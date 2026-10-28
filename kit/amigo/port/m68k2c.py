@@ -15,6 +15,7 @@ the dispatcher. Addresses the game replaces by HLE (game.json "hle") call the na
 
 usage: m68k2c.py OUTDIR [--config game.json] [--seeds FILE ...] [--single FILE] [--no-speculative]
        [--coverage FILE]   (G1 coverage.json: reachable / translated / interpreted, with details)
+       [--emit rust]       (G5 M2: write OUTDIR/translated.rs from the same decoder instead of the C chunks; m68k2rs.py)
 """
 import re
 import os, sys, struct, json, collections
@@ -1038,7 +1039,14 @@ def main():
     if '--no-speculative' not in sys.argv:
         for _ in range(3):
             spec = speculative(mem, dec, insns, leaders)
-    names = emit(mem, insns, leaders, outdir)
+    rust = None
+    if '--emit' in sys.argv and sys.argv[sys.argv.index('--emit') + 1] == 'rust':
+        import m68k2rs
+        os.makedirs(outdir, exist_ok=True)
+        rust = m68k2rs.emit_rust(insns, os.path.join(outdir, 'translated.rs'), HLE)
+        names = []
+    else:
+        names = emit(mem, insns, leaders, outdir)
     for i, a in enumerate(sys.argv):
         if a == '--single': emit_single(insns, sys.argv[i + 1])
     # statistics
@@ -1060,6 +1068,9 @@ def main():
         'runtime_code_pcs_used': len(mem.observed), 'runtime_code_pcs_changed_left_to_interpreter': mem.volatile,
         'ghidra_seed_files': ghidra_used,
     }
+    if rust is not None:
+        stats['rust_instructions_translated'] = rust['translated']
+        stats['rust_untranslated'] = {('%06X' % k): v for k, v in sorted(rust['untranslated'].items())}
     json.dump({'stats': stats, 'bad': {('%06X' % k): v for k, v in sorted(bad.items())}}, open(os.path.join(outdir, 'translate_stats.json'), 'w'), indent=1)
     open(os.path.join(outdir, 'translated_pcs.txt'), 'w').write(''.join('%06X\n' % p for p in sorted(insns)))
     open(os.path.join(outdir, 'leaders.txt'), 'w').write(''.join('%06X\n' % p for p in blks))

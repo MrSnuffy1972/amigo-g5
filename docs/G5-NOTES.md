@@ -53,3 +53,26 @@ above, that detail is the exporter's reading and is labelled as an assumption.
   range, body longer than the declared image). No real game hunk file was loaded.
 - **Not done**: M2 onwards. `HunkError::Unsupported` covers overlays and HUNK_EXT references, as the Python does.
 - **For Ryzen**: nothing for M1.
+
+### 2026-10-28: M2, Rust emitter for a first instruction subset, checked against the C translation (PARTIAL)
+- **Measured** (cloud container, rustc/cargo 1.97.0, python 3.13, gcc): `cargo fmt --check`, `cargo clippy
+  --all-targets -- -D warnings` clean; `cargo test --all-targets`: 18 unit tests, hunk differential test, and the new
+  `emit_diff` (2 tests) pass; leakcheck clean; `python3 -m unittest discover -s tests/synthetic` 6 tests pass.
+  `emit_diff` translates 8 hand-encoded programs (loop from tests/synthetic, move modes, arithmetic and compares,
+  shifts and rotates, bit ops/BCD/CCR/Scc, movem/link/unlk, bsr/jsr/rts, branches and dbra) with one
+  `m68k2c.py ... --emit rust --single` run each, runs the `--single` C (gcc) and the generated Rust from the same
+  start state to the same stop address (5 to 24 steps each), and compares D0-D7, A0-A7, SR, PC, cycle count, OSP and
+  every changed RAM byte: identical for all 8. Mutation check: flipping `>` to `>=` in the Rust `sub` carry made the
+  test fail on the first program.
+- **Decision (28 Oct 2026)**: the Rust emitter transliterates the decoder's own C statements (`Insn.code`) with a small
+  expression parser (`kit/amigo/port/m68k2rs.py`), so both outputs come from one decode. Anything it cannot translate
+  (goto, loops, `/` and `%`, exceptions: traps, chk, mul/div) becomes an arm that returns `Stop::Untranslated`, and
+  is counted in `translate_stats.json` (`rust_untranslated`). A structured form in the decoder is the alternative if
+  the subset grows.
+- **Assumed**: the `--single` C build (one function per instruction, the build `difftest.c` uses against Musashi) is the
+  right oracle for M2; the chunk build with its event checks was not compared. A word or long access at an odd
+  address is a typed error in Rust and silent in the C test driver, so no test program does one.
+  The C test driver's memory is a flat 512 KB, so nothing here exercises custom-chip addresses.
+- **Not done**: mul/div, chk, trap, rte, stop, movep, rts-through-exception paths; the chunk C build as oracle;
+  randomised trials (M3); HLE arms; no game-level check.
+- **For Ryzen**: nothing for M2.

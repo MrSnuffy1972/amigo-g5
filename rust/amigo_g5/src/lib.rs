@@ -5,7 +5,9 @@
 //! M3 (28 Oct 2026): a write journal in guest memory; randomised trials of every instruction class against the C.
 //! M4 (28 Oct 2026): cold boot of a filed program (its hunk file, files and entry point) and the exec/dos services it calls.
 //! M5 (28 Oct 2026): the clean-sheet display (copper list as a table, frame composition, sprites, raw RGBA dumps).
+//! M5 part 2 (28 Oct 2026): the clean-sheet blitter (each blit done at once by what it achieves, line draw included).
 
+pub mod blit;
 pub mod boot;
 pub mod cpu;
 pub mod display;

@@ -202,3 +202,32 @@ above, that detail is the exporter's reading and is labelled as an assumption.
   headless audio dump (main.c `--wav`); the hires AVERAGE policy and the other environment switches. Non-test code is
   about 600 lines (display.rs, without comments and blank lines), so the rest of M5 is the next session's.
 - **For Ryzen**: nothing for this step.
+
+### 2026-10-28: M5 part 2, the clean-sheet blitter in Rust, checked against intentrt.c (PARTIAL)
+- **Measured** (cloud container, rustc/cargo 1.97.0, python 3.13, gcc): `cargo fmt --check`, `cargo clippy --all-targets
+  -- -D warnings` clean; `cargo test --all-targets`: 24 unit tests (new: the minterm table, a BLTSIZE clear that wraps at the
+  chip size), `hunk_diff`, `emit_diff`, `rand_diff`, `os_diff`, `display_diff` and the new `blit_diff` (about 2.5 s) pass;
+  `python3 -m unittest discover -s tests/synthetic`: 9 tests pass; leakcheck clean. `blit_diff` takes intentrt.c's blit
+  classes from its own text at test time (`ib_r16` to `intent_blit_dispatch_ext`), compiles them with gcc at a 128 KB
+  CHIP_SIZE, starts each blit the way write_custom does (BLTSIZE, ECS BLTSIZV/BLTSIZH) and feeds it and `blit.rs` the same
+  180 synthetic register streams over noise chip RAM (20 written by hand: clear 0/1/BLTADAT, copy A with masks, copy B,
+  shifted copy up, down and down by 0, bob draw and bob with the mask from BLTADAT, inclusive, exclusive and FCI area fill,
+  no destination, general minterms, pointers with high bits and odd modulos that wrap, BLTSIZE 0 (1024 x 64), chained blits
+  from the pointers the last one left, ECS sizes including the zero defaults, 44 lines across all eight octants with and
+  without SING; 160 random streams of 1 to 6 blits). Result: 763 blits (by class 0-7: 282 general, 11 clear, 2 copy, 8 shift,
+  10 bob, 183 fill, 189 line, 78 no destination), 1,257,183 chip bytes changed, chip RAM, every blitter register after the
+  stream and the class of every blit identical. Mutation checks, each fails the test: inclusive fill as exclusive, an octant
+  swap, the descending B shift by one, no last word mask, the clear stride, copy taking shifted blits, SING ignored, the line
+  pattern rotated the wrong way, no D pointer write-back, the ECS zero height, the line increments swapped, the bob cut
+  without ~A, the fill carry not reset per row, the descending shift modulo sign.
+- **Decision (28 Oct 2026)**: blits are done at once on the BLTSIZE or BLTSIZH write and return what they were
+  (`blit::BlitKind`, named for what the game wants: Clear, Copy, Shift, DrawBob, Fill, Line, General, NoDest); the caller
+  raises INTREQ bit 6 as write_custom does. Chip RAM is written through `blit::ChipMut`, bounds-checked, wrapping at its
+  power-of-two size; the blitter's registers live in `blit::Blitter`, owned by the runtime, no global state.
+- **Assumed**: the two BLTSIZE cases of write_custom, copied into the C test driver by hand, stand for the product's write
+  path (they are the only lines of it a blit depends on). The random streams use noise data, not shapes a game would blit.
+- **Not done**: wiring the blitter, display and OS chip log into one runtime tick; the copper writing blitter registers;
+  the BLITLOG trace and class counters; Paula channels and the 44.1 kHz mix with its BLEP and RC filters; the headless
+  audio dump (main.c `--wav`); the progressive compose and copper re-read on mid-frame COPxLC writes (from part 1). Non-test
+  code is about 375 lines (blit.rs, without comments, blank lines and its unit tests).
+- **For Ryzen**: nothing for this step.

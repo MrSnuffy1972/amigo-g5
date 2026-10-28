@@ -1,0 +1,13 @@
+[package]
+name = "amigo_g5_part0"
+version = "0.1.0"
+edition = "2021"
+description = "Ami-Go G5: part 0 of 8 of a game's translated code (pages whose number is 0 modulo 8)"
+publish = false
+build = "../amigo_g5_part/build.rs"
+
+[lib]
+path = "../amigo_g5_part/lib.rs"
+
+[dependencies]
+amigo_g5 = { path = "../amigo_g5" }

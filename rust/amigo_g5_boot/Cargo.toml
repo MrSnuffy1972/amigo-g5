@@ -12,3 +12,11 @@ path = "src/main.rs"
 
 [dependencies]
 amigo_g5 = { path = "../amigo_g5" }
+amigo_g5_part0 = { path = "../amigo_g5_part0" }
+amigo_g5_part1 = { path = "../amigo_g5_part1" }
+amigo_g5_part2 = { path = "../amigo_g5_part2" }
+amigo_g5_part3 = { path = "../amigo_g5_part3" }
+amigo_g5_part4 = { path = "../amigo_g5_part4" }
+amigo_g5_part5 = { path = "../amigo_g5_part5" }
+amigo_g5_part6 = { path = "../amigo_g5_part6" }
+amigo_g5_part7 = { path = "../amigo_g5_part7" }

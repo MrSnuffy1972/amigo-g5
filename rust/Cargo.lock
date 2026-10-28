@@ -11,4 +11,68 @@ name = "amigo_g5_boot"
 version = "0.1.0"
 dependencies = [
  "amigo_g5",
+ "amigo_g5_part0",
+ "amigo_g5_part1",
+ "amigo_g5_part2",
+ "amigo_g5_part3",
+ "amigo_g5_part4",
+ "amigo_g5_part5",
+ "amigo_g5_part6",
+ "amigo_g5_part7",
+]
+
+[[package]]
+name = "amigo_g5_part0"
+version = "0.1.0"
+dependencies = [
+ "amigo_g5",
+]
+
+[[package]]
+name = "amigo_g5_part1"
+version = "0.1.0"
+dependencies = [
+ "amigo_g5",
+]
+
+[[package]]
+name = "amigo_g5_part2"
+version = "0.1.0"
+dependencies = [
+ "amigo_g5",
+]
+
+[[package]]
+name = "amigo_g5_part3"
+version = "0.1.0"
+dependencies = [
+ "amigo_g5",
+]
+
+[[package]]
+name = "amigo_g5_part4"
+version = "0.1.0"
+dependencies = [
+ "amigo_g5",
+]
+
+[[package]]
+name = "amigo_g5_part5"
+version = "0.1.0"
+dependencies = [
+ "amigo_g5",
+]
+
+[[package]]
+name = "amigo_g5_part6"
+version = "0.1.0"
+dependencies = [
+ "amigo_g5",
+]
+
+[[package]]
+name = "amigo_g5_part7"
+version = "0.1.0"
+dependencies = [
+ "amigo_g5",
 ]

@@ -80,3 +80,6 @@ The gate build keeps its symbols. A stripped binary fails.
   passes the kit's G0 choice (gates/G0/g0.json `exe_rel`). The binary prints `boot: game code fnv <16 hex>`, the FNV-1a
   64 of the generated code compiled into it; g5_build.sh fails (exit 9) when it is not the hash of the game's own
   translated.rs. `AMIGO_G5_OSTRACE=FILE` writes every OS call as `TICK t CALL base $B LVO -$L` (dev only).
+- **M6 part 3:** the game's code is built by the crates `amigo_g5_part0..7` from the same `AMIGO_G5_GAME_RS` (pages by
+  PC >> 9, part = page modulo 8), so `cargo build --bin amigo-g5-boot` builds them too; m68k2rs.py must emit 512-byte
+  pages (`PAGE_BITS = 9`) or the parts refuse the file.

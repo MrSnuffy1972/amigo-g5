@@ -1,3 +1,3 @@
 [workspace]
-members = ["amigo_g5", "amigo_g5_boot"]
+members = ["amigo_g5", "amigo_g5_boot", "amigo_g5_part0", "amigo_g5_part1", "amigo_g5_part2", "amigo_g5_part3", "amigo_g5_part4", "amigo_g5_part5", "amigo_g5_part6", "amigo_g5_part7"]
 resolver = "2"

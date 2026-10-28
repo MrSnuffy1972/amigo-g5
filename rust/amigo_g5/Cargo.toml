@@ -1,0 +1,8 @@
+[package]
+name = "amigo_g5"
+version = "0.1.0"
+edition = "2021"
+description = "Ami-Go G5: Rust cold-boot port toolkit (guest memory, hunk loader)"
+publish = false
+
+[dependencies]

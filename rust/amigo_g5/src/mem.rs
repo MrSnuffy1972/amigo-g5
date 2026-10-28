@@ -7,6 +7,7 @@
 //! differential test (and later the per-tick oracle check) can list the bytes a step touched and roll them back
 //! without copying the whole of guest memory. It is off unless asked for and changes no access result.
 
+use std::cell::{Cell, RefCell};
 use std::fmt;
 
 /// The 68000 drives 24 address lines.
@@ -75,11 +76,57 @@ struct Region {
     data: Vec<u8>,
 }
 
-#[derive(Debug, Clone)]
+/// The custom chips and CIAs as the 68000 bus sees them (M6, 28 Oct 2026). Attached to guest memory with
+/// [`GuestMemory::attach_io`], it receives every access to $DFF000-$DFFFFF and $BF0000-$BFFFFF exactly as
+/// intentrt.c `mem_rb`..`mem_wl` route them: a custom register is a word at `addr & $1FE`, a byte write to it puts
+/// the byte in both halves, CIA-A is the odd bytes with A12 low and CIA-B the even bytes with A13 low, register
+/// `(addr >> 8) & 15`. `now` is the runtime's beam clock at the access (for VPOSR/VHPOSR).
+pub trait Io {
+    fn custom_read(&mut self, reg: u16, now: u64) -> u16;
+    fn custom_write(&mut self, chip: &mut [u8], reg: u16, v: u16);
+    fn cia_read(&mut self, n: usize, reg: u8) -> u8;
+    fn cia_write(&mut self, n: usize, reg: u8, v: u8);
+    fn as_any_mut(&mut self) -> &mut dyn std::any::Any;
+}
+
+/// Lowest address past the chip RAM window: chip RAM and its mirrors fill $000000-$1FFFFF (intentrt.c `is_chip`).
+const CHIP_WINDOW: u32 = 0x20_0000;
+/// The slow RAM window $C00000-$D7FFFF (intentrt.c `is_slow`).
+const SLOW_WINDOW_END: u32 = 0xD8_0000;
+
 pub struct GuestMemory {
     regions: Vec<Region>,
     /// `(masked address, old byte)` for every byte written while journalling, oldest first.
     journal: Option<Vec<(u32, u8)>>,
+    /// The bus (M6): when attached, chip and slow RAM mirror across their windows, the custom chips and CIAs are
+    /// reached through `io`, and any other address reads 0 and ignores writes, as the C runtime does (counted in
+    /// `unmapped`). Without it every access outside a region is a typed error, as before.
+    io: Option<RefCell<Box<dyn Io>>>,
+    now: Cell<u64>,
+    unmapped: Cell<u64>,
+}
+
+impl Clone for GuestMemory {
+    /// A copy of the RAM and the journal. The bus is not copied: the copy has none.
+    fn clone(&self) -> Self {
+        GuestMemory {
+            regions: self.regions.clone(),
+            journal: self.journal.clone(),
+            io: None,
+            now: Cell::new(self.now.get()),
+            unmapped: Cell::new(0),
+        }
+    }
+}
+
+impl fmt::Debug for GuestMemory {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("GuestMemory")
+            .field("regions", &self.regions)
+            .field("journal", &self.journal.as_ref().map(|j| j.len()))
+            .field("bus", &self.io.is_some())
+            .finish()
+    }
 }
 
 impl GuestMemory {
@@ -110,6 +157,9 @@ impl GuestMemory {
         Ok(GuestMemory {
             regions,
             journal: None,
+            io: None,
+            now: Cell::new(0),
+            unmapped: Cell::new(0),
         })
     }
 
@@ -190,33 +240,204 @@ impl GuestMemory {
     }
 
     pub fn read_u8(&self, addr: u32) -> Result<u8, MemError> {
+        if self.io.is_some() {
+            return Ok(match self.ram_addr(addr, 1) {
+                Some(a) => self.read_bytes(a, 1)?[0],
+                None => self.io_rb(addr & ADDR_MASK),
+            });
+        }
         Ok(self.read_bytes(addr, 1)?[0])
     }
 
     pub fn read_u16(&self, addr: u32) -> Result<u16, MemError> {
         Self::check_even(addr, 2)?;
-        let b = self.read_bytes(addr, 2)?;
-        Ok(u16::from_be_bytes([b[0], b[1]]))
+        if self.io.is_some() {
+            match self.ram_addr(addr, 2) {
+                Some(a) => {
+                    let b = self.read_bytes(a, 2)?;
+                    Ok(u16::from_be_bytes([b[0], b[1]]))
+                }
+                None => Ok(self.io_rw(addr & ADDR_MASK)),
+            }
+        } else {
+            let b = self.read_bytes(addr, 2)?;
+            Ok(u16::from_be_bytes([b[0], b[1]]))
+        }
     }
 
     pub fn read_u32(&self, addr: u32) -> Result<u32, MemError> {
         Self::check_even(addr, 4)?;
+        if self.io.is_some() {
+            // as mem_rl: two word reads
+            let hi = self.read_u16(addr)? as u32;
+            return Ok(hi << 16 | self.read_u16(addr.wrapping_add(2))? as u32);
+        }
         let b = self.read_bytes(addr, 4)?;
         Ok(u32::from_be_bytes([b[0], b[1], b[2], b[3]]))
     }
 
     pub fn write_u8(&mut self, addr: u32, v: u8) -> Result<(), MemError> {
+        if self.io.is_some() {
+            match self.ram_addr(addr, 1) {
+                Some(a) => return self.write_bytes(a, &[v]),
+                None => {
+                    self.io_wb(addr & ADDR_MASK, v);
+                    return Ok(());
+                }
+            }
+        }
         self.write_bytes(addr, &[v])
     }
 
     pub fn write_u16(&mut self, addr: u32, v: u16) -> Result<(), MemError> {
         Self::check_even(addr, 2)?;
+        if self.io.is_some() {
+            match self.ram_addr(addr, 2) {
+                Some(a) => return self.write_bytes(a, &v.to_be_bytes()),
+                None => {
+                    self.io_ww(addr & ADDR_MASK, v);
+                    return Ok(());
+                }
+            }
+        }
         self.write_bytes(addr, &v.to_be_bytes())
     }
 
     pub fn write_u32(&mut self, addr: u32, v: u32) -> Result<(), MemError> {
         Self::check_even(addr, 4)?;
+        if self.io.is_some() {
+            // as mem_wl: two word writes, high word first
+            self.write_u16(addr, (v >> 16) as u16)?;
+            return self.write_u16(addr.wrapping_add(2), v as u16);
+        }
         self.write_bytes(addr, &v.to_be_bytes())
+    }
+
+    /// Attach the bus (M6). From now on the RAM windows mirror and the chip addresses go to `io`.
+    pub fn attach_io(&mut self, io: Box<dyn Io>) {
+        self.io = Some(RefCell::new(io));
+    }
+
+    /// The beam clock the next custom-chip read sees.
+    pub fn set_now(&self, now: u64) {
+        self.now.set(now);
+    }
+
+    /// Accesses to addresses that are neither RAM nor chips since the bus was attached (they read 0).
+    pub fn unmapped_accesses(&self) -> u64 {
+        self.unmapped.get()
+    }
+
+    /// Run `f` on the bus and chip RAM together (the runtime's line step needs both). None without a bus.
+    pub fn with_io<R>(&mut self, f: impl FnOnce(&mut dyn Io, &mut [u8]) -> R) -> Option<R> {
+        let GuestMemory { regions, io, .. } = self;
+        let io = io.as_mut()?;
+        let chip = match regions.iter_mut().find(|r| r.base == 0) {
+            Some(r) => r.data.as_mut_slice(),
+            None => &mut [],
+        };
+        Some(f(io.get_mut().as_mut(), chip))
+    }
+
+    /// Bus mode: the region address of a RAM access, with chip RAM mirrored across $000000-$1FFFFF and slow RAM
+    /// across $C00000-$D7FFFF (intentrt.c `CHIP_MASK`, `SLOW_IDX`). None for a chip or unmapped address.
+    fn ram_addr(&self, addr: u32, len: u32) -> Option<u32> {
+        let a = addr & ADDR_MASK;
+        if a < CHIP_WINDOW {
+            let n = self.regions.iter().find(|r| r.base == 0)?.data.len() as u32;
+            let m = a % n;
+            return if m + len <= n { Some(m) } else { Some(a) };
+        }
+        if (SLOW_BASE..SLOW_WINDOW_END).contains(&a) {
+            let n = self
+                .regions
+                .iter()
+                .find(|r| r.base == SLOW_BASE)?
+                .data
+                .len() as u32;
+            let m = SLOW_BASE + (a - SLOW_BASE) % n;
+            return if m + len <= SLOW_BASE + n {
+                Some(m)
+            } else {
+                Some(a)
+            };
+        }
+        if self.locate(a, len as usize).is_ok() {
+            return Some(a);
+        }
+        None
+    }
+
+    fn is_chip_io(a: u32) -> bool {
+        a & 0xFF_F000 == 0xDF_F000 || a & 0xFF_0000 == 0xBF_0000
+    }
+
+    fn io_rb(&self, a: u32) -> u8 {
+        let Some(io) = self.io.as_ref() else { return 0 };
+        if a & 0xFF_F000 == 0xDF_F000 {
+            let w = io
+                .borrow_mut()
+                .custom_read((a & 0x1FE) as u16, self.now.get());
+            return if a & 1 != 0 { w as u8 } else { (w >> 8) as u8 };
+        }
+        if a & 0xFF_0000 == 0xBF_0000 {
+            let reg = ((a >> 8) & 15) as u8;
+            if a & 0x1001 == 0x0001 {
+                return io.borrow_mut().cia_read(0, reg);
+            }
+            if a & 0x2001 == 0 {
+                return io.borrow_mut().cia_read(1, reg);
+            }
+            return 0xFF;
+        }
+        self.unmapped.set(self.unmapped.get() + 1);
+        0
+    }
+
+    fn io_rw(&self, a: u32) -> u16 {
+        if a & 0xFF_F000 == 0xDF_F000 {
+            if let Some(io) = self.io.as_ref() {
+                return io
+                    .borrow_mut()
+                    .custom_read((a & 0x1FE) as u16, self.now.get());
+            }
+        }
+        if !Self::is_chip_io(a) {
+            self.unmapped.set(self.unmapped.get() + 1);
+            return 0;
+        }
+        (self.io_rb(a) as u16) << 8 | self.io_rb(a + 1) as u16
+    }
+
+    fn io_custom_write(&mut self, reg: u16, v: u16) {
+        self.with_io(|io, chip| io.custom_write(chip, reg, v));
+    }
+
+    fn io_wb(&mut self, a: u32, v: u8) {
+        if a & 0xFF_F000 == 0xDF_F000 {
+            // a byte write to a custom register puts the byte in both halves
+            self.io_custom_write((a & 0x1FE) as u16, (v as u16) << 8 | v as u16);
+        } else if a & 0xFF_0000 == 0xBF_0000 {
+            let reg = ((a >> 8) & 15) as u8;
+            if a & 0x1001 == 0x0001 {
+                self.with_io(|io, _| io.cia_write(0, reg, v));
+            } else if a & 0x2001 == 0 {
+                self.with_io(|io, _| io.cia_write(1, reg, v));
+            }
+        } else {
+            self.unmapped.set(self.unmapped.get() + 1);
+        }
+    }
+
+    fn io_ww(&mut self, a: u32, v: u16) {
+        if a & 0xFF_F000 == 0xDF_F000 {
+            self.io_custom_write((a & 0x1FE) as u16, v);
+        } else if Self::is_chip_io(a) {
+            self.io_wb(a, (v >> 8) as u8);
+            self.io_wb(a + 1, v as u8);
+        } else {
+            self.unmapped.set(self.unmapped.get() + 1);
+        }
     }
 }
 

@@ -5,3 +5,10 @@ version = 4
 [[package]]
 name = "amigo_g5"
 version = "0.1.0"
+
+[[package]]
+name = "amigo_g5_boot"
+version = "0.1.0"
+dependencies = [
+ "amigo_g5",
+]

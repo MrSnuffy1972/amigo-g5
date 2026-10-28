@@ -6,7 +6,7 @@
 //! (decision 28 Oct 2026): COPJMP and COPTIME on, mid-line colour changes on, 6 planes (HAM6, EHB) on, sprites on, hires
 //! reduced by taking the left pixel. M5 part 5 (28 Oct 2026) added the progressive compose (`intent_compose_to`, line by
 //! line as the tick's virtual beam passes) and the copper re-read on a mid-frame CPU write to COP2LC or COPJMP1/2
-//! (`intent_copper_cpu`); `tests/chipset_diff.rs` checks both through the whole of intentrt.c.
+//! (`intent_copper_cpu`); `tests/hardware_diff.rs` checks both through the whole of intentrt.c.
 
 use std::io::{self, Write};
 use std::path::Path;

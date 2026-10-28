@@ -1,4 +1,4 @@
-//! M5 part 5 differential test: the custom chips as one runtime (`chipset.rs`) against `runtime/intentrt.c`.
+//! M5 part 5 differential test: the custom chips as one runtime (`hardware.rs`) against `runtime/intentrt.c`.
 //!
 //! The C side is the whole of intentrt.c (with intent.c and the blit classes it includes), compiled with gcc and
 //! linked with a small driver written here that defines only the scheduler clock and the PC ring intentrt.c expects
@@ -14,7 +14,7 @@ use std::fs;
 use std::io::Write as _;
 use std::process::{Command, Stdio};
 
-use amigo_g5::chipset::{Chipset, Input, CYC_PER_LINE};
+use amigo_g5::hardware::{Hardware, Input, CYC_PER_LINE};
 use amigo_g5::paula::Paula;
 
 mod common;
@@ -96,7 +96,7 @@ fn fnv(b: impl IntoIterator<Item = u8>) -> u64 {
 /// The Rust side: the same output the C driver prints.
 fn run_rust(chip0: &[u8], ev: &[Ev]) -> String {
     let mut chip = chip0.to_vec();
-    let mut cs = Chipset::new(&chip, 0, Paula::default());
+    let mut cs = Hardware::new(&chip, 0, Paula::default());
     let mut lines = 0u64;
     let mut out = String::new();
     for e in ev {
@@ -114,7 +114,7 @@ fn run_rust(chip0: &[u8], ev: &[Ev]) -> String {
             Ev::In(i) => cs.input = i,
             Ev::Lines(k) => {
                 for _ in 0..k {
-                    cs.line_step(&chip);
+                    cs.pass_line(&chip);
                     lines += 1;
                     let before = cs.intreq;
                     let level = cs.ipl();
@@ -553,7 +553,7 @@ fn random(seed: u64) -> (Vec<u8>, Vec<Ev>) {
 }
 
 #[test]
-fn chipset_matches_c_intentrt() {
+fn hardware_matches_c_intentrt() {
     if !have("gcc") {
         eprintln!("skipped: needs gcc");
         return;
@@ -639,7 +639,7 @@ fn chipset_matches_c_intentrt() {
         }
     }
     eprintln!(
-        "chipset_diff: {} scenarios, {lines} lines, {frames} frames, {samples} stereo samples, {reads} reads, \
+        "hardware_diff: {} scenarios, {lines} lines, {frames} frames, {samples} stereo samples, {reads} reads, \
          blits by class 0-7 {blits:?}, lines by level 0-6 {levels:?}: identical",
         sc.len()
     );

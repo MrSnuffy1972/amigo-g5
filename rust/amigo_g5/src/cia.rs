@@ -321,7 +321,7 @@ impl Cias {
 
     /// What one PAL line does to the CIAs (intentrt.c `tick_line_step`): both timers count the line's E clock
     /// ticks, CIA-B's TOD counts the line, and the keyboard link moves on.
-    pub fn line_step(&mut self) {
+    pub fn pass_line(&mut self) {
         for c in &mut self.cia {
             let t = c.e_ticks();
             c.tick(t);
@@ -413,11 +413,11 @@ mod tests {
         c.write(1, 4, 99);
         c.write(1, 5, 0); // latch 99, loaded while stopped
         c.write(1, 14, 0x01); // start, continuous
-        c.line_step(); // 45 ticks: 54 left
+        c.pass_line(); // 45 ticks: 54 left
         assert_eq!(c.read(1, 4, Buttons::default()), 54);
         assert_eq!(c.intreq_bits(), 0);
-        c.line_step(); // 45 more (45.4 accumulates): 9 left
-        c.line_step(); // underflow, reload to 99 + 1 - 36
+        c.pass_line(); // 45 more (45.4 accumulates): 9 left
+        c.pass_line(); // underflow, reload to 99 + 1 - 36
         assert_eq!(c.intreq_bits(), 0x2000);
         assert_eq!(c.read(1, 13, Buttons::default()), 0x81);
         assert_eq!(c.intreq_bits(), 0, "an ICR read clears it");
@@ -430,7 +430,7 @@ mod tests {
         c.write(0, 4, 10);
         c.write(0, 5, 0);
         assert_eq!(c.read(0, 14, Buttons::default()) & 1, 1);
-        c.line_step();
+        c.pass_line();
         assert_eq!(c.read(0, 14, Buttons::default()) & 1, 0);
         assert_eq!(c.read(0, 4, Buttons::default()), 10);
     }
@@ -440,18 +440,18 @@ mod tests {
         let mut c = Cias::new();
         c.push_key(0x45, true); // Esc down
         c.push_key(0x45, false);
-        c.line_step();
+        c.pass_line();
         assert_eq!(c.read(0, 12, Buttons::default()), !0x8au8);
         assert_eq!(c.intreq_bits(), 0x0008);
         assert_eq!(c.read(0, 13, Buttons::default()), 0x88);
         for _ in 0..20 {
-            c.line_step();
+            c.pass_line();
         }
         assert_eq!(c.intreq_bits(), 0, "no second byte before the handshake");
         c.write(0, 14, 0x40);
         c.write(0, 14, 0x00);
         for _ in 0..9 {
-            c.line_step();
+            c.pass_line();
         }
         assert_eq!(c.read(0, 12, Buttons::default()), !0x8bu8);
     }

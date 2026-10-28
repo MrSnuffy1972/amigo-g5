@@ -11,14 +11,17 @@
 //! interrupt level.
 //! M5 part 5 (28 Oct 2026): the custom chips as one runtime (register writes and reads, one PAL line at a call, the
 //! progressive compose and the copper re-read on a mid-tick pointer write).
+//! M6 (28 Oct 2026): the bus (custom chips and CIAs reached from guest memory) and the run loop that puts translated
+//! code, the OS services and the chips on one clock; the boot binary `amigo-g5-boot` (crate amigo_g5_boot).
 
 pub mod blit;
 pub mod boot;
-pub mod chipset;
 pub mod cia;
 pub mod cpu;
 pub mod display;
+pub mod hardware;
 pub mod hunk;
 pub mod mem;
 pub mod os;
 pub mod paula;
+pub mod run;

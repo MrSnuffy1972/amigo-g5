@@ -4,7 +4,9 @@
 //! Ported from `kit/amigo/port/runtime/intent.c` (M5, 28 Oct 2026), which is the oracle: `tests/display_diff.rs` compiles
 //! intent.c with gcc and compares the table and every pixel. The C's environment switches are fixed at their defaults
 //! (decision 28 Oct 2026): COPJMP and COPTIME on, mid-line colour changes on, 6 planes (HAM6, EHB) on, sprites on, hires
-//! reduced by taking the left pixel. Only the whole-frame compose (`intent_compose`) is ported, not the progressive one.
+//! reduced by taking the left pixel. M5 part 5 (28 Oct 2026) added the progressive compose (`intent_compose_to`, line by
+//! line as the tick's virtual beam passes) and the copper re-read on a mid-frame CPU write to COP2LC or COPJMP1/2
+//! (`intent_copper_cpu`); `tests/chipset_diff.rs` checks both through the whole of intentrt.c.
 
 use std::io::{self, Write};
 use std::path::Path;
@@ -289,6 +291,91 @@ fn colour(pal: &[u16; 32], v: u8) -> u16 {
 pub struct Frame {
     pub start: ScreenState,
     pub table: CopperTable,
+    /// Where the frame's copper list starts, and the COP1LC/COP2LC the CPU has set since (intent.c in_frame_cop,
+    /// in_cop1, in_cop2).
+    cop: u32,
+    cop1: u32,
+    cop2: u32,
+}
+
+impl Frame {
+    /// Mirrors intent.c intent_copper_cpu: the CPU wrote $080-$08A at line `l` mid-frame. COPJMP1/2 restarts the
+    /// copper at COP1LC/COP2LC from that line; a COP2LC write re-reads the frame's list with the new pointer. Table
+    /// entries before the line are kept (already shown or applied), the re-read supplies the line onwards, and the
+    /// compose cursor `p` steps back to the first replaced entry.
+    pub fn copper_cpu(&mut self, chip: Chip, p: &mut Progress, l: i32, reg: u16, v: u16) {
+        let (hi, lo) = ((v as u32) << 16, (v & 0xfffe) as u32);
+        match reg {
+            0x80 => self.cop1 = (self.cop1 & 0xffff) | hi,
+            0x82 => self.cop1 = (self.cop1 & 0xffff_0000) | lo,
+            0x84 => self.cop2 = (self.cop2 & 0xffff) | hi,
+            0x86 => self.cop2 = (self.cop2 & 0xffff_0000) | lo,
+            0x88 | 0x8a => {}
+            _ => return,
+        }
+        // COP1LC only matters at the next frame or a COPJMP1
+        if reg == 0x80 || reg == 0x82 {
+            return;
+        }
+        let tmp = match reg {
+            0x88 => read_table(chip, self.cop1, self.cop1, self.cop2, l),
+            0x8a => read_table(chip, self.cop2, self.cop1, self.cop2, l),
+            _ => read_table(chip, self.cop, self.cop, self.cop2, 0),
+        };
+        let t = &mut self.table;
+        let k = t.changes.iter().take_while(|c| c.line < l).count();
+        t.changes.truncate(k);
+        for c in tmp.changes.iter().filter(|c| c.line >= l) {
+            if t.changes.len() >= MAX_CHG {
+                break;
+            }
+            let seq = t.changes.len() as i32;
+            t.changes.push(Change { seq, ..*c });
+        }
+        let j = t.callbacks.iter().take_while(|c| c.0 < l).count();
+        t.callbacks.truncate(j);
+        for &c in tmp.callbacks.iter().filter(|c| c.0 >= l) {
+            if t.callbacks.len() >= MAX_CB {
+                break;
+            }
+            t.callbacks.push(c);
+        }
+        p.ci = p.ci.min(k);
+    }
+}
+
+/// How far a progressive compose has got through a frame (intent.c `ic`): the screen state, the next table entry
+/// and CPU write to apply, the next line, and the sprite fetch.
+pub struct Progress {
+    s: ScreenState,
+    ci: usize,
+    wi: usize,
+    l: i32,
+    spr: Sprites,
+    spr312: bool,
+}
+
+impl Progress {
+    /// Mirrors intent.c intent_compose_begin.
+    pub fn begin(f: &Frame) -> Self {
+        Progress {
+            s: f.start.clone(),
+            ci: 0,
+            wi: 0,
+            l: 0,
+            spr: Sprites {
+                spr: [Sprite::default(); 8],
+                pix: [0; 1024],
+                pair: [0; 1024],
+            },
+            spr312: false,
+        }
+    }
+
+    /// The next line to compose.
+    pub fn line(&self) -> i32 {
+        self.l
+    }
 }
 
 #[derive(Clone, Copy, Default)]
@@ -426,8 +513,7 @@ impl Sprites {
 pub struct CpuWrites(Vec<Change>);
 
 impl CpuWrites {
-    /// Mirrors the recording half of intent.c intent_cpu_write. Not done (28 Oct 2026): the C also re-reads the copper
-    /// list on a CPU write to COP2LC or COPJMP1/2 mid-frame (intent_copper_cpu); here those writes only enter the list.
+    /// Mirrors the recording half of intent.c intent_cpu_write (the copper half is `Frame::copper_cpu`).
     pub fn push(&mut self, line: i32, reg: u16, val: u16) {
         if reg >= 0x40 && self.0.len() < MAX_CHG {
             let seq = self.0.len() as i32;
@@ -482,24 +568,42 @@ impl Display {
         }
         let cop2 = ((sh.custom[0x84 >> 1] as u32) << 16) | (sh.custom[0x86 >> 1] & 0xfffe) as u32;
         let table = read_table(chip, cop, cop, cop2, 0);
-        Frame { start, table }
+        Frame {
+            start,
+            table,
+            cop,
+            cop1: cop,
+            cop2,
+        }
     }
 
     /// Mirrors intent.c intent_compose (intent_compose_begin plus intent_compose_to line 312): the whole frame into
     /// `out` (SCR_W x SCR_H, 0xAARRGGBB), and the sprite pointers carried to the next frame.
     pub fn compose(&mut self, chip: Chip, f: &Frame, cpuw: &CpuWrites, out: &mut [u32]) {
+        let mut p = Progress::begin(f);
+        self.compose_to(chip, f, cpuw, &mut p, 312, out);
+    }
+
+    /// Mirrors intent.c intent_compose_to: compose the lines from where `p` stands up to (not including) `lend`, each
+    /// from chip RAM as it is now. Reaching line 312 also runs that line's sprite fetch and carries the sprite
+    /// pointers to the next frame.
+    pub fn compose_to(
+        &mut self,
+        chip: Chip,
+        f: &Frame,
+        cpuw: &CpuWrites,
+        p: &mut Progress,
+        lend: i32,
+        out: &mut [u32],
+    ) {
         assert_eq!(out.len(), SCR_W * SCR_H);
+        let lend = lend.min(312);
         let (t, cpuw) = (&f.table.changes, &cpuw.0);
-        let mut s = f.start.clone();
-        let mut spr = Sprites {
-            spr: [Sprite::default(); 8],
-            pix: [0; 1024],
-            pair: [0; 1024],
-        };
-        let (mut ci, mut wi) = (0usize, 0usize);
+        let (s, spr) = (&mut p.s, &mut p.spr);
+        let (mut ci, mut wi) = (p.ci, p.wi);
         let mut mid: Vec<Change> = Vec::new();
         let mut defr: Vec<Change> = Vec::new();
-        for l in 0..312 {
+        for l in p.l..lend {
             mid.clear();
             defr.clear();
             let wi0 = wi;
@@ -543,7 +647,7 @@ impl Display {
                 nplanes = 5;
             }
             let mut pix = [0u8; 1024];
-            spr.line(chip, &mut s, l);
+            spr.line(chip, s, l);
             if disp {
                 ddfstrt = ddfstrt.max(0x18);
                 ddfstop = ddfstop.min(0xd8);
@@ -646,8 +750,15 @@ impl Display {
                 s.apply(c.reg, c.val);
             }
         }
-        spr.line(chip, &mut s, 312); // chipset.c also runs sprite DMA on line 312
-        self.spt_next = Some(s.spt);
+        if lend >= 312 {
+            if !p.spr312 {
+                p.spr312 = true;
+                spr.line(chip, s, 312); // chipset.c also runs sprite DMA on line 312
+            }
+            self.spt_next = Some(s.spt);
+        }
+        (p.ci, p.wi) = (ci, wi);
+        p.l = p.l.max(lend);
     }
 }
 

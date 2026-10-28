@@ -9,9 +9,12 @@
 //! M5 part 3 (28 Oct 2026): Paula channels, the 44.1 kHz mix with its BLEP and RC filters, and the WAV dump.
 //! M5 part 4 (28 Oct 2026): the CIAs (timers, time of day, interrupt control, fire buttons, keyboard link) and the
 //! interrupt level.
+//! M5 part 5 (28 Oct 2026): the custom chips as one runtime (register writes and reads, one PAL line at a call, the
+//! progressive compose and the copper re-read on a mid-tick pointer write).
 
 pub mod blit;
 pub mod boot;
+pub mod chipset;
 pub mod cia;
 pub mod cpu;
 pub mod display;

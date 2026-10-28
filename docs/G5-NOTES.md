@@ -135,3 +135,39 @@ above, that detail is the exporter's reading and is labelled as an assumption.
   Extension words are random per slot but fixed across its trials; branch targets land where they fall in the image.
 - **Not done**: the chunk C build as oracle (still the `--single` build); HLE arms; no game-level check.
 - **For Ryzen**: nothing for M3.
+
+### 2026-10-28: M4, cold boot of a filed program and the OS services it calls (DONE)
+- **Measured** (cloud container, rustc/cargo 1.97.0, python 3.13, gcc): `cargo fmt --check`, `cargo clippy --all-targets
+  -- -D warnings` clean; `cargo test --all-targets`: 22 unit tests (new: the fake OS tables and slot lookup, a typed stop
+  for an unserved call), the hunk differential test, `emit_diff`, `rand_diff` and the new `os_diff` pass; `python3 -m
+  unittest discover -s tests/synthetic`: 9 tests pass; leakcheck clean. `os_diff` assembles two synthetic AmigaDOS hunk
+  programs in the test (a code hunk with RELOC32 into a BSS hunk; one in slow RAM ending with RTS to the CLI, one in chip
+  RAM ending with dos Exit) with their own data files. The C side boots each the way the kit boots a filed game:
+  hunkload.py with LoadSeg headers, oshle.py `execlib()` and its library table, oshle.c `game_boot_extra` (linked whole,
+  with the real `hle_lib` serving every jump-table call) and cpu.c `run_boot`'s start registers, then runs the `--single`
+  C translation. The Rust side boots the same files with `boot::cold_boot` and runs the generated Rust with `os::run`.
+  Boot state (registers, a hash of chip and slow RAM) and end state (registers, cycles, custom-chip writes, every non-zero
+  byte of chip and slow RAM) are identical: 197 and 99 steps. Calls covered: exec OpenLibrary, OldOpenLibrary (a fake
+  base and an unknown name), OpenResource (ciab), AllocMem (slow, chip, the freed-block list), FreeMem (twice), AvailMem
+  (chip, any, largest), Forbid/Permit, nested Disable/Enable, FindTask, CopyMem; dos Open (a path, a missing file),
+  Read (in parts, past the end, after Close, the console), Seek (all three modes, past the end), Close, Lock (case
+  ignored, a directory), UnLock, DupLock, ParentDir, Examine (file and root), ExNext, IoErr, Input, Output, Write,
+  DateStamp, Info, Delay, Exit. Mutation checks, each fails the test: dropping dos's D1 = D0, a changed stack fill word,
+  a changed Workbench copper list word, listing a block freed twice twice, Seek not held at the end, a changed root name.
+- **Decision (28 Oct 2026)**: a call the C fake OS serves but the Rust does not yet is a typed stop
+  (`Stop::OsCall { base, lvo }`), not "D0 = 0 and return", so a program that needs more of the OS stops at the call
+  rather than drifting from the C. The Rust keeps the C's fake library bases and jump-table addresses, its allocator
+  state mirror at $3FC8-$3FEF (so the memory compare covers it) and its boot display set-up; the custom-chip writes the
+  C makes (COP1LC, DMACON, INTENA) are kept as an ordered list (`Os::chip_log`) for the presentation code (M5) to act on.
+- **Assumed**: the C side's start (`game_boot_extra` plus cpu.c `run_boot`) and the AllocMem pools copied from
+  oshle.py `main` into the test stand for the kit's full path (portg0.py, portgen.py `boot_gen.c`), which needs a game
+  workspace. The C test driver's memory is chip 1 MB plus slow 1.5 MB (oshle.py's `chip_kb`/`slow_kb`) with custom
+  registers logged, not the chipset. File names are looked up by their last path part, exact then ignoring case, as
+  `gamefile` does for one disk.
+- **Not done**: Workbench start (WBStartup message), the startup-sequence lines before and after the program, Assign,
+  libraries from the game's disk, LoadSeg, overlays, CreateProc/AddTask, multi-disk volumes, save files (nativefs.c),
+  and every other exec, graphics and intuition call the C serves (each is a `Stop::OsCall` today). No game-level check.
+  Non-test code is about 700 lines (os.rs, boot.rs), a little over the ~600 aim, because the boot and the services are
+  only testable together.
+- **For Ryzen**: nothing for M4. When the pilot is chosen, its `AMIGO_OSHLE_TRACE` log from the C native build lists
+  the OS calls it makes: any not in the list above is work before M6.

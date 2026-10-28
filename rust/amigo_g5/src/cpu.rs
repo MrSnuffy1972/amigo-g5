@@ -12,6 +12,11 @@ pub enum Stop {
     Mem(MemError),
     /// No translated code at this address (the C path hands this to its fallback interpreter; G5 has none).
     Untranslated(u32),
+    /// A library call the OS services (`os.rs`) do not serve yet: the library base and the LVO (negative).
+    OsCall {
+        base: u32,
+        lvo: i32,
+    },
 }
 
 impl From<MemError> for Stop {

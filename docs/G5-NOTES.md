@@ -306,3 +306,54 @@ above, that detail is the exporter's reading and is labelled as an assumption.
   trace and the HWSTAT/CREADLOG counters. Non-test code is about 330 lines (cia.rs without comments, blank lines and
   its unit tests).
 - **For Ryzen**: nothing for this step.
+
+### 2026-10-28: M5 part 5, the custom chips as one runtime tick in Rust, checked against the whole of intentrt.c (M5 DONE)
+- **Measured** (cloud container, rustc/cargo 1.97.0, python 3.11, gcc 13.3): `cargo fmt --check`, `cargo clippy --all-targets
+  -- -D warnings` clean; `cargo test --all-targets`: 32 unit tests (new: an OS boot log applied, a tick with VERTB and a
+  copper SOFT interrupt, a beam read), `hunk_diff`, `emit_diff`, `rand_diff`, `os_diff`, `display_diff`, `blit_diff`,
+  `paula_diff`, `cia_diff` and the new `chipset_diff` (about 8 s) pass; `python3 -m unittest discover -s tests/synthetic`:
+  9 tests pass; leakcheck clean. `chipset_diff` compiles the **whole** of intentrt.c (with intent.c and the blit classes)
+  with gcc (`-ffp-contract=off`, CHIP_SIZE 64 KB, environment cleared so every switch is at its default) and drives the
+  real `chip_reset`, `chip_poke` (write_custom), `hw_r16` (read_custom) at a given scheduler clock, `hw_ciaw`/`hw_ciar`,
+  `tick_line_step` and `chip_ipl`, with chip RAM written directly mid-tick and the front-end input globals set; the Rust
+  side runs `chipset::Chipset`. 86 synthetic scenarios (6 written by hand: a 4-plane screen with copper interrupts at
+  lines, CPU palette and BPLCON0 writes and drawing during the tick; COPJMP1/2 and COP2LC written by the CPU mid-tick
+  and a list moving COP1LC to a plausible list and later to zero memory; clear, copy, line and fill blits started by
+  BLTSIZE and ECS BLTSIZH with their interrupt; two Paula channels, AUDxDAT with DMA off and the LED filter switched by
+  CIA-A; beam reads at 0 to 142,000 cycles into a line, across lines and the end of the tick; every input combination and
+  every readable register; 80 random: noise chip RAM, four random copper lists of up to 85 MOVE, WAIT, SKIP, INTREQ and
+  pointer moves, random writes to 64 registers, reads, CIA accesses, chip RAM writes and input over 300 to 1200 lines).
+  Result: 69,205 lines, 183 frames, 195,712 stereo samples, 2,462 reads, blits by class 0-7 [11, 1, 1, 0, 0, 21, 43,
+  94], lines by level 0-6 [9286, 835, 182, 6259, 34018, 10672, 7953]: every read, INTREQ before and after `chip_ipl`,
+  the level after every line, a hash of every audio sample and of every finished frame, the blit classes and chip RAM
+  at the end identical. Mutation checks, each fails the test: no progressive compose, no copper re-read on a CPU
+  COP2LC/COPJMP write, COPJMP2 restarting at COP1LC, no plausibility guard on the next tick's COP1LC, no COP1LC from the
+  table, no line-0 copper interrupts with VERTB, no blit interrupt, no line wrap in the beam read, JOY1DAT up and down
+  swapped, CPU writes stamped a line late, DMACON not passed to Paula, no AUDxDAT interrupt, bitplane pointer halves
+  swapped, DMACONR unmasked, the LED switch inverted, CIA bits not in INTREQ after the line, no CIA-A TOD count, the
+  POTGOR fire bit moved. Four mutations pass and are equivalent, so the code mirrors the C without a test that can see
+  them: the beam position cap $E2 (453 / 2 never exceeds it), the palette's 12-bit mask (masked again when shown), the
+  compose cursor stepped back on a re-read (in progressive mode it never passes the line of the write), and the C's
+  second compose at the end of the tick (removed in the Rust: the call before it already reaches line 312).
+- **Decision (28 Oct 2026)**: the custom chips are `chipset::Chipset`, owned by the runtime, no global state. It owns
+  the display, blitter, Paula and the CIAs and does what write_custom, read_custom, tick_line_step and chip_ipl do with
+  them; chip RAM is passed in by the caller (guest memory owns it). The CPU clock for a beam read is an argument (the
+  C reads the scheduler's `CYC`). The player's controls are `chipset::Input` instead of front-end globals.
+  `apply_os_log` replays `Os::chip_log` (the fake OS's boot writes) through the same write path. The display gained the
+  progressive compose (`Display::compose_to` with a `Progress` cursor) and the mid-tick copper re-read
+  (`Frame::copper_cpu`); the whole-frame `compose` is now the progressive one run to line 312. After a blit the
+  pointers it left are copied into the register shadow, as the C's blitter works on that shadow. Audio samples are
+  appended to `Chipset::audio` for the caller to drain, with no 16384-sample cap.
+- **Assumed**: the test driver's clock (the scheduler steps one line per 454 cycles, a read happens at a given offset
+  in the line) is how the product's run loop will call the chips. The random copper lists and register streams are
+  noise, not what a game sets up.
+- **Not done**: the dev traces and counters (BLITLOG, HWSTAT, CREADLOG, DECSTAT, WATCH, the sprite findings); the
+  snapshot restore paths (chipset_restore_words, chipset_restore_cia, aud_restore_shadow: a cold boot has none); the
+  test-only RNG replay (AMIGO_RNG_REPLAY); the environment switches other than their defaults. **Not part of any
+  milestone yet**: routing the translated code's custom-chip and CIA accesses ($DFFxxx, $BFxxxx) from guest memory to
+  `Chipset`, the run loop that steps one line per 454 cycles and takes interrupts at `ipl`, and a headless runner that
+  writes `pNNNNN.rgba` and the WAV for judge.py. M6 needs them; Karl to say whether they are M6's first step. Non-test
+  code is about 375 lines (chipset.rs 270 and display.rs about 105 added, without comments, blank lines and unit tests).
+- **For Ryzen**: nothing for this step.
+- **M5 status**: done (parts 1 to 5: copper list as a table, bitplane composition, sprites, the blitter intents, Paula
+  and its mix, the CIAs, the whole tick, frame and WAV dumps in judge.py's formats). Next is M6, which needs Karl.

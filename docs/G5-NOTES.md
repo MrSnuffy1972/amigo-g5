@@ -39,3 +39,17 @@ above, that detail is the exporter's reading and is labelled as an assumption.
 
 ## Session log (newest last; one entry per Claude Code session)
 <!-- Each session appends: date, milestone, PR link, Measured, Assumed, Not done, Next. -->
+
+### 2026-10-28: M1, Rust skeleton, guest memory and hunk loader (DONE)
+- **Measured** (cloud container, rustc/cargo 1.97.0, python 3.13): `cargo fmt --check`, `cargo clippy --all-targets
+  -- -D warnings` clean; `cargo test --all-targets`: 13 unit tests (mem accessors, boundaries, odd-address error,
+  map validation, hunk basics) and 2 integration tests pass. The differential test builds 14 synthetic hunk files in
+  the test (several hunks, RELOC32/RELOC32SHORT/RELRELOC32/RELOC16/RELOC8, BSS, chip and fast hunks, NAME/SYMBOL/DEBUG/EXT
+  definitions, resident library names, and error cases) and compares the Rust loader with `hunkload.load()` under four
+  layouts each (auto base, explicit `$C00000`, seglist, seglist at `$400000`): BASE, ENTRY, RELOCS, every hunk address
+  and the full image hex are identical for the 8 cases that load, and the 6 error cases agree on error class.
+- **Assumed**: addresses are masked to 24 bits (68000 bus); a single access must sit inside one region; the Rust
+  loader reports an error where the Python indexes loosely (reloc before the first hunk, target or offset out of
+  range, body longer than the declared image). No real game hunk file was loaded.
+- **Not done**: M2 onwards. `HunkError::Unsupported` covers overlays and HUNK_EXT references, as the Python does.
+- **For Ryzen**: nothing for M1.

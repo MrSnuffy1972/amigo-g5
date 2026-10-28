@@ -6,6 +6,7 @@
 //! M4 (28 Oct 2026): cold boot of a filed program (its hunk file, files and entry point) and the exec/dos services it calls.
 //! M5 (28 Oct 2026): the clean-sheet display (copper list as a table, frame composition, sprites, raw RGBA dumps).
 //! M5 part 2 (28 Oct 2026): the clean-sheet blitter (each blit done at once by what it achieves, line draw included).
+//! M5 part 3 (28 Oct 2026): Paula channels, the 44.1 kHz mix with its BLEP and RC filters, and the WAV dump.
 
 pub mod blit;
 pub mod boot;
@@ -14,3 +15,4 @@ pub mod display;
 pub mod hunk;
 pub mod mem;
 pub mod os;
+pub mod paula;

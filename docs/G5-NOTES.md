@@ -231,3 +231,42 @@ above, that detail is the exporter's reading and is labelled as an assumption.
   audio dump (main.c `--wav`); the progressive compose and copper re-read on mid-frame COPxLC writes (from part 1). Non-test
   code is about 375 lines (blit.rs, without comments, blank lines and its unit tests).
 - **For Ryzen**: nothing for this step.
+
+### 2026-10-28: M5 part 3, Paula channels, the 44.1 kHz mix and the WAV dump in Rust, checked against intentrt.c (PARTIAL)
+- **Measured** (cloud container, rustc/cargo 1.97.0, python 3.11, gcc 13.3): `cargo fmt --check`, `cargo clippy --all-targets
+  -- -D warnings` clean; `cargo test --all-targets`: 27 unit tests (new: a square wave with its start and block-end
+  interrupts, AUDxDAT with DMA off, the WAV header), `hunk_diff`, `emit_diff`, `rand_diff`, `os_diff`, `display_diff`,
+  `blit_diff` and the new `paula_diff` (under 1 s) pass; `python3 -m unittest discover -s tests/synthetic`: 9 tests pass;
+  leakcheck clean. `paula_diff` takes intentrt.c's whole audio section (audio_dmacon, aud_start, chan_step, audio_line,
+  paula_setup and the vendored pt2-clone BLEP and RC filters it includes) and its `crw` from its own text at test time, and
+  main.c's `--wav` header lines from main.c's text, compiles them with gcc (`-ffp-contract=off`) at a 64 KB CHIP_SIZE and
+  feeds it and `paula.rs` the same 134 synthetic scenarios (14 written by hand: one square wave and all four channels
+  (square, saw, sine, full-scale steps) in each of the raw, A500 and A1200 models with the LED filter in and out, period
+  below 124, volume above 64, LEN 0, LEN 1 blocks, DMACON before LC/LEN with and without the g47 deferral, a channel off
+  again before its deferred start, the DMACON master bit, AUDxDAT with DMA on and off, volume and period sweeps, model
+  changes while playing; 120 random: noise chip RAM, random AUDx writes, DMACON and LED changes over 300 to 1000 lines).
+  Result: 77,776 lines, 219,927 stereo samples (324,071 values not zero, 3 clipped), 12,177 audio interrupt bits, every
+  sample, every INTREQ bit, the channel, BLEP and filter state bit for bit every 4th or 16th line, the BLEP table and every
+  WAV file byte-identical. Mutation checks, each fails the test: left and right channel pairs swapped, the period floor
+  123, the volume cap 63, the LED switch inverted, no g47 deferral, the BLEP step offset ignored, the BLEP offset clamped
+  at 0.999 instead of 1, no end-of-line start interrupt, LEN 0 as 65535, the byte order in a word, the A500 low-pass in
+  A1200 mode, a 361 ohm R321, the AUDxDAT interrupt ignoring the master bit, DMACON ignoring the master bit, a 227 colour
+  clock line, a deferred start not cancelled by DMA off. (The test found one real bug on the way: the C keeps a BLEP
+  offset in [0.999, 1) as it is, a Rust `clamp(0.0, 0.999)` did not.)
+- **Decision (28 Oct 2026)**: Paula is `paula::Paula`, owned by the runtime, no global state. The output model (raw, A500,
+  A1200) and the g47 start deferral are constructor arguments (the C reads AMIGO_PAULA and AMIGO_AUD_DEFER); their
+  defaults are the C's (A500, no deferral). `play_line` takes the LED switch (`led_filter_on(pra, ddra)` from CIA-A) and
+  returns the INTREQ bits instead of writing a global. Samples are appended to a caller's Vec, so there is no 16384-sample
+  cap as in `audio_buf` (the C frontend drains it every frame, well under the cap). The BLEP table is a copy of
+  pt2_blep.c's literals, with pt2-clone's BSD 3-Clause notice in the module header; the test checks its bits against
+  the compiled C table. `write_wav` writes the file main.c `--wav` writes, which judge.py `wav()` reads.
+- **Assumed**: the DMACON and AUDx cases of write_custom, copied into the C test driver by hand, stand for the product's
+  write path. Rust's `f64::exp`, `tan` and `sqrt` give glibc's results (they call the platform libm), so the filter
+  coefficients match; on another platform's libm they may differ in the last bit, which the test cannot see. The product
+  C build may contract float multiply-adds where the test forbids it; that would change low bits of samples, not sound.
+- **Not done**: the snapshot restore of channel state (aud_restore_shadow: a cold boot has no snapshot); the audio
+  profile hooks; wiring the blitter, display, Paula and the OS chip log into one runtime tick (with CIA timers, the
+  copper writing blitter registers and INTREQ/INTENA); the BLITLOG trace and class counters; the progressive compose and
+  copper re-read on mid-frame COPxLC writes (from part 1). Non-test code is about 490 lines (paula.rs without comments,
+  blank lines and its unit tests, of which 65 are the BLEP table).
+- **For Ryzen**: nothing for this step.

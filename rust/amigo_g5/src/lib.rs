@@ -7,9 +7,12 @@
 //! M5 (28 Oct 2026): the clean-sheet display (copper list as a table, frame composition, sprites, raw RGBA dumps).
 //! M5 part 2 (28 Oct 2026): the clean-sheet blitter (each blit done at once by what it achieves, line draw included).
 //! M5 part 3 (28 Oct 2026): Paula channels, the 44.1 kHz mix with its BLEP and RC filters, and the WAV dump.
+//! M5 part 4 (28 Oct 2026): the CIAs (timers, time of day, interrupt control, fire buttons, keyboard link) and the
+//! interrupt level.
 
 pub mod blit;
 pub mod boot;
+pub mod cia;
 pub mod cpu;
 pub mod display;
 pub mod hunk;

@@ -270,3 +270,39 @@ above, that detail is the exporter's reading and is labelled as an assumption.
   copper re-read on mid-frame COPxLC writes (from part 1). Non-test code is about 490 lines (paula.rs without comments,
   blank lines and its unit tests, of which 65 are the BLEP table).
 - **For Ryzen**: nothing for this step.
+
+### 2026-10-28: M5 part 4, the CIAs and the interrupt level in Rust, checked against intentrt.c (PARTIAL)
+- **Measured** (cloud container, rustc/cargo 1.97.0, python 3.11, gcc 13.3): `cargo fmt --check`, `cargo clippy --all-targets
+  -- -D warnings` clean; `cargo test --all-targets`: 31 unit tests (new: a continuous timer with its interrupt and ICR
+  clear, a one-shot started by the high byte, a keyboard byte waiting for its handshake, the interrupt priorities),
+  `hunk_diff`, `emit_diff`, `rand_diff`, `os_diff`, `display_diff`, `blit_diff`, `paula_diff` and the new `cia_diff` (about
+  1.5 s) pass; `python3 -m unittest discover -s tests/synthetic`: 9 tests pass; leakcheck clean. `cia_diff` compiles the
+  **whole** of intentrt.c with gcc (a 30-line driver defines only `CYC` and the PC ring it expects from cpu_native.c) and
+  drives the real `chip_reset`, `hw_ciaw`, `hw_ciar`, `kbd_push`, `chip_poke` (INTENA/INTREQ), `tick_line_step` and
+  `chip_ipl`; the Rust side runs `cia::Cias` and `cia::ipl` with VERTB added at each tick's end. 134 synthetic scenarios
+  (14 written by hand: every register after reset, CIA-B timer A continuous at latches 0, 1, 44, 45, 46 and 300, one-shots
+  started by the high byte and restarted, timer B in CRB bit 6 mode, the force-load strobes and a high-byte write while
+  running, both TODs with alarms, the latch on a high read and the stop on a high write, the keyboard link with 70 keys
+  (handshake, gap, the 17,872-line timeout probed line by line, the full queue dropping the 64th key), serial output and
+  the ICR mask, fire buttons and ports through DDRA/DDRB, interrupt priorities with INTREQ cleared while a CIA still holds
+  it; 120 random streams of 300 to 1500 lines). Result: 131,331 lines, 4,983 CIA reads, 74,878 lines with a CIA interrupt
+  raised, lines by level 0-6 [60567, 1540, 25763, 11525, 11271, 12009, 8656]: every read value, INTREQ and level after
+  every line identical. Mutation checks, each fails the test: the timer reload without its +1, timer B counting in CRB
+  bit 6 mode, the force-load bit stored, 45 E ticks a line instead of 45.4, the two TODs swapped, no TOD stop on a high
+  write, the TOD low read keeping its latch, the one-shot not started by the high byte, the alarm one count late, the
+  key code not rotated, a 7-line key gap, a 62- or 64-key queue, the timeout one line late, a receive while SPMODE is an
+  output, an ICR read keeping the SP bit, PORTS raised without the mask, level 5 without bit 12, the left mouse button
+  on CIA-B, PRB ignoring DDRB.
+- **Decision (28 Oct 2026)**: the CIAs are `cia::Cias`, owned by the runtime, no global state. `line_step` and
+  `frame_end` are what one line and one tick do to them; `intreq_bits` returns the PORTS/EXTER bits for the caller to OR
+  into INTREQ (the C's `update_cia_intreq` writes the global). The fire buttons are passed to `read` (`cia::Buttons`)
+  instead of read from front-end globals. `Cias::led_filter_on` feeds `Paula::play_line`.
+- **Assumed**: a reset CIA pair is the right cold-boot start (`chip_reset`; a snapshot boot restores the CIAs with
+  chipset_restore_cia, which a cold boot does not have). With chip RAM zero and DMA off, the C's copper table and Paula
+  raise no interrupt in the test, so INTREQ differences can only come from the CIAs or VERTB.
+- **Not done**: wiring the display, blitter, Paula, CIAs and the OS chip log into one runtime tick (write_custom,
+  read_custom, the copper's line-timed interrupts, the blitter's INTREQ bit, beam reads); the progressive compose and
+  the copper re-read on mid-frame COPxLC writes (from part 1); the snapshot restore paths (not needed cold); the BLITLOG
+  trace and the HWSTAT/CREADLOG counters. Non-test code is about 330 lines (cia.rs without comments, blank lines and
+  its unit tests).
+- **For Ryzen**: nothing for this step.

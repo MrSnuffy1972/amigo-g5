@@ -171,3 +171,34 @@ above, that detail is the exporter's reading and is labelled as an assumption.
   only testable together.
 - **For Ryzen**: nothing for M4. When the pilot is chosen, its `AMIGO_OSHLE_TRACE` log from the C native build lists
   the OS calls it makes: any not in the list above is work before M6.
+
+### 2026-10-28: M5 part 1, the clean-sheet display in Rust, checked against intent.c (PARTIAL)
+- **Measured** (cloud container, rustc/cargo 1.97.0, python 3.13, gcc): `cargo fmt --check`, `cargo clippy --all-targets
+  -- -D warnings` clean; `cargo test --all-targets`: 22 unit tests, `hunk_diff`, `emit_diff`, `rand_diff`, `os_diff` and the
+  new `display_diff` (2 tests, about 3 s) pass; `python3 -m unittest discover -s tests/synthetic`: 9 tests pass; leakcheck
+  clean. `display_diff` compiles a C driver that `#include`s the real `runtime/intent.c` (with `rgb12` taken from
+  intentrt.c's text at test time and frames written by the kit's own `amigo_img_save`), feeds it and `display.rs` the same
+  59 synthetic scenarios (11 written by hand: lores 5 planes, hires 4, hires 6 clamped, HAM6, EHB, BPU 7, DDFSTOP before
+  DDFSTRT, all 8 sprites with reuse after VSTOP, attached pairs and dual-playfield priority, two copper-flow lists with
+  COPJMP2, SKIP, the 8-bit WAIT line, WAIT h >= $E4, a COPJMP loop, a COP1LC move to a plausible and to an all-zero list,
+  CPU writes during the frame and COPTIME deferral; 48 random: noise chip RAM, random shadow, copper lists of 10 to 309
+  random MOVE, WAIT, SKIP, INTREQ, COPxLC, COPJMP and raw words, random CPU writes) for 2 or 3 frames each. Result: 121
+  frames, 15485 table changes, 11,492,894 non-black pixels, every copper table (changes, callbacks, skips, the list's COP1LC/COP2LC), every
+  next-frame copper start and every raw RGBA dump byte-identical. Mutation checks, each fails the test: HAM green and blue
+  swapped, the EHB mask, the mid-line `+1`, the COPTIME cut-off moved by 2 either way, WAIT h >= $E6, SKIP with a 9-bit
+  line, attached sprite bits swapped, sprite priority `<=`, odd/even plane scroll swapped, DIWSTOP bit 8 forced, no COPJMP
+  loop guard, CPU palette writes not re-applied after a mid-line change, no line-312 sprite fetch.
+- **Decision (28 Oct 2026)**: the Rust display runs intent.c's defaults with no switches (COPJMP, COPTIME, mid-line colour,
+  6 planes and sprites on, hires by the left pixel). It reads chip RAM through `display::Chip`, a bounds-checked slice
+  whose word addresses wrap at its power-of-two size as CHIP_WMASK does; no global state (the sprite pointers carried
+  from frame to frame live in `display::Display`). Frames are dumped as `pNNNNN.rgba`, the kit's raw RGBA that judge.py
+  reads.
+- **Assumed**: intent.c's whole-frame compose is the right oracle for this step; the product runtime (intentrt.c) composes
+  progressively, line by line as its virtual beam passes, so chip RAM written during the frame shows from that line. The
+  random scenarios use noise bitplanes and sprite data, not pictures a game would draw.
+- **Not done**: the progressive compose (intent_compose_to) and the copper re-read on a mid-frame CPU write to COP2LC or
+  COPJMP1/2 (intent_copper_cpu; the test makes no such write); the blitter intents (intentrt.c op_blit_* and
+  intent_blit_dispatch, including line mode); Paula channels and the 44.1 kHz mix with its BLEP and RC filters; the
+  headless audio dump (main.c `--wav`); the hires AVERAGE policy and the other environment switches. Non-test code is
+  about 600 lines (display.rs, without comments and blank lines), so the rest of M5 is the next session's.
+- **For Ryzen**: nothing for this step.

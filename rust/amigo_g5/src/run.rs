@@ -73,6 +73,9 @@ pub struct Machine {
     /// When `Some`, every OS call is recorded as (tick, library base, LVO): the dev trace that lines the port's
     /// OS calls up with the reference harness's AMIGO_OSHLE_TRACE.
     pub os_trace: Option<Vec<(u64, u32, i32)>>,
+    /// How much of `os.chip_log` has reached the chips: the OS services' custom-chip writes (Disable, Enable,
+    /// AddIntServer's INTENA) are applied after the call that made them.
+    log_applied: usize,
 }
 
 impl Machine {
@@ -92,6 +95,7 @@ impl Machine {
         mem.attach_io(Box::new(Hw(cs)));
         let log = os.chip_log.clone();
         mem.with_io(|io, chip| chips(io).apply_os_log(chip, &log));
+        let log_applied = log.len();
         Machine {
             cpu,
             mem,
@@ -101,6 +105,7 @@ impl Machine {
             carry: 0,
             stats: Stats::default(),
             os_trace: None,
+            log_applied,
         }
     }
 
@@ -179,6 +184,12 @@ impl Machine {
                 }
                 self.os.call(&mut self.cpu, &mut self.mem)?;
                 self.stats.os_calls += 1;
+                if self.os.chip_log.len() > self.log_applied {
+                    let new = self.os.chip_log[self.log_applied..].to_vec();
+                    self.log_applied = self.os.chip_log.len();
+                    self.mem
+                        .with_io(|io, chip| chips(io).apply_os_log(chip, &new));
+                }
             } else {
                 step(&mut self.cpu, &mut self.mem)?;
                 self.stats.steps += 1;

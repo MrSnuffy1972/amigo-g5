@@ -9,8 +9,9 @@
 //! s/startup-sequence that names a hunk executable at the top of DIR. Its argument string is the rest of the
 //! startup-sequence line whose command names it, as oshle.py `startup_args` does; when no line names it (the kit
 //! then starts it from Workbench, which the port does not serve yet) it gets an empty CLI line and a warning. The game's translated code is compiled in: `build.rs` takes the file named by the
-//! environment variable AMIGO_G5_GAME_RS at build time (the output of `m68k2c.py --emit rust` for that game) and,
-//! without it, a stub that stops at the first instruction, so the crate builds and tests with no game.
+//! environment variable AMIGO_G5_GAME_RS at build time (the output of `m68k2c.py --emit rust` for that game), spread
+//! over the crates amigo_g5_part0..7 by page; without it every part is a stub that stops at the first instruction, so
+//! the crates build and test with no game.
 //!
 //! Exit 0 when all N ticks ran; 3 when the run stopped early (an untranslated address, an OS call the port does not
 //! serve yet, a bus error), with the cause on stderr and the frames up to the stop written; 2 for bad arguments or
@@ -26,10 +27,24 @@ use amigo_g5::display::dump_frame;
 use amigo_g5::os::GameFiles;
 use amigo_g5::run::Machine;
 
-// generated code: one match arm per instruction; its warnings are not this crate's
-#[allow(warnings, clippy::all)]
+/// The game's translated code, spread over eight crates by page so that rustc builds it in parallel and each crate
+/// stays small (G5 M6): the part is the PC's page number (PC >> 9, the emitter's PAGE_BITS) modulo 8.
 mod game {
-    include!(concat!(env!("OUT_DIR"), "/game.rs"));
+    use amigo_g5::cpu::{Cpu, Stop};
+    use amigo_g5::mem::GuestMemory;
+
+    pub fn step(cpu: &mut Cpu, mem: &mut GuestMemory) -> Result<(), Stop> {
+        match (cpu.pc >> 9) % 8 {
+            0 => amigo_g5_part0::step(cpu, mem),
+            1 => amigo_g5_part1::step(cpu, mem),
+            2 => amigo_g5_part2::step(cpu, mem),
+            3 => amigo_g5_part3::step(cpu, mem),
+            4 => amigo_g5_part4::step(cpu, mem),
+            5 => amigo_g5_part5::step(cpu, mem),
+            6 => amigo_g5_part6::step(cpu, mem),
+            _ => amigo_g5_part7::step(cpu, mem),
+        }
+    }
 }
 
 struct Args {

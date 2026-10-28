@@ -41,6 +41,8 @@ const NFREE: usize = 512;
 /// oshle.c `osp_out`: the allocator and boot state mirrored into guest RAM, so a later boot can carry on.
 const OSP_M: u32 = 0x3FC8;
 const OSP_MAGIC: u32 = 0x4F53_484C;
+/// oshle.c `VBL_SERVERS`: the AddIntServer VERTB list (is_Code, is_Data; 0 ends), run by the level 3 handler at $3E40.
+const VBL_SERVERS: u32 = 0x3EC0;
 
 /// The program's files, as the C kit embeds them (looked up by the last part of the path).
 #[derive(Debug, Clone, Default)]
@@ -314,6 +316,41 @@ impl Os {
                 cpu.d[0] = base;
             }
             -0x19E => cpu.d[0] = 0, // CloseLibrary
+            -0xA8 => {
+                // AddIntServer(D0 intnum, A1 Interrupt): a VERTB server goes in the list the level 3 handler runs, and
+                // INTENA gets INTEN|VERTB so it runs (oshle.c; the C writes it only when not yet set, which SET makes
+                // the same)
+                if d[0] == 5 {
+                    let mut e = VBL_SERVERS;
+                    while e < VBL_SERVERS + 40 {
+                        if mem.read_u32(e)? == 0 {
+                            let code = mem.read_u32(a[1].wrapping_add(0x12))?;
+                            let data = mem.read_u32(a[1].wrapping_add(0x0E))?;
+                            mem.write_u32(e, code)?;
+                            mem.write_u32(e + 8, 0)?;
+                            mem.write_u32(e + 4, data)?;
+                            break;
+                        }
+                        e += 8;
+                    }
+                    self.intena(0xC020);
+                }
+            }
+            -0xAE => {
+                // RemIntServer(D0 intnum, A1 Interrupt): close the list over the removed entry
+                let c = mem.read_u32(a[1].wrapping_add(0x12))?;
+                let mut e = VBL_SERVERS;
+                while e < VBL_SERVERS + 40 && mem.read_u32(e)? != 0 && mem.read_u32(e)? != c {
+                    e += 8;
+                }
+                while e < VBL_SERVERS + 40 && mem.read_u32(e)? != 0 {
+                    let (n0, n1) = (mem.read_u32(e + 8)?, mem.read_u32(e + 12)?);
+                    mem.write_u32(e, n0)?;
+                    mem.write_u32(e + 4, n1)?;
+                    e += 8;
+                }
+            }
+            -0xA2 => cpu.d[0] = 0, // SetIntVector: no old handler
             -0x1F2 => cpu.d[0] = lib_base(&cstr(mem, a[1], 64)?), // OpenResource
             -0x270 | -0x276 => {
                 // CopyMem, CopyMemQuick

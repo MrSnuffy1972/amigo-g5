@@ -79,7 +79,7 @@ fn run_rust(ev: &[Ev]) -> String {
             }
             Ev::Lines(k) => {
                 for _ in 0..k {
-                    c.line_step();
+                    c.pass_line();
                     line += 1;
                     if line >= LINES_PER_FRAME {
                         line = 0;

@@ -1,3 +1,3 @@
 [workspace]
-members = ["amigo_g5"]
+members = ["amigo_g5", "amigo_g5_boot"]
 resolver = "2"

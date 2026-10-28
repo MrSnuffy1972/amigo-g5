@@ -5,7 +5,7 @@
 //! the tick's lines pass.
 //!
 //! Ported from `kit/amigo/port/runtime/intentrt.c` (M5 part 5, 28 Oct 2026), which is the oracle:
-//! `tests/chipset_diff.rs` compiles the whole of intentrt.c with gcc and compares every read, INTREQ and the level
+//! `tests/hardware_diff.rs` compiles the whole of intentrt.c with gcc and compares every read, INTREQ and the level
 //! after every line, each tick's frame, every audio sample and chip RAM. Chip RAM is passed in by the caller (the
 //! guest memory owns it); its size must be a power of two, as the C's CHIP_SIZE.
 
@@ -36,7 +36,7 @@ pub struct Input {
 }
 
 /// The custom chips. No global state: the runtime owns one of these.
-pub struct Chipset {
+pub struct Hardware {
     custom: [u16; 256],
     pub intena: u16,
     pub intreq: u16,
@@ -67,7 +67,7 @@ pub struct Chipset {
     pub blits: [u64; 8],
 }
 
-impl Chipset {
+impl Hardware {
     /// The chips as intentrt.c `chip_reset` leaves them, with the CPU clock at `now` and the given Paula (its output
     /// model and start deferral are the C's environment switches).
     pub fn new(chip: &[u8], now: u64, paula: Paula) -> Self {
@@ -83,7 +83,7 @@ impl Chipset {
             },
             0,
         );
-        Chipset {
+        Hardware {
             custom,
             intena: 0,
             intreq: 0,
@@ -232,11 +232,11 @@ impl Chipset {
     /// composed down to the line just passed and the copper table's interrupts for it are raised. At the end of the
     /// tick the frame is finished, the next tick's copper table is read from COP1LC (or where this tick's list moved
     /// it), and VERTB is raised.
-    pub fn line_step(&mut self, chip: &[u8]) {
+    pub fn pass_line(&mut self, chip: &[u8]) {
         let c = Chip::new(chip);
         let led = self.cias.led_filter_on();
         self.intreq |= self.paula.play_line(c, led, &mut self.audio);
-        self.cias.line_step();
+        self.cias.pass_line();
         self.line_cyc += CYC_PER_LINE;
         self.line += 1;
         self.compose_to(c, self.line);
@@ -319,7 +319,7 @@ mod tests {
         }
         // the reset table is read from $0: end it there, or its zero words (MOVE $000) would run on into the list
         chip[..4].copy_from_slice(&[0xff, 0xff, 0xff, 0xfe]);
-        let mut cs = Chipset::new(&chip, 0, Paula::default());
+        let mut cs = Hardware::new(&chip, 0, Paula::default());
         // a CIA address in the log is not a custom register and is skipped
         let log = [
             (0xdff080, 0),
@@ -331,13 +331,13 @@ mod tests {
         assert_eq!((cs.shadow(0x082), cs.intena), (0x100, 0x4024));
         // the list is read at the end of the first tick; VERTB (level 3) then, SOFT (level 1) at line $40 after it
         for _ in 0..LINES_PER_FRAME {
-            cs.line_step(&chip);
+            cs.pass_line(&chip);
         }
         assert!(cs.frame_done);
         assert_eq!((cs.intreq, cs.ipl()), (0x0020, 3));
         cs.write(&mut chip, 0x09c, 0x0020);
         for _ in 0..0x40 {
-            cs.line_step(&chip);
+            cs.pass_line(&chip);
         }
         assert_eq!((cs.intreq, cs.ipl()), (0x0004, 1));
         // the beam: line $40, half way along it

@@ -1,0 +1,14 @@
+[package]
+name = "amigo_g5_boot"
+version = "0.1.0"
+edition = "2021"
+description = "Ami-Go G5: the boot binary (cold boot of a filed game, headless frame and audio dumps)"
+publish = false
+build = "build.rs"
+
+[[bin]]
+name = "amigo-g5-boot"
+path = "src/main.rs"
+
+[dependencies]
+amigo_g5 = { path = "../amigo_g5" }

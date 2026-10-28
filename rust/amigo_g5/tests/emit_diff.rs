@@ -10,22 +10,13 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
+mod common;
+use common::{have, repo_root, run_ok};
+
 const BASE: u32 = 0x20000;
 const DATA: u32 = 0x21000; // data window, filled with a fixed pattern
 const IMAGE_LEN: usize = 0x2000;
 const MAX_STEPS: u64 = 5000;
-
-fn repo_root() -> PathBuf {
-    Path::new(env!("CARGO_MANIFEST_DIR")).join("../..")
-}
-
-fn have(tool: &str) -> bool {
-    Command::new(tool)
-        .arg("--version")
-        .output()
-        .map(|o| o.status.success())
-        .unwrap_or(false)
-}
 
 /// Programs: (name, 16-bit words). The last word is always `bra.s *` ($60FE), the stop address.
 fn programs() -> Vec<(&'static str, Vec<u16>)> {
@@ -332,18 +323,6 @@ fn main() {
     print!("{o}");
 }
 "#;
-
-fn run_ok(cmd: &mut Command) -> String {
-    let out = cmd.output().expect("spawn");
-    assert!(
-        out.status.success(),
-        "{:?} failed:\n{}\n{}",
-        cmd,
-        String::from_utf8_lossy(&out.stdout),
-        String::from_utf8_lossy(&out.stderr)
-    );
-    String::from_utf8_lossy(&out.stdout).into_owned()
-}
 
 /// One translator run over a synthetic image: writes `translated.rs` and `single.c` into `work/gen`.
 /// `seeds` are extra discovery start points (game.json `seed_addrs`), e.g. a handler reached only through a vector.

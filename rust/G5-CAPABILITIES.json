@@ -1,5 +1,5 @@
 {"schema": 1,
- "milestones": ["M1", "M2", "M3", "M4", "M5"],
+ "milestones": ["M1", "M2", "M3", "M4", "M5", "M6"],
  "cold_boot_filed": true,
  "headless_dumps": true,
  "boot_bin": "amigo-g5-boot"}

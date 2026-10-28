@@ -76,3 +76,7 @@ The gate build keeps its symbols. A stripped binary fails.
   called `chipset` and a `cia::` function with `step` in its name. The rename changes no behaviour; the module was
   always the intent runtime (copper list as a table, blits done at once), not a chip model. The check is by name, and
   this note says so.
+- **M6 part 2:** `--program REL` (optional) names the program to boot, a path under the game directory; the Ryzen glue
+  passes the kit's G0 choice (gates/G0/g0.json `exe_rel`). The binary prints `boot: game code fnv <16 hex>`, the FNV-1a
+  64 of the generated code compiled into it; g5_build.sh fails (exit 9) when it is not the hash of the game's own
+  translated.rs. `AMIGO_G5_OSTRACE=FILE` writes every OS call as `TICK t CALL base $B LVO -$L` (dev only).

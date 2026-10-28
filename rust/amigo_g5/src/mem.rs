@@ -2,6 +2,10 @@
 //!
 //! Decision 28 Oct 2026: addresses are masked to 24 bits, as on the 68000 address bus. An odd address on a word
 //! or long access is a typed error (the 68000 address error). A single access must lie inside one region.
+//!
+//! Decision 28 Oct 2026 (M3): an optional write journal records the old value of every byte written, so a
+//! differential test (and later the per-tick oracle check) can list the bytes a step touched and roll them back
+//! without copying the whole of guest memory. It is off unless asked for and changes no access result.
 
 use std::fmt;
 
@@ -74,6 +78,8 @@ struct Region {
 #[derive(Debug, Clone)]
 pub struct GuestMemory {
     regions: Vec<Region>,
+    /// `(masked address, old byte)` for every byte written while journalling, oldest first.
+    journal: Option<Vec<(u32, u8)>>,
 }
 
 impl GuestMemory {
@@ -101,7 +107,10 @@ impl GuestMemory {
                 });
             }
         }
-        Ok(GuestMemory { regions })
+        Ok(GuestMemory {
+            regions,
+            journal: None,
+        })
     }
 
     /// Chip RAM at 0, plus slow RAM at `SLOW_BASE` when `slow_size` is non-zero.
@@ -143,8 +152,39 @@ impl GuestMemory {
         Ok(&self.regions[i].data[off..off + len])
     }
 
+    /// Start (or restart) recording writes. Any earlier record is dropped, not rolled back.
+    pub fn start_journal(&mut self) {
+        self.journal = Some(Vec::new());
+    }
+
+    /// The bytes written since [`start_journal`](Self::start_journal), as `(address, old byte)`, oldest first.
+    /// An address appears once per write, so a byte written twice is listed twice.
+    pub fn journal(&self) -> &[(u32, u8)] {
+        self.journal.as_deref().unwrap_or(&[])
+    }
+
+    /// Put back every journalled byte (newest first) and clear the record. Journalling stays on.
+    pub fn rollback(&mut self) {
+        let Some(log) = self.journal.take() else {
+            return;
+        };
+        for &(a, old) in log.iter().rev() {
+            if let Ok((i, off)) = self.locate(a, 1) {
+                self.regions[i].data[off] = old;
+            }
+        }
+        self.journal = Some(Vec::new());
+    }
+
     pub fn write_bytes(&mut self, addr: u32, bytes: &[u8]) -> Result<(), MemError> {
         let (i, off) = self.locate(addr, bytes.len())?;
+        if let Some(log) = self.journal.as_mut() {
+            let data = &self.regions[i].data;
+            let first = addr & ADDR_MASK;
+            for k in 0..bytes.len() {
+                log.push((first + k as u32, data[off + k]));
+            }
+        }
         self.regions[i].data[off..off + bytes.len()].copy_from_slice(bytes);
         Ok(())
     }
@@ -297,6 +337,27 @@ mod tests {
         // A single access cannot straddle two adjacent regions.
         assert!(m.read_u16(0xFE).is_ok());
         assert!(m.read_bytes(0xFF, 2).is_err());
+    }
+
+    #[test]
+    fn journal_lists_old_bytes_and_rolls_back() {
+        let mut m = mem();
+        m.write_u16(0x10, 0x1234).unwrap();
+        assert!(m.journal().is_empty(), "off by default");
+        m.start_journal();
+        m.write_u16(0xFF00_0010, 0xABCD).unwrap();
+        m.write_u8(0x11, 0xEE).unwrap();
+        assert!(
+            m.write_u32(0x13, 1).is_err(),
+            "a failed access writes nothing"
+        );
+        assert_eq!(m.journal(), &[(0x10, 0x12), (0x11, 0x34), (0x11, 0xCD)]);
+        assert_eq!(m.read_u16(0x10), Ok(0xABEE));
+        m.rollback();
+        assert_eq!(m.read_u16(0x10), Ok(0x1234));
+        assert!(m.journal().is_empty());
+        m.write_u8(SLOW_BASE, 7).unwrap();
+        assert_eq!(m.journal(), &[(SLOW_BASE, 0)]);
     }
 
     #[test]

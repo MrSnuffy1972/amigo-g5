@@ -106,3 +106,32 @@ above, that detail is the exporter's reading and is labelled as an assumption.
   here. Odd-address word access and custom-chip addresses are still not exercised.
 - **Not done**: the chunk C build as oracle; randomised trials (M3); HLE arms; no game-level check.
 - **For Ryzen**: nothing for M2.
+
+### 2026-10-28: M3, full emitter coverage with randomised differential tests against the C translation (DONE)
+- **Measured** (cloud container, rustc/cargo 1.97.0, python 3.13, gcc): `cargo fmt --check`, `cargo clippy --all-targets
+  -- -D warnings` clean; `cargo test --all-targets`: 20 unit tests (new: the guest memory write journal), the hunk
+  differential test, `emit_diff` and the new `rand_diff` pass (`rand_diff` about 26 s); `python3 -m unittest discover
+  -s tests/synthetic`: 9 tests pass; leakcheck clean. `rand_diff` sorts all 46088 decodable opcodes into 1100 classes
+  by the C each decodes to (register numbers and constants blanked), draws 2 opcodes per class with random extension
+  words (2170 slots, 1 for single-opcode classes), translates them in one `m68k2c.py --emit rust --single` run and runs
+  every slot from random D0-D7, A0-A7, OSP, CCR, supervisor bit and interrupt mask over noise-filled memory until 128
+  trials complete (at most 512 attempts), on both the `--single` C (gcc -O1) and the generated Rust. Result: 267006
+  trials compared, all identical (D0-D7, A0-A7, SR, PC, cycles, OSP, stopped flag, every changed byte); 56633 attempts
+  were address errors on both sides; every one of the 1100 classes has a slot with the full 128 trials; 84 slots
+  (second draws with odd extension words) have fewer. Mutation checks: the `abcd` V flag tested on bit 6 instead of
+  bit 7 passes `emit_diff` but fails 4 slots of `rand_diff`; the emitter zero-extending instead of sign-extending
+  `SX16` fails 273 slots.
+- **Decision (28 Oct 2026)**: guest memory gets an optional write journal (`start_journal`, `journal`, `rollback`), off
+  by default, so a test can list the bytes a step changed and undo them without copying 16 MB. It is meant for the
+  per-tick oracle check later too. The pilot's "128 trials per instruction" is read as 128 per decoder class (two
+  opcodes each, as above), since a translated test of all 46088 opcodes x 128 is too slow for CI.
+- **Found (measured, not fixed)**: the `divs.w` $80000000 / -1 case recorded under M2 turns up in random trials (2 of
+  them with the fixed seed): the C dies with SIGFPE. The C test driver catches it and the trial is not compared; the
+  test checks the Rust took the 68000 overflow path (V set) there. The C fix is still Karl's call.
+- **Assumed**: a word or long access at an odd address (or one that runs off the top of the 24-bit space) is
+  reported as an address error by both sides and not compared further; neither side models the 68000 address error
+  exception. The C model is the reference for cycles and for the undefined flags (abcd/sbcd N and V, div overflow,
+  chk), so nothing is masked; Musashi is not in this loop (the pilot's difftest.c already checked the C against it).
+  Extension words are random per slot but fixed across its trials; branch targets land where they fall in the image.
+- **Not done**: the chunk C build as oracle (still the `--single` build); HLE arms; no game-level check.
+- **For Ryzen**: nothing for M3.

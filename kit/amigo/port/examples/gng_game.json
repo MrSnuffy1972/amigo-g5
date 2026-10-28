@@ -1,0 +1,16 @@
+{
+ "name": "Ghosts 'n Goblins",
+ "segments": [{"file": "out/chip.bin", "addr": "0x0"}, {"file": "out/slow.bin", "addr": "0xC00000"}],
+ "translate_only": [{"file": "game/0b.paradox", "addr": "0x38554"}],
+ "code": ["0xC00000-0xC18AF8", "0x38574-0x48768", "0x7BC00-0x7C000"],
+ "entry": "0xC00000",
+ "sr": "0x2000",
+ "regs": {"d0": "0x3032", "a0": "0xDFF000", "a2": "0xC00000", "a3": "0x7BF0E", "a4": "0xDFF1A0", "a7": "0xC80000"},
+ "seed_addrs": ["0x7BF0E"],
+ "seeds": ["gates/G1/seeds_executed.txt"],
+ "ghidra": false,
+ "hle": {"0xC0C0D4": {"fn": "hle_gng_load", "cycles": 2000}},
+ "hooks_c": ["gates/G1/hooks.c"],
+ "boot_extra": true,
+ "files": ["game/ghost_n_goblins", "game/*.paradox"]
+}

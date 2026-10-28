@@ -1,0 +1,25 @@
+# CI for the G5 toolkit repo. Needs no game, ROM or secret.
+# Cost note: private-repo Actions use the account's free monthly minutes (2,000 on GitHub Free). With the default
+# spending limit of 0 USD, runs stop at the quota rather than bill. Each run here takes about 1-3 minutes.
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Leak check (hash list and signatures; the ROM byte search runs on Ryzen only)
+        run: python3 tools/leakcheck.py --hashes tools/leak-hashes.txt --allow tools/leak-allow.txt .
+      - name: Python and C unit tests (synthetic 68000, no game data)
+        run: python3 -m unittest discover -s tests/synthetic -v
+      - name: Rust tests (when the crate exists)
+        run: |
+          if [ -f rust/Cargo.toml ]; then
+            cd rust && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test --all-targets
+          else
+            echo "no rust/Cargo.toml yet"
+          fi

@@ -1,0 +1,1 @@
+temisu/ancient commit 61cd9088a218ce43fd389f3f3c48f35fc70f7834 (20 Sep 2026), BSD 2-Clause (bzip2 part: bzip2 licence). Unmodified copy of src/ and api/. Shared-tool code, no game data.

@@ -1,0 +1,776 @@
+{
+ "114": {
+  "active_after_seq": 8,
+  "class": "input-wait",
+  "found": "inputdisc.py v1.1 18 Oct 2026, every step confirmed 3 times",
+  "needs": [
+   "kbfix chipset (CIA-A icrmask 0x08 / handshake) in the kit"
+  ],
+  "offset_from_snap": [
+   4
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "space",
+    "ref_frame": 66
+   }
+  ],
+  "snap_frame_at_discovery": 62,
+  "stuck_frame": 64,
+  "works_with_current_kit_harness": false
+ },
+ "135": {
+  "active_after_seq": 47,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   294
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 294
+   }
+  ],
+  "snap_frame_at_discovery": 0,
+  "stuck_frame": 292,
+  "works_with_current_kit_harness": true
+ },
+ "141": {
+  "active_after_seq": 2,
+  "class": "input-wait",
+  "found": "inputdisc.py v1.1 18 Oct 2026, every step confirmed 3 times",
+  "needs": [
+   "raw-key tokens in the kit harness.c and main.c"
+  ],
+  "offset_from_snap": [
+   4
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "d1",
+    "ref_frame": 4
+   }
+  ],
+  "snap_frame_at_discovery": 0,
+  "stuck_frame": 2,
+  "works_with_current_kit_harness": null
+ },
+ "143": {
+  "active_after_seq": 234,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   8
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 128
+   }
+  ],
+  "snap_frame_at_discovery": 120,
+  "stuck_frame": 126,
+  "works_with_current_kit_harness": true
+ },
+ "145": {
+  "active_after_seq": 256,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   31
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 370
+   }
+  ],
+  "snap_frame_at_discovery": 339,
+  "stuck_frame": 368,
+  "works_with_current_kit_harness": true
+ },
+ "176": {
+  "active_after_seq": 329,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   3
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 3
+   }
+  ],
+  "snap_frame_at_discovery": 0,
+  "stuck_frame": 1,
+  "works_with_current_kit_harness": true
+ },
+ "196": {
+  "active_after_seq": 35,
+  "class": "input-wait",
+  "found": "inputdisc.py v1.1 18 Oct 2026, every step confirmed 3 times",
+  "needs": [
+   "kbfix chipset (CIA-A icrmask 0x08 / handshake) in the kit"
+  ],
+  "offset_from_snap": [
+   27,
+   154,
+   183
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "f1",
+    "ref_frame": 27
+   },
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 154
+   },
+   {
+    "hold": 2,
+    "key": "fire2",
+    "ref_frame": 183
+   }
+  ],
+  "snap_frame_at_discovery": 0,
+  "stuck_frame": 25,
+  "works_with_current_kit_harness": false
+ },
+ "201": {
+  "active_after_seq": 8,
+  "class": "input-wait",
+  "found": "inputdisc.py v1.1 18 Oct 2026, every step confirmed 3 times",
+  "needs": [
+   "raw-key tokens in the kit harness.c and main.c"
+  ],
+  "offset_from_snap": [
+   10,
+   33,
+   56,
+   79
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "d1",
+    "ref_frame": 87
+   },
+   {
+    "hold": 1,
+    "key": "return",
+    "ref_frame": 110
+   },
+   {
+    "hold": 1,
+    "key": "space",
+    "ref_frame": 133
+   },
+   {
+    "hold": 1,
+    "key": "space",
+    "ref_frame": 156
+   }
+  ],
+  "snap_frame_at_discovery": 77,
+  "stuck_frame": 85,
+  "works_with_current_kit_harness": null
+ },
+ "21": {
+  "active_after_seq": 31,
+  "class": "input-wait",
+  "found": "inputdisc.py v1.1 18 Oct 2026, every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   24,
+   143
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "space",
+    "ref_frame": 127
+   },
+   {
+    "hold": 4,
+    "key": "down_fire",
+    "ref_frame": 246
+   }
+  ],
+  "snap_frame_at_discovery": 103,
+  "stuck_frame": 125,
+  "works_with_current_kit_harness": true
+ },
+ "213": {
+  "active_after_seq": 475,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   14
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 118
+   }
+  ],
+  "snap_frame_at_discovery": 104,
+  "stuck_frame": 116,
+  "works_with_current_kit_harness": true
+ },
+ "222": {
+  "active_after_seq": 272,
+  "class": "input-wait",
+  "found": "inputdisc.py v1.1 18 Oct 2026, every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   21
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 41
+   }
+  ],
+  "snap_frame_at_discovery": 20,
+  "stuck_frame": 39,
+  "works_with_current_kit_harness": true
+ },
+ "230": {
+  "active_after_seq": 2,
+  "class": "input-wait",
+  "found": "inputdisc.py v1.1 18 Oct 2026, every step confirmed 3 times",
+  "needs": [
+   "raw-key tokens in the kit harness.c and main.c"
+  ],
+  "offset_from_snap": [
+   4
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "d1",
+    "ref_frame": 4
+   }
+  ],
+  "snap_frame_at_discovery": 0,
+  "stuck_frame": 2,
+  "works_with_current_kit_harness": null
+ },
+ "236": {
+  "active_after_seq": 234,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   8
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 128
+   }
+  ],
+  "snap_frame_at_discovery": 120,
+  "stuck_frame": 126,
+  "works_with_current_kit_harness": true
+ },
+ "25": {
+  "active_after_seq": 471,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   77,
+   100,
+   123,
+   146
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 379
+   },
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 402
+   },
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 425
+   },
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 448
+   }
+  ],
+  "snap_frame_at_discovery": 302,
+  "stuck_frame": 377,
+  "works_with_current_kit_harness": true
+ },
+ "261": {
+  "active_after_seq": 465,
+  "class": "input-wait",
+  "found": "inputdisc.py v1.1 18 Oct 2026, every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   51
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 488
+   }
+  ],
+  "snap_frame_at_discovery": 437,
+  "stuck_frame": 437,
+  "works_with_current_kit_harness": true
+ },
+ "263": {
+  "active_after_seq": 37,
+  "class": "input-wait",
+  "found": "inputdisc_g39.py (g39 variant of inputdisc.py v1.1) 19 Oct 2026, every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   20,
+   43,
+   66,
+   89
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "space",
+    "ref_frame": 81
+   },
+   {
+    "hold": 1,
+    "key": "space",
+    "ref_frame": 104
+   },
+   {
+    "hold": 1,
+    "key": "space",
+    "ref_frame": 127
+   },
+   {
+    "hold": 1,
+    "key": "space",
+    "ref_frame": 150
+   }
+  ],
+  "snap_frame_at_discovery": 61,
+  "stuck_frame": 79,
+  "works_with_current_kit_harness": true
+ },
+ "270": {
+  "active_after_seq": 34,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   2,
+   53,
+   399,
+   422
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 110
+   },
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 161
+   },
+   {
+    "hold": 1,
+    "key": "space",
+    "ref_frame": 507
+   },
+   {
+    "hold": 2,
+    "key": "up_fire",
+    "ref_frame": 530
+   }
+  ],
+  "snap_frame_at_discovery": 108,
+  "stuck_frame": 108,
+  "works_with_current_kit_harness": true
+ },
+ "274": {
+  "active_after_seq": 71,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   31
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 310
+   }
+  ],
+  "snap_frame_at_discovery": 279,
+  "stuck_frame": 308,
+  "works_with_current_kit_harness": true
+ },
+ "312": {
+  "active_after_seq": 240,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   18
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 33
+   }
+  ],
+  "snap_frame_at_discovery": 15,
+  "stuck_frame": 16,
+  "works_with_current_kit_harness": true
+ },
+ "325": {
+  "active_after_seq": 48,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   40
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 912
+   }
+  ],
+  "snap_frame_at_discovery": 872,
+  "stuck_frame": 910,
+  "works_with_current_kit_harness": true
+ },
+ "357": {
+  "active_after_seq": 104,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   106,
+   129
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 106
+   },
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 129
+   }
+  ],
+  "snap_frame_at_discovery": 0,
+  "stuck_frame": 104,
+  "works_with_current_kit_harness": true
+ },
+ "462": {
+  "active_after_seq": 129,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   18,
+   43
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire1",
+    "ref_frame": 18
+   },
+   {
+    "hold": 1,
+    "key": "fire1",
+    "ref_frame": 43
+   }
+  ],
+  "snap_frame_at_discovery": 0,
+  "stuck_frame": 16,
+  "works_with_current_kit_harness": true
+ },
+ "48": {
+  "active_after_seq": 36,
+  "class": "input-wait",
+  "found": "inputdisc.py v1.1 18 Oct 2026, every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   88,
+   117,
+   193
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 307
+   },
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 336
+   },
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 412
+   }
+  ],
+  "snap_frame_at_discovery": 219,
+  "stuck_frame": 277,
+  "works_with_current_kit_harness": true
+ },
+ "49": {
+  "active_after_seq": 36,
+  "class": "input-wait",
+  "found": "inputdisc.py v1.1 18 Oct 2026, every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   88,
+   117,
+   193
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 853
+   },
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 882
+   },
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 958
+   }
+  ],
+  "snap_frame_at_discovery": 765,
+  "stuck_frame": 823,
+  "works_with_current_kit_harness": true
+ },
+ "607": {
+  "active_after_seq": 294,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   2
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "d1",
+    "ref_frame": 2
+   }
+  ],
+  "snap_frame_at_discovery": 0,
+  "stuck_frame": 0,
+  "works_with_current_kit_harness": true
+ },
+ "609": {
+  "active_after_seq": 151,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   7
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 187
+   }
+  ],
+  "snap_frame_at_discovery": 180,
+  "stuck_frame": 185,
+  "works_with_current_kit_harness": true
+ },
+ "619": {
+  "active_after_seq": 300,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   2
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 2
+   }
+  ],
+  "snap_frame_at_discovery": 0,
+  "stuck_frame": 0,
+  "works_with_current_kit_harness": true
+ },
+ "622": {
+  "active_after_seq": 93,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   2
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "space",
+    "ref_frame": 2
+   }
+  ],
+  "snap_frame_at_discovery": 0,
+  "stuck_frame": 0,
+  "works_with_current_kit_harness": true
+ },
+ "648": {
+  "active_after_seq": 68,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   10,
+   34,
+   378,
+   412
+  ],
+  "seq": [
+   {
+    "hold": 2,
+    "key": "fire2",
+    "ref_frame": 10
+   },
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 34
+   },
+   {
+    "hold": 12,
+    "key": "fire2",
+    "ref_frame": 378
+   },
+   {
+    "hold": 2,
+    "key": "fire2",
+    "ref_frame": 412
+   }
+  ],
+  "snap_frame_at_discovery": 0,
+  "stuck_frame": 8,
+  "works_with_current_kit_harness": true
+ },
+ "650": {
+  "active_after_seq": 151,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   5,
+   28,
+   53
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "space",
+    "ref_frame": 18
+   },
+   {
+    "hold": 3,
+    "key": "fire2",
+    "ref_frame": 41
+   },
+   {
+    "hold": 4,
+    "key": "fire2",
+    "ref_frame": 66
+   }
+  ],
+  "snap_frame_at_discovery": 13,
+  "stuck_frame": 16,
+  "works_with_current_kit_harness": true
+ },
+ "696": {
+  "active_after_seq": 388,
+  "class": "input-wait",
+  "found": "inputdisc2.py v2 27 Oct 2026 (fix-g2e11-input, the workspace's own harness), every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   40
+  ],
+  "seq": [
+   {
+    "hold": 1,
+    "key": "fire2",
+    "ref_frame": 462
+   }
+  ],
+  "snap_frame_at_discovery": 422,
+  "stuck_frame": 460,
+  "works_with_current_kit_harness": true
+ },
+ "78": {
+  "active_after_seq": 74,
+  "class": "input-wait",
+  "found": "inputdisc.py v1.1 18 Oct 2026, every step confirmed 3 times",
+  "needs": [],
+  "offset_from_snap": [
+   93
+  ],
+  "seq": [
+   {
+    "hold": 8,
+    "key": "fire2",
+    "ref_frame": 183
+   }
+  ],
+  "snap_frame_at_discovery": 90,
+  "stuck_frame": 153,
+  "works_with_current_kit_harness": true
+ }
+}

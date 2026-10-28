@@ -1,0 +1,20 @@
+# native_windows.fn (G4, Cowork 25 Oct 2026, tag cs-g4-1): the body of amigo_port.sh's existing "native_windows)" case. Kept in this
+# file so amigo_port.sh is byte-unchanged (the clean-sheet kit_rev is unchanged; cs_content_id.G4_EXEMPT lists this file and
+# symcheck_g4.sh). Use:  BASH_ENV=$K/native_windows.fn SDL_MINGW=<mingw SDL2> bash $K/amigo_port.sh native_windows
+# A separate target: the old Musashi "windows" target is untouched and still links the emulator (never a G4 build).
+do_native_windows() {   # G4 (Cowork 25 Oct 2026, Karl's clean-sheet G4): the SAME sources as do_native (out/native), cross-built with
+  # mingw-w64 into out/native_win/game.exe with the SDL2 frontend in main.c (video, audio, input). No Musashi, no chipset.c, no
+  # whd.c, no cpu.c interpreter, no harness: symcheck_g4.sh proves it on the unstripped build. -O1 as out/native, for fidelity.
+  SDL="${SDL_MINGW:-}"
+  for d in "$K/sdl2-mingw" /opt/SDL2-2.30.9/x86_64-w64-mingw32 /opt/SDL2/x86_64-w64-mingw32 "$W/third_party/SDL2-2.30.9/x86_64-w64-mingw32"; do [ -z "$SDL" ] && [ -f "$d/lib/libSDL2.a" ] && SDL="$d"; done
+  [ -n "$SDL" ] || { echo "no mingw SDL2 found (set SDL_MINGW)"; exit 1; }
+  do_translate; do_boot
+  cc_all x86_64-w64-mingw32-gcc "-O1 -w $(memdefs) -I$RT -I$O/gen -I$SDL/include/SDL2 -DAMIGO_NATIVE $(kif)" "$O/obj_nw" "$O"/gen/*.c "$O"/boot/*.c $RT/intentrt.c $RT/boot.c $RT/rtkick.c $RT/nowhd.c $RT/nativefs.c $RT/cpu_native.c "$K/main.c" $(hooks) $(kis)   # G2E10 kickinterp: rtkick.c (boot.c calls kick_load) and the player's-ROM interpreter
+  mkdir -p "$W/out/native_win"
+  x86_64-w64-mingw32-gcc -static -static-libgcc -mwindows "$O"/obj_nw/*.o "$SDL/lib/libSDL2.a" \
+    -lsetupapi -lwinmm -limm32 -lversion -lole32 -loleaut32 -lgdi32 -luser32 -lshell32 -luuid -ladvapi32 -lcfgmgr32 -lm \
+    -o "$W/out/native_win/game.unstripped.exe"
+  echo "built out/native_win/game.unstripped.exe"
+  bash "$K/symcheck_g4.sh" "$W" || { echo "G4 BUILD REFUSED: symcheck_g4 failed"; exit 1; }
+  x86_64-w64-mingw32-strip -o "$W/out/native_win/game.exe" "$W/out/native_win/game.unstripped.exe"; ls -la "$W/out/native_win/game.exe"
+}

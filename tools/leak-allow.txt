@@ -1,0 +1,4 @@
+# Binary files reviewed and allowed in this repo: sha256  path  reason.
+# A binary not listed here, or listed with a different sha256, fails tools/leakcheck.py. Add a line only after a
+# human (or the Ryzen leak check with the real ROMs) has confirmed the file holds no ROM, game or picture data.
+2d559c45859b53fe5522e35776b932bb95118dee22e036baf7ee515600fd5a26  kit/amigo/port/cycles68000.bin  68000 base cycle count per opcode (65,536 bytes), exported from Musashi's table; read by m68k2c.py

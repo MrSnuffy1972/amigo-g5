@@ -5,8 +5,10 @@
 //!   amigo-g5-boot --game DIR --config game.json --ticks N --frames OUTDIR --audio OUT.raw
 //!
 //! DIR holds the game disk's files as a directory tree (s/startup-sequence, the program, its data). The program is
-//! the first command of s/startup-sequence that names a hunk executable at the top of DIR; the rest of that line is
-//! its argument string. The game's translated code is compiled in: `build.rs` takes the file named by the
+//! `--program REL` when given (a path under DIR: the kit's G0 choice, g0.json `exe_rel`), else the first command of
+//! s/startup-sequence that names a hunk executable at the top of DIR. Its argument string is the rest of the
+//! startup-sequence line whose command names it, as oshle.py `startup_args` does; when no line names it (the kit
+//! then starts it from Workbench, which the port does not serve yet) it gets an empty CLI line and a warning. The game's translated code is compiled in: `build.rs` takes the file named by the
 //! environment variable AMIGO_G5_GAME_RS at build time (the output of `m68k2c.py --emit rust` for that game) and,
 //! without it, a stub that stops at the first instruction, so the crate builds and tests with no game.
 //!
@@ -32,6 +34,7 @@ mod game {
 
 struct Args {
     game: PathBuf,
+    program: Option<String>,
     ticks: u32,
     frames: PathBuf,
     audio: PathBuf,
@@ -47,6 +50,7 @@ fn parse_args() -> Result<Args, String> {
     let need = |k: &str| get(k).ok_or(format!("missing {k}"));
     Ok(Args {
         game: PathBuf::from(need("--game")?),
+        program: get("--program"),
         ticks: need("--ticks")?
             .parse()
             .map_err(|_| "--ticks must be a number".to_string())?,
@@ -112,15 +116,68 @@ fn startup_program(dir: &Path) -> Result<(String, Vec<u8>), String> {
     Err("s/startup-sequence names no hunk executable at the top of the game's files".into())
 }
 
+/// The startup-sequence's lines, comments cut, split into words (oshle.py `startup_args`).
+fn startup_lines(dir: &Path) -> Vec<Vec<String>> {
+    let Some(s) = ["s", "S"]
+        .iter()
+        .flat_map(|d| {
+            ["startup-sequence", "Startup-Sequence", "STARTUP-SEQUENCE"]
+                .iter()
+                .map(move |f| dir.join(d).join(f))
+        })
+        .find(|p| p.is_file())
+    else {
+        return Vec::new();
+    };
+    let text = fs::read(s).unwrap_or_default();
+    String::from_utf8_lossy(&text)
+        .lines()
+        .map(|l| {
+            l.split(';')
+                .next()
+                .unwrap_or("")
+                .split_whitespace()
+                .map(String::from)
+                .collect()
+        })
+        .collect()
+}
+
+/// `--program REL`: the program file and its argument string (oshle.py `startup_args`: the words after the command
+/// of the first startup-sequence line whose command's last path part is the program's name, plus a newline).
+fn chosen_program(dir: &Path, rel: &str) -> Result<(String, Vec<u8>), String> {
+    let path = dir.join(rel);
+    if !path.is_file() {
+        return Err(format!("--program {rel}: no such file in the game's files"));
+    }
+    let base = rel.rsplit('/').next().unwrap_or(rel).to_lowercase();
+    for w in startup_lines(dir) {
+        if let Some(cmd) = w.first() {
+            if cmd.rsplit([':', '/']).next().unwrap_or(cmd).to_lowercase() == base {
+                let mut args = w[1..].join(" ").into_bytes();
+                args.push(b'\n');
+                return Ok((rel.to_string(), args));
+            }
+        }
+    }
+    eprintln!("boot: WARNING no startup-sequence line runs {rel} (the kit starts it from Workbench, which the port does not serve yet): started from the CLI with an empty line");
+    Ok((rel.to_string(), b"\n".to_vec()))
+}
+
 fn run(a: &Args) -> Result<u32, String> {
-    let (prog, args) = startup_program(&a.game)?;
+    let (prog, args) = match &a.program {
+        Some(rel) => chosen_program(&a.game, rel)?,
+        None => startup_program(&a.game)?,
+    };
+    eprintln!("boot: game code fnv {}", env!("AMIGO_G5_GAME_FNV"));
     let mut all = Vec::new();
     collect(&a.game, &mut all).map_err(|e| e.to_string())?;
     let mut files = GameFiles::default();
     let mut exe = None;
+    let prog_path = a.game.join(&prog);
     for (p, d) in all {
         let name = p.file_name().unwrap().to_string_lossy().into_owned();
-        if p.parent() == Some(a.game.as_path()) && name == prog {
+        if p == prog_path {
             exe = Some(d.clone());
         }
         files.add(&name, d);
@@ -154,6 +211,10 @@ fn run(a: &Args) -> Result<u32, String> {
         fs::write(&path, d).map_err(|e| e.to_string())?;
     }
     let mut m = Machine::new(booted);
+    let os_trace = std::env::var("AMIGO_G5_OSTRACE").ok();
+    if os_trace.is_some() {
+        m.os_trace = Some(Vec::new());
+    }
     fs::create_dir_all(&a.frames).map_err(|e| e.to_string())?;
     let mut wav = fs::File::create(&a.audio).map_err(|e| e.to_string())?;
     let mut step = game::step;
@@ -189,6 +250,13 @@ fn run(a: &Args) -> Result<u32, String> {
             return Ok(t - 1);
         }
         dump_frame(&a.frames, t, &px).map_err(|e| e.to_string())?;
+    }
+    if let (Some(path), Some(t)) = (os_trace, m.os_trace.as_ref()) {
+        let text: String = t
+            .iter()
+            .map(|(tick, base, lvo)| format!("TICK {tick} CALL base ${base:X} LVO -${:X}\n", -lvo))
+            .collect();
+        fs::write(path, text).map_err(|e| e.to_string())?;
     }
     eprintln!(
         "ran {} ticks: {:?}, unmapped accesses {}",

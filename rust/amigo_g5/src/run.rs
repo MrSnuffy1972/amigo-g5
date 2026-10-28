@@ -70,6 +70,9 @@ pub struct Machine {
     next_line: u64,
     carry: u64,
     pub stats: Stats,
+    /// When `Some`, every OS call is recorded as (tick, library base, LVO): the dev trace that lines the port's
+    /// OS calls up with the reference harness's AMIGO_OSHLE_TRACE.
+    pub os_trace: Option<Vec<(u64, u32, i32)>>,
 }
 
 impl Machine {
@@ -97,6 +100,7 @@ impl Machine {
             next_line: CYC_PER_LINE,
             carry: 0,
             stats: Stats::default(),
+            os_trace: None,
         }
     }
 
@@ -166,7 +170,13 @@ impl Machine {
             }
             let c0 = self.cpu.cyc;
             self.mem.set_now(self.beam);
-            if Os::slot(self.cpu.pc).is_some() {
+            if let Some((base, lvo)) = Os::slot(self.cpu.pc) {
+                if self.os_trace.is_some() {
+                    let tick = self.chips(|c| c.frame_count);
+                    if let Some(t) = self.os_trace.as_mut() {
+                        t.push((tick, base, lvo));
+                    }
+                }
                 self.os.call(&mut self.cpu, &mut self.mem)?;
                 self.stats.os_calls += 1;
             } else {

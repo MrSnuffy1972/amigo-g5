@@ -133,6 +133,60 @@ fn programs() -> Vec<(&'static str, Vec<u16>)> {
                 end,
             ],
         ),
+        (
+            "mul_div",
+            vec![
+                0xC0C1, 0xC7C2, // mulu.w d1,d0 / muls.w d2,d3 (-32768 * -1)
+                0xC9FC, 0xFFFB, 0xCED0, // muls.w #-5,d4 / mulu.w (a0),d7
+                0x80FC, 0x0007, // divu.w #7,d0
+                0x87FC,
+                0xFFFD, // divs.w #-3,d3 (negative quotient, remainder takes the dividend's sign)
+                0x8AFC, 0x0001, // divu.w #1,d5: quotient overflows, V set, d5 unchanged
+                0x89C6, // divs.w d6,d4
+                0x83FC,
+                0x0002, // divs.w #2,d1: overflows (never $80000000 / -1, which is undefined in the C)
+                0x8BFC, 0xFED4, // divs.w #-300,d5: -1 / -300 = 0 remainder -1
+                end,
+            ],
+        ),
+        (
+            // One handler at $20002 (addq.w #1,d6 / rte) for every vector, so d6 counts the exceptions taken.
+            "exceptions",
+            vec![
+                0x6004, 0x5246, 0x4E73, // bra.s over / handler: addq.w #1,d6 / rte
+                0x4BF9, 0x0002, 0x0002, // lea $20002,a5
+                0x21CD, 0x0014, 0x21CD,
+                0x0018, // move.l a5,$14.w (divide by zero) / $18.w (chk)
+                0x21CD, 0x001C, 0x21CD, 0x008C, // move.l a5,$1C.w (trapv) / $8C.w (trap #3)
+                0x4E60, 0x4E69, // move a0,usp / move usp,a1
+                0x8EFC, 0x0000, // divu.w #0,d7: vector 5
+                0x41BC, 0x000A, // chk.w #10,d0: in bounds, no exception
+                0x41BC, 0x0002, // chk.w #2,d0: above the bound, vector 6 with N clear
+                0x45BC, 0x0002, // chk.w #2,d2: negative, vector 6 with N set
+                0x44FC, 0x0002, 0x4E76, // move #2,ccr / trapv: vector 7
+                0x44FC, 0x0000, 0x4E76, // move #0,ccr / trapv: no exception
+                0x027C,
+                0xDFFF, // andi.w #$DFFF,sr: user mode, A7 and the other stack pointer swap
+                0x4E43,
+                0x4E43, // trap #3 twice from user mode: supervisor stack, rte back to user mode
+                0x487A, 0x0008, // pea 10(pc): the address after rtr
+                0x3F3C, 0x001F, 0x4E77, // move.w #$1F,-(a7) / rtr
+                end,
+            ],
+        ),
+        (
+            "movep_stop",
+            vec![
+                0x05C9, 0x0000, // movep.l d2,0(a1)
+                0x0F89, 0x0009, // movep.w d7,9(a1)
+                0x0909, 0x0001, // movep.w 1(a1),d4
+                0x0B49, 0x0000, // movep.l 0(a1),d5
+                0x4E72,
+                0x2700, // stop #$2700: sets the stopped flag; the single build carries on
+                0x4E70, 0x4E71, // reset / nop
+                end,
+            ],
+        ),
     ]
 }
 
@@ -202,7 +256,15 @@ uint32_t mem_rl(uint32_t a) { return (mem_rw(a) << 16) | mem_rw(a + 2); }
 void mem_wb(uint32_t a, uint32_t v) { ram[a & 0x7ffff] = (uint8_t)v; }
 void mem_ww(uint32_t a, uint32_t v) { mem_wb(a, v >> 8); mem_wb(a + 1, v); }
 void mem_wl(uint32_t a, uint32_t v) { mem_ww(a, v >> 16); mem_ww(a + 2, v); }
-uint32_t cpu_exception(int vec, uint32_t pc) { (void)vec; return pc; }
+/* the same as cpu_exception in runtime/cpu_native.c (that file needs the whole runtime, so it is not linked here) */
+uint32_t cpu_exception(int vec, uint32_t pc) {
+    uint32_t sr = get_sr();
+    if (!cpu.S) { uint32_t t = A[7]; A[7] = cpu.OSP; cpu.OSP = t; cpu.S = 1; }
+    A[7] -= 4; mem_wl(A[7], pc);
+    A[7] -= 2; mem_ww(A[7], sr);
+    CYC += 34;
+    return mem_rl((uint32_t)vec * 4);
+}
 int main(int argc, char **argv) {
     (void)argc;
     FILE *f = fopen(argv[1], "rb"); size_t n = fread(ram + BASE_ADDR, 1, 0x2000, f); (void)n; fclose(f);
@@ -222,7 +284,7 @@ int main(int argc, char **argv) {
     printf("STOP %s STEPS %llu\n", why, steps);
     for (int i = 0; i < 8; i++) printf("D%d %x\n", i, cpu.dr[i]);
     for (int i = 0; i < 8; i++) printf("A%d %x\n", i, cpu.ar[i]);
-    printf("SR %x PC %x CYC %llu OSP %x\n", get_sr(), cpu.PC, (unsigned long long)CYC, cpu.OSP);
+    printf("SR %x PC %x CYC %llu OSP %x STOPPED %d\n", get_sr(), cpu.PC, (unsigned long long)CYC, cpu.OSP, cpu.stopped);
     for (uint32_t a = 0; a < sizeof ram; a++) if (ram[a] != init[a]) printf("M %x %x\n", a, ram[a]);
     return 0;
 }
@@ -262,7 +324,7 @@ fn main() {
     let _ = writeln!(o, "STOP {why} STEPS {}", if why == "ok" { steps } else { 0 });
     for i in 0..8 { let _ = writeln!(o, "D{i} {:x}", cpu.d[i]); }
     for i in 0..8 { let _ = writeln!(o, "A{i} {:x}", cpu.a[i]); }
-    let _ = writeln!(o, "SR {:x} PC {:x} CYC {} OSP {:x}", cpu.get_sr(), cpu.pc, cpu.cyc, cpu.osp);
+    let _ = writeln!(o, "SR {:x} PC {:x} CYC {} OSP {:x} STOPPED {}", cpu.get_sr(), cpu.pc, cpu.cyc, cpu.osp, cpu.stopped);
     let now = mem.read_bytes(0, 0x80000).unwrap();
     for (a, (x, y)) in now.iter().zip(init.iter()).enumerate() {
         if x != y { let _ = writeln!(o, "M {:x} {:x}", a, x); }
@@ -284,14 +346,21 @@ fn run_ok(cmd: &mut Command) -> String {
 }
 
 /// One translator run over a synthetic image: writes `translated.rs` and `single.c` into `work/gen`.
-fn translate(work: &Path, image: &[u8]) -> PathBuf {
+/// `seeds` are extra discovery start points (game.json `seed_addrs`), e.g. a handler reached only through a vector.
+fn translate(work: &Path, image: &[u8], seeds: &[u32]) -> PathBuf {
     let root = repo_root();
     fs::create_dir_all(work.join("out")).unwrap();
     fs::write(work.join("out/image.bin"), image).unwrap();
     let cfg = format!(
         "{{\"name\":\"synthetic\",\"segments\":[{{\"file\":\"out/image.bin\",\"addr\":\"0x{BASE:X}\"}}],\
-         \"code\":[\"0x{BASE:X}-0x{:X}\"],\"entry\":\"0x{BASE:X}\",\"ghidra\":false,\"seeds\":[],\"hle\":{{}}}}",
-        BASE as usize + 0x400
+         \"code\":[\"0x{BASE:X}-0x{:X}\"],\"entry\":\"0x{BASE:X}\",\"ghidra\":false,\"seeds\":[],\"hle\":{{}},\
+         \"seed_addrs\":[{}]}}",
+        BASE as usize + 0x400,
+        seeds
+            .iter()
+            .map(|a| format!("\"0x{a:X}\""))
+            .collect::<Vec<_>>()
+            .join(",")
     );
     fs::write(work.join("game.json"), cfg).unwrap();
     let gen = work.join("gen");
@@ -364,7 +433,14 @@ fn rust_emitter_matches_c_translation() {
         let stop = if *name == "calls" { BASE + 10 } else { stop };
         fs::write(cdir.join(format!("c{n}.bin")), &img).unwrap();
         fs::write(cdir.join(format!("c{n}.txt")), case_text(stop)).unwrap();
-        let gen = translate(&work.join(format!("p{n}")), &img);
+        // "exceptions" has its handler at $20002, reached only through the vectors it installs, and code after
+        // each trap (the decoder ends a block at a trap, as at rts: the return address is not static)
+        let seeds: &[u32] = if *name == "exceptions" {
+            &[BASE + 2, BASE + 0x42, BASE + 0x44]
+        } else {
+            &[]
+        };
+        let gen = translate(&work.join(format!("p{n}")), &img, seeds);
         let st = stats(&gen);
         assert_eq!(st.undecodable, 0, "{name}: undecodable addresses reached");
         assert_eq!(
@@ -445,24 +521,5 @@ fn rust_emitter_matches_c_translation() {
         eprintln!("{name}: {}", c_out[n].lines().next().unwrap());
         assert_eq!(r, c_out[n], "{name}: Rust and C results differ");
     }
-    let _ = fs::remove_dir_all(&work);
-}
-
-#[test]
-fn unsupported_instructions_are_reported_not_guessed() {
-    if !have("python3") {
-        eprintln!("skipped: needs python3");
-        return;
-    }
-    // divu.w d1,d0 / bra.s *: the C text for divide needs `goto` and `%`, which the emitter does not translate.
-    let words = [0x80C1u16, 0x60FE];
-    let work = std::env::temp_dir().join(format!("g5-emit-un-{}", std::process::id()));
-    let _ = fs::remove_dir_all(&work);
-    let gen = translate(&work, &image_for(&words));
-    let st = stats(&gen);
-    assert_eq!(st.rust_untranslated, 1);
-    assert_eq!(st.rust_translated, 1);
-    let rs = fs::read_to_string(gen.join("translated.rs")).unwrap();
-    assert!(rs.contains("Stop::Untranslated(0x20000)"));
     let _ = fs::remove_dir_all(&work);
 }

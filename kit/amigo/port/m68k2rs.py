@@ -12,8 +12,11 @@ Output is one `pub fn step(cpu, mem)` with a match arm per instruction address (
 `emit_single` build). There is no fetch, decode or opcode table in it. It uses amigo_g5::cpu for the flag helpers.
 
 Supported C subset: assignments and compound assignments to D[n], A[n], ea, ea2, s, t, r, PC_, the flags and
-cpu.PC; `if (...) stmt` and blocks; the helper calls of runtime/cpu.h; RB/RW/RL/WB/WW/WL; CYC += / -=.
-Not supported (reported): goto, for, local declarations, / and %, cpu_exception (traps, chk, mul/div blocks).
+cpu.PC; `if (...) stmt [else stmt]` and blocks; block-local `uint32_t`/`int32_t` declarations; `for (; c; step)`;
+`/` and `%`; the helper calls of runtime/cpu.h including cpu_exception; RB/RW/RL/WB/WW/WL; CYC += / -=;
+`goto dyn_exit` (the only label the decoder emits). Literals take C's types (a plain decimal is a signed int), so
+signed compares such as `q < -32768` in divs stay signed. Anything else is reported, not guessed.
+Added 28 Oct 2026 (M2 completion): mul/div, chk, trap, trapv now translate; every opcode the decoder accepts does.
 """
 import re
 
@@ -48,10 +51,20 @@ def tokenize(text):
 
 
 # Expression types: 'u' u32, 'i' i32, 'h' i16, 'c' i8, 'b' bool, 'q' u64
+RUST_TY = {'u': 'u32', 'i': 'i32', 'h': 'i16', 'c': 'i8', 'q': 'u64'}
+
+
 def to_u(code, ty):
     if ty == 'u': return code
-    if ty == 'b': return '(%s as u32)' % code
     return '(%s as u32)' % code
+
+
+def conv(e, ty):
+    """Value of expression e as Rust type ty, as a C assignment to a variable of that type converts it."""
+    code, src = e
+    if src == ty: return code
+    if src == 'b': code = '(%s as u32)' % code
+    return '(%s as %s)' % (code, RUST_TY[ty])
 
 
 def promote(a, b):
@@ -70,8 +83,9 @@ def promote(a, b):
 
 
 class P:
-    def __init__(self, toks):
+    def __init__(self, toks, locals_=None):
         self.t, self.i = toks, 0
+        self.locals = {} if locals_ is None else locals_   # block-local C variables: name -> type
 
     def peek(self):
         return self.t[self.i] if self.i < len(self.t) else None
@@ -107,7 +121,6 @@ class P:
         return left
 
     def apply(self, op, a, b):
-        if op in ('/', '%'): raise Unsupported('division')
         if op in ('||', '&&'):
             return ('(%s %s %s)' % (self.as_bool(a), op, self.as_bool(b)), 'b')
         if op in ('<<', '>>'):
@@ -117,7 +130,8 @@ class P:
         ca, cb, ty = promote(a, b)
         if op in ('==', '!=', '<', '>', '<=', '>='):
             return ('(%s %s %s)' % (ca, op, cb), 'b')
-        fn = {'+': 'wrapping_add', '-': 'wrapping_sub', '*': 'wrapping_mul'}.get(op)
+        # / and % only follow a zero-divisor check in the decoder's text (divu/divs raise vector 5 first)
+        fn = {'+': 'wrapping_add', '-': 'wrapping_sub', '*': 'wrapping_mul', '/': 'wrapping_div', '%': 'wrapping_rem'}.get(op)
         if fn: return ('%s.%s(%s)' % (ca, fn, cb), ty)
         return ('(%s %s %s)' % (ca, op, cb), ty)
 
@@ -131,11 +145,12 @@ class P:
             return ('(!%s)' % self.as_bool(e), 'b')
         if t == '-':
             self.next(); c, ty = self.unary()
+            if ty == 'i': return ('%s.wrapping_neg()' % c, 'i')
             return ('%s.wrapping_neg()' % to_u(c, ty), 'u')
         if t == '(' and self.i + 2 < len(self.t) and self.t[self.i + 1] in CASTS and self.t[self.i + 2] == ')':
             ty = CASTS[self.t[self.i + 1]]; self.i += 3
             c, src = self.unary()
-            rust = {'u': 'u32', 'i': 'i32', 'h': 'i16', 'c': 'i8', 'q': 'u64'}[ty]
+            rust = RUST_TY[ty]
             if src == 'b': c, src = '(%s as u32)' % c, 'u'
             return ('(%s as %s)' % (c, rust), ty)
         return self.primary()
@@ -145,8 +160,12 @@ class P:
         if t is None: raise Unsupported('unexpected end')
         if t == '(':
             e = self.expr(); self.eat(')'); return e
-        if re.match(r'0x[0-9A-Fa-f]+u?$', t): return ('%su32' % t.rstrip('u'), 'u')
-        if re.match(r'\d+u?$', t):
+        if re.match(r'(0x[0-9A-Fa-f]+|\d+)u?$', t):
+            # C literal types: a `u` suffix is unsigned; otherwise int if it fits, and a hex literal that does not
+            # fit is unsigned int (a decimal one would be long, which the decoder never writes)
+            v = int(t.rstrip('u'), 0)
+            if not t.endswith('u') and v <= 0x7FFFFFFF: return ('%si32' % t, 'i')
+            if v > 0xFFFFFFFF or not (t.endswith('u') or t.startswith('0x')): raise Unsupported('literal %s' % t)
             return ('%su32' % t.rstrip('u'), 'u')
         if re.match(r'[A-Za-z_]', t):
             if self.peek() == '[':
@@ -159,6 +178,7 @@ class P:
         raise Unsupported('token %r' % t)
 
     def name(self, t):
+        if t in self.locals: return (t, self.locals[t])
         if t in LOCALS: return (t.lower(), 'u')
         if t in FLAGS: return ('cpu.' + FLAGS[t], 'u')
         if t.startswith('cpu.') and t[4:] in CPUFIELDS: return ('cpu.' + CPUFIELDS[t[4:]], 'u')
@@ -182,6 +202,7 @@ class P:
         if fn == 'SX8': return ('sx8(%s)' % to_u(*a[0]), 'u')
         if fn == 'SX16': return ('sx16(%s)' % to_u(*a[0]), 'u')
         if fn == 'cond': return ('cpu.cond(%s)' % to_u(*a[0]), 'b')
+        if fn == 'cpu_exception': return ('cpu.exception(mem, %s, %s)?' % (to_u(*a[0]), to_u(*a[1])), 'u')
         if fn in HELPERS_U32: return ('cpu.%s()' % fn, 'u')
         m = re.match(r'([a-z]+)([124])$', fn)
         if m and m.group(1) in SIZED:
@@ -205,13 +226,23 @@ class P:
         if t == 'if':
             self.next(); self.eat('('); c = self.expr(); self.eat(')')
             body = self.stmt()
-            if self.peek() == 'else': raise Unsupported('else')
+            if self.peek() == 'else':
+                self.next(); other = self.stmt()
+                return 'if %s { %s } else { %s }' % (self.as_bool(c), body, other)
             return 'if %s { %s }' % (self.as_bool(c), body)
         if t == 'return':
             self.next(); v = self.next(); self.eat(';')
             if v != '1': raise Unsupported('return %s' % v)
             return 'return Ok(());'
-        if t in ('goto', 'for', 'while', 'uint32_t', 'int32_t', 'int'):
+        if t == 'goto':
+            self.next(); label = self.next(); self.eat(';')
+            if label != 'dyn_exit': raise Unsupported('goto %s' % label)
+            return '{ cpu.pc = pc_; return Ok(()); }'   # the C single build's dyn_exit: label
+        if t in ('uint32_t', 'int32_t'):
+            return self.declaration()
+        if t == 'for':
+            return self.for_loop()
+        if t in ('while', 'int', 'do', 'switch', 'break', 'continue'):
             raise Unsupported(t)
         if t == 'CYC':
             self.next(); op = self.next(); e = self.expr(); self.eat(';')
@@ -232,12 +263,45 @@ class P:
             if m and m.group(1) in SIZED:
                 return 'cpu.%s(%s);' % (t, ', '.join(to_u(*x) for x in a))
             raise Unsupported('call statement %s' % t)
+        return self.assignment()
+
+    def declaration(self):
+        """`uint32_t a = x, b = y;` -> one `let mut` per name (block-scoped as in C, by Rust's own scoping)."""
+        ty = 'u' if self.next() == 'uint32_t' else 'i'
+        out = []
+        while True:
+            nm = self.next()
+            if not nm or not re.match(r'[a-z][a-z0-9]*$', nm) or nm in LOCALS: raise Unsupported('declaration %s' % nm)
+            self.eat('='); e = self.expr()
+            self.locals[nm] = ty
+            out.append('let mut %s: %s = %s;' % (nm, RUST_TY[ty], conv(e, ty)))
+            if self.peek() == ';': self.next(); return ' '.join(out)
+            self.eat(',')
+
+    def for_loop(self):
+        """`for (init; cond; step) body` -> `init; while cond { body step }` (the decoder's loops have no continue)."""
+        self.next(); self.eat('(')
+        init = '' if self.peek() == ';' else self.stmt()
+        if not init: self.eat(';')
+        cond = 'true' if self.peek() == ';' else self.as_bool(self.expr())
+        self.eat(';')
+        depth, toks = 0, []
+        while not (depth == 0 and self.peek() == ')'):
+            tok = self.next()
+            if tok is None: raise Unsupported('for step')
+            depth += {'(': 1, ')': -1}.get(tok, 0); toks.append(tok)
+        self.eat(')')
+        step = P(toks + [';'], self.locals).assignment() if toks else ''
+        body = self.stmt()
+        return '{ %s while %s { %s %s } }' % (init, cond, body, step)
+
+    def assignment(self):
         lv = self.primary()
         op = self.next()
         if op not in ('=', '+=', '-=', '|=', '&=', '^=', '<<=', '>>='): raise Unsupported('statement op %r' % op)
         e = self.expr(); self.eat(';')
         place = lv[0]
-        v = to_u(*e)
+        v = conv(e, lv[1]) if op in ('=', '+=', '-=', '|=', '&=', '^=') else to_u(*e)
         if op == '=': return '%s = %s;' % (place, v)
         if op in ('+=', '-='):
             return '%s = %s.%s(%s);' % (place, place, 'wrapping_add' if op == '+=' else 'wrapping_sub', v)

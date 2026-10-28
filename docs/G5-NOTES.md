@@ -357,3 +357,80 @@ above, that detail is the exporter's reading and is labelled as an assumption.
 - **For Ryzen**: nothing for this step.
 - **M5 status**: done (parts 1 to 5: copper list as a table, bitplane composition, sprites, the blitter intents, Paula
   and its mix, the CIAs, the whole tick, frame and WAV dumps in judge.py's formats). Next is M6, which needs Karl.
+
+### 2026-10-28: M6, the pilot game cold-booted in the Rust port on Ryzen and judged against the reference (DONE; Karl 28 Oct 17:25: "Run it all through")
+- **Pilot choice (measured):** game 234 (Airball), named as the likely pilot in G4-DESIGN.md, is NOT in G5 scope: it is a
+  WHDLoad game (game-orig.json `whdload`), and the G5 scope is the G4 entry rule plus preport triage `filed` (15 games:
+  135 179 296 336 337 344 375 464 472 502 507 549 557 608 713). The pilot is **296, Global Thermonuclear Warfare (1994)**:
+  one AmigaDOS program (GTW, 398,208 bytes) started by `s/startup-sequence`, snapshot frame 0 in its clean-sheet run, and
+  its C native build's AMIGO_OSHLE_TRACE lists 9 OS calls (Forbid, OpenLibrary x2, AllocMem, dos Open, Seek x2, Read,
+  Close), all served by os.rs since M4. Baseline (measured): the C native build against the same cold-boot reference
+  passes judge.py (picture mean 1.0000, sound 0.987).
+- **Measured, pilot 296** (Ryzen, campaign 81 G5 Epoch 1, gate_results gate 5 `pass` 17:57:39, class `pass:rust-coldboot`):
+  - the boot binary cold-boots GTW from the disk's own files (entry $004008, A7 $07FFE8, the C kit's values), runs 600
+    ticks headless: 5,330,814 translated instructions (the reference harness: 5,345,769 for 603 frames), 9 OS calls,
+    599 VERTB interrupts, 0 unmapped accesses;
+  - judge.py: PICTURE PASS, SSIM >= 0.90 on 100% of ticks, mean 1.0000, min 0.9879; 113 of 600 reference ticks moving
+    (the gate needs 30); TICK_OFFSET +0; SOUND PASS, mean spectral correlation 0.998, 100% of ticks >= 0.85;
+  - 599 of 600 frames byte-identical to the reference (the C native build: 520 of 600);
+  - g5_symcheck.sh PASS: 1297 symbols, no interpreter or chip-model names, no emulator strings, Kickstart byte search
+    over the binary with 28 ROMs loaded: no ROM bytes;
+  - image check: the 3371 translated instructions' first words, 5744 bytes, equal the cold boot's RAM (0 differ; 998
+    bytes are code the translator found outside the clean-sheet image, from the reference run's observations).
+- **Measured, the rest of the scope** (gate_results gate 5; G5 passed now **3 of 15**: 296, 336, 608):
+  - Epoch 1 (campaign 81, amigo-g5 68ef8a5): 296 and 336 pass. 135, 179, 337, 344 and 375 failed the image check:
+    the first startup-sequence command was not the program the kit boots (fixed in part 2 for 135 and 337).
+    464, 502, 507, 549, 557 and 608 were stopped by this session after rustc had compiled one game's single
+    huge function for about 15 minutes (fixed in part 3); 472 and 713 never started (epoch cancelled).
+  - Epoch 2 (campaign 82, amigo-g5 895d018, 14 targets): **336 pass** again; **608 pass** (E-Motion, 111,280
+    translated instructions: picture mean 0.9995, min 0.9659, 528 of 600 ticks moving, sound 0.990, symcheck PASS).
+  - 135 fail:picture, but only by the moving rule: picture PASS (mean 1.0000, min 1.0000) and sound PASS (0.999),
+    with 15 of 600 reference ticks moving where the gate needs 30 (no input in G5 runs).
+  - 337 fail:picture (SSIM >= 0.90 on 41%, sound 0.655): the reference runs the startup-sequence's crack intro (dos
+    Execute at frame 0) and starts the game's program at frame 101; the port boots the program at once. With
+    AMIGO_G5_OSTRACE against the reference's AMIGO_OSHLE_TRACE: port tick 1 shows the reference's tick 103 frame.
+  - 179 and 472 fail the image check on disk-library stubs (5 and 349 bytes at $0F72, $2E9A-$2EE3): libraries
+    from the game's disk are not served by os.rs yet.
+  - 464 and 502 stop at tick 1 on intuition.library LVO -$84 (GetPrefs), not served yet.
+  - 507 fails the image check at $C1000 (24 bytes): the C kit loads code into slow RAM there and the Rust cold boot
+    does not (not measured further).
+  - 549: the kit's program `kick` is on disk 2 (multi-disk not served; the glue copies disk 1's files only).
+  - 344, 375, 557: trackloader games with `filed` triage (no AmigaDOS program to boot); out of reach of a filed
+    cold boot.
+  - 713: its gate item waits for G2 campaign 80 (one slot per game). Run by hand through the same g5_build.sh:
+    builds, cold-boots `tetris`, and stops at tick 279 on untranslated $004058 after 4.3 million instructions with
+    one OS call; most likely the program unpacks itself over its own start, and the translator's image (taken at
+    clean-sheet frame 2350) holds the later bytes there (assumed, not measured further).
+- **Decisions (28 Oct 2026):**
+  - Interrupts, lines and OS calls run between single translated instructions (the `--single` build), with the beam
+    clock stretched by the C's cpu_slow_num 1126/1024 and the fraction carried. No yield table is needed: a busy loop
+    spins on its own cycles, as on the 68000, and the instruction count lands within 0.3% of the reference's.
+  - The bus routes $DFFxxx/$BFxxxx exactly as intentrt.c's mem_* do and, when attached, reads unmapped addresses as 0
+    (counted) as the C does; M1-M5 code without a bus keeps its typed errors.
+  - `chipset` renamed `hardware` (and `line_step` to `pass_line`) because g5_symcheck.sh's name rules reject them; the
+    check is by name and nothing else changed (every differential test passes unchanged).
+  - The game's translated code is compiled into the boot binary through AMIGO_G5_GAME_RS on Ryzen, in 512-byte
+    page functions spread over eight crates (rustc's front end grows much faster than linearly with one crate's size:
+    100 pages of a game checked in 5.2 s, 200 in 19 s; 608 now builds in 16 s). The binary prints the code's FNV-1a
+    64 and the Ryzen build checks it, because one build directory serves every game.
+  - The program is the kit's G0 choice (g0.json `exe_rel`, `--program`), with oshle.py's argument rule.
+  - OS custom-chip writes made at run time (Disable, Enable, AddIntServer's INTENA) reach the chips after the call.
+- **Assumed:** the translator's inputs are the clean-sheet workspace's (its code image taken at the program's entry, its
+  seed list and the reference run's discovery observations); the image check proves the bytes the cold boot loads are
+  the ones translated, and nothing of a reference run is used when the port runs. The reference is the game's own
+  reference harness from power-on (Musashi plus the kit's fake OS, no Kickstart), with no input, as G2/G3 use it.
+- **Not done:** graphics and intuition calls (464, 502); running the startup-sequence's other lines (337's reference runs a crack intro with dos Execute for
+  about 100 ticks before the program, so the port runs about 100 ticks ahead); Workbench start (179, `run >nil: hfro`);
+  libraries from the game's disk (179's image check: 5 bytes of a disk library stub differ); trackloader games in the
+  `filed` triage (344, 375, 557: no AmigaDOS program to boot); reading the ADF in the binary (the Ryzen glue gives it
+  the files G0 extracted); a G5 Windows build.
+- **Incident (owned):** the first sync-in committed rust/ to kit-intent, and kit_rev's first part is kit-intent's newest
+  commit, so kit_rev moved (0cdb614 to 3a06cbe) for about two minutes while G2 campaign 80 ran; restored by moving
+  the branch back one commit and listing /rust/ in .git/info/exclude (nothing deleted). One campaign-80 workspace,
+  game 404, was stamped with the moved label at 17:48 (same dev and tools content). g5-sync-in.sh's G5_RUST_ONLY mode
+  now never commits and compares the full kit_rev before and after.
+- **Ryzen side (not in this repo):** /srv/fast/cleansheet/g5/g5_ref.sh (cold-boot reference), g5_game.sh (per-game
+  glue: disk files, the kit's program, translation, the image check), g5_build.sh (build lock, --program, fingerprint
+  check); the crate is
+  synced with `g5-sync-in.sh` in its G5_RUST_ONLY mode (rust/ only, uncommitted in kit-intent, so kit_rev is unchanged
+  while G2 campaign 80 runs).

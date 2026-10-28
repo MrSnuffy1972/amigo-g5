@@ -310,6 +310,23 @@ impl Cpu {
         self.set_ccr(v);
     }
 
+    /// `cpu_exception` in runtime/cpu_native.c: enter supervisor mode, push the return PC and the old SR, and
+    /// return the handler address from the vector table. Used by translated trap, trapv, chk and divide by zero.
+    /// The cycle charge is the C function's own (34), on top of the instruction's.
+    pub fn exception(&mut self, mem: &mut GuestMemory, vec: u32, pc: u32) -> Result<u32, Stop> {
+        let sr = self.get_sr();
+        if self.s == 0 {
+            std::mem::swap(&mut self.a[7], &mut self.osp);
+            self.s = 1;
+        }
+        self.a[7] = self.a[7].wrapping_sub(4);
+        mem.write_u32(self.a[7], pc)?;
+        self.a[7] = self.a[7].wrapping_sub(2);
+        mem.write_u16(self.a[7], sr as u16)?;
+        self.cyc = self.cyc.wrapping_add(34);
+        Ok(mem.read_u32(vec.wrapping_mul(4))?)
+    }
+
     /// `cond` in cpu.h.
     pub fn cond(&self, cc: u32) -> bool {
         let (n, z, v, c) = (self.n != 0, self.z != 0, self.v != 0, self.c != 0);
@@ -469,6 +486,20 @@ mod tests {
         c.set_ccr(0b01000);
         assert!(c.cond(11) && c.cond(13) && !c.cond(12) && c.cond(15));
         assert!(!c.cond(1) && c.cond(0));
+    }
+
+    #[test]
+    fn exception_from_user_mode_switches_stack_and_pushes_frame() {
+        let mut mem = GuestMemory::new(&[(0, 0x1000)]).unwrap();
+        mem.write_u32(0x8C, 0x0456).unwrap();
+        let mut c = Cpu::default();
+        c.a[7] = 0x800;
+        c.osp = 0xC00;
+        c.set_ccr(0x1F);
+        assert_eq!(c.exception(&mut mem, 35, 0x0123_4566).unwrap(), 0x0456);
+        assert_eq!((c.s, c.a[7], c.osp, c.cyc), (1, 0xC00 - 6, 0x800, 34));
+        assert_eq!(mem.read_u16(0xC00 - 6).unwrap(), 0x001F);
+        assert_eq!(mem.read_u32(0xC00 - 4).unwrap(), 0x0123_4566);
     }
 
     #[test]

@@ -54,7 +54,7 @@ above, that detail is the exporter's reading and is labelled as an assumption.
 - **Not done**: M2 onwards. `HunkError::Unsupported` covers overlays and HUNK_EXT references, as the Python does.
 - **For Ryzen**: nothing for M1.
 
-### 2026-10-28: M2, Rust emitter for a first instruction subset, checked against the C translation (PARTIAL)
+### 2026-10-28: M2, Rust emitter for a first instruction subset, checked against the C translation (PARTIAL, completed below)
 - **Measured** (cloud container, rustc/cargo 1.97.0, python 3.13, gcc): `cargo fmt --check`, `cargo clippy
   --all-targets -- -D warnings` clean; `cargo test --all-targets`: 18 unit tests, hunk differential test, and the new
   `emit_diff` (2 tests) pass; leakcheck clean; `python3 -m unittest discover -s tests/synthetic` 6 tests pass.
@@ -75,4 +75,34 @@ above, that detail is the exporter's reading and is labelled as an assumption.
   The C test driver's memory is a flat 512 KB, so nothing here exercises custom-chip addresses.
 - **Not done**: mul/div, chk, trap, rte, stop, movep, rts-through-exception paths; the chunk C build as oracle;
   randomised trials (M3); HLE arms; no game-level check.
+- **For Ryzen**: nothing for M2.
+
+### 2026-10-28: M2 completed, the emitter covers every opcode the decoder accepts (DONE)
+- **Measured** (cloud container, rustc/cargo 1.97.0, python 3.13, gcc): `cargo fmt --check`, `cargo clippy --all-targets
+  -- -D warnings` clean; `cargo test --all-targets`: 19 unit tests (new: `Cpu::exception` from user mode), the hunk
+  differential test and `emit_diff` pass; `python3 -m unittest discover -s tests/synthetic`: 9 tests pass (3 new);
+  leakcheck clean. `emit_diff` now runs 11 hand-encoded programs, all identical between Rust and the `--single` C
+  (D0-D7, A0-A7, SR, PC, cycles, OSP, the stopped flag, every changed RAM byte). New programs: `mul_div` (mulu/muls
+  including the per-bit cycle loops, divu/divs with negative operands and both overflow cases), `exceptions` (divide
+  by zero, chk above and below bounds, trapv taken and not taken, trap #3 twice from user mode with the stack swap,
+  move usp, rte, rtr) and `movep_stop` (movep word and long both ways, stop, reset, nop). An opcode sweep (every
+  opcode, extension words of 4) decodes 46088 opcodes and all of them translate to Rust; before this change 2193
+  became `Stop::Untranslated`. Mutation checks: pushing only the low byte of SR in `Cpu::exception` fails
+  `exceptions`; typing decimal literals as unsigned again fails `emit_diff`.
+- **Decision (28 Oct 2026)**: the transliterator now handles `else`, block-local `uint32_t`/`int32_t` declarations,
+  `for (; c; step)`, `/` and `%` (as `wrapping_div`/`wrapping_rem`, reached only after the decoder's zero check),
+  `goto dyn_exit` and `cpu_exception` (new `Cpu::exception`, mirroring cpu_native.c). C literal types are kept
+  (a plain decimal is a signed int), so `q < -32768` and `(int16_t)t < 0` stay signed compares. The test C driver's
+  `cpu_exception` stub (it returned the PC) is replaced by the cpu_native.c body, so both sides really take the
+  exception. The unsupported-text test moved to Python (`RustEmitterCoverage`), since no decodable opcode is
+  untranslated any more.
+- **Found (measured, not fixed)**: the decoder's C for `divs.w` computes `(int32_t)D / (int16_t)s` before its overflow
+  check, so `divs.w #-1,Dn` with Dn = $80000000 is undefined behaviour in C: a 5-line gcc -O1 test of that exact
+  expression dies with SIGFPE (exit 136) on x86-64. The Rust takes the overflow path (V set, Dn unchanged, as the
+  68000 does). The test avoids that input. Fixing the C (test the overflow before dividing) is a translator change
+  outside G5 and is for Karl to decide.
+- **Assumed**: the seeds the `exceptions` program needs (its handler and the code after each trap) stand in for what
+  the C kit's discovery gets from the reference run; the cycle counts are the C model's, not checked against Musashi
+  here. Odd-address word access and custom-chip addresses are still not exercised.
+- **Not done**: the chunk C build as oracle; randomised trials (M3); HLE arms; no game-level check.
 - **For Ryzen**: nothing for M2.

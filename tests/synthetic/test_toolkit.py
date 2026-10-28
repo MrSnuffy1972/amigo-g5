@@ -97,6 +97,61 @@ class HunkLoadSynthetic(unittest.TestCase):
             shutil.rmtree(w, ignore_errors=True)
 
 
+class RustEmitterCoverage(unittest.TestCase):
+    """m68k2rs.py (the --emit rust transliterator): every opcode the decoder accepts becomes Rust, and text it does
+    not know becomes a Stop::Untranslated arm rather than a guess. Behaviour is checked against the C translation by
+    rust/amigo_g5/tests/emit_diff.rs; this only checks coverage."""
+
+    @classmethod
+    def setUpClass(cls):
+        sys.path.insert(0, PORT)
+        import m68k2c, m68k2rs
+        cls.m68k2c, cls.m68k2rs = m68k2c, m68k2rs
+
+    class Words:
+        """The translator's memory interface over one opcode followed by extension words of 4 (a valid even
+        displacement, immediate and register mask for every addressing mode)."""
+        snap = None
+
+        def __init__(self, op):
+            self.op = op
+
+        def w(self, a):
+            return self.op if a == BASE else 0x0004
+
+        def l(self, a):
+            return (self.w(a) << 16) | self.w(a + 2)
+
+    def test_every_decodable_opcode_translates(self):
+        decoded, bad = 0, {}
+        for op in range(0x10000):
+            try:
+                ins = self.m68k2c.Decoder(self.Words(op)).decode(BASE)
+            except self.m68k2c.Undecodable:
+                continue
+            decoded += 1
+            _, err = self.m68k2rs.arm(BASE, ins, None)
+            if err:
+                bad.setdefault(err, '%04X' % op)
+        self.assertGreater(decoded, 40000)
+        self.assertEqual(bad, {})
+
+    def test_unknown_text_is_reported_not_guessed(self):
+        ins = self.m68k2c.Insn(BASE)
+        ins.code = ['goto elsewhere;']
+        text, err = self.m68k2rs.arm(BASE, ins, None)
+        self.assertIn('goto elsewhere', err)
+        self.assertIn('Stop::Untranslated(0x%X)' % BASE, text)
+        for c in ('while (t) t -= 1;', 'x = 1;', 'D[0] = 1.5;', 'switch (t) {}'):
+            with self.assertRaises(self.m68k2rs.Unsupported, msg=c):
+                self.m68k2rs.translate([c])
+
+    def test_c_literal_types_keep_signed_compares_signed(self):
+        rs = ' '.join(self.m68k2rs.translate(['{ int32_t q = (int32_t)D[0]; if (q < -32768) VF = 1; }']))
+        self.assertIn('32768i32.wrapping_neg()', rs)
+        self.assertIn('let mut q: i32', rs)
+
+
 class LeakCheck(unittest.TestCase):
     """tools/leakcheck.py passes a clean folder and catches each kind of leak."""
 

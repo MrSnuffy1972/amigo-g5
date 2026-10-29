@@ -5,6 +5,9 @@
 
 pub mod controls;
 mod menu;
+pub mod pad;
+pub mod preboot;
+pub mod theme;
 
 use std::path::PathBuf;
 use std::time::{Duration, Instant};
@@ -19,9 +22,12 @@ use sdl2::event::Event;
 use sdl2::mouse::MouseButton;
 use sdl2::pixels::{Color, PixelFormatEnum};
 use sdl2::rect::Rect;
+use sdl2::render::{Texture, TextureCreator, WindowCanvas};
+use sdl2::video::WindowContext;
 
 use controls::{Controls, Host, Mapper};
 use menu::{Menu, MenuItem};
+use preboot::{nav_of, Item, Nav, Preboot, Screen};
 
 /// One tick: 50 Hz, the PAL frame rate the game was written for.
 pub const TICK: Duration = Duration::from_millis(20);
@@ -187,16 +193,65 @@ where
     if let Ok(q) = &audio {
         q.resume();
     }
-    if o.controls.mouse && o.ticks.is_none() {
-        ctx.mouse().set_relative_mouse_mode(true);
-    }
     let mut events = ctx.event_pump()?;
     let mut open_pads = Vec::new();
     let mut sticks = [0i32; 6];
+    let mut pre = Preboot::new(&o.title, &o.controls)?;
+    let mut full = None;
+    // the pre-boot at every start (Karl, 14 Oct 2026); a `--ticks` run is a headless review and goes straight in
+    if o.ticks.is_none() {
+        let mut last = Instant::now();
+        loop {
+            let (ww, wh) = canvas.output_size()?;
+            let (vw, vh) = canvas.window().size();
+            // window coordinates to output pixels (they differ on high-DPI screens), then to design units
+            let at = |x: i32, y: i32| {
+                let (fx, fy) = (ww as f32 / vw.max(1) as f32, wh as f32 / vh.max(1) as f32);
+                Preboot::to_design(ww as usize, wh as usize, x as f32 * fx, y as f32 * fy)
+            };
+            let mut picked = None;
+            for e in events.poll_iter() {
+                let n = match &e {
+                    Event::Quit { .. } => return Ok(Outcome::Quit),
+                    Event::ControllerDeviceAdded { which, .. } => {
+                        if let Ok(p) = pads.open(*which) {
+                            open_pads.push(p);
+                        }
+                        None
+                    }
+                    Event::MouseMotion { x, y, .. } => Some(Nav::Point(at(*x, *y).0, at(*x, *y).1)),
+                    Event::MouseButtonDown { x, y, .. } => {
+                        Some(Nav::Click(at(*x, *y).0, at(*x, *y).1))
+                    }
+                    _ => host_event(&e, &mut sticks).and_then(|h| nav_of(&h)),
+                };
+                picked = picked.or(n.and_then(|n| pre.handle(n)));
+            }
+            let ms = last.elapsed().as_millis() as u32;
+            last += Duration::from_millis(ms as u64);
+            match picked.or(pre.advance(ms)) {
+                Some(Item::Quit) => return Ok(Outcome::Quit),
+                Some(_) => break,
+                None => {}
+            }
+            blit(
+                &mut canvas,
+                &tc,
+                &mut full,
+                &pre.render(ww as usize, wh as usize),
+            )?;
+            canvas.present();
+            std::thread::sleep(TICK);
+        }
+    }
+    if o.controls.mouse && o.ticks.is_none() {
+        ctx.mouse().set_relative_mouse_mode(true);
+    }
     let mut mapper = Mapper::new(o.controls.clone());
     let mut m = Machine::new(o.tree.boot(&o.program)?);
     let mut tick = 0u32;
     let mut paused = false;
+    let mut show_controls = false;
     let mut bytes = vec![0u8; SCR_W * SCR_H * 4];
     let mut base = (Instant::now(), 0u32);
     loop {
@@ -213,12 +268,19 @@ where
             let Some(h) = host_event(&e, &mut sticks) else {
                 continue;
             };
-            if paused {
+            if show_controls {
+                // any press goes back to the pause menu
+                show_controls = nav_of(&h).is_none() && !matches!(h, Host::MouseButton(_, true));
+            } else if paused {
                 match menu.handle(&h) {
                     Some(MenuItem::Resume) => paused = false,
                     Some(MenuItem::Restart) => {
                         m = Machine::new(o.tree.boot(&o.program)?);
                         paused = false;
+                    }
+                    Some(MenuItem::Controls) => {
+                        pre.screen = Screen::Controls;
+                        show_controls = true;
                     }
                     Some(MenuItem::Quit) => return Ok(Outcome::Quit),
                     None => {}
@@ -276,7 +338,14 @@ where
         canvas.clear();
         let (ww, wh) = canvas.output_size()?;
         canvas.copy(&tex, None, Some(fit_rect(ww, wh)))?;
-        if paused {
+        if show_controls {
+            blit(
+                &mut canvas,
+                &tc,
+                &mut full,
+                &pre.render(ww as usize, wh as usize),
+            )?;
+        } else if paused {
             menu.draw(&mut canvas)?;
         }
         canvas.present();
@@ -285,6 +354,30 @@ where
             std::thread::sleep(next.saturating_sub(base.0.elapsed()).min(TICK));
         }
     }
+}
+
+/// Shows a screen drawn on the CPU (the pre-boot, the Controls diagram) filling the window.
+fn blit<'a>(
+    canvas: &mut WindowCanvas,
+    tc: &'a TextureCreator<WindowContext>,
+    slot: &mut Option<Texture<'a>>,
+    cv: &theme::Canvas,
+) -> Result<(), String> {
+    let (w, h) = (cv.w as u32, cv.h as u32);
+    if !slot
+        .as_ref()
+        .is_some_and(|t| (t.query().width, t.query().height) == (w, h))
+    {
+        *slot = Some(sdl(tc.create_texture_streaming(
+            PixelFormatEnum::ARGB8888,
+            w,
+            h,
+        ))?);
+    }
+    let tex = slot.as_mut().ok_or("no texture")?;
+    let b: Vec<u8> = cv.px.iter().flat_map(|p| p.to_ne_bytes()).collect();
+    sdl(tex.update(None, &b, cv.w * 4))?;
+    canvas.copy(tex, None, None)
 }
 
 #[cfg(test)]

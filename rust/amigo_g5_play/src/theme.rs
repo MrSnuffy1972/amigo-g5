@@ -129,6 +129,14 @@ impl Canvas {
         }
     }
 
+    /// A see-through picture whose design units are its pixels (the on-screen touch controls, drawn over the game).
+    pub fn overlay(w: usize, h: usize) -> Canvas {
+        Canvas {
+            px: vec![0; w * h],
+            ..Canvas::plain(w, h)
+        }
+    }
+
     /// Device pixel to design units (for the mouse).
     pub fn to_design(&self, x: f32, y: f32) -> (f32, f32) {
         ((x - self.ox) / self.s, (y - self.oy) / self.s)
@@ -150,9 +158,32 @@ impl Canvas {
     fn put(&mut self, x: usize, y: usize, col: u32, a: u32) {
         let a = a * (col >> 24) / 255;
         let d = &mut self.px[y * self.w + x];
-        let mix =
-            |sh: u32| ((((col >> sh) & 0xFF) * a + ((*d >> sh) & 0xFF) * (255 - a)) / 255) << sh;
-        *d = 0xFF00_0000 | mix(16) | mix(8) | mix(0);
+        let da = *d >> 24;
+        if da == 255 {
+            let mix = |sh: u32| {
+                ((((col >> sh) & 0xFF) * a + ((*d >> sh) & 0xFF) * (255 - a)) / 255) << sh
+            };
+            *d = 0xFF00_0000 | mix(16) | mix(8) | mix(0);
+            return;
+        }
+        // over a see-through pixel (an overlay): the usual "over" with straight alpha
+        let keep = da * (255 - a) / 255;
+        let oa = a + keep;
+        if oa > 0 {
+            let mix =
+                |sh: u32| ((((col >> sh) & 0xFF) * a + ((*d >> sh) & 0xFF) * keep) / oa) << sh;
+            *d = oa << 24 | mix(16) | mix(8) | mix(0);
+        }
+    }
+
+    /// Scales the opacity of everything in `r` by `a`/255 (an on-screen control at rest or touched).
+    pub fn fade(&mut self, r: R, a: u32) {
+        let (x0, y0, x1, y1) = self.span(r);
+        for y in y0..y1 {
+            for p in &mut self.px[y * self.w + x0..y * self.w + x1] {
+                *p = ((*p >> 24) * a / 255) << 24 | (*p & 0xFF_FFFF);
+            }
+        }
     }
 
     pub fn fill(&mut self, r: R, col: u32) {
@@ -182,6 +213,30 @@ impl Canvas {
         self.shape(
             r,
             |x, y| (x - cx).powi(2) + (y - cy).powi(2) <= rad * rad,
+            |_| col,
+        );
+    }
+
+    /// `fade` for the disc of radius `rad` only (round controls whose squares overlap).
+    pub fn fade_disc(&mut self, cx: f32, cy: f32, rad: f32, a: u32) {
+        let (x0, y0, x1, y1) = self.span(R::new(cx - rad, cy - rad, 2.0 * rad, 2.0 * rad));
+        for y in y0..y1 {
+            for x in x0..x1 {
+                let (dx, dy) = self.to_design(x as f32 + 0.5, y as f32 + 0.5);
+                if (dx - cx).hypot(dy - cy) <= rad {
+                    let p = &mut self.px[y * self.w + x];
+                    *p = ((*p >> 24) * a / 255) << 24 | (*p & 0xFF_FFFF);
+                }
+            }
+        }
+    }
+
+    /// A ring between radii `r0` and `r1`.
+    pub fn ring(&mut self, cx: f32, cy: f32, r0: f32, r1: f32, col: u32) {
+        let r = R::new(cx - r1, cy - r1, r1 * 2.0, r1 * 2.0);
+        self.shape(
+            r,
+            |x, y| (r0 * r0..=r1 * r1).contains(&((x - cx).powi(2) + (y - cy).powi(2))),
             |_| col,
         );
     }

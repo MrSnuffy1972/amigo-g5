@@ -271,6 +271,49 @@ default, so a game names only what differs. Without the block the game gets the 
   `x86_64-pc-windows-gnu` (`--no-default-features`: with `desktop` its build script would build SDL2 with a mingw
   compiler CI does not have; the Rust checked is the same).
 
+## Added by M9 part 2 (29 Oct 2026): the on-screen touch controls
+- **Code**: `rust/amigo_g5_play/src/touch.rs` (button choice, layout, fingers to actions, the overlay drawing, the
+  checkbox default and storage); the checkbox in `preboot.rs`; the wiring in `lib.rs`.
+- **One input path**: a finger arrives as `Host::Finger(id, down|move|up, x, y)` (x and y as fractions of the window).
+  When the controls are on, `TouchPad` turns it into `Host::Touch(source, action, held)`, which `Mapper` holds and
+  lets go of exactly as it does a pad button's action, so the game reads the same `Input` and the same key presses.
+  With the controls on, the mouse events SDL makes from touches (`SDL_TOUCH_MOUSEID`) are dropped in game, so a
+  finger is not also the Amiga mouse; with them off, a tap still works as the mouse.
+- **Checkbox** "On-screen controls": focus item 4 of the pre-boot (after Quit, right of the countdown bar), toggled
+  by Choose, a click or a tap. Shown only on Android, where its value is the stored choice, else on when SDL sees a
+  touch device and no connected game controller. The choice is saved as `onscreen-controls` (`on` or `off`) in
+  SDL's pref path for org `Ami-Go`, app `G5_<title>` (non-alphanumerics as `_`); on Android that is the app's own
+  internal storage, so it is per game.
+- **`--touch on|off`** (any platform): shows the checkbox with that value and remembers nothing; with `on` the game
+  starts with the controls. For review on a desktop and for the tests. `--preboot-shot` draws the checkbox when given.
+- **Script line** `TICK touch down|move|up ID X Y` feeds a finger in a `--ticks` run.
+- **Buttons**: `touch.buttons` when given (exactly 4, each `{action, label}`; otherwise the game.json is refused);
+  else fire and fire 2 when the pad has them, then the keys of X, Y, B, RB, LB, RT, LT in that order, with the key
+  `start_hint` names put in the fourth place if it is not already among them. A start key is found in the hint as a
+  function key, a named key (Space, Return/Enter, Esc, Del, Help) or one capital letter or digit. **Decision (29 Oct
+  2026)**: when that gives fewer than four (the default mapping gives Fire and Fire 2), the empty places are not
+  drawn; a made-up button would do nothing. Positions: bottom, right, left, top of the diamond (A, B, X, Y on a pad).
+  Labels: Fire, Fire 2, or the key's name.
+- **Keyboard button**: shown when `touch.keyboard` is true or a `key:` action in `pad` or `keys` has no button. The
+  pop-up is an Amiga 500 layout in six rows (Esc, F1 to F10, Del, Help; the digit row with Backspace; Tab to
+  Return; Ctrl to the second half of Return; Shift to the arrows Left and Right; Alt, Amiga, Space, Amiga, Alt, Up,
+  Down) along the bottom 55% of the screen. Each key sends its Amiga raw key down while touched and up when lifted
+  or slid off; modifiers are held by a finger, as on a real keyboard. **Decision (29 Oct 2026)**: while the
+  keyboard is open, the stick and buttons are hidden and let go (the keyboard needs the width); the key and pause
+  buttons stay.
+- **Layout** (pixels, from `u` = the shorter of the height and width x 9/16, over 1080): margin 40u, stick radius
+  190u in the bottom-left corner with a dead zone of 0.3 of its radius and 8 directions, buttons of radius 78u at
+  120u from the diamond's centre in the bottom-right corner, pause and key buttons 96u square at the top right.
+  Tested at 2400x1080, 1600x720 (the two phones turned to landscape), 1920x1080 and 1280x720: nothing overlaps,
+  everything is on screen, nothing is over the middle third of the picture's width.
+- **Drawing**: a see-through overlay drawn on the CPU when a control changes, blended over the picture: metal discs,
+  light rim at rest, cyan rim and knob while touched, a visible dead-zone ring, Inter labels; 40% opaque at rest,
+  80% touched (the keyboard 80% while open).
+- **Pause menu**: a click or tap picks the item under it (a phone has no keys to move the focus); the pointer is
+  shown while paused (relative mouse mode is off), so a desktop click lands where it is seen.
+- **Fixed on the way**: `rawkey("F11")` returned nothing (the function-key test stopped before the Help entry), so
+  F11 never reached the game as Help; it does now.
+
 ## M10 (Ryzen only, not for a Claude Code session)
 Package games 296, 336 and 608 for Windows and Android, run g6check.py, check that `amigo-g5-play` frames match the
 G5 headless frames, capture the pre-boot with `--preboot-shot`, then copy the builds to WinPC

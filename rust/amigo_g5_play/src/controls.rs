@@ -91,6 +91,10 @@ pub struct Controls {
     pub status: Vec<(String, String)>,
     /// How the game is started (`start_hint`, M8): the text and its status.
     pub start_hint: Option<(String, String)>,
+    /// The on-screen buttons from `touch.buttons` (M9 part 2): exactly four (action, label), or none given.
+    pub touch_buttons: Vec<(Action, String)>,
+    /// `touch.keyboard`: the game wants the pop-up keyboard.
+    pub touch_keyboard: bool,
 }
 
 impl Default for Controls {
@@ -131,6 +135,8 @@ impl Default for Controls {
             labels: Vec::new(),
             status: Vec::new(),
             start_hint: None,
+            touch_buttons: Vec::new(),
+            touch_keyboard: false,
         }
     }
 }
@@ -181,6 +187,21 @@ impl Controls {
             let f = |k| h.get(k).and_then(Value::as_str).map(String::from);
             c.start_hint = f("text").map(|t| (t, f("status").unwrap_or_default()));
         }
+        if let Some(t) = b.get("touch") {
+            if let Some(bs) = t.get("buttons").and_then(Value::as_array) {
+                if bs.len() != 4 {
+                    return Err(
+                        "controls.touch.buttons: exactly 4 buttons, each {action, label}".into(),
+                    );
+                }
+                for x in bs {
+                    let s = |k| x.get(k).and_then(Value::as_str).unwrap_or("");
+                    c.touch_buttons
+                        .push((Action::parse(s("action"))?, s("label").to_string()));
+                }
+            }
+            c.touch_keyboard = t.get("keyboard").and_then(Value::as_bool) == Some(true);
+        }
         Ok(c)
     }
 }
@@ -196,6 +217,17 @@ pub enum Host {
     Axis(String, i32, i32),
     MouseMove(i32, i32),
     MouseButton(bool, bool),
+    /// A finger on the touchscreen (M9 part 2): its id, what it did and where, as fractions of the window (0..1).
+    Finger(i64, Phase, f32, f32),
+    /// An action held or let go by an on-screen control (touch.rs), by the control's own source name.
+    Touch(String, Action, bool),
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Phase {
+    Down,
+    Move,
+    Up,
 }
 
 const STICK_DEAD: i32 = 12000;
@@ -297,6 +329,8 @@ impl Mapper {
                 // a trigger past half way is a button
                 a => self.hold(name, a, *x > 16384),
             },
+            Host::Touch(_, Action::Pause, down) => return *down,
+            Host::Touch(src, a, down) => self.hold(src, *a, *down),
             Host::MouseMove(dx, dy) if self.controls.mouse => self.move_mouse(*dx, *dy),
             Host::MouseButton(left, down) if self.controls.mouse => {
                 let a = if *left {
@@ -378,7 +412,9 @@ pub fn rawkey(name: &str) -> Option<u8> {
             .find_map(|(r, b)| r.find(c).map(|i| b + i as u8));
     }
     if let Some(n) = name.strip_prefix('F').and_then(|n| n.parse::<u8>().ok()) {
-        return (1..=10).contains(&n).then_some(0x4F + n);
+        if (1..=10).contains(&n) {
+            return Some(0x4F + n);
+        }
     }
     if let Some(k) = name.strip_prefix("Keypad ") {
         return Some(match k {
@@ -491,6 +527,8 @@ mod tests {
             assert_eq!(rawkey(n), Some(rk), "{n}");
         }
         assert_eq!(rawkey("F12"), None);
+        // F11 is the Help key (it used to stop at the function-key test, 29 Oct 2026)
+        assert_eq!(rawkey("F11"), Some(0x5F));
         assert_eq!(rawkey("Volume Up"), None);
     }
 

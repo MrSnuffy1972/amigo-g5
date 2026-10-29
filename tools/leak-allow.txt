@@ -2,3 +2,7 @@
 # A binary not listed here, or listed with a different sha256, fails tools/leakcheck.py. Add a line only after a
 # human (or the Ryzen leak check with the real ROMs) has confirmed the file holds no ROM, game or picture data.
 2d559c45859b53fe5522e35776b932bb95118dee22e036baf7ee515600fd5a26  kit/amigo/port/cycles68000.bin  68000 base cycle count per opcode (65,536 bytes), exported from Musashi's table; read by m68k2c.py
+# 29 Oct 2026, Claude: OFL 1.1 fonts for the LGP-themed pre-boot (docs/G5-PLAYABLE.md), same files as laya-game-playa
+f4d83d34d1f6c741193e4acf4b3dff9531e5a67b6aa65228d00a7db72a4e0f34  rust/assets/fonts/Cinzel-Variable.ttf  OFL 1.1 font, licence text beside it
+cf4de751ada78ceac033dbe16a687742939995b77bc2a052ae17a4957958594d  rust/assets/fonts/VT323-Regular.ttf  OFL 1.1 font, licence text beside it
+29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031  rust/assets/fonts/Inter-Variable.ttf  OFL 1.1 font, licence text beside it

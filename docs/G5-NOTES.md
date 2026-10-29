@@ -1,6 +1,9 @@
 # G5: what is decided, what is assumed, and the session log
 
 ## Decided by Karl (dated)
+- **29 Oct 2026**: Android versions of every game that passes G5 (296, 336, 608 today), with an updated pre-boot
+  menu in the Laya Game Playa theme (metallic plus neon, Cinzel, VT323 and Inter), the same pre-boot on Windows.
+  Built as milestones M7 to M9; Ryzen packages and installs (M10). Details: docs/G5-PLAYABLE.md.
 - **25 Oct 2026**: "Copilot plan as G5". G5 is a **Rust cold-boot product** following Copilot's architecture, with the
   existing **C translation kept as the oracle**. Piloted on one small game that already passes G3 (G4-DESIGN.md
   section 6 names game 234, Airball v1.0, a filed game, as the likely pilot). Gemini's alternative Rust design, built

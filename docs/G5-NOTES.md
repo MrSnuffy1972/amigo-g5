@@ -537,7 +537,7 @@ above, that detail is the exporter's reading and is labelled as an assumption.
 - **M8 status**: done (the Android checkbox moved to M9). Next is M9.
 
 ### 2026-10-29: M9 part 1, the Windows and Android builds (PARTIAL: touch controls are part 2)
-- **PR**: (link below, added after the PR opened)
+- **PR**: https://github.com/MrSnuffy1972/amigo-g5/pull/13
 - **What**: the start of `amigo-g5-play` moved into `amigo_g5_play::app::main`, shared by the desktop binary and the
   new Android library `libmain.so` (crate `rust/amigo_g5_play/android`, `SDL_main` in its module `ffi`, no
   `unsafe`). The pack comes from `--pack`/`--game`, else from the pack built in with `AMIGO_G5_PACK` (the one-file

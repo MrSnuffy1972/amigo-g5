@@ -264,8 +264,8 @@ where
             if let Some(dir) = &o.frames {
                 dump_frame(dir, tick, &px).map_err(|e| e.to_string())?;
             }
-            for (b, p) in bytes.chunks_exact_mut(4).zip(&px) {
-                b.copy_from_slice(&p.to_ne_bytes());
+            for (b, p) in bytes.as_chunks_mut::<4>().0.iter_mut().zip(&px) {
+                *b = p.to_ne_bytes();
             }
             if o.ticks == Some(tick) {
                 return Ok(Outcome::Ticks(tick));

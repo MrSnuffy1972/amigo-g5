@@ -488,6 +488,7 @@ above, that detail is the exporter's reading and is labelled as an assumption.
 - **M7 status**: done (Controls entry of the pause menu moved to M8). Next is M8.
 
 ### 2026-10-29: M8, the pre-boot menu in the LGP theme (DONE, with the Android on-screen controls checkbox moved to M9)
+- **PR**: https://github.com/MrSnuffy1972/amigo-g5/pull/12
 - **What**: `amigo-g5-play` opens on the pre-boot at every start (Karl's rule of 14 Oct): the game's name in Cinzel,
   the "Ami-Go G5" badge and build line in VT323 on a Workbench-style title bar, the `start_hint` line, a Controller
   panel with an Xbox-style pad drawn in code (vector shapes, no artwork, no logos) and a leader line with an arrow

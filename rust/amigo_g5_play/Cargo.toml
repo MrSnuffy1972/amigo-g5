@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2021"
 description = "Ami-Go G5: the playable runtime (SDL2 window, 50 Hz fixed timestep, audio queue, pad, keyboard and mouse)"
 publish = false
-# the same script as the boot binary: records the FNV-1a 64 of AMIGO_G5_GAME_RS for the boot line
-build = "../amigo_g5_boot/build.rs"
+# records the FNV-1a 64 of AMIGO_G5_GAME_RS as the boot binary's script does, and builds in AMIGO_G5_PACK (M9)
+build = "build.rs"
 
 [[bin]]
 name = "amigo-g5-play"
@@ -21,10 +21,17 @@ amigo_g5_part4 = { path = "../amigo_g5_part4" }
 amigo_g5_part5 = { path = "../amigo_g5_part5" }
 amigo_g5_part6 = { path = "../amigo_g5_part6" }
 amigo_g5_part7 = { path = "../amigo_g5_part7" }
-# SDL2 built from source and linked in, so the exe needs no DLL (docs/G5-PLAYABLE.md, measured on Ryzen 29 Oct)
-sdl2 = { version = "0.37", features = ["bundled", "static-link"] }
+sdl2 = "0.37"
 serde_json = "1"
 fontdue = "0.9"
 
+[features]
+default = ["desktop"]
+# SDL2 built from source and linked in, so the exe needs no DLL (docs/G5-PLAYABLE.md, measured on Ryzen 29 Oct).
+# Android turns it off and links the prebuilt libSDL2.so the APK carries (M9).
+desktop = ["sdl2/bundled", "sdl2/static-link"]
+
 # Its own workspace, so the boot binary's lock file stays free of SDL2 and the font crates (see ../Cargo.toml).
+# `android` is the cdylib libmain.so that SDL's Java activity loads (M9).
 [workspace]
+members = [".", "android"]

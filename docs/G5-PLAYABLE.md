@@ -216,6 +216,46 @@ default, so a game names only what differs. Without the block the game gets the 
 - CI: `cargo check` for aarch64-linux-android and x86_64-pc-windows-gnu (add the targets in CI; linking needs the
   NDK and mingw, which only Ryzen has). Everything else Ryzen runs in M10.
 
+## Added by M9 part 1 (29 Oct 2026)
+- **One start for every platform**: `amigo_g5_play::app::main(args, built-in pack, game code)` holds the command line,
+  the pack choice and the exit codes. The desktop binary calls it from `main`; the Android library calls it from
+  `SDL_main`. Before SDL starts it sets `SDL_ANDROID_TRAP_BACK_BUTTON=1`, so the TV remote's or phone's Back arrives
+  as the `AC Back` key (pause in game, quit on the pre-boot) and never just closes the activity.
+- **Where the pack comes from**, in order: `--pack PACK.bin` or `--game DIR`; the pack built in at build time
+  (`AMIGO_G5_PACK=PACK.bin cargo build ...`, read by `build.rs` with `include_bytes!`); else `gamepack.bin` through
+  SDL_RWops (the APK asset on Android, a file in the working directory elsewhere; stderr says `play: pack
+  gamepack.bin`). With a pack built in, `build.rs` sets the cfg `g5_embedded`, and on Windows that makes the exe a GUI
+  program (`windows_subsystem = "windows"`: no console window). A build without a pack keeps its console, so a
+  `--ticks` frame check under wine still prints.
+- **Android library**: crate `rust/amigo_g5_play/android` (package `amigo_g5_android`, a member of the play
+  workspace), a `cdylib` named `main`, so the file is `libmain.so`. `SDL_main` is in its module `ffi`; it reads no
+  argument (SDL passes only the library name), so it has no `unsafe`, and it catches a panic so unwinding never
+  enters SDL's C. It builds the play crate without the `desktop` feature: SDL2 is linked as the prebuilt
+  `libSDL2.so`, not built from source.
+- **Cargo features of `amigo_g5_play`**: `desktop` (default) = `sdl2/bundled` + `sdl2/static-link`, as in M7.
+- **`tools/g5_package.sh`** (the contract's command line, plus `--skip-symcheck` and `--dry-run`):
+  - `--windows`: `AMIGO_G5_PACK=PACK cargo build --release --offline --locked --target x86_64-pc-windows-gnu --bin
+    amigo-g5-play`, then `OUTDIR/unstripped/ID.exe` (symbols kept) and `OUTDIR/ID.exe` (mingw strip).
+  - `--android`: for arm64-v8a and armeabi-v7a (x86_64 too with `G5_ANDROID_X86_64=1`), `cargo build --release
+    --offline --locked --target T -p amigo_g5_android` with the NDK's API 21 clang as linker and
+    `-L native=/opt/sdl2-android/ABI`, without `AMIGO_G5_PACK` (the pack is the asset, not in the library twice);
+    each ABI's directory gets the stripped `libmain.so`, the prebuilt `libSDL2.so` and the NDK's `libc++_shared.so`;
+    `OUTDIR/unstripped/ABI-libmain.so` keeps the symbols. Then the stages of `kit/amigo/android/build_apk.sh`: SDL's
+    Java activity with the one-line `org.amigo.GameActivity`, icon and TV banner (given, or shapes in the theme's
+    colours), the same manifest (LAUNCHER and LEANBACK_LAUNCHER, banner, sensorLandscape, touchscreen not
+    required, gamepad declared) with package `org.amigo.g5.ID`, aapt2 with the asset directory holding
+    `gamepack.bin`, zipalign and debug signing. The stages are copied, not called: build_apk.sh needs C sources,
+    and changing any kit/ file moves Ryzen's kit_rev, which rebuilds every G2 to G4 workspace.
+  - Every unstripped binary goes through `$G5_SYMCHECK BINARY` (Ryzen's g5_symcheck.sh) before it is stripped;
+    without `G5_SYMCHECK` the script stops with exit 4, unless `--skip-symcheck` (which prints `SYMCHECK
+    SKIPPED`). `kit/amigo/g6check.py` is Ryzen's and is not in this repo: run it on the APK there.
+  - `AMIGO_G5_GAME_RS` (the game's code), `AMIGO_G5_REV` and `AMIGO_G5_BUILD_DATE` come from the environment (the
+    last two default to the repo's short rev and today's UTC date). Exit 0 built, 2 bad arguments or pack, 4 a
+    symbol check failed or could not run, 1 a build step failed.
+- **CI**: `cargo clippy -D warnings` for `aarch64-linux-android` (`-p amigo_g5_android`) and for
+  `x86_64-pc-windows-gnu` (`--no-default-features`: with `desktop` its build script would build SDL2 with a mingw
+  compiler CI does not have; the Rust checked is the same).
+
 ## M10 (Ryzen only, not for a Claude Code session)
 Package games 296, 336 and 608 for Windows and Android, run g6check.py, check that `amigo-g5-play` frames match the
 G5 headless frames, capture the pre-boot with `--preboot-shot`, then copy the builds to WinPC

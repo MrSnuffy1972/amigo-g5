@@ -193,6 +193,91 @@ class GamePack(unittest.TestCase):
         self.assertIn('checksum', r.stderr)
 
 
+class Package(unittest.TestCase):
+    """tools/g5_package.sh --dry-run on a synthetic pack (M9, 29 Oct 2026): the arguments and the pack are checked, the
+    build commands are the packaging contract's (targets, the pack built into the exe but not into the APK's library,
+    package org.amigo.g5.ID) and the APK manifest declares what the Shield and phones need. The real NDK and mingw
+    builds run on Ryzen."""
+
+    def setUp(self):
+        self.w = tempfile.mkdtemp(prefix='g5k-')
+        self.addCleanup(shutil.rmtree, self.w)
+        g = os.path.join(self.w, 'game')
+        os.makedirs(os.path.join(g, 's'))
+        put(os.path.join(g, 'Game'), bytes([0, 0, 3, 0xF3]) + bytes(8))
+        put(os.path.join(g, 's', 'startup-sequence'), 'Game\n')
+        self.pack = os.path.join(self.w, 'p.bin')
+        r = run([sys.executable, os.path.join(ROOT, 'tools', 'g5_pack.py'), 'pack', '--game', g, '--out', self.pack])
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.tool = os.path.join(ROOT, 'tools', 'g5_package.sh')
+        self.out = os.path.join(self.w, 'out')
+
+    def package(self, *extra, pack=None, ident='synth'):
+        return run(['bash', self.tool, '--pack', pack or self.pack, '--name', 'Synth & "Co"', '--id', ident,
+                    '--out', self.out, '--dry-run'] + list(extra))
+
+    def test_windows_and_android(self):
+        r = self.package('--windows', '--android')
+        self.assertEqual(r.returncode, 0, r.stderr)
+        cmds = [c for c in r.stdout.splitlines() if c.startswith('+ ')]
+        builds = [c for c in cmds if ' cargo build ' in c]
+        self.assertEqual(len(builds), 3, builds)
+        win, arm64, armv7 = builds
+        self.assertIn('AMIGO_G5_PACK=' + os.path.realpath(self.pack), win)
+        self.assertIn('--offline --locked --target x86_64-pc-windows-gnu --bin amigo-g5-play', win)
+        for c, t, abi in ((arm64, 'aarch64-linux-android', 'arm64-v8a'),
+                          (armv7, 'armv7-linux-androideabi', 'armeabi-v7a')):
+            self.assertIn('env -u AMIGO_G5_PACK ', c)
+            self.assertIn('--target %s -p amigo_g5_android' % t, c)
+            self.assertIn('native=/opt/sdl2-android/' + abi, c)
+            self.assertTrue(any(abi + '/libSDL2.so' in x and 'libc++_shared.so' in x for x in cmds), abi)
+        # every binary is symbol-checked unstripped, before it is stripped
+        checks = [c for c in cmds if c.startswith('+ $G5_SYMCHECK ')]
+        self.assertEqual([c.rsplit('/', 1)[1] for c in checks],
+                         ['synth.exe', 'arm64-v8a-libmain.so', 'armeabi-v7a-libmain.so'])
+        self.assertTrue(any(c.endswith('/work/assets/gamepack.bin') for c in cmds))
+        self.assertTrue(any('apksigner sign' in c and c.split('--out ')[1].startswith(os.path.join(
+            os.path.realpath(self.out), 'synth.apk')) for c in cmds))
+        m = get(os.path.join(self.out, 'work', 'AndroidManifest.xml'))
+        self.assertIn('package="org.amigo.g5.synth"', m)
+        self.assertIn('android:label="Synth &amp; &quot;Co&quot;"', m)
+        for want in ('android.intent.category.LAUNCHER', 'android.intent.category.LEANBACK_LAUNCHER',
+                     'android:banner=', 'android:screenOrientation="sensorLandscape"',
+                     'android:name="android.hardware.touchscreen" android:required="false"',
+                     'android:name="android.hardware.gamepad"'):
+            self.assertIn(want, m)
+        j = get(os.path.join(self.out, 'work', 'java', 'org', 'amigo', 'GameActivity.java'))
+        self.assertIn('"c++_shared", "SDL2", "main"', j)
+
+    def test_x86_64_android_is_optional(self):
+        env = dict(os.environ, G5_ANDROID_X86_64='1')
+        r = run(['bash', self.tool, '--pack', self.pack, '--name', 'S', '--id', 'synth', '--out', self.out,
+                 '--android', '--dry-run'], env=env)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn('--target x86_64-linux-android -p amigo_g5_android', r.stdout)
+        self.assertIn('ABIs arm64-v8a armeabi-v7a x86_64', r.stdout)
+
+    def test_skip_symcheck_says_so(self):
+        r = self.package('--windows', '--skip-symcheck')
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn('SYMCHECK SKIPPED', r.stdout)
+        self.assertNotIn('$G5_SYMCHECK', r.stdout)
+
+    def test_bad_arguments_and_packs_are_refused(self):
+        self.assertEqual(self.package().returncode, 2)  # no target
+        self.assertEqual(self.package('--windows', ident='Bad-Id').returncode, 2)
+        self.assertEqual(self.package('--windows', ident='9lives').returncode, 2)
+        self.assertEqual(run(['bash', self.tool, '--pack']).returncode, 2)
+        self.assertEqual(self.package('--windows', '--icon', os.path.join(self.w, 'none.png')).returncode, 2)
+        b = bytearray(get(self.pack, 'rb'))
+        b[12] ^= 1
+        bad = os.path.join(self.w, 'bad.bin')
+        put(bad, bytes(b))
+        r = self.package('--windows', pack=bad)
+        self.assertEqual(r.returncode, 2)
+        self.assertIn('not a good game pack', r.stderr)
+
+
 class LeakCheck(unittest.TestCase):
     """tools/leakcheck.py passes a clean folder and catches each kind of leak."""
 

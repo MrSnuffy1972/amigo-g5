@@ -13,6 +13,13 @@ name = "amigo_g5"
 version = "0.1.0"
 
 [[package]]
+name = "amigo_g5_android"
+version = "0.1.0"
+dependencies = [
+ "amigo_g5_play",
+]
+
+[[package]]
 name = "amigo_g5_part0"
 version = "0.1.0"
 dependencies = [

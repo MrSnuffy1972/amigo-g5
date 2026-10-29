@@ -19,12 +19,11 @@
 
 use std::fs;
 use std::io::Write;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
-use amigo_g5::boot::cold_boot;
 use amigo_g5::cpu::Stop;
 use amigo_g5::display::dump_frame;
-use amigo_g5::os::GameFiles;
+use amigo_g5::game::GameTree;
 use amigo_g5::run::Machine;
 
 /// The game's translated code, spread over eight crates by page so that rustc builds it in parallel and each crate
@@ -74,136 +73,20 @@ fn parse_args() -> Result<Args, String> {
     })
 }
 
-/// Every file under `dir`, by its file name (the OS services look a name up by its last path part).
-fn collect(dir: &Path, out: &mut Vec<(PathBuf, Vec<u8>)>) -> std::io::Result<()> {
-    let mut ents: Vec<_> = fs::read_dir(dir)?.collect::<Result<_, _>>()?;
-    ents.sort_by_key(|e| e.file_name());
-    for e in ents {
-        let p = e.path();
-        if p.is_dir() {
-            collect(&p, out)?;
-        } else {
-            out.push((p.clone(), fs::read(&p)?));
-        }
-    }
-    Ok(())
-}
-
-fn is_hunk_exe(d: &[u8]) -> bool {
-    d.len() >= 4 && d[..4] == [0, 0, 3, 0xF3]
-}
-
-/// The program s/startup-sequence starts: (file name, argument string ending in a newline).
-fn startup_program(dir: &Path) -> Result<(String, Vec<u8>), String> {
-    let s = ["s", "S"]
-        .iter()
-        .flat_map(|d| {
-            ["startup-sequence", "Startup-Sequence", "STARTUP-SEQUENCE"]
-                .iter()
-                .map(move |f| dir.join(d).join(f))
-        })
-        .find(|p| p.is_file())
-        .ok_or("no s/startup-sequence in the game's files")?;
-    let text = fs::read(&s).map_err(|e| e.to_string())?;
-    let top: Vec<String> = fs::read_dir(dir)
-        .map_err(|e| e.to_string())?
-        .filter_map(|e| e.ok())
-        .filter(|e| e.path().is_file())
-        .map(|e| e.file_name().to_string_lossy().into_owned())
-        .collect();
-    for line in text.split(|&b| b == b'\n') {
-        let line = String::from_utf8_lossy(line);
-        let line = line.split(';').next().unwrap_or("").trim();
-        let mut parts = line.splitn(2, char::is_whitespace);
-        let Some(cmd) = parts.next().filter(|c| !c.is_empty()) else {
-            continue;
-        };
-        let name = cmd.rsplit([':', '/']).next().unwrap_or(cmd);
-        if let Some(f) = top.iter().find(|f| f.eq_ignore_ascii_case(name)) {
-            let data = fs::read(dir.join(f)).map_err(|e| e.to_string())?;
-            if is_hunk_exe(&data) {
-                let mut args = parts.next().unwrap_or("").trim().as_bytes().to_vec();
-                args.push(b'\n');
-                return Ok((f.clone(), args));
-            }
-        }
-    }
-    Err("s/startup-sequence names no hunk executable at the top of the game's files".into())
-}
-
-/// The startup-sequence's lines, comments cut, split into words (oshle.py `startup_args`).
-fn startup_lines(dir: &Path) -> Vec<Vec<String>> {
-    let Some(s) = ["s", "S"]
-        .iter()
-        .flat_map(|d| {
-            ["startup-sequence", "Startup-Sequence", "STARTUP-SEQUENCE"]
-                .iter()
-                .map(move |f| dir.join(d).join(f))
-        })
-        .find(|p| p.is_file())
-    else {
-        return Vec::new();
-    };
-    let text = fs::read(s).unwrap_or_default();
-    String::from_utf8_lossy(&text)
-        .lines()
-        .map(|l| {
-            l.split(';')
-                .next()
-                .unwrap_or("")
-                .split_whitespace()
-                .map(String::from)
-                .collect()
-        })
-        .collect()
-}
-
-/// `--program REL`: the program file and its argument string (oshle.py `startup_args`: the words after the command
-/// of the first startup-sequence line whose command's last path part is the program's name, plus a newline).
-fn chosen_program(dir: &Path, rel: &str) -> Result<(String, Vec<u8>), String> {
-    let path = dir.join(rel);
-    if !path.is_file() {
-        return Err(format!("--program {rel}: no such file in the game's files"));
-    }
-    let base = rel.rsplit('/').next().unwrap_or(rel).to_lowercase();
-    for w in startup_lines(dir) {
-        if let Some(cmd) = w.first() {
-            if cmd.rsplit([':', '/']).next().unwrap_or(cmd).to_lowercase() == base {
-                let mut args = w[1..].join(" ").into_bytes();
-                args.push(b'\n');
-                return Ok((rel.to_string(), args));
-            }
-        }
-    }
-    eprintln!("boot: WARNING no startup-sequence line runs {rel} (the kit starts it from Workbench, which the port does not serve yet): started from the CLI with an empty line");
-    Ok((rel.to_string(), b"\n".to_vec()))
-}
-
 fn run(a: &Args) -> Result<u32, String> {
-    let (prog, args) = match &a.program {
-        Some(rel) => chosen_program(&a.game, rel)?,
-        None => startup_program(&a.game)?,
-    };
-    eprintln!("boot: game code fnv {}", env!("AMIGO_G5_GAME_FNV"));
-    let mut all = Vec::new();
-    collect(&a.game, &mut all).map_err(|e| e.to_string())?;
-    let mut files = GameFiles::default();
-    let mut exe = None;
-    let prog_path = a.game.join(&prog);
-    for (p, d) in all {
-        let name = p.file_name().unwrap().to_string_lossy().into_owned();
-        if p == prog_path {
-            exe = Some(d.clone());
-        }
-        files.add(&name, d);
+    let tree = GameTree::from_dir(&a.game).map_err(|e| e.to_string())?;
+    let prog = tree.program(a.program.as_deref())?;
+    if let Some(w) = &prog.warning {
+        eprintln!("boot: WARNING {w}");
     }
-    let exe = exe.ok_or("program file vanished")?;
+    eprintln!("boot: game code fnv {}", env!("AMIGO_G5_GAME_FNV"));
     eprintln!(
-        "boot: {prog} ({} bytes), arguments {:?}",
-        exe.len(),
-        String::from_utf8_lossy(&args)
+        "boot: {} ({} bytes), arguments {:?}",
+        prog.rel,
+        tree.get(&prog.rel).map_or(0, |d| d.len()),
+        String::from_utf8_lossy(&prog.args)
     );
-    let booted = cold_boot(&exe, &args, files).map_err(|e| format!("cold boot failed: {e:?}"))?;
+    let booted = tree.boot(&prog)?;
     eprintln!(
         "boot: entry ${:06X}, A7 ${:06X}",
         booted.cpu.pc, booted.cpu.a[7]

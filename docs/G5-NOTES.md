@@ -437,3 +437,52 @@ above, that detail is the exporter's reading and is labelled as an assumption.
   check); the crate is
   synced with `g5-sync-in.sh` in its G5_RUST_ONLY mode (rust/ only, uncommitted in kit-intent, so kit_rev is unchanged
   while G2 campaign 80 runs).
+
+### 2026-10-29: M7, the playable runtime on desktop (DONE, with the pause menu's Controls entry moved to M8)
+- **What**: `amigo-g5-play` (crate `rust/amigo_g5_play`): SDL2 window, 50 Hz fixed timestep decoupled from the
+  display (the clock is set again after a pause or a stall of more than 5 ticks, so the game never runs fast to catch
+  up), 44.1 kHz stereo audio queue (882 frames a tick, capped at 6 ticks queued), SDL GameController, keyboard and
+  mouse mapped to the Amiga joystick (port 2), mouse (port 1) and keyboard; the in-game pause menu (Resume, Restart,
+  Quit; Start, Back, Esc or the TV remote's Back opens it, never quits); letterboxed scaling. The game pack
+  (`amigo_g5::pack`, `tools/g5_pack.py`) and the game.json `controls` block, both documented in docs/G5-PLAYABLE.md.
+  The program choice and file collection moved from the boot binary into `amigo_g5::game::GameTree` unchanged, so the
+  two binaries boot the same way.
+- **Decisions (29 Oct 2026)**:
+  - `amigo_g5_play` is its own cargo workspace: in the main workspace its crates enter rust/Cargo.lock, and
+    `cargo build --release --offline --locked --bin amigo-g5-boot` then fails on a cache without them (measured:
+    "no matching package named `fontdue` found"). The boot binary's lock file is unchanged by this PR.
+  - New dependencies (play crate only): `sdl2` 0.37 (`bundled`, `static-link`: window, renderer, audio queue and game
+    controllers, with SDL 2.26.4 built from source so the exe needs no DLL), `serde_json` 1 (reads the game.json
+    `controls` block), `fontdue` 0.9 (pure-Rust rasteriser for the bundled Inter font in the pause menu; M8 uses it
+    for the pre-boot).
+  - The pause menu's Controls entry shows the full-screen controller diagram, which is M8's; it is added with M8.
+- **Measured** (this container, rustc 1.97 stable, cmake 3.28, gcc 13):
+  - `cd rust && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test --all-targets`: clean,
+    all pass (amigo_g5 lib 37 tests including the new game.rs and pack.rs ones).
+  - `cd rust/amigo_g5_play && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test
+    --all-targets`: clean; 8 unit tests and `play_frames_match_headless_under_scripted_input` pass. Under SDL's dummy
+    video and audio drivers, 14 ticks of a synthetic program that reads JOY1DAT, CIA-A PRA, JOY0DAT and the keyboard
+    give byte-identical frames in the play loop (input from a script: key, pad, mouse move, mouse button) and in the
+    headless loop amigo-g5-boot runs (input set by hand); 6 or more distinct frames, so every input showed. Made to
+    fail on purpose twice (fire held one tick longer, a different key code): it failed at tick 8 and tick 9.
+  - The same test packs the synthetic game with `tools/g5_pack.py`, reads it back in Rust equal to the directory,
+    and runs `amigo-g5-play --pack` (no game code compiled in): exit 3, "STOP after 0 ticks: Untranslated".
+  - `python3 -m unittest discover -s tests/synthetic -v`: 11 tests OK (2 new: pack round trip, damage caught).
+  - Boot refactor: the old (main) and new `amigo-g5-boot` on a synthetic game directory with no `--program`,
+    `--program Other`, `--program data/f` and `--program nope` give identical stderr, exit codes and audio.
+  - With an empty CARGO_HOME, `cargo build --release --offline --locked --bin amigo-g5-boot` in rust/ builds.
+- **Assumed**: SDL GameController events on a real Xbox pad, Shield controller and TV remote arrive as SDL documents
+  them (no pad here); the audio queue's 6-tick cap keeps latency acceptable on real hardware (not measured with a
+  real device); a real game's frames in amigo-g5-play equal amigo-g5-boot's (the core is shared and the synthetic
+  test proves the input path, but no game runs here).
+- **Not done**: the pause menu's Controls entry (M8, with the diagram); the menu's look is a first cut (metal
+  panel, bevels, cyan focus, Inter labels) that M8's theme module takes over; mouse support inside the pause menu
+  is a click on the selected item only; Android `SDL_main` and APK asset loading (M9). Size: about 1,100 lines of
+  non-test code, of which about 130 moved from the boot binary; over the ~600 aim, because the milestone's pieces
+  (runtime, mapping, pack, menu) only prove out together in the frame test.
+- **For Ryzen**: optional, before M10: build with a game's AMIGO_G5_GAME_RS and compare frames:
+  `cd rust/amigo_g5_play && AMIGO_G5_GAME_RS=... cargo build --release` then
+  `amigo-g5-play --game WORKDIR/g5files --program REL --ticks 600 --frames /tmp/play` against
+  `amigo-g5-boot ... --ticks 600 --frames /tmp/boot` (`cmp` each pNNNNN.rgba). Needs `cargo fetch` in
+  rust/amigo_g5_play first for an offline build, and `CMAKE_POLICY_VERSION_MINIMUM=3.5 CFLAGS=-std=gnu17`.
+- **M7 status**: done (Controls entry of the pause menu moved to M8). Next is M8.

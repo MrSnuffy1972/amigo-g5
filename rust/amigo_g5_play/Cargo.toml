@@ -1,0 +1,30 @@
+[package]
+name = "amigo_g5_play"
+version = "0.1.0"
+edition = "2021"
+description = "Ami-Go G5: the playable runtime (SDL2 window, 50 Hz fixed timestep, audio queue, pad, keyboard and mouse)"
+publish = false
+# the same script as the boot binary: records the FNV-1a 64 of AMIGO_G5_GAME_RS for the boot line
+build = "../amigo_g5_boot/build.rs"
+
+[[bin]]
+name = "amigo-g5-play"
+path = "src/main.rs"
+
+[dependencies]
+amigo_g5 = { path = "../amigo_g5" }
+amigo_g5_part0 = { path = "../amigo_g5_part0" }
+amigo_g5_part1 = { path = "../amigo_g5_part1" }
+amigo_g5_part2 = { path = "../amigo_g5_part2" }
+amigo_g5_part3 = { path = "../amigo_g5_part3" }
+amigo_g5_part4 = { path = "../amigo_g5_part4" }
+amigo_g5_part5 = { path = "../amigo_g5_part5" }
+amigo_g5_part6 = { path = "../amigo_g5_part6" }
+amigo_g5_part7 = { path = "../amigo_g5_part7" }
+# SDL2 built from source and linked in, so the exe needs no DLL (docs/G5-PLAYABLE.md, measured on Ryzen 29 Oct)
+sdl2 = { version = "0.37", features = ["bundled", "static-link"] }
+serde_json = "1"
+fontdue = "0.9"
+
+# Its own workspace, so the boot binary's lock file stays free of SDL2 and the font crates (see ../Cargo.toml).
+[workspace]

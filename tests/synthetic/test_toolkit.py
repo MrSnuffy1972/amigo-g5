@@ -152,6 +152,47 @@ class RustEmitterCoverage(unittest.TestCase):
         self.assertIn('let mut q: i32', rs)
 
 
+class GamePack(unittest.TestCase):
+    """tools/g5_pack.py on synthetic files: pack, list and unpack round-trip; damage is caught (M7, 29 Oct 2026)."""
+
+    def setUp(self):
+        self.w = tempfile.mkdtemp(prefix='g5p-')
+        self.addCleanup(shutil.rmtree, self.w)
+        g = os.path.join(self.w, 'game')
+        os.makedirs(os.path.join(g, 's'))
+        os.makedirs(os.path.join(g, 'data', 'lvl'))
+        self.files = {'Game': bytes([0, 0, 3, 0xF3]) + bytes(range(256)), 's/startup-sequence': b'Game -x\n',
+                      'data/lvl/one': b'\x00' * 3, 'data/b': b'', 'Zed': b'z'}
+        for n, d in self.files.items():
+            put(os.path.join(g, *n.split('/')), d)
+        put(os.path.join(self.w, 'game.json'), '{"name": "Synthetic", "controls": {"pad": {"x": "key:Space"}}}')
+        self.tool = os.path.join(ROOT, 'tools', 'g5_pack.py')
+        self.pack = os.path.join(self.w, 'p.bin')
+        r = run([sys.executable, self.tool, 'pack', '--game', g, '--config', os.path.join(self.w, 'game.json'),
+                 '--out', self.pack])
+        self.assertEqual(r.returncode, 0, r.stderr)
+
+    def test_round_trip(self):
+        out = os.path.join(self.w, 'out')
+        r = run([sys.executable, self.tool, 'unpack', self.pack, '--out', out])
+        self.assertEqual(r.returncode, 0, r.stderr)
+        for n, d in self.files.items():
+            self.assertEqual(get(os.path.join(out, 'files', *n.split('/')), 'rb'), d, n)
+        self.assertEqual(get(os.path.join(out, 'game.json'), 'rb'), get(os.path.join(self.w, 'game.json'), 'rb'))
+        # directory-walk order: names sorted per directory, a subdirectory's files where its name sorts
+        lst = run([sys.executable, self.tool, 'list', self.pack]).stdout.split()[1::2]
+        self.assertEqual(lst, ['game.json', 'files/Game', 'files/Zed', 'files/data/b', 'files/data/lvl/one',
+                               'files/s/startup-sequence'])
+
+    def test_damage_is_caught(self):
+        b = bytearray(get(self.pack, 'rb'))
+        b[30] ^= 0x10
+        put(self.pack, bytes(b))
+        r = run([sys.executable, self.tool, 'list', self.pack])
+        self.assertEqual(r.returncode, 2)
+        self.assertIn('checksum', r.stderr)
+
+
 class LeakCheck(unittest.TestCase):
     """tools/leakcheck.py passes a clean folder and catches each kind of leak."""
 

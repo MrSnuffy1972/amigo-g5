@@ -23,3 +23,12 @@ jobs:
           else
             echo "no rust/Cargo.toml yet"
           fi
+      - name: Rust play runtime (M7; its own workspace so the boot binary's lock stays free of SDL2)
+        # The sdl2 crate builds SDL2 from source with cmake (bundled, static-link). The two variables are the settings
+        # Ryzen measured for cmake 4 and gcc 15 (docs/G5-PLAYABLE.md); harmless on older tools. Tests use SDL's dummy
+        # video and audio drivers, so no display or sound device is needed.
+        env:
+          CMAKE_POLICY_VERSION_MINIMUM: "3.5"
+          CFLAGS: -std=gnu17
+        run: |
+          cd rust/amigo_g5_play && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test --all-targets

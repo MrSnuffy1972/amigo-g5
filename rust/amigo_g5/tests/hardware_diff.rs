@@ -596,13 +596,14 @@ fn hardware_matches_c_intentrt() {
             .stdout(Stdio::piped())
             .spawn()
             .unwrap();
-        child
-            .stdin
-            .take()
-            .unwrap()
-            .write_all(text(ev).as_bytes())
-            .unwrap();
+        // Feed stdin from a thread while wait_with_output drains stdout. Writing all of stdin first deadlocks as
+        // soon as the C driver fills its stdout pipe: measured on Ryzen 29 Oct 2026, where a user over
+        // fs.pipe-user-pages-soft gets 8 KiB pipes instead of 64 KiB and this test hung for the full gate timeout.
+        let mut stdin = child.stdin.take().unwrap();
+        let input = text(ev);
+        let feeder = std::thread::spawn(move || stdin.write_all(input.as_bytes()));
         let out = child.wait_with_output().unwrap();
+        feeder.join().unwrap().unwrap();
         assert!(out.status.success(), "{name}: C driver failed");
         let c = String::from_utf8(out.stdout).unwrap();
         let rust = run_rust(chip, ev);

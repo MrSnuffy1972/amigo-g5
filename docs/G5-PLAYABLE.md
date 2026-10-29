@@ -94,3 +94,13 @@ docs/G5-NOTES.md is for M1 to M6.
 Package games 296, 336 and 608 for Windows and Android, run g6check.py, check that `amigo-g5-play` frames match the
 G5 headless frames, capture the pre-boot with `--preboot-shot`, then copy the builds to WinPC
 (`F:\Game Source\Amiga\Android` and `\Windows`), install the APKs on the YugeTV Shield, and send them to Karl.
+
+## M11: the multi-game launcher (Karl, 29 Oct 2026; after M10)
+Karl wants a launcher for many games, in the same LGP theme, on the Shield and on Windows: a browsable shelf of box
+art, each game with its art, a linked manual and instructions, links to videos, and (later) short instruction videos
+made from our own play. It hands off to each game's own build, whose pre-boot still shows.
+- Media is gathered on Ryzen by `~/bin/amigo-media.py` into `/srv/bulk/amigo-media/games/<id5>/` (art, manuals,
+  `manifest.json` with sources, match scores and video links). That media is third-party artwork and scans for
+  Karl's personal use: it **never enters this repo**. The launcher code reads a media pack Ryzen builds at packaging
+  time, in the same way the game pack works; tests use synthetic images only.
+- Not scheduled for an automatic run yet: M11 starts only when the routine's milestone list names it.

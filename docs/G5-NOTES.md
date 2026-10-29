@@ -597,7 +597,7 @@ above, that detail is the exporter's reading and is labelled as an assumption.
 - **M9 status**: partial (part 1 done; part 2 is the touch controls and the checkbox). Next is M9 part 2.
 
 ### 2026-10-29: M9 part 2, the on-screen touch controls and the pre-boot checkbox (M9 DONE)
-- **PR**: (link added after it opens)
+- **PR**: https://github.com/MrSnuffy1972/amigo-g5/pull/14
 - **What**: `rust/amigo_g5_play/src/touch.rs`: the virtual stick (8 directions, visible dead zone), four buttons in a
   diamond from `touch.buttons` or the default rule, the pause button, the key button and the pop-up Amiga keyboard,
   multi-touch, slide-off release, the overlay in the theme (40% at rest, 80% touched). Fingers become `Host::Touch`

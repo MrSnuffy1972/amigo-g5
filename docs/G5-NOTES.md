@@ -595,3 +595,44 @@ above, that detail is the exporter's reading and is labelled as an assumption.
   gNNNNN --out /w/out/g5pkg --windows --android`, then `kit/amigo/g6check.py` on `/w/out/g5pkg/gNNNNN.apk`, and
   under wine `gNNNNN.exe` (no arguments: it opens on the pre-boot). Report any link error from either target.
 - **M9 status**: partial (part 1 done; part 2 is the touch controls and the checkbox). Next is M9 part 2.
+
+### 2026-10-29: M9 part 2, the on-screen touch controls and the pre-boot checkbox (M9 DONE)
+- **PR**: (link added after it opens)
+- **What**: `rust/amigo_g5_play/src/touch.rs`: the virtual stick (8 directions, visible dead zone), four buttons in a
+  diamond from `touch.buttons` or the default rule, the pause button, the key button and the pop-up Amiga keyboard,
+  multi-touch, slide-off release, the overlay in the theme (40% at rest, 80% touched). Fingers become `Host::Touch`
+  actions that go through `Mapper` like a pad's. The pre-boot's "On-screen controls" checkbox (Android only; the
+  default rule; remembered per game in SDL's pref path). The pause menu takes clicks and taps by position. `--touch
+  on|off` and the script line `TICK touch down|move|up ID X Y`. Details in docs/G5-PLAYABLE.md "Added by M9 part 2".
+- **Decisions (29 Oct 2026)**: fewer than four default buttons leaves the empty places undrawn; the open keyboard
+  hides and lets go of the stick and buttons; with the controls on, SDL's touch-made mouse events are dropped in
+  game; the pointer shows while paused. Also fixed: `rawkey("F11")` (Help) returned nothing.
+- **Measured** (this container, rustc 1.97 stable):
+  - `cd rust && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test --all-targets`: clean,
+    48 passed (the boot workspace is untouched).
+  - `cd rust/amigo_g5_play && cargo fmt --all --check && cargo clippy --all-targets -- -D warnings && cargo test
+    --all-targets`: clean; 27 unit tests (new: button choice and start key, layout at 2400x1080, 1600x720, 1920x1080
+    and 1280x720 with no overlap, on screen and clear of the middle third, keyboard keys inside and apart, fingers
+    give the same `Input` as the pad with stick and fire at once, slide-off and dead zone, the keyboard sends F1 as
+    raw $50, the overlay is see-through with 40% and 80% controls, the checkbox default rule and storage round
+    trip, the checkbox as a fourth focus item drawn ticked in cyan and gone when hidden, the touch script line);
+    `play_frames` now also runs the scripted test with the stick and fire given by fingers (`--touch on`) and its
+    14 frames equal the headless ones byte for byte; `pack_sources` and `preboot_shot` pass unchanged.
+  - `cargo clippy --target aarch64-linux-android -p amigo_g5_android -- -D warnings` and the Windows check: clean.
+  - `python3 -m unittest discover -s tests/synthetic`: 15 tests OK. Leak check: clean.
+  - Looked by eye at the overlay at 2400x1080 (stick held, four buttons, key and pause buttons), the open keyboard
+    and the pre-boot shot with `--touch on`: as described, nothing clipped.
+- **Assumed**: SDL on Android reports the touchscreen in `SDL_GetNumTouchDevices` before the first touch, and a
+  Shield with no touchscreen reports none (so the default is off there); SDL_GetPrefPath on Android is the app's
+  writable internal storage; SDL's touch events arrive normalised to the window (SDL documents both; not run on a
+  device); redrawing the full-screen overlay when a control changes keeps 50 Hz in a release build on a phone (not
+  measured on a device: while the stick is dragged it is redrawn every frame).
+- **Not done**: the Windows exe icon and stderr to Android logcat (from part 1, still open); the pause menu is
+  unchanged in look (tap support only); no haptics. Size: about 820 lines of non-test code (touch.rs 545, lib.rs
+  150, preboot 75, theme 60, menu 35, controls 30), over the ~600 aim: the checkbox, the overlay and its wiring
+  only prove out together in the scripted frame test.
+- **For Ryzen**: with part 1's `g5_package.sh` command, install a G5 APK on a phone (touch, no pad: the box should be
+  ticked) and on the Shield (it should not be); on the phone, play with the stick and buttons, open the keyboard,
+  and check the choice survives a restart. Optional desktop review: `amigo-g5-play --pack PACK.bin --touch on`
+  (the controls show; a mouse does not drive them, fingers do) and `--preboot-shot /tmp/pb.png --touch on`.
+- **M9 status**: done (part 1 and part 2). Next is M10, which is Ryzen's.

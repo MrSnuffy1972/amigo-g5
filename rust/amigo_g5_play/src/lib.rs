@@ -9,6 +9,7 @@ mod menu;
 pub mod pad;
 pub mod preboot;
 pub mod theme;
+pub mod touch;
 
 use std::path::PathBuf;
 use std::time::{Duration, Instant};
@@ -26,9 +27,10 @@ use sdl2::rect::Rect;
 use sdl2::render::{Texture, TextureCreator, WindowCanvas};
 use sdl2::video::WindowContext;
 
-use controls::{Controls, Host, Mapper};
+use controls::{Controls, Host, Mapper, Phase};
 use menu::{Menu, MenuItem};
 use preboot::{nav_of, Item, Nav, Preboot, Screen};
+use touch::TouchPad;
 
 /// One tick: 50 Hz, the PAL frame rate the game was written for.
 pub const TICK: Duration = Duration::from_millis(20);
@@ -47,6 +49,10 @@ pub struct Options {
     pub frames: Option<PathBuf>,
     /// Scripted input: each event is taken just before its tick runs (ticks count from 1).
     pub script: Vec<(u32, Host)>,
+    /// `--touch on|off`: the on-screen controls' checkbox shows with this value on any platform and the choice is
+    /// not remembered (review and tests). Without it only Android shows the checkbox, with the stored choice or the
+    /// default rule (M9 part 2).
+    pub touch: Option<bool>,
 }
 
 #[derive(Debug, PartialEq)]
@@ -58,7 +64,8 @@ pub enum Outcome {
 }
 
 /// Scripted input, one event a line: `TICK key down|up NAME`, `TICK pad down|up NAME`, `TICK axis NAME X Y`,
-/// `TICK mouse DX DY`, `TICK button down|up left|right`. Blank lines and `#` comments are skipped.
+/// `TICK mouse DX DY`, `TICK button down|up left|right`, `TICK touch down|move|up ID X Y` (a finger, X and Y as
+/// fractions of the window). Blank lines and `#` comments are skipped.
 pub fn parse_script(text: &str) -> Result<Vec<(u32, Host)>, String> {
     let mut out = Vec::new();
     for (n, line) in text.lines().enumerate() {
@@ -73,6 +80,7 @@ pub fn parse_script(text: &str) -> Result<Vec<(u32, Host)>, String> {
         }
         let bad = || format!("script line {}: {line:?}", n + 1);
         let num = |s: &str| s.parse::<i32>().map_err(|_| bad());
+        let frac = |s: &str| s.parse::<f32>().map_err(|_| bad());
         let tick: u32 = w[0].parse().map_err(|_| bad())?;
         let down = w.get(2).map(|s| *s == "down");
         let e = match (w.get(1).copied(), w.len()) {
@@ -81,6 +89,15 @@ pub fn parse_script(text: &str) -> Result<Vec<(u32, Host)>, String> {
             (Some("axis"), 5) => Host::Axis(w[2].into(), num(w[3])?, num(w[4])?),
             (Some("mouse"), 4) => Host::MouseMove(num(w[2])?, num(w[3])?),
             (Some("button"), 4) => Host::MouseButton(w[3] == "left", down.unwrap()),
+            (Some("touch"), 6) => {
+                let ph = match w[2] {
+                    "down" => Phase::Down,
+                    "move" => Phase::Move,
+                    "up" => Phase::Up,
+                    _ => return Err(bad()),
+                };
+                Host::Finger(num(w[3])? as i64, ph, frac(w[4])?, frac(w[5])?)
+            }
             _ => return Err(bad()),
         };
         out.push((tick, e));
@@ -132,6 +149,15 @@ pub fn host_event(e: &Event, sticks: &mut [i32; 6]) -> Option<Host> {
                 Axis::TriggerRight => Host::Axis("rt".into(), sticks[5], 0),
             }
         }
+        Event::FingerDown {
+            finger_id, x, y, ..
+        } => Host::Finger(*finger_id, Phase::Down, *x, *y),
+        Event::FingerMotion {
+            finger_id, x, y, ..
+        } => Host::Finger(*finger_id, Phase::Move, *x, *y),
+        Event::FingerUp {
+            finger_id, x, y, ..
+        } => Host::Finger(*finger_id, Phase::Up, *x, *y),
         Event::MouseMotion { xrel, yrel, .. } => Host::MouseMove(*xrel, *yrel),
         Event::MouseButtonDown { mouse_btn, .. } if *mouse_btn != MouseButton::Middle => {
             Host::MouseButton(*mouse_btn == MouseButton::Left, true)
@@ -158,6 +184,36 @@ pub fn fit_rect(win_w: u32, win_h: u32) -> Rect {
         w.max(1) as u32,
         h.max(1) as u32,
     )
+}
+
+/// A mouse event SDL made from a touch (SDL_TOUCH_MOUSEID). With the on-screen controls on, a finger is not also
+/// the Amiga mouse.
+fn from_touch(e: &Event) -> bool {
+    matches!(
+        e,
+        Event::MouseMotion {
+            which: u32::MAX,
+            ..
+        } | Event::MouseButtonDown {
+            which: u32::MAX,
+            ..
+        } | Event::MouseButtonUp {
+            which: u32::MAX,
+            ..
+        }
+    )
+}
+
+/// One host event into the mapping; a finger goes through the on-screen controls first (nothing when they are off).
+/// True when it asks for the pause menu.
+fn feed(m: &mut Mapper, t: &mut Option<TouchPad>, h: &Host) -> bool {
+    match (h, t) {
+        (Host::Finger(id, ph, x, y), Some(t)) => t
+            .finger(*id, *ph, *x, *y)
+            .iter()
+            .fold(false, |p, h| m.handle(h) | p),
+        _ => m.handle(h),
+    }
 }
 
 fn sdl<T, E: ToString>(r: Result<T, E>) -> Result<T, String> {
@@ -198,6 +254,29 @@ where
     let mut open_pads = Vec::new();
     let mut sticks = [0i32; 6];
     let mut pre = Preboot::new(&o.title, &o.controls)?;
+    // the on-screen controls' checkbox: Android only, remembered per game in its app storage (M9 part 2)
+    let android = cfg!(target_os = "android") && o.touch.is_none();
+    let store = android
+        .then(|| {
+            let app: String = o
+                .title
+                .chars()
+                .map(|c| if c.is_alphanumeric() { c } else { '_' })
+                .collect();
+            sdl2::filesystem::pref_path("Ami-Go", &format!("G5_{app}")).ok()
+        })
+        .flatten()
+        .map(PathBuf::from);
+    pre.touch = o.touch.or_else(|| {
+        android.then(|| {
+            let n = pads.num_joysticks().unwrap_or(0);
+            let connected = (0..n).filter(|&i| pads.is_game_controller(i)).count();
+            let screen = sdl2::touch::num_touch_devices() > 0;
+            let stored = store.as_deref().and_then(touch::load);
+            stored.unwrap_or_else(|| touch::default_on(screen, connected))
+        })
+    });
+    let mut saved = pre.touch;
     let mut full = None;
     // the pre-boot at every start (Karl, 14 Oct 2026); a `--ticks` run is a headless review and goes straight in
     if o.ticks.is_none() {
@@ -228,6 +307,10 @@ where
                 };
                 picked = picked.or(n.and_then(|n| pre.handle(n)));
             }
+            if let (Some(d), true) = (&store, pre.touch != saved) {
+                saved = pre.touch;
+                let _ = touch::save(d, pre.touch == Some(true));
+            }
             let ms = last.elapsed().as_millis() as u32;
             last += Duration::from_millis(ms as u64);
             match picked.or(pre.advance(ms)) {
@@ -245,17 +328,28 @@ where
             std::thread::sleep(TICK);
         }
     }
-    if o.controls.mouse && o.ticks.is_none() {
-        ctx.mouse().set_relative_mouse_mode(true);
-    }
+    // the game owns the mouse while it runs; the pause menu shows the pointer so a click lands where it is seen
+    let mut relative = false;
     let mut mapper = Mapper::new(o.controls.clone());
     let mut m = Machine::new(o.tree.boot(&o.program)?);
     let mut tick = 0u32;
     let mut paused = false;
     let mut show_controls = false;
     let mut bytes = vec![0u8; SCR_W * SCR_H * 4];
+    let (ww, wh) = canvas.output_size()?;
+    let mut tpad = match pre.touch {
+        Some(true) => Some(TouchPad::new(&o.controls, ww, wh)?),
+        _ => None,
+    };
+    let mut over = None;
     let mut base = (Instant::now(), 0u32);
     loop {
+        let (ww, wh) = canvas.output_size()?;
+        let (vw, vh) = canvas.window().size();
+        if let Some(t) = tpad.as_mut().filter(|t| t.size() != (ww, wh)) {
+            t.resize(ww, wh);
+            mapper.release_all();
+        }
         for e in events.poll_iter() {
             match &e {
                 Event::Quit { .. } => return Ok(Outcome::Quit),
@@ -266,14 +360,41 @@ where
                 }
                 _ => {}
             }
+            if tpad.is_some() && from_touch(&e) {
+                continue;
+            }
+            // a click or tap on the pause menu, in output pixels
+            let tap = match &e {
+                Event::MouseButtonDown {
+                    mouse_btn: MouseButton::Left,
+                    x,
+                    y,
+                    ..
+                } => Some((
+                    *x as f32 * ww as f32 / vw.max(1) as f32,
+                    *y as f32 * wh as f32 / vh.max(1) as f32,
+                )),
+                Event::FingerDown { x, y, .. } => Some((x * ww as f32, y * wh as f32)),
+                _ => None,
+            };
             let Some(h) = host_event(&e, &mut sticks) else {
                 continue;
             };
             if show_controls {
                 // any press goes back to the pause menu
-                show_controls = nav_of(&h).is_none() && !matches!(h, Host::MouseButton(_, true));
+                show_controls = nav_of(&h).is_none()
+                    && !matches!(
+                        h,
+                        Host::MouseButton(_, true) | Host::Finger(_, Phase::Down, ..)
+                    );
             } else if paused {
-                match menu.handle(&h) {
+                let pick = match tap {
+                    // without the on-screen controls a tap also arrives as a click: take it once, as the click
+                    Some(_) if tpad.is_none() && matches!(h, Host::Finger(..)) => None,
+                    Some((x, y)) => menu.hit(ww, wh, x, y),
+                    None => menu.handle(&h),
+                };
+                match pick {
                     Some(MenuItem::Resume) => paused = false,
                     Some(MenuItem::Restart) => {
                         m = Machine::new(o.tree.boot(&o.program)?);
@@ -286,11 +407,19 @@ where
                     Some(MenuItem::Quit) => return Ok(Outcome::Quit),
                     None => {}
                 }
-            } else if mapper.handle(&h) {
+            } else if feed(&mut mapper, &mut tpad, &h) {
                 paused = true;
                 mapper.release_all();
+                if let Some(t) = &mut tpad {
+                    t.release_all();
+                }
                 menu.open();
             }
+        }
+        let want = !paused && o.controls.mouse && o.ticks.is_none();
+        if want != relative {
+            ctx.mouse().set_relative_mouse_mode(want);
+            relative = want;
         }
         // the fixed timestep: as many ticks as the clock owes since `base`. Paused, or after a stall of more than a few
         // ticks, the clock is set again from now, so the game never runs fast to catch up.
@@ -304,7 +433,7 @@ where
         while !paused && tick < due {
             tick += 1;
             for (_, h) in o.script.iter().filter(|(t, _)| *t == tick) {
-                mapper.handle(h);
+                feed(&mut mapper, &mut tpad, h);
             }
             let input = mapper.tick_input();
             let keys = mapper.take_keys();
@@ -337,7 +466,6 @@ where
         sdl(tex.update(None, &bytes, SCR_W * 4))?;
         canvas.set_draw_color(Color::RGB(0x14, 0x16, 0x1A));
         canvas.clear();
-        let (ww, wh) = canvas.output_size()?;
         canvas.copy(&tex, None, Some(fit_rect(ww, wh)))?;
         if show_controls {
             blit(
@@ -348,6 +476,14 @@ where
             )?;
         } else if paused {
             menu.draw(&mut canvas)?;
+        } else if let Some(t) = &mut tpad {
+            // drawn again only when a control changed
+            if t.dirty || over.is_none() {
+                t.dirty = false;
+                blit(&mut canvas, &tc, &mut over, &t.render())?;
+            } else if let Some(x) = &over {
+                canvas.copy(x, None, None)?;
+            }
         }
         canvas.present();
         if o.ticks.is_none() {
@@ -369,11 +505,10 @@ fn blit<'a>(
         .as_ref()
         .is_some_and(|t| (t.query().width, t.query().height) == (w, h))
     {
-        *slot = Some(sdl(tc.create_texture_streaming(
-            PixelFormatEnum::ARGB8888,
-            w,
-            h,
-        ))?);
+        let mut t = sdl(tc.create_texture_streaming(PixelFormatEnum::ARGB8888, w, h))?;
+        // the on-screen controls are see-through; an opaque screen's alpha is 255 everywhere, so blending is a copy
+        t.set_blend_mode(sdl2::render::BlendMode::Blend);
+        *slot = Some(t);
     }
     let tex = slot.as_mut().ok_or("no texture")?;
     let b: Vec<u8> = cv.px.iter().flat_map(|p| p.to_ne_bytes()).collect();
@@ -387,7 +522,7 @@ mod tests {
 
     #[test]
     fn script_lines_parse() {
-        let s = "# comment\n3 key down Right Ctrl\n4 pad up a\n5 axis left_stick -30000 0\n6 mouse 2 -1\n7 button down right\n";
+        let s = "# comment\n3 key down Right Ctrl\n4 pad up a\n5 axis left_stick -30000 0\n6 mouse 2 -1\n7 button down right\n8 touch move 2 0.25 0.5\n";
         assert_eq!(
             parse_script(s).unwrap(),
             vec![
@@ -396,10 +531,12 @@ mod tests {
                 (5, Host::Axis("left_stick".into(), -30000, 0)),
                 (6, Host::MouseMove(2, -1)),
                 (7, Host::MouseButton(false, true)),
+                (8, Host::Finger(2, Phase::Move, 0.25, 0.5)),
             ]
         );
         assert!(parse_script("x key down A").is_err());
         assert!(parse_script("1 wiggle").is_err());
+        assert!(parse_script("1 touch press 1 0.5 0.5").is_err());
     }
 
     #[test]

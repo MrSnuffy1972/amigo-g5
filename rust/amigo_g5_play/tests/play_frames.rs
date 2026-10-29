@@ -15,6 +15,7 @@ use amigo_g5::mem::GuestMemory;
 use amigo_g5::pack::Pack;
 use amigo_g5::run::Machine;
 use amigo_g5_play::controls::Controls;
+use amigo_g5_play::touch::layout;
 use amigo_g5_play::{parse_script, run, Options, Outcome};
 
 /// A hunk file with one CODE hunk of NOPs (HUNK_HEADER, HUNK_CODE, HUNK_END), and its startup-sequence.
@@ -120,6 +121,42 @@ fn play_frames_match_headless_under_scripted_input() {
         ticks: Some(TICKS),
         frames: Some(play.clone()),
         script: parse_script(SCRIPT).unwrap(),
+        touch: None,
+    };
+    assert_eq!(run(&o, &mut step).unwrap(), Outcome::Ticks(TICKS));
+
+    // the same script with the stick and fire given by fingers on the on-screen controls (M9 part 2): the window is
+    // the dummy driver's 1056x816, and the controls are where touch::layout puts them there
+    let lay = layout(1056.0, 816.0, false);
+    let (sx, sy, sr) = lay.stick;
+    let (bx, by, _) = lay.buttons[0];
+    let at = |x: f32, y: f32| format!("{} {}", x / 1056.0, y / 816.0);
+    let touch_script = SCRIPT
+        .replace(
+            "3 key down Right",
+            &format!("3 touch down 7 {}", at(sx + sr * 0.7, sy + 3.0)),
+        )
+        .replace(
+            "6 key up Right",
+            &format!("6 touch up 7 {}", at(sx + sr * 0.7, sy + 3.0)),
+        )
+        .replace("5 pad down a", &format!("5 touch down 9 {}", at(bx, by)))
+        .replace(
+            "8 pad up a",
+            &format!(
+                "8 touch move 9 {}\n8 touch up 9 {}",
+                at(bx + 4.0, by),
+                at(bx + 4.0, by)
+            ),
+        );
+    assert_ne!(touch_script, SCRIPT);
+    let touched = root.join("touch");
+    std::fs::create_dir_all(&touched).unwrap();
+    let o = Options {
+        frames: Some(touched.clone()),
+        script: parse_script(&touch_script).unwrap(),
+        touch: Some(true),
+        ..o
     };
     assert_eq!(run(&o, &mut step).unwrap(), Outcome::Ticks(TICKS));
 
@@ -129,6 +166,11 @@ fn play_frames_match_headless_under_scripted_input() {
         let a = std::fs::read(head.join(&f)).unwrap();
         let b = std::fs::read(play.join(&f)).unwrap();
         assert!(a == b, "tick {t}: play frame differs from headless");
+        let c = std::fs::read(touched.join(&f)).unwrap();
+        assert!(
+            a == c,
+            "tick {t}: frame under touch input differs from headless"
+        );
         distinct.insert(a);
     }
     // not vacuous: the joystick, fire, mouse, key and button each changed the picture

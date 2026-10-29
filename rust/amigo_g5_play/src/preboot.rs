@@ -111,6 +111,8 @@ pub const CONTROLS_PANELS: (R, R) = (
     R::new(1400.0, 170.0, 460.0, 830.0),
 );
 const BAR: R = R::new(560.0, 906.0, 800.0, 18.0);
+/// The "On-screen controls" checkbox (Android only, M9 part 2), right of the countdown bar: focus item 3.
+pub const CHECK: R = R::new(1420.0, 868.0, 440.0, 60.0);
 
 fn button(i: usize) -> R {
     R::new(410.0 + i as f32 * 380.0, 950.0, 340.0, 80.0)
@@ -123,6 +125,8 @@ pub struct Preboot {
     pub sel: usize,
     pub countdown: Countdown,
     pub screen: Screen,
+    /// The "On-screen controls" checkbox: None hides it (every build but Android, unless `--touch` is given).
+    pub touch: Option<bool>,
     /// The screen's unchanging layer at its size, so a frame redraws only the buttons and the countdown.
     base: Option<(usize, usize, Screen, Vec<u32>)>,
 }
@@ -136,6 +140,7 @@ impl Preboot {
             sel: 0,
             countdown: Countdown::default(),
             screen: Screen::Menu,
+            touch: None,
             base: None,
         })
     }
@@ -155,17 +160,34 @@ impl Preboot {
             }
             return None;
         }
-        let hit = |x, y| (0..ITEMS.len()).find(|&i| button(i).contains(x, y));
+        let count = ITEMS.len() + self.touch.is_some() as usize;
+        let check = self.touch.is_some().then_some(CHECK);
+        let hit = |x, y| {
+            (0..ITEMS.len())
+                .find(|&i| button(i).contains(x, y))
+                .or(check.filter(|c| c.contains(x, y)).map(|_| ITEMS.len()))
+        };
+        // the checkbox (focus item 3) toggles where a button would be chosen
+        let pick = |p: &mut Preboot, i: usize| match ITEMS.get(i) {
+            Some(it) => Some(it.0),
+            None => {
+                p.touch = p.touch.map(|t| !t);
+                None
+            }
+        };
         let chosen = match n {
             Nav::Prev => {
-                self.sel = (self.sel + ITEMS.len() - 1) % ITEMS.len();
+                self.sel = (self.sel + count - 1) % count;
                 None
             }
             Nav::Next => {
-                self.sel = (self.sel + 1) % ITEMS.len();
+                self.sel = (self.sel + 1) % count;
                 None
             }
-            Nav::Choose => Some(ITEMS[self.sel].0),
+            Nav::Choose => {
+                let i = self.sel;
+                pick(self, i)
+            }
             Nav::Back => Some(Item::Quit),
             Nav::Point(x, y) => {
                 if let Some(i) = hit(x, y) {
@@ -174,7 +196,7 @@ impl Preboot {
                 }
                 None
             }
-            Nav::Click(x, y) => hit(x, y).map(|i| ITEMS[i].0),
+            Nav::Click(x, y) => hit(x, y).and_then(|i| pick(self, i)),
             _ => None,
         };
         if chosen == Some(Item::Controls) {
@@ -278,6 +300,22 @@ impl Preboot {
             }
             cv.text_mid(&f.body, 32.0, r.x + r.w / 2.0, r.y + 52.0, name, TEXT);
         }
+        if let Some(on) = self.touch {
+            let focus = self.sel == ITEMS.len();
+            if focus {
+                cv.glow(CHECK, CYAN, 16.0);
+                cv.outline(CHECK, CYAN, 2.0);
+            }
+            let b = R::new(CHECK.x + 14.0, CHECK.y + 12.0, 36.0, 36.0);
+            cv.fill(b, DARK);
+            cv.bevel(b, false);
+            if on {
+                cv.line((b.x + 8.0, b.y + 19.0), (b.x + 15.0, b.y + 27.0), 5.0, CYAN);
+                cv.line((b.x + 15.0, b.y + 27.0), (b.x + 29.0, b.y + 9.0), 5.0, CYAN);
+            }
+            let label = "On-screen controls";
+            cv.text(&f.body, 30.0, b.right() + 16.0, CHECK.y + 41.0, label, TEXT);
+        }
     }
 }
 
@@ -319,8 +357,15 @@ fn title_bar(cv: &mut Canvas, f: &Fonts) {
 
 /// `--preboot-shot`: the menu `at_s` seconds into the countdown, as a 1920x1080 PNG. Drawn on the CPU, so it needs
 /// no display (and no SDL at all).
-pub fn shot(title: &str, c: &Controls, at_s: f32, out: &std::path::Path) -> Result<(), String> {
+pub fn shot(
+    title: &str,
+    c: &Controls,
+    touch: Option<bool>,
+    at_s: f32,
+    out: &std::path::Path,
+) -> Result<(), String> {
     let mut p = Preboot::new(title, c)?;
+    p.touch = touch;
     p.countdown.advance((at_s * 1000.0) as u32);
     let cv = p.render(1920, 1080);
     std::fs::write(out, png(cv.w, cv.h, &cv.px)).map_err(|e| format!("{}: {e}", out.display()))
@@ -388,6 +433,38 @@ mod tests {
         assert_eq!(p.sel, 2);
         assert_eq!(p.handle(Nav::Click(q.x + 5.0, q.y + 5.0)), Some(Item::Quit));
         assert_eq!(p.handle(Nav::Click(5.0, 5.0)), None);
+    }
+
+    #[test]
+    fn touch_checkbox_is_a_fourth_item_only_when_shown() {
+        let mut p = Preboot::new("Test", &Controls::default()).unwrap();
+        p.handle(Nav::Prev);
+        assert_eq!(p.sel, 2);
+        assert_eq!(p.handle(Nav::Click(CHECK.x + 5.0, CHECK.y + 5.0)), None);
+        assert_eq!(p.touch, None);
+        p.touch = Some(true);
+        p.handle(Nav::Next);
+        assert_eq!(p.sel, 3);
+        assert_eq!(p.handle(Nav::Choose), None);
+        assert_eq!(p.touch, Some(false));
+        p.handle(Nav::Next);
+        assert_eq!(p.sel, 0);
+        assert_eq!(p.handle(Nav::Click(CHECK.x + 5.0, CHECK.y + 5.0)), None);
+        assert_eq!(p.touch, Some(true));
+        p.handle(Nav::Point(CHECK.x + 5.0, CHECK.y + 5.0));
+        assert_eq!(p.sel, 3);
+        // the box is drawn, ticked in cyan, and gone when hidden
+        let shown = p.render(1920, 1080);
+        let tick = |cv: &Canvas| {
+            let r = R::new(CHECK.x + 14.0, CHECK.y + 12.0, 36.0, 36.0);
+            (r.y as usize..r.bottom() as usize)
+                .flat_map(|y| (r.x as usize..r.right() as usize).map(move |x| (x, y)))
+                .filter(|&(x, y)| cv.px[y * cv.w + x] == CYAN)
+                .count()
+        };
+        assert!(tick(&shown) > 50);
+        p.touch = None;
+        assert_eq!(tick(&p.render(1920, 1080)), 0);
     }
 
     #[test]

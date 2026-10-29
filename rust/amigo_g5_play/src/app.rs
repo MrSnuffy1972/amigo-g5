@@ -24,7 +24,7 @@ include!(concat!(env!("OUT_DIR"), "/embedded.rs"));
 /// The APK asset (or working-directory file) a binary with no pack argument and none built in reads.
 pub const PACK_ASSET: &str = "gamepack.bin";
 
-pub const USAGE: &str = "usage: amigo-g5-play (--pack PACK.bin | --game DIR [--config game.json]) [--program REL] [--fullscreen] [--ticks N --frames OUTDIR] [--script FILE] [--preboot-shot OUT.png [--preboot-at SECONDS]]";
+pub const USAGE: &str = "usage: amigo-g5-play (--pack PACK.bin | --game DIR [--config game.json]) [--program REL] [--fullscreen] [--ticks N --frames OUTDIR] [--script FILE] [--preboot-shot OUT.png [--preboot-at SECONDS]] [--touch on|off]";
 
 /// The game's translated code by page, as in amigo-g5-boot (part = (PC >> 9) % 8).
 pub fn game_step(cpu: &mut Cpu, mem: &mut GuestMemory) -> Result<(), Stop> {
@@ -112,6 +112,12 @@ fn options(v: &[String], embedded: Option<&[u8]>) -> Result<Options, String> {
             .map(|t| t.parse().map_err(|_| "--ticks must be a number"))
             .transpose()?,
         frames: get(v, "--frames").map(PathBuf::from),
+        touch: match get(v, "--touch") {
+            Some("on") => Some(true),
+            Some("off") => Some(false),
+            Some(_) => return Err("--touch must be on or off".into()),
+            None => None,
+        },
         script: match get(v, "--script") {
             Some(p) => parse_script(&String::from_utf8_lossy(&read(p)?))?,
             None => Vec::new(),
@@ -136,7 +142,7 @@ where
         let at = get(v, "--preboot-at").map_or(Ok(0.0), |a| a.parse::<f32>());
         let r = match at {
             Ok(at) if (0.0..=30.0).contains(&at) => {
-                preboot::shot(&o.title, &o.controls, at, out.as_ref())
+                preboot::shot(&o.title, &o.controls, o.touch, at, out.as_ref())
             }
             _ => Err("--preboot-at must be seconds from 0 to 30".into()),
         };

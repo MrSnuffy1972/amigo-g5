@@ -68,12 +68,7 @@ fn render(sel: usize, fonts: &Fonts) -> theme::Canvas {
     cv.bevel(all, true);
     cv.text(&fonts.title, 32.0, 32.0, 56.0, "Paused", CYAN);
     for (i, (_, label)) in ITEMS.iter().enumerate() {
-        let r = R::new(
-            24.0,
-            ROW_Y + i as f32 * ROW_H,
-            W as f32 - 48.0,
-            ROW_H - 14.0,
-        );
+        let r = row(i);
         if i == sel {
             cv.outline(r, CYAN, 2.0);
         } else {
@@ -98,24 +93,48 @@ impl Menu<'_> {
             self.dirty = false;
         }
         let (ww, wh) = canvas.output_size()?;
-        // the panel is sized for 1080 lines and scaled with the window
-        let s = wh as f32 / 1080.0 * 1.6;
-        let (w, h) = ((W as f32 * s) as u32, (H as f32 * s) as u32);
-        let r = Rect::new(
-            (ww.saturating_sub(w) / 2) as i32,
-            (wh.saturating_sub(h) / 2) as i32,
-            w,
-            h,
-        );
-        canvas.copy(&self.tex, None, Some(r))
+        canvas.copy(&self.tex, None, Some(place(ww, wh)))
+    }
+
+    /// The item under output pixel (x, y), for a click or a tap (M9 part 2: a phone has no keys to move the focus).
+    pub fn hit(&mut self, ww: u32, wh: u32, x: f32, y: f32) -> Option<MenuItem> {
+        let r = place(ww, wh);
+        let s = r.height() as f32 / H as f32;
+        let (px, py) = ((x - r.x() as f32) / s, (y - r.y() as f32) / s);
+        let i = (0..ITEMS.len()).find(|&i| row(i).contains(px, py))?;
+        self.sel = i;
+        self.dirty = true;
+        Some(ITEMS[i].0)
     }
 }
 
-/// One host event in the menu: up and down move the selection, fire / Enter / A choose, pause again resumes.
+/// Where the panel goes in a `ww` x `wh` window: sized for 1080 lines, scaled with the window and centred.
+fn place(ww: u32, wh: u32) -> Rect {
+    let s = wh as f32 / 1080.0 * 1.6;
+    let (w, h) = ((W as f32 * s) as u32, (H as f32 * s) as u32);
+    Rect::new(
+        (ww.saturating_sub(w) / 2) as i32,
+        (wh.saturating_sub(h) / 2) as i32,
+        w.max(1),
+        h.max(1),
+    )
+}
+
+/// Item `i`'s row in panel pixels.
+fn row(i: usize) -> R {
+    R::new(
+        24.0,
+        ROW_Y + i as f32 * ROW_H,
+        W as f32 - 48.0,
+        ROW_H - 14.0,
+    )
+}
+
+/// One host event in the menu: up and down move the selection, Enter / A choose, pause again resumes (a click or tap
+/// goes to `Menu::hit`).
 fn nav(sel: &mut usize, h: &Host) -> Option<MenuItem> {
     let (name, down) = match h {
         Host::Key(n, d) | Host::Pad(n, d) => (n.as_str(), *d),
-        Host::MouseButton(true, d) => ("mouse_left", *d),
         _ => return None,
     };
     if !down {
@@ -125,9 +144,7 @@ fn nav(sel: &mut usize, h: &Host) -> Option<MenuItem> {
     match name {
         "Up" | "dpad_up" => *sel = (*sel + n - 1) % n,
         "Down" | "dpad_down" => *sel = (*sel + 1) % n,
-        "Return" | "Keypad Enter" | "Space" | "Select" | "a" | "mouse_left" => {
-            return Some(ITEMS[*sel].0)
-        }
+        "Return" | "Keypad Enter" | "Space" | "Select" | "a" => return Some(ITEMS[*sel].0),
         "Escape" | "AC Back" | "start" | "back" | "b" => return Some(MenuItem::Resume),
         _ => {}
     }

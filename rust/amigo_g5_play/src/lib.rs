@@ -3,6 +3,7 @@
 //! timestep decoupled from the display, an audio queue, the player's pad, keyboard and mouse mapped to what the game
 //! reads, and the in-game pause menu. For the same game, inputs and tick the frames are the boot binary's (tested).
 
+pub mod app;
 pub mod controls;
 mod menu;
 pub mod pad;

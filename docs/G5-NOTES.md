@@ -535,3 +535,63 @@ above, that detail is the exporter's reading and is labelled as an assumption.
   `amigo-g5-play --pack PACK.bin --preboot-shot /tmp/preboot-ID.png --preboot-at 5` and look at it, with the game's
   real `controls` block. The game-level frame check from M7 is unchanged.
 - **M8 status**: done (the Android checkbox moved to M9). Next is M9.
+
+### 2026-10-29: M9 part 1, the Windows and Android builds (PARTIAL: touch controls are part 2)
+- **PR**: (link below, added after the PR opened)
+- **What**: the start of `amigo-g5-play` moved into `amigo_g5_play::app::main`, shared by the desktop binary and the
+  new Android library `libmain.so` (crate `rust/amigo_g5_play/android`, `SDL_main` in its module `ffi`, no
+  `unsafe`). The pack comes from `--pack`/`--game`, else from the pack built in with `AMIGO_G5_PACK` (the one-file
+  Windows exe; such a build is a Windows GUI program with no console), else from `gamepack.bin` through SDL_RWops
+  (the APK asset). Android Back is trapped so it reaches the pause menu. `tools/g5_package.sh` builds the exe and
+  the APK per the packaging contract. CI clippy for aarch64-linux-android and x86_64-pc-windows-gnu. Details in
+  docs/G5-PLAYABLE.md "Added by M9 part 1".
+- **Decisions (29 Oct 2026)**:
+  - The APK stages of `kit/amigo/android/build_apk.sh` are copied into `g5_package.sh`, not changed in place:
+    build_apk.sh needs C sources, and editing a kit/ file moves Ryzen's kit_rev and rebuilds every G2 to G4
+    workspace (docs/G5-RYZEN-CONTRACT.md section 4).
+  - The symbol check is Ryzen's own `g5_symcheck.sh` (`G5_SYMCHECK`), not a copy: a rewrite here could disagree
+    with the gate (a debug build here has `amigo_g5::cia::Cia::tod_step`, which a naive reading of contract section
+    3 would flag, while Ryzen's check passes the release build).
+  - The pack is built into the exe but not into the APK's library (it is the asset there), so it is never twice.
+  - The Windows cross check in CI runs without the `desktop` feature: with it, sdl2-sys builds SDL2 with a mingw
+    compiler CI lacks. No new dependency.
+- **Measured** (this container, rustc 1.97 stable, cmake 3.28, gcc 13):
+  - `cd rust && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test --all-targets`: clean,
+    48 passed (the boot workspace is untouched).
+  - `cd rust/amigo_g5_play && cargo fmt --all --check && cargo clippy --all-targets -- -D warnings && cargo test
+    --all-targets`: clean; 20 unit tests (new: the pack source order, a damaged built-in pack exits 2),
+    `pack_sources` (new: no pack and no asset exits 2 naming gamepack.bin; `gamepack.bin` in the working directory
+    boots with `play: pack gamepack.bin` and the same last stderr line as `--pack` on the same file; a damaged one
+    exits 2), `play_frames` and `preboot_shot` pass unchanged.
+  - `cargo clippy --target aarch64-linux-android -p amigo_g5_android -- -D warnings` and `cargo clippy --target
+    x86_64-pc-windows-gnu --no-default-features --bin amigo-g5-play -- -D warnings`: clean. With `AMIGO_G5_PACK`
+    set, the Windows check's rustc line carries `--cfg g5_embedded` (seen with `-v`).
+  - The Android crate built for the host (`cargo build -p amigo_g5_android --features amigo_g5_play/desktop`):
+    `nm -D --defined-only libmain.so` shows `T SDL_main`.
+  - Built in: `AMIGO_G5_PACK=p.bin cargo build --bin amigo-g5-play` with a synthetic pack, run with no arguments
+    and `--ticks 1` under the dummy drivers: `STOP after 0 ticks: Untranslated(12582920)`, exit 3 (the pack booted
+    to its entry point; no game code here).
+  - `python3 -m unittest discover -s tests/synthetic`: 15 tests OK (4 new: `g5_package.sh --dry-run` gives the
+    three cargo builds with the contract's targets, the pack built into the exe and unset for Android, the SDL2
+    and libc++ copies, symbol checks on the three unstripped binaries in order, the asset, the signed
+    `OUTDIR/synth.apk`, a manifest with package `org.amigo.g5.synth`, both launchers, banner, landscape, touchscreen
+    not required and gamepad, and an escaped label; x86_64 when asked; `--skip-symcheck` says so; a missing target,
+    a bad id, a missing value, a missing icon and a damaged pack exit 2). Leak check: clean.
+- **Assumed**: the NDK 26 clang names (`aarch64-linux-android21-clang`, `armv7a-linux-androideabi21-clang`) and
+  sysroot paths of `libc++_shared.so` are where `g5_package.sh` looks; sdl2-sys without `bundled` links
+  `-lSDL2` against `/opt/sdl2-android/ABI/libSDL2.so` and nothing more is needed on Android; `sdl2` 0.37's `bundled`
+  build cross-compiles SDL 2.26.4 with mingw-w64 on Ryzen (cmake-rs sets the Windows system name); `g5_symcheck.sh`
+  takes the binary as its one argument and exits 0 on a pass; SDL_RWops reads the APK asset `gamepack.bin` at
+  `SDL_main` time (SDL documents it; not run on a device); a Windows GUI exe with SDL2 static needs no SDL2main.
+  None of these links ran here: no NDK, no mingw.
+- **Not done**: the Android on-screen touch controls and the pre-boot "On-screen controls" checkbox (moved from M8;
+  M9 part 2: virtual stick, four buttons, pop-up Amiga keyboard, pause button, the layout tests at 1080x2400 and
+  720x1600, the checkbox default rule and per-game storage); the Windows exe icon; stderr to Android logcat (a
+  failed start on Android is silent for now); running `kit/amigo/g6check.py`, which is not in this repo. Size: about
+  290 lines of new non-test code (app 130 after the 110 moved from main.rs, package script 145, build.rs 35,
+  Android 20).
+- **For Ryzen**: in the amigo-tools image, after `cd rust/amigo_g5_play && cargo fetch`: for a G5 pass,
+  `AMIGO_G5_GAME_RS=... G5_SYMCHECK=/path/to/g5_symcheck.sh tools/g5_package.sh --pack PACK.bin --name NAME --id
+  gNNNNN --out /w/out/g5pkg --windows --android`, then `kit/amigo/g6check.py` on `/w/out/g5pkg/gNNNNN.apk`, and
+  under wine `gNNNNN.exe` (no arguments: it opens on the pre-boot). Report any link error from either target.
+- **M9 status**: partial (part 1 done; part 2 is the touch controls and the checkbox). Next is M9 part 2.

@@ -1,0 +1,15 @@
+[package]
+name = "amigo_g5_android"
+version = "0.1.0"
+edition = "2021"
+description = "Ami-Go G5: the Android library libmain.so, whose SDL_main SDL's Java activity calls"
+publish = false
+
+[lib]
+name = "main"
+crate-type = ["cdylib"]
+path = "src/lib.rs"
+
+[dependencies]
+# without the desktop feature: SDL2 is the prebuilt libSDL2.so the APK carries, not built from source
+amigo_g5_play = { path = "..", default-features = false }

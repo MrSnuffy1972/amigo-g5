@@ -32,3 +32,14 @@ jobs:
           CFLAGS: -std=gnu17
         run: |
           cd rust/amigo_g5_play && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test --all-targets
+      - name: Rust play runtime cross checks (M9; Windows exe and Android libmain.so)
+        # cargo check only: linking needs mingw and the Android NDK, which Ryzen has (docs/G5-PLAYABLE.md). Windows is
+        # checked without the desktop feature because its build script would build SDL2 from source with a mingw
+        # compiler; the code checked is the same, only the SDL2 link differs. Android never builds SDL2 (it links the
+        # prebuilt libSDL2.so the APK carries).
+        run: |
+          rustup target add aarch64-linux-android x86_64-pc-windows-gnu
+          cd rust/amigo_g5_play
+          cargo fmt --all --check
+          cargo clippy --target aarch64-linux-android -p amigo_g5_android -- -D warnings
+          cargo clippy --target x86_64-pc-windows-gnu --no-default-features --bin amigo-g5-play -- -D warnings

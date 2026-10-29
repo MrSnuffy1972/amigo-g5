@@ -87,6 +87,10 @@ pub struct Controls {
     pub mouse: bool,
     /// What the pre-boot shows for a control (M8), by pad control or key name; absent ones are named by action.
     pub labels: Vec<(String, String)>,
+    /// How each label is known (`label_status`, M8): `confirmed`, `manual`, `web`, `code` or `unconfirmed`.
+    pub status: Vec<(String, String)>,
+    /// How the game is started (`start_hint`, M8): the text and its status.
+    pub start_hint: Option<(String, String)>,
 }
 
 impl Default for Controls {
@@ -125,6 +129,8 @@ impl Default for Controls {
             passthrough: true,
             mouse: true,
             labels: Vec::new(),
+            status: Vec::new(),
+            start_hint: None,
         }
     }
 }
@@ -162,11 +168,18 @@ impl Controls {
         if let Some(m) = b.get("mouse").and_then(Value::as_str) {
             c.mouse = m == "port1";
         }
-        if let Some(l) = b.get("labels").and_then(Value::as_object) {
-            c.labels = l
-                .iter()
-                .map(|(k, v)| (k.clone(), v.as_str().unwrap_or("").to_string()))
-                .collect();
+        let strings = |k: &str| -> Vec<(String, String)> {
+            b.get(k).and_then(Value::as_object).map_or(Vec::new(), |l| {
+                l.iter()
+                    .map(|(k, v)| (k.clone(), v.as_str().unwrap_or("").to_string()))
+                    .collect()
+            })
+        };
+        c.labels = strings("labels");
+        c.status = strings("label_status");
+        if let Some(h) = b.get("start_hint") {
+            let f = |k| h.get(k).and_then(Value::as_str).map(String::from);
+            c.start_hint = f("text").map(|t| (t, f("status").unwrap_or_default()));
         }
         Ok(c)
     }
@@ -384,28 +397,69 @@ pub fn rawkey(name: &str) -> Option<u8> {
             _ => return None,
         });
     }
-    Some(match name {
-        "Space" => 0x40,
-        "Backspace" => 0x41,
-        "Tab" => 0x42,
-        "Return" => 0x44,
-        "Escape" => 0x45,
-        "Delete" => 0x46,
-        "Up" => 0x4C,
-        "Down" => 0x4D,
-        "Right" => 0x4E,
-        "Left" => 0x4F,
-        "F11" | "Insert" => 0x5F, // Help
-        "Left Shift" => 0x60,
-        "Right Shift" => 0x61,
-        "CapsLock" => 0x62,
-        "Left Ctrl" | "Right Ctrl" => 0x63,
-        "Left Alt" => 0x64,
-        "Right Alt" => 0x65,
-        "Left GUI" => 0x66,
-        "Right GUI" => 0x67,
-        _ => return None,
-    })
+    SPECIAL.iter().find(|k| k.0 == name).map(|k| k.1)
+}
+
+/// The host keys with an Amiga key that are not a character or a function key.
+const SPECIAL: [(&str, u8); 21] = [
+    ("Space", 0x40),
+    ("Backspace", 0x41),
+    ("Tab", 0x42),
+    ("Return", 0x44),
+    ("Escape", 0x45),
+    ("Delete", 0x46),
+    ("Up", 0x4C),
+    ("Down", 0x4D),
+    ("Right", 0x4E),
+    ("Left", 0x4F),
+    ("F11", 0x5F), // Help
+    ("Insert", 0x5F),
+    ("Left Shift", 0x60),
+    ("Right Shift", 0x61),
+    ("CapsLock", 0x62),
+    ("Left Ctrl", 0x63),
+    ("Right Ctrl", 0x63),
+    ("Left Alt", 0x64),
+    ("Right Alt", 0x65),
+    ("Left GUI", 0x66),
+    ("Right GUI", 0x67),
+];
+
+/// A name for an Amiga raw key, for the pre-boot's labels (M8): the host key at its place, Help for $5F.
+pub fn key_name(rk: u8) -> String {
+    let chars = "`1234567890-=\\QWERTYUIOP[]ASDFGHJKL;'ZXCVBNM,./";
+    if rk == 0x5F {
+        return "Help".into();
+    }
+    if let Some(c) = chars.chars().find(|c| rawkey(&c.to_string()) == Some(rk)) {
+        return c.to_string();
+    }
+    if (0x50..=0x59).contains(&rk) {
+        return format!("F{}", rk - 0x4F);
+    }
+    match SPECIAL.iter().find(|k| k.1 == rk) {
+        Some(k) => k.0.into(),
+        None => format!("${rk:02X}"),
+    }
+}
+
+/// What an action does, in words, for the pre-boot's labels (M8).
+pub fn describe(a: Action) -> String {
+    match a {
+        Action::Up => "up".into(),
+        Action::Down => "down".into(),
+        Action::Left => "left".into(),
+        Action::Right => "right".into(),
+        Action::Joystick => "joystick".into(),
+        Action::Fire => "fire".into(),
+        Action::Fire2 => "fire 2".into(),
+        Action::Mouse => "mouse".into(),
+        Action::MouseLeft => "left mouse button".into(),
+        Action::MouseRight => "right mouse button".into(),
+        Action::Key(rk) => format!("key {}", key_name(rk)),
+        Action::Pause => "pause".into(),
+        Action::None => "none".into(),
+    }
 }
 
 #[cfg(test)]
@@ -476,6 +530,7 @@ mod tests {
         assert!(c.keys.contains(&("Left Ctrl".into(), Action::Fire2)));
         assert!(!c.passthrough && !c.mouse);
         assert_eq!(c.labels, vec![("x".into(), "Smart bomb".into())]);
+        assert!(c.status.is_empty() && c.start_hint.is_none());
         let mut m = Mapper::new(c);
         m.handle(&Host::Pad("x".into(), true));
         m.handle(&Host::Pad("x".into(), false));
@@ -486,5 +541,28 @@ mod tests {
         assert_eq!(Controls::from_game_json(None).unwrap(), Controls::default());
         assert!(Controls::from_game_json(Some(br#"{"controls":{"pad":{"z":"fire"}}}"#)).is_err());
         assert!(Action::parse("key:$68").is_err());
+    }
+
+    #[test]
+    fn status_and_start_hint_are_read_and_keys_named() {
+        let j = br#"{"controls":{"label_status":{"a":"manual","F1":"unconfirmed"},
+            "start_hint":{"text":"F1 or fire: start","status":"web"}}}"#;
+        let c = Controls::from_game_json(Some(j)).unwrap();
+        assert!(c.status.contains(&("a".into(), "manual".into())));
+        assert_eq!(
+            c.start_hint,
+            Some(("F1 or fire: start".into(), "web".into()))
+        );
+        for (rk, n) in [
+            (0x40, "Space"),
+            (0x50, "F1"),
+            (0x10, "Q"),
+            (0x5F, "Help"),
+            (0x63, "Left Ctrl"),
+        ] {
+            assert_eq!(key_name(rk), n);
+            assert_eq!(rawkey(n).unwrap_or(0x5F), rk);
+        }
+        assert_eq!(describe(Action::Key(0x45)), "key Escape");
     }
 }

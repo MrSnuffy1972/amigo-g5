@@ -1,7 +1,11 @@
 //! amigo-g5-play: the playable G5 binary (M7, 29 Oct 2026). Plays a game from a game pack or a directory of its files:
 //!
 //!   amigo-g5-play (--pack PACK.bin | --game DIR [--config game.json]) [--program REL] [--fullscreen]
-//!                 [--ticks N --frames OUTDIR] [--script FILE]
+//!                 [--ticks N --frames OUTDIR] [--script FILE] [--preboot-shot OUT.png [--preboot-at SECONDS]]
+//!
+//! Every start opens on the pre-boot menu (M8), except a `--ticks` run. `--preboot-shot` draws the pre-boot as it
+//! looks SECONDS (default 0) into its countdown, as a 1920x1080 PNG, and exits without booting: drawn on the CPU, so
+//! it needs no display.
 //!
 //! `--ticks` runs N ticks unpaced and exits, with `--frames` writing them as amigo-g5-boot does, so Ryzen can check
 //! the two binaries' frames match. `--script` feeds scripted input (format in lib.rs `parse_script`). The game's
@@ -16,6 +20,7 @@ use std::path::PathBuf;
 use amigo_g5::game::GameTree;
 use amigo_g5::pack::Pack;
 use amigo_g5_play::controls::Controls;
+use amigo_g5_play::preboot;
 use amigo_g5_play::{parse_script, run, Options, Outcome};
 
 /// The game's translated code by page, as in amigo-g5-boot (part = (PC >> 9) % 8).
@@ -85,10 +90,26 @@ fn main() {
     let o = match options() {
         Ok(o) => o,
         Err(e) => {
-            eprintln!("amigo-g5-play: {e}\nusage: amigo-g5-play (--pack PACK.bin | --game DIR [--config game.json]) [--program REL] [--fullscreen] [--ticks N --frames OUTDIR] [--script FILE]");
+            eprintln!("amigo-g5-play: {e}\nusage: amigo-g5-play (--pack PACK.bin | --game DIR [--config game.json]) [--program REL] [--fullscreen] [--ticks N --frames OUTDIR] [--script FILE] [--preboot-shot OUT.png [--preboot-at SECONDS]]");
             std::process::exit(2);
         }
     };
+    let v: Vec<String> = std::env::args().collect();
+    let get = |k: &str| v.iter().position(|a| a == k).and_then(|i| v.get(i + 1));
+    if let Some(out) = get("--preboot-shot") {
+        let at = get("--preboot-at").map_or(Ok(0.0), |a| a.parse::<f32>());
+        let r = match at {
+            Ok(at) if (0.0..=30.0).contains(&at) => {
+                preboot::shot(&o.title, &o.controls, at, out.as_ref())
+            }
+            _ => Err("--preboot-at must be seconds from 0 to 30".into()),
+        };
+        if let Err(e) = r {
+            eprintln!("amigo-g5-play: {e}");
+            std::process::exit(2);
+        }
+        return;
+    }
     if let Some(d) = &o.frames {
         if let Err(e) = fs::create_dir_all(d) {
             eprintln!("amigo-g5-play: {}: {e}", d.display());

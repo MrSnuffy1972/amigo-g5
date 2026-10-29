@@ -177,6 +177,29 @@ default, so a game names only what differs. Without the block the game gets the 
   Android TV remote's Back) pause; passthrough on; mouse in port 1. The host mouse moves the Amiga mouse one count a
   pixel; a stick on `mouse` moves it up to 6 counts a tick.
 
+## Added by M8 (29 Oct 2026)
+- `amigo-g5-play` opens on the pre-boot at every start; only a `--ticks` run (headless review, the frame test) goes
+  straight into the game. `--preboot-shot OUT.png [--preboot-at SECONDS]` draws the pre-boot as it looks SECONDS
+  (0 to 30, default 0) after it opened, as a 1920x1080 RGB PNG, and exits without booting. Every screen is drawn on
+  the CPU, so the shot needs no display and no SDL video driver at all (it also works under the dummy driver).
+- Code: `theme.rs` (the one theme module: colours, the three fonts, brushed metal, bevels, glow, text, arrows, the
+  PNG writer), `pad.rs` (the pad drawn in code, the label layout, the keyboard and mouse rows), `preboot.rs` (the
+  countdown, navigation, the menu and Controls screens). Screens are laid out in a 1920x1080 design space and scaled
+  to the window, centred.
+- Countdown: 30 s; any input other than start pauses it (shown in magenta, "PAUSED"); 10 s with no input resumes it
+  from where it stopped. The mouse only pauses it when it hovers a button, so a mouse bumped while the window opens
+  does not. The countdown never starts the game while the Controls screen is open.
+- Keys: arrows / D-pad move, Enter / Space / A / the remote's centre (SDL `Select`) choose, pad Start starts at once,
+  Escape / B / Back / the remote's Back quit on the menu and return from the Controls screen; mouse hover focuses
+  and a click chooses.
+- Labels: `"<control>: <labels entry or the action in words>"`, cut with "..." to fit the column. The chip of a
+  `label_status` other than `confirmed` reads "from manual", "from web", "from game code" or "unconfirmed"; it goes
+  under the label, or after it on the same line when a side is too crowded. Controls with no action are drawn
+  dimmed with no label. `start_hint` shows under the title with the same chip rule.
+- The build line reads `rev $AMIGO_G5_REV  $AMIGO_G5_BUILD_DATE`, both set at build time (Ryzen's packager sets them
+  in M9); `rev dev` when unset.
+- The in-game pause menu has its Controls entry (the pre-boot's Controls screen; any press returns).
+
 ## The packaging contract with Ryzen (M9)
 - `tools/g5_package.sh --pack PACK.bin --name NAME --id ID --out OUTDIR [--android] [--windows] [--icon PNG]
   [--banner PNG]`, run on Ryzen inside the `amigo-tools` image, offline. The image provides: `/opt/android` (SDK,

@@ -486,3 +486,51 @@ above, that detail is the exporter's reading and is labelled as an assumption.
   `amigo-g5-boot ... --ticks 600 --frames /tmp/boot` (`cmp` each pNNNNN.rgba). Needs `cargo fetch` in
   rust/amigo_g5_play first for an offline build, and `CMAKE_POLICY_VERSION_MINIMUM=3.5 CFLAGS=-std=gnu17`.
 - **M7 status**: done (Controls entry of the pause menu moved to M8). Next is M8.
+
+### 2026-10-29: M8, the pre-boot menu in the LGP theme (DONE, with the Android on-screen controls checkbox moved to M9)
+- **What**: `amigo-g5-play` opens on the pre-boot at every start (Karl's rule of 14 Oct): the game's name in Cinzel,
+  the "Ami-Go G5" badge and build line in VT323 on a Workbench-style title bar, the `start_hint` line, a Controller
+  panel with an Xbox-style pad drawn in code (vector shapes, no artwork, no logos) and a leader line with an arrow
+  from each mapped control to its label, a Keyboard and mouse panel, Start game / Controls / Quit with a cyan glow on
+  focus, and the 30 s orange countdown bar (auto-start; any input pauses; 10 s idle resumes). The theme lives in one
+  module (`theme.rs`); the pause menu now uses it and has its Controls entry. `--preboot-shot OUT.png --preboot-at
+  SECONDS` writes the menu as a 1920x1080 PNG. Labels and chips come from the `controls` block (`labels`,
+  `label_status`, `start_hint`, read and ignored when absent). Details in docs/G5-PLAYABLE.md "Added by M8".
+- **Decisions (29 Oct 2026)**:
+  - Screens are drawn on the CPU in a 1920x1080 design space scaled to the window, so the screenshot needs no
+    display, the layout test is exact, and the look is the same at 720p and 4K.
+  - The PNG writer is 40 lines in theme.rs (stored deflate blocks, CRC-32, Adler-32): no new dependency. A shot is
+    about 6 MB; fine for review, and the size was not worth a compressor crate.
+  - A mouse moving over the window pauses the countdown only when it hovers a button.
+  - `--preboot-at` counts seconds since the pre-boot opened (0 shows 30 s left).
+  - A crowded side (9 labels with chips) puts each chip after its label instead of under it, so the labels fit.
+- **Measured** (this container, rustc 1.97 stable):
+  - `cd rust/amigo_g5_play && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test
+    --all-targets`: clean; 18 unit tests (new: countdown auto-start at 30 s, pause and 10 s idle resume, menu
+    navigation by key, pad, remote and mouse, labels from the controls data, no overlapping labels at 1920x1080 and
+    1280x720 on both screens for the default mapping and for every control mapped with long labels and chips,
+    screens render with the glow and the bar, the pause menu's Controls entry, label_status and start_hint parsing,
+    key names, PNG checksums), `play_frames_match_headless_under_scripted_input` (unchanged, passes) and the new
+    `preboot_shot_renders_without_a_display` (the binary writes a PNG that decodes to 1920x1080 with every CRC and
+    the Adler-32 right, orange to the bar's middle at 15 s and all of it at 0 s; `--preboot-at 31` exits 2).
+  - `cd rust && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test --all-targets`: clean,
+    48 passed (the boot workspace is untouched by this PR).
+  - `python3 -m unittest discover -s tests/synthetic`: 11 tests OK. Leak check: clean.
+  - Under SDL's dummy drivers, `amigo-g5-play --game SYNTH --config game.json` with no input waited on the pre-boot
+    and started the game by itself after 30.5 s (exit 3, "STOP after 0 ticks: Untranslated": no game code here).
+  - Looked at the shot (1920x1080, menu) and the Controls screen at 1280x720 by eye: labels clear of each other and
+    of the pad, chips readable.
+- **Assumed**: the Shield remote's centre arrives as SDL's `Select` scancode and its Back as `AC Back` (SDL 2's
+  Android key mapping; not tried on a device); the pre-boot redraw (a copy of the cached static layer plus the
+  buttons and bar each frame) keeps 50 Hz in a release build on the Shield (the debug build here used about 0.8 of a
+  core at 1920x1080 under the dummy driver; not measured on a device).
+- **Not done**: the Android "On-screen controls" checkbox (Android only, hidden on Windows; its default needs the
+  touchscreen and controller queries and per-game app storage that come with M9's Android glue, so it moves to M9
+  with the touch controls it switches); left stick navigation in the pre-boot (the D-pad and keys do it); the
+  Controls screen reuses the menu's two-panel layout at a larger height rather than a bigger pad. Size: about 1,000
+  lines of non-test code (theme 360, pad 310, pre-boot 330, the rest in controls, lib, main and menu), over the ~600
+  aim: the screenshot, layout and render tests only prove out with all three modules together.
+- **For Ryzen**: optional, before M10: `cd rust/amigo_g5_play && cargo build --release` then for each G5 pass
+  `amigo-g5-play --pack PACK.bin --preboot-shot /tmp/preboot-ID.png --preboot-at 5` and look at it, with the game's
+  real `controls` block. The game-level frame check from M7 is unchanged.
+- **M8 status**: done (the Android checkbox moved to M9). Next is M9.

@@ -69,6 +69,21 @@ Karl: "update the preboot for each game with specific controls shown as controll
   fire on B when the game uses it, the game's keys with a known meaning on X, Y, B, RB, LB, RT, LT in order of
   evidence strength, Start opens the pause menu (a game's own pause key is shown in its label).
 
+## Pre-boot "alive" ripple (Karl, 29 Oct 2026; after M8, in M9 or M10)
+Karl, on seeing the M8 pre-boot ("that preboot looks good"): add a rippling animation across the screen, from left to
+right, to show the interface is alive, until the game auto-starts.
+- A soft wave of light travels left to right across the whole pre-boot about every 3 seconds: a narrow vertical band
+  (about 12% of the width) that brightens the brushed metal slightly and tints the bevel edges and panel rules it
+  crosses neon cyan, with a gentle sine ripple in its shape (a few pixels of vertical wobble), fading in and out at
+  the edges. Subtle: text stays fully readable under it and it never hides a label or the countdown.
+- Runs while the pre-boot is on screen and stops the moment the game starts (auto-start or Start game). It keeps
+  running while the countdown is paused, since the interface is still alive.
+- Driven by elapsed time, not frame count, so it moves at the same speed at 30, 60 or 120 Hz; cheap enough to keep
+  60 fps on the Shield (draw it as one additive textured quad or a per-column brightness pass, not per-pixel maths).
+- Deterministic for screenshots: `--preboot-shot` at `--preboot-at T` renders the ripple at its position for time T.
+- Tests: the band position for a given time, that it is gone once the game starts, and that the countdown text pixels
+  stay above a contrast floor where the band crosses them.
+
 ## On-screen touch controls for Android (Karl, 29 Oct 2026; pre-boot checkbox in M8, Android in M9)
 Karl: a checkbox in the pre-boot to add an on-screen directional controller on the left side of the screen, four
 buttons mapped to the game's controls and/or the key that starts the game (for example F1), and a pop-up keyboard

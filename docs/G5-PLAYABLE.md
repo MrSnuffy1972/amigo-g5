@@ -52,6 +52,45 @@ docs/G5-NOTES.md is for M1 to M6.
 - Headless review: `--preboot-shot OUT.png --preboot-at SECONDS` renders the menu at that countdown point with the
   SDL dummy video driver and exits, so Ryzen and CI can capture it without a display.
 
+## Per-game controls on the pre-boot (Karl, 29 Oct 2026; for M8)
+Karl: "update the preboot for each game with specific controls shown as controller mapping, if we know them."
+- Ryzen builds each game's `controls` block (the M7 schema) with `~/bin/amigo-controls.py` from the evidence it
+  has: the game's own screen (screen reader), its manual (quote-gated), quote-gated web research, the keys its code
+  reads, and model research. It goes into the game pack's game.json at packaging time. Nothing here changes.
+- The block adds two optional fields M8 must read (and ignore when absent):
+  - `label_status`: by the same control or key names as `labels`, one of `confirmed`, `manual`, `web`, `code`,
+    `unconfirmed`. **Karl decided (29 Oct) to show unconfirmed mappings, marked**: the pre-boot shows a small chip
+    beside a label that is not `confirmed` (for example "from manual", "unconfirmed"), in VT323, dim magenta. A
+    `confirmed` label has no chip.
+  - `start_hint`: `{"text": "F1 or fire: start", "status": "web"}` when known; the pre-boot shows it under the title,
+    with the same chip rule.
+  - `touch`: the on-screen controls for phones (next section).
+- Pad layout is automatic (Karl, 29 Oct: no review step): joystick on the D-pad and left stick, fire on A, second
+  fire on B when the game uses it, the game's keys with a known meaning on X, Y, B, RB, LB, RT, LT in order of
+  evidence strength, Start opens the pause menu (a game's own pause key is shown in its label).
+
+## On-screen touch controls for Android (Karl, 29 Oct 2026; pre-boot checkbox in M8, Android in M9)
+Karl: a checkbox in the pre-boot to add an on-screen directional controller on the left side of the screen, four
+buttons mapped to the game's controls and/or the key that starts the game (for example F1), and a pop-up keyboard
+when the game uses the keyboard, for the Android builds, in case they run on a phone.
+- **Pre-boot checkbox** "On-screen controls", Android only (hidden on Windows). Default: on when the device has a
+  touchscreen and no game controller is connected, otherwise off. Remembered per game (app storage).
+- **Left side**: a virtual joystick (a thumb pad with 8 directions plus a visible dead zone), feeding the same
+  `joystick` action as the D-pad.
+- **Right side**: four round buttons in a diamond, labelled from `touch.buttons` (or, when absent, fire, second fire,
+  then the first two keys from the pad layout, with the start key always included when `start_hint` names one).
+- **Keyboard button**: a small key icon that pops up an Amiga-layout on-screen keyboard (function keys, Esc, Help,
+  Del, cursor keys, letters, digits, Space, Return, Shift, Ctrl, Alt, Amiga keys), shown only when `touch.keyboard`
+  is true or the game's controls use keys beyond the four buttons. Keys go to the game exactly as a real keyboard's.
+- **Pause**: a small pause button top-right opens the pause menu (Android Back does the same).
+- Themed like the rest: brushed-metal ring for the stick, neon cyan focus, labels in Inter, opacity about 40% at rest
+  and 80% while touched, never covering the middle third of the game picture; scales with screen size.
+- Multi-touch: stick and buttons at the same time; a finger that slides off a button releases it.
+- `touch` schema: `{"buttons": [{"action": "fire", "label": "Fire"}, {"action": "key:F1", "label": "Start"}, ...]
+  (exactly 4), "keyboard": true}`. Ryzen fills it per game; the code must work with it absent.
+- Tests: the layout at 1080x2400 and 720x1600 portrait-rotated-to-landscape (no overlap, the middle third clear),
+  touch events driving the same input path as the pad in the scripted-input test, the checkbox default rule.
+
 ## The playable runtime (M7)
 - A binary `amigo-g5-play` and a library entry used by Android (`SDL_main`), on the same core as `amigo-g5-boot`.
   For the same game, inputs and tick, the frames are **identical** to `amigo-g5-boot`'s headless dumps (test it).

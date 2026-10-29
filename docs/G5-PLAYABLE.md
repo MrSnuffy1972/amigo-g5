@@ -59,6 +59,10 @@ docs/G5-NOTES.md is for M1 to M6.
   (`bundled` and `static-link` features) so the exe needs no DLL; Ryzen has cmake and the X11, Wayland and ALSA
   development packages but no system libSDL2. On Android link the prebuilt `libSDL2.so` (SDL 2.30.9) that Ryzen's
   packager bundles with SDL's own Java activity.
+- Measured on Ryzen 29 Oct 2026: `sdl2` 0.37 with `bundled` and `static-link` builds and opens a window under the
+  dummy driver (SDL 2.26.4), but only with `CMAKE_POLICY_VERSION_MINIMUM=3.5` (cmake 4 refuses SDL's old minimum)
+  and `CFLAGS=-std=gnu17` (gcc 15 defaults to C23, where SDL 2.26's `false` enum fails). Ryzen's gate sets both;
+  set them in CI too if its cmake or gcc is that new.
 - 50 Hz fixed timestep, decoupled from the display refresh; audio 44,100 Hz stereo, 882 frames per tick, queued with
   a small latency target.
 - Inputs: SDL GameController (Xbox, Shield, Switch Pro and others through SDL's mapping database), keyboard and

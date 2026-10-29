@@ -72,6 +72,7 @@ Hard boundaries:
 python3 tools/leakcheck.py --hashes tools/leak-hashes.txt --allow tools/leak-allow.txt .
 python3 -m unittest discover -s tests/synthetic -v
 cd rust && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test --all-targets
+cd rust/amigo_g5_play && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test --all-targets
 ```
 Needs python3, gcc and a stable Rust toolchain. Anything that needs a real game, the reference harness run, wine or
 the judge on real frames is **Ryzen-only**: write the test so it skips cleanly without its inputs, and say in the PR

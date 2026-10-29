@@ -74,6 +74,70 @@ docs/G5-NOTES.md is for M1 to M6.
   `tools/` (tested on synthetic files only). Windows embeds it in the exe at build time on Ryzen; Android carries it
   as the APK asset `gamepack.bin`, read through SDL_RWops. No game bytes ever enter this repo.
 
+## Added by M7 (29 Oct 2026)
+
+### amigo-g5-play
+```
+amigo-g5-play (--pack PACK.bin | --game DIR [--config game.json]) [--program REL] [--fullscreen]
+              [--ticks N --frames OUTDIR] [--script FILE]
+```
+- `--program` picks the program as amigo-g5-boot's does (both use `amigo_g5::game::GameTree`, moved out of the boot
+  binary unchanged). The game's code is compiled in the same way (AMIGO_G5_GAME_RS, crates amigo_g5_part0..7), and
+  the binary prints `play: game code fnv <16 hex>`.
+- `--ticks N` runs N ticks unpaced and exits; with `--frames` it writes them as `pNNNNN.rgba`, the format of
+  amigo-g5-boot's `--frames`, so the two can be compared byte for byte. `--script` feeds scripted input, one event a
+  line: `TICK key down|up NAME`, `TICK pad down|up NAME`, `TICK axis NAME X Y`, `TICK mouse DX DY`,
+  `TICK button down|up left|right` (an event is taken just before its tick runs; ticks count from 1).
+- Exit 0 when the player quits or N ticks ran, 3 when the game stopped early, 2 for bad arguments or files.
+- The crate `rust/amigo_g5_play` is **its own cargo workspace** with its own Cargo.lock. Measured 29 Oct: with sdl2,
+  fontdue and serde_json in the main workspace, `cargo build --release --offline --locked --bin amigo-g5-boot` fails
+  ("no matching package named `fontdue` found") on a cargo cache that lacks them, which would break Ryzen's G5 gate.
+  Build it with `cd rust/amigo_g5_play && cargo build --release` (after `cargo fetch` for an offline build).
+- The `sdl2` crate's bundled source is SDL 2.26.4 (sdl2-sys 0.37).
+
+### Game pack format
+Written by `tools/g5_pack.py pack --game DIR [--config game.json] --out PACK.bin` (also `list PACK.bin` and
+`unpack PACK.bin --out DIR`), read by `rust/amigo_g5/src/pack.rs`. All integers little-endian.
+
+| Part | Bytes |
+|---|---|
+| Header | `AG5PACK1` (8 bytes), u32 entry count |
+| Each entry | u16 name length, the name (UTF-8, `/` separated), u32 data length, the data |
+| Trailer | u64 FNV-1a 64 of every byte before it (a damaged or cut pack is refused) |
+
+Entry names: `game.json` (optional, first) and `files/<path>` for each game file, in directory-walk order (each
+directory's entries sorted by name, a subdirectory's files where its name sorts): the order amigo-g5-boot serves a
+game directory's files in, so a pack and its directory boot the same way.
+
+### The controls block
+An optional `controls` object in the game's game.json. Every field is optional; what it leaves out keeps the
+default, so a game names only what differs. Without the block the game gets the default Amiga mapping.
+
+```json
+"controls": {
+  "pad":  {"a": "fire", "b": "fire2", "x": "key:Space", "start": "pause"},
+  "keys": {"Left Ctrl": "fire"},
+  "keyboard_passthrough": true,
+  "mouse": "port1",
+  "labels": {"x": "Smart bomb"}
+}
+```
+- `pad`: pad control to action. Controls (Xbox layout, SDL GameController): `dpad`, `left_stick`, `right_stick`,
+  `a`, `b`, `x`, `y`, `lb`, `rb`, `lt`, `rt`, `start`, `back`, `ls`, `rs` (stick clicks). `dpad` and the sticks take
+  `joystick`, `mouse` (sticks) or `none`; a trigger past half way is a button.
+- `keys`: host key (SDL scancode name, for example `Right Ctrl`, `Space`, `F1`, `Keypad 5`) to action. A key named
+  here is not passed through.
+- Actions: `up`, `down`, `left`, `right`, `joystick`, `fire`, `fire2` (port 2), `mouse`, `mouse_left`,
+  `mouse_right` (port 1), `key:NAME` (the Amiga key at that host key's place, or `key:$HH` by raw key code),
+  `pause`, `none`.
+- `keyboard_passthrough` (default true): every other host key with an Amiga key reaches the game as that key.
+- `mouse`: `port1` (default) or `none`.
+- `labels`: what the pre-boot (M8) shows for a control, by pad control or key name; absent ones are named by action.
+- Defaults: `dpad` and `left_stick` joystick, `right_stick` mouse, `a` fire, `b` fire2, `lb` / `rb` mouse buttons,
+  `start` and `back` pause; keys: the arrows are the joystick, `Right Ctrl` fire, `Escape` and `AC Back` (the
+  Android TV remote's Back) pause; passthrough on; mouse in port 1. The host mouse moves the Amiga mouse one count a
+  pixel; a stick on `mouse` moves it up to 6 counts a tick.
+
 ## The packaging contract with Ryzen (M9)
 - `tools/g5_package.sh --pack PACK.bin --name NAME --id ID --out OUTDIR [--android] [--windows] [--icon PNG]
   [--banner PNG]`, run on Ryzen inside the `amigo-tools` image, offline. The image provides: `/opt/android` (SDK,

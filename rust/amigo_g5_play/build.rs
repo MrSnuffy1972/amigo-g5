@@ -20,6 +20,11 @@ fn main() {
         fnv = format!("{h:016x}");
     }
     println!("cargo:rustc-env=AMIGO_G5_GAME_FNV={fnv}");
+    if env::var("CARGO_CFG_TARGET_OS").as_deref() == Ok("windows") {
+        // The bundled static SDL2 calls the registry API (RegOpenKeyExW, RegQueryValueExW, RegCloseKey); without
+        // advapi32 the mingw link fails (measured on Ryzen 29 Oct 2026, the first G5 Windows package).
+        println!("cargo:rustc-link-lib=advapi32");
+    }
     let mut embedded = "pub const EMBEDDED_PACK: Option<&[u8]> = None;\n".to_string();
     if let Some(p) = set("AMIGO_G5_PACK") {
         let p = fs::canonicalize(&p).unwrap_or_else(|e| panic!("AMIGO_G5_PACK {p}: {e}"));

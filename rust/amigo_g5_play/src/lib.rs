@@ -435,6 +435,9 @@ where
             for (_, h) in o.script.iter().filter(|(t, _)| *t == tick) {
                 feed(&mut mapper, &mut tpad, h);
             }
+            // a game that has read only port 1 so far gets the joystick on port 1 (its menu cannot see port 2)
+            let [p1, p2] = m.chips(|c| c.port_reads());
+            mapper.set_port1(p1 > 0 && p2 == 0);
             let input = mapper.tick_input();
             let keys = mapper.take_keys();
             m.chips(|c| {

@@ -93,7 +93,10 @@ fn options(v: &[String], embedded: Option<&[u8]>) -> Result<Options, String> {
             unpack(&read_asset(PACK_ASSET)?, PACK_ASSET)?
         }
     };
-    let program = tree.program(get(v, "--program"))?;
+    // --program wins; else the pack's `program` (the kit's G0 choice, written by the packer), so the playable build
+    // boots the same program as the G5 check rather than the first command of s/startup-sequence
+    let from_config = config_program(config.as_deref());
+    let program = tree.program(get(v, "--program").or(from_config.as_deref()))?;
     if let Some(w) = &program.warning {
         eprintln!("play: WARNING {w}");
     }
@@ -201,5 +204,33 @@ mod tests {
     fn a_damaged_built_in_pack_is_a_bad_file() {
         let mut no_step = |_: &mut Cpu, _: &mut GuestMemory| Ok(());
         assert_eq!(main(&args("play"), Some(b"AG5PACK1"), &mut no_step), 2);
+    }
+}
+
+/// The optional `program` of a game.json: the program the kit chose at G0 (a path in the game's files), which the
+/// G5 check boots with `--program`. Ryzen's packager writes it so a pack boots that program too.
+pub fn config_program(config: Option<&[u8]>) -> Option<String> {
+    let j: serde_json::Value = serde_json::from_slice(config?).ok()?;
+    j.get("program")?
+        .as_str()
+        .map(str::trim)
+        .filter(|p| !p.is_empty())
+        .map(String::from)
+}
+
+#[cfg(test)]
+mod program_tests {
+    use super::config_program;
+
+    #[test]
+    fn the_pack_program_is_read_when_present() {
+        assert_eq!(
+            config_program(Some(br#"{"name":"x","program":"qattro"}"#)).as_deref(),
+            Some("qattro")
+        );
+        assert_eq!(config_program(Some(br#"{"name":"x"}"#)), None);
+        assert_eq!(config_program(Some(br#"{"program":"  "}"#)), None);
+        assert_eq!(config_program(Some(b"not json")), None);
+        assert_eq!(config_program(None), None);
     }
 }

@@ -636,3 +636,14 @@ above, that detail is the exporter's reading and is labelled as an assumption.
   and check the choice survives a restart. Optional desktop review: `amigo-g5-play --pack PACK.bin --touch on`
   (the controls show; a mouse does not drive them, fingers do) and `--preboot-shot /tmp/pb.png --touch on`.
 - **M9 status**: done (part 1 and part 2). Next is M10, which is Ryzen's.
+
+## 30 Oct 2026: playability fixes (Karl, Qattro "fix this for all games")
+
+Qattro passed G5 (600 ticks, no input) but the APK closed at once, ignored the pad and froze at tick 1855. Four causes, all generic:
+
+1. **Wrong program.** `amigo-g5-play` booted the first command of `s/startup-sequence` (Qattro's is `type`), while the G5 check boots the kit's G0 choice (`program.txt`). The pack's game.json now carries `"program"`, and play boots it when no `--program` is given (`app.rs config_program`).
+2. **Input on the wrong port.** Qattro reads only JOY0DAT and CIA-A PRA (port 1). Play now counts JOY0DAT/JOY1DAT reads (`Hardware::port_reads`); a game that has read only port 1 gets the joystick there: directions move the port-1 counters, Fire is the left button, Fire 2 the right.
+3. **Code translated from zeros.** The translator read bytes inside code ranges that no segment loaded (the program unpacks there at run time) as the image's zero fill whenever the reference run had not executed them, so a `beq` into Qattro's music player ran `ori.b #0,d0` words into the next routine's `rts`, left A6 at $DFF020 and spun on a blitter wait at $DFF022. `m68k2c.py Mem.rb` now takes those bytes from the reference run's end-of-run RAM (first-execution bytes and loaded bytes still win). Qattro: 1,891 instructions translated before, 29,532 after; 6 undecodable addresses reached before, 1 after.
+4. **Unknown registers.** A write-only or unknown custom register now reads $FFFF in `hardware.rs` and `intentrt.c`, as the reference harness's `chipset.c` does (CLXDAT and DSKBYTR stay 0).
+
+The G5 check itself is now stronger: at least 3000 ticks, and a stall check (the port's picture still for the last 300 frames while the reference's changed 5 or more times there fails as `fail:stall`). Packaging adds a scripted-input play check (Ryzen `playcheck.sh`).

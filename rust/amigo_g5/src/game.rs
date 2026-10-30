@@ -212,4 +212,16 @@ mod tests {
         assert!(p.warning.is_some());
         assert!(t.program(Some("nope")).is_err());
     }
+
+    #[test]
+    fn the_chosen_program_wins_over_the_first_startup_command() {
+        // 30 Oct 2026, Qattro: the startup-sequence types a text file first; the kit's choice is the game itself
+        let t = tree(&[
+            ("type", EXE),
+            ("game", EXE),
+            ("s/startup-sequence", b"type intro\ngame\n"),
+        ]);
+        assert_eq!(t.program(None).unwrap().rel, "type");
+        assert_eq!(t.program(Some("game")).unwrap().rel, "game");
+    }
 }

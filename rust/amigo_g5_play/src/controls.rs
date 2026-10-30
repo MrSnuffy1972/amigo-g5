@@ -243,6 +243,8 @@ pub struct Mapper {
     stick_mouse: (i32, i32),
     mouse: (u8, u8),
     keys: Vec<(u8, bool)>,
+    /// The joystick drives port 1 (the mouse port) instead of port 2: set for a game that reads only port 1.
+    port1: bool,
 }
 
 impl Mapper {
@@ -356,9 +358,22 @@ impl Mapper {
     }
 
     /// The input the game sees this tick (a stick held over the mouse moves it once a tick).
+    /// Route the joystick to port 1 (30 Oct 2026): a game that reads only JOY0DAT (Qattro's trainer menu, mouse-driven
+    /// menus) never sees port 2, so the stick moves the port-1 mouse counters and the fire buttons are its buttons.
+    pub fn set_port1(&mut self, on: bool) {
+        self.port1 = on;
+    }
+
     pub fn tick_input(&mut self) -> Input {
         let (sx, sy) = self.stick_mouse;
         self.move_mouse(sx, sy);
+        if self.port1 {
+            const STEP: i32 = 4;
+            let dx = (self.is(Action::Right) as i32 - self.is(Action::Left) as i32) * STEP;
+            let dy = (self.is(Action::Down) as i32 - self.is(Action::Up) as i32) * STEP;
+            self.move_mouse(dx, dy);
+        }
+        let port1 = self.port1;
         Input {
             up: self.is(Action::Up),
             down: self.is(Action::Down),
@@ -367,9 +382,9 @@ impl Mapper {
             fire: self.is(Action::Fire),
             fire2: self.is(Action::Fire2),
             mouse_joy0dat: (self.mouse.1 as u16) << 8 | self.mouse.0 as u16,
-            lmb: self.is(Action::MouseLeft),
+            lmb: self.is(Action::MouseLeft) || (port1 && self.is(Action::Fire)),
             // the right mouse button pulls POTGOR's DATLY (bit 10) low
-            potgor_clear: if self.is(Action::MouseRight) {
+            potgor_clear: if self.is(Action::MouseRight) || (port1 && self.is(Action::Fire2)) {
                 0x0400
             } else {
                 0
@@ -501,6 +516,20 @@ pub fn describe(a: Action) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_port1_game_gets_the_joystick_as_its_mouse() {
+        let mut m = Mapper::new(Controls::default());
+        m.held.push(("t".into(), Action::Down));
+        m.held.push(("t".into(), Action::Fire));
+        let off = m.tick_input();
+        assert!(!off.lmb && off.mouse_joy0dat == 0);
+        m.set_port1(true);
+        let on = m.tick_input();
+        assert!(on.lmb, "fire is port 1's button");
+        assert_eq!(on.mouse_joy0dat >> 8, 4, "down moves the vertical counter");
+        assert!(on.fire, "port 2 still sees fire");
+    }
 
     #[test]
     fn rawkeys_follow_the_amiga_keyboard() {

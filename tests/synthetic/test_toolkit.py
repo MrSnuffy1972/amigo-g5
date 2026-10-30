@@ -152,6 +152,43 @@ class RustEmitterCoverage(unittest.TestCase):
         self.assertIn('let mut q: i32', rs)
 
 
+class TranslatorCodeBytes(unittest.TestCase):
+    """Where the translator reads code bytes (m68k2c.Mem.rb): inside a code range, bytes a segment loaded win over the
+    end-of-run RAM, and bytes nothing loaded (the image's zero fill) give way to it (30 Oct 2026, Qattro's music player)."""
+
+    @classmethod
+    def setUpClass(cls):
+        sys.path.insert(0, PORT)
+        import m68k2c
+        cls.m68k2c = m68k2c
+
+    def mem(self):
+        m = object.__new__(self.m68k2c.Mem)
+        m.chipsz, m.slowsz = 0x1000, 0x100
+        m.chip, m.slow, m.other = bytearray(m.chipsz), bytearray(m.slowsz), {}
+        m.lchip, m.lslow = bytearray(m.chipsz), bytearray(m.slowsz)
+        m.ranges, m.kick, m.fx, m.fxo, m.observed = [(0x100, 0x800)], None, {}, {}, {}
+        ram = bytearray(m.chipsz)
+        ram[0x200:0x204] = bytes.fromhex('6000fc6c')   # code the program unpacked after the snapshot
+        ram[0x300:0x302] = bytes.fromhex('4e75')       # end-of-run RAM over code a segment loaded
+        m.snap, m.fill = None, (bytes(ram), bytes(m.slowsz))   # no code observed outside the ranges: no snap, only the fill
+        m.put(0x300, bytes.fromhex('4e71'))
+        return m
+
+    def test_unloaded_code_comes_from_the_end_of_run_ram(self):
+        m = self.mem()
+        self.assertEqual(bytes(m.rb(0x200 + i) for i in range(4)), bytes.fromhex('6000fc6c'))
+
+    def test_loaded_code_keeps_its_image_bytes(self):
+        m = self.mem()
+        self.assertEqual(bytes(m.rb(0x300 + i) for i in range(2)), bytes.fromhex('4e71'))
+
+    def test_first_execution_bytes_still_win(self):
+        m = self.mem()
+        m.fx[0x200] = 0x4e
+        self.assertEqual(m.rb(0x200), 0x4e)
+
+
 class GamePack(unittest.TestCase):
     """tools/g5_pack.py on synthetic files: pack, list and unpack round-trip; damage is caught (M7, 29 Oct 2026)."""
 

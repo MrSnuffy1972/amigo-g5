@@ -409,7 +409,7 @@ static uint16_t read_custom(int reg) {
     case 0x01c: return intena;
     case 0x01e: return intreq;
     }
-    return 0;
+    return 0xffff;   /* a write-only or unknown register reads as $FFFF, as the reference harness's chipset.c does (30 Oct 2026, Qattro's line wait on $DFF026) */
 }
 
 static void write_custom(int reg, uint16_t v, int from_copper) {

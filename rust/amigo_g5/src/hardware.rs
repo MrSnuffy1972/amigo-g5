@@ -56,6 +56,9 @@ pub struct Hardware {
     pub paula: Paula,
     pub cias: Cias,
     pub input: Input,
+    /// How often the game has read JOY0DAT (port 1) and JOY1DAT (port 2): the front end routes the player's
+    /// joystick to port 1 for a game that only ever reads port 1 (30 Oct 2026, Qattro's trainer menu).
+    port_reads: std::cell::Cell<[u32; 2]>,
     /// Set when a tick ends (the frame in `framebuf` is complete); the caller clears it.
     pub frame_done: bool,
     pub frame_count: u64,
@@ -102,6 +105,7 @@ impl Hardware {
             paula,
             cias: Cias::new(),
             input: Input::default(),
+            port_reads: std::cell::Cell::new([0; 2]),
             frame_done: false,
             frame_count: 0,
             framebuf: vec![0; SCR_W * SCR_H],
@@ -191,8 +195,12 @@ impl Hardware {
                 let (l, h) = self.beam(now);
                 ((l as u16 & 0xff) << 8) | h
             }
-            0x00a => i.mouse_joy0dat,
+            0x00a => {
+                self.count_port_read(0);
+                i.mouse_joy0dat
+            }
             0x00c => {
+                self.count_port_read(1);
                 let (r, l, u, d) = (i.right as u16, i.left as u16, i.up as u16, i.down as u16);
                 (r << 1) | (l << 9) | (r ^ d) | ((l ^ u) << 8)
             }
@@ -202,8 +210,24 @@ impl Hardware {
             0x018 => 0x3000,
             0x01c => self.intena,
             0x01e => self.intreq,
-            _ => 0,
+            0x00e => 0,
+            0x01a => 0,
+            // a write-only or unknown register reads as $FFFF, as the reference harness's chipset.c read_custom_raw does
+            // (30 Oct 2026: Qattro's music player leaves A6 at $DFF020 and its line wait then reads $DFF026; 0 kept it
+            // waiting forever, while the original carries on)
+            _ => 0xffff,
         }
+    }
+
+    fn count_port_read(&self, port: usize) {
+        let mut r = self.port_reads.get();
+        r[port] = r[port].saturating_add(1);
+        self.port_reads.set(r);
+    }
+
+    /// How often the game has read JOY0DAT (port 1) and JOY1DAT (port 2) since it started.
+    pub fn port_reads(&self) -> [u32; 2] {
+        self.port_reads.get()
     }
 
     /// A game read of register `reg` of CIA `n` (0 = CIA-A, 1 = CIA-B), with the fire buttons from `input`.
@@ -345,5 +369,23 @@ mod tests {
             cs.read(0x006, (LINES_PER_FRAME as u64 + 0x40) * CYC_PER_LINE + 200),
             0x4064
         );
+    }
+
+    #[test]
+    fn write_only_registers_read_as_ffff_and_port_reads_are_counted() {
+        let chip = vec![0u8; 0x8_0000];
+        let cs = Hardware::new(&chip, 0, Paula::default());
+        assert_eq!(cs.read(0x026, 0), 0xffff, "DSKDAT is write-only");
+        assert_eq!(
+            cs.read(0x09a, 0),
+            0xffff,
+            "INTENA is written at $09A, read at $01C"
+        );
+        assert_eq!(cs.read(0x01a, 0), 0, "DSKBYTR stays 0");
+        assert_eq!(cs.port_reads(), [0, 0]);
+        cs.read(0x00a, 0);
+        cs.read(0x00a, 0);
+        cs.read(0x00c, 0);
+        assert_eq!(cs.port_reads(), [2, 1]);
     }
 }

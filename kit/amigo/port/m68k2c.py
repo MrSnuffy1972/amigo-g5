@@ -151,7 +151,8 @@ class Mem:
     runtime models them (zero where nothing is loaded), plus any other loaded block."""
     def __init__(self, cfg):
         self.chipsz, self.slowsz = mem_sizes(); self.chip = bytearray(self.chipsz); self.slow = bytearray(self.slowsz); self.other = {}
-        self.snap = None; self.ranges = list(cfg['code']); self.observed = {}; self.fx = {}; self.fxo = {}
+        self.lchip = bytearray(self.chipsz); self.lslow = bytearray(self.slowsz)   # 1 where a segment or copy loaded the byte
+        self.snap = None; self.fill = None; self.ranges = list(cfg['code']); self.observed = {}; self.fx = {}; self.fxo = {}
         self.kick = None   # G2E10 kickxlate: game.json "kick" (base, size hex) = the player's Kickstart, run at run time, never translated
         try:
             _k = cfg.get('kick')
@@ -181,8 +182,10 @@ class Mem:
                 if len(_t) > 1 and int(_t[0], 16) in _pcs:
                     _a = int(_t[0], 16)
                     for _i, _b in enumerate(_t[1:]): self.fxo.setdefault(_a + _i, int(_b, 16))
-        self.snap = None
+        self.snap = self.fill = None
         rc, rs = portcfg.path('out/port/ref/ram_chip.bin'), portcfg.path('out/port/ref/ram_slow.bin')
+        if os.path.exists(rc) and os.path.exists(rs):
+            self.fill = (open(rc, 'rb').read(), open(rs, 'rb').read())   # 30 Oct 2026: see rb, unloaded bytes in code ranges
         if self.observed and os.path.exists(rc) and os.path.exists(rs):
             self.snap = (open(rc, 'rb').read(), open(rs, 'rb').read())
             bad = [a for a, op in self.observed.items() if self.wsnap(a) != op and a not in self.fx]
@@ -199,14 +202,22 @@ class Mem:
         for i, b in enumerate(data):
             self.wb(a + i, b)
     def wb(self, a, v):
-        if a < self.chipsz: self.chip[a] = v
-        elif 0xC00000 <= a < 0xC00000 + self.slowsz: self.slow[a - 0xC00000] = v
+        if a < self.chipsz: self.chip[a] = v; self.lchip[a] = 1
+        elif 0xC00000 <= a < 0xC00000 + self.slowsz: self.slow[a - 0xC00000] = v; self.lslow[a - 0xC00000] = 1
         else: self.other[a] = v
     def rb(self, a):
         if a in self.fxo: return self.fxo[a]
         if a in self.fx: return self.fx[a]   # Cowork 17 Oct smc: the bytes the original ran with win inside code ranges too.
         # 3D World Tennis patches its own 'jmp $00000000' at $91E0 to 'jmp $3E40' (the old VBL vector) before it first runs;
         # the image bytes made the translation jump to 0 and the port ran zeroed memory from frame 2.
+        # 30 Oct 2026 (Qattro, G5): inside a code range, a byte no segment loaded is only the image's zero fill. Code the
+        # program unpacks there after the snapshot and that the reference run never reached (so no first-execution bytes) was
+        # translated from those zeros: a 'beq' into it ran ori.b #0 words into the next routine's rts and the game froze. The
+        # end-of-run RAM (self.fill, read whenever the reference run left it) holds what the program put there, so it wins over
+        # the zeros; bytes a segment loaded still win inside code ranges, and first-execution bytes win over both.
+        if self.fill is not None and self.incode(a) and not self.loaded(a):
+            if a < self.chipsz and a < len(self.fill[0]): return self.fill[0][a]
+            if 0xC00000 <= a < 0xC00000 + self.slowsz and a - 0xC00000 < len(self.fill[1]): return self.fill[1][a - 0xC00000]
         if self.snap is not None and not self.incode(a):
             if a < self.chipsz and a < len(self.snap[0]): return self.snap[0][a]
             if 0xC00000 <= a < 0xC00000 + self.slowsz and a - 0xC00000 < len(self.snap[1]): return self.snap[1][a - 0xC00000]
@@ -214,6 +225,10 @@ class Mem:
         if 0xC00000 <= a < 0xC00000 + self.slowsz: return self.slow[a - 0xC00000]
         if a in self.other: return self.other[a]
         raise IndexError(hex(a))
+    def loaded(self, a):
+        if a < self.chipsz: return bool(self.lchip[a])
+        if 0xC00000 <= a < 0xC00000 + self.slowsz: return bool(self.lslow[a - 0xC00000])
+        return a in self.other
     def incode(self, a):
         if self.kick and self.kick[0] <= a < self.kick[1]: return False   # G2E10 kickxlate: the player's Kickstart is never translated
         return any(s <= a < e for s, e in self.ranges)

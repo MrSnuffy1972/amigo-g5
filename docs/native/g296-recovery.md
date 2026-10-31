@@ -159,3 +159,7 @@ Limit: the reference run covers only the intro and title (about 400 frames). The
 - `prtvals`: Prints all option values on the options screen: the four numbers (prtcon), trails ON/OFF and the map name.
 - `prtcon`: Prints one 2-digit option number at a screen position (convert then write12).
 - `exitopt`: Options PLAY button: sets exitflag so the options loop ends and the game starts.
+
+## Copy protection found
+
+- none found: no routine touches disk hardware or trackdisk, no protection text is referenced, and every file loads through AmigaDOS (checked with the generic evidence rules, 1 Nov 2026).

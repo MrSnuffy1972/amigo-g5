@@ -88,6 +88,33 @@ operations", "unknown", "helper function" and similar), no hexadecimal, no libra
 routines a specific lower_snake_case name. A rejected answer is retried once with the reasons; if it fails again the
 routine stays undescribed and the game is blocked on proof (c).
 
+## Copy protection (tagged for removal in the native rewrite)
+
+Recovery keeps protection code, because the 100% proof needs every byte. Each routine with deterministic evidence
+(disk hardware registers DSKLEN/DSKPTH/DSKSYNC/DSKDAT/DSKBYTR/CIAB_PRB/ADKCON, raw trackdisk.device I/O, protection text
+such as manual, code wheel, colour card or original disk) is judged by the local model, with the instructions after
+each call site, as protection or not; the pass path is recorded. Protection routines get the `copy-protection` tag in
+`classification.json`, a marked entry in `functions.md`, and a "Copy protection found" list in `coverage.md` and in the
+repository summary (names and descriptions only).
+
+## Regions the short reference run never reached
+
+Proof (a) does not rest on one run: AmigaDOS disks are walked completely (every file and block; bitmap-free blocks are
+unused), the boot block's own trackdisk reads are followed statically (io_Offset, io_Length and io_Data constants before
+DoIO) and each read region becomes a unit, and only regions static analysis cannot resolve fall back to longer runs of
+the project's own reference harness (frozen build, reference only) plus shorter prefix runs, whose RAM keeps the first
+form of self-modifying code. Both forms of modified code are recovered as units and the writers are named where a
+store addresses them directly. PCs a recording logged that cannot be replayed are mapped statically against the
+recovered units.
+
+## Naming quality
+
+A spot-check of 60 model-named routines in game 800 against their pseudo-code found 17% wrong (invented game purposes,
+misread registers), 67% vague and 17% correct. Naming v2 asks for evidence-only descriptions, hides generated label
+names, adds register notes (keyboard vs joystick, interrupt enable bits) and library context, and rejects empty-routine
+or keyboard/joystick contradictions; every v1 model text is re-asked. A 40-routine check of game 336 under v2 found 0%
+wrong, 22% vague, 78% correct.
+
 ## Queue (`queue.py`)
 
 A background process (setsid/nohup, not a unit, timer or cron job) works through the G5 games, then top-list titles

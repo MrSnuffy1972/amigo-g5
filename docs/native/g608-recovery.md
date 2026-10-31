@@ -39,27 +39,31 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - E-Motion/E-Motion.adf:e_motion: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
+## Copy protection found
+
+- none found
+
 ## Functions
 
 
 ### E-Motion.adf:e_motion
 
-- `run_game_entry`: This is the program entry point that starts the game.
-- `decode_animation_frames`: This routine decodes a compressed animation frame stream into the game's frame buffer and updates the colour register used for palette effects.
-- `set_player_direction`: The routine reads the current player direction from the object structure and stores a packed direction byte for the sprite.
-- `wait_for_input_bits`: The routine waits for a series of input bits to be consumed, repeatedly shifting the input value and refilling it from the input source when it runs out, until the required count is exhausted.
-- `initialize_game_state`: This routine sets up the Amiga custom hardware registers and memory for the game, initializes global state and loads resources, then starts the main game loop.
-- `install_interrupt_handlers`: The routine copies a small set of interrupt handler entry points into the system interrupt vector table and then immediately invokes the first installed handler.
-- `copy_palette_data`: Copies a small block of palette data from a source to a destination in memory.
-- `check_and_close_window`: This routine checks whether a window is open and, if so, closes it.
-- `run_game_loop`: This routine drives the main gameplay loop for E-Motion.
-- `run_game_loop_2`: This routine drives one frame of E-Motion gameplay.
-- `wait_for_input`: This routine pauses the game by repeatedly calling a small delay routine until a short counter expires.
-- `decode_and_apply_palette`: The routine decodes a packed palette block marked with a magic tag and expands it into the game's colour table, then applies a series of byte-wise transformations to the screen buffer using the decoded data.
-- `run_game_tick_loop`: This routine drives a fixed number of game update steps, repeatedly invoking the per-frame logic and the per-frame rendering.
-- `set_palette_fade`: This routine fades the Amiga screen palette by adjusting the intensity of the first 32 color registers.
-- `wait_for_scanline`: This routine blocks execution until the Amiga video beam reaches a specific scanline range.
-- `init_sprite_cop_list`: Initializes a set of sprite cop entries for the game’s display list.
+- `run_game_entry`: The routine calls decode_animation_frames and then initialize_game_state, and returns zero.
+- `decode_animation_frames`: The routine copies a block of bytes from a static table into a RAM buffer and then repeatedly reads input bits, updates a counter, and writes bytes from another static table into the buffer backwards while calling set_player_direction and wait_for_input_bits.
+- `set_player_direction`: The routine reads a word from the address in A0 minus four, stores a byte derived from that word together with the high byte of D7 into the word pointed to by A5, and returns the read word shifted right by one with the sign bit set.
+- `wait_for_input_bits`: The routine repeatedly shifts the word in d0 right by one bit and, when the value becomes zero, calls set_player_direction and copies the short result from d1 into a local counter.
+- `initialize_game_state`: The routine clears custom registers, programs display window and bitplane control registers, initializes sprite cop lists, installs interrupt handlers, runs game loops and waits for input, then copies palette data to chip memory and executes it.
+- `install_interrupt_handlers`: The routine copies three long words from the address of copy_palette_data to the interrupt vector area and then calls the installed handler at that area.
+- `copy_palette_words`: The routine copies four 32-bit words from the source pointer in A0 to the destination pointer in A1, decrementing a loop counter in D7.
+- `check_and_close_window`: The routine calls a function through a pointer stored at an offset from a6, tests the returned integer, and if non-zero calls two further functions through pointers at other offsets from a6, passing the first result to the second and its result to the third.
+- `run_game_loop`: The routine closes the window, runs the game tick loop, decodes and applies the palette, then performs a fade by waiting for scanlines and setting the palette fade fifteen times before returning.
+- `run_game_loop_2`: The routine calls decode_and_apply_palette, then performs a sixteen-iteration loop that waits for a scanline and sets the palette fade each iteration, decrementing a counter until it wraps.
+- `wait_for_scanline_loop`: The routine sets a short counter and repeatedly calls wait_for_scanline, decrementing the counter each iteration, until the counter reaches -1.
+- `decode_palette_and_write_copperlist`: The routine walks a chunked resource area, decodes a palette chunk into a copper list buffer, then repeatedly decodes run-length blocks from a data chunk into a destination buffer, using the bytes as literal copies and negative repeat counts.
+- `wait_scanlines_and_fade_palette`: The routine waits for scanlines and updates the palette fade repeatedly.
+- `fade_palette_to_black`: The routine reads 32 palette entries from chip memory and writes them to the Amiga color registers.
+- `wait_for_scanline`: The routine reads the vertical position register and spins until the value is greater than a lower bound and then spins until the value is less than an upper bound, effectively waiting for a specific scanline range.
+- `init_sprite_cop_list`: The routine fills a short array with a repeating pattern of control words and pointer values derived from an initial register value, then writes a terminator pair and stores the base address and final pointer value in two global locations.
 
 ### E-Motion.adf:bootblock
 
@@ -67,37 +71,37 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `set_game_state_handler`: This routine installs the game’s main state handler and then halts execution.
-- `initialize_game_state_2`: This routine runs at startup to set up the game environment before the first frame is drawn.
-- `delay_frame_count`: This routine burns a fixed number of CPU cycles to create a short pause in the game.
-- `copy_code_bytes`: The routine copies a small block of code into a writable area and then continues execution by jumping to a game routine and a callback stored in the data segment.
-- `initialize_game_state_3`: This routine sets up the initial game state and memory tables for E-Motion, preparing the title screen and input handling before the first frame is drawn.
-- `load_animation_frames`: Loads animation frame data from a packed table into the active sprite buffer and copies a small code stub into RAM. It is used to prepare the next set of animation frames for the player or objects.
-- `copy_word_pairs_to_buffer`: The routine copies a series of 16-bit word pairs from a source value into a destination buffer, advancing the buffer each iteration.
-- `update_game_state`: This routine refreshes the game state by running the core update steps and then copies a small block of data from ROM into RAM. It is invoked from the main loop and from the pause and game-over handlers.
-- `reset_game_state`: This routine clears a set of global state variables and installs a default jump vector, then halts execution.
-- `set_game_state`: The routine writes a constant value into a global variable that the game uses to track its current state.
-- `wait_for_vblank`: The routine pauses execution until the display reaches the vertical blank interval.
-- `update_hud_digit_display`: The routine updates the on-screen HUD digit for the selected player slot, adjusting the scoreboard offsets and the digit counter, then copies the chosen digit graphics into the blitter buffer for display.
-- `update_animation_frames`: This routine advances two animation frame indices and copies the corresponding frame data into the sprite tables used for rendering the player character.
-- `update_emotion_palette`: This routine updates the emotion palette and related display data for the current character expression.
-- `update_bob_animation`: This routine advances the bob animation for the player character and refreshes the sprite data in chip memory.
-- `copy_palette_data_2`: This routine copies a small block of palette data into the hardware palette registers and updates the palette pointer.
-- `initiate_game_loop`: This routine performs the initial setup for starting a new game session.
+- `set_game_state_handler`: The routine stores a pointer to initialize_game_state_2 in a global variable and then triggers a trap.
+- `initialize_game_state_two`: The routine calls initialize_game_state_3, copy_code_bytes, update_game_state, func_0x00070022 and initiate_game_loop in that order and then returns.
+- `delay_frame_count`: The routine loads a short with a negative constant and decrements it in a loop until it reaches -1, then returns zero.
+- `copy_code_bytes`: The routine copies a block of bytes from a fixed source location to the address of initialize_input_interrupt, decrementing a counter until it reaches -1.
+- `initialize_game_state_3`: The routine sets up several work areas in RAM, fills tables with constant values, runs a small loop that builds a byte table from a string and derives offsets from it, calls copy_word_pairs_to_buffer twice and load_animation_frames, copies a block of code into the low memory area, and writes a few bytes to custom hardware registers.
+- `load_animation_frames`: The routine copies a small block of bytes from a fixed source area to a fixed destination area and then copies a fixed 144-byte block from a fixed source area to a fixed destination area.
+- `copy_word_pairs_to_buffer`: The routine copies word pairs from D0 into the buffer pointed to by A0.
+- `wait_vblank_update_state_copy`: The routine repeatedly waits for vertical blank, updates HUD digits, bob animation and animation frames while reset_game_state is non-zero, then copies a small block of bytes from a fixed source to a fixed destination and writes four bytes from a fixed source to fixed locations.
+- `reset_game_state`: The routine conditionally writes a constant word pattern to several global locations based on the input registers and two memory flags, then stores a jump instruction word and a function pointer, and ends with a trap.
+- `set_game_state`: The routine stores a byte value into a memory location and then returns.
+- `wait_for_vblank`: The routine polls the vertical position register until the value in the range of the register equals the value that indicates the vertical blank interval, then returns.
+- `update_hud_digit_display`: The routine updates a digit counter and a set of screen positions based on the counter, then selects a digit bitmap from a table and copies it to a buffer using the current digit value and a flag from CIAA_PRA and POTGOR. It finally copies a small block of data to a fixed location and returns.
+- `update_animation_frames`: The routine increments a palette index with wrap-around and copies eight 16-bit palette entries from a table to a fixed destination.
+- `update_emotion_palette`: The routine updates a palette-related counter and, when a condition is met, copies palette data and writes eight entries from a source table into a destination table with a fixed stride, then sets several global variables and waits for a hardware flag to clear before returning.
+- `update_bob_animation`: The routine updates a bob animation counter and, when the counter wraps, calls copy_palette_data_2 and copies eight palette entries from a table to a fixed destination using a stride.
+- `copy_palette_data_2`: The routine checks a flag in D1.
+- `initiate_game_loop`: The routine calls an external function pointer, stores a constant byte in a global, copies a word from the returned pointer into a global, calls initiate_emotion_sprites, and then calls another external function pointer.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `initialize_input_interrupt`: Sets up the game’s input interrupt handler so player controls are processed each frame.
-- `disable_interrupt_server`: The routine disables the Amiga interrupt server and sets a flag to indicate the interrupt system is off.
-- `initiate_emotion_sprites`: The routine initializes the sprite setup for the E-Motion title screen.
-- `trigger_game_over`: This routine is executed during the end-of-level sequence and initiates the game-over handling.
-- `update_sprite_positions`: The routine updates the positions of the player and enemy sprites each frame and refreshes the hardware sprite pointers.
-- `process_input_events`: The routine processes the current input event table for the game, updating per-player state such as sprite selection, movement, and control flags.
-- `self`: This routine initializes and updates a music or sound channel entry for the E-Motion title screen or gameplay, loading instrument and note data from the game’s tables and configuring playback parameters.
-- `set_player_sprite_offset`: The routine copies a sprite offset value into the player object structure.
-- `update_audio_channels`: Iterates over the set of audio channel descriptors and refreshes each active channel by invoking the channel update routine.
-- `update_animation_frames_2`: Advances per-object animation timers and loads the next frame data for palette, colour and sprite animations.
+- `initialize_input_interrupt`: The routine calls initiate_emotion_sprites and then calls a function pointer stored in the data segment.
+- `disable_interrupt_server`: The routine calls a function pointer stored in the data segment and writes a constant to a data location.
+- `initiate_emotion_sprites`: The routine initializes a counter and optionally sets it from a RAM byte when a RAM word and byte match specific values.
+- `trigger_game_over`: The routine calls update_sprite_positions and returns the value in d1.
+- `update_sprite_positions`: The routine updates sprite position data by iterating over three sprite entries, writes the computed values to custom chip registers via DMACON, and conditionally changes the sprite offset.
+- `process_input_events`: The routine iterates over a set of input slots, reads per-slot bytes from RAM and updates a per-slot control block in RAM. It copies and combines values into the block, writes to CIAA_PRA via the custom chip registers, and sets a dirty flag when a field changes.
+- `init_sprite_animation`: The routine initializes a sprite animation structure from a table entry selected by a type byte, copies palette and frame data into the sprite buffer, sets DMA control bits, and updates the sprite position fields.
+- `set_player_sprite_offset`: The routine writes a 16-bit value from a table indexed by a byte in D4 to the word at offset six from the pointer in A1.
+- `update_audio_channels`: The routine loops over a set of channel structures, checks a field in each structure and, when the field is non-zero, calls update_animation_frames_2.
+- `update_animation_frames_2`: Updates three independent animation counters stored in the structure pointed to by A2 using tables pointed to by A3.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `init_game_state`: This routine is called at startup to prepare the game.
+- `call_two_functions`: The routine calls two functions and then returns zero.

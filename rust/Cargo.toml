@@ -2,5 +2,5 @@
 members = ["amigo_g5", "amigo_g5_boot", "amigo_g5_part0", "amigo_g5_part1", "amigo_g5_part2", "amigo_g5_part3", "amigo_g5_part4", "amigo_g5_part5", "amigo_g5_part6", "amigo_g5_part7"]
 # amigo_g5_play is its own workspace (M7, 29 Oct 2026): its crates (sdl2, fontdue, serde_json) must not enter this
 # lock file, or Ryzen's gate build (`cargo build --offline --locked --bin amigo-g5-boot`) fails on a cache that lacks them
-exclude = ["amigo_g5_play"]
+exclude = ["amigo_g5_play", "native_engine", "games"]
 resolver = "2"

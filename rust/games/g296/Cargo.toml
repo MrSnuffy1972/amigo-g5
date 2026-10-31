@@ -1,0 +1,22 @@
+[package]
+name = "g296"
+version = "0.1.0"
+edition = "2021"
+description = "Ami-Go native stage 1: game 296, Global Thermonuclear Warfare, rewritten natively on native_engine from its recovered code"
+publish = false
+workspace = "../../native_engine"
+build = "build.rs"
+
+[[bin]]
+name = "g296"
+path = "src/main.rs"
+required-features = ["sdl"]
+
+[dependencies]
+native_engine = { path = "../../native_engine", default-features = false }
+serde_json = "1"
+
+[features]
+default = ["desktop"]
+sdl = ["native_engine/sdl"]
+desktop = ["sdl", "native_engine/desktop"]

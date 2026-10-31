@@ -1,0 +1,15 @@
+[package]
+name = "g296_android"
+version = "0.1.0"
+edition = "2021"
+description = "Ami-Go native stage 1: libmain.so of game 296's APK (SDL's Java activity calls SDL_main)"
+publish = false
+workspace = "../../../native_engine"
+
+[lib]
+name = "main"
+crate-type = ["cdylib"]
+path = "src/lib.rs"
+
+[dependencies]
+g296 = { path = "..", default-features = false, features = ["sdl"] }

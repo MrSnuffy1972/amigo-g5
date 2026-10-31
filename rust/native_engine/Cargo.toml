@@ -1,0 +1,27 @@
+[package]
+name = "native_engine"
+version = "0.1.0"
+edition = "2021"
+description = "Ami-Go native stage 1: the shared, system-neutral engine for native game rewrites (fixed-rate loop, indexed-colour renderer, mixer and tracker player, abstract input, save data, asset packs, SDL2 desktop and Android)"
+publish = false
+
+[[bin]]
+name = "napack"
+path = "src/bin/napack.rs"
+
+[dependencies]
+serde_json = "1"
+fontdue = "0.9"
+sdl2 = { version = "0.37", optional = true }
+
+[features]
+default = ["desktop"]
+sdl = ["dep:sdl2"]
+# SDL2 built from source and linked in, so a desktop binary needs no DLL (as the G5 play binary, docs/G5-PLAYABLE.md).
+# Android turns this off and links the prebuilt libSDL2.so the APK carries.
+desktop = ["sdl", "sdl2/bundled", "sdl2/static-link"]
+
+# Its own workspace (the native engine and the games written on it), apart from the G5 crates in ../Cargo.toml.
+[workspace]
+members = [".", "../games/g296", "../games/g296/android"]
+resolver = "2"

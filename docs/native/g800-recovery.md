@@ -1,0 +1,1982 @@
+# Game 800 (theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/00800). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (909040 top-level bytes in 74 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 12 of 12 units identical (bytes and relocations), 115 raw-word lines |
+| Functions named and described | pass, 1878 of 1878 named (109 author symbols), 1878 of 1878 described (11 by rule, 1867 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1008 of 1008 (100.00%) |
+| Independent decoder cross-check (Ghidra against capstone) | 75888 of 75923 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 242039 |
+| code | 19460 |
+| data | 625328 |
+| padding | 14021 |
+| unused | 8192 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| speeder | 1 | 739 | 53 |
+| LOADPPDATA | 5 | 76 | 2 |
+| AFLtro | 2 | 267 | 8 |
+| Assign | 2 | 267 | 8 |
+| Cls | 2 | 20 | 1 |
+| Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:main#unpacked | 9 | 69749 | 1515 |
+| Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:breloc | 1 | 1568 | 111 |
+| powerpacker.library | 2 | 1755 | 129 |
+| explode.library | 1 | 475 | 30 |
+| Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:bootblock | 1 | 10 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 929 | 18 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 68 | 2 |
+
+## Cases handled
+
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:main: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (222773 -> 483976 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/LANG4-0.DAT: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (13660 -> 35141 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/AENDB-0.BM: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (13422 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/LANG2-0.DAT: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (12629 -> 30746 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/AAUCT-0.BM: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (7197 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/LANG1-0.DAT: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (14628 -> 36877 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/ares-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (11628 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/AINS-1.BM: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (10946 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/ains-2.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (13644 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/aglobe-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (12792 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/AEND-0.BM: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (14488 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/astate-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (3432 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/balpr-0.dat: high-entropy data file (7.64 bits/byte), classified as packed data
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/aawar1-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (13240 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/astock-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (5614 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/lang0-0.dat: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (13009 -> 30950 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/aawar0-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (11628 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/UNION.BM: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (12505 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/amap-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (8708 -> 32000 bytes)
+- runtime segment an address: 415 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:c/LOADPPDATA: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
+
+## Functions
+
+
+### speeder
+
+- `verify_game_version_and_patch`: The routine checks a version signature in RAM and, if it matches, installs a custom track handler for the Amiga disk system.
+- `set_palette_color`: This routine sets the Amiga hardware palette entry COLOR00 to a series of values, cycling through a range to create a visual effect in the game.
+- `increment_speeder_counter`: This routine updates the speeder system by setting a hardware interrupt enable flag and incrementing a per-instance counter used to pace speeder activity in the theme park simulation.
+- `decrement_timer_and_disable_interrupt`: The routine decrements a countdown timer used by the game and disables the vertical blank interrupt when the timer expires.
+- `run_game_loop`: This routine drives the main game loop for the theme park simulation.
+- `run_game_loop_2`: This routine drives the main game loop for the theme park simulation.
+- `process_ride_queue`: This routine processes the queue for a ride, advancing guests through the line and handling the ride's operation cycle.
+- `process_speeder_vehicle`: Handles the per-frame update of a speeder ride vehicle, advancing its state machine and cleaning up when the ride finishes.
+- `clear_speeder_flags`: Clears specific status flags for a speeder object in the game.
+- `clear_ride_flag`: This routine clears a ride flag and then dispatches a ride-specific handler based on the ride type stored in the ride structure.
+- `call_game_action`: This routine dispatches a game-specific action by indexing into a table of function pointers with a byte value and then runs a common post-action update.
+- `initialize_speeder`: This routine sets up the speeder object for the current park section.
+- `update_ride_carriage_state`: Updates the state of a ride carriage during the simulation tick, advancing its position along the track and handling passenger loading and unloading.
+- `process_ride_queue_2`: This routine advances the ride queue for a selected attraction, updating passenger counters and ride state each tick.
+- `update_ride_speed`: This routine advances the simulation of a ride vehicle along its track, updating its position and speed counters each tick.
+- `update_ride_carriage_position`: This routine advances the animation and timing state for a ride carriage in the park simulation.
+- `process_speeder_queue`: This routine advances the speeder’s internal timers and steps through its queued commands, updating the current command pointer and handling command completion.
+- `play_ride_sound`: Plays the audio cue associated with a ride or attraction when it is triggered in the game.
+- `set_ride_speed`: The routine sets the speed of a ride object to a maximum value.
+- `draw_ride_car`: This routine draws the ride car sprite for the park’s roller coaster and related attractions.
+- `process_ride_queue_3`: This routine advances the ride queue for a park attraction, updating the current rider count and the ride’s state each tick.
+- `check_ride_queue_next`: This routine checks whether the next ride in the simulation queue is ready to be processed.
+- `init_speeder_object`: Initialises a speeder object for the park simulation.
+- `reset_park_speeder`: This routine resets the park speeder system and clears its state.
+- `clear_speeder_state`: This routine resets the speeder object state and clears its associated data.
+- `reset_ride_state`: This routine clears the ride state for ten rides and resets a small table of ride flags.
+- `set_speeder_speed`: Sets the speed value for the speeder vehicle used in the game.
+- `set_disk_dma_control`: The routine programs the Amiga disk DMA controller registers to prepare a disk transfer and clears the disk interrupt request.
+- `trigger_ride_start`: This routine initiates the start sequence for a ride vehicle.
+- `apply_tile_mask`: This routine updates a tile attribute word by masking and recombining bits from an input value, optionally clearing the sign bit based on a flag byte.
+- `toggle_ride_state_flag`: This routine flips a ride’s active flag in the park simulation.
+- `set_speeder_flag`: The routine writes a masked byte into a game flag used by the Speeder vehicle logic.
+- `xor_checksum_table`: Computes a masked XOR checksum over a small table of words used for validating or identifying game data.
+- `extract_tile_pattern`: The routine pulls a 32-bit tile pattern from memory and interleaves its bits to produce a mask used for drawing or testing park scenery tiles.
+- `wait_for_ride_completion`: This routine polls the ride controller until the selected ride finishes or the timeout expires.
+- `set_speeder_offsets`: Initializes the speeder vehicle’s animation offsets and frame count for the current speed tier.
+- `set_game_speed`: The routine configures the in-game speed setting used by the park simulation and then aborts the current operation.
+- `wait_for_interrupt_flag`: The routine polls a hardware interrupt status flag until it is set or a timeout expires, then returns the flag value or a failure code.
+- `process_speeder_data`: This routine processes the speeder vehicle data for the park simulation.
+- `store_speeder_state`: The routine saves the current speeder context into the global state used by the speeder system.
+- `unpack_sprite_pixels`: This routine expands a packed sprite bitmap into a wider pixel buffer used by the game’s rendering system.
+- `update_ride_status`: The routine updates the status of a ride or attraction in the park, checking its current condition and setting a new state code.
+- `reset_speeder_state`: The routine clears the speeder’s runtime state and resets its counters before the next use.
+- `set_ride_speed_2`: This routine configures the speed parameters for a ride vehicle and marks the ride as ready to run.
+- `set_ride_speed_3`: The routine configures a ride’s speed parameters and marks the ride as active.
+- `set_ride_speed_4`: The routine configures a ride’s speed parameters and marks the ride as active.
+- `set_speeder_state`: The routine initializes the speeder’s state and marks it for processing.
+- `set_ride_speed_5`: This routine configures a ride’s speed parameters and marks the ride as needing an update.
+- `run_speeder_update`: This routine advances the speeder vehicle logic during gameplay.
+- `set_ride_speed_6`: The routine configures a ride object’s speed parameters and marks it as active.
+- `wait_for_blt_ready`: The routine stores a size value for the blitter and then blocks until the blitter is idle before returning.
+- `wait_for_blitter`: The routine pauses execution until the Amiga blitter hardware is idle, allowing the game to safely start a new blitter operation.
+- `reset_ride_state_2`: Clears the ride’s active flags and zeroes its timing counters so the ride is treated as idle and ready for a new cycle.
+
+### LOADPPDATA
+
+- `check_game_state_and_exit`: This routine checks the current game state and decides whether to continue running or to exit the game.
+- `open_explode_library`: Opens the explode.library and dos.library required for the game, handling errors if the libraries are missing.
+
+### AFLtro
+
+- `load_park_data`: This routine loads and decompresses the park data structures from the game files into memory.
+- `wait_for_input`: This routine blocks until the player input flag is cleared, effectively waiting for the game to be ready for the next action.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `shift_tile_row`: The routine shifts a row of tiles within a park map buffer, moving a block of cells one step and handling a special three-tile pattern when encountered.
+- `check_bitmask_flag`: The routine tests a bit in a flag word using a mask derived from another value.
+- `decode_bitstream`: The routine extracts a sequence of bits from a packed bitstream stored in memory, handling byte boundaries and bit offsets.
+- `decode_compressed_palette`: This routine expands a packed bitstream into colour indices and writes them into the screen palette.
+- `trigger_debug_trap`: This routine is a deliberately placed debug trap that halts the game when reached.
+
+### Assign
+
+- `self`: The routine initializes and processes the game's scripted event blocks, loading their data into memory and preparing them for execution during gameplay.
+- `wait_for_input_2`: The routine blocks until a pending input counter reaches zero, effectively waiting for the player to finish an interaction before the game continues.
+- `assign_park_object`: Assigns a park object to a newly created ride or facility.
+- `shift_tile_row_2`: The routine shifts a row of map tiles one step left or right, handling a special three-tile pattern when the row is marked, and updates the park map data accordingly.
+- `skip_if_flag_set`: The routine checks a flag derived from two registers and aborts the current operation if the flag is set.
+- `extract_bitfield_from_buffer`: This routine pulls a variable-length bitfield out of a byte buffer for the game’s data structures.
+- `decode_compressed_stream`: This routine decompresses a byte stream using a sliding-window scheme and writes the output to a destination buffer.
+- `assign_park_object_2`: Assigns a park object to a slot during park setup.
+
+### Cls
+
+- `open_dos_library`: The routine opens the DOS library at program start and returns a handle for file operations used by the game.
+
+### Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:main#unpacked
+
+- `initialize_game_engine`: This is the program entry point that sets up the Amiga environment and starts the Theme Park game engine.
+- `handle_game_event`: This routine processes a game event by updating the current event state and invoking the appropriate handlers for the park simulation.
+- `jump_to_sub_0_4e0ee`: Jump stub: passes control straight on to sub_0_4E0EE.
+- `jump_to_sub_0_4e0cc`: Jump stub: passes control straight on to sub_0_4E0CC.
+- `jump_to_sub_0_4e964`: Jump stub: passes control straight on to sub_0_4E964.
+- `parse_ride_config`: The routine scans ride configuration strings for markers and flags, updating global state for ride type and layout handling.
+- `update_ride_statistics`: This routine refreshes the displayed statistics for the four main rides in the park.
+- `update_ride_prices`: The routine refreshes the price data for the four main ride categories in the park.
+- `handle_interrupt`: This routine is a stub interrupt handler used by the game’s interrupt dispatch.
+- `initialize_game_state`: Sets up global pointers, flags and default values and then runs the start-up sequence for a new or loaded park session.
+- `reset_park_state`: This routine clears the park’s runtime state and resets a set of global variables used by the simulation.
+- `init_palette_pointers`: Initializes the palette pointer table used for screen drawing.
+- `reset_game_state`: This routine resets the game state by invoking the central reset handler.
+- `set_park_state_to_new`: This function initialises a new park by setting the park state to new so that the game will start the park creation flow and load the fresh park screens and menus.
+- `load_game_assets`: Initialises the game by loading core data files and sound resources needed for play.
+- `update_ride_prices_2`: Iterates over a table of ride entries and updates their price and related counters.
+- `halve_palette_entries`: The routine halves the brightness of a range of palette entries used for a fade effect in the game.
+- `skip_unused_handler`: This routine is a stub handler that is installed for an unused event or menu action.
+- `clear_screen`: This routine clears the screen buffer before a new frame is drawn.
+- `set_random_seed`: Initialises the game’s pseudo-random number generator.
+- `repeat_action_loop`: This routine repeats a game action a specified number of times.
+- `reset_ride_state_3`: This routine clears the current ride state and resets the ride control flags before delegating to the ride update handler.
+- `reset_ui_state`: Resets the UI state before showing a new screen.
+- `set_display_mode`: This routine switches the game between normal and zoomed display modes, updating global state and scaling the map and sprite data accordingly.
+- `reset_ride_waiting_times`: This routine resets the park state before a new day starts.
+- `self_2`: This routine halves the ride vehicle speed and passenger values in the park simulation and then refreshes the ride and park state.
+- `fade_palette_and_reset_state`: This routine fades the palette by halving colour components and then runs the park initialisation sequence, resetting the game state variables used for the main loop.
+- `find_nearest_tile`: The routine scans a small 16-entry tile neighbourhood around a reference tile and returns the index of the tile whose packed 12-bit coordinates are closest to a target position.
+- `initialize_game_state_6`: This routine is a stub that does nothing and is invoked as part of the game start-up sequence.
+- `handle_invalid_input`: This routine is a stub handler that is installed for invalid or unused input messages and does nothing in the game.
+- `copy_ride_data`: Copies a small block of ride data into a fixed memory area used by the park simulation and resets the ride update flags so the ride state is refreshed.
+- `find_park_objects`: The routine scans the game world for park objects and records their identifiers, then processes them.
+- `set_current_ride_id`: Sets the global current ride identifier used by the game logic.
+- `trigger_park_event`: This routine fires a park-wide event when a specific global flag is set.
+- `burn_park_heat`: This routine repeatedly writes the park identifier into a global counter and loops a fixed number of times.
+- `run_game_loop_3`: This routine drives the main game loop for Theme Park, updating the park simulation each frame and handling input, UI and state changes.
+- `initialize_game_data`: This routine sets up the initial game state by loading text strings and palette entries and creating the default colour objects used by the park simulation.
+- `process_ride_queue_4`: This routine is a periodic game tick that updates ride queue timers and clears finished entries, and occasionally triggers random ride events and guest interactions based on park state and timers.
+- `process_ride_queue_5`: Iterates over the ride queue entries and updates their timers, triggering a ride start when a timer expires.
+- `process_ride_queue_6`: The routine steps through the park’s ride queue entries and updates timing and state for each ride.
+- `check_ride_availability`: The routine checks whether a ride is available for use and updates the park state accordingly.
+- `process_ride_queue_7`: The routine checks a ride’s operating conditions and queue state and decides whether to start, pause or stop the ride, updating its status flags.
+- `process_ride_queue_8`: The routine evaluates the current ride queue and decides whether to trigger a ride start or a queue update based on guest and ride state.
+- `process_ride_queue_9`: This routine processes the queue and state for a selected ride, updating guest flow, ride operation flags and related counters.
+- `apply_ride_price_adjustments`: This routine updates the park’s financial summary and copies the current ride pricing and statistics from temporary buffers into the main ride data structures.
+- `process_ride_statistics`: This routine aggregates and updates ride-related statistics for the park, handling guest flow and financial totals, then copies the latest ride data into the active structures used by the game.
+- `copy_ride_data_2`: The routine copies ride configuration data from template slots into active ride slots for a number of rides.
+- `copy_ride_data_3`: Copies ride configuration and state data from template entries into per-ride slots during initialization.
+- `update_ride_status_2`: The routine refreshes the current ride’s operational state by reading a sensor value and passing it together with the ride’s identifiers to the status handler.
+- `handle_ui_input`: Processes UI control messages for the park editor, updating selection, scrolling and toggle states and delegating to rendering helpers.
+- `process_pending_events`: This routine processes the game's pending input and event flags each frame, dispatching the appropriate handler for the current menu or screen and clearing the flags once handled.
+- `handle_menu_input`: Processes a menu command and updates the current UI state and selection offsets for the park management screens.
+- `handle_menu_selection`: The routine processes a menu selection index and drives the park management UI state machine.
+- `handle_ride_event`: This routine processes a ride-related event for the park simulation.
+- `process_game_event`: Handles a variety of in-game events such as ride operation, guest updates and UI changes.
+- `trigger_ride_event`: This routine conditionally triggers a ride-related event for a given ride index.
+- `handle_ride_interaction`: When the player interacts with a ride, the routine selects the appropriate ride object and its associated scenery or animation entry from the game’s tables and stores the selection indices for later use.
+- `update_ride_statistics_2`: Updates the park's ride statistics counters based on the current ride state and clamps the values for display.
+- `clamp_ride_parameters`: Updates the ride’s control parameters each frame.
+- `skip_game_loop_iteration`: This routine is a no-op handler installed for a game event.
+- `update_ride_price`: Updates the price of a ride or attraction in the park.
+- `update_tile_priority`: Updates the priority ordering of objects on a map tile when the tile coordinates change.
+- `sort_ride_queue`: This routine maintains the ordered queue of guests waiting for a ride.
+- `find_next_ride`: This routine walks the park’s ride linked list to locate the next ride for the player to interact with.
+- `sort_ride_queue_2`: This routine orders the ride queue entries by a priority byte so the park processes rides in the correct order.
+- `sort_linked_list`: This routine sorts a linked list of park objects by their height value, swapping nodes and updating the list head as needed.
+- `allocate_ride_object`: The routine allocates a new ride object for the park and links it into the appropriate ride list.
+- `update_park_object_flags`: The routine refreshes a park object’s flag word by walking a linked list of objects and writing two fresh random values into the object’s data and an output slot.
+- `write_random_value`: The routine fetches a random 16-bit value and writes it to a caller-supplied output location.
+- `update_ride_queue`: This routine updates the queue or waiting list for a ride.
+- `update_tile_animation`: Updates the animation frame data for a park tile when its animation parameters change.
+- `update_ride_object`: Updates a ride object with new parameters.
+- `set_sprite_offsets`: Sets the horizontal and vertical sprite offsets for a game object.
+- `clear_park_data`: This routine clears a block of park data used by the game.
+- `generate_random_park_value`: Returns a pseudo-random 15-bit value used for park simulation decisions.
+- `disable_ride_elements`: This routine disables and then re-enables ride elements for a given ride, clearing their active flags and updating their state in the ride data structures.
+- `process_ride_queue_10`: Iterates over the park's ride queue and triggers the ride update for each entry marked as active.
+- `evaluate_ride_condition`: The routine checks a ride’s operational condition against the current guest position and ride state, deciding whether the guest can interact with or be affected by the ride.
+- `handle_ride_control_input`: Processes a ride control command from the input buffer and updates the ride’s target speed and direction.
+- `reset_game_state_2`: This routine is used to clear the game state when starting a new game or returning to the title screen.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `reset_game_state_3`: This routine clears and initializes a large set of game globals and tables, copies default data into working memory, and sets up initial flags and counters for a new game session.
+- `check_ride_status`: Returns the current operational state of a ride for the given ride identifier.
+- `initialize_ride_instance`: This routine sets up a new ride object in the park simulation, copying its name and description into the ride’s data block and initializing its operational fields.
+- `update_animation_timer`: Advances a per-object animation timer used by the game’s visual effects.
+- `run_game_loop_4`: This routine initializes the game state and then repeatedly drives the main gameplay loop, updating the park simulation and handling input and rendering until the player quits.
+- `wait_for_input_event`: Waits for a user input event from the park management interface and processes the resulting action.
+- `wait_for_input_event_2`: The routine polls the game input system until a non-zero event is received, repeatedly invoking the input handler and a per-frame update.
+- `handle_ride_selection`: This routine drives the ride selection screen, drawing the list of rides and highlighting the currently chosen entry.
+- `handle_ride_selection_2`: This routine drives the ride selection menu, drawing the list of rides and highlighting the currently chosen entry.
+- `draw_ride_preview`: This routine renders the ride preview panel and handles user selection of a ride type.
+- `draw_ride_preview_2`: The routine iterates over a set of ride preview entries and draws each preview tile on screen, updating the selection highlight when the cursor moves.
+- `draw_ride_preview_3`: Renders a small preview of a ride or attraction in the park planning interface.
+- `draw_ride_preview_4`: The routine renders a preview of a ride or attraction on the screen and steps through its animation frames.
+- `check_ride_availability_2`: The routine checks whether a ride is available for the player and updates the ride selection state.
+- `trigger_park_event_2`: This routine is a small event trigger used by the park simulation.
+- `self_3`: This routine handles the park map selection screen, letting the player move a highlight between saved parks and confirm a choice.
+- `unimplemented_stub`: The routine is an empty stub left in the game binary.
+- `handle_game_event_2`: Dispatches a game event code to the appropriate handler and records the last processed event.
+- `store_d7_word`: The routine copies the incoming word from D7 into a global variable used elsewhere in the game.
+- `self_4`: This routine drives the park’s ride queue simulation for a selected ride.
+- `draw_park_map`: Renders the park map by iterating over map tiles and drawing each symbol until a terminator is found.
+- `process_ride_queue_11`: The routine steps through a ride queue, drawing each entry and handling plus and star markers.
+- `parse_ride_config_2`: This routine parses a ride configuration table, skipping entries marked with plus or star symbols and handling special markers to control ride behavior.
+- `reset_ride_control_state`: Resets the ride control state and clears the active ride handler.
+- `copy_localized_strings`: Copies language-specific text from a shared string table into the game's English and localized buffers for rides, shops, staff and scenery.
+- `reset_game_state_4`: This routine is invoked at several points during gameplay and appears to clear or reinitialize core game state.
+- `render_ride_preview`: This routine draws a small preview of a ride or scenery object in the park editor.
+- `process_ride_elements`: Iterates over a linked list of ride elements and dispatches each element to its specific drawing routine based on type.
+- `process_ride_event`: Handles a ride-related event for a park object.
+- `skip_ride_event`: This routine is a no-op stub that is called from the ride event processing path.
+- `handle_entity_event`: This routine dispatches per-entity event handling based on the entity type stored in the object.
+- `return_from_intermediate`: Provides a small intermediate entry point that immediately returns to the caller.
+- `draw_ride_vehicle`: Renders the sprites for a ride vehicle at the given map position, choosing the correct vehicle graphics set based on the ride type and applying the appropriate offsets and animation frames.
+- `draw_ride_object`: Renders a ride or scenery object by iterating over its sprite tiles and drawing them at the calculated screen positions.
+- `draw_ride_elements`: The routine renders the visual elements of a ride or attraction based on the current ride configuration and animation state.
+- `draw_ride_elements_2`: The routine renders the visual parts of a ride for the current view.
+- `draw_ride_elements_3`: The routine renders the visual parts of a ride or attraction for the current view.
+- `draw_ride_elements_4`: The routine renders a set of ride elements for the current view, first drawing the base parts and then any additional decorative or support pieces defined by the ride type.
+- `render_ride_sprites`: Draws the sprites for a ride’s cars and carriages along its track.
+- `draw_park_elements`: The routine iterates over a set of park elements and draws each one at its stored screen position with the appropriate tile data.
+- `draw_ride_element`: Renders a ride piece and its attached scenery elements at the given screen offset, using the ride's definition tables and the current view parameters.
+- `process_ride_queue_12`: The routine walks the park's ride queue and dispatches each waiting guest to the appropriate ride entrance, handling normal and special-case rides.
+- `process_ride_queue_13`: The routine walks the park's ride queue structures and dispatches each ride entry to the ride rendering / update handler, handling both normal and special-case ride entries.
+- `process_ride_queue_14`: Iterates over the ride queue entries and updates the positions of guests waiting for a ride, handling both normal and special queue cases.
+- `process_ride_queue_15`: The routine walks the ride queue and updates the next guest to be processed for a ride.
+- `draw_ride_vehicle_2`: The routine renders a ride vehicle sprite on the park map, updating its screen position from the ride’s track data and handling the vehicle’s animation frame.
+- `process_ride_queue_16`: This routine walks the ride queue and updates each ride’s state, handling guest flow and ride operation for the current park tick.
+- `apply_ride_offset`: The routine applies a small offset to a ride’s stored position values and forwards the adjusted coordinates to the ride update helper.
+- `find_ride_object`: The routine looks up a ride object by its identifier within a managed range of ride pointers.
+- `find_ride_by_type_id`: Searches the ride index for a ride matching a given type and identifier and returns its record address.
+- `find_ride_entry`: Searches the ride linked list for a node whose two flag bytes match the requested values.
+- `find_park_object`: Searches the park object list for an entry whose type and flags match the current criteria and whose position is beyond a given limit.
+- `process_ride_object`: Handles a ride object entry from the park data, walking its linked chain to find or update ride state and triggers.
+- `render_park_object`: Draws a park object such as a ride or scenery piece at the given map coordinates, using the current view settings.
+- `draw_ride_elements_5`: The routine walks a ride’s element list and draws each visible piece at an offset position, using a different rendering path when a special display mode is active.
+- `draw_ride_elements_6`: This routine walks a linked list of ride element descriptors and draws each visible element at the offset position supplied by the caller.
+- `process_ride_queue_17`: Iterates over a ride queue and dispatches each entry to the ride handler, updating the global ride state.
+- `process_park_objects`: Iterates over park objects and updates their positions and state when the game is running.
+- `process_ride_queue_18`: Iterates over a ride queue and triggers a ride event for each entry when a global flag is set.
+- `process_ride_queue_19`: Iterates over a list of ride queue entries and updates each ride’s state using the ride processing routine.
+- `process_ride_queue_20`: The routine walks a ride’s linked list of queued items and, for each entry whose time is in the future, schedules a callback with the ride identifier and adjusted coordinates.
+- `process_ride_queue_21`: Iterates over the park's ride queue entries and updates each ride's timing and state via the ride handler.
+- `draw_ride_object_2`: Renders a ride element at the given map coordinates using the current rendering mode.
+- `self_5`: The routine checks whether a ride element can be placed at a given map location and returns the appropriate placement result code.
+- `find_ride_entrance`: The routine scans a linked list of ride objects to find the minimum and maximum screen extents of a ride and then decides which ride entrance to use based on global park state and the ride type.
+- `play_park_announcement`: Plays a short audio announcement that is triggered by park events.
+- `process_ride_queue_22`: Iterates over a ride queue and dispatches each ride entry to its specific update handler based on ride type.
+- `process_ride_queue_23`: Iterates over ride queue entries and dispatches each ride to its specific update handler based on ride type.
+- `self_6`: This routine iterates over a list of park entities and dispatches each one to its type-specific update handler, decrementing a per-entity timer and tracking the highest priority value seen.
+- `process_entity_list`: Iterates over a linked list of in-game entities and updates each one according to its type, decrementing a timer and handling type-specific behaviour.
+- `process_ride_queue_24`: Iterates over a ride’s queue entries and updates counters for guests who are ahead of or behind the current position, then dispatches ride-specific handling for each queued guest based on their type and subtype.
+- `process_ride_queue_25`: Iterates over the park's ride queue entries and dispatches each ride to its specific update handler based on ride type and subtype.
+- `process_ride_queue_26`: Iterates over a linked list of ride queue entries and dispatches each entry to its type-specific handler.
+- `find_next_ride_object`: Scans a linked list of ride objects to locate the next one matching a type filter and returns its identifier.
+- `process_ride_queue_27`: The routine walks through a linked list of ride queue entries and updates park statistics for each entry.
+- `iterate_ride_entities`: Walks the linked list of ride entities and processes each one according to its type, updating global counters for the current ride and its length.
+- `find_next_ride_object_2`: Scans a linked list of ride objects to locate the next item that needs processing.
+- `iterate_ride_list`: Walks through the park’s ride list and returns the index of the first ride that matches the current selection criteria.
+- `find_ride_object_2`: The routine walks a linked list of ride objects and returns the identifier of the first object whose type matches a mask, invoking type-specific handlers along the way.
+- `find_next_ride_object_3`: Scans a linked list of ride objects to locate the next entry and returns its identifier.
+- `dispatch_ride_action`: The routine dispatches a ride-specific action based on a type byte stored in the ride structure.
+- `toggle_ride_flags`: The routine flips a set of ride-related flag bits in the park state structure using a mask derived from an input value, then walks through a ride list to find a matching entry and returns an associated identifier.
+- `process_ride_object_2`: Iterates over a ride object’s linked list of elements and dispatches each element to its specific handler based on type.
+- `process_ride_queue_28`: Iterates over a linked list of ride queue entries and updates each entry’s state, handling timed events and dispatching ride-specific logic based on the entry type.
+- `process_ride_queue_29`: Iterates over a ride’s queue of guests and dispatches each guest to the appropriate ride-specific handler based on the guest’s current state.
+- `process_ride_queue_30`: Iterates over the active ride queue entries and updates each ride’s state, handling timers, counters and triggering ride-specific actions.
+- `process_ride_queue_31`: The routine advances a ride’s queue state and checks whether a guest is ready to board.
+- `update_ride_price_2`: The routine updates the price of a selected ride in the park.
+- `check_ride_operational`: The routine checks whether a ride is operational by scanning its control flags and returns success if a valid state is found.
+- `update_ride_price_3`: Updates the price of a ride when the player adjusts it within allowed limits.
+- `update_ride_status_3`: Updates the state of a ride or attraction each tick, handling its countdown timer, selecting the next animation frame and applying ride-specific flags.
+- `process_ride_queue_32`: The routine processes a ride queue entry for the current park object, updating its state and ride parameters based on the ride type and player input.
+- `update_ride_status_4`: Updates the status and visual parameters of a ride object in the park simulation.
+- `set_ride_price`: This routine updates a ride’s price field in the park data and refreshes the ride’s cost display.
+- `process_animation_frame`: This routine advances a park animation or effect frame for a game object.
+- `handle_ride_control_input_2`: Processes player input for a ride control panel and updates the selected option and ride state.
+- `process_ride_queue_33`: This routine processes a ride queue entry for a guest, updating the guest’s ride state and selecting the appropriate ride vehicle or attraction based on the guest’s current position and ride data.
+- `select_ride_object`: This routine chooses which ride object to place or update in the park editor.
+- `set_ride_price_2`: This routine updates the price of a ride by writing a byte flag and a price value from a table into the ride data structure, then refreshes the ride’s cost display and triggers a UI update.
+- `process_ride_vehicle`: Handles a ride vehicle entity each tick, updating its state, checking for guest interaction and ride operation conditions, and advancing it to the next stage when appropriate.
+- `set_ride_price_3`: Updates the price and related data for a selected ride in the park.
+- `check_ride_queue_entry`: The routine checks whether a guest can enter a ride queue and updates the guest’s ride-related state.
+- `process_ride_vehicle_2`: Handles a ride vehicle update for the theme park simulation.
+- `spawn_ride_vehicle`: Creates a new ride vehicle instance for a selected ride and initializes its state.
+- `check_ride_queue_entry_2`: The routine checks a ride queue entry for a waiting guest and updates the guest’s ride state and animation data.
+- `self_7`: This routine updates a ride vehicle or guest entity state for the current simulation tick.
+- `check_ride_availability_3`: The routine checks whether a ride is currently available for guests and updates the ride’s state and display information.
+- `set_ride_config`: Initializes a ride configuration record for the current park object.
+- `process_ride_queue_34`: The routine processes a ride queue entry for a guest, checking the ride state and updating the guest’s ride interaction data.
+- `process_ride_queue_35`: Iterates over ride queue entries and processes a matching ride for a guest.
+- `process_ride_vehicle_3`: This routine updates a single ride vehicle each tick, advancing its animation and movement along the ride track.
+- `check_ride_availability_4`: The routine checks whether a ride is available for a guest and updates the guest’s ride state when the ride is found.
+- `set_ride_price_4`: This routine configures a ride object by setting its price tier and clearing its state flags.
+- `set_ride_operation_mode`: The routine updates the operational mode of a ride object based on its current state and a selection flag, writing the new mode and related sprite index into the ride structure and marking the ride for redraw.
+- `set_ride_vehicle_type`: The routine selects a vehicle type for a ride object based on a mask and a lookup table, writes the type into the object and loads the corresponding vehicle data pointer.
+- `set_tile_flag`: Marks a specific tile in the park map as active or selected during layout operations.
+- `clear_ride_queue_entry`: Clears a ride queue entry and updates its display state when the ride becomes available.
+- `reset_ride_state_4`: This routine resets the internal state of a ride object after a specific condition is met.
+- `update_ride_state`: Updates a ride’s operational state and linked attraction data each tick.
+- `reset_ride_state_5`: This routine resets the state of a ride after a guest interaction or failure.
+- `check_ride_operational_2`: The routine checks whether a specific ride is currently operational and, if so, triggers its update logic.
+- `process_ride_queue_36`: This routine advances a ride’s guest queue and handles the next guest to board.
+- `update_ride_status_5`: This routine updates the status and display parameters for a ride object in the park.
+- `check_ride_collision`: The routine checks whether a ride vehicle is too close to the ride’s start and end limits and flags a collision condition.
+- `validate_ride_operation`: Checks whether a ride can operate under current conditions and updates its status flags.
+- `update_ride_state_2`: Updates the ride state for a park object.
+- `update_ride_status_6`: The routine updates the status of a ride object when a specific flag is set.
+- `decrement_ride_counter`: The routine decrements a counter used for a ride or attraction in the park.
+- `process_ride_queue_37`: Handles the next guest in a ride’s queue, updates the ride’s state and timing, and decides whether a new guest boards or the ride is skipped.
+- `update_ride_price_4`: This routine updates the price and related data for a selected ride or attraction in the park.
+- `read_park_rating`: The routine reads the current park rating value from the game state and stores the updated rating back into the state structure.
+- `process_ride_queue_38`: This routine processes a ride queue entry and updates the ride’s current guest and wait time.
+- `update_ride_price_5`: The routine updates a ride’s price and display data based on its current configuration and linked objects.
+- `update_ride_price_6`: The routine updates the price of a ride by copying a base value from a table and then, if a linked list is present, scans the list for a cheaper price and writes the new price and a related flag into the ride record.
+- `update_ride_price_7`: Adjusts the price of a ride based on its current rating and other park data.
+- `update_ride_status_7`: Updates the current ride’s operational status and related flags in the game’s theme park simulation.
+- `update_ride_waiting_time`: The routine updates the waiting time for a ride queue entry and refreshes its display.
+- `set_ride_name_and_type`: Sets the ride name and type for the currently selected ride object.
+- `return_constant_zero`: The routine is a stub that always yields a zero result.
+- `process_ride_queue_39`: This routine advances a ride queue entry, updates its counters and checks for the next guest to board.
+- `process_ride_queue_40`: This routine advances the queue for a ride or attraction, handling the next guest or vehicle to be processed and updating the ride state.
+- `find_ride_object_3`: This routine looks up a ride or scenery object in the park data structures and resolves its type and position.
+- `set_ride_speed_7`: The routine reads a byte from the ride data structure, calls the speed calculation routine, and stores the resulting speed value back into the ride structure.
+- `update_ride_status_8`: Updates the status and configuration of a ride object each tick.
+- `update_ride_price_8`: The routine updates the price of a ride selected by the player.
+- `set_ride_vehicle_type_2`: The routine selects a vehicle type for a ride based on the current ride configuration and writes the chosen type and its associated data into the ride structure.
+- `update_ride_state_3`: The routine updates the internal state of a ride object, refreshing its type and configuration tables and then triggers a visual refresh of the ride’s sprites.
+- `update_ride_vehicle_state`: Updates the state of a ride vehicle each tick, advancing its animation frame and handling its movement along the track.
+- `update_ride_status_9`: Updates the status and orientation of a ride object based on its current configuration and a random value.
+- `set_ride_status_flag`: Updates the status flag for a ride object based on its current speed and a configuration table, and loads a related ride parameter into the object.
+- `set_ride_status_flag_2`: Updates the status flag for a ride object based on a comparison of two counters.
+- `set_ride_price_5`: This routine updates the price data for a ride object.
+- `set_tile_flag_2`: The routine marks a tile as active in the park layout by writing a flag into the tile structure.
+- `copy_ride_price`: Copies a ride price value from a data table into a ride structure.
+- `set_ride_status`: Updates the status and timing fields for a ride object based on its current configuration and schedule.
+- `clear_ride_state`: This routine clears a ride object’s runtime state.
+- `process_ride_queue_41`: The routine processes a ride queue entry for a guest, updating the guest state and ride interaction, handling payment, queue position and ride selection.
+- `reset_ride_state_6`: Resets the state of a ride object when it is cleared or its timer expires.
+- `reset_ride_waiting`: The routine clears a ride’s waiting passenger count and updates the park’s money when a ride is reset.
+- `process_ride_waiting`: The routine handles a ride waiting state, clearing any pending penalty, updating a timer, and selecting the appropriate ride configuration based on a flag.
+- `set_ride_vehicle_type_3`: The routine configures a ride vehicle entry by copying a type identifier from a table into the vehicle structure and marks the vehicle with a ride-related flag.
+- `reset_ride_state_7`: This routine clears a ride object’s runtime state so the ride can be safely re-initialized.
+- `update_ride_vehicle_state_2`: Updates the per-vehicle state for a ride in the theme park simulation.
+- `update_ride_status_10`: Updates the operational status and display information for a park ride based on its current position and control flags.
+- `update_ride_status_11`: Updates the status and timing information for a ride object based on its current state and configuration.
+- `update_ride_status_12`: Updates the status and timing fields for a ride object based on its current state and configuration.
+- `update_ride_state_4`: Updates a ride’s operational state and timing parameters based on its current configuration and flags.
+- `update_ride_state_5`: Updates the internal state of a ride object each tick, synchronising its current mode with the ride table and setting its operating status based on the park’s global flags.
+- `set_ride_config_2`: Initializes a ride configuration record for the current park object.
+- `apply_ride_price_modifier`: Adjusts a ride’s price modifier based on the ride type and a configuration flag.
+- `find_ride_entry_2`: Scans the ride database for a matching ride type and selects the best entry based on priority values, updating the ride record with the chosen entry and its parameters.
+- `validate_ride_operation_2`: Checks whether a selected ride is currently operational and updates its running state.
+- `update_ride_status_13`: The routine updates the operational status of a selected ride in the park.
+- `check_ride_operational_3`: The routine checks whether a selected ride is currently operational and can be interacted with.
+- `update_ride_price_9`: Adjusts the price of a selected ride based on user input and updates the ride's data.
+- `handle_ride_selection_3`: Processes a player choice for a ride in the park and updates the corresponding ride state.
+- `copy_ride_object`: Copies a ride object from a source structure to a destination structure, handling a special case when the two source indices are consecutive.
+- `copy_ride_object_2`: Copies a ride object from a source structure into a destination structure.
+- `copy_ride_settings`: Copies a small set of ride configuration bytes from a source structure into a destination structure and returns success.
+- `copy_ride_config`: Copies a ride configuration byte from a source structure to a destination structure and then loads a 16-bit ride parameter from a table indexed by the configuration byte and a secondary ride type byte.
+- `apply_ride_setting`: The routine applies a ride setting to a selected ride object, updating its configuration fields when the ride matches the current selection criteria.
+- `copy_ride_object_3`: Copies a ride object from a source structure to a destination structure, handling a special case when the two ride indices are consecutive.
+- `copy_ride_object_data`: Copies ride object data from a source structure into a destination structure.
+- `copy_ride_object_data_2`: Copies a small set of ride object fields from a source structure into a destination structure during setup.
+- `copy_tile_attributes`: Copies a tile attribute byte from a source tile to a destination tile and then loads the destination tile's 16-bit attribute word from a table indexed by the attribute byte and a secondary index.
+- `find_ride_match`: The routine searches the park's ride tables for a ride that matches a given type and criteria, and records the ride's identifier and position into a guest or ride structure.
+- `find_ride_variant`: Searches the ride definition tables for a matching variant by type and parameters and writes the chosen variant index and size into the ride structure.
+- `apply_ride_restriction`: The routine checks a ride’s current restriction settings against a set of allowed limits and updates the ride’s configuration if the limits are satisfied.
+- `check_ride_availability_5`: The routine checks whether a ride can be built or modified at a given height and updates the ride’s type and height fields when a matching entry is found.
+- `find_ride_entry_3`: The routine looks up a ride entry in the park data tables by matching a type identifier and a set of attribute ranges, then writes the matching entry’s identifier and size into a caller-supplied structure.
+- `find_ride_entry_4`: The routine looks up a ride entry in the park data tables and updates the ride’s entry record with the current selection and price information.
+- `self_8`: This routine checks a set of palette or colour mapping entries against a target colour index and updates the destination entry when a match is found.
+- `apply_ride_constraint`: This routine checks a ride’s parameter constraints against a target value and updates the ride’s stored settings when the constraints are satisfied.
+- `apply_ride_constraint_2`: The routine checks a ride’s operational limits against a requested speed or height value and updates the ride’s constraint fields when the request is within the allowed range.
+- `find_ride_connection`: The routine checks whether a ride element can be linked to another element at a given height and updates the target element’s connection data when a valid match is found.
+- `find_ride_connection_2`: The routine searches the park data for a ride link that matches a given connection type and position, and updates the ride’s connection bytes when a compatible link is found.
+- `apply_ride_constraint_3`: The routine checks a ride’s operational limits against a requested time value and, when the request is within the allowed window, writes the adjusted time and a constraint flag into the ride’s data structure.
+- `find_ride_object_4`: The routine looks up a ride object by its identifier and checks whether the object can be placed at the requested coordinates.
+- `decrement_ride_timer`: This routine updates a ride’s internal timer and refreshes its display data.
+- `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
+- `update_ride_waiting_queue`: This routine updates a ride queue entry, advances its internal timers and decrements a counter.
+- `update_ride_statistics_3`: Updates a ride’s guest count and revenue when a guest boards or when a special event occurs.
+- `apply_ride_maintenance`: Applies a maintenance update to a ride object when a specific trigger condition is met.
+- `update_ride_state_6`: This routine updates the operational state of a ride object each tick, advancing its internal step counter and applying conditions such as queue length, maintenance flags and guest satisfaction to change the ride’s status and timer.
+- `resolve_ride_object`: This routine resolves a ride object reference through a chain of linked entries in the park data.
+- `find_park_object_2`: This routine walks a linked list of park objects looking for one that matches a mask derived from the current object and a global table.
+- `get_ride_price_index`: Returns the price index for a ride or attraction based on its type and current configuration.
+- `find_ride_object_5`: Searches the park data structures for a ride object matching a mask and attribute criteria, following linked entries until a valid object is found.
+- `set_ride_state`: Sets the ride state for a park object, updating its operational flags and status fields.
+- `update_ride_status_14`: Updates a ride object’s operational flags and selects its current status value from a table based on the ride type and a mode byte.
+- `process_park_ride`: This routine handles a specific park ride object when it is in a particular state.
+- `update_ride_object_2`: The routine updates a ride object in the park simulation.
+- `add_to_ride_stat`: Increases a ride's accumulated statistic by a given amount.
+- `resolve_ride_object_id`: This routine resolves a ride object identifier from a ride descriptor and stores the resulting object reference in the descriptor.
+- `copy_ride_price_2`: Copies a ride price value from a data table into the ride structure.
+- `set_ride_price_6`: Sets the price of a ride based on its type and current park configuration.
+- `set_entity_animation_frame`: Updates the current animation frame for a park entity by looking up a frame index from a table using the entity's type and state.
+- `clear_ride_instance`: This routine clears a ride instance structure and updates global ride counters when a ride is removed.
+- `clear_input_buffer`: This routine clears a small input buffer used by the game.
+- `draw_ride_vehicle_3`: The routine draws a ride vehicle sprite at the given screen position using a per-column visibility mask.
+- `check_ride_access`: The routine decides whether a guest can use a particular ride and, when allowed, updates the guest’s ride state and related counters.
+- `compute_ride_flags`: The routine computes a flag byte for a ride based on the status of its eight components and writes the result into the ride data.
+- `check_ride_operational_status`: This routine checks whether a ride is operational and determines its current state for the park management interface.
+- `apply_ride_maintenance_2`: The routine checks the four rides selected by the player and applies a maintenance or repair action to matching rides, updating their state and the park’s ride data structures.
+- `self_9`: This routine updates the park’s ride or attraction state for a selected guest group.
+- `self_10`: This routine updates a ride vehicle’s state and appearance when it is selected or activated in the park.
+- `get_ride_name`: Returns the name string for a ride type based on an index supplied on the stack.
+- `update_ride_vehicle_state_3`: Updates the state of a ride vehicle when it is being processed by the ride system.
+- `validate_ride_object`: Checks a ride object record against the current park data and flags it for removal or reset when it is invalid or marked for deletion.
+- `handle_ride_status`: Processes a ride’s current status flag and triggers a park update when the ride is active or malfunctioning.
+- `handle_ride_crash`: The routine processes a ride crash event for a specific ride type.
+- `update_ride_price_10`: Adjusts the price of a ride or attraction and propagates the change through its linked components.
+- `get_ride_state`: Returns the current operational state of a ride and optionally marks it for update.
+- `set_tile_flag_3`: The routine marks a tile as active and forces a lowercase flag on the tile data when a condition is set.
+- `process_ride_queue_42`: This routine updates a ride queue entry, clears its state flags and notifies the ride system when the queue is empty or when a specific ride condition is met.
+- `self_11`: This routine processes a ride vehicle’s state and updates its passenger loading and ride operation flags.
+- `update_ride_waiting_time_2`: Updates the waiting time for a ride’s queue entry when the ride is active and the entry is not already processed.
+- `update_ride_waiting_time_3`: This routine updates the waiting time for a ride and notifies the game when the wait changes.
+- `update_ride_state_7`: Updates the operational state of a ride after a guest interaction or timer tick.
+- `trigger_park_event_3`: This routine initiates a park event by invoking the event handler.
+- `remove_ride_vehicle`: Removes a ride vehicle from the park simulation when the ride is being dismantled or cleared.
+- `draw_ride_vehicle_4`: The routine draws a ride vehicle sprite at the calculated screen position for the current park view.
+- `clear_pending_messages`: This routine clears a small pending message queue used by the game, moving each entry to a processing buffer and then zeroing the original slot.
+- `reset_global_flag`: This routine clears a global flag used by the game engine.
+- `load_game_slot`: Loads a saved park game from a slot or starts a new game, handling demo and quick-load paths.
+- `load_park_data_2`: This routine loads and validates a saved park file and initializes the park state for gameplay.
+- `swap_adjacent_bytes`: Swaps the first two bytes of a two-byte pair in memory.
+- `load_language_strings`: The routine loads the game's language strings from the language data file into memory and builds a lookup table for quick access.
+- `copy_palette_block`: Copies a small block of palette data from a source table to a destination table used by the game.
+- `restore_game_state`: This routine restores the saved park state when loading a game.
+- `verify_password_match`: Checks whether the entered park password matches the stored password.
+- `check_ride_compatibility`: The routine checks whether a selected ride can be placed on a given plot and whether it satisfies the park’s current constraints.
+- `check_ride_eligibility`: The routine validates whether a guest can board a selected ride by checking the guest’s flags, the ride’s requirements and the current park state.
+- `check_ride_compatibility_2`: The routine checks whether a selected ride can be placed on the current plot and whether it is compatible with the existing attraction, updating the placement state and triggering a failure if the ride is incompatible or the plot is full.
+- `check_ride_connection`: The routine checks whether a ride piece is correctly linked to its neighbours in the park layout.
+- `find_ride_connection_3`: The routine scans ride data structures to locate a connected ride and updates ride state flags when a matching connection is found.
+- `check_ride_connection_2`: The routine checks whether a ride piece connects to another piece in the park layout and, when a connection is found, triggers the ride start sequence and updates the ride state and timers.
+- `update_ride_statistics_4`: Updates the in-memory statistics for a ride being inspected, such as visitor count and satisfaction, and refreshes the displayed ride information panel.
+- `self_12`: This routine processes a park object’s animation and state updates, handling timing, frame selection and visual effects for the object in the game world.
+- `find_ride_connection_4`: The routine searches for a valid connection between two ride elements and validates the link against the park layout.
+- `process_ride_vehicle_4`: The routine updates a ride vehicle’s state and visual data during the simulation tick.
+- `check_ride_access_2`: This routine validates a guest’s access to a ride and updates the ride’s state when the guest boards.
+- `check_ride_availability_6`: The routine checks whether a ride can be built or operated at the requested location and updates the game state for a new ride placement.
+- `validate_ride_operation_3`: This routine checks whether a ride can be operated safely and prepares the ride’s operational state for the current simulation tick.
+- `draw_ride_preview_5`: The routine prepares and draws a small preview of a ride or attraction in the theme park interface, using the ride’s type and configuration data to select the correct sprite and colour information.
+- `update_ride_statistics_5`: The routine updates per-ride counters and timing values used by the park simulation.
+- `update_ride_statistics_6`: This routine updates the in-memory statistics and state for a selected ride, refreshing its counters, flags and timers and handling special ride-type behaviour such as resetting or incrementing usage values.
+- `update_ride_statistics_7`: This routine updates per-ride counters and statistics for the currently selected attraction.
+- `process_ride_queue_43`: The routine processes a ride queue entry, updates ride statistics and counters, and triggers ride-related updates such as animation and sound.
+- `process_ride_event_2`: Handles a ride-related event triggered by the game engine.
+- `update_ride_stats`: The routine refreshes the statistics for a set of five rides, updating their internal counters and flags.
+- `increment_ride_counter`: The routine updates the park’s ride usage statistics.
+- `increment_ride_counter_2`: The routine increments a per-ride usage counter and updates the ride’s maximum recorded usage value.
+- `set_park_name`: The routine sets the park name string to a default value and then stores the park name pointer in the save data structure.
+- `check_ride_path_collision`: The routine checks whether a ride path segment collides with existing park objects and updates the ride layout state accordingly.
+- `process_ride_vehicle_5`: Updates the state of a ride vehicle each tick, handling its movement, passenger loading and unloading, and ride operation timers.
+- `process_ride_queue_44`: The routine advances the per-ride queue state for a single ride, handling entry timers, passenger loading and unloading, and ride operation timing.
+- `process_ride_vehicle_6`: This routine updates the state of a ride vehicle each tick, handling passenger loading and unloading, ride operation timing, and vehicle movement along the track.
+- `update_ride_state_8`: The routine updates a ride’s internal state and counters.
+- `update_ride_status_15`: The routine updates a ride’s internal counters and state flags each tick.
+- `process_ride_state`: Updates the internal state of a ride object each tick, advancing its operational phase, handling guest loading and unloading, and resetting timers when the ride is idle or completes a cycle.
+- `set_ride_wait_time`: The routine updates a ride object’s waiting state, increments its internal counter and configures the ride to wait for a long period before the next cycle.
+- `set_ride_price_7`: The routine updates a ride’s price field from an incoming value and refreshes a derived display value based on the ride’s current price tier.
+- `reset_ride_state_8`: Resets the state of a ride when its timer expires or it is deactivated.
+- `reset_ride_state_9`: Resets the ride state for a selected ride and updates its timing and status flags.
+- `clear_ride_instance_2`: Resets a ride object in memory to a clean default state.
+- `update_ride_waiting_time_4`: This routine updates the waiting time for a ride and processes its queue.
+- `process_ride_queue_45`: The routine updates a ride’s queue state each tick.
+- `clear_ride_waiters`: The routine clears a pending waiters count for a ride when the wait time has elapsed.
+- `process_ride_vehicle_7`: Updates a ride vehicle each tick, handling its movement, passenger loading and unloading, and ride state changes.
+- `process_ride_queue_entry`: The routine updates a ride queue entry with a new type and state, advances the queue pointer and clears the queue flag when the end is reached, and marks a bit in a bitmap based on a stored index.
+- `set_ride_operational_flag`: The routine marks a ride as operational and updates its internal state.
+- `update_ride_queue_entry`: The routine updates a single entry in a ride queue, advancing the queue index and writing the next guest state into the ride’s data structures.
+- `clear_ride_waiting`: When a ride has a non-zero waiting queue, the routine applies a penalty to the park’s money and to a global finance counter, then clears the waiting queue for that ride.
+- `process_ride_vehicle_8`: This routine updates a ride vehicle each tick, handling its current state, passenger loading, ride progress and visual effects.
+- `increment_ride_statistic`: The routine updates a ride’s internal counters and marks a visitor presence bit for the current guest.
+- `process_ride_queue_46`: The routine advances a ride’s queue state and updates the guest waiting list for the next ride cycle.
+- `process_ride_waiting_2`: Applies a financial penalty when a ride has been waiting too long for service and clears the waiting flag.
+- `process_ride_ticket`: The routine processes a ride ticket when the ride is ready and the ticket matches the current ride.
+- `reset_ride_state_10`: The routine clears the ride state flag for the current park object.
+- `clear_ride_objects`: Removes all objects linked to a ride and then clears the ride’s own data fields.
+- `process_ride_vehicle_9`: Removes a ride vehicle from the simulation and updates the park state.
+- `check_ride_availability_7`: Checks whether a ride is currently available for guests to use.
+- `check_ride_status_2`: The routine checks the status of a ride by testing four related entries.
+- `update_ride_wait_time`: This routine advances the internal wait counter for a ride and recomputes its current wait time from the ride’s base wait, current load and a global factor.
+- `set_ride_state_flags`: This routine updates the ride's operational flags after checking a condition from a helper routine.
+- `update_ride_object_state`: This routine updates the state and visual parameters of a ride object in the park simulation.
+- `set_ride_price_8`: The routine updates the price of a ride object when a price field is marked for change, selecting the appropriate price slot and writing the new price from the ride’s price table.
+- `spawn_ride_entity`: Creates a new ride object in the park simulation and initializes its state from the ride definition.
+- `create_ride_vehicle`: This routine creates a new ride vehicle instance and initializes its state for the current ride.
+- `increment_ride_counter_3`: The routine updates a ride-related counter and refreshes a small set of ride state fields when a flag is set.
+- `increment_ride_counter_4`: The routine updates a ride usage counter and refreshes the ride’s display data when the ride is active.
+- `increment_ride_counter_5`: Increments a ride usage counter and updates the current guest record with ride data.
+- `increment_ride_counter_6`: The routine increments a per-ride usage counter and updates a small ride state block when a flag is set.
+- `spawn_ride_vehicle_2`: Creates a new ride vehicle instance in the park simulation and initializes its state, timers and visual parameters.
+- `decrement_ride_waiting_counters`: This routine is called when a guest leaves a queue and updates the park’s ride waiting counters.
+- `decrement_ride_counter_2`: This routine decrements a ride’s guest counter and updates the park’s global ride statistics.
+- `decrement_ride_stats`: This routine updates the internal counters for a selected ride and its associated attraction, decrementing a global ride usage counter and a per-ride counter while incrementing a related statistic.
+- `decrement_ride_counter_3`: This routine updates the park’s ride usage counters and decrements the current ride’s remaining capacity.
+- `decrement_ride_counter_4`: The routine decrements a ride usage counter and a per-ride statistic, increments a related counter, triggers a ride-specific sound effect, and clears a small temporary buffer used for the ride update.
+- `process_ride_queue_47`: This routine advances the state of a ride queue entry each tick, handling countdowns, random selection of a guest, and updating the ride’s next guest pointer.
+- `update_ride_status_16`: Updates the status and animation data for a ride object in the park.
+- `process_ride_queue_48`: This routine advances a ride’s guest queue and updates the ride’s state each tick.
+- `update_ride_state_9`: This routine updates the current state of a ride object in the park.
+- `update_ride_state_10`: The routine updates the current state of a ride object and selects the appropriate animation frame.
+- `set_ride_vehicle_type_4`: Updates a ride vehicle entry with a new vehicle type and selects the corresponding sprite data for that type.
+- `update_entity_timer`: This routine updates a timed game entity each frame, advancing its internal countdown and refreshing its visual and behavioural state.
+- `set_ride_parameters`: This routine initializes or updates the parameters for a ride object in the park.
+- `update_ride_object_flags`: Updates a ride object’s status flags and cached data after a change in the park simulation.
+- `update_park_object_state`: Updates a park object’s cached state fields from the current game data.
+- `self_13`: This routine checks a park object against a set of ride or attraction entries to decide whether the player can interact with it.
+- `find_ride_entrance_2`: The routine scans a small set of ride records to locate an entrance matching the current guest state and ride type.
+- `check_ride_queue`: This routine checks whether a ride queue can be advanced for a guest.
+- `find_ride_for_guest`: The routine selects a ride for a guest by scanning a list of rides and checking compatibility with the guest’s preferences and current state.
+- `find_ride_object_6`: Searches the ride object table for a matching entry based on the current ride and park data, then fills the ride descriptor with the found object’s parameters and returns a status code indicating success or failure.
+- `update_ride_state_11`: Updates the state of a ride object based on the current park mode and the ride’s configuration.
+- `update_ride_waiting_queue_2`: The routine advances a ride queue entry and handles a guest leaving the queue.
+- `write_ride_price`: The routine writes a ride price value into the ride structure.
+- `update_ride_status_17`: The routine updates the ride’s status bytes and counters, refreshes its display parameters from the ride table, and optionally sets a special operating mode when a global flag is active.
+- `process_ride_queue_49`: Handles a single ride queue entry each tick, advancing its internal timer and updating the guest state for the ride.
+- `set_ride_type`: The routine selects a ride type for a new park object and writes the chosen type and associated default parameters into the object record.
+- `set_ride_option`: The routine selects a ride option for the currently edited ride and stores the chosen option index and its display parameters in the ride data structure.
+- `set_ride_price_9`: The routine selects a ride price tier for the currently edited ride object.
+- `return_constant_zero_2`: This routine always returns zero and is called from several game logic branches.
+- `find_ride_vehicle`: The routine searches the park's ride vehicle list for a suitable vehicle to attach to a guest and, when found, links the guest to that vehicle and updates the guest and vehicle state.
+- `find_ride_vehicle_2`: The routine scans the park’s ride vehicle tables for a vehicle that matches a set of criteria and, when found, initializes its control and animation data and returns success.
+- `find_ride_for_placement`: This routine searches the park data for a ride that matches the current placement constraints and returns a success flag.
+- `validate_ride_entry`: Checks a ride entry against the park data and, when valid, initializes the ride’s display and control structures so it can be shown and operated in the game.
+- `process_theme_park_object`: Updates a theme park object each tick, handling its animation frame, position and state transitions.
+- `update_ride_object_3`: Updates a ride object record after a change in its state.
+- `set_ride_price_10`: The routine updates the price data for a selected ride object in the park.
+- `update_ride_status_18`: Updates a ride’s operational status and related display data in the park simulation.
+- `process_ride_queue_50`: Iterates through a ride’s queue entries and updates their state each tick.
+- `check_ride_operation`: The routine walks the linked list of rides and checks each ride’s operational flags against the current park state.
+- `process_ride_queue_51`: The routine processes a ride queue entry, checks its configuration and updates the ride’s state flags and timing fields.
+- `init_ride_vehicle`: Initializes a ride vehicle instance for the theme park simulation.
+- `check_ride_availability_8`: The routine checks whether a ride can be used or is blocked by the current park state and updates the ride’s status flags accordingly.
+- `process_animation_frame_2`: This routine advances a park object’s animation frame and updates its visual state.
+- `update_ride_price_11`: Updates the price of a ride in the park.
+- `update_ride_price_12`: Updates the price data for a selected ride in the park.
+- `update_theme_park_object`: Updates a theme park object’s animation and state each tick.
+- `update_ride_object_flags_2`: Updates the ride object’s internal flags and timing fields from the game state.
+- `update_ride_status_19`: Updates a ride’s operational status and related display data in the park simulation.
+- `update_ride_instance`: Updates a ride instance each tick, handling its animation timing and state progression.
+- `set_ride_price_11`: The routine writes a price value into a ride structure based on an index derived from the ride data.
+- `set_ride_price_12`: The routine updates the price and related data for a ride object in the park.
+- `set_ride_price_13`: This routine updates the price and related data for a selected ride in the park.
+- `decrement_cooldown_counter`: This routine decrements a short-lived cooldown or delay counter stored in an object and returns whether the counter has just expired.
+- `check_park_open_2`: Checks whether the park is currently open to visitors and returns a flag indicating open status.
+- `check_ride_availability_9`: The routine checks whether a ride is free to operate and, if so, creates a new ride instance and updates the park’s ride counters and state.
+- `process_ride_queue_52`: The routine processes a small set of ride queue entries, marking each as active and then initializing the first empty ride slot with data from the current ride definition.
+- `process_ride_queue_53`: The routine walks the ride queue and processes each waiting guest entry, updating guest records and ride statistics.
+- `create_ride_instance`: This routine creates a new ride instance in the park and initializes its core data.
+- `process_park_visitor`: The routine processes a park visitor record that is currently being handled, updating counters and visitor state as the guest moves through the park.
+- `increment_ride_statistics`: The routine updates global ride counters and per-ride statistics for a park attraction, advancing the simulation tick and recording usage, revenue and state changes for each ride entry.
+- `process_ride_queue_54`: This routine advances the ride queue counters and processes each waiting guest entry, updating their ride state, costs and statistics.
+- `process_ride_queue_55`: This routine steps through the ride queue and advances each waiting guest entry, updating ride statistics and counters.
+- `process_guest_departure`: The routine handles a guest leaving the park, clearing any pending ride requests for that guest and updating park statistics such as guest counts, money and satisfaction.
+- `reset_ride_state_11`: Resets the internal state for a specific ride and prepares it for a new operation.
+- `add_ride_object`: The routine records a new ride object in the park’s object table when the park is being initialized.
+- `populate_ride_list`: This routine fills the in-memory ride list for the current park view, selecting the appropriate ride table based on the active screen mode and copying each ride’s data into the display structures.
+- `update_park_ride_state`: Iterates over the park’s rides and updates a per-ride state flag based on the current ride type and the active park mode.
+- `update_ride_status_20`: Iterates over a set of ride entries and updates a status byte for each ride based on its current type and control flags.
+- `find_park_object_3`: The routine scans a list of park objects looking for a matching entry based on the current selection criteria and a stored index.
+- `self_14`: The routine processes a small table of ride or attraction entries and checks the current park state to decide whether to trigger a special event.
+- `skip_invalid_ride_entry`: This routine skips over invalid or blocked ride entries while scanning a ride list.
+- `handle_ride_control`: This routine processes a ride control command selected by the current ride state.
+- `draw_ride_preview_6`: The routine renders a small preview of a ride for the park management interface.
+- `draw_ride_preview_7`: The routine renders a small preview of a ride for the park management interface.
+- `draw_ride_preview_8`: This routine renders a small preview of a ride for the park editor, drawing its track and support elements into the preview buffer.
+- `reset_park_state_2`: The routine clears and reinitialises the park’s runtime state before a new session.
+- `increment_theme_counter`: Increments a theme counter while scanning a null-terminated list of theme entries.
+- `draw_ride_preview_9`: Renders the preview of a ride being built or selected in the park editor.
+- `draw_ride_preview_10`: The routine renders a preview of a ride or attraction on the park map, drawing its bounding box and associated UI elements.
+- `draw_ride_info_panel`: The routine renders the information panel for a selected ride in the park.
+- `draw_ride_info_panel_2`: This routine renders the ride information panel in the theme park interface.
+- `draw_ride_preview_11`: This routine renders the preview of a selected ride in the park editor.
+- `draw_ride_preview_12`: The routine renders a small preview of a ride for the park management interface.
+- `draw_ride_info_panel_3`: Renders the ride information panel for a selected attraction, showing its name, statistics and status in the UI. The routine chooses between different layouts depending on the ride type and updates the on-screen text fields accordingly.
+- `draw_ride_info_panel_4`: The routine renders the ride information panel in the park management interface.
+- `draw_ride_preview_13`: This routine renders the preview of a selected ride in the park editor, drawing its main sprite, support graphics and label.
+- `draw_ride_preview_14`: The routine renders a small preview of a ride for the park management interface.
+- `draw_ride_preview_15`: Renders a small preview window showing the current ride being inspected or built in the park editor.
+- `draw_ride_preview_panel`: This routine renders the ride preview panel in the park editor, drawing the ride thumbnail, its name and description text, and the associated control buttons.
+- `draw_ride_preview_16`: Renders a small preview of a ride in the construction UI. It iterates over the ride’s tiles, draws the base graphics and overlays the appropriate entrance and exit markers, and updates the selection highlight when the preview matches the currently chosen ride.
+- `draw_ride_preview_17`: The routine renders a small preview of a ride in the park editor, drawing its track pieces and associated scenery for the currently selected ride type.
+- `draw_ride_info_panel_5`: The routine renders the information panel for a selected ride, drawing its decorative borders and filling in the ride’s name and statistics.
+- `draw_ride_vehicle_5`: The routine renders the sprites for a ride vehicle as it moves along its track.
+- `draw_ride_preview_18`: The routine renders a small preview of a ride being built in the park editor, updating the on-screen tiles and markers as the player steps through the construction sequence.
+- `draw_ride_preview_19`: This routine renders a small preview of a ride being placed in the park.
+- `draw_ride_preview_20`: Renders a small preview of a ride being placed in the park editor, updating the on-screen preview as the player moves the selection.
+- `draw_ride_info_panel_6`: This routine renders the information panel for a selected ride in the park management interface.
+- `draw_park_ride_vehicle`: Renders a park ride vehicle sprite with dynamic scaling and color based on distance and speed.
+- `draw_ride_status_indicators`: This routine renders the on-screen status indicators for a selected ride, choosing different icons and labels based on the ride’s current state and recent performance metrics.
+- `draw_ride_preview_21`: The routine draws the on-screen preview of a ride being placed in the park editor.
+- `draw_ride_info_panel_7`: This routine renders the information panel for a selected ride in the park management view.
+- `draw_ride_info_panel_8`: The routine renders the ride information panel for the currently selected attraction.
+- `draw_ride_preview_22`: Renders the ride preview window for the selected attraction, drawing its name, price and status text and updating the preview graphics based on the current selection and time.
+- `draw_ride_preview_23`: The routine draws a small preview of a ride in the park editor, showing its bounding box and a status icon that changes with the ride’s age.
+- `draw_ride_vehicle_6`: Renders a ride vehicle sprite on the park map, selecting the correct animation frame based on the vehicle’s position relative to the camera and updating the ride’s visual state.
+- `draw_ride_preview_24`: This routine draws a small preview of a ride or attraction in the park, selecting the correct sprite orientation based on the current camera position relative to the object.
+- `draw_ride_preview_25`: This routine draws the preview of a ride being placed in the park and updates the placement UI. It renders the ride footprint and related overlays, then handles the confirmation of the placement and updates the game state when the ride is accepted.
+- `draw_ride_preview_26`: This routine draws a preview of a ride being placed in the park.
+- `draw_ride_preview_27`: The routine draws a small preview of a ride in the park, selecting a different icon and label depending on the ride’s current height relative to the camera.
+- `draw_ride_preview_28`: The routine draws a small preview of a ride in the park, selecting a visual style based on the ride’s current height and then rendering its name and other details.
+- `draw_ride_preview_29`: The routine draws a ride preview in the park editor, selecting the appropriate preview graphics based on the ride’s size and then rendering the preview with its label and price information.
+- `draw_ride_preview_30`: Renders a small preview of a ride being placed in the park editor, showing its footprint and a selection highlight.
+- `draw_ride_preview_31`: Renders a small preview of the selected ride in the park editor, updating the on-screen thumbnail and related UI state.
+- `draw_ride_preview_32`: This routine renders a small preview of a ride in the park editor, drawing its entrance, exit and optional queue elements based on the selected ride type and current configuration.
+- `draw_ride_preview_33`: The routine draws a small preview of a ride in the park interface and updates the associated UI elements.
+- `draw_ride_preview_34`: The routine draws a preview of a ride or attraction in the park, using the current selection and layout data to render the preview image and its bounding box.
+- `draw_ride_info_panel_9`: This routine renders the information panel for a selected ride, drawing its name, statistics and status text on screen.
+- `update_ride_status_21`: The routine updates the on-screen status information for a ride, refreshing its name, statistics and operational flags.
+- `draw_ride_info_panel_10`: Renders the ride information panel in the park management UI. It draws the ride name, statistics and status icons for the selected attraction, updating the display when the player inspects a ride.
+- `draw_ride_preview_35`: Renders a small preview of a ride or attraction in the park interface.
+- `draw_ride_preview_36`: The routine renders a small preview of a ride in the park editor, drawing its entrance and exit markers and the ride name string.
+- `check_ride_entrance_collision`: The routine checks whether the player’s current position overlaps the entrance area of a ride and, if so, copies the ride’s name into a global buffer and marks the ride as selected.
+- `reset_ride_state_12`: This routine clears a ride-related flag and then updates the ride system.
+- `trigger_park_update`: The routine initiates a park-wide update step in Theme Park.
+- `update_ride_queue_2`: The routine updates the state of ride queues and waiting guests, advancing timers, handling guest entry and exit, and refreshing the on-screen queue display for the park simulation.
+- `update_ride_queue_3`: The routine steps through the park’s ride queue entries and updates each guest’s progress, timers and state while moving them along the queue.
+- `update_ride_status_22`: The routine iterates over ride entities and updates their per-ride timers and state flags, handling ride operation phases such as loading, running and unloading.
+- `update_ride_vehicle_state_4`: Iterates over ride vehicles and updates their position, animation and state flags as they travel along the track.
+- `update_ride_state_12`: Updates the state and animation of a ride object each tick.
+- `update_ride_vehicle_state_5`: Iterates over ride vehicles and updates their position, animation and state flags each game tick.
+- `draw_ride_elements_7`: The routine iterates over ride data and draws the ride’s track pieces and scenery sprites for the current view.
+- `draw_ride_preview_37`: The routine renders a preview of a ride being placed in the park.
+- `draw_ride_elements_8`: This routine iterates over a set of ride elements and draws each one at its screen position while also updating the associated ride data.
+- `draw_ride_stats`: The routine renders the ride statistics panel for the currently selected ride.
+- `draw_ride_vehicle_7`: This routine renders the visual representation of a ride vehicle on screen.
+- `draw_ride_info_panel_11`: The routine renders the ride information panel for the currently selected attraction, updating its various numeric fields and labels from the ride’s data.
+- `draw_ride_info_panel_12`: This routine renders the ride information panel in the park management interface.
+- `draw_ride_info_panel_13`: This routine renders the ride information panel in the park management interface.
+- `clear_ride_selection_flag`: This routine clears a ride selection flag and, when a ride is active, updates the ride preview and information panels for the currently selected ride.
+- `check_ride_queue_2`: The routine checks the current ride queue entry and updates the ride state when a guest is waiting or the queue is empty.
+- `self_15`: This routine scans a list of ride or attraction entries to find one that contains the current guest coordinates and handles the guest interaction with that ride.
+- `check_ride_operation_2`: The routine checks the current operating state of a ride and updates ride control flags and timers.
+- `check_ride_queue_position`: This routine checks the current guest queue position against the ride’s entry window and updates the ride state flags.
+- `check_ride_bounds`: The routine checks whether a ride’s bounding box overlaps the current selection rectangle and updates the ride’s selection state.
+- `reset_ride_state_13`: The routine clears and resets the ride state variables and triggers a ride reset event.
+- `reset_ride_state_14`: This routine resets the internal state of a ride when a specific condition is met, clearing flags and counters and triggering a ride reset action.
+- `reset_global_state`: Clears a set of global flags and pointers used by the game engine, effectively resetting the current internal state.
+- `reset_park_state_3`: The routine resets the park state when a specific game mode is active, clearing the park’s money and guest counters and disabling the park update.
+- `reset_ride_state_15`: The routine clears the ride’s internal state variables, effectively resetting the ride to an idle condition before it is (re)initialised.
+- `handle_park_event`: This routine processes a park event based on the current event type.
+- `update_park_rating`: The routine updates the park’s rating by applying a fixed adjustment to the current rating value.
+- `handle_text_input`: Processes a text string for the in-game editor, handling insertion, deletion and cursor movement based on the current editing mode.
+- `set_palette_mask`: The routine prepares a palette mask by setting a register to all bits on and returns a success flag.
+- `clear_ride_flag_2`: The routine clears a ride-related flag used by the park simulation.
+- `set_palette_entry`: The routine writes a single byte from a data register into a byte pointed to by an address register, updating one palette entry used for the game's colour look-up.
+- `decrement_counter`: The routine decrements a counter stored at an address held in A3, but only if the counter is non-zero.
+- `increment_counter_if_needed`: This routine checks a counter value against a limit and increments the counter when it is below the limit.
+- `return_error_code`: This routine is a small error handler used by the game when a requested operation cannot be performed.
+- `return_true_flag`: Returns a constant true flag used as a boolean check in game logic.
+- `shift_string_left`: Removes the first character from a zero-terminated string in place when the string is shorter than a limit, shifting the remaining characters left by one.
+- `shift_string_right`: This routine shifts a null-terminated string one byte to the left in place, effectively removing the first character.
+- `remove_character_from_name`: This routine removes a character from a name string stored in the game data.
+- `decrement_ride_waiting`: This routine shifts a null-terminated string one byte to the left and then decrements a counter that tracks how many guests are waiting for a ride.
+- `insert_character_into_name`: Inserts a character into a name buffer at a given position, shifting existing characters to the right.
+- `decrement_stack_pointer`: This routine walks a byte buffer backwards, copying each byte onto itself and finally writes a terminator byte.
+- `handle_ui_control_input`: Processes user input for the park management UI, adjusting selection indices and updating the currently highlighted ride or menu item.
+- `reset_park_state_4`: This routine resets the park state flags and triggers a park-wide update.
+- `self_16`: This routine interprets a script of ride or scenery commands stored in a data block and dispatches each entry to the appropriate game action.
+- `render_ride_vehicle`: This routine updates the visual representation of ride vehicles on the park map.
+- `update_ride_status_23`: This routine updates the current ride’s operational state and animates its vehicles or scenery depending on whether the ride is running, paused, or being set up.
+- `update_ride_vehicle_positions`: This routine advances the ride vehicle update timer and steps through the active vehicle list, redrawing each vehicle or its shadow depending on its state and whether it is the currently selected vehicle.
+- `update_ride_vehicle_positions_2`: The routine advances the ride vehicle index and refreshes the positions of all vehicles on the currently selected ride.
+- `update_ride_status_24`: The routine refreshes the visual and logical state of a ride after a change, iterating over its cars and updating each car’s position and appearance.
+- `update_ride_car_positions`: Advances the ride car index toward a target and refreshes the visual state of each car on the current ride.
+- `update_ride_vehicle_positions_3`: The routine updates the ride vehicle counter and then iterates over the active ride vehicles.
+- `update_ride_vehicle_positions_4`: The routine updates the positions of ride vehicles in the park.
+- `update_ride_vehicle_positions_5`: This routine updates the positions of ride vehicles in the park.
+- `render_text_in_box`: The routine measures a null-terminated string and, if it fits, renders the characters inside a rectangular text box using the game's font and colour tables.
+- `render_text_string`: The routine renders a text string into a bitmap buffer, measuring character widths and drawing each glyph with sub_0_2381A. It handles left-to-right and right-to-left placement based on a control byte and a special marker, and skips drawing when the string would exceed the allocated width.
+- `process_ride_queue_56`: The routine walks through a ride queue and updates each guest’s position and state as they move through the attraction.
+- `render_text_line`: Draws a single line of on-screen text for the park interface, advancing a cursor and handling word wrap and special characters.
+- `render_text_line_2`: Draws a single line of text for the park map or UI, advancing a vertical cursor and handling spacing for each character.
+- `draw_ride_path_segment`: Renders a single segment of a ride track during the park map view.
+- `render_text_line_3`: Draws a single line of text at a given screen position using the game's font tables.
+- `draw_ride_name`: The routine renders the name of a ride or attraction on screen, using the current text buffer and ride data.
+- `draw_text_line`: Renders a single line of text for the in-game UI, advancing through characters and handling line wrapping and spacing.
+- `self_17`: The routine walks a park layout table to locate a specific ride or attraction and then triggers a visual highlight or selection effect for that object.
+- `render_ride_name`: The routine renders the name of a ride or attraction on screen, handling the text layout and drawing each character with the appropriate spacing and font.
+- `draw_ride_rectangle`: The routine draws a rectangular ride element on the park map using the supplied corner coordinates.
+- `initialize_theme_park`: The routine is a no-op stub used during the game start-up sequence.
+- `apply_tile_transform`: Applies a tile transformation to the park map using a helper routine.
+- `draw_park_object`: Renders a park object by issuing four textured quad draws that map the object's two texture coordinates onto the screen rectangle defined by the parameters.
+- `draw_ride_preview_38`: The routine draws a small preview of a ride on the map screen.
+- `draw_park_area`: This routine draws a rectangular area of the park map to the screen.
+- `draw_tile_rect`: Renders a rectangular area of the park map by converting tile coordinates to screen space and drawing the tiles.
+- `draw_tile_quad`: The routine draws a rectangular quad of tiles in the park map, filling the four edges with side graphics and the interior with a fill pattern.
+- `draw_ride_elements_9`: The routine draws the visual elements of a ride or attraction at a given screen position.
+- `compute_tile_delta`: The routine returns the difference in tile indices between two pointers by shifting each right by five bits.
+- `compare_ride_attribute`: The routine compares two ride records by a selected attribute chosen at runtime.
+- `compare_two_values`: The routine compares two values by subtracting one from the other.
+- `compare_entity_heights`: The routine compares the vertical position of two game entities by subtracting their height values.
+- `compare_entity_heights_2`: The routine compares the vertical positions of two game entities by subtracting their height values.
+- `clear_ride_building_flag`: The routine is a stub that always returns zero.
+- `self_18`: The routine adjusts a ride or attraction parameter by an offset and forwards the adjusted values to the ride update handler.
+- `draw_ride_element_2`: Renders a single piece of a ride at the given screen position.
+- `set_ride_price_14`: The routine computes a ride price from a base value and a name length and then applies it to the specified ride.
+- `render_text_string_2`: The routine renders a null-terminated text string to the screen, advancing the drawing cursor and handling spacing and punctuation for the theme park interface.
+- `calculate_string_width`: Computes the pixel width of a text string for on-screen rendering in the game.
+- `draw_amusement_map`: This routine renders the park overview map screen, initializing the map view and drawing the tiled amusement map background with the appropriate scaling.
+- `draw_ride_preview_39`: The routine renders a preview of a ride layout on screen, using the current ride dimensions and a flag to adjust the scale.
+- `update_ride_statistics_8`: The routine updates the park's ride statistics over multiple passes, feeding calculated values into the game's ride update logic and then finalising the update with a summary call.
+- `process_ride_queue_57`: Iterates over a ride queue and updates each entry with a calculated wait time and passenger count.
+- `set_ride_parameter`: The routine updates a ride configuration entry identified by a ride identifier.
+- `find_ride_entry_5`: The routine scans a small table of ride entries looking for one whose identifier matches a given value.
+- `write_park_ride_data`: Updates a park ride record in the game’s ride table.
+- `check_park_closed_flag`: The routine checks a park status flag and reports whether the park is closed.
+- `show_message_box`: Displays a small on-screen message box to the player.
+- `self_19`: This routine maps a ride or attraction type identifier to a category used by the game.
+- `find_object_by_type`: Looks up an in-game object record by its type identifier in a global table and returns a pointer to the record, or null if the type is not present.
+- `update_ride_queue_display`: The routine refreshes the on-screen queue indicators for rides, marking empty, partial and full slots and filling the remainder with a default state.
+- `fill_ride_queue_slots`: The routine initializes and fills ride queue slot entries with type markers for different guest states and pads the remaining queue with empty slots.
+- `count_ride_stats`: The routine tallies how many rides of certain types are present in the park and then marks a set of ride slots with status values to reflect those counts.
+- `reset_ride_queue_slots`: The routine clears and repopulates the ride queue slot flags for a ride, counting the current guests by type and then marking the appropriate number of slots as occupied or empty.
+- `count_ride_types_and_mark`: The routine scans the park's ride list and counts how many rides of each type are present, then marks a set of ride slots with type codes to reflect the counts.
+- `count_ride_vehicles`: The routine scans a block of ride vehicle records and tallies how many are in each of four operational states.
+- `place_ride_objects`: The routine places ride objects in the park layout by iterating over a set of ride entries and writing type markers into the world data structures.
+- `process_ride_queue_58`: The routine walks a linked list of ride queue entries and tallies how many guests are in each waiting state.
+- `populate_ride_queue`: The routine fills the ride queue with a set of guest entries for the current ride.
+- `set_ride_status_flags`: The routine initializes status flags for a batch of ride objects.
+- `set_ride_state_flags_2`: The routine initializes a block of ride records by writing a state value into each entry and then continues writing a different state for a second batch of records.
+- `fill_ride_object_flags`: Initializes a series of ride objects by setting a flag byte to a default value and then marking a further contiguous block of objects with a second flag value.
+- `fill_ride_flags`: The routine initializes a block of ride-related flag structures in memory, setting a field in each entry to a constant value.
+- `wrap_text_to_width`: This routine wraps a text string to fit within a given pixel width, inserting line breaks when the accumulated character width would exceed the limit.
+- `init_game_state`: This routine performs one-time initialization of global game state and then drives periodic updates for two timed subsystems when the game is active.
+- `reset_game_state_5`: This routine clears a global flag and then runs the main game reset logic, marking the game as initialized.
+- `self_20`: This routine creates a new guest entry in the park simulation when a visitor spawns.
+- `create_ride_instance_2`: Creates a new ride instance in the park simulation and initializes its core attributes.
+- `increment_ride_waiting`: The routine increments the waiting counter for a ride and updates the ride’s state flags.
+- `process_ride_instance`: The routine updates a ride instance in the park simulation.
+- `decrement_ride_waiting_2`: The routine decrements the waiting counter for a specific ride and clears the ride identifier.
+- `clear_ride_queue_entry_2`: Removes a ride queue entry from the park simulation.
+- `update_ride_configuration`: Updates the configuration of a ride or attraction for a given park element, applying type-specific rules and flags.
+- `draw_ride_vehicle_8`: The routine draws a ride vehicle by restoring its previous sprite data and rendering nine parts with transformed positions based on the vehicle’s orientation and location.
+- `render_ride_queue`: The routine draws the queue line for a selected ride, updating the on-screen sprites that represent guests waiting in line.
+- `spawn_ride_vehicle_3`: Creates and initializes a ride vehicle instance for a selected ride, setting up its type, position and visual attributes.
+- `find_ride_object_7`: The routine searches the park data for a ride object matching a set of criteria and builds a temporary list of candidates.
+- `self_21`: This routine validates a ride or attraction against the park layout and the player’s current context, checking tile types and object properties to decide if the object can be interacted with or built.
+- `check_ride_availability_10`: The routine checks whether a ride is available and usable for the current park state, walking through ride and attraction tables and validating their type and status.
+- `find_ride_vehicle_3`: The routine searches the park data structures for a ride vehicle that matches a given ride and position criteria, walking through linked vehicle lists and checking type and state.
+- `find_ride_vehicle_4`: Searches the park data for a ride vehicle matching a given criteria and returns whether it is found.
+- `process_ride_queue_59`: The routine walks through a block of ride queue entries and updates the visual and timing state for each guest waiting for a ride.
+- `process_ride_queue_60`: The routine steps through a linked list of ride queue entries and resolves the next ride for each guest.
+- `process_ride_queue_61`: Iterates over the ride queue entries and assigns a new ride type to the first matching slot, updating the ride’s configuration and scheduling data.
+- `spawn_ride_vehicle_4`: Creates a new ride vehicle instance and links it into the active ride chain.
+- `set_ride_vehicle_type_5`: This routine configures a ride vehicle entry in the park simulation, initializing its type and visual parameters and then iterating through linked vehicle records to assign appearance and behavior data.
+- `process_ride_queue_62`: The routine walks the ride queue and assigns a new ride type to each waiting guest, using the ride’s current configuration and a random choice.
+- `process_ride_chain`: Walks a linked list of ride objects and updates their state, clearing a flag on any ride that is marked for removal.
+- `skip_ride_chain`: The routine is a stub that deliberately does nothing when a ride chain is processed.
+- `update_ride_state_13`: The routine updates the state of a ride object each tick, advancing its timing and handling completion or cancellation.
+- `clear_ride_flags`: The routine clears two ride-related status flags in the current park object.
+- `process_ride_queue_63`: The routine processes a ride queue entry, advancing its timer and handling a pending refund when the wait expires or a timeout occurs.
+- `process_ride_waiting_3`: Processes a ride entity that has accumulated waiting time and clears its passenger load.
+- `update_ride_status_25`: Updates the status and timing information for a ride object in the park simulation.
+- `clear_ride_maintenance`: This routine clears a maintenance flag on a ride object and, when the ride is in a specific state, updates its operational parameters from the ride definition table.
+- `find_next_ride_2`: The routine walks a linked list of ride structures and returns the first ride whose active flag is clear, initializing its data from a ride-type table and assigning it a fresh identifier.
+- `update_ride_price_13`: The routine updates the price of a ride in the park.
+- `update_ride_waiting_time_5`: This routine updates the waiting time and queue position for a ride guest or vehicle.
+- `update_ride_vehicle_state_6`: This routine updates the state of a ride vehicle during a simulation tick.
+- `self_22`: This routine updates the state of a ride vehicle or guest entity when it reaches a station stop, handling boarding and alighting logic and adjusting the entity's schedule and counters.
+- `update_ride_waiting_queue_3`: The routine updates the waiting queue for a ride, adjusting the number of waiting guests and the ride’s state when guests board or leave.
+- `update_ride_waiting_queue_4`: This routine updates the waiting queue and ride state for a guest or vehicle in the theme park simulation.
+- `update_ride_queue_position`: Updates the queue position and waiting timer for a guest or vehicle in a ride queue.
+- `process_ride_queue_entry_2`: This routine advances a ride queue entry and updates its linked list pointers and timing fields.
+- `update_ride_queue_position_3`: The function advances the ride queue position for a ride.
+- `process_ride_queue_64`: This routine updates a ride queue entry, decrements its wait counter and propagates the ride reference through linked queue nodes.
+- `process_ride_queue_entry_3`: This routine updates a single ride queue entry, decrementing its wait counter and propagating the entry’s data through the linked queue chain.
+- `skip_invalid_trigger`: The routine is a stub that immediately returns zero and is invoked when the game encounters an unrecognised or malformed trigger.
+- `update_ride_queue_entry_2`: Updates a ride queue entry in the park simulation, propagating a change through linked queue nodes and adjusting the entry’s timing and state flags.
+- `self_23`: This routine updates the state of a park object and its linked chain, handling direction and animation flags for the object and its neighbours.
+- `update_ride_state_14`: Updates the internal state of a ride or attraction after a guest interaction or simulation tick.
+- `update_ride_availability`: The routine updates the availability and state flags for a ride and its linked rides in the park.
+- `validate_ride_entry_2`: Checks whether a ride entry and its linked chain are valid and updates the ride’s operational flags and type based on the park’s configuration.
+- `validate_ride_constraints`: Checks a ride’s linked constraints and updates its operational flags.
+- `validate_ride_queue`: Checks a ride queue chain for consistency and updates each queue entry’s state and display flags based on the ride’s configuration and current guest data.
+- `validate_ride_entry_3`: Checks whether a ride entry is valid and updates its flags and linked entries.
+- `validate_ride_access`: Checks whether a guest can enter a ride and updates the guest's ride state accordingly.
+- `validate_ride_constraints_2`: Checks a ride’s configuration and linked rides for consistency, applying type-specific flag rules and updating the ride’s control bytes.
+- `update_ride_status_26`: The routine updates the status and visual flags for a ride or attraction in the park.
+- `update_ride_queue_4`: Updates the waiting queue for a ride by processing each guest entry and applying the ride’s current state.
+- `update_ride_object_flags_3`: Updates per-ride object flags and associated display attributes for a park ride.
+- `draw_ride_vehicle_9`: The routine renders a ride vehicle sprite for each car in a ride, selecting the correct animation frame based on the vehicle type and the ride’s state and writing the resulting tile data to the display buffer.
+- `update_ride_object_flags_4`: The routine updates per-ride object flags and associated display data for a theme park ride, propagating state changes through linked ride entries.
+- `apply_ride_costume`: The routine walks through a ride’s linked list of scenery objects and applies a costume or colour overlay to each object based on the ride’s current state and the player’s selection.
+- `process_ride_queue_65`: Iterates through a ride's queue entries and updates each guest's position and orientation based on the ride's configuration and current state.
+- `update_ride_status_27`: The routine updates the status of a ride or attraction in the park, applying changes to its operational flags and related data structures.
+- `check_ride_availability_11`: The routine checks whether a ride is available for a guest and updates the guest’s pathing flags accordingly.
+- `update_ride_vehicle_state_7`: Updates the state of a ride vehicle during simulation.
+- `process_ride_queue_66`: Iterates through a ride’s queue of guests and updates each guest’s state based on ride availability and guest preferences.
+- `process_ride_queue_67`: The routine walks through a ride’s queue of guests and updates each guest’s state as they move along the ride.
+- `process_ride_prices`: Iterates over a linked list of ride price entries and applies a price adjustment to each entry based on a flag byte.
+- `process_ride_queue_68`: The routine walks a linked list of ride queue entries and updates their waiting times and positions.
+- `check_ride_path`: The routine walks a linked ride path structure to verify a chain of track pieces, updating the current segment and checking for termination or invalid links.
+- `self_24`: This routine walks a linked chain of ride or attraction data structures and updates a pair of short offsets for each node.
+- `check_ride_path_2`: The routine walks a linked chain of ride path nodes and checks whether a given offset lies on the path, returning success when the chain terminates.
+- `find_ride_connection_5`: Searches for a connected ride or attraction starting from a given park object and follows its links through the park data.
+- `handle_ride_queue`: Processes the guest queue for a selected ride, updating wait times and moving guests toward the entrance.
+- `self_25`: The routine processes a park object record and dispatches it to the appropriate handler for updating or rendering.
+- `draw_park_object_2`: Renders a park object such as a ride, shop or scenery element at the current screen position using the game's sprite and tile drawing system.
+- `return_magic_constant`: Returns a fixed magic constant used as a sentinel or identifier value in the game logic.
+- `update_ride_status_28`: The routine updates the status of a ride or attraction in the park.
+- `check_ride_condition`: The routine tests whether a ride meets a specific operational condition by looking up a value for the given ride and checking it against a threshold.
+- `return_zero`: This routine is an empty stub that always returns zero.
+- `update_ride_status_29`: Updates a ride’s operational state and timers each tick.
+- `update_ride_status_30`: Updates the status of a ride or attraction based on its current configuration and timers.
+- `update_ride_waiting_time_6`: The routine updates the waiting time for a ride and marks the ride as empty when the wait reaches zero.
+- `update_ride_status_31`: The routine updates the status of a ride or attraction in the park, advancing its internal timer and handling its completion.
+- `update_ride_status_32`: The routine updates the state of a ride object, clearing its active flag when the ride is out of range and advancing its internal timer.
+- `process_ride_queue_69`: The routine processes a ride queue entry, resolves its linked elements and updates the ride state for the current park simulation step.
+- `process_ride_queue_70`: Iterates over a small fixed-size ride queue on the stack, resolves each entry through the game’s ride lookup and updates the ride’s state flags and price multiplier.
+- `process_ride_queue_71`: The routine walks a ride’s guest queue stored on the stack, resolves each waiting guest, updates the ride’s internal counters and flags, and removes guests that have been processed or cleared.
+- `process_ride_queue_72`: This routine processes a ride queue entry, updating the ride’s state and clearing flags for guests in the queue.
+- `update_ride_instance_2`: This routine updates a ride instance in the park simulation.
+- `process_ride_queue_73`: This routine advances a ride’s queue entry, updates its position and remaining wait time, and handles the case where the queue empties.
+- `process_ride_queue_74`: This routine processes a ride queue entry for the current ride, updating its state and handling guest flow.
+- `process_ride_queue_75`: Iterates over the linked list of rides and updates each ride's state, handling rides that are flagged for removal.
+- `find_next_ride_3`: The routine walks a linked list of rides to locate the next valid ride entry.
+- `find_ride_object_8`: The routine scans a small set of ride entries to locate a specific object and, when found, records its index and type information in the current object structure.
+- `find_ride_object_9`: The routine searches a small table of ride objects for one whose type matches a marker and then records the found object in the current park structure.
+- `set_object_flags`: Sets the object flags and triggers a refresh for a park object.
+- `set_ride_state_2`: This routine initializes a ride object’s state before it is used.
+- `process_ride_queue_76`: This routine advances a ride queue entry each tick and updates its timing and state.
+- `set_ride_price_15`: The routine sets the price field for a ride object and then selects a price value based on whether the ride is free.
+- `set_ride_price_16`: This routine updates the price of a selected ride by reading a byte from the ride data and storing a value returned by a helper routine.
+- `update_ride_state_15`: Updates the internal state of a ride object when it is processed by the game simulation.
+- `set_ride_status_2`: Updates the status of a ride object in the park.
+- `update_ride_status_33`: The routine updates a ride’s status fields in the game’s park simulation.
+- `process_ride_queue_77`: This routine advances a ride queue entry and updates its state, handling entry and exit conditions for guests.
+- `update_ride_status_34`: Updates the ride status record in memory based on the current ride state.
+- `update_ride_status_35`: Updates the ride status record pointed to by A5 with a fresh value from the game state and refreshes the ride’s display.
+- `set_ride_status_3`: Updates the status of a ride object in the park.
+- `set_ride_price_17`: The routine records a new price for a ride and marks the ride data as changed.
+- `advance_ride_carriage`: Advances a ride carriage along its track and updates its position and state.
+- `find_ride_exit`: The routine searches for a valid exit tile for a ride vehicle by walking the ride layout and checking the map for an exit flag.
+- `find_ride_exit_2`: The routine searches for a valid exit tile for a ride element by walking the ride’s path and checking the map for a suitable exit.
+- `find_ride_exit_3`: The routine searches the park map for a valid exit tile reachable from the current ride entrance and marks the exit coordinates in the ride structure.
+- `check_ride_availability_12`: The routine checks whether a ride can be entered from the current map tile and determines if the player can board it.
+- `find_ride_connection_6`: The routine searches for a valid connection between two ride elements and, when found, marks the link as connected and returns success.
+- `self_26`: This routine validates a ride or attraction configuration and marks it as ready.
+- `validate_ride_statistics`: The routine validates a ride’s statistics against expected ranges and lookup tables.
+- `test_ride_safety_flags`: Checks a set of ride safety or operational flag bits for a given ride and returns a combined mask indicating which of the four flag groups are active.
+- `process_ride_queue_78`: Handles the per-tick update of a ride queue entry, advancing its internal timer and checking for the next guest to board.
+- `self_27`: This routine updates a timed park event or ride animation step, advances a countdown counter and triggers a completion effect when the timer expires.
+- `decrement_ride_wait_counter`: The routine decrements a ride’s waiting counter and, when the counter reaches zero, finalizes the ride’s state by copying the ride type, loading its display parameters and marking it as ready.
+- `update_ride_wait`: This routine refreshes the waiting count for a ride when its queue changes, keeping the displayed wait time in sync with the current queue length.
+- `check_ride_availability_13`: The routine checks whether a ride is currently available for use and, if it is, updates the ride’s state to mark it as in use and loads its operational parameters.
+- `check_park_closed`: Returns zero, indicating the park is not currently closed.
+- `process_ride_queue_79`: This routine advances a ride queue entry each tick and checks for a valid guest to board.
+- `update_ride_status_36`: Updates the internal state of a ride object after a simulation tick.
+- `update_ride_status_37`: The routine updates the status and configuration of a ride object in the park.
+- `update_ride_price_14`: This routine updates the price data for a selected ride in the park.
+- `self_28`: The routine computes the next ride vehicle position along a track segment and updates the ride state for the current vehicle.
+- `calculate_ticket_price`: This routine computes the price a guest will pay for a ride, taking the ride type and guest mood into account.
+- `update_ride_vehicle_state_8`: The routine updates the state of a ride vehicle each tick, decrementing its animation counter and handling the transition when the counter reaches zero.
+- `update_ride_status_38`: Updates the status and timing fields for a ride object based on its current state and input values.
+- `update_ride_status_39`: Updates the operational status of a ride object based on its current state and guest interaction flags.
+- `update_ride_status_40`: Updates the operational status and animation state of a ride object each game tick.
+- `update_park_object_state_2`: Updates an in-game park object’s state by copying a flag and selecting a new timer value based on a condition.
+- `set_ride_price_18`: Updates the price of a ride by reading the current price from the ride data and writing a new price value into the ride structure.
+- `update_ride_status_41`: The routine updates the status and display information for a ride object in the park.
+- `update_ride_status_42`: Updates a ride’s operational status and related flags in the park simulation.
+- `update_ride_state_16`: The routine updates a ride object’s operational flags based on a sensor check and synchronises its animation frame.
+- `update_ride_status_43`: Updates the status flags for a ride object and refreshes its display state when the ride changes.
+- `find_nearest_ride_exit`: The routine searches for the closest ride exit tile to a given start position, scanning outward in a diamond pattern and testing map tiles for a valid exit.
+- `update_ride_status_44`: Updates the state of a ride or attraction each tick, handling its countdown timer, direction flags and animation frame selection.
+- `update_ride_status_45`: Updates the status and display flags for a ride object based on its current state and input values.
+- `update_ride_state_17`: Updates the internal state of a ride object based on its current flags and configuration.
+- `update_ride_status_46`: Updates the status of a ride object each tick.
+- `copy_byte_to_offset`: Copies a single byte from an offset to another offset within the same structure pointed to by A5.
+- `update_ride_status_47`: Updates the status and display flags for a ride object in the park simulation.
+- `update_ride_status_48`: The routine refreshes a ride’s operational status by querying the ride controller and, when the ride is fully operational, updates its current configuration from the ride data table.
+- `update_ride_instance_3`: Updates a ride or attraction instance each game tick, advancing its internal timers, handling state changes and passenger flow, and refreshing its on-screen representation.
+- `update_ride_object_state_2`: Updates the per-ride object state used by the park simulation, advancing timers and counters and handling ride-specific events such as passenger loading, ride completion and failure conditions.
+- `update_ride_state_18`: Updates the internal state of a ride attraction each tick, handling its operation mode, passenger loading, ride duration and failure conditions.
+- `update_ride_state_19`: This routine updates the internal state of a ride object each tick, handling its operational flags, timers and mode changes.
+- `set_ride_price_19`: The routine sets the price for a ride based on its type and current configuration.
+- `run_game_loop_5`: This routine starts the main gameplay loop for the park management simulation.
+- `update_ride_state_20`: This routine updates the internal state of a ride object during the simulation tick.
+- `update_ride_waiting_list`: This routine updates the waiting list for a ride when a guest boards.
+- `update_ride_state_21`: This routine updates the state of a ride object based on its current status and a mode parameter.
+- `update_ride_status_49`: This routine updates the status and timing information for a ride object in the park.
+- `process_ride_object_3`: Handles initialization and placement of a ride object in the park layout.
+- `write_park_name_line`: Writes the park name into the save buffer and terminates the line.
+- `create_ride_instance_3`: Creates a new ride instance from a template and initializes its state for use in the park.
+- `find_next_free_ride_slot`: Searches the ride list for the first unused entry and initializes it from a template ride.
+- `spawn_ride_vehicle_5`: Creates a new ride vehicle instance in the park simulation.
+- `update_ride_waiting_time_7`: Updates the waiting time counter for a ride object and toggles its waiting state.
+- `increment_ride_wait_counter`: This routine updates the waiting counter for a ride queue entry.
+- `check_ride_status_3`: The routine checks a ride’s status flag and triggers a global update when the ride is idle.
+- `update_ride_status_50`: This routine updates the operational status and visual flags for a ride object in the park.
+- `update_ride_status_51`: The routine refreshes the state of a selected ride and its related scenery objects, then marks a set of ride elements as active for the current game tick.
+- `update_ride_status_52`: This routine advances a ride’s internal tick and updates its position and cumulative statistics.
+- `update_ride_statistics_9`: The routine iterates over the park's rides and updates their financial and operational statistics each game tick.
+- `update_ride_statistics_10`: This routine iterates over ride records and updates their accumulated statistics such as visitor counts, revenue and operational timers.
+- `update_ride_statistics_11`: The routine updates per-ride statistics and global park counters each simulation tick.
+- `update_ride_statistics_12`: This routine updates the accumulated statistics for a ride or attraction during the simulation tick.
+- `update_ride_statistics_13`: This routine updates the running statistics for a park ride during simulation.
+- `update_ride_statistics_14`: This routine updates the in-game statistics for rides and their components, adjusting values such as usage counters and timers based on the current simulation tick.
+- `update_ride_statistics_15`: The routine updates per-ride statistics and financial values for the park simulation.
+- `update_ride_statistics_16`: This routine updates per-ride and global park statistics such as guest counts, satisfaction and revenue, and applies periodic adjustments for rides and shops.
+- `update_ride_statistics_17`: This routine updates the in-memory statistics for a park ride during the simulation tick.
+- `update_ride_statistics_18`: This routine updates the in-game statistics for a selected ride, adjusting its popularity, income and related counters each simulation tick.
+- `update_ride_statistics_19`: The routine updates per-ride statistics such as capacity, queue length and wait times for each attraction in the park.
+- `update_ride_waiting_times`: This routine updates the waiting times and queue information for rides and shops in the park.
+- `process_ride_queue_80`: Handles the queue of guests waiting for a ride and updates the ride’s waiting list.
+- `process_ride_queue_81`: The routine walks a linked list of ride queue entries and updates each guest’s position along the queue.
+- `process_ride_queue_82`: Iterates over the ride queue entries and updates the on-screen position of each ride icon as the camera scrolls.
+- `process_ride_queue_83`: The routine walks through the park’s ride queue entries and updates the on-screen position of each ride’s queue indicator.
+- `find_next_ride_4`: The routine walks a linked list of rides and selects the next ride to process, skipping rides that are disabled or have no active guests.
+- `find_ride_by_id`: The routine walks a ride list looking for a ride whose identifier matches a stored value and whose flags indicate it is active.
+- `find_ride_attraction`: The routine looks up a ride or attraction by following linked attraction records and checks whether the player can reach it, setting a flag when a valid target is found.
+- `process_ride_queue_84`: Iterates over a linked list of ride queue entries and updates each active entry by calling the ride update routine with its offset coordinates and length.
+- `process_ride_queue_85`: Iterates over a ride queue and updates each ride’s state for the current tick.
+- `self_29`: The routine processes a park object and its linked children to decide whether to trigger a visual or audio effect for the object.
+- `select_random_ride`: The routine picks a random ride from a pool and stores its identifier in the park state.
+- `process_ride_queue_86`: The routine processes a ride queue entry selected by the current ride index and a random choice, updating the ride’s passenger pointer and checking for a special flag that can abort the ride.
+- `process_ride_queue_87`: The routine walks a ride’s waiting queue and updates the next guest to board, using the ride’s current offset and the guest’s position data.
+- `process_ride_queue_88`: The routine walks a linked list of ride queue entries and updates the current ride being processed.
+- `process_ride_queue_89`: The routine walks a linked list of ride queue entries and updates the park's ride queue state for each entry that is ahead of the current position.
+- `process_ride_queue_90`: Iterates over a linked list of ride queue entries and updates each entry by calling the ride processing routine.
+- `draw_park_object_3`: Renders a park object at the coordinates supplied on the stack when the drawing flag is set.
+- `apply_ride_stats_to_display`: Updates the park display buffers with the current ride statistics.
+- `process_ride_queue_91`: The routine walks a linked list of ride queue entries and, for each active entry, updates a global ride index and triggers a ride processing step with offset coordinates and a time value.
+- `process_ride_queue_92`: Iterates over a ride queue and dispatches each active ride entry to the ride update handler with its adjusted parameters.
+- `self_30`: This routine drives the multi-step dialogue and cutscene sequence for a park guest interaction, advancing a state machine that triggers speech, animations and UI updates as conditions are met.
+- `draw_text_box`: Renders a bordered text box for a string and then draws the string inside it, wrapping at spaces and advancing the cursor for each line.
+- `format_ride_queue_text`: This routine formats a numeric queue length for display in the park interface.
+- `get_object_data_ptr`: Returns a pointer to the data block for a park object identified by its index.
+- `init_game_state_2`: This routine performs the initialisation of the game state and loads the main menu.
+- `update_ride_statistics_20`: The routine refreshes the in-memory statistics for the park’s rides, recomputing values such as capacity, popularity and maintenance from the ride data and updating the global ride tables.
+- `update_ride_waiting_stats`: The routine updates per-guest waiting counters and flags for a ride and then refreshes the ride’s on-screen information and related UI elements.
+- `process_theme_script`: The routine interprets a theme-park script block selected by the current theme index and drives the associated audio and visual effects for the park.
+- `process_menu_command`: Handles a single menu command from the park management interface and updates the in-memory menu state accordingly.
+- `process_ride_queue_93`: This routine processes the queue of guests waiting for a ride, advancing the queue each frame and handling guest entry, exit and ride interaction.
+- `draw_ride_sign`: This routine draws a small sign or label for a ride based on the ride type stored in the object.
+- `spawn_park_object`: Creates and initializes a park object instance when the object is placed in the world.
+- `update_ride_statistics_21`: The routine refreshes the on-screen statistics and ratings for a selected ride, updating its popularity, excitement, intensity and other displayed values.
+- `draw_ride_preview_40`: Renders a small preview of a ride being placed in the park editor, updating the on-screen thumbnail as the player moves the cursor.
+- `draw_ride_info_panel_14`: The routine draws the ride information panel and its optional detail overlays on screen.
+- `draw_ride_preview_41`: The routine draws a small preview of a ride in the park editor, showing its sprite and basic stats.
+- `reset_park_objects`: Resets the state of park objects each game tick.
+- `update_ride_status_53`: This routine updates the in-game state of a selected ride, refreshing its operational flags, guest statistics and visual indicators each tick.
+- `process_park_maintenance`: The routine handles the periodic maintenance and upkeep logic for the theme park, updating ride and facility wear, resetting timers and counters, and triggering related park management updates.
+- `process_dialogue_script`: The routine interprets a dialogue script for the game’s conversation system, driving text display, choices and related UI updates.
+- `process_park_maintenance_2`: Handles the periodic park upkeep and financial updates when the game is in the maintenance phase.
+- `parse_ride_script`: The routine interprets a scripted ride description stored in the game data and drives the ride construction and animation sequence.
+- `reset_ride_statistics`: This routine clears and aggregates per-ride statistics and updates global park state.
+- `process_park_finances`: The routine updates the financial and guest statistics for each park and then runs the end-of-month bookkeeping, including ride wear, guest satisfaction and staff costs.
+- `process_ride_queue_94`: The routine updates the waiting queues for two ride types, marking eligible guests for boarding and handling the ride’s internal wait loop.
+- `process_ride_queue_95`: This routine processes the ride queue entries and updates ride state flags, then runs a finalisation sequence that clears ride data, updates the park state and triggers the end-of-ride screen handling.
+- `process_ride_queue_96`: This routine processes the queue of guests waiting for a ride.
+- `process_park_entities`: Iterates over park entities and updates their state, handling active objects and triggering related game updates.
+- `process_ride_queue_97`: This routine advances the ride queue and processes the next guest or vehicle in line.
+- `self_31`: This routine runs a small initialization loop and then sets up the park’s global state before starting the main game loop.
+- `reset_ride_state_16`: The routine clears the ride’s active flag and resets its internal state, then triggers a generic update and a sound or effect callback.
+- `wait_for_vblank_and_load`: This routine prepares the game’s main screen assets and palette, then synchronizes with the Amiga vertical blank to avoid tearing.
+- `update_ride_bounding_box`: The routine updates the bounding box limits for a set of rides by scanning ride data and applying per-ride extents, then writes the resulting min/max values back to the ride’s global bounding structure.
+- `set_game_speed_2`: This routine configures the game speed and timing parameters for the simulation.
+- `process_ride_queue_98`: Iterates over the ride queue entries and processes each ride type, updating the ride state and handling player interaction.
+- `process_message_queue`: The routine processes a queue of in-game messages, dispatching each entry to the appropriate handler for text, graphics or UI updates.
+- `process_ride_queue_99`: Iterates over the ride queue entries and updates each ride’s state, handling ride operation, guest loading and ride-specific events.
+- `process_message_queue_2`: The routine processes a queued message list for the game, handling display, timing and cleanup of on-screen messages.
+- `draw_ride_preview_42`: The routine renders a preview of a ride being placed in the park editor, drawing its components and price information on screen.
+- `render_park_view`: The routine draws the park view for the current screen, iterating over visible objects and updating their on-screen representation.
+- `draw_ride_queue`: Renders the queue and station information for a selected ride, showing its name, length, and waiting time.
+- `process_ride_queue_100`: This routine processes the queue of guests waiting for a ride.
+- `process_ride_queue_101`: This routine processes the ride queue data for a selected attraction, handling guest entry, ride operation and exit logic.
+- `update_ride_statistics_22`: This routine updates per-ride counters and global park statistics when a guest interacts with a ride.
+- `reset_ride_state_17`: This routine clears a ride-related flag and copies a stored ride parameter into the active ride structure.
+- `handle_ride_event_2`: Processes a ride-related event record and updates the corresponding ride state.
+- `handle_ride_event_3`: This routine processes a ride-related event for a park object, selecting the appropriate ride data tables based on the object type and invoking the ride logic.
+- `process_ride_event_3`: Handles a ride-related event for the currently selected park object.
+- `process_ride_queue_102`: This routine processes a ride queue entry, updating its state and handling any required ride actions.
+- `reset_game_state_6`: Resets the game state at the start of a new park session.
+- `reset_game_state_7`: This routine resets the game state by invoking the central reset routine.
+- `handle_game_input_loop`: This routine drives the main interactive loop for a screen or menu, repeatedly polling input and updating the display until a selection is made.
+- `check_ride_collision_2`: The routine tests whether the player’s current ride position overlaps a collision rectangle and, when a collision is detected, it triggers the ride crash sequence and returns a collision flag.
+- `process_input_field`: This routine handles the in-game text entry field, updating its visual elements and validating the entered string against the current park name.
+- `handle_ride_collision`: The routine checks whether the player’s ride vehicle collides with a scenery object and, if so, triggers the crash response for the ride.
+- `check_ride_collision_3`: The routine checks whether the player’s current position overlaps a ride’s bounding box and whether the player is on the correct side of the ride.
+- `check_ride_collision_4`: This routine checks whether the player’s current position overlaps the ride’s collision box and triggers a crash response if it does.
+- `trigger_park_event_4`: This routine is invoked from park management code paths and initiates a park-wide event sequence.
+- `init_park_stock`: Initializes the park stock and building sprite data for the game.
+- `render_ride_preview_2`: This routine prepares and draws the preview of a selected ride in the park editor.
+- `update_ride_status_54`: The routine updates the status and visual representation of rides in the park.
+- `update_ride_statistics_23`: The routine refreshes the in-memory statistics and visual state for all rides that are currently active in the park.
+- `update_ride_status_55`: The routine updates the in-game status and visual representation of rides and scenery objects, processing active and inactive items to refresh their state and draw them correctly in the park view.
+- `draw_ride_queue_2`: This routine renders the queue line and waiting guests for a selected ride, updating the on-screen sprites and text that show how many people are waiting and the current queue length.
+- `process_ride_queue_103`: The routine walks the ride queue and updates each ride’s state, handling guest loading, ride operation and queue clearing.
+- `process_ride_queue_104`: Handles the queue and boarding logic for a ride, updating its visual elements and managing guest flow when the ride is idle.
+- `draw_ride_info_panel_15`: Renders the detailed information panel for a selected ride in the park management UI. It populates the panel with the ride’s name, statistics and cost values and draws the associated graphics and text.
+- `update_ride_vehicle_state_9`: The routine updates the state and visual parameters for a ride vehicle, handling its on-screen position, animation timing and interaction with the player cursor.
+- `handle_ride_queue_2`: This routine manages the guest queue and boarding logic for a ride, updating the queue state, handling ride entry timing and resetting ride flags when guests are processed.
+- `set_ride_price_and_check`: The routine updates a ride’s price based on the current game time and a modifier, clamps it to a minimum, and resets related ride state flags.
+- `handle_park_boundary_exit`: The routine checks the player’s position against park limits and decides which exit cursor to show.
+- `handle_park_exit`: This routine decides whether the player is leaving the park and triggers the exit sequence.
+- `reset_ride_state_18`: The routine clears and resets the state of a ride when it is removed or becomes inactive.
+- `reset_park_state_5`: This routine resets the park state when the player quits or the game ends.
+- `reset_ride_state_19`: This routine resets the state of a ride when it is being removed or replaced.
+- `draw_ride_element_3`: Renders a single ride element at the given map coordinates using the ride’s sprite and animation data.
+- `render_ride_queue_2`: This routine draws the queue line and entrance graphics for a selected ride.
+- `draw_ride_element_4`: Renders a single ride element at the given screen position, choosing the correct sprite variant for the current view and ride state and applying the appropriate offsets.
+- `init_theme_park`: Initialises the main theme park simulation state and loads the initial park data and scenery assets.
+- `draw_ride_preview_43`: The routine renders a preview of a ride being placed in the park editor.
+- `draw_ride_preview_44`: Renders the ride preview window and updates its UI elements each frame.
+- `animate_ride_vehicle`: The routine animates a ride vehicle along its track, updating its position and orientation each frame and handling rider boarding and alighting.
+- `draw_ride_preview_45`: The routine renders a preview of a selected ride in the park editor, updating the on-screen graphics and UI elements for the ride under construction.
+- `run_ride_simulation`: This routine drives the in-game simulation of a selected ride, updating its state each frame and handling the ride’s control panel UI. It processes the ride’s operation, draws the ride view and overlays, and manages the ride’s lifecycle until the simulation ends or the player exits.
+- `draw_ride_preview_46`: This routine renders the on-screen preview of a ride while the player is configuring it in the park editor.
+- `run_ride_preview`: Displays a preview of a selected ride with its statistics and a short animation loop, allowing the player to inspect the ride before building it.
+- `run_building_screen`: Displays the building placement screen and lets the player choose a building type and position.
+- `update_park_statistics`: The routine refreshes the park’s running totals by copying the current cached values into the working slots and then adds the latest delta returned by the statistics accumulator.
+- `draw_ride_preview_47`: Renders a small preview of a ride in the park editor, showing its icon and a colour swatch for the selected ride.
+- `set_active_ride`: Sets the currently active ride object for the park simulation.
+- `set_park_name_2`: The routine sets the park name variable from the stored name buffer.
+- `draw_park_statistics`: This routine renders the park statistics screen, updating the display with current park data such as guest numbers, income and ride information.
+- `render_map_label`: Draws a map label or statistic value for the park overview screen.
+- `render_ride_preview_3`: This routine draws a small preview of a ride or attraction in the park, updating its on-screen representation and handling any associated UI feedback.
+- `process_ride_queue_105`: The routine updates a ride’s queue data and related counters, copies a block of ride information into a working buffer, and then checks the park’s ride list to decide whether to trigger a ride-related event or to start the ride’s operation.
+- `check_ride_input`: The routine checks a ride-related input table and then queries the player controller.
+- `set_park_visibility_flag`: The routine sets a global park visibility flag used by the game to control whether the park view is drawn.
+- `draw_park_overview`: The routine renders the park overview screen, updating the map view and drawing ride and scenery information for the current selection.
+- `set_ride_visibility_flag`: Sets the visibility flag for a ride in the park.
+- `assign_ride_to_employee`: The routine scans the ride table and assigns a free employee to each ride that needs staffing, marking the ride as active and initializing its employee and timing data.
+- `process_ride_queue_106`: Iterates over the ride queue entries and updates each ride's state, statistics and guest flow.
+- `update_ride_statistics_24`: This routine updates the operational statistics and state for a ride object in the park simulation.
+- `process_park_visitor_2`: Iterates over active park visitors and updates their per-visitor timers and state.
+- `process_ride_queue_107`: The routine iterates over the ride queue entries and updates each ride’s wait time and related counters, handling ride-specific state changes and triggering a park reset when a particular condition is met.
+- `process_ride_queue_108`: Iterates over the ride queue entries and updates each ride’s waiting time and state.
+- `reset_ride_state_20`: The routine clears the active flag for each ride entry in a table and then marks the ride system as ready.
+- `reset_park_state_6`: This routine resets the park state and clears temporary data when the player exits the park editor.
+- `reset_ride_queue`: This routine resets the ride queue and clears the current ride selection state.
+- `process_ride_queue_109`: This routine steps through the park’s ride queue entries and updates each ride’s waiting time and state.
+- `decrement_ride_wait_times`: The routine walks through a list of ride structures and reduces each ride's current queue/wait time by a value returned from a helper.
+- `update_ride_waiting_times_2`: Iterates over all rides and refreshes their queue and waiting-time data each frame.
+- `update_ride_vehicle_state_10`: Iterates over active ride vehicles and updates their per-vehicle timers, passenger load and visual flags each game tick.
+- `update_ride_vehicle_state_11`: Updates the state of a ride vehicle each tick, adjusting its position, orientation and passenger-related timers.
+- `update_ride_statistics_25`: This routine updates the operational statistics for a ride in the park.
+- `update_ride_statistics_26`: The routine updates per-ride counters and accumulators used for the park simulation, such as guest counts and revenue, and advances the ride’s internal tick and a global ride index.
+- `update_ride_vehicle_state_12`: Updates a ride vehicle’s state and statistics when it reaches a station stop.
+- `update_ride_statistics_27`: The routine updates per-ride statistics for a selected ride, consuming a resource amount and refreshing stored random values for the ride’s metrics.
+- `find_ride_by_type`: Returns the index of a ride whose type matches the requested type and whose length is sufficient for the given parameter, skipping the globally excluded ride.
+- `find_valid_ride`: The routine scans a list of ride entries looking for one that is active and not already selected, and returns the index of the first matching ride.
+- `load_theme_park_data`: The routine selects and loads a theme park data set into memory and then runs the park simulation loop until the park is ready.
+- `load_end_game_bitmap`: The routine copies the end-game bitmap data into RAM and then runs the end-game sequence, waiting for the player to acknowledge the result before cleaning up the screen and returning to the main menu.
+- `load_end_screen`: This routine prepares and displays the end-of-game screen.
+- `wait_for_input_timeout`: The routine polls for user input with a bounded retry loop and then performs a fixed sequence of UI updates and input handling steps.
+- `render_building_sprite`: This routine draws a building sprite for the park, loading its bitmap and palette data and positioning it on screen.
+- `update_ride_waiting_queue_5`: Updates the waiting queue state for a ride, adjusting queue length and related timers based on current demand and ride operation.
+- `update_ride_waiting_time_8`: Updates the waiting time and queue length for a ride.
+- `update_ride_statistics_28`: This routine updates the ride’s internal counters and caps values for a selected ride.
+- `update_ride_waiting_time_9`: This routine updates the waiting time for a ride.
+- `clamp_ride_waiting_time`: This routine updates the waiting time for a ride based on a mode flag and clamps the result within allowed limits.
+- `clamp_ride_height_limits`: The routine clamps the ride height limits used by the park simulation.
+- `update_ride_wait_time_2`: This routine updates the waiting time for a ride.
+- `clamp_ride_waiting_time_2`: This routine updates the waiting time for a ride queue, clamping the value within allowed limits and refreshing related display timers.
+- `handle_park_event_2`: Processes a park event for the given object.
+- `create_ride_instance_4`: The routine creates a new ride object in the park simulation and initializes its default properties.
+- `init_ride_object`: Initialises a ride object structure when a null terminator is found in the name field.
+- `set_ride_price_20`: The routine configures a ride object with default price and operational parameters and updates a global ride counter.
+- `update_ride_instance_4`: This routine updates a ride instance in the park simulation.
+- `check_ride_collision_5`: The routine checks whether the player’s current ride element collides with a forbidden tile type and, if so, records the collision and ride data for the game’s theme park simulation.
+- `find_ride_by_type_2`: This routine looks up a ride object by its type code and returns a pointer to the ride data.
+- `self_32`: This routine validates a ride element against a table of allowed types and, when it matches, records the element’s index and a related ride parameter in the current object structure.
+- `process_ride_queue_110`: This routine processes a ride queue entry when the ride is active.
+- `set_ride_price_21`: This routine updates the price and related data for a selected ride in the park.
+- `validate_ride_entry_4`: Checks whether a ride entry is valid and, if so, records its type and related data in the ride structure.
+- `self_33`: This routine processes a ride vehicle or guest entity to decide whether it can be placed or moved, updating its placement flags and position data.
+- `set_ride_price_22`: This routine updates the price data for a selected ride in the park.
+- `process_ride_queue_111`: This routine advances a ride’s guest queue and updates the ride’s current state.
+- `process_ride_queue_112`: The routine processes a ride queue entry for a guest, selecting a ride type and updating the guest’s ride state.
+- `set_ride_operating_mode`: The routine updates the operating mode of a ride object based on its current state and a set of configuration tables.
+- `self_34`: The routine updates a ride vehicle’s visual state and animation frame based on the current ride configuration and global park settings.
+- `update_ride_stats_2`: Updates the ride statistics block for a selected attraction.
+- `clear_ride_flag_3`: This routine clears a ride-related flag for the selected park object and refreshes its cached data.
+- `increment_ride_waiting_2`: This routine updates the waiting queue for a ride object.
+- `set_tile_type`: The routine marks a tile in the park layout as a specific type, updating the tile’s type field to indicate a particular terrain or object.
+- `check_ride_status_4`: This routine is a stub used when the game checks whether a ride is operational.
+- `update_ride_status_56`: Updates the state of a ride object each tick, decrementing its remaining time and handling completion or failure.
+- `process_ride_vehicle_10`: Handles the update of a ride vehicle’s state and position during a simulation tick.
+- `check_ride_operational_4`: The routine checks whether a ride is operational and, if so, updates its control block with new ride data and triggers the ride update sequence.
+- `set_ride_price_23`: This routine updates a ride’s price data from a lookup table and then refreshes the ride’s cost and display values.
+- `update_animation_frame`: Advances the animation state for a park object and refreshes its visual frame and palette.
+- `update_ride_price_15`: The routine updates the price data for a selected ride in the park.
+- `update_ride_animation`: Updates the animation state for a ride object each tick.
+- `update_ride_state_22`: This routine updates the internal state of a ride object during the simulation tick.
+- `check_ride_status_5`: The routine checks a ride’s operational status and updates its state flags and display data.
+- `update_ride_status_57`: Updates a ride’s operational status and animation frame based on its current state and configuration.
+- `update_ride_status_58`: Updates the status and display data for a ride object when its configuration changes or a timer expires.
+- `update_ride_status_59`: The routine updates the status of a ride object when its configuration matches the current selection.
+- `update_ride_statistics_29`: This routine updates the statistics for a ride in the park.
+- `set_animation_frame`: Sets the current animation frame for a park object by looking up a frame index from a table using the object's type and state.
+- `decrement_animation_counter`: This routine updates a sprite or animation structure by refreshing its frame pointer and counting down a timer.
+- `skip_animation_frame`: The routine is a stub that always returns zero.
+- `draw_ride_preview_48`: This routine draws the ride preview panel and updates the ride selection cursor.
+- `reset_ride_parameters`: This routine clears and re-initialises the global ride configuration data used by the park simulation.
+- `draw_ride_preview_49`: This routine renders the small preview image shown for a ride in the park management interface.
+- `draw_ride_preview_50`: This routine renders the on-screen preview and UI elements for a ride while the player is editing or inspecting it in the park editor.
+- `self_35`: This routine updates a ride or attraction state and triggers a UI notification.
+- `rotate_string_substring`: This routine rotates a text string by a given offset and length, then passes the result to a formatting routine.
+- `draw_ride_element_5`: The routine renders a ride element for the theme park simulation.
+- `draw_ride_vehicle_10`: Renders a single ride vehicle sprite for the selected ride by issuing a series of draw calls for its parts.
+- `check_ride_state`: The routine checks a ride-related flag in the game state and triggers a secondary update when the condition is met.
+- `dispatch_theme_park_event`: The routine dispatches a theme park event handler selected by a packed index derived from two input values.
+- `return_early_exit`: This routine is an early exit stub used by the game to skip a code path.
+- `gameplay_scene_end`: The routine marks the end of a gameplay scene and returns control to the game’s main loop.
+- `build_park_object_key`: Creates a packed identifier for a park object used by the game’s object handling system.
+- `wait_for_blitter_and_clear_screen`: This routine waits for the Amiga blitter to become idle and then programs the custom copper registers to clear the screen buffer before starting a new frame.
+- `spawn_park_elements`: The routine spawns park elements defined in a data table when both flags are set, using random offsets added to the base parameters.
+- `handle_ui_event`: This routine dispatches UI button and menu events for the park management interface.
+- `unknown_function`: The function is an empty routine that does nothing.
+- `save_game_slots`: This routine prepares the save game slot table for the park.
+- `patch_ride_configurations`: The routine updates ride configuration data for the game, marking a specific ride type with a new handler and disabling two particular rides when a global flag is set.
+- `init_theme_park_data`: Initialises the theme park data structures when first entered.
+- `reset_park_state_7`: The routine clears the park’s global state and resets the current scenario index before loading the initial park data.
+- `find_ride_entrance_3`: The routine locates the entrance of a ride or attraction within the park map and updates the ride’s entrance data structures.
+- `set_ride_status_flags_2`: The routine selects a ride status based on a global flag and writes a fixed set of status bytes and a ride type identifier into the current ride’s data block.
+- `compute_ride_waiting_time`: The routine walks a linked list of ride queue entries and accumulates the maximum waiting time and the maximum ride length for the current ride, then writes the resulting start and end times into the supplied time window structure.
+- `render_ride_preview_4`: Renders a ride preview panel in the park editor.
+- `draw_ride_object_3`: This routine renders a ride object on the park map, drawing its bounding box and then iterating over its components to place sprites and labels.
+- `load_sound_tables`: The routine loads the sound tables for the game.
+- `update_ride_status_60`: This routine updates the state and statistics of a ride or attraction each tick.
+- `update_ride_waiting_time_10`: Adjusts the waiting time and related counters for a ride or guest entity based on its current state and surrounding conditions.
+- `update_ride_status_61`: This routine updates the state and statistics of a ride object in the park simulation.
+- `update_ride_queue_position_2`: Adjusts the waiting queue position for a ride based on guest proximity and ride state.
+- `update_ride_price_16`: This routine adjusts the price of a ride based on guest demand and satisfaction, updating the ride’s price flag and accumulating a price delta.
+- `update_ride_waiting_time_11`: Adjusts the waiting time for a ride based on the current queue state and ride configuration.
+- `update_ride_waiting_time_12`: The routine updates the waiting time and queue state for a ride based on guest flow and ride configuration.
+- `update_ride_stats_3`: Updates the statistics and state for a ride object during the game simulation.
+- `apply_ride_rating_modifier`: Adjusts a ride’s guest rating score by combining base ride data with current guest mood and park conditions, then writes the updated rating and visual feedback flags back to the ride structure.
+- `calculate_ride_price`: The routine computes the price for a ride based on its type, length and current modifiers, then writes the resulting cost into the ride structure.
+- `calculate_ride_rating`: Computes a guest’s satisfaction rating for a ride based on the ride’s excitement, intensity and nausea values together with the guest’s preferences and current mood.
+- `update_ride_price_17`: Adjusts the price of a ride based on its current demand and guest feedback, applying modifiers for ride type and special conditions.
+- `update_ride_stats_4`: Updates the in-memory statistics for a ride, adjusting its rating and operational values based on current guest and ride state.
+- `calculate_ride_rating_2`: Computes and updates the guest satisfaction rating for a ride, adjusting the score based on ride type, current guest mood and ride state, and writes the resulting rating and visual feedback values into the ride structure.
+- `update_ride_waiting_time_13`: Adjusts the waiting time for a ride based on its current state and flags, and updates the ride’s queue length and related timers.
+- `update_ride_waiting_time_14`: This routine updates the waiting time for a ride based on guest flow and ride state, adjusting the queue length and applying modifiers for different ride conditions.
+- `update_ride_waiting_time_15`: Updates the waiting time and queue position for a ride based on its current state and flags.
+- `update_ride_waiting_time_16`: This routine updates the waiting time for a ride based on guest flow and ride state.
+- `update_ride_statistics_30`: Updates the per-ride counters and timing values used for the park simulation.
+- `update_ride_status_62`: Updates a ride’s internal counters and timing based on its current state and flags.
+- `update_ride_wait_time_3`: Updates the waiting time for a selected ride based on current guest flow and ride state.
+- `calculate_ride_price_2`: Computes the price for a ride by combining a base price from the ride table with a modifier and subtracting a discount value.
+- `evaluate_ride_waiting_time`: The routine decides whether a guest will wait for a ride and sets a waiting or leaving message based on the guest’s mood, ride queue length and time of day.
+- `set_ride_status_4`: Sets the operational status of a ride based on its current conditions and updates a flag.
+- `set_ride_status_5`: Sets the operational status of a ride object based on its current state and age.
+- `set_ride_wait_time_2`: The routine configures a ride’s waiting parameters based on its current state.
+- `set_ride_price_24`: Sets the price and duration parameters for a ride object in the park.
+- `set_ride_parameters_2`: Initializes a ride object with default configuration values before it is placed in the park.
+- `check_ride_queue_wait`: This routine decides whether a guest is waiting long enough in a ride queue and sets the guest’s current speech bubble.
+- `set_ride_status_6`: This routine selects a ride status code for a park object based on its current state and writes it to the object, then marks the object as needing a redraw.
+- `set_ride_status_flags_3`: The routine updates the status fields for a ride object based on its current metrics, choosing a status code that reflects whether the ride is under construction, operating normally, or needs attention, and then marks the ride as needing a refresh.
+- `set_ride_wait_time_3`: Sets the waiting time for a ride vehicle and marks the vehicle as ready.
+- `set_ride_wait_time_4`: The routine configures a ride’s waiting parameters based on the current guest count.
+- `set_ride_price_25`: The routine sets the price of a selected ride to a fixed value.
+- `set_ride_parameters_3`: Initialises a ride object with its default configuration values.
+- `check_ride_queue_wait_2`: This routine decides whether a guest is waiting long enough in a ride queue and, if so, sets a mood or impatience value for the guest.
+- `set_ride_status_icon`: The routine selects and writes a status icon for a ride object based on its current operational flags, age counters and guest metrics, then marks the object as needing a redraw.
+- `set_ride_status_7`: Sets the status field of a ride object based on its current operational flags, age and guest metrics, choosing an appropriate state such as closed, operating or under maintenance.
+- `set_guest_sprite_type`: Sets the sprite type for a guest based on its current state and flags.
+- `set_ride_status_8`: Sets the current status code for a ride object based on its operational flags and counters, and marks the ride as needing a refresh.
+- `set_ride_status_9`: The routine decides which operational status to assign to a ride based on its current flags and counters, then marks the ride as needing an update.
+- `set_ride_status_10`: The routine updates a ride’s status field based on its current passenger count and a comparison with a threshold, then marks the ride as active.
+- `set_ride_speed_limit`: Sets the speed limit for a ride based on the current length of the ride.
+- `set_ride_price_26`: The routine configures a ride object by writing a price value and a price type into its data structure.
+- `set_ride_price_27`: This routine configures a ride’s pricing parameters in the game.
+- `process_ride_vehicle_11`: Updates a ride vehicle’s state each tick, handling its movement along the track, passenger loading and unloading, and ride-specific timers.
+- `update_ride_vehicle_position`: This routine advances the position and orientation of a ride vehicle along its track, checking whether the vehicle is allowed to move and updating its screen coordinates.
+- `update_ride_vehicle_position_2`: This routine advances a ride vehicle along its track each tick, adjusting its horizontal offset and vertical bobbing based on the current track piece and direction.
+- `update_ride_statistics_31`: This routine updates the park’s ride statistics for a single ride.
+- `update_ride_statistics_32`: This routine updates the in-memory statistics for a ride after a guest interaction, adjusting counters for wait time and usage and marking the ride as having been visited.
+- `reset_ride_instance`: Resets the internal state of a ride instance when it is created or re-initialized.
+- `draw_ride_preview_51`: The routine draws a small preview of a ride in the park planning UI. It renders the ride’s bounding box and interior with different shading, then places a centered label showing the ride name.
+- `draw_ride_preview_52`: The routine draws a small preview of a ride in the park planning UI. It fetches the ride’s current visual index and then renders the preview tile at the appropriate screen position with the correct palette and size.
+- `draw_loading_message`: This routine prepares and draws a loading or disk-insert prompt on screen.
+- `initialize_ride_ride`: This routine sets up the ride system at the start of a scenario, loading ride sprites and bitmaps and initializing ride-related globals and tables.
+- `init_game_state_3`: This routine performs the initial setup for a new game session, clearing and initializing global state, loading default configuration and map data, and preparing the park simulation structures before play begins.
+- `check_ride_queue_collision`: The routine tests whether a ride queue element overlaps the current selection rectangle and whether the queue is active and visible.
+- `check_ride_eligibility_2`: This routine checks whether a guest can use a particular ride based on the guest’s height, age and other ride requirements.
+- `draw_ride_preview_53`: This routine renders a small preview of a ride for the park management interface.
+- `draw_ride_preview_54`: The routine renders a preview of a selected ride on the screen, showing its name, statistics and a small map of the ride layout.
+- `draw_ride_preview_55`: Renders the ride preview screen shown when a ride is selected in the park editor.
+- `draw_park_overview_2`: The routine renders the park overview screen, drawing the map grid, park name and statistics, and updates the overview UI elements.
+- `draw_ride_preview_56`: The routine renders a ride preview in the park editor, updating the on-screen representation as the user moves the selection and handling the associated UI feedback.
+- `reset_ride_state_21`: This routine resets the state of a ride after it has been built or edited.
+- `update_ride_waiting_state`: The routine updates the waiting state for a ride.
+- `decrement_ride_wait_time`: This routine updates the waiting counter for a ride attraction.
+- `clear_ride_flag_4`: The routine clears a ride-related flag in the park simulation.
+- `update_ride_statistics_33`: The routine updates per-ride statistics for the six rides, accumulating guest counts and refreshing the best ride time values.
+- `update_ride_statistics_34`: Iterates over the park’s rides and updates their operational counters and guest usage metrics.
+- `update_ride_statistics_35`: The routine updates per-ride statistics and maintenance counters for the park simulation.
+- `update_ride_statistics_36`: The routine updates per-ride statistics for a small set of rides, accumulating guest counts and recomputing best times for each ride type.
+- `unreachable_stub`: This routine is never reached in the game and contains no functional code.
+- `draw_aglobe_background`: Renders the globe background bitmap used in the park overview and updates the globe rotation counters and display flags for the two globe views.
+- `handle_ride_queue_interaction`: This routine processes the player’s interaction with a ride queue, drawing the queue UI and handling selection of a ride vehicle.
+- `render_ride_info_panel`: This routine draws the detailed information panel for a selected ride in the park management interface.
+- `return_immediately`: This routine is an unused stub that is never reached during normal play.
+- `format_number_string`: This routine formats a numeric value into a display string, handling sign, thousands separators and optional decimal places for in-game numbers such as money, scores and statistics.
+- `draw_ride_preview_57`: This routine renders a preview of a ride or attraction in the park editor.
+- `draw_ride_sprite`: The routine selects a sprite for a ride object based on its type and state and draws it at the calculated screen position.
+- `draw_park_tile`: Renders a single park map tile by drawing its four corner pixels with the appropriate colours.
+- `draw_ride_preview_58`: This routine renders a preview of a ride or attraction in the park editor, drawing its components, supports and scenery based on the selected ride definition.
+- `draw_ride_preview_59`: The routine renders a preview of a ride or attraction in the park editor, drawing its sprites and associated UI elements.
+- `render_ride_preview_5`: The routine iterates over ride definition entries and draws their preview graphics and associated UI elements in the park editor.
+- `process_ride_queue_113`: This routine steps through a ride’s queue of guests and updates their positions and states each tick.
+- `process_ride_queue_114`: Iterates over ride queue entries and updates their on-screen positions and state, handling entry and exit animations for guests.
+- `handle_ride_interaction_2`: Processes player interaction with a ride object, updating ride state, handling entry and exit conditions, and triggering ride-specific animations and sounds.
+- `set_ride_price_28`: Sets the price of the currently selected ride and updates the ride's pricing data.
+- `set_ride_price_29`: Sets the price of the currently selected ride.
+- `set_ride_price_30`: This routine sets the ride price flag and loads the price value for the currently selected ride from the ride data table when the price is not already set.
+- `process_ride_interaction`: Handles player interaction with a ride object, updating ride state and triggering ride-related events when the player is in range.
+- `process_ride_queue_115`: This routine processes a ride queue entry, updating the ride’s state and handling passenger flow for the selected ride.
+- `self_36`: The routine processes a guest’s ride interaction and updates the guest’s state and ride statistics.
+- `process_ride_queue_116`: This routine processes a ride queue entry and updates the ride’s internal state for the current guest.
+- `handle_ride_queue_3`: This routine processes a ride queue entry and updates the ride’s internal state such as the current guest position, waiting list and ride operation flags.
+- `process_ride_queue_117`: This routine processes the ride queue entries for the currently selected ride, updating waiting times, queue lengths and related ride state.
+- `process_ride_queue_118`: Iterates over the ride queue entries and updates each ride’s state, handling ride operation, guest flow and queue management.
+- `process_park_object_list`: Iterates over a park object list and updates per-object state such as flags and timers.
+- `trigger_park_event_5`: This routine is called from the park update logic and initiates a park-wide event sequence.
+- `set_ride_speed_limit_2`: Initialises the ride speed limit variables used by the park simulation.
+- `update_ride_state_23`: This routine advances the per-ride and per-shop state machines and clears stale flags, driving the ride operation sequence and related UI updates.
+- `draw_ride_preview_60`: The routine renders a small preview of a ride in the park editor, drawing its track and support graphics into a temporary buffer before blitting it to the screen.
+- `copy_ride_data_to_stack`: Copies ride configuration data for active rides into a temporary stack buffer before processing.
+- `copy_ride_data_to_stack_2`: Copies ride configuration data for the currently selected ride into a temporary stack buffer.
+- `copy_ride_data_to_stack_3`: The routine copies ride configuration data for the currently selected ride into a temporary stack buffer.
+- `copy_ride_data_4`: This routine copies ride configuration data from global tables into a temporary stack buffer for the current ride type and variant.
+- `copy_ride_config_data`: Copies ride configuration data from static tables into a temporary stack buffer for the current ride.
+- `update_ride_statistics_37`: The routine updates the per-ride statistics used for the park management simulation.
+- `draw_ride_track_segment`: Renders a single segment of a theme park ride track for the current view, updating the visible track geometry and its screen coordinates.
+- `update_ride_queue_5`: The routine updates the waiting queue for a ride, advancing guests through the line and handling entry conditions each tick.
+- `render_ride_preview_6`: Renders a small preview of a ride or attraction for the park management interface.
+- `render_ride_preview_7`: Draws a small preview of a ride in the park editor, updating the preview window as the user scrolls or changes the selection.
+- `process_ride_queue_119`: The routine processes a ride’s guest queue for a given range of queue slots, updating each guest’s state and handling ride loading, unloading and waiting logic.
+- `draw_park_text`: Renders a line of park text on the screen, advancing through a list of strings and updating the display each frame.
+- `process_ride_queue_120`: This routine processes a ride queue entry, updating the queue display and handling guest flow for a specific ride.
+- `draw_park_object_4`: Renders a park object such as a ride or scenery element at the current camera position.
+- `update_ride_status_indicators`: The routine refreshes the on-screen status indicators for the three rides and the eight park-wide controls.
+- `draw_ride_preview_61`: Renders the small preview thumbnails for the three rides currently selected in the park editor.
+- `draw_ride_preview_62`: This routine draws the small preview panels for the three rides being built in the construction menu.
+- `render_ride_preview_8`: The routine draws the three ride preview panels and updates their selection state.
+- `draw_ride_preview_63`: This routine renders a small preview of a ride or attraction in the park interface.
+- `process_ride_queue_121`: The routine steps through a short ride queue, updating each entry’s state and refreshing the associated ride data.
+- `update_park_state`: This routine refreshes the park simulation state each game tick.
+- `save_game_state`: This routine initiates a save operation for the current park.
+- `reset_display_dma`: This routine resets the Amiga display DMA and interrupt state to a known safe configuration before the game changes video modes or starts a new screen.
+- `disable_interrupt_mask`: This routine disables the Amiga interrupt mask by writing to INTENA and then invokes the interrupt handling helper twice before and twice after the write.
+- `process_ride_queue_122`: This routine processes the next ride queue entry for the current park simulation step.
+- `handle_park_event_3`: Processes a timed park event by updating the simulation state and checking for a pending event result.
+- `process_ride_queue_123`: Iterates over the four ride queue slots, updating each slot's state and checking its status.
+- `dispatch_game_event`: This routine dispatches a game event based on an incoming event code and returns the result to the caller.
+- `find_free_script_slot`: The routine scans a small table of script slots for an entry whose active flag is clear and claims it for a new script, initializing the slot fields and returning a success flag.
+- `clear_ride_flag_5`: The routine clears a ride-related flag in the game state.
+- `clamp_minimum_value`: The routine limits a value to a minimum threshold and stores the result in the object’s data.
+- `process_ride_queue_124`: This routine advances the guest queue for a ride, updating the current guest index and the ride’s wait time based on the ride’s state and the guest’s progress.
+- `mask_low_bits`: The routine returns the low bits of a value passed in D0, effectively masking the input to a limited range.
+- `get_ride_price_index_2`: Returns the price index for a ride based on an input identifier.
+- `process_ride_queue_125`: This routine advances the ride queue for a selected attraction, updating the number of guests waiting and the time they have been waiting.
+- `process_ride_queue_126`: This routine processes the queue of guests waiting for a ride, advancing the queue and handling guest movement and timing.
+- `copy_tile_row`: Copies a row of tile data from a source buffer to a destination buffer, handling a variable length and a mask derived from the input value.
+- `increment_ride_counter_7`: Increments the ride usage counter for a park attraction when the ride is active and not already counted.
+- `self_37`: This routine builds and streams a block of park data to the game’s internal buffer, advancing the park’s state counters and handling the end-of-data condition.
+- `write_ride_object`: Writes a ride object into the game world and initializes its state.
+- `process_ride_queue_127`: This routine processes the queue for a selected ride, updating its state and handling guest flow.
+- `set_ride_flag`: The routine marks a specific ride or attraction flag as active in the park's state data.
+- `wait_for_park_open`: The routine loops waiting for the park to become open before allowing the game to continue.
+- `wait_for_input_event_3`: Waits for a specific input event to be received before continuing.
+- `read_park_data`: This routine reads two 32-bit values from the park data structure and returns them combined as a single 64-bit result.
+- `clear_ride_flag_6`: The routine clears a specific flag bit for a ride or attraction in the park's state.
+- `check_ride_status_6`: The routine checks whether a ride is currently operating and returns its status code.
+- `copy_name_to_buffer`: Copies a short name string from a source buffer into a fixed destination area and stores the length of the copied name.
+- `process_ride_queue_128`: The routine processes the ride queue for the current park.
+- `clear_ride_data`: The routine clears a block of ride-related data used by the park simulation.
+- `initialize_game_state_2`: This routine sets up the initial game state and loads the park data when the game starts.
+- `check_ride_availability_14`: This routine checks whether a ride is available and can be entered by the player.
+- `parse_ride_name`: This routine parses a ride name string from the game data and validates it against an expected pattern.
+- `parse_date_string`: The routine checks a short input buffer for the literal 'DF' followed by a date in the form dd:mm and stores the day value for later use in the game.
+- `normalize_input_character`: This routine normalizes a single input character for the game.
+- `handle_unreachable_path`: Detects when a requested park path segment or ride name cannot be found and aborts further processing of the current map entry.
+- `parse_park_path`: This routine parses a park path string to find the segment after the first slash and returns a packed value containing the segment length and a derived index.
+- `check_park_ride_status`: The routine queries the current park ride state and, when a specific ride condition is met, copies a ride configuration value into a global used by the park simulation.
+- `get_park_object_id`: Returns the identifier for the currently selected park object.
+- `get_ride_price`: Returns the price of the currently selected ride for the park.
+- `sum_negate_score`: The routine totals a block of 128 signed 32-bit values pointed to by A0 and returns the negated sum in D0.
+- `reset_park_state_8`: This routine clears a park state flag and refreshes the park data by invoking the park update helpers.
+- `reset_ride_state_22`: Resets the ride state for the currently selected ride by clearing its active flag and refreshing the ride data.
+- `reset_ride_state_23`: Resets the ride’s internal state and refreshes its cached data.
+- `reset_ride_state_24`: This routine clears a ride’s state and then refreshes the ride’s data so the ride can be rebuilt or reset in the park simulation.
+- `reset_ride_state_25`: This routine clears a ride’s active flag and refreshes its cached state so the ride can be safely reset or re-initialized in the park simulation.
+- `set_ride_price_31`: Sets the price of the currently selected ride to a new value.
+- `initialize_game_state_3`: This routine is called during startup to set up the initial game state.
+- `trigger_park_event_6`: This routine initiates a park-wide event sequence in Theme Park.
+- `trigger_park_update_2`: This routine is invoked during the park simulation update path and kicks off the next stage of the park logic processing.
+- `trigger_park_event_7`: This routine initiates a park-wide event sequence in Theme Park.
+- `trigger_park_event_8`: This routine initiates a park-wide event sequence by delegating to the event handler.
+- `render_park_tile`: This routine renders a single park tile for the in-game map view.
+- `poll_joystick_input`: The routine polls the Amiga joystick hardware and translates the raw CIA port state into game input flags.
+- `wait_for_disk_load`: The routine waits for a floppy disk load to finish and then signals the game to continue.
+- `render_park_view_2`: The routine refreshes the park screen by repeatedly updating the view data and redrawing the scene.
+- `wait_for_ride_completion_2`: The routine polls the ride system until a completion flag is set or a retry limit is reached, then updates the ride state and timer in the ride structure.
+- `check_ride_queue_status`: This routine checks the status of a ride queue and decides whether the ride can continue operating.
+- `check_ride_queue_status_2`: The routine is a no-op stub reached from the ride queue status check.
+- `set_ride_flag_2`: The routine marks a ride-related flag in the park simulation and increments an associated counter.
+- `clear_park_object_list`: The routine clears a series of park object list entries by zeroing their fields.
+- `combine_random_values`: The routine obtains a random value from the game’s random number generator and combines its low and high bytes into a 16-bit result.
+- `self_38`: This routine extracts and interleaves the odd and even bits of a 32-bit value, effectively performing a bit permutation used for packing or unpacking tile and sprite data in the game.
+- `apply_ride_setting_2`: Applies a ride configuration value that was just read from the park data.
+- `compute_checksum_xor`: The routine computes a 9-word XOR checksum from a small block of data and masks the result.
+- `compute_checksum_xor_2`: The routine computes a simple XOR checksum over a block of words and masks the result.
+- `clear_tile_buffer`: This routine clears a block of tile data used by the game’s map renderer.
+- `unscramble_tile_map`: Unscrambles a packed tile map buffer in place by de-interleaving bits from two source streams into the destination.
+- `draw_ride_preview_64`: This routine draws a small preview of a ride in the park planning interface.
+- `update_ride_state_flag`: The routine updates a ride state flag in the game.
+- `toggle_ride_flag`: The routine toggles a ride state flag in the park data, clearing or setting the active bit depending on the ride’s current status.
+- `decode_tile_index`: This routine decodes a packed tile index used by the park map renderer.
+- `set_disk_dma_parameters`: The routine programs the Amiga disk DMA registers to prepare a track read for the game’s data loader.
+- `poll_input_wait_release`: The routine polls the Amiga input hardware until the fire button is released, then signals the game to continue.
+- `set_adkcon_and_update_input_mask`: The routine initializes the ADKCON hardware register and, when a flag in the caller’s context is negative, updates a global input mask based on a value from that context.
+- `set_park_flag`: The routine sets a specific park flag bit in the game state.
+- `wait_for_input_3`: The routine blocks until the player provides the required input, polling the input state and waiting for the CIA port to clear before returning.
+- `update_ride_position`: Moves the currently selected ride or attraction to the position indicated by the input data, stepping the movement one unit at a time.
+- `wait_for_ciaa_bit`: The routine polls a CIAA port bit and waits for it to become set, calling a helper each iteration.
+- `wait_for_button_press`: This routine waits for the player to press a specific button on the joystick or keyboard before continuing.
+- `read_joystick_input`: The routine reads the current joystick state from the Amiga CIAB port B register and stores the result for later use in input handling.
+- `check_ride_availability_15`: The routine checks whether a particular ride is currently available for use and returns a packed status word that combines the ride identifier with a bitmask of its availability flags.
+- `wait_for_input_event_4`: The routine blocks until a specific input event is signaled by the game’s input handling, polling a CIA timer flag while repeatedly checking for the event via a helper.
+- `reset_ciab_timer`: The routine resets the CIA timer configuration used for periodic game timing.
+- `set_ciab_timer`: The routine programs the CIA timer registers to start a short timed interval used by the game’s event scheduling.
+- `wait_for_vblank_and_tick`: The routine waits for the vertical blank flag to clear, then increments a global frame counter, runs the per-frame game update, and decrements the counter again before returning.
+- `wait_for_vblank`: The routine blocks until the Amiga video hardware signals the start of vertical blank, then increments a global counter, runs a short internal update, and decrements the counter again.
+- `parse_ride_name_2`: This routine extracts and processes a ride name string from the park data, handling line breaks and character mapping to build the display name for a ride.
+- `update_park_object`: Updates a park object’s state and related counters during the simulation step.
+- `apply_tile_mask_2`: The routine applies a per-tile mask to a block of map tiles, using a bitmask to decide whether to keep or clear the high or low nibble of each byte.
+- `handle_input_event`: Processes a user input event for the park interface.
+- `handle_ride_interaction_3`: Processes a player interaction with a ride object.
+- `handle_ride_interaction_4`: Processes a player interaction with a ride object.
+- `check_ride_operation_3`: This routine checks whether a ride is currently operating and, if so, validates its configuration and state.
+- `handle_park_event_4`: This routine processes a park event triggered by the game logic.
+- `handle_park_event_5`: The routine processes a park event triggered by the game logic.
+- `update_park_state_2`: This routine refreshes the park simulation state each tick.
+- `trigger_park_event_9`: This routine initiates a park-wide event sequence.
+- `run_theme_park_init`: Initialises the Theme Park game at startup.
+- `handle_park_event_6`: Processes a park event triggered by the game logic.
+- `validate_monthly_maintenance`: The routine validates a monthly maintenance record and, when valid, updates the park’s maintenance state and triggers the monthly upkeep processing.
+- `clear_ride_selection`: Clears the current ride selection state in the theme park manager.
+- `trigger_park_event_10`: This routine initiates a park event sequence.
+- `trigger_park_event_11`: This routine initiates a park event sequence.
+- `trigger_park_event_12`: This routine is a small event hook used by the park simulation.
+- `trigger_park_event_13`: This routine initiates a park-wide event sequence by invoking the central event handler.
+- `check_global_flag_then_call`: The routine checks a global flag and, when the flag is clear, invokes a sub-routine that processes the supplied parameter.
+- `trigger_park_event_14`: This routine fires a park-wide event in Theme Park.
+- `process_ride_queue_129`: This routine advances the waiting queues for rides that are currently operating.
+- `process_ride_queue_130`: Iterates over ride queue entries and advances each ride’s state each tick, updating timers and handling ride-specific events.
+- `process_ride_queue_131`: This routine advances the queue of guests waiting for a ride, updating each guest’s state and moving them through the ride’s stations.
+- `skip_unreachable_code`: The routine is a three-instruction no-op that was never linked into normal play.
+- `parse_script_token`: Reads the next token from a script buffer and advances the pointer.
+- `set_ride_flags`: The routine updates ride-related flags in the game state, marking a ride as active and adjusting its configuration counters.
+- `parse_script_command`: The routine decodes a byte from the script stream and dispatches the corresponding theme park command, updating the ride or scenery state and advancing the script pointer.
+- `parse_config_token`: This routine parses a single token from a configuration script while advancing a script pointer stored in memory.
+- `increment_ride_counter_8`: Increments a ride-related counter stored in the caller’s structure.
+- `increment_ride_counter_9`: Increments a ride usage counter stored in a structure pointed to by A5.
+- `increment_ride_wait_time`: The routine increments a ride’s waiting time counter by a small fixed amount.
+- `update_ride_price_18`: Adjusts the price of a selected ride by adding a delta and writes the new price into the ride data structure.
+- `update_ride_waiting_time_17`: Updates the accumulated waiting time for a ride queue entry.
+- `update_ride_statistics_38`: The routine updates a ride’s accumulated statistics by adding the latest measured value to the stored total and then adding a second accumulated offset.
+- `update_ride_waiting_time_18`: The routine updates the accumulated waiting time for a ride by adding the time returned from a helper and the current stack value to the ride's waiting counter.
+- `increment_pointer_until_terminator`: This routine advances a pointer stored in a structure until it finds a terminator byte, incrementing a counter each step.
+- `increment_ride_counter_10`: It bumps the in-memory counter for a specific ride, such as the total rides built or rides waiting, while the game updates park statistics during normal play.
+- `skip_game_loop_iterations`: This routine is dead code that would advance a short counter through a fixed number of iterations before returning.
+- `check_ride_open`: The routine checks whether a ride is currently open for guests.
+- `reset_ride_state_26`: The routine clears and initializes the internal state for rides and their associated data structures.
+- `reset_ride_state_27`: Clears the internal state for all rides before a new day or simulation step.
+- `clear_ride_data_2`: The routine clears per-ride data structures used by the park simulation, resetting counters and flags for each ride.
+- `reset_ride_state_27_2`: This routine is a stub that does nothing.
+- `init_ride_object_2`: This routine allocates and zero-initialises the data structure for a ride object, setting up default flags, limits and per-car and per-station tables so the ride can be created and later updated in the park simulation.
+- `clear_ride_data_3`: The routine clears the data structures used for a ride, resetting its configuration and associated state so the ride can be rebuilt or removed.
+- `clear_ride_queue`: The routine clears the ride queue data used by the park simulation.
+- `return_zero_stub`: A no-operation stub routine that always returns zero.
+- `reset_ride_state_28`: This routine clears a pending ride-related flag and runs the cleanup steps for a ride that has just been reset or removed.
+- `clear_ride_data_4`: Resets the internal data structures used for a ride before it is rebuilt or reused.
+- `clear_ride_data_5`: This routine clears the data structures for a set of rides in the park.
+- `clear_ride_data_4_2`: The routine is a stub that does nothing.
+- `reset_ride_queue_2`: The routine clears and reinitializes the ride queue data used by the park simulation.
+- `reset_ride_queue_4`: This routine clears the ride queue data used by the park simulation.
+- `wait_for_frames`: The routine is a short delay used by the game to pause execution for a fixed number of frames.
+- `draw_park_background`: This routine renders the static park backdrop each frame, painting the scenery behind rides and visitors.
+- `clear_pending_message`: The routine clears a pending message request by invoking the message handler with the stored message id and its length and then resets the request flag.
+- `initialize_ride_markers`: This routine sets up the ride marker tables for the current park and loads each ride’s marker data from the packed ride data.
+- `parse_ride_markers`: This routine scans a list of ride marker blocks and parses each block’s data, marking any active markers in the game’s ride table.
+- `parse_trader_record`: This routine parses a trader record from the game data and marks the trader as active.
+- `return_zero_flag`: Returns a zero status value to indicate no error or no action was taken in the theme park simulation.
+- `parse_ride_markers_2`: Iterates over a list of ride marker entries and extracts each marker’s name and length, storing pointers and sizes in a ride structure and flagging active markers.
+- `return_zero_constant`: This routine is a stub that always returns zero.
+- `decode_variable_length_value`: Decodes a variable-length encoded integer from a byte stream, accumulating the 7-bit payloads and returning the number of bytes consumed.
+- `add_park_rating_modifier`: The routine adds a signed modifier to the park’s rating value stored via a pointer, masking the modifier to clear its sign bit.
+- `set_ride_status_flag_3`: Sets a per-ride status flag for a ride and marks it as changed.
+- `clear_ride_flag_7`: The routine clears a ride-related flag in the park simulation.
+- `parse_script_token_2`: Advances a script token pointer past its header and variable-length payload, returning the token length and the number of bytes to skip for the next token.
+- `clear_ride_bitmask`: Clears a bit in the ride’s attribute bitmasks and marks several flag bytes as dirty, then returns a pointer offset from the ride structure.
+- `parse_script_token_3`: Advances a script pointer past a variable-length token and returns the number of bytes consumed.
+- `parse_script_token_4`: Advances a script pointer past the current token and returns the byte offset from the start of the command.
+- `write_ride_price_2`: The routine writes a byte value to a ride price table entry and returns a small offset used for indexing the next price slot.
+- `calculate_ride_price_3`: This routine computes the price for a ride or attraction in the park.
+- `calculate_ride_price_4`: Computes the price for a ride or attraction in the park.
+- `set_tile_height`: Adjusts the height value stored for a map tile and returns a delta used by the terrain editing tools.
+- `set_tile_attribute`: Updates a tile attribute in the park map by writing a byte value to a tile table entry and returns a derived offset used for the current tile operation.
+- `calculate_ride_score`: Computes a ride’s score value for the park simulation.
+- `skip_to_terminator`: Advances a pointer through a byte stream until a terminator byte is found, then stores a byte value and returns the distance moved.
+- `add_time_to_ride_times`: The routine adds a time offset to the three stored timestamps of each ride entry in a block of ride data.
+- `run_game_tick`: Advances the park simulation by one game tick and returns the current tick counter.
+- `copy_ride_data_5`: This routine copies ride data from a source buffer into a destination buffer, handling multiple rides and their associated data blocks.
+- `read_tile_attribute`: Reads a tile attribute from the park map data, using the current tile index and a mask to locate the correct entry.
+- `select_random_theme`: Chooses a theme for a park element by masking the input value with a stored mask and, if a stored threshold is lower than the supplied threshold, replaces the result with a random theme value.
+- `game_theme_park_1994_0_49_a8_a`: This routine is a stub function in the Theme Park 1994 game binary.
+- `read_3_byte_value`: Reads a three-byte little-endian integer from memory and returns it.
+- `build_ride_layout`: This routine builds the internal layout data for a ride from the packed ride description.
+- `wait_for_blitter_and_set_params`: This routine waits for the Amiga blitter to become idle and then programs a set of global parameters used by the blitter handler.
+- `wait_for_vblank_and_init`: This routine waits for the vertical blank interval to finish and then initializes a set of display and timing variables used by the game engine.
+- `init_blitter_copy`: This routine prepares the Amiga blitter registers for a screen copy operation used by the game.
+- `wait_for_blitter_and_init`: The routine waits for the Amiga blitter to become idle and then initializes a set of global variables used for the game's graphics blitting operations.
+- `wait_for_blitter_and_queue_copy`: The routine waits for the Amiga blitter to be idle and then queues a block copy operation by writing source and destination pointers and control words to the blitter registers.
+- `wait_for_blitter_and_init_copy`: The routine waits for the Amiga blitter to become idle and then sets up a set of global parameters used for a blitter copy operation.
+- `copy_ride_data_block`: Copies a fixed-size block of ride configuration data into the ride data buffer used by the game.
+- `draw_scaled_sprite`: This routine draws a scaled sprite into the Amiga bitplane buffer using the blitter, handling clipping and positioning for on-screen objects in the theme park simulation.
+- `wait_for_input_bit`: Waits for a specific input bit to change state and returns a combined value derived from the input register and a status flag.
+- `wait_for_vblank_2`: This routine synchronizes the game loop to the Amiga display by waiting for a vertical blank interval.
+- `set_tile_mask_bits`: Sets or clears mask bits for a 2x2 tile block in the park map.
+- `apply_park_flags`: Applies park-wide flag masks to a set of park data words, updating each entry based on a bitmask and a secondary mask.
+- `install_interrupt_handler`: The routine installs a custom interrupt handler for the game’s vertical blank processing.
+- `install_interrupt_handler_2`: The routine installs a custom interrupt handler for the game’s vertical blank processing and configures the interrupt enable register.
+- `handle_joystick_input`: This routine processes joystick input for the theme park game, updating internal state flags and handling button presses to control game actions.
+- `set_input_flags`: The routine updates the game's input state flags based on the current key and a toggle value, clears or sets a per-key entry in the input tables, and then runs a short busy-wait loop to debounce the input before marking the input buffer as ready.
+- `wait_for_vblank_and_clear`: This routine synchronizes to the Amiga video hardware by waiting for a stable vertical blank interval and then clears a small buffer area and sets a display flag.
+- `skip_if_no_theme`: The routine checks whether a theme is selected and, if not, aborts the current operation.
+- `set_joystick_button_state`: The routine updates the internal joystick button state from the CIAA serial data register and mirrors the current button flags into the input buffer.
+- `handle_key_toggle`: This routine processes a key press and toggles internal flags that control the park editor’s mode.
+- `clear_coaster_queue`: This routine clears a coaster queue entry and resets related state for the ride system.
+- `check_park_capacity`: Returns true when the requested park size is within the current maximum allowed size, otherwise false.
+- `check_park_capacity_2`: Returns true when the requested number of guests is within the park’s current capacity limit, otherwise false.
+- `check_park_capacity_3`: Returns true when the requested park size is within the current maximum allowed capacity, otherwise false.
+- `check_park_capacity_3_2`: This routine is a stub that always returns zero, indicating the park has no capacity limit or the check is disabled.
+- `reset_park_state_9`: This routine clears two park state variables at startup, effectively resetting the park’s internal counters.
+- `read_joystick_state`: The routine reads the current joystick input and stores the button and direction bits for later use by the game logic.
+- `trigger_park_event_15`: This routine is invoked as an event handler for the park simulation and initiates the next stage of the current park event sequence.
+- `set_interrupt_vector`: The routine installs a new interrupt handler for the game loop and enables the master interrupt mask so the engine can receive timed callbacks.
+- `set_interrupt_mask`: The routine configures the Amiga interrupt mask and installs a custom interrupt handler.
+- `process_interrupt_handler`: This routine is an interrupt handler that increments a counter and, when a specific interrupt condition is active, runs the park update logic, triggers a sound effect, and advances a frame timer that wraps after a set number of ticks.
+- `load_park_data_3`: Loads the saved park data into memory when the game starts a scenario.
+- `update_joystick_position`: This routine reads the joystick state and updates the current horizontal and vertical position values used for camera or view control.
+- `poll_joystick_input_2`: The routine polls the Amiga joystick hardware and updates the game's internal input state.
+- `decrement_counter_and_trigger`: The routine decrements a global counter and, when it reaches zero, resets a flag and a secondary counter before triggering the next park update step.
+- `update_ride_price_19`: Updates the selected ride’s price based on the current price slider and copies the ride’s name and description into the UI buffers for display.
+- `update_ride_queue_6`: Updates the ride queue state and copies the current queue entries into the ride’s display buffers.
+- `update_ride_stats_5`: The routine updates the current ride’s statistics and refreshes the on-screen information for the selected attraction.
+- `skip_unused_routine`: This routine is never called by the game and contains no executable logic.
+- `write_sprite_tile_data`: The routine writes a small block of tile data for a sprite into a buffer, computing the base tile index and flags from the sprite's position and animation parameters.
+- `reset_game_state_8`: Clears a set of global game state variables and sets a flag to indicate a fresh start.
+- `reset_park_state_10`: This routine clears a set of global park state variables and sets a control flag, effectively resetting the current park data to a clean initial state.
+- `reset_game_state_9`: This routine clears a set of global variables used by the game and sets a control flag to indicate a fresh start.
+- `reset_game_state_10`: This routine clears a set of global variables used by the game and sets a flag to indicate a fresh start.
+- `reset_ride_state_29`: Clears the ride’s runtime state and sets the ride type to a neutral value.
+- `reset_game_state_11`: Clears a set of global game state variables and sets a control flag, effectively resetting the current park session to a clean initial state.
+- `reset_park_state_11`: This routine clears the global park state variables and sets a control flag, effectively resetting the current park data before a new scenario is loaded.
+- `reset_game_state_12`: Clears a set of global game state variables and sets a control flag, effectively resetting the current game session to its initial state.
+- `reset_ride_state_30`: Clears the ride state variables and sets the ride mode to idle.
+- `reset_audio_channels`: This routine clears the audio hardware registers for all four channels and disables audio DMA, effectively silencing the sound system at the start of a level or when the game is reset.
+- `set_interrupt_mask_2`: The routine configures the Amiga custom chip interrupt mask and request registers to enable and acknowledge the relevant interrupts for the game loop.
+- `set_interrupt_mask_3`: The routine configures the Amiga interrupt system for the game.
+- `clear_ride_flag_8`: Clears a ride’s operational flag when a matching control code is received.
+- `clear_ride_waiting_queue`: Clears a waiting queue for a ride when the matching guest type arrives.
+- `clear_ride_flag_9`: Clears a ride’s operational flag when a specific trigger value matches one of two stored thresholds.
+- `clear_ride_flag_10`: Clears a ride’s active flag when the current state matches the stored target state.
+- `wait_for_vblank_3`: This routine is a no-op stub used by the frame timing code.
+- `jump_to_sub_3_07ce`: Jump stub: passes control straight on to sub_3_07CE.
+- `add_ride_object_2`: Adds a ride object to the active scene when the park is loaded.
+- `enqueue_ride_event`: The routine queues a ride-related event for later processing when the game is running.
+- `check_park_name_and_trigger`: This routine checks whether a park name has been entered and, if so, triggers the routine that loads or processes the park data.
+- `set_ride_flag_3`: Marks a ride as needing attention in the park simulation.
+- `process_park_ride_queue`: This routine updates the queue of guests waiting for a park ride.
+- `set_ride_object_data`: Copies a ride object definition from the ride data tables into the active ride instance and marks the slot as used.
+- `reset_park_state_12`: This routine clears the current park state when a new park is loaded.
+- `update_audio_channels`: This routine updates the Amiga audio hardware registers for two sound channels when the game is active and audio is enabled.
+- `handle_game_event_3`: This routine processes a pending game event by rotating a small event queue and updating the current event state.
+- `close_game_libraries`: Closes the game’s opened Amiga libraries and cleans up global state during shutdown.
+- `initialize_ride_data`: This routine sets up the initial ride data structures for the park simulation.
+- `initialize_ride_data_2`: This routine sets up the ride data structures for the park simulation.
+- `set_default_theme`: Sets the default theme for the park when no theme is selected.
+- `build_menu_item_table`: The routine builds a menu item table for the game’s UI, filling in identifiers, text pointers and layout values for the current screen.
+- `set_park_open_flag`: This routine marks the park as open for visitors.
+- `reset_animation_state`: This routine clears the animation state for a park element after updating it.
+- `set_active_ride_index`: The routine records the chosen ride index for the current park interaction and stores the previous ride index.
+- `copy_tile_data`: Copies a block of tile data from a source buffer into the game's tile storage area.
+- `iterate_park_objects`: The routine walks through a linked list of park objects and dispatches each entry to the appropriate update handler depending on a global mode flag.
+- `clear_ride_queue_2`: This routine clears the pending ride queue for a park object and updates the total memory allocated counter.
+- `verify_park_password`: The routine checks a stored park password and validates a user-supplied code against the saved park data.
+- `verify_ride_name`: The routine checks a ride name string against the park data and returns a flag indicating whether the name is valid and matches the expected ride.
+- `update_disk_prompt`: The routine refreshes the INSERT DISK prompt when the disk drive changes.
+- `handle_alloc_request`: Processes an allocation request from the game’s scripting system and allocates or reuses a memory block for the requested object.
+- `handle_test_input`: This routine processes a single keystroke from the test input field and updates the displayed value.
+- `process_ride_command`: This routine handles a ride-related command from the game’s scripting system.
+- `validate_ride_operation_4`: This routine checks whether a ride can operate under the current conditions.
+- `update_park_object_2`: Updates a park object’s state during the simulation tick.
+- `call_subroutine_4_fa64`: This routine forwards its three arguments to another internal routine and then returns.
+- `trigger_park_event_16`: This routine is a thin wrapper that initiates a park-wide event or interaction using the supplied parameters.
+- `trigger_ride_event_2`: This routine initiates a ride-related event for a park element, delegating the actual handling to the ride event processor.
+- `get_park_object_state`: Retrieves the current state of a park object by first initializing its data and then reading its stored value.
+- `rotate_ride_queue`: The routine rotates the guest queue for a ride by swapping the first two entries repeatedly.
+- `return_stack_value`: The routine returns the value that was left on the stack by its caller.
+- `delay_game_loop`: This routine introduces a short pause in the game by burning CPU cycles with nested empty loops.
+- `wait_for_frames_2`: This routine introduces a short pause in the game by burning CPU cycles, effectively delaying the next update.
+- `skip_unused_branch`: This routine is never used in the game.
+- `allocate_memory_block`: This routine allocates a block of memory from a pre-allocated pool used by the game engine.
+- `check_park_open`: This routine checks whether the park is open and, if so, forwards the request to the park update handler.
+- `check_ride_entrance`: The routine checks a ride entrance structure for a valid state and triggers a ride entry animation when the entrance is active and the park is in the correct mode.
+- `check_ride_condition_2`: The routine checks a ride-related condition stored in the ride data and triggers a ride event handler when the condition is met.
+- `self_39`: This routine updates a small tile-based map region used for drawing the park view.
+- `apply_tile_mask_3`: Applies a per-tile mask to the park’s tilemap data, updating the visible map and the corresponding collision buffers.
+- `copy_sprite_masked`: Copies masked sprite or tile data from a source buffer into a destination buffer using Amiga blitter setup, handling clipping and per-pixel masking for the theme park UI and sprites.
+- `set_blitter_parameters`: This routine configures the Amiga blitter registers for a sprite or tile copy operation used in the theme park game.
+- `set_blitter_line_params`: This routine computes the line geometry for a blitter copy and programs the Amiga blitter registers with the resulting parameters.
+- `draw_ride_overlay`: This routine prepares and draws the overlay graphics for a ride or attraction in the park view.
+- `draw_ride_path`: Renders the on-screen representation of a ride’s track or queue path by mapping the ride’s layout bits into the screen bitmap and colour map.
+- `draw_ride_track`: Renders a ride track segment into the screen buffer using a bitmask map, handling scaling and clipping for the park view.
+- `draw_ride_track_2`: This routine renders a ride track segment into the screen bitmap, using the ride’s mask and pattern data to set and clear pixels along the track.
+- `draw_ride_map_overlay`: The routine renders a ride’s map overlay onto the park map, using the ride’s bitmask to set and clear map cells for the ride’s footprint.
+- `apply_ride_mask`: The routine applies a ride mask to the park map, marking tiles that are covered by a ride structure.
+- `apply_ride_coverage_mask`: The routine updates the park’s ride coverage bitmap by marking cells that are covered by a ride’s footprint.
+- `clear_ride_block_flags`: This routine clears and updates the occupancy bitmask for a ride block in the park simulation.
+- `process_ride_queue_132`: Iterates through a linked list of ride queue entries, invoking each entry’s handler until the list ends or a stop flag is set.
+- `poll_event_callback_chain`: The routine walks a linked list of event callbacks stored in the object, invoking each in turn until a non-zero result is returned or the list ends.
+- `handle_theme_park_event`: This routine is an event handler used by the game’s main loop.
+- `trigger_global_callback`: The routine invokes a global callback stored in the game’s data area, passing a fixed context structure.
+- `count_string_length`: This routine returns the length of a null-terminated string by first finding its terminator and then iterating over each character while invoking a side-effect routine.
+- `parse_format_string`: This routine parses a printf-style format string and returns the total number of characters that will be written when it is formatted.
+- `clear_event_handlers`: The routine walks the linked list of pending event handlers stored in the object and invokes each handler in turn.
+- `free_linked_list`: The routine walks a linked list of structures and frees each node by invoking the system memory release routine, then clears a flag in the caller’s context to indicate the list is empty.
+- `swap_memory_bytes`: Swaps bytes between two memory buffers in the game.
+- `copy_string_to_buffer`: Copies a null-terminated string from a source pointer to a destination buffer, byte by byte, until the terminator is reached.
+- `format_signed_integer`: Converts a signed integer in D0 to a decimal ASCII string in the buffer pointed to by A0 and returns the length of the string.
+- `parse_signed_integer`: This routine parses a signed decimal integer from a text buffer and stores the value through a pointer.
+- `initialize_game_state_4`: Sets up the main game context and loads the initial park data.
+- `handle_park_entrance`: This routine processes the park entrance configuration and decides whether to load a saved park or start a new one.
+- `set_ride_operation_flags`: This routine configures the operational state and flags for a ride object in the park.
+- `reset_ride_state_31`: The routine resets the internal state of a ride object after it has been initialized.
+- `initialize_ride_instance_2`: This routine initializes a ride instance when the ride is first created.
+- `initialize_ride_instance_3`: This routine initializes a ride instance when it is first created.
+- `process_ride_queue_133`: Iterates over ride objects and triggers a check for rides with a specific status flag and mismatched parameters, then walks a second linked list of entities and dispatches a handler based on their state flags, invoking either a generic update or a special callback.
+- `process_ride_queue_134`: Iterates over a linked list of ride objects and triggers a ride update when a specific flag and state change are detected.
+- `process_linked_list`: Iterates a linked list of objects and triggers their per-frame update or cleanup callback depending on a flag in each node.
+- `process_event_chain`: Iterates over a linked list of event structures and dispatches each event's handler.
+- `process_ride_queue_135`: This routine advances the ride queue for the currently selected attraction and returns the next guest index to be processed.
+- `update_ride_status_63`: Updates the status of a ride in the park.
+- `update_ride_status_64`: Updates the operational status of a ride after checking its control data.
+- `compute_modular_remainder`: This routine computes a modular remainder for the game’s park simulation logic, handling signed inputs and performing a scaled reduction using a divisor derived from the arguments.
+- `normalize_fixed_point`: This routine converts a 32-bit fixed-point value to a normalized 32-bit fixed-point representation, handling special cases for zero and scaling the fractional part.
+- `multiply_fixed_point`: Computes the product of two 16.16 fixed-point numbers and returns the result in 16.16 fixed-point format.
+- `handle_game_event_4`: Processes a game event dispatched from various subsystems.
+- `trigger_park_event_17`: This routine initiates a park-wide event sequence by invoking the central event handler.
+- `jump_to_sub_0_0210`: Jump stub: passes control straight on to sub_0_0210.
+- `parse_command_line`: The routine parses a command line string into separate arguments, handling quoted strings and escape sequences, and stores the token list for later processing.
+- `check_park_validity`: The routine checks whether a park object is present and valid and, if so, invokes the park’s update callback.
+- `register_game_input_handler`: The routine installs itself as a game input handler and prepares the input state for the current frame.
+- `get_park_object_by_index`: Returns a pointer to a park object from the current park's linked list by index.
+- `process_game_tick`: Advances the game simulation for one frame, handling input and state updates.
+- `calculate_string_length`: Returns the length of a null-terminated string passed in.
+- `find_string_terminator`: Scans a buffer for a terminating byte value and returns a pointer to the terminator or null if not found.
+- `compare_strings_lexicographically`: Compares two zero-terminated strings byte by byte and returns a signed result indicating their lexical order.
+- `check_flag_and_return`: Returns a failure code when a carry or zero flag is set, otherwise returns success.
+- `return_constant_one`: This routine is a tiny stub that always returns the constant value one.
+- `copy_string_to_buffer_2`: Copies a null-terminated source string into a destination buffer whose length is determined by scanning the destination first.
+- `copy_c_string`: Copies a null-terminated string from a source buffer into a destination buffer.
+- `copy_memory_block`: Copies a block of bytes from one memory area to another within the game.
+- `copy_memory_block_2`: Copies a block of bytes from a source buffer to a destination buffer in the Theme Park game.
+- `copy_memory_block_3`: Copies a block of bytes from a source buffer to a destination buffer.
+- `remove_ride_object`: Removes a ride object from the park simulation when it is deleted.
+- `remove_ride_object_2`: This routine removes a ride object from the park simulation.
+- `remove_negative_ride_link`: This routine removes a negative ride link from the park data structures and updates the linked list of rides.
+- `remove_ride_object_3`: This routine removes a ride object from the park’s internal list.
+- `self_40`: This routine processes a linked list of ride or attraction records to resolve a forward and a backward reference, updating the link offsets and the associated data blocks.
+- `remove_ride_object_4`: Removes a ride object from the park when its removal flag is set.
+- `free_linked_list_node`: The routine removes a node from a singly linked list and frees the memory it occupied.
+- `allocate_memory_block_2`: The routine allocates a memory block for a new park object and links it into the active object list.
+- `abs_value`: Returns the absolute value of a signed integer parameter.
+- `self_41`: This routine drives a recursive validation loop over a set of park objects using a callback predicate.
+- `process_ride_queue_136`: This routine processes a ride queue for a single ride, repeatedly applying the ride's entry test to each guest in the queue and removing those who cannot enter.
+- `process_ride_queue_137`: The routine processes a ride queue by repeatedly evaluating guest order comparisons and updating queue pointers.
+- `process_ride_queue_138`: This routine steps through a ride’s queue and updates the positions of waiting guests, advancing them along the line and handling the ride’s loading logic.
+- `check_pointer_validity`: The routine checks whether a stored game pointer is still valid before the caller proceeds.
+- `iterate_callback_list`: Walks a linked list of callbacks stored in the game state and invokes each one in turn.
+- `increment_and_store_byte`: Increments a counter and writes a byte value to a memory location pointed to by the next word.
+- `reset_ui_element`: This routine clears a UI element state and resets its flag to zero.
+- `process_text_input_buffer`: Handles incoming typed characters for a text entry field, updating the buffer and cursor and signalling line completion.
+- `process_ride_object_4`: This routine processes a ride object and its linked children, resetting state flags and handling ride operation conditions such as power and maintenance.
+- `parse_format_specifier`: Parses a format specifier from the game's text formatting language and extracts flags, width and precision to prepare a formatted output string.
+- `set_ride_flags_2`: The routine marks a ride as active in the park’s ride state tables and updates related flags for the ride’s availability and operation.
+- `return_stack_value_2`: This routine returns a 32-bit value that was passed on the stack by the caller.
+- `parse_format_string_2`: The routine walks a format string and expands % placeholders by calling a helper to fetch the next argument, then invokes the corresponding output routine.
+- `clear_park_flag`: The routine clears a specific park flag for the given entity and returns the modified identifier together with the flag state.
+- `check_ride_flag`: The routine tests a ride-related flag table for the given ride index and reports whether a specific operational flag is set.
+- `get_ride_flag`: Returns a small flag value for a ride type, used when handling ride data and UI interactions in the park simulation.
+- `get_ride_flag_2`: Returns the ride flag for a given ride index.
+- `validate_ride_params`: This routine validates the ride configuration parameters before the ride is built in the park.
+- `reset_input_state`: This routine clears the current input state before processing new controller data.
+- `trigger_game_event`: This routine fires a game event by invoking a callback stored in the game's event table.
+- `play_sound_effect`: This routine triggers a sound effect in the game.
+- `invoke_library_handler`: The routine calls a handler function taken from a table of library callbacks.
+- `trigger_game_event_2`: This routine fires a game event by invoking a callback stored in the game’s event table.
+- `invoke_callback_handler`: The routine calls a callback function stored in a table used by the game’s event system.
+- `trigger_game_event_3`: This routine fires a game event by invoking a handler stored in the game’s event table.
+- `trigger_game_event_4`: This routine fires a game event by invoking a handler stored in the game's event table.
+- `allocate_ride_vehicle`: Allocates a ride vehicle entry for a given ride and car type, initializing its state and linking it to the ride data.
+
+### Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:breloc
+
+- `ProgStart`: Sets up global pointers and variables for the game and runs the initial startup sequence.
+- `lbC00000C`: This routine runs at program start to set up the initial game state and copy a small block of code into a runtime buffer before jumping to the game’s main entry point.
+- `lbC000060`: This routine sets up the initial game state and cash values, then enters an endless loop that repeatedly configures park data, updates global variables, and triggers the main game logic and rendering steps.
+- `lbC00009A`: This routine sets up the initial game state and enters the main loop for Theme Park.
+- `lbC00015A`: This routine writes a palette colour value into a set of tile data blocks used by the game.
+- `lbC000178`: The routine writes ride queue data into a linked list of blocks for the park simulation.
+- `lbC000184`: This routine parses a ride layout definition from memory and initializes the ride’s internal state.
+- `lbC0001C6`: This routine processes a ride layout definition stored in memory and computes cumulative lengths and positions for its segments.
+- `lbC000226`: Jump stub: passes control straight on to lbC00039A.
+- `lbC00022A`: This routine walks through a ride queue structure and dispatches each entry to the appropriate ride handler.
+- `lbC000244`: This routine walks a packed list of ride objects and dispatches each entry to a specific handler based on a type tag.
+- `lbC000296`: This routine walks through a linked list of theme park data structures and dispatches each entry to a specific handler based on its type.
+- `lbC0002A6`: This routine walks through a ride queue and dispatches each entry to the appropriate handler based on its type code.
+- `lbC0002AC`: The routine walks through a ride queue and processes each entry, handling different queue item types and invoking the appropriate ride logic.
+- `lbC0002B4`: This routine walks the park’s ride queue and processes each entry.
+- `lbC0002BC`: The routine walks the ride queue and dispatches each entry to its handler.
+- `lbC0002C4`: Copies a ride's configuration data from a source buffer into a destination structure used by the park simulation.
+- `lbC0002FC`: This routine is a stub that halts the park update loop when the park is closed or the game is paused.
+- `lbC000302`: This routine is a stub that does nothing and returns immediately.
+- `lbC000304`: This routine walks a list of ride or shop price entries and adds a global modifier to each price field.
+- `lbC00032A`: This routine loads a park object into memory for use in the game.
+- `lbC00032C`: Copies a block of ride data from a source buffer into a destination buffer.
+- `lbC00034C`: Increments the global ride counter and records the current ride pointer and ride ID into a small fixed table.
+- `lbC00039A`: Jump stub: passes control straight on to lbC0003AC.
+- `load_park_layout`: This routine reads the saved park layout data from the game file and restores the park's buildings, rides, and scenery into memory.
+- `lbC0003AC`: The routine pauses the game by spinning until the display hardware signals a vertical blank.
+- `wait_for_vertical_blank`: This routine is a busy-wait loop that stalls execution until the display hardware signals a vertical blank interval.
+- `lbC0003BE`: The routine returns a random park location by combining a random index with a random offset.
+- `lbC0003F0`: This routine advances the ride queue for a selected attraction, handling guest loading and unloading steps and updating the ride state as guests move through the queue.
+- `lbC000424`: This routine processes the queue of guests waiting for a ride.
+- `lbC000468`: The routine copies ride configuration data from a source block into a destination buffer used by the park simulation.
+- `lbC000470`: Copies a list of ride objects from a source buffer to a destination buffer in the theme park simulation.
+- `lbC00047C`: Copies a block of bytes from a source pointer to a destination pointer.
+- `lbC000484`: This routine updates the waiting time for a ride object in the park.
+- `lbC0004AE`: This routine validates a ride configuration against the park data and returns a status code indicating whether the configuration is acceptable or what kind of error was found.
+- `lbC000524`: The routine checks a ride’s operational flag and returns a status code indicating whether the ride is running normally or is stopped.
+- `lbC00053C`: This routine checks the current state of a ride queue and decides whether the ride can proceed, is blocked, or needs to be skipped.
+- `lbC000552`: The routine reads a drive identifier from input and, when it matches the expected pattern for a DOS volume label, stores the drive letter for later use in the game.
+- `lbC000584`: Converts a character read from input to uppercase when it is a lowercase letter, leaving other characters unchanged.
+- `lbC000586`: This routine sets the current game speed for the park simulation.
+- `lbC00059A`: This routine parses a ride path string to locate the segment after the first slash and returns a ride identifier derived from the segment.
+- `lbC0005EE`: The routine checks whether a ride is ready for operation and, when the condition is met, copies the ride’s configuration value into a global used by the park simulation.
+- `lbC000616`: Returns the price for a ride in the park.
+- `lbC000624`: Returns the price of the currently selected ride for the park.
+- `lbC000630`: This routine sums a block of 128 32-bit values from memory and returns the negated total as a 64-bit result.
+- `lbW000648`: This routine is called to start a park-wide event sequence in Theme Park.
+- `lbL00064C`: This routine is called early during game start-up to set up the initial state of the park simulation.
+- `lbW000650`: This routine is called early during startup to set up the game's initial state.
+- `lbL000654`: This routine is a small entry point used by the game to start a park-related event sequence.
+- `lbC000674`: This routine is invoked from the park management logic to start a themed event sequence in the game.
+- `lbC000676`: This routine delegates work to another internal routine, acting as a thin wrapper in the game’s logic flow.
+- `lbC000678`: This routine is a thin wrapper that delegates to another routine.
+- `lbC000686`: The routine computes a ride or attraction location index from input parameters and a secondary offset, using a helper to map the index into a table and another helper to fetch the entry.
+- `lbC00072E`: The routine retrieves the data for a park object by reading a pointer from the current object context and returning the referenced structure.
+- `lbC000762`: The routine polls the joystick and CIA interrupt state while waiting for a button press or stick movement, handling the pause menu input loop and returning when the player confirms or cancels the action.
+- `lbC000838`: Attempts to load a save slot repeatedly, retrying on transient failures and giving up after a limited number of attempts.
+- `lbC000858`: This routine checks a ride’s configuration stored in the object’s data block and validates the current settings against expected values.
+- `lbC000884`: This routine is a tiny stub that always returns the same constant.
+- `lbC000888`: Returns the identifier for the current park being edited or viewed.
+- `lbC00088C`: The routine is a tiny stub that is called from the game code and simply returns a fixed constant.
+- `lbC000890`: This routine checks the status of a ride queue and decides whether the ride can continue operating.
+- `lbC00094C`: This routine is a small error handler used by the game when an unexpected condition is encountered.
+- `lbC000950`: This routine sets up the initial game state for a new park session.
+- `lbC000960`: Marks a specific ride attribute as active and increments the ride's usage counter.
+- `lbC000970`: This routine clears a ride object list by zeroing a series of entries used by the game to track ride objects.
+- `lbC000982`: This routine fetches a 32-bit value from the game’s random number generator and returns the lower 16 bits combined with the high 16 bits, effectively producing a 32-bit pseudo-random value for use in the park simulation.
+- `lbC0009A2`: This routine extracts a specific set of bit flags from a two-word tile descriptor used by the park map.
+- `lbC0009B8`: Sets the price for a ride based on the current park pricing rules.
+- `lbC0009C6`: Computes a simple XOR checksum over a small block of park data used for integrity verification.
+- `lbC0009CC`: Computes a running XOR checksum over a block of park data and masks the result.
+- `lbC0009E6`: This routine pauses execution until the Amiga custom chip DMA controller signals that it is ready.
+- `lbC0009F2`: The routine interleaves two 128-word tile buffers by mixing the bits of each word into the destination buffer.
+- `lbC000A1A`: Initializes the Amiga disk DMA control registers and related memory variables before a disk access.
+- `lbC000A58`: The routine polls a ride control flag until the ride is clear and then arms the ride start signal, returning success when the clearance condition is met.
+- `lbC000A7A`: This routine configures the Amiga disk hardware for the game.
+- `lbC000A90`: This routine configures the ADKCON hardware register and clears a flag in a global variable.
+- `lbC000AA0`: The routine marks a specific tile flag in the park map data.
+- `lbC000ABE`: The routine blocks until the player presses the fire button on the joystick.
+- `lbC000AD6`: Sets the current location of a ride object in the park.
+- `lbC000B24`: The routine polls the joystick port until a specific button is pressed or a short timeout expires.
+- `lbC000B42`: The routine clears a ride-related flag in the game state.
+- `lbC000B58`: The routine masks the current joystick button state and then blocks until the player releases the fire button and presses it again.
+- `lbC000B7C`: This routine reads the current joystick or controller state from the Amiga CIAs and stores the result for the game logic.
+- `lbC000B86`: Constructs a sprite descriptor for a breloc object by combining a base pattern index with a per-instance variation flag and a mask derived from CIAB_PRB. The routine returns the packed descriptor used to render the breloc in the theme park scene.
+- `lbC000BB6`: Waits until the player presses the joystick fire button in the game.
+- `lbC000BC8`: This routine configures the CIA B control register A for the game’s hardware timing.
+- `lbC000BD6`: The routine programs the CIA timer registers to start a short timed interval used by the game’s timing and input handling.
+- `lbC000BF8`: This routine disables the game’s interrupt handling by clearing the interrupt enable and request registers.
+- `lbC000C24`: This routine sets up the initial game state for a new park session.
+- `lbL000D36`: Copies ride data between buffers while iterating over a set of rides.
+- `lbC000DB2`: This routine copies ride data between buffers while shuffling entries, likely updating the in-memory ride list for the park simulation.
+- `lbC000E02`: This routine copies blocks of park data between memory areas while iterating over a set of records.
+- `lbC000E52`: This routine decodes a ride object’s flag word from the park data, using the object’s index and a borrow test to decide whether to fetch a fresh value.
+- `lbC000E88`: This routine masks an input value with a stored mask and, when a condition flag is low, replaces the result with a value fetched from another routine.
+- `lbC000E94`: Adjusts a ride’s price modifier in the park simulation.
+- `lbC000EAC`: Reads a three-byte little-endian value from memory and returns it as a 32-bit integer.
+- `lbC000EB8`: This routine builds an internal table of ride objects from the current park data.
+- `cash1`: This routine copies a block of cash-related data into a jump table and then transfers control to the installed handler.
+- `cash2`: This routine copies a small jump table into memory and then transfers control to the first entry, effectively dispatching to the game's main initialization sequence.
+- `cash3`: The routine copies a block of code into a writable area and then executes it.
+- `lbC000F40`: Copies a jump table into place and then dispatches through it to run the game's main event handler.
+- `lbC000F5A`: The routine returns a stored configuration value used by the game engine during initialization.
+- `lbC000F64`: The routine repeatedly polls the game’s input handler until an event is received, then processes it.
+- `lbC000FCC`: The routine blocks until the vertical blank interrupt flag is set and then clears the flag.
+- `trainintro`: The routine sets up the Amiga custom hardware and copper lists for the train introduction screen, draws the initial graphics and text, and then runs a key-handling loop that lets the player adjust the starting cash values for the easy, medium and hard game modes with the function keys and modifiers before returning to the main program.
+- `numtoascii`: Converts a numeric value in D0 into an ASCII decimal representation using a precomputed table.
+- `calctable`: This routine prepares the plane lookup table used for rendering the park view.
+- `cls`: The routine clears the screen planes used by the game.
+- `dopretty`: The routine adjusts a set of palette entries used for a pretty effect and then copies and shifts two blocks of 16-bit data that drive the train introduction visuals.
+- `print`: Renders a text string to the screen using a bitmap font, handling line breaks and control codes for positioning.
+- `dospr`: The routine writes a 32-bit sprite parameter from the data register into two consecutive 16-bit fields of a sprite structure.
+
+### powerpacker.library
+
+- `return_error_code_2`: The routine is the program entry point and immediately returns a failure value, indicating the game cannot start under the current conditions.
+- `set_library_base`: Initialises a library base pointer for the game’s PowerPacker library and stores it in global variables used by the rest of the code.
+- `increment_counter_clear_flag`: Increments a per-object counter and clears a status flag bit on the same object.
+- `decrement_timer_and_trigger_event`: This routine decrements a per-object countdown timer and, when the timer reaches zero while an active flag is set, it fires the object’s completion callbacks and runs the associated park event sequence, such as closing a ride or triggering a guest reaction.
+- `handle_powerpacker_decompress`: This routine processes a PowerPacker decompression request for the game.
+- `check_powerpacker_state`: The routine checks the PowerPacker library state and, when a specific condition is met, runs a series of library initialisation steps before returning a stored value; otherwise it resets the state and returns zero.
+- `load_powerpacker_library`: The routine loads the PowerPacker library used by the game and returns a handle to it.
+- `null_function`: This routine does not perform any game logic and always returns a neutral value.
+- `initialize_powerpacker`: This routine performs the initial setup for the PowerPacker decompression library used by the game.
+- `decode_compressed_block`: Unpacks a PowerPacker-compressed data block into the destination buffer using the game's custom bitstream decoder.
+- `decode_compressed_block_2`: Unpacks a compressed data block in place using a bitstream decoder and a copy table.
+- `decode_compressed_block_3`: Routine decodes a PowerPacker-compressed data block in place, expanding the packed bytes into the destination buffer.
+- `decode_powerpacker_block`: Unpacks a PowerPacker compressed data block into the destination buffer using the stream cipher and table lookups defined by the PowerPacker format.
+- `decode_powerpacker_stream`: This routine decodes a PowerPacker compressed data stream in place, expanding the packed bytes into the destination buffer for the game.
+- `decode_compressed_stream_2`: The routine expands a PowerPacker-compressed data stream into the destination buffer, performing bit-level decompression and copying blocks.
+- `decode_powerpacker_stream_2`: This routine decodes a PowerPacker-compressed data stream used by the game.
+- `decompress_powerpacker_data`: This routine decompresses PowerPacker-compressed data in place for the game.
+- `decode_powerpacker_block_2`: Unpacks a PowerPacker compressed data block in place, expanding the encoded stream into the destination buffer until the output region is filled.
+- `decode_powerpacker_stream_3`: This routine decodes a PowerPacker compressed data stream in place, expanding the packed bytes into the destination buffer using a bitstream and a sliding window.
+- `decode_compressed_data`: The routine expands a bit-packed stream into a destination buffer using a small sliding window, copying bytes from earlier in the output.
+- `decode_powerpacker_block_3`: This routine decodes a PowerPacker-compressed data block in place, expanding the packed bytes into the destination buffer using the PowerPacker bitstream and copy commands.
+- `decode_compressed_stream_3`: The routine decodes a PowerPacker-compressed data stream in place, expanding the packed bytes into the destination buffer for the game.
+- `decode_powerpacker_block_4`: This routine decodes a PowerPacker compressed data block in place, expanding the packed bytes into the destination buffer using the PowerPacker bitstream and copy tables.
+- `decode_compressed_block_4`: Unpacks a PowerPacker compressed data block into the destination buffer and updates the output pointer.
+- `decode_compressed_data_2`: This routine expands a PowerPacker-compressed data block used by the game.
+- `decode_compressed_stream_4`: This routine expands a bit-packed, PowerPacker-style compressed data stream into a destination buffer, using a small lookup table to copy or repeat bytes.
+- `decode_powerpacker_block_5`: Unpacks a PowerPacker compressed block into the destination buffer, handling literal runs and back-reference copies.
+- `decode_compressed_stream_5`: The routine decompresses a PowerPacker compressed data stream into an output buffer, handling literal runs and back-reference copies while updating the destination pointer.
+- `decode_compressed_block_5`: The routine expands a PowerPacker-compressed data block into the destination buffer, handling literal copies and back-reference moves.
+- `dispatch_game_event_2`: Handles a game event by selecting and invoking the appropriate handler based on a type byte stored in the current event structure.
+- `decode_compressed_chunk`: This routine decompresses a chunk of PowerPacker data, copying bytes and expanding bit-packed literals using the stream’s bit buffer and a sliding window.
+- `self_42`: This routine computes a checksum for a null-terminated string used by the game’s data handling.
+- `compute_checksum`: The routine computes a checksum over a zero-terminated byte string and returns the resulting value.
+- `xor_decrypt_block`: The routine decrypts a block of data in place using an XOR with a repeating key derived from the input value.
+- `process_ride_queue_139`: The routine processes a ride’s queue data, building internal ride structures and updating guest counts for each queue entry.
+- `process_powerpacker_decompression`: This routine drives the PowerPacker decompression and installation of packed game data into memory.
+- `self_43`: The routine processes a list of ride or attraction objects and updates their internal counters and linked data structures during the park simulation tick.
+- `decode_powerpacker_block_6`: This routine decodes a PowerPacker compressed data block used by the game.
+- `process_powerpacker_chunk`: The routine processes a PowerPacker compressed data chunk and decompresses it into the destination buffer.
+- `process_powerpacker_decompression_2`: The routine runs the PowerPacker decompression engine used by the game to unpack compressed data blocks in memory.
+- `process_ride_script`: This routine interprets a ride script for the theme park simulation.
+- `wait_for_vblank_4`: This routine blocks until the vertical blank counter reaches zero, effectively waiting for the display to finish a frame.
+- `wait_for_vertical_blank_2`: This routine is a vertical blank wait stub used by the game’s timing code.
+- `process_powerpacker_decompress`: This routine processes a PowerPacker decompression stream for the game data.
+- `process_powerpacker_block`: This routine processes a PowerPacker compressed data block, decompressing it into the destination buffer and updating the library context.
+- `write_powerpacker_header`: Writes the PowerPacker decompression header into a temporary buffer before the decompressor starts.
+- `verify_park_object`: Checks a park object identifier against the expected value and returns whether it matches.
+- `set_powerpacker_header`: This routine writes the PowerPacker magic header into a buffer and then invokes a library routine to decompress data.
+- `handle_powerpacker_decompression`: This routine is a PowerPacker decompression handler used by the game to unpack compressed game data at runtime.
+- `check_powerpacker_flag`: Returns a flag value from the PowerPacker library and indicates whether the PowerPacker decompression routine is active.
+- `handle_powerpacker_decompression_2`: This routine is a PowerPacker decompression handler used by the game.
+- `handle_powerpacker_decompression_3`: This routine is the PowerPacker decompression handler used by the game.
+- `close_powerpacker_library`: Closes the PowerPacker library after use.
+- `call_powerpacker_decompress`: This routine invokes the PowerPacker decompression library to unpack compressed game data in memory.
+- `get_powerpacker_table_entry`: The routine selects a PowerPacker decompression table entry based on the input value and returns the corresponding pointer.
+- `verify_pack_header`: This routine checks whether a PowerPacker archive header is present and self-referential, and if so advances the data pointer past the header.
+- `check_powerpacker_header`: The routine validates the PowerPacker archive header before decompression.
+- `open_data_file`: The routine opens a data file using the DOS library and prepares a buffer for reading its contents.
+- `self_44`: The routine handles a PowerPacker decompression request and returns the result of the unpack operation.
+- `validate_powerpacker_header`: Checks the PowerPacker archive header and validates the magic bytes and version fields before decompression.
+- `read_save_file`: This routine reads a saved game file and validates its header and data.
+- `read_powerpacker_header`: This routine reads and validates the PowerPacker archive header from disk, checking the magic and version fields before deciding whether to continue decompression or abort.
+- `check_powerpacker_header_2`: The routine validates the PowerPacker archive header for the game’s data file and confirms the packer signature before allowing decompression to proceed.
+- `read_file_header`: The routine reads a file header from a packed archive and validates the magic value before returning a pointer to the data block.
+- `handle_powerpacker_decompression_4`: This routine manages the PowerPacker decompression library used by the game.
+- `check_powerpacker_header_3`: Validates the PowerPacker archive header and returns a status code indicating whether the block is a valid PowerPacker chunk or should be skipped.
+- `allocate_powerpacker_buffer`: Allocates a temporary memory buffer for decompressing PowerPacker data during game startup.
+- `close_and_cleanup_file`: This routine finalises a file opened by the PowerPacker library and releases its resources.
+- `close_file_and_free_memory`: Closes an open file and frees the associated memory block used by the PowerPacker library.
+- `check_ride_status_7`: The routine checks the status of a ride and updates its internal counters and state flags.
+- `handle_powerpacker_error`: This routine handles a PowerPacker decompression error for the game.
+- `check_ride_status_8`: The routine checks the current ride status against a stored value and updates a flag when they match.
+- `check_park_status_flag`: The routine checks the current park status against an expected value stored in the game state and sets a flag indicating whether the park is ready or not.
+- `set_powerpacker_flag`: Marks a PowerPacker decompression block as processed so the game will not attempt to unpack it again.
+- `trigger_powerpacker_decompress`: This routine is used by the PowerPacker library to start a decompression pass.
+- `allocate_ride_config`: Allocates and initializes a ride configuration structure for a new ride instance.
+- `init_ride_config`: Initializes a ride configuration block with size, speed and capacity parameters derived from the ride type and variant, and fills in default flags and limits.
+- `initialize_ride_config`: The routine sets up a ride configuration structure with default dimensions, flags and timing values, adjusting the size based on the ride type.
+- `init_ride_object_3`: Creates and initializes a ride object descriptor in memory for the park simulation.
+- `init_ride_object_4`: Initializes a ride object descriptor in memory with default parameters and type flags.
+- `init_ride_config_2`: Initializes a ride configuration structure with default parameters and a mask derived from the ride type, then fills in size and capacity values that depend on the ride variant and queries the ride database for the next two available ride IDs.
+- `exit_theme_park`: This routine is a stub that is called when the player chooses to leave the park.
+- `set_ride_stats`: Initializes a ride object with its two core parameters and a derived total, clears its active flag, and triggers the ride setup routine.
+- `set_ride_stats_2`: This routine initializes ride statistics for a selected attraction.
+- `reset_ride_state_32`: The routine clears and prepares the internal state for a ride simulation, zeroing control tables and setting up size and buffer pointers before invoking the ride-specific initialization.
+- `self_45`: This routine processes a text buffer for the in-game message system, handling line wrapping, word breaking and scrolling while updating the display state.
+- `decode_compressed_chunk_2`: The routine decompresses a chunk of data from the PowerPacker archive used by the game.
+- `decode_compressed_stream_6`: Decompresses a PowerPacker compressed data block into the destination buffer while updating the source pointer.
+- `find_string_in_buffer`: Scans a bounded memory buffer for a pattern defined by a jump table and returns the offset and identifier of the first match.
+- `clear_ride_queue_3`: This routine clears entries from a ride queue structure, resetting the queue pointers and counters used by the park simulation.
+- `find_shortest_unique_substring`: The routine searches for the shortest unique substring of the input text that distinguishes it from other strings in the set.
+- `clear_ride_queue_4`: The routine clears pending ride queue entries for a selected ride, resetting the queue buffers and updating the ride state.
+- `find_next_match`: This routine scans a buffer for the next occurrence of a pattern described by a token table, advancing the search position and updating match state.
+- `clear_ride_queue_5`: This routine clears the guest queue for a ride and updates the ride's internal state after a guest is removed or the ride is reset.
+- `process_ride_queue_140`: This routine processes a ride queue entry for the theme park simulation, updating the queue state and advancing the next entry pointer.
+- `decode_compressed_chunk_3`: This routine decodes a compressed data chunk used by the game’s PowerPacker library.
+- `clear_ride_queue_6`: The routine clears the guest or vehicle queue for a ride, resetting the occupancy tables and handling the ride’s state transitions.
+- `decode_powerpacker_block_7`: This routine decodes a PowerPacker compressed data block used by the game.
+- `clear_tile_buffer_2`: The routine clears a tile buffer used by the game’s rendering system and prepares the next set of tiles for drawing.
+- `decode_powerpacker_block_8`: This routine decodes a compressed data block from the PowerPacker library used by the game.
+- `clear_tile_buffer_3`: This routine clears and prepares the tile buffer used for drawing the park view.
+- `process_powerpacker_block_2`: This routine processes a decompressed PowerPacker data block used by the game.
+- `self_46`: This routine processes a stream of compressed data and expands it into the game’s runtime buffers.
+- `process_powerpacker_block_3`: This routine processes a block of compressed data from the PowerPacker library, decompressing it into an output buffer for the game.
+- `read_next_input_byte`: This routine fetches the next compressed input byte from a PowerPacker decompression stream used by the game.
+- `decode_powerpacker_block_9`: This routine decodes a compressed data block from the PowerPacker library used by the game.
+- `copy_palette_entry`: Copies a palette entry from the park's colour table into the PowerPacker library's working buffer.
+- `get_next_tile_index`: This routine computes the index of the next tile in a path or queue for the park simulation.
+- `get_tile_offset`: This routine computes a tile offset for the park map by selecting a base index from the object data and combining it with a caller-supplied value.
+- `compute_park_rating_delta`: Calculates the change in a park's rating by comparing the current score in D0 with a stored baseline value.
+- `write_tile_mapping`: The routine writes a tile mapping table for a section of the park map.
+- `update_sprite_offsets`: Updates sprite offset tables for a set of sprites during rendering.
+- `update_sprite_offsets_2`: Updates the sprite offset table for a set of animation frames.
+- `play_intro_music`: Plays the opening music sequence for the game.
+- `run_powerpacker_decompress`: Runs the PowerPacker decompression library to unpack compressed game data into memory.
+- `decode_powerpacker_block_10`: This routine decodes a block of PowerPacker-compressed data used by the game.
+- `write_output_buffer`: The routine writes a computed output value into a destination buffer and handles buffer overflow by invoking the game's memory expansion routine.
+- `check_buffer_overflow`: The routine checks whether a write would overflow a temporary buffer and, if so, triggers a memory expansion or returns an error code.
+- `generate_random_number`: Returns a pseudo-random 32-bit value used by the game for procedural decisions.
+- `decode_powerpacker_stream_4`: This routine decodes a bit stream from a PowerPacker compressed block, feeding bits into an accumulator and returning the next 32-bit word when the stream is exhausted.
+- `check_powerpacker_decompress`: The routine checks the PowerPacker decompression state for a chunk and returns a status flag indicating whether decompression is complete or still in progress.
+- `check_powerpacker_decompression`: This routine checks the PowerPacker decompression state for a chunk and returns a status flag.
+- `check_ride_capacity`: This routine checks whether a ride has enough free capacity for a new guest group and returns a status flag indicating success or failure.
+- `check_park_capacity_4`: The routine checks whether the park has reached its guest capacity limit and returns a status indicating if more guests can be admitted.
+- `check_buffer_capacity`: The routine verifies that a supplied buffer pointer lies within a dynamically maintained memory region.
+- `return_stack_value_3`: This routine simply returns the value that was passed on the stack, acting as a pass-through for data supplied by its caller.
+- `allocate_memory_block_3`: This routine obtains a memory block from the PowerPacker library and returns a pointer to the usable area after the block header.
+- `set_stack_value`: The routine copies a value from the stack into the memory location pointed to by D0 and returns the next address.
+- `free_powerpacker_library`: Releases the PowerPacker library after use.
+
+### explode.library
+
+- `explode_library_entry`: This is the entry point for the explode library stub used by the game.
+- `handle_explosion_library`: This routine processes an explosion library entry for the game, initializing the handler and loading the associated sprite or effect data.
+- `increment_explosion_counter`: Increments the explosion counter for an active explosion object and clears the corresponding flag bit in its status byte.
+- `decrement_explosion_counter`: This routine decrements the active explosion counter for a park object and, when the counter reaches zero and the explosion is flagged, it updates the object's animation and sound callbacks and triggers the explosion effects for the theme park scene.
+- `explode_animation_cleanup`: The routine appears to be a stub used as an explode animation handler that does nothing and returns a success status.
+- `self_47`: This routine patches a library jump table entry for an explosion effect and then triggers the explosion sequence in the game.
+- `set_explosion_flag`: The routine marks an explosion object as active by setting its flag.
+- `check_library_signature`: The routine validates the explode.library resource by checking its identifier and name signature before allowing use.
+- `check_library_signature_2`: The routine verifies that a loaded library structure matches the explode.library signature and triggers initialization when the name matches.
+- `check_library_header`: The routine validates the header of a library file and confirms it is the explode library before triggering its initialization.
+- `check_library_name`: The routine checks the library name string in memory and triggers a secondary routine when the name matches the expected library identifier.
+- `decrement_timer_and_trigger_explosion`: This routine is used by the explosion library to step an explosion effect forward each frame.
+- `init_explosion_effect`: Initialises an explosion effect structure from input parameters and sets up its particle masks and offsets.
+- `process_explosion_effect`: This routine drives the explosion visual effect for a theme park element, updating its animation frames and handling the effect’s lifetime.
+- `check_explosion_flag`: Checks whether an explosion flag is set and triggers the explosion effect if the condition is met.
+- `copy_tile_block`: This routine copies a block of tile data from a source area into a destination buffer used by the explosion effect.
+- `copy_explosion_data`: Copies explosion-related data blocks from a source buffer into a destination buffer, handling wrap-around and accumulation of values for the current explosion effect.
+- `copy_explosion_data_2`: Copies explosion-related data from a source buffer into a destination buffer, handling full and partial blocks.
+- `copy_explosion_tile`: Copies a rectangular block of tile data for an explosion effect from a source buffer into a destination buffer, handling the row stride and byte order used by the explosion graphics.
+- `decode_explosion_data`: This routine decodes a packed explosion description stored backwards in memory, extracting size and timing parameters for the effect.
+- `decode_explosion_animation`: This routine decodes a packed explosion animation frame from the game's data stream and expands it into the working buffer used for rendering.
+- `decode_explosion_palette`: The routine decodes a packed explosion palette entry from the game's data stream and expands it into the destination buffer.
+- `decode_ride_data`: The routine decodes a packed ride configuration blob used by the park simulation, expanding variable-length bit fields into the game’s internal ride parameters.
+- `decode_explosion_sprite`: Decodes a compressed explosion sprite frame from the game's explode library and expands it into the destination buffer.
+- `decode_explosion_pattern`: The routine decodes a packed explosion pattern from the library data and expands it into the game’s explosion buffer.
+- `self_48`: This routine processes a compressed sprite or tile block from the explode library, expanding the packed data into a destination buffer while handling run-length and bit-stream decoding.
+- `decode_explosion_data_2`: The routine decodes compressed explosion animation data stored in the explode library.
+- `decode_sprite_animation`: This routine decodes a compressed sprite animation frame from the game's explode library and expands it into the destination buffer.
+- `free_explosion_library`: This routine releases the explosion library resources used by the game.
+- `wait_for_vblank_5`: This routine blocks execution until the vertical blank period is reached, effectively synchronizing game updates with the display refresh.
+
+### Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `return_error_code_3`: This routine is a small error path used by the game when an invalid operation is requested.
+- `initialize_game_state_5`: This routine performs one-time start-up initialization for the Theme Park game, setting up memory structures and loading font data before entering the main run loop.
+- `advance_message_queue`: Moves the next message text into the active message buffer and advances the message pointer.
+- `run_game_loop_6`: This routine starts the main gameplay loop for the theme park simulation.
+- `reset_ride_queue_3`: This routine clears and reinitialises the ride queue data structures and resets related park state flags.
+- `reset_audio_channels_2`: This routine silences all four audio channels and clears the DMA control register, effectively stopping any sound output.
+- `process_park_tick`: This routine advances the park simulation tick and updates the global park state.
+- `update_music_channel`: Updates the Amiga audio channel registers for the current music track and advances the playback position based on the current song state and tempo.
+- `update_ride_state_24`: Updates the state of a ride object each tick, handling its type-specific parameters, timers and audio channel setup.
+- `self_49`: This routine updates a ride vehicle’s position and state along a track segment, handling movement, timing, and animation selection for the vehicle.
+- `copy_ride_config_word`: This routine copies a 16-bit configuration value from a source ride structure into a destination ride structure.
+- `self_50`: The routine selects a ride price tier for a park attraction and writes the chosen price and direction flag into the attraction’s data block.
+- `update_ride_wait_time_4`: This routine updates the waiting time for a ride queue entry and selects the appropriate wait threshold based on the ride type.
+- `update_ride_wait_time_5`: This routine updates the waiting time for a ride or attraction.
+- `handle_joystick_input_2`: This routine processes joystick and input device data for the theme park game, interpreting control codes to update player actions, menu selections and on-screen parameters.
+- `set_park_flag_2`: The routine updates a park state flag by masking a control byte and storing the result in a status field.
+- `update_ride_waiting_queue_6`: The routine updates a ride’s waiting queue when a guest boards.
+- `update_ride_statistics_39`: Updates the per-ride operational statistics used by the park management simulation.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `load_park_data_4`: The routine validates a park header and loads a saved park into memory, then initializes the park structures and copies a small data block into the loaded buffer.
+- `update_park_entrance`: The routine updates the park entrance state during the game loop.

@@ -1015,6 +1015,39 @@ def blocks(ins):
         if pc not in fallen: lead.add(pc)
     return sorted(l for l in lead if l in ins)
 
+def superset(mem, dec, insns, mode='regions'):
+    """31 Oct 2026 (Karl: 100% of the code translated). Rust only: every even address in every code range (and every run-time
+    code PC) that decodes to an instruction gets its own arm, keyed by its exact PC. The Rust arms set cpu.pc and return, so an
+    arm for a wrong start never changes the arms of the real path (tests/synthetic SupersetSynthetic proves it).
+    Limit (measured 31 Oct on 336/800/608/758): the code ranges are all of chip and slow RAM (2.5 MB, 1.3 million starts,
+    hundreds of MB of Rust), so by default ("superset": true) the starts are limited to code regions: runs of known
+    instructions (discovered, speculative, executed, run-time) merged across gaps up to G5_SUPERSET_GAP bytes (default 4096),
+    plus 64 bytes either side. That is about 2x the instructions. "superset": "full" takes every even address of every range."""
+    added = 0
+    starts = set()
+    if mode == 'full':
+        for s, e in mem.ranges:
+            starts.update(range(s + (s & 1), e, 2))
+    else:
+        gap = int(os.environ.get('G5_SUPERSET_GAP', '4096'))
+        known = sorted(set(insns) | set(mem.observed))
+        rs = None; re_ = None
+        for a in known + [None]:
+            if a is not None and rs is not None and a - re_ <= gap:
+                re_ = a; continue
+            if rs is not None:
+                starts.update(x for x in range(max(0, rs - 64) & ~1, re_ + 64, 2) if mem.incode(x))
+            rs = re_ = a
+    starts.update(a for a in mem.observed if not a & 1)
+    for a in sorted(starts):
+        if a in insns: continue
+        try:
+            ins = dec.decode(a)
+        except Exception:
+            continue
+        ins.superset = True; insns[a] = ins; added += 1
+    return added
+
 def main():
     global HLE, SCHED, YIELDS, EVT_CHECK
     outdir = sys.argv[1]
@@ -1057,7 +1090,16 @@ def main():
         for _ in range(3):
             spec = speculative(mem, dec, insns, leaders)
     rust = None
-    if '--emit' in sys.argv and sys.argv[sys.argv.index('--emit') + 1] == 'rust':
+    is_rust = '--emit' in sys.argv and sys.argv[sys.argv.index('--emit') + 1] == 'rust'
+    # direct targets of the real code (before superset adds wrong starts): the 100% gate (cover100.py) checks them
+    direct = set()
+    for _i in insns.values(): direct.update(_i.targets)
+    for _b, _t in jt: direct.add(_t)
+    n_super = 0
+    _sm = cfg.get('superset') or ('full' if '--superset-full' in sys.argv else '--superset' in sys.argv) or os.environ.get('G5_SUPERSET') not in (None, '', '0')
+    if is_rust and _sm:
+        n_super = superset(mem, dec, insns, 'full' if 'full' in (_sm, os.environ.get('G5_SUPERSET')) else 'regions')
+    if is_rust:
         import m68k2rs
         os.makedirs(outdir, exist_ok=True)
         rust = m68k2rs.emit_rust(insns, os.path.join(outdir, 'translated.rs'), HLE)
@@ -1084,12 +1126,15 @@ def main():
         'hle': ['%06X %s' % (k, v['fn']) for k, v in sorted(HLE.items())],
         'runtime_code_pcs_used': len(mem.observed), 'runtime_code_pcs_changed_left_to_interpreter': mem.volatile,
         'ghidra_seed_files': ghidra_used,
+        'superset_instructions': n_super,
     }
     if rust is not None:
         stats['rust_instructions_translated'] = rust['translated']
         stats['rust_untranslated'] = {('%06X' % k): v for k, v in sorted(rust['untranslated'].items())}
     json.dump({'stats': stats, 'bad': {('%06X' % k): v for k, v in sorted(bad.items())}}, open(os.path.join(outdir, 'translate_stats.json'), 'w'), indent=1)
     open(os.path.join(outdir, 'translated_pcs.txt'), 'w').write(''.join('%06X\n' % p for p in sorted(insns)))
+    open(os.path.join(outdir, 'executed_pcs.txt'), 'w').write(''.join('%06X\n' % p for p in sorted(executed)))
+    open(os.path.join(outdir, 'direct_targets.txt'), 'w').write(''.join('%06X\n' % p for p in sorted(direct)))
     open(os.path.join(outdir, 'leaders.txt'), 'w').write(''.join('%06X\n' % p for p in blks))
     for i, a in enumerate(sys.argv):
         if a == '--coverage':

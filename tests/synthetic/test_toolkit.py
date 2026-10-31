@@ -370,5 +370,58 @@ class LeakCheck(unittest.TestCase):
             self.assertEqual(r.returncode, 1, '%s not caught: %s' % (name, r.stdout))
 
 
+class SupersetSynthetic(unittest.TestCase):
+    """31 Oct 2026, 100% translation. move.w #$4E75,d0 / moveq #1,d1 / bra.s *: the real path is 0x20000, 0x20004, 0x20006.
+    The immediate word at 0x20002 decodes as rts, a wrong start. With superset it gets its own arm, keyed by its exact PC,
+    and the arms of the real path are byte for byte the ones a plain translation emits. cover100.py fails, naming 0x20002,
+    when a recording says 0x20002 ran and only the plain translation exists, and passes with superset."""
+    WORDS = [0x303C, 0x4E75, 0x7201, 0x60FE]
+
+    def translate(self, superset):
+        w = tempfile.mkdtemp(prefix='g5s-'); self.addCleanup(shutil.rmtree, w, True)
+        os.makedirs(os.path.join(w, 'out'))
+        img = b''.join(struct.pack('>H', x) for x in self.WORDS)
+        put(os.path.join(w, 'out', 'image.bin'), img)
+        cfg = {'name': 'synthetic', 'segments': [{'file': 'out/image.bin', 'addr': hex(BASE)}],
+               'code': ['0x%X-0x%X' % (BASE, BASE + len(img))], 'entry': hex(BASE), 'ghidra': False, 'seeds': [], 'hle': {}}
+        if superset: cfg['superset'] = True
+        put(os.path.join(w, 'game.json'), json.dumps(cfg))
+        out = os.path.join(w, 'gen'); os.makedirs(out)
+        r = run([sys.executable, os.path.join(PORT, 'm68k2c.py'), out, '--config', os.path.join(w, 'game.json'),
+                 '--no-speculative', '--emit', 'rust'], cwd=w, env=dict(os.environ, AMIGO_W=w))
+        self.assertEqual(r.returncode, 0, r.stderr[-2000:])
+        return w, out
+
+    @staticmethod
+    def arms(out):
+        arms = {}
+        for chunk in get(os.path.join(out, 'translated.rs')).split('\n        0x')[1:]:
+            head, _, rest = chunk.partition(' ')
+            if not rest.startswith(('=> {', '=> return')): continue   # not the page dispatch arms
+            pc = int(head, 16)
+            arms[pc] = chunk.split('\n        }')[0]
+        return arms
+
+    def test_wrong_start_gets_own_arm_real_path_unchanged(self):
+        _, plain = self.translate(False); _, sup = self.translate(True)
+        a, b = self.arms(plain), self.arms(sup)
+        real = [BASE, BASE + 4, BASE + 6]
+        self.assertEqual(sorted(a), real)
+        self.assertIn(BASE + 2, b)
+        self.assertNotIn(BASE + 2, a)
+        for pc in real:
+            self.assertEqual(a[pc], b[pc], 'real arm 0x%X changed by superset' % pc)
+        st = json.loads(get(os.path.join(sup, 'translate_stats.json')))['stats']
+        self.assertGreaterEqual(st['superset_instructions'], 1)
+
+    def test_gate_names_missing_address(self):
+        for superset, code in ((False, 1), (True, 0)):
+            w, out = self.translate(superset)
+            rec = os.path.join(w, 'recorded.txt'); put(rec, '%06X\n' % (BASE + 2))
+            r = run([sys.executable, os.path.join(PORT, 'cover100.py'), out, '--extra', rec])
+            self.assertEqual(r.returncode, code, r.stdout + r.stderr)
+            if code: self.assertIn('%06X' % (BASE + 2), r.stdout)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -75,3 +75,100 @@ Pilot game: **296 Global Thermonuclear Warfare** (the smallest: 41 translated fu
 - G2 crash chasing (the Kickstart patch work of 29 Oct) is paused: those crashes live in the memory model that this
   plan removes. G2 stays as the oracle's own check.
 - Ryzen runs each N milestone's tooling on the real game files and keeps the reports outside the repo.
+
+## Added by native stage 1 (31 Oct 2026)
+
+Stage 1 built the shared engine every native rewrite stands on, and took game 296 (Global Thermonuclear Warfare) all
+the way to a native APK on it. Games 336 and 608 come next on the same engine. Per-game notes live in
+`docs/native/gNNN-native.md` (first: [g296-native.md](native/g296-native.md)).
+
+### Layout
+
+- `rust/native_engine/`: the engine crate, and the root of its own Cargo workspace (members `.`, `../games/*`,
+  `../games/*/android`). The G5 workspace in `rust/Cargo.toml` excludes it, so the frozen G5 build is untouched.
+- `rust/games/gNNN/`: one crate per game (library `gNNN`, desktop binary `gNNN`, `examples/headless.rs`, `tests/`).
+- `rust/games/gNNN/android/`: a `cdylib` named `main` that exports `SDL_main` and calls the engine's platform layer.
+- `tools/native_package.sh`: builds the Android APK (arm64-v8a and armeabi-v7a, signed as `g5_package.sh` does) and
+  the Linux and Windows desktop binaries for a native game.
+- Asset extractors, packs, reference runs and function maps live outside the repo (on Ryzen under
+  `/srv/bulk/amigo-native/NNNNN/` and `/srv/fast2/native/`); no game bytes, assets or disassembly enter git.
+
+### Engine API (native_engine)
+
+Nothing in the engine knows about the Amiga. Its tests use synthetic data only.
+
+- `game`: `GameInfo {title, id, width, height, tick_hz, bindings, sheet, effect_voices}`, `Options {seed}`,
+  `Ctx {input, audio, save, tick}`, `Flow {Continue, Quit}`, trait `Game { tick(&mut Ctx) -> Flow; render(&mut Frame);
+  state() -> Vec<(String, i64)> }`, and `Spec {info, make: fn(&Pack, &Options) -> Result<Box<dyn Game>, String>}`.
+  `state()` is the named state the verification compares with the original.
+- `timing::FixedStep`: the fixed logic rate (50 Hz for PAL) paced against the display rate. On a 60 Hz screen a
+  frame is drawn every refresh and the game ticks 50 times a second.
+- `gfx`: `Palette` (12-bit Amiga-style colours via `rgb12`, or 24-bit), `Bitmap` (8-bit indexed pixels; `blit`,
+  `blit_masked`, `blit_keyed`, `blit_with` for custom per-pixel rules, `line`/`line_with`), `Sheet` (frames of one
+  image), `Font` (fixed-cell bitmap fonts, ink, opaque or layer modes) and `Frame` (the indexed picture plus its
+  palette; `to_argb`).
+- `audio::Mixer`: voices 0 to 3 belong to the music player, the rest to effects. `start`/`play` a `Sample` or
+  `Block` with an optional queued `next` block (looping as Paula did), `set_rate`, `set_volume`, `stop`,
+  `is_playing`, stereo pan. The game calls `Mixer::tick()` itself where its original called the replayer (it returns
+  true on a new row, which some games' timing depends on); the platform never ticks the music.
+- `tracker`: a complete ProTracker 2 replayer (`Tracker`, `TrackerTables`), quirks kept. The period, vibrato and
+  funk tables come from the game's pack, not from the engine.
+- `input`: abstract `Action`s (Up, Down, Left, Right, Fire, Fire2, Start, Cancel, Primary, Secondary, Pause),
+  `InputState {held, pressed, released, motion, absolute}`, `Bindings` (`pointer_game()`, `joystick_game()`) from
+  host events (keys, pad buttons and axes, mouse, touch, TV remote). The `Mapper` latches presses, so a tap that goes
+  down and up between two ticks is still seen (this was the "pressing start does nothing" bug on the Shield).
+- `save::Save`: a small JSON store per game id.
+- `pack::Pack`: the asset pack (below). `palette`, `sheet`, `bitmap`, `font`, `sample(name, rate)`, `music`, `data`.
+- `script`: scripted input ("TICK key/pad/axis/mouse/button/pointer ...") for verification runs.
+- `headless::Run`: runs a game with no display for N ticks, writing frames, `state.jsonl` and the audio.
+- `frontdoor`: the pre-boot menu (M8 to M11a look, Ami-Go badge, controls sheet from `ControlSheet`), pause menu
+  and touch overlay (stick, buttons, pointer mode).
+- `platform::sdl::app_main(args, embedded_pack, &Spec)` (feature `sdl`): front door, then the game loop with vsync,
+  audio queue, pause menu, touch and relative mouse. Flags: `--pack`, `--ticks`, `--out`, `--every`, `--script`,
+  `--seed`, `--touch`, `--fullscreen`, `--preboot-shot`. Logs `native ID: N fps drawn, tick T` every 5 s.
+- `napack` binary: `napack pack DIR OUT.nap`, `napack list FILE`.
+
+### Asset packs: native-asset-pack/1
+
+Decision: one versioned, engine-neutral format with two forms of the same content. Extractors write the directory
+form (easy to inspect and diff); `napack` turns it into the binary form, which the desktop binary and APK embed
+(`NATIVE_PACK=path.nap` at build time) or load with `--pack`.
+
+- Directory: `manifest.json` (`format: "native-asset-pack/1"`, `game`, `title`, `assets: [...]`) plus the files.
+- Binary `.nap`: `"NAP1"`, u32 version (1), u32 manifest length, the manifest JSON (each asset entry also gets
+  `offset` and `len` into the blob area), the asset bytes, then a u64 FNV-1a 64 checksum of everything before it
+  (all little-endian).
+- Asset kinds: `palette` (JSON `colours` as `#RRGGBB`), `image` (raw 8-bit palette indices, `w` x `h` per frame,
+  `frames` side by side), `font` (an image of glyph cells with `glyph_w`, `glyph_h`, `first`, `count`, optional
+  `fold_lower`, `alias`, `blank`), `sample` (signed 8-bit PCM, `format` "s8"; the game supplies the play rate),
+  `music` (`format` "protracker-mod") and `data` (any JSON the game needs: tables, texts, button lists). It replaces
+  the `0.1-proposed` draft. Names must be unique; `Pack` rejects duplicates, an unknown format or version, and a bad
+  checksum.
+
+### How a game is structured
+
+- `assets.rs` loads the pack into typed tables once (`Assets::load`), failing loudly on anything missing.
+- The game is one struct with typed state and a `Phase` enum. Each original main-program loop becomes a phase;
+  each original routine keeps its author's name as a method, so the function map reads straight across.
+- `tick` first does what the original's vertical-blank handler did, then runs the main program until it would have
+  waited for a frame. Original frame waits become counters. Work the original was too slow to do in one frame keeps
+  its measured cost (a `busy` count), so timing matches the reference tick for tick.
+- `render` draws the whole frame from state; it never changes state.
+- `state` names the values the comparison scripts read from the original's memory.
+
+### How to add the next game
+
+1. Write `extractNNN.py` outside the repo: read the recovered source and files, write
+   `/srv/bulk/amigo-native/NNNNN/pack/` and `napack pack` it to `gNNN.nap`. Remove copy protection; keep cracktros as
+   an intro piece.
+2. Copy `rust/games/g296` to `rust/games/gNNN` (rename the crate, the `android` crate and the ids), add both to the
+   workspace members in `rust/native_engine/Cargo.toml`, and rewrite `assets.rs` and the game module from the
+   recovered source.
+3. Keep a function map (outside the repo) from every recovered routine to its native code; 100% must be accounted
+   for, with a reason for each routine not ported.
+4. Verify: the same scripted input through the 68000 reference harness and `examples/headless.rs`, then compare
+   named state, frames and audio; write down the tolerances. Then a real play test, desktop and Shield.
+5. `tools/native_package.sh --game gNNN --pack gNNN.nap --name "Title" --out DIR --android --linux --package
+   org.amigo.g5.gNNNNN.nativegame`, install on the Shield beside the translated build, and check fps and screenshots.
+6. `cargo fmt`, `cargo clippy --workspace --all-targets -- -D warnings`, `cargo test --workspace` in
+   `rust/native_engine`; the leak check; then `docs/native/gNNN-native.md`.

@@ -41,6 +41,13 @@ ever relaxed to make a game pass.
      filesystem and blocks of custom-format disks are matched against the segments and classified through them, so
      track-loaded code is reassembled per loaded block. Unmatched blocks are decided on evidence: code-like bytes and
      packed blocks ancient cannot open are blockers; low-entropy blocks with no opcode signal are data;
+   - WHDLoad disk loads the reference harness logs (`WHD DiskLoad disk N +offset -> address`) become their own units built
+     from the disk image bytes, so code a later load overwrote is still recovered and the image is classified per
+     loaded block. WHDLoad disk images of any size are judged in 256-byte chunks; damaged, truncated or protection
+     files on AmigaDOS disks are judged by their raw blocks; overlaid executables keep every overlay node's hunks;
+   - play recordings (`/srv/bulk/amigo-play/<id>/run-*`) add their executed PCs to proof (d); each is re-run with its
+     own input script and its RAM is used only if the re-run logs exactly the recorded PCs. PCs a recording logged that
+     no reproducible snapshot holds keep the game blocked, with the count per recording in the blocker;
    - recursive descent (own flow following, every relocation must match exactly one operand) from: the entry point,
      every executed PC, cross-hunk calls; then validated candidates (author symbols, pointers in data, addresses taken
      by lea/pea/move) that must decode with no problem; then whole gaps that decode cleanly and end in a flow terminator
@@ -95,4 +102,6 @@ commits these no-bytes summaries in batches.
 - The reference run covers a few hundred frames, so proof (d) confirms only the code reached early; the rest is
   recovered statically.
 - A run-time segment's extent is derived from the code reachable from the executed PCs it contains.
-- IPF images, overlaid executables and 16/8-bit relocations are blockers until their stages exist.
+- IPF images and 16/8-bit relocations are blockers until their stages exist.
+- Disk bytes the reference run never loaded are judged on evidence only: code-like or packed-unknown bytes block the
+  game. A longer or input-driven reference run is the way to reach them.

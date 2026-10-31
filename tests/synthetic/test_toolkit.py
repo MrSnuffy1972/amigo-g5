@@ -189,6 +189,27 @@ class TranslatorCodeBytes(unittest.TestCase):
         self.assertEqual(m.rb(0x200), 0x4e)
 
 
+class PlayCoverage(unittest.TestCase):
+    """portcfg.observed_bytes with out/port/play (31 Oct 2026, "Record play, then translate"): first bytes recorded while
+    the original was played fill addresses the no-input reference never ran, and never override it."""
+
+    def test_play_bytes_fill_gaps_only(self):
+        import tempfile
+        sys.path.insert(0, PORT)
+        import portcfg
+        d = tempfile.mkdtemp()
+        os.makedirs(os.path.join(d, 'out/port/ref')); os.makedirs(os.path.join(d, 'out/port/play'))
+        open(os.path.join(d, 'out/port/ref/first_bytes.txt'), 'w').write('001000 4E 71 4E 75\n')
+        open(os.path.join(d, 'out/port/play/first_bytes.txt'), 'w').write('001002 60 00\n002000 70 01 4E 75\n')
+        old, portcfg.W = portcfg.W, d
+        try:
+            fx = portcfg.observed_bytes({})
+        finally:
+            portcfg.W = old
+        self.assertEqual([fx[0x1002], fx[0x1003]], [0x4E, 0x75])          # the reference wins
+        self.assertEqual([fx[0x2000 + i] for i in range(4)], [0x70, 0x01, 0x4E, 0x75])   # play fills the gap
+
+
 class GamePack(unittest.TestCase):
     """tools/g5_pack.py on synthetic files: pack, list and unpack round-trip; damage is caught (M7, 29 Oct 2026)."""
 

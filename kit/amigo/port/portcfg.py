@@ -179,10 +179,22 @@ def ghidra_seeds(c):
 
 def observed_bytes(c):
     """address -> byte, from out/port/ref/first_bytes.txt (harness FIRSTBYTES): the bytes at each executed PC at the moment it first ran."""
-    f = path("out/port/ref/first_bytes.txt")
     fx = {}
-    if not os.path.exists(f):
-        return fx
+    for f, fill in ((path("out/port/ref/first_bytes.txt"), False), (path(PLAY + "/first_bytes.txt"), True)):
+        if os.path.exists(f):
+            _first_bytes_into(fx, f, fill)
+    return fx
+
+
+# 31 Oct 2026 (Karl: "Record play, then translate"): the reference run is recorded with no input, so code a game only reaches
+# after player input was never seen and never translated (Theme Park stopped at tick 1119, Jail Break at 519, when played).
+# Ryzen records the original again with scripted input and merges those runs here: executed_pcs.txt (more seeds) and
+# first_bytes.txt (the bytes they ran with). The no-input reference wins wherever both saw an address.
+PLAY = "out/port/play"
+
+
+def _first_bytes_into(fx, f, fill):
+    """first_bytes.txt lines into fx; fill=True only adds addresses fx does not have yet."""
     dist = {}   # G2E2 fxown (carried over from G1E3, 25 Oct 2026): a byte comes from the line whose PC is nearest below it (its own
     for line in open(f):   # instruction's line). First-line-wins let a lower PC's 10-byte look-ahead, taken before a copy loop rewrote
         t = line.split()   # the bytes, win over the bytes the instruction really ran with.
@@ -190,9 +202,10 @@ def observed_bytes(c):
             continue
         a = int(t[0], 16)
         for i, b in enumerate(t[1:]):
+            if fill and a + i in fx and a + i not in dist:
+                continue
             if a + i not in dist or i < dist[a + i]:
                 dist[a + i] = i; fx[a + i] = int(b, 16)
-    return fx
 
 
 def observed(c):

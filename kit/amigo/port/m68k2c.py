@@ -1037,6 +1037,8 @@ def main():
         if 'executed' in pat:
             import glob as _g
             for f in _g.glob(portcfg.path(pat)): executed.update(portcfg.hex_lines(f))
+    _pp = portcfg.path(portcfg.PLAY + '/executed_pcs.txt')   # 31 Oct 2026: code reached only when played (portcfg.PLAY)
+    if os.path.exists(_pp): executed.update(portcfg.hex_lines(_pp))
     seeds |= executed
     mem = Mem(cfg); dec = Decoder(mem)
     if mem.kick:   # G2E10 kickroots: every PC the reference ran may be entered from the interpreted Kickstart

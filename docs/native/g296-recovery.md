@@ -7,7 +7,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (one OFS disk image, 901120 bytes) | 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | not run yet: vasm could not be fetched automatically from its official site |
+| Byte-identical reassembly with vasm | identical: all 12 program hunks (bytes and relocations) and the boot block |
 | Functions named and described | 116 of 116 named (author symbols), 116 of 116 described |
 | Executed addresses (reference run) in recovered, described code | 675 of 675 (100.00%) |
 | Independent decoder cross-check (Ghidra against capstone) | 2659 of 2660 instructions identical in start and length, 0 mismatches |

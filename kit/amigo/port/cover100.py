@@ -7,7 +7,9 @@ Reads the translator's outputs in GENDIR (translated_pcs.txt, direct_targets.txt
 and fails (exit 1), naming the addresses, when any direct branch target or jump-table entry of the real code, any PC a
 recording executed, or any address in an --extra file (recorded targets, one hex address per line) is not a translated
 instruction. An arm the Rust emitter left as Untranslated does not count as translated. HLE PCs count as covered.
-Kickstart ROM addresses (0xF80000 and up) are not game code and are left out.
+Kickstart ROM addresses (0xF80000 and up) are not game code and are left out. Direct targets come from the confirmed code
+(not speculative roots); odd ones (address errors) and ones the decoder rejects as illegal 68000 instructions are listed
+in --json, not failed.
 """
 import json, os, sys
 
@@ -31,7 +33,10 @@ def main():
             for f in a[i + 1:]:
                 if f.startswith('--'): break
                 extra.append(f)
-    st = json.load(open(os.path.join(g, 'translate_stats.json')))['stats']
+    tsj = json.load(open(os.path.join(g, 'translate_stats.json'))); st = tsj['stats']
+    # an address the decoder rejects as an illegal 68000 instruction (bad EA, line A/F, ...) is not code: listed, not failed.
+    # Out of code range still fails (pilot 31 Oct, 800: bcc at 07E9DE into 'bad ea 7 6' on both paths = data, not code).
+    illegal = {int(k, 16): v for k, v in tsj.get('bad', {}).items() if v != 'out of code range'}
     unt = {int(k, 16) for k in st.get('rust_untranslated', {})}
     hle = {int(h.split()[0], 16) for h in st.get('hle', [])}
     ok = (hexes(os.path.join(g, 'translated_pcs.txt')) - unt) | hle
@@ -43,9 +48,10 @@ def main():
     miss = {}
     for kind, s in need.items():
         for p in s:
-            if p >= 0xF80000 or p in ok: continue
+            if p >= 0xF80000 or p in ok or p in illegal: continue
             miss.setdefault(p, []).append(kind)
-    rep = {'checked': {k: len(v) for k, v in need.items()}, 'translated': len(ok), 'missing': len(miss),
+    odd = hexes(os.path.join(g, 'direct_targets_odd.txt'))   # 68000 address error targets: listed, not code
+    rep = {'illegal_not_code': ['%06X %s' % (p, illegal[p]) for p in sorted(illegal)], 'odd_direct_targets_not_code': ['%06X' % p for p in sorted(odd)], 'checked': {k: len(v) for k, v in need.items()}, 'translated': len(ok), 'missing': len(miss),
            'missing_list': ['%06X %s%s' % (p, '+'.join(miss[p]), ' (Untranslated arm)' if p in unt else '') for p in sorted(miss)]}
     if jout: json.dump(rep, open(jout, 'w'), indent=1)
     if miss:

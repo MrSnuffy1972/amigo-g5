@@ -1091,10 +1091,13 @@ def main():
             spec = speculative(mem, dec, insns, leaders)
     rust = None
     is_rust = '--emit' in sys.argv and sys.argv[sys.argv.index('--emit') + 1] == 'rust'
-    # direct targets of the real code (before superset adds wrong starts): the 100% gate (cover100.py) checks them
+    # direct targets of the confirmed code (reached from seeds; not speculative roots, not superset): the 100% gate (cover100.py)
+    # checks them. An odd target is a 68000 address error, never code (pilot 31 Oct: speculative data decodes gave C00C07 etc.)
     direct = set()
-    for _i in insns.values(): direct.update(_i.targets)
-    for _b, _t in jt: direct.add(_t)
+    for _i in confirmed.values(): direct.update(_i.targets)
+    for _b, _t in jt:
+        if _b in confirmed: direct.add(_t)
+    direct_odd = {t for t in direct if t & 1}; direct -= direct_odd
     n_super = 0
     _sm = cfg.get('superset') or ('full' if '--superset-full' in sys.argv else '--superset' in sys.argv) or os.environ.get('G5_SUPERSET') not in (None, '', '0')
     if is_rust and _sm:
@@ -1135,6 +1138,7 @@ def main():
     open(os.path.join(outdir, 'translated_pcs.txt'), 'w').write(''.join('%06X\n' % p for p in sorted(insns)))
     open(os.path.join(outdir, 'executed_pcs.txt'), 'w').write(''.join('%06X\n' % p for p in sorted(executed)))
     open(os.path.join(outdir, 'direct_targets.txt'), 'w').write(''.join('%06X\n' % p for p in sorted(direct)))
+    open(os.path.join(outdir, 'direct_targets_odd.txt'), 'w').write(''.join('%06X\n' % p for p in sorted(direct_odd)))
     open(os.path.join(outdir, 'leaders.txt'), 'w').write(''.join('%06X\n' % p for p in blks))
     for i, a in enumerate(sys.argv):
         if a == '--coverage':

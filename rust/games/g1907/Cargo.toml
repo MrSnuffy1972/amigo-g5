@@ -1,0 +1,27 @@
+[package]
+name = "g1907"
+version = "0.1.0"
+edition = "2021"
+description = "Ami-Go native: game 336, International Karate +, rewritten natively on native_engine from its recovered code (native batch 1)"
+publish = false
+workspace = "../../native_engine"
+build = "build.rs"
+
+[[bin]]
+name = "g1907"
+path = "src/main.rs"
+required-features = ["sdl"]
+
+[dependencies]
+native_engine = { path = "../../native_engine", default-features = false }
+serde_json = "1"
+
+[features]
+default = ["desktop"]
+sdl = ["native_engine/sdl"]
+desktop = ["sdl", "native_engine/desktop"]
+# Writes a call trace of the main program (frame and routine) to the file named by G336_TRACE: verification only.
+trace = []
+# The reference harness's conditions (its OS returns from the one-second delay at once and never turns sprites on):
+# verification only.
+ref-harness = []

@@ -1,0 +1,79 @@
+# Game 1907 native: International Karate +
+
+Added by native batch 1 (1 Nov 2026). International Karate + (System 3, 1988; Ami-Go game 1907, the Oracle crack
+with the Invisible Crime cracktro) is a three-fighter karate game: the white fighter (player 1), red (player 2 or the
+computer) and blue (always the computer) fight bouts of 30 seconds judged by a referee who speaks in a bubble; six
+half points win a bout; a fighter who comes last is out; every third bout is a bonus round; the belt colour follows
+the score; a 50-place high-score table with name entry.
+
+The native version is `rust/games/g1907` on `rust/native_engine` (see [G5-NATIVE.md](../G5-NATIVE.md)). It is
+written from the recovered source (`docs/native/g1907-recovery.md`) as typed Rust: no guest memory, no 68000
+registers, no Kickstart, no custom-chip registers, no port reads, no copper, blitter or bitplane emulation. All
+pictures, frames, fonts, colours, sounds, the music and the game's tables come from the asset pack at run time
+(extracted outside the repository; nothing of the game is in git).
+
+## How it is built
+
+- `ik.rs`: the state (per-fighter arrays of three, named after what they hold, each with the original's address in
+  its comment), the frame interrupt's work (`vblank`: clocks, hit timers, delayed sounds, the effects channel, the
+  music), the option keys and code words (`handle_input_byte`), drawing (the two screens and the background put back
+  under what moved, as the original kept them, indexed 320 by 200), and the random numbers (the original's mixer of
+  three running sums with bytes of its own image, a table in the pack).
+- `flow.rs`: the phases of the main loop: 0 set-up, 1 a bout, 3 between bouts (ranking, the verdict, the time
+  bonus, who is out), 6 the pause (the fighters show their moves), 4 the match over, 5 the bonus round; the panel
+  (points markers, scores, clock, round, speed meter) and the belt colours.
+- `fight.rs`: moves are table driven as in the original (each move a run of animation cursors; each cursor a frame,
+  a step and flags: hold, turn, interruptible, knocked down, attacking); the joystick tables (with the special table
+  while an opponent attacks from behind); the computer fighters' choices (target, counters, attacks by distance and
+  sides, skill by level and bout); hit detection (attack frames against body zones, reach, half and full points, the
+  score pop-up, the reaction move); the stars over a fallen fighter.
+- `speech.rs`: the referee: the bubble placed in the widest gap between the fighters, its frame and tail, the text
+  (fighters' names by rank, big letters, the seconds left), the referee talking, the sparkles.
+- `hiscore.rs`: the high-score table, sorting, name entry with the joystick, the "top 50 scores" show and its lights.
+- `bonus.rs`: the ball round: the shield's seven places from the joystick, the balls' physics (in the frame
+  interrupt), pixel collisions against the fighter's and the shield's outlines, the bonus for all balls turned away.
+- `music.rs`: the title music player rewritten on typed channel records (note streams, instruments with attack and
+  loop, volume envelopes, slides, vibrato), feeding the engine mixer as Paula channels; channel 3 is shared with the
+  effects as on the original.
+- `co.rs`: the main program on its own thread in lock-step with the engine's ticks (the g336 pattern), the per-row
+  colours of the original's display list given as one colour a pixel (`Frame::direct`: the sky and the sea are
+  gradients down the screen).
+- `skew.rs`: the shadows' lean, generated from the recovered routine as a list of word operations.
+
+Controls: the joystick's eight directions with and without fire give the sixteen moves (pad D-pad or stick and A,
+arrows and Right Ctrl or Space, the touch stick and Fire button); Start / Return = F1 (one player), B / F2 = two
+players, Y / F3 = music; the pre-boot menu is the front door.
+
+## Verification (1 Nov 2026)
+
+Reference: the b1 copy of the 68000 reference harness running the original from power-on with the recovery's
+one-player recording (`s_p1a`), state logged every tick (phase, clock, positions, frames, facing, moves, points,
+scores). Native: the same joystick script through `examples/headless.rs`, aligned at the game start.
+
+| Check | Result | Tolerance |
+|---|---|---|
+| Phase sequence, first bout and the break after it | bout 1580 vs 1585 ticks, break 350 vs 350 | 2 frames a step |
+| First picture of the bout (fighters bowing), whole screen | 98.5% of pixels identical | sea shimmer, 1 random step |
+| Named state over bout 1 (1580 ticks) | phase 100%, clock 94% within 2 ticks, positions and frames identical until the first computer decision (+70 ticks) | see note |
+
+Note: the computer fighters' choices use the original's random numbers, which mix a count of calls since power-on
+with bytes of the program's own memory; the native run starts from the title (no cracktro, a shorter title) and the
+window it reads holds a few run-time variables as stored in the image, so the numbers part after the first random
+choice and the bouts then differ in detail (same rules, different fights). Scoring, verdicts and phases follow the
+same code.
+
+Play test: `cargo test -p g1907` with `G1907_PACK` set: fire starts a one-player game from the title, the clock runs,
+the player's fighter moves, fighters score, the bout ends. Headless 6000-tick sessions show the title cards, bouts
+with the referee's verdicts, the ball round and the match over; screenshots checked by eye.
+
+## Not in this revision (remaining)
+
+- The cracktro (Invisible Crime intro) as the native intro piece.
+- The title's 33-step script (fades, starfield, logos, scrolling credits, fighters dancing behind the title): shown
+  as three cards from the title sheet.
+- The background's extras (sea shimmer and sun reflection, the creatures and code-word extras).
+- The bomb round (bonus phase 7): played as the ball round.
+- A second player's controls: the engine has one set of controls; two-player games start but player 2 has no input.
+
+The function map (routine, unit, range, status, where or why) is kept outside the repo with the asset pack:
+166 routines ported, 41 done by the engine or the extractor, 143 not yet (the items above).

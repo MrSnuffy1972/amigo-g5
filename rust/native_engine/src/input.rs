@@ -73,6 +73,8 @@ pub struct InputState {
     pub motion: (i32, i32),
     /// The pointer's absolute position this tick (a touch, or an uncaptured mouse), in logical pixels.
     pub absolute: Option<(i32, i32)>,
+    /// A second player's held actions (keys bound with `Bind::P2`; added by native batch 1 for two-joystick games).
+    pub held2: u32,
 }
 
 impl InputState {
@@ -110,6 +112,8 @@ pub enum Host {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Bind {
     Act(Action),
+    /// A key held by a second player (`InputState::held2`).
+    P2(Action),
     /// A stick or the D-pad moves the pointer.
     Pointer,
     /// A stick or the D-pad gives Up, Down, Left and Right.
@@ -244,6 +248,9 @@ pub struct Mapper {
     /// Actions pressed since the last tick: a press and release between two ticks (a quick tap or click) still
     /// counts as held for one tick, so it is never lost.
     latched: u32,
+    /// The second player's held keys and quick taps.
+    held2: Vec<(String, Action)>,
+    latched2: u32,
 }
 
 impl Mapper {
@@ -258,6 +265,8 @@ impl Mapper {
             dirs: vec![],
             dir_ticks: 0,
             latched: 0,
+            held2: vec![],
+            latched2: 0,
         }
     }
 
@@ -277,6 +286,13 @@ impl Mapper {
         }
     }
 
+    fn hold2(&mut self, src: &str, a: Action, down: bool) {
+        self.held2.retain(|h| !(h.0 == src && h.1 == a));
+        if down {
+            self.held2.push((src.to_string(), a));
+            self.latched2 |= a.bit();
+        }
+    }
     fn dir_index(name: &str) -> Option<usize> {
         match name {
             "Up" | "up" => Some(0),
@@ -316,6 +332,7 @@ impl Mapper {
                 match (b, Self::dir_index(name)) {
                     (Some(Bind::Act(Action::Pause)), _) => return *down,
                     (Some(Bind::Act(a)), _) => self.hold(name, a, *down),
+                    (Some(Bind::P2(a)), _) => self.hold2(name, a, *down),
                     (Some(b @ (Bind::Pointer | Bind::Directions)), Some(i)) => {
                         self.direction(name, i, b, *down)
                     }
@@ -351,7 +368,7 @@ impl Mapper {
                 }
                 Bind::Act(Action::Pause) => return *x > 16_384,
                 Bind::Act(a) => self.hold(name, a, *x > 16_384),
-                Bind::None => {}
+                Bind::None | Bind::P2(_) => {}
             },
             Host::MouseMove(dx, dy) if self.bindings.mouse => {
                 self.motion.0 += dx;
@@ -410,6 +427,8 @@ impl Mapper {
             released: self.prev & !held,
             motion: m,
             absolute: self.absolute.take(),
+            held2: self.held2.iter().fold(0, |h, x| h | x.1.bit())
+                | std::mem::take(&mut self.latched2),
         };
         self.prev = held;
         s
@@ -418,6 +437,7 @@ impl Mapper {
     /// Lets go of everything (on pause, so nothing stays held while the game is frozen).
     pub fn release_all(&mut self) {
         self.held.clear();
+        self.held2.clear();
         self.latched = 0;
         self.sticks.clear();
         self.dirs.clear();

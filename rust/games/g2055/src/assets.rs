@@ -33,6 +33,9 @@ pub struct Assets {
     pub topfont: Sheet,
     pub botfont: Sheet,
     pub menus: Menus,
+    /// The 8 x 8 text font of the league screens (letters, digits, box pieces) and the league tables (part 2).
+    pub textfont: Sheet,
+    pub league: crate::league::League,
 }
 
 fn pal12(p: &Palette) -> [u16; 32] {
@@ -87,6 +90,8 @@ impl Assets {
             topfont: p.sheet("topfont")?,
             botfont: p.sheet("botfont")?,
             menus: Menus::load(&p.data("menus")?)?,
+            textfont: p.sheet("textfont")?,
+            league: crate::league::League::load(&p.data("fixture")?)?,
         };
         for (n, b) in [
             ("title", &a.title),
@@ -110,6 +115,9 @@ impl Assets {
         }
         if a.menus.players.len() != 4 || a.menus.matches.len() != 4 || a.menus.cup.len() != 2 {
             return Err("menus: want 4 players, 4 match and 2 cup items".into());
+        }
+        if a.textfont.frame_w != 8 || a.textfont.frame_h != 8 || a.textfont.frames < 45 {
+            return Err("textfont: want 45 glyphs of 8 x 8".into());
         }
         Ok(a)
     }

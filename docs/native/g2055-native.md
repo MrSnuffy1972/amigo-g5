@@ -134,3 +134,39 @@ the same choices. The playfield is cropped at x 17, y 8 as in part 1.
 
 Play tests: the menus lead to the league (mode 1, 550) and the cup (NEW GAME recorded), the arrows wrap, Esc goes back
 to the first menu, and the demo is chosen after 1500 idle frames.
+
+## Part 2, second slice: the knockout's NEXT FIXTURE screen
+
+`src/intro/fixture.rs` and `src/league.rs`, written from `cycle_team_selection_screen`, `render_post_match_summary`,
+`draw_two_team_names`, `render_team_stats_text`, `render_ui_component`, `update_player_flags`,
+`initialize_entity_properties`, `parse_entity_message`, `wait_for_input_flag`, `clear_player_stats`,
+`copy_player_struct_fields`, `average_attribute_bytes`, `average_player_attributes` and their helpers.
+
+- The league tables as typed values (`league::League`, `league::Team`): the 17 team records of `$7F50` (names,
+  played/won/drawn/lost, points for and against, points, placing, the four skill groups), the squad (`$594E`) and the
+  opponent's players (`$597E`), and the 21 text rows of the screen (`$32BE`). The pack's `fixture` data and the 8 x 8
+  text font (`textfont`, disk file 1 at `$44364`, 51 glyphs: letters, digits, box pieces) are added by
+  `fixture2055.py` (outside the repo, beside `extract2055.py`).
+- KNOCKOUT: every record cleared, mode 0, 1100 in each purse, the first opponent (REVOLVER, team 1 of the knockout
+  table); the opponent's players take the team's skill groups.
+- The screen: the menu panel with NEXT FIXTURE and PRESS FIRE, the middle (x 17 to 302, rows 17 to 182) filled with
+  colour 6, the rows drawn 6 pixels a character and 4 lines a row (rows 4, 6, ... 44; the boxes are box-piece glyphs),
+  the names and PLAY on row 6. Each team's numbers are written into the shared rows first (left team at character
+  19, right at 49): points as four digits, played/won/drawn/lost as two, NA for placing and points for/against outside
+  the league (their values in the league), and the four groups' ratings (the eight skill bytes over eight; the
+  player's team takes its groups from its squad first, three players a group).
+- Fire (or a key) leaves the screen; Esc sets the escape flag.
+- Not yet: the gym and team screen (`handle_team_selection_logic`) and the match (`initialize_match_state`) that the
+  knockout runs next, the knockout's progression through the 15 opponents and its win sequence; the knockout
+  records `next` = 1 and goes back to the first menu.
+
+### Verification (part 2, second slice)
+
+Reference: the harness copy's knockout run (`k1`: fire at 2200, 2350, then every 120 to 150 frames). Native:
+`examples/headless.rs` with the same choices (fire at 1000, 1300, 1450, 1700).
+
+| Screen | Differing pixels |
+|---|---|
+| NEXT FIXTURE, BRUTAL DELUXE v REVOLVER (reference frame 2450; native ticks 1500 to 1700, five frames) | 0 of 64,000 each |
+
+Play test: KNOCKOUT shows NEXT FIXTURE (mode 0, 1100, opponent 1), waits for fire, then goes back to the menus.

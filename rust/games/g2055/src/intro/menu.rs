@@ -44,6 +44,7 @@ impl Intro<'_> {
     /// The main program's loop (`l_008050`): the first menu, again and again.
     pub(super) fn main_loop(&mut self) {
         self.w().stage = Stage::Menu;
+        self.load_league();
         loop {
             self.initialize_post_match_screen();
         }
@@ -111,7 +112,7 @@ impl Intro<'_> {
             return;
         }
         match c {
-            0 => self.pick(Next::Knockout),
+            0 => self.cycle_team_selection_screen(),
             1 => self.enter_league_menu_mode(),
             2 => self.initialize_league_menu_state(),
             _ => self.toggle_display_flags(),
@@ -157,7 +158,7 @@ impl Intro<'_> {
     }
 
     /// Records where a selection leads (a later part of the port).
-    fn pick(&mut self, n: Next) {
+    pub(super) fn pick(&mut self, n: Next) {
         let mut w = self.w();
         w.next = n;
         w.picks += 1;
@@ -312,7 +313,7 @@ fn parse_player_name_string(b: &mut Bitmap, f: &Sheet, text: &[u8]) {
 
 /// Writes a heading in an 8 x 8 font: one column byte a glyph, wrapping after 40 (`increment_and_check_limit`); `dy`
 /// is the font's line offset (the heading sits one line higher than the footing).
-fn parse_and_project_entities(b: &mut Bitmap, f: &Sheet, text: &[u8], dy: i32) {
+pub(super) fn parse_and_project_entities(b: &mut Bitmap, f: &Sheet, text: &[u8], dy: i32) {
     let (mut col, mut row) = (0u16, 0u16);
     let mut i = 0;
     while i < text.len() && text[i] != 0 {

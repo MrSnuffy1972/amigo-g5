@@ -9,10 +9,14 @@
 //!
 //! Part 2 (first slice): the menus (`intro::menu`): the menu screen and runner, the first menu, the match menu and
 //! the league's and the cup's game menus. Where a selection leads is recorded for the later parts.
+//!
+//! Part 2 (second slice): the knockout's start and its NEXT FIXTURE screen (`intro::fixture`), on the league tables
+//! (`league`).
 
 pub mod assets;
 pub mod co;
 pub mod intro;
+pub mod league;
 pub mod world;
 
 /// The engine, for the Android library (which reaches it through this crate).

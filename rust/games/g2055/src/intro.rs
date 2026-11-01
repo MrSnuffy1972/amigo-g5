@@ -17,6 +17,7 @@ use crate::assets::{Assets, Page};
 use crate::co::{Co, Link};
 use crate::world::{Stage, World};
 
+mod fixture;
 mod menu;
 
 /// The cursor glyph and the save slot the typing uses (the original keeps the background under the cursor in glyph
@@ -113,6 +114,7 @@ impl Game for Speedball {
             ("money".into(), w.money[0] as i64),
             ("next".into(), w.next as i64),
             ("picks".into(), w.picks as i64),
+            ("opponent".into(), w.opponent as i64),
         ]
     }
 }

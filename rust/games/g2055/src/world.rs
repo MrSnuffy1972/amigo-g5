@@ -3,6 +3,8 @@
 
 use native_engine::gfx::Bitmap;
 
+use crate::league::Team;
+
 pub const SCREEN_W: usize = 320;
 pub const SCREEN_H: usize = 200;
 
@@ -25,6 +27,8 @@ pub enum Stage {
     GameStart = 6,
     /// The menus (part 2).
     Menu = 7,
+    /// The NEXT FIXTURE screen (part 2, second slice).
+    Fixture = 8,
 }
 
 /// Where a menu selection leads: the routine the original runs next, which is a later part of the port (the `next`
@@ -99,6 +103,13 @@ pub struct World {
     /// Where the last selection leads, and how many selections were made.
     pub next: Next,
     pub picks: u32,
+    /// The league tables (part 2): the 17 team records, the squad and the opponent's players, the NEXT FIXTURE
+    /// rows as the stats were last written into them, and the knockout's opponent (`$387A`, 1 to 15).
+    pub teams: Vec<Team>,
+    pub squad: Vec<[u8; 8]>,
+    pub rivals: Vec<[u8; 8]>,
+    pub rows: Vec<Vec<u8>>,
+    pub opponent: u16,
 }
 
 impl Default for World {
@@ -132,6 +143,11 @@ impl Default for World {
             money: [0; 3],
             next: Next::None,
             picks: 0,
+            teams: Vec::new(),
+            squad: Vec::new(),
+            rivals: Vec::new(),
+            rows: Vec::new(),
+            opponent: 0,
         }
     }
 }

@@ -167,3 +167,34 @@ fn the_first_menu_starts_the_demo_after_1500_idle_frames() {
     r.run(200);
     assert_eq!(r.get("next"), 9, "DEMO GAME");
 }
+
+#[test]
+fn knockout_shows_the_next_fixture_until_fire() {
+    let Some(p) = pack() else { return };
+    let mut r = Run::new(&p);
+    let mut n = 0;
+    while r.get("stage") != 7 && n < 4000 {
+        r.step(&[Host::Key("Space".into(), n % 20 < 10)]);
+        n += 1;
+    }
+    r.run(120);
+    tap(&mut r, "Space");
+    assert_eq!(r.get("menu"), 2, "the match menu");
+    tap(&mut r, "Space");
+    r.run(60);
+    assert_eq!(r.get("stage"), 8, "KNOCKOUT shows NEXT FIXTURE");
+    assert_eq!(
+        (r.get("mode"), r.get("money"), r.get("opponent")),
+        (0, 1100, 1)
+    );
+    assert!(r.lit() > 30000, "the screen is shown");
+    r.run(200);
+    assert_eq!(r.get("stage"), 8, "it waits for fire");
+    tap(&mut r, "Space");
+    assert_eq!(r.get("stage"), 7, "back to the menus");
+    assert_eq!(
+        r.get("next"),
+        1,
+        "the knockout's gym and match come next (a later part)"
+    );
+}

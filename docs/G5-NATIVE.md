@@ -191,3 +191,71 @@ did between waits is a measured cost in frames (`busy`), and a frame interrupt t
 wait return at once, as on the original. Verification-only features: `trace` (a call trace to compare with the
 reference harness's call log) and `ref-harness` (the reference harness's conditions: its stand-in OS's instant
 one-second delay and no sprites).
+
+## Release builds and revisions
+
+Added 1 Nov 2026. Karl, 1 Nov: "name all the games filenames with a revision number, from now on".
+
+### File names
+
+`<5-digit id>-<title slug>-r<N>.<ext>`, for example `00296-global-thermonuclear-warfare-r2.apk` and
+`00296-global-thermonuclear-warfare-r2-windows.zip`. The revision belongs to the game: it starts at 1 and goes up
+by 1 for every released build of that game (an APK and a Windows zip built together share one revision). The old
+unnumbered files (`g296-native.apk` and so on) stay where they are.
+
+### Where releases live
+
+- Ryzen: `/srv/fast/amigo/native/releases/<id>/`, mirrored to WinPC `F:\openclaw\tmp\nv-release\<id>\`.
+- `releases/releases.json` (format `amigo-native-releases/1`) records every release: `id`, `title`, `revision`,
+  `date` (UTC), `commit` (full hash of amigo-g5), `change` (the note), `files` (`name`, `kind` android or windows,
+  `bytes`, `sha256`), `pack_sha256`, `native_rev` (what the pre-boot shows), the toolchains, and `superseded` for a
+  revision whose file was not kept. `releases/<id>/releases.json` holds the same entries for one game.
+- `releases/games.json`: per game the `title`, `slug` and Android `package`. A new game is added from its pack
+  manifest's `title` the first time it is released (package `org.amigo.g5.gNNNNN.nativegame`). Game 336 keeps the
+  package `org.amigo.g5.g00336.native` its first APK used, so new releases install over it.
+- The APK's `versionCode` is the revision and its `versionName` is `rN`.
+
+### Making a release
+
+```
+/srv/fast/amigo/native/tools/release.sh ID "change note" [--android-only | --windows-only] [--ref BRANCH]
+                                                         [--pack-dir DIR] [--no-mirror]
+```
+
+It clones amigo-g5 for the game (`/srv/fast/amigo/native/build/<id>/repo`), checks out the current tip of `main`,
+packs the game's asset pack fresh from `/srv/bulk/amigo-native/<id>/pack` with `napack`, builds the Windows zip and
+the signed Android APK, takes the next revision, copies both into `releases/<id>/`, records them, and mirrors the
+folder to WinPC (`tools/release_mirror.sh ID` repeats only the mirror). The log is
+`build/<id>/release-<UTC time>.log`.
+
+Several games can be released at once (the game agents do): each game has its own lock (`releases/<id>/.lock`; a
+second release of the same game waits for the first), its own clone, pack and cargo target directories
+(`build/<id>/target-host`, `target-windows`, `target-android`), and the JSON files are written under one short
+global lock. A failed build records nothing and its revision is used by the next attempt. Nothing is deleted and an
+existing release file is never overwritten.
+
+### Toolchains (all under /srv/fast, none on Ryzen's boot drive)
+
+- Windows: llvm-mingw 20261020 (UCRT, `/srv/fast/tools/llvm-mingw`, clang 23.1.4), a rustup toolchain in
+  `/srv/fast/tools/rust` (`. /srv/fast/tools/rust/env.sh`; stable with `x86_64-pc-windows-gnullvm`), and the
+  official SDL2 2.30.9 mingw development package (`/srv/fast/tools/sdl2-mingw`, the same SDL version as the
+  Android build). Download checksums are in `/srv/fast/tools/dl/SHA256SUMS`.
+- Android: unchanged, the `amigo-tools:4` image (NDK 26.3, SDL2 2.30.9) with the Rust in `/srv/fast/rust`, signed
+  with the image's debug keystore as `tools/g5_package.sh` does.
+
+### The Windows build
+
+- `tools/native_package.sh --windows` builds on the host: `x86_64-pc-windows-gnullvm`, linked with llvm-mingw against
+  the SDL2 import library, `crt-static`, so the exe needs only `SDL2.dll` and the UCRT that Windows 10 and 11 ship.
+- Decision: the asset pack is embedded in the exe (`NATIVE_PACK`), as on Linux. That also selects the Windows GUI
+  subsystem (no console window). The zip holds one folder `<base>-windows/` with `<id>-<slug>.exe`, `SDL2.dll`,
+  `README.txt`, `README-SDL.txt` and `SDL2-LICENSE.txt`.
+- The pre-boot menu is the front door, as on every platform. Keyboard, mouse and gamepad come from the engine's SDL
+  layer (SDL game controllers, hot-plugged).
+- Renderer: on Windows the engine asks SDL for `direct3d12` unless `SDL_RENDER_DRIVER` is set. Measured on WinPC on
+  1 Nov 2026: SDL 2.30.9's default `direct3d` (Direct3D 11) renderer, Direct3D 9 and `opengl` gave a black or white
+  window, while `direct3d12` and `software` drew the pre-boot and the game. SDL falls back to its other renderers if
+  Direct3D 12 cannot start.
+- Testing on WinPC: copy the zip's folder to `F:\openclaw\tmp\nv-win\<name>\`, start the exe, and capture the window
+  (PrintWindow with full content); synthetic clicks and keys sent from a background shell do not reach the window, so
+  the auto-start after the countdown is what the scripted check sees.

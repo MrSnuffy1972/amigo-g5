@@ -10,7 +10,10 @@
 #              beside the prebuilt libSDL2.so and libc++_shared.so, the pack as the asset gamepack.bin, SDL's Java
 #              activity, phone and TV launcher entries, debug-signed. Package org.amigo.g5.<id>.nativegame unless
 #              --package is given (a different package from the translated G5 build, so both can be installed).
-#   --linux / --windows: OUTDIR/<game>-native (x86_64 Linux) / <game>-native.exe, SDL2 and the pack built in.
+#   --linux: OUTDIR/<game>-native (x86_64 Linux), SDL2 and the pack built in.
+#   --windows: OUTDIR/windows/<game>-native.exe beside SDL2.dll, the pack built in (on the Ryzen host, llvm-mingw).
+#   NATIVE_VERSION_CODE / NATIVE_VERSION_NAME: the APK versionCode and versionName (default 1 and 1.0); release.sh
+#   sets them to the revision so each release installs over the one before.
 # The APK stages follow tools/g5_package.sh (Java, manifest, resources, signing); only the native library differs.
 # Exit: 0 built, 2 bad arguments, 1 a build step failed.
 set -euo pipefail
@@ -37,20 +40,37 @@ export NATIVE_REV=${NATIVE_REV:-$(git -C "$HERE" rev-parse --short HEAD 2>/dev/n
 export NATIVE_BUILD_DATE=${NATIVE_BUILD_DATE:-$(date -u +%Y-%m-%d)}
 export CMAKE_POLICY_VERSION_MINIMUM=3.5 CFLAGS=${CFLAGS:--std=gnu17}
 WS=$HERE/rust/native_engine
+TD=${CARGO_TARGET_DIR:-$WS/target}   # the cargo target directory (release.sh gives each game its own)
 run() { if [ $DRY = 1 ]; then echo "+ $*"; else "$@"; fi; }
 
 if [ $LINUX = 1 ]; then
   ( cd "$WS" && run env NATIVE_PACK="$PACK" cargo build --release --offline --locked -p "$GAME" --bin "$GAME" )
-  run cp "$WS/target/release/$GAME" "$OUT/unstripped/$GAME-native"
+  run cp "$TD/release/$GAME" "$OUT/unstripped/$GAME-native"
   run strip -o "$OUT/$GAME-native" "$OUT/unstripped/$GAME-native"
   echo "LINUX $OUT/$GAME-native"
 fi
 if [ $WINDOWS = 1 ]; then
-  T=x86_64-pc-windows-gnu
-  ( cd "$WS" && run env NATIVE_PACK="$PACK" cargo build --release --offline --locked --target $T -p "$GAME" --bin "$GAME" )
-  run cp "$WS/target/$T/release/$GAME.exe" "$OUT/unstripped/$GAME-native.exe"
-  run x86_64-w64-mingw32-strip -o "$OUT/$GAME-native.exe" "$OUT/unstripped/$GAME-native.exe"
-  echo "EXE $OUT/$GAME-native.exe"
+  # Windows x86_64 (Release builds and revisions, docs/G5-NATIVE.md): built on the Ryzen host, not in the image, with
+  # llvm-mingw (clang, lld, UCRT) and Rust's x86_64-pc-windows-gnullvm target, linked against the official SDL2
+  # mingw development package, so OUT/windows holds the exe, SDL2.dll and SDL's readme and licence. The pack is built in
+  # (NATIVE_PACK), which also makes the exe a GUI program with no console window. The C runtime is static
+  # (crt-static) apart from the UCRT that Windows 10 and 11 ship.
+  T=x86_64-pc-windows-gnullvm; TU=X86_64_PC_WINDOWS_GNULLVM
+  LLVM_MINGW=${LLVM_MINGW:-/srv/fast/tools/llvm-mingw}
+  SDL2_MINGW=${SDL2_MINGW:-/srv/fast/tools/sdl2-mingw/SDL2-2.30.9}
+  SDLX=$SDL2_MINGW/x86_64-w64-mingw32
+  [ -x "$LLVM_MINGW/bin/x86_64-w64-mingw32-clang" ] && [ -f "$SDLX/bin/SDL2.dll" ] \
+    || { echo "native_package.sh: --windows needs LLVM_MINGW and SDL2_MINGW (see docs/G5-NATIVE.md)" >&2; exit 1; }
+  ( cd "$WS" && run env NATIVE_PACK="$PACK" "CARGO_TARGET_${TU}_LINKER=$LLVM_MINGW/bin/x86_64-w64-mingw32-clang" \
+      "CARGO_TARGET_${TU}_RUSTFLAGS=-C target-feature=+crt-static -L native=$SDLX/lib" \
+      cargo build --release --offline --locked --target $T -p "$GAME" --bin "$GAME" --no-default-features --features sdl )
+  mkdir -p "$OUT/windows"
+  run cp "$TD/$T/release/$GAME.exe" "$OUT/unstripped/$GAME-native.exe"
+  run "$LLVM_MINGW/bin/llvm-strip" -o "$OUT/windows/$GAME-native.exe" "$OUT/unstripped/$GAME-native.exe"
+  run cp "$SDLX/bin/SDL2.dll" "$OUT/windows/SDL2.dll"
+  run cp "$SDL2_MINGW/README-SDL.txt" "$OUT/windows/README-SDL.txt"
+  run cp "$SDL2_MINGW/LICENSE.txt" "$OUT/windows/SDL2-LICENSE.txt"
+  echo "EXE $OUT/windows/$GAME-native.exe"
 fi
 if [ $ANDROID = 1 ]; then
   SDK=${ANDROID_HOME:-/opt/android}; BT=$SDK/build-tools/37.0.0; JAR=$SDK/platforms/android-34/android.jar
@@ -67,7 +87,7 @@ if [ $ANDROID = 1 ]; then
         "CARGO_TARGET_${TU}_RUSTFLAGS=-L native=/opt/sdl2-android/$a" \
         cargo build --release --offline --locked --target "$T" -p "${GAME}_android" )
     mkdir -p "$W/apk/lib/$a"
-    run cp "$WS/target/$T/release/libmain.so" "$OUT/unstripped/$a-libmain.so"
+    run cp "$TD/$T/release/libmain.so" "$OUT/unstripped/$a-libmain.so"
     run "$TC/bin/llvm-strip" -o "$W/apk/lib/$a/libmain.so" "$OUT/unstripped/$a-libmain.so"
     run cp "/opt/sdl2-android/$a/libSDL2.so" "$TC/sysroot/usr/lib/$LIB/libc++_shared.so" "$W/apk/lib/$a/"
   done
@@ -91,7 +111,7 @@ JAVA
   LABEL=$(printf '%s' "$NAME" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/"/\&quot;/g')
   cat > "$W/AndroidManifest.xml" <<XML
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="$PKG" android:versionCode="1" android:versionName="1.0">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="$PKG" android:versionCode="${NATIVE_VERSION_CODE:-1}" android:versionName="${NATIVE_VERSION_NAME:-1.0}">
   <uses-feature android:glEsVersion="0x00020000" />
   <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
   <uses-feature android:name="android.hardware.gamepad" android:required="false" />

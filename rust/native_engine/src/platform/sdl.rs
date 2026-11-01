@@ -234,6 +234,14 @@ fn window(
 ) -> Result<(), String> {
     let info = &spec.info;
     let (lw, lh) = (info.width, info.height);
+    // Windows: SDL's direct3d12 renderer unless the player chose one with SDL_RENDER_DRIVER. Measured on WinPC
+    // (1 Nov 2026): SDL 2.30.9's default direct3d (11) renderer, direct3d (9) and opengl showed a black or white
+    // window, while direct3d12 and software drew the pre-boot and the game. SDL tries its other renderers when
+    // direct3d12 cannot start, so older systems still get a picture.
+    #[cfg(windows)]
+    if std::env::var_os("SDL_RENDER_DRIVER").is_none() {
+        sdl2::hint::set("SDL_RENDER_DRIVER", "direct3d12");
+    }
     let ctx = sdl2::init()?;
     let video = ctx.video()?;
     let pads = ctx.game_controller()?;

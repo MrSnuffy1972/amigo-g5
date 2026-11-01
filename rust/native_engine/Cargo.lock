@@ -77,6 +77,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "g2055"
+version = "0.1.0"
+dependencies = [
+ "native_engine",
+ "serde_json",
+]
+
+[[package]]
+name = "g2055_android"
+version = "0.1.0"
+dependencies = [
+ "g2055",
+]
+
+[[package]]
 name = "g2271"
 version = "0.1.0"
 dependencies = [

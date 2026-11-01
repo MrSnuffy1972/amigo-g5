@@ -1,0 +1,15 @@
+[package]
+name = "g2055_android"
+version = "0.1.0"
+edition = "2021"
+description = "Ami-Go native: libmain.so of game 2055's APK (SDL's Java activity calls SDL_main)"
+publish = false
+workspace = "../../../native_engine"
+
+[lib]
+name = "main"
+crate-type = ["cdylib"]
+path = "src/lib.rs"
+
+[dependencies]
+g2055 = { path = "..", default-features = false, features = ["sdl"] }

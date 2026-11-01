@@ -1,7 +1,7 @@
 # Game 2035 (Sensible Soccer, Crack Inc crack): native port notes
 
-Written 1 Nov 2026 by the p2035 agent (batch 2). Status: step 1 (code recovery) done, all four proofs pass (2 Nov 2026), step 2 (understanding)
-started, steps 3 and 4 (native rewrite, verification) and the release not started. Recovery summary: [g2035-recovery.md](g2035-recovery.md).
+Written 1 Nov 2026 by the p2035 agent (batch 2). Status: step 1 (code recovery) done, all four proofs pass (2 Nov 2026); native parts 1 (intro) and 2 (language
+screen, main menu) done and verified; the match engine and the release not started. Recovery summary: [g2035-recovery.md](g2035-recovery.md).
 
 ## Measured so far
 
@@ -47,7 +47,8 @@ started, steps 3 and 4 (native rewrite, verification) and the release not starte
 | Part | What | State |
 |---|---|---|
 | 1 | Extractor and asset pack (outside the repo), crate, the Crack Inc intro | done 2 Nov 2026 |
-| 2 | Language screen and main menu (Marble background, `cjcbits` flags and logo, `cjcgrafs` font) | next |
+| 2 | Language screen and main menu: sprite cut lists, fonts, language texts, menu engine, fades | done 2 Nov 2026 |
+| 3 | Match engine (pitch, players, ball, referee, set pieces, computer play, timing, sound) | next |
 
 ### Part 1 (2 Nov 2026)
 - Extractor `/srv/fast/native-work/2035/tools/extract2035.py FILES PACK` (pack at `/srv/fast/native-work/2035/pack`, 101 assets):
@@ -65,7 +66,7 @@ started, steps 3 and 4 (native rewrite, verification) and the release not starte
 - Checks: `cargo test -p g2035 --no-default-features` (intro timing, skip, centring on a synthetic pack); headless run on
   the real pack (80 ticks): phase 0 for ticks 1-69, phase 1 from tick 70.
 
-### Part 2 groundwork: the menu tables (measured 2 Nov 2026, not yet ported)
+### Part 2 groundwork: the menu tables (measured 2 Nov 2026; ported in part 2 below)
 - The front end is data driven. A menu descriptor (main program) is: items pointer (long, so far always descriptor + 20),
   two words (1, 1), two handler routine pointers and a third long (zero in both menus found), read by `open_menu_descriptor` ($C1E656), then
   16-byte items until a $FFFF word, then a navigation table (bytes: neighbour item per direction, $FF = none).
@@ -98,6 +99,51 @@ started, steps 3 and 4 (native rewrite, verification) and the release not starte
 - Plan: the extractor parses the descriptors into JSON (`menu_*` data assets), the crate draws items by kind (box and text
   in the colour from the attribute, sprites cut from `cjcbits` by a sprite table still to locate) and moves the selection
   by the navigation table; each menu's handlers become typed Rust actions.
+
+### Part 2 (2 Nov 2026): language screen and main menu
+- Extractor addition `tools/menus2035.py` (outside the repo, run by `extract2035.py`) reads the front end's tables out of the
+  main program file: the three sprite cut lists (`sprites`: base set $C131CC, match set $C136CC, menu set $C16FF0; ops
+  $FFF9 picture by name, $FFF8 picture via a pointer, $FFFF/$FFFB/$FFFE/$FFFD cut n x y w h [dx dy [mode]], $FFF7 blank work
+  sprite, $FFF6 end; interpreter $C08C96), the language and main menu descriptors (`menus`), and the menu tables
+  (`menu_ui`: font index table and height $C192D4, colour -> font base $C1F468, bottom-edge shades $C1EC52, cursor flash
+  colours $C1E556). 104 assets in the pack now.
+- The sprite-number-to-picture table is resolved: it is not a table but these cut lists, run at start-up into chip RAM
+  (header: graphics, mask, width, height, words per row, ..., own number; interleaved planes). The menu sprites
+  $231-$236 are the flags (England $231 at `cjcbits` 48,132; Germany $232 0,114; France $233 48,0; Italy $234 0,0) and the
+  logos (Sensible $235 0,156 128 x 37; SOCCER $236 128,156 124 x 42). Checked against a RAM dump of the language screen.
+- The coloured fonts are one glyph set (`cjcgrafs` from y 192, face colour 10, shadow colour 8) cut once per text colour
+  (bases $92, $C5, $F8, $12B, $15E, $191, $1C4, $1F7 for colours 1, 2, 5, 6, 7, 10, 13, 15) and recoloured: the port draws
+  the one set with colour 10 replaced.
+- Language texts: the four `textN` files are the program's English block at $C1B750 (2844 bytes) in each language; the
+  original copied the chosen one over it. Main menu labels are offsets into that block, so all four languages work
+  (German shown natively; lower-case codes are the accented capitals through the font index table).
+- Menu engine ported from the code: item drawer $C1EC62 (fill unless bit 7 of the low byte; framed items: ring 2 pixels
+  in, top edge in the frame colour, bottom edge in the shade; kind $04 sprite at its byte offsets, $0B text centred
+  vertically by (h - 11) / 2 rounded up, in the frame colour's font; glyphs advance width - 1, a space half an `A`); grid
+  walk $C1EA4E with the walk codes -2 to -10; menu loop $C1E2EE (cursor = one-pixel outline in flash colour
+  [3,3,3,1,1,2,1,1] by counter / 2; 4-frame move wait; fire wait set to $FF on entry, 8 after a press).
+- Measured on the reference and ported: the display starts one pixel right; colours are the IFF CMAP's high nibbles
+  (#101020 shows as #111122); sprites blit whole 16-pixel words (the SOCCER logo shows 4 more columns of its picture);
+  after a move the loop skips one pass (held stick repeats every 6 frames) and the cursor is erased for one frame;
+  menus open with 7 set-up frames (fade-in 0, 0, 0, 2, 4, 8, 16 sixteenths, cursor from the 7th); after an activation the
+  screen fades out (16, 16, 8, 4, 2, then black) and the next menu opens on the 9th frame; the frame counter $C0DE6A is
+  cleared only at $C1D2AA and $C1D2CA, so the main menu's flash carries on from the language screen's counter.
+- Front-end flow $C1D25E: attract mode with 1500-frame (then 375) time-outs, language -> main menu, main menu choices
+  dispatch by $C1D332 (Options, Edit Teams, Load/Save, Highlights, Friendly, Cup, League, Specials); the choices are a
+  black placeholder until their parts (back or fire returns, the cursor kept as the original keeps it).
+- Verification (harness snapshot runs with scripted joystick, every frame; native headless with the same input,
+  native tick = reference frame + 71): walk3 (language moves, English, main menu moves) 435 of 435 frames pixel-exact;
+  walk5 (repeats, diagonal, main menu walk) 368 of 368 up to the Friendly choice; walk4 (Deutsch) 88 of 88 up to the
+  choice, after which the reference harness never loads the German text from disk 2 (stalls at $C020E8).
+- Not verified: the attract path. The snapshot starts with attract mode off ($C1D732 = 0 in its RAM), so its language
+  screen never times out; the port follows the code (no fade on the attract changes). An idle reference run also shows
+  the language cursor frozen from frame 1510 to about 1890 with the menu still current (counter running): cause unknown,
+  not ported. The attract demo match needs the match engine; until then the attract main menu's time-out goes back to
+  the language screen. The loading pictures and credits shown while the original loads are not ported (the cold-boot
+  recordings do not reach them).
+- Checks: `cargo test -p g2035 --no-default-features` (11 tests on a synthetic pack: timing, repeats, fire release,
+  fades, attract time-outs, German text, item drawing, grid walk); verification tools outside the repo
+  (`tools/cmp2035.py`, `vfy2035.py`, `scr2035.py`).
 
 ## Naming pass (proof 3), 2 Nov 2026
 - 902 routines needed names (1568 inherit from the identical soccers routine). The naming ran on Ryzen's muse-glimmer:30b and,

@@ -7,6 +7,7 @@
 pub mod assets;
 pub mod flow;
 pub mod intro;
+pub mod menu;
 
 pub use native_engine;
 

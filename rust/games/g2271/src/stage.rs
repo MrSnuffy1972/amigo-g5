@@ -1124,6 +1124,7 @@ impl Castle {
         self.w.reset_walls();
         self.phase = Phase::Stage;
         self.scr.clip_top = true;
+        self.dev_cheats();
         self.enter_room(&a);
         self.panel_cache = None;
         loop {
@@ -1206,6 +1207,32 @@ impl Castle {
         self.fade_out();
         self.scr.clip_top = false;
         self.scr.scroll = 0;
+    }
+
+    /// The developer cheats (off by default). The original had them behind a code typed on its pause screen
+    /// (+D394, then keys for collision off +09CC, game time off +0A26, life count off +0A80 and a room number
+    /// +0B0C); the native build takes them from the environment variable G2271_CHEATS, a comma list of
+    /// `nocollision`, `notime`, `nolives` and `room=N` (N from 0 to 46).
+    fn dev_cheats(&mut self) {
+        let Ok(v) = std::env::var("G2271_CHEATS") else {
+            return;
+        };
+        for c in v.split(',') {
+            let c = c.trim();
+            match c {
+                "nocollision" => self.st.no_collision = true,
+                "notime" => self.st.time_on = false,
+                "nolives" => self.st.lives_on = false,
+                _ => {
+                    if let Some(n) = c.strip_prefix("room=").and_then(|n| n.parse::<i16>().ok()) {
+                        if (0..0x2F).contains(&n) {
+                            self.st.room = n;
+                            self.st.entry_mode = 1;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /// The scroll and the map as the objects see them this frame.
@@ -1334,29 +1361,32 @@ impl Castle {
     }
 
     /// +1E68 decrement_counters_and_call_helpers: after the orb, the time left scores 10 a second and the
-    /// hearts 100 each, counted down on the panel.
+    /// hearts 100 each, counted down on the panel (a step every two vertical blanks, +CC16 twice).
     fn tally(&mut self, a: &Arc<Assets>) {
         while self.st.time > 0 {
             self.w.score(&mut self.st, 10);
             self.w.fx(4);
             self.st.time -= 1;
-            self.draw_objects(a);
-            self.wait_game_frame();
-            self.play_sounds();
+            self.tally_step(a);
         }
         while self.st.hearts > 0 {
             self.w.score(&mut self.st, 100);
             self.w.fx(5);
             self.st.hearts -= 1;
-            self.draw_objects(a);
-            self.wait_game_frame();
-            self.play_sounds();
+            self.tally_step(a);
         }
         self.st.time = 0;
         self.st.hearts = 0;
     }
 
-    /// The frame's sound requests go to the sound part (`sound.rs`).
+    fn tally_step(&mut self, a: &Arc<Assets>) {
+        self.draw_objects(a);
+        self.wait_frame();
+        self.hold_frame();
+        self.play_sounds();
+    }
+
+    /// The frame's sound requests go to the sound part.
     fn play_sounds(&mut self) {
         let snd: Vec<Snd> = std::mem::take(&mut self.w.snd);
         for s in snd {

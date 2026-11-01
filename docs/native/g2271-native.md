@@ -187,6 +187,16 @@ the title menu draw correctly, the window closes cleanly (exit code 0); keys pos
 SendKeys after AppActivate) did not reach it, so play under control was not tested on Windows. Shield: untested
 (no adb binary on Ryzen or WinPC to check whether it is idle).
 
+## Release r2 (1 Nov 2026, commit 433dcaf)
+
+`02271-castlevania-r2.apk` and `02271-castlevania-r2-windows.zip` (release.sh with `--pack-dir
+/srv/fast2/native/b1-2271/pack`). Windows (WinPC): keys posted to the window (PostMessage WM_KEYDOWN/UP, extended
+flag on the arrows) reach it: the title, the game started with Space, Simon walked right and the courtyard
+scrolled; the window closed with exit code 0. Sound not heard (no listener); a jump on Up was not caught in the
+screenshots. Shield (idle: asleep, no user activity for 3.8 hours): installed, ran at 59.9 fps to the title menu;
+the remote's centre key (input keyevent DPAD_CENTER) did not start a game (not diagnosed); then stopped, home, back
+to sleep (the launcher came back on its main activity, not the boot helper it showed before).
+
 ## What remains (exact)
 
 Part 3b: the attract sequence (+9158, with +97F2, +980C: the castle and title pictures with the bats; the title

@@ -1,0 +1,22 @@
+# Scripted joystick input for game 2271 (input timings only, nothing of the game): boot page, title, walk right
+# to the first fire bowl and whip it, walk on to the next and whip, then wait.
+30 key down Space
+33 key up Space
+150 key down Space
+153 key up Space
+300 key down Right
+318 key up Right
+340 key down Space
+344 key up Space
+380 key down Space
+384 key up Space
+420 key down Right
+470 key up Right
+480 key down Space
+484 key up Space
+520 key down Space
+524 key up Space
+560 key down Right
+640 key up Right
+660 key down Space
+664 key up Space

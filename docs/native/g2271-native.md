@@ -2,15 +2,17 @@
 
 Started 1 Nov 2026 by the batch 1 port agent (p2271). Crate `rust/games/g2271` on `native_engine`; the asset pack,
 extractor, tools and function map live outside the repo (Ryzen `/srv/bulk/amigo-native/02271/`). No game bytes,
-assets or disassembly are in the repo.
+assets or disassembly are in the repo. From part 3 (Ryzen's /srv/bulk being full) the current extractor and pack
+are at `/srv/fast2/native/b1-2271/tools/extract2271.py` and `/srv/fast2/native/b1-2271/pack`.
 
-## Status: part 2 of 4 committed (stage engine, Simon, panel)
+## Status: parts 1, 2 and 3a committed (stage engine, Simon, panel, the objects)
 
 | Part | Content | State |
 |------|---------|-------|
 | 1 | File formats, extractor, asset pack, crate, picture model, boot text page, title menu | done |
 | 2 | Stage engine (room set-up, scrolling, collision map, stairs, exits) and Simon (walk, jump, crouch, whip, stairs, knock-back, death) with the status panel | done (1 Nov 2026) |
-| 3 | Enemies, bosses, items, sub-weapons, timer, score, continue and game over, sound (.mus replayer, samples, title module) | to do |
+| 3a | The object system (`objects.rs`): enemies and their behaviours, bosses, candles, items, sub-weapons, shots, spawners, platforms, walls, hidden treasures, hits, score and extra lives, the orb, tally and next block | done (1 Nov 2026) |
+| 3b | Sound (.mus replayer, samples, title module), attract sequence, high scores, pause and cheats menu, door and map pictures, ending | to do |
 | 4 | Verification against the reference harness, play test, releases (Windows, Android) | to do |
 
 Not released yet: a release needs parts 3 and 4 (without enemies the build would not be the game).
@@ -77,6 +79,27 @@ Not released yet: a release needs parts 3 and 4 (without enemies the build would
   state (still, up, left, right, the four stair directions).
 - Panel: the panel picture, score (7 digits), time (4), hearts, lives and stage (2 each) drawn when they change, and
   the two health bars (a segment every second frame when health changes).
+
+## The objects (part 3a, `objects.rs`)
+
+- The original keeps its object state in its data area: 16 records of 0x70 bytes (slot 0 the player), per-type
+  records (spawner on, count alive, spawn timer and its reset), 10 item marks, the breakable walls (3 a screen file,
+  each broken once a life), the hidden treasures, the moving platforms and the lifts. Most behaviour comes from its
+  type table (0x2C bytes a type: speeds by direction, flags for waiting, jumping, falling, turning at ledges,
+  keeping a distance, shooting, flying on a wave, health, score). The port keeps that state laid out as the
+  original did (`Mem`, built at load from the program's initial data in the asset pack, never the repo), so each
+  routine reads like the recovered one; the player stays `Simon`.
+- Frame order as the original: timers (with the spawn timers), controls, the moving platforms, the player (the whip's
+  last frame hits, or throws the sub-weapon with up held), the body-row marks (spawners on and off, hidden items),
+  the objects (+5E7E: lifts, the six spawners, then each object's frame +3F32/+4528), previous positions, hits
+  (+63DE: the player hurt by the block's damage, weapons and their combo score, pick-ups), the hidden treasures
+  (+A4D0), then the frame (+1F8E): the columns scrolled on to are scanned for marks, objects are drawn in depth
+  order, the orb's countdown leads to the tally and the next block.
+- Random numbers: the original's generator (+DBC2, a linear congruential generator) and its `random_below`, which
+  divides by n - 1 (so random_below(2) is always 0, and some "one in two" chances never happen; kept). The seed
+  is the run's seed (the original seeded from the CIA timers).
+- Not yet: the boxes drawn under platforms and ropes (+18FC's class 6 and kind 0x35 box), the boss bar's
+  priority in the panel chain (it moves every frame here, the original only when no number changed).
 
 ## Controls
 

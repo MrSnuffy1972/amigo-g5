@@ -88,8 +88,20 @@ pub struct Simon {
     /// What the player was doing, for +2952 (jump -$1376, crouch -$137A, whip -$1374, hurt -$1378,
     /// fall -$137C).
     pub was: [bool; 6],
-    /// The whip reached its last frame this frame (part 3 checks what it hits: +6D4C).
+    /// The whip reached its last frame this frame (what it hits is checked by +6D4C), or the throw's (+7CE4).
     pub whip_strike: bool,
+    pub throw_strike: bool,
+    /// At the strike: the whip's frame, and whether the body's animation had ended (+6D4C reads both).
+    pub strike: (u8, bool),
+    /// Up was held when the whip started (-$12B8), and the sub-weapon may be thrown (no more of it on the
+    /// screen than the shot multiplier allows; set by the objects each frame).
+    pub throw_up: bool,
+    pub throw_ok: bool,
+    /// The whip's damage (-$20D2: 0x10, 0x14 from the second whip) and the extra lives scored (-$2172).
+    pub dmg: i16,
+    pub extra: i16,
+    /// The negative attribute byte in the body row this frame (spawner and item marks; exits are handled here).
+    pub mark: i8,
     // ---- the stage
     pub room: i16,                 // -$19B0
     pub van: i16,                  // the room's screen file (room table +8)
@@ -198,6 +210,7 @@ impl Simon {
         self.shot = 0;
         self.time = at(&t.time, self.stage as i32 - 1) as i16 * 100;
         self.whip_len = at(&t.whip, self.whip_level as i32) as i16;
+        self.dmg = 0x10;
         self.stopwatch = 0;
         self.inv = 0;
         self.inv_count = 0;
@@ -336,7 +349,7 @@ impl Simon {
     }
 
     /// +2AA2 increment_counter_and_update_offset: one step right, scrolling the map once past column 18.
-    fn step_right(&mut self) {
+    pub(crate) fn step_right(&mut self) {
         if self.scroll_col < self.map_w - 0x28 && (self.x >> 3) > 0x12 && self.scroll_lock == 0 {
             self.scroll_col += 1;
         } else if (self.x >> 3) < 0x27 {
@@ -368,7 +381,7 @@ impl Simon {
     }
 
     /// +2B36 check_and_update_state: right (4), up the stairs right (7) or down them right (8); 0 if blocked.
-    fn move_right(&mut self) -> i16 {
+    pub(crate) fn move_right(&mut self) -> i16 {
         if self.blocked_move() {
             if self.gr.can_right {
                 self.step_right();
@@ -390,7 +403,7 @@ impl Simon {
     }
 
     /// +2BA4 check_and_update_state_flags: left (3), up the stairs left (5) or down them left (6).
-    fn move_left(&mut self) -> i16 {
+    pub(crate) fn move_left(&mut self) -> i16 {
         if self.blocked_move() {
             if self.gr.can_left {
                 self.step_left();
@@ -461,10 +474,13 @@ impl Simon {
     pub fn ground(&mut self, t: &Tables, rooms_van: &[i16], sf: &ScreenFile) {
         self.read_grid(sf);
         let e0 = self.g[4][1];
+        self.mark = 0;
         if e0 < 0 {
             let kind = (e0 as u8) & 0x70;
             if kind == 0x30 {
                 self.exit(t, rooms_van, sf, (e0 & 0xF) as i16);
+            } else {
+                self.mark = e0;
             }
         }
         let g = |r: usize, c: usize| self.g[r][c] as u8;
@@ -717,6 +733,7 @@ impl Simon {
     /// and last the animation for the move state.
     pub fn update(&mut self, t: &Tables, rooms_van: &[i16], sf: &ScreenFile) {
         self.whip_strike = false;
+        self.throw_strike = false;
         // -$12BC is never set: the frame counter runs every frame
         self.frame += 1;
         if self.changing == 0 {
@@ -857,9 +874,9 @@ impl Simon {
                 } else {
                     self.sel(t, 0x1C, -2)
                 };
-                // part 3: a throw needs fewer of the sub-weapon on screen than the shot multiplier allows
-                let can_throw = false;
-                if !up || !can_throw || self.sub == 0x20 || self.sub == 0 || self.hearts < 1 {
+                // a throw needs no more of the sub-weapon on the screen than the shot multiplier allows
+                self.throw_up = up;
+                if !up || !self.throw_ok || self.sub == 0x20 || self.sub == 0 || self.hearts < 1 {
                     let row = [4, 0x12, 0x16][self.whip_level.clamp(0, 2) as usize];
                     self.whip_anim = self.sel(t, row, -2);
                 } else {
@@ -876,7 +893,20 @@ impl Simon {
             self.whip += 1;
             if !self.anim_ended(t) {
                 if t.frame(self.anim, self.frame + 1) == 99 {
-                    self.whip_strike = true;
+                    self.strike = (
+                        t.frame(self.whip_anim, self.frame),
+                        t.frame(self.anim, self.frame) == 99,
+                    );
+                    if !self.throw_up
+                        || !self.throw_ok
+                        || self.sub == 0x20
+                        || self.sub == 0
+                        || self.hearts < 1
+                    {
+                        self.whip_strike = true;
+                    } else {
+                        self.throw_strike = true;
+                    }
                 }
             } else {
                 self.whip_anim = 0;
@@ -1003,6 +1033,7 @@ impl Simon {
 }
 
 use crate::castle::{Castle, Phase};
+use crate::objects::{Hdr, Snd, World};
 use crate::screen::Into;
 
 /// Vertical blanks a game frame takes during a stage (+BD00 store_word_into_global, called with 4 after the
@@ -1012,26 +1043,95 @@ pub const VBLANKS: u32 = 4;
 pub const SCROLL_STEP: i32 = 2;
 
 /// The goodies file's frames the panel uses (the original's shape pointers -$1646, -$165E, -$1662, -$157E and
-/// -$1586, which point at goodies frames 10, 4, 3, 60 and 58).
+/// -$1586, which point at goodies frames 10, 4, 3, 60 and 58), the sub-weapon frame (-$15EE/-$1582: 30 and
+/// 59), the shot multipliers (-$15F2, -$15F6: 14 and 13) and the broken wall (-$159A: 53).
 const PANEL: usize = 10;
 const PANEL_A: usize = 4;
 const PANEL_B: usize = 3;
 const BAR_EMPTY: usize = 60;
 const BAR_FULL: usize = 58;
+const WALL: usize = 53;
+
+/// The damage a hit does to the player by block of rooms (+0ED2: -$1382).
+const HIT_DMG: [i16; 7] = [2, 2, 3, 3, 4, 4, 4];
 
 impl Castle {
+    fn hdr_of(a: &Assets, file: &str, frame: usize) -> Hdr {
+        a.shape(file, frame)
+            .map(|s| Hdr {
+                h: s.h as i16,
+                ax: s.ax,
+                ay: s.ay,
+                cw: s.cw,
+            })
+            .unwrap_or_default()
+    }
+
+    /// +0C22 load_stage_enemy_art: block `b`'s enemy art files into the shape table (the program's table at
+    /// -$7C02: file, first and last entry, nine a block; file names at -$7CFE, nine bytes each).
+    fn load_block_shapes(&mut self, b: i16) {
+        let a = self.a.clone();
+        for j in 0..9 {
+            let e = 0x7C02 - 6 * j - 0x36 * b as i32;
+            let fi = self.w.m.w(e);
+            if fi == -1 {
+                break;
+            }
+            let first = self.w.m.w(e - 2);
+            let last = self.w.m.w(e - 4);
+            let mut name = String::new();
+            for i in 0..9 {
+                let c = self.w.m.ub(0x7CFE - fi as i32 * 9 - i);
+                if c == 0 {
+                    break;
+                }
+                name.push((c as char).to_ascii_lowercase());
+            }
+            for (n, ix) in (first..=last).enumerate() {
+                if (0..0xD9).contains(&ix) {
+                    self.w.hdrs[ix as usize] = Castle::hdr_of(&a, &name, n);
+                    self.w.shp[ix as usize] = Some((name.clone(), n));
+                }
+            }
+        }
+    }
+
+    /// +0D26 load_castle_shapes_and_goodies (after the title): the player's frames and the goodies file (entries
+    /// 0x7C to 0xBD of the shape table).
+    fn load_fixed_shapes(&mut self) {
+        let a = self.a.clone();
+        self.w.phdrs = (0..0x41)
+            .map(|i| Castle::hdr_of(&a, "castshps", i))
+            .collect();
+        for (n, ix) in (0x7C..0xBE).enumerate() {
+            self.w.hdrs[ix] = Castle::hdr_of(&a, "goodies", n);
+            self.w.shp[ix] = Some(("goodies".to_string(), n));
+        }
+    }
+
     /// The game part of +0006 main_program: a new game from the first room, frame after frame until the game is
-    /// over or Escape leaves it (+051C, +04BA, then the loop of +1480, +15AA, +386A, +16C6 and +1F8E).
+    /// over or Escape leaves it (+051C, +04BA, then the loop of +1480, +15AA, +386A, +5E7E, +16C6, +63DE, +A4D0
+    /// and +1F8E).
     pub fn game(&mut self) {
         let a = self.a.clone();
         let vans: Vec<i16> = a.rooms.iter().map(|r| r.van).collect();
         self.st = Simon::new_game(&a.tables, &vans);
+        let rng = self.w.rng;
+        self.w = World::new(&a.dat);
+        self.w.rng = rng;
+        self.load_fixed_shapes();
+        self.w.clear_counts();
+        self.w.reset_walls();
         self.phase = Phase::Stage;
         self.scr.clip_top = true;
         self.enter_room(&a);
         self.panel_cache = None;
         loop {
             self.st.timers();
+            if self.st.tick10 == 0 && self.st.stopwatch != 0 {
+                self.w.fx(5);
+            }
+            self.w.spawn_timers();
             if self.st.dying == 0 {
                 self.player_controls();
             } else {
@@ -1040,15 +1140,62 @@ impl Castle {
             if self.input.pressed(native_engine::input::Action::Cancel) {
                 self.st.quit = 1;
             }
-            let van = self.st.van as usize;
-            if let Ok(sf) = a.screen(van) {
-                self.st.update(&a.tables, &vans, sf);
+            if self.input.pressed(native_engine::input::Action::Pause) {
+                self.pause();
             }
-            // part 3: enemies and objects (+5E7E), the stage clear test (+63DE), spawns (+A4D0)
-            self.st.sfx.clear();
-            // +16C6 save_previous_positions
+            // +350C's platforms (screen files 6, 8 and 16) carry the player
+            let carried = match self.st.van {
+                6 => self.w.platforms(&self.st, 0, 0),
+                8 => self.w.platforms(&self.st, 1, 2),
+                0x10 => self.w.platforms(&self.st, 3, 6),
+                _ => 0,
+            };
+            self.sf.attrs.clone_from(&self.w.attrs);
+            if carried == 3 {
+                self.st.move_left();
+                self.st.read_grid(&self.sf);
+            } else if carried == 4 {
+                self.st.move_right();
+                self.st.read_grid(&self.sf);
+            }
+            let st_sub = self.st.sub;
+            self.st.throw_ok = self.w.trec(st_sub, 1) <= self.st.shot;
+            self.st.update(&a.tables, &vans, &self.sf);
+            self.sync_world();
+            if self.st.whip_strike {
+                let (wf, ended) = self.st.strike;
+                self.w.whip(&mut self.st, wf, ended);
+            }
+            if self.st.throw_strike {
+                self.w.throw(&mut self.st);
+            }
+            let m = self.st.mark;
+            if m != 0 {
+                let kind = (m as u8) & 0x70;
+                let code = (m & 0xF) as i32;
+                if kind == 0x10 || kind == 0 {
+                    let t = self.w.m.ub(0x7A88 - code - 6 * self.st.van as i32) as i16;
+                    self.w.set_trec(t, 0, kind as i16);
+                } else if kind == 0x50 {
+                    self.w.collect_mark(&mut self.st, code as i16);
+                }
+            }
+            // +5E7E the objects, +16C6 the previous positions, +63DE the hits, +A4D0 the hidden treasures
+            self.w.update(&mut self.st);
             self.st.saved_col = self.st.scroll_col;
             self.st.room_change_prev = self.st.room_change;
+            self.w.save_prev();
+            self.w.save_boss();
+            let f = self.st.shapes(&a.tables).0;
+            let hit = self.w.collisions(&mut self.st, f);
+            if self.st.hurt == 0 && hit {
+                self.st.hurt = 1;
+            }
+            if self.w.rosary != 0 {
+                self.rosary(&a);
+            }
+            self.w.secrets(&self.st);
+            self.st.sfx.clear();
             if !self.frame_end(&a) {
                 break;
             }
@@ -1059,6 +1206,45 @@ impl Castle {
         self.fade_out();
         self.scr.clip_top = false;
         self.scr.scroll = 0;
+    }
+
+    /// The scroll and the map as the objects see them this frame.
+    fn sync_world(&mut self) {
+        self.w.scol = self.st.scroll_col;
+        self.w.sx = self.st.scroll_col.wrapping_mul(8);
+        self.w.block = self.st.block;
+    }
+
+    /// The rosary (+7784): ten frames of flashing (the room's colours swapped with white, +B5FE), then every enemy
+    /// on the screen dies.
+    fn rosary(&mut self, a: &Arc<Assets>) {
+        let pal = self.scr.palette;
+        for i in 0..10 {
+            if i & 1 == 0 {
+                for c in self.scr.palette.iter_mut().skip(16) {
+                    *c = 0xFFF;
+                }
+            } else {
+                self.scr.palette = pal;
+            }
+            self.draw_objects(a);
+            self.wait_game_frame();
+        }
+        self.scr.palette = pal;
+        self.w.rosary = 0;
+        self.w.kill_hostiles(&mut self.st);
+    }
+
+    /// The pause (+AFCA pause_screen): the game stops, the picture held, until the pause key again.
+    fn pause(&mut self) {
+        loop {
+            self.hold_frame();
+            if self.input.pressed(native_engine::input::Action::Pause)
+                || self.input.pressed(native_engine::input::Action::Cancel)
+            {
+                break;
+            }
+        }
     }
 
     /// +15AA read_player_controls, into the player's flags.
@@ -1087,12 +1273,41 @@ impl Castle {
         s.jump_btn = false;
     }
 
-    /// +1F8E sync_game_state: draws the frame and waits for it, then the death sequence's end (a life lost, or
-    /// the game over) and a room change. False when the game is over.
+    /// +1F8E sync_game_state: the columns scrolled on to are scanned for marks, the frame is drawn and waited
+    /// for, then the orb's countdown (the tally and the next block, or the end of the game), the death
+    /// sequence's end (a life lost, or the game over) and a room change. False when the game is over.
     fn frame_end(&mut self, a: &Arc<Assets>) -> bool {
+        let n = (self.st.saved_col - self.st.prev_col).abs();
+        if n != 0 {
+            self.scan_n = n;
+        }
+        self.sync_world();
+        if self.st.saved_col < self.st.prev_col {
+            self.w.scan(&self.st, true, self.scan_n);
+        } else if self.st.prev_col < self.st.saved_col {
+            self.w.scan(&self.st, false, self.scan_n);
+        }
         self.draw_objects(a);
         self.wait_game_frame();
+        self.play_sounds();
         self.st.prev_col = self.st.saved_col;
+        if self.w.orb != 0 {
+            self.w.orb_wait -= 1;
+            if self.w.orb_wait < 0x14 {
+                self.w.orb_wait = 0;
+                self.w.orb = 0;
+                self.panel_cache = None;
+                self.tally(a);
+                if self.st.block > 4 {
+                    self.st.stage_clear = 1;
+                    return true;
+                }
+                let k = self.w.m.ub(0x79B2 - self.st.block as i32) as i16;
+                let vans: Vec<i16> = a.rooms.iter().map(|r| r.van).collect();
+                self.st.exit(&a.tables, &vans, &self.sf, k);
+                self.st.room_change_prev = self.st.room_change;
+            }
+        }
         if self.st.death_done == 1 && self.st.hp < 1 && self.st.dying == 1 {
             self.st.dying = 0;
             self.st.death_done = 0;
@@ -1104,11 +1319,11 @@ impl Castle {
                 }
             }
             let vans: Vec<i16> = a.rooms.iter().map(|r| r.van).collect();
-            if let Ok(sf) = a.screen(self.st.van as usize) {
-                self.st.exit(&a.tables, &vans, sf, -1);
-            }
+            self.st.exit(&a.tables, &vans, &self.sf, -1);
             self.st.room_change_prev = self.st.room_change;
             self.st.reset_player(&a.tables);
+            self.w.clear_counts();
+            self.w.reset_walls();
         }
         if self.st.room_change_prev != 0 {
             self.enter_room(a);
@@ -1116,6 +1331,37 @@ impl Castle {
             self.st.room_change_prev = self.st.room_change;
         }
         true
+    }
+
+    /// +1E68 decrement_counters_and_call_helpers: after the orb, the time left scores 10 a second and the
+    /// hearts 100 each, counted down on the panel.
+    fn tally(&mut self, a: &Arc<Assets>) {
+        while self.st.time > 0 {
+            self.w.score(&mut self.st, 10);
+            self.w.fx(4);
+            self.st.time -= 1;
+            self.draw_objects(a);
+            self.wait_game_frame();
+            self.play_sounds();
+        }
+        while self.st.hearts > 0 {
+            self.w.score(&mut self.st, 100);
+            self.w.fx(5);
+            self.st.hearts -= 1;
+            self.draw_objects(a);
+            self.wait_game_frame();
+            self.play_sounds();
+        }
+        self.st.time = 0;
+        self.st.hearts = 0;
+    }
+
+    /// The frame's sound requests go to the sound part (`sound.rs`).
+    fn play_sounds(&mut self) {
+        let snd: Vec<Snd> = std::mem::take(&mut self.w.snd);
+        for s in snd {
+            self.sound(s);
+        }
     }
 
     /// The frame wait of a stage (+CBB8 with -$2BB6 = 4): the frame shows for four vertical blanks while the
@@ -1143,14 +1389,17 @@ impl Castle {
     }
 
     /// +0ED2 initialize_serial_device (the room set-up) and +20EC process_level_tilemap (the room drawn): the
-    /// block of rooms and its time, the screen file, the player where the room table puts him, the panel, then a
-    /// fade in. The door and stair-exit pictures (+A162 for doors, the castle map +A21A and +A2FA between
-    /// blocks) are part 3.
+    /// block of rooms (its enemy art, its damage, its tune and its time), the screen file, the player where the
+    /// room table puts him, the objects of the screen's marks, the panel, then a fade in. The door and stair-exit
+    /// pictures (+A162) and the castle map between blocks (+A21A, +A2FA) are not drawn yet.
     fn enter_room(&mut self, a: &Arc<Assets>) {
         let t = &a.tables;
+        self.w.clear_room();
         let st = &mut self.st;
         st.changing = 0;
         st.scroll_lock = 0;
+        st.inv = 0;
+        st.cross = 0;
         let room = st.room.clamp(0, a.rooms.len() as i16 - 1);
         st.room = room;
         let r = a.rooms[room as usize];
@@ -1161,12 +1410,14 @@ impl Castle {
         } else {
             room_range(st.prev_room)
         };
+        let mut new_block = None;
         if let Some(n) = room_range(room) {
             if old != Some(n) {
                 st.block = [0, 1, 2, 3, 4, 5, 5][n];
                 if st.hearts == 0 {
                     st.hearts = 5;
                 }
+                new_block = Some(n);
             }
         }
         if st.block != old_block {
@@ -1200,11 +1451,18 @@ impl Castle {
         st.enemy_hp = 0x10;
         st.changing = 0;
         st.prev_room = room;
+        if let Some(n) = new_block {
+            self.load_block_shapes(n as i16);
+            self.w.hit_dmg = HIT_DMG[n];
+            let b = self.st.block;
+            self.w.tune(b);
+        }
         self.fade_out();
         // +0E14 and +20EC: the screen file, every column of it into the three pictures
         let Ok(sf) = a.screen(r.van as usize) else {
             return;
         };
+        self.sf = sf.clone();
         self.st.map_w = sf.w as i16;
         self.scr.resize(sf.w * 8);
         for row in 3..25 {
@@ -1216,6 +1474,18 @@ impl Castle {
             }
         }
         self.scr.scroll = self.st.scroll_col as i32 * 8;
+        self.w.attrs = sf.attrs.clone();
+        self.w.mw = sf.w as i16;
+        self.w.van = r.van;
+        self.sync_world();
+        let deco = self.w.room_marks(&self.st);
+        if let Some((file, frame)) = self.w.shp[0x7F].clone() {
+            if let Some(s) = a.shape(&file, frame) {
+                for (x, y) in deco {
+                    self.scr.shape(s, x, y, Into::CleanShow, false);
+                }
+            }
+        }
         self.panel(a);
         // +BDAE twice: both display pictures start as the clean one
         self.scr.copy_clean();
@@ -1227,7 +1497,8 @@ impl Castle {
         self.set_palette(room as usize);
     }
 
-    /// +24E4 redraw_status_panel: the panel picture, the numbers and both health bars, into the clean picture.
+    /// +24E4 redraw_status_panel: the panel picture, the numbers, the sub-weapon and both health bars, into the
+    /// clean picture.
     fn panel(&mut self, a: &Arc<Assets>) {
         for (f, x, y) in [(PANEL, 0, 0), (PANEL_A, 0x8E, 9), (PANEL_B, 0x9C, 9)] {
             if let Some(s) = a.shape("goodies", f) {
@@ -1235,7 +1506,8 @@ impl Castle {
             }
         }
         self.panel_cache = None;
-        self.panel_numbers();
+        self.sub_cache = None;
+        self.panel_numbers(a);
         // +255C and +2584: the lost part of each health bar
         self.st.hp_shown = self.st.hp;
         for i in self.st.hp_shown.max(0)..16 {
@@ -1262,49 +1534,115 @@ impl Castle {
     }
 
     /// +7640, +7664, +7688, +76AE, +76D4: score, time, hearts, lives and stage, each drawn when it changes
-    /// (+1A40 compares them with the values last drawn).
-    fn panel_numbers(&mut self) {
+    /// (+1A40 compares them with the values last drawn); +76F8 the sub-weapon and +7736 the shot multiplier.
+    fn panel_numbers(&mut self, a: &Arc<Assets>) {
         let s = &self.st;
         let now = (s.score, s.time, s.hearts, s.lives, s.stage);
         let old = self.panel_cache;
-        if old == Some(now) {
-            return;
+        if old != Some(now) {
+            self.scr.ink = 3;
+            self.scr.paper = 0;
+            let items: [(i32, i32, String); 5] = [
+                (0x48, 0, format!("{:07}", now.0.clamp(0, 9_999_999))),
+                (0xD8, 0, format!("{:04}", now.1.clamp(0, 9999))),
+                (0xE8, 8, format!("{:02}", now.2.clamp(0, 99))),
+                (0xE8, 0x10, format!("{:02}", now.3.clamp(0, 99))),
+                (0x130, 0, format!("{:02}", now.4.clamp(0, 99))),
+            ];
+            for (k, (x, y, text)) in items.iter().enumerate() {
+                let changed = match old {
+                    None => true,
+                    Some(o) => [
+                        o.0 != now.0,
+                        o.1 != now.1,
+                        o.2 != now.2,
+                        o.3 != now.3,
+                        o.4 != now.4,
+                    ][k],
+                };
+                if !changed {
+                    continue;
+                }
+                for (i, ch) in text.chars().enumerate() {
+                    let g = self.glyph(ch);
+                    self.scr.char(&g, x + 8 * i as i32, *y, true, true);
+                }
+            }
+            self.panel_cache = Some(now);
         }
-        self.scr.ink = 3;
-        self.scr.paper = 0;
-        let items: [(i32, i32, String); 5] = [
-            (0x48, 0, format!("{:07}", now.0.clamp(0, 9_999_999))),
-            (0xD8, 0, format!("{:04}", now.1.clamp(0, 9999))),
-            (0xE8, 8, format!("{:02}", now.2.clamp(0, 99))),
-            (0xE8, 0x10, format!("{:02}", now.3.clamp(0, 99))),
-            (0x130, 0, format!("{:02}", now.4.clamp(0, 99))),
-        ];
-        for (k, (x, y, text)) in items.iter().enumerate() {
-            let changed = match old {
-                None => true,
-                Some(o) => [
-                    o.0 != now.0,
-                    o.1 != now.1,
-                    o.2 != now.2,
-                    o.3 != now.3,
-                    o.4 != now.4,
-                ][k],
+        let sub = (self.st.sub, self.st.shot);
+        if self.sub_cache != Some(sub) {
+            self.sub_cache = Some(sub);
+            // +1A40 clears the two boxes (goodies 59 and 32), +76F8 draws the weapon's first frame at
+            // (0xBD, 0x13), +7736 the multiplier (goodies 14 or 13) at (0x11D, 0x18)
+            if let Some(s) = a.shape("goodies", 59) {
+                self.scr.shape(s, 0xBD, 0x18, Into::CleanShow, false);
+            }
+            if let Some(s) = a.shape("goodies", 32) {
+                self.scr.shape(s, 0x11D, 0x18, Into::CleanShow, false);
+            }
+            if sub.0 != 0 {
+                let ix = self.w.m.w(0x630A - 0x5A * sub.0 as i32);
+                if let Some((file, frame)) = (0..0xD9)
+                    .contains(&ix)
+                    .then(|| self.w.shp[ix as usize].clone())
+                    .flatten()
+                {
+                    if let Some(s) = a.shape(&file, frame) {
+                        self.scr.shape(s, 0xBD, 0x13, Into::CleanShow, false);
+                    }
+                }
+            }
+            let m = match sub.1 {
+                1 => Some(14),
+                2 => Some(13),
+                _ => None,
             };
-            if !changed {
-                continue;
-            }
-            for (i, ch) in text.chars().enumerate() {
-                let g = self.glyph(ch);
-                self.scr.char(&g, x + 8 * i as i32, *y, true, true);
+            if let Some(f) = m {
+                if let Some(s) = a.shape("goodies", f) {
+                    self.scr.shape(s, 0x11D, 0x18, Into::CleanShow, false);
+                }
             }
         }
-        self.panel_cache = Some(now);
     }
 
-    /// +1A40 process_input_events: the frame's shapes (the objects are part 3, then the player and his whip,
-    /// +188A) and the panel's changes: numbers, and the health bar moving one segment every second frame.
+    /// +1A40 process_input_events: the frame's shapes (a broken wall, the twin bosses' gate, the objects in depth
+    /// order, then the player and his whip, +188A) and the panel's changes: numbers, the player's health bar a
+    /// segment every second frame, and the boss's bar.
     fn draw_objects(&mut self, a: &Arc<Assets>) {
         let t = &a.tables;
+        self.w.free_gone();
+        if self.w.wall_draw != 0 {
+            let i = self.w.wall_draw as i32 - 1;
+            self.w.wall_draw = 0;
+            let e = 0x3D06 - 0xC * i - 0x24 * self.st.van as i32;
+            let col = self.w.m.w(e - 2) as i32;
+            let row = self.w.m.w(e - 4) as i32;
+            if let Some(s) = a.shape("goodies", WALL) {
+                self.scr
+                    .shape(s, (col + 1) * 8, row * 8 + 7, Into::CleanShow, false);
+            }
+        }
+        if self.w.flash != 0 {
+            self.w.flash = 0;
+            let sx = self.st.scroll_col as i32 * 8;
+            if let Some(s) = a.shape("goodies", WALL) {
+                for (x, y) in [
+                    (0x68, 0x70),
+                    (0x68, 0x7E),
+                    (0x78, 0x70),
+                    (0x78, 0x7E),
+                    (0x7E, 0x78),
+                ] {
+                    self.scr.shape(s, sx + x, y, Into::CleanShow, false);
+                }
+            }
+        }
+        for d in self.w.draws() {
+            if let Some(s) = a.shape(&d.file, d.frame) {
+                self.scr.shape(s, d.x, d.y, Into::Work, false);
+            }
+        }
         let (f, w) = self.st.shapes(t);
         let sx = self.st.scroll_col as i32 * 8 + self.st.x as i32;
         let sy = (self.st.y >> 5) as i32 + 1;
@@ -1327,7 +1665,16 @@ impl Castle {
                 }
             }
         }
-        self.panel_numbers();
+        self.panel_numbers(a);
+        // the boss's bar (+19D8 starts it, +1A40 moves it a segment a frame)
+        if self.w.bar_anim == 0 {
+            self.w.boss_bar(&self.st);
+        }
+        for (i, full) in self.w.bar_step(&mut self.st) {
+            if (0..16).contains(&i) {
+                self.bar(a, if full { BAR_FULL } else { BAR_EMPTY }, i, 0x17);
+            }
+        }
         // +1A40's health bar: two frames a segment
         let st = &mut self.st;
         if st.hp_anim != 0 {

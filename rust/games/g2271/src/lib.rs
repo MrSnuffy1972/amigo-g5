@@ -5,6 +5,7 @@
 pub mod assets;
 pub mod castle;
 pub mod co;
+pub mod objects;
 pub mod screen;
 pub mod stage;
 

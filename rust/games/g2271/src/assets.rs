@@ -28,7 +28,7 @@ pub struct Room {
 }
 
 /// A screen file: tile map, attribute map (collision, stairs, spawn marks) and its 8 by 8 tiles (32 colours).
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ScreenFile {
     pub w: usize,
     pub h: usize,
@@ -134,6 +134,8 @@ pub struct Assets {
     pub intro_seconds: u32,
     pub title: Title,
     pub tables: Tables,
+    /// The program's initial data area (its data hunk), for the object state (`objects::Mem`).
+    pub dat: Vec<u8>,
 }
 
 fn num(v: &Value, k: &str) -> Result<i64, String> {
@@ -309,6 +311,10 @@ impl Assets {
                 split: num(&td, "split")? as i16,
             },
             tables,
+            dat: ints(&p.data("datahunk")?, "bytes")?
+                .into_iter()
+                .map(|v| v as u8)
+                .collect(),
         })
     }
 

@@ -11,8 +11,9 @@ use std::sync::Arc;
 
 use native_engine::input::{Action, InputState};
 
-use crate::assets::{Assets, H, W};
+use crate::assets::{Assets, ScreenFile, H, W};
 use crate::co::{FrameIn, FrameOut, Stop};
+use crate::objects::{Snd, World};
 use crate::screen::{Into, Screen};
 use crate::stage::Simon;
 
@@ -64,6 +65,14 @@ pub struct Castle {
     pub scroll_col: i16,
     #[allow(dead_code)]
     seed: Option<u32>,
+    /// The objects (part 3) and the room's screen file as the player reads it (platforms change it).
+    pub w: World,
+    pub sf: ScreenFile,
+    /// Columns the last scroll moved (-$199C), and the sub-weapon box as last drawn.
+    pub(crate) scan_n: i16,
+    pub(crate) sub_cache: Option<(i16, i16)>,
+    /// Sound requests of the frame being drawn (played by the sound part).
+    pub snd_out: Vec<Snd>,
 }
 
 impl Castle {
@@ -74,7 +83,6 @@ impl Castle {
         tx: Sender<FrameOut>,
     ) -> Castle {
         Castle {
-            a,
             rx,
             tx,
             scr: Screen::new(W),
@@ -88,7 +96,23 @@ impl Castle {
             room: 0,
             scroll_col: 0,
             seed,
+            w: {
+                let mut w = World::new(&a.dat);
+                // +B798 seed_random seeds from the CIA timers at start; a fixed seed makes runs repeatable
+                w.rng = seed.unwrap_or(0x2271);
+                w
+            },
+            a,
+            sf: ScreenFile::default(),
+            scan_n: 1,
+            sub_cache: None,
+            snd_out: Vec::new(),
         }
+    }
+
+    /// A sound request (+AC24 effects, +ACB0 tunes) for the frame being drawn.
+    pub fn sound(&mut self, s: Snd) {
+        self.snd_out.push(s);
     }
 
     pub fn state(&self) -> Vec<(String, i64)> {
@@ -115,6 +139,18 @@ impl Castle {
             ("whip".into(), self.st.whip as i64),
             ("crouch".into(), self.st.crouch as i64),
             ("falling".into(), self.st.falling as i64),
+            ("score".into(), self.st.score as i64),
+            ("hearts".into(), self.st.hearts as i64),
+            ("sub".into(), self.st.sub as i64),
+            ("whip_level".into(), self.st.whip_level as i64),
+            ("hurt".into(), self.st.hurt as i64),
+            ("block".into(), self.st.block as i64),
+            ("objects".into(), self.w.m.w(crate::objects::G_LIVE) as i64),
+            ("boss_hp".into(), self.w.boss_hp as i64),
+            ("enemy_bar".into(), self.st.enemy_hp as i64),
+            ("game_over".into(), self.st.game_over as i64),
+            ("stage_clear".into(), self.st.stage_clear as i64),
+            ("rng".into(), self.w.rng as i64),
         ]
     }
 

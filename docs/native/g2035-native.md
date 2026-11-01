@@ -1,6 +1,6 @@
 # Game 2035 (Sensible Soccer, Crack Inc crack): native port notes
 
-Written 1 Nov 2026 by the p2035 agent (batch 2). Status: step 1 (code recovery) done apart from naming, step 2 (understanding)
+Written 1 Nov 2026 by the p2035 agent (batch 2). Status: step 1 (code recovery) done, all four proofs pass (2 Nov 2026), step 2 (understanding)
 started, steps 3 and 4 (native rewrite, verification) and the release not started. Recovery summary: [g2035-recovery.md](g2035-recovery.md).
 
 ## Measured so far
@@ -64,3 +64,48 @@ started, steps 3 and 4 (native rewrite, verification) and the release not starte
   black until part 2's language screen replaces it.
 - Checks: `cargo test -p g2035 --no-default-features` (intro timing, skip, centring on a synthetic pack); headless run on
   the real pack (80 ticks): phase 0 for ticks 1-69, phase 1 from tick 70.
+
+### Part 2 groundwork: the menu tables (measured 2 Nov 2026, not yet ported)
+- The front end is data driven. A menu descriptor (main program) is: items pointer (long, so far always descriptor + 20),
+  two words (1, 1), two handler routine pointers and a third long (zero in both menus found), read by `open_menu_descriptor` ($C1E656), then
+  16-byte items until a $FFFF word, then a navigation table (bytes: neighbour item per direction, $FF = none).
+- Item: kind (word), x, y, w, fifth word (height for boxes; for text buttons it is $24 on every main-menu button, so not
+  the drawn height: still to decode), attribute word (high byte flags, low byte colour, e.g. $8F06), data (long: a text
+  pointer for kind $0B, a sprite number in the high word for kind $04, zero for kind $0A).
+- Kinds seen: $0A plain box, $04 sprite (numbers $231-$234 the four flags, $235 the Sensible logo, $236 the SOCCER logo, all
+  in `cjcbits`), $0B text button.
+- Language menu at program address $C1D154: four boxes 80 x 79 at (11,39), (247,39), (11,142), (247,142); the two logo
+  sprites; four flags; four labels ENGLISH, DEUTSCH, FRANCAIS, ITALIANO.
+- Main menu at $C1CC3C: eight text buttons 130 wide in two columns at x 29 and 179, y 56, 96, 136, 176 (OPTIONS, EDIT
+  TEAMS, LOAD/SAVE DATA, HIGHLIGHTS; FRIENDLY, CUP, LEAGUE, SPECIALS) and the two logo sprites.
+- Descriptors whose items pointer is descriptor + 20 (found by scanning): $C1CC3C, $C1D154, $C203DE, $C22B5E, $C24B10,
+  $C26096. Other menus (options, friendly, team selection) use another layout or are built at run time; still to find.
+- Attribute word, matched against the reference menus: bit 15 a flag (set on boxes and buttons), bits 8-11 the border and
+  text colour, the low byte the fill colour, in the shared 16-colour menu palette (`Marble` and `cjcbits` carry the same
+  CMAP: 5 dark orange, 6 orange, 10 red, 12 dark red, 15 yellow ...). Language boxes $8F06 = orange with a yellow border
+  and yellow labels; OPTIONS $8605 = dark orange with orange border and text; EDIT TEAMS $8A0C = dark red with red text.
+- Sprite items carry their size in w and h. In `cjcbits` (320 x 256): flags 36 x 24 at Italy (0,0), France (48,0),
+  Germany (0,114), England (48,132); the logo strip at (0,156) 255 x 37 (Sensible 128 wide, then SOCCER). The sprite
+  number to rectangle table itself is not found yet; until it is, these rectangles are measured from the picture.
+- Text and sprites share one system: a run-time table of sprite header pointers (long at $C2642C; header word 8 = width,
+  word 10 = height) and `draw_sprite_by_number` ($C042BE). A font is a table whose first word is its base sprite number,
+  followed by a glyph index per character code minus 32 (a space advances half the width of entry 33);
+  `draw_text_centred_on_x` ($C0A496) and `draw_text_from_x` ($C0A4F6) draw proportional text up to x 336. The glyphs are
+  the small fonts in `cjcgrafs` below y 192. The table pointer is set to $708D6 (chip RAM) by $C263A0; the table is
+  built at run time (the reference RAM dumps in runs/m12 hold it: entry n = header pointer; header = graphics pointer,
+  second pointer, then words 8 and 10). Entries $231-$236 there read 16 x 19, 12 x 15, 13 x 15, so the menu item sprite
+  numbers are not plain indices into it: to resolve next, with the routine that draws kind $04 items.
+- Plan: the extractor parses the descriptors into JSON (`menu_*` data assets), the crate draws items by kind (box and text
+  in the colour from the attribute, sprites cut from `cjcbits` by a sprite table still to locate) and moves the selection
+  by the navigation table; each menu's handlers become typed Rust actions.
+
+## Naming pass (proof 3), 2 Nov 2026
+- 902 routines needed names (1568 inherit from the identical soccers routine). The naming ran on Ryzen's muse-glimmer:30b and,
+  from 2 Nov, three shards on IntelPC's RTX 3090 (qwen3.6:27b); a last round one routine per request. 14 answers rejected
+  only for a name already taken were accepted with the address appended (tools-p2035/accept2035.py). The 11 largest routines
+  the models never answered (interrupt handlers, the main loop step, the start-up load sequence, the DOS helpers) and the
+  small leftovers were named by hand from the code (hand.json, 54 entries).
+- Quality: a spot check found several model names plainly wrong (the IFF picture loader was named as a menu flag setter,
+  the sprite drawer as a team pointer fetch, the file cache routines as team look-ups); those are corrected in hand.json. A
+  deterministic check of names against hardware use (tools-p2035/check2035.py) flagged 18 of 547, mostly harmless. Treat
+  model names outside hand.json as hints until the routine is read for the port.

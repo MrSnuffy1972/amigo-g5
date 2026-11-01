@@ -12,10 +12,10 @@ Step 1 of the native-port process. Source, disassembly, data and assets stay on 
 |---|---|
 | Bytes classified | PASS: 100.000% of 1802240 disk bytes (2 disks) classified, 0 unknown; 9 code containers |
 | Byte-identical reassembly with vasm | PASS: 9 of 9 units identical |
-| Functions named and described | PARTIAL: 35 / 2470 named and described (28 by a model or by hand, 7 inherited from the same routine in soccers) |
-| Executed addresses (reference recordings) in recovered code | PASS: 13668 / 13668 (100.00%) inside recovered code (11 stand-in OS addresses of the harness left out); 13390 of them in functions not yet described |
+| Functions named and described | PASS: 2470 / 2470 named and described (902 by a model or by hand, 1568 inherited from the same routine in soccers) |
+| Executed addresses (reference recordings) in recovered code | PASS: 13668 / 13668 (100.00%) inside recovered code (11 stand-in OS addresses of the harness left out); 0 of them in functions not yet described |
 
-Names and descriptions so far: 2435 not named, 23 muse-glimmer:30b, 7 inherited, 5 hand.
+Names and descriptions so far: 1568 inherited, 419 muse-glimmer:30b, 415 qwen3.6:27b, 54 hand, 7 muse-glimmer:30b (name made unique), 7 qwen3.6:27b (name made unique).
 
 ## Disk bytes by class
 

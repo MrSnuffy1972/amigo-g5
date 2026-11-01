@@ -1033,7 +1033,7 @@ impl Simon {
 }
 
 use crate::castle::{Castle, Phase};
-use crate::objects::{Hdr, Snd, World};
+use crate::objects::{Hdr, World};
 use crate::screen::Into;
 
 /// Vertical blanks a game frame takes during a stage (+BD00 store_word_into_global, called with 4 after the
@@ -1132,6 +1132,7 @@ impl Castle {
             if self.st.tick10 == 0 && self.st.stopwatch != 0 {
                 self.w.fx(5);
             }
+            self.forward_sfx();
             self.w.spawn_timers();
             if self.st.dying == 0 {
                 self.player_controls();
@@ -1162,6 +1163,7 @@ impl Castle {
             let st_sub = self.st.sub;
             self.st.throw_ok = self.w.trec(st_sub, 1) <= self.st.shot;
             self.st.update(&a.tables, &vans, &self.sf);
+            self.forward_sfx();
             self.sync_world();
             if self.st.whip_strike {
                 let (wf, ended) = self.st.strike;
@@ -1196,7 +1198,7 @@ impl Castle {
                 self.rosary(&a);
             }
             self.w.secrets(&self.st);
-            self.st.sfx.clear();
+            self.forward_sfx();
             if !self.frame_end(&a) {
                 break;
             }
@@ -1388,10 +1390,7 @@ impl Castle {
 
     /// The frame's sound requests go to the sound part.
     fn play_sounds(&mut self) {
-        let snd: Vec<Snd> = std::mem::take(&mut self.w.snd);
-        for s in snd {
-            self.sound(s);
-        }
+        self.flush_sounds();
     }
 
     /// The frame wait of a stage (+CBB8 with -$2BB6 = 4): the frame shows for four vertical blanks while the
@@ -1524,6 +1523,11 @@ impl Castle {
         self.scr.work ^= 1;
         self.room = room;
         self.scroll_col = self.st.scroll_col;
+        // l0_1458: a tune that has stopped (the boss's, the orb's, a death's fade) gives way to the block's again
+        if self.snd.check_ended() {
+            let b = self.st.block;
+            self.music(b);
+        }
         self.set_palette(room as usize);
     }
 

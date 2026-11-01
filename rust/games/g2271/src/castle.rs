@@ -15,7 +15,8 @@ use crate::assets::{Assets, ScreenFile, H, W};
 use crate::co::{FrameIn, FrameOut, Stop};
 use crate::objects::{Snd, World};
 use crate::screen::{Into, Screen};
-use crate::stage::Simon;
+use crate::sound::Sound;
+use crate::stage::{Sfx, Simon};
 
 /// Workbench 1.3's CLI colours, for the boot text page: blue paper, white ink.
 const WB_PAPER: u16 = 0x05A;
@@ -71,8 +72,8 @@ pub struct Castle {
     /// Columns the last scroll moved (-$199C), and the sub-weapon box as last drawn.
     pub(crate) scan_n: i16,
     pub(crate) sub_cache: Option<(i16, i16)>,
-    /// Sound requests of the frame being drawn (played by the sound part).
-    pub snd_out: Vec<Snd>,
+    /// The sound: the replayer, the effect slots and the commands for the mixer (part 3b).
+    pub snd: Sound,
 }
 
 impl Castle {
@@ -82,6 +83,7 @@ impl Castle {
         rx: Receiver<FrameIn>,
         tx: Sender<FrameOut>,
     ) -> Castle {
+        let snd = Sound::new(&a);
         Castle {
             rx,
             tx,
@@ -106,16 +108,67 @@ impl Castle {
             sf: ScreenFile::default(),
             scan_n: 1,
             sub_cache: None,
-            snd_out: Vec::new(),
+            snd,
         }
     }
 
-    /// A sound request (+AC24 effects, +ACB0 tunes) for the frame being drawn.
-    pub fn sound(&mut self, s: Snd) {
-        self.snd_out.push(s);
+    /// The player's sound requests, as the original's numbers (+AC24), in the order they were made.
+    pub fn forward_sfx(&mut self) {
+        let sfx: Vec<Sfx> = std::mem::take(&mut self.st.sfx);
+        for s in sfx {
+            // +2D98 landing (6, no sample), +1502 the time running out (1), +3EEE and +39FA falling and dying (7)
+            let n = match s {
+                Sfx::Land => 6,
+                Sfx::TimeWarning => 1,
+                Sfx::Fall | Sfx::Death => 7,
+                Sfx::Hurt => continue,
+            };
+            self.w.fx(n);
+        }
+    }
+
+    /// The frame's sound requests: effects at once (+AC24), tunes through +ACB0 (which can wait for the music to
+    /// fade out first).
+    pub fn flush_sounds(&mut self) {
+        self.forward_sfx();
+        let snd: Vec<Snd> = std::mem::take(&mut self.w.snd);
+        for s in snd {
+            match s {
+                Snd::Fx(n) => self.snd.effect(n),
+                Snd::Tune(n) => self.music(n),
+            }
+        }
+    }
+
+    /// +ACB0 handle_music_event: fade the music out at 4 a step, wait (the main program spins; the picture stays)
+    /// until it has stopped, then tune `n` (1000, the title module, starts at once without the wait).
+    pub fn music(&mut self, n: i16) {
+        self.snd.fade_out(4);
+        let n = if n > 12 && n != 1000 { 12 } else { n };
+        if n == 1000 {
+            self.snd.play_title();
+            return;
+        }
+        while !self.snd.check_ended() {
+            self.hold_frame();
+        }
+        self.snd.play_tune(n);
+    }
+
+    /// One vertical blank's sound: the requests made, the interrupts, and the commands for the mixer.
+    fn sound_vblank(&mut self) -> Vec<crate::sound::Mix> {
+        self.flush_sounds();
+        self.snd.vblank();
+        std::mem::take(&mut self.snd.out)
     }
 
     pub fn state(&self) -> Vec<(String, i64)> {
+        let mut v = self.state_main();
+        v.extend(self.snd.state());
+        v
+    }
+
+    fn state_main(&self) -> Vec<(String, i64)> {
         vec![
             ("frame".into(), self.frame as i64),
             ("phase".into(), self.phase as i64),
@@ -156,8 +209,10 @@ impl Castle {
 
     /// One more vertical blank of the frame already on screen (no flip): the stage's frames last four.
     pub fn hold_frame(&mut self) {
+        let mix = self.sound_vblank();
         let (screen, palette) = self.scr.view();
         let out = FrameOut {
+            mix,
             screen,
             palette,
             quit: false,
@@ -176,9 +231,11 @@ impl Castle {
     /// The frame wait (+CBB8 wait_for_vblank_and_clear_flags): shows the picture drawn, takes the next frame's
     /// input, and restores the boxes of the shapes drawn into the next picture.
     pub fn wait_frame(&mut self) {
+        let mix = self.sound_vblank();
         self.scr.flip();
         let (screen, palette) = self.scr.view();
         let out = FrameOut {
+            mix,
             screen,
             palette,
             quit: false,
@@ -244,7 +301,18 @@ impl Castle {
     /// pass, and the native build behaves as if it had passed.
     pub fn run(&mut self) {
         self.intro();
+        // +0006: the title module (tune 1000) and the villain's laugh (+A96E 0) for the opening; then the module
+        // fades at 2 a step and the rest of the sound loads once it has stopped (+A96E 1)
+        self.music(1000);
+        self.snd.load_sounds(0);
+        self.snd.fade_out(2);
+        while !self.snd.check_ended() {
+            self.hold_frame();
+        }
+        self.snd.load_sounds(1);
         loop {
+            // l0_0076: the title's tune
+            self.music(3);
             let choice = self.title_screen();
             if choice == 0 {
                 self.game();

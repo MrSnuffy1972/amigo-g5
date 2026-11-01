@@ -7,6 +7,7 @@ pub mod castle;
 pub mod co;
 pub mod objects;
 pub mod screen;
+pub mod sound;
 pub mod stage;
 
 /// The engine, for the Android library (which reaches it through this crate).

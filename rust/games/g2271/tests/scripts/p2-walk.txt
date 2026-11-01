@@ -2,15 +2,15 @@
 # walk right, jump, whip, crouch, walk left.
 30 key down Space
 33 key up Space
-150 key down Space
-153 key up Space
-300 key down Right
-400 key up Right
-420 key down Left Shift
-424 key up Left Shift
-500 key down Space
-504 key up Space
-560 key down Down
-600 key up Down
-620 key down Left
-700 key up Left
+228 key down Space
+231 key up Space
+411 key down Right
+511 key up Right
+531 key down Left Shift
+535 key up Left Shift
+611 key down Space
+615 key up Space
+671 key down Down
+711 key up Down
+731 key down Left
+811 key up Left

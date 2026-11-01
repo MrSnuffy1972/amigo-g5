@@ -18,6 +18,8 @@ pub struct FrameIn {
 }
 
 pub struct FrameOut {
+    /// The sound's commands for the mixer in this vertical blank.
+    pub mix: Vec<crate::sound::Mix>,
     pub screen: Vec<u8>,
     pub palette: [u16; 32],
     pub quit: bool,
@@ -108,6 +110,9 @@ impl Game for Native {
             self.done = true;
             return Flow::Quit;
         };
+        for m in &out.mix {
+            crate::sound::apply(m, cx.audio);
+        }
         let quit = out.quit;
         self.last = Some(out);
         if quit {

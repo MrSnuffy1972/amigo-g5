@@ -2,7 +2,7 @@
 # walk right to the end of the courtyard and through its exit.
 30 key down Space
 33 key up Space
-150 key down Space
-153 key up Space
-300 key down Right
-1100 key up Right
+228 key down Space
+231 key up Space
+411 key down Right
+1211 key up Right

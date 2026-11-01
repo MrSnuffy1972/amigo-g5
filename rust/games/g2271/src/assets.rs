@@ -2,6 +2,7 @@
 //! recovered program; the pack never enters the repo). Nothing here holds game bytes.
 
 use std::collections::BTreeMap;
+use std::sync::Arc;
 
 use native_engine::gfx::{Argb, Bitmap};
 use native_engine::pack::Pack;
@@ -136,7 +137,48 @@ pub struct Assets {
     pub tables: Tables,
     /// The program's initial data area (its data hunk), for the object state (`objects::Mem`).
     pub dat: Vec<u8>,
+    /// The disk's sounds/ files by lower-case name (tunes, instruments, the title module, the 8SVX effects), read by
+    /// the game's own loaders in `sound`.
+    pub sounds: Arc<BTreeMap<String, Arc<Vec<i8>>>>,
 }
+
+/// Every file of the disk's sounds/ directory (asset `snd_<name>` with the dot made an underscore).
+pub const SOUND_FILES: [&str; 34] = [
+    "3rdblock.mus",
+    "4thblock.mus",
+    "5thblock.mus",
+    "bonus.eff",
+    "snare6",
+    "allclearbgm.mus",
+    "allcleared.mus",
+    "badkill.eff",
+    "bgm1.mus",
+    "bgm2.mus",
+    "bgm6.mus",
+    "bosscharacter.mus",
+    "btime.eff",
+    "cvbass1",
+    "cvbassdrum",
+    "cvsolo1",
+    "cvstart",
+    "cvstart.mus",
+    "entry.mus",
+    "explay.eff",
+    "explod.eff",
+    "falling.eff",
+    "gameover.mus",
+    "get.eff",
+    "hellojarre.mod",
+    "holybur.eff",
+    "lwvill2.eff",
+    "lwvillam.eff",
+    "monhit.eff",
+    "sack.eff",
+    "splash.eff",
+    "stagecleared.mus",
+    "timeout.eff",
+    "whip.eff",
+];
 
 fn num(v: &Value, k: &str) -> Result<i64, String> {
     v.get(k)
@@ -294,7 +336,13 @@ impl Assets {
         for (i, v) in e.iter().take(16).enumerate() {
             ease[i] = *v as i16;
         }
+        let mut sounds = BTreeMap::new();
+        for n in SOUND_FILES {
+            let s = p.sample(&format!("snd_{}", n.replace('.', "_")), 8000.0)?;
+            sounds.insert(n.to_string(), s.data.clone());
+        }
         Ok(Assets {
+            sounds: Arc::new(sounds),
             palettes,
             rooms,
             screens,

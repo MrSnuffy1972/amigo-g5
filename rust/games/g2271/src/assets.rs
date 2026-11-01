@@ -1,0 +1,257 @@
+//! Game 2271's assets and data, typed, from its asset pack (built by the extractor from the original disk and the
+//! recovered program; the pack never enters the repo). Nothing here holds game bytes.
+
+use std::collections::BTreeMap;
+
+use native_engine::gfx::{Argb, Bitmap};
+use native_engine::pack::Pack;
+use serde_json::Value;
+
+/// The picture the game shows: 320 by 200 (the top 24 lines are the status panel).
+pub const W: usize = 320;
+pub const H: usize = 200;
+/// Lines of the status panel at the top of the screen (screen rows 0 to 2).
+pub const PANEL_H: usize = 24;
+
+/// One entry of the room table: where the player starts when a room is entered.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Room {
+    /// First map column on screen.
+    pub scroll: i16,
+    /// Player column and row.
+    pub x: i16,
+    pub y: i16,
+    /// 1: facing right.
+    pub facing: i16,
+    /// Screen file number.
+    pub van: i16,
+}
+
+/// A screen file: tile map, attribute map (collision, stairs, spawn marks) and its 8 by 8 tiles (32 colours).
+#[derive(Debug, Clone)]
+pub struct ScreenFile {
+    pub w: usize,
+    pub h: usize,
+    pub tiles: Vec<u8>,
+    pub attrs: Vec<i8>,
+    pub tile_px: Vec<[u8; 64]>,
+}
+
+impl ScreenFile {
+    pub fn tile(&self, col: usize, row: usize) -> u8 {
+        self.tiles.get(row * self.w + col).copied().unwrap_or(0)
+    }
+    pub fn attr(&self, col: i32, row: i32) -> i8 {
+        if col < 0 || row < 0 {
+            return 0;
+        }
+        self.attrs
+            .get(row as usize * self.w + col as usize)
+            .copied()
+            .unwrap_or(0)
+    }
+}
+
+/// One frame of a shape file: the picture (255 = not drawn) and its header words.
+#[derive(Debug, Clone)]
+pub struct Shape {
+    pub w: usize,
+    pub h: usize,
+    /// Subtracted from x and y when drawn (the frame's anchor).
+    pub ax: i16,
+    pub ay: i16,
+    /// Header words +8 and +A: the width and height the game uses for clipping and restore boxes.
+    pub cw: i16,
+    pub ch: i16,
+    pub px: Vec<u8>,
+}
+
+/// The title menu's numbers.
+#[derive(Debug, Clone)]
+pub struct Title {
+    pub ease: [i16; 16],
+    pub palette: usize,
+    pub cursor_x: i16,
+    pub top: i16,
+    pub bottom: i16,
+    pub split: i16,
+}
+
+pub struct Assets {
+    /// 32 colours a palette (12-bit): 0 to 15 the sprite colours, 16 to 31 the room's.
+    pub palettes: Vec<[u16; 32]>,
+    pub rooms: Vec<Room>,
+    pub screens: BTreeMap<usize, ScreenFile>,
+    pub shapes: BTreeMap<String, Vec<Shape>>,
+    /// The 8 by 8 font from the space character: one value (0 or 1) a pixel.
+    pub font: Vec<[u8; 64]>,
+    pub intro: Vec<String>,
+    pub intro_seconds: u32,
+    pub title: Title,
+}
+
+fn num(v: &Value, k: &str) -> Result<i64, String> {
+    v.get(k)
+        .and_then(Value::as_i64)
+        .ok_or_else(|| format!("missing number {k}"))
+}
+
+fn rgb_to_12(c: Argb) -> u16 {
+    let r = ((c >> 16) & 0xFF) as u16 / 17;
+    let g = ((c >> 8) & 0xFF) as u16 / 17;
+    let b = (c & 0xFF) as u16 / 17;
+    (r << 8) | (g << 4) | b
+}
+
+/// The frames of a sheet image (side by side), each as its own row-major pixels.
+fn frames(b: &Bitmap, fw: usize, fh: usize, n: usize) -> Vec<Vec<u8>> {
+    (0..n)
+        .map(|f| {
+            let mut v = Vec::with_capacity(fw * fh);
+            for y in 0..fh {
+                v.extend_from_slice(&b.px[y * b.w + f * fw..y * b.w + f * fw + fw]);
+            }
+            v
+        })
+        .collect()
+}
+
+fn ints(v: &Value, k: &str) -> Result<Vec<i64>, String> {
+    v.get(k)
+        .and_then(Value::as_array)
+        .ok_or_else(|| format!("missing list {k}"))?
+        .iter()
+        .map(|x| x.as_i64().ok_or_else(|| format!("bad number in {k}")))
+        .collect()
+}
+
+impl Assets {
+    pub fn load(p: &Pack) -> Result<Assets, String> {
+        let mut palettes = Vec::new();
+        while let Ok(pal) = p.palette(&format!("pal.{}", palettes.len())) {
+            let mut c = [0u16; 32];
+            for (i, v) in pal.colours.iter().take(32).enumerate() {
+                c[i] = rgb_to_12(*v);
+            }
+            palettes.push(c);
+        }
+        if palettes.is_empty() {
+            return Err("no palettes in the pack".into());
+        }
+        let rooms = p
+            .data("rooms")?
+            .as_array()
+            .ok_or("rooms: not a list")?
+            .iter()
+            .map(|r| {
+                Ok(Room {
+                    scroll: num(r, "scroll")? as i16,
+                    x: num(r, "x")? as i16,
+                    y: num(r, "y")? as i16,
+                    facing: num(r, "facing")? as i16,
+                    van: num(r, "van")? as i16,
+                })
+            })
+            .collect::<Result<Vec<_>, String>>()?;
+        let mut screens = BTreeMap::new();
+        for n in 0..38 {
+            let Ok(d) = p.data(&format!("van.{n}")) else {
+                continue;
+            };
+            let sheet = p.sheet(&format!("tiles.{n}"))?;
+            let tile_px = frames(&sheet.image, 8, 8, sheet.frames)
+                .into_iter()
+                .map(|v| {
+                    let mut t = [0u8; 64];
+                    t.copy_from_slice(&v);
+                    t
+                })
+                .collect();
+            screens.insert(
+                n,
+                ScreenFile {
+                    w: num(&d, "w")? as usize,
+                    h: num(&d, "h")? as usize,
+                    tiles: ints(&d, "tiles")?.into_iter().map(|v| v as u8).collect(),
+                    attrs: ints(&d, "attrs")?.into_iter().map(|v| v as i8).collect(),
+                    tile_px,
+                },
+            );
+        }
+        let mut shapes = BTreeMap::new();
+        let sd = p.data("shapes")?;
+        for (name, list) in sd.as_object().ok_or("shapes: not an object")? {
+            let mut v = Vec::new();
+            for (i, f) in list
+                .as_array()
+                .ok_or("shapes: bad entry")?
+                .iter()
+                .enumerate()
+            {
+                let h = f.as_array().ok_or("shapes: bad frame")?;
+                let g = |k: usize| h.get(k).and_then(Value::as_i64).unwrap_or(0);
+                let b = p.bitmap(&format!("art.{name}.{i}"))?;
+                v.push(Shape {
+                    w: g(0) as usize,
+                    h: g(1) as usize,
+                    ax: g(2) as i16,
+                    ay: g(3) as i16,
+                    cw: g(4) as i16,
+                    ch: g(5) as i16,
+                    px: b.px,
+                });
+            }
+            shapes.insert(name.clone(), v);
+        }
+        let fs = p.sheet("font")?;
+        let font = frames(&fs.image, 8, 8, fs.frames)
+            .into_iter()
+            .map(|v| {
+                let mut t = [0u8; 64];
+                t.copy_from_slice(&v);
+                t
+            })
+            .collect();
+        let it = p.data("intro")?;
+        let intro = it
+            .get("lines")
+            .and_then(Value::as_array)
+            .ok_or("intro: no lines")?
+            .iter()
+            .map(|l| l.as_str().unwrap_or("").to_string())
+            .collect();
+        let td = p.data("title")?;
+        let e = ints(&td, "ease")?;
+        let mut ease = [0i16; 16];
+        for (i, v) in e.iter().take(16).enumerate() {
+            ease[i] = *v as i16;
+        }
+        Ok(Assets {
+            palettes,
+            rooms,
+            screens,
+            shapes,
+            font,
+            intro,
+            intro_seconds: num(&it, "seconds")? as u32,
+            title: Title {
+                ease,
+                palette: num(&td, "palette")? as usize,
+                cursor_x: num(&td, "cursor_x")? as i16,
+                top: num(&td, "top")? as i16,
+                bottom: num(&td, "bottom")? as i16,
+                split: num(&td, "split")? as i16,
+            },
+        })
+    }
+
+    pub fn shape(&self, file: &str, frame: usize) -> Option<&Shape> {
+        self.shapes.get(file).and_then(|v| v.get(frame))
+    }
+
+    pub fn screen(&self, n: usize) -> Result<&ScreenFile, String> {
+        self.screens
+            .get(&n)
+            .ok_or_else(|| format!("screen file {n} is not in the pack"))
+    }
+}

@@ -83,6 +83,24 @@ round starts, cutting and claiming, deaths, game over, the high-score table and 
 executed PCs against 756 for the canonical run. The canonical re-run with the copy reproduces the canonical PCs
 exactly.
 
+## Naming pass, batch 2 continued (2 Nov 2026)
+
+- The naming pass now runs on two GPUs: the forward pass on Ryzen's Glimmer and four shards on IntelPC's RTX 3090
+  (qwen3.6:27b, `tools-p1727/describe_shard.py`, a copy of the reverse shard split four ways; IntelPC's Ollama
+  serves one request at a time, so the four shards only remove the gaps between calls: about 3 to 4 routines a
+  minute in all).
+- Eighteen key routines were checked by hand against the code and the reference runs and carry hand names
+  (`tools/p1727-names.json`, merged last by `tools-p1727/p1727_merge.py`): program start, wait for the vertical
+  blank, main program, random step, round set-up, the player routine and its four direction steps, the claim fill,
+  print string, the glyph plotter, the bob-set loader, the percentage format and draw, the round enemy dispatch and
+  round 1's enemy logic. The model names they replace were wrong for most of them (for example the player routine
+  was "process_game_state", the round set-up "initialize_copper_list" and the direction steps "empty_routine").
+- `tools-p1727/finish-p1727.sh` (a background process, no timer or unit) waits for the shards, stops the forward
+  pass, merges, runs describe (leftovers and retries on IntelPC), emit, build and report, then installs the root
+  over `/srv/fast/amigo/recovery/01727` with a verified backup (`tools-p1727/install-p1727.sh`). Its log is
+  `/srv/fast/native-work/1727/finish.log`. Proofs 3 and 4 are reported as they stand when it ends; the result table
+  above is not updated until then.
+
 ## Result so far (2 Nov 2026)
 
 | proof | result |

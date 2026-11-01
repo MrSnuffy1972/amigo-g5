@@ -232,7 +232,7 @@ counts at the end. No code or bytes here.
 | `compute_edge` | ported | scene::Fill::edge |
 | `reset_poly` | ported | scene::Fill::reset |
 | `alloc_poly_arrays` | ported | scene::Fill (growable buffers) |
-| `inside_poly` | pending | game logic, to port |
+| `inside_poly` | ported | ball::inside_poly |
 | `clip_ocean` | ported | scene::clip_ocean |
 | `perspect_ocean` | ported | scene (perspect_ocean) |
 | `transform_ocean` | ported | scene::View::transform_ocean |
@@ -328,15 +328,15 @@ counts at the end. No code or bytes here.
 | `convert_pt` | pending | game logic, to port |
 | `draw_course_overhead` | pending | game logic, to port |
 | `sync_to_int` | pending | game logic, to port |
-| `ball_interrupt` | pending | game logic, to port |
-| `ball_32_to_16` | pending | game logic, to port |
+| `ball_interrupt` | ported | ball::Ball::interrupt (fly, land, roll) |
+| `ball_32_to_16` | ported | ball::round16 |
 | `get_ball_pos` | pending | game logic, to port |
 | `new_draw_ball` | pending | game logic, to port |
 | `draw_ball` | pending | game logic, to port |
 | `erase_ball` | pending | game logic, to port |
 | `draw_cursor` | pending | game logic, to port |
 | `erase_cursor` | pending | game logic, to port |
-| `check_cup` | pending | game logic, to port |
+| `check_cup` | ported | ball::Ball::cup |
 | `check_ball_in_cup` | pending | game logic, to port |
 | `check_priority` | pending | game logic, to port |
 | `draw_inset_objs` | pending | game logic, to port |
@@ -616,4 +616,4 @@ counts at the end. No code or bytes here.
 | `WBenchToBack` | os | AmigaOS library call: replaced by native_engine (display, input, files, memory) |
 | `WindowToFront` | os | AmigaOS library call: replaced by native_engine (display, input, files, memory) |
 
-Counts: os 84, partial 13, pending 359, platform 53, ported 37, runtime 61 (of 607).
+Counts: os 84, partial 13, pending 355, platform 53, ported 41, runtime 61 (of 607).

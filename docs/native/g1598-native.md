@@ -1,7 +1,7 @@
 # Game 1598 (PGA Tour Golf): native rewrite notes
 
 Native batch 2, 2 Nov 2026, p1598 agent. Status: **stage 1 (recovery) nearly complete (naming pass running), stage 2 under way,
-stage 3 parts 1 and 2 done (front door to pro shop, the 3D hole view); not yet playable.** No game bytes here; the asset pack is built outside the repo by
+stage 3 parts 1, 2 and 3a done (front door to pro shop, the 3D hole view, the ball in motion); not yet playable.** No game bytes here; the asset pack is built outside the repo by
 `/srv/fast/native-work/1598/tools/mkpack.py` (its first version already decodes the pictures, palettes, golfer, pro
 shop, tree and mountain graphics, checked by eye against the expected look).
 
@@ -65,8 +65,17 @@ integer arithmetic; assets from the pack (built outside the repo by `tools/mkpac
 - Checked so far: unit tests on synthetic data (fixed-point helpers, projection, clip and fill, bearings, the console
   parser) and a scripted headless run on the real pack (intro, title, pro shop, hole 2). Frames were looked at by eye;
   they have **not yet been compared with reference frames** (stage 4).
-- Function map: `g1598-function-map.md` (37 routines ported, 13 partial, 359 game routines pending, the rest platform,
+- Function map: `g1598-function-map.md` (41 routines ported, 13 partial, 355 game routines pending, the rest platform,
   AmigaOS or C runtime).
+
+## Part 3a: the ball in motion (2 Nov 2026)
+`ball`: `ball_interrupt` ported from the assembly (the decompiler's version differs in the landing code): the step
+gate (odd frames and every sixth even frame), tree deflection, flight with wind and spin after ten steps, gravity
+0x275c, landing by surface (sounds 2 to 5, plugging in sand, stopping in water or hazards, the green keeping
+backspin), the roll with contour vectors and friction (halved on fairway and green), the stop test on the velocity's
+high words, `ball_32_to_16` rounding, `inside_poly` (even-odd with the original's vertex rule, 6 as 3, 9 as none) and
+`check_cup` (within 2 units: drop below speed 0x276, else the lip hop). Unit tests on synthetic holes. Not yet wired
+to a swing (part 3b), and `get_contour` (green slopes) is still to port, so rolls on greens have no slope yet.
 
 ## Next parts
 3. Swing and shot: `init_shot`, the snap meter (`draw_snap_meter`, `snap_event`, `draw_snap_line`), `shoot` (club

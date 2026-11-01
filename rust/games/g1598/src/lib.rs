@@ -4,6 +4,7 @@
 //! `co`), the intro text page in `intro`, the asset loading in `assets`.
 
 pub mod assets;
+pub mod ball;
 pub mod co;
 pub mod fixed;
 pub mod golf;

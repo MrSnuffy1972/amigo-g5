@@ -21,8 +21,37 @@ pub enum Stage {
     Credits = 4,
     /// LOADING GAME over the arena.
     Loading = 5,
-    /// The intro is over; the game itself (team management, matches) is the next part of the port.
+    /// The intro is over (the main program starts).
     GameStart = 6,
+    /// The menus (part 2).
+    Menu = 7,
+}
+
+/// Where a menu selection leads: the routine the original runs next, which is a later part of the port (the `next`
+/// the verification reads).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Next {
+    None = 0,
+    /// KNOCKOUT: team selection (`cycle_team_selection_screen`).
+    Knockout = 1,
+    /// LEAGUE, NEW GAME.
+    LeagueNew = 2,
+    /// LEAGUE, TEAM MANAGER.
+    LeagueManager = 3,
+    /// LEAGUE, LOAD GAME (`process_league_menu_input`).
+    LeagueLoad = 4,
+    /// CUP, NEW GAME (`reset_league_tables_and_teams`).
+    CupNew = 5,
+    /// CUP, LOAD GAME.
+    CupLoad = 6,
+    /// PRACTICE.
+    Practice = 7,
+    /// 2 PLAYER GAME (`run_player_management_loop`).
+    TwoPlayers = 8,
+    /// DEMO GAME, or 1500 idle frames on the first menu.
+    Demo = 9,
+    /// REPLAY GOALS (`initialize_game_session_data`).
+    ReplayGoals = 10,
 }
 
 pub struct World {
@@ -54,6 +83,22 @@ pub struct World {
     /// Sound effects asked for: the last one and how many (the sound driver is a later part of the port).
     pub sfx_last: u8,
     pub sfx_count: u32,
+    /// Joystick events since the menu last cleared them (the interrupt's event byte: up 1, down 2, fire `$80`).
+    pub joy: u8,
+    /// The last key pressed (the keyboard handler's byte; Esc is `$45`).
+    pub key: u8,
+    /// The chosen menu item (the original's `$34A2`), the menu on screen, and Esc pressed in a menu (`$172` bit 6).
+    pub choice: u16,
+    pub menu: u8,
+    pub escape: bool,
+    /// Frames since the first menu last redrew (`$EA`; the demo starts at 1500).
+    pub idle: u16,
+    /// The game mode (`$EF`: 1 league, 2 cup) and the three purses (`$1EC`-`$1F0`).
+    pub mode: u8,
+    pub money: [u16; 3],
+    /// Where the last selection leads, and how many selections were made.
+    pub next: Next,
+    pub picks: u32,
 }
 
 impl Default for World {
@@ -77,6 +122,16 @@ impl Default for World {
             cursor: (0, 0),
             sfx_last: 0,
             sfx_count: 0,
+            joy: 0,
+            key: 0,
+            choice: 0,
+            menu: 0,
+            escape: false,
+            idle: 0,
+            mode: 0,
+            money: [0; 3],
+            next: Next::None,
+            picks: 0,
         }
     }
 }
@@ -100,6 +155,7 @@ impl World {
     pub fn vertical_blank(&mut self) {
         self.frames = self.frames.wrapping_add(1);
         self.vbl = self.vbl.wrapping_add(1);
+        self.idle = self.idle.wrapping_add(1);
         self.display = self.shown;
     }
 

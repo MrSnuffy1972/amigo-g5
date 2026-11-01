@@ -6,6 +6,9 @@
 //! credits over the arena, and the LOADING GAME page. The program runs on its own thread in lock-step with the
 //! engine's ticks (`co`), so the intro module reads as its original routines did (`intro`); `world` holds the typed
 //! state it works on (two screens, the colour registers, the frame counters and the flags).
+//!
+//! Part 2 (first slice): the menus (`intro::menu`): the menu screen and runner, the first menu, the match menu and
+//! the league's and the cup's game menus. Where a selection leads is recorded for the later parts.
 
 pub mod assets;
 pub mod co;

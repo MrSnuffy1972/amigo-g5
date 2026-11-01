@@ -17,6 +17,8 @@ use crate::assets::{Assets, Page};
 use crate::co::{Co, Link};
 use crate::world::{Stage, World};
 
+mod menu;
+
 /// The cursor glyph and the save slot the typing uses (the original keeps the background under the cursor in glyph
 /// slot 43 of the font).
 const CURSOR: usize = 41;
@@ -62,6 +64,19 @@ impl Game for Speedball {
             w.fire = [Action::Fire, Action::Start]
                 .iter()
                 .any(|&a| i.held(a) || i.pressed(a));
+            // the joystick interrupt's events (new pushes) and the keyboard handler's Esc, for the menus
+            w.joy |= [
+                (Action::Up, menu::JOY_UP),
+                (Action::Down, menu::JOY_DOWN),
+                (Action::Fire, menu::JOY_FIRE),
+                (Action::Start, menu::JOY_FIRE),
+            ]
+            .iter()
+            .filter(|(a, _)| i.pressed(*a))
+            .fold(0, |v, (_, b)| v | b);
+            if i.pressed(Action::Cancel) {
+                w.key = menu::KEY_ESC;
+            }
         }
         self.co.tick();
         Flow::Continue
@@ -91,6 +106,13 @@ impl Game for Speedball {
             ("colour_sum".into(), pal),
             ("sfx_last".into(), w.sfx_last as i64),
             ("sfx_count".into(), w.sfx_count as i64),
+            ("menu".into(), w.menu as i64),
+            ("choice".into(), w.choice as i64),
+            ("escape".into(), w.escape as i64),
+            ("mode".into(), w.mode as i64),
+            ("money".into(), w.money[0] as i64),
+            ("next".into(), w.next as i64),
+            ("picks".into(), w.picks as i64),
         ]
     }
 }
@@ -117,9 +139,7 @@ impl Intro<'_> {
         self.set_game_status_flags();
         self.load_and_apply_palette_data();
         self.w().stage = Stage::GameStart;
-        loop {
-            self.frame();
-        }
+        self.main_loop();
     }
 
     // ---- waits ----

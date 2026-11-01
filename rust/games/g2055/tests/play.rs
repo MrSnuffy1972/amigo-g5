@@ -94,7 +94,7 @@ fn fire_skips_to_loading_game_and_the_intro_ends() {
     }
     r.step(&fire(false));
     r.run(600);
-    assert_eq!(r.get("stage"), 6, "the intro is over");
+    assert!(r.get("stage") >= 6, "the intro is over");
     assert_eq!(r.get("intro"), 0);
     assert!(r.lit() > 1000, "the arena with LOADING GAME is shown");
 }
@@ -107,4 +107,63 @@ fn nothing_skips_the_opening_pages() {
         r.step(&[Host::Key("Space".into(), true)]);
     }
     assert_eq!(r.get("stage"), 1);
+}
+
+fn tap(r: &mut Run, key: &str) {
+    for d in [true, false] {
+        r.step(&[Host::Key(key.into(), d)]);
+    }
+    r.run(60);
+}
+
+#[test]
+fn the_menus_lead_to_the_league_and_esc_goes_back() {
+    let Some(p) = pack() else { return };
+    let mut r = Run::new(&p);
+    let mut n = 0;
+    while r.get("stage") != 7 && n < 4000 {
+        r.step(&[Host::Key("Space".into(), n % 20 < 10)]);
+        n += 1;
+    }
+    r.run(120);
+    assert_eq!(r.get("menu"), 1, "the first menu");
+    assert!(r.lit() > 30000, "the panel is shown");
+    tap(&mut r, "Space");
+    assert_eq!(r.get("menu"), 2, "1 PLAYER GAME leads to the match menu");
+    tap(&mut r, "Down");
+    assert_eq!(r.get("choice"), 1, "LEAGUE");
+    tap(&mut r, "Up");
+    tap(&mut r, "Up");
+    assert_eq!(r.get("choice"), 3, "the arrows wrap to PRACTICE");
+    tap(&mut r, "Down");
+    tap(&mut r, "Down");
+    tap(&mut r, "Space");
+    assert_eq!(r.get("menu"), 3, "the league's game menu");
+    assert_eq!((r.get("mode"), r.get("money")), (1, 550));
+    tap(&mut r, "Escape");
+    assert_eq!(r.get("menu"), 1, "Esc goes back to the first menu");
+    assert_eq!(r.get("picks"), 0);
+    tap(&mut r, "Space");
+    tap(&mut r, "Down");
+    tap(&mut r, "Down");
+    tap(&mut r, "Space");
+    assert_eq!(r.get("menu"), 6, "the cup's game menu");
+    tap(&mut r, "Space");
+    assert_eq!(r.get("next"), 5, "CUP, NEW GAME");
+    assert_eq!(r.get("menu"), 1, "back to the first menu");
+}
+
+#[test]
+fn the_first_menu_starts_the_demo_after_1500_idle_frames() {
+    let Some(p) = pack() else { return };
+    let mut r = Run::new(&p);
+    let mut n = 0;
+    while r.get("stage") != 7 && n < 4000 {
+        r.step(&[Host::Key("Space".into(), n % 20 < 10)]);
+        n += 1;
+    }
+    r.run(1400);
+    assert_eq!(r.get("picks"), 0);
+    r.run(200);
+    assert_eq!(r.get("next"), 9, "DEMO GAME");
 }

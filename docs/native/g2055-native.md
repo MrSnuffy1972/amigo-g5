@@ -68,9 +68,11 @@ records each request (`sfx_last`, `sfx_count` in the named state) and plays noth
 
 ## Function map summary
 
-668 recovered routines, 668 accounted for: 24 ported (part 1), 17 protection removed (all Copylock units and the
-crack's bypass), 44 not ported because the engine does their job (the boot block, the crack's track loader, the
-program depacker run when the pack is built, the program entry), 583 pending (parts 2 to 4). The full map (routine,
+668 recovered routines, 668 accounted for: 24 ported (part 1), 16 ported (part 2, first slice: the menus), 17
+protection removed (all Copylock units and the crack's bypass), 44 not ported because the engine does their job (the
+boot block, the crack's track loader, the program depacker run when the pack is built, the program entry), 3 started
+(the first menu, the league's and the cup's starts: their menu parts are ported, the rest is pending) and 564 pending
+(the rest of parts 2 to 4). The full map (routine,
 unit, address, native code, status) is kept outside the repo with the asset pack.
 
 ## Verification (part 1)
@@ -91,3 +93,44 @@ typing positions, the cursor and the fade timing line up over the whole run, inc
 Play tests (`cargo test -p g2055` with `G2055_PACK` set): the CRYSTAL CRACKED page is typed first with clicks asked
 for, the title and the story follow; nothing skips the opening pages; fire held during the title's wait reaches
 `LOADING GAME` and ends the intro.
+
+## Part 2, first slice: the menus
+
+`src/intro/menu.rs`, written from `initialize_post_match_screen`, `process_player_selection_menu`,
+`process_entity_list`, `parse_player_name_string`, `parse_and_project_entities` and their helpers.
+
+- The menu screen: the panel picture (disk file 1, which the game loads to `$361D6`: an IFF picture decoded by the
+  same decoder as part 1's pictures), the heading and footing in two 8 x 8 fonts (one column byte a glyph, the heading
+  one line up) and the items in the 16 x 16 menu font (two column bytes a glyph); the arrows (glyphs 36 and 37) at the
+  item's two positions. The still parts are drawn once into a backdrop; each move copies the backdrop to the drawing
+  screen, draws the arrows and shows the screen (with the panel's colours: a fade only when the colours differ).
+- The menu runner: up and down move the arrows (wrapping), fire chooses (sound 22, moves sound 20), Esc leaves with
+  the escape flag. Joystick events are the new pushes since the menu last cleared them, as the original's interrupt
+  sets them.
+- The first menu (1 PLAYER GAME, 2 PLAYER GAME, DEMO GAME, REPLAY GOALS) and its demo timeout (1500 frames without a
+  joystick event; the counter is the one the vertical blank increments). 1 PLAYER GAME leads to the match menu
+  (KNOCKOUT, LEAGUE, CUP, PRACTICE); LEAGUE sets mode 1 and 550 in each purse and shows NEW GAME, TEAM MANAGER, LOAD
+  GAME; CUP sets mode 2 and 2000 and shows NEW GAME, LOAD GAME; PRACTICE sets 10000.
+- Where a selection leads (team selection, the team manager, a match, the demo, loading a game) is recorded in the
+  named state (`next`, `picks`) and the game goes back to the first menu: those screens are the rest of part 2 and
+  parts 3 and 4.
+- Not reproduced: the original calls its random number generator on every pass of the first menu's busy wait, so its
+  generator state depends on how long the player waits; it is to be seeded where the match engine (part 3) needs it.
+- Timing: the native game reaches the first menu at tick 1185 with the intro skipped; the original takes longer
+  because it loads the main program from disk.
+
+### Verification (part 2, first slice)
+
+Reference: the harness copy with the league script (`l1`, and a new run `m55a` with RAM dumps at frames 2250, 2700,
+3100 that located the panel, the fonts and the menu tables). Native: `examples/headless.rs` with scripts that make
+the same choices. The playfield is cropped at x 17, y 8 as in part 1.
+
+| Screen (same choice on both) | Differing pixels |
+|---|---|
+| First menu, 1 PLAYER GAME (reference frame 2150) | 0 of 64,000 (two native runs) |
+| Match menu, KNOCKOUT (reference frame 2250) | 0 (two native runs) |
+| League game menu, NEW GAME (reference frame 2700) | 0 |
+| Back on the first menu after Esc | 0 |
+
+Play tests: the menus lead to the league (mode 1, 550) and the cup (NEW GAME recorded), the arrows wrap, Esc goes back
+to the first menu, and the demo is chosen after 1500 idle frames.

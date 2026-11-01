@@ -184,7 +184,7 @@ fn stage_walk_on_real_pack() {
     .unwrap();
     let out = std::env::temp_dir().join(format!("g2271-walk-{}", std::process::id()));
     let r = native_engine::headless::Run {
-        ticks: 840,
+        ticks: 920,
         out: Some(out.clone()),
         every: 1000,
         script: native_engine::script::parse(&text).unwrap(),
@@ -200,17 +200,17 @@ fn stage_walk_on_real_pack() {
             .find(|v| v["t"].as_i64() == Some(t))
             .unwrap()
     };
-    let v = at(411);
-    assert_eq!(v["phase"], 2, "in the stage by tick 411");
+    let v = at(487);
+    assert_eq!(v["phase"], 2, "in the stage by tick 487");
     assert_eq!((v["x"].as_i64(), v["map_col"].as_i64()), (Some(8), Some(0)));
-    let v = at(531);
+    let v = at(607);
     assert_eq!(
         (v["x"].as_i64(), v["map_col"].as_i64()),
         (Some(152), Some(7))
     );
-    assert!(at(551)["jump"].as_i64().unwrap() > 0);
-    assert_eq!(at(571)["y"], at(531)["y"]);
-    assert!(at(619)["whip"].as_i64().unwrap() > 0);
-    assert_eq!(at(691)["crouch"], 1);
-    assert_eq!(at(723)["crouch"], 0);
+    assert!(at(627)["jump"].as_i64().unwrap() > 0);
+    assert_eq!(at(647)["y"], at(607)["y"]);
+    assert!(at(695)["whip"].as_i64().unwrap() > 0);
+    assert_eq!(at(767)["crouch"], 1);
+    assert_eq!(at(799)["crouch"], 0);
 }

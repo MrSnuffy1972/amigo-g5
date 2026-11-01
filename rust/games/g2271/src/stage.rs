@@ -39,6 +39,14 @@ pub struct Ground {
     pub stair_top: bool,     // -$12F4
 }
 
+/// Frames the original spent loading and depacking a screen file of `bytes` packed bytes (see `enter_room`).
+pub fn load_frames(bytes: usize) -> usize {
+    ((bytes * 1943 + 50_000) / 100_000).saturating_sub(9)
+}
+
+/// The pause message as this disk has it (+B00C: the crack's banner).
+pub const PAUSE_BANNER: &str = "     Q U A R T E X      ";
+
 /// Sound effects the stage engine asks for (played by part 3; kept as numbers of the original's calls).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Sfx {
@@ -1265,15 +1273,36 @@ impl Castle {
     }
 
     /// The pause (+AFCA pause_screen): the game stops, the picture held, until the pause key again.
+    /// +AFCA pause_screen: the music is switched off (its volumes go to nothing at its next row), the banner the
+    /// crack put in place of the pause message is shown in the middle of the play area (+C044 with +AE1C: until a
+    /// key or the fire button), then the music is switched back as it was and the picture restored. The typed
+    /// cheat check that follows (+D394: the keys "661017" in the keyboard buffer) is not ported: the native
+    /// build has no typed keys (the developer cheats are G2271_CHEATS).
     fn pause(&mut self) {
+        let music = self.snd.music_off;
+        self.snd.music_off = true;
+        let saved = self.scr.disp.clone();
+        let text = PAUSE_BANNER;
+        self.scr.ink = 2;
+        self.scr.paper = 0;
+        let x0 = (crate::assets::W as i32 - 8 * text.len() as i32) / 2;
+        for (i, ch) in text.chars().enumerate() {
+            let g = self.glyph(ch);
+            self.scr.char(&g, x0 + 8 * i as i32, 112, true, true);
+        }
         loop {
             self.hold_frame();
-            if self.input.pressed(native_engine::input::Action::Pause)
-                || self.input.pressed(native_engine::input::Action::Cancel)
+            let i = &self.input;
+            use native_engine::input::Action;
+            if [Action::Pause, Action::Cancel, Action::Fire, Action::Start]
+                .iter()
+                .any(|a| i.pressed(*a))
             {
                 break;
             }
         }
+        self.scr.disp = saved;
+        self.snd.music_off = music;
     }
 
     /// +15AA read_player_controls, into the player's flags.
@@ -1487,6 +1516,13 @@ impl Castle {
             self.w.tune(b);
         }
         self.fade_out();
+        // +0E14 loads and depacks the screen file (+D418, +D4BE): on the original that took about a fiftieth of a
+        // second for each 51 packed bytes, less 9 frames (measured on the reference harness: VAN0, 4,371 bytes, 76
+        // frames; VAN1, 10,907 bytes, 203), with the screen black
+        let bytes = a.screen_bytes.get(&(r.van as usize)).copied().unwrap_or(0);
+        for _ in 0..load_frames(bytes) {
+            self.hold_frame();
+        }
         // +0E14 and +20EC: the screen file, every column of it into the three pictures
         let Ok(sf) = a.screen(r.van as usize) else {
             return;

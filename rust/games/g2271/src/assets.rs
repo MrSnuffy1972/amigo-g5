@@ -140,6 +140,8 @@ pub struct Assets {
     /// The disk's sounds/ files by lower-case name (tunes, instruments, the title module, the 8SVX effects), read by
     /// the game's own loaders in `sound`.
     pub sounds: Arc<BTreeMap<String, Arc<Vec<i8>>>>,
+    /// Packed bytes of each screen file (VANn), for the time the original took to depack it.
+    pub screen_bytes: BTreeMap<usize, usize>,
 }
 
 /// Every file of the disk's sounds/ directory (asset `snd_<name>` with the dot made an underscore).
@@ -341,7 +343,18 @@ impl Assets {
             let s = p.sample(&format!("snd_{}", n.replace('.', "_")), 8000.0)?;
             sounds.insert(n.to_string(), s.data.clone());
         }
+        let mut screen_bytes = BTreeMap::new();
+        if let Ok(v) = p.data("screen_bytes") {
+            if let Some(o) = v.as_object() {
+                for (k, n) in o {
+                    if let (Ok(k), Some(n)) = (k.parse::<usize>(), n.as_u64()) {
+                        screen_bytes.insert(k, n as usize);
+                    }
+                }
+            }
+        }
         Ok(Assets {
+            screen_bytes,
             sounds: Arc::new(sounds),
             palettes,
             rooms,

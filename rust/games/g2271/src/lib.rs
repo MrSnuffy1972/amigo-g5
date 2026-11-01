@@ -5,6 +5,7 @@
 pub mod assets;
 pub mod castle;
 pub mod co;
+pub mod hall;
 pub mod objects;
 pub mod screen;
 pub mod sound;
@@ -32,15 +33,15 @@ pub fn sheet() -> ControlSheet {
         pad: vec![
             ("dpad", s("walk, crouch, stairs, menu")),
             ("left_stick", s("walk, crouch, stairs, menu")),
-            ("a", s("whip (fire)")),
-            ("b", s("jump")),
+            ("a", s("whip (tap), sub-weapon (hold)")),
+            ("b", s("jump (as up)")),
             ("x", s("start (title menu)")),
             ("back", s("back to the title")),
             ("start", s("pause menu")),
         ],
         keys: vec![
-            s("Arrow keys: walk, crouch, stairs, menu"),
-            s("Space or Ctrl: whip (fire)"),
+            s("Arrow keys: walk, crouch, stairs, menu; up jumps"),
+            s("Space or Ctrl: whip (tap), sub-weapon (hold)"),
             s("Alt, Shift or Z: jump"),
             s("Return: start (title menu)"),
             s("Escape: back to the title"),

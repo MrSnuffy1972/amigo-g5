@@ -4,5 +4,5 @@
 33 key up Space
 228 key down Space
 231 key up Space
-411 key down Right
-1211 key up Right
+487 key down Right
+1287 key up Right

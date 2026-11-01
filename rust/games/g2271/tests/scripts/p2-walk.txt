@@ -4,13 +4,13 @@
 33 key up Space
 228 key down Space
 231 key up Space
-411 key down Right
-511 key up Right
-531 key down Left Shift
-535 key up Left Shift
-611 key down Space
-615 key up Space
-671 key down Down
-711 key up Down
-731 key down Left
-811 key up Left
+487 key down Right
+587 key up Right
+607 key down Left Shift
+611 key up Left Shift
+687 key down Space
+691 key up Space
+747 key down Down
+787 key up Down
+807 key down Left
+887 key up Left

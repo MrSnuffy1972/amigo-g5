@@ -44,6 +44,8 @@ pub enum Phase {
     Intro,
     Title,
     Stage,
+    /// The high-score table (+9CA6).
+    Hall,
 }
 
 pub struct Castle {
@@ -57,6 +59,8 @@ pub struct Castle {
     /// The panel's numbers as last drawn (score, time, hearts, lives, stage).
     pub(crate) panel_cache: Option<(i32, i16, i16, i16, i16)>,
     pub ctl: Controls,
+    /// -$2674: reads the fire button has been held.
+    pub fire_count: i16,
     pub frame: u32,
     pub phase: Phase,
     /// Title menu cursor line.
@@ -74,6 +78,9 @@ pub struct Castle {
     pub(crate) sub_cache: Option<(i16, i16)>,
     /// The sound: the replayer, the effect slots and the commands for the mixer (part 3b).
     pub snd: Sound,
+    /// The high-score table (from the save store) and the table to save at the next frame.
+    pub scores: Vec<(i32, String)>,
+    pub(crate) save_out: Option<serde_json::Value>,
 }
 
 impl Castle {
@@ -92,6 +99,7 @@ impl Castle {
             st: Simon::default(),
             panel_cache: None,
             ctl: Controls::default(),
+            fire_count: 0,
             frame: 0,
             phase: Phase::Intro,
             title_y: 0,
@@ -109,6 +117,8 @@ impl Castle {
             scan_n: 1,
             sub_cache: None,
             snd,
+            scores: crate::hall::scores_from(None),
+            save_out: None,
         }
     }
 
@@ -212,6 +222,7 @@ impl Castle {
         let mix = self.sound_vblank();
         let (screen, palette) = self.scr.view();
         let out = FrameOut {
+            save: self.save_out.take(),
             mix,
             screen,
             palette,
@@ -235,6 +246,7 @@ impl Castle {
         self.scr.flip();
         let (screen, palette) = self.scr.view();
         let out = FrameOut {
+            save: self.save_out.take(),
             mix,
             screen,
             palette,
@@ -259,34 +271,54 @@ impl Castle {
         }
     }
 
-    /// +15AA read_player_controls: directions, and the two buttons with their press edges.
+    /// +15AA read_player_controls with +D14E read_joystick_and_update_state: the joystick's directions (up is
+    /// also the jump bit, 0x21), and the one fire button counted over the reads (-$2674): a tap fires on its
+    /// release (the whip), a hold fires with up on its fourth read (the sub-weapon). The second button (jump key
+    /// or pad B) is a second way to push the stick up. Edges as +15AA keeps them (-$1920 fire, -$191E jump).
     pub fn read_controls(&mut self) {
         let i = &self.input;
+        let hold = |a: Action| i.held(a) || i.pressed(a);
+        let (up, down) = (hold(Action::Up) || hold(Action::Fire2), hold(Action::Down));
+        let mut bits = 0u16;
+        if hold(Action::Right) {
+            bits |= 4;
+        } else if hold(Action::Left) {
+            bits |= 8;
+        }
+        if up {
+            bits |= 0x21;
+        } else if down {
+            bits |= 2;
+        }
+        if hold(Action::Fire) {
+            self.fire_count += 1;
+            if self.fire_count == 4 {
+                bits |= 0x11;
+            }
+        } else if self.fire_count != 0 {
+            if self.fire_count <= 4 {
+                bits |= 0x10;
+                bits &= !1;
+            }
+            self.fire_count = 0;
+        }
         let mut c = Controls {
-            up: i.held(Action::Up),
-            down: i.held(Action::Down),
-            right: i.held(Action::Right),
-            left: i.held(Action::Left),
+            up: bits & 1 != 0,
+            down: bits & 2 != 0,
+            right: bits & 4 != 0,
+            left: bits & 8 != 0,
+            fire_held: bits & 0x10 != 0,
+            fire2_held: bits & 0x20 != 0,
             ..Controls::default()
         };
-        if c.up && c.down {
-            c.down = false;
-        }
-        if c.left && c.right {
-            c.left = false;
-        }
         c.centre = !(c.up || c.down || c.left || c.right);
-        let f1 = i.held(Action::Fire) || i.pressed(Action::Fire);
-        let f2 = i.held(Action::Fire2) || i.pressed(Action::Fire2);
-        c.fire = f1 && !self.ctl.fire_held;
-        c.fire2 = f2 && !self.ctl.fire2_held;
-        c.fire_held = f1;
-        c.fire2_held = f2;
+        c.fire = c.fire_held && !self.ctl.fire_held;
+        c.fire2 = c.fire2_held && !self.ctl.fire2_held;
         self.ctl = c;
     }
 
     /// +0830 clear_state_flags_2: reads the controls once and forgets the presses.
-    fn clear_presses(&mut self) {
+    pub(crate) fn clear_presses(&mut self) {
         self.read_controls();
         self.ctl.fire = false;
         self.ctl.fire2 = false;
@@ -316,6 +348,10 @@ impl Castle {
             let choice = self.title_screen();
             if choice == 0 {
                 self.game();
+                // +015E: unless the game was quit, the high-score table
+                if self.st.quit == 0 {
+                    self.hall_of_blame();
+                }
             }
         }
     }
@@ -387,7 +423,12 @@ impl Castle {
 
     /// +248A run_callback_grid / +20EC process_level_tilemap: draws screen rows `rows` of a screen file from map
     /// column `col`, into all three pictures.
-    fn draw_screen_file(&mut self, van: usize, col: usize, rows: std::ops::Range<usize>) {
+    pub(crate) fn draw_screen_file(
+        &mut self,
+        van: usize,
+        col: usize,
+        rows: std::ops::Range<usize>,
+    ) {
         let a = self.a.clone();
         let Ok(sf) = a.screen(van) else {
             return;

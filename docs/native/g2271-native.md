@@ -5,17 +5,17 @@ extractor, tools and function map live outside the repo (Ryzen `/srv/bulk/amigo-
 assets or disassembly are in the repo. From part 3 (Ryzen's /srv/bulk being full) the current extractor and pack
 are at `/srv/fast2/native/b1-2271/tools/extract2271.py` and `/srv/fast2/native/b1-2271/pack`.
 
-## Status: parts 1, 2 and 3a committed (stage engine, Simon, panel, the objects)
+## Status: parts 1, 2, 3a and most of 3b committed; release r2
 
 | Part | Content | State |
 |------|---------|-------|
 | 1 | File formats, extractor, asset pack, crate, picture model, boot text page, title menu | done |
 | 2 | Stage engine (room set-up, scrolling, collision map, stairs, exits) and Simon (walk, jump, crouch, whip, stairs, knock-back, death) with the status panel | done (1 Nov 2026) |
 | 3a | The object system (`objects.rs`): enemies and their behaviours, bosses, candles, items, sub-weapons, shots, spawners, platforms, walls, hidden treasures, hits, score and extra lives, the orb, tally and next block | done (1 Nov 2026) |
-| 3b | Sound (.mus replayer, samples, title module), attract sequence, high scores, pause and cheats menu, door and map pictures, ending | to do |
-| 4 | Verification against the reference harness, play test, releases (Windows, Android) | to do |
+| 3b | Sound and music (done), the pause banner (done), the high-score table (done), the controls as +D14E reads them (done), the screen files' load time (done); attract sequence, saved game, door and map pictures, ending | partly done (1 Nov 2026) |
+| 4 | Verification against the reference harness, play test, releases (Windows, Android) | stage 1 compared; r2 released |
 
-Not released yet: a release needs parts 3 and 4 (without enemies the build would not be the game).
+Released: r1 (silent), r2 (with sound; see below).
 
 ## The program (from the recovered code)
 
@@ -101,11 +101,44 @@ Not released yet: a release needs parts 3 and 4 (without enemies the build would
 - Not yet: the boxes drawn under platforms and ropes (+18FC's class 6 and kind 0x35 box), the boss bar's
   priority in the panel chain (it moves every frame here, the original only when no number changed).
 
+## Sound and music (part 3b, `sound.rs`)
+
+The game has its own replayer, not ProTracker: a tune ("SONG" .mus files with their samples in an instrument bank,
+or the title module, "MODU" with its own samples after "SAMP") is a position list, a pattern table and rows of a
+channel mask word and four-byte notes (period, instrument, command C volume, 0 arpeggio, 1 and 2 portamento, E
+filter, F speed; a negative F stops the tune). +EEB8 steps it from the CIA-A timer A interrupt (14,640 ticks of
+709,379 Hz, about 48.45 a second); the port runs those steps inside each vertical blank by the same clock. Effects
+are IFF 8SVX files in 15 slots (+A96E, +F364); +AC24 plays the 15 numbers that have a sample, on channel 0 or 1,
+the first one no effect holds; the effect borrows the music's channel until the sample has played (the audio
+interrupt, modelled from the sample's length). +ACB0 fades the music out at 4 a step and the main program spins
+until it has stopped before the next tune: the port waits the same frames with the picture held. Tunes: the
+title module at boot (it fades at 2 a step while the rest of the sound loads), tune 3 on the title, the block's tune
+on entering a block (and again on entering a room when a tune has stopped), the boss's (7) and the orb's (11), tune
+6 on the high-score table. Quirks kept: the portamento slides a per-channel word no note sets, the effect channel's
+commands are compared without masking the instrument bits, the effect periods are computed with the NTSC clock and
+played on the PAL one, a tune muted under an effect leaves that channel borrowed until the next tune. The pack
+carries the disk's sounds/ files as raw sample assets (`snd_<name>`), read by the game's own loaders.
+
+## Pause and high scores (part 3b)
+
+- Pause (+AFCA): the music is switched off (volumes go to nothing at its next row), the disk's pause message (the
+  crack's banner "Q U A R T E X") is shown over the play area until a button, then the picture and the music come
+  back. The typed cheat code the original checked on the pause screen (+D394, "661017") is not ported: no typed
+  keys; the developer cheats stay in G2271_CHEATS.
+- "Hall Of Blame" (+9CA6, after the game ends unless it was quit): screen file 31, ten entries of score and name,
+  the new score in its place, the name entered, the table saved, then until the tune ends or a button. The table is
+  kept in the engine's save store (`scores`) instead of SCORES.DAT. The original read the name from the keyboard
+  (+D27A); the native build takes it from the joystick: up and down choose a letter, fire adds it, the second
+  button removes one, start (Return, pad X) or ten letters end it.
+
 ## Controls
 
-Joystick game: directions walk, crouch and climb stairs; fire (Space, Ctrl, pad A) whips; the second button (Alt,
-Shift, Z, pad B; the original's second port bit) jumps; Return or pad X start on the title; Escape returns to the
-title. The pause screen and the cheats menu come with part 3.
+The original reads the joystick as +D14E does, and the port now does the same: up is also the jump bit (0x21), so
+pushing up jumps (and climbs stairs); the one fire button is counted over the reads: a tap fires when it is
+released (the whip) and a hold fires with up on its fourth read (the sub-weapon). The second button (Alt, Shift,
+Z, pad B) is a second way to push up. Return or pad X start on the title; Escape returns to the title; the pause key
+shows the pause banner. (Parts 2 and 3a had jump on the second button only and the whip on the press: the
+reference showed the difference, see Verification.)
 
 ## Verification so far
 
@@ -124,6 +157,28 @@ title. The pause screen and the cheats menu come with part 3.
   bat appears at its mark, its bar drains, it dies for 3000, the orb is taken, the tally runs and stage 2 (room 8,
   block 1, time 400) begins. Unit tests: random_below's quirk, the generator, objects made and freed.
 
+- Part 3b and 4 (1 Nov 2026), against the reference harness (b1-2271 copy, `tools/ref.sh` with STATELOG,
+  WAVOUT and RNGLOG; c-tools scripts in /srv/fast2/native/b1-2271/c-tools):
+  - Sound: the replayer's position, row and tick match the reference's frame for frame within one frame (the CIA
+    timer's phase against the vertical blank is not modelled) for the title module, the title's tune and block 0's
+    tune; the fades take the same frames (74 and 32); the mixed audio's spectrum correlates 0.985 to 0.997 with the
+    reference's and its level is within 5%.
+  - Stage 1 with the reference recording play1 (its joystick input moved to the native timeline, the generator
+    seeded with the reference's seed at the stage start, 0xB3D3E515): x, y, map column, room, time, hearts and
+    lives are equal frame for frame for 1,200 ticks of the courtyard and, after the room change, for 1,100 ticks
+    of the next room, where the reference takes one more frame (a frame the original drops under load, not
+    modelled) and the runs part. The score changes one tick earlier than the reference's after a kill (tolerance:
+    1 tick). All 45 of the reference's generator draws from the stage start are equal, in order.
+  - What the comparison corrected: the controls (+D14E, above) and the screen files' load time. The original spends
+    about a fiftieth of a second for each 51 packed bytes depacking a screen file with the screen black (measured:
+    VAN0 76 frames, VAN1 203); `stage::load_frames` keeps that cost, so a room change takes the original's time.
+  - Not compared: stage 2 (the reference recordings do not reach it; the original's room cheat needs typed keys).
+- Play test (native, scripted; p3b-boss.txt, p3b-gameover.txt): with G2271_CHEATS=room=5 only (no collision cheat)
+  Simon walks to the giant bat, whips it to death (3000), takes the orb and the tally runs into stage 2 (room 8,
+  block 1, tune 1); deaths lose a life and restart the room (3 to 2 to 1 to 0); the high-score table shows on screen
+  file 31. Not run: stage 1 from the start to the boss without the room cheat, and a name entered on screen (the
+  scripted runs ran out before a game over with points; the table and ranking have unit tests).
+
 ## Release r1 (1 Nov 2026, commit 68d9909)
 
 `02271-castlevania-r1.apk` and `02271-castlevania-r1-windows.zip` (release.sh with `--pack-dir
@@ -134,12 +189,10 @@ SendKeys after AppActivate) did not reach it, so play under control was not test
 
 ## What remains (exact)
 
-Part 3b: sound (the build is silent: effects +AC24/+F44C, tunes +ACB0, the .mus replayer +EEB8/+EFDE, samples
-+ED3A/+F364, the title module), the attract sequence (+9158, +A96E), the high-score table and name entry (+9CA6,
-+B2BA), the save and load of a game (+0858, +08FA; the title's "Continue a Saved Game"; the Amiga game has no
-continue screen), the pause banner and the original's typed cheat code, the door and stair-exit pictures (+A162),
-the castle map between blocks (+A21A, +A2FA, +A34C, +A3E0), the ending (+99E6) and the next loop (+05E2), the
-platform and rope boxes of +18FC. Part 4: compare with the reference harness (frames, named state, random numbers),
-a real play test under control on Windows and the Shield. The function map (now also at
-/srv/fast2/native/b1-2271/function-map.md, copied over the /srv/bulk one) lists every routine: 594; 191 ported,
-303 not ported with reasons, 100 to do (part 3b).
+Part 3b: the attract sequence (+9158, with +97F2, +980C: the castle and title pictures with the bats; the title
+module now fades straight after boot because of it), the save and load of a game (+0858, +0884, +08FA, +099E: the
+title's "Continue a Saved Game" says "No Game Saved"), the door and stair-exit pictures and the castle map between
+blocks (+A162, +A21A, +A2FA, +A34C, +A3E0, with their tunes 9 and 10), the ending (+99E6, tune 12) and the next loop
+(+05E2), the platform and rope boxes of +18FC, the effect slot release (+F422). Part 4: stage 2 against the
+reference; frames the original drops under load. The function map (/srv/fast2/native/b1-2271/function-map.md,
+copied to /srv/bulk/amigo-native/02271/) lists all 594 routines: 208 ported, 315 not ported with reasons, 71 to do.

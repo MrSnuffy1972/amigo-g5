@@ -18,6 +18,8 @@ pub struct FrameIn {
 }
 
 pub struct FrameOut {
+    /// The high-score table to keep in the save store (`scores`), when it changed.
+    pub save: Option<serde_json::Value>,
     /// The sound's commands for the mixer in this vertical blank.
     pub mix: Vec<crate::sound::Mix>,
     pub screen: Vec<u8>,
@@ -52,7 +54,7 @@ impl Native {
         }
     }
 
-    fn start(&mut self) {
+    fn start(&mut self, saved: Option<serde_json::Value>) {
         let (tx_in, rx_in) = sync_channel::<FrameIn>(0);
         let (tx_out, rx_out): (Sender<FrameOut>, Receiver<FrameOut>) = channel();
         let a = self.assets.clone();
@@ -62,6 +64,7 @@ impl Native {
             .spawn(move || {
                 let r = std::panic::catch_unwind(std::panic::AssertUnwindSafe(move || {
                     let mut c = Castle::new(a, seed, rx_in, tx_out);
+                    c.scores = crate::hall::scores_from(saved.as_ref());
                     c.run();
                 }));
                 if let Err(e) = r {
@@ -93,7 +96,7 @@ impl Game for Native {
             return Flow::Quit;
         }
         if self.tx.is_none() {
-            self.start();
+            self.start(cx.save.get("scores").cloned());
         }
         let sent = self.tx.as_ref().is_some_and(|t| {
             t.send(FrameIn {
@@ -110,6 +113,10 @@ impl Game for Native {
             self.done = true;
             return Flow::Quit;
         };
+        if let Some(v) = &out.save {
+            let _ = cx.save.set("scores", v.clone());
+            let _ = cx.save.flush();
+        }
         for m in &out.mix {
             crate::sound::apply(m, cx.audio);
         }

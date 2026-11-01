@@ -395,7 +395,7 @@ impl Ik {
             held_copy: [0; 3],
             skill: [0; 3],
             music_div: 0,
-            rng_n: (seed.unwrap_or(0) & 0xffff) as u16,
+            rng_n: 0,
             rng_v: [0; 3],
             msg_t: 0,
             msg_i: 0,
@@ -419,6 +419,11 @@ impl Ik {
             snap: None,
         };
         g.initialize_input_state();
+        // --seed: the draws made before this point (the original's cracktro and title draw too; the count varies with
+        // when the player clicks and presses fire, so a seed reproduces one particular session)
+        if let Some(c) = seed {
+            g.set_draws(c as u16);
+        }
         g
     }
 
@@ -559,6 +564,9 @@ impl Ik {
             let s = &self.score[i];
             v.push((format!("score{i}"), ((s[0] as i64) << 8) | s[1] as i64));
         }
+        v.push(("rng_n".to_string(), self.rng_n as i64));
+        v.push(("rng_v0".to_string(), self.rng_v[0] as i64));
+        v.push(("vbl".to_string(), self.vbl as i64));
         v
     }
 }
@@ -885,25 +893,55 @@ impl Ik {
     pub fn random(&mut self) -> u8 {
         (self.random16() & 0xff) as u8
     }
+    /// compute_obfuscation_checksum ($726A), exactly: d0 is cleared and loaded with the call count as a word, so the
+    /// first byte read moves only its low byte and the count's high byte stays in d0's low word. That word (sign
+    /// extended, as a 68000 index register) indexes the second read, is the multiplicand of `mulu.w`, and the result
+    /// is masked with $F9FF.
     pub fn random16(&mut self) -> u16 {
         self.rng_n = self.rng_n.wrapping_add(1);
         self.rng_v[0] = self.rng_v[0].wrapping_add(0x1b1);
         self.rng_v[1] = self.rng_v[1].wrapping_add(0x23b);
         self.rng_v[2] = self.rng_v[2].wrapping_add(0x2b3);
-        let t = self.a.t("rngwin");
-        let mut d0 = t[self.rng_n as usize];
-        d0 = d0.wrapping_add(self.vbl);
-        let d3 = t[100 + d0 as usize];
-        d0 ^= d3;
-        d0 = d0.wrapping_sub(self.rng_n as u8);
-        let mut r = (d0 as u32).wrapping_mul(self.rng_v[0] as u32) as u16;
+        let n = self.rng_n;
+        let mut b = self.rng_byte(n as i16 as i32);
+        b = b.wrapping_add(self.vbl);
+        let d0w = (n & 0xff00) | b as u16;
+        let d3 = self.rng_byte(100 + d0w as i16 as i32);
+        b ^= d3;
+        b = b.wrapping_sub(n as u8);
+        let d0w = (n & 0xff00) | b as u16;
+        let mut r = (d0w as u32).wrapping_mul(self.rng_v[0] as u32) as u16;
         r = r.wrapping_add(self.rng_v[1]);
-        r ^ self.rng_v[2]
+        (r ^ self.rng_v[2]) & 0xf9ff
+    }
+    /// A byte of the original's memory at $785C + `i` (`i` from -$8000 to $80FF). `rngwin` holds the game image from
+    /// $600; below that the original reads the vectors and system area or (below 0) the Kickstart ROM, which a native
+    /// game has not got: those read as 0, and only a game running past 32768 draws (about seven minutes) reaches them.
+    fn rng_byte(&self, i: i32) -> u8 {
+        let t = self.a.t("rngwin");
+        let o = RNGWIN_BASE + i;
+        if o >= 0 && (o as usize) < t.len() {
+            t[o as usize]
+        } else {
+            0
+        }
+    }
+    /// The power-on draw count as the original leaves it in the three running sums ($7856..): each draw adds a fixed
+    /// step, so `c` draws give `c` times the steps. The call count itself ($92E) restarts with every game.
+    pub fn set_draws(&mut self, c: u16) {
+        self.rng_v = [
+            c.wrapping_mul(0x1b1),
+            c.wrapping_mul(0x23b),
+            c.wrapping_mul(0x2b3),
+        ];
     }
 }
 
 /// How a fighter's three planes become colours: the same frames drawn three ways give the white, red and blue
 /// fighters (draw_fighter_frame, decode_sprite_pattern, xor_rotate_sprite_block).
+/// Where $785C (the window the random numbers read) lies in `rngwin`, which starts at the game image's $600.
+const RNGWIN_BASE: i32 = 0x785C - 0x600;
+
 fn fighter_colour(i: usize, v: u8) -> u8 {
     let (b0, b1, b2) = (v & 1, (v >> 1) & 1, (v >> 2) & 1);
     match i {

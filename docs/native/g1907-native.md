@@ -62,6 +62,28 @@ window it reads holds a few run-time variables as stored in the image, so the nu
 choice and the bouts then differ in detail (same rules, different fights). Scoring, verdicts and phases follow the
 same code.
 
+Random numbers (revision 2, 1 Nov 2026). `Ik::random16` is now compute_obfuscation_checksum ($726A) exactly: the
+call count is loaded into d0 as a word, so the first byte read replaces only its low byte; that word (sign extended,
+as a 68000 index) indexes the second read and is the multiplicand of `mulu.w`, and the result is masked with $F9FF.
+The first revision used the byte alone, which is the same only while the count is below 256 (the first 100 or so
+ticks of a game). `rngwin` now holds the image from $600, so the reads reach from $600 up to $785C+$80FF as the
+original's do. `--seed N` now means what the original carries into a game: N draws made before it (the three running
+sums at $7856; the count at $92E restarts with every game), where it used to set the count, which every game clears.
+Measured against the reference (`STATELOG` with $92E, $7856-$785B and $608 every tick, recording `s_p1a`):
+
+| Check | Result | Tolerance |
+|---|---|---|
+| Running sums at the first draw of the game, `--seed 1495` | equal to the reference (1495 draws made by the cracktro and title) | exact |
+| Draws per tick in bout 1 | reference 1 to 3 a tick from the bow onwards (1645 by the end of the bout); native one every 5 ticks (330) | not met |
+| First difference in named state, aligned at the bow | player position +76 ticks, computer fighter 2 +81, fighter 1 +171: the same with and without the seed | see note |
+
+Note: the sequences part at the second tick of the bout because the original draws far more often, from a caller
+the recovered call graph does not show (no direct call to $725C or $726A accounts for it; the recorded draws through
+$725C stop at the game start). Until that caller is found and ported the computer fighters' choices differ in detail;
+the first state difference (+76) is the player's own position, so it is not the random numbers that end the match.
+Run-time variables in the window ($96CD-$96DB, $D5D7-$D6B9) are read from the image as stored: only a game past about
+7700 draws (some 100 s) reaches them. Draws past 32768 in one game would read the Kickstart ROM and read 0 here.
+
 Play test: `cargo test -p g1907` with `G1907_PACK` set: fire starts a one-player game from the title, the clock runs,
 the player's fighter moves, fighters score, the bout ends. Headless 6000-tick sessions show the title cards, bouts
 with the referee's verdicts, the ball round and the match over; screenshots checked by eye.

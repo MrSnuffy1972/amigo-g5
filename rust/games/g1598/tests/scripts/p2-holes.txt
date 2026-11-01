@@ -1,0 +1,11 @@
+# Part 2 walk: skip the intro and title, choose the first course, step to hole 2.
+30 button down left
+31 button up left
+60 button down left
+61 button up left
+70 pointer 330 302
+80 button down left
+81 button up left
+120 pointer 500 200
+130 button down left
+131 button up left

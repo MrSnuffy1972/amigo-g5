@@ -1,7 +1,7 @@
 # Game 1598 (PGA Tour Golf): native rewrite notes
 
-Native batch 2, 2 Nov 2026, p1598 agent. Status: **stage 1 (recovery) nearly complete, stage 2 (understanding) begun,
-stage 3 (rewrite) not started.** No game bytes here; the asset pack is built outside the repo by
+Native batch 2, 2 Nov 2026, p1598 agent. Status: **stage 1 (recovery) nearly complete (naming pass running), stage 2 under way,
+stage 3 parts 1 and 2 done (front door to pro shop, the 3D hole view); not yet playable.** No game bytes here; the asset pack is built outside the repo by
 `/srv/fast/native-work/1598/tools/mkpack.py` (its first version already decodes the pictures, palettes, golfer, pro
 shop, tree and mountain graphics, checked by eye against the expected look).
 
@@ -42,3 +42,36 @@ shop, tree and mountain graphics, checked by eye against the expected look).
    meter, ball physics, wind, putting grid, scorecard, tournament, the AGL text page as the intro.
 4. Stage 4: reference runs on the project harness (`prekit/out/port/harness` in the archive) with scripted mouse
    input, frame and state comparison, a play test of holes to a scorecard, then `release.sh 1598`.
+
+## Native build: parts 1 and 2 (2 Nov 2026)
+`rust/games/g1598` on `native_engine` (pointer-game bindings, 50 Hz). No emulation: typed Rust with the game's own
+integer arithmetic; assets from the pack (built outside the repo by `tools/mkpack.py` + `mkpack_more.py`).
+- **Part 1, front door to pro shop.** The engine's pre-boot menu, then the intro: the AGL text page executed as the
+  Amiga console did (CSI raster offsets `y`, left offset `x`, forward, position, clear, inverse video), so its large
+  lettering, built one text line a raster line apart from the top pixel rows of a few characters, comes out; the ROM
+  font is not shipped, so those top rows are this build's own (`intro::top_row`) and other glyphs are VT323. Then the
+  title picture and the pro shop picture with their palettes. The logical screen is 640 x 400 (the game's 320 x 200
+  doubled) so the 80-column page and text overlays are sharp. The pro shop's course choice is an interim menu.
+- **Part 2, the 3D hole view**, ported routine for routine: `create_matrix` (aim), `transform` (heading and the fixed
+  pitch, 1.15 fractions, the original's high-word rounding), `perspect` (480 and 545 focal lengths, centre 150, 149,
+  the divide-overflow results), `clip_3d` (clip to y <= z, `mul_div` with its overflow rule; the first vertex only
+  opens the first edge), `clip_ocean` / `transform_ocean` / `perspect_ocean` (32-bit path for far water),
+  `compute_edge` / `draw_poly` / `reset_poly` (edge table, active list, insertion sort, removal at y max),
+  `clipped_hline` / `hline` / `pattern_on` (two-colour checkerboard), `draw_bkg`, `draw_hole` (records in file order,
+  colours from `_poly1_colors` / `_poly2_colors`), `draw_horizon` / `xy_to_angle960` (three mountain strips by the
+  bearing to the pin), `draw_trees` (shell sort far to near, 12 sizes by `_tree_dist`, flag from GR3), `new_hole`, and
+  `init_scene`'s camera (eye 88 up, 380 behind the ball, aimed at the aim point from a par 4 or 5 tee, else the pin).
+  Every hole of both courses can be viewed from its tee (click left or right of the picture to step).
+- Checked so far: unit tests on synthetic data (fixed-point helpers, projection, clip and fill, bearings, the console
+  parser) and a scripted headless run on the real pack (intro, title, pro shop, hole 2). Frames were looked at by eye;
+  they have **not yet been compared with reference frames** (stage 4).
+- Function map: `g1598-function-map.md` (37 routines ported, 13 partial, 359 game routines pending, the rest platform,
+  AmigaOS or C runtime).
+
+## Next parts
+3. Swing and shot: `init_shot`, the snap meter (`draw_snap_meter`, `snap_event`, `draw_snap_line`), `shoot` (club
+   table, swing and over-swing fractions, hook and slice from the snap line, spin and backspin), `ball_interrupt`
+   (flight with wind and spin, bounces by surface, roll with contour vectors), `end_of_shot`, `check_cup`, the golfer
+   animation (GR2), the ball and shadow, the camera switch for long shots.
+4. Putting (`putt`, `draw_grid`, `get_contour`), wind (`do_wind`, `draw_wind`), the menus and play menu bar, lie,
+   overhead view, scorecard, players and tournaments (`generate_score`, leader boards), sound and music players.

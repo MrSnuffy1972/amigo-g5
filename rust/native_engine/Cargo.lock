@@ -77,6 +77,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "g1598"
+version = "0.1.0"
+dependencies = [
+ "fontdue",
+ "native_engine",
+ "serde_json",
+]
+
+[[package]]
+name = "g1598_android"
+version = "0.1.0"
+dependencies = [
+ "g1598",
+]
+
+[[package]]
 name = "g1727"
 version = "0.1.0"
 dependencies = [

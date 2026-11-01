@@ -117,13 +117,29 @@ title. The pause screen and the cheats menu come with part 3.
   p2-exit.txt): the courtyard scrolls, Simon walks, jumps, whips and crouches, and the courtyard's exit leads into
   the castle hall (room 1). Frames checked by eye.
 
+- Part 3a (own behaviour, headless on the real pack, frames checked by eye; not yet compared with the reference):
+  p3-candle.txt (a fire bowl breaks, its big heart is taken: hearts 5 to 10); p3-hall.txt (the hall's zombies and
+  panther spawn, hurt the player with knock-back, die to the whip for 100; the dagger is picked up; with no cheat
+  the player dies, a life is lost and the stage restarts in room 0); with G2271_CHEATS=nocollision,room=5 the giant
+  bat appears at its mark, its bar drains, it dies for 3000, the orb is taken, the tally runs and stage 2 (room 8,
+  block 1, time 400) begins. Unit tests: random_below's quirk, the generator, objects made and freed.
+
+## Release r1 (1 Nov 2026, commit 68d9909)
+
+`02271-castlevania-r1.apk` and `02271-castlevania-r1-windows.zip` (release.sh with `--pack-dir
+/srv/fast2/native/b1-2271/pack`). Windows (WinPC): the front door's countdown starts the game, the boot page and
+the title menu draw correctly, the window closes cleanly (exit code 0); keys posted to the window (PostMessage, and
+SendKeys after AppActivate) did not reach it, so play under control was not tested on Windows. Shield: untested
+(no adb binary on Ryzen or WinPC to check whether it is idle).
+
 ## What remains (exact)
 
-Part 2 simplifications to finish with part 3: the door and stair-exit pictures (+A162, the fade point use), the
-castle map between blocks (+A21A, +A2FA), the moving platforms of screen files 6, 8 and 16 (+33C2), the column
-spawn marks while scrolling (+25C6, +273A). Part 3: +5E7E and +4528 objects and enemies, +63DE stage clear,
-+6976 bosses, +6D4C/+7CE4 whip hits and sub-weapons, +8A46/+6068 spawns, +60E6 items, +9CA6/+99E6 game over and
-stage clear, continue, +EEB8/+ED3A music, +F364 samples, the attract sequence (+9158), high scores (+B2BA), pause
-and the cheats menu (+AFCA). Part 4: reference comparison, play test, releases. The function map
-(/srv/bulk/amigo-native/02271/function-map.md) lists every routine's state: 107 ported, 192 not ported with
-reasons, 295 to do (all part 3).
+Part 3b: sound (the build is silent: effects +AC24/+F44C, tunes +ACB0, the .mus replayer +EEB8/+EFDE, samples
++ED3A/+F364, the title module), the attract sequence (+9158, +A96E), the high-score table and name entry (+9CA6,
++B2BA), the save and load of a game (+0858, +08FA; the title's "Continue a Saved Game"; the Amiga game has no
+continue screen), the pause banner and the original's typed cheat code, the door and stair-exit pictures (+A162),
+the castle map between blocks (+A21A, +A2FA, +A34C, +A3E0), the ending (+99E6) and the next loop (+05E2), the
+platform and rope boxes of +18FC. Part 4: compare with the reference harness (frames, named state, random numbers),
+a real play test under control on Windows and the Shield. The function map (now also at
+/srv/fast2/native/b1-2271/function-map.md, copied over the /srv/bulk one) lists every routine: 594; 191 ported,
+303 not ported with reasons, 100 to do (part 3b).

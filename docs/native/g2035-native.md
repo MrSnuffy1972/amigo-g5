@@ -42,3 +42,25 @@ started, steps 3 and 4 (native rewrite, verification) and the release not starte
 - Naming: 2470 functions; 2.5k routines minus inherited ones (soccerc/soccerf take soccers names, 406 socceru functions match soccers
   instruction for instruction) leave about 900 for the local models; the naming pass is slow because several agents share the one Ryzen GPU.
 - Steps 2 to 4 and the release as above.
+
+## Port parts (rust/games/g2035)
+| Part | What | State |
+|---|---|---|
+| 1 | Extractor and asset pack (outside the repo), crate, the Crack Inc intro | done 2 Nov 2026 |
+| 2 | Language screen and main menu (Marble background, `cjcbits` flags and logo, `cjcgrafs` font) | next |
+
+### Part 1 (2 Nov 2026)
+- Extractor `/srv/fast/native-work/2035/tools/extract2035.py FILES PACK` (pack at `/srv/fast/native-work/2035/pack`, 101 assets):
+  IFF ILBM pictures to image + palette (25), IFF 8SVX samples to s8 with rate and loop (21), the two FLT4 modules as
+  ProTracker modules (tag set to M.K.; the layout is the same), every other file as a raw `blob` (team databases, which
+  are packed, pitch maps, cup and league templates, round-name texts, the program files for their data tables). The menu
+  graphics are not in the program: `cjcbits` holds the flags, the pitch radar and the Sensible SOCCER logo, `cjcgrafs` the
+  kit sprites, clock digits, HALF/FULL TIME and the small fonts, `cjcteam1-3`/`cjcteamg1` the player sprites.
+- Intro: the text and layout of the Crack Inc page (lines separated by zero bytes, ended by $FF; line i at y = 23 + 10i,
+  centred; background #550044, ink #FF0077; about 70 frames). The original drew with the Kickstart topaz font, which is not
+  shipped: the pack carries an 8x8 font rendered from the repo's VT323 (SIL OFL). Checked against reference boot frame 50:
+  every text row matches except the dashed line (topaz dashes are two pixels high, ours one).
+- After the intro the original showed a black screen while it read the main program and asked for disk 2; the port shows
+  black until part 2's language screen replaces it.
+- Checks: `cargo test -p g2035 --no-default-features` (intro timing, skip, centring on a synthetic pack); headless run on
+  the real pack (80 ticks): phase 0 for ticks 1-69, phase 1 from tick 70.

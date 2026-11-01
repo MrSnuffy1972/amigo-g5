@@ -23,5 +23,5 @@ desktop = ["sdl", "sdl2/bundled", "sdl2/static-link"]
 
 # Its own workspace (the native engine and the games written on it), apart from the G5 crates in ../Cargo.toml.
 [workspace]
-members = [".", "../games/g296", "../games/g296/android", "../games/g336", "../games/g336/android", "../games/g2271", "../games/g2271/android", "../games/g2055", "../games/g2055/android", "../games/g608", "../games/g608/android", "../games/g2179", "../games/g2179/android", "../games/g1907", "../games/g1907/android"]
+members = [".", "../games/g296", "../games/g296/android", "../games/g336", "../games/g336/android", "../games/g2271", "../games/g2271/android", "../games/g2055", "../games/g2055/android", "../games/g608", "../games/g608/android", "../games/g2179", "../games/g2179/android", "../games/g1907", "../games/g1907/android", "../games/g2035", "../games/g2035/android"]
 resolver = "2"

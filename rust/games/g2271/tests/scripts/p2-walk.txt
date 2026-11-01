@@ -1,0 +1,16 @@
+# Scripted joystick input for game 2271 (input timings only, nothing of the game): boot page, title, then
+# walk right, jump, whip, crouch, walk left.
+30 key down Space
+33 key up Space
+150 key down Space
+153 key up Space
+300 key down Right
+400 key up Right
+420 key down Left Shift
+424 key up Left Shift
+500 key down Space
+504 key up Space
+560 key down Down
+600 key up Down
+620 key down Left
+700 key up Left

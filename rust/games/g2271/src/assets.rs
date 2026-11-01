@@ -41,6 +41,11 @@ impl ScreenFile {
     pub fn tile(&self, col: usize, row: usize) -> u8 {
         self.tiles.get(row * self.w + col).copied().unwrap_or(0)
     }
+    /// The attribute byte at flat offset `i` (row times width plus column), as the original's pointer arithmetic
+    /// read it; 0 outside the map.
+    pub fn at(&self, i: i32) -> i8 {
+        at(&self.attrs, i)
+    }
     pub fn attr(&self, col: i32, row: i32) -> i8 {
         if col < 0 || row < 0 {
             return 0;
@@ -77,6 +82,46 @@ pub struct Title {
     pub split: i16,
 }
 
+/// The stage engine's tables, from the program's data (see the extractor for where each one lives).
+#[derive(Debug, Clone, Default)]
+pub struct Tables {
+    /// Animations: row r's frames at 9 + 20r (99 ends a row), its next-animation map by move state at 20r.
+    pub anim: Vec<u8>,
+    /// Jump steps (1/256 rows a frame; 1000 ends) and the knock-back arc when hit.
+    pub jump: Vec<i16>,
+    pub knock: Vec<i16>,
+    /// Exits: 12 words a screen file, 4 exits of (room, door kind, mode).
+    pub exits: Vec<i16>,
+    /// Hundreds of seconds by stage, whip length by level, first room of a block, restart room by stage, stage
+    /// by screen file, death animation by facing, the animation set when hit.
+    pub time: Vec<u8>,
+    pub whip: Vec<u8>,
+    pub block_room: Vec<u8>,
+    pub stage_room: Vec<u8>,
+    pub van_stage: Vec<u8>,
+    pub death_anim: Vec<u8>,
+    pub hurt_anim: u8,
+}
+
+/// The value at `i` of a table, 0 past its end (the original read on into the next table).
+pub fn at<T: Copy + Default>(v: &[T], i: i32) -> T {
+    if i < 0 {
+        return T::default();
+    }
+    v.get(i as usize).copied().unwrap_or_default()
+}
+
+impl Tables {
+    /// Frame `i` of animation `row` (a castshps frame number; 99 ends the animation).
+    pub fn frame(&self, row: i16, i: i16) -> u8 {
+        at(&self.anim, 9 + 20 * row as i32 + i as i32)
+    }
+    /// The animation that follows `row` in move state `s` (+90EC lookup_tile_byte, +3E78).
+    pub fn next(&self, row: i16, s: i16) -> i16 {
+        at(&self.anim, 20 * row as i32 + s as i32) as i16
+    }
+}
+
 pub struct Assets {
     /// 32 colours a palette (12-bit): 0 to 15 the sprite colours, 16 to 31 the room's.
     pub palettes: Vec<[u16; 32]>,
@@ -88,6 +133,7 @@ pub struct Assets {
     pub intro: Vec<String>,
     pub intro_seconds: u32,
     pub title: Title,
+    pub tables: Tables,
 }
 
 fn num(v: &Value, k: &str) -> Result<i64, String> {
@@ -220,6 +266,26 @@ impl Assets {
             .iter()
             .map(|l| l.as_str().unwrap_or("").to_string())
             .collect();
+        let tt = p.data("tables")?;
+        let bytes = |k: &str| -> Result<Vec<u8>, String> {
+            Ok(ints(&tt, k)?.into_iter().map(|v| v as u8).collect())
+        };
+        let words = |k: &str| -> Result<Vec<i16>, String> {
+            Ok(ints(&tt, k)?.into_iter().map(|v| v as i16).collect())
+        };
+        let tables = Tables {
+            anim: bytes("anim")?,
+            jump: words("jump")?,
+            knock: words("knock")?,
+            exits: words("exits")?,
+            time: bytes("time")?,
+            whip: bytes("whip")?,
+            block_room: bytes("block_room")?,
+            stage_room: bytes("stage_room")?,
+            van_stage: bytes("van_stage")?,
+            death_anim: bytes("death_anim")?,
+            hurt_anim: bytes("hurt_anim")?.first().copied().unwrap_or(0),
+        };
         let td = p.data("title")?;
         let e = ints(&td, "ease")?;
         let mut ease = [0i16; 16];
@@ -242,6 +308,7 @@ impl Assets {
                 bottom: num(&td, "bottom")? as i16,
                 split: num(&td, "split")? as i16,
             },
+            tables,
         })
     }
 

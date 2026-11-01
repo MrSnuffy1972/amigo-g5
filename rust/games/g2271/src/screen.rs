@@ -45,8 +45,10 @@ impl Pic {
 pub enum Into {
     /// Straight into the picture being drawn (modes 0, 4 and 5).
     Work,
-    /// Into the clean background (modes 1 to 3).
+    /// Into the clean background (mode 3).
     Clean,
+    /// Into the clean background, and restored into both display pictures so it shows (modes 1 and 2).
+    CleanShow,
 }
 
 pub struct Screen {
@@ -64,6 +66,8 @@ pub struct Screen {
     /// The palette as set (+CC3A) and the brightness of the fade, 0 to 15 (+CD08 out, +CCC6 in).
     pub palette: [u16; 32],
     pub level: u8,
+    /// Shapes drawn into a display picture stop at the top of the play area (on during a stage).
+    pub clip_top: bool,
 }
 
 impl Screen {
@@ -79,6 +83,7 @@ impl Screen {
             paper: 0,
             palette: [0; 32],
             level: 0,
+            clip_top: false,
         }
     }
 
@@ -131,11 +136,14 @@ impl Screen {
         let w = self.work;
         let pic = match into {
             Into::Work => &mut self.disp[w],
-            Into::Clean => &mut self.clean,
+            Into::Clean | Into::CleanShow => &mut self.clean,
         };
         for r in 0..s.h {
             let yy = y0 + r as i32;
-            if !(0..H as i32).contains(&yy) {
+            // the play area's shapes are clipped at the top of the play area (+C29A, -$2BE2)
+            if !(0..H as i32).contains(&yy)
+                || (into == Into::Work && self.clip_top && yy < PANEL_H as i32)
+            {
                 continue;
             }
             for c in 0..s.w {
@@ -145,8 +153,13 @@ impl Screen {
                 }
             }
         }
+        let b = (x0, y0, x0 + s.w as i32 + 16, y0 + s.h as i32 + 1);
         if into == Into::Work && !keep {
-            self.restore[w].push((x0, y0, x0 + s.w as i32 + 16, y0 + s.h as i32 + 1));
+            self.restore[w].push(b);
+        }
+        if into == Into::CleanShow {
+            self.restore[0].push(b);
+            self.restore[1].push(b);
         }
     }
 

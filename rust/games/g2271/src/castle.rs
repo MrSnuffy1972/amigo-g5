@@ -2,8 +2,8 @@
 //! Each routine keeps the original's name (from the recovered function list) in its doc comment, with its offset in
 //! the program (`+XXXX`), so the function map reads straight across.
 //!
-//! Port status (part 1): the crack's boot text page, the title menu and the room drawing. The stage engine, the
-//! player, enemies, bosses, sub-weapons, the panel and the sound follow in the next parts (see
+//! Port status (part 2): the crack's boot text page, the title menu, and the stage engine with Simon and the
+//! panel (in `stage`). Enemies, bosses, sub-weapons, items and the sound follow in part 3 (see
 //! docs/native/g2271-native.md).
 
 use std::sync::mpsc::{Receiver, Sender};
@@ -14,6 +14,7 @@ use native_engine::input::{Action, InputState};
 use crate::assets::{Assets, H, W};
 use crate::co::{FrameIn, FrameOut, Stop};
 use crate::screen::{Into, Screen};
+use crate::stage::Simon;
 
 /// Workbench 1.3's CLI colours, for the boot text page: blue paper, white ink.
 const WB_PAPER: u16 = 0x05A;
@@ -40,15 +41,19 @@ pub struct Controls {
 pub enum Phase {
     Intro,
     Title,
-    Room,
+    Stage,
 }
 
 pub struct Castle {
-    a: Arc<Assets>,
+    pub(crate) a: Arc<Assets>,
     rx: Receiver<FrameIn>,
     tx: Sender<FrameOut>,
     pub scr: Screen,
-    input: InputState,
+    pub(crate) input: InputState,
+    /// The player and the stage (part 2).
+    pub st: Simon,
+    /// The panel's numbers as last drawn (score, time, hearts, lives, stage).
+    pub(crate) panel_cache: Option<(i32, i16, i16, i16, i16)>,
     pub ctl: Controls,
     pub frame: u32,
     pub phase: Phase,
@@ -74,6 +79,8 @@ impl Castle {
             tx,
             scr: Screen::new(W),
             input: InputState::default(),
+            st: Simon::default(),
+            panel_cache: None,
             ctl: Controls::default(),
             frame: 0,
             phase: Phase::Intro,
@@ -91,7 +98,43 @@ impl Castle {
             ("title_y".into(), self.title_y as i64),
             ("room".into(), self.room as i64),
             ("scroll_col".into(), self.scroll_col as i64),
+            ("map_col".into(), self.st.scroll_col as i64),
+            ("x".into(), self.st.x as i64),
+            ("y".into(), self.st.y as i64),
+            ("anim".into(), self.st.anim as i64),
+            ("anim_frame".into(), self.st.frame as i64),
+            ("mv".into(), self.st.mv as i64),
+            ("facing".into(), self.st.facing as i64),
+            ("hp".into(), self.st.hp as i64),
+            ("lives".into(), self.st.lives as i64),
+            ("time".into(), self.st.time as i64),
+            ("stage".into(), self.st.stage as i64),
+            ("game_room".into(), self.st.room as i64),
+            ("dying".into(), self.st.dying as i64),
+            ("jump".into(), self.st.jump as i64),
+            ("whip".into(), self.st.whip as i64),
+            ("crouch".into(), self.st.crouch as i64),
+            ("falling".into(), self.st.falling as i64),
         ]
+    }
+
+    /// One more vertical blank of the frame already on screen (no flip): the stage's frames last four.
+    pub fn hold_frame(&mut self) {
+        let (screen, palette) = self.scr.view();
+        let out = FrameOut {
+            screen,
+            palette,
+            quit: false,
+            state: self.state(),
+        };
+        if self.tx.send(out).is_err() {
+            std::panic::panic_any(Stop);
+        }
+        match self.rx.recv() {
+            Ok(f) => self.input = f.input,
+            Err(_) => std::panic::panic_any(Stop),
+        }
+        self.frame += 1;
     }
 
     /// The frame wait (+CBB8 wait_for_vblank_and_clear_flags): shows the picture drawn, takes the next frame's
@@ -168,7 +211,7 @@ impl Castle {
         loop {
             let choice = self.title_screen();
             if choice == 0 {
-                self.room_view(0);
+                self.game();
             }
         }
     }
@@ -208,13 +251,13 @@ impl Castle {
         }
     }
 
-    fn glyph(&self, ch: char) -> [u8; 64] {
+    pub(crate) fn glyph(&self, ch: char) -> [u8; 64] {
         let i = (ch as u32).wrapping_sub(0x20) as usize;
         self.a.font.get(i).copied().unwrap_or([0; 64])
     }
 
     /// +B5BC copy_handler_table_entries: the sprite colours and the room's colours, then a fade in (+CCC6).
-    fn set_palette(&mut self, n: usize) {
+    pub(crate) fn set_palette(&mut self, n: usize) {
         self.scr.palette = self.a.palettes[n.min(self.a.palettes.len() - 1)];
         self.fade_in();
     }
@@ -228,7 +271,7 @@ impl Castle {
     }
 
     /// +CD08 clear_flag_and_poll_loop: 33 frames to black (only when not already black).
-    fn fade_out(&mut self) {
+    pub(crate) fn fade_out(&mut self) {
         if self.scr.level == 0 {
             return;
         }
@@ -328,23 +371,6 @@ impl Castle {
             self.scr.char(&g, x0 + 8 * i as i32, 96, true, false);
         }
         self.wait_frames(100);
-    }
-
-    /// Part 1 stand-in for a stage: room `room` as the stage set-up draws it (+0ED2, +20EC), until Escape.
-    fn room_view(&mut self, room: usize) {
-        self.phase = Phase::Room;
-        let r = self.a.rooms[room];
-        self.room = room as i16;
-        self.scroll_col = r.scroll;
-        self.draw_screen_file(r.van as usize, r.scroll.max(0) as usize, 3..25);
-        self.set_palette(room);
-        loop {
-            self.wait_frame();
-            self.read_controls();
-            if self.input.pressed(Action::Cancel) {
-                break;
-            }
-        }
     }
 }
 

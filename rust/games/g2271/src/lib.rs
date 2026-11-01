@@ -6,13 +6,14 @@ pub mod assets;
 pub mod castle;
 pub mod co;
 pub mod screen;
+pub mod stage;
 
 /// The engine, for the Android library (which reaches it through this crate).
 pub use native_engine;
 
 use native_engine::frontdoor::ControlSheet;
 use native_engine::game::{Game, GameInfo, Options, Spec};
-use native_engine::input::{Action, Bindings};
+use native_engine::input::{Action, Bind, Bindings};
 use native_engine::pack::Pack;
 
 // EMBEDDED_PACK: Option<&[u8]>, written by build.rs (NATIVE_PACK at build time)
@@ -31,15 +32,15 @@ pub fn sheet() -> ControlSheet {
             ("left_stick", s("walk, crouch, stairs, menu")),
             ("a", s("whip (fire)")),
             ("b", s("jump")),
-            ("x", s("pause")),
+            ("x", s("start (title menu)")),
             ("back", s("back to the title")),
             ("start", s("pause menu")),
         ],
         keys: vec![
             s("Arrow keys: walk, crouch, stairs, menu"),
-            s("Ctrl or Return: whip (fire)"),
-            s("Alt or Shift: jump"),
-            s("Space or P: pause"),
+            s("Space or Ctrl: whip (fire)"),
+            s("Alt, Shift or Z: jump"),
+            s("Return: start (title menu)"),
             s("Escape: back to the title"),
             s("F10: pause menu"),
         ],
@@ -53,8 +54,20 @@ pub fn sheet() -> ControlSheet {
     }
 }
 
+/// The joystick game's bindings, with keys for the second button (jump).
 pub fn bindings() -> Bindings {
-    Bindings::joystick_game()
+    let mut b = Bindings::joystick_game();
+    for (k, v) in [
+        ("Left Ctrl", Action::Fire),
+        ("Left Alt", Action::Fire2),
+        ("Right Alt", Action::Fire2),
+        ("Left Shift", Action::Fire2),
+        ("Right Shift", Action::Fire2),
+        ("Z", Action::Fire2),
+    ] {
+        b.keys.push((k.to_string(), Bind::Act(v)));
+    }
+    b
 }
 
 pub fn spec() -> Spec {

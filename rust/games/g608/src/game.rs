@@ -499,6 +499,9 @@ impl Emo {
         if self.mode == 1 && self.level == 4 {
             return Go::Title;
         }
+        // measured on the reference (the demo's levels): the move to the next level shows a frame later than the
+        // pass that decided it
+        self.busy(1);
         self.level += 1;
         Go::Level
     }

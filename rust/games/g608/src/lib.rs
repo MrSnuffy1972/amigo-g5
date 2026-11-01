@@ -74,6 +74,8 @@ pub fn bindings() -> Bindings {
     b.keys.push(("P".to_string(), Bind::Act(Action::Pause)));
     b.keys
         .push(("Escape".to_string(), Bind::Act(Action::Cancel)));
+    // the TV remote's centre button is fire
+    b.keys.push(("Select".to_string(), Bind::Act(Action::Fire)));
     b
 }
 

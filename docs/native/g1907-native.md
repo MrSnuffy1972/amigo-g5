@@ -90,6 +90,13 @@ Play test: `cargo test -p g1907` with `G1907_PACK` set: fire starts a one-player
 the player's fighter moves, fighters score, the bout ends. Headless 6000-tick sessions show the title cards, bouts
 with the referee's verdicts, the ball round and the match over; screenshots checked by eye.
 
+Release tests (1 Nov 2026, release r2 = fc5c3e2). Windows (WinPC, keys posted to the window): pre-boot, title card,
+F1 starts a one-player game, the bout runs (scores and clock move), closed cleanly. Shield (only from an idle,
+asleep Shield, put back to sleep after): pre-boot, the title's options card, then the computer's demo bouts and the
+high-score table drawn correctly, 58.0 to 62.5 fps (SurfaceFlinger timestats, the game layer); the injected remote
+centre presses (a press of a few milliseconds) did not start a player game, so play under control on the Shield is
+still to be checked with a held press or a pad.
+
 ## Not in this revision (remaining)
 
 - The cracktro (Invisible Crime intro) as the native intro piece.
@@ -97,6 +104,10 @@ with the referee's verdicts, the ball round and the match over; screenshots chec
   as three cards from the title sheet.
 - The background's extras (sea shimmer and sun reflection, the creatures and code-word extras).
 - The bomb round (bonus phase 7): played as the ball round.
+- The random numbers' per-tick caller (about one draw a tick in a bout, see Verification), so the computer fighters'
+  choices match the original only while no draw is missed.
+- A second pad and touch for player 2: the engine's input has no pad index yet (a change to the SDL and Android
+  layers for every game), so player 2 stays on the keyboard (W A S D and Left Shift).
 - A second player's controls: the engine has one set of controls; two-player games start but player 2 has no input.
 
 The function map (routine, unit, range, status, where or why) is kept outside the repo with the asset pack:

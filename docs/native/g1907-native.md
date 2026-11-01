@@ -97,18 +97,41 @@ high-score table drawn correctly, 58.0 to 62.5 fps (SurfaceFlinger timestats, th
 centre presses (a press of a few milliseconds) did not start a player game, so play under control on the Shield is
 still to be checked with a held press or a pad.
 
+## Revision 3 work (1 Nov 2026, not yet released)
+
+- The background's life (`ambient.rs`): all of title_logo_frame ($18642) as typed Rust: the 21 running values with
+  their real step (31, one down; revision 2 stepped them up) and the patterns they choose, the shimmer strip on the sea
+  (64 by 21 pixels under the sun), the sun's reflection, the eight sparkles, and the background extras: the
+  eight-state machine of rotate_and_copy_sprite_words (state 0 chooses; 1 a bird crossing, 2 a fish jumping, 3 a
+  slow thing on the horizon, 4 a hopping creature, 5 falling drops that stay where they land (the last 16), 6 the
+  creature crossing the beach on four routes, 7 a figure acting out one of eight scripts), each drawn behind the
+  scenery mask as the original drew it, and put back from the background the next frame. The code words' extras
+  (states 6, 3, 1 and 7) are included. The tables, picture pointers and the scenery mask are the new pack table
+  `extras` (the image from unit $18240; the extractor writes it). Without that table only the values step.
+- The game's start: the original spends two frames of set-up time with the frame interrupt idle ($618 set) before the
+  start's random draws, and its first flip ends two frames later; the native now does the same, so the draws see the
+  same frame counter ($608).
+- Random numbers, measured against the reference (`RNGLOG` of the b1 harness with the return addresses, recording
+  `s_p1a`, `--seed 1495`; native `G1907_RNGLOG`): the first 121 draws of the game are equal, value for value, up to
+  77 frames after the set-up (revision 2 parted at the first draws: its set-up drew at $608 = 0 instead of 2, and the
+  per-frame draws of the extras' state 0 and the drops of state 5 were missing). Draw 122 differs because the second
+  computer fighter decides one frame later in the native than in the original (the original makes both fighters'
+  may_act draws in the same frame): a fight-timing difference, not the generator or the extras. That is the next
+  item for the random numbers.
+- Player 2 on a pad (native_engine, all games): pads take player slots in the order they are first used; in a game
+  with a second player (any `Bind::P2` key) pad 2's directions and fire are player 2's, its other buttons shared.
+  On touch a second on-screen layout was not added: two players on one phone screen would cover the game.
+- The TV remote: `Select` (Android DPAD_CENTER, the Shield remote's centre) is now fire in every joystick game and
+  Keypad Enter is start. It was unbound, which is why remote presses never started a game on the Shield in r2.
+
 ## Not in this revision (remaining)
 
-- The cracktro (Invisible Crime intro) as the native intro piece.
+- The cracktro (Invisible Crime intro) and the Type command's message, as the native intro piece.
 - The title's 33-step script (fades, starfield, logos, scrolling credits, fighters dancing behind the title): shown
   as three cards from the title sheet.
-- The background's extras (sea shimmer and sun reflection, the creatures and code-word extras).
 - The bomb round (bonus phase 7): played as the ball round.
-- The random numbers' per-tick caller (about one draw a tick in a bout, see Verification), so the computer fighters'
-  choices match the original only while no draw is missed.
-- A second pad and touch for player 2: the engine's input has no pad index yet (a change to the SDL and Android
-  layers for every game), so player 2 stays on the keyboard (W A S D and Left Shift).
-- A second player's controls: the engine has one set of controls; two-player games start but player 2 has no input.
+- The second computer fighter's decision frame (see above), after which the random numbers part.
 
 The function map (routine, unit, range, status, where or why) is kept outside the repo with the asset pack:
-166 routines ported, 41 done by the engine or the extractor, 143 not yet (the items above).
+186 routines ported, 41 done by the engine or the extractor, 123 not yet, each with its reason (the cracktro and
+Type 47, the title script 55, the bomb round and its drawing 15, and 6 single routines).

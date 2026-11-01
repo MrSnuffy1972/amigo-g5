@@ -108,4 +108,9 @@ screens and play; screenshots checked by eye. Start does something, nothing free
 start-up screens (the only exits are Escape on the title and the pause menu, as designed).
 
 Android: `tools/native_package.sh --game g336 ... --package org.amigo.g5.g00336.native`, arm64-v8a and armeabi-v7a,
-g6check passes (signature, phone and TV launchers, libraries). Installed on the Shield beside the translated build.
+g6check passes (signature, phone and TV launchers, libraries). On the Shield (installed beside the translated
+build, 1 Nov 2026): pre-boot menu, title, a game started by touch, the remote's D-pad moving the bat both ways and its
+centre button, then three lives lost and the game-over screens back to the title; screenshots checked by eye. Frame
+rate over 140 s of play: 59.9 to 60.3 fps drawn, the game at 50 ticks a second. Fixed on the Shield: a touch far from
+the pointer pressed the wrong title button (the jump went through the mouse counters, which carry at most 127 a
+frame); a touch now places the pointer directly (test `a_touch_presses_the_button_under_it`).

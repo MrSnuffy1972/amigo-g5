@@ -142,3 +142,22 @@ fn editor_saves_custom_levels() {
     r.click(0x30, 0xb2);
     r.wait_for("mode", 0, 100);
 }
+
+#[test]
+fn a_touch_presses_the_button_under_it() {
+    // Found on the Shield (1 Nov 2026): a tap far from the pointer landed on the wrong button, because the jump was
+    // passed through the mouse counters, which carry at most 127 a frame. A touch now places the pointer directly.
+    let Some(p) = pack() else { return };
+    let mut r = Run::new(&p);
+    r.run(800);
+    assert_eq!((r.get("ptr_x"), r.get("ptr_y")), (0, 0));
+    r.step(&[
+        Host::PointerAt(0x98, 0xa8),
+        Host::Touch("f".into(), native_engine::input::Action::Primary, true),
+    ]);
+    r.step(&[
+        Host::PointerAt(0x98, 0xa8),
+        Host::Touch("f".into(), native_engine::input::Action::Primary, false),
+    ]);
+    r.wait_for("mode", 2, 20);
+}

@@ -497,14 +497,18 @@ impl Jail {
             }
         }
         self.input = i.input;
-        let (mut dx, mut dy) = self.input.motion;
+        let (mut dx, dy) = self.input.motion;
         if let Some((ax, ay)) = self.input.absolute {
-            // A touch (or an uncaptured mouse) puts the pointer, or the bat's middle, where it is.
+            // A touch (or an uncaptured mouse) puts the pointer's hot spot where it is (directly: a jump across the
+            // screen is more than the mouse counters can carry in one frame), or brings the bat's middle to it.
             if self.mode == M_PLAY {
                 dx += ax - (self.ents[BAT_L].x + self.bat_w / 2) as i32;
             } else {
-                dx += ax - 7 - self.ents[POINTER].x as i32;
-                dy += ay - 7 - self.ents[POINTER].y as i32;
+                let p = &mut self.ents[POINTER];
+                p.x = (ax - 7).clamp(0, 0x130) as i16;
+                p.y = (ay - 7).clamp(0, 0xc0) as i16;
+                self.ptr_y = p.y + 7;
+                self.ptr_x = p.x + 7;
             }
         }
         self.mouse_x = self.mouse_x.wrapping_add(dx.clamp(-127, 127) as u8);

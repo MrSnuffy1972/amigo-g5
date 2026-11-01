@@ -895,8 +895,9 @@ impl Ik {
     }
     /// compute_obfuscation_checksum ($726A), exactly: d0 is cleared and loaded with the call count as a word, so the
     /// first byte read moves only its low byte and the count's high byte stays in d0's low word. That word (sign
-    /// extended, as a 68000 index register) indexes the second read, is the multiplicand of `mulu.w`, and the result
-    /// is masked with $F9FF.
+    /// extended, as a 68000 index register) indexes the second read and is the multiplicand of `mulu.w`. `sub.b
+    /// ($92E)` takes the count's high byte (the word is big-endian), and the closing `andi.l` keeps the low word (its
+    /// operand is the label at $FFFF). Checked against 197 of 197 draws of a reference bout.
     pub fn random16(&mut self) -> u16 {
         self.rng_n = self.rng_n.wrapping_add(1);
         self.rng_v[0] = self.rng_v[0].wrapping_add(0x1b1);
@@ -908,11 +909,11 @@ impl Ik {
         let d0w = (n & 0xff00) | b as u16;
         let d3 = self.rng_byte(100 + d0w as i16 as i32);
         b ^= d3;
-        b = b.wrapping_sub(n as u8);
+        b = b.wrapping_sub((n >> 8) as u8);
         let d0w = (n & 0xff00) | b as u16;
         let mut r = (d0w as u32).wrapping_mul(self.rng_v[0] as u32) as u16;
         r = r.wrapping_add(self.rng_v[1]);
-        (r ^ self.rng_v[2]) & 0xf9ff
+        r ^ self.rng_v[2]
     }
     /// A byte of the original's memory at $785C + `i` (`i` from -$8000 to $80FF). `rngwin` holds the game image from
     /// $600; below that the original reads the vectors and system area or (below 0) the Kickstart ROM, which a native

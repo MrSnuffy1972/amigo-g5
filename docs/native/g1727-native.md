@@ -11,10 +11,34 @@ disassembly are in the repository; the extractor and pack live on Ryzen (`/srv/f
 |---|---|
 | 1 recovery | proofs 1 and 2 pass; 3 and 4 wait for the naming pass (see the recovery page) |
 | 2 understanding | main loop, round set-up, playfield model, player record, file formats, font; per-round enemy logic mapped but not yet read in detail |
-| 3 native rewrite | asset extractor and pack done (pictures, bob sets, font, texts); no crate yet (`rust/games/g1727` not started) |
+| 3 native rewrite | started: crate `rust/games/g1727` (field, player and cut, claim fill, percentage, shield, RNG, HUD, title, round card, clear, game over); enemies are a provisional stand-in; not released |
 | 4 verification | reference harness copy with state, frame and PC logs ready; nine reference recordings made |
 
-No release yet: nothing native is playable.
+No release yet: the crate runs and plays a round, but its enemies are not yet translated, so it is not the game.
+
+## Stage 3 so far (crate `rust/games/g1727`)
+
+Typed Rust on native_engine; no guest memory, registers, chips or Kickstart. Coordinates are the original's map
+coordinates, which are also its text coordinates (measured: frame pixel = map + (17, 8) in the harness frames; the
+round picture sits at map (0, 1); the border runs along x 0 and 286, y 0 and 198, so the inside is 285 x 197 =
+56,145 pixels). The logical screen is 336 x 200 because the overscanned display's HUD reaches x 335.
+
+| module | translated from | state |
+|---|---|---|
+| `field` | claim map (data hunk 1 +0028), claim close +6608, fill +68DE, percentage +7D54, end test +7D90 | typed cells (free, line, claimed, cut); the fill keeps the boss's side free and claims the rest (same outcome as the boundary-walking fill; checked by tests, not yet against the harness); percentage formula exact |
+| `play` | player routine +643E, direction steps +66C4..+66CA, round set-up +5BB2 | start (142, 198), shield 900 counting down one step every 5 calls (measured: every ~10 frames with two calls a frame), one pixel a move, every other call without the speed power-up, cut start needs fire over free ground, backing up erases, closing claims; shield off while cutting |
+| `rng` | +5442, state +5458 | exact step (six-byte state, overlapping longs, swap, plus the frame counter) |
+| `volfied` | main program +2C04, HUD +7DC8, +6484, +7D4C | title with start level and difficulty, ROUND card, play, clear with the full picture, game over; HUD positions from the code where known |
+| enemies | +E8FA, +999A .. +14658 | **provisional stand-in** (a bouncing boss and three guards that kill on touching the cut, or the player when the shield is off); to be replaced by the 16 translated handlers |
+
+Not yet translated: the 16 per-round enemy handlers and their shared helpers (+EA30 .. +F8E0), the power-up boxes
+(+82F6, +8546, +8516; including the speed flag +8078), the bonus objects (+7672), the score for a claim, the
+shield-out handler (+64A2), the 8-frame turn delay after backing up to a corner (+6694), sound, story, high-score
+table, two-player turns, and the per-difficulty shield step table (+5746; 5 is NORMAL as measured). The function
+map is therefore not complete, and stage 4 (frames, named state and RNG against the harness) has not been run.
+
+Seven unit tests pass (`cargo test -p g1727 --no-default-features`); a scripted headless run (`tests/scripts/p1-claim.txt`)
+renders the playfield, the cut and the HUD.
 
 ## The program (stage 2 so far)
 
@@ -66,7 +90,7 @@ file is consumed to its last byte.
    the bonus items (+7672), the 16 per-round enemy handlers (+999A .. +14658, about 45 KB of the 85 KB code hunk,
    built from shared helpers at +EA30 .. +F8E0), the sound (+0D7C, +0D9C, +24FC), the HUD, title, story, high-score
    table and two-player turns; take the game's random number generator from the code and log it from the harness.
-3. Stage 3: `rust/games/g1727` on native_engine (typed playfield, player, cut and claim, boss and enemies per round,
+3. Stage 3: finish `rust/games/g1727` on native_engine (typed playfield, player, cut and claim, boss and enemies per round,
    power-ups, percentage, levels, the reveal picture, HUD, title and options, story, high scores), the function map,
    cheats none (no trainer on this disk; TRAINER stays a difficulty).
 4. Stage 4: scripted comparisons against the harness (state log addresses above), the RNG match, a play test through

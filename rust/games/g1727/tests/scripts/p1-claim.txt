@@ -1,0 +1,16 @@
+# Scripted joystick input for game 1727 (input timings only, nothing of the game): boot page, title, round card,
+# then along the bottom edge to the left, a cut straight up to the top edge (a claim), and along the top edge.
+30 key down Space
+33 key up Space
+60 key down Space
+63 key up Space
+90 key down Space
+93 key up Space
+100 key down Left
+200 key up Left
+201 key down Space
+201 key down Up
+420 key up Up
+420 key up Space
+430 key down Right
+530 key up Right

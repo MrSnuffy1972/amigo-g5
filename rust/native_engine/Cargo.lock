@@ -77,6 +77,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "g1727"
+version = "0.1.0"
+dependencies = [
+ "native_engine",
+ "serde_json",
+]
+
+[[package]]
+name = "g1727_android"
+version = "0.1.0"
+dependencies = [
+ "g1727",
+]
+
+[[package]]
 name = "g1907"
 version = "0.1.0"
 dependencies = [

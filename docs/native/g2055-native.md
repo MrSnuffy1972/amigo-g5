@@ -170,3 +170,39 @@ Reference: the harness copy's knockout run (`k1`: fire at 2200, 2350, then every
 | NEXT FIXTURE, BRUTAL DELUXE v REVOLVER (reference frame 2450; native ticks 1500 to 1700, five frames) | 0 of 64,000 each |
 
 Play test: KNOCKOUT shows NEXT FIXTURE (mode 0, 1100, opponent 1), waits for fire, then goes back to the menus.
+
+## Part 3 groundwork: the match (measured, nothing ported yet)
+
+Started 1 Nov 2026 (second run). No match code is ported yet, so there is still no release: the match engine is
+roughly 250 recovered routines (from `initialize_match_state` to the sprite update before `initialize_game_state`),
+about a quarter of the program, and it did not fit in this run. What was measured, for the port to build on:
+
+- **Reference recording**: the DEMO GAME (computer against computer, so no input decides it and the random numbers
+  alone drive the match) is a whole short match in the harness: the darkened arena at frame 2600, the line-up with
+  the team box (FATAL JUSTICE v TURBO HAMMERS, shortened as the game prints them) at 2700, play from 2750, MATCH OVER
+  at 3800, the result screen at 3900 and the manager and gym screens after it. A new run `dmr` (the demo script, 3300
+  frames, frames every 50) keeps RAM snapshots at frames 2560, 2600, 2650, 2700, 2750, 2800 and 3000 (outside the
+  repo, with the other runs). This is the recording the match engine is to be verified against: frames and named
+  state (each object's position, speed and flags), with tolerances written down when the comparison is made.
+- **The screen**: three screen buffers (triple buffering), each five planes of 42 bytes by 209 rows (336 pixels wide,
+  16 more than shown, for the sideways fine scroll); the display list restarts the plane pointers part-way down, so
+  each buffer is a circular strip that scrolls up and down by moving the start row. A separate 16-row, five-plane
+  strip is the status bar under the arena.
+- **The arena graphics**: the background under the centre launcher is drawn from blocks of 96 by 64 pixels, five
+  planes of 12 bytes a row, 3,840 bytes a block, kept in chip memory; the plain floor repeats one block. How the rest
+  (the star, the walls, the multipliers) is laid out is still to be read from the drawing routines.
+- **The objects**: the match works on 40-byte object records: the ball first, then the two squads (nine on the
+  pitch each, reached through two tables of pointers) and further records not yet identified. Words 20
+  and 22 of a record are its arena position, word 32 its speed, byte 34 its flags. The arena is 640 by about 1,150
+  units with the centre spot at (320, 576), where the ball sits before the launch. The squads walk on in a tight
+  block either side of the centre (frame 2560) and line up at thirds and sixths of the width (213, 426, 106, 533) by
+  frame 2700; the two words the projection reads as the view position are (160, 484) at the line-up.
+- **The frame**: each frame the match runs, in order, the goal and state checks, the timers, the goal collisions and
+  the goal animation, the camera clamp, the players' input and decisions, the team bookkeeping, the ball, the
+  distances between players, the event timers and the position checks, then waits for the frame count, lays out the
+  sprites, projects every object to the screen (in a fixed order, the ball before or after the players depending on
+  who holds it) and swaps the buffers.
+
+Next for part 3, in order: the arena (the block map and the scroll, checked against frames 2600 and 2700 with the
+objects masked out), the objects drawn at their recorded positions (checked against the same frames), then the
+match logic routine by routine with the random numbers, checked as named state against `dmr` frame by frame.

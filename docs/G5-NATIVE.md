@@ -172,3 +172,22 @@ form (easy to inspect and diff); `napack` turns it into the binary form, which t
    org.amigo.g5.gNNNNN.nativegame`, install on the Shield beside the translated build, and check fps and screenshots.
 6. `cargo fmt`, `cargo clippy --workspace --all-targets -- -D warnings`, `cargo test --workspace` in
    `rust/native_engine`; the leak check; then `docs/native/gNNN-native.md`.
+
+## Added by native stage 2: game 336 (1 Nov 2026)
+
+Game 336 (Jail Break) is the second game on the engine: `rust/games/g336`, notes in
+[native/g336-native.md](native/g336-native.md).
+
+Engine addition (general, additive): `gfx::Frame::direct: Option<Vec<Argb>>`. A game may give a frame as one
+colour a pixel, which then replaces the indexed picture in `to_argb` (and so on every platform); a wrong-sized
+picture is ignored. For screens with more colours than a palette holds (Jail Break's hold-and-modify title has 544).
+Every other frame stays indexed. `Frame::new` sets it to `None`.
+
+Pattern worth reusing for the next games: an original whose frame waits sit deep inside nested routines can keep its
+shape. `g336/src/co.rs` runs the main program on its own thread in strict lock-step with the engine's ticks (each
+tick hands over that tick's input and waits for the program's next frame wait), so routines read as the original's
+and the result is as deterministic as one thread. Dropping the game unwinds the thread. The long work the original
+did between waits is a measured cost in frames (`busy`), and a frame interrupt that came during it makes the next
+wait return at once, as on the original. Verification-only features: `trace` (a call trace to compare with the
+reference harness's call log) and `ref-harness` (the reference harness's conditions: its stand-in OS's instant
+one-second delay and no sprites).

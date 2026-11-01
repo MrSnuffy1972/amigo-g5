@@ -92,6 +92,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "g336"
+version = "0.1.0"
+dependencies = [
+ "native_engine",
+ "serde_json",
+]
+
+[[package]]
+name = "g336_android"
+version = "0.1.0"
+dependencies = [
+ "g336",
+]
+
+[[package]]
 name = "hashbrown"
 version = "0.15.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"

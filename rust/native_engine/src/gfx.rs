@@ -368,10 +368,13 @@ impl Font {
 }
 
 /// What a game draws each frame: a logical-resolution picture of palette indices and the palette to show it with.
+/// A picture with more colours than a palette holds (a photo-like title screen) can be given in `direct` instead:
+/// one colour a pixel, which then replaces the indexed picture (added by native stage 2, game 336).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Frame {
     pub image: Bitmap,
     pub palette: Palette,
+    pub direct: Option<Vec<Argb>>,
 }
 
 impl Frame {
@@ -379,12 +382,21 @@ impl Frame {
         Frame {
             image: Bitmap::new(w, h),
             palette: Palette::new(256),
+            direct: None,
         }
     }
 
-    /// The picture in colours, row by row.
+    /// The picture in colours, row by row (the direct-colour picture when there is one of the right size).
     pub fn to_argb(&self, out: &mut Vec<Argb>) {
         out.clear();
+        if let Some(d) = self
+            .direct
+            .as_ref()
+            .filter(|d| d.len() == self.image.w * self.image.h)
+        {
+            out.extend_from_slice(d);
+            return;
+        }
         let lut: Vec<Argb> = (0..256).map(|i| self.palette.get(i as u8)).collect();
         out.extend(self.image.px.iter().map(|&i| lut[i as usize]));
     }
@@ -393,6 +405,25 @@ impl Frame {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn direct_colours_replace_the_indexed_picture() {
+        let mut f = Frame::new(2, 1);
+        f.palette.colours[0] = 0xFF00_0000;
+        let mut out = Vec::new();
+        f.to_argb(&mut out);
+        assert_eq!(out, vec![0xFF00_0000; 2]);
+        f.direct = Some(vec![0xFF12_3456, 0xFF65_4321]);
+        f.to_argb(&mut out);
+        assert_eq!(out, vec![0xFF12_3456, 0xFF65_4321]);
+        f.direct = Some(vec![1]);
+        f.to_argb(&mut out);
+        assert_eq!(
+            out,
+            vec![0xFF00_0000; 2],
+            "a wrong-sized direct picture is ignored"
+        );
+    }
 
     #[test]
     fn rgb12_expands_each_nibble() {

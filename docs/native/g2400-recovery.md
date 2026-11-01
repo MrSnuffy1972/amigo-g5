@@ -70,10 +70,19 @@ The project's prekit harness never left the trainer menu (1,089 PCs). Changes, a
    This is a documented reference deviation (frame-locked game logic is unaffected; CPU-bound timing is not exact).
 - Result: cracktro, trainer menu, copyright, intro, title, "Get Ready: Stardust, Caverns One" and level 1 drawn
   correctly (checked by eye).
-- Measured (4,000-frame run, joystick right held with jump taps): the "Get Ready ... PRESS START" card shows at
-  frame ~2,250 and level 1 runs from ~2,400 with the port-2 reader (code+$24526) polled every frame, but the
-  player stays at the left edge and the screen does not scroll, so the play recordings do not yet cover gameplay.
-  Next step: read the level-start state (player object, start/pause flags) from the RAM dumps.
+7. Sprites (2 Nov): the harness only drew DMA sprites whose control words come from memory. This game positions its
+   sprites from the copper list instead: copper writes SPRxPOS/SPRxCTL (the four player sprites, attached pairs, data
+   fetched by DMA) and drives other objects in manual mode by writing SPRxDATA/SPRxDATB on every line, with a y-sorted
+   chain of copper segments (COP2LC + COPJMP2) rebuilt each frame. The private harness now arms a sprite on a
+   SPRxDATA write, disarms it on a SPRxCTL write, and takes VSTART/VSTOP/HSTART from copper POS/CTL writes.
+- Input was never broken. The 1 Nov "player does not move" was a display fault: the joystick word reaches the game
+  (reader code+$24526, port 2 JOY1DAT plus CIA-A fire, polled every frame), the player's horizontal speed builds up
+  from the right input and the player walks, but Bubble is a copper-positioned sprite the harness did not draw, and
+  walking right from the start ends at a pillar. Measured with memory watches: speed $6D00 per frame with friction,
+  world x $06BF to $06E6, then the collision routine clears the speed against the pillar.
+- With the sprite fix, Bubble, Squeak's items and the enemies show. Two play recordings: `title` (2,700 frames:
+  cracktro, trainer, title, Get Ready, level 1 start) and `play1` (6,000 frames, walking left with jumps: scrolls,
+  collects a gem, score 110). Both reproduce exactly in the recovery pipeline (same executed PCs).
 
 ## Proofs today
 | proof | state |

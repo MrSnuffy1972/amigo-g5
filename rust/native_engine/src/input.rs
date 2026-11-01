@@ -106,6 +106,21 @@ pub enum Host {
     PointerAt(i32, i32),
     /// An action held or let go by an on-screen control, by its own source name.
     Touch(String, Action, bool),
+    /// A button of the pad in player slot `n` (1 is the second pad; the first pad sends `Pad`).
+    PlayerPad(usize, String, bool),
+    /// A stick or trigger of the pad in player slot `n` (1 is the second pad; the first pad sends `Axis`).
+    PlayerAxis(usize, String, i32, i32),
+}
+
+impl Host {
+    /// The event as if from the first pad (for menus, which any pad drives).
+    pub fn as_first_pad(&self) -> Host {
+        match self {
+            Host::PlayerPad(_, b, d) => Host::Pad(b.clone(), *d),
+            Host::PlayerAxis(_, n, x, y) => Host::Axis(n.clone(), *x, *y),
+            h => h.clone(),
+        }
+    }
 }
 
 /// What a control is bound to.
@@ -216,6 +231,9 @@ impl Bindings {
                 ("Right Ctrl", Bind::Act(Fire)),
                 ("Space", Bind::Act(Fire)),
                 ("Return", Bind::Act(Start)),
+                ("Keypad Enter", Bind::Act(Start)),
+                // the TV remote's centre button (Android DPAD_CENTER)
+                ("Select", Bind::Act(Fire)),
                 ("Escape", Bind::Act(Cancel)),
                 ("F10", Bind::Act(Pause)),
                 ("AC Back", Bind::Act(Pause)),
@@ -226,6 +244,7 @@ impl Bindings {
 }
 
 const DEAD: i32 = 12_000;
+const DIRS: [Action; 4] = [Action::Up, Action::Down, Action::Left, Action::Right];
 /// Pointer speed in logical pixels a tick: a stick fully over, and a held direction after `ACCEL_TICKS`.
 const STICK_SPEED: i32 = 6;
 const STEP_SLOW: i32 = 2;
@@ -293,6 +312,59 @@ impl Mapper {
             self.latched2 |= a.bit();
         }
     }
+    /// The bindings give a second player (keys bound with `Bind::P2`), so a second pad drives player 2.
+    fn two_players(&self) -> bool {
+        self.bindings
+            .keys
+            .iter()
+            .any(|k| matches!(k.1, Bind::P2(_)))
+    }
+
+    /// Player 2's pad: directions and fire are player 2's; the other actions (start, the game's keys) are shared.
+    fn hold_p2(&mut self, src: &str, a: Action, down: bool) {
+        match a {
+            Action::Up | Action::Down | Action::Left | Action::Right | Action::Fire => {
+                self.hold2(src, a, down)
+            }
+            _ => self.hold(src, a, down),
+        }
+    }
+
+    fn pad2(&mut self, n: usize, b: &str, down: bool) -> bool {
+        let src = format!("pad{n}:{b}");
+        match b.strip_prefix("dpad_").and_then(Self::dir_index) {
+            Some(i) => {
+                if self.pad_bind("dpad") == Bind::Directions {
+                    self.hold2(&src, DIRS[i], down);
+                }
+            }
+            None => match self.pad_bind(b) {
+                Bind::Act(Action::Pause) => return down,
+                Bind::Act(a) => self.hold_p2(&src, a, down),
+                _ => {}
+            },
+        }
+        false
+    }
+
+    fn axis2(&mut self, n: usize, name: &str, x: i32, y: i32) -> bool {
+        let src = format!("pad{n}:{name}");
+        match self.pad_bind(name) {
+            Bind::Directions => {
+                for (i, on) in [y < -DEAD, y > DEAD, x < -DEAD, x > DEAD]
+                    .into_iter()
+                    .enumerate()
+                {
+                    self.hold2(&src, DIRS[i], on);
+                }
+            }
+            Bind::Act(Action::Pause) => return x > 16_384,
+            Bind::Act(a) => self.hold_p2(&src, a, x > 16_384),
+            _ => {}
+        }
+        false
+    }
+
     fn dir_index(name: &str) -> Option<usize> {
         match name {
             "Up" | "up" => Some(0),
@@ -385,6 +457,13 @@ impl Mapper {
             Host::PointerAt(x, y) => self.absolute = Some((*x, *y)),
             Host::Touch(_, Action::Pause, down) => return *down,
             Host::Touch(src, a, down) => self.hold(src, *a, *down),
+            Host::PlayerPad(n, b, down) if *n > 0 && self.two_players() => {
+                return self.pad2(*n, b, *down)
+            }
+            Host::PlayerAxis(n, name, x, y) if *n > 0 && self.two_players() => {
+                return self.axis2(*n, name, *x, *y)
+            }
+            Host::PlayerPad(..) | Host::PlayerAxis(..) => return self.handle(&e.as_first_pad()),
             _ => {}
         }
         false
@@ -502,5 +581,41 @@ mod tests {
         m.release_all();
         assert_eq!(m.tick().held, 0);
         assert_eq!(Action::parse("secondary"), Some(Action::Secondary));
+    }
+
+    #[test]
+    fn a_second_pad_drives_player_two_in_a_two_player_game() {
+        let mut b = Bindings::joystick_game();
+        b.keys.push(("W".into(), Bind::P2(Action::Up)));
+        let mut m = Mapper::new(b);
+        m.handle(&Host::PlayerPad(1, "dpad_left".into(), true));
+        m.handle(&Host::PlayerPad(1, "a".into(), true));
+        m.handle(&Host::PlayerAxis(1, "left_stick".into(), 0, -30_000));
+        m.handle(&Host::PlayerPad(1, "x".into(), true));
+        let i = m.tick();
+        assert_eq!(
+            i.held2,
+            Action::Left.bit() | Action::Fire.bit() | Action::Up.bit()
+        );
+        assert!(i.held(Action::Start) && !i.held(Action::Fire));
+        m.handle(&Host::PlayerPad(1, "a".into(), false));
+        assert_eq!(m.tick().held2 & Action::Fire.bit(), 0);
+    }
+
+    #[test]
+    fn a_second_pad_is_player_one_in_a_one_player_game() {
+        let mut m = Mapper::new(Bindings::joystick_game());
+        m.handle(&Host::PlayerPad(1, "a".into(), true));
+        let i = m.tick();
+        assert!(i.held(Action::Fire));
+        assert_eq!(i.held2, 0);
+    }
+
+    #[test]
+    fn the_tv_remote_centre_is_fire_in_a_joystick_game() {
+        let mut m = Mapper::new(Bindings::joystick_game());
+        m.handle(&Host::Key("Select".into(), true));
+        m.handle(&Host::Key("Select".into(), false));
+        assert!(m.tick().pressed(Action::Fire));
     }
 }

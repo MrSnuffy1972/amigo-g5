@@ -121,8 +121,58 @@ fn start(v: &[String], embedded: Option<&[u8]>, spec: &Spec) -> Result<(), Strin
     window(spec, &pack, &opts, fullscreen, touch)
 }
 
-/// An SDL event as a host event, for the events the mapping knows (touch is handled separately).
-pub fn host_event(e: &Event, sticks: &mut [i32; 6]) -> Option<Host> {
+/// The pads by player: a pad takes the lowest free slot the first time it is used, so the first pad pressed is
+/// player 1 and the next player 2; an unplugged pad frees its slot. Each slot keeps its sticks' last values.
+#[derive(Debug, Default)]
+pub struct PadSlots {
+    slots: Vec<Option<u32>>,
+    sticks: Vec<[i32; 6]>,
+}
+
+impl PadSlots {
+    /// The player slot of the pad with this SDL instance id.
+    pub fn slot(&mut self, id: u32) -> usize {
+        if let Some(i) = self.slots.iter().position(|s| *s == Some(id)) {
+            return i;
+        }
+        let i = self
+            .slots
+            .iter()
+            .position(|s| s.is_none())
+            .unwrap_or(self.slots.len());
+        if i == self.slots.len() {
+            self.slots.push(None);
+            self.sticks.push([0; 6]);
+        }
+        self.slots[i] = Some(id);
+        self.sticks[i] = [0; 6];
+        i
+    }
+
+    pub fn remove(&mut self, id: u32) {
+        for s in self.slots.iter_mut().filter(|s| **s == Some(id)) {
+            *s = None;
+        }
+    }
+}
+
+fn pad_host(slot: usize, name: &str, down: bool) -> Host {
+    match slot {
+        0 => Host::Pad(name.into(), down),
+        n => Host::PlayerPad(n, name.into(), down),
+    }
+}
+
+fn axis_host(slot: usize, name: &str, x: i32, y: i32) -> Host {
+    match slot {
+        0 => Host::Axis(name.into(), x, y),
+        n => Host::PlayerAxis(n, name.into(), x, y),
+    }
+}
+
+/// An SDL event as a host event, for the events the mapping knows (touch is handled separately). The second and
+/// later pads give `PlayerPad` and `PlayerAxis` with their player slot.
+pub fn host_event(e: &Event, pads: &mut PadSlots) -> Option<Host> {
     let button = |b: &Button| {
         Some(match b {
             Button::A => "a",
@@ -151,19 +201,30 @@ pub fn host_event(e: &Event, sticks: &mut [i32; 6]) -> Option<Host> {
         Event::KeyUp {
             scancode: Some(s), ..
         } => Host::Key(s.name().into(), false),
-        Event::ControllerButtonDown { button: b, .. } => Host::Pad(button(b)?.into(), true),
-        Event::ControllerButtonUp { button: b, .. } => Host::Pad(button(b)?.into(), false),
-        Event::ControllerAxisMotion { axis, value, .. } => {
+        Event::ControllerButtonDown {
+            which, button: b, ..
+        } => pad_host(pads.slot(*which), button(b)?, true),
+        Event::ControllerButtonUp {
+            which, button: b, ..
+        } => pad_host(pads.slot(*which), button(b)?, false),
+        Event::ControllerAxisMotion {
+            which, axis, value, ..
+        } => {
+            let p = pads.slot(*which);
+            let sticks = &mut pads.sticks[p];
             let i = *axis as usize;
             sticks[i.min(5)] = *value as i32;
-            match axis {
-                Axis::LeftX | Axis::LeftY => Host::Axis("left_stick".into(), sticks[0], sticks[1]),
-                Axis::RightX | Axis::RightY => {
-                    Host::Axis("right_stick".into(), sticks[2], sticks[3])
-                }
-                Axis::TriggerLeft => Host::Axis("lt".into(), sticks[4], 0),
-                Axis::TriggerRight => Host::Axis("rt".into(), sticks[5], 0),
-            }
+            let (name, x, y) = match axis {
+                Axis::LeftX | Axis::LeftY => ("left_stick", sticks[0], sticks[1]),
+                Axis::RightX | Axis::RightY => ("right_stick", sticks[2], sticks[3]),
+                Axis::TriggerLeft => ("lt", sticks[4], 0),
+                Axis::TriggerRight => ("rt", sticks[5], 0),
+            };
+            axis_host(p, name, x, y)
+        }
+        Event::ControllerDeviceRemoved { which, .. } => {
+            pads.remove(*which);
+            return None;
         }
         Event::MouseMotion {
             which, xrel, yrel, ..
@@ -267,7 +328,7 @@ fn window(
     }
     let mut events = ctx.event_pump()?;
     let mut open_pads = Vec::new();
-    let mut sticks = [0i32; 6];
+    let mut sticks = PadSlots::default();
     let store = sdl2::filesystem::pref_path("Ami-Go", &format!("native_{}", info.id))
         .ok()
         .map(PathBuf::from);
@@ -317,7 +378,7 @@ fn window(
                         Preboot::to_design(ww as usize, wh as usize, x * ww as f32, y * wh as f32);
                     Some(Nav::Click(d.0, d.1))
                 }
-                _ => host_event(&e, &mut sticks).and_then(|h| nav_of(&h)),
+                _ => host_event(&e, &mut sticks).and_then(|h| nav_of(&h.as_first_pad())),
             };
             picked = picked.or(n.and_then(|n| pre.handle(n)));
         }
@@ -418,7 +479,8 @@ fn window(
             if show_controls {
                 let any = finger.is_some_and(|f| f.1 == Phase::Down)
                     || host_event(&e, &mut sticks).is_some_and(|h| {
-                        nav_of(&h).is_some() || matches!(h, Host::MouseButton(_, true))
+                        nav_of(&h.as_first_pad()).is_some()
+                            || matches!(h, Host::MouseButton(_, true))
                     });
                 show_controls = !any;
                 continue;
@@ -426,7 +488,7 @@ fn window(
             if paused {
                 let pick = match (tap, host_event(&e, &mut sticks)) {
                     (Some((x, y)), _) => menu.hit(ww, wh, x, y),
-                    (None, Some(h)) => menu.handle(&h),
+                    (None, Some(h)) => menu.handle(&h.as_first_pad()),
                     _ => None,
                 };
                 match pick {

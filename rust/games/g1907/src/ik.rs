@@ -567,6 +567,7 @@ impl Ik {
         v.push(("rng_n".to_string(), self.rng_n as i64));
         v.push(("rng_v0".to_string(), self.rng_v[0] as i64));
         v.push(("vbl".to_string(), self.vbl as i64));
+        v.push(("extra".to_string(), self.ambient.state as i64));
         v
     }
 }
@@ -623,6 +624,12 @@ impl Ik {
         }
         if i.pressed(Action::Secondary) {
             self.key(0x3d);
+        }
+        // $618 set (the title's colours, or a game starting from the title until its first flip): the original's
+        // interrupt only loads the title's colours (l0_0BFE)
+        if self.title_colours && self.phase != 8 {
+            self.step_wait = self.step_wait.wrapping_add(1);
+            return;
         }
         if self.title_colours && self.phase == 8 {
             self.handle_input_byte();
@@ -913,7 +920,9 @@ impl Ik {
         let d0w = (n & 0xff00) | b as u16;
         let mut r = (d0w as u32).wrapping_mul(self.rng_v[0] as u32) as u16;
         r = r.wrapping_add(self.rng_v[1]);
-        r ^ self.rng_v[2]
+        let r = r ^ self.rng_v[2];
+        rng_log(self.tick, n, r);
+        r
     }
     /// A byte of the original's memory at $785C + `i` (`i` from -$8000 to $80FF). `rngwin` holds the game image from
     /// $600; below that the original reads the vectors and system area or (below 0) the Kickstart ROM, which a native
@@ -935,6 +944,24 @@ impl Ik {
             c.wrapping_mul(0x23b),
             c.wrapping_mul(0x2b3),
         ];
+    }
+}
+
+/// Verification aid: with `G1907_RNGLOG=file` every draw is written as "tick count value" (compared with the reference
+/// harness's RNGLOG of the original).
+fn rng_log(tick: u64, n: u16, r: u16) {
+    use std::io::Write;
+    static LOG: std::sync::OnceLock<Option<std::sync::Mutex<std::fs::File>>> =
+        std::sync::OnceLock::new();
+    let f = LOG.get_or_init(|| {
+        std::env::var_os("G1907_RNGLOG")
+            .and_then(|p| std::fs::File::create(p).ok())
+            .map(std::sync::Mutex::new)
+    });
+    if let Some(m) = f {
+        if let Ok(mut f) = m.lock() {
+            let _ = writeln!(f, "{tick} {n} {r:04X}");
+        }
     }
 }
 

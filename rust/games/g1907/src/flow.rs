@@ -51,6 +51,13 @@ impl Ik {
         self.key_count = 0;
         self.vbl = 0;
         self.speed = 2;
+        // the original's clearing and set-up take two frames of 68000 time before the start's random draws (the
+        // reference's first draws of a game see $608 = 2); the frame interrupt does nothing meanwhile ($618 set)
+        self.frame();
+        self.frame();
+        // and the first flip of the game ends two frames after the set-up: the reference's first full frame
+        // interrupt of a game sees $608 = 5 (the step count the original carries in from the title is not modelled)
+        self.step_wait = 3;
         self.reset_flag_and_call_helpers();
         self.set_state_flags(15);
     }

@@ -73,6 +73,33 @@ renders the playfield, the cut and the HUD.
 - Text: the 8x8 font at data hunk 1 +277C, drawn by +7024/+7132 in any of 16 colours into the interleaved display
   (four planes of 40 bytes a row, 160 bytes a line).
 
+## Round 1 enemy logic (read 2 Nov 2026, not yet translated)
+
+Read from the recovered code of +999A (1,890 bytes) for the port; the shared helpers it calls (+EA30 .. +F8E0:
+collision against the claim map and the cut, 32-way direction steps, the line cursor) are next.
+
+- Objects: the boss record at BSS +0800 and three guards of 44 bytes from BSS +06A0; x and y at +0 and +2, state or
+  speed at +4 (state for a guard, step size for the boss), direction 0-31 at +6, a size or speed word at +8, timers at +10, +20 and +32, the collision flags of the last move at
+  +28, the turn step at +30 (+2 or -2), the base heading at +34, the animation index and frame at +22 and +24.
+- Each frame the boss runs its continuation (pointer at +44, delay in frames at +48; a step returns the next delay in
+  d7 and the next step in a6) unless the time-stop counter is running or the check over the eight 24-byte objects
+  at a5+5658 (a5 = BSS +3108) reports a hit this frame (what those objects are is not read yet).
+- Guards: state 0 sets +8 = 7, turn step 2, turn timer 50; state 1 moves, and if the move touched the cut or the
+  player the guard goes to state 2, which checks again and returns to 1 when clear. On a wall hit the direction is
+  reflected from the collision flags, the base heading is kept and the turn step reversed. Turning: while the
+  player's shield is on, every 7 frames the direction swings by the turn step, reversing 16 steps (half a turn) away
+  from the base heading; while it is off, every 10 frames the guard turns one step towards the player. Animation
+  frames 0, 1, 2, 1, one step every 5 frames. Under time stop, or when caught in a claim, a guard dies and scores from
+  the table 100, 200, 400, 800, 1600, 3200, 6400 (BCD) by its frame index.
+- Boss cycle: set-up gives a 300-frame phase, rotation step -1, spark speed 10 and +8 = 9. Each frame of a phase:
+  move, reflect on a hit (counting hits), turn the direction by the rotation step (skipping the four axis directions,
+  multiples of 8), and set the animation delays and +8 from the frames left in 32-frame bands (delays 3 and +8 = 11
+  for most of the phase, rising to 4, 5 and 6 with +8 falling to 9, 7 and 5 in the last 96 frames). At the end of a
+  phase: open animation (frames 0, 1, 2), flash (on 3, off 6, on 3, off 3 frames), launch three sparks from the boss
+  position (30-byte records at a5+6042, delays 1, 11 and 21 frames), wait 10, close animation, then speed up by one
+  (to 8) if it hit a wall 20 or more times in the phase, else slow down by one (to its minimum at +58), and start the
+  next phase.
+
 ## Assets (extractor `extract1727.py`, pack `native-asset-pack/1`, 74 assets)
 
 `scr_at`, `scr_a`..`scr_q` with `pal_*` (pictures and their 16-colour palettes), `bobs_at`, `bobs_a`..`bobs_q`

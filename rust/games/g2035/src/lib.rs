@@ -5,9 +5,12 @@
 //! Assets come from the asset pack (built outside the repo by the extractor), never from the repo.
 
 pub mod assets;
+pub mod camera;
 pub mod flow;
 pub mod intro;
 pub mod menu;
+pub mod pitch;
+pub mod rng;
 
 pub use native_engine;
 

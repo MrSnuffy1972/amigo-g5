@@ -1,7 +1,7 @@
 # Game 2035 (Sensible Soccer, Crack Inc crack): native port notes
 
-Written 1 Nov 2026 by the p2035 agent (batch 2). Status: step 1 (code recovery) done, all four proofs pass (2 Nov 2026); native parts 1 (intro) and 2 (language
-screen, main menu) done and verified; the match engine and the release not started. Recovery summary: [g2035-recovery.md](g2035-recovery.md).
+Written 1 Nov 2026 by the p2035 agent (batch 2). Status: step 1 (code recovery) done, all four proofs pass (2 Nov 2026); native parts 1 (intro), 2 (language
+screen, main menu) and 3a (pitch, camera) done and verified; the rest of the match engine and the release not started. Recovery summary: [g2035-recovery.md](g2035-recovery.md).
 
 ## Measured so far
 
@@ -48,7 +48,8 @@ screen, main menu) done and verified; the match engine and the release not start
 |---|---|---|
 | 1 | Extractor and asset pack (outside the repo), crate, the Crack Inc intro | done 2 Nov 2026 |
 | 2 | Language screen and main menu: sprite cut lists, fonts, language texts, menu engine, fades | done 2 Nov 2026 |
-| 3 | Match engine (pitch, players, ball, referee, set pieces, computer play, timing, sound) | next |
+| 3a | Match pitch, pitch types, random numbers, camera | done 2 Nov 2026 |
+| 3b | Ball physics and after-touch, players, referee, set pieces, computer play, timing, sound; match flow from the menu | next |
 
 ### Part 1 (2 Nov 2026)
 - Extractor `/srv/fast/native-work/2035/tools/extract2035.py FILES PACK` (pack at `/srv/fast/native-work/2035/pack`, 101 assets):
@@ -144,6 +145,35 @@ screen, main menu) done and verified; the match engine and the release not start
 - Checks: `cargo test -p g2035 --no-default-features` (11 tests on a synthetic pack: timing, repeats, fire release,
   fades, attract time-outs, German text, item drawing, grid walk); verification tools outside the repo
   (`tools/cmp2035.py`, `vfy2035.py`, `scr2035.py`).
+
+### Part 3a (2 Nov 2026): the pitch, pitch types, random numbers and the camera
+- Pitch files (`pitch1.map`, `pitch2.map`): a map of 38 x 46 big-endian longs (byte offsets of 128-byte tiles), then the
+  tiles (16 x 16, four bitplanes interleaved by row; 128 tiles in pitch1, 160 in pitch2). Measured: every marking is in
+  the tiles (the RAM copy at frame 3000 of a CPU v CPU match is the file plus $5CA8, tiles unchanged); nothing is drawn
+  over them. The original scrolled a 352 x 272 ring buffer ($C0343A, $C0371C blit a tile row or column as the camera
+  crosses a tile edge); natively the view is read from the map. `src/pitch.rs`.
+- Pitch type word $C0DF72: low byte = type 0 to 6, high byte = pitch file. Chosen before the match ($C0B3FA): month row of
+  chances ($C09962, 12 x 7 percentages; -1 = default row $C099B6; -2 to -8 = type month + 8), the random number scaled
+  to 0..99 walks the row; bit 4 of the frame counter picks the file. The type sets palette colours 0, 7 and 9 from
+  $C09946 ($C09BAC) and three ball-physics words ($C0D438, $C0D41C, $C0D42A; to decode with the ball).
+- Random numbers ($C0DFAC): seed byte = seed * 5 + $81, XOR a byte of the program's own code at $C0F2B6 indexed by
+  (frame counter + calls) & $3FF. The pack carries those 1024 bytes. `src/rng.rs`.
+- Camera ($C090C6, `src/camera.rs`): target = ball - (168, 136) plus a look-ahead that moves 2 pixels a frame up to 40
+  towards the ball's velocity (ball loose, $C0E8AA = 100) or the controlled player's facing; fixed view, forced focus and
+  set-piece events ($15-$18, $19-$1C) override; eases (distance / 4) * $4000 per frame in 16.16, at most 5 pixels;
+  x 16..256 (0..272 without margin), y 9..452.
+- Display: screen columns 1 to 336 show pitch column camera x - 1 + column (column 0 and 337-351 colour 0); all 272
+  rows; the shown frame uses the previous frame's camera (double buffering), measured over frames 1991-2010.
+- Extractor addition `tools/match2035.py` (outside the repo) writes `match_tables` (palette, grass sets, chances,
+  random table, facing table, the per-type physics words, the two map names). 105 assets.
+- Reference harness finding: on the match screen the harness shows bitplane 4 wrongly (grey bands; planes 0-2 match,
+  plane 4 is the map's in the game's own RAM buffer), so frame checks compare planes 0-2 until the harness is fixed.
+- Verification (`p3/vfy3a.py` outside the repo, recording runs/cvc1 with RAM dumps at frames 1990-2010, through the
+  `matchcheck` example): camera 20 of 20 frames exact in 16.16 position and look-ahead from the previous frame's ball
+  state; pitch view planes 0-2 equal on 99.33% of 1.9 M pixels (the rest are players, ball and shadows, not yet ported).
+  Not verified yet: the pitch-type choice on a recording (the choice runs before the match; needs a RAM dump there).
+- Checks: `cargo test -p g2035 --no-default-features` adds 5 tests (random routine, pitch decoding, type choice,
+  camera, view mapping) on synthetic data.
 
 ## Naming pass (proof 3), 2 Nov 2026
 - 902 routines needed names (1568 inherit from the identical soccers routine). The naming ran on Ryzen's muse-glimmer:30b and,

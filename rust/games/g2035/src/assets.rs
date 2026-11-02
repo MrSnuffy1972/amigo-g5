@@ -108,6 +108,8 @@ pub struct FrontEnd {
 pub struct Assets {
     pub intro: IntroPage,
     pub front: FrontEnd,
+    /// The match tables and pitches (part 3); absent from packs built before part 3.
+    pub matchd: Option<crate::pitch::MatchData>,
 }
 
 fn colour(v: &Value, k: &str) -> Result<Argb, String> {
@@ -278,9 +280,19 @@ impl Assets {
             ticks: num("ticks")? as u32,
             font: p.font("intro_font")?,
         };
+        let matchd = if p.entry("match_tables", "data").is_ok() {
+            let f = |n: &str| p.bytes(n).map(<[u8]>::to_vec);
+            Some(crate::pitch::MatchData::from_json(
+                &p.data("match_tables")?,
+                &f,
+            )?)
+        } else {
+            None
+        };
         Ok(Assets {
             intro,
             front: FrontEnd::load(p)?,
+            matchd,
         })
     }
 }

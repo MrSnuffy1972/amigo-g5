@@ -12,7 +12,10 @@
 //!
 //! Part 2 (second slice): the knockout's start and its NEXT FIXTURE screen (`intro::fixture`), on the league tables
 //! (`league`).
+//!
+//! Part 3 (first slice): the match arena drawn from its cell map and tiles, and the camera that scrolls it (`arena`).
 
+pub mod arena;
 pub mod assets;
 pub mod co;
 pub mod intro;

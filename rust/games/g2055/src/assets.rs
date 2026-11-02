@@ -36,6 +36,8 @@ pub struct Assets {
     /// The 8 x 8 text font of the league screens (letters, digits, box pieces) and the league tables (part 2).
     pub textfont: Sheet,
     pub league: crate::league::League,
+    /// Part 3: the match arena (cell map, tiles of disk file 26, the match colours).
+    pub match_arena: crate::arena::Arena,
 }
 
 fn pal12(p: &Palette) -> [u16; 32] {
@@ -92,6 +94,7 @@ impl Assets {
             menus: Menus::load(&p.data("menus")?)?,
             textfont: p.sheet("textfont")?,
             league: crate::league::League::load(&p.data("fixture")?)?,
+            match_arena: crate::arena::Arena::load(p)?,
         };
         for (n, b) in [
             ("title", &a.title),

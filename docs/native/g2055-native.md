@@ -10,7 +10,7 @@ written from the recovered source as ordinary typed Rust: no guest memory, no 68
 registers, no port reads, no copper, blitter or bitplane emulation. Pictures, the font and the intro pages come from
 the asset pack at run time (built outside the repo; nothing of the game is in git).
 
-## Status: part 1 of 4 (the front end)
+## Status: part 1 done, parts 2 and 3 under way (part 3: the arena)
 
 The port is done in parts, each committed when it passes its checks:
 
@@ -68,11 +68,10 @@ records each request (`sfx_last`, `sfx_count` in the named state) and plays noth
 
 ## Function map summary
 
-668 recovered routines, 668 accounted for: 24 ported (part 1), 16 ported (part 2, first slice: the menus), 17
-protection removed (all Copylock units and the crack's bypass), 44 not ported because the engine does their job (the
-boot block, the crack's track loader, the program depacker run when the pack is built, the program entry), 3 started
-(the first menu, the league's and the cup's starts: their menu parts are ported, the rest is pending) and 564 pending
-(the rest of parts 2 to 4). The full map (routine,
+668 recovered routines, 668 accounted for: 73 ported (24 in part 1, 16 in part 2's first slice, 25 in its second
+slice, 8 in part 3's first slice: the arena), 17 protection removed (all Copylock units and the crack's bypass), 44 not
+ported because the engine does their job (the boot block, the crack's track loader, the program depacker run when
+the pack is built, the program entry), 4 started and 530 pending (the rest of parts 2 to 4). The full map (routine,
 unit, address, native code, status) is kept outside the repo with the asset pack.
 
 ## Verification (part 1)
@@ -206,3 +205,48 @@ about a quarter of the program, and it did not fit in this run. What was measure
 Next for part 3, in order: the arena (the block map and the scroll, checked against frames 2600 and 2700 with the
 objects masked out), the objects drawn at their recorded positions (checked against the same frames), then the
 match logic routine by routine with the random numbers, checked as named state against `dmr` frame by frame.
+
+## Part 3, first slice: the arena and its scrolling
+
+Ported 2 Nov 2026 (`src/arena.rs`). The match arena as the original keeps it, read from the code:
+
+- **The map**: 40 by 72 cells of 16 by 16 pixels (640 by 1,152), one signed word a cell, in the program at `$27A`.
+  0 is the plain blank cell (planes 0 and 4 set: colour 17), a positive number is a tile of disk file 26 (five planes
+  of 16 rows, 160 bytes a tile, tile 1 the file's first) and a negative number the same tile upside down (the blitter
+  reads it bottom row first with a negative modulo). The start-up clears every cell holding `$A2` to 0.
+- **The drawing**: `configure_team_sprite_layout` draws the 21 by 13 cells under the camera into the buffer about to
+  be shown, only those the dirty map at `$19EA` marks for that buffer (`fill_team_sprites` marks the edges);
+  `toggle_copper_blitter_wait` fills a blank cell, `execute_conditional_blit_loop` copies a tile and
+  `wait_and_update_sprite_state` copies one upside down. Natively the 320 by 184 view is drawn straight from the map
+  each frame: no buffers, no dirty map, no copper or blitter.
+- **The camera** (`$18E`, `$190`, the arena pixel at the view's top left) starts at (160, 484). Each frame
+  `clamp_player_position` moves it towards the followed object: the target is the object less (160, 92), the step
+  an eighth of the distance plus one (`compute_clamped_difference`), at most 16, never past the target, and the
+  camera stays within 0 to 320 across and 0 to 968 down. Which object it follows is set by the frame's ball and
+  player code (next slice); `Camera::follow` takes its position.
+- **Colours**: the match's 32 colours are the program's table at `$F2`.
+
+The pack gains `arena_tiles` (374 tiles), `arena_map` and `match_pal` (`match2055.py`, outside the repo beside
+`extract2055.py`). `examples/arena_view.rs` draws the view at a camera position for the checks.
+
+### Verification (part 3, first slice)
+
+Reference: the demo match `dmr`. The view is compared with the reference frame's 320 by 184 arena area; the camera
+comes from the RAM snapshot at the same frame. The picture shown lags the snapshot by up to two frames (triple
+buffering), so the native view is drawn at every camera within 16 pixels and the best is kept (`varena2055.py`).
+
+| Frame | RAM camera | Best native camera | Differing pixels |
+|---|---|---|---|
+| 2700, line-up (camera still) | (160, 484) | (160, 484) | 9,751 of 58,880 (16.6%) |
+| 2750, play starts (camera still) | (160, 484) | (160, 484) | 2,860 (4.9%) |
+| 2800 | (164, 483) | (160, 488) | 4,157 (7.1%) |
+| 3000, top of the arena | (141, 51) | (156, 39) | 3,341 (5.7%) |
+
+Every differing pixel checked on the difference pictures of frames 2700 and 3000 is an object the next slices draw:
+the players, the ball, the centre launcher and the line-up's team box. One exception to look at with the objects:
+a broken line of single pixels about 16 rows from the bottom of the view at frame 3000. The camera's follow rule is
+checked by unit tests (step size, no overshoot, both clamps); it is checked frame by frame against `dmr` once the
+followed object moves natively.
+
+Not yet: the 16-row status bar under the view, the objects (next: objects and the ball), players and AI, scoring,
+timing and sound. There is still no release: one waits for a whole knockout match that plays and verifies.

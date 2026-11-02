@@ -101,13 +101,31 @@ exactly.
   `/srv/fast/native-work/1727/finish.log`. Proofs 3 and 4 are reported as they stand when it ends; the result table
   above is not updated until then.
 
-## Result so far (2 Nov 2026)
+## Result (2 Nov 2026, installed)
 
 | proof | result |
 |---|---|
 | 1. bytes classified | PASS: 100% of 901,184 top-level bytes (49 containers), 0 unknown |
 | 2. byte-identical reassembly (vasm) | PASS: 7 of 7 units identical |
-| 3. functions named and described | in progress (naming pass on Ryzen and IntelPC) |
-| 4. executed addresses in recovered, described code | waits for proof 3 |
+| 3. functions named and described | PASS: 1,134 of 1,134 (44 by hand, the rest by the naming pass) |
+| 4. executed addresses in recovered, described code | PASS: 7,743 of 7,743 executed PCs (100%) |
 
-The table is updated when the naming pass ends; the current state is in `coverage.md` of the recovery folder.
+How it ended:
+
+- The unattended finish merged the shards (1,124 of 1,134 described); the IntelPC retry pass left 10 routines that
+  failed the quality check five times. Those 10 were read and described by hand (two drawing passes for the
+  three-slot and seven-slot rounds, two enemy state steps, the round-start countdown wait, the line-cursor helpers
+  for 80- and 120-byte rows, and a timed value-sequence step). 16 more main-loop, loader and decoder routines whose
+  model names were wrong were renamed by hand (for example `update_moving_objects`, `draw_round_enemies`,
+  `update_powerup_boxes`, `swap_display_buffers`, `life_lost`, `round_clear`, `decode_cnp_picture`, `lzhuf_decode`,
+  `parse_bob_set`, `load_file`); 44 hand entries in all (`tools/p1727-names.json`).
+- Proof 4 then stood at 7,738 of 7,743: five executed PCs in two continuation routines that follow a call to the
+  inline-argument copier (+F51C pops its return address, copies the words after the call and jumps past them).
+  Ghidra had decoded those argument words as instructions by falling through the call and so ran over the two
+  routine starts. Fix (general, in `tools-p1727/RecovGeneric.java`): a recovered code label that sits inside a Ghidra
+  instruction has that decode cleared (up to 64 bytes past the label) and is disassembled again from the label and
+  from every other recovered label in the span. Two labels were re-seeded; proof 4 passes.
+- The finish script's install step pointed at a missing helper, so the install was done by hand: the old
+  `/srv/fast/amigo/recovery/01727` was copied to `/srv/fast/native-work/1727/backup-amigo-01727-20261102-1218`
+  (sha256 list checked), the private root copied over it (sha256 list checked), nothing deleted. The shared queue's
+  stopped run of 1727 stays stopped.

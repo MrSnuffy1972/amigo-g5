@@ -9,7 +9,7 @@ disassembly are in the repository; the extractor and pack live on Ryzen (`/srv/f
 
 | stage | state |
 |---|---|
-| 1 recovery | proofs 1 and 2 pass; 3 and 4 wait for the naming pass (see the recovery page) |
+| 1 recovery | done: proofs 1-4 pass, installed over the shared recovery folder (see the recovery page) |
 | 2 understanding | main loop, round set-up, playfield model, player record, file formats, font; per-round enemy logic mapped but not yet read in detail |
 | 3 native rewrite | started: crate `rust/games/g1727` (field, player and cut, claim fill, percentage, shield, RNG, HUD, title, round card, clear, game over); enemies are a provisional stand-in; not released |
 | 4 verification | reference harness copy with state, frame and PC logs ready; nine reference recordings made |
@@ -82,10 +82,7 @@ file is consumed to its last byte.
 
 ## What remains (exact)
 
-1. Stage 1: finish the naming pass (1,134 routines; about 400 named so far), check the main-loop, loader, decoder,
-   playfield and player names by hand, re-run the report until proofs 3 and 4 pass, and install the result over
-   `/srv/fast/amigo/recovery/01727` once the shared queue's own run of 1727 has ended (its lock holder then keeps the
-   queue away).
+1. Stage 1: done (2 Nov 2026).
 2. Stage 2: read the claim fill (+68DE), the percentage and round target, the power-up boxes (+82F6, +8546, +8516),
    the bonus items (+7672), the 16 per-round enemy handlers (+999A .. +14658, about 45 KB of the 85 KB code hunk,
    built from shared helpers at +EA30 .. +F8E0), the sound (+0D7C, +0D9C, +24FC), the HUD, title, story, high-score

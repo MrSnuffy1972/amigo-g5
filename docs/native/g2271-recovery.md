@@ -185,7 +185,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_serial_status_flags`: The routine merges a value returned by another routine with a flag from a control byte and a stored word, writes the result to a global variable and two counters, and conditionally searches a small table for a match.
 - `decrement_counter_and_update_linked_list`: The routine checks a counter in a structure and, if non-zero, reads an index from a field, updates a linked list pointer and the back link, stores the pointer, decrements the counter, toggles two bits in a byte of the referenced object, clears a field, copies a field from the object into the structure, and recurses if a field equals a constant.
 - `set_global_flag`: The routine writes a constant value to a global variable and returns.
-- `self`: The routine clears a byte flag in a structure and combines it with a word field to update a global variable, then forces the global to one when two structure fields are both zero.
+- `check_serial_interrupt_status`: Reads a byte from a global variable and combines it with a value from a hardware register to update a global status flag.
 - `set_serial_device_state`: The routine writes to a global variable and to a structure pointed to by a register, clearing a byte field and zeroing several fields, then writes constant values into the structure.
 - `check_serial_status_and_dispatch`: The routine calls another routine and then tests a byte from a structure pointed to by a register.
 - `copy_serial_state`: The routine copies a 32-bit value from an offset within a structure pointed to by a register to two other offsets in the same structure, then clears a 32-bit field at a third offset.
@@ -193,7 +193,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `disable_serial_interrupt_handler`: The routine clears a flag byte in a structure, optionally calls another routine and stores its result, then writes a value to a global variable twice and writes to INTENA to enable interrupts.
 - `disable_interrupts_and_call_handler`: The routine writes to a global variable, calls another routine, writes the global variable again, and conditionally calls a handler via a pointer taken from a table.
 - `clear_serial_flag`: The routine calls another routine twice and then clears a 32-bit field in a structure pointed to by an address register.
-- `self_2`: The routine follows a linked list of structures pointed to by a global variable.
+- `process_serial_message_queue_3`: Iterates through a linked list of message structures pointed to by a register.
 - `empty_routine`: The routine is empty.
 - `set_serial_flags_and_maybe_call`: The routine sets a flag byte in a structure pointed to by a1 and writes a constant to the next byte.
 - `copy_serial_state_flags`: The routine copies a byte from a global variable, masks it with a flag from a structure, writes the result to a structure field, copies and masks another byte from a structure, clears a flag in the structure, copies a word from the structure, and conditionally calls another routine via a function pointer stored in the structure.
@@ -211,7 +211,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_serial_control_byte`: The routine writes a constant byte value to an offset within a memory block pointed to by a pointer.
 - `compute_timer_interval`: The routine computes a 16-bit interval from a scaled value stored in the structure and a base constant, optionally adjusted by a flag byte, and writes the result to a field in the structure and to a global variable.
 - `compute_serial_divisor_and_flags`: The routine divides an input value by the low word of another input and stores the result in a structure field, copies that field to a global variable, clears a flag bit in a byte field, and conditionally sets a high bit in the global variable and a flag bit in the byte field based on two structure bytes.
-- `self_3`: The routine initializes a serial.device structure by writing pointers and constants into fields of a block obtained from another routine, then configures two function pointers inside the block to point to another routine and stores the results of calling that routine.
+- `initialize_serial_device_unit`: Allocates and initializes a device unit structure by calling library functions to set up memory and resource references.
 - `initialize_serial_device`: The routine initializes a serial device structure by calling several other routines, writing constant values into specific fields of the structure, setting up function pointers within the structure, storing return values from other routines into the structure, and setting a global variable before returning a success code.
 - `initialize_serial_device_2`: The routine stores a pointer to a global variable in a structure pointed to by a register, writes a constant byte into the structure, and copies two caller-supplied values into fields of the structure.
 - `set_serial_device_io_request`: The routine writes a constant byte to an offset in a structure pointed to by a0, stores a pointer to a global variable at another offset, and copies two caller-provided values into two further offsets.
@@ -748,30 +748,3 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `jt_negate_and_store_word`: Jump-table entry in the program's data hunk: the code calls it through the small-data base register and it jumps straight on to negate_and_store_word.
 - `jt_check_flag_and_call`: Jump-table entry in the program's data hunk: the code calls it through the small-data base register and it jumps straight on to check_flag_and_call.
 - `jt_clear_tile_or_delay`: Jump-table entry in the program's data hunk: the code calls it through the small-data base register and it jumps straight on to clear_tile_or_delay.
-
-## Batch 1 notes (b1-2271, 1 Nov 2026)
-
-Variant: project 2271 (Castlevania, Konami 1990, converted by Novotrade, Quartex crack) rather than 2272. Both hold
-the same game program; 2272 also holds a saved game and a high-score table left by a previous player and thousands of
-damaged sample bytes in three sound files, so 2271 is the clean dump.
-
-What changed against the first queue run (private tool copy on Ryzen; the shared tools were not changed):
-- Reassembly: seven text strings that the game pushes as data had been decoded as instructions; one of them could not
-  be written back for vasm. They are now typed as data with the evidence recorded, and all 13 units reassemble
-  identically.
-- Packed files: the 74 art and room files use the game's own Huffman coder (16-bit checksum, length, code tree, bit
-  stream). The decoder was recovered from the game's loader and re-implemented outside the repository; every file
-  decodes to its last byte with a matching checksum. One small file that only looked like code is classed as packed
-  data on that evidence.
-- Reference runs: the stand-in operating system of the reference harness accepted the game's CIA interrupt vectors but
-  never ran them, so the keyboard and the 50 Hz CIA timer were dead and the password screen waited for ever. The
-  harness copy now delivers them; three 20,000-frame play recordings reach stage 1 play (about 10,000 executed
-  addresses each, against 1,878 for the first 200-frame run).
-
-Copy protection: a manual code lookup ("ENTER PASSWORD FOR MISSION", a letter and a row from the manual's code table,
-four tries). The crack makes every answer match. The native build will skip the screen (behave as passed). No disk,
-track or checksum protection: the game reads its files through AmigaDOS only.
-Developer cheat: typing a six-digit code in the pause screen enables keys for collision, game time, life count,
-effects, restart and a screen select; it will become an optional cheats menu, off by default.
-Crack: no cracktro program; the crack shows a text page at boot (startup-sequence) and its name in the pause banner.
-The text page will be kept as a native intro.

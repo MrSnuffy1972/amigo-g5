@@ -1,8 +1,6 @@
-# Game 1868 (Flashback, Delphine / U.S. Gold 1992, Interpol crack): code recovery summary
+# Game 1868 (flashback (1992)(u. s. gold)[cr interpol]): code recovery summary
 
 Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/01868). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
-
-Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model naming pass, which shares Ryzen's GPU with other agents and is still running. Packed parts: the game itself is an Imploder V6 library-mode executable and the cracktro has its own packer; both depackers are recovered as code and were ported line by line to produce the unpacked units (evidence in the cases below). Unreached routines placed after tables inside gaps are found by a prologue scan (4 found). Notes: B2-1868-RECOVERY-NOTE.md on Ryzen.
 
 ## Proofs
 
@@ -10,7 +8,7 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 |---|---|
 | Bytes classified (3604480 top-level bytes in 178 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 4 raw-word lines |
-| Functions named and described | pass, 672 of 672 named (0 author symbols), 672 of 672 described (4 by rule, 641 by the local model) |
+| Functions named and described | pass, 672 of 672 named (0 author symbols), 672 of 672 described (6 by rule, 639 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 15148 of 15148 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 30016 of 30016 instructions identical in start and length, 0 mismatches |
@@ -57,12 +55,12 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 
 ## Cracktros (kept, not protection)
 
-- INTERPOL: the Interpol cracktro, run by the startup-sequence before the game. Its code hunk is a self-loader that decrunches a backward bit stream into a hunk image with compact relocations; that depacker was ported line by line, and the unpacked cracktro is recovered as its own unit (INTERPOL#unpacked). Kept, to be ported natively as the intro piece. No trainer in this variant.
+- Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4).adf:INTERPOL
+- Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4).adf:INTERPOL#unpacked
 
 ## Copy protection found
 
-- Code-wheel check before the logos (read in the code, protection_code_wheel_screen): a random wheel shape and code, a six-character answer compared with a table; three failures end in a deliberate crash (the routine that clears the system pointer). The Interpol crack made the comparison a no-op. Native: removed (no screen).
-- No disk checks: every file is read through dos.library by name.
+- none found
 
 ## Functions
 
@@ -74,12 +72,12 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `store_explode_library_pointer`: The routine stores an incoming value into a global variable and then calls another routine with a constant.
 - `find_explode_library`: The routine searches the Amiga OS library list for a library named explode.library using exec.FindName and stores the resulting library base pointer in a global variable.
 - `report_explode_library_open`: Explode loader: stores the explode.library base returned by OpenLibrary and prints "explode.library initialized!" when it opened, or "not available!" when it did not.
-- `self_5`: The routine checks a global variable and, if non-zero, calls a function pointer stored in that variable offset by a constant.
+- `call_hook_and_clear_flags`: Checks a pointer stored in a global variable; if non-zero, it invokes a function pointer located at an offset from that address.
 - `clear_flag_and_call_hook`: The routine checks a flag stored at an offset from a global variable using a short index in D0.
 - `self_recursive_call_with_callback`: The routine calls itself and then invokes a function pointer stored in a global variable table.
 - `call_other_routine_sequence`: The routine calls another routine five times in a row with different arguments, passing a stack slot, a fixed address, an offset from a register and a constant, and returns.
 - `call_indirect_via_table`: The routine calls another routine through an indirect pointer obtained from a global variable and returns a 64-bit value formed by concatenating the two input registers.
-- `self`: The routine writes a byte from a register through a pointer and then updates a global variable to point to the next byte in the buffer, wrapping to the start if the next byte would be past the buffer end.
+- `store_byte_and_advance_pointer`: Stores a byte from a register into the memory location pointed to by a global pointer.
 - `store_return_values`: The routine calls another routine, captures its return value and an extra output pointer, and stores both into two consecutive words of a caller-provided structure via a pointer in A4, then returns the original input value in D0.
 - `skip_string_table_entry`: The routine walks a short string table, finds the length of the first string by counting words until a zero short, then updates a pointer to the next entry and returns an offset for the next entry.
 - `parse_string_table_entry`: The routine reads a zero-terminated string from a pointer table, advances the pointer past the string and returns the byte offset of the next entry.
@@ -98,7 +96,7 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `cracktro_decrunch`: Decrunches the cracktro's data hunk backwards in place: a PowerPacker-style bit stream with literal runs and back references whose offset widths come from the table 9, 10, 11, 11.
 - `check_shifted_flag`: The routine tests whether a shifted version of a global variable is non-zero and returns early if it is; otherwise it returns.
-- `self_2`: The routine extracts a sequence of bits from a bitstream held in a pair of registers and a byte table, using a bit counter and a signed loop count derived from an input word, and assembles the extracted bits into a 32-bit accumulator.
+- `tiny_sub`: Small routine of 1 instruction that subtracts d4 from d0.
 - `extract_bits_to_word`: The routine extracts a series of bits from a byte stream pointed to by a pointer, using a bit buffer in a register, and assembles them into a 32-bit word in a register.
 - `negate_byte_via_pointer`: The routine negates a byte pointed to by a parameter using a register value, ORs a byte pointed to by a pointer with a constant, copies an int from a global variable to a pointer target, and writes a byte derived from a comparison to memory.
 
@@ -112,7 +110,7 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `decode_script_bytes`: The routine reads bytes from a source pointer, skipping newline characters by advancing the destination pointer by a fixed stride, and stops when it encounters an escape byte.
 - `decode_text_to_tile_data`: Iterates through a text buffer, skipping newline characters by advancing a destination pointer by a fixed offset.
 - `build_copper_list_and_start_dma`: The routine builds a copper list in chip memory by writing word pairs that form copper move and wait instructions, using three pointers obtained from another routine and offsets added to two of them.
-- `self_6`: The routine clears a global variable, writes a constant to it, and then calls a series of other routines via a table.
+- `initialize_dma_and_coprocessor`: Opens the graphics library and allocates memory.
 - `wait_for_global_flag`: The routine spins until a global variable no longer has a specific bit set, then returns.
 - `wait_for_global_flag_clear`: The routine spins in a loop until a global variable has its bit cleared, then returns.
 - `wait_for_vblank`: The routine reads the vertical and horizontal position status register and repeatedly copies a global variable to itself until the variable is zero, effectively spinning until a condition on that global variable is met.
@@ -172,10 +170,10 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `propagate_collision_flags`: The routine checks a signed byte at an offset from a pointer and, if it is non-negative, calls another routine with that pointer.
 - `compare_and_propagate_entry`: The routine checks a byte at an offset in the input structure; if it is not a sentinel value it indexes into a global table using that byte and calls another routine with the table entry and the input structure.
 - `set_flag_and_forward_call`: The routine forwards its first argument to another routine using a table lookup based on the high word of its second argument, then stores a constant byte at an offset from the first argument and returns a constant.
-- `self_7`: The routine calls another routine with the input parameter and checks the returned value.
-- `self_8`: The routine indexes a global table using a byte from the argument and walks a linked list of entries until it finds a matching short field, then calls another routine with a computed offset from the entry and returns a sentinel value.
+- `check_collision_and_propagate_flags`: Looks up an index for a linked item using a parameter.
+- `search_linked_list_for_id`: The routine traverses a linked list of structures using a global variable as a base pointer.
 - `self_linking_table_search`: The routine walks a self-linking table of pointers starting from a pointer in a register.
-- `self_9`: This routine walks a linked list of entries in memory until it finds an entry whose field at offset six matches a short value in D2.
+- `search_link_and_propagate_flags`: Traverses a linked list by following pointers until a null terminator is found or a specific short value matches a register.
 - `copy_entity_state_from_table`: The routine copies a set of fields from a table entry indexed by the high word of the second argument into a structure pointed to by the first argument, merges a flag from the table into a byte field of the structure, copies one byte from a location derived from a pointer inside the structure, then calls another routine and returns a constant.
 - `find_entry_in_linked_table`: The routine uses a byte from the first argument to index into a global variable table and follows a linked list of entries until it finds one whose second field matches the short field of the second argument.
 - `follow_linked_list_until_match`: The routine follows a linked list via a pointer in A2, dereferencing it repeatedly until the pointer becomes null or the word at offset six matches the value in D2.
@@ -187,8 +185,8 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `clear_global_variable`: The routine stores the address of a global variable into a four-byte global variable and then writes zero to the global variable.
 - `validate_palette_index`: The routine adjusts a 16-bit offset in a structure using a signed byte from a table entry, then checks a signed byte from a global table for a non-zero sentinel and returns -1 if found.
 - `find_index_in_table`: The routine searches a table of short values pointed to by a global variable for a match with a short field from the argument.
-- `self_10`: The routine walks a linked list of objects referenced from a parameter block, using a global pointer as a stack of entries.
-- `self_11`: The routine walks a fixed-size table of six-byte entries, calling another routine for each entry and storing the result and a pointer in the entry.
+- `update_sprite_palette_entry`: Iterates through a global table to validate and update palette indices for a sprite object, linking the object to a specific palette entry and handling collision or state flags.
+- `build_palette_entry_table`: This routine iterates through data to validate palette indices and populate a table with pointers and associated values.
 - `update_entity_link`: The routine updates a linked list of entity structures and sets a few global flags based on a byte field in the entity.
 - `empty_loop_routine`: The routine contains no reachable instructions and ends in an infinite loop, so it performs no observable work.
 - `parse_input_stream`: The routine reads a byte from a register and stores it into a global variable table indexed by a high byte from another register and a counter, handling tab and newline characters specially and resetting counters.
@@ -200,7 +198,7 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `random_number`: Random number generator: doubles the 32-bit seed and XORs an address into it when a bit is carried out or the result is zero; returns the low 16 bits.
 - `decode_byte_runlength`: A routine that decodes a byte stream using run-length encoding where a marker byte indicates a repeat count.
 - `reset_game_state_3`: The routine repeatedly calls another routine until a comparison of two returned values is satisfied, then calls that routine twice more, clears a global variable and stores a computed difference into the next word of that variable, and returns a concatenated value built from a global pointer and a RAM address.
-- `self_12`: The routine compares two memory blocks byte by byte using two pointers, tracks the length of the longest matching prefix and updates a global variable and a table entry with the best match length and offset.
+- `encode_longest_match`: Scans a data buffer to find the longest repeated substring and calculates the corresponding length and distance values.
 - `compare_and_update_minimum_match`: The routine compares a fixed source buffer against successive positions in a destination buffer, tracking the length of the longest common prefix for each alignment.
 - `find_longest_common_substring`: The routine scans a byte buffer for the longest repeated substring and updates a global variable with the best length and offset found so far.
 - `call_other_routine_and_return_one`: The routine calls another routine and then returns the constant value one.
@@ -232,9 +230,9 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `check_linked_list_entry_2`: The routine walks a linked list via a pointer in A1, dereferencing it until it reaches a null pointer or finds a node whose two short fields at offset six match the values in D0 and D1.
 - `return_zero_constant`: The routine is empty and returns the constant zero.
 - `call_other_routine_with_one`: The routine calls another routine passing the incoming argument and the constant 1.
-- `self_13`: The routine receives a 32-bit value and immediately calls another routine with that value and the constant 2, then returns.
+- `check_table_entry_match_2`: Passes the first argument and the constant value 2 to a table matching routine.
 - `call_other_routine_with_constant`: The routine calls another routine with the original argument and the constant 3.
-- `self_14`: The routine calls another routine with the same argument and a constant value of 4.
+- `check_table_entry_match_3`: Passes the first argument and the constant value 4 to a table matching routine.
 - `invoke_callback_and_return`: The routine calls another routine with an argument derived from a pointer stored in a global variable and then returns a constant value.
 - `flashback`: The routine receives a pointer, reads a 16-bit value from an offset within the pointed-to structure, adds a constant offset to obtain a second pointer, and calls another routine with that pointer.
 - `call_other_routine_and_return_minus_one`: The routine calls another routine with an argument derived from a pointer stored in a global variable, then returns a constant value of minus one.
@@ -281,9 +279,9 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `lookup_item_by_type`: The routine checks a byte field in a structure to index into a global table of linked entries.
 - `find_linked_item_index`: The routine reads a byte from the input structure and uses it as an index into a global table of linked items.
 - `check_ram_flag_and_table_entry`: The routine reads a byte from an offset in the argument structure and compares it with a constant stored in RAM. If the byte matches, it compares a short from the structure with a RAM value scaled by a constant; otherwise it indexes a global table with the byte and checks the entry against the same constant.
-- `self_15`: The routine reads a byte from offset seven of two input pointers, uses the first byte as an index into a global table, and compares the table entry with the second byte.
+- `compare_ram_byte_to_table`: Reads a byte from an offset in a register, checks if it is a printable character, and compares it against a value in a global table indexed by that character.
 - `check_ram_byte_and_table`: The routine receives a pointer and examines a byte at offset seven.
-- `self_16`: The routine reads a byte from an input structure and uses it as an index into a global table.
+- `check_char_table_match`: Reads a byte from an offset in the first argument pointer and checks if it is a printable character.
 - `check_collision_range`: The routine compares a short field from the first argument with a global short, using a flag to choose the comparison direction, and returns a failure code if the value is outside a range defined by a second argument and a global short.
 - `compare_short_fields`: The routine compares two short values located at offset two in two memory blocks pointed to by two registers.
 - `compare_word_offsets`: The routine compares two 16-bit values located at offset 2 in two input structures, optionally swapping the order based on a global variable, and computes their signed difference.
@@ -335,11 +333,11 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `check_zero_terminator`: The routine calls another routine and checks whether the returned byte is zero.
 - `check_null_terminator`: The routine calls another routine and tests the returned byte.
 - `check_other_routine_result_3`: The routine calls another routine and stores its returned byte in a local variable.
-- `self_17`: The routine calls another routine three times in sequence, checking the returned short each time.
+- `fetch_palette_bytes_sequence`: Calls a routine to fetch palette-indexed bytes three times.
 - `check_other_routine_result_4`: The routine calls another routine three times in sequence, testing the returned short each time.
 - `retry_three_calls`: The routine calls another routine three times in sequence, returning a non-zero value only if the first call returns non-zero and the second and third calls both return zero; otherwise it returns zero.
 - `retry_three_times`: The routine calls another routine up to three times in succession.
-- `self_18`: The routine calls another routine up to three times in a row.
+- `check_palette_byte_sequence`: Reads three bytes from a palette-indexed source.
 - `check_secondary_condition`: The routine calls another routine twice.
 - `empty_routine_6`: The routine contains no instructions and performs no operations.
 - `check_other_routine_result_5`: The routine calls another routine twice and returns a constant on a specific result combination, otherwise returns zero.
@@ -355,7 +353,7 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `check_collision_chain`: The routine walks a linked list of records indexed from a global table using a 16-bit index taken from an object field.
 - `compare_byte_flags_and_return`: The routine reads a byte from an offset of a global variable, compares a byte from a pointer in the first argument with a byte from the third argument, and checks the low bit of two bytes.
 - `return_constant_zero_2`: The routine is empty and contains no executable logic.
-- `self_19`: The routine receives a pointer argument, passes it unchanged to another routine, and returns.
+- `check_collision_chain_2`: Passes the first argument to a routine that checks a collision chain.
 - `compare_flag_bytes`: The routine reads a byte from an object field and a flag from another object, compares a byte from a pointer table with a parameter, and returns a 64-bit value built from a constant and the flag when the two flags match, otherwise returns the flag value.
 - `empty_routine_7`: The routine contains no instructions and returns immediately.
 - `recursive_call`: The routine calls another routine with the same argument it received and then returns.
@@ -416,7 +414,7 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `return_zero_stub_5`: The routine is empty and immediately returns zero.
 - `self_recursive_handler`: The routine receives two parameters and immediately calls another routine, passing the first two parameters together with two copies of its own address as the third and fourth arguments.
 - `other_routine_3`: The routine returns a constant value with no side effects.
-- `self_20`: The routine is empty and performs no operations.
+- `process_tile_column_2`: Passes two arguments along with pointers to a collision flag check routine and another helper routine to a tile column processing function.
 - `call_other_routine_with_self`: The routine calls another routine, passing the first argument, the second argument, and two copies of its own address as the third and fourth arguments.
 - `check_tile_collision`: The routine walks a small set of tiles around an object using a direction flag and a step count taken from the object structure.
 - `check_collision_flag_3`: The routine checks a flag in the first object’s status byte and a flag in a sub-structure, then compares a flag in the second object’s status byte with the first.
@@ -431,7 +429,7 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `check_and_trigger_event`: The routine checks two objects for a flag in a byte field and a condition in a referenced byte, then compares a flag bit between them.
 - `check_flag_and_mark`: The routine calls another routine and tests its short result.
 - `return_constant_zero_3`: The routine is empty and returns a constant zero.
-- `self_21`: The routine receives two arguments and immediately calls another routine, passing the first two arguments unchanged and passing the routine itself twice as the third and fourth arguments.
+- `check_collision_events_2`: Passes two arguments along with pointers to an event trigger routine and a flag clearing routine to a collision event checking function.
 - `clear_and_copy_palette_entries`: The routine clears a block of memory and then copies bytes from a table indexed by two bytes read from a global variable into two separate tables, using a loop that processes entries from a global list.
 - `set_global_from_other_routine`: The routine calls another routine, masks the returned 16-bit value with 7, subtracts 3, and stores the result in a global variable.
 - `normalize_object_flags`: The routine clears the low nibble of a word at an offset from a pointer and, unless the word at another offset matches one of three specific values, it replaces that word with a value derived from an input register and a constant divisor, then returns a constant.
@@ -443,7 +441,7 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `clear_status_flags`: The routine clears a global variable four times and then tests four individual bits of that variable.
 - `empty_routine_12`: The routine contains no reachable instructions and performs no observable work.
 - `disable_dma_and_loop`: The routine writes to the DMACON register with bit 15 set to enable DMA channels, then repeatedly calls another routine in an infinite loop.
-- `self_22`: The routine repeatedly copies a null-terminated string from a global variable to itself, inserts a separator, writes a fixed byte pattern to an output buffer, and calls another routine with the string and a constant.
+- `render_separator_string_loop`: Copies a string into a buffer, appends pipe characters, and draws the text to the screen using the blitter.
 - `copy_string_with_delimiters`: The routine copies a null-terminated string from a global variable to another location, inserts pipe delimiters, writes a repeated pipe pattern through a pointer, and then copies the string again with a space terminator.
 - `set_byte_and_loop`: The routine writes a constant byte value to a global variable, then tests the variable with a bitwise and and an equality check, and if the condition is true it calls another routine and returns.
 - `empty_routine_13`: The routine contains no reachable instructions and is effectively empty.
@@ -478,7 +476,7 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `empty_routine_15`: The routine contains no instructions and returns immediately.
 - `process_input_buffer_2`: The routine reads a byte from a global input buffer until a sentinel is found and compares it with a value from another routine, then updates the buffer based on the character: it clears the buffer on escape, backspaces on tab, appends printable characters up to a limit, and otherwise shifts the buffer contents and pads the display with a space or underscore before invoking another routine to render the text.
 - `process_input_buffer_3`: The routine updates a global character buffer using a byte from a register and a high-byte index, handling tab and newline cases, then shifts the buffer contents forward and terminates it with a space or underscore depending on the buffer length before calling another routine with the buffer and a constant.
-- `self_23`: The routine copies a global variable string to itself, terminates it with a space or underscore depending on the value of a global counter, then calls another routine with the string and a constant.
+- `format_and_draw_text`: The routine updates a global counter, copies a string from a global variable into a buffer, and appends a space or underscore character based on the counter value.
 - `set_global_state_flags`: The routine calls another routine three times and then sets a global variable to a constant.
 - `decrement_increment_counter`: The routine checks a global variable's bits and a global counter.
 - `decrement_and_increment_flag`: The routine checks a global variable for two flag bits.
@@ -559,7 +557,7 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `set_up_sprite_table`: The routine writes a set of 32-bit values split into 16-bit halves into a structure pointed to by a global variable, using a base offset and an index derived from a global flag.
 - `keyboard_interrupt_level2`: Level 2 interrupt: reads the CIA-A serial byte when the SP flag is set, marks it in the key table, keeps the last key code for the menus and the Ctrl state, handshakes the keyboard and clears PORTS.
 - `initialize_game_state_6`: The routine writes a series of constants and copies from a global variable into several global variables and RAM locations, then calls another routine twice with different global values, copies a block of 16 words from one global area to another, and then enters an infinite loop.
-- `self_25`: The routine initializes a set of global variables and a table with values from another table and a global variable, then clears a flag and calls another routine twice, and then copies a block of global variables onto itself before entering an infinite loop.
+- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 - `take_over_hardware`: Saves the system interrupt vectors and INTENA, sets up the double screen buffers, installs the game's level 1 and level 2 handlers and enables its interrupts.
 - `copy_word_table_until_marker`: The routine copies 16-bit words from a source pointer to a destination pointer until a sentinel word is encountered, then clears a global variable, stores the destination pointer into a global variable and another global variable, calls another routine, and sets a global variable to a constant value.
 - `infinite_recursive_loop`: The routine calls another routine and then enters an infinite loop, never returning.
@@ -604,7 +602,7 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `call_handler_routine`: This routine serves as a handler pointer target, being called by one unnamed routine.
 - `reset_interrupt_state`: The routine clears a global variable and then writes a series of values into a global variable and a small table of four words, followed by copying a value from another global variable into two locations and finally zeroing the global variable.
 - `set_display_dma_control_2`: The routine writes to Amiga custom chip registers that control display DMA and copper list pointers, and it sets a global variable to a constant value before copying a value from another global variable into a third global variable and then clearing the first global variable three times.
-- `self_26`: The routine walks a pointer through a byte table using the size encoded in each entry, writes each entry’s address into an output pointer list, and terminates the list with a sentinel.
+- `load_and_parse_file_table`: This routine loads a file and iterates through a table of structures, calculating offsets based on size fields stored in the data.
 - `populate_pointer_table`: The routine walks a byte table pointed to by a global variable and fills an array of pointers with successive entries, advancing the source pointer by a size derived from the entry bytes.
 - `initialize_display_buffer`: The routine sets up a display buffer by writing to global variables and calculating offsets based on input values and table entries.
 - `initialize_display_buffer_2`: The routine initializes a set of global variables used for a display buffer and computes a starting offset based on input values and a table pointed to by a register.
@@ -723,7 +721,7 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `increment_counter_and_clear_flag`: The routine increments a 16-bit counter stored at an offset from a pointer in A6 and clears a single bit in a byte at another offset from the same pointer.
 - `decrement_and_poke_handlers`: The routine decrements a counter at an offset from a passed pointer and, if the counter reaches zero while a flag bit is set, it validates a nearby jump table and patches two entries in that table with values from the passed structure.
 - `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
-- `self_3`: The routine checks a library header for a specific signature and a pointer to itself, then copies a short and a long from a caller-supplied structure into a library structure, optionally overwrites a function pointer, calls three functions through offsets in a global variable, and returns a value from the caller-supplied structure.
+- `validate_and_update_library`: Library code that checks magic values and function pointers within a structure to verify its integrity.
 - `set_flag_in_structure`: The routine receives an address in a register and sets a flag bit in a byte field of the pointed-to structure.
 - `validate_library_name`: The routine obtains a handle from another routine and checks a header field for a specific value.
 - `check_library_name`: The routine obtains a library base pointer from a global variable, validates the library header magic and then checks the library name field for the string 'explode.library' in either forward or reversed byte order.
@@ -732,7 +730,7 @@ Status, 2 Nov 2026: proofs 1 and 2 pass; proofs 3 and 4 wait for the local-model
 - `explode_entry`: explode.library function -30 (called by an imploded program's stub): explodes the calling program's own segment list and returns into its real first hunk.
 - `explode_program`: Explodes an Imploder V6 library-mode program in place: reads the descriptor after the stub's call, decrunches the packed hunk through the buffer hunk into the real hunks, applies the relocations and frees the two packing hunks.
 - `copy_memory_blocks`: The routine copies a block of memory from a source area to a destination area, handling full 8-word chunks and a remaining byte tail, and updates a running sum into a table while looping until a counter in a global variable reaches a limit, then clears a flag and returns.
-- `self_4`: The routine compares two pointers and conditionally calls another routine, then returns the value pointed to by one of the pointers.
+- `check_pointer_and_decrunch`: Library code that compares two pointers; if they are equal, it calls a routine to decrunch a block of data.
 - `copy_block_words`: The routine copies a variable number of 32-bit words from a source area to a destination area, handling full 8-word blocks first and then any remaining words one by one.
 - `copy_memory_blocks_2`: The routine copies 32-bit words from a source area to a destination area in a loop, handling a signed count and a termination condition based on a pointer reaching the end of a buffer.
 - `copy_struct_array_loop`: The routine copies blocks of eight words from a source area into a destination area, then copies any remaining words one by one, using a global variable as a loop counter and a table of function pointers for repeated callbacks.

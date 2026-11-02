@@ -53,10 +53,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_game_state`: The routine calls another routine multiple times, invokes a function pointer taken from a global variable, clears a word at an address derived from a register, and returns the concatenation of two input registers.
 - `decrement_to_minus_one`: The routine loads a short value from a register, repeatedly decrements it until it reaches -1, and then returns.
 - `initialize_board_state`: The routine clears a fixed region of memory to zero, then repeatedly invokes other routines to update game state and shift rows of bytes in a buffer.
-- `self`: The routine processes a 16-bit value by repeatedly shifting it right and mixing in bits from a table of 16-bit words, building an index from the extracted bits.
+- `shift_bit_stream`: Shifts bits from a register and updates a value using a bitmask or a value from a table.
 - `lookup_table_masked_value`: The routine reads a 16-bit value from a table using an index derived from the input word, and returns that value masked with an input mask.
 - `fill_two_tables`: The routine calls another routine to obtain a count, then fills a short table with that many values returned by the same routine, accumulating the values.
-- `self_2`: The routine copies a short from a source pointer into a destination table and updates a running sum.
+- `initialize_table_values`: Iteratively calculates and stores new values into a table using a pointer.
 
 ### Tetris Pro (1993)(Logic Systems).adf:bootblock
 

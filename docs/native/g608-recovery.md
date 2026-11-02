@@ -140,7 +140,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `draw_line_dual`: Draws a one-pixel line in colour 1 into two buffers at once, used for the tethers between linked balls.
 - `extract_image_from_table`: The routine takes two inputs, computes a table address from them and a global variable, then uses a mask derived from the first input to clear and set 16-bit words in the target table in a repeating 120-byte pattern.
 - `write_planes_from_source`: The routine copies 16-bit words from a global source table into a destination table using an index derived from the inputs.
-- `self_6`: The routine blends four 16-bit source words from a table into a 16-bit destination block using a shift amount derived from the low four bits of the first input, applying masks and combining high and low halves of the shifted values.
+- `render_sprite_to_screen`: Copies sprite data from a global table to the screen buffer, applying bitwise masking and shifting to handle sub-pixel positioning and transparency.
 - `wait_for_vblank_and_copy_planes`: The routine waits for a hardware flag to clear, then configures copper registers and blitter registers for a series of block copies.
 - `copy_struct_array`: The routine copies a fixed-size array of structures from a source table to a destination table, preserving each field in order while skipping a single word in each structure.
 - `copy_struct_block`: The routine copies a fixed-size block of 32-bit words from a source table located at a constant address to a destination global variable, advancing both pointers each iteration.
@@ -230,18 +230,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decrement_global_and_branch`: The routine receives a word in D0, subtracts a value derived from the high nibble of that word plus eight from a global variable, then calls another routine.
 - `increment_global_and_scan_table`: The routine increments a global variable, resets it when it exceeds a threshold, calls another routine twice, then walks a table of short entries until it finds a sentinel value and writes a marker into the table.
 - `handle_input_0x20`: The routine returns the input value unless it equals a specific code, in which case it sets a global variable and calls another routine twice.
-- `self_9`: The routine updates a global variable by adding a scaled difference to it and then walks a table of signed bytes via an uninitialized pointer, stopping when it finds a zero byte or a negative byte, and writes a constant byte into the table entry that follows the first zero byte.
+- `process_collision_and_update_state`: Plays a sound effect and calculates a value from a global variable to potentially add bonus points.
 - `check_table_entry_2`: The routine increments a global counter and resets it after a threshold.
 - `increment_global_and_update_table`: The routine increments a global variable, wraps it when it exceeds a threshold, calls another routine twice, then walks a table by a fixed stride until it finds a non-negative entry equal to a specific value, and writes that value into a field of the same entry.
 - `check_and_increment_flag`: The routine returns the input when the input is not a specific value, otherwise it calls another routine twice, reads a global variable and conditionally calls another routine, increments the global variable and adjusts it with an unsigned short, then returns the result.
 - `check_and_update_flag_2`: The routine calls another routine twice, reads a byte from a global variable and, if the variable is not one, calls another routine to obtain a value.
-- `self_10`: The routine calls another routine, reads a global variable, computes a quotient from the difference of two reads of that variable and a constant, conditionally calls another routine based on the quotient, then walks a short table by a fixed stride until it finds a zero entry or a negative sentinel, and writes a constant to the located entry.
+- `check_score_add_bonus`: Plays a sound effect and conditionally adds bonus points based on a global variable range.
 - `check_table_and_set_byte`: The routine checks a signed offset derived from a register and conditionally calls another routine.
 - `update_object_motion`: The routine updates a motion object stored in the A6 argument block by iterating a table of control points and selecting the closest one based on distance calculations.
 - `update_sprite_motion_state`: The routine updates a sprite motion state stored in a structure pointed to by a register.
 - `clear_object_state`: The routine calls another routine and, if a zero flag condition is true, writes a constant to a word pointed to by an output pointer and then stores return values from two further calls into two words of a structure referenced by that pointer.
-- `self_11`: The routine updates a global variable from a table entry, clears a table entry, then repeatedly calls another routine and, when a condition is met, writes a fixed byte, the routine’s return value, two table-derived words and two values from an output pointer into an output buffer for seven iterations.
-- `self_12`: The routine clears a global variable, reads two words from an input table, then loops seven times calling another routine and, if a flag is set, writes a fixed byte, the call result, the saved words and two words from an output pointer into an output buffer before returning when a zero word is seen.
+- `spawn_object_from_data`: Plays a sound effect and initializes a global flag.
+- `spawn_explosion_particles`: Plays a sound effect and clears the source object's data.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `increment_counter_with_branching`: The routine increments a counter stored in a structure and checks it against a limit.
 - `initialize_extra_output_block`: The routine calls another routine and, if a zero flag condition is true, writes a constant word to a memory block pointed to by an output pointer, fills several words in the block by calling another routine twice and writing constants, then loops calling another routine until a masked result is not both bits set, and finally stores a masked result word into the block.
@@ -275,9 +275,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `increment_global_and_dispatch_table`: The routine increments a global counter, loads a word from a structure pointed to by a register, and if the value is non-negative it computes several offsets into a global table and calls another routine with derived parameters.
 - `draw_dispatch_last_entry`: Last entry of the object draw dispatch table, indexed by object type: a single branch to the shared drawing path that most object types use.
 - `swap_two_table_entries`: The routine reads a 16-bit index from a global variable, uses it to fetch a 16-bit value from a table, then reads another 16-bit index from the same global variable, uses it to fetch a 16-bit value from a second table and stores it back into the global variable, and finally writes the first fetched value into the global variable, effectively swapping the two table-derived entries.
-- `self_15`: The routine is empty; it contains no instructions and performs no operations.
+- `empty_routine_placeholder`: This routine is empty and contains no executable instructions other than a return.
 - `empty_routine_5`: The routine contains no instructions and returns immediately.
-- `self_13`: The routine repeatedly extracts the low word of an input value, shifts it left by two bits, and updates a high-word accumulator using carry flags from the shift operations.
+- `compute_bitwise_iteration`: Performs a bitwise arithmetic loop on an input value, shifting and adding bits based on carry flags and comparisons, iterating up to 15 times before returning.
 - `wrap_palette_table`: The routine fills a table of short values with a wrapped index sequence.
 - `fill_modulo_table`: The routine fills a short table pointed to by a pointer with values derived from a width parameter.
 

@@ -71,22 +71,47 @@ ever relaxed to make a game pass.
    as raw words and rebuilt (at most four rounds), then the comparison must be identical.
 7. **report** - the four proofs, `coverage.json/md`, `functions.md`, state.
 
-## Naming and describing at scale (no paid API)
+## Naming and describing at scale (describe v3, 2 Nov 2026)
 
-Each routine climbs the ladder only as far as it must:
+Each routine climbs the ladder only as far as it must; `work/describe-stats.json` counts what each rung carried.
 
 1. reuse - a routine already accepted for the same key keeps its name and text;
-2. deterministic rules on recovered facts - empty stubs, return-constant stubs, jump stubs, single library-call
-   wrappers, standard boot blocks and the ProTracker replay entry points get exact names and texts;
-3. the local model on Ryzen (Ollama, the pinned `muse-glimmer:30b`, thinking off, no `num_ctx`, structured JSON output)
-   writes a name and a one-or-two-sentence description from the Ghidra pseudo-code plus the recovered facts. One game
-   at a time holds the GPU, and the model must already be resident 100% in GPU memory.
+2. deterministic rules on recovered facts - empty stubs, return-constant stubs, jump stubs, library wrappers (including
+   saved-register library stubs and unresolved library vectors), standard boot blocks, the ProTracker replay entry points,
+   blitter waits, beam-position waits, copper-list starts, copy and clear loops, jump-table entries and empty compiled C
+   functions get exact names and texts (every rule matches the whole instruction list);
+3. shared-code signature library (`siglib.py`, data under `/srv/fast/amigo/siglib`, never in a repository) - every accepted
+   routine of every game is fingerprinted from Ghidra's instruction listing with relocated and absolute addresses and
+   outside branch targets masked. An identical body (at least 4 instructions, not just a run of calls) takes the accepted
+   name and text of the other game with no model call (sentences about callers are dropped); a near-identical body
+   (Jaccard 0.90 or more on 3-instruction shingles) is only a draft that the big model reviews. Model texts from naming v1
+   and copies are never used as sources. The library is rebuilt after each game, so later games reuse earlier ones;
+4. identical bodies inside one game are named once; each copy gets the text plus "It is an identical copy of ...";
+5. routines of at most three instructions get an exact literal description;
+6. local models, bottom-up (callees before callers, with the callees' accepted names and first sentences in the facts),
+   in batches of `NAMING_BATCH` (default 10) small routines per request; long routines go one at a time. An optional fast
+   draft model (`DRAFT_OLLAMA`/`DRAFT_MODEL`) drafts with a confidence; only high-confidence drafts that pass the quality
+   check are kept, the rest are reviewed by the big model (`OLLAMA`/`RECOV_MODEL`, think off, never `num_ctx`). Rejected
+   answers are retried singly with the reasons. Answers that fail only on form are repaired mechanically first:
+   hexadecimal addresses become "a fixed address", small hexadecimal constants are written in decimal, over-long texts
+   keep their leading whole sentences;
+7. another local method for what still fails - the alternate big model (`ALT_OLLAMA`/`ALT_MODEL`) with more context (the
+   pseudo-code of callers and callees and a longer code window);
+8. paid fallback (`paid_fallback.py`, Anthropic Message Batches API) - DISABLED until Karl confirms a budget
+   (`paid-fallback/ENABLED.json`); off-peak only. What still fails is listed in `paid-fallback/pending/<id>.jsonl` and stays
+   rejected; answers that come back still pass the quality check on the game's next naming pass.
+
+Stage B runs on every GPU host listed in `recovery/naming-hosts.json` at once (the queue gives each host a different game).
 
 Every text passes a quality check before it counts: not empty or too short, no generic wording ("performs
 operations", "unknown", "helper function" and similar), no hexadecimal, no library call the routine does not make, no
 "empty routine" claim for a routine with real instructions, not a copy of another routine's text, and for unnamed
-routines a specific lower_snake_case name. A rejected answer is retried once with the reasons; if it fails again the
-routine stays undescribed and the game is blocked on proof (c).
+routines a specific lower_snake_case name (not generic, not "self"). If no rung produces an accepted text the routine
+stays undescribed and the game is blocked on proof (c).
+
+Measuring: `naming_bench.py` runs the production describe.py on a held-out copy (sample or whole game, empty
+descriptions) and `naming_judge.py` grades answers against the pseudo-code with a local judge model. Results:
+`/srv/fast/amigo/scratch/naming-bench/results.jsonl` and `judged.jsonl`.
 
 ## Copy protection (tagged for removal in the native rewrite)
 

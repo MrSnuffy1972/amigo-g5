@@ -114,13 +114,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `ack_interrupt_return`: Handler for interrupt levels the game does not use: writes the pending requests back to clear them and returns from the exception.
 - `setup_hardware_and_data`: Disables interrupts and DMA before clearing global variables and copying a table from low memory to a high-memory buffer.
 - `clear_interrupt_and_dma_flags`: The routine writes to DMACON and INTENA and INTREQ to clear DMA and interrupt request flags and then re-enables interrupts and DMA channels.
-- `self_3`: The routine checks a global variable and, if a flag is set, computes a transformed byte value and updates the global variable and a byte table entry.
+- `handle_keyboard_interrupt`: Checks a global flag and processes keyboard serial data via CIAA registers.
 - `read_joystick_and_ciaa`: The routine calls another routine twice and stores the results in a global variable.
 - `transform_input_flags`: Performs bitwise operations on input flags from registers D0 and D7, shifting and XORing specific bits before combining them with a constant mask.
 - `prepare_graphics_once`: One-time set-up guarded by its own flag: runs the graphics table preparation on three image blocks the first time it is called.
 - `copy_blocks_to_global_and_back`: The routine copies 20 word blocks from a source pointer to four fixed tables and a global variable, then copies 80 words back from the global variable to the source area, repeating the process 200 times.
 - `copy_word_block_to_memory`: The routine copies 16,000 words from a global variable area to another global variable area and to a fixed memory region.
-- `self_11`: The routine first resolves a table of pointers stored in a global variable by dereferencing each entry and writing the resolved address back into the table.
+- `initialize_input_pointers`: Iterates through a table of pointers, adjusting them relative to a global base address.
 - `align_word_to_block`: The routine takes a 32-bit value from a register and a 16-bit value from a register, aligns the 32-bit value down to a multiple of 160 by clearing its low 8 bits, then builds a 32-bit result from the aligned value and the remainder offset plus eight, combined with the quotient and the 16-bit input.
 - `rotate_word_right`: Rotates a 16-bit word right by one bit position for a fixed number of iterations.
 - `align_word_index_and_pack`: The routine aligns the low word of a value down to a multiple of a constant, extracts the low word remainder, shifts it, and combines the parts with an input word to form a packed 32-bit result.
@@ -140,7 +140,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_palette_and_dispatch`: The routine copies a block of palette words from a table to hardware registers, optionally overwriting part of the block with another table and a global value, then conditionally calls a function from a jump table using an index derived from a global variable.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `set_global_flag_sequence`: Sets a global variable to a specific constant value, calls another routine, and then toggles the global variable between zero and one.
-- `self_12`: The routine updates a set of RAM words and long values from a table and then conditionally advances a global counter, copying a short value into two long slots when the counter is even or beyond a threshold.
+- `update_sprite_palette_colors`: Configures copper list jumpers and updates sprite palette entries by copying color values from source memory locations to destination registers and global variables.
 - `configure_copper_jumper`: Sets up the copper list jump address by writing to the COPJMP1 hardware register.
 - `initialize_sprite_tables`: The routine computes a base offset from a global variable and writes the resulting addresses into ten global table pointers.
 - `random_value`: Returns a fresh pseudo-random value by calling the random-number generator.
@@ -170,7 +170,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `load_sprite_data_block`: Clears several global variables and calls an external routine.
 - `copy_player_state_entries`: The routine copies a fixed number of entries from one table to another by moving several fields per entry, then updates a global counter with wrap-around and increments another global counter, setting a flag if the counter overflows.
 - `compute_scaled_remainder`: Calculates the remainder of a 16-bit value divided by 10 and scales it by 2 for the lower word.
-- `self`: The routine calls another routine, then selects a short value and a table base from a global flag and uses the current index to fetch a function pointer from a table and call it.
+- `execute_state_machine_step`: Retrieves a function pointer from a table indexed by a global counter and executes it.
 - `shift_bitplane_data_right`: Iterates through a block of memory, shifting each word right by one bit and propagating the least significant bit to the most significant position of the subsequent word.
 - `shift_rows_left_with_carry`: The routine processes a block of short words arranged as a table.
 - `shift_tile_palette_data`: Shifts a series of 16-bit words forward in a memory buffer using a stride calculated from a global counter.
@@ -188,7 +188,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `merge_tables_with_mask`: The routine merges four 32-bit words from a source table into a destination table using a bitwise mask derived from the source words.
 - `merge_table_rows`: The routine merges four 32-bit words from a source block into a destination block using a mask derived from the source words.
 - `copy_and_clear_sprite_data`: Copies specific fields from a source table to a destination table in a nested loop, then zeroes out those same fields in both tables.
-- `self_2`: The routine iterates over a global table and ORs together four words from each entry, writing the result back into the entry.
+- `clear_sprite_data_blocks`: Iterates through a block of memory starting at a fixed address, performing bitwise OR operations on specific word offsets within each sub-block.
 - `copy_global_structures_to_buffer`: Copies specific words from a global array to a fixed memory location in a nested loop.
 - `swap_and_clear_tables`: The routine swaps bytes between a table and a global workspace, clears several tables, and then repeatedly processes a set of entries by rotating a byte value and writing a byte from a global array into a table slot.
 - `swap_and_clear_state`: The routine repeatedly invokes another routine and, when a flag is set, swaps two bytes in a table indexed by a global counter.
@@ -220,7 +220,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `load_karate_character_data`: Calculates an index from a global variable and uses it to fetch character attributes from a table.
 - `select_table_index`: The routine reads a global variable and indexes a table with it to obtain an index, then uses that index to pick a byte from the table and compares two bytes at a fixed offset from the chosen entries.
 - `evaluate_game_state_flags`: Reads specific bytes from a global structure to determine game state conditions.
-- `self_4`: The routine repeatedly calls another routine and compares the low byte of a register with the low five bits of the returned value.
+- `evaluate_game_state_flags_2`: Calls another routine to retrieve a value and compares its lower bits against a threshold.
 - `compute_state_flags`: Reads bytes from two memory structures and combines them with conditional offsets based on a zero-check.
 - `clear_byte_table_and_search`: The routine clears a byte table and then performs a nested search through a table of pointers.
 - `infinite_loop_when_flag_set`: The routine checks a global variable.
@@ -245,8 +245,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decrement_flag_loop`: The routine sets a global variable to seven and then repeatedly decrements it while calling another routine.
 - `draw_panel_into_both_buffers`: Runs the drawing routine that follows into both display buffers in turn and restores the current-buffer pointer.
 - `decode_script_bytes`: The routine walks a byte stream using an index stored in a global variable, reads bytes from a table pointed to by another global, and dispatches on the byte value.
-- `self_13`: The routine builds an index from the low byte of an input register and a global variable, then repeatedly calls another routine, using its returned value to decide whether to continue looping, and finally increments the global variable and returns a combined value from the index and another input register.
-- `self_5`: The routine checks a global variable and, if it is in a valid range, updates the variable and repeatedly calls another routine while adjusting the variable in a loop until it reaches a sentinel value.
+- `decode_script_byte_sequence`: Processes a byte value by subtracting an offset and applying masks to a table.
+- `process_global_byte_table`: Checks if a global variable is within a valid positive range.
 - `return_global_variable`: The routine loads a global variable and returns its value.
 - `apply_byte_mask_to_table`: The routine iterates over a block of memory using a pointer and a counter.
 - `draw_panel_current_buffer`: Calls the drawing routine that follows once, for the current buffer only.
@@ -273,7 +273,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reset_low_nibble_flag`: The routine writes a constant to a global variable, then clears it, masks the variable with the low nibble, and calls another routine.
 - `self_calling_state_toggle`: The routine calls another routine repeatedly and toggles a global variable between 1 and 0 before conditionally setting it to 2 and performing further calls.
 - `advance_scrolling_object`: Moves the scrolling object one step when it is active: erases it at the old position, advances the fine position by two in a 64-step cycle (the coarse position drops by one on each wrap, modulo 8) and draws it again.
-- `self_14`: The routine repeatedly calls another routine four times with different repetition counts.
+- `advance_scrolling_object_steps`: Calls a routine to increment a global counter multiple times in sequence.
 - `increment_global_counter`: The routine calls another routine through an address in a register and then increments a global variable by one.
 - `decode_screen_tiles`: The routine decodes a block of screen tiles using a small lookup table and a mask derived from input registers.
 - `apply_sprite_tile_pattern`: The routine writes a 4×4 block of bytes derived from a small pattern table and a control byte into a tiled region of a global buffer, using a computed base offset and a stride of 160 bytes per row.
@@ -309,8 +309,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_state_table`: The routine checks a global flag and, if set, calls another routine and then iterates over a table of state structures by index, updating bytes in each structure based on flags and values read from the structures.
 - `decrement_or_reset_counter`: The routine reads a global variable, uses it as a base for a structure, and decrements or increments a byte field in that structure, resetting it when it underflows or overflows.
 - `update_player_stats`: The routine updates several byte fields within a structure pointed to by a global variable, performing addition with carry propagation between related bytes.
-- `self_15`: The routine reads a byte from a structure pointed to by a register, inverts it, writes the inverted value back plus one, and updates another byte in the same structure with an inverted value plus a conditional increment.
-- `self_6`: The routine reads a byte from an offset in a structure pointed to by a register, inverts it, writes the inverted value back plus one, and updates another byte in the same structure with an inverted value plus a conditional increment based on the previous byte.
+- `toggle_and_increment_flags`: Reads a byte from a memory offset, inverts it, and increments it back to the same location.
+- `toggle_sprite_state_flags`: Inverts and increments a byte at offset 1793 from a base pointer, then updates a byte at offset 1783 based on the result.
 - `shift_byte_pair_2`: The routine reads a byte from an object pointed to by a register, shifts it right by one bit and writes the result back to the same location.
 - `shift_byte_pair`: The routine reads a byte from an object pointed to by a register, halves it by shifting right, and writes the result back to the same location.
 - `decode_sprite_state_table`: The routine reads and updates bytes in a small table of sprite-like records.
@@ -331,7 +331,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_flag_and_call`: The routine checks a byte in a table indexed by a global variable.
 - `save_object_screen_position`: Stores the current screen pointer in the bonus object's saved-position slot and draws the object with the masked plotting routine.
 - `copy_sprite_attributes`: The routine copies sprite attribute bytes from a source structure referenced by a global variable into a destination structure, adjusting a mask byte and writing several fixed attribute bytes.
-- `self_16`: The routine reads a byte from a table indexed by a value derived from a global variable and an input register, and if the byte is non-zero it calls another routine twice with arguments built from bytes in the same table entry and then stores a result from the second call into a table indexed by the input value.
+- `render_sprite_with_masking`: Checks a condition at offset 1803; if true, it calls routines to compute tile offsets, mask tiles with a rotated key, and restore the background.
 - `clear_opponent_state`: The routine clears a per-opponent state entry and, when a flag is set, invokes another routine with parameters derived from bytes in a per-entity structure and a global table.
 - `music_frame_all_channels`: Music player frame: runs the channel sequencer for each of the four audio channels.
 - `music_channel_sequencer`: Music channel sequencer: counts down the current note, then reads the channel's command stream (note, sample, loop and pointer commands through a jump table) and programs the channel's period, volume and sample with DMACON.
@@ -348,7 +348,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decrypt_global_bytes`: The routine increments a global variable and then processes twenty bytes of a global buffer in a loop.
 - `initialize_sprite_tables_2`: The routine fills a series of entries in a table with zeros and with values read from a global variable and from offsets relative to an index taken from the global variable, then it clears specific bits in four words of a global variable.
 - `write_masked_bytes_to_table`: The routine reads a byte from a global table using a running index and XOR-masks a byte in a working buffer, then copies the same byte to three fixed offsets in that buffer and masks another offset.
-- `self_7`: The routine computes several byte values by xoring pairs of bytes from RAM and writes each result to four mirrored locations derived from a pair of global short variables, using both the variable and its negation as bases.
+- `update_sprite_collision_flags`: The routine computes XOR-based values from specific memory locations and writes them to multiple offsets within sprite data structures.
 - `initialize_global_table`: The routine checks a global variable and, if it is zero, increments it, shifts it right, and then performs a loop that updates a series of bytes in the same global memory area by adding a byte taken from a position derived from the global variable and the loop index, masking the result.
 - `rotate_and_copy_sprite_words`: The routine updates a global counter and dispatches on its low bits.
 - `decode_input_byte`: The routine reads a byte from a global variable and, depending on its value, clears two control flags and sets a state variable, then returns a value obtained from another routine.
@@ -366,24 +366,24 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reset_and_update_state`: The routine resets a set of global variables when a flag is set and then updates several counters and reads bytes from a table indexed by those counters.
 - `conditionally_recurse_and_clear_flag`: The routine checks a global variable for a specific value and a flag variable for non-zero.
 - `compute_sprite_tile_offset`: The routine computes a word offset from two input values and a table base pointer, then uses the result to index a table and conditionally clears a word.
-- `self_8`: The routine computes an index from the low twelve bits of an input value, combines it with a masked input and an external pointer, and writes the result to a global variable.
+- `calculate_sprite_tile_offset`: Computes a memory address by scaling an index from a register and adding it to a base pointer, while validating bounds against a global variable.
 - `apply_masked_bitplane_blend`: The routine blends four source bitplanes into four destination bitplanes using a mask, producing a masked copy of the source into the destination.
 - `process_sprite_masks`: The routine iterates over a set of mask words, builds four rotated masks from four source words per block, combines them with a control word and writes the resulting mask to an optional output table.
 - `check_input_range_and_call`: The routine checks a masked value from a register against a threshold and, if in range, derives an index from another register, tests it against fixed ranges and conditionally calls another routine.
 - `check_input_range_and_dispatch`: The routine checks a masked value from a register against a threshold and, if the condition holds, masks another register value and tests it against several ranges.
-- `self_17`: The routine processes four 16-bit words from a source table, combines them with a rotating mask derived from a global variable and a rotating counter, and applies the mask to four 32-bit words in a destination buffer using bitwise AND and OR operations.
+- `apply_rotated_bitmask`: Iterates through a series of data structures, rotating a combined mask value based on a shift amount.
 - `check_collision_mask`: The routine builds a 32-bit mask from four words of a source structure and compares it against two tables indexed by input values.
 - `mask_tile_words_with_rotated_key`: The routine masks four 32-bit words per iteration using a rotated key derived from a global variable and the input word.
 - `apply_sprite_mask_to_tiles`: The routine iterates over a set of tile entries and applies a per-pixel mask derived from a source word and a rotation amount.
 - `apply_rotated_word_mask_to_table`: The routine conditionally iterates a fixed number of times, building a 32-bit mask from a word in a table by rotating it and mixing it with an accumulator value, then applying the mask with a bitwise AND to four 32-bit words spaced 40 bytes apart in a source table and OR-ing the result into the corresponding words of a destination table.
 - `apply_sprite_mask_to_screen`: The routine masks a block of screen words with a per-pixel mask derived from a source word and writes the result through a pointer computed from input values, using a global table as a mask source.
-- `self_18`: The routine clears a large block of short words by subtracting a constant, zeroes a small code area, resets several global variables and then copies a set of words from one memory area to another.
+- `initialize_game_state_and_loop`: The routine initializes global variables, clears memory blocks, and sets up data tables before entering a main processing loop that calls other routines based on state flags.
 
 ### logged disk load from International Karate + (1988)(System 3)[cr Oracle][m Invisible Crime].adf:intro#bytekiller+E8 unpacked at an address (131072 bytes)
 
 - `set_byte_flag`: The routine receives a pointer in A0 and sets a flag bit in the byte immediately before the pointed-to address.
 - `set_global_variable_table`: The routine writes a constant to a global variable, inverts it, and then conditionally copies four words from one of two tables into the same global variable.
-- `self_9`: The routine walks a zero-terminated string at a fixed address comparing each byte with the previous one and decrements a counter.
+- `compute_audio_volume_table`: Iterates through a data buffer to find the maximum byte value, then uses that value to calculate and populate a table of integers via a loop.
 - `clear_audio_dma`: The routine writes to the four audio volume registers and to the DMA control register, setting the audio channels off and clearing DMA enables.
 - `init_audio_channels`: The routine increments a global counter and, on the sixth call, resets state, invokes another routine four times, and sets up a loop that writes to four audio channel base registers.
 - `handle_vampire_sound`: The routine decodes a nibble from a control byte and updates a short value in a structure, clamping it, then copies it to a caller’s field.
@@ -409,7 +409,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_global_flags_2`: The routine writes two values to a global variable and then returns.
 - `reset_global_flag_2`: The routine clears a global variable and then checks a byte in a table indexed by another global variable.
 - `clear_global_flag_2`: The routine checks a global variable and a table entry indexed by another global variable.
-- `self_10`: The routine checks a byte from a memory-mapped I/O area and, depending on its value, reads a word or long from the following bytes and adds a small constant to it, storing the result in a global variable.
+- `dispatch_player_state_logic`: Checks a global flag and reads a byte from a memory-mapped register to determine a control code.
 - `set_player_state_for_two_frames`: The routine writes fixed values to several words in a structure pointed to by A5, then loops twice.
 - `initialize_player_state`: The routine clears several words in a structure pointed to by A5, sets a few fixed word values in that structure, then loops twice to build two 32-bit pointers from a global table base and an index, writes those pointers and a constant word into the structure, and finally returns.
 - `set_palette_and_tile_pointers`: The routine increments a global counter modulo 128 and returns early if the counter is already non-zero.
@@ -429,30 +429,3 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `bytekiller_depack_game_copy`: The ByteKiller depacker as it runs from 500 hex (a verbatim copy of ik+++ hunk 0 from offset 32 hex): moves the packed data up, unpacks the game to 600 hex onwards, checks the checksum and jumps to the game entry.
 - `bk_refill_bit_buffer_copy`: Bit buffer refill of the depacker copy at 500 hex: takes the previous packed longword, adds it to the checksum and shifts out the first bit with the end marker set.
 - `bk_read_bits_copy`: Bit reader of the depacker copy at 500 hex: shifts D1 bits of the packed stream into D2, refilling the 32-bit buffer as needed.
-
-## Notes from the b1-1907 agent (1 Nov 2026)
-
-- Variant: the AmigaDOS release cracked by Oracle with the Invisible Crime intro (boot block, startup-sequence,
-  the cracktro, the game and the AmigaDOS Type command). It runs end to end on the reference harness: cracktro,
-  title, credits, key help, demo fights, one and two player games, the bonus stage, match over and the high-score
-  table. The other IK+ project in Ami-Go is a WHDLoad install of the same game; this one carries the cracktro.
-- The game and the cracktro are each one code hunk holding a ByteKiller depacker and a packed stream. The first
-  automatic run saw only the depackers. This run unpacks both streams with a depacker written from the recovered
-  one (checksum verified), recovers the unpacked images as units at the addresses the programs unpack them to, and
-  recovers the depacker copy the game runs from low memory as its own unit.
-- Code was found by region: every non-code gap in the code areas was decoded and read by hand. Real code found
-  that way: the bonus stage's object handlers reached through an absolute pointer table, and four unreferenced
-  routines. Buffers and tables that an earlier rule had decoded as code (a zero-filled buffer of about six
-  kilobytes among them) were returned to data.
-- Copy protection: none found. No disk hardware access, no trackdisk I/O, no manual, word or code-wheel lookup,
-  no checksum over code and no trace-vector trick in the game or the cracktro. The original protection was in the
-  publisher's loader, which this release replaced with AmigaDOS files. The keyboard code words are game cheats.
-- Cracktro: the Invisible Crime intro (starfield, globe, copper bars, scroller, music; waits for the left mouse
-  button) is recovered and labelled cracktro. There is no trainer in this release.
-- Naming: names come from deterministic rules, two local models (sharded across Ryzen and IntelPC) and hand
-  entries; the routines the models described wrongly in the review (for example calling a wrapper "recursive", or
-  calling the pause idle loop with the frame interrupt behind it "empty") were rewritten by hand. A full
-  read-through of every description happens in stage 3, where each routine is ported.
-- Reassembly: every unit is identical in bytes and relocations; the cracktro's executable file additionally carries
-  an empty relocation block after its code hunk, which vasm does not write, so that one file is hunk-identical
-  rather than file-identical.

@@ -7,19 +7,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (901120 top-level bytes in 35 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 1 raw-word lines |
-| Functions named and described | pass, 156 of 156 named (0 author symbols), 156 of 156 described (1 by rule, 155 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 432 of 432 (100.00%) |
+| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 1 raw-word lines |
+| Functions named and described | pass, 156 of 156 named (0 author symbols), 156 of 156 described (1 by rule, 154 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 953 of 953 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 16900 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 4842 of 4842 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 789956 |
+| asset | 773056 |
 | code | 20844 |
-| data | 76921 |
-| padding | 8791 |
+| data | 93818 |
+| padding | 8794 |
 | unused | 4608 |
 
 ## Code units
@@ -29,6 +30,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Disk-Validator | 1 | 386 | 1 |
 | Jail Break (1990)(Odyssey).adf:JailBreak | 4 | 4446 | 154 |
 | Jail Break (1990)(Odyssey).adf:bootblock | 1 | 10 | 1 |
+| jailregback.map (raw code file, load address unknown) | 1 | 0 | 0 |
+
+## Cases handled
+
+- 2 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- jail break (1990)(odyssey)/Jail Break (1990)(Odyssey).adf:Map/jailregback.map: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+
+## Cracktros (kept, not protection)
+
+- none
 
 ## Copy protection found
 
@@ -195,7 +206,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `close_game_libraries`: The routine runs entity callbacks, calls an indirect routine, writes to memory locations, then closes the graphics library.
 - `run_level_script`: The routine repeatedly calls a function taken from a table pointed to by a global variable, stores each returned value into successive entries of a global variable array, and stops when the returned value is zero or a negative sentinel is found in the array, returning that sentinel or zero.
 - `process_game_objects`: The routine walks a table of entries stored in a global variable, stepping through the table by a fixed stride.
-- `update_score_display`: The routine updates the score display by writing to a custom hardware register.
+- `chain_vblank_interrupt`: Level-3 interrupt handler the game installs in the level-3 interrupt autovector in front of the system handler: if INTREQR shows a vertical blank it calls decrement_prisoner_counters, then jumps on to the previous level-3 handler, whose address the install code wrote into this routine's jmp operand at run time (close_game_libraries restores the autovector from that same operand).
 - `handle_vblank_interrupt`: The routine checks a bit in a custom hardware register and, if set, writes a value to a custom hardware register and calls decrement_prisoner_counters.
 
 ### Jail Break (1990)(Odyssey).adf:bootblock

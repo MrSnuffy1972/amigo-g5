@@ -17,8 +17,10 @@ release with all four courses but with the music file replaced by a copy of the 
 |---|---|
 | 1. every byte classified (901,248 top-level bytes, 44 containers) | **PASS**: 100.000%, 0 unknown |
 | 2. byte-identical vasm reassembly | **PASS**: 15 of 15 units identical (3 raw-word fallback lines) |
-| 3. every function named and described | **in progress**: 1,409 routines; 1,137 named (608 by the author's own symbols), 529 described; the local-model pass (muse-glimmer on Ryzen) is running for the rest |
-| 4. every executed address in recovered, described code | waits only on proof 3: all 2,475 executed PCs of the reference run map to recovered code; they count once their routines' descriptions are accepted |
+| 3. every routine named and described | **PASS** (2 Nov 2026): all 1,409 routines; EA author symbols name 608, the local models (Glimmer on Ryzen, qwen3.6 on IntelPC) wrote the rest, 37 the models could not get past the quality check were named and described by hand from the code |
+| 4. every executed address in recovered, described code | **PASS** (2 Nov 2026): all 2,475 executed PCs of the reference run fall in recovered, described routines |
+
+The full generated summary (proofs, units, every routine name) is in [g1598-recovery-summary.md](g1598-recovery-summary.md).
 
 ## How the code was recovered
 - **Packed program.** `Golf` (72,296 bytes, 7 hunks) is crunched with an Imploder-style executable cruncher that

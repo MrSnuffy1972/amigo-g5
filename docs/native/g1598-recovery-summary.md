@@ -1,0 +1,1530 @@
+# Game 1598 (PGA Tour Golf, Electronic Arts 1991): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/01598). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (901248 top-level bytes in 44 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 15 of 15 units identical (bytes and relocations), 3 raw-word lines |
+| Functions named and described | pass, 1409 of 1409 named (608 author symbols), 1409 of 1409 described (567 by rule, 805 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 2475 of 2475 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 224942 bytes, 10 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 32019 of 32225 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 470968 |
+| code | 13794 |
+| data | 397083 |
+| padding | 10699 |
+| unused | 8704 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:Golf | 7 | 232 | 6 |
+| PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:Golf#unpacked | 3 | 27902 | 1196 |
+| Type | 6 | 29 | 2 |
+| endcli | 2 | 117 | 2 |
+| loadwb | 16 | 29 | 2 |
+| Disk-Validator | 1 | 386 | 1 |
+| icon.library | 10 | 1372 | 106 |
+| diskfont.library | 15 | 1040 | 75 |
+| PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:bootblock | 1 | 126 | 6 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
+| PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:FXLARGE (raw code file, load address unknown) | 1 | 260 | 2 |
+| PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:FLYMUS (raw code file, load address unknown) | 1 | 245 | 3 |
+| PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:GMUSIC (raw code file, load address unknown) | 1 | 246 | 3 |
+| PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:FXSMALL (raw code file, load address unknown) | 1 | 238 | 2 |
+
+## Cases handled
+
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:Golf: imploder-style-exe-packed executable, unpacked by explode_g1598 (a port of its own decruncher; 72296 -> 150840 bytes): Golf's hunk 0 (80 bytes) walks the seglist to hunk 4 and calls it; hunk 4 (496 bytes) explodes the stream in data hunk 5 backwards through the an address-byte buffer in BSS hunk 6 into hunks 1-3, applies the stream's RELOC32 groups, frees hunks 4-6 and returns into hunk 1. The port consumes the whole stream (pointer ends at +0) and gives 114564 + 11728 bytes plus 5673 + 435 relocations, identical to the 1593 Golf
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:Golf#unpacked: 1155 author symbols attached from HUNK_SYMBOL blocks of the unpacked Golf on the 1593 variant's program disk, whose hunks are byte-identical to this unpacked image (same sizes, every byte, the same relocation sets)
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:TR4.EGA: data, not code, by the program's use of it: tree pictures read by graf_read() in load_course (course header names the tree set) and drawn by draw_trees; never executed
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:TR3.EGA: data, not code, by the program's use of it: tree pictures read by graf_read() in load_course (course header names the tree set) and drawn by draw_trees; never executed
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:AVENEL.PAK: high-entropy data file (7.66 bits/byte), classified as packed data
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:GR5.EGA: data, not code, by the program's use of it: read by graf_read() (object count, total size, per-object sizes, then the object bytes into an allocated buffer) and only drawn by the blitter object routines (blit_obj, draw_object); no code path jumps into the buffer
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:TR1.EGA: data, not code, by the program's use of it: tree pictures read by graf_read() in load_course (course header names the tree set) and drawn by draw_trees; never executed
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:GR3.EGA: data, not code, by the program's use of it: read by graf_read() (object count, total size, per-object sizes, then the object bytes into an allocated buffer) and only drawn by the blitter object routines (blit_obj, draw_object); no code path jumps into the buffer
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:TR2.EGA: data, not code, by the program's use of it: tree pictures read by graf_read() in load_course (course header names the tree set) and drawn by draw_trees; never executed
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:GR4.EGA: data, not code, by the program's use of it: read by graf_read() (object count, total size, per-object sizes, then the object bytes into an allocated buffer) and only drawn by the blitter object routines (blit_obj, draw_object); no code path jumps into the buffer
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:GR2.EGA: data, not code, by the program's use of it: read by graf_read() (object count, total size, per-object sizes, then the object bytes into an allocated buffer) and only drawn by the blitter object routines (blit_obj, draw_object); no code path jumps into the buffer
+- runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:FXLARGE: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:FLYMUS: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:GMUSIC: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:FXSMALL: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- pga tour golf (1991)(electronic arts)[cr agl][a]/PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:Golf: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- none found
+
+## Functions
+
+
+### PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:Golf
+
+- `sub_0_0000`: The routine calls another routine repeatedly, invokes a function pointer stored in a global variable, and clears a word at an address derived from a register.
+- `sub_0_003C`: The routine contains an empty loop that repeatedly decrements an uninitialized short in D6 until it equals -1, then returns.
+- `sub_4_0000`: The routine repeatedly invokes another routine and uses its return value to decide whether to call a second routine, accumulate a count from a returned value, and add a base offset to entries in a table pointed to by an output pointer.
+- `sub_4_005A`: The routine copies bytes backwards from a source pointer into a destination area referenced by a global variable, using a counter and a flag byte to control the loop.
+- `sub_4_0060`: The routine copies bytes from a source pointer backwards into a destination buffer while maintaining a running bit accumulator in a global variable.
+- `sub_4_01D6`: The routine copies bytes from a source pointer backwards into a destination buffer using a nested loop, updating counters and flags while handling carry logic for byte processing.
+
+### PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:Golf#unpacked
+
+- `sub_0_0000`: Jump stub: passes control straight on to _begin.
+- `_random_init`: The routine reads mouse coordinates into two stack shorts and mixes them with the low byte of a global variable to compute a loop count.
+- `_stp`: Initializes random number generation and prepares a list of items for display.
+- `_check_on`: The routine writes a byte value to a location in a global variable table using an index derived from the argument.
+- `_check_off`: The routine writes a space character into a byte of a global text table at an offset derived from the input parameter.
+- `_set_proshop`: The routine selects between two text pointers based on a flag in its parameter and stores the chosen pointer into a global variable.
+- `sub_0_0460`: Out-of-line block of _set_proshop (4 instructions, entered only by branches from it, placed after its body by the compiler): refers to the text ' *Pro Shop  '.
+- `_auto_center_string`: The routine copies a source string into a temporary buffer, optionally replaces the source pointer with a second pointer, then fills a region of memory starting at that pointer with spaces for a given length.
+- `sub_0_04A6`: Out-of-line block of _auto_center_string (27 instructions, entered only by branches from it, placed after its body by the compiler): calls _strcpy; it continues in sub_0_0520.
+- `sub_0_0502`: Out-of-line block of _auto_center_string (8 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_0520.
+- `sub_0_0520`: Out-of-line block of _auto_center_string (11 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_0502.
+- `_set_player_name`: The routine measures the length of a string pointed to by its parameter.
+- `sub_0_0580`: Out-of-line block of _set_player_name (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_set_pro_menu_items`: The routine clears four check marks, then sets one check mark according to a global variable, and updates several word flags by clearing or setting their high byte based on comparisons with the global variable.
+- `_set_game_menu_items`: The routine configures a set of menu-item flags based on the value of a global variable, calling another routine to set up the pro shop and updating a player name string depending on the variable.
+- `sub_0_06EA`: Out-of-line block of _set_game_menu_items (9 instructions, entered only by branches from it, placed after its body by the compiler): calls _set_proshop; it continues in sub_0_0716.
+- `sub_0_0716`: Out-of-line block of _set_game_menu_items (7 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_073C.
+- `sub_0_073C`: Out-of-line block of _set_game_menu_items (7 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_0762.
+- `sub_0_0762`: Out-of-line block of _set_game_menu_items (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_077E.
+- `sub_0_077E`: Out-of-line block of _set_game_menu_items (10 instructions, entered only by branches from it, placed after its body by the compiler): calls _set_player_name; it continues in sub_0_07B6.
+- `sub_0_07B6`: Out-of-line block of _set_game_menu_items (14 instructions, entered only by branches from it, placed after its body by the compiler): calls _set_player_name; refers to the text '   Player   '; it continues in sub_0_0800, sub_0_0812.
+- `sub_0_0800`: Out-of-line block of _set_game_menu_items (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_0812.
+- `sub_0_0812`: Out-of-line block of _set_game_menu_items (6 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_0834.
+- `sub_0_0834`: Out-of-line block of _set_game_menu_items (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_pro_disable_choice`: The routine tests a bit in a global table indexed by the high word of the parameter.
+- `_game_disable_choice`: The routine returns true if a bit in a global variable table is set for the entry selected by the high word of the parameter.
+- `_disable_choice`: The routine receives a short parameter and branches on whether it is zero.
+- `_option_state`: The routine builds a 32-bit value from the high 16 bits of the input, shifted left by 16, and the 16-bit entry from a global table indexed by the low 16 bits of the input.
+- `_put_check`: The routine writes a byte value to an entry in a menu text table indexed by a field from the parameter and sets a corresponding entry in an option states table to a non-zero flag.
+- `_remove_check`: The routine clears a menu entry by writing a space character into a text buffer at an index derived from the parameter and zeroing the corresponding option state in a table.
+- `_option_toggle`: The routine flips a byte at an address derived from the parameter and a global variable, then queries option state and calls another routine to remove or put a check depending on the returned value.
+- `sub_0_0962`: Out-of-line block of _option_toggle (5 instructions, entered only by branches from it, placed after its body by the compiler): calls _remove_check.
+- `_load_setup`: The routine obtains the program disk and searches for a configuration file named GOLF.CFG. If found, it reads twelve bytes into a global variable and a global table, then iterates six times calling a routine that returns a state and toggles a check mark via two other routines depending on the returned state.
+- `_save_setup`: The routine obtains the program disk and checks for the existence of a global filename.
+- `sub_0_0A2C`: Out-of-line block of _save_setup (7 instructions, entered only by branches from it, placed after its body by the compiler): calls _file_write; refers to the text 'GOLF.CFG'.
+- `_toggle_overhead`: The routine calls another routine to toggle an option and then returns.
+- `_toggle_ball_lie`: The routine calls a generic option toggle routine and then returns.
+- `_toggle_greens`: The routine invokes another routine to toggle an option.
+- `_toggle_fly_by`: The routine calls another routine to toggle an option.
+- `_toggle_music`: The routine calls another routine to toggle an option.
+- `_toggle_sound`: The routine calls another routine to toggle an option.
+- `_get_offset`: The routine searches a global table of object identifiers for a match with the input value.
+- `_set_planes`: The routine reads an integer from a global variable via a pointer stored at offset eight of the first argument, adds it to the field at offset two of the second argument, and stores the result at offset twelve of the first argument.
+- `_init_new_object`: Loads the GR5 picture object: gets the object record and file offset, allocates plane memory for its width times height, reads the planes from GR5.EGA and sets the object's plane pointers.
+- `_free_card`: The routine is empty.
+- `_load_card`: The routine is empty.
+- `_free_board`: The routine frees four objects by calling _Free_Object with the constant 2.
+- `_load_board`: The routine calls _init_new_object four times in succession and then returns.
+- `_free_pro_golfer`: The routine frees object number 2 by calling the memory manager routine _Free_Object.
+- `_load_pro_golfer`: The routine initializes a new object and then applies a transformation with a fixed parameter set.
+- `_create_offsets`: The routine initializes a local counter and a running total, then repeatedly writes the current total into a global table entry and updates the total by adding the product of two short fields from an object returned by another routine, repeating the process a fixed number of times.
+- `_set_player_slot`: The routine writes a constant byte value to a byte located at an offset from the address in param_1.
+- `_player_active`: The routine reads a single byte from memory by adding a constant offset to the value passed in param_1 and dereferencing the result.
+- `_remove_active_player`: The routine stores a zero byte through a pointer derived from its argument.
+- `_total_players`: The routine scans 200 bytes from a global variable and increments a counter for each byte that is non-zero.
+- `_get_next_player_slot`: The routine receives a starting index and scans forward through a table of bytes, incrementing the index while the index is below a limit and the byte at the corresponding offset in a global variable is zero.
+- `sub_0_0D86`: Out-of-line block of _get_next_player_slot (7 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_0D9E.
+- `sub_0_0D9E`: Out-of-line block of _get_next_player_slot (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_0D86.
+- `_save_players_status`: Checks if a file named PLAYERS.PLR exists and deletes it if found.
+- `_load_players_status`: The routine searches for a file named PLAYERS.PLR using a global variable.
+- `sub_0_0E26`: Out-of-line block of _load_players_status (3 instructions, entered only by branches from it, placed after its body by the compiler): calls _save_players_status.
+- `_get_open_slot`: The routine loads player status and scans a fixed range of 200 slots by repeatedly calling a routine that tests whether a slot is active.
+- `sub_0_0E4C`: Out-of-line block of _get_open_slot (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _get_open_slot.
+- `_get_player_file`: Loads the player status table and scans up to two hundred player slots for an active entry.
+- `sub_0_0EBE`: Out-of-line block of _get_player_file (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _get_player_file.
+- `sub_0_0ECE`: The routine loads a player status block and iterates over a list of player entries, updating fields and invoking file search, file read, string copy and sprintf operations for each active entry, then saves the status block if needed.
+- `_get_player_names`: This routine is called by two unnamed routines and by the routine used to choose a file name.
+- `sub_0_0F86`: Out-of-line block of _get_player_names (6 instructions, entered only by branches from it, placed after its body by the compiler): calls _remove_active_player; it continues in _get_player_names.
+- `sub_0_0F9E`: Out-of-line block of _get_player_names (8 instructions, entered only by branches from it, placed after its body by the compiler): calls _save_players_status.
+- `sub_0_0FB8`: The routine increments a byte at a fixed offset from a register and, if the byte was below a threshold, returns a byte from a raw-key to ASCII table indexed by a field of the parameter, otherwise returns zero.
+- `_key_convert`: The routine maps a raw key index to an ASCII character using a global lookup table.
+- `sub_0_0FF2`: Out-of-line block of _key_convert (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _key_convert.
+- `_get_string`: The routine reads keyboard events into a null-terminated string buffer, handling backspace, delete, and a space shortcut, and redraws the input line on each change.
+- `sub_0_1088`: Out-of-line block of _get_string (24 instructions, entered only by branches from it, placed after its body by the compiler): calls _get_event, _print_font_at, _set_color; it continues in sub_0_113E, sub_0_115C.
+- `sub_0_10E2`: The routine calls a library routine that turns off the hidden screen.
+- `sub_0_10EC`: Out-of-line block of _get_string (7 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1102.
+- `sub_0_1102`: Out-of-line block of _get_string (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_115C.
+- `sub_0_1114`: Out-of-line block of _get_string (10 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_115C.
+- `sub_0_113C`: Out-of-line block of _get_string (1 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_115C.
+- `sub_0_113E`: Out-of-line block of _get_string (11 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_10E2, sub_0_10EC, sub_0_1114.
+- `sub_0_115C`: Out-of-line block of _get_string (18 instructions, entered only by branches from it, placed after its body by the compiler): calls _key_convert; it continues in _get_string.
+- `sub_0_119C`: The routine calls a routine that turns off the hidden screen and then returns.
+- `_get_object`: The routine computes an address by adding a base offset derived from a table lookup to a constant base.
+- `_free_mountains`: The routine frees three objects of type 2 by calling _Free_Object three times in succession.
+- `_load_mountains`: The routine builds a mountain file name from a base path by replacing the extension with MTN and reads a header of two 16-bit values.
+- `_write_pixel`: The routine writes a single pixel into a planar bitmap.
+- `sub_0_1432`: Polls a byte at offset two from a pointer in register A1 until the sixth bit is cleared.
+- `_moreinit`: The routine shifts a global variable right by three bits, then stores the constant 3 into a global variable and stores the result of multiplying a global variable by 200 and shifting right by three into a global variable.
+- `_blit_fig`: Configures the Amiga Copper Blitter to draw a figure by iterating through a table of line parameters.
+- `_new_blit`: The routine checks a flag in the object and a match between two fields.
+- `_draw_box`: Iterates through a range of vertical coordinates and draws a horizontal line at each position using a clipping routine.
+- `_draw_frame`: The routine draws a rectangular border by iterating over a range defined by two short parameters and a width value, calling a clipped horizontal line routine and a vertical line routine for each offset.
+- `sub_0_1634`: Out-of-line block of _draw_frame (42 instructions, entered only by branches from it, placed after its body by the compiler): calls _clipped_hline, _vline; it continues in sub_0_16CC.
+- `sub_0_16CC`: Out-of-line block of _draw_frame (20 instructions, entered only by branches from it, placed after its body by the compiler): calls _clipped_hline.
+- `_draw_frame2`: Iterates a specified number of times to draw concentric rectangular borders by calling routines for clipped horizontal and vertical lines.
+- `_path_attach`: The routine checks a global flag and, if set, copies the contents of the pointer argument into a global variable and then overwrites the argument with the address of a global path name buffer.
+- `_graf_read`: Opens a file specified by the first parameter and reads a header containing a count and size.
+- `_return_from_error`: The routine calls a routine to move Workbench to the back and then calls a routine to bring a window to the front.
+- `_error_exit`: Calls a routine to return from an error state and then invokes a message display routine.
+- `_file_read`: The routine opens a file whose path is built from the first argument, optionally seeks to an offset, reads a given byte count into a buffer, and closes the handle.
+- `_file_write`: Attaches a path and opens a file specified by the first parameter for writing.
+- `sub_0_1B44`: Out-of-line block of _file_write (1 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1B60.
+- `sub_0_1B46`: Out-of-line block of _file_write (8 instructions, entered only by branches from it, placed after its body by the compiler): calls _Close, _error_exit; it continues in _file_write.
+- `sub_0_1B60`: Out-of-line block of _file_write (6 instructions, entered only by branches from it, placed after its body by the compiler): calls _Close, _return_from_error; it continues in _file_write.
+- `_file_search`: The routine attaches a path to the supplied buffer, opens the file for read access and then closes it if the open succeeds.
+- `_delete_file`: Attaches a path to the provided filename and searches for the file.
+- `sub_0_1BF4`: Out-of-line block of _delete_file (3 instructions, entered only by branches from it, placed after its body by the compiler): calls _return_from_error; it continues in _delete_file.
+- `sub_0_1BFC`: Out-of-line block of _delete_file (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _delete_file.
+- `_alloc_file_info`: The routine allocates a memory block for a global variable using the Amiga memory allocator.
+- `_free_file_info`: Frees a block of memory associated with file information and unlocks two file lock pointers if they are valid.
+- `_get_files`: The routine locks a directory, examines it and then iterates over its entries, copying matching filenames into a caller-supplied table.
+- `sub_0_1D32`: Out-of-line block of _get_files (10 instructions, entered only by branches from it, placed after its body by the compiler): calls _ExNext, _return_from_error; it continues in sub_0_1D5A, sub_0_1DC8.
+- `sub_0_1D5A`: Out-of-line block of _get_files (11 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1D7E.
+- `sub_0_1D7E`: Out-of-line block of _get_files (21 instructions, entered only by branches from it, placed after its body by the compiler): calls _strcmp, _strcpy; refers to the text '.CRS'; it continues in sub_0_1DC4, sub_0_1DC8.
+- `sub_0_1DC4`: Out-of-line block of _get_files (1 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1D32.
+- `sub_0_1DC8`: Out-of-line block of _get_files (3 instructions, entered only by branches from it, placed after its body by the compiler): calls _return_from_error; it continues in _get_files.
+- `_get_file_size`: Locates a file using search and allocation routines, locks it to examine its metadata, and copies the size value from the file information structure to the output pointer.
+- `sub_0_1E52`: Out-of-line block of _get_file_size (7 instructions, entered only by branches from it, placed after its body by the compiler): calls _UnLock, _free_file_info, _return_from_error; it continues in _get_file_size.
+- `_byte_transfer`: The routine copies a number of bytes from a source address to a destination address.
+- `_set_buffer_address`: Sets a global variable to a specific integer value based on an input parameter, effectively selecting one of four graphics buffers.
+- `sub_0_1EA8`: Out-of-line block of _set_buffer_address (10 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_get_buffer`: The routine compares its argument with four global buffer pointers.
+- `_init_obj`: The routine prepares object rendering by managing background buffers and retrieving display memory.
+- `__clip_blit`: The routine clears a global variable, calls another routine with a value taken from the argument, then sets the global variable again.
+- `_draw_pobj`: Restores the background for a projectile object and checks if its animation frame index is within bounds.
+- `_init_anims`: The routine clears a global variable and a global pointer, then builds a two-element linked list in memory starting at a fixed address.
+- `_animate`: Iterates through a linked list of object pointers, drawing each object if its timer has expired and removing it from the list if its animation is complete.
+- `_mouse_init`: The routine is empty.
+- `_mouse_end`: The routine is empty and performs no operations.
+- `_move_words`: The routine copies a number of 16-bit words from one pointer to another.
+- `sub_0_27A6`: Out-of-line block of _move_words (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_clip_blit`: Empty routine left from the PC version: sets up and tears down a stack frame and returns; blit clipping is not used on the Amiga.
+- `_generate_sound`: The routine is empty and performs no operations; it contains only a return.
+- `_hide_mouse`: The routine modifies a global variable to indicate that the mouse pointer should not be displayed.
+- `_log_scr`: The routine is empty.
+- `_phys_scr`: The routine is empty.
+- `_random`: The routine obtains a random value from another routine, converts it to floating point, multiplies it, converts it back to integer and adds the result to the low word of the input parameter.
+- `_rnd`: Calls a random number generator routine with a maximum value argument.
+- `_curr_font`: The routine stores the result of testing a field of the argument against zero into a global variable, effectively setting a flag that indicates whether a small font is active.
+- `_show_mouse`: The routine is empty, containing only entry and exit instructions without performing any operations.
+- `_swap_bytes`: The routine receives a pointer to a byte buffer and a count.
+- `_swap_longs`: Iterates through a block of memory and swaps the byte order of each 32-bit word to convert endianness.
+- `_page_flip`: The routine calls another routine and toggles a global variable by XORing it with one.
+- `_key_wait`: The routine contains three instructions despite appearing empty in pseudo-code, likely performing a simple hardware check or loop to detect input.
+- `_cleanup_exit`: The routine clears a global music flag, then calls another routine to end fly-by, then calls routines to end sprite, ball sprite and shadow sprite, then calls a routine to end sound, then calls routines to free graphics, free all planes, free background and close display.
+- `_memory_error_exit`: The routine performs global cleanup, prints an error message from a specific string table, and terminates the program execution.
+- `_read_error_exit`: The routine calls a cleanup routine, then prints a message using a global string, then terminates the program.
+- `_abs`: Takes a signed integer parameter and returns its absolute value by negating it if it is negative.
+- `_max`: The routine receives a 32-bit value in a register pair and compares the low 16-bit word with the high 16-bit word.
+- `_min`: Compares two 16-bit values passed in a single 32-bit parameter and returns the smaller of the two.
+- `_mul_div`: The routine takes two 32-bit values and treats each as a 16.16 fixed-point number.
+- `_mul_ints`: Multiplies two 16-bit signed integers passed in a single 32-bit parameter and returns the 32-bit signed product.
+- `_mul_frac`: Multiplies two 16-bit signed integers contained within a 32-bit word.
+- `_div_int2frac`: Calculates the ratio of two 16-bit signed integers by dividing the absolute value of the first by the absolute value of the second, returning a 16-bit fixed-point result.
+- `_magxy`: Calculates the magnitude of a 2D vector by taking the absolute values of its components and applying an approximation formula involving squares and divisions.
+- `_percent`: Computes a percentage value using fixed-point arithmetic by scaling the input and performing division.
+- `_mul32_frac`: Multiplies two 32-bit signed integers using a fixed-point arithmetic algorithm that splits operands into 16-bit halves to compute the product.
+- `_proshop_pallette`: Loads a color palette table by passing its address to a software color setting routine.
+- `_title_pallette`: Passes a pointer to a global palette table to a routine that updates the color registers.
+- `_new_pallette`: Passes the address of a global palette table to a color switching routine to update the display colors.
+- `_old_pallette`: Passes a pointer to a global palette table to a routine that sets the screen colors.
+- `_credits_pallette`: Passes the address of a global palette table to a routine that updates the hardware color registers.
+- `_clr_screen`: Sets the display color and draws 200 horizontal lines to fill the screen.
+- `_set_color`: Sets the active copper pen color using the provided parameter and updates a global variable with the same value.
+- `_clipped_xy_hline`: Checks if the Y coordinate of a line segment falls within global vertical bounds.
+- `_line`: Moves the drawing cursor to the first coordinate pair and draws a line to the second coordinate pair using a global context pointer.
+- `_vline`: Moves the graphics cursor to a specified coordinate and draws a vertical line of a given length using the underlying graphics primitives.
+- `_set_hilite`: Stores two color values from the input parameter into global variables designated for highlight and restore colors.
+- `_set_string_hilite`: Stores two 16-bit values from the input parameter into two global variables representing highlight and restore colors.
+- `_print_character`: Selects a glyph pointer from font tables based on character type and control codes.
+- `_print_string`: Iterates through a string to print each character using a helper routine.
+- `_font_color`: Sets the active foreground pen to the color index provided in the first argument.
+- `_b_print_font_at`: Calculates the length of a provided string and uses a global graphics handle to set the drawing mode, move the cursor to coordinates derived from the first parameter, and render the text.
+- `_b_print_font_centered`: Calculates the horizontal offset required to center a string based on its length and a target coordinate.
+- `_s_print_font_at`: Passes two parameters to another routine responsible for printing a string.
+- `_s_print_font_centered`: Calculates the horizontal offset required to center a string by dividing its length by two and adjusting for odd lengths.
+- `_print_font_at`: Checks a global flag to determine the active font size.
+- `_print_font_centered`: Checks a global variable to determine the active font size.
+- `__draw_object`: Draws an object pixel by pixel inside the 320 by 200 screen: rejects positions off screen, then walks the rows and writes each pixel of the shape through write_pixel.
+- `_blitter_object`: Checks a status flag and initialization state before preparing a bitmap transfer structure on the stack.
+- `_page_copy`: The routine swaps page pointers stored in global variables and calls a page flip routine.
+- `_Save_Object_Init`: Allocates four memory planes using a size value from the input structure and stores the resulting pointers in consecutive fields of that structure.
+- `_Free_Object_Planes`: Iterates through four pairs of pointers within a structure, calling a raster freeing routine for each non-null pair and zeroing the pointers upon completion.
+- `_Free_Background`: Iterates twelve times to call a routine that frees object planes, using a base address incremented by a fixed offset for each iteration.
+- `_save_bkg`: Copies object parameters from a source structure or global table into a local buffer based on a flag, then initializes and blits the bitmap to the screen.
+- `_rest_bkg`: Calculates a pointer to a background object structure using an offset from a global table.
+- `_free_bkg`: Calculates an offset from the input parameter and checks a global flag.
+- `_menu_init`: Sets specific global variables to constant values, including zeroing several fields and assigning fixed numeric constants to others.
+- `_save_menu_bkg`: Loads bitmap parameters from a global table based on an input index, initializes a graphics object, and blits the background image to the screen.
+- `_free_menu_bkg`: Checks a global flag associated with the menu background object.
+- `_rest_menu_bkg`: Checks a flag in a global table based on an index parameter; if set, it blits a background object using an offset derived from that index.
+- `_amiga_init`: Initializes hardware and page flipping, then populates a table of 200 words by multiplying a global variable by an incrementing index.
+- `_init_sprite`: Attempts to acquire a sprite resource from the system.
+- `_sprite_off`: Replaces the active sprite with a blank sprite and image via a change routine.
+- `_sprite_ball`: Checks if the provided coordinates are within valid bounds; if out of bounds, it turns off the sprite.
+- `_end_sprite`: Checks a global variable for a non-zero value and calls a routine to free a sprite if true.
+- `_init_shadow_sprite`: Requests a sprite resource from the system and checks for allocation failure.
+- `_shadow_sprite_off`: Updates the shadow sprite with a blank image and sets a global flag to indicate the sprite is off.
+- `_sprite_shadow`: Checks coordinate bounds and turns off the shadow sprite if out of range, otherwise moves it to adjusted coordinates and enables it with a specific image if not already active.
+- `_end_shadow_sprite`: Checks a global variable for a non-zero value and calls a routine to free sprite index 3 if true.
+- `_init_ball_sprite`: Requests a sprite resource with specific parameters and checks for allocation failure.
+- `_bigball_sprite_off`: Replaces the active ball sprite with a blank image using a sprite modification routine.
+- `_sprite_bigball`: Checks coordinate bounds and disables the sprite if out of range, otherwise moves and enables the ball sprite.
+- `_end_ball_sprite`: Checks a global variable for a non-zero value and calls a routine to free sprite number 4 if true.
+- `_window_front`: Passes a global variable to a routine that brings a window to the front of the display stack.
+- `_SxHan`: Enables interrupts and conditionally executes music and ball event handling routines based on global flags before disabling interrupts.
+- `_swcolor`: Iterates through a table of sixteen 16-bit color values.
+- `_mouse_position`: Loads the X and Y coordinates from a global variable structure and stores them into the memory locations pointed to by the two input parameters.
+- `_mouse_and_keyboard`: Retrieves an input message from a global pointer and replies to it.
+- `_init_hw`: Opens the diskfont, dos, graphics, and intuition libraries, checking for errors after each operation.
+- `_wait_bovp`: Loads a global variable and passes it as an argument to another routine responsible for waiting on the BOVP.
+- `_DisplayOpen`: Allocates memory for two bitmaps and their planes, then opens a screen and window for the game interface.
+- `_hdswap`: Exchanges the active and inactive bitmap pointers using a toggle variable to implement double buffering.
+- `_hidden_scr`: Sets a global flag to indicate the screen is hidden and copies a bitmap pointer from a conditional source into multiple global variables and memory locations.
+- `_hidden_scr_off`: The routine clears a hidden screen flag and updates multiple global pointers and RAM locations with the address of the current active bitmap.
+- `_term`: Disables interrupts and closes the graphics display if initialized.
+- `_DisplayClose`: This routine removes an interrupt handler and clears a global flag if set.
+- `_SIntOff`: Writes to the INTENA register to enable interrupts by setting bit 15.
+- `_decode`: Clears a memory buffer with space characters and expands a bitstream containing literal bytes and length-distance pairs into that buffer using a sliding window.
+- `sub_0_4C98`: Out-of-line block of _decode (20 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _decode, sub_0_4CCE.
+- `sub_0_4CCE`: Out-of-line block of _decode (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_lzw_picture`: The routine obtains the size of a file identified by param_1, allocates two memory blocks, and aborts with cleanup and exit if allocation fails.
+- `sub_0_4CF0`: Out-of-line block of _lzw_picture (57 instructions, entered only by branches from it, placed after its body by the compiler): calls _AllocMem, _FreeMem, _cleanup_exit, _decode, _exit, _file_read and others; refers to the text 'ERROR: Not Enough Memory'; it continues in _lzw_picture.
+- `_box_colors`: Stores three 32-bit values passed as parameters into consecutive global memory locations.
+- `_set_title_box_colors`: Loads six 16-bit color values from a palette table indexed by the input parameter into a global memory buffer.
+- `_set_box_colors`: Loads a set of color values from a global table into specific memory locations based on an index parameter.
+- `_please_wait1`: Sets three consecutive global variables to zero, fifteen, and four respectively.
+- `_please_wait2`: The routine initializes three consecutive global variables with specific constant values.
+- `_hot_key_colors`: The routine invokes another routine to display a waiting state.
+- `_title_box_colors`: Checks two global variables to determine state, then unconditionally calls another routine to configure title box colors.
+- `_default_box_colors`: Checks a global flag and calls a routine to set title box colors regardless of the flag's value, then calls another routine to set standard box colors.
+- `_memory_detect`: Calls the system routine to determine available memory for two different allocation types and stores the resulting values into the two pointer arguments provided.
+- `_memory_size`: Calls a memory detection routine to retrieve memory values and compares them against specific thresholds.
+- `_find_buffer`: Attempts to allocate a block of memory of the specified size with a specific flag value.
+- `_load_sound_effects`: Checks available memory to allocate space for large or small sound effect buffers.
+- `_sound_size`: Returns the value stored in a global variable representing the sound size.
+- `_sound_init`: Allocates the music buffer with AllocMem; when that fails it cleans up, prints 'ERROR: Not Enough Memory' and exits, otherwise it reads the sound data into the buffer.
+- `_sound_end`: Determines the size of the audio buffer by calling a helper routine and clears a music flag.
+- `_get_memory`: Allocates a block of memory with a size specified by the input parameter and a flag value of 4.
+- `_init_fly_by_music`: Prepares the hole fly-by: clears the fly-by music flag and, when music is on, picks the small or large effects set by the sound memory size and reads FLYMUS and the FXSMALL or FXLARGE file.
+- `_fly_by_music_on`: Checks two global flags to determine if fly-by music should play.
+- `_fly_by_music_off`: Checks two global flags and, if set, disables music playback and clears a buffer.
+- `_fly_by_end`: Checks two global pointers for non-zero values and frees the associated memory blocks using a standard memory deallocation routine.
+- `_music_init`: Allocates a block of memory for the music buffer and stores the pointer in a global variable.
+- `_music_load`: Reads the GMUSIC file into the music buffer when one was allocated.
+- `_music_end`: Checks if a global pointer to an old music buffer is non-zero.
+- `_sound`: Checks a global music flag and an option state routine to determine if sound is enabled.
+- `_fly_by_song`: Checks a global music flag and an option state routine.
+- `__sound`: Reads a function pointer from an offset within a global music buffer variable and invokes it.
+- `_music_on`: Calls a function pointer located at an offset within a global music buffer structure.
+- `_music_off`: Reads a function pointer from an offset within a global music buffer structure and invokes it.
+- `_music_code`: Invokes a function pointer stored in a global variable representing a music buffer.
+- `_load_pro_shop`: Reads 32000 bytes from the file PROSHOP.EGA into a global variable buffer.
+- `_load_tent_shop`: Reads 32000 bytes from the file TENT.EGA into a global variable buffer.
+- `_alloc_mask`: Requests a block of memory from the system allocator.
+- `_mask_object`: The routine iterates over a two-dimensional block defined by the first parameter and converts four nibbles per source byte into a single mask byte written through the third pointer.
+- `_draw_object_one`: Decodes a compressed sprite stream into four separate bitplanes for hardware blitting.
+- `_draw_object_two`: Decodes a run-length encoded bitstream into four parallel planes using a mask and blend operation.
+- `_draw_object`: Checks a flag in the fourth parameter to decide whether to draw an object directly or with masking.
+- `_hline`: Draws a horizontal line on the screen by writing to four bitplanes simultaneously.
+- `_set_blitter_nasty`: Writes a value to a global variable to configure the DMA control register.
+- `_transform`: Performs coordinate transformation operations, likely for 3D rendering, as indicated by its name and callers related to clipping and drawing 3D elements.
+- `_perspect`: Transforms 3D world coordinates into 2D screen positions using perspective division by depth.
+- `_new_init`: The routine writes constant values to a set of global variables, copies a block of memory from one global area to another using a loop, then writes several constants to additional global variables and calls another routine.
+- `_player_init`: Checks a global variable for a null value to select between a fixed memory address or the variable's own address.
+- `sub_0_6018`: Out-of-line block of _player_init (8 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_pattern_on`: Configures four pairs of global variables with alternating bit patterns or solid values based on bit flags in the input parameter.
+- `_draw_bkg`: Sets the drawing color and iterates through a range of vertical positions to draw horizontal lines.
+- `sub_0_61A6`: Out-of-line block of _draw_bkg (19 instructions, entered only by branches from it, placed after its body by the compiler): calls _hline, _new_draw_ball, _pattern_on; it continues in sub_0_61E8.
+- `sub_0_61E8`: Out-of-line block of _draw_bkg (4 instructions, entered only by branches from it, placed after its body by the compiler): calls _set_color; it continues in sub_0_61F6.
+- `sub_0_61F6`: Out-of-line block of _draw_bkg (15 instructions, entered only by branches from it, placed after its body by the compiler): calls _hline, _new_draw_ball.
+- `_draw_hole`: Clears background buffers and iterates through a linked list of polygon descriptors to allocate memory, clip geometry against the ocean or 3D bounds, and draw colored polygons.
+- `sub_0_62FE`: Out-of-line block of _draw_hole (22 instructions, entered only by branches from it, placed after its body by the compiler): calls _clip_3d, _draw_poly; it continues in _draw_hole.
+- `sub_0_6348`: Out-of-line block of _draw_hole (19 instructions, entered only by branches from it, placed after its body by the compiler): calls _draw_all_balls, _draw_horizon, _draw_trees.
+- `_reload_trees`: Reloads the tree and scenery graphics for the course: asks for the right disk with an alert box until the file is found, frees the old mountain and tree data and reads the new pictures.
+- `_load_course`: Initializes display colors and frees existing graphics buffers.
+- `sub_0_64FA`: Out-of-line block of _load_course (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `sub_0_650A`: Out-of-line block of _load_course (75 instructions, entered only by branches from it, placed after its body by the compiler): calls _close, _free, _graf_read, _load_mountains, _new_init_obj, _open and others; refers to the text '.EGA'; it continues in sub_0_664C.
+- `sub_0_664C`: Out-of-line block of _load_course (6 instructions, entered only by branches from it, placed after its body by the compiler): calls _message; it continues in sub_0_64FA.
+- `_load_hole`: Calculates the size of a hole file and checks for buffer overflow.
+- `sub_0_673E`: Out-of-line block of _load_hole (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `sub_0_6748`: Out-of-line block of _load_hole (44 instructions, entered only by branches from it, placed after its body by the compiler): calls _close, _lseek, _new_hole, _open, _path_attach, _read and others; it continues in sub_0_67F0.
+- `sub_0_67F0`: Out-of-line block of _load_hole (5 instructions, entered only by branches from it, placed after its body by the compiler): calls _message; it continues in sub_0_673E.
+- `_new_hole`: Routine walks a short descriptor pointed to by param_1, extracts a type and a count, and fills a table of bounding-box entries for types 0-7 and 9.
+- `sub_0_6886`: Iterates through a stream of 16-bit values to parse course geometry, computing bounding boxes for segments and storing parameters like slope and direction into global state structures based on command codes.
+- `sub_0_6A02`: Out-of-line block of _new_hole (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_6A68.
+- `sub_0_6A56`: Out-of-line block of _new_hole (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_6A02.
+- `sub_0_6A68`: Jump stub: passes control straight on to _new_hole.
+- `sub_0_6A6C`: Out-of-line block of _new_hole (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_create_matrix`: Calculates the magnitude of the difference between two coordinate pairs and stores normalized or saturated values into a destination array.
+- `sub_0_6AD4`: Out-of-line block of _create_matrix (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_6ADA.
+- `sub_0_6ADA`: Out-of-line block of _create_matrix (14 instructions, entered only by branches from it, placed after its body by the compiler): calls _abs, _div_int2frac; it continues in sub_0_6B0C, sub_0_6B18, sub_0_6B1C.
+- `sub_0_6B0C`: Out-of-line block of _create_matrix (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_6B18.
+- `sub_0_6B18`: Out-of-line block of _create_matrix (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_6B1C.
+- `sub_0_6B1C`: Out-of-line block of _create_matrix (10 instructions, entered only by branches from it, placed after its body by the compiler): calls _div_int2frac.
+- `_clip_3d`: Allocates memory to store transformed vertices, clips line segments against depth bounds using linear interpolation, applies perspective projection to the resulting points, and draws the edges before freeing the buffer.
+- `sub_0_6B90`: Out-of-line block of _clip_3d (71 instructions, entered only by branches from it, placed after its body by the compiler): calls _mul_div, _transform; it continues in sub_0_6C94.
+- `sub_0_6C94`: Out-of-line block of _clip_3d (66 instructions, entered only by branches from it, placed after its body by the compiler): calls _mul_div, _perspect; it continues in sub_0_6B90, sub_0_6D86.
+- `sub_0_6D86`: Out-of-line block of _clip_3d (39 instructions, entered only by branches from it, placed after its body by the compiler): calls _compute_edge, _free, _perspect.
+- `_clipped_hline`: Checks if the horizontal line's Y coordinates fall within global vertical bounds.
+- `_draw_poly`: Iterates through a global scanline range to process vertex indices, sorting them by Y-coordinate and drawing clipped horizontal lines to fill the shape.
+- `sub_0_6EAC`: Out-of-line block of _draw_poly (15 instructions, entered only by branches from it, placed after its body by the compiler): calls _pattern_on; it continues in sub_0_7002.
+- `sub_0_6EDC`: Out-of-line block of _draw_poly (8 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_6EF6.
+- `sub_0_6EF6`: Out-of-line block of _draw_poly (15 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_6FD0.
+- `sub_0_6F26`: Out-of-line block of _draw_poly (29 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_6F78.
+- `sub_0_6F78`: Out-of-line block of _draw_poly (30 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_6FD0.
+- `sub_0_6FD0`: Out-of-line block of _draw_poly (18 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_6F26, sub_0_7002.
+- `sub_0_7002`: Out-of-line block of _draw_poly (22 instructions, entered only by branches from it, placed after its body by the compiler): calls _clipped_hline, _new_draw_ball, _reset_poly; it continues in sub_0_6EDC.
+- `_compute_edge`: Computes a value using division and stores it in a global table, managing a linked list of entries to handle collisions or chaining.
+- `sub_0_70A4`: Out-of-line block of _compute_edge (55 instructions, entered only by branches from it, placed after its body by the compiler): calls _mulu; it continues in sub_0_716C, sub_0_717A.
+- `sub_0_716C`: Out-of-line block of _compute_edge (6 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_717A.
+- `sub_0_717A`: Out-of-line block of _compute_edge (37 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_reset_poly`: Zeros out a block of 100 longwords in memory, likely clearing a polygon or object list.
+- `_alloc_poly_arrays`: Increments a global counter and calculates offsets for three global pointers based on that value.
+- `sub_0_72A4`: Out-of-line block of _alloc_poly_arrays (9 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_inside_poly`: Iterates through a table of polygon definitions to determine if a global coordinate value lies within any of them using a ray-casting algorithm.
+- `_clip_ocean`: Allocates memory and iterates through a list of coordinates, transforming them using ocean-specific or standard transformation routines.
+- `sub_0_74FA`: Out-of-line block of _clip_ocean (20 instructions, entered only by branches from it, placed after its body by the compiler): calls _transform; it continues in sub_0_76BE.
+- `sub_0_7546`: Out-of-line block of _clip_ocean (23 instructions, entered only by branches from it, placed after its body by the compiler): calls _transform_ocean; it continues in sub_0_75A0.
+- `sub_0_75A0`: Out-of-line block of _clip_ocean (75 instructions, entered only by branches from it, placed after its body by the compiler): calls _divs, _mulu, _transform; it continues in sub_0_76BE.
+- `sub_0_76BE`: Out-of-line block of _clip_ocean (68 instructions, entered only by branches from it, placed after its body by the compiler): calls _divs, _mulu, _perspect_ocean; it continues in sub_0_7546, sub_0_77BE.
+- `sub_0_77BE`: Out-of-line block of _clip_ocean (44 instructions, entered only by branches from it, placed after its body by the compiler): calls _compute_edge, _free, _perspect_ocean.
+- `_perspect_ocean`: Calculates two perspective values using multiplication and division, adds offsets, and clamps the results to a signed 16-bit range before storing them in a pointer.
+- `sub_0_7882`: Out-of-line block of _perspect_ocean (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_7896.
+- `sub_0_7896`: Out-of-line block of _perspect_ocean (14 instructions, entered only by branches from it, placed after its body by the compiler): calls _divs, _mulu; it continues in sub_0_78D8, sub_0_78EE.
+- `sub_0_78D8`: Out-of-line block of _perspect_ocean (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_78EE.
+- `sub_0_78EE`: Out-of-line block of _perspect_ocean (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_transform_ocean`: Calculates surface normals for ocean geometry by performing vector cross products on vertex coordinates.
+- `_clipped_line`: Tests line endpoints against clipping boundaries using a helper routine and adjusts coordinates via multiplication and division if necessary.
+- `_cliptest`: Determines if a line segment is visible within the screen boundaries by comparing coordinates against global clipping limits.
+- `sub_0_7B6A`: Out-of-line block of _cliptest (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `sub_0_7B74`: Out-of-line block of _cliptest (15 instructions, entered only by branches from it, placed after its body by the compiler): calls _abs, _div_int2frac; it continues in sub_0_7B9E, sub_0_7BAA.
+- `sub_0_7B9E`: Out-of-line block of _cliptest (6 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_7BAA.
+- `sub_0_7BAA`: Out-of-line block of _cliptest (10 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_7BD0.
+- `sub_0_7BD0`: Out-of-line block of _cliptest (10 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_7BFC.
+- `sub_0_7BFC`: Out-of-line block of _cliptest (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_7B6A.
+- `_delay`: Performs a software delay by iterating a counter up to the value passed in the first parameter.
+- `_main`: The routine initializes the Amiga hardware and sets up global game systems including graphics, sprites, menus, and memory.
+- `_special_effects`: Executes visual transition effects by copying horizontal lines, moving lines downward, or copying vertical strips based on a mode parameter.
+- `__copy_hline`: Copies four horizontal blocks of 10 longwords from a source buffer to a destination buffer.
+- `__move_line_down`: Scrolls a band of the four-plane screen buffer down by one line height from a line table, copying the rows of every plane so the view moves down.
+- `__copy_vline`: The routine copies 200 bytes from four source blocks to four destination blocks.
+- `__transform`: Calculates an offset into a global table using the input parameter and calls a color translation routine with values retrieved from that table.
+- `__transform_hair`: Calculates an index based on the input parameter and uses it to retrieve two values from a global table.
+- `_transform_shoes`: Iteratively calls a transformation routine for a sequence of model indices.
+- `_transform_golfer`: Compares the current golfer index against a cached global value to determine if sprite transformation is required.
+- `_transform_putter`: Checks if the putter index has changed and, if so, iterates ten times to update color and hair transformation tables using global lookup arrays.
+- `_XlateColor`: Sets several global variables based on input parameters and executes a nested loop that repeatedly calls other routines.
+- `sub_0_83D2`: Checks a global variable against a register value and, if they match, updates four memory locations by ORing them with values from a table indexed by the lower nibble of the global variable.
+- `sub_0_83FC`: Checks a global state variable and, if valid, updates four memory locations by ORing them with values from a table indexed by the lower nibble of the global variable.
+- `sub_0_8426`: Checks a global variable against a register value and returns if they differ.
+- `sub_0_8450`: Checks a global flag for changes and, if necessary, reads four bytes from a color table indexed by the flag value.
+- `sub_0_847A`: Checks if a global flag differs from a local variable, and if not, updates four memory locations by merging their contents with values from a global table.
+- `sub_0_84A4`: Checks a global variable for changes and, if different, updates four memory locations by merging values from a lookup table with the current contents using bitwise operations.
+- `sub_0_84CE`: Reads a global variable to index into a table and updates four byte pointers with values from that table.
+- `sub_0_84F8`: The routine checks a global variable for changes.
+- `sub_0_8522`: Gathers bit 0 of the current byte of each of the four bitplanes into one four-bit pixel colour.
+- `sub_0_854E`: The routine contains instructions but performs no observable operations or side effects.
+- `sub_0_857A`: The routine is empty and performs no operations.
+- `sub_0_85A6`: Gathers bit 3 of the current byte of each of the four bitplanes into one four-bit pixel colour.
+- `sub_0_85D2`: This routine is empty and performs no operations.
+- `sub_0_8600`: The routine contains no instructions and performs no operations.
+- `sub_0_862E`: The routine is empty and does not contain any executable instructions.
+- `sub_0_865C`: Converts the current byte of each of the four bitplanes into eight four-bit pixel colours, bit 7 first, gathering one bit from every plane per pixel.
+- `_new_init_obj`: Initialises a graphics object from a loaded picture: works out its byte width, transforms the shape data into the screen layout and copies the bytes into the object's buffer.
+- `_get_byte_width`: Calculates the byte width of a bitfield by shifting the input value right by three bits and adding one if any bits are lost.
+- `_transform_object`: Allocates memory planes for a graphic object based on its width and a mask flag, calculating offsets for each plane.
+- `_object_free`: Checks a flag within an object structure and conditionally calls a raster freeing routine with different parameters.
+- `_Free_All_Planes`: Iterates through a fixed-size array of plane structures, calculating their base addresses and invoking a memory deallocation routine for each entry.
+- `_Free_Planes`: Iterates through a range of object indices defined by a global table and calls a routine to free each object's memory.
+- `_Free_Object`: Calculates a pointer to an object structure by indexing a global table with the input parameter and adding a fixed base offset.
+- `_alloc_plane`: Ensures the requested size meets a minimum threshold before allocating a raster plane.
+- `_init_mask_object`: Calculates a binary mask from a bitmap by checking for zero bytes in the high and low nibbles of each pixel row.
+- `_init_draw_object`: Iterates through input bytes from a source buffer and decodes bit fields to populate four parallel output buffers via global pointers.
+- `_alert_disk_full`: The routine performs cleanup operations, prints an error message indicating a file write failure, and terminates the program.
+- `_choose_filename`: Retrieves a list of player names and presents them in a selection box along with next and cancel options.
+- `sub_0_929E`: Out-of-line block of _choose_filename (16 instructions, entered only by branches from it, placed after its body by the compiler): refers to the text ' Next '; it continues in sub_0_92D6.
+- `sub_0_92D6`: Out-of-line block of _choose_filename (57 instructions, entered only by branches from it, placed after its body by the compiler): calls __box; it continues in _choose_filename, sub_0_93A4.
+- `sub_0_93A4`: Out-of-line block of _choose_filename (7 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_93B8.
+- `sub_0_93B8`: Out-of-line block of _choose_filename (10 instructions, entered only by branches from it, placed after its body by the compiler): calls _strcpy; it continues in _choose_filename.
+- `_new_player`: Displays a dialog box prompting for a name, checks for an existing player file, and creates a new slot if none is found.
+- `sub_0_953A`: Out-of-line block of _new_player (1 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_9562.
+- `sub_0_953C`: Out-of-line block of _new_player (8 instructions, entered only by branches from it, placed after its body by the compiler): calls _message, _page_copy; it continues in _new_player.
+- `sub_0_9562`: Out-of-line block of _new_player (25 instructions, entered only by branches from it, placed after its body by the compiler): calls _file_write, _log_scr, _page_copy, _save_players_status, _set_player_slot, _sprintf and others; refers to the text 'P%d.PLR'; it continues in _new_player.
+- `_load_player`: Prompts the user to select a player file and reads its contents into memory after verifying the filename is unique.
+- `sub_0_9682`: Out-of-line block of _load_player (17 instructions, entered only by branches from it, placed after its body by the compiler): calls _message, _strcmp; it continues in sub_0_96BC.
+- `sub_0_96BC`: Out-of-line block of _load_player (14 instructions, entered only by branches from it, placed after its body by the compiler): calls _message; it continues in sub_0_9682, sub_0_96F4.
+- `sub_0_96F4`: Out-of-line block of _load_player (18 instructions, entered only by branches from it, placed after its body by the compiler): calls _file_read, _get_player_file, _sprintf; refers to the text 'P%d.PLR'; it continues in sub_0_9742.
+- `sub_0_9742`: Out-of-line block of _load_player (6 instructions, entered only by branches from it, placed after its body by the compiler): calls _message; it continues in sub_0_9682.
+- `_delete_player`: Prompts the user to select a player file, then deletes the corresponding file from disk and updates the in-memory player status list.
+- `sub_0_97F4`: Out-of-line block of _delete_player (6 instructions, entered only by branches from it, placed after its body by the compiler): calls _message.
+- `sub_0_9818`: The routine increments a byte at the address pointed to by a5 and, if the byte was near its maximum, it prepares a fixed table base and two pointers into a global structure.
+- `_save_player`: Saves the current player's record (78 bytes) to their player file when it has changed: deletes the old file, writes the new one and clears the changed flag.
+- `_save_all_players`: The routine checks the program disk state and, if present, iterates over a count stored in a global variable, calling a save routine for each entry.
+- `sub_0_9898`: Out-of-line block of _save_all_players (20 instructions, entered only by branches from it, placed after its body by the compiler): calls _delete_file, _file_write, _save_player; refers to the text 'PROS.SAV'.
+- `_get_program_disk`: Iteratively searches for a file named GOLF on the current path attachment.
+- `_show_plyr_stats`: Formats and displays player performance metrics, including percentages and scores, using string formatting routines and a dialog box.
+- `sub_0_9A08`: Out-of-line block of _show_plyr_stats (98 instructions, entered only by branches from it, placed after its body by the compiler): calls _percent, _sprintf; refers to the text 'Driving Accuracy:!   %u.%u%%'; it continues in sub_0_9B62.
+- `sub_0_9B62`: Out-of-line block of _show_plyr_stats (132 instructions, entered only by branches from it, placed after its body by the compiler): calls __box, _add_commas, _alert_box, _default_box_colors, _get_avg_score, _percent and others; refers to the text 'Average score:!   %u.%02u'; it continues in sub_0_9D7A.
+- `sub_0_9D7A`: Out-of-line block of _show_plyr_stats (15 instructions, entered only by branches from it, placed after its body by the compiler): calls _delete_file, _file_write, _get_program_disk.
+- `_update_tourn_stats`: Updates the tournament statistics after a round: sorts the tournament players and, on the last round, walks the 32-player field to rank them and record the money and places.
+- `sub_0_9F9C`: Out-of-line block of _update_tourn_stats (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _update_tourn_stats.
+- `sub_0_9FA8`: Out-of-line block of _update_tourn_stats (15 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_9FD4.
+- `sub_0_9FD4`: Out-of-line block of _update_tourn_stats (1 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _update_tourn_stats.
+- `sub_0_9FD8`: Out-of-line block of _update_tourn_stats (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_A00A.
+- `sub_0_9FDC`: Out-of-line block of _update_tourn_stats (14 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_A00A.
+- `sub_0_A00A`: Out-of-line block of _update_tourn_stats (92 instructions, entered only by branches from it, placed after its body by the compiler): calls _mul_ints, _save_all_players; it continues in sub_0_9FDC.
+- `_show_tourn_stats`: The routine loads professional and user player records into a heap buffer, computes average scores for each entry, merges the two sets, and then sorts the combined list by total score with a tie-breaker using a flag byte.
+- `sub_0_A33C`: Out-of-line block of _show_tourn_stats (10 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_A36A, sub_0_AAA4.
+- `sub_0_A362`: Out-of-line block of _show_tourn_stats (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_A36A.
+- `sub_0_A36A`: Out-of-line block of _show_tourn_stats (63 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_A362, sub_0_A6D8.
+- `sub_0_A41A`: Out-of-line block of _show_tourn_stats (87 instructions, entered only by branches from it, placed after its body by the compiler): calls _clr_screen, _curr_font, _draw_frame2, _print_font_at, _print_font_centered, _set_color and others; refers to the text '%2d %s'; it continues in sub_0_A57C, sub_0_A6D8.
+- `sub_0_A57C`: Out-of-line block of _show_tourn_stats (33 instructions, entered only by branches from it, placed after its body by the compiler): calls _add_commas, _print_font_at, _reset_clip, _set_color; it continues in sub_0_A5FC.
+- `sub_0_A5FC`: Out-of-line block of _show_tourn_stats (54 instructions, entered only by branches from it, placed after its body by the compiler): calls _print_font_at, _print_font_centered, _sprintf; it continues in sub_0_A41A.
+- `sub_0_A6D8`: Out-of-line block of _show_tourn_stats (12 instructions, entered only by branches from it, placed after its body by the compiler): calls _special_effects, _wait_for_next_page; it continues in sub_0_A41A, sub_0_A70E.
+- `sub_0_A706`: Out-of-line block of _show_tourn_stats (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_A70E.
+- `sub_0_A70E`: Out-of-line block of _show_tourn_stats (86 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_A706, sub_0_AA78.
+- `sub_0_A802`: Out-of-line block of _show_tourn_stats (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_A80C.
+- `sub_0_A80C`: Out-of-line block of _show_tourn_stats (76 instructions, entered only by branches from it, placed after its body by the compiler): calls _clr_screen, _curr_font, _draw_frame2, _print_font_centered, _set_color; refers to the text 'Average'; it continues in sub_0_A936, sub_0_AA78.
+- `sub_0_A936`: Out-of-line block of _show_tourn_stats (19 instructions, entered only by branches from it, placed after its body by the compiler): calls _sprintf; refers to the text '%2d %s'; it continues in sub_0_A97C.
+- `sub_0_A97C`: Out-of-line block of _show_tourn_stats (64 instructions, entered only by branches from it, placed after its body by the compiler): calls _print_font_at, _print_font_centered, _reset_clip, _set_color, _sprintf; refers to the text '%u.%02u'; it continues in sub_0_A80C.
+- `sub_0_AA78`: Out-of-line block of _show_tourn_stats (11 instructions, entered only by branches from it, placed after its body by the compiler): calls _special_effects, _wait_for_next_page; it continues in sub_0_A33C, sub_0_A802.
+- `sub_0_AAA4`: Out-of-line block of _show_tourn_stats (5 instructions, entered only by branches from it, placed after its body by the compiler): calls _free; it continues in sub_0_AAB6.
+- `sub_0_AAB6`: Out-of-line block of _show_tourn_stats (14 instructions, entered only by branches from it, placed after its body by the compiler): calls _clr_screen, _message, _new_pallette, _page_copy.
+- `_new_stats`: Iterates through a fixed-size table of structures, copying five 32-bit values from a global memory location into each entry.
+- `_reset_pro_stats`: Displays an alert box to request confirmation.
+- `_get_avg_score`: Computes the average score by dividing a total value by a count stored in a structure, handling division by zero.
+- `sub_0_ABFE`: Out-of-line block of _get_avg_score (23 instructions, entered only by branches from it, placed after its body by the compiler): calls _divu, _mul_ints, _percent.
+- `_saved_plyr_stats`: The routine sets a global variable, calls another routine to save all players, sets a reset-stats flag, loads a player and if the load succeeds it calls another routine to show player stats, then clears the reset-stats flag and the global variable.
+- `_draw_trees`: Transforms tree object coordinates, sorts them by distance using a shell sort algorithm, and iterates through the sorted list to draw trees, balls, or cups based on distance thresholds and type flags.
+- `sub_0_ACA4`: Out-of-line block of _draw_trees (30 instructions, entered only by branches from it, placed after its body by the compiler): calls _transform; it continues in sub_0_AD18.
+- `sub_0_AD18`: Out-of-line block of _draw_trees (15 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_ADC8, sub_0_ADF6.
+- `sub_0_AD54`: Out-of-line block of _draw_trees (39 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_ADC8.
+- `sub_0_ADC8`: Out-of-line block of _draw_trees (14 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_AD18, sub_0_AD54.
+- `sub_0_ADF6`: Out-of-line block of _draw_trees (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_AFA2.
+- `sub_0_ADFE`: Out-of-line block of _draw_trees (42 instructions, entered only by branches from it, placed after its body by the compiler): calls _mulu, _new_draw_ball; it continues in sub_0_AE9E, sub_0_AEAE, sub_0_AF02.
+- `sub_0_AE9E`: Out-of-line block of _draw_trees (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_AEAE.
+- `sub_0_AEAE`: Out-of-line block of _draw_trees (21 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_AF06.
+- `sub_0_AF02`: Out-of-line block of _draw_trees (1 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_AFA2.
+- `sub_0_AF06`: Out-of-line block of _draw_trees (1 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_AFA2.
+- `sub_0_AF0A`: Out-of-line block of _draw_trees (12 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_AF46, sub_0_AFA2.
+- `sub_0_AF46`: Out-of-line block of _draw_trees (23 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_AFA2.
+- `sub_0_AFA2`: Out-of-line block of _draw_trees (56 instructions, entered only by branches from it, placed after its body by the compiler): calls _clip_blit, _init_obj, _perspect; it continues in sub_0_ADFE.
+- `_check_trees`: Iterates through a table of object properties to check for overlap with the ball using absolute distance and overlap routines.
+- `_draw_horizon`: Calculates an angle based on a global variable and an offset from the input parameter, then invokes a blitting routine three times to draw the horizon.
+- `sub_0_B308`: Out-of-line block of _draw_horizon (14 instructions, entered only by branches from it, placed after its body by the compiler): calls _blit_obj; it continues in sub_0_B33E.
+- `sub_0_B33E`: Out-of-line block of _draw_horizon (14 instructions, entered only by branches from it, placed after its body by the compiler): calls _blit_obj; it continues in sub_0_B374.
+- `sub_0_B374`: Out-of-line block of _draw_horizon (6 instructions, entered only by branches from it, placed after its body by the compiler): calls _blit_obj.
+- `_xy_to_angle960`: Calculates an interpolated angle value from input coordinates by comparing absolute values against a lookup table and adjusting the result based on sign bits and quadrant logic.
+- `sub_0_B3F4`: Out-of-line block of _xy_to_angle960 (58 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_B4B4, sub_0_B4BE.
+- `sub_0_B4B4`: Out-of-line block of _xy_to_angle960 (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_B4BE.
+- `sub_0_B4BE`: Out-of-line block of _xy_to_angle960 (9 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_get_dist`: Formats a distance value into a string using a global variable as the format template and stores the result in the buffer pointed to by the input parameter.
+- `sub_0_B514`: Out-of-line block of _get_dist (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_B51E.
+- `sub_0_B51E`: Out-of-line block of _get_dist (13 instructions, entered only by branches from it, placed after its body by the compiler): calls _sprintf; refers to the text '%u %s'.
+- `_draw_grid`: Calculates a matrix of contour values for the course terrain and renders a grid overlay on the screen, including centered text labels and color initialization.
+- `sub_0_B57C`: Out-of-line block of _draw_grid (188 instructions, entered only by branches from it, placed after its body by the compiler): calls _bigball_sprite_off, _clr_screen, _create_matrix, _curr_font, _default_box_colors, _get_contour and others; refers to the text 'F1 and F2 move grid'; it continues in sub_0_B86A.
+- `sub_0_B86A`: Out-of-line block of _draw_grid (60 instructions, entered only by branches from it, placed after its body by the compiler): calls _abs, _create_matrix, _flush_event_q, _hline, _page_copy, _print_font_centered and others; refers to the text 'The ball is %d in.
+- `sub_0_B958`: Out-of-line block of _draw_grid (76 instructions, entered only by branches from it, placed after its body by the compiler): calls _perspect_grid, _transform; it continues in sub_0_BA7A.
+- `sub_0_BA7A`: Out-of-line block of _draw_grid (711 instructions, entered only by branches from it, placed after its body by the compiler): calls _WaitTOF, __clip_blit, _abs, _alloc_poly_arrays, _blit_obj, _clip_blit and others; it continues in sub_0_C454.
+- `sub_0_C454`: Out-of-line block of _draw_grid (24 instructions, entered only by branches from it, placed after its body by the compiler): calls _hide_mouse, _phys_scr; it continues in sub_0_C608, sub_0_C638.
+- `sub_0_C4B0`: Out-of-line block of _draw_grid (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_C636.
+- `sub_0_C4BA`: Out-of-line block of _draw_grid (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_C636.
+- `sub_0_C4C4`: Out-of-line block of _draw_grid (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_C636.
+- `sub_0_C4DA`: Out-of-line block of _draw_grid (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_C636.
+- `sub_0_C4F0`: Out-of-line block of _draw_grid (11 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_C516, sub_0_C566, sub_0_C572.
+- `sub_0_C516`: Out-of-line block of _draw_grid (18 instructions, entered only by branches from it, placed after its body by the compiler): calls _perspect_grid, _transform; it continues in sub_0_C4F0, sub_0_C556.
+- `sub_0_C556`: Out-of-line block of _draw_grid (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_C636.
+- `sub_0_C566`: Out-of-line block of _draw_grid (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_C572.
+- `sub_0_C572`: Out-of-line block of _draw_grid (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_C636.
+- `sub_0_C57A`: Out-of-line block of _draw_grid (11 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_C5A0, sub_0_C5EE, sub_0_C5FA.
+- `sub_0_C5A0`: Out-of-line block of _draw_grid (18 instructions, entered only by branches from it, placed after its body by the compiler): calls _perspect_grid, _transform; it continues in sub_0_C57A, sub_0_C5E0.
+- `sub_0_C5E0`: Out-of-line block of _draw_grid (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_C636.
+- `sub_0_C5EE`: Out-of-line block of _draw_grid (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_C5FA.
+- `sub_0_C5FA`: Out-of-line block of _draw_grid (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_C636.
+- `sub_0_C600`: Out-of-line block of _draw_grid (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_C636.
+- `sub_0_C608`: Out-of-line block of _draw_grid (13 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_C4B0, sub_0_C4BA, sub_0_C4C4.
+- `sub_0_C636`: Out-of-line block of _draw_grid (1 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_C638.
+- `sub_0_C638`: Out-of-line block of _draw_grid (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_B86A.
+- `sub_0_C642`: Out-of-line block of _draw_grid (24 instructions, entered only by branches from it, placed after its body by the compiler): calls _init_scene, _log_scr, _mul_frac, _rest_bkg; it continues in _draw_grid.
+- `_get_contour`: The routine walks a height-map contour table stored in a global variable and, for a given X/Y pair, finds the nearest contour indices by interpolating between the four surrounding contour samples.
+- `_get_contour_vector`: Gets the green's contour slope for the ball's current position through get_contour.
+- `_perspect_grid`: Computes two short values from a packed input structure using fixed-point multiplication and addition.
+- `_Free_Graphics`: Checks if four global pointers hold values greater than five and calls a memory deallocation routine for each valid pointer to release allocated graphics buffers.
+- `_blit_obj`: The routine calls another routine to initialize an object and then calls a clipping blit routine with a constant argument.
+- `_free_gr1`: Calls a routine to free plane resources associated with the first graphic set.
+- `_load_gr1`: Frees existing graphics resources, reads a graphics file, and initializes a table of object pointers.
+- `_free_gr2`: Calls a routine to free allocated graphic planes.
+- `_load_gr2`: Frees the GR1 graphics, reads the second graphics file and initialises each of its objects in turn.
+- `_load_gr3`: The routine sets a global variable, reads a graphics resource from disk into memory, then loops to create a number of objects from a table using a base address and an index, frees the loaded resource, and updates the graphics buffer address.
+- `_free_gr3`: Invokes the _Free_Planes routine to perform memory cleanup operations.
+- `_title_screen_start`: Reads the title graphics file and initialises each of its objects for the title screen.
+- `_gr3_mode_switch`: The routine writes the constant 1 into a word-sized slot of a global table indexed by a global variable, effectively setting a blit object mode flag.
+- `_gr4_mode_switch`: Stores the value 2 into a specific entry of a global table used for blit object modes, indexed by a global variable.
+- `_please_wait`: Hides the screen, displays a message window at coordinates 0,0, restores the screen visibility, and resets box colors to defaults.
+- `_graphics`: The routine manages the transition from the title screen to the main game by loading graphical assets, switching display modes, and initializing audio.
+- `_get_pro_name`: The routine returns a pointer to a player name string.
+- `sub_0_D336`: Out-of-line block of _get_pro_name (7 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_fly_by`: Displays a golfer portrait and biography text, then animates a camera flight over the course geometry while checking for player input to skip.
+- `sub_0_D498`: Out-of-line block of _fly_by (9 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_D4B4.
+- `sub_0_D4B4`: Out-of-line block of _fly_by (37 instructions, entered only by branches from it, placed after its body by the compiler): calls _print_font_at, _strlen; it continues in _fly_by.
+- `sub_0_D532`: Out-of-line block of _fly_by (57 instructions, entered only by branches from it, placed after its body by the compiler): calls _any_input, _create_matrix, _draw_hole, _page_copy, _print_font_at, _print_hole_title and others; it continues in sub_0_D624, sub_0_D6DE.
+- `sub_0_D624`: Out-of-line block of _fly_by (31 instructions, entered only by branches from it, placed after its body by the compiler): calls _create_matrix, _draw_hole, _max; it continues in sub_0_D6AE.
+- `sub_0_D6AE`: Out-of-line block of _fly_by (10 instructions, entered only by branches from it, placed after its body by the compiler): calls _page_flip; it continues in sub_0_D532.
+- `sub_0_D6DE`: Out-of-line block of _fly_by (30 instructions, entered only by branches from it, placed after its body by the compiler): calls _any_input, _mul_div, _mul_frac, _reset_clip; it continues in sub_0_D532, sub_0_D75E, sub_0_D86A.
+- `sub_0_D75E`: Out-of-line block of _fly_by (30 instructions, entered only by branches from it, placed after its body by the compiler): calls _abs, _create_matrix, _draw_hole, _mul_frac; it continues in sub_0_D7DA.
+- `sub_0_D7DA`: Out-of-line block of _fly_by (37 instructions, entered only by branches from it, placed after its body by the compiler): calls _page_flip, _set_clip; it continues in sub_0_D6DE.
+- `sub_0_D86A`: Out-of-line block of _fly_by (3 instructions, entered only by branches from it, placed after its body by the compiler): calls _reset_clip; it continues in sub_0_D532.
+- `sub_0_D87A`: Loads a string pointer from a global table based on a condition, formats it into a buffer, and prints it centered at a specified vertical position.
+- `sub_0_D87C`: Selects a value from a global table based on a flag, formats it into a string using a specific format, and prints it centered on the screen alongside a static text string.
+- `_print_hole_title`: Sets the font and color, then formats a string from a global table based on a parameter.
+- `sub_0_D8CE`: Out-of-line block of _print_hole_title (28 instructions, entered only by branches from it, placed after its body by the compiler): calls _print_font_centered, _set_color, _sprintf; refers to the text 'Hole #%-2d  %d yards   Par %d'.
+- `_init_round`: Initializes the tournament roster by shuffling player indices and marking unused human slots as computer-controlled opponents.
+- `sub_0_DA34`: Out-of-line block of _init_round (34 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_DAA8.
+- `sub_0_DAA8`: Out-of-line block of _init_round (30 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_DB1C.
+- `sub_0_DB1C`: Out-of-line block of _init_round (1 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_DB1E.
+- `sub_0_DB1E`: Out-of-line block of _init_round (35 instructions, entered only by branches from it, placed after its body by the compiler): calls _random; it continues in sub_0_DBB0, sub_0_DBF6.
+- `sub_0_DB94`: Out-of-line block of _init_round (8 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_DBB0.
+- `sub_0_DBB0`: Out-of-line block of _init_round (19 instructions, entered only by branches from it, placed after its body by the compiler): calls _min; it continues in sub_0_DB1E, sub_0_DB94.
+- `sub_0_DBF6`: Out-of-line block of _init_round (91 instructions, entered only by branches from it, placed after its body by the compiler): calls _curr_font, _delay_until_input, _draw_box, _draw_frame, _hide_mouse, _log_scr and others; refers to the text 'The following players did not make'; it continues in sub_0_DDD8.
+- `sub_0_DD56`: Out-of-line block of _init_round (39 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_DDD8.
+- `sub_0_DDD8`: Out-of-line block of _init_round (35 instructions, entered only by branches from it, placed after its body by the compiler): calls _sort_t_players; it continues in sub_0_DBF6, sub_0_DD56, sub_0_DE48.
+- `sub_0_DE48`: Out-of-line block of _init_round (9 instructions, entered only by branches from it, placed after its body by the compiler): calls _generate_score; it continues in sub_0_DE62.
+- `sub_0_DE62`: Out-of-line block of _init_round (9 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_DDD8.
+- `_reset_players`: Iterates over a fixed-size table of player structures, clearing specific byte, word, and longword fields to zero or default values based on a name-check condition.
+- `sub_0_DF0A`: Out-of-line block of _reset_players (22 instructions, entered only by branches from it, placed after its body by the compiler): calls _rnd, _who_is_up; it continues in _reset_players.
+- `_who_is_up`: The routine scans a table of player records, computes a distance metric for each entry, builds a list of players whose position matches a reference, sorts that list by a hole score and repeatedly discards the worst entries until one remains.
+- `sub_0_DF74`: Out-of-line block of _who_is_up (35 instructions, entered only by branches from it, placed after its body by the compiler): calls _magxy; it continues in sub_0_DFFC, sub_0_E11A.
+- `sub_0_DFFC`: Out-of-line block of _who_is_up (22 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_E054.
+- `sub_0_E048`: Out-of-line block of _who_is_up (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_E054.
+- `sub_0_E054`: Out-of-line block of _who_is_up (50 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_E048, sub_0_E0E8.
+- `sub_0_E0E8`: Out-of-line block of _who_is_up (14 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_DF74.
+- `sub_0_E11A`: Out-of-line block of _who_is_up (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_E12C, sub_0_E1AA.
+- `sub_0_E12C`: Out-of-line block of _who_is_up (6 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_E162.
+- `sub_0_E142`: Out-of-line block of _who_is_up (8 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_E162.
+- `sub_0_E162`: Out-of-line block of _who_is_up (16 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_E142, sub_0_E1AA.
+- `sub_0_E1AA`: Out-of-line block of _who_is_up (5 instructions, entered only by branches from it, placed after its body by the compiler): calls _player_up.
+- `_player_up`: Copies a block of 71 words from a source address calculated using a global variable to a destination starting at a global variable.
+- `_player_down`: The routine copies a fixed number of 32-bit words from a global variable block to a destination area computed from a global variable.
+- `_set_default_players`: Invokes a routine to save player states, then iterates four times to copy a default player structure into a table of player records.
+- `_init_new_scene`: Resets a global variable to zero, frees a background resource table, and initializes the current scene.
+- `_draw_name`: Checks a global flag and variable to determine if an author name should be displayed.
+- `_init_scene`: Initializes the graphical scene by hiding the cursor, managing the background, and calculating camera transformations.
+- `sub_0_E42C`: Out-of-line block of _init_scene (45 instructions, entered only by branches from it, placed after its body by the compiler): calls _inside_poly, _random, _who_is_up; it continues in sub_0_E512.
+- `sub_0_E512`: Out-of-line block of _init_scene (45 instructions, entered only by branches from it, placed after its body by the compiler): calls _ball_on_tee, _magxy, _player_down, _who_is_up; it continues in sub_0_E5FA.
+- `sub_0_E5FA`: Out-of-line block of _init_scene (53 instructions, entered only by branches from it, placed after its body by the compiler): calls _create_matrix, _draw_hole, _init_anims, _mul_frac; it continues in sub_0_E6F8.
+- `sub_0_E6F8`: Out-of-line block of _init_scene (32 instructions, entered only by branches from it, placed after its body by the compiler): calls _curr_font, _perspect, _transform, _transform_putter; it continues in sub_0_E78E, sub_0_E852.
+- `sub_0_E78E`: Out-of-line block of _init_scene (14 instructions, entered only by branches from it, placed after its body by the compiler): calls _free_bkg, _transform_putter; it continues in sub_0_E7CC.
+- `sub_0_E7CC`: Out-of-line block of _init_scene (26 instructions, entered only by branches from it, placed after its body by the compiler): calls _draw_inset_box, _init_obj; it continues in sub_0_E9D4.
+- `sub_0_E852`: Out-of-line block of _init_scene (6 instructions, entered only by branches from it, placed after its body by the compiler): calls _transform_golfer; it continues in sub_0_E86A.
+- `sub_0_E86A`: Out-of-line block of _init_scene (16 instructions, entered only by branches from it, placed after its body by the compiler): calls _free_bkg, _transform_golfer; it continues in sub_0_E8B0.
+- `sub_0_E8B0`: Out-of-line block of _init_scene (50 instructions, entered only by branches from it, placed after its body by the compiler): calls _init_obj; it continues in sub_0_E9A6, sub_0_E9D4.
+- `sub_0_E980`: Out-of-line block of _init_scene (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_E9B8.
+- `sub_0_E98A`: Out-of-line block of _init_scene (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_E9B8.
+- `sub_0_E994`: Out-of-line block of _init_scene (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_E9B8.
+- `sub_0_E99E`: Out-of-line block of _init_scene (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_E9B8.
+- `sub_0_E9A6`: Out-of-line block of _init_scene (7 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_E980, sub_0_E98A, sub_0_E994.
+- `sub_0_E9B8`: Out-of-line block of _init_scene (7 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_E9D4.
+- `sub_0_E9D4`: Out-of-line block of _init_scene (37 instructions, entered only by branches from it, placed after its body by the compiler): calls _auto_club_select, _ball_on_tee, _blit_obj, _draw_pobj, _mulu; it continues in sub_0_EA70.
+- `sub_0_EA70`: Out-of-line block of _init_scene (61 instructions, entered only by branches from it, placed after its body by the compiler): calls _blit_obj, _draw_box, _draw_frame2, _set_color, _strcpy; refers to the text 'Driving Range'; it continues in sub_0_EB58, sub_0_ECD2.
+- `sub_0_EB58`: Out-of-line block of _init_scene (54 instructions, entered only by branches from it, placed after its body by the compiler): calls _get_dist, _print_font_at, _sprintf; refers to the text 'Distance:%s'; it continues in sub_0_EC30, sub_0_EC58, sub_0_ECD2.
+- `sub_0_EC30`: Out-of-line block of _init_scene (10 instructions, entered only by branches from it, placed after its body by the compiler): calls _sprintf; it continues in sub_0_EC58.
+- `sub_0_EC58`: Out-of-line block of _init_scene (31 instructions, entered only by branches from it, placed after its body by the compiler): calls _print_font_at, _set_color, _sprintf, _strcpy; refers to the text 'Hole %-2d Par %d'; it continues in sub_0_ECD2.
+- `sub_0_ECD2`: Out-of-line block of _init_scene (149 instructions, entered only by branches from it, placed after its body by the compiler): calls _all_sprite_off, _display_club, _draw_box, _draw_frame2, _draw_inset, _draw_name and others; refers to the text '%s is up'; it continues in sub_0_EF14, sub_0_EF9A.
+- `sub_0_EF14`: Out-of-line block of _init_scene (33 instructions, entered only by branches from it, placed after its body by the compiler): calls _box_colors, _message; it continues in sub_0_EF9A.
+- `sub_0_EF9A`: Out-of-line block of _init_scene (29 instructions, entered only by branches from it, placed after its body by the compiler): calls _default_box_colors, _draw_cursor, _message, _pick_up_ball.
+- `_draw_snap_meter`: Iteratively draws snap meter lines and checks for input events to determine the timing of a shot.
+- `sub_0_F0DC`: Out-of-line block of _draw_snap_meter (19 instructions, entered only by branches from it, placed after its body by the compiler): calls _draw_snap_line, _snap_event; it continues in sub_0_F13A, sub_0_F154.
+- `sub_0_F13A`: Out-of-line block of _draw_snap_meter (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F1B0.
+- `sub_0_F154`: Out-of-line block of _draw_snap_meter (13 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F19E, sub_0_F1B0.
+- `sub_0_F19E`: Out-of-line block of _draw_snap_meter (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F1B0.
+- `sub_0_F1B0`: Out-of-line block of _draw_snap_meter (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F0DC.
+- `_snap_event`: Evaluates input and global counters to determine if a snap event has occurred.
+- `sub_0_F200`: Out-of-line block of _snap_event (10 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _snap_event, sub_0_F22C.
+- `sub_0_F22C`: Out-of-line block of _snap_event (1 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F2C0.
+- `sub_0_F230`: Out-of-line block of _snap_event (12 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _snap_event, sub_0_F262, sub_0_F292.
+- `sub_0_F262`: Out-of-line block of _snap_event (10 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _snap_event, sub_0_F290.
+- `sub_0_F290`: Out-of-line block of _snap_event (1 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F2C0.
+- `sub_0_F292`: Out-of-line block of _snap_event (13 instructions, entered only by branches from it, placed after its body by the compiler): calls _any_input; it continues in _snap_event, sub_0_F2C0.
+- `sub_0_F2C0`: Out-of-line block of _snap_event (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _snap_event.
+- `_draw_snap_line`: The routine saves two globals, resets the clip, chooses a mode based on a global variable and draws a short line pattern using hline and vline helpers with hidden-screen buffering, then restores the saved globals.
+- `sub_0_F2F4`: Out-of-line block of _draw_snap_line (13 instructions, entered only by branches from it, placed after its body by the compiler): calls _phys_scr, _set_color; it continues in sub_0_F32E, sub_0_F384.
+- `sub_0_F32E`: Out-of-line block of _draw_snap_line (24 instructions, entered only by branches from it, placed after its body by the compiler): calls _hline, _max, _min; it continues in sub_0_F384.
+- `sub_0_F384`: Out-of-line block of _draw_snap_line (20 instructions, entered only by branches from it, placed after its body by the compiler): calls _hidden_scr, _hidden_scr_off, _vline; it continues in sub_0_F3DE, sub_0_F434.
+- `sub_0_F3DE`: Out-of-line block of _draw_snap_line (24 instructions, entered only by branches from it, placed after its body by the compiler): calls _hline, _max, _min; it continues in sub_0_F434.
+- `sub_0_F434`: Out-of-line block of _draw_snap_line (23 instructions, entered only by branches from it, placed after its body by the compiler): calls _hidden_scr, _hidden_scr_off, _log_scr, _vline.
+- `_draw_club`: Draws a box and prints the name of the selected club from a text table based on a global index.
+- `sub_0_F552`: Out-of-line block of _draw_club (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F580.
+- `sub_0_F564`: Out-of-line block of _draw_club (9 instructions, entered only by branches from it, placed after its body by the compiler): calls _ball_on_tee; it continues in sub_0_F580.
+- `sub_0_F580`: Out-of-line block of _draw_club (109 instructions, entered only by branches from it, placed after its body by the compiler): calls _draw_box, _draw_frame2, _print_font_centered, _set_color, _sprintf.
+- `sub_0_F708`: The routine hides the mouse cursor, switches to physical screen coordinates, and draws a club graphic.
+- `_display_club`: Hides the mouse cursor and switches the display context to the physical screen.
+- `_do_splash`: Initializes the screen and animation systems, then runs an animation loop until a global counter condition is met.
+- `sub_0_F7FC`: Out-of-line block of _do_splash (10 instructions, entered only by branches from it, placed after its body by the compiler): calls _hidden_scr_off, _log_scr, _rest_bkg.
+- `_auto_club_select`: Calculates an initial club index based on distance and ball state, then searches a club table for a valid club by iterating upwards or downwards until a non-disabled entry is found.
+- `sub_0_F86A`: Out-of-line block of _auto_club_select (13 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F88E.
+- `sub_0_F88E`: Out-of-line block of _auto_club_select (6 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F8A0.
+- `sub_0_F8A0`: Out-of-line block of _auto_club_select (10 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F8C8, sub_0_F8D2.
+- `sub_0_F8C8`: Out-of-line block of _auto_club_select (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F914.
+- `sub_0_F8D2`: Out-of-line block of _auto_club_select (7 instructions, entered only by branches from it, placed after its body by the compiler): calls _ball_on_tee; it continues in sub_0_F8E6, sub_0_F914.
+- `sub_0_F8E6`: Out-of-line block of _auto_club_select (6 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F8FC, sub_0_F90A.
+- `sub_0_F8FC`: Out-of-line block of _auto_club_select (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F90A.
+- `sub_0_F90A`: Out-of-line block of _auto_club_select (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F914.
+- `sub_0_F914`: Out-of-line block of _auto_club_select (8 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F936.
+- `sub_0_F936`: Out-of-line block of _auto_club_select (27 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_F99C.
+- `sub_0_F99C`: Out-of-line block of _auto_club_select (21 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_FA08.
+- `sub_0_FA08`: Out-of-line block of _auto_club_select (15 instructions, entered only by branches from it, placed after its body by the compiler): calls _ball_on_tee; it continues in sub_0_FA42, sub_0_FA76.
+- `sub_0_FA42`: Out-of-line block of _auto_club_select (10 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_FA70.
+- `sub_0_FA70`: Out-of-line block of _auto_club_select (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_FA08.
+- `sub_0_FA76`: Out-of-line block of _auto_club_select (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_ball_on_tee`: Compares a global variable against itself to determine a boolean state.
+- `sub_0_FAA0`: Out-of-line block of _ball_on_tee (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_all_sprite_off`: Calls three separate routines to turn off the sprite for the large ball, the shadow, and the general sprite system.
+- `_end_of_shot`: The routine finalises the current shot by updating a per-player state table, optionally applying a water penalty, and then displaying a centred message box with the shot result.
+- `sub_0_FBD2`: Out-of-line block of _end_of_shot (16 instructions, entered only by branches from it, placed after its body by the compiler): calls _magxy; it continues in sub_0_FC1A, sub_0_FC2A, sub_0_FCBA.
+- `sub_0_FC1A`: Out-of-line block of _end_of_shot (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_FC2A.
+- `sub_0_FC2A`: Out-of-line block of _end_of_shot (21 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_FC84.
+- `sub_0_FC84`: Out-of-line block of _end_of_shot (8 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_FCAC.
+- `sub_0_FCAC`: Out-of-line block of _end_of_shot (5 instructions, entered only by branches from it, placed after its body by the compiler): calls _sound; it continues in sub_0_FCBA.
+- `sub_0_FCBA`: Out-of-line block of _end_of_shot (77 instructions, entered only by branches from it, placed after its body by the compiler): calls _curr_font, _get_dist, _hidden_scr, _phys_scr, _sound, _sprintf and others; refers to the text ' Last shot went %s '; it continues in sub_0_FDEE, sub_0_FE36.
+- `sub_0_FDEE`: Out-of-line block of _end_of_shot (22 instructions, entered only by branches from it, placed after its body by the compiler): calls _bigball_sprite_off; it continues in sub_0_FE36.
+- `sub_0_FE36`: Out-of-line block of _end_of_shot (44 instructions, entered only by branches from it, placed after its body by the compiler): calls _delay_until_input, _draw_box, _draw_frame, _hidden_scr_off, _log_scr, _print_font_centered and others; it continues in sub_0_FF02.
+- `sub_0_FF02`: Out-of-line block of _end_of_shot (25 instructions, entered only by branches from it, placed after its body by the compiler): calls _magxy; it continues in sub_0_FF86, sub_0_FFC8.
+- `sub_0_FF86`: Out-of-line block of _end_of_shot (13 instructions, entered only by branches from it, placed after its body by the compiler): calls _curr_font, _drop_ball; it continues in sub_0_10052.
+- `sub_0_FFC8`: Out-of-line block of _end_of_shot (7 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1001C, sub_0_10052.
+- `sub_0_FFF0`: Out-of-line block of _end_of_shot (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1002E.
+- `sub_0_FFF8`: Out-of-line block of _end_of_shot (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1002E.
+- `sub_0_10000`: Out-of-line block of _end_of_shot (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1000C.
+- `sub_0_1000C`: Out-of-line block of _end_of_shot (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1002E.
+- `sub_0_10014`: Out-of-line block of _end_of_shot (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1002E.
+- `sub_0_1001C`: Out-of-line block of _end_of_shot (7 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_10000, sub_0_10014, sub_0_FFF0.
+- `sub_0_1002E`: Out-of-line block of _end_of_shot (10 instructions, entered only by branches from it, placed after its body by the compiler): calls _random; it continues in sub_0_10052.
+- `sub_0_10052`: Out-of-line block of _end_of_shot (114 instructions, entered only by branches from it, placed after its body by the compiler): calls _all_sprite_off, _do_instant_replay, _generate_score, _magxy, _player_down, _random and others; it continues in sub_0_10240.
+- `sub_0_10240`: Out-of-line block of _end_of_shot (26 instructions, entered only by branches from it, placed after its body by the compiler): calls _all_sprite_off, _draw_scorecard, _show_leader_board, _update_scores; it continues in sub_0_102B6.
+- `sub_0_102B6`: Out-of-line block of _end_of_shot (3 instructions, entered only by branches from it, placed after its body by the compiler): calls _init_new_scene.
+- `_do_instant_replay`: Restores game state from a saved buffer to re-execute a previous shot, initializing the scene and calling the appropriate swing routine based on the stored shot type.
+- `sub_0_10438`: Out-of-line block of _do_instant_replay (17 instructions, entered only by branches from it, placed after its body by the compiler): calls _delay_until_input, _init_new_scene, _load_hole, _shoot.
+- `_special_shots`: Checks a global variable against specific values and calls a routine to disable choices.
+- `sub_0_10512`: Out-of-line block of _special_shots (6 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1052A.
+- `sub_0_1052A`: Out-of-line block of _special_shots (8 instructions, entered only by branches from it, placed after its body by the compiler): calls _init_new_scene.
+- `_set_clip`: Stores two 32-bit parameters into two consecutive global variables.
+- `_reset_clip`: Sets the top-left clipping coordinates to zero and calculates the bottom-right clipping coordinates by subtracting one from global width and height values.
+- `_save_ball_pos`: The routine checks a global variable and, when it equals a specific value, copies a block of words from one location in memory to another using another routine.
+- `sub_0_105BC`: Out-of-line block of _save_ball_pos (16 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_overhead`: Clears the screen and draws the overhead view of the golf hole, including terrain polygons, fairway lines, and special effects.
+- `sub_0_10618`: Out-of-line block of _overhead (144 instructions, entered only by branches from it, placed after its body by the compiler): calls _bigball_sprite_off, _blit_obj, _clr_screen, _convert_pt, _draw_box, _draw_frame and others; it continues in sub_0_10832, sub_0_108C8, sub_0_10902.
+- `sub_0_10832`: Out-of-line block of _overhead (7 instructions, entered only by branches from it, placed after its body by the compiler): calls _alloc_poly_arrays; it continues in sub_0_10848.
+- `sub_0_10848`: Out-of-line block of _overhead (36 instructions, entered only by branches from it, placed after its body by the compiler): calls _compute_edge, _convert_pt; it continues in sub_0_108BA, sub_0_108C8.
+- `sub_0_108BA`: Out-of-line block of _overhead (5 instructions, entered only by branches from it, placed after its body by the compiler): calls _draw_poly; it continues in sub_0_108C8.
+- `sub_0_108C8`: Out-of-line block of _overhead (16 instructions, entered only by branches from it, placed after its body by the compiler): calls _draw_poly; it continues in sub_0_10618.
+- `sub_0_10902`: Out-of-line block of _overhead (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_10908.
+- `sub_0_10908`: Out-of-line block of _overhead (54 instructions, entered only by branches from it, placed after its body by the compiler): calls _clipped_line, _convert_pt, _reset_clip, _set_color, _write_pixel; it continues in sub_0_109C4.
+- `sub_0_109C4`: Out-of-line block of _overhead (7 instructions, entered only by branches from it, placed after its body by the compiler): calls _set_color; it continues in sub_0_109DA.
+- `sub_0_109DA`: Out-of-line block of _overhead (42 instructions, entered only by branches from it, placed after its body by the compiler): calls _convert_pt, _delay_until_input, _flush_event_q, _hidden_scr, _hidden_scr_off, _init_scene and others; it continues in _overhead.
+- `_convert_pt`: Divides two input values by distinct constants and adds a global variable to each result.
+- `_draw_course_overhead`: The routine frees planes and background, clears the screen and flips the page, loads a pro shop palette, builds a filename by copying a base string into a stack buffer, finds the first dot in the buffer, appends a suffix string, decodes the resulting LZW picture, logs the screen, flips the page and waits for input, then clears the screen again, flips the page, installs a new palette and shows please-wait messages.
+- `_sync_to_int`: Polls a global variable until its least significant bit is zero, then waits until it becomes one.
+- `sub_0_10B86`: Out-of-line block of _sync_to_int (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_10B92.
+- `sub_0_10B92`: Out-of-line block of _sync_to_int (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_ball_interrupt`: Processes ball movement by converting coordinates, checking polygon containment, and determining surface interaction.
+- `_ball_32_to_16`: The routine repeatedly takes the high 16 bits of a global variable, sign-extends the 16-bit value by adding one when the sign bit is set, and writes the result back to the same global variable.
+- `_get_ball_pos`: The routine reads three global variables sequentially.
+- `_new_draw_ball`: Checks a global flag variable to determine if a swing has started.
+- `_draw_ball`: The routine prepares a drawing context, transforms and projects the ball object twice, restores background buffers, initializes objects, checks drawing priority, conditionally clips blits, manages sprite and shadow visibility, logs the screen, toggles hidden screen handling, and checks the ball in cup and trees.
+- `_erase_ball`: Checks a global flag to switch the physical screen, then reads a global variable to determine an index.
+- `_draw_cursor`: The routine transforms a cursor object and projects it, then if a cursor draw flag is set it clamps a global coordinate and recursively redraws when out of bounds, otherwise it hides the mouse, erases the cursor, sets save and no-draw flags, initializes an object with the coordinate and two values, performs a blit, saves the coordinate, logs the screen and shows the mouse.
+- `sub_0_116EC`: Out-of-line block of _draw_cursor (15 instructions, entered only by branches from it, placed after its body by the compiler): calls _draw_cursor; it continues in sub_0_11724.
+- `sub_0_11724`: Out-of-line block of _draw_cursor (26 instructions, entered only by branches from it, placed after its body by the compiler): calls __clip_blit, _erase_cursor, _hide_mouse, _init_obj, _log_scr, _phys_scr and others; it continues in _draw_cursor.
+- `_erase_cursor`: Calls a background restoration routine using a fixed offset to redraw a specific screen region, effectively erasing the cursor.
+- `_check_cup`: The routine checks if a ball has entered the hole by calculating the magnitude of its position and vertical velocity.
+- `_check_ball_in_cup`: Checks a global condition flag and, if met, plays a sound, disables sprites, and draws a final inset graphic while erasing the ball.
+- `_check_priority`: Determines if a game object overlaps with other entities based on a global state variable.
+- `_draw_inset_objs`: Initializes an object and blits a background graphic.
+- `_set_inset_clip`: Configures the clipping area for inset graphics by invoking the clip setting routine with fixed coordinate parameters.
+- `_draw_inset`: Retrieves the ball position and, if a global flag is set, enables inset clipping.
+- `_clipped_xy_pixel`: The routine checks whether the X and Y components of the argument lie within the ranges defined by four global variables.
+- `_draw_inset_box`: Draws the inset 'Close-up' view box: frames and fills the panel, prints its caption in the current font and draws the ball in it.
+- `sub_0_11CF2`: Out-of-line block of _draw_inset_box (36 instructions, entered only by branches from it, placed after its body by the compiler): calls _clipped_xy_pixel, _reset_clip, _set_color, _set_inset_clip.
+- `_draw_all_balls`: The routine iterates over a table of ball structures using a global variable as a count.
+- `sub_0_11DAA`: Out-of-line block of _draw_all_balls (38 instructions, entered only by branches from it, placed after its body by the compiler): calls _clipped_xy_pixel, _perspect, _set_color, _transform; it continues in sub_0_11E3C, sub_0_11E60.
+- `sub_0_11E3C`: Out-of-line block of _draw_all_balls (10 instructions, entered only by branches from it, placed after its body by the compiler): calls _clipped_xy_pixel, _set_color; it continues in sub_0_11E60.
+- `sub_0_11E60`: Out-of-line block of _draw_all_balls (18 instructions, entered only by branches from it, placed after its body by the compiler): calls _draw_box; it continues in sub_0_11DAA.
+- `_obj_overlap`: Tests if the current rendering depth intersects with a sprite's horizontal bounds and bitmap mask.
+- `_events_off`: The routine clears a global flag used to gate event addition and then calls another routine to wait for the next vertical blank and another routine to empty the event queue.
+- `_events_on`: Sets a global variable to 1 to enable event processing.
+- `_get_event`: Calls a queue routine to fetch an event index.
+- `_timer_set`: Stores the lower two bytes of the input parameter into a global timer count variable.
+- `_timer_off`: Sets a global timer flag variable to zero.
+- `_timer_on`: Returns the value of a global timer flag variable.
+- `_add_event`: The routine processes pending input flags when an add-event flag is set.
+- `_any_input`: Calls a routine to retrieve an input event and checks if the event type field is zero.
+- `_clear_inputs`: The routine executes three instructions to perform a specific operation, despite the high-level pseudocode suggesting an empty function.
+- `_wait_for_input`: Flushes the event queue and loops waiting for an input event, adjusting the time limit if palette mode is active.
+- `_delay_until_input`: The routine flushes the event queue, converts the supplied frame count to a PAL-adjusted timeout counter, then waits for vertical blank interrupts while polling for input events.
+- `_flush_event_q`: Disables the timer and resets global queue head, tail, and element count variables to zero.
+- `_Queue_Add_Update`: Increments a global tail index for a circular buffer of size thirty-two and updates the element count.
+- `_Queue_Remove_Update`: Increments the queue head index modulo the buffer size and decrements the element count.
+- `_Queue_Element`: The routine reads a global variable holding the head index and returns it unless the head equals the tail or a queue element count is zero, in which case it returns -1.
+- `_update_scores`: Iterates through a table of score entries to update statistics and flags based on global conditions.
+- `sub_0_12620`: Out-of-line block of _update_scores (83 instructions, entered only by branches from it, placed after its body by the compiler): calls _generate_score, _min.
+- `_draw_scorecard`: Draws the scorecard screen: hides the mouse and animations, clears the screen, then draws the card's boxes, lines, hole numbers, pars and the players' scores.
+- `sub_0_12A6E`: Out-of-line block of _draw_scorecard (23 instructions, entered only by branches from it, placed after its body by the compiler): calls _print_font_at, _reset_clip, _set_color; it continues in sub_0_12B56.
+- `sub_0_12AD0`: Out-of-line block of _draw_scorecard (30 instructions, entered only by branches from it, placed after its body by the compiler): calls _sprintf; it continues in sub_0_12B2E, sub_0_12B56.
+- `sub_0_12B2E`: Out-of-line block of _draw_scorecard (13 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_12B56.
+- `sub_0_12B56`: Out-of-line block of _draw_scorecard (160 instructions, entered only by branches from it, placed after its body by the compiler): calls _curr_font, _print_font_at, _print_font_centered, _reset_clip, _set_color, _sprintf; refers to the text 'Total'; it continues in sub_0_12A6E, sub_0_12AD0, sub_0_12DDE.
+- `sub_0_12DDE`: Out-of-line block of _draw_scorecard (187 instructions, entered only by branches from it, placed after its body by the compiler): calls _curr_font, _delay_until_input, _hidden_scr, _phys_scr, _print_font_centered, _set_color and others; refers to the text 'Yards'; it continues in sub_0_1319A, sub_0_13228.
+- `sub_0_13104`: Out-of-line block of _draw_scorecard (13 instructions, entered only by branches from it, placed after its body by the compiler): calls _sprintf; it continues in sub_0_1312E, sub_0_1319A.
+- `sub_0_1312E`: Out-of-line block of _draw_scorecard (25 instructions, entered only by branches from it, placed after its body by the compiler): calls _sprintf; it continues in sub_0_13176, sub_0_1319A.
+- `sub_0_13176`: Out-of-line block of _draw_scorecard (11 instructions, entered only by branches from it, placed after its body by the compiler): calls _sprintf; it continues in sub_0_1319A.
+- `sub_0_1319A`: Out-of-line block of _draw_scorecard (37 instructions, entered only by branches from it, placed after its body by the compiler): calls _draw_box, _print_font_centered, _set_color, _strcpy; it continues in sub_0_12DDE, sub_0_13104.
+- `sub_0_13228`: Out-of-line block of _draw_scorecard (10 instructions, entered only by branches from it, placed after its body by the compiler): calls _clr_screen, _hidden_scr_off, _log_scr, _page_flip, _proshop_pallette.
+- `_game_scorecard`: Calls a routine to render the scorecard interface, then initializes the scene state.
+- `_pro_scorecard`: The routine calls another routine to draw the scorecard and then calls another routine to draw the pro shop, and then returns.
+- `_do_birds`: Generates a random number and checks if the lowest byte is zero.
+- `_mulligan`: Checks a global state variable against specific conditions.
+- `sub_0_13316`: Out-of-line block of _mulligan (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _mulligan, sub_0_13324.
+- `sub_0_13324`: Out-of-line block of _mulligan (28 instructions, entered only by branches from it, placed after its body by the compiler): calls _free_bkg, _init_new_scene, _log_scr, _player_down; it continues in _mulligan.
+- `_show_lie`: Displays a centered text box showing the current lie surface name and associated details by drawing a frame, printing text, and blitting a graphic.
+- `sub_0_13452`: Out-of-line block of _show_lie (140 instructions, entered only by branches from it, placed after its body by the compiler): calls _clip_blit, _curr_font, _delay_until_input, _draw_box, _draw_frame, _flush_event_q and others.
+- `_leave_game`: The routine writes a constant value to a global variable and then returns.
+- `_start_game`: Sets a global variable to 1 and calls the main gameplay routine.
+- `_play`: Manages the main game state machine by iterating through a global counter to sequence rounds, update scores, and display tournament results.
+- `sub_0_1370C`: Out-of-line block of _play (9 instructions, entered only by branches from it, placed after its body by the compiler): calls _clr_screen, _load_hole, _page_copy, _play_hole; it continues in sub_0_13738.
+- `sub_0_13738`: Out-of-line block of _play (14 instructions, entered only by branches from it, placed after its body by the compiler): calls _all_sprite_off, _announce_tourney, _init_round, _leave_game, _show_tourn_results, _update_tourn_stats; it continues in sub_0_1377E, sub_0_13792.
+- `sub_0_1377E`: Out-of-line block of _play (4 instructions, entered only by branches from it, placed after its body by the compiler): calls _leave_game, _show_tourn_stats; it continues in sub_0_13792.
+- `sub_0_13792`: Out-of-line block of _play (8 instructions, entered only by branches from it, placed after its body by the compiler): calls _clr_screen, _leave_game, _new_pallette, _page_copy, _save_all_players; it continues in _play.
+- `sub_0_137C2`: Out-of-line block of _play (4 instructions, entered only by branches from it, placed after its body by the compiler): calls _all_sprite_off, _draw_pro_shop.
+- `_play_hole`: Initializes the scene and player state, then enters a main loop that handles input events, updates physics, and manages menu interactions until the hole is completed or aborted.
+- `sub_0_138C2`: Out-of-line block of _play_hole (15 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_138FA, sub_0_1390C.
+- `sub_0_138FA`: Out-of-line block of _play_hole (4 instructions, entered only by branches from it, placed after its body by the compiler): calls _do_birds, _do_wind, _page_copy; it continues in sub_0_138C2.
+- `sub_0_1390C`: Out-of-line block of _play_hole (8 instructions, entered only by branches from it, placed after its body by the compiler): calls _any_input; it continues in sub_0_13928, sub_0_13948.
+- `sub_0_13928`: Out-of-line block of _play_hole (8 instructions, entered only by branches from it, placed after its body by the compiler): calls _alert_box; it continues in _play_hole.
+- `sub_0_13948`: Out-of-line block of _play_hole (19 instructions, entered only by branches from it, placed after its body by the compiler): calls _mul_frac, _random; it continues in sub_0_1399A, sub_0_13A82.
+- `sub_0_1399A`: Out-of-line block of _play_hole (66 instructions, entered only by branches from it, placed after its body by the compiler): calls _get_contour, _mul_frac; it continues in sub_0_13A82.
+- `sub_0_13A82`: Out-of-line block of _play_hole (33 instructions, entered only by branches from it, placed after its body by the compiler): calls _mul_div, _random; it continues in sub_0_13B08, sub_0_13B22.
+- `sub_0_13B08`: Out-of-line block of _play_hole (6 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_13B22.
+- `sub_0_13B22`: Out-of-line block of _play_hole (15 instructions, entered only by branches from it, placed after its body by the compiler): calls _random; it continues in sub_0_13C8C.
+- `sub_0_13B66`: Out-of-line block of _play_hole (70 instructions, entered only by branches from it, placed after its body by the compiler): calls _WaitTOF, _ball_on_tee, _draw_cursor, _draw_grid, _draw_menu, _flush_event_q and others; it continues in sub_0_13C8C.
+- `sub_0_13C8C`: Out-of-line block of _play_hole (57 instructions, entered only by branches from it, placed after its body by the compiler): calls _do_birds, _do_wind, _draw_cursor, _draw_menu, _erase_menu, _flush_event_q and others; it continues in sub_0_13D90, sub_0_14256.
+- `sub_0_13D90`: Out-of-line block of _play_hole (5 instructions, entered only by branches from it, placed after its body by the compiler): calls _log_scr, _phys_scr; it continues in sub_0_13DAA, sub_0_14256.
+- `sub_0_13DAA`: Out-of-line block of _play_hole (28 instructions, entered only by branches from it, placed after its body by the compiler): calls _timer_off; it continues in sub_0_13E36, sub_0_13E40, sub_0_13E68.
+- `sub_0_13E36`: Out-of-line block of _play_hole (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_13E68.
+- `sub_0_13E40`: Out-of-line block of _play_hole (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_13E56, sub_0_13E68.
+- `sub_0_13E56`: Out-of-line block of _play_hole (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_13E68.
+- `sub_0_13E68`: Out-of-line block of _play_hole (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1423E.
+- `sub_0_13E7C`: Out-of-line block of _play_hole (2 instructions, entered only by branches from it, placed after its body by the compiler): calls _leave_game; it continues in sub_0_14256.
+- `sub_0_13E84`: Out-of-line block of _play_hole (22 instructions, entered only by branches from it, placed after its body by the compiler): calls _erase_cursor, _erase_menu, _flush_event_q, _init_shot, _page_copy, _putt; it continues in sub_0_13F04.
+- `sub_0_13F04`: Out-of-line block of _play_hole (7 instructions, entered only by branches from it, placed after its body by the compiler): calls _end_of_shot, _flush_event_q, _shoot, _show_mouse; it continues in sub_0_14256.
+- `sub_0_13F2C`: Out-of-line block of _play_hole (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_14224.
+- `sub_0_13F3C`: The routine updates a global state variable with bounded increments and skips positions marked in a table, then calls display and page copy routines.
+- `sub_0_13F54`: Out-of-line block of sub_0_13F3C (9 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_13F90.
+- `sub_0_13F82`: Out-of-line block of sub_0_13F3C (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_13F90.
+- `sub_0_13F90`: Out-of-line block of sub_0_13F3C (17 instructions, entered only by branches from it, placed after its body by the compiler): calls _display_club, _page_copy; it continues in sub_0_13F82, sub_0_1423C.
+- `sub_0_14202`: Out-of-line block of _play_hole (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1423C.
+- `sub_0_14224`: Out-of-line block of _play_hole (6 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_14202.
+- `sub_0_1423C`: Polls the event queue and processes input to update game state, handle menu selections, and trigger screen updates or sprite rendering.
+- `sub_0_1423E`: Out-of-line block of _play_hole (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_13E7C, sub_0_13E84, sub_0_13F2C.
+- `sub_0_14256`: Jump stub: passes control straight on to _play_hole.
+- `sub_0_1425A`: Out-of-line block of _play_hole (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_free_ball_and_shadow`: Calls a background freeing routine four times with distinct parameters to release memory or resources associated with the ball and shadow graphics.
+- `_shoot`: Computes the ball's flight path by applying swing force, wind, and random variance factors to determine final position and outcome.
+- `sub_0_14358`: Out-of-line block of _shoot (15 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_14396, sub_0_143D6.
+- `sub_0_14396`: Out-of-line block of _shoot (14 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_143D6.
+- `sub_0_143D6`: Out-of-line block of _shoot (11 instructions, entered only by branches from it, placed after its body by the compiler): calls _animate; it continues in _shoot.
+- `sub_0_14408`: Out-of-line block of _shoot (2 instructions, entered only by branches from it, placed after its body by the compiler): calls _page_flip; it continues in _shoot.
+- `sub_0_14412`: Out-of-line block of _shoot (8 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1443A, sub_0_1449A.
+- `sub_0_1443A`: Out-of-line block of _shoot (6 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_14450, sub_0_14458.
+- `sub_0_14450`: Out-of-line block of _shoot (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1449A.
+- `sub_0_14458`: Out-of-line block of _shoot (9 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1447A, sub_0_14482.
+- `sub_0_1447A`: Out-of-line block of _shoot (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1449A.
+- `sub_0_14482`: Out-of-line block of _shoot (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1448E, sub_0_1449A.
+- `sub_0_1448E`: Out-of-line block of _shoot (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1449A.
+- `sub_0_1449A`: Out-of-line block of _shoot (48 instructions, entered only by branches from it, placed after its body by the compiler): calls _mul_frac, _random, _sound; it continues in sub_0_14558.
+- `sub_0_14558`: Out-of-line block of _shoot (22 instructions, entered only by branches from it, placed after its body by the compiler): calls _mul_frac; it continues in sub_0_145A4.
+- `sub_0_145A4`: Out-of-line block of _shoot (7 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_145BC.
+- `sub_0_145BC`: Out-of-line block of _shoot (27 instructions, entered only by branches from it, placed after its body by the compiler): calls _abs, _mulu; it continues in sub_0_14626.
+- `sub_0_14626`: Out-of-line block of _shoot (32 instructions, entered only by branches from it, placed after its body by the compiler): calls _create_matrix, _random; it continues in sub_0_146B2, sub_0_14748.
+- `sub_0_146B2`: Out-of-line block of _shoot (17 instructions, entered only by branches from it, placed after its body by the compiler): calls _random; it continues in sub_0_146EE.
+- `sub_0_146EE`: Out-of-line block of _shoot (16 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_14732, sub_0_14748.
+- `sub_0_14732`: Out-of-line block of _shoot (6 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_14748.
+- `sub_0_14748`: Out-of-line block of _shoot (54 instructions, entered only by branches from it, placed after its body by the compiler): calls _mul_ints, _sound; it continues in sub_0_1482A, sub_0_1486C.
+- `sub_0_1482A`: Out-of-line block of _shoot (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1486C.
+- `sub_0_14834`: Out-of-line block of _shoot (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_14842.
+- `sub_0_14842`: Out-of-line block of _shoot (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1486C.
+- `sub_0_1484C`: Out-of-line block of _shoot (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1485A.
+- `sub_0_1485A`: Out-of-line block of _shoot (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1486C.
+- `sub_0_14864`: Out-of-line block of _shoot (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1486C.
+- `sub_0_1486C`: Out-of-line block of _shoot (43 instructions, entered only by branches from it, placed after its body by the compiler): calls _animate, _draw_ball, _mul32_frac, _mul_frac, _page_flip; it continues in sub_0_14834, sub_0_1484C, sub_0_14864.
+- `sub_0_14928`: Out-of-line block of _shoot (109 instructions, entered only by branches from it, placed after its body by the compiler): calls _create_matrix, _draw_ball, _draw_hole, _magxy, _mul_div, _mul_frac and others; it continues in sub_0_14B0A.
+- `sub_0_14B0A`: Out-of-line block of _shoot (42 instructions, entered only by branches from it, placed after its body by the compiler): calls _any_input, _draw_ball, _draw_inset_box, _erase_ball, _hidden_scr, _hidden_scr_off and others; it continues in sub_0_14BE4.
+- `sub_0_14BE4`: Out-of-line block of _shoot (7 instructions, entered only by branches from it, placed after its body by the compiler): calls _check_lip, _check_splash, _reset_clip.
+- `_putt`: Plays a putt: removes the ball and its shadow, waits for the frame interrupt and runs the snap meter until the putt is struck, then moves the ball on the green.
+- `sub_0_14C6A`: Out-of-line block of _putt (12 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_14CA2.
+- `sub_0_14CA2`: Out-of-line block of _putt (10 instructions, entered only by branches from it, placed after its body by the compiler): calls _animate; it continues in _putt.
+- `sub_0_14CCE`: Out-of-line block of _putt (2 instructions, entered only by branches from it, placed after its body by the compiler): calls _page_flip; it continues in _putt.
+- `sub_0_14CD8`: Out-of-line block of _putt (44 instructions, entered only by branches from it, placed after its body by the compiler): calls _create_matrix, _max, _mul_div, _mul_frac, _sound; it continues in sub_0_14D90, sub_0_14DC2.
+- `sub_0_14D90`: Out-of-line block of _putt (13 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_14DC2.
+- `sub_0_14DC2`: Out-of-line block of _putt (69 instructions, entered only by branches from it, placed after its body by the compiler): calls _animate, _draw_ball, _draw_inset_objs, _hidden_scr, _hidden_scr_off, _mul_ints and others; it continues in sub_0_14EFA, sub_0_14F02.
+- `sub_0_14EFA`: Out-of-line block of _putt (2 instructions, entered only by branches from it, placed after its body by the compiler): calls _page_flip; it continues in sub_0_14DC2.
+- `sub_0_14F02`: Out-of-line block of _putt (30 instructions, entered only by branches from it, placed after its body by the compiler): calls _any_input, _check_lip, _check_splash, _draw_ball, _erase_ball, _hidden_scr and others.
+- `_check_lip`: Checks if a global variable is zero, then calls a coordinate magnitude routine to determine if the result is less than seven.
+- `_check_splash`: Checks a global state variable to determine which splash screen to display.
+- `sub_0_14FEE`: Out-of-line block of _check_splash (9 instructions, entered only by branches from it, placed after its body by the compiler): calls _sound; it continues in sub_0_15010.
+- `sub_0_15010`: Out-of-line block of _check_splash (7 instructions, entered only by branches from it, placed after its body by the compiler): calls _do_splash; it continues in sub_0_15072.
+- `sub_0_1502C`: Out-of-line block of _check_splash (11 instructions, entered only by branches from it, placed after its body by the compiler): calls _sound; it continues in sub_0_15056.
+- `sub_0_15056`: Out-of-line block of _check_splash (7 instructions, entered only by branches from it, placed after its body by the compiler): calls _do_splash; it continues in sub_0_15072.
+- `sub_0_15072`: Out-of-line block of _check_splash (6 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_14FEE, sub_0_1502C.
+- `_init_shot`: Hides the mouse cursor and erases the on-screen cursor.
+- `_pro_shop`: The routine initializes the pro shop screen and menu, then enters a loop that continues while a global variable is zero.
+- `_draw_pro_shop`: Clears the screen and applies the pro shop palette.
+- `_get_courses`: Calls a file retrieval routine with the provided parameters, passing zero as the second argument if the input short is zero, otherwise passing the input short directly.
+- `sub_0_15294`: Out-of-line block of _get_courses (10 instructions, entered only by branches from it, placed after its body by the compiler): calls _get_files.
+- `_pick_course`: Loads course metadata from disk and presents a text menu to the user.
+- `sub_0_1537A`: Out-of-line block of _pick_course (16 instructions, entered only by branches from it, placed after its body by the compiler): calls __alert_box, _file_search, _return_from_error; refers to the text 'PGA TOUR Courses:GOLF.DAT'; it continues in _pick_course, sub_0_153C4.
+- `sub_0_153C4`: Out-of-line block of _pick_course (4 instructions, entered only by branches from it, placed after its body by the compiler): calls _free_file_info.
+- `sub_0_153D0`: Out-of-line block of _pick_course (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_153E0.
+- `sub_0_153E0`: Out-of-line block of _pick_course (43 instructions, entered only by branches from it, placed after its body by the compiler): calls _auto_center_string, _file_read; refers to the text '        Next        '; it continues in sub_0_15474.
+- `sub_0_15474`: Out-of-line block of _pick_course (60 instructions, entered only by branches from it, placed after its body by the compiler): calls __box, _free_file_info, _strlen; it continues in sub_0_153C4, sub_0_15550.
+- `sub_0_15550`: Out-of-line block of _pick_course (9 instructions, entered only by branches from it, placed after its body by the compiler): calls _alloc_file_info, _free_file_info; it continues in _pick_course, sub_0_15572.
+- `sub_0_15572`: Out-of-line block of _pick_course (29 instructions, entered only by branches from it, placed after its body by the compiler): calls _Free_Planes, _draw_course_overhead, _free_file_info, _load_course, _strcpy; it continues in sub_0_153C4.
+- `_driving_range`: The routine checks a condition via another routine and, if true, optionally selects a course via another routine and then initializes player defaults, sets several global variables, prepares a driving range buffer via another routine, and starts the game via another routine.
+- `_putting_green`: Checks if the game can be aborted, then initializes a specific game mode by picking a course, setting default players, generating a random value, loading a hole, and starting the game.
+- `_practice`: Checks if the game can be aborted, sets a global flag, and prepares the game state.
+- `sub_0_156E0`: Out-of-line block of _practice (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_tournament`: Menu entry that starts a tournament: checks the current game may be abandoned, prepares the new game and sets the tournament round state.
+- `sub_0_15736`: Out-of-line block of _tournament (35 instructions, entered only by branches from it, placed after its body by the compiler): calls _announce_tourney, _init_round, _random, _start_game; it continues in _tournament, sub_0_157BA.
+- `sub_0_157BA`: Out-of-line block of _tournament (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_prepare_game`: Initializes the game state and presents a menu to select the number of players.
+- `sub_0_1594C`: Out-of-line block of _prepare_game (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1595C.
+- `sub_0_1595C`: Out-of-line block of _prepare_game (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_159E6.
+- `sub_0_1596A`: Out-of-line block of _prepare_game (26 instructions, entered only by branches from it, placed after its body by the compiler): calls __box; it continues in sub_0_159E0, sub_0_159E6.
+- `sub_0_159E0`: Out-of-line block of _prepare_game (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _prepare_game.
+- `sub_0_159E6`: Out-of-line block of _prepare_game (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_15BCE.
+- `sub_0_159F0`: Out-of-line block of _prepare_game (28 instructions, entered only by branches from it, placed after its body by the compiler): calls __box, _player_up; it continues in _prepare_game, sub_0_15A62.
+- `sub_0_15A62`: Out-of-line block of _prepare_game (40 instructions, entered only by branches from it, placed after its body by the compiler): calls __box, _strcpy; it continues in _prepare_game, sub_0_15B0E, sub_0_15BCE.
+- `sub_0_15B0E`: Out-of-line block of _prepare_game (8 instructions, entered only by branches from it, placed after its body by the compiler): calls _new_player; it continues in sub_0_15A62, sub_0_15B2A.
+- `sub_0_15B2A`: Out-of-line block of _prepare_game (27 instructions, entered only by branches from it, placed after its body by the compiler): calls __box, _load_player; it continues in _prepare_game, sub_0_15A62, sub_0_15B9E.
+- `sub_0_15B9E`: Out-of-line block of _prepare_game (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_15BAC.
+- `sub_0_15BAC`: Out-of-line block of _prepare_game (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_15BB6.
+- `sub_0_15BB6`: Out-of-line block of _prepare_game (6 instructions, entered only by branches from it, placed after its body by the compiler): calls _pick_clubs; it continues in _prepare_game, sub_0_15BCE.
+- `sub_0_15BCE`: Out-of-line block of _prepare_game (17 instructions, entered only by branches from it, placed after its body by the compiler): calls _free_card, _load_pros, _pick_course, _player_down; it continues in sub_0_159F0, sub_0_15C20.
+- `sub_0_15C20`: Out-of-line block of _prepare_game (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _prepare_game.
+- `__prepare_game`: Loads a card resource, executes a preparation routine, and then frees the card resource.
+- `_announce_tourney`: The routine draws a pro shop screen, hides the mouse and prints a tournament announcement using a drop-shadow font.
+- `sub_0_15DC8`: Out-of-line block of _announce_tourney (49 instructions, entered only by branches from it, placed after its body by the compiler): calls _blit_obj, _delay_until_input, _flush_event_q, _log_scr, _page_copy, _print_font_drop_shadow and others; refers to the text 'Prepare to %s Round %d'.
+- `_print_font_drop_shadow`: Sets a color and prints centered text at an offset position to create a shadow effect, then sets another color and prints the same text at the original position.
+- `_add_commas`: Converts a numeric value into a string using a global format variable, then inserts comma separators every three digits from the right.
+- `sub_0_15F84`: Out-of-line block of _add_commas (23 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_15FD2, sub_0_15FEC.
+- `sub_0_15FD2`: Out-of-line block of _add_commas (7 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_15F84.
+- `sub_0_15FEC`: Out-of-line block of _add_commas (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_load_pros`: The routine saves all players, obtains the program disk identifier, and searches for a file named PROS.SAV. If the file is not found it creates new stats and returns zero; otherwise it reads the file into a global variable and returns one.
+- `sub_0_1603E`: Out-of-line block of _load_pros (4 instructions, entered only by branches from it, placed after its body by the compiler): calls _new_stats.
+- `sub_0_1604A`: Out-of-line block of _load_pros (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1603E.
+- `_do_wind`: Updates a global wind variable using randomization and smoothing algorithms, then triggers screen updates and wind drawing routines.
+- `sub_0_16122`: Out-of-line block of _do_wind (37 instructions, entered only by branches from it, placed after its body by the compiler): calls _draw_wind, _log_scr, _max, _min, _phys_scr, _rnd.
+- `_force_draw_wind`: Sets two global variables to a specific value to trigger a redraw, then calls the wind drawing routine.
+- `_draw_wind`: The routine updates a global variable using fractional multiplication and addition, hides the mouse, computes a magnitude, draws a box and prints a formatted value with the current font when the magnitude changes, then conditionally updates an angle, sets a flag and performs a blit before showing the mouse again.
+- `sub_0_162E8`: Out-of-line block of _draw_wind (25 instructions, entered only by branches from it, placed after its body by the compiler): calls __clip_blit, _print_font_at, _show_mouse, _xy_to_angle.
+- `_xy_to_angle`: Calculates an 8-way directional index from a coordinate pair by comparing absolute values and using a fixed-point division to approximate the angle.
+- `sub_0_163C4`: Out-of-line block of _xy_to_angle (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_163D4, sub_0_163E4.
+- `sub_0_163D4`: Out-of-line block of _xy_to_angle (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_163E4.
+- `sub_0_163E4`: Out-of-line block of _xy_to_angle (23 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1642E, sub_0_16436.
+- `sub_0_1642E`: Out-of-line block of _xy_to_angle (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_16436.
+- `sub_0_16436`: Out-of-line block of _xy_to_angle (9 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_generate_score`: The routine is identified by the author symbol _generate_score and consists of 9 instructions.
+- `sub_0_164D0`: Out-of-line block of _generate_score (21 instructions, entered only by branches from it, placed after its body by the compiler): calls _random; it continues in sub_0_1651C.
+- `sub_0_1651C`: Out-of-line block of _generate_score (40 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_165A8.
+- `sub_0_165A8`: Out-of-line block of _generate_score (33 instructions, entered only by branches from it, placed after its body by the compiler): calls _sprintf; refers to the text '%s just scored'; it continues in sub_0_16628, sub_0_1663A, sub_0_16752.
+- `sub_0_16628`: Out-of-line block of _generate_score (6 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1663A.
+- `sub_0_1663A`: Out-of-line block of _generate_score (16 instructions, entered only by branches from it, placed after its body by the compiler): calls _sprintf; refers to the text 'a%s on hole %d'; it continues in sub_0_16674.
+- `sub_0_16674`: Out-of-line block of _generate_score (9 instructions, entered only by branches from it, placed after its body by the compiler): calls _strcpy; refers to the text 'to go even par'; it continues in sub_0_16694.
+- `sub_0_16694`: Out-of-line block of _generate_score (17 instructions, entered only by branches from it, placed after its body by the compiler): calls _sort_t_players, _sprintf; refers to the text 'to go %d %ser par'; it continues in sub_0_166D4.
+- `sub_0_166D4`: Out-of-line block of _generate_score (12 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1671A.
+- `sub_0_166FC`: Out-of-line block of _generate_score (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1671A.
+- `sub_0_16706`: Out-of-line block of _generate_score (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1671A.
+- `sub_0_16710`: Out-of-line block of _generate_score (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1671A.
+- `sub_0_1671A`: Out-of-line block of _generate_score (14 instructions, entered only by branches from it, placed after its body by the compiler): refers to the text 'drop to'; it continues in sub_0_166FC, sub_0_16706, sub_0_16710.
+- `sub_0_16740`: Out-of-line block of _generate_score (6 instructions, entered only by branches from it, placed after its body by the compiler): refers to the text 'move up to'; it continues in sub_0_16752.
+- `sub_0_16752`: Out-of-line block of _generate_score (55 instructions, entered only by branches from it, placed after its body by the compiler): calls _blit_obj, _curr_font, _default_box_colors, _hide_mouse, _log_scr, _message_window and others; refers to the text 'and %s %d%s place'.
+- `_sort_t_players`: Sorts a list of player entries based on tournament statistics, such as scores and holes played, using a bubble sort algorithm on a global array of indices.
+- `sub_0_1692C`: Out-of-line block of _sort_t_players (75 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _sort_t_players.
+- `_show_leader_board`: The routine loads a board, hides the mouse and sorts players, then enters a loop that clears the screen, blits objects, counts entries, prints headers and up to twelve player names with formatted scores and par information, advances pages, and waits for input until a quit condition is met.
+- `sub_0_16A94`: Out-of-line block of _show_leader_board (35 instructions, entered only by branches from it, placed after its body by the compiler): calls _blit_obj, _clr_screen, _set_color; it continues in sub_0_16B20.
+- `sub_0_16B20`: Out-of-line block of _show_leader_board (80 instructions, entered only by branches from it, placed after its body by the compiler): calls _curr_font, _get_pro_name, _print_font_at, _set_color, _sprintf; refers to the text '%2d.
+- `sub_0_16C5E`: Out-of-line block of _show_leader_board (24 instructions, entered only by branches from it, placed after its body by the compiler): calls _print_font_at, _reset_clip, _set_color, _sprintf; it continues in sub_0_16CBE.
+- `sub_0_16CBE`: Out-of-line block of _show_leader_board (42 instructions, entered only by branches from it, placed after its body by the compiler): calls _print_font_at, _sprintf; it continues in sub_0_16D6A.
+- `sub_0_16D6A`: Out-of-line block of _show_leader_board (15 instructions, entered only by branches from it, placed after its body by the compiler): calls _print_font_at; it continues in sub_0_16B20.
+- `sub_0_16DA6`: Out-of-line block of _show_leader_board (10 instructions, entered only by branches from it, placed after its body by the compiler): calls _special_effects, _wait_for_next_page; it continues in _show_leader_board, sub_0_16A94.
+- `sub_0_16DCE`: Out-of-line block of _show_leader_board (3 instructions, entered only by branches from it, placed after its body by the compiler): calls _free_board.
+- `sub_0_16DEA`: Clears the screen and sets the palette before iterating through a table of professional golfers.
+- `_show_tourn_results`: Calculates cumulative scores for a list of pros and renders the tournament results screen.
+- `sub_0_16E0E`: Out-of-line block of _show_tourn_results (8 instructions, entered only by branches from it, placed after its body by the compiler): calls _bigball_sprite_off, _clr_screen, _page_copy, _proshop_pallette; it continues in sub_0_16E34.
+- `sub_0_16E34`: Out-of-line block of _show_tourn_results (10 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_16E54.
+- `sub_0_16E54`: Out-of-line block of _show_tourn_results (35 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_16E34, sub_0_1724A, sub_0_17272.
+- `sub_0_16ED4`: Out-of-line block of _show_tourn_results (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_16EE0.
+- `sub_0_16EE0`: Out-of-line block of _show_tourn_results (45 instructions, entered only by branches from it, placed after its body by the compiler): calls _clr_screen, _curr_font, _draw_frame, _set_color; refers to the text 'Results after Round %d'; it continues in sub_0_16F94, sub_0_1724A.
+- `sub_0_16F94`: Out-of-line block of _show_tourn_results (79 instructions, entered only by branches from it, placed after its body by the compiler): calls _curr_font, _get_pro_name, _print_font_centered, _sprintf; refers to the text '%c%2d %s'; it continues in sub_0_170BC, sub_0_1724A.
+- `sub_0_170BC`: Out-of-line block of _show_tourn_results (13 instructions, entered only by branches from it, placed after its body by the compiler): calls _print_font_at, _reset_clip, _set_color; it continues in sub_0_170EE.
+- `sub_0_170EE`: Out-of-line block of _show_tourn_results (48 instructions, entered only by branches from it, placed after its body by the compiler): calls _print_font_at, _sprintf; it continues in sub_0_171B2.
+- `sub_0_171B2`: Out-of-line block of _show_tourn_results (39 instructions, entered only by branches from it, placed after its body by the compiler): calls _add_commas, _mul_ints, _print_font_at, _strlen; it continues in sub_0_16F94.
+- `sub_0_1724A`: Out-of-line block of _show_tourn_results (10 instructions, entered only by branches from it, placed after its body by the compiler): calls _special_effects, _wait_for_next_page; it continues in sub_0_16E54, sub_0_16ED4.
+- `sub_0_17272`: Out-of-line block of _show_tourn_results (6 instructions, entered only by branches from it, placed after its body by the compiler): calls _clr_screen, _new_pallette, _page_copy; it continues in _show_tourn_results.
+- `sub_0_172BE`: Copies a 32-bit value from a source pointer to a destination offset in a global structure.
+- `sub_0_172C2`: The routine copies a 32-bit word from a location four bytes before a pointer in register A5 to a location four bytes before a pointer in register A6.
+- `_game_t_results`: Calls a routine to show tournament results, then calls a routine to initialize the scene.
+- `_pro_t_results`: Calls a routine to show tournament results followed by a routine to draw the pro shop interface.
+- `_game_show_t_stats`: Calls a routine to show tournament statistics.
+- `_pro_show_t_stats`: The routine calls another routine to obtain a short result and, if the result is non-zero, calls a second routine to draw the pro shop.
+- `_game_lboard`: Calls a routine to show the leader board, then calls another routine to initialize the scene.
+- `_pro_lboard`: Calls a routine to show the leader board, then calls another routine to draw the pro shop interface.
+- `_wait_for_next_page`: Waits for user input and checks if the returned status is one; if so, it resets the status to zero.
+- `_new_title`: The routine calls another routine to set up the title palette and then reads 4 bytes from a file into a global variable using a file-read helper.
+- `_title_screen`: Sets a global flag and calls a routine to initialize the title screen, then triggers special effects.
+- `_credits_screen`: Draws a framed box and prints centered text listing production roles and names such as BlueSky Software and Rob Hubbard.
+- `_sparkle_sequence`: The routine loops twice to animate two different object types by initializing, drawing, and flipping pages five times each, checking for user input between frames.
+- `_showmouse`: The routine is empty; it contains no instructions and performs no operations.
+- `_hidemouse`: The routine executes three instructions to hide the mouse pointer on the screen.
+- `_text_box`: Calculates box dimensions based on text length and line count, then draws a filled box and an optional frame.
+- `__text_box`: Calculates dimensions based on string lengths and draws a bordered box.
+- `_pro_menu`: The routine stores addresses of several global variables and a constant into a global variable, then clears a byte in RAM and returns.
+- `_play_menu`: Initializes a series of global variables by assigning them pointers to menu position, text, and keyboard option tables.
+- `__restore_video`: Calls a routine to restore the background graphics behind the menu interface.
+- `_restore_video2`: Calls another routine to restore the background graphics behind the menu interface.
+- `__save_video`: The routine calls another routine to save the menu background and then returns.
+- `_save_video2`: Invokes another routine to save the background of the menu.
+- `_hilite_bar_letter`: Empty routine left from the PC version (menu bar letter highlight): sets up a stack frame and returns.
+- `_hilite_menu_letter`: The routine is empty except for a return.
+- `_menu_word`: Iterates through a table of word offsets starting from a global variable to locate the correct index for a menu option.
+- `_event`: Waits for a vertical blank if required, then retrieves an input event structure.
+- `_get_option_number`: The routine derives two 16-bit values from the input parameter and a global variable, using multiplication and division by seven, and returns them packed together.
+- `sub_0_18276`: Out-of-line block of _get_option_number (16 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_draw_down_menu`: Hides the mouse and saves the video state before drawing a text box at an offset derived from a parameter.
+- `_erase_down_menu`: Hides the mouse pointer, restores the video display, and then shows the mouse pointer again.
+- `_check_xlimits`: Compares two 16-bit values derived from the input parameters to determine if a horizontal limit is exceeded.
+- `sub_0_183FA`: Out-of-line block of _check_xlimits (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _check_xlimits.
+- `_invert_option_text`: Hides the mouse and updates a global option index using a table lookup and limit check.
+- `sub_0_1844E`: Out-of-line block of _invert_option_text (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _invert_option_text, sub_0_18462.
+- `sub_0_18462`: Out-of-line block of _invert_option_text (27 instructions, entered only by branches from it, placed after its body by the compiler): calls _disable_choice; it continues in _invert_option_text, sub_0_184C4.
+- `sub_0_184C4`: Out-of-line block of _invert_option_text (21 instructions, entered only by branches from it, placed after its body by the compiler): calls _set_hilite, _showmouse, _text_box; it continues in _invert_option_text.
+- `_restore_option_text`: Hides the mouse cursor and checks a global variable against a value in a table.
+- `sub_0_18542`: Out-of-line block of _restore_option_text (26 instructions, entered only by branches from it, placed after its body by the compiler): calls _disable_choice; it continues in _restore_option_text, sub_0_185A0.
+- `sub_0_185A0`: Out-of-line block of _restore_option_text (20 instructions, entered only by branches from it, placed after its body by the compiler): calls _set_hilite, _showmouse, _text_box; it continues in _restore_option_text.
+- `_get_menu_option`: Polls input events to navigate a menu structure, updating the display based on cursor position and selected options.
+- `sub_0_186D2`: Processes input events and updates menu state variables to navigate options or confirm selections.
+- `sub_0_186E6`: The routine drives a down-menu state machine using a global variable and a stack frame.
+- `sub_0_187C2`: Processes menu navigation events and updates the selected option index.
+- `_draw_menu`: Saves the video state and hides the mouse cursor.
+- `_erase_menu`: Hides the mouse cursor and restores the video display state by calling two separate video restoration routines.
+- `_newmenu`: The routine saves the ball sprite state, sets the font, and obtains a menu option.
+- `_get_menu_word`: Iterates through a global table of words up to a global count limit, comparing each entry against a provided parameter.
+- `_get_keyborad_menu_option`: Iterates through a table of menu entries stored in a global variable to find a specific value.
+- `_get_adjacent_boxes`: Calculates the linear index of a grid cell and retrieves the indices of its four adjacent neighbors from a short array, storing them in a global buffer.
+- `_adjacent_boxes`: The routine iterates over a two-dimensional range defined by two fields of the first argument and, for each pair of indices, calls another routine with the row index, the second field of the first argument, and the second argument.
+- `_center_2d`: Computes centered coordinates by subtracting half of the width and height values from fixed offsets, storing the results into the provided pointers.
+- `_message_window`: Calculates string length and sets colors before drawing a framed box.
+- `_box_initialize`: Sets up box visual properties by calling routines to apply default or title-specific colors, center the box in 2D space, and handle adjacent box logic.
+- `__box`: The routine initializes a box with four parameters, flips the page, hides the screen, flushes the event queue, runs the box interface with a masked result, restores the screen and copies the page, then returns the interface result.
+- `_in_box`: Determines if a point defined by the first parameter lies within a rectangle defined by the second parameter.
+- `_which_box`: Iterates through a table of box structures to find the first one containing the mouse cursor if mouse input is active.
+- `_box_exit`: Compares two fields within the first parameter structure and checks if the second parameter is non-zero.
+- `_mouse_press`: The routine clears a global flag, waits for a vertical blank, fetches an event structure and returns the mouse button word if the event type is a mouse button press.
+- `sub_0_1930E`: Out-of-line block of _mouse_press (11 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _mouse_press.
+- `_hilite_box`: Calculates an offset into a global structure table and calls a text box routine to render a highlighted selection box using derived coordinates and static pointers.
+- `_restore_box`: Checks a state flag in a global table indexed by the input parameter.
+- `_get_box_states`: The routine consists of three instructions and calls another unnamed routine.
+- `sub_0_19460`: Out-of-line block of _get_box_states (14 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_update_box`: The routine checks a global variable for each box index and, depending on the box type and a mode field in the second parameter, updates a state flag in a table and calls another routine to restore or highlight the box.
+- `_box_interface`: Polls mouse position and press state to determine which interface box is selected, updating the display and tracking mouse movement until an exit condition is met or a selection is confirmed.
+- `_not_implemented`: The routine is empty and contains no executable instructions beyond the return.
+- `_alert_box`: Calls a graphics routine to draw a rectangular box on the screen using specific coordinates.
+- `__alert_box`: The routine calls another routine with constant arguments and returns true if the result equals zero, otherwise false.
+- `_drop_ball`: Calls a routine to draw a box at screen coordinates 0,1 with width 6 and height 10.
+- `_message`: Hides the screen, displays a message window, restores the screen, and waits for user input before refreshing the display.
+- `_pick_up_ball`: Checks a global state variable; if low, it either displays an alert or formats a message string to display, then sets a pick-up flag and calls a shot-ending routine.
+- `sub_0_198C2`: Out-of-line block of _pick_up_ball (14 instructions, entered only by branches from it, placed after its body by the compiler): calls _message, _sprintf; refers to the text '%s picks up his ball'; it continues in sub_0_198FE, sub_0_19916.
+- `sub_0_198FE`: Out-of-line block of _pick_up_ball (8 instructions, entered only by branches from it, placed after its body by the compiler): calls _alert_box; it continues in sub_0_19916.
+- `sub_0_19916`: Out-of-line block of _pick_up_ball (5 instructions, entered only by branches from it, placed after its body by the compiler): calls _end_of_shot; it continues in sub_0_198FE.
+- `_show_hot_keys`: The routine sets a string highlight value, then calls another routine to set hot key colors, displays a message, and restores default box colors before returning.
+- `_special_shot_menu`: Hides the screen, initializes a box interface, and waits for user input to select an option.
+- `_bye`: Quit entry: fills the closing dialog's button table, saves every player's record and leaves the game.
+- `sub_0_19BDA`: Out-of-line block of _bye (23 instructions, entered only by branches from it, placed after its body by the compiler): calls __box, _save_game; it continues in sub_0_19C36.
+- `sub_0_19C36`: Out-of-line block of _bye (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_save_game`: Saves the game in progress to GOLF.SAV on the program disk: asks before overwriting an existing save, deletes it and writes the game state.
+- `sub_0_19CCC`: Out-of-line block of _save_game (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `sub_0_19CD0`: Out-of-line block of _save_game (11 instructions, entered only by branches from it, placed after its body by the compiler): calls _delete_file, _file_write; refers to the text 'GOLF.SAV'; it continues in sub_0_19CCC.
+- `_ok_to_abort_game`: Checks a global variable for a specific state and prompts the user via an alert box if the condition is met.
+- `sub_0_19D48`: Out-of-line block of _ok_to_abort_game (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_restore_game`: Checks the program disk and whether abort is allowed, then searches for a save file.
+- `sub_0_19E1C`: Out-of-line block of _restore_game (6 instructions, entered only by branches from it, placed after its body by the compiler): calls _message.
+- `_goto_hole`: Checks a global state variable and, if valid, initializes two stack buffers with constant values.
+- `sub_0_19E94`: Out-of-line block of _goto_hole (46 instructions, entered only by branches from it, placed after its body by the compiler): calls __box, _load_hole; it continues in _goto_hole.
+- `_choose_player`: Checks a global variable to determine if a player selection is needed.
+- `sub_0_19F64`: Out-of-line block of _choose_player (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_19F78, sub_0_1A098.
+- `sub_0_19F78`: Out-of-line block of _choose_player (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_19F7E.
+- `sub_0_19F7E`: Out-of-line block of _choose_player (77 instructions, entered only by branches from it, placed after its body by the compiler): calls __box; refers to the text 'Cancel'; it continues in _choose_player, sub_0_1A098.
+- `sub_0_1A098`: Out-of-line block of _choose_player (4 instructions, entered only by branches from it, placed after its body by the compiler): calls _player_up; it continues in _choose_player.
+- `_pro_show_plyr_stats`: The routine calls another routine to obtain a short value and stores it in a local short.
+- `_pick_clubs`: Displays a dialog box to allow the user to toggle the selection of various clubs.
+- `sub_0_1A228`: Iterates through a list of clubs, displaying options and reading user input to select a specific set.
+- `sub_0_1A332`: Polls input states to count active selections and updates a global flag table based on whether specific conditions are met.
+- `sub_0_1A374`: The routine clears a byte in a table for each box index, then marks boxes as active or inactive based on a flag byte and updates state fields.
+- `sub_0_1A3AA`: Initializes a menu state table and displays a dialog box to allow the user to select clubs.
+- `sub_0_1A3C6`: Initializes a dialog box for selecting clubs by iterating through a table to set item states and labels based on a global string array.
+- `sub_0_1A3E2`: The routine returns the integer value 1.
+- `sub_0_1A3E8`: The routine calls the screen logging routine and then returns a 16-bit word read from an address computed as an offset from an uninitialized pointer.
+- `_new_course`: Calls a routine to select a course and, if successful, initializes the round.
+- `sub_0_1A424`: Out-of-line block of _new_course (6 instructions, entered only by branches from it, placed after its body by the compiler): calls _clr_screen.
+- `_sprintf`: Saves a destination pointer to a global variable and calls a formatting routine to process arguments.
+- `sub_0_1A470`: Increments a global pointer and stores the first byte of the input parameter at the address it points to.
+- `_printf`: The routine receives a pointer argument and calls a formatting routine with a putchar callback, the argument pointer and a small stack buffer.
+- `sub_0_1A4A8`: The routine executes eight instructions and invokes two other unnamed routines.
+- `sub_0_1A4C4`: Out-of-line block of sub_0_1A4A8 (7 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1A4D6.
+- `sub_0_1A4D6`: Out-of-line block of sub_0_1A4A8 (33 instructions, entered only by branches from it, placed after its body by the compiler): calls _divu, _modu.
+- `_format`: Parses a format string to extract flags, width, and precision for conversion specifiers.
+- `_ftoa`: Converts a floating-point number to a decimal or scientific notation string by calculating the exponent, rounding, and formatting digits with a decimal point.
+- `sub_0_1A92E`: Out-of-line block of _ftoa (10 instructions, entered only by branches from it, placed after its body by the compiler): calls _Fcmp, _Fdiv; it continues in sub_0_1A94E.
+- `sub_0_1A94E`: Out-of-line block of _ftoa (10 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1A974.
+- `sub_0_1A974`: Out-of-line block of _ftoa (10 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1A996.
+- `sub_0_1A996`: Out-of-line block of _ftoa (41 instructions, entered only by branches from it, placed after its body by the compiler): calls _Fadd, _Fcmp; it continues in sub_0_1AA0E, sub_0_1AA14, sub_0_1AA20.
+- `sub_0_1AA0E`: Out-of-line block of _ftoa (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1AA14.
+- `sub_0_1AA14`: Out-of-line block of _ftoa (4 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1AA20.
+- `sub_0_1AA20`: Out-of-line block of _ftoa (25 instructions, entered only by branches from it, placed after its body by the compiler): calls _Ffix, _Fflt, _Fmul, _Fsub; it continues in sub_0_1AA70, sub_0_1AA96.
+- `sub_0_1AA70`: Out-of-line block of _ftoa (14 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1AA20, sub_0_1AA96.
+- `sub_0_1AA96`: Out-of-line block of _ftoa (12 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1AAB8.
+- `sub_0_1AAB8`: Out-of-line block of _ftoa (36 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_Fadd`: The routine sets up a small stack frame and, on first entry, opens a library and aborts with an error message if the open fails.
+- `_Fcmp`: Opens the floating-point library if not already loaded and invokes its comparison routine to evaluate two floating-point numbers passed via registers.
+- `_Fneg`: Loads the math library if not already present and invokes a routine to negate the floating-point value stored in register A6.
+- `_Ftst`: Loads the math library if not already present and invokes a specific function from its vector table using a global pointer.
+- `_Ffix`: Loads the math library if not already open and invokes a specific function from its jump table to perform a fixed-point multiplication.
+- `_Fsub`: Opens the math library if not already loaded, aborting on failure with an error message.
+- `_ran`: The routine obtains a value from another routine, stores it into a global variable, obtains a second value from another routine and stores it into the same global variable, then calls two other routines and returns.
+- `_randl`: Calls a routine to generate a random number, multiplies it using a floating-point multiplication routine, and passes the result to an exponential function routine.
+- `_exp`: Checks a global variable to see if the math library is already loaded.
+- `_Fdiv`: Opens the math library if not already loaded, then invokes a function pointer from that library to perform a floating-point division using registers A4 and A6.
+- `_Fflt`: Opens the math library if not already loaded, then invokes a specific floating-point multiplication routine from that library using a function pointer table.
+- `_Fmul`: Checks a global pointer to determine if the math library is loaded; if not, it opens the library and aborts on failure.
+- `amiga_math`: Checks a global pointer to see if the mathtrans.library is already loaded; if not, it opens the library and exits the program with an error message if the load fails.
+- `__abort`: Retrieves a pointer to a global string variable and passes it to a write routine to display an error message.
+- `__Output`: Wrapper that calls the dos library function Output and returns its result to the caller.
+- `__Write`: Wrapper that calls the dos library function Write and returns its result to the caller.
+- `__OpenLibrary`: The routine loads a pointer from a global variable, adds an offset, and calls the routine found at that address.
+- `_strcpy`: Copies a null-terminated string from a source pointer to a destination pointer byte by byte until the null terminator is encountered.
+- `_strlen`: Iterates through a null-terminated string byte by byte until the terminator is found.
+- `_toupper`: Checks if the input byte represents a lowercase ASCII letter and subtracts a constant to convert it to uppercase if true.
+- `_tolower`: Checks if the input byte represents an uppercase ASCII letter.
+- `_strcmp`: Compares two null-terminated strings character by character up to a maximum length, returning a negative value if the first string is lexicographically smaller, a positive value if larger, or zero if they are equal.
+- `_strncmp`: Compares up to a specified number of bytes from two memory locations, returning a negative value if the first is less, positive if greater, or zero if they match or the limit is reached.
+- `sub_0_1AD80`: Out-of-line block of _strncmp (3 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in sub_0_1AD86.
+- `sub_0_1AD86`: Out-of-line block of _strncmp (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates.
+- `_int_start`: The routine executes a jump to another routine.
+- `_int_end`: The routine loads a function pointer from a global table and calls the pointed-to routine indirectly, then returns.
+- `_lseek`: This routine adjusts the file position pointer for a file handle, likely implementing the standard library function lseek.
+- `sub_0_1ADDA`: Out-of-line block of _lseek (15 instructions, entered only by branches from it, placed after its body by the compiler): calls __IoErr, __Seek; it continues in _lseek, sub_0_1AE08.
+- `sub_0_1AE08`: Out-of-line block of _lseek (6 instructions, entered only by branches from it, placed after its body by the compiler): calls __Seek; it continues in _lseek.
+- `_creat`: Calls the open routine with the provided argument to create or open a file.
+- `_open`: Allocates a slot in the file descriptor table and opens a file using dos.library, handling creation, truncation, and locking based on flags.
+- `_read`: This routine executes a low-level file read operation by calling the system library function __Read.
+- `_begin`: Clears a block of global memory and checks a flag in a global structure to decide whether to call a specific handler or proceed to the main program entry point.
+- `_geta4`: The routine is empty and returns immediately without performing any operations.
+- `__main`: Allocates memory for a global structure and parses command line or Workbench arguments to set the current directory.
+- `sub_0_1B1A8`: Small routine of 1 instruction that copies d0 to d5.
+- `__cli_parse`: Allocates memory to store a command string, copies a prefix and suffix around a null-terminated sequence from another routine, and tokenizes the result by splitting on whitespace while handling quoted strings.
+- `sub_0_1B370`: Copies a null-terminated string from a source pointer to a destination pointer, truncating the copy after a fixed maximum number of bytes.
+- `_strcat`: Appends the second string to the first string up to a maximum length, ensuring the result is null-terminated.
+- `_strncat`: The routine finds the null terminator of the first string, then copies up to param_3 characters from the second string into the first, stopping early if a null byte is encountered.
+- `_strncpy`: Copies characters from a source string to a destination buffer up to a specified count.
+- `_mulu`: Performs a 32-bit unsigned multiplication of two values passed in registers.
+- `__wb_parse`: Opens the icon library and retrieves the disk object to parse command line tool types.
+- `sub_0_1B494`: Determines the sign of a value based on input registers and negates the result of another routine if the condition is met.
+- `_divs`: Calculates the sign of the result based on the signs of the dividend and divisor, calls another routine to perform the magnitude division, and returns the signed quotient and remainder.
+- `_mods`: Calls another routine to perform a division, then negates the result if the input value is negative.
+- `_modu`: Calls another routine and returns the 64-bit result formed by the D0 and D1 registers.
+- `_divu`: The routine invokes another routine and then returns.
+- `sub_0_1B4EE`: Calculates the quotient and remainder of a 32-bit integer division.
+- `_putchar`: Calls another routine to handle character output.
+- `_aputc`: The routine calls a character output function and a flush routine to ensure buffered text is displayed.
+- `sub_0_1B594`: Jump stub: passes control straight on to _aputc.
+- `_putc`: The routine outputs a character by invoking a flash-related routine and an unnamed helper.
+- `sub_0_1B5C0`: Reads a byte from a source buffer pointed to by a global register, increments the source pointer, and stores the byte into a destination buffer pointed to by another global register.
+- `sub_0_1B5D2`: Iterates through a range of file handle values stored in a global variable and closes each one using the standard library close function.
+- `_fclose`: Validates the file handle pointer and flushes pending output if necessary.
+- `sub_0_1B616`: Out-of-line block of _fclose (33 instructions, entered only by branches from it, placed after its body by the compiler): calls _close, _flsh_, _free, _unlink; it continues in _fclose.
+- `_flsh_`: The routine manages a small output buffer pointed to by param_1 and uses param_2 to supply a byte to write.
+- `sub_0_1B6A4`: Writes a byte from a global variable into a buffer managed by a structure passed in register A2.
+- `sub_0_1B6DC`: Handles a disk I/O operation by checking status flags and either writing a byte to the disk or reading a byte into a buffer.
+- `sub_0_1B6F4`: Checks a global flag and allocates a buffer if empty.
+- `sub_0_1B734`: Increments a pointer stored in a global structure by a short offset and sets a flag bit.
+- `_newstream`: Iterates through a fixed-size table of structures to find an entry marked as free.
+- `sub_0_1B788`: Out-of-line block of _newstream (1 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _newstream.
+- `sub_0_1B78A`: Out-of-line block of _newstream (5 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _newstream.
+- `_getbuff`: Allocates a memory block and stores the pointer in a structure, setting error flags if allocation fails.
+- `sub_0_1B7CA`: Sets specific fields in a buffer structure pointed to by a register, including a size value and flags.
+- `sub_0_1B7F6`: The routine walks a linked list of memory blocks referenced by a global variable and releases each block using the memory allocator.
+- `sub_0_1B804`: Iterates through a linked list of memory blocks, freeing each block using its stored size field, until a null pointer is reached.
+- `_lmalloc`: Allocates memory using the system allocator and links the block into a global singly linked list for tracking purposes.
+- `_malloc`: Extracts the lower 16 bits from the input parameter and passes it to the low-level memory allocation routine.
+- `_free`: Traverses a global linked list to locate a node matching the provided pointer.
+- `_isatty`: Validates a file descriptor index against a global limit and checks if the corresponding entry in a file table is null.
+- `sub_0_1B8FE`: Calculates an address using offsets from two global pointers and a table index.
+- `sub_0_1B91C`: The routine returns a constant value of zero.
+- `_unlink`: The routine attempts to delete the file whose name is passed in.
+- `sub_0_1B940`: Out-of-line block of _unlink (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _unlink.
+- `_write`: Checks the abort flag to determine if the operation should be terminated.
+- `sub_0_1B97E`: Out-of-line block of _write (6 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _write, sub_0_1B992.
+- `sub_0_1B992`: Out-of-line block of _write (14 instructions, entered only by branches from it, placed after its body by the compiler): calls __IoErr, __Write; it continues in _write, sub_0_1B9BE.
+- `sub_0_1B9BE`: Out-of-line block of _write (2 instructions, entered only by branches from it, placed after its body by the compiler): straight-line arithmetic and local-variable updates; it continues in _write.
+- `_Chk_Abort`: Clears a specific signal bit and checks if it was previously set.
+- `_exit`: Checks a global pointer variable; if it is non-null, calls the function it points to.
+- `__exit`: Releases allocated memory, closes opened libraries, and unlocks resources.
+- `sub_0_1BB26`: The routine contains three instructions and performs no observable work; it ends with a return to its caller.
+- `_close`: Validates a file descriptor index against a global table and error state.
+- `_Close`: Jump stub: passes control straight on to __Close.
+- `__Close`: Wrapper that calls the dos library function Close and returns its result to the caller.
+- `__CurrentDir`: Wrapper that calls the dos library function CurrentDir and returns its result to the caller.
+- `_DeleteFile`: Jump stub: passes control straight on to __DeleteFile.
+- `__DeleteFile`: Wrapper that calls the dos library function DeleteFile and returns its result to the caller.
+- `_DupLock`: Wrapper that calls the dos library function DupLock and returns its result to the caller.
+- `_Examine`: Jump stub: passes control straight on to __Examine.
+- `__Examine`: Wrapper that calls the dos library function Examine and returns its result to the caller.
+- `_ExNext`: Wrapper that calls the dos library function ExNext and returns its result to the caller.
+- `__Input`: Wrapper that calls the dos library function Input and returns its result to the caller.
+- `__IoErr`: Wrapper that calls the dos library function IoErr and returns its result to the caller.
+- `__IsInteractive`: Wrapper that calls the dos library function IsInteractive and returns its result to the caller.
+- `_Lock`: Jump stub: passes control straight on to __Lock.
+- `__Lock`: Wrapper that calls the dos library function Lock and returns its result to the caller.
+- `_Open`: Jump stub: passes control straight on to __Open.
+- `__Open`: Wrapper that calls the dos library function Open and returns its result to the caller.
+- `_ParentDir`: Wrapper that calls the dos library function ParentDir and returns its result to the caller.
+- `_Read`: Jump stub: passes control straight on to __Read.
+- `__Read`: Wrapper that calls the dos library function Read and returns its result to the caller.
+- `_Seek`: Jump stub: passes control straight on to __Seek.
+- `__Seek`: Wrapper that calls the dos library function Seek and returns its result to the caller.
+- `_UnLock`: Jump stub: passes control straight on to __UnLock.
+- `__UnLock`: Wrapper that calls the dos library function UnLock and returns its result to the caller.
+- `_Write`: Jump stub: passes control straight on to __Write.
+- `_AddIntServer`: Loads a function pointer from a global variable and calls the routine it points to.
+- `_Alert`: Retrieves a function pointer from a global variable and executes it.
+- `_AvailMem`: Loads a function pointer from a global variable offset and executes it.
+- `_CloseLibrary`: Jump stub: passes control straight on to __CloseLibrary.
+- `__CloseLibrary`: Loads a function pointer from a global variable and an offset into a jump table, then executes the pointed-to routine.
+- `_AllocMem`: Jump stub: passes control straight on to __AllocMem.
+- `__AllocMem`: Performs an indirect function call using a pointer derived from a global variable offset by the A4 register.
+- `_FindTask`: Jump stub: passes control straight on to __FindTask.
+- `__FindTask`: The routine loads a pointer from a global variable, adds an offset, and calls the routine found at that address.
+- `__Forbid`: Loads a function pointer from a global table entry and executes it.
+- `_FreeMem`: Jump stub: passes control straight on to __FreeMem.
+- `__FreeMem`: Loads a function pointer from a global variable and executes it.
+- `_GetMsg`: Jump stub: passes control straight on to __GetMsg.
+- `__GetMsg`: Calculates an address by combining a global variable with an offset and dereferences it to invoke a function pointer.
+- `_OpenLibrary`: Jump stub: passes control straight on to __OpenLibrary.
+- `_RemIntServer`: Loads a function pointer from a global table offset by a base register and executes it.
+- `_ReplyMsg`: Jump stub: passes control straight on to __ReplyMsg.
+- `__ReplyMsg`: Loads a function pointer from a global variable and executes it.
+- `__SetSignal`: Loads a function pointer from a global variable and executes it.
+- `_SetTaskPri`: Executes an indirect function call through a pointer stored in a global variable, offset by a negative constant.
+- `__WaitPort`: The routine calls another routine through a pointer stored in a global variable.
+- `_AllocRaster`: Loads a function pointer from a global table using an offset from a base register and executes it.
+- `_BltBitMap`: Loads a function pointer from a global table and executes it.
+- `_BltBitMapRastPort`: Loads a function pointer from a global variable and executes it.
+- `_BltClear`: The routine invokes a function pointer stored in a global table via an offset from a base register.
+- `_BltMaskBitMapRastPort`: Loads a function pointer from a global variable and a table, then invokes the pointed-to routine.
+- `_ChangeSprite`: Loads a function pointer from a global table offset by a base address and executes it.
+- `_DisownBlitter`: Loads a function pointer from a global variable and a table offset, then executes the pointed-to routine to release blitter resources.
+- `_Draw`: Loads a function pointer from a global table offset by a value in register A4 and executes it.
+- `_FreeCprList`: Calls a function pointer stored in a global variable to release a list of compressed resources.
+- `_FreeRaster`: Loads a function pointer from a global variable and executes it to release raster resources.
+- `_FreeSprite`: Loads a function pointer from a global table offset by a register value and executes it.
+- `_FreeVPortCopLists`: The routine performs an indirect function call through a pointer derived from a global variable offset.
+- `_GetSprite`: Loads a function pointer from a global table offset by a register value and executes it.
+- `_InitBitMap`: Loads a function pointer from a global table using an offset and executes it.
+- `_InitView`: Loads a function pointer from a global variable and executes it.
+- `_LoadView`: The routine calculates an address from a global variable and a constant offset, then performs an indirect jump to the function pointer stored at that location.
+- `_MakeVPort`: Loads a function pointer from a global structure offset and executes it.
+- `_Move`: Loads a function pointer from a global variable and executes the routine it references.
+- `_MoveSprite`: Loads a function pointer from a global table using an offset derived from a base pointer and invokes it.
+- `_MrgCop`: Loads a function pointer from a global table using an offset and executes it.
+- `_OwnBlitter`: Loads a function pointer from a global table and executes it to wait for the blitter hardware to finish its current operation.
+- `_SetAPen`: Loads a function pointer from a global table and executes it.
+- `_SetDrMd`: Reads a function pointer from a global variable and executes it to configure the display mode.
+- `_SetRGB4`: Loads a function pointer from a global variable and executes it via an indirect jump.
+- `_Text`: Loads a function pointer from a global variable and executes it.
+- `_WaitBlit`: Calls the Blitter wait function via a pointer stored in a global variable.
+- `_WaitBOVP`: Loads a function pointer from a global table using an offset and executes it.
+- `_WaitTOF`: Calls a function pointer located in the global variables to synchronize with the start of the next video frame.
+- `_FindToolType`: Loads a function pointer from a global variable and executes it.
+- `_FreeDiskObject`: Calls a function pointer retrieved from a global variable to release a disk object.
+- `_GetDiskObject`: Loads a function pointer from a global variable and executes it.
+- `_CloseScreen`: Loads a function pointer from a global variable and executes it to perform screen closure tasks.
+- `_CloseWindow`: Loads a function pointer from a global variable and executes it to perform window closure logic.
+- `_MakeScreen`: Calculates an address using a global offset and a base pointer.
+- `_OpenScreen`: The routine performs an indirect function call by dereferencing a pointer stored in a global variable.
+- `_OpenWindow`: Loads a function pointer from a global variable and an offset into a table, then executes the routine located at that address.
+- `_RethinkDisplay`: Loads a function pointer from a global variable and executes it to update the display.
+- `_WBenchToBack`: Loads a function pointer from a global offset relative to a base register and executes it.
+- `_WindowToFront`: Loads a function pointer from a global variable and executes it to bring a window to the front.
+
+### Type
+
+- `sub_0_0000`: Calls two unnamed routines and iteratively invokes a function pointer from a global table.
+- `sub_0_003C`: Decrements a value in register D6 repeatedly until it equals negative one.
+
+### endcli
+
+- `sub_0_0000`: The routine walks a linked list via a global variable to find the maximum value at a computed index, then writes that maximum into a table and fills a range with incremental words.
+- `sub_0_0136`: Copies sixteen words from a global structure to a stack buffer if the buffer pointer is valid, then calls a routine via a function pointer.
+
+### loadwb
+
+- `sub_0_0000`: Calls two unnamed routines and iteratively invokes a function pointer from a global table.
+- `sub_0_003C`: The routine decrements a value in register D6 by one in a loop until it equals negative one.
+
+### Disk-Validator
+
+- `sub_0000`: Allocates memory blocks via library calls and initializes internal counters and bitmasks.
+
+### icon.library
+
+- `sub_0_0000`: The routine returns a fixed constant value to the caller.
+- `sub_0_00DC`: Increments a 16-bit counter located at a fixed offset from a base pointer.
+- `sub_0_00EA`: Decrements a 16-bit counter located at an offset in a structure pointed to by register A6.
+- `sub_0_0100`: Checks a status flag within a structure passed in register A6.
+- `sub_0_013A`: Sets the third bit of a byte located at a fixed offset within a structure pointed to by the A6 register.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `sub_0_0148`: Stores context pointers and invokes a callback routine to process the result of a library operation.
+- `sub_0_017C`: The routine reads two 32-bit words from a memory location pointed to by a register, adding fixed offsets to the base address.
+- `sub_0_019A`: Calls another unnamed routine within the library.
+- `sub_0_01A8`: Calls another routine within the library.
+- `sub_0_01BA`: The routine calls another unnamed routine and returns.
+- `sub_0_01CC`: Calls another routine within the library.
+- `sub_0_01DE`: This routine invokes another unnamed routine within the library.
+- `sub_0_01EC`: Invokes another unnamed routine within the library.
+- `sub_0_01FA`: The routine executes a jump to another unnamed routine within the library.
+- `sub_0_0206`: The routine executes a single jump to another routine and returns.
+- `sub_0_0218`: Calls another unnamed routine.
+- `sub_0_0226`: Calls another routine and returns.
+- `sub_0_0234`: Invokes another unnamed routine within the library.
+- `sub_0_0242`: The routine invokes another unnamed routine and returns.
+- `sub_0_0250`: Calls another routine and returns.
+- `sub_0_0260`: Retrieves a function pointer from a structure offset and executes it to obtain a base address.
+- `sub_3_0000`: Allocates a new icon structure and initializes its fields by copying default values from a stack buffer.
+- `sub_3_004A`: Copies a block of ten words and several specific fields from a source structure to a destination structure.
+- `sub_3_009C`: The routine returns a constant value of zero.
+- `sub_3_00A8`: icon.library: builds a disk object header from the caller's object, copying its gadget fields, and writes it out as an .info file.
+- `sub_3_0124`: The routine is library code that processes an icon message structure by querying and updating fields such as the icon type, default tool, and related handles through other library calls.
+- `sub_3_0180`: icon.library: reads a disk object, checks the magic an address and version 1, clears the pointers and reads the drawer data, images and tool types that follow.
+- `sub_3_024A`: Initializes icon state by writing pointers to structure fields and calling helper routines.
+- `sub_3_033A`: The routine walks a table of entries using a callback to fetch each entry, stores the fetched value through a pointer and decrements a counter until the counter reaches four, then checks a flag in a structure and conditionally updates the flag using the same callback and fetch routine before returning a status flag.
+- `sub_3_03EE`: Invokes another routine within the library and returns zero.
+- `sub_3_03F2`: icon.library: common exit that returns the saved result in d0.
+- `sub_3_03FE`: icon.library: allocates a path buffer (setting error 103, no free store, on failure), opens the .info file for writing and writes the disk object.
+- `sub_3_043E`: icon.library: appends '.info' to the object's name, opens the file and starts reading or writing the disk object depending on the access mode.
+- `sub_3_04F2`: Iterates through pointers in a structure at specific offsets, calling helper routines on each entry.
+- `sub_3_0584`: The routine walks a null-terminated list of pointers, advancing a counter and invoking a callback for each entry, then processes a secondary list referenced through a structure and optionally a single extra entry, updating a counter and calling the callback between steps.
+- `sub_3_05AC`: Iterates through a pointer table, calling a routine for each entry and updating a counter until a null terminator is reached.
+- `sub_3_0656`: Iterates through a linked list structure by following pointers, checking for null terminators or specific end conditions.
+- `sub_3_0662`: Iterates through a linked list structure by following pointers until a null terminator is reached or a specific condition is met.
+- `sub_3_0692`: Adds a fixed offset to the second parameter and passes both arguments to another routine.
+- `sub_3_06A8`: Allocates a block of memory for an icon structure and initializes its fields.
+- `sub_3_06F6`: The routine executes a sequence of instructions that results in calling another routine.
+- `sub_3_0714`: Returns a constant value of zero to the caller.
+- `sub_3_071C`: Decrements a short counter in a provided pointer.
+- `sub_3_0744`: Decrements a global counter and uses it as an index to store two values from registers into a table pointed to by another global variable.
+- `sub_3_0768`: Requests a block of memory from the system allocator.
+- `sub_3_07E2`: The routine is empty and returns immediately without performing any operations.
+- `sub_3_07E4`: Calls another routine and returns zero.
+- `sub_3_07FC`: Adds a fixed offset to the second parameter and passes both arguments to another routine.
+- `sub_3_0818`: Iterates through a linked list of integer pointers, calling a helper routine on each node.
+- `sub_3_0836`: Iterates through a pointer table to locate an entry where the referenced string contains an equals sign.
+- `sub_3_0856`: Iterates through a linked list of pointers stored in a global variable.
+- `sub_3_0864`: Traverses a linked list of icon structures by repeatedly calling helper routines to fetch the next node.
+- `sub_3_087E`: Iterates through a linked list structure using a pointer stored in a register, calling helper routines to process nodes until a null pointer is reached.
+- `sub_3_0896`: Iterates through a list of icon entries using an index, calling helper routines to check entry validity and calculate offsets.
+- `sub_3_08BE`: Iteratively queries another routine to determine the state of an icon, adjusting a counter based on return values until a specific condition is met or the loop terminates.
+- `sub_3_08C8`: Iterates through a list of icon handles to verify their status against a global variable.
+- `sub_3_08D6`: This library routine parses a string buffer to extract numeric values and pointer offsets, likely for processing icon label metadata.
+- `sub_3_0926`: Iterates through a character buffer starting at an offset, converting ASCII digits into an integer value.
+- `sub_3_0948`: Iterates through a byte array to accumulate a decimal integer value until a terminator is found.
+- `sub_3_094C`: Parses a string of digits into an integer value by iterating through characters and accumulating the result.
+- `sub_3_09BE`: Checks if an input value falls within the ASCII range for numeric characters.
+- `sub_3_09D6`: The routine returns the value -1.
+- `sub_9_0000`: This routine retrieves a function pointer from a global variable and invokes it.
+- `sub_9_0018`: Retrieves a function pointer from a global variable and executes it.
+- `sub_9_0030`: Loads a function pointer from a global variable and executes it.
+- `sub_9_0044`: Invokes a function pointer stored in a global variable within the icon library.
+- `sub_9_005C`: Retrieves a function pointer from a global variable and invokes it.
+- `sub_8_0000`: This routine retrieves a function pointer from a global offset and invokes it.
+- `sub_8_001C`: Invokes a function pointer stored in a global structure within the icon library.
+- `sub_8_0030`: The routine dereferences a pointer stored in a global variable to invoke a function within the icon.library.
+- `sub_8_004C`: Retrieves a function pointer from a global variable offset by a fixed negative value and invokes the referenced routine.
+- `sub_1_0000`: Allocates a new icon handle by calling a creation routine.
+- `sub_1_004E`: Allocates a memory block of fixed size and initializes specific fields within the returned structure.
+- `sub_1_008A`: The routine returns a constant zero value.
+- `sub_1_0092`: Calls another routine with three parameters and compares the returned value against the fourth input parameter.
+- `sub_1_00B8`: The routine contains no instructions other than a return statement.
+- `sub_1_00BC`: The routine calls another routine with the second, third and fourth arguments and compares the returned value with the fourth argument.
+- `sub_1_00E2`: This routine is empty and performs no operations.
+- `sub_6_0000`: Performs a 32-bit integer division of the value in D1 by the value in D2.
+- `sub_6_0020`: Executes a 32-bit integer division algorithm by iteratively shifting bits and subtracting the divisor from the dividend.
+- `sub_6_0040`: Performs a 32-bit by 32-bit multiplication using 16-bit partial products, returning the 32-bit result in D0 and the high 32 bits of the product in D1.
+- `sub_6_00C8`: Invokes a function pointer stored in a global variable within the icon library.
+- `sub_6_00EC`: Stores a byte from the D0 register into the memory location pointed to by the A3 register.
+- `sub_5_0000`: Iterates through a null-terminated string to count its length.
+- `sub_5_0010`: The routine scans a null-terminated byte string starting at the first argument, advancing one byte at a time, and returns a pointer to the first byte whose value equals the second argument.
+- `sub_5_0026`: The routine returns a constant zero value to its caller.
+- `sub_5_002C`: Copies bytes from a source pointer to a destination pointer until a null terminator is encountered.
+- `sub_5_0038`: The routine advances the first pointer to the null terminator of its string, then copies the second string into that location, effectively appending the second string to the first.
+- `sub_5_0048`: Compares a specified number of bytes from two memory locations.
+- `sub_5_0064`: Returns the integer value one to the caller.
+- `sub_5_006C`: Iterates through a character string up to a specified limit to check for a null terminator.
+- `sub_5_0080`: The routine calls another routine and returns.
+- `sub_5_0092`: The routine copies bytes from a source pointer to a destination pointer until a zero byte is encountered, stopping early if a length in D0 is less than one.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `sub_7_0000`: The routine initializes a block of memory pointed to by the input parameter.
+- `sub_2_0000`: Validates a parameter and if non-zero, performs a series of checks and updates using helper routines, returning a status code indicating success or failure.
+- `sub_2_007A`: Iterates through a linked list of icon structures, checking for termination or processing entries via another routine.
+- `sub_2_008C`: Iterates through a linked list by following pointers at a fixed offset until a null pointer is found.
+- `sub_2_00D4`: The routine returns a constant value of zero.
+- `sub_2_00DC`: Allocates memory for an icon structure and initializes its fields by calling other library routines.
+- `sub_2_01A4`: The routine returns the constant value -1.
+- `sub_2_01AC`: The routine repeatedly calls another routine to fetch and link structures, copying a field from one structure into another and storing a computed size value into a field.
+- `sub_2_01C2`: Iterates through a linked list of icon structures, updating internal pointers and checking for null references.
+- `sub_2_01EC`: Iterates through a linked list structure stored in memory, checking specific fields for null values to determine termination or error conditions.
+- `sub_2_0278`: Returns the constant value -1.
+
+### diskfont.library
+
+- `sub_0_0000`: Calls a function pointer from a library structure to process a request.
+- `sub_0_0050`: Calls a function pointer stored in a global structure to process a request.
+- `sub_0_0080`: Opens the dos.library and graphics.library dependencies required by the diskfont library.
+- `sub_0_0182`: Iterates through a linked list of font cache structures, removing entries that have reached a reference count threshold.
+- `sub_0_01DA`: The routine checks a flag in a structure and, if set, calls another routine twice, closes a library and frees memory allocated for the structure, then returns a stored value.
+- `sub_0_0242`: Sets the most significant bit of a byte located within a structure pointed to by a register.
+- `sub_0_024A`: The routine is empty and returns immediately without performing any operations.
+- `sub_0_024C`: diskfont.library open vector: clears the delayed-expunge flag and increments the library's open count.
+- `sub_0_025A`: Decrements a reference counter stored in a structure.
+- `sub_0_026C`: The routine immediately returns a zero value without performing any other operations or modifying memory.
+- `sub_3_0000`: The routine fills a short-counted table in the caller-supplied buffer with entries for built-in font names and for disk font records found via a library lookup.
+- `sub_3_003E`: diskfont.library: measures a font name string, including its terminator, and takes the length from the space left in the caller's buffer.
+- `sub_3_0046`: The routine scans a null-terminated list of strings, maintaining a running offset.
+- `sub_3_0068`: diskfont.library AvailFonts: copies the names of the fonts found in FONTS: into the caller's buffer, counting entries and noting when the buffer is too small.
+- `sub_3_0106`: The routine walks a font structure using another routine to iterate entries, copies a name string into a buffer and, when a glyph record matches a specific marker, writes a fixed-size record into an output table and updates a counter.
+- `sub_3_0164`: diskfont.library: adds one font name to the AvailFonts buffer when it fits, otherwise records the shortfall.
+- `sub_3_0182`: The routine copies a byte from a pointer through a pointer and then repeatedly invokes another routine with several arguments, using the results to update a table entry and a counter.
+- `sub_3_01B8`: diskfont.library: reads a font's contents file entry by entry (264 bytes each) and adds every size to the AvailFonts list.
+- `sub_3_025C`: The routine contains four instructions and immediately returns a constant zero.
+- `sub_7_0000`: Calculates a similarity score between two font character descriptors by comparing their bitmaps and adjusting the result based on differences found in a lookup table.
+- `sub_7_002E`: Iterates through bit flags to compare source and destination attribute bytes, adjusting a metric value by subtracting entries from a global lookup table based on bit state differences.
+- `sub_7_0082`: Iterates through bit flags to check conditions against a global variable table.
+- `sub_7_00B8`: The routine walks a small bitmask table using a global variable as a base and a pointer into a structure in A1, repeatedly subtracting table entries from an accumulator while testing bits in two mask words.
+- `sub_7_00D2`: Returns a fixed 32-bit constant value to the caller.
+- `sub_7_00E0`: Iterates through a buffer to find maximum values and updates related global structures.
+- `sub_7_0142`: diskfont.library: locks FONTS: and the font's own directory and examines them before the font files are read.
+- `sub_7_015E`: Iterates through available font definitions to identify the one with the optimal metric value.
+- `sub_7_021C`: Iterates through a table to find the optimal slot, then initializes a font buffer structure by setting pointers and flags.
+- `sub_7_0224`: The routine scans a font glyph table, tracks the largest glyph metric found so far, and for each candidate invokes helper routines to process and link glyph descriptors, updating a global counter and returning a descriptor pointer when finished.
+- `sub_7_0304`: Iterates through a table of font cache entries to find the one with the highest metric value, likely for eviction.
+- `sub_7_0322`: Iterates through a table of font metadata structures to find the entry with the highest priority value.
+- `sub_5_0000`: The routine prepares a font buffer by querying a font object and, if present, allocating a block of memory for glyph descriptors.
+- `sub_5_00BA`: diskfont.library OpenDiskFont: reads the font file's header, checks it, allocates memory for the font and loads and relocates the character data.
+- `sub_5_0240`: Loads a function pointer and an argument from a stack frame structure and invokes the function.
+- `sub_13_0000`: The routine performs a single indirect call through a table entry located in a global variable and then returns.
+- `sub_13_0010`: Retrieves a function pointer from a global table and executes it.
+- `sub_13_0020`: The routine retrieves a function pointer from a global table and invokes it.
+- `sub_13_0038`: Retrieves a function pointer from a global variable and invokes it.
+- `sub_13_0050`: The routine calls another routine obtained by indexing a global table with a fixed offset.
+- `sub_12_0000`: The routine executes a function pointer retrieved from a global table offset.
+- `sub_12_001C`: Retrieves a function pointer from a global table and executes it.
+- `sub_12_0030`: Loads a function pointer from a global table and executes it.
+- `sub_12_004C`: The routine calls another routine taken from a global table via an offset.
+- `sub_12_0068`: The routine invokes a function pointer stored in a global variable within the diskfont library.
+- `sub_12_007C`: Loads a function pointer from a table at a negative offset and invokes it.
+- `sub_12_0098`: Invokes a function pointer stored in a global variable within the diskfont library structure.
+- `sub_12_00B4`: The routine calls another routine through an indirect pointer taken from a global variable.
+- `sub_12_00C8`: The routine retrieves a function pointer from a global variable and executes it.
+- `sub_12_00D8`: Executes a function pointer stored in a global table within the diskfont.library.
+- `sub_12_00EC`: Calls the dos.UnLoadSeg function to unload a program segment from memory.
+- `sub_12_0100`: The routine fetches a function pointer from a global variable table and calls the referenced routine, then returns.
+- `sub_9_0000`: Copies a null-terminated string from a source pointer to a destination pointer byte by byte.
+- `sub_9_0010`: Iterates through a character string until a null terminator is found.
+- `sub_9_001A`: Increments a pointer passed in register A0 until it points to a null byte.
+- `sub_9_002C`: The routine receives a pointer to a null-terminated byte string and walks the bytes one by one until it finds the terminating zero byte.
+- `sub_9_0034`: Iterates through a byte array pointed to by a register, incrementing a counter for each byte until a null terminator is encountered.
+- `sub_9_003C`: Compares two null-terminated strings character by character.
+- `sub_9_0046`: Compares two null-terminated strings character by character.
+- `sub_9_004E`: The routine compares two null-terminated strings byte by byte using the pointers in A0 and A1.
+- `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
+- `sub_9_0062`: Scans a null-terminated string for a specific character byte.
+- `sub_9_006C`: Iterates through a null-terminated string pointed to by a register, comparing each character against a target byte.
+- `sub_9_0074`: Iterates through a null-terminated string pointed to by a register, comparing each character against a target value passed in another register.
+- `sub_9_007E`: The routine asks another routine for a length, computes an end pointer inside a buffer and walks backwards byte by byte until it finds a matching byte or runs past the start, returning a pointer to the match or null.
+- `sub_9_009C`: Scans a memory region backwards from a starting pointer to find a specific character.
+- `sub_9_00A4`: Iterates backward through a memory buffer pointed to by a register, decrementing the pointer until it matches a specific byte value or falls below a lower bound address.
+- `sub_9_00B2`: Queries the system to verify the presence of specific font resources by passing distinct identifiers to another routine.
+- `sub_9_00DA`: The routine returns the value it receives in D0 incremented by one.
+- `sub_14_0000`: Retrieves a function pointer from a global structure and invokes it.
+- `sub_14_0014`: This library routine invokes the graphics CloseFont function to release a font resource.
+- `sub_14_0028`: The routine retrieves a function pointer from a global table offset by a negative value and invokes it.
+- `sub_1_0000`: The routine calls another routine and then returns.
+- `sub_1_0012`: The routine invokes another unnamed routine within the library.
+- `sub_1_001E`: Calls another routine within the library.
+- `sub_1_002C`: The routine calls another unnamed routine and returns.
+
+### PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+- `sub_0056`: The routine checks a set of flags in a structure and, if any are set, calls a cleanup routine, closes libraries, and performs a short wait loop before returning.
+- `sub_00C8`: The routine clears a block of chip memory, copies a small block from a global variable to a low memory area, then recursively calls itself twice and once more after writing a value to a global variable and updating a table entry.
+- `sub_01A6`: The routine calls another routine and then invokes two functions through a global variable.
+- `sub_01CA`: Increments a pointer until it points to a null byte, effectively skipping over a null-terminated string.
+- `sub_01F2`: Iteratively writes a sequence of values into a memory buffer, incrementing a counter and updating pointers to populate a structured table.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `sub_0000`: Enters an unconditional infinite loop that executes no further instructions.
+- `sub_0006`: The routine contains an empty loop that repeats forever, performing no operations.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `sub_000A`: Runtime segment stub: jumps on to the loader routine in the same segment.
+
+### PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:FXLARGE (raw code file, load address unknown)
+
+- `sub_0000`: Iterates over three entries in a table of pointers and flags and programs the Amiga custom chip registers for DMA control and interrupt handling.
+- `sub_01F6`: Calculates an offset based on a channel index and updates a configuration table with pointer values and control bytes.
+
+### PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:FLYMUS (raw code file, load address unknown)
+
+- `sub_0000`: Interprets a byte-coded music script by fetching opcodes and updating global playback state.
+- `sub_00E0`: This routine is empty and returns immediately without performing any operations.
+- `sub_00E2`: The routine clears a global variable and sets another global variable to a constant value twice, with the second write overwriting the first.
+
+### PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:GMUSIC (raw code file, load address unknown)
+
+- `sub_0000`: Iterates through a table of track structures, parsing bytecode instructions to configure audio channels.
+- `sub_00E2`: The routine performs no operations and returns control to the caller immediately.
+- `sub_00E4`: The routine clears two global variables and writes to hardware registers to disable DMA channels.
+
+### PGA Tour Golf (1991)(Electronic Arts)[cr AGL][a].adf:FXSMALL (raw code file, load address unknown)
+
+- `sub_0000`: The routine iterates over a small set of per-channel entries and updates custom chip registers for DMA control and blitter setup.
+- `sub_01F6`: Computes an index based on a register value and updates a table entry with pointers and byte values.

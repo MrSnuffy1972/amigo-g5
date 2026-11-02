@@ -29,15 +29,16 @@ round picture sits at map (0, 1); the border runs along x 0 and 286, y 0 and 198
 | `play` | player routine +643E, direction steps +66C4..+66CA, round set-up +5BB2 | start (142, 198), shield 900 counting down one step every 5 calls (measured: every ~10 frames with two calls a frame), one pixel a move, every other call without the speed power-up, cut start needs fire over free ground, backing up erases, closing claims; shield off while cutting |
 | `rng` | +5442, state +5458 | exact step (six-byte state, overlapping longs, swap, plus the frame counter) |
 | `volfied` | main program +2C04, HUD +7DC8, +6484, +7D4C | title with start level and difficulty, ROUND card, play, clear with the full picture, game over; HUD positions from the code where known |
-| enemies | +E8FA, +999A .. +14658 | **provisional stand-in** (a bouncing boss and three guards that kill on touching the cut, or the player when the shield is off); to be replaced by the 16 translated handlers |
+| `motion` | +F0E6, +F122, +F162, +F182, +F1AC, +F1EC, +F22C, +F250, +F266, +F296, +F30C, +F430, +F686, +F4D6 | exact: 32-way bit-pattern steps, speed table (odd indexes alternate), heading towards a point, turn towards it, wall reflection, the 6-pixel player contact |
+| enemies | +E8FA, round 1 +999A | round 1 handler: guards (set-up, move, reflect, shield-on swing every 7 calls, shield-off homing every 10, animation 0-1-2-1, claim kill scores 100..6400) and the boss cycle (300-call phases, rotation skipping the axes, speed bands 11/9/7/5, open, flash, three sparks); used for all 16 rounds until the other 15 handlers are translated. APPROXIMATE: the wall probe (seven pixels across each faced side instead of the four-pixel cursor), spark motion (aimed at the player, gone at a wall), the boss speed-up/slow-down at the end of a phase, enemy start positions (the tables read by +F60C/+F63E) and the cut contact (+F7CA not read) |
 
-Not yet translated: the 16 per-round enemy handlers and their shared helpers (+EA30 .. +F8E0), the power-up boxes
+Not yet translated: the enemy handlers of rounds 2-16 (table +E91A, up to +14658) and the rest of the shared helpers (+EA30 .. +F010, the line cursors +F85E .. +F8EC), the power-up boxes
 (+82F6, +8546, +8516; including the speed flag +8078), the bonus objects (+7672), the score for a claim, the
 shield-out handler (+64A2), the 8-frame turn delay after backing up to a corner (+6694), sound, story, high-score
 table, two-player turns, and the per-difficulty shield step table (+5746; 5 is NORMAL as measured). The function
 map is therefore not complete, and stage 4 (frames, named state and RNG against the harness) has not been run.
 
-Seven unit tests pass (`cargo test -p g1727 --no-default-features`); a scripted headless run (`tests/scripts/p1-claim.txt`)
+Fourteen unit tests pass (2 Nov 2026, batch 2 follow-up) (`cargo test -p g1727 --no-default-features`); a scripted headless run (`tests/scripts/p1-claim.txt`)
 renders the playfield, the cut and the HUD.
 
 ## The program (stage 2 so far)

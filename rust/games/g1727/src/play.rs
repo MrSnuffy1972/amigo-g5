@@ -4,10 +4,12 @@
 //! Translated from the recovered code: the player's start, movement, cutting, backing up along the cut, closing a
 //! claim, the shield and its count-down, the percentage and the round's end. NOT yet translated (stage 2 has not
 //! read them): the 16 per-round enemy handlers (+999A .. +14658), the power-up boxes (+82F6) and the score for a
-//! claim. Until they are, `Enemy` is a provisional stand-in (a bouncing boss and three bouncing guards) so the round
-//! can be played; it is marked as such in docs/native/g1727-native.md and is not a verified behaviour.
+//! claim. The enemies follow round 1's handler (+999A: the guards, the boss cycle and its sparks) on the shared motion
+//! of `motion`, in every round until the other fifteen handlers are translated; see docs/native/g1727-native.md for
+//! what is exact and what is still approximate.
 
-use crate::field::{Cell, Field, FH, FW};
+use crate::field::{Cell, Field};
+use crate::motion::{reflect, touches_player, towards, turn_towards, Motion, FACING};
 use crate::rng::Rng;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -84,15 +86,228 @@ impl Default for Player {
     }
 }
 
-/// PROVISIONAL stand-in for a round's enemies (see the module comment).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Kind {
+    /// The boss record (BSS +0800).
+    Boss,
+    /// A guard (44-byte records from BSS +06A0).
+    Guard,
+    /// A spark launched by the boss (30-byte records at a5+6042).
+    Spark,
+}
+
+/// Round 1's guard animation (frames 0, 1, 2, 1, one step every 5 calls).
+const GUARD_ANIM: [u8; 4] = [0, 1, 2, 1];
+/// Score for a guard caught in a claim, by its index (BCD 100 .. 6400 in the original).
+pub const GUARD_SCORE: [u32; 7] = [100, 200, 400, 800, 1600, 3200, 6400];
+/// Calls in one boss phase (+999A set-up: 300).
+pub const BOSS_PHASE: u16 = 300;
+
+/// An enemy object: position (+0, +2), motion (+6 .. +18) and the handler's own fields.
 #[derive(Debug, Clone)]
 pub struct Enemy {
     pub x: i32,
     pub y: i32,
-    pub dx: i32,
-    pub dy: i32,
+    /// Half the size used for walls and the cut (0 = gone).
     pub r: i32,
     pub boss: bool,
+    pub kind: Kind,
+    pub m: Motion,
+    /// Handler state (+4 for a guard): 0 set-up, 1 moving; for the boss 2 is the end of a phase.
+    pub state: u8,
+    /// Turn step (+30, +2 or -2 for a guard, the rotation step for the boss).
+    pub turn_step: i16,
+    /// Turn timer (+10/+20 in the original).
+    pub turn_timer: u16,
+    swings: u8,
+    /// Base heading (+34).
+    pub base: u16,
+    anim: u8,
+    anim_timer: u8,
+    /// Animation frame shown (+24).
+    pub frame: u8,
+    /// Wall hits in the boss phase.
+    pub hits: u16,
+    /// Calls left in the boss phase.
+    pub phase_left: u16,
+    pause: u16,
+}
+
+impl Enemy {
+    fn new(kind: Kind, x: i32, y: i32, dir: u16, r: i32) -> Enemy {
+        Enemy {
+            x,
+            y,
+            r,
+            boss: kind == Kind::Boss,
+            kind,
+            m: Motion {
+                dir: dir & 31,
+                ..Motion::default()
+            },
+            state: 0,
+            turn_step: 0,
+            turn_timer: 0,
+            swings: 0,
+            base: dir & 31,
+            anim: 0,
+            anim_timer: 0,
+            frame: 0,
+            hits: 0,
+            phase_left: 0,
+            pause: 0,
+        }
+    }
+    pub fn boss(x: i32, y: i32, dir: u16) -> Enemy {
+        Enemy::new(Kind::Boss, x, y, dir, 10)
+    }
+    pub fn guard(x: i32, y: i32, dir: u16) -> Enemy {
+        Enemy::new(Kind::Guard, x, y, dir, 5)
+    }
+    pub fn spark(x: i32, y: i32, dir: u16) -> Enemy {
+        let mut e = Enemy::new(Kind::Spark, x, y, dir, 2);
+        e.m.speed = 10;
+        e.state = 1;
+        e
+    }
+}
+
+/// The wall flags of a move (+F6DE .. +F7C8): on each side the object faces, a short segment at `half` pixels from
+/// its centre is tested against the claim map and the field's limits (left x 3, right x $11C, top y 1, bottom y
+/// $C7). APPROXIMATION: the original steps a four-pixel line cursor along the side, shifted towards the motion; here
+/// the seven pixels across the side are tested.
+fn walls(f: &Field, x: i32, y: i32, dir: u16, half: i32) -> u16 {
+    let face = FACING[((dir & 0x18) >> 3) as usize];
+    let blocked = |px: i32, py: i32| matches!(f.get(px, py), Cell::Line | Cell::Claimed);
+    let mut flags = 0;
+    if face & 1 != 0 {
+        if x - half < 3 || (-3..=3).any(|k| blocked(x - half, y + k)) {
+            flags |= 1;
+        }
+    } else if x + half > 0x11C || (-3..=3).any(|k| blocked(x + half, y + k)) {
+        flags |= 8;
+    }
+    if face & 2 != 0 {
+        if y + half > 0xC7 || (-3..=3).any(|k| blocked(x + k, y + half)) {
+            flags |= 2;
+        }
+    } else if y - half < 1 || (-3..=3).any(|k| blocked(x + k, y - half)) {
+        flags |= 4;
+    }
+    flags
+}
+
+/// Round 1's guard (+999A, states 0 and 1).
+fn guard_step(e: &mut Enemy, f: &Field, px: i32, py: i32, shield: bool) {
+    if e.state == 0 {
+        e.m.speed = 7;
+        e.turn_step = 2;
+        e.turn_timer = 50;
+        e.base = e.m.dir;
+        e.state = 1;
+        return;
+    }
+    if e.m.step(&mut e.x, &mut e.y, true) {
+        let fl = walls(f, e.x, e.y, e.m.dir, 6);
+        if fl != 0 {
+            e.m.dir = reflect(e.m.dir, fl);
+            e.base = e.m.dir;
+            e.turn_step = -e.turn_step;
+            e.swings = 0;
+        }
+    }
+    e.turn_timer = e.turn_timer.saturating_sub(1);
+    if e.turn_timer == 0 {
+        if shield {
+            // shield on: swing by the turn step every 7 calls, back again after half a turn from the base heading
+            e.turn_timer = 7;
+            e.m.dir = e.m.dir.wrapping_add_signed(e.turn_step) & 31;
+            e.swings += 1;
+            if e.swings >= 8 {
+                e.swings = 0;
+                e.turn_step = -e.turn_step;
+            }
+        } else {
+            // shield off: one step towards the player every 10 calls (+F430, +F30C)
+            e.turn_timer = 10;
+            let t = towards(e.x, e.y, px, py);
+            if t != e.m.dir {
+                e.m.dir = e.m.dir.wrapping_add_signed(turn_towards(e.m.dir, t)) & 31;
+            }
+        }
+    }
+    e.anim_timer += 1;
+    if e.anim_timer >= 5 {
+        e.anim_timer = 0;
+        e.anim = (e.anim + 1) % 4;
+    }
+    e.frame = GUARD_ANIM[e.anim as usize];
+}
+
+/// Round 1's boss cycle (+999A): a 300-call phase of moving and turning, then open, flash, three sparks, close.
+fn boss_step(e: &mut Enemy, f: &Field, px: i32, py: i32, sparks: &mut Vec<Enemy>) {
+    if e.state == 0 {
+        e.phase_left = BOSS_PHASE;
+        e.turn_step = -1;
+        e.m.speed = 9;
+        e.hits = 0;
+        e.state = 1;
+        return;
+    }
+    if e.state == 1 {
+        if e.m.step(&mut e.x, &mut e.y, false) {
+            let fl = walls(f, e.x, e.y, e.m.dir, e.r);
+            if fl != 0 {
+                e.m.dir = reflect(e.m.dir, fl);
+                e.hits += 1;
+            }
+        }
+        // turn by the rotation step, skipping the four axis directions
+        let mut d = e.m.dir.wrapping_add_signed(e.turn_step) & 31;
+        if d.is_multiple_of(8) {
+            d = d.wrapping_add_signed(e.turn_step) & 31;
+        }
+        e.m.dir = d;
+        // speed from the calls left, in 32-call bands at the end of the phase
+        e.m.speed = match e.phase_left {
+            0..=32 => 5,
+            33..=64 => 7,
+            65..=96 => 9,
+            _ => 11,
+        };
+        e.phase_left -= 1;
+        if e.phase_left == 0 {
+            e.state = 2;
+            e.pause = 0;
+        }
+        return;
+    }
+    // the end of a phase: open (3 frames of 3 calls), flash (3 on, 6 off, 3 on, 3 off), sparks after 1, 11 and 21
+    // calls, wait 10, close
+    e.pause += 1;
+    let launch = 9 + 15;
+    e.frame = match e.pause {
+        0..=9 => (e.pause.saturating_sub(1) / 3) as u8,
+        _ => 2,
+    };
+    if [launch + 1, launch + 11, launch + 21].contains(&e.pause) {
+        sparks.push(Enemy::spark(e.x, e.y, towards(e.x, e.y, px, py)));
+    }
+    if e.pause >= launch + 21 + 10 + 9 {
+        e.frame = 0;
+        e.state = 1;
+        e.phase_left = BOSS_PHASE;
+        e.hits = 0;
+    }
+}
+
+/// A spark: straight on at speed 10 until a wall. APPROXIMATION: aimed at the player and gone at the first wall;
+/// the spark routine itself is not read yet.
+fn spark_step(e: &mut Enemy, f: &Field) {
+    e.m.step(&mut e.x, &mut e.y, true);
+    if walls(f, e.x, e.y, e.m.dir, 2) != 0 {
+        e.r = 0;
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -112,24 +327,16 @@ pub struct Round {
 
 impl Round {
     pub fn new(number: usize, rng: &mut Rng) -> Round {
-        let mut enemies = vec![Enemy {
-            x: 143,
-            y: 80,
-            dx: 1,
-            dy: 1,
-            r: 10,
-            boss: true,
-        }];
+        // positions as before (the per-round start tables read by +F60C and +F63E are not read yet); headings from
+        // the game's random numbers
+        let mut enemies = vec![Enemy::boss(143, 80, rng.step() & 31)];
         for i in 0..3 {
             let v = rng.step();
-            enemies.push(Enemy {
-                x: 40 + 100 * i,
-                y: 30 + (v & 0x3F) as i32,
-                dx: if v & 0x100 != 0 { 1 } else { -1 },
-                dy: if v & 0x200 != 0 { 1 } else { -1 },
-                r: 5,
-                boss: false,
-            });
+            enemies.push(Enemy::guard(
+                40 + 100 * i,
+                30 + (v & 0x3F) as i32,
+                (v >> 8) & 31,
+            ));
         }
         Round {
             number,
@@ -214,9 +421,15 @@ impl Round {
                 p.shield_on = p.shield > 0;
                 let boss = self.enemies.iter().find(|e| e.boss).map(|e| (e.x, e.y));
                 self.field.close(boss.unwrap_or((143, 99)));
+                let mut caught = 0;
                 for e in self.enemies.iter_mut() {
-                    if self.field.get(e.x, e.y) != Cell::Free {
-                        e.r = 0; // trapped in the claimed area: gone
+                    if !e.boss && self.field.get(e.x, e.y) != Cell::Free {
+                        // caught in the claim: gone; a guard scores by its index
+                        if e.kind == Kind::Guard {
+                            self.score_gain += GUARD_SCORE[caught.min(GUARD_SCORE.len() - 1)];
+                            caught += 1;
+                        }
+                        e.r = 0;
                     }
                 }
                 self.enemies.retain(|e| e.r > 0 || e.boss);
@@ -229,33 +442,27 @@ impl Round {
         Outcome::Playing
     }
 
-    /// PROVISIONAL enemy movement and contact (see the module comment).
+    /// One call of the round's enemy logic (+E8FA; round 1's handler +999A for every round so far), then contact:
+    /// an enemy on the open cut, or touching the player while the shield is off (+F4D6), costs a life.
     pub fn enemies_step(&mut self) -> Outcome {
-        let f = &self.field;
-        for e in self.enemies.iter_mut() {
-            let nx = e.x + e.dx;
-            if f.get(nx, e.y) != Cell::Free && f.get(nx, e.y) != Cell::Cut {
-                e.dx = -e.dx;
-            } else {
-                e.x = nx;
-            }
-            let ny = e.y + e.dy;
-            if f.get(e.x, ny) != Cell::Free && f.get(e.x, ny) != Cell::Cut {
-                e.dy = -e.dy;
-            } else {
-                e.y = ny;
-            }
-            e.x = e.x.clamp(1, FW - 2);
-            e.y = e.y.clamp(1, FH - 2);
-        }
         let p = &self.player;
+        let (px, py, shield, cutting) = (p.x, p.y, p.shield_on, p.cutting());
+        let mut sparks = Vec::new();
+        for e in self.enemies.iter_mut() {
+            match e.kind {
+                Kind::Guard => guard_step(e, &self.field, px, py, shield),
+                Kind::Boss => boss_step(e, &self.field, px, py, &mut sparks),
+                Kind::Spark => spark_step(e, &self.field),
+            }
+        }
+        self.enemies.retain(|e| e.r > 0 || e.boss);
+        self.enemies.extend(sparks);
+        let f = &self.field;
         for e in &self.enemies {
             let r = e.r.max(1);
-            let hit_cut = p.cutting()
+            let hit_cut = cutting
                 && (-r..=r).any(|dy| (-r..=r).any(|dx| f.get(e.x + dx, e.y + dy) == Cell::Cut));
-            let hit_player =
-                (e.x - p.x).abs() <= r && (e.y - p.y).abs() <= r && (p.cutting() || !p.shield_on);
-            if hit_cut || hit_player {
+            if hit_cut || touches_player(e.x, e.y, px, py, shield) {
                 return Outcome::LifeLost;
             }
         }
@@ -338,5 +545,26 @@ mod tests {
             r.player_step(None, false, false);
         }
         assert_eq!(r.player.shield, 890);
+    }
+    #[test]
+    fn enemies_stay_inside_the_field() {
+        use crate::field::{FH, FW};
+        let mut rng = Rng::new(7);
+        let mut r = Round::new(0, &mut rng);
+        let mut sparks = 0;
+        for _ in 0..20_000 {
+            assert_eq!(r.enemies_step(), Outcome::Playing);
+            sparks = sparks.max(r.enemies.iter().filter(|e| e.kind == Kind::Spark).count());
+            for e in &r.enemies {
+                assert!(
+                    (0..=FW).contains(&e.x) && (0..=FH).contains(&e.y),
+                    "{:?} at {},{}",
+                    e.kind,
+                    e.x,
+                    e.y
+                );
+            }
+        }
+        assert!(sparks > 0, "the boss launches sparks at the end of a phase");
     }
 }

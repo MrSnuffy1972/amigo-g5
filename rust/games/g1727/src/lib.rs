@@ -6,6 +6,7 @@
 
 pub mod assets;
 pub mod field;
+pub mod motion;
 pub mod play;
 pub mod rng;
 pub mod volfied;

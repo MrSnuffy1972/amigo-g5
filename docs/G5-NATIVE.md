@@ -237,6 +237,26 @@ second release of the same game waits for the first), its own clone, pack and ca
 global lock. A failed build records nothing and its revision is used by the next attempt. Nothing is deleted and an
 existing release file is never overwritten.
 
+### The Android verification mode (Ami-Go G5)
+
+Added 3 Nov 2026, so the released APK can be judged on picture and sound as the released Windows exe is under Wine
+(G4). The desktop programs always had the headless verification run (`--ticks N --out DIR [--script FILE] [--every K]
+[--seed N]`, the same `headless::run` as `examples/headless.rs`), and the Android library always compiled it in, but
+nothing could reach it: SDL's activity passed no arguments and `SDL_main` ignored them.
+
+- `tools/native_package.sh` writes `GameActivity.getArguments()`: when the activity is started with the string extra
+  `amigo_verify` it returns those options, with `@FILES@` replaced by the app's external files folder; only `--ticks`,
+  `--out`, `--every`, `--script` and `--seed` are accepted (anything else, or no `--ticks`, gives no arguments). A
+  normal start (launcher, TV, Shield) has no extra and so no arguments: play is unchanged.
+- Every game's `android/src/lib.rs` passes SDL's arguments on (`platform::sdl::c_args`, which drops SDL's
+  `app_process`), so `app_main` sees `gNNN --ticks ...` and runs headless with the APK's own `gamepack.bin`, writing
+  `fNNNNN.rgba`, `state.jsonl` and `audio.raw` into the files folder, then returns; SDL then finishes the activity.
+- Example: `adb shell am start -n <package>/org.amigo.GameActivity --es amigo_verify '--ticks 300 --out @FILES@/t1
+  --script @FILES@/t1.txt --every 50 --seed 0'`. Checked 3 Nov 2026 on game 296 (API 30 x86_64 emulator, arm64
+  code through ARM translation): state, audio and frames byte-identical to the Linux headless runner.
+- Every APK built by `release.sh` from this commit on carries it. Ryzen's `native/tools/g5_native.sh` runs it in the
+  IntelPC emulator on the golden input; an older APK is reported as blocked (no `amigo_verify` in its dex).
+
 ### Toolchains (all under /srv/fast, none on Ryzen's boot drive)
 
 - Windows: llvm-mingw 20261020 (UCRT, `/srv/fast/tools/llvm-mingw`, clang 23.1.4), a rustup toolchain in

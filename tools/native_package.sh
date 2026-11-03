@@ -97,6 +97,21 @@ if [ $ANDROID = 1 ]; then
 package org.amigo;
 public class GameActivity extends org.libsdl.app.SDLActivity {
     @Override protected String[] getLibraries() { return new String[] { "c++_shared", "SDL2", "main" }; }
+    // Ami-Go G5 check (native/tools/g5_native.sh): started with the string extra amigo_verify ("--ticks N --out
+    // @FILES@/out [--every K] [--script @FILES@/in.txt] [--seed N]") the game runs headless and writes its frames,
+    // state and audio, then exits. @FILES@ is this app's external files folder. Normal starts have no arguments.
+    @Override protected String[] getArguments() {
+        android.content.Intent it = getIntent();
+        String a = it == null ? null : it.getStringExtra("amigo_verify");
+        if (a == null || a.trim().isEmpty()) return new String[0];
+        java.io.File d = getExternalFilesDir(null);
+        String files = (d != null ? d : getFilesDir()).getAbsolutePath();
+        String[] v = a.trim().replace("@FILES@", files).split(" +");
+        java.util.Set<String> ok = new java.util.HashSet<>(java.util.Arrays.asList("--ticks", "--out", "--every", "--script", "--seed"));
+        if (v.length % 2 != 0) return new String[0];
+        for (int i = 0; i < v.length; i += 2) if (!ok.contains(v[i])) return new String[0];
+        return java.util.Arrays.asList(v).contains("--ticks") ? v : new String[0];
+    }
 }
 JAVA
   if [ $DRY = 1 ]; then echo "+ javac ... d8 ..."

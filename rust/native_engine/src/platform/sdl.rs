@@ -43,6 +43,28 @@ fn get<'a>(v: &'a [String], k: &str) -> Option<&'a str> {
         .map(String::as_str)
 }
 
+/// The arguments SDL's Android activity hands to `SDL_main`, without the first one (SDL's "app_process"). They are
+/// empty for normal play; the APK's activity supplies the headless verification arguments (`--ticks N --out DIR
+/// [--every K] [--script FILE] [--seed N]`) only when it is started with the `amigo_verify` intent extra, which is how
+/// the Ami-Go G5 check (native/tools/g5_native.sh) runs a released APK on its golden input.
+///
+/// # Safety
+/// `argv` must hold `argc` pointers to NUL-terminated strings (or be null), as SDL's `nativeRunMain` passes them.
+pub unsafe fn c_args(
+    argc: std::os::raw::c_int,
+    argv: *const *const std::os::raw::c_char,
+) -> Vec<String> {
+    if argv.is_null() {
+        return Vec::new();
+    }
+    (1..argc.max(0) as usize)
+        .filter_map(|i| {
+            let a = *argv.add(i);
+            (!a.is_null()).then(|| std::ffi::CStr::from_ptr(a).to_string_lossy().into_owned())
+        })
+        .collect()
+}
+
 fn read_asset(name: &str) -> Result<Vec<u8>, String> {
     let mut rw = sdl2::rwops::RWops::from_file(name, "rb").map_err(|e| format!("{name}: {e}"))?;
     let mut b = Vec::new();

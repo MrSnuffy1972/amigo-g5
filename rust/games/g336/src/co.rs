@@ -205,9 +205,14 @@ impl Game for Native {
 }
 
 /// Where the display window's first line sits when the picture is fully shown, and how far a sprite's position is
-/// from the picture's (the original placed sprites one pixel left of the playfield coordinate they were given).
+/// from the picture's. The game writes HSTART = $80 + x for a thing at playfield column x, and on the hardware a sprite
+/// at HSTART h shows at the playfield pixel whose beam position is h + 1 (the first pixel of a display window opening
+/// at DIWSTRT $81 takes a sprite at HSTART $80: Linux amifb places its cursor at HSTART = DIWSTRT - 1 + x; the
+/// reference chipset draws a sprite from h + 1). So the sprite lands exactly on column x: no offset. (Until 3 Nov 2026
+/// this was -1, which drew every sprite one pixel left of the original; measured against the reference harness with
+/// sprites on, 36 of 37 sampled frames.)
 pub const WINDOW_TOP: i32 = 0x24;
-pub const SPRITE_DX: i32 = -1;
+pub const SPRITE_DX: i32 = 0;
 
 /// Draws a frame from the program's view: the shown picture slid down by the window wipe, then the sprites.
 pub fn render_view(v: &View, a: &Assets, frame: &mut Frame) {

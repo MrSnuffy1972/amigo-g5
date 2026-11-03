@@ -1567,10 +1567,18 @@ impl Jail {
         self.save_out = Some((self.cust_bricks.clone(), self.cust_backs.clone()));
     }
 
-    /// set_interrupt_mask: a one-second OS delay (and the program's own frame interrupt put back).
+    /// set_interrupt_mask: a one-second OS delay (and the program's own frame interrupt put back). The OS counts the
+    /// delay in vertical-blank ticks and wakes the program at a frame interrupt, the first one at least DELAY_FRAMES
+    /// frames after the call; the program goes on from the start of that frame. (Until 3 Nov 2026 the delay was 50
+    /// frames from the call, so the program went on up to a frame early: in the golden run v2 the level after a
+    /// delay was served 2 frames ahead of the original and the ball's path parted at about frame 5040. Measured
+    /// against the reference harness with the OS delay: call in frame 1687, wake in frame 1737, here too now.)
     fn set_interrupt_mask(&mut self) {
         tr!(self, "set_interrupt_mask");
-        self.busy(DELAY_FRAMES);
+        if DELAY_FRAMES > 0.0 {
+            let end = (self.time + DELAY_FRAMES as f64).ceil();
+            self.busy((end - self.time) as f32);
+        }
     }
 
     /// clear_game_buffers: every custom level emptied.

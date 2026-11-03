@@ -1643,10 +1643,12 @@ impl Castle {
         let sub = (self.st.sub, self.st.shot);
         if self.sub_cache != Some(sub) {
             self.sub_cache = Some(sub);
-            // +1A40 clears the two boxes (goodies 59 and 32), +76F8 draws the weapon's first frame at
-            // (0xBD, 0x13), +7736 the multiplier (goodies 14 or 13) at (0x11D, 0x18)
+            // +1A40 clears the two boxes (goodies 59 at (0xC0, 0x18), +1C38, and 32 at (0x11D, 0x18)), +76F8 draws the
+            // weapon's first frame at (0xBD, 0x13), +7736 the multiplier (goodies 14 or 13) at (0x11D, 0x18). (Until
+            // 3 Nov 2026 the clear was drawn at 0xBD, the weapon's x: the box sat 3 pixels left and its top covered
+            // the TIME label; found by the golden-set picture check against the reference harness.)
             if let Some(s) = a.shape("goodies", 59) {
-                self.scr.shape(s, 0xBD, 0x18, Into::CleanShow, false);
+                self.scr.shape(s, 0xC0, 0x18, Into::CleanShow, false);
             }
             if let Some(s) = a.shape("goodies", 32) {
                 self.scr.shape(s, 0x11D, 0x18, Into::CleanShow, false);

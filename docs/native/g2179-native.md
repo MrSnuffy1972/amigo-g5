@@ -71,7 +71,13 @@ the native headless runner (`examples/headless.rs`). Measured 1 Nov 2026:
 |---|---|---|
 | p1: one player, trainer on, 4000 frames (logo, title picture, title, get-ready, play, a death, the restart at the halfway point) | 29 named values (stage, scroll, position, speed, jump and fall phases, score, diamonds, lives, clock, power, shot, five enemy records) at 240 frames | 239 of 240 frames all exact at the same tick (the other is the title, where the player position is unused) |
 | p2: two players, 14000 frames | same, 248 frames | all exact through player one's whole game (deaths, game over, the high-score screen, its scroll-in and wobble, the name entry letter by letter) up to frame 7866; there a 3-frame fire pulse falls 1 to 2 frames from a screen-change wait, the reference takes it and the native build waits for the next press, so the runs part |
-| Playfield picture | the reference's own bitplanes and display-list pointers rendered from its RAM dumps, against the native frame at the same tick | 100% of pixels on 5 of 6 gameplay frames, 99.7% on the sixth (the reference dump caught the player bob half-drawn) |
+| Playfield picture | the reference's own bitplanes and display-list pointers rendered from its RAM dumps, against the native frame at the same tick | 100% of pixels on 5 of 6 gameplay frames, 99.7% on the sixth (see the note below the table) |
+
+Note (3 Nov 2026, golden set): the sixth frame was not a half-drawn bob, as first written here. Drawn from the RAM
+and custom registers of every p1 gameplay dump (168 frames), 159 match 100% and 9 match 99.65 to 99.72%: all 9 are in
+ticks 3890 to 3970, where Giana falls into a pit, and the reference's playfield holds no player bob there at all (none
+of the 50 yellow pixels the native frame shows), so the native build draws her below the line where the original
+stops drawing her. The 99.7% frame of the first check was one of these.
 
 Tolerance: named state exact at the same tick; picture within 24 per colour channel (the two expand 12-bit colours
 differently). The reference harness's own frame dumps are used only for the screens that do not scroll (logo, title

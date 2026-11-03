@@ -1,0 +1,1 @@
+{"game": 715, "key": "runtime segment $C7E020-$C7F380:0:1328", "name": "pass_stack_argument_through", "description": "This two-instruction routine has no logic of its own: it returns the value found in its first stack argument slot. The code shows no calls, library use, or hardware access, so it is a minimal pass-through stub.", "model": "claude-haiku-5-5"}

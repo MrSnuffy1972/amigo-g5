@@ -206,6 +206,9 @@ unnumbered files (`g296-native.apk` and so on) stay where they are.
 ### Where releases live
 
 - Ryzen: `/srv/fast/amigo/native/releases/<id>/`, mirrored to WinPC `F:\openclaw\tmp\nv-release\<id>\`.
+- WinPC `F:\Game Source\Amiga\Native Ports` (added 3 Nov 2026): `release.sh` publishes there too (append-only) and runs
+  the native checks (G4 Windows under Wine, `native/tools/g4_native.sh`; G5 Android on IntelPC once built). Current
+  gate meanings and the R-first rule are in `CLAUDE.md`.
 - `releases/releases.json` (format `amigo-native-releases/1`) records every release: `id`, `title`, `revision`,
   `date` (UTC), `commit` (full hash of amigo-g5), `change` (the note), `files` (`name`, `kind` android or windows,
   `bytes`, `sha256`), `pack_sha256`, `native_rev` (what the pre-boot shows), the toolchains, and `superseded` for a

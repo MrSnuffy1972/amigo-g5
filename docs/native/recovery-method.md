@@ -18,6 +18,13 @@ that now runs every game: `/srv/fast/amigo/recovery/tools` on Ryzen. Per game ev
 A game that cannot reach all four is marked **blocked** with the precise reason, and the queue moves on. No proof is
 ever relaxed to make a game pass.
 
+## The R gate (3 Nov 2026)
+
+R is the first gate on every game: green only when all four proofs pass in its recovery record.
+`/srv/fast/amigo/amigo_rgate.py` reads the records and stores one row per project in `amigo.db` table `recovery_gate`.
+**R first:** a G gate counts only results produced after the game's R pass, and the schedulers (`tools/campaign.py`
+`rfirst_tick` and the rest) only run G work on R-green games.
+
 ## Pipeline stages (`pipeline.py <id>`)
 
 1. **prep** - copy the project's inputs (`projects/<id>/prekit/game`, following the archiver's links to
@@ -97,11 +104,13 @@ Each routine climbs the ladder only as far as it must; `work/describe-stats.json
    keep their leading whole sentences;
 7. another local method for what still fails - the alternate big model (`ALT_OLLAMA`/`ALT_MODEL`) with more context (the
    pseudo-code of callers and callees and a longer code window);
-8. paid fallback (`paid_fallback.py`, Anthropic Message Batches API) - DISABLED until Karl confirms a budget
-   (`paid-fallback/ENABLED.json`); off-peak only. What still fails is listed in `paid-fallback/pending/<id>.jsonl` and stays
+8. paid fallback (`paid_fallback.py`, Anthropic Message Batches API) - Haiku, capped at A$5 in total, off-peak
+   only (Karl, 2-3 Nov 2026; model and budget in `paid-fallback/ENABLED.json`). What still fails is listed in `paid-fallback/pending/<id>.jsonl` and stays
    rejected; answers that come back still pass the quality check on the game's next naming pass.
 
 Stage B runs on every GPU host listed in `recovery/naming-hosts.json` at once (the queue gives each host a different game).
+Today: Ryzen Glimmer, IntelPC qwen3.6 and M4 gemma (Leroy first). Stage A runs on Ryzen plus remote CPU workers
+(IntelPC with 3 slots now; Unraid, WinPC and MiniPC being added): see `/srv/fast/amigo/docs/remote-recovery-workers.md`.
 
 Every text passes a quality check before it counts: not empty or too short, no generic wording ("performs
 operations", "unknown", "helper function" and similar), no hexadecimal, no library call the routine does not make, no

@@ -1,47 +1,64 @@
 # CLAUDE.md: Ami-Go G5 toolkit repo
 
 ## What Ami-Go is
-Ami-Go is Karl DeWet's pipeline that turns Amiga games he owns into **native** Windows (.exe) and Android (.apk)
-ports. Games are reverse-engineered: the 68000 code is recovered, translated statically to C (`kit/amigo/port/
-m68k2c.py`), and run on a clean-sheet runtime that does what the game needs rather than emulating the custom chips.
-Real games, ROMs and the judging harness live on Karl's home server (called Ryzen in the docs). **This repo holds
-toolkit source only.** You will never see a game here, and you must never add one.
+Ami-Go is Karl DeWet's process for turning Amiga games he owns into **native** programs: idiomatic Rust on a shared,
+system-neutral engine (`rust/native_engine`) with a per-system front end, released as a Windows .exe and an Android
+.apk, so the same process can later cover other consoles. It is **not an emulator**. Real games, ROMs, recovered source
+and the judging harness live on Karl's home server (called Ryzen in the docs). **This repo holds toolkit and native
+source only.** You will never see a game's bytes here, and you must never add them.
+
+## The process (Karl, 31 Oct to 3 Nov 2026)
+1. **Recover 100% of the code**, never skipped or partial, tracked by the **R gate**. R is green only when all four
+   proofs hold: (1) every byte classified; (2) byte-identical reassembly with vasm; (3) every function named and
+   described; (4) every executed PC covered. Ryzen stores the result in `amigo.db` table `recovery_gate` (script
+   `/srv/fast/amigo/amigo_rgate.py`). Method: `docs/native/recovery-method.md`.
+2. Understand the game from the recovered code: loop, rules, objects, timing, state and assets.
+3. Rewrite it natively on the shared engine.
+4. Verify against the game's golden set, then release.
+
+**R first:** a G gate counts only results produced after the game's R pass, and Ryzen's schedulers
+(`tools/campaign.py` `rfirst_tick` and the rest) only run G work on R-green games.
 
 ## The gates (what "passing" means)
-A gate passes only when a script says so, never on a model's claim. Results are judged against a reference run of
-the original game.
+A gate passes only when a script says so, never on a model's claim.
 | Gate | Passes when |
 |---|---|
-| G0 | The game's code is recovered (memory image, entry point, code regions) and the pre-port reaches a real game screen. |
-| G1 | The whole reachable program is translated to C and the translated build matches the original on a real picture. |
-| G2 | The clean-sheet native build's picture matches the reference: SSIM >= 0.90 on >= 95% of ticks with a moving reference (`cleansheet/tools/judge.py`). |
-| G3 | G2 plus sound: mean spectral correlation >= 0.85. |
-| G4 | A Windows .exe of the same native code, with **no emulator code inside** (`kit/amigo/port/symcheck_g4.sh`), passes the G3 check under wine. 29 of 32 games passed G4 Epoch 1. See docs/G4-DESIGN.md. |
-| G5 | **This repo's job**: the Rust cold-boot port (below). |
-Older notes that call G4 "polish" and G5 "Android" (the 13 Oct scoring table, `kit/amigo/g5check.py`) are superseded
-by the table above.
+| R | 100% code recovery: all four proofs above pass (`amigo_rgate.py`). |
+| G0 | Boot / first-screen match in the clean-sheet harness. |
+| G1 | Second-stage screen match (CPU). |
+| G2 | Picture. |
+| G3 | Sound. |
+| G4 | The released native Rust Windows .exe passes picture and sound against the game's golden set (run under Wine on Ryzen, `native/tools/g4_native.sh`). |
+| G5 | The released native Rust Android .apk passes picture and sound against the golden set (Android emulator on IntelPC, being built: `native/tools/g5_native.sh`). |
+| G6 | Shipped: Karl has confirmed the release on his phone (`amigo_ngate.py ship`). |
 
-## G5: goal and boundaries
-Goal (Karl, 25 Oct 2026, "Copilot plan as G5"): a **Rust** port that **cold-boots** a game from its own files and
-entry point, with no snapshot from a reference emulator run, using the existing **C translation as the oracle**.
-Pilot: one small filed game that already passes G3 (likely game 234). Read docs/G5-NOTES.md first: it separates what
-Karl decided from what is assumed, and the Copilot design document is not yet in the repo.
+**Legacy, history only:** the old translated-code G4 (a Windows .exe of the C translation judged under wine: `g4/`,
+`symcheck_g4.sh`, docs/G4-DESIGN.md), the Rust cold-boot G5 (the frozen translated build under `rust/`, docs/G5-NOTES.md,
+docs/G5-PLAYABLE.md) and the old Android check once called G5 or G6 (`g5check.py` / `g6check.py`). Their results no
+longer count. Do not extend the translated build's runtime, translator, ports or chips; it is kept only as a reference
+recorder.
 
-In scope: a Rust crate under `rust/`; Rust code generation from the translator's decoded instructions (a new
-emitter beside the C one, sharing the decoder); clean-sheet Rust versions of the runtime pieces (guest memory, OS
-services for filed games, copper/blitter/bitplane/Paula *functions*); differential tests against the C path;
-CI. Out of scope unless a milestone says so: changing gate thresholds or judge.py, the campaign scheduler, the web
-UI, Android packaging, polish (menus, controller mapping, saves).
+## Golden sets, sound rule, retention and release (Ryzen)
+- Golden sets: `/srv/fast/amigo/native/golden/<id>/` with `manifest.json` and `replay.sh`, proven by replay; a game
+  needs one before anything of it is pruned. Sound passes on envelope correlation >= 0.9, except games whose manifest
+  says `"sound_class": "continuous"`, which pass on spectrum correlation >= 0.98 and level within 5%.
+- Retention "Lean + regression": `/srv/fast/amigo/docs/retention-policy.md`. `tools/retention_prune.py` is a dry run by
+  default; `--apply` moves files to `_to_prune` and never deletes; it refuses any game that is not fully green.
+- Releases: file names `<id>-<slug>-r<N>` (docs/G5-NATIVE.md, "Release builds and revisions"). `native/tools/release.sh`
+  also publishes to WinPC `F:\Game Source\Amiga\Native Ports` (append-only) and runs the native checks.
 
-Hard boundaries:
-- **No emulated hardware.** No cycle-stepped chip models, no beam emulation, no general 68000 interpreter in the
-  product. Karl: copy "the functionality required to do what the game needs to do", not what the chip does.
-- **No raw-pointer guest memory.** Gemini's raw-pointer Rust design was rejected as CPU-shaped. Guest memory is an
-  owned, bounds-checked structure with explicit big-endian accessors. `unsafe` only inside a module named `ffi`,
-  each block with a `// SAFETY:` comment.
-- **ROM interpreter exception (Karl, 27 Oct 2026):** only for WHDLoad kickemu games, only to run the player's own
-  Kickstart loaded at run time, marked `kick_interp_only`, stopping before the first instruction outside the ROM.
-  Not needed for the filed pilot; do not build it unless a milestone asks.
+## What every native port must do
+- Copy protection is removed in every port (recovery still documents it, so the 100% proof holds). Cracktros are kept
+  as native intros. Trainers become a cheats menu, off by default.
+- Not an emulator: no guest memory, no 68000 register file, no custom-chip registers and no joystick or mouse port reads
+  in the native engine or a native game. Input is abstract actions.
+- `unsafe` only inside a module named `ffi`, each block with a `// SAFETY:` comment.
+
+## Who does the work
+Recovery runs on Ryzen plus remote stage-A workers (IntelPC with 3 slots now; Unraid, WinPC and MiniPC being added).
+Naming models: Ryzen Glimmer, IntelPC qwen3.6, M4 gemma (Leroy first); shared signature library
+`/srv/fast/amigo/siglib` (never in a repository); paid fallback Haiku, capped at A$5, off-peak only. Fleet tasks go
+through OpenClaw as the worker, with Claude as XO verifying.
 
 ## Karl's rules (non-negotiable)
 - Australian English spelling (behaviour, colour, initialise, analyse, licence as a noun). **No em dashes** in any
@@ -62,9 +79,9 @@ Hard boundaries:
   `musashi/` is the reference 68000 core used only by the harness and difftest. The prebuilt SDL2 mingw libraries
   are not exported (21 MB of binaries); the Windows build runs on Ryzen.
 - `kit/amigo/`: `hunkload.py` (AmigaDOS hunk loader), gate checks (`g0check.py`, `g3check.py`, `g5check.py`, which is
-  the old Android check, not this G5).
+  the legacy Android check; none of these is the current G4-G6).
 - `cleansheet/tools/`: the clean-sheet G2/G3 job (`cs_game.sh`), `judge.py`, alignment, snapshot config, bisect.
-- `g4/`: the G4 Windows build and wine judging script. `docs/`: G4 design, native-runtime design, lessons.
+- `g4/`: the legacy translated-code G4 Windows build and its wine judging script (history only). `docs/`: G4 design, native-runtime design, lessons.
 - `tools/leakcheck.py`, `tools/leak-hashes.txt`, `tools/leak-allow.txt`, `tools/export.sh`. `tests/synthetic/`.
 
 ## Build and test in the cloud (no games needed)

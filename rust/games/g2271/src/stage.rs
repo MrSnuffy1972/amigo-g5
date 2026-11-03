@@ -1423,27 +1423,77 @@ impl Castle {
     }
 
     /// The frame wait of a stage (+CBB8 with -$2BB6 = 4): the frame shows for four vertical blanks while the
-    /// display's scroll eases towards the map position; presses during the four count.
+    /// display's scroll moves towards the map position; presses during the four count. The scroll follows the
+    /// original's control (3 Nov 2026, measured against the reference harness frame by frame): the game frame asks for
+    /// a move (+C60A), the blank that shows the frame takes it only with the scroll on a column boundary (+CA78), and
+    /// each blank moves the scroll 2 pixels until it reaches the position (+C7A4). Before, the display eased towards
+    /// the map position from the next blank, a game frame or two ahead of the original.
     fn wait_game_frame(&mut self) {
-        let target = self.st.scroll_col as i32 * 8;
-        self.ease_scroll(target);
+        // the frame's move is asked for before the blank that shows the frame, as the frame's picture is drawn: the
+        // original draws a frame while the previous one shows and asks after that blank, so its picture and scroll
+        // both come one game frame later than here; kept together here (measured 3 Nov 2026: with only the scroll a
+        // frame later, scroll and picture parted)
+        self.scroll_request(self.st.scroll_col as i32 * 8);
+        if self.scr.scroll & 7 == 0 {
+            self.scr.scroll_dir = self.scr.scroll_want;
+        }
+        self.scroll_blank();
         self.wait_frame();
         let mut pressed = self.input.pressed;
         for _ in 1..VBLANKS {
-            self.ease_scroll(target);
+            self.scroll_blank();
             self.hold_frame();
             pressed |= self.input.pressed;
         }
         self.input.pressed = pressed;
     }
 
-    fn ease_scroll(&mut self, target: i32) {
-        let d = target - self.scr.scroll;
-        self.scr.scroll += if d.abs() > 8 {
-            d
-        } else {
-            d.clamp(-SCROLL_STEP, SCROLL_STEP)
-        };
+    /// +C60A process_collision_state (its scroll part): a new map position starts a move unless one in the other
+    /// direction is asked or running (that is cancelled, and the next frame asks again) or the last move has not been
+    /// finished off (-$2BC2, cleared the frame after a move ends).
+    fn scroll_request(&mut self, x: i32) {
+        let s = &mut self.scr;
+        let x = x & !7;
+        let mut started = false;
+        if x != s.scroll_to {
+            let d2 = s.scroll_want;
+            let d4 = d2 | s.scroll_dir;
+            let (this, other) = if s.scroll >= x { (4, 8) } else { (8, 4) };
+            if d4 & other != 0 {
+                s.scroll_want = d2 & 3;
+            } else if d2 & this != 0 {
+                s.scroll_to = x;
+            } else if s.scroll_started == 0 {
+                s.scroll_to = x;
+                s.scroll_want = (d2 & 3) | this;
+                s.scroll_started = s.scroll_want;
+                started = true;
+            }
+        }
+        if !started && s.scroll_dir & 0xC == 0 {
+            s.scroll_started = 0;
+        }
+    }
+
+    /// +C7A4 update_player_horizontal_position: one vertical blank of the display scroll's move.
+    fn scroll_blank(&mut self) {
+        let s = &mut self.scr;
+        if s.scroll == s.scroll_to {
+            s.scroll_dir &= 3;
+        }
+        if s.scroll_dir & 4 != 0 {
+            s.scroll -= SCROLL_STEP;
+            if s.scroll < 0 {
+                s.scroll = 0;
+                s.scroll_dir &= 3;
+            }
+        } else if s.scroll_dir & 8 != 0 {
+            s.scroll += SCROLL_STEP;
+            if s.scroll > 0xBB8 {
+                s.scroll = 0xBB8;
+                s.scroll_dir &= 3;
+            }
+        }
     }
 
     /// +0ED2 initialize_serial_device (the room set-up) and +20EC process_level_tilemap (the room drawn): the
@@ -1538,7 +1588,7 @@ impl Castle {
                 }
             }
         }
-        self.scr.scroll = self.st.scroll_col as i32 * 8;
+        self.scr.set_scroll(self.st.scroll_col as i32 * 8); // +BC9A
         self.w.attrs = sf.attrs.clone();
         self.w.mw = sf.w as i16;
         self.w.van = r.van;

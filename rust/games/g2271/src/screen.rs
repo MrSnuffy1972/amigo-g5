@@ -68,9 +68,24 @@ pub struct Screen {
     pub level: u8,
     /// Shapes drawn into a display picture stop at the top of the play area (on during a stage).
     pub clip_top: bool,
+    /// The display scroll's control (+C60A, +C7A4, the vertical blank's +CA78): the position it moves to (-$2BD8),
+    /// the direction it is moving (-$2BCA: 4 left, 8 right), the direction the game asked for (-$2BCC, taken when
+    /// a frame is shown with the scroll on a column boundary), and the move last started (-$2BC2).
+    pub scroll_to: i32,
+    pub scroll_dir: i32,
+    pub scroll_want: i32,
+    pub scroll_started: i32,
 }
 
 impl Screen {
+    /// +BC9A initialize_object_state: the display scroll and its target at a position, no move asked or running.
+    pub fn set_scroll(&mut self, x: i32) {
+        self.scroll = x;
+        self.scroll_to = x;
+        self.scroll_want = 0;
+        self.scroll_dir = 0;
+    }
+
     pub fn new(world_w: usize) -> Screen {
         let w = world_w.max(ROW_W);
         Screen {
@@ -84,6 +99,10 @@ impl Screen {
             palette: [0; 32],
             level: 0,
             clip_top: false,
+            scroll_to: 0,
+            scroll_dir: 0,
+            scroll_want: 0,
+            scroll_started: 0,
         }
     }
 

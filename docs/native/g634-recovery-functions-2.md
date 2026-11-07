@@ -1,0 +1,738 @@
+# Game 634 (balance of power - the 1990 edition (1990)(mindscape)): code recovery summary
+
+## Functions (part 2 of 2)
+
+### translator.library
+(continued)
+
+- `check_byte_value`: Loads two pointers from the stack, reads a byte from the address in a6, and branches if that byte is decimal 92 or decimal 96.
+- `stub_immediate_return`: The decompiled body contains only a return, so the routine does no visible work in the library.
+- `match_bracketed_tag_text`: Skips forward to an opening bracket character, then compares the characters that follow against a reference string until a closing bracket.
+- `check_table_and_compare_byte`: As library code, it decrements d6, and if it is not negative, it loads a byte from a table using d6, performs arithmetic on it, uses the result to load a word from another table, and if a bit is set, compares the byte from the first table with a byte from a pointer in a2.
+- `set_condition_code`: Sets the negative condition code bit in the processor status register and returns.
+- `call_handler_with_d7`: Sets register d7 to 1, calls another routine, and if the result is not zero, branches to another location; otherwise it clears the carry flag and returns.
+- `match_string_and_call_handler`: As library code, it iterates through a string, comparing characters to a source, and for each character, it checks a bit in a table and calls another routine if the bit is set, returning if a character matches an equals sign or if a routine returns true.
+- `call_handler_with_ff`: Sets register d7 to 255, calls another routine, and if the result is not zero, branches to another location; otherwise it clears the carry flag and returns.
+- `scan_text_buffer`: This library code routine loops through a buffer at an offset in a6, using d7 as an index, and compares bytes to specific values, returning when a match is found or the loop completes.
+- `calculate_text_length`: Subtracts a value from a longword in d0, adds a word from d7, compares the result to d2, and if the result is less than d2, performs bitwise operations on d6, adds d6 to a6, pushes d7 to the stack, and branches back to the start of the routine.
+- `copy_counted_bytes_with_flag`: Copies a counted run of bytes from the source to the destination buffer, then sets the continuation flag bit and clears it again if the next source byte is a backtick.
+- `truncate_text_at_break`: Walks backwards from the current position through a text buffer until it reaches a break character, then writes a zero byte there to end the string.
+- `dispatch_on_special_character`: Searches a short fixed table of special characters for the byte in the data register and calls the handler at the matching position.
+- `load_byte_conditionally`: Tests if d7 is negative; if not, it loads a byte from the address in a2 into d1 and branches to the end.
+- `stub_empty_return_slot`: Contains only a return in the decompiled output, so it is an empty stub with no visible effect on the library.
+- `test_bit_six`: This library code routine calls another routine and then returns if bit 6 of d4 is set.
+- `wait_while_status_bit_set`: This library code routine calls another routine and then calls it again while bit 5 of d4 remains set, returning when that bit clears.
+- `library_empty_return`: This library code routine performs no visible actions and simply returns.
+- `check_byte_values`: This library code routine calls another routine and, if bit 5 of d4 is set, compares d1 against two specific byte values, setting the 4th bit of the condition code register before returning.
+- `set_ccr_eight`: Sets the 8th bit of the condition code register in this library code and returns.
+- `validate_string_sequence`: As library code, it calls another routine multiple times to check for specific character sequences, and returns based on the results of these calls and the state of a bit in register d4.
+- `verify_string_sequence`: This library code routine calls another routine and checks if d4 has bit 7 set, and if bit 5 of d4 is set, it checks if d1 contains a specific sequence of characters.
+- `disable_interrupts_and_return`: Sets the interrupt mask to disable all maskable interrupts via the condition code register and returns immediately.
+- `test_bit_four`: This library code routine calls another routine and then returns.
+- `execute_handler_and_test_bit`: Calls another routine and then tests bit 2 of a register before returning.
+- `call_handler_and_test_bit`: Calls another routine and then tests bit 5 of a register before returning.
+- `execute_handler_and_test_bit_2`: Calls another routine and then tests bit 8 of a register; otherwise it returns.
+- `poll_status_bit_until_clear`: Calls a library routine repeatedly while bit 5 of the status value in d4 stays set, then adds the value in d7 to the address in a2 and sets the condition code register to 8 before returning.
+- `call_handler_and_test_bit_2`: Calls another routine and then tests bit 1 of a register; otherwise it returns.
+- `repeat_call_while_bit_one`: Calls a library routine repeatedly while bit 1 of the status value in d4 is set, and returns once that bit is clear, adding the value in d7 to the address in a2 and setting the condition code register to 8.
+- `check_status_bit_seven`: Calls a library routine, checks bit 7 of d4, and if it is clear, sets the condition code register to 8 and returns; otherwise it returns.
+- `set_ccr_four`: Sets the 4th bit of the condition code register in this library code and returns.
+- `process_text_buffer`: Iterates through a buffer, performing character transformations such as converting specific characters to spaces or adjusting case, while updating a counter and checking for specific character sequences or a maximum length, and calls other routines to write spaces or move data.
+- `write_space_before_pointer`: Writes a space character two bytes before the address in a2 and returns.
+- `tiny_moveq_rts_2`: Small routine of 2 instructions that loads 253 into d1, then returns.
+- `tiny_move_move_rts_2`: Small routine of 3 instructions that copies 32 to (a2)+, then copies 32 to (a2)+, then returns.
+- `shift_buffer_on_match`: Checks a bit in a structure, iterates through a buffer to find a matching value, and if a match is found, shifts the buffer contents and inserts a marker byte.
+- `shift_buffer_insert_marker`: Shifts the bytes of a text buffer right by one place up to a fixed position, writes a marker character into the vacated slot, and advances the buffer pointer.
+
+### info.library
+
+- `trigger_illegal_instruction_exception_2`: Executes an illegal instruction to trigger an exception.
+- `store_library_state`: The routine stores the incoming register values into a global variable and a table, and writes a pointer through an offset in a structure, then stores that pointer into another global variable.
+- `call_library_function`: As library code, it pushes the address in a6 onto the stack, calls another routine, adjusts the stack pointer, and returns.
+- `call_library_helper_2`: Library code that calls another routine to allocate memory and initialize a structure, then returns.
+- `execute_library_call`: Pushes a6 onto the stack, calls a routine at an offset of 18, and then increments the stack pointer by 4.
+- `empty_stub_11`: Empty routine: returns to the caller immediately without doing anything.
+- `reset_library_state_recursive`: This library code calls itself indefinitely, resulting in infinite recursion, before finally calling a routine that resets the library state.
+- `clear_flag_and_increment_counter_2`: The routine clears a specific bit in a byte field of a structure pointed to by its argument and increments a 16-bit counter field within the same structure.
+- `execute_library_calls_2`: Saves registers to the stack, loads a pointer from the stack into a2, calls a routine at a specific offset, checks a byte at offset 32 of the structure in a2, sets bit 3 of a byte at offset 14 if the value is not less than or equal to zero, and calls another routine before returning.
+- `return_saved_value_after_calls`: Reads a saved global value, calls a library function at offset minus 252, then calls a helper with values derived from the structure in an address register and another helper.
+- `process_structure_and_call`: Loads a pointer from an offset of 4 on the stack into a0, decrements a word at offset 32 of that pointer, and if the result is not zero, checks bit 3 of a byte at offset 14 of that pointer; if bit 3 is set, it pushes a0 onto the stack, calls a routine at an offset of 18, and increments the stack pointer by 4.
+- `return_constant_64`: Returns the constant an address in d0 to the caller without any other effect.
+- `invoke_nonzero_global_handlers`: Invokes each handler routine only when its corresponding global or argument value is nonzero.
+- `allocate_and_initialize_info_structure`: Allocates a memory block via a library call and populates various internal offsets within that block by copying data from a global variable.
+- `initialize_info_structure_pointers`: Given a block base in an address register, it writes a set of internal pointers at fixed offsets from that base.
+- `execute_callback_chain_5`: Performs a series of conditional calls to a routine using a global variable and a pointer, storing the results in various global variables and returning either 0, 1, or a specific integer constant.
+- `execute_callback_loop_4`: Pushes a pointer from a global variable onto the stack, calls a routine using a pointer from a3, stores the result in a global variable, and loops if the result is not zero.
+- `execute_callback_and_check_2`: Pushes a constant onto the stack, calls a routine using a pointer from a3, stores the result in a global variable, and if the result is not zero, branches to another location.
+- `execute_callback_and_check`: Calls a routine using a pointer from a3 and a global variable, stores the result in a global variable, and if the result is zero, calls another routine with three arguments.
+- `return_one_and_restore`: Sets d0 to one, restores a2 and a3 from the stack, and returns.
+- `check_pointer_validity`: Library code that pushes a2 to the stack, loads a constant into a1, and then branches if the value at the address in a1 is non-zero or if a branch is taken.
+- `check_structure_byte`: Loads a pointer from a1 into a0, compares the byte at offset 61 of the structure in a0 to seven, and branches if they are not equal or if a subsequent condition is met.
+- `load_structure_pointer`: Loads a pointer from a1 into a0, loads a pointer from offset 56 of that pointer into a2, loads a pointer from a1 into a0 again, and if the byte at offset 164 of that pointer is not zero, loads a pointer from offset 164 of that pointer into d0.
+- `load_pointer_from_structure_2`: Loads a pointer from a1 into a0, compares a byte at offset 61 of that pointer to one, and if it is not one, loads a pointer from offset 76 of the structure in a0 into a0, then loads a longword from offset 474 of that new pointer into d0 and branches.
+- `load_pointer_from_structure`: Moves a longword from the address in a2 into d0; if d0 is not zero, it loads the address at offset 76 of the structure in a2 into a0 and branches to the end.
+- `return_zero_and_restore_3`: Sets d0 to zero, restores a2 from the stack, and returns.
+- `update_info_structure`: Library code that calls another routine, stores the result in a structure at offset 152, and performs conditional checks on a byte at offset 61 of a structure to determine which pointer to use.
+- `lookup_named_entry_with_fallback`: Calls a routine with a pointer and a constant of negative two, sets a global variable to zero, and if the result is zero and a byte at offset 61 of a structure in a2 is one, it reads a longword from offset 474 of a structure pointed to by offset 76 of a2 and sets a global variable to one.
+- `update_library_structure_data`: Library code that calls several routines to update global variables, increments a longword at offset 100 of a structure, ensures that value is at least 256, and updates a value at offset 60 of a structure if a specific routine returns a non-zero result.
+- `store_result_and_branch`: Pushes a constant and several registers onto the stack, calls another routine, stores the result in a location pointed to by a4, and then branches based on the result.
+- `process_library_call`: Loads a pointer from d4 into a0, loads a pointer from a0 into a2, and if the byte at offset 61 of a2 is not one, branches to another routine; otherwise, it pushes a global pointer and the value in d3 onto the stack, calls a routine, and loops if the result in d0 is not zero.
+- `call_library_vector_102_2`: Pushes a pointer from a4 and the value in d3 onto the stack, calls a routine at a fixed address, and if the result in d0 is not zero, adds eight to the stack pointer and branches.
+- `update_structure_fields_4`: Calls a routine with values from two structures, updates a longword at offset 100 of a structure in a3, ensures that value is at least 256, calls another routine, updates a longword at offset 96 of the structure in a3, and if that value is nonzero, calls a routine and updates offsets 104 and 112 of the structure in a3.
+- `copy_struct_fields_from_source`: Calls a helper with two fields read from the source and destination structures, copies two further fields from the source into the destination, and returns one.
+- `execute_library_callback_chain`: Library code that initializes several global variables, calls a library function, and then performs a complex sequence of conditional calls to other library routines based on the results of previous calls and global flags.
+- `execute_conditional_library_logic_2`: As library code, it pushes a value from a6 onto the stack, calls another routine, tests the result in d0, adjusts the stack pointer, and branches if d0 is non-zero; otherwise, it pushes a0 to the stack, pushes a value from a6 and a constant onto the stack, and branches to another location.
+- `call_and_compare_result`: As library code, it calls a routine, moves the result into a4, and then branches based on whether a4 is zero.
+- `dispatch_library_call`: Library code that pushes d2 to the stack, calls a routine at an address in a2, and then conditionally calls another routine using a value from d0.
+- `dispatch_info_call`: As library code, it calls a routine with two arguments, then calls another routine, and if the result is non-zero, it calls a third routine, otherwise it calls a fourth routine, a fifth routine, and finally calls a routine at the address in a2 with a constant and a value from a pointer.
+- `call_and_store_result_2`: Library code that calls another routine, moves the returned value from d0 to d2, and then performs an unconditional branch.
+- `execute_indirect_call`: Library code that pushes d2 to the stack, calls a routine at an address in a2, and then conditionally calls another routine using a value from a4.
+- `run_cleanup_then_indirect_call`: Checks a global flag and calls one helper routine when it is zero, then calls four other helpers unconditionally.
+- `call_library_vector_132_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
+- `call_library_vector_138_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 138 of that base, returning its result to the caller.
+- `call_library_vector_198_11`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_210_11`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `call_library_vector_234_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 234 of that base, returning its result to the caller.
+- `call_library_vector_246_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 246 of that base, returning its result to the caller.
+- `call_library_vector_252_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 252 of that base, returning its result to the caller.
+- `call_library_vector_294_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
+- `call_library_vector_318_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 318 of that base, returning its result to the caller.
+- `call_library_vector_372_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 372 of that base, returning its result to the caller.
+- `call_library_vector_378_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 378 of that base, returning its result to the caller.
+- `call_library_vector_414_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `call_library_vector_552_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `call_library_vector_42_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 42 of that base, returning its result to the caller.
+- `call_library_vector_72_4`: Library stub: loads a library base from a global variable and calls the library function at offset minus 72 of that base, returning its result to the caller.
+- `call_library_vector_96`: Library stub: loads a library base from a global variable and calls the library function at offset minus 96 of that base, returning its result to the caller.
+- `call_library_vector_204_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 204 of that base, returning its result to the caller.
+- `call_library_vector_222`: Library stub: loads a library base from a global variable and calls the library function at offset minus 222 of that base, returning its result to the caller.
+- `call_library_vector_228_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 228 of that base, returning its result to the caller.
+- `call_library_vector_270`: Library stub: loads a library base from a global variable and calls the library function at offset minus 270 of that base, returning its result to the caller.
+- `call_library_vector_276_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 276 of that base, returning its result to the caller.
+- `call_library_vector_354`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
+- `call_library_vector_366_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 366 of that base, returning its result to the caller.
+- `call_library_vector_396`: Library stub: loads a library base from a global variable and calls the library function at offset minus 396 of that base, returning its result to the caller.
+- `call_library_vector_408`: Library stub: loads a library base from a global variable and calls the library function at offset minus 408 of that base, returning its result to the caller.
+- `call_library_vector_60_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 60 of that base, returning its result to the caller.
+- `call_library_vector_66_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 66 of that base, returning its result to the caller.
+- `call_library_vector_72_5`: Library stub: loads a library base from a global variable and calls the library function at offset minus 72 of that base, returning its result to the caller.
+- `call_library_vector_78_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
+- `call_library_vector_234_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 234 of that base, returning its result to the caller.
+- `call_library_vector_240_4`: Library stub: loads a library base from a global variable and calls the library function at offset minus 240 of that base, returning its result to the caller.
+- `call_library_vector_270_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 270 of that base, returning its result to the caller.
+- `call_library_vector_306`: Library stub: loads a library base from a global variable and calls the library function at offset minus 306 of that base, returning its result to the caller.
+- `call_library_vector_342_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 342 of that base, returning its result to the caller.
+- `call_library_vector_354_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
+- `initialize_data_block`: The library routine builds a 36-byte block on the stack with a set of fixed constants and a pointer to a global variable, then passes the block's address to another routine.
+- `dispatch_via_table_3`: Saves registers to the stack, loads a pointer from the stack into a2, loads a longword from offset 16 of the stack into d1, sets a3 to 100, loads a pointer from offset 28 of a2 into a0, compares a word at offset 38 of the structure in a0 to 16, and if it is higher, performs arithmetic and jumps to an address from a table using the result.
+- `return_one`: Sets register d0 to one, restores registers a2 and a3 from the stack, and returns.
+- `xor_global_value`: Library code that selects a bitmask based on a value at offset 38 of a structure, performs an XOR operation with a global variable at offset 112, and calls another routine using a pointer from a structure.
+- `store_register_to_global`: Library code that stores a register value into a global variable offset by a fixed amount and then calls another routine using a pointer from a structure.
+- `process_message_buffer_structure`: Copies a string into a buffer, checks a type byte at offset 61 of a structure, and performs conditional memory operations and nested calls based on the structure's state and the results of buffer allocation and string copying.
+- `allocate_message_buffer_3`: Library code that calls a routine via a pointer, attempts to allocate a buffer, and conditionally calls other routines to populate fields or handle errors based on a byte at offset 61 of a structure.
+- `compare_byte_and_branch`: Library code that loads a pointer from a3 into a0, compares the byte at offset 61 of the structure in a0 to one, and if not equal, pushes a pointer onto the stack and branches.
+- `process_conditional_buffer_logic`: Calls a routine using values from a structure, checks a byte at offset 61 of a structure, and performs a sequence of conditional calls using pointers from a3 and a4.
+- `allocate_message_buffer_loop`: Loads a pointer from a3 into a0, and if the byte at offset 61 of a0 is one, branches to another routine; otherwise, it pushes a global pointer and a longword from offset 64 of a0 onto the stack, calls a routine, and loops if the result in d0 is not zero.
+- `allocate_message_buffer_2`: Loads a pointer from a4 into a0, pushes a longword from offset 112 of that pointer onto the stack, loads a pointer from a3 into a1, pushes a longword from offset 64 of a1 onto the stack, calls a routine at a fixed address, and if the result in d0 is not zero, adds eight to the stack pointer and branches.
+- `allocate_message_buffer`: As library code, it attempts to allocate a message buffer and populates its fields with parameters and a value from a global variable, then calls a library function and returns a constant one.
+- `return_constant_one`: This routine unconditionally returns the constant value one.
+- `call_and_check_result`: Pushes several values onto the stack, including a constant and a pointer from a global variable, then calls a routine at an address stored on the stack.
+- `call_companion_routine`: It calls another routine with no arguments and then returns one, so it works as a pass-through entry point.
+- `initialize_info_library_tables`: Library code that initializes internal tables by repeatedly calling another routine with various constant arguments and a pointer derived from the input parameter, including passing a global variable to certain calls.
+- `set_fixed_index_value_entries`: As library code, it calls another routine four times with a fixed first parameter and varying sets of integer arguments.
+- `initialize_display_palette_entries`: As library code, it calls another routine seven times with a fixed first parameter and varying sets of integer arguments.
+- `register_info_table_entries`: As library code, it calls another routine nine times with a fixed first parameter and varying sets of integer arguments.
+- `set_info_table_entries`: As library code, it calls another routine nine times with a fixed first parameter and varying sets of six integer arguments each time.
+- `check_byte_at_offset`: As library code, it saves registers, loads a pointer from a table, and compares a byte at offset 61 of that pointer to 4, setting d1 to 131 if they are not equal.
+- `check_list_boundary`: Compares a value at an offset from a pointer to a value at another offset from the same pointer, then calls another routine based on the result.
+- `call_base_then_field_helper`: Calls a library function at a fixed offset from the library base with no arguments, then calls a helper with a field read from the structure pointed to by an address register.
+- `update_list_structure`: As library code, it calls a routine to increment a 32-bit value in a structure, updates a field with the result, and then loops through a list of elements, calling another routine to store a result into a structure for each element.
+- `iterate_and_update_list`: As library code, it increments a 32-bit value at an offset of a structure, updates a field with that value, and then loops through a list of pointers, calling routines to process each element and update a structure.
+- `push_and_call_library`: Pushes a constant onto the stack, pushes the current stack pointer, and calls a library routine via a pointer, then branches based on the result in register a2.
+- `process_list_elements`: Iterates through a list, calling a routine to store a result into a structure at an offset, and continues until a pointer in a structure reaches zero.
+- `advance_list_cursor_if_not_end`: As library code, it checks if a list has reached its end or a specific boundary, then either calls three routines using values from a parameter or updates a cursor and calls three other routines.
+- `step_list_cursor_forward`: Calls a helper with a value derived from a node field and a stored constant, calls a helper with no arguments, advances a cursor by following its next link, and then calls another helper with no arguments.
+- `update_cursor_on_boundary`: As library code, it checks if a list boundary is met, and if not, it calls routines using a pointer and a global variable before updating a cursor value from a structure.
+- `follow_cursor_first_link`: Calls a helper with a value derived from a node field and a stored constant, calls a helper with no arguments, advances a cursor by following its first link, and then calls another helper with no arguments.
+- `insert_node_at_cursor`: Sets a status flag and, when a list is not at its end, calls two helpers for the current node.
+- `process_list_with_conditional_assignment`: As library code, it sets a byte in a global structure to 1 and then executes a series of routine calls to traverse a list and assign a value to a cursor based on boundary conditions.
+- `execute_sequential_callbacks_2`: Retrieves a pointer from a structure, calls another routine with that pointer, and then updates the structure with either a new pointer or the original head pointer if a boundary is reached.
+- `execute_sequential_callbacks`: Library code that calls another routine twice using pointers or offsets or registers.
+- `initialize_and_test_structure`: Library code that saves registers to the stack, loads a constant into a4, sets d2 to 88, loads a pointer from the address in a4 into a2, and then tests a long word at offset 242 of the structure in a2.
+- `copy_list_to_buffer`: Library code that checks a condition on a structure, loops through a linked list to count elements, and then loops again to copy data from the list into a new buffer.
+- `clear_structure_field`: Library code that moves a pointer from d2 to a0, loads a second pointer from the address in a0 into a2, and clears a longword at offset 92 of the structure in a2 before branching.
+- `load_list_pointer`: As library code, it loads a pointer from a location specified by a2, retrieves a value from an offset of that pointer, and branches to another location.
+- `traverse_and_allocate_list_2`: Calculates the length of a list, allocates a block of memory, and then iterates through a second list to allocate individual elements and copy them into the new block.
+- `traverse_and_allocate_list`: Iterates through a linked list, calling a library routine to allocate memory for each element, and stores the resulting pointers into a destination array while performing various checks on the list structure.
+- `allocate_and_populate_array`: As library code, it loops through a list, calls a routine to allocate memory for each element, stores the resulting pointer in an array, and calls routines to link the new elements to the list.
+- `populate_array_from_list`: As library code, it loops through a list, calling a routine to copy a string to a buffer and another to allocate memory, then stores the resulting pointer into an array until the end of the list is reached.
+- `call_library_vector_84_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 84 of that base, returning its result to the caller.
+- `call_library_vector_90_5`: Library stub: loads a library base from a global variable and calls the library function at offset minus 90 of that base, returning its result to the caller.
+- `call_library_vector_102`: Library stub: loads a library base from a global variable and calls the library function at offset minus 102 of that base, returning its result to the caller.
+- `call_library_vector_114`: Library stub: loads a library base from a global variable and calls the library function at offset minus 114 of that base, returning its result to the caller.
+- `call_library_vector_180`: Library stub: loads a library base from a global variable and calls the library function at offset minus 180 of that base, returning its result to the caller.
+- `call_library_vector_186`: Library stub: loads a library base from a global variable and calls the library function at offset minus 186 of that base, returning its result to the caller.
+- `dispatch_ui_layout_sequence`: Reads a value from a global structure to select a case and then executes a sequence of calls to prepare_text_draw and process_with_offset_decrement using various constant parameters and values retrieved from other global structures.
+- `restore_registers`: Restores registers d2, a2, a3, a4, and a5 from the stack and returns.
+- `validate_and_dispatch_data_structure`: Performs a series of checks by calling a routine with specific constants and pointers, storing the results in global variables.
+- `dispatch_indexed_value_2`: Calls a routine via a pointer in a3 four times, storing each result in a global variable, and if all results are non-zero, reads a byte from offset 61 of a global pointer and calls another routine between one and four times based on that byte's value.
+- `dispatch_indexed_value`: As library code, it loads a pointer from a global variable, reads a byte from an offset of 61 from that pointer, compares it against the values 1 and 5, and then jumps to an address retrieved from a table based on the modified byte value.
+- `unlk_and_restore`: Restores registers d2, d3, a2, a3, and a4 from an offset of minus 40 relative to a6, unlinks a6, and returns.
+- `probe_after_copy_status_2`: Pushes d2 onto the stack, loads a longword from offset 8 of the stack into d2, loads a pointer from a global variable into a0, and if a byte at offset 104 of that pointer is non-zero, branches; otherwise, it loads a pointer from offset 340 of a global variable into a0, clears a byte at that address, and branches.
+- `probe_after_copy_status`: As library code, it copies a state field into a global pointer target through a helper, calls a second helper, and returns zero if that result is minus one, otherwise it returns the result.
+- `validate_and_format_sequence`: As library code, it checks a byte at an offset of a global variable, writes four specific values to a table if the check fails, and then calls four separate routines using a pointer and a constant to determine a return value.
+- `call_via_pointer_2_2`: Pushes a constant and a pointer from a global variable and the value in d2 onto the stack, calls a routine using a pointer in a2, and if the result in d0 is not negative 256, adjusts the stack pointer and branches.
+- `call_via_pointer_2`: As library code, it pushes a constant, a pointer from a global variable, and the value of d2 onto the stack, calls a routine using a pointer in a2, and then branches based on a comparison between d0 and a constant.
+- `call_via_pointer`: Pushes a constant and a pointer from a global variable onto the stack, then calls a routine using a pointer in a2.
+- `return_constant_one_2`: The library routine unconditionally returns the constant value one and performs no other operations.
+- `loop_and_call_indirect`: Library code that retrieves a byte from a structure, enters a loop where it calls a routine using a pointer from a structure, and if that returns non-zero, calls another routine with that result and a parameter, otherwise it calls a routine using a bit-shifted value derived from the byte.
+- `clear_and_restore`: Sets register d0 to zero, restores registers d2, d3, d4, and a2 from the stack, and returns.
+- `compare_values_from_stack`: Saves registers to the stack, loads a pointer from an offset in the stack, retrieves values from the stack and the structure, and performs conditional branches based on a comparison between d1 and four.
+- `compare_d1_to_constant`: As library code, it compares the value in d1 to 512 and branches based on the result.
+- `compare_and_branch`: As library code, it compares d1 to the constant 512 and branches to another location if they are not equal, otherwise it branches to a different location.
+- `execute_two_calls_2`: Pushes d2 and a2 onto the stack, calls a routine using a pointer from a6, adds eight to the stack pointer, and branches.
+- `call_stored_pointer`: Pushes the value of a2 onto the stack, calls a routine using a pointer from a global variable, sets d0 to zero, and branches to another location.
+- `execute_two_calls`: Library code that calls another routine twice and returns a constant value.
+- `execute_multiple_callbacks`: Library code that calls another routine or a global function pointer multiple times based on a condition checked against a global variable, then calls another routine with a specific pointer and constant, and finally calls another routine with a certain pointer and a constant.
+- `invoke_info_handler`: Calls a string formatting routine using a fixed integer, a flag derived from a bit in a global table, and a pointer to a global variable.
+- `format_string_with_parameters`: As library code, it initializes a local stack buffer with several values and calls another routine to format a string using a global variable and a provided pointer.
+- `format_string_buffer`: Formats a string from a global variable into a local buffer and then optionally calls another routine when a specific byte value is detected in that buffer.
+- `set_zero_pointer`: Loads a value from an offset of 4 from the stack into d0, sets d1 to zero, moves d1 into a1, and branches to another location.
+- `find_string_length`: The library routine advances a pointer through a byte array until it reaches a zero byte, then returns the number of bytes examined.
+- `copy_cstring_to_buffer`: Library code that copies a null-terminated byte string from a source pointer to a destination pointer, advancing both pointers and writing each byte until a zero byte is encountered.
+- `setup_copy_parameters`: As library code, it loads a source pointer from an offset of 4 from the stack, a destination pointer from an offset of 8 from the stack, and a count from an offset of 12 from the stack, then branches to another location.
+- `copy_bytes_loop`: The library routine copies a fixed number of bytes from a source pointer in a1 to a destination pointer in a0, advancing both pointers until the counter in d1 reaches the requested amount in d0.
+- `transfer_pointers_and_branch`: Loads two pointers from the stack into registers a0 and a1, then branches to a new location.
+- `compare_two_strings`: The library routine advances two pointers byte by byte until a mismatch or a zero byte is found, then returns whether the compared bytes matched.
+- `count_string_length`: The library routine walks forward one byte at a time through a null-terminated byte string until it finds the terminating zero byte, then returns the number of bytes examined.
+- `process_with_offset_decrement`: Calls another routine using a pointer from a parameter, passing a decremented or modified value as an argument.
+- `prepare_text_draw`: Clears a local buffer and passes it along with the incoming arguments to another routine, dispatching them to a drawing or processing function.
+- `extract_byte_and_loop`: Loads a pointer and a value from the stack, calculates an offset by shifting a value left by two, and enters a loop that reads a byte from the calculated address and extends it to a long integer.
+- `copy_bytes_with_terminator`: The library routine copies bytes from a source address offset by a register to a destination address offset by the same register, incrementing the offset until it exceeds a limit, then writes a zero byte after the copied range.
+- `initialize_and_copy_data`: Populates several fields in two structures located on the stack, calls another routine with a global variable and a parameter, and then calls a library routine to copy a string to a buffer if a specific condition is met.
+- `call_other_routine_with_argument`: The library routine loads a value from a global variable and passes it as an argument to another routine, then returns the constant value one.
+- `clear_library_entry`: This library code clears a library entry by invoking another routine three times with fields taken from a structure pointed to by the first argument.
+- `invoke_table_entry_5`: Retrieves a function pointer from a global variable and calls it using arguments loaded from the stack.
+- `store_byte_at_pointer`: Stores a byte from register d0 at the memory location pointed to by a3 and increments a3.
+- `call_library_vector_36_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 36 of that base, returning its result to the caller.
+- `call_library_vector_72_6`: Library stub: loads a library base from a global variable and calls the library function at offset minus 72 of that base, returning its result to the caller.
+
+### mathieeedoubbas.library
+
+- `residentMI`: Triggers an illegal instruction exception by executing an undefined opcode.
+- `libInit2`: Stores the value from register a0 into a global variable at offset 102.
+- `MIExpunge`: If a value at an offset of 8 in a structure is zero, it removes a node from a linked list by updating pointers and calls a library routine, otherwise it sets bit 3 of a byte at offset 14 of the structure.
+- `Exp_InUse`: Sets bit 3 of a byte at offset 14 of a structure pointed to by a6 and returns zero.
+- `MIOpen`: Tests bit 3 of a byte at offset 14 of a structure; if set, it branches to another routine, otherwise it increments a word at offset 32 of the structure and returns the structure pointer in d0.
+- `openFail`: Returns negative one in register d0.
+- `MIClose`: The library code decrements a short counter stored in a structure and, if the counter reaches zero and a specific flag bit is set, calls MIExpunge and returns its result.
+- `DPFix`: Performs bitwise operations and a loop of bit shifts on a 32-bit value to normalize or adjust its precision based on its leading bits.
+- `dfi4`: Library code that tests bit 1 of d0 and branches to another routine if the bit is set, otherwise it clears d1 and branches to another routine.
+- `dfi6`: Library code that clears d1 and branches to another routine.
+- `dfix1`: Small routine of 2 instructions that copies d1 to d0, then returns.
+- `DPFlt`: The library routine converts a signed single-precision value in a register into a double-precision representation stored through a pointer.
+- `DPAbs`: The library routine copies the high word of a double from a source pointer to a destination pointer and writes the low word with its sign bit cleared to produce an absolute value.
+- `dcmp_1`: Small routine of 2 instructions that subtracts 1 from d0, then returns.
+- `dcmp_2`: Small routine of 2 instructions that adds 1 to d0, then returns.
+- `dtst_1`: The library routine decrements the value in register D0 by one and returns.
+- `dtst_2`: The library routine increments the value in register D0 by one and returns.
+- `cc_1`: This library routine calls a function whose address is passed in an address register and then returns.
+- `cc_2`: The library routine calls a function whose address is passed in register A1 and then returns the contents of a stack slot.
+- `cc_3`: The library routine calls a function pointer held in register A1 and returns the value left on the stack at offset 18.
+- `MIIEEEDPFix`: This library code calls another routine and then returns.
+- `MIIEEEDPFlt`: Library code that calls a floating point routine and returns the value previously on the stack.
+- `MIIEEEDPCmp`: The library routine loads an address into register A1 and performs a tail branch to another routine.
+- `MIIEEEDPTst`: Loads the address of another routine into a1 and calls it via a tail branch.
+- `MIIEEEDPAbs`: Library code that loads an address into a1 and jumps to another routine.
+- `MIIEEEDPNeg`: Loads an address into a register and jumps to another routine to perform a negation on a double precision floating point value.
+- `MIIEEEDPAdd`: Loads an address from a relative offset into a register and calls a double precision addition routine.
+- `MIIEEEDPSub`: Loads an address from a relative offset and calls the double precision subtraction routine.
+- `MIIEEEDPMul`: Loads an address from a location relative to the program counter into a register and calls another routine via a tail branch.
+- `MIIEEEDPDiv`: Loads an address from a relative offset into a register and calls the double precision division routine.
+- `MIIEEEDPCeil`: Calls a negation routine, then a floor routine, and finally calls another negation routine as library code.
+- `MIIEEEDPFloor`: As library code, it calls routines to fix and compare a value, then calls an addition or subtraction routine based on whether the value is negative and its relationship to zero.
+- `test_d6_d7`: Copies the contents of registers d6 and d7 into d0 and d1, calls another routine, and if the result is less than zero, calls a second routine after restoring registers d2 and d3; otherwise, it restores registers d2 and d3, moves d4 into d0, sets d1 to zero, calls a third routine, and branches to another location.
+- `lt_zero`: This library routine stores a constant into a stack slot and then tail calls another routine.
+- `fptrap`: The library routine retrieves a word from a pointer stored on the stack, masks it, shifts it, and performs a jump to a table based on the result.
+- `fpoptab`: Jump stub: passes control straight on to badtrap.
+- `jump_to_badtrap`: Jump stub: passes control straight on to badtrap.
+- `dfsub`: Library code that saves registers, moves the contents of d1 and d2 into a0 and a1, loads a word from the address in a1 into d3, modifies the lower 5 bits of d3, and branches to another routine.
+- `dfadd`: Performs addition on two double-precision floating-point numbers stored in memory, handling exponent alignment, mantissa summation, and normalization before storing the result back to the destination pointer.
+- `dfa11`: Performs double-precision floating-point division by calculating the quotient and remainder using bit-shifting loops and conditional normalization, then stores the result into a memory structure pointed to by a register.
+- `dfa14`: As library code, it performs bitwise negation and addition on registers and stores the results into a memory location pointed to by a register.
+- `dfa13`: Library code that executes a loop to rotate bits within registers and performs arithmetic operations involving carries.
+- `dfa5`: Performs bitwise shifts and arithmetic operations on values in registers to determine a result, then writes two 32-bit words to a memory location pointed to by a register and calls two other routines via tail branches.
+- `dfa8`: As library code, it compares two values and, if the first is less than the second, subtracts one from a third value and performs a logical shift left and a rotate left through carry on two registers before branching.
+- `dfa7`: Tests register d5 and, if not less than or equal to zero, clears bit 20 of d1, performs a logical OR of d5 and d0 into d1, stores d1 at the address in a0, stores d2 at offset 4 of the structure in a0, tests the value at the address in a0, restores several registers from the stack, and branches to another location.
+- `dfa9`: Library code that clears the longword at the address in a0 and the longword at offset 4 of that address, then branches to another routine.
+- `dfauo`: This library routine compares a longword in d5 to 204901궤752, and if it is smaller, it performs a bitwise OR between d0 and an address, stores the result in a longword at a pointer in a0, stores 255 in a longword at offset 4 of that pointer, and branches to another routine; otherwise it branches to another routine.
+- `dfmul`: Performs double-precision floating-point multiplication by extracting mantissas and exponents, executing a loop to shift values, and calculating the resulting product and exponent before storing the result back into the memory pointed to by the first operand.
+- `dfm4`: Clears the longword in a0, clears the longword at offset 4 from a0, and branches to another routine.
+- `dfmuo`: This library routine compares a longword in d0 to 204901궤752, and if it is smaller, it performs a bitwise OR between d4 and an address, stores the result in a longword at a pointer in a0, stores -1 in a longword at offset 4 of that pointer, and branches to another routine; otherwise it branches to another routine.
+- `dfdiv`: Performs double-precision floating-point division using a bit-shifting loop to calculate the quotient and remainder, then stores the resulting 64-bit value back into the memory pointed to by the first operand.
+- `dfd10`: Performs a bitwise normalization loop on a double-precision floating-point value and stores the resulting 64-bit mantissa and exponent into the memory location pointed to by a0.
+- `dfd4`: Performs bitwise manipulations and arithmetic on values in registers D0, D5, and D6, then stores the resulting 32-bit values through a pointer in A0.
+- `dfsetz`: Sets d5 and d6 to zero and branches to another routine.
+- `dfdbyz`: Loads the value 7 into register D3 and then performs a short branch to a different location.
+- `dfduo`: This library routine compares a longword in d7 to 204901궤752, and if it is smaller, it performs a bitwise OR between d0 and an address, stores the result in d5, sets the carry flag using a word from d3, and branches to another routine; otherwise it branches to another routine.
+- `dfneg`: The library routine checks bits of a word at the address in register A0, and if a specific bitmask is not zero, performs an XOR operation on a byte at that address before branching to another routine.
+- `dfcmp`: Compares two double precision floating point numbers and calls dftst to update the status flags based on the comparison result.
+- `dftst`: This library routine returns the 32-bit value that was passed on the stack.
+- `badtrap`: Small routine of 1 instruction that copies 224 to d1.
+
+### version.library
+
+- `return_constant_65`: Returns the constant an address in d0 to the caller without any other effect.
+- `store_library_pointers`: The routine writes two 32-bit values from registers into a structure pointed to by a register, storing one value at an offset and another at a different offset.
+- `increment_counter_and_clear_flag`: The routine increments a short value at an offset from a base pointer and clears a bit in a byte at another offset from the same base pointer.
+- `decrement_counter_and_call`: Library code that decrements a short counter at a fixed offset from a pointer and calls another routine if the counter reaches zero and a specific bit in a flag byte is set.
+- `process_library_version_data`: Saves registers to the stack, moves a pointer from a6 to a5, loads a new pointer into a6 from offset 34 of the structure in a5, tests the word at offset 32 of the structure in a5, and if it is zero, branches to another routine; otherwise, it sets bit 3 of the byte at offset 42 of the structure in a5, clears d0, and branches to another routine.
+- `get_library_value`: retrieves a value from an offset in a passed pointer and calls two other functions via pointers.
+- `return_constant_66`: Returns the constant an address in d0 to the caller without any other effect.
+
+### diskfont.library
+
+- `branch_to_offset_5`: Performs a short branch to an offset of 80.
+- `check_and_set_font_handle`: This library routine calls a routine via a table entry using a library base.
+- `initialize_font_structure`: calls two functions via pointers from a passed pointer, and if both return non-zero, initializes a structure by setting a pointer to an offset in the input and clearing another field.
+- `remove_font_elements`: iterates through a linked list, removing elements with a specific property by updating pointers and calling a routine, then potentially performs cleanup and returns a value from a structure if certain conditions are met.
+- `cleanup_font_resources`: calls another routine and then returns, or if specific conditions are met, calls two other routines, returns a value from a structure, and modifies a byte in a structure.
+- `set_status_bit`: sets bit 7 of a byte at an offset in a structure and sets a register to zero.
+- `empty_stub_12`: Empty routine: returns to the caller immediately without doing anything.
+- `clear_flag_and_increment_counter_3`: Library code that clears the most significant bit of a byte at a fixed offset and increments a short integer at another fixed offset.
+- `branch_on_status`: decrements a word at an offset in a structure, and if it is not zero, checks bit 7 of a byte at an offset in a structure and branches to another routine if it is set.
+- `return_constant_67`: Returns the constant an address in d0 to the caller without any other effect.
+- `compute_font_offset`: calculates a signed offset value based on the difference between two 16-bit values and a bitwise comparison of two byte arrays.
+- `process_font_character_table`: Iterates through a table of font character structures to find the entry with the highest metric value.
+- `call_open_font`: Library stub: loads its arguments and the graphics library base, calls OpenFont and returns its result to the caller.
+- `call_close_font`: Library stub: loads its arguments and the graphics library base, calls CloseFont and returns its result to the caller.
+- `call_add_font`: Library stub: loads its arguments and the graphics library base, calls AddFont and returns its result to the caller.
+- `call_open_2`: Library stub: loads its arguments and the dos library base, calls Open and returns its result to the caller.
+- `call_close_2`: Library stub: loads its arguments and the dos library base, calls Close and returns its result to the caller.
+- `call_read_3`: Library stub: loads its arguments and the dos library base, calls Read and returns its result to the caller.
+- `call_lock_3`: Library stub: loads its arguments and the dos library base, calls Lock and returns its result to the caller.
+- `call_un_lock_5`: Library stub: loads its arguments and the dos library base, calls UnLock and returns its result to the caller.
+- `call_examine_3`: Library stub: loads its arguments and the dos library base, calls Examine and returns its result to the caller.
+- `call_ex_next`: Library stub: loads its arguments and the dos library base, calls ExNext and returns its result to the caller.
+- `call_current_dir_3`: Library stub: loads its arguments and the dos library base, calls CurrentDir and returns its result to the caller.
+- `call_load_seg_2`: Library stub: loads its arguments and the dos library base, calls LoadSeg and returns its result to the caller.
+- `call_un_load_seg_2`: Library stub: loads its arguments and the dos library base, calls UnLoadSeg and returns its result to the caller.
+- `call_forbid`: Library stub: loads its arguments and the exec library base, calls Forbid and returns its result to the caller.
+- `call_permit`: Library stub: loads its arguments and the exec library base, calls Permit and returns its result to the caller.
+- `call_alloc_mem_4`: Library stub: loads its arguments and the exec library base, calls AllocMem and returns its result to the caller.
+- `call_free_mem_4`: Library stub: loads its arguments and the exec library base, calls FreeMem and returns its result to the caller.
+- `call_add_tail`: Library stub: loads its arguments and the exec library base, calls AddTail and returns its result to the caller.
+- `copy_null_terminated_string`: As part of library code, this routine copies bytes from a source pointer to a destination pointer until a null terminator is encountered.
+- `find_non_zero_byte`: searches for the first non-zero byte in a string by incrementing a pointer and branches to another routine if a non-zero byte is found.
+- `copy_string_stub`: This library routine acts as a wrapper that calls another routine to copy a null-terminated string from a source to a destination pointer.
+- `calculate_string_length_2`: Iterates through a null-terminated string to count the number of characters before the terminator.
+- `compare_bytes_in_buffers`: As library code, it compares a byte from a buffer in a0 with a byte from a buffer in a1, then checks if the byte in a0 is zero.
+- `compare_byte_and_set_d0`: As library code, it moves a byte from the address in a0 to d0, decrements a1 by one and moves it to a0, then compares the byte at the new a0 address with d0, setting d0 to 255 if the comparison results in a non-positive value.
+- `return_constant_68`: Returns the constant an address in d0 to the caller without any other effect.
+- `compare_byte_at_pointer`: As library code, it loads a pointer from offset 4 of the stack into a0, a byte from offset 11 of the stack into d0, and a byte from the address in a0 into d1, then compares d0 and d1, setting d0 to the address in a0 if they are equal.
+- `increment_pointer_and_branch`: Increments the value in a0 by 1 and then branches to a different location in the code.
+- `return_constant_69`: Returns the constant an address in d0 to the caller without any other effect.
+- `find_char_backward`: This library routine calculates the length of a string and then scans it backwards from the end to locate the first occurrence of a specified character.
+- `validate_font_handle`: This library routine checks the validity of a font handle by attempting two specific operations.
+- `concatenate_font_string_list`: Iterates through a linked list of string structures, calculating their lengths and copying the character data into a destination buffer while populating a list of metadata entries.
+- `concatenate_linked_string_list`: Iterates through a linked list of strings, calculating lengths and copying each string into a destination buffer while updating a structure with the new pointer, length, and metadata.
+- `copy_string_to_buffer`: Copies a sequence of bytes from a source pointer to a destination buffer and performs length calculations and conditional updates to a structure based on the string content and specific constant values.
+- `parse_font_metadata_and_extract_glyphs`: Checks a bit in a register and, if set, calls another routine to retrieve a font handle and parses its metadata.
+- `load_font_glyph_definitions`: Iterates through a font metadata structure to extract character definitions, copying byte sequences into a destination buffer and populating a table with glyph metadata including offsets and dimensions.
+- `parse_font_metadata_header`: Reads a block of data from a disk file and iterates through a structure to extract character definitions.
+- `read_and_parse_font_data`: Reads data from a disk file into a buffer, calculates string lengths, and copies character bytes into a destination structure while updating a counter and a remaining byte count.
+- `process_absolute_value`: calls three different routines and returns the absolute value of a passed register.
+- `return_zero_constant`: The routine immediately returns a zero value without performing any other operations or accessing memory.
+- `call_unknown_handler`: The routine invokes another unnamed function and returns.
+- `call_external_handler`: The routine calls another unnamed routine and returns.
+
+### Balance of Power - The 1990 Edition (1990)(Mindscape).adf:bop
+
+- `__H0_org`: Performs a short branch to an instruction located 24 bytes ahead of the current location.
+- `clear_d0_register`: Performs a bitwise OR operation on register d0 with zero.
+- `clear_data_register_zero`: Performs a logical OR operation on data register zero with zero.
+- `jump_to_address_2`: Clears register d0 and jumps to a long address.
+- `_InterruptTick`: Increments a long integer in a global variable and returns.
+- `_ExchangP`: It swaps two 16-bit words stored at two global memory locations and then calls another routine.
+- `_main`: Sets up an interrupt server, opens fonts, and initializes a screen and window with gadgets.
+- `_MessageLoop`: Calls three random routines, retrieves a message from a pointer at offset 54 of a structure in a2, extracts values from the message structure through various offsets, calls a reply routine with the message pointer, and conditionally calls three other routines based on a value and provided pointers.
+- `_TakeInput`: Sets up a stack frame and branches to another routine using a value loaded from a global variable.
+- `check_and_update_status`: Compares a word at a memory location to negative one; if not equal, it pushes a word from that location to the stack, calls another routine, and branches to another routine.
+- `process_region_and_map`: If a global byte equals 104, it enters a loop that increments a 16-bit value at a negative offset from a5 and checks if a point is within a region; if so, it fills a country, moves data, draws a string, and performs a series of map loading and segment freeing operations before returning.
+- `process_flag_and_call_handler`: Increments a 16-bit value at a negative offset from a5, compares it to 80, and if it is less than or equal, branches to a different location; otherwise, it checks a byte at a global address, and if it is non-zero, calls a routine at a long address, clears the stack pointer, calls another routine, increments the stack pointer, and branches to another location.
+- `branch_to_target`: Performs a short relative branch to another routine.
+- `decrement_and_branch`: It decrements d0 by 8 and branches if it is zero, otherwise it subtracts 248 from d0 and branches if it is zero, otherwise it performs a branch.
+- `tiny_unlk_rts`: Small routine of 2 instructions that removes the stack frame held in a5, then returns.
+- `_CodeProtect`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
+- `_Check`: Saves and restores registers d4 and d5 using the stack and returns.
+- `loop_maid_conversion`: Runs a loop that calls another routine 70 times, incrementing a counter in each iteration.
+- `_CheckMem`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
+- `_FrameRect`: Checks if two 16-bit values at offsets 48 and 50 of a structure in a1 are at least one; if so, it calls routines to get pen state, draw a rectangle, and set pen state using the pointer in a1 and a value in a2, otherwise it returns 0.
+- `_DrawChar`: Pushes two parameters onto the stack and calls a routine at a specific address, then returns.
+- `_PenSize`: Checks if two 16-bit values in a parameter are less than zero, sets them to zero if they are, and stores them at offsets 48 and 50 of a structure pointed to by a parameter, then returns.
+- `_TextFace`: Checks if a 16-bit value in a parameter is less than 4, and if so, calls another routine using a pointer from a table at an offset determined by that value, then returns.
+- `_SetPt`: Stores a 16-bit word from a stack offset into a location pointed to by a pointer in a5, then stores another 16-bit word from a different stack offset into a location at offset 2 of that same pointer, and returns.
+- `_SetRect`: Stores four 16-bit values from a structure passed in a5 into a destination pointed to by a pointer at offset 8 of that structure.
+- `_PtInRect`: It compares a point defined by two 16-bit values against a rectangle defined by four 16-bit values, returning 1 if the point is within the rectangle and 0 otherwise.
+- `clear_d0_and_branch_2`: Clears d0 and branches to another routine.
+- `_PaintRect`: Calls three routines to get pen state, draw a rectangle, and set pen state using the pointer in a1 and a value in a2.
+- `_InsetRect`: Modifies four values in a structure pointed to by a parameter by adding or subtracting values from another parameter, then calls another routine.
+- `_SetPenState`: Copies seven bytes from a source to offsets 24 through 30 of a structure in a1, and copies five 16-bit words from a source to offsets 32 through 42 of that structure.
+- `_GetPenState`: Copies seven bytes from offsets 24 through 30 of a structure in a1 to a destination, and copies five 16-bit words from offsets 32 through 42 of that structure to that destination.
+- `__FRSDrawRect`: Calls another routine to fill a rectangle, and if a specific bit is set, it calls that routine up to four additional times to draw borders based on width and height values stored in a structure and a table.
+- `_EmptyRect`: It checks if a rectangle defined by four 16-bit values is valid, and if not, it calls another routine to set the rectangle to zero and returns 1, otherwise it returns 0.
+- `clear_d0_and_branch_3`: Sets register d0 to zero and performs a short branch to another location within the empty rectangle routine.
+- `_FillRect`: Sets the drawing mode to one, stores a 32-bit value at offset 8 and a byte at offset 29 of a structure in a1, calls routines to set pens based on a comparison of a fourth parameter, calls a routine to draw a rectangle, and calls a routine to restore pen state.
+- `_OpenMyWindow`: Stores four parameters into global variables, calls a routine to open a window, and if that fails, calls a routine to print a message and then exits; otherwise, it sets two 16-bit values at specific offsets in a structure and calls a routine to manage the cursor.
+- `_OpenMyScreen`: Stores two values into global variables, sets a third global variable to point to a global table, calls a routine to open a screen, and then calls another routine to load a colormap based on the value of the second parameter.
+- `_WorldOff`: Frees two memory segments, and if a global variable is non-zero, clears a menu strip, resets a byte, frees a segment, closes a window, and clears the global variable.
+- `call_close_and_show_title`: Pushes a long value from a global variable onto the stack, calls another routine, pushes another long value from a global variable onto the stack, calls another routine, and branches to another routine.
+- `_PicRand`: Calls a random routine and returns the result masked with a bitwise AND using the constant 32767.
+- `_BitShift`: Calls a routine to get a value, then shifts the first parameter left or right by that value masked with 63, depending on whether the second parameter is negative.
+- `shift_value_from_structure`: Loads a long value from an offset of 8 in a structure, pushes it to the stack, loads another value from an offset of 12 in a structure, calls another routine, and then performs a logical shift left on the result.
+- `_FillRgn`: Calls three different routines to perform drawing operations.
+- `_PtInRgn`: Iterates through a table to find a matching value, then checks if a point is within a rectangle and reads a pixel value, or performs a similar check using a different offset if the first condition is not met.
+- `branch_to_offset_6`: Performs a relative branch to a specific offset.
+- `check_point_in_region`: Increments a word in d4, compares it to 9, and if it is not less than 9, performs a series of operations involving a bitwise shift and a memory check at an offset determined by a value in d0.
+- `check_pixel_in_region`: Checks if a point is within a rectangle and if the pixel at that location, calculated using values from a structure in a5, is zero, returning 1 if both conditions are met and 0 otherwise.
+- `clear_register_and_branch_2`: Clears register d0 and branches to another routine.
+- `_MyReadPixel`: It calculates a bit position and an offset based on a pointer and two 16-bit values to read a byte from memory, then returns a 64-bit value containing the bit result.
+- `set_d0_and_branch_3`: Sets d0 to one and branches to another routine.
+- `_MyWritePixel`: Calculates an address using a value from a structure and a pointer in another structure, then performs a bitwise AND or OR between a bitmask and the byte at that address.
+- `modify_pixel_bit`: Calculates an address using a value from a structure and a pointer in another structure, then performs a bitwise AND between a byte from a structure and the value at that address.
+- `_DrawString`: Calls three different routines to set a pen, set a drawing mode, calculate a string length, and render text.
+- `_GetIndString`: Iterates through a table of shorts until a match is found for a value in a parameter, and if a value in the table exceeds a constant, calls a routine and enters an infinite loop.
+- `jump_to__getindstring`: Jump stub: passes control straight on to _GetIndString.
+- `print_error_and_loop`: Calls a routine to print a message and then enters an infinite loop.
+- `_GetIndString2`: Iterates through a table of shorts until a match is found for a value in a parameter, and if a value in the table is less than a parameter, calls a routine and enters an infinite loop.
+- `jump_to__getindstring2`: Jump stub: passes control straight on to _GetIndString2.
+- `print_two_errors_and_loop`: Pushes two 16-bit values from a structure onto the stack, calls a routine to print a message, and then enters an infinite loop.
+- `_GetString`: Iterates through a table of shorts until a match is found for a parameter, and if a value in the table exceeds a constant, calls a routine and enters an infinite loop.
+- `jump_to__getstring`: Jump stub: passes control straight on to _GetString.
+- `print_one_error_and_loop`: Pushes a 16-bit value from a structure onto the stack, calls a routine to print a message, and then enters an infinite loop.
+- `_GetString2`: Pushes a 16-bit word from an offset of 8 in a structure pointed to by a5 onto the stack and calls another routine.
+- `jump_to__getstring2`: Jump stub: passes control straight on to _GetString2.
+- `format_and_print_integer`: Pushes a 16-bit word from an offset of 8 in a structure pointed to by a5 onto the stack, calls a routine to format it as a decimal string, and then calls a print routine.
+- `_MySqrt`: Converts a value from a global variable to a float, calculates its square root, and converts the result back to a fixed-point value.
+- `_SetCTitle`: Clears a rectangle defined by offsets within two structures, writes a value to an offset of a third structure, and refreshes gadgets.
+- `_HiliteControl`: Sets up a stack frame, checks a word at offset 16 of a structure, and if it is equal to 1, pushes two values from a structure onto the stack and calls another routine.
+- `update_gadget_display`: It checks a value at offset 16 of a structure; if it matches specific constants, it calls routines to offset a gadget, set a rectangle, set a pen, adjust pen size, frame a rectangle, and spin a wheel, then refreshes the gadgets.
+- `_MyRand`: Calls a random routine and returns the result after subtracting 32767.
+- `_WindowBorder`: Sets a pen, insets a rectangle, decrements two values in a structure, sets a pen size, draws a frame, insets the rectangle again, sets a different pen size, and draws another frame.
+- `_WindowBorder2`: Sets a pen, insets a rectangle, decrements two values in a structure, sets a pen and drawing mode, sets a pen size, draws a frame, moves to a coordinate, draws a line, and sets a pen size.
+- `_FrameBorder`: Sets a pen, draws a rectangle, and if a global variable is one, concatenates strings to draw a text string within a window border.
+- `_MenusOff`: If a global variable is non-zero, it calls another routine to disable a feature, enters a loop that calls another routine six times with incrementing values, and then calls another routine to enable the feature.
+- `_MenusOn`: Disables a feature, enters a loop that calls another routine six times with an incrementing value combined with a constant, calls another routine, frees a segment, and enables the feature.
+- `_SetThePen`: Calls three different routines to set a pen, a background pen, and a drawing mode, then stores a pointer to a pattern and a byte value into a structure.
+- `_Abs`: It checks a 16-bit word at offset 8 of a structure in a5, and if it is negative, it loads the word into d0 and negates it before returning.
+- `load_d0_and_branch`: Loads a word from offset 8 of a structure in a5 into d0 and branches to another routine.
+- `_MyWrite`: Sets up a stack frame, checks a word at offset 12 of a structure, and if it is not less than 0, pushes the address of a constant onto the stack, pushes a value from an offset of 8 in a structure onto the stack, and calls another routine.
+- `process_numeric_string_2`: It calls another routine to draw a string, then enters a loop that performs division by 10 on a value at offset -2 of a structure, updates several other offsets, and calls another routine to draw characters until a counter at offset -4 reaches zero.
+- `process_numeric_string`: Performs a loop that updates values at various offsets of a structure in a5, calls another routine to draw a character, and terminates when a 16-bit value at offset -4 reaches zero.
+- `tiny_move_2`: Small routine of 1 instruction that copies d0 to d0.
+- `tiny_move_3`: Small routine of 1 instruction that copies d0 to -(a6).
+- `_ClearRect`: Sets a rectangle, configures a pen with a specific pattern based on the fourth parameter, and calls routines to paint the rectangle and spin a wheel.
+- `_EconConv`: Multiplies the input parameter by two to use as an index into a global table, retrieves a word from that table, and returns a 32-bit value composed of the high bits of the input parameter and the retrieved word.
+- `_MAidConv`: Multiplies the input parameter by two to use as an index into a global table, retrieves a word from that table, and returns a 32-bit value composed of the high bits of the input parameter and the retrieved word.
+- `_IntvConv`: Multiplies a 16-bit input parameter by two to index into a global table, retrieves a word from that table, and returns a 32-bit value composed of the high bits of the input parameter and the retrieved word.
+- `_EconAMax`: Compares a 16-bit input value against several thresholds and returns a value between 1 and 5 based on the result.
+- `_MilMax`: Compares a 16-bit input value against several thresholds and returns a value between 2 and 5 based on the result.
+- `_IntvGMax`: Compares a word at a global address with 3 and branches if it is less than 3; otherwise, it compares a word at offset 8 of a structure in a5 with 3 and, if equal, sets d0 to 2.
+- `compare_constant_with_structure`: Compares a word at offset 8 of a structure with 4, and if it is not equal, branches to another routine; otherwise, it sets d0 to 4 and branches to another location.
+- `compare_and_branch_3`: Compares a word at an offset of 8 from a pointer in a5 with 5, and if not equal, branches to another routine; otherwise, it sets d0 to 5 and performs a tail branch to another routine.
+- `clear_d0_and_branch_4`: Clears register d0 and performs a tail branch to another routine.
+- `update_status_index`: Compares a 16-bit value at an offset from a pointer against several constants and stores a resulting index from 0 to 5 into a 16-bit location at an offset from that pointer.
+- `_TreatMax`: Compares a 16-bit input value against several thresholds and a global variable to return a value between 2 and 5.
+- `_MaxPolcy`: Executes 61 instructions and calls two different routines.
+- `_InsgAMax`: Calculates an index by multiplying a 16-bit value from a stack offset by 81, checks a byte at that index in a global table, and if non-zero, sets a 16-bit value on the stack to 5 before branching.
+- `process_insg_a_max`: Runs a loop 81 times, updating a value from a global table based on an index, incrementing it if it is less than 5, and tracking the maximum value found in a global variable.
+- `_InsgIMax`: Multiplies a 16-bit value from a stack parameter by 81, adds a 32-bit value from a stack parameter to the result, and tests a bit at that calculated offset within a global table; if the bit is set, it updates a 16-bit value on the stack to 5 and branches to another routine, otherwise it updates the value to 2 and branches to another routine.
+- `update_max_value_from_table`: Runs a loop 81 times, retrieving a value from a table using a calculated index, incrementing that value if it is less than 5, and updating a global variable with the maximum value found during the loop.
+- `_Should`: Multiplies a 16-bit input value by two to serve as an index into a global table, retrieves a word from that table, and returns a 32-bit value combining the high bits of the original input with the retrieved word.
+- `_SpinWheel`: Loops a specified number of times, calling a routine to wait for the vertical blank and another to generate a random number.
+- `_ChgDipAff`: Adds a value to a 16-bit integer stored in a global table at an index derived from two input parameters, clamps the result between -127 and 127, and writes the result back to two different locations in the table.
+- `_FillCntry`: Compares a 16-bit value at a calculated offset from a global address with a provided parameter, and if they differ, updates the global value and calls another routine.
+- `_WritScor2`: Clears a rectangle, sets a font, pen, and drawing mode, then moves to two different positions to draw two strings and writes them using a specific routine.
+- `_WritScor`: If a global variable is non-zero, it calls another routine with a length of 275 and a value of 4 at offset 275 of a structure in a6; if a second global variable is non-zero, it calls that same routine with a length of 306 and a value of 0 at offset 132 of a structure in a6.
+- `_CalcScores`: Increments a counter in a loop from 4 to 80, then calls a division routine twice and stores the result in a global variable.
+- `_MyCursor`: Calculates an offset, then either sets a cursor and three RGB4 values if a global variable is 0, or calls a routine to load a cursor if the global variable is 1 or otherwise.
+- `_MySetCursor`: Calculates an offset, sets three RGB4 values at that offset, and then calls a routine to set the cursor using a 16-bit value from a parameter.
+- `_LoadCursor`: Configures a pointer and sets RGB color values for a cursor based on an input parameter, calling other routines to set the pointer and colors.
+- `_SetCursor`: Calls another routine to set a pointer with specific dimensions and color values based on the input parameter.
+- `_RadioButtons`: Iterates through a list of values in a buffer, compares them against a value in a linked list, and sets or clears a bit at an offset within the list elements.
+- `jump_to__radiobuttons`: Jump stub: passes control straight on to _RadioButtons.
+- `modify_radio_button`: Checks a word at an offset of -4 from a5, and if not equal to a value at offset 16 of a5, performs a branch; otherwise, it loads a pointer from offset -8 of a5 into a0, compares a word at offset 26 of a0 with a value at offset 16 of a5, and if not equal, branches; if equal, it sets bit 7 of a byte at offset 13 of the structure in a0 and branches.
+- `modify_and_branch`: Loads a pointer from the stack into a0, clears bit 7 of a byte at an offset from that pointer, and performs a branch to another routine.
+- `call_radio_buttons`: Pushes two values from the stack onto the stack, calls another routine, cleans up the stack, sets d0 to 1, and performs a branch to another routine.
+- `_TimeMesg`: Clears a rectangle using a global variable and specific coordinates, moves to a position, and draws a string from a parameter.
+- `_Influence`: Calculates a 16-bit value by summing several 16-bit words from three different tables using offsets derived from two input parameters, then clamps the result to a minimum of zero.
+- `_ChgDMess`: Adds a 16-bit value to a word at a specific memory location and a global variable, ensures the global variable is at least one, and then divides that global variable by 80.
+- `_LoadMap`: If a global variable is non-zero, it frees twenty-six specific memory segments, closes and opens screens and windows, sets a cursor, calls another routine, shows a title, sets a menu strip, sets window titles, clears fifty-one 16-bit values in a table via a loop, and sets a pen and drawing mode.
+- `_segload`: Saves registers d0-d2 and a0-a4 to the stack, loads a word from offset 36 of the stack into a1, compares it to 20217, and if equal, branches to another routine; otherwise, it adds 4 to a1 and branches to another routine.
+- `_segload_2`: Iterates through a table to find non-zero values and updates a secondary list by writing specific values and incrementing pointers.
+- `manage_library_resources`: Interacts with library structures to check status, execute functions, and update a pointer in a table.
+- `_toupper`: Checks if an input byte is a lowercase ASCII letter and subtracts a constant to convert it to uppercase if it is.
+- `_tolower`: Checks if an input byte is an uppercase ASCII letter and adds a constant to convert it to lowercase if it is.
+- `_freeseg`: Validates a header, traverses a list of pointers, and for each entry, performs memory operations involving pointer redirection and calls a routine via a global pointer.
+- `_begin`: Calls a routine to get a pointer, loops to zero out a block of memory, stores a value in a global variable, checks a bit in a structure, calls a routine via a pointer, calls another routine via a pointer, and then calls either a cleanup routine or a main routine based on the result.
+- `_geta4`: Loads the address stored at a global variable into register a4 and returns immediately.
+- `__main`: Allocates a memory block for a global structure, initializes several fields within that block, and determines whether to parse command line arguments or workbench message parameters.
+- `tiny_move_4`: Small routine of 1 instruction that copies d0 to d5.
+- `__cli_parse`: Allocates memory for a command string, copies a prefix, and then enters a loop to tokenize the remaining input string into individual arguments by handling whitespace and quoted substrings.
+- `_strncpy`: Copies bytes from a source to a destination up to a specified count or until a null terminator is found, then fills any remaining bytes in the count with zeros.
+- `_lseek`: This routine is called by seek_with_error_handling and push_and_call_seek.
+- `seek_with_error_handling`: Calls a seek routine, and if it returns -1, calls an I/O error routine and stores the result in a global variable; otherwise, it calls a seek routine to reset the position to the start of the file.
+- `push_and_call_seek`: Clears two 32-bit values on the stack, pushes the contents of a pointer from a register, calls a routine at a fixed address, restores the stack pointer, and branches to another location.
+- `_creat`: Passes its argument to a routine that searches a table of pointers and potentially updates an entry.
+- `_open`: Checks for an abort, then loops through a table of entries to find an empty slot, attempting to lock, delete, or open files with various flags and modes, and stores the resulting file handle and flags in the table.
+- `handle_open_errors`: Calls routines to check for an abort, handle an I/O error, and perform a read operation.
+- `_strcat`: Sets register D0 to 32767 and then performs a short branch to another location.
+- `_strncat`: Copies bytes from a source pointer to a destination pointer, stopping at a null terminator or when a counter reaches negative one, and ensures a null terminator is written at the next destination byte if the counter expires first.
+- `_strcmp`: Loads the value negative 32769 into register d0 and branches to another routine.
+- `_strncmp`: Compares two strings up to a length specified on the stack using a loop, and returns 0 if a mismatch is found or if the length is exhausted, otherwise it returns 1.
+- `return_one_conditionally`: Otherwise it returns if a specific condition is not met, otherwise it sets register D0 to one and returns.
+- `return_negative_one_2`: Sets register D0 to negative one and returns.
+- `_strcpy`: Copies bytes from a source pointer to a destination pointer until a zero byte is encountered, including the terminator.
+- `_mulu`: Computes the full 64-bit product of two 32-bit values using the cross terms of their 16-bit halves.
+- `__wb_parse`: Opens a library, retrieves a disk object, searches for tool types, and opens two files while storing their handles and data in a structure.
+- `copy_register_d0_to_d5`: Copies the long value from register D0 to register D5.
+- `_printf`: Parses a format string and copies a byte from a table into a destination pointed to by a global pointer.
+- `perform_math_operations`: Calls division and modulo routines.
+- `_format`: Parses a format string to process various specifiers including integers, floating-point numbers, and strings.
+- `_divs`: Reads two signed inputs, flips the sign flag based on their signs, calls another routine and optionally negates its result, then combines that result with the second input into a 32-bit value.
+- `_mods`: Negates the values in d0 and d1 if they are negative, increments d4 if d0 was negative, and calls another routine to perform a 32-bit division.
+- `_modu`: The routine calls another routine and returns a 64-bit value formed by concatenating the original D1 contents with the value left in D1 by the call.
+- `_divu`: The routine calls another routine and then returns.
+- `perform_32bit_division`: The routine calculates the quotient and remainder of a 32-bit integer division using inputs in registers D0 and D1.
+- `_strlen`: Walks forward through a zero-terminated byte string and returns the number of bytes before the terminator.
+- `_putchar`: Sets up a stack frame and calls another routine, then returns.
+- `_aputc`: Calls another routine, calls a routine to output a character, and calls a routine to flush a buffer.
+- `jump_to__aputc`: Jump stub: passes control straight on to _aputc.
+- `_putc`: Copies a byte from an offset of a structure to a location pointed to by another register, increments a pointer in a global variable, and branches.
+- `increment_and_write_byte`: Copies a byte from an offset of a structure to a location pointed to by another register, increments a pointer in a global variable, and branches back to an earlier instruction.
+- `close_files_in_loop`: Enters a loop that calls a routine to close a file at a calculated address and increments that address until a condition is met.
+- `_fclose`: Loads a pointer from an offset of 8 in a structure, and if that pointer is non-zero, sets d0 to that pointer; otherwise it sets d0 to negative one and returns.
+- `close_and_cleanup_file`: Checks bit 3 of a byte at offset 3 of a structure to decide whether to call a flush routine, then calls a close routine, and conditionally calls a free routine if bit 1 is set or an unlink and free routine if bit 5 is set, finally clearing the first four words of the structure.
+- `_flsh_`: Saves registers, loads a pointer from an offset of a5 into a2, loads a constant address into a0, stores a0 at an offset of a4, and if bit 4 of a byte at an offset of a2 is set, restores registers and returns; otherwise it restores registers and continues.
+- `manage_write_buffer`: Compares a 16-bit word at an offset from a5 to 65535, and if it is not equal, clears bit 2 of a byte at an offset from a2, clears two longwords, and otherwise calls a write routine.
+- `clear_buffer_flags`: Compares a 16-bit word at an offset from a5 to 65535, and if it is not equal, clears bit 2 of a byte at an offset from a2, clears two longwords at offsets 0 and 4 from a2, and returns 0 in d0.
+- `update_buffer`: If a value at an offset of 2 in a structure is zero, calls another routine.
+- `update_buffer_and_pointer`: Updates a value in a structure using an offset, modifies a byte at an offset, increments a pointer, and writes a byte from another structure to the memory location pointed to by the updated pointer.
+- `_newstream`: Iterates through a list of 22-byte structures until it finds one where the byte at offset 3 is zero, then clears the first 4 bytes of that structure and returns its address.
+- `jump_to__newstream`: Jump stub: passes control straight on to _newstream.
+- `clear_structure_fields`: Clears a 32-bit register, then clears the 4-byte and 8-byte offsets of a structure pointed to by a2, moves a2 to d0, and branches to another routine.
+- `_getbuff`: Calls a memory allocation routine and, if successful, stores the pointer at offset 8 of a structure, sets a 16-bit value at offset 16, and sets bit 1 of a byte at offset 12, additionally setting bit 7 of that byte if a terminal check returns non-zero; otherwise, it sets offset 16 to 1 and offset 8 to the address of the structure plus 14.
+- `update_buffer_status`: Writes 1024 to offset 16 of a structure, sets bit 0 at offset 12, copies a pointer from the stack to offset 8, and calls another routine with a byte from offset 13 pushed onto the stack.
+- `link_and_load_pointer`: Links a5, saves a2 and a3 to the stack, loads a value from an offset of a4 into a2, and branches to another routine.
+- `free_linked_list`: Iterates through a linked list by calling a memory free routine for each element and sets a global variable to zero before returning.
+- `_lmalloc`: Calls another routine to allocate a block of memory with an 8-byte increase, then if successful, stores a global pointer at the start of the block, sets the second word to the input value, updates the global pointer to the new block, and returns a pointer to the memory starting at offset 4.
+- `update_global_pointer`: Moves a value from an offset of a4 to the location pointed to by a2, moves a value from an offset of a5 to an offset of a2, updates a global variable with the value in a2, and branches to another routine.
+- `_malloc`: The routine forwards the second field of its parameter structure to another routine and then returns.
+- `_free`: Creates a stack frame, saves registers a2 and a3 to the stack, subtracts the value of a3 from a3, and loads a longword from an offset of a4 into a2 before branching to another routine.
+- `update_address_pointer`: Decrements a pointer in a0 by 8, compares it to a2, and if they are not equal, enters a loop that updates a2 to point to the next longword and copies the new value into d0 until d0 is zero.
+- `move_address_pointer`: Moves the contents of a3 into d0, and if d0 is not zero, copies the longword at the address pointed to by a2 into the address pointed to by a3.
+- `call_free_mem_5`: Moves a value from an offset of a4 to the location pointed to by a2, calculates a value by adding 8 to the contents of an offset of a2, pushes this value and a2 onto the stack, and calls another routine.
+- `_isatty`: Checks if a value at an offset from a global variable is within a specific range and if a pointer fetched from a table is non-zero, then returns 1 if true or 0 if false.
+- `calculate_interactive_status`: Multiplies a 16-bit value from a global variable by 6, uses the result as an offset to fetch a pointer from a table, calls another routine using that pointer, and returns 1 in d0 if the result is zero, otherwise it returns 0.
+- `return_zero_4`: Sets d0 to zero and branches to another routine.
+- `_unlink`: Pushes a value from the stack, calls another routine, and if the result in d0 is not zero, calls another routine, stores the result in a global variable at offset 14950 of a structure in a4, and returns.
+- `clear_d0_and_branch_5`: Clears register d0 and performs a short branch to another routine.
+- `_write`: Checks the two least significant bits of a word at offset 4 of a structure in a2; if they are not zero, it writes the value 5 to a global variable.
+- `set_error_status`: Checks the two least significant bits of a word at offset 4 of a structure in a2; if they are not zero, it writes the value 5 to a global variable at offset 3946 of a4, otherwise it writes 255 to d0 and returns.
+- `write_data_with_error_check`: Calls another routine to write data from a structure, and if the return value is negative, calls another routine to get an error code and stores that code in a global variable at offset 14950 of a structure in a4.
+- `move_d5_to_d0`: Moves the contents of d5 to d0 and branches to another routine.
+- `_Chk_Abort`: Calls a signal setting routine and, if a specific bit is set in the return value, checks a global variable and calls an abort routine if that variable is non-zero.
+- `__abort`: Passes the result of a function call to a write wrapper followed by an output wrapper.
+- `tiny_addq_eori`: Small routine of 2 instructions that adds 7 to d3, then exclusive-ors 0 into d0.
+- `_exit`: Checks if a pointer at offset 24480 in a4 is non-zero, calls that pointer if it is, then calls another routine and returns.
+- `__exit`: Closes files in a loop, frees memory, calls a function pointer, closes multiple libraries, and handles message replies or memory freeing based on values in a structure and a global variable.
+- `_close`: Checks if a provided index is valid within a range and points to a non-zero entry in a table, then either calls a close routine and clears the table entry or sets a global variable to two and returns negative one.
+- `__Close`: Wrapper that calls the dos library function Close and returns its result to the caller.
+- `__CurrentDir`: Wrapper that calls the dos library function CurrentDir and returns its result to the caller.
+- `__DeleteFile`: Wrapper that calls the dos library function DeleteFile and returns its result to the caller.
+- `__Input`: Wrapper that calls the dos library function Input and returns its result to the caller.
+- `__IoErr`: Wrapper that calls the dos library function IoErr and returns its result to the caller.
+- `__IsInteractive`: Wrapper that calls the dos library function IsInteractive and returns its result to the caller.
+- `__Lock`: Wrapper that calls the dos library function Lock and returns its result to the caller.
+- `__Open`: Wrapper that calls the dos library function Open and returns its result to the caller.
+- `__Output`: Wrapper that calls the dos library function Output and returns its result to the caller.
+- `__Read`: Wrapper that calls the dos library function Read and returns its result to the caller.
+- `__Seek`: Wrapper that calls the dos library function Seek and returns its result to the caller.
+- `__UnLock`: Wrapper that calls the dos library function UnLock and returns its result to the caller.
+- `__Write`: Wrapper that calls the dos library function Write and returns its result to the caller.
+- `_AddIntServer`: Library stub: loads a library base from a global variable and calls the library function at offset minus 168 of that base, returning its result to the caller.
+- `_Alert`: Library stub: loads a library base from a global variable and calls the library function at offset minus 108 of that base, returning its result to the caller.
+- `_AvailMem`: Library stub: loads a library base from a global variable and calls the library function at offset minus 216 of that base, returning its result to the caller.
+- `_CloseLibrary`: Jump stub: passes control straight on to __CloseLibrary.
+- `__CloseLibrary`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `_AllocMem`: Jump stub: passes control straight on to __AllocMem.
+- `__AllocMem`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `_Disable`: Library stub: loads a library base from a global variable and calls the library function at offset minus 120 of that base, returning its result to the caller.
+- `_Enable`: Library stub: loads a library base from a global variable and calls the library function at offset minus 126 of that base, returning its result to the caller.
+- `__FindTask`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
+- `__Forbid`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
+- `_FreeMem`: Jump stub: passes control straight on to __FreeMem.
+- `__FreeMem`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `_GetMsg`: Jump stub: passes control straight on to __GetMsg.
+- `__GetMsg`: Library stub: loads a library base from a global variable and calls the library function at offset minus 372 of that base, returning its result to the caller.
+- `_OpenLibrary`: Jump stub: passes control straight on to __OpenLibrary.
+- `__OpenLibrary`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `_RemIntServer`: Library stub: loads a library base from a global variable and calls the library function at offset minus 174 of that base, returning its result to the caller.
+- `_ReplyMsg`: Jump stub: passes control straight on to __ReplyMsg.
+- `__ReplyMsg`: Library stub: loads a library base from a global variable and calls the library function at offset minus 378 of that base, returning its result to the caller.
+- `__SetSignal`: Library stub: loads a library base from a global variable and calls the library function at offset minus 306 of that base, returning its result to the caller.
+- `__WaitPort`: Library stub: loads a library base from a global variable and calls the library function at offset minus 384 of that base, returning its result to the caller.
+- `_AllocRaster`: Library stub: loads a library base from a global variable and calls the library function at offset minus 492 of that base, returning its result to the caller.
+- `_BltBitMap`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `_BltClear`: Library stub: loads a library base from a global variable and calls the library function at offset minus 300 of that base, returning its result to the caller.
+- `_BltPattern`: Library stub: loads a library base from a global variable and calls the library function at offset minus 312 of that base, returning its result to the caller.
+- `_ClipBlit`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `_CloseFont`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
+- `_Draw`: Library stub: loads a library base from a global variable and calls the library function at offset minus 246 of that base, returning its result to the caller.
+- `_FreeRaster`: Library stub: loads a library base from a global variable and calls the library function at offset minus 498 of that base, returning its result to the caller.
+- `_InitBitMap`: Library stub: loads a library base from a global variable and calls the library function at offset minus 390 of that base, returning its result to the caller.
+- `_InitRastPort`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `_LoadRGB4`: Library stub: loads a library base from a global variable and calls the library function at offset minus 192 of that base, returning its result to the caller.
+- `_Move`: Library stub: loads a library base from a global variable and calls the library function at offset minus 240 of that base, returning its result to the caller.
+- `_OpenFont`: Library stub: loads a library base from a global variable and calls the library function at offset minus 72 of that base, returning its result to the caller.
+- `_RectFill`: Library stub: loads a library base from a global variable and calls the library function at offset minus 306 of that base, returning its result to the caller.
+- `_SetAPen`: Library stub: loads a library base from a global variable and calls the library function at offset minus 342 of that base, returning its result to the caller.
+- `_SetBPen`: Library stub: loads a library base from a global variable and calls the library function at offset minus 348 of that base, returning its result to the caller.
+- `_SetDrMd`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
+- `_SetFont`: Library stub: loads a library base from a global variable and calls the library function at offset minus 66 of that base, returning its result to the caller.
+- `_SetRGB4`: Library stub: loads a library base from a global variable and calls the library function at offset minus 288 of that base, returning its result to the caller.
+- `_SetSoftStyle`: Library stub: loads a library base from a global variable and calls the library function at offset minus 90 of that base, returning its result to the caller.
+- `_Text`: Library stub: loads a library base from a global variable and calls the library function at offset minus 60 of that base, returning its result to the caller.
+- `_TextLength`: Library stub: loads a library base from a global variable and calls the library function at offset minus 54 of that base, returning its result to the caller.
+- `_WaitTOF`: Library stub: loads a library base from a global variable and calls the library function at offset minus 270 of that base, returning its result to the caller.
+- `_FindToolType`: Library stub: loads a library base from a global variable and calls the library function at offset minus 96 of that base, returning its result to the caller.
+- `_FreeDiskObject`: Library stub: loads a library base from a global variable and calls the library function at offset minus 90 of that base, returning its result to the caller.
+- `_GetDiskObject`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
+- `_AddGadget`: Library stub: loads a library base from a global variable and calls the library function at offset minus 42 of that base, returning its result to the caller.
+- `_ClearMenuStrip`: Library stub: loads a library base from a global variable and calls the library function at offset minus 54 of that base, returning its result to the caller.
+- `_ClearPointer`: Library stub: loads a library base from a global variable and calls the library function at offset minus 60 of that base, returning its result to the caller.
+- `_CloseScreen`: Library stub: loads a library base from a global variable and calls the library function at offset minus 66 of that base, returning its result to the caller.
+- `_CloseWindow`: Library stub: loads a library base from a global variable and calls the library function at offset minus 72 of that base, returning its result to the caller.
+- `_OffGadget`: Library stub: loads a library base from a global variable and calls the library function at offset minus 174 of that base, returning its result to the caller.
+- `_OffMenu`: Library stub: loads a library base from a global variable and calls the library function at offset minus 180 of that base, returning its result to the caller.
+- `_OnGadget`: Library stub: loads a library base from a global variable and calls the library function at offset minus 186 of that base, returning its result to the caller.
+- `_OnMenu`: Library stub: loads a library base from a global variable and calls the library function at offset minus 192 of that base, returning its result to the caller.
+- `_OpenScreen`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `_OpenWindow`: Library stub: loads a library base from a global variable and calls the library function at offset minus 204 of that base, returning its result to the caller.
+- `_RefreshGadgets`: Library stub: loads a library base from a global variable and calls the library function at offset minus 222 of that base, returning its result to the caller.
+- `_RemakeDisplay`: Library stub: loads a library base from a global variable and calls the library function at offset minus 384 of that base, returning its result to the caller.
+- `_RemoveGadget`: Library stub: loads a library base from a global variable and calls the library function at offset minus 228 of that base, returning its result to the caller.
+- `_SetMenuStrip`: Library stub: loads a library base from a global variable and calls the library function at offset minus 264 of that base, returning its result to the caller.
+- `_SetPointer`: Library stub: loads a library base from a global variable and calls the library function at offset minus 270 of that base, returning its result to the caller.
+- `_SetWindowTitles`: Library stub: loads a library base from a global variable and calls the library function at offset minus 276 of that base, returning its result to the caller.
+- `_ShowTitle`: Library stub: loads a library base from a global variable and calls the library function at offset minus 282 of that base, returning its result to the caller.
+- `_OpenDiskFont`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `_Ffix`: Pushes a constant onto the stack and jumps to another routine.
+- `_ran`: Calls three different routines in sequence to perform multiplication, modulo, and floating point operations, storing results in a global variable.
+- `_randl`: Calls a random number generator, a floating-point multiplication routine, and an exponential function with a zero parameter.
+- `_exp`: Pushes the word 65458 onto the stack and jumps to an offset of 47016 from the current program counter.
+- `_Fdiv`: Checks if a library handle is stored in a global variable, loads it from a system library if not already present, and then calls a function at an offset determined by a value on the stack.
+- `_Fflt`: Pushes a constant value onto the stack and jumps to another routine.
+- `_Fmul`: Loads a library if not already present, manages a stack-based argument structure, and calls a function from the loaded library.
+- `_sqrt`: Pushes the word 65440 onto the stack and jumps to an offset of 47016 from the current program counter.
+- `amiga_math`: Checks if a global variable contains a zero, then calls a library opening routine; if the library fails to open, it calls a write routine and an exit routine, otherwise it calls a function from the opened library using an offset stored in a stack variable.
+- `call_and_mask_d0`: Calls another routine and then performs a bitwise AND on register D0 with the constant 162.
+- `call_and_mask_d0_small`: Calls another routine and then performs a bitwise AND on register D0 with the constant 20.
+- `modify_bit_flags`: Sets a bit in a byte at an offset calculated from a value in d0 and a pointer in a6, also sets the same bit in bytes at offsets 1024 and -1 of the structure in a6, then clears a bit in a byte at offset -2 of the structure in a6 and sets a 16-bit value in a table pointed to by a4.
+- `call_and_subtract_8a`: Calls another routine and subtracts 138 from d0.
+- `call_and_subtract_ea`: Calls another routine and subtracts 234 from d0.
+- `call_and_subtract_dc`: Calls another routine and subtracts 220 from d0.
+- `test_bit_and_clear_flag`: Calls another routine, tests bit 0 of d0, clears a bit in the byte at the address in a6 using the bit index from d0, and adds 150 to d0.
+- `test_bit_and_update_table`: Calls another routine, tests bit 0 of d0, writes a 16-bit value to a table at the address in a4 and increments the pointer, clears a bit in the byte at the address in a6, and tests bit 0 of d0 again.
+- `call_handler_via_pointer`: Calls a routine using a pointer stored in a global variable.
+- `call_and_test_bit`: Calls another routine and tests bit 0 of d0 against the value in d4.
+- `load_segment_data`: Calls a routine to load a segment of data into memory.
+- `test_bit_at_pointer`: Calls another routine, moves d0 to d2, clears a byte at offset 446 of the structure in a4, moves d0 to d2 again, and tests a bit in the byte at the address in a6 using the bit index in d2.
+- `update_status_byte`: Calls another routine, moves a byte from d0 to d2, modifies a byte at offset 6100 of a structure in a2 using d2, loads a word from offset 5896 of a structure in a6 into d0, performs bitwise operations on d0, tests bit 6 of d6, moves d0 to d3, and performs another bitwise operation on d0.
+- `push_d0_to_stack`: Calls another routine and pushes the long value in d0 onto the stack pointed to by a5.
+- `store_and_push_d0`: Calls another routine, stores the value of d0 into d6, writes a word to offset 38 of a structure in a0 using d0 as an index, and pushes the long value of d0 onto the stack pointed to by a6.
+- `push_and_mask_byte`: Calls another routine, pushes the long value of d0 onto the stack pointed to by a6, and performs a bitwise AND on a byte at a0 with zero.
+- `jump_to__segload_2`: Jump stub: passes control straight on to _segload_2.
+
+### Balance of Power - The 1990 Edition (1990)(Mindscape).adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `jump_to_fixed_address`: Performs bitwise OR operations on d0 and then jumps to a fixed long address.
+- `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_2`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `modify_and_push_d0`: Calls another routine, stores d0 in d6, writes a word to offset 9 of a structure in a0 using d0 as an index, pushes the long value of d0 onto the stack pointed to by a3, and pushes the byte value f9 onto the stack pointed to by a6.
+- `jump_vector_entry_3`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_libraries`: Calls another routine multiple times and, if the return value is zero, calls two other routines to handle errors.
+- `copy_multiple_tables`: Calls another routine several times to allocate memory, then performs four loops to copy various sequences of words from fixed source locations to the newly allocated memory.
+- `load_and_branch_longword`: Saves the stack pointer in a5, loads a longword from a global variable into d0, and branches to another routine.
+- `load_and_subtract_value`: Loads a longword from an offset of a global variable into a0, copies a word from offset 38 of a0 to offset -2 of a5, and then sets d0 to the value copied to offset -2 of a5 before branching to another routine.
+- `set_status_byte`: Sets a byte at a global address to 1 and branches forward.
+- `branch_forward_only`: Performs a short branch forward.
+- `subtract_and_branch`: Subtracts 65 from d0 and branches to an earlier address if the result is zero, otherwise it branches to a later address.
+- `branch_forward`: Performs a short branch to an instruction located 14 bytes ahead.
+- `subtract_and_branch_2`: Subtracts 64 from a longword in d0, then performs a conditional branch if the result is zero and an unconditional branch to another location.
+- `return_from_subroutine`: Unlinks a5 and returns immediately.
+- `call_subroutine_with_parameter`: Sets up a stack frame, loads a long address from offset 75100 into a register, calls another routine with that address, pushes the result onto the stack, calls a third routine, and returns.
+- `display_out_of_memory_error`: Performs several operations involving function calls and memory checks, and if a global value is below an address, it enters a loop that repeatedly calls a routine until a global variable is non-zero, then calls two final routines.
+- `call_subroutines_with_parameters`: Calls three different routines using parameters passed in a1 and a2, where the third routine uses a value returned from a second routine as its third argument.
+- `update_state_and_registers`: Checks a byte in a structure to call one of two routines, then if that byte is 0 or 255, it performs a series of operations including a call with calculated values from a structure, updates several values in a structure pointed to by a1, and calls three other routines.
+- `initialize_menu_assets_and_graphics`: Loads various game assets including fonts and images from disk, initializes several graphics buffers, and performs a series of setup operations involving memory allocation and data copying to prepare the interface for display.
+- `process_bitmask_buffer_entries`: Iterates through a buffer using a loop, performing various combinations of bitwise AND and OR operations on values retrieved from a function and storing the 16-bit results into a destination table.
+- `populate_bitmask_buffer_via_loop_2`: Iterates through a buffer using a counter in a global variable, performing various bitwise AND and OR operations on values retrieved from a function to store a 16-bit result at an offset calculated from the counter.
+- `compute_bitmask_buffer_entries`: Iterates through a buffer using a loop, performing varying sequences of bitwise AND and OR operations on values retrieved from a function to populate a destination table.
+- `populate_bitmask_buffer_via_loop_3`: Iterates through a buffer using a counter in a global variable, performing varying sequences of bitwise AND and OR operations on values retrieved from a function and storing the 16-bit result into a calculated memory location.
+- `process_bitmask_buffer_entries_2`: Iterates through a buffer using a loop, performing varying sequences of bitwise AND and OR operations on values retrieved from a function and storing the 16-bit results into a destination table at an offset determined by the current index.
+- `compute_bitmask_buffer_entries_2`: Iterates through a buffer using a loop, performing varying sequences of bitwise AND and OR operations on values retrieved from a function to store a 16-bit result at a calculated offset in a destination table.
+- `process_bitmask_buffer_entries_3`: Iterates through a buffer using a loop, performing varying sequences of bitwise AND and OR operations on values retrieved from a function and storing the resulting 16-bit value into a destination table.
+- `update_bitmask_buffer_entry`: Calls a routine to populate a buffer, then calculates an offset based on a 16-bit value from a stack-relative location, and stores the result of a previous operation into a global variable at that calculated offset.
+- `compute_bitmask_buffer_entries_3`: Iterates through a buffer using a loop, performing varying sequences of bitwise AND and OR operations on values retrieved from a function to populate a destination table.
+- `generate_bitmask_buffer_via_logic`: Iterates through a buffer using a loop, performing various combinations of bitwise AND and OR operations on multiple values retrieved from a source function to populate a destination buffer.
+- `process_bitmask_buffer_via_switch`: Iterates through a buffer using a loop, performing a series of bitwise AND and OR operations on values retrieved from a function and storing the result into a destination table.
+- `process_bitmask_buffer_logic`: Iterates through a buffer using a loop, performing varying sequences of bitwise AND and OR operations on values retrieved from a function to populate a destination table.
+- `process_bitmask_buffer_entries_4`: Iterates through a buffer using a loop, performing various sequences of bitwise AND and OR operations on values retrieved from a function and storing the resulting 16-bit value into a calculated memory location.
+- `process_bitmask_buffer_entries_5`: Iterates through a buffer using a loop, performing various combinations of bitwise AND and OR operations on multiple values retrieved from a function and storing the resulting 16-bit value into a destination table.
+- `process_bitmask_buffer_logic_2`: Iterates through a buffer using a loop, performing various sequences of bitwise AND and OR operations on values retrieved from a function and storing the resulting 16-bit value into a destination table.
+- `set_bitmask_value`: Loads a 16-bit word from an offset of a structure in a5, extends it to a longword, shifts it left by one bit, and then writes the value 65535 to a location calculated from a5 and the modified value, before branching to another routine.
+- `populate_bitmask_buffer_via_loop`: Iterates through a buffer, calculating a 16-bit value for each entry by performing bitwise AND/OR operations on multiple consecutive results from another routine, then stores the result at an offset determined by a counter.
+- `loop_and_call_routine`: Loops a number of times based on a byte at offset 5 of a structure, calling another routine in each iteration with values derived from the structure.
+- `execute_multiple_fill_calls`: Calls another routine five times with different sets of constant and global arguments.
+- `allocate_and_check_memory`: Calls two routines to perform an allocation, stores the result in a structure at offset 8, and if the result is 0, calls two other routines.
+- `update_global_pointer_and_call_routine`: Loads a value from a global variable into a register, uses that value as a pointer to call another routine, and then returns.
+- `modify_global_variable`: Compares a global variable minus 64 to zero, and if so, checks a word at offset 38 of the global variable to conditionally update the global variable to 0 or 1.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `traverse_linked_list_node`: Checks a global variable to determine if it points to a list structure, updates the pointer by following a link or resetting it based on a status bit, and returns the byte value at the resulting address.
+- `allocate_and_store_pointers`: Calls a routine to initialize a structure, stores a value at offset 4 of that structure, calls another routine, and then loops to call a memory allocation routine, storing the result at offset 8 of the structure plus an incrementing offset, and calling another routine with the result and a calculated value.
+- `loop_and_store_allocation`: Loops while a value at offset -2 of a structure is less than a value at offset 16, calling a routine to allocate memory, storing the result in a structure, and calling another routine with calculated parameters.
+- `initialize_memory_blocks`: Calculates a size and count from a table, calls a routine to initialize a structure, and then loops to call a memory allocation routine, stores the result at offset 8 of the structure plus an incrementing offset, checks if the result is zero to call an error handler, and then loops to call another routine and store its result at the beginning of the allocated block.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `jump_to_address`: Clears bit 0 of d0 and jumps to a long address.
+- `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_4`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_4`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `call_and_store_data`: Calls a routine at offset 210 and then stores a longword from a table into a destination at a negative offset from a pointer in a1 and d4.
+- `call_subroutine_210`: Calls a routine at offset 210.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `call_subroutine_20`: Calls a routine at offset 20.
+
+### Balance of Power - The 1990 Edition (1990)(Mindscape).adf bytes 603136-603648 (code never loaded by a reference run)
+
+- `return_zero_3`: Clears the d0 register and returns.
+
+### Balance of Power - The 1990 Edition (1990)(Mindscape).adf bytes 714240-715264 (code never loaded by a reference run)
+
+- `process_conditional_callbacks`: Flips a bit in a byte at a negative offset from a4, then conditionally calls up to three different routines based on the values in a5 and a global variable.

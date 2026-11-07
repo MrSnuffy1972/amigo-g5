@@ -1,0 +1,1071 @@
+# Game 2399 (bubble and squeak (1994)(audiogenic)[cr pdx]): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/02399). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (1802240 top-level bytes in 345 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 24 raw-word lines |
+| Functions named and described | pass, 858 of 858 named (0 author symbols), 858 of 858 described (15 by rule, 109 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 352 of 352 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 3620 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 22061 of 22420 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 21507 |
+| code | 84920 |
+| data | 1146636 |
+| padding | 57145 |
+| unused | 492032 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| closewb | 1 | 23 | 1 |
+| Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:code | 5 | 21609 | 833 |
+| Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:PARADOX | 5 | 752 | 22 |
+| Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:bootblock | 1 | 18 | 1 |
+| Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:bootblock | 1 | 18 | 1 |
+| S3L1.MAP#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+
+## Cases handled
+
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 1 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:nop.all: IMP: File Imploder-packed, unpacked with ancient (1074 -> 4400 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 1 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:jointall.all: IMP: File Imploder-packed, unpacked with ancient (13502 -> 47072 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 1 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:TITLE.MOD: IMP: File Imploder-packed, unpacked with ancient (48370 -> 55976 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 1 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:dpoptions.raw: IMP: File Imploder-packed, unpacked with ancient (1154 -> 2304 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 1 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:swing.raw: IMP: File Imploder-packed, unpacked with ancient (1906 -> 4140 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 1 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:titlepic.raw: IMP: File Imploder-packed, unpacked with ancient (14508 -> 46924 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 1 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:CHIPSAMS.BIN: IMP: File Imploder-packed, unpacked with ancient (39620 -> 45366 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 1 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:dppassword.raw: IMP: File Imploder-packed, unpacked with ancient (1512 -> 2304 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 1 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:clyde.all: IMP: File Imploder-packed, unpacked with ancient (8996 -> 21136 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 1 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:barney.all: IMP: File Imploder-packed, unpacked with ancient (18686 -> 48640 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 1 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:pressstart.all: IMP: File Imploder-packed, unpacked with ancient (448 -> 1440 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 1 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:dpgameover.raw: IMP: File Imploder-packed, unpacked with ancient (1562 -> 2304 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 1 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:DPgamecomplete.RAW: IMP: File Imploder-packed, unpacked with ancient (2140 -> 4608 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 1 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:acid8.all: IMP: File Imploder-packed, unpacked with ancient (108 -> 132 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 1 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:500BARNEYMASK1.RAW: IMP: File Imploder-packed, unpacked with ancient (1064 -> 3160 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:seu.raw: IMP: File Imploder-packed, unpacked with ancient (20946 -> 38464 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:worm.all: IMP: File Imploder-packed, unpacked with ancient (1250 -> 3360 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:sec5.grad: IMP: File Imploder-packed, unpacked with ancient (124 -> 640 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:robot.all: IMP: File Imploder-packed, unpacked with ancient (3478 -> 10468 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:nop.all: IMP: File Imploder-packed, unpacked with ancient (1074 -> 4400 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:SEC5.raw: IMP: File Imploder-packed, unpacked with ancient (14270 -> 38464 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:restart.raw: IMP: File Imploder-packed, unpacked with ancient (354 -> 1280 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:jointall.all: IMP: File Imploder-packed, unpacked with ancient (13502 -> 47072 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:TITLE.MOD: IMP: File Imploder-packed, unpacked with ancient (48370 -> 55976 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:FACTORY.MOD: IMP: File Imploder-packed, unpacked with ancient (32856 -> 46376 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Blobs.all: IMP: File Imploder-packed, unpacked with ancient (2038 -> 11596 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Seutoken.raw: IMP: File Imploder-packed, unpacked with ancient (334 -> 640 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:bossstuff.all: IMP: File Imploder-packed, unpacked with ancient (6076 -> 23120 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:goalpost.all: IMP: File Imploder-packed, unpacked with ancient (502 -> 5120 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:dpoptions.raw: IMP: File Imploder-packed, unpacked with ancient (1154 -> 2304 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:vase.all: IMP: File Imploder-packed, unpacked with ancient (446 -> 960 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:sec3.raw: IMP: File Imploder-packed, unpacked with ancient (25738 -> 38464 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:lava.all: IMP: File Imploder-packed, unpacked with ancient (372 -> 1280 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:shake.all: IMP: File Imploder-packed, unpacked with ancient (2234 -> 12480 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:sec1b.grad: IMP: File Imploder-packed, unpacked with ancient (222 -> 640 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:swing.raw: IMP: File Imploder-packed, unpacked with ancient (1906 -> 4140 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Gargoyle.all: IMP: File Imploder-packed, unpacked with ancient (3226 -> 7600 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:lift.all: IMP: File Imploder-packed, unpacked with ancient (218 -> 680 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:crawler.all: IMP: File Imploder-packed, unpacked with ancient (1660 -> 5180 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:sec3.grad: IMP: File Imploder-packed, unpacked with ancient (148 -> 640 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:sec1a.grad: IMP: File Imploder-packed, unpacked with ancient (224 -> 640 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:bigship.all: IMP: File Imploder-packed, unpacked with ancient (864 -> 2880 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Explosion.all: IMP: File Imploder-packed, unpacked with ancient (606 -> 1920 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:pengojump.all: IMP: File Imploder-packed, unpacked with ancient (1208 -> 3840 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:rider.all: IMP: File Imploder-packed, unpacked with ancient (2444 -> 7740 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:sec2.grad: IMP: File Imploder-packed, unpacked with ancient (192 -> 640 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:BONUS.MOD: IMP: File Imploder-packed, unpacked with ancient (11594 -> 15754 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:titlepic.raw: IMP: File Imploder-packed, unpacked with ancient (14508 -> 46924 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:SANDCASTLES.MOD: IMP: File Imploder-packed, unpacked with ancient (32594 -> 45212 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:CHIPSAMS.BIN: IMP: File Imploder-packed, unpacked with ancient (39620 -> 45366 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:coin.all: IMP: File Imploder-packed, unpacked with ancient (678 -> 1800 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:spring.all: IMP: File Imploder-packed, unpacked with ancient (702 -> 2880 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:bonus.grad: IMP: File Imploder-packed, unpacked with ancient (92 -> 640 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:sec1a.raw: IMP: File Imploder-packed, unpacked with ancient (23890 -> 38464 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:expseu_bub.all: IMP: File Imploder-packed, unpacked with ancient (1804 -> 4800 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:octopus.all: IMP: File Imploder-packed, unpacked with ancient (618 -> 1920 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:subtoken.raw: IMP: File Imploder-packed, unpacked with ancient (264 -> 320 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Food.raw: IMP: File Imploder-packed, unpacked with ancient (654 -> 800 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:bigfishy.all: IMP: File Imploder-packed, unpacked with ancient (1390 -> 4320 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S2L3.MAP: IMP: File Imploder-packed, unpacked with ancient (772 -> 2893 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S3L2.MAP: IMP: File Imploder-packed, unpacked with ancient (1218 -> 4002 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S4L1.MAP: IMP: File Imploder-packed, unpacked with ancient (4384 -> 16562 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S1L02.MAP: IMP: File Imploder-packed, unpacked with ancient (2940 -> 8101 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/BONUS6.MAP: IMP: File Imploder-packed, unpacked with ancient (230 -> 884 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S1L2.MAP: IMP: File Imploder-packed, unpacked with ancient (2420 -> 5867 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S2L1.MAP: IMP: File Imploder-packed, unpacked with ancient (1660 -> 3782 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/BONUS4.MAP: IMP: File Imploder-packed, unpacked with ancient (398 -> 1406 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/BONUS2.MAP: IMP: File Imploder-packed, unpacked with ancient (786 -> 1598 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/seu5.map: IMP: File Imploder-packed, unpacked with ancient (2260 -> 5042 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S3L7.MAP: IMP: File Imploder-packed, unpacked with ancient (924 -> 4002 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S5L5.MAP: IMP: File Imploder-packed, unpacked with ancient (1072 -> 3050 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/BONUS0.MAP: IMP: File Imploder-packed, unpacked with ancient (758 -> 1598 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/SEU3.MAP: IMP: File Imploder-packed, unpacked with ancient (2162 -> 5042 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S3L5.MAP: IMP: File Imploder-packed, unpacked with ancient (1124 -> 2902 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S4L4.MAP: IMP: File Imploder-packed, unpacked with ancient (2936 -> 12962 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S5L3.MAP: IMP: File Imploder-packed, unpacked with ancient (850 -> 3778 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S1L04.MAP: IMP: File Imploder-packed, unpacked with ancient (1684 -> 4692 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/SEU1.MAP: IMP: File Imploder-packed, unpacked with ancient (2612 -> 5042 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/BONUS9.MAP: IMP: File Imploder-packed, unpacked with ancient (720 -> 1601 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S2L4.MAP: IMP: File Imploder-packed, unpacked with ancient (3274 -> 10436 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S3L3.MAP: IMP: File Imploder-packed, unpacked with ancient (532 -> 1718 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S4L2.MAP: IMP: File Imploder-packed, unpacked with ancient (2458 -> 12698 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S5L1.MAP: IMP: File Imploder-packed, unpacked with ancient (1652 -> 4410 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/BONUS7.MAP: IMP: File Imploder-packed, unpacked with ancient (334 -> 686 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S1L3.MAP: IMP: File Imploder-packed, unpacked with ancient (5162 -> 12362 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S2L2.MAP: IMP: File Imploder-packed, unpacked with ancient (1722 -> 3656 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S3L1.MAP: IMP: File Imploder-packed, unpacked with ancient (1296 -> 3620 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S1L01.MAP: IMP: File Imploder-packed, unpacked with ancient (3304 -> 9596 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/BONUS5.MAP: IMP: File Imploder-packed, unpacked with ancient (260 -> 1262 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S1L1.MAP: IMP: File Imploder-packed, unpacked with ancient (2984 -> 8642 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/BONUS3.MAP: IMP: File Imploder-packed, unpacked with ancient (594 -> 1325 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S3L8.MAP: IMP: File Imploder-packed, unpacked with ancient (1974 -> 6482 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/BONUS1.MAP: IMP: File Imploder-packed, unpacked with ancient (314 -> 1332 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/seu4.map: IMP: File Imploder-packed, unpacked with ancient (2116 -> 5042 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S3L6.MAP: IMP: File Imploder-packed, unpacked with ancient (996 -> 3362 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S4L5.MAP: IMP: File Imploder-packed, unpacked with ancient (2118 -> 9921 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S5L4.MAP: IMP: File Imploder-packed, unpacked with ancient (2020 -> 10298 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/SEU2.MAP: IMP: File Imploder-packed, unpacked with ancient (2188 -> 5042 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S2L5.MAP: IMP: File Imploder-packed, unpacked with ancient (1264 -> 4752 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S3L4.MAP: IMP: File Imploder-packed, unpacked with ancient (1062 -> 3334 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S4L3.MAP: IMP: File Imploder-packed, unpacked with ancient (2492 -> 15962 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S5L2.MAP: IMP: File Imploder-packed, unpacked with ancient (1738 -> 10562 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/s1l03.map: IMP: File Imploder-packed, unpacked with ancient (1570 -> 4486 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/BONUS8.MAP: IMP: File Imploder-packed, unpacked with ancient (690 -> 1374 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:seu.grad: IMP: File Imploder-packed, unpacked with ancient (106 -> 640 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:dppassword.raw: IMP: File Imploder-packed, unpacked with ancient (1512 -> 2304 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:duck.all: IMP: File Imploder-packed, unpacked with ancient (3762 -> 11520 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:wasp.all: IMP: File Imploder-packed, unpacked with ancient (3308 -> 15360 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:clyde.all: IMP: File Imploder-packed, unpacked with ancient (8996 -> 21136 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:gum.all: IMP: File Imploder-packed, unpacked with ancient (118 -> 160 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:wavesplash.all: IMP: File Imploder-packed, unpacked with ancient (300 -> 600 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:bozo.all: IMP: File Imploder-packed, unpacked with ancient (3158 -> 10360 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:sec4.raw: IMP: File Imploder-packed, unpacked with ancient (19148 -> 38464 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:pushblock.all: IMP: File Imploder-packed, unpacked with ancient (142 -> 320 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:sec4.grad: IMP: File Imploder-packed, unpacked with ancient (168 -> 640 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Jumbo.all: IMP: File Imploder-packed, unpacked with ancient (2776 -> 7820 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:SUBMAR.MOD: IMP: File Imploder-packed, unpacked with ancient (38544 -> 41422 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:barney.all: IMP: File Imploder-packed, unpacked with ancient (19000 -> 48640 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:pressstart.all: IMP: File Imploder-packed, unpacked with ancient (448 -> 1440 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:sec2.raw: IMP: File Imploder-packed, unpacked with ancient (26668 -> 38464 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Snake.all: IMP: File Imploder-packed, unpacked with ancient (2676 -> 6240 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:spider.all: IMP: File Imploder-packed, unpacked with ancient (1052 -> 2400 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:dpgameover.raw: IMP: File Imploder-packed, unpacked with ancient (1562 -> 2304 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:bubble.all: IMP: File Imploder-packed, unpacked with ancient (430 -> 1500 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:DPgamecomplete.RAW: IMP: File Imploder-packed, unpacked with ancient (2140 -> 4608 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:UNDERGROUND.MOD: IMP: File Imploder-packed, unpacked with ancient (26032 -> 41902 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:homer.all: IMP: File Imploder-packed, unpacked with ancient (242 -> 500 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:SWAMP.MOD: IMP: File Imploder-packed, unpacked with ancient (31740 -> 42166 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:bonus.raw: IMP: File Imploder-packed, unpacked with ancient (19048 -> 38464 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:octopusbullet.all: IMP: File Imploder-packed, unpacked with ancient (220 -> 960 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:expseu.all: IMP: File Imploder-packed, unpacked with ancient (2166 -> 4800 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:firehoze.raw: IMP: File Imploder-packed, unpacked with ancient (180 -> 384 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:pengosine.all: IMP: File Imploder-packed, unpacked with ancient (1584 -> 6200 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:CITY.MOD: IMP: File Imploder-packed, unpacked with ancient (28022 -> 38260 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:sec1b.raw: IMP: File Imploder-packed, unpacked with ancient (24786 -> 38464 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:smashglass.all: IMP: File Imploder-packed, unpacked with ancient (4700 -> 20800 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:sub.all: IMP: File Imploder-packed, unpacked with ancient (910 -> 2880 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:tinkle.all: IMP: File Imploder-packed, unpacked with ancient (356 -> 1920 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:catbubbles.all: IMP: File Imploder-packed, unpacked with ancient (1072 -> 3120 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:barneystars.all: IMP: File Imploder-packed, unpacked with ancient (986 -> 6720 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:acid8.all: IMP: File Imploder-packed, unpacked with ancient (108 -> 132 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:pfish.all: IMP: File Imploder-packed, unpacked with ancient (918 -> 2560 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Tortoise.all: IMP: File Imploder-packed, unpacked with ancient (3108 -> 11200 bytes)
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:500BARNEYMASK1.RAW: IMP: File Imploder-packed, unpacked with ancient (1064 -> 3160 bytes)
+- 4 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- bubble and squeak (1994)(audiogenic)[cr pdx](disk 2 of 2)/Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:Maps/S3L1.MAP#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- 1 never-loaded region(s), 3620 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- `dispatch_screen_state_sequence` (code): Resets shared state, then branches on a game state value to select one of several screen or sequence paths, with an endless loop for unhandled values. Kind: loader/protection sequence. Pass path: the branch where _u1__d4_1DECE == 1 is handled, leading to the sequence of u1__sub_0_16684 calls and subsequent data loading/execution functions.
+- `copy_password_table` (code): Calls one routine, copies eight bytes from a fixed source table into a shared buffer, then calls another routine when a shared flag is nonzero. Kind: password/key validation. Pass path: the loop completes and execution continues to the next instruction (u1__sub_0_196FC check).
+- `initialise_hardware_at_entry` (PARADOX): Program entry that clears two blocks of memory, writes the display control and background colour, and sets the copper and interrupt control registers. Kind: disk hardware/track check. Pass path: u2__sub_0_1290().
+
+## Functions
+
+
+### closewb
+
+- `open_intuition_library_then_close`: Program entry routine that calls exec library functions and refers to the text intuition.library.
+
+### Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:code
+
+- `start_program_check_memory`: Program entry routine of 101 instructions that queries free memory and allocates and frees memory through exec calls.
+- `emit_parameter_blocks_loop`: Writes pairs of values into a shared parameter block, calls helper routines for each pair, and loops copying eight longwords from a source table into a list entry on each pass.
+- `emit_parameter_blocks_loop_2`: Writes pairs of values into a shared parameter block and calls helper routines for each pair, with a loop that copies eight longwords from a source table into a list entry.
+- `process_parameter_frame_update`: Calls a sequence of helper routines and runs a loop that copies eight longwords per pass into a list entry, with many helper calls gated by shared flags.
+- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
+- `call_conditional_callback`: Invokes several helper routines and, when a stored pointer is nonzero, calls a function pointer that is passed the custom chip base address.
+- `write_stepped_word_records`: Loops six times writing four-word records: a running word that rises by eight per record, that word plus two, and the high and low halves of a value that grows by a fixed step each pass.
+- `check_range_sum_or_halt`: Sums a range of longwords and returns when the sum equals a stored value; otherwise it repeats forever, clearing a shared variable and calling an unnamed routine on each pass.
+- `return_stack_argument_value`: Two-instruction routine that returns the value read from the top of the stack and does nothing else.
+- `allocate_self_linked_node`: Calls an allocation function through a global table and, if a block is returned, writes its own address into its first longword and a stack argument into the second, then returns the address past those eight bytes.
+- `allocate_and_init_block`: Calls an allocation function through a global table and, if a block is returned, writes its own address into its first longword and a stack argument into the second, then returns the address past those eight bytes.
+- `free_node_if_self_linked`: Checks that a node's size field matches the expected value and that its back-link points to itself, and if both hold it calls a free function through a global table.
+- `set_task_field_minus_one`: Looks up a task structure through the exec find-task call and stores the value minus one at a fixed offset inside it.
+- `open_intuition_library_once`: Opens the intuition library through the exec old-open call only when a shared handle is still zero, and stores the returned library base in that handle.
+- `close_intuition_if_flagged`: When a shared intuition handle is nonzero, calls the exec close-library function through a global table and clears the handle, returning the call result.
+- `call_library_vector_390`: Library stub: loads a library base from a global variable and calls the library function at offset minus 390 of that base, returning its result to the caller.
+- `open_graphics_library`: Calls the exec open-library function and stores the returned graphics library base in a shared variable; the text graphics.library is referenced.
+- `close_graphics_if_flagged`: When a shared graphics handle is nonzero, calls the exec close-library function through a global table and clears the handle, returning the call result.
+- `open_dos_library`: Calls the exec open-library function and stores the returned library base in a shared variable; the text dos.library is referenced.
+- `close_dos_if_flagged`: When a shared dos handle is nonzero, calls the exec close-library function through a global table and clears the handle, returning the call result.
+- `call_dos_library_vector`: Loads the library base stored by the dos open routine and calls a library function at a fixed negative offset from it, with no arguments.
+- `call_library_vector_36`: Library stub: loads a library base from a global variable and calls the library function at offset minus 36 of that base, returning its result to the caller.
+- `call_dos_vector_then_pair`: Calls a dos library function, uses its result to decide whether to call a second dos library function, and then calls two further unnamed routines.
+- `invoke_dos_vector_twice`: Calls the dos library function at a fixed negative offset from the stored library base, then calls it again with a register value passed as an argument.
+- `store_dos_vector_result`: Calls a dos library function at a fixed negative offset from the stored library base and stores the returned value in a shared variable.
+- `call_dos_library_vector_2`: Loads the stored dos library base and calls a library function at a fixed negative offset from it, with no arguments.
+- `call_dos_library_vector_3`: Loads the stored dos library base and calls a library function at a fixed negative offset from it.
+- `call_function_from_table`: Loads a function pointer from a global table using a negative offset and executes it.
+- `skip_string_then_call_library`: Advances a pointer until it finds a null terminator in a string, then calls a library function at a fixed negative offset from the stored dos base.
+- `store_byte_and_call_library`: Stores the low byte of an input value in a shared variable, scans forward to a null byte, then calls a library function at a fixed negative offset from the stored dos base.
+- `call_helpers_return_first_result`: Calls one routine and keeps its result, then calls two further routines in sequence and returns the kept result.
+- `call_value_then_two_routines`: Calls a routine and passes its result to a second routine, then calls a third routine.
+- `tiny_move`: Small routine of 1 instruction that copies d0 to d5.
+- `initialize_custom_hardware`: Iterates through a linked list of structures calling their function pointers when a shared flag is clear, then sets global configuration values and writes custom chip interrupt and DMA state.
+- `call_if_flag_bit_set`: If bit 0 of a flag byte in a structure addressed by an address register is set, it calls a function pointer from a global table and returns its result; otherwise it returns zero.
+- `branch_on_bit_set`: Checks if a specific bit is set in a byte at an offset from a register and calls a function pointer from a global table if it is.
+- `branch_on_bit_set_2`: Checks if a bit is enabled in a byte at a certain offset and executes a function pointer from a global table if so.
+- `branch_on_bit_set_3`: Tests a bit in a byte at an offset from a register and, if set, calls a function pointer from a global table.
+- `check_flag_and_call`: Checks bit 0 of a flag byte in a structure addressed by an address register and calls a function pointer from a global table if it is set, otherwise returns zero.
+- `restart_copper_list_if_set`: If a shared pointer is nonzero, calls helper routines, writes the copper list address and then the copper jump register, and calls another routine.
+- `restore_saved_hardware_state`: If a flag is nonzero, writes saved interrupt and DMA values back into shared variables and clears the flag.
+- `disable_dma_interrupts`: If a shared pointer is nonzero, calls two routines, writes DMA and interrupt disable values to custom chip registers, updates shared variables, and clears the pointer.
+- `save_interrupt_dma_values`: If a shared pointer is zero, stores computed interrupt-enable and DMA values into shared variables and sets the pointer to a fixed negative value.
+- `initialize_interrupt_dma_state`: If a shared pointer is zero, calls two routines, writes set-bit values for DMA and interrupt control into shared variables, and sets the pointer to a fixed value.
+- `run_countdown_routine_calls`: If a flag is zero, calls two routines on each pass of a countdown loop whose count comes from an input register, then calls a third routine once.
+- `forward_call_then_return`: Calls one unnamed routine and returns; this single call is the whole body.
+- `unpack_tagged_backward_stream`: Checks a four-byte tag at the start of a block and, when it matches, relocates three header words and decodes a packed bit stream read backwards from the end of the block, copying runs of bytes.
+- `set_shared_state_to_two`: Stores the value 2 into a shared state variable.
+- `run_state_machine_step`: Calls a routine through a table entry, then when a shared flag is set either stores a timing value and calls one routine, or calls a table handler.
+- `advance_state_machine_frame`: Calls four table-driven routines in turn, then branches on a shared state: in state one it stores a timing value and may set the state to three, otherwise it waits on a shared pointer and calls a handler.
+- `configure_dma_control`: Combines a shared variable with the input register to compute a bit value, stores it in a structure, and sets or clears the high bit of a shared variable.
+- `advance_state_one_to_two`: When a shared state equals one, stores the timing value 15 and, if a second state equals one, calls a routine and sets that second state to two.
+- `advance_state_two_to_one`: When a shared state equals one, stores the timing value 4080 and, if a second state equals two, calls a routine and sets that second state back to one.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `poll_io_completion_state`: When a shared state equals one, stores the timing value 3855 and, if a second state equals one, calls an exec check-I/O wrapper and calls another routine when its result is nonzero.
+- `call_function_pointer`: Calls the routine stored in a shared function pointer when that pointer is non-null.
+- `call_pointer_offset_function`: Calls the function whose address is stored four bytes into the structure that a shared pointer refers to, but only when that pointer is nonzero.
+- `pack_table_value_counts`: Loops over eight 32-bit table entries, counting how many times each fits into the remaining input value by repeated subtraction, and packs the counts into one 32-bit result stored through a pointer.
+- `write_nibbles_as_digit_chars`: Writes the eight four-bit groups of a 32-bit value as characters by adding the ASCII code for zero to each group, so groups above nine give characters that are not digits.
+- `convert_int_to_hex_string`: Takes a 32-bit integer from a pointer and converts its eight nibbles into ASCII hexadecimal characters, storing the resulting string into a destination buffer.
+- `add_bcd_to_buffer`: Adds a 32-bit value byte by byte into a four-byte buffer using BCD adjustment and carry propagation, working from the most significant byte down.
+- `subtract_bcd_bytes`: Subtracts a 32-bit value byte by byte from a four-byte BCD number in memory, adjusting each byte and propagating the borrow.
+- `clear_table_entries`: Stores two longwords from the input block into shared variables, then walks 55 table entries of 26 bytes each, clearing a word unless it holds a fixed check value and clearing a longword in each entry.
+- `clear_struct_array`: Walks 55 table entries of 26 bytes each, zeroing most fields and setting one word field in each entry to the maximum value.
+- `allocate_entity_slot`: Scans a fixed table of 55 entries for one whose first field matches the input value and whose check word is set, then updates its counter and stored value.
+- `update_table_entries_under_forbid`: Disables multitasking around a loop over 55 table entries that computes position values and calls six routines, reading the vertical position register and writing the colour register.
+- `load_string_from_table`: Copies a string from a global string table selected by the index value, or when the index is negative skips ahead to the next colon, then appends the input string to the copy.
+- `update_bubble_counter`: Adjusts a shared counter from the input value, keeping it within a range of zero to three when the input is negative, and stores the result in a shared variable.
+- `read_struct_field_after_call`: Calls one routine, then returns the longword twelve bytes into the structure addressed by an address register.
+- `load_from_offset`: Calls a routine and then loads a longword from an offset of a register into a register.
+- `sum_word_table`: Adds a table of 16-bit words starting at the address register into an accumulator, with the number of words equal to the input value divided by two.
+- `relocate_active_entry_pointers`: Walks 55 table entries and, for each entry with a valid check word and a nonzero pointer, updates the pointed-to word with an offset-adjusted value, then calls one unnamed routine.
+- `swap_two_structures`: Exchanges the contents of two memory blocks addressed by registers, swapping four longwords and then several word fields at fixed offsets within the blocks.
+- `calculate_and_reduce_entity_count`: Walks the entity table to sum the sizes of active entries into an offset, then reduces an active count by matching entries and calling another routine for each valid entry.
+- `scan_entity_table_for_markers`: Walks a fixed table of entries and calls a routine for each entry marked with a fixed check value, then matches a second group of marked entries against a shared counter and calls a routine on each match.
+- `select_game_end_screen`: Chooses between two end-of-game outcomes from shared state variables and calls one routine for the selected case.
+- `dispatch_screen_state_sequence`: Resets shared state, then branches on a game state value to select one of several screen or sequence paths, with an endless loop for unhandled values.
+- `hang_in_infinite_loop`: Enters an unconditional endless loop with no body and never returns.
+- `copy_global_table`: Preserves the value returned by one routine, copies longwords from a source pointer into a shared table up to a fixed end address, then calls two routines and returns.
+- `prompt_disk_insertion`: Reads a disk index from the input register, masks it to a value from zero to seven, selects a routine from a function table, and calls it to show the message asking for that disk.
+- `call_recursive_routine`: Calls another routine and returns.
+- `tiny_addq`: Small routine of 1 instruction that adds 4 to d0.
+- `run_level_start_sequence`: Runs a long countdown delay, advances a shared stage counter up to two, calls eight routines in a loop, waits while a status bit is set, and resets the stage counter.
+- `initialise_table_block_words`: Calls several routines with shared table addresses, sets a block of 31 words to 4095, and clears a block of 32 words to zero.
+- `clear_global_buffer`: Zeroes every byte of a shared buffer in a loop, with calls to routines before and after the clear.
+- `skip_string_to_terminator`: Advances an address register past a null-terminated string.
+- `call_recursive_routine_2`: A simple wrapper that calls another routine and returns without any additional logic.
+- `delay_between_routine_calls`: Calls one routine, spins in a long countdown loop, then calls a second routine and returns.
+- `call_game_complete_message`: Calls one unnamed routine and returns.
+- `call_two_routines_and_return`: Calls two unnamed routines in sequence, then returns a two-byte value built from a shared variable and a memory byte.
+- `copy_password_table`: Calls one routine, copies eight bytes from a fixed source table into a shared buffer, then calls another routine when a shared flag is nonzero.
+- `wait_for_start_press`: Calls one unnamed routine, then loops while bit 7 of a shared variable is set.
+- `clear_flag_and_call_routines`: Calls several routines before and after setting one shared variable to zero.
+- `copy_byte_array`: Copies eight bytes from a source address register to a destination address register.
+- `display_score_totals`: Calls four routines in sequence.
+- `poll_input_and_update_display`: Routine of 127 instructions that reads the CIA-A port register and the vertical position register, writes the colour register and a custom chip register, and calls ten routines.
+- `calculate_captive_value`: Multiplies a shared counter by a constant factor of 38 and returns the product.
+- `repeat_until_result_zero`: Calls one routine repeatedly until it returns zero.
+- `hang_in_infinite_loop_2`: Enters an endless loop with no body in the decompiled code.
+- `wait_then_set_custom_mask`: Calls one unnamed routine, waits while bit 6 of a shared variable is set, then writes all ones to a custom chip register and calls two routines.
+- `wait_blitter_then_set_mask`: Calls one routine, waits while bit 6 of a shared variable is set, writes all ones to the blitter first-word mask register, and calls three routines.
+- `update_dual_pointers_loop`: Initialises two shared pointers, then loops calling routines and moving one pointer back and the other forward by a fixed step of 264 per pass.
+- `increment_pointer_in_loop`: Calls two routines per pass, adds a fixed step of 264 to a shared pointer each pass, and repeats while a counter is not yet at minus one.
+- `copy_level_table_and_unpack`: Unless the mode is 2 or the busy flag is set, copies the 861-word level table into the working copy and unpacks the level data ('CHFI' block).
+- `load_stage_title_string`: Selects a stage title from shared state flags and calls routines to copy it into a buffer.
+- `repeat_routine_nine_times`: Calls one routine nine times in a counted loop.
+- `copy_table_pair_by_index`: Calls three routines, then copies two longwords from a table entry chosen by a shared index into two shared locations.
+- `load_difficulty_data`: Loads two longwords from a table entry indexed by the input register and stores them into a shared variable and a fixed memory location.
+- `configure_custom_chip_registers`: Writes a series of values into the custom chip register block and copper list memory, choosing one copper value from a shared flag, then calls seven routines.
+- `clear_shared_longword_range`: Zeroes shared longwords in two loops over the same region, up to a fixed end address.
+- `blank_display_and_clear_memory`: Turns bitplane DMA off, runs the reset routine and clears the large work-memory block word by word.
+- `clear_sprite_pointers`: Writes the address of a shared variable into eight sprite pointer slots, zeroes the following sixteen longwords, and clears a shared variable.
+- `configure_copper_list`: Stores copper list values and display list pointers into shared memory, sets a bit in the DMA control register, and calls four routines.
+- `initialize_blitter_control_block`: Waits while a shared bit is set, writes first-word mask, modulo and control values to the blitter registers, zeroes two blocks of 120 bytes, sets several table words, and calls seven routines.
+- `call_six_routines_in_sequence`: Calls six unnamed routines in sequence and returns.
+- `step_animation_table_entries`: Decrements the high byte of table words by one step on each pass for four entries, resets specific words when a threshold is reached, and calls four routines.
+- `shift_and_step_long_pair`: Calls two routines, copies one shared longword into another, and then subtracts 65536 from the second.
+- `wait_for_flag_clear`: Calls one routine repeatedly until a shared longword becomes nonzero, then sets it back to zero and returns.
+- `update_memory_pointers`: Saves a register value to a global variable, increments another global pointer by a fixed offset, and clears a third global variable before calling several other routines.
+- `loop_until_condition_met`: Executes a loop that repeatedly calls other routines and sets a global variable to a specific value, breaking the loop when a called routine returns a non-zero value.
+- `match_table_entry_fields`: Waits while a status bit of a structure is set, then searches a table for an entry matching a shared value and writes its fields into the structure.
+- `clear_global_table`: Zeroes a block of shared longwords in a nested loop, sets three shared values, then repeats calls until a routine returns nonzero.
+- `set_global_word_values`: Calls one routine, then stores 20 into one shared word and 65535 into the adjacent shared word.
+- `process_four_stage_sequence`: Increments a shared counter until it reaches 20, then steps through four stages, loading a table value for each stage and calling routines.
+- `wait_flag_then_call_routines`: Waits in a loop until a bit is set in a byte of a structure addressed by a register, then calls three routines in sequence.
+- `decrement_global_counter`: Copies one shared longword into another and then subtracts 65536 from the original.
+- `check_memory_signature`: Reads the high word of a shared pointer, returns all ones when it equals one fixed tag value, and clears a word in another structure when it equals a second tag value.
+- `increment_tick_counter`: Adds 65536 to a shared counter and returns all ones when the previous high word equals 365, otherwise zero.
+- `clear_work_memory_longwords`: Zeroes longwords in a shared work area up to a fixed end address.
+- `advance_blitter_animation_frame`: Counts down a frame timer, cycles a four-entry table index when the timer expires, and sets up blitter values for the new frame.
+- `wait_and_setup_block_data`: Waits while a status bit of a structure is set, then computes a table offset from shared values and stores a block address and control words into the structure.
+- `clear_two_shared_regions`: Zeroes four longwords per pass from two shared regions, over 920 passes.
+- `clear_global_memory`: Zeroes four longwords per pass from two shared regions, over 920 passes.
+- `build_blit_command_list`: Writes pairs of blitter command words into a list in shared memory using a computed blit size, and calls five routines.
+- `wait_blitter_and_check_flag`: Waits while a status bit of a structure is set, writes all ones to the blitter first-word mask register, calls three routines, then waits for a shared flag and returns early if a second shared value is nonzero.
+- `call_two_subroutines`: Calls two unnamed routines in sequence and returns.
+- `run_eight_call_update_loop`: Sets a shared stage value to zero, then loops calling eight routines with computed position values until a called routine signals the end of the loop.
+- `tiny_ori_ori_ori`: Small routine of 3 instructions that merges 240 into d0, then merges 176 into d0, then merges 112 into d0.
+- `wait_and_save_state`: Waits while a status bit of a hardware structure is set, stores several register values into the structure while zeroing some fields, and waits again before returning.
+- `setup_blitter_and_wait`: Waits while a status bit of a structure is set, writes blitter control values and source and destination pointers into it, and waits for the operation to finish.
+- `wait_and_write_block`: Waits while a status bit of a structure is set, writes several control values into a block in the structure, and waits again.
+- `compute_blit_size`: Works out blitter values for a column: the remaining width (44 minus x) and the size word, the row count (height times rows a line) shifted into the height field ORed with x in words.
+- `draw_text_string_glyphs`: Walks a text string until its null terminator.
+- `copy_strided_column_bytes`: Copies eleven bytes from a source stepping 36 bytes per pass into a destination stepping 132 bytes per pass.
+- `clear_global_flags`: Sets five shared variables to zero.
+- `execute_recursive_calls`: Performs two consecutive calls to a routine.
+- `return_without_action`: Returns immediately without doing anything.
+- `update_state_counter`: Increments a shared counter when a masked input matches a second input, resets the counter to 22 once it reaches 25, and returns a status value from bits of the input.
+- `initialise_name_text_buffers`: Fills shared text buffers with space characters, selects one of two four-letter words from a shared value, and calls eleven routines in a loop.
+- `return_immediately`: Performs no operations and returns control to the caller immediately, consisting of instructions likely used for stack frame management or dead code artifacts.
+- `store_clamped_uppercase_letter`: Clamps an input value to the codes for capital letters A to Z, stores it in a shared byte and at an offset from it, then calls one routine.
+- `initialize_game_globals`: Sets several shared variables to fixed constants such as zero, two and eight, copies one shared value into another, and calls one routine before returning.
+- `tiny_ori_ori`: Small routine of 2 instructions that merges 4 into d5, then merges 3 into d3.
+- `load_word_from_table`: Reads a word from a table indexed by a shared value and stores it in a shared variable.
+- `find_level_entry_by_id`: Scans a table of 14-byte entries for one whose identifier matches a shared value and copies its fields into shared variables, ending in an endless loop at a sentinel value.
+- `tiny_ori_ori_2`: Small routine of 2 instructions that merges 0 into d0, then merges 0 into d0.
+- `validate_checksum_and_store`: Clears eight shared variables and calls a routine, returning early if it returns a nonzero value.
+- `validate_input_checksum`: calculates a checksum or bitmask from a global variable and verifies it against a checksummed instruction sequence, then conditionally updates a series of global state variables if certain numeric bounds or value comparisons are met.
+- `initialize_command_parser_state`: Clears a series of global or static variables and checks a bitmask or checksum-like value before validating a sequence of input-derived integers.
+- `reset_and_validate_input_state`: Clears several global variables and checks if a bitmask-derived value matches a checksum calculated from a sequence of instructions.
+- `validate_handler_checksum`: Calculates a checksum of a routine's instructions and verifies it against a bitmask-derived value.
+- `parse_input_command`: Checks specific bits of a shared flag word and sums four table bytes to validate input.
+- `xor_text_then_poll_routine`: XORs two shared longwords with a four-letter constant, then calls a routine repeatedly until it returns a nonzero value, returning zero if that value is negative.
+- `compare_eight_byte_strings`: Returns all ones when the first byte of the compared string is the letter Z. Otherwise it compares eight bytes of the two strings and sets a flag from the result.
+- `set_state_nine_after_call`: Calls one routine, then stores 9 into a handler slot and into a shared byte.
+- `set_handler_three_after_call`: Calls one routine, then stores 3 into a handler slot and the four-letter tag LAME into a shared longword.
+- `call_then_set_byte_max`: Calls one routine, then sets a shared byte to 255.
+- `set_word_to_max_value`: Stores 65535 into a shared word and returns.
+- `poll_button_bit_then_reset`: Stores 15 into a shared byte and, when bit 6 of that byte is set, calls one routine and stores 255.
+- `copy_state_values_then_call`: Calls one routine, then copies two shared state values into a handler slot and into two shared variables.
+- `compute_checksum_flags`: Sums bytes from a code pointer to compute a checksum, sets flag bits in a shared variable from the checksum's parity, and XORs the result with another shared value.
+- `shift_bits_into_buffer`: Shifts a bit stream from a source register into a destination buffer, handling word boundaries and bit alignment, for a set number of bits.
+- `extract_bits_from_word_stream`: Iterates through a stream of 32-bit words, extracting individual bits by counter and accumulating them into a result, reloading the next word when the bit index reaches zero.
+- `convert_nibbles_to_letters`: Takes the upper four bits of a 32-bit value and writes each as a capital letter by adding the code for A, storing the character through a pointer and repeating until a register condition is met.
+- `decode_letter_code`: Decodes a letter code: takes each byte of the input longs in turn, looks it up in the character table and turns it into a value counted from 'A'.
+- `check_global_flag_value`: Searches a table of five two-byte entries for the input value and calls a routine when a match is found and the following byte is not the letter V.
+- `scan_table_for_byte`: Compares an input byte with entries of a table of words, stopping at a match or after eight entries.
+- `zero_clear_global_arrays`: Zeroes two shared memory regions, one of 200 longwords and one of 25,600 bytes, then sets several configuration variables to small integer constants.
+- `process_input_flags`: Checks a long series of shared flag variables and calls routines for each nonzero flag, with three calls when one particular flag is set.
+- `clear_linked_list_nodes`: Walks a linked list of twelve nodes, calling helper routines for each node and marking its first word with the value minus one before advancing to the next node.
+- `reset_linked_list_nodes`: Walks a linked list of three nodes, clearing a word field and marking the first word of each node with minus one before advancing.
+- `initialize_sprite_object`: Checks that an object pointer is inside a fixed range, then zeroes and sets fields of the object record and calls hide_display_object and one unnamed routine.
+- `store_object_position_words`: Stores two input words into fixed fields of the object structure addressed by an address register.
+- `store_longword_and_advance`: Stores a register value into a shared pointer, clears the following longword, advances the pointer, and sets a word field of the object to one.
+- `clear_object_field_word`: Clears one word field in the object structure addressed by an address register.
+- `store_object_state_flags`: Stores two input words and two longwords into fixed fields of an object structure, and sets two byte fields to one and another byte field to zero.
+- `store_object_state`: Stores input values into an object structure, decrements a stored count and resets it to its original value when it reaches zero, then calls one routine.
+- `set_object_velocity_fields`: If the input is zero, sets two velocity fields to one and derives a third from a division; otherwise it copies the input into two fields and negates the second when the input is negative.
+- `set_object_velocity_pair`: Copies an input value into two velocity fields, negating the second when the input is negative, and stores four times the input and zero into two other fields.
+- `set_sprite_dimensions`: Stores an input value into two fields of the object structure, negating the second when the input is negative; when the input is zero it stores one into both and computes a third field by division.
+- `store_object_word_pair`: Stores two input words into the object structure at fixed offsets.
+- `store_word_into_record_field`: Writes the low 16 bits of D0 into a word field of the record that A2 points to.
+- `store_word_into_record_slot`: Writes the low 16 bits of D0 into a second word field of the record addressed by A2.
+- `dispatch_action_by_index`: Returns zero when the signed word field of the structure in A4 is negative.
+- `check_and_update_entity_table`: Iterates through a table of structures to find an entry with a negative value.
+- `claim_free_record_large_pool`: Finds the first free record among twelve 64-byte records and fills it from the input registers, fixed constants and a global value.
+- `claim_free_record_from_cursor`: Walks forward through 64-byte records from the pointer in A4, counting down in D7, until it finds one with a negative leading word.
+- `reset_object_state_fields`: Sets two fields of the record in A2 to fixed values, stores a global value in a third and clears a fourth.
+- `compute_masked_position_value`: Combines two word fields of the structure in A4 into one 32-bit value, adding half of a third field to the first and subtracting 6 from the second.
+- `initialize_entity_state`: Sets fixed counters, flags, a routine pointer and a position word rounded down to a multiple of 16 in the structure at A2, and zeroes two longs.
+- `scan_status_table_and_dispatch`: Clears a long field of the record in A2, then scans a four-entry byte table for a status value or checks one entry directly.
+- `match_status_and_dispatch`: While a global flag is set, scans a four-entry status table for the current index.
+- `dispatch_handler_if_index_valid`: Calls the handler in the structure when the index in D1 is between 0 and 3.
+- `wait_for_status_bit_toggle`: Writes a fixed control value to a global location and busy-waits until a status bit clears and sets again.
+- `dispatch_handler_on_mismatch`: Calls the handler in the structure when the byte at offset 34 differs from the low byte of D0 or a per-index global flag is set.
+- `scan_status_table_after_call`: Calls one routine, stores a constant long in the record, then scans a four-entry status table against a different global byte.
+- `wait_for_status_match_alt`: While a second global flag is set, scans a status table for the current index.
+- `dispatch_handler_in_range`: Calls the handler pointer in the structure when the index in D1 is between 0 and 3.
+- `spin_status_bit_toggle`: Writes a fixed control value to a global location and busy-waits until one status bit clears and then sets again.
+- `check_status_and_call_handler`: Checks if a byte in a structure matches a value and if a global flag is zero, then calls a routine pointer located in that structure.
+- `call_then_set_field_three`: Calls one routine, then stores the constant 3 into a word field of the record in A2.
+- `store_global_field_and_call`: Calls one routine, copies a global word into the second field of the record in A2, then calls another routine with the value in A0 passed on.
+- `set_flag_and_show_object`: Sets the word at the record in A2 to one, then calls two routines.
+- `set_word_negative_and_hide`: Stores minus one into the word at the record in A2, then calls hide_display_object to hide the object in both buffers.
+- `clear_word_and_hide_object`: Stores zero into the word at the record in A2, then calls hide_display_object to hide the object in both buffers.
+- `initialize_record_fields`: Sets a word field to minus one and another to 4, clears a long field and copies a global value into a third field.
+- `setup_record_and_call`: Sets two word fields of the record in A2 to fixed values and copies a global value into a third field.
+- `move_record_between_lists`: When the state word in the record at A2 differs from the new value in D0, unlinks the record from the pointer list for its old state and appends it to the list for the new state.
+- `decrement_three_counters`: Decrements three global counters, reloading each with a fixed count of 4, 3 or 2 and calling a routine when it reaches zero.
+- `process_active_record_list`: Walks a null-terminated list of record pointers and handles each active record by moving it by its velocity and advancing a countdown that can reverse velocity.
+- `update_records_in_region`: Every fourth call it recomputes a rectangular region from two screen-position fields with a margin of 44 units.
+- `spawn_record_in_window`: After a cooldown, scans a table of record groups for an inactive record whose horizontal position falls in a window near the current scroll position.
+- `decrement_counters_and_clear_flag`: Clears a global flag, then decrements three global counters, reloading each with a fixed count and calling a routine when it reaches zero.
+- `update_active_records_with_expiry`: Walks a null-terminated record list and updates active records.
+- `stub_no_operation`: Returns immediately without any work.
+- `clear_two_global_words`: Writes zero to two adjacent global words and returns.
+- `tick_countdown_and_dispatch_status`: Counts down a word field of the record in A4.
+- `scan_status_table_value_15`: Scans a four-entry status table for the value 15 and calls the handler on a valid match.
+- `branch_on_offset_condition`: Checks a bitmask or value in a register and either executes a function pointer or enters a loop that monitors a global variable bit.
+- `set_global_and_loop`: Stores a constant value into a global variable and enters a loop that checks a bit in that variable.
+- `dispatch_conditional_callback`: Compares a byte from a pointer-indexed memory location with a register value and calls a function pointer if a certain condition or global flag is met.
+- `check_status_value_14`: Either scans a four-entry status table for the value 14 or checks one entry directly, depending on a pointer field.
+- `scan_status_table_value_14`: Scans a four-entry status table for the value 14 and calls the handler on a valid match.
+- `branch_on_index_condition_2`: Checks if a register value satisfies a bitwise condition to either update a global or call a function unable to be determined or call a function pointer via a pointer in a table.
+- `set_global_and_loop_2`: Assigns a constant to a global variable and then executes a conditional loop based on a bitmask.
+- `branch_if_not_equal`: Compares a byte from a pointer-indexed memory location with a register value and calls a function pointer if the byte does not match or if a global array entry is non-zero.
+- `decrement_and_dispatch_callback`: Decrements a value in a structure and, if it reaches zero, searches a memory table for a byte match to determine whether to execute a function pointer or a secondary dispatch routine.
+- `search_and_execute_callback`: Iteratively searches for a byte match in a memory range, then checks if a specific bitwise condition on an index is met to either assign a value to a global or call a function pointer.
+- `execute_conditional_branch`: Checks if a register value satisfies a certain bitwise condition to either assign a constant to a global or call a function pointer via a pointer in a table.
+- `set_global_and_loop_3`: Writes a constant value to a global variable and performs a conditional loop check.
+- `execute_conditional_callback`: Checks a condition involving a byte from an indexed memory location and a global variable, then calls a function pointer from a pointer-indexed location.
+- `search_pattern_and_dispatch`: Searches a memory-based table for a specific byte value using a descending index, and if a match is found within a certain range, executes a routine via a pointer.
+- `scan_memory_for_match`: Iteratively scans a memory range for a specific byte value, then checks a bitwise condition on the index to either update a global or call a function pointer.
+- `dispatch_indirect_pointer`: Checks if a masked value or a bit-check against a global variable certains a condition, then executes a routine called via a pointer stored in a table at an offset from a base register.
+- `set_global_and_loop_4`: Updates a global variable with a fixed value and enters a loop checking a bit status.
+- `verify_status_and_call`: Checks if a byte from a pointer-indexed memory location matches a register value and calls a function pointer if a global array entry is zero or if the byte does not match.
+- `update_position_from_global`: Copies a global word into the second field of the record in A4, adding 3 when a signed word field is non-negative.
+- `set_global_word_clear_flags`: Copies a global word into the second field of the record in A2, sets the field at offset 76 to zero and sets the next field to one.
+- `call_and_return_minus_one`: Calls one routine and returns the value minus one as a 32-bit result.
+- `clear_two_globals_and_call`: Clears two adjacent global words, then calls one routine.
+- `call_routine_only`: Calls one routine and returns.
+- `set_flag_bytes_and_call`: Sets two global flag bytes to one and clears three others, then calls one routine.
+- `set_initial_parameters_and_call`: Sets one global flag and clears two global words, then stores a value computed from a pointer's field plus 113 and the constants 300 and 80 into globals.
+- `clear_bits_and_adjust_long`: Clears one bit in the byte at A0, chosen from a register value, and clears another bit in the byte at A2 chosen from D0.
+- `return_void`: The routine is empty and performs no operations before returning.
+- `sync_linked_record_position`: Reads a linked record through the pointer at offset 20 and negates its word at offset 86 when its sign differs from the current record's word.
+- `clamp_long_fields_within_limit`: Compares the record's position with a reference position and a half-width limit.
+- `store_clamped_long_pair`: Caps the first incoming value at a maximum bound and stores it in a long field of the record in A2.
+- `store_clamped_value`: Caps an incoming value at a maximum bound, then stores it with a second incoming value into two long fields of the record in A2.
+- `clear_long_fields`: Stores zero into two long fields of the record in A2.
+- `update_position_and_scan_status`: Sets a position word of the record in A2 from a global value, adding 1 when a signed word field is non-negative, and sets a word field to minus one.
+- `scan_status_table_value_23`: Scans a four-entry status table for the value 23 and calls the handler on a valid match.
+- `branch_on_index_condition`: Checks if a register value satisfies a bitwise condition to either update a global or call a function pointer via a pointer in a table.
+- `test_global_bit`: Checks the state of a specific bit in a global variable using a loop.
+- `check_and_call_status_handler`: Verifies a byte at an offset from a pointer and checks a global variable, then executes a function pointer if the condition is met.
+- `set_global_word_clear_field`: Copies a global word into the second field of the record in A2 and clears the field at offset 76.
+- `object_timer_step_up`: Object step: counts down the object's frame timer and, when it runs out, reloads it, advances the object's animation and moves it up 6 pixels.
+- `update_position_and_scan_status_2`: Sets a position word of the record in A2 from a global value, adding 6 when a signed word field is non-negative and 2 otherwise, and sets a word field to minus one.
+- `scan_status_table_value_27`: Scans a four-entry status table for the value 27 and calls the handler on a valid match.
+- `execute_conditional_pointer_call`: Checks if a value or bitmask-transformed register equals a specific constant; if so, it enters a loop that waits for a bit change in a global variable, otherwise it calls a routine via a pointer located in a table or structure.
+- `set_global_and_loop_5`: Writes a constant to a global variable and executes a loop that tests a bitmask.
+- `test_global_bit_and_call`: Checks a condition based on memory contents and a global variable, then executes a routine via a pointer if certain criteria are met.
+- `init_pointer_and_call`: Stores a global variable value into an offset of a pointer-based structure and clears another offset within that structure, then calls another routine.
+- `object_timer_step_follow`: Object step: counts down the object's frame timer and, when it runs out, reloads it, advances the animation and places the linked object one pixel on from this one, then checks input.
+- `update_position_and_scan_status_3`: Sets a position word of the record in A2 from a global value, adding 6 when a signed word field is non-negative and 2 otherwise, and sets a word field to minus one.
+- `scan_status_table_value_35`: Scans a four-entry status table for the value 35 and calls the handler on a valid match.
+- `branch_on_data_value`: Checks if a certain value in a register (specifically if a bit or value matches a certain constant) and, if the condition is not met, enters a loop checking a global variable's bit status.
+- `set_global_and_loop_6`: Assigns a specific value to a global variable and then enters a loop checking a bit.
+- `evaluate_global_state_and_call`: Evaluates whether a byte in memory matches a value and checks a global variable before calling a function pointer at an offset.
+- `set_object_flag_and_clear_offset`: Stores a global variable value into an offset of a pointer-based structure and clears another offset within that structure.
+- `return_from_subroutine`: This routine is empty and performs no operations before returning.
+- `assign_pointer_slots_from_cursor`: For each of three global pointer slots that is still zero, stores the current value of a shared cursor into it and advances the cursor by 7 for the first slot and by 6 for the other two.
+- `dispatch_routines_from_byte_list`: Calls one routine, sets two global words to minus one and zero, then walks a byte list until it reaches the terminator 254.
+- `tiny_adda_rts`: Small routine of 2 instructions that adds d2 to a0, then returns.
+- `process_lift_all_command`: Assigns the next counter value to a global slot the first time a flag is clear, then advances the counter.
+- `call_two_routines`: Calls two routines in sequence and returns.
+- `assign_counter_to_slot`: Assigns a value from a counter to a global slot if a flag is clear, then increments the counter.
+- `process_lift_all_command_2`: Assigns the next counter value to a global slot the first time a flag is clear, then advances the counter.
+- `execute_self_recursive_sequence`: An infinite or repetitive sequence of instructions that calls itself or a sequence of identical operations.
+- `add_two_pointer_and_call`: Adds two to the pointer passed in A0 and calls one routine with the result.
+- `init_pushblock_state`: Assigns the next counter value to a global slot the first time the slot is used, then advances the counter.
+- `setup_worm_all_state`: When the index in D2 equals 2, assigns the next counter value to a global slot the first time and advances the counter by 6.
+- `return_immediately_2`: the routine is empty and performs no operations before returning.
+- `initialize_crawler_state`: Checks if a register contains a specific index value and, if so, assigns a global slot and calculates two new global position coordinates using a constant offset or counter increment.
+- `setup_crawler_all_state`: When the index in D2 equals 2, assigns a global slot the first time with a counter advance of 9 and derives two global positions from it.
+- `do_nothing_routine`: the routine is empty and performs no operations.
+- `increment_and_reset_pointer`: Saves the current value of a global pointer, calls a routine, increments a global counter and replaces the global pointer with the value in A3.
+- `assign_global_slot`: assigns a global slot a value and increments a counter when a certain index or register value is met.
+- `setup_duck_all_state`: When the index in D2 equals 2, assigns a global slot the first time with a counter advance of 12 and derives a second global position from it.
+- `return_from_subroutine_3`: The routine performs a return from a subroutine.
+- `assign_global_slot_2`: assigns a global slot a value and derives a position from an index when a certain register value is met.
+- `setup_rider_all_state`: When the index in D2 equals 2, assigns a global slot the first time with a counter advance of 7 and derives a second global position from it.
+- `nop_placeholder`: This routine is empty and performs no operations.
+- `increment_and_reset_pointer_2`: increments a global counter and resets a pointer to a register value before writing a fixed value to a memory location.
+- `setup_snake_all_state`: When the index in D2 equals 2, assigns the next counter value to a global slot the first time with an advance of 6.
+- `return_immediately_3`: this routine is empty and performs no operations before returning.
+- `assign_global_slot_3`: assigns a global slot a value and derives a position from an index when a certain register or index value is met.
+- `setup_jumbo_all_state`: When the index in D2 equals 4, assigns a global slot the first time with a counter advance of 7 and derives a second global position from it.
+- `return_from_subroutine_4`: The routine performs a single return instruction.
+- `increment_counter_and_mark_slot`: Saves a global pointer, calls a routine, increments a global counter and replaces the pointer with the value in A3.
+- `assign_global_slot_4`: assigns a global slot a value and calls other routines when a certain register or index value is met.
+- `setup_spider_all_state`: When the index in D2 equals 4, assigns a global slot the first time with a counter advance of 12 and calls several routines.
+- `return_from_subroutine_5`: The routine performs a single instruction to return from a subroutine call.
+- `assign_global_slot_5`: assigns a global slot a value and derives a second global position from it.
+- `setup_robot_all_state`: When the index in D2 equals 2, assigns a global slot the first time with a counter advance of 9 and derives a second global position from it.
+- `return_from_subroutine_2`: This routine performs no operations and immediately returns to the caller.
+- `increment_and_reset_pointer_3`: increments a global counter and resets a pointer to a specific register value before writing a fixed value to a memory location pointed to by the saved pointer.
+- `setup_wasp_all_state`: Assigns a global slot the first time with a counter advance of 12, advances the counter and replaces a global pointer with the value in A3.
+- `setup_blobs_all_state`: When the index in D2 equals 2, assigns two global slots the first time, each with a counter advance of 7.
+- `do_nothing`: this routine is empty and performs no operations or data transfers.
+- `call_routines_then_init_fields`: Calls five routines, then sets a word field of the record in A2 to 48 and sets its first word to minus one.
+- `setup_gargoyle_all_state`: Assigns a global slot the first time with a counter advance of 7 and derives a second global position from it.
+- `increment_counter_and_reset_pointer`: Increments a global byte and resets a global pointer to a previously saved register value, then writes a fixed value to the memory location pointed to by the original pointer.
+- `initialize_tortoise_slot`: checks a register value to decide whether to assign a global slot and update a counter and a secondary position or skip the operation.
+- `setup_tortoise_all_state`: When the index in D2 equals 2, assigns a global slot the first time with a counter advance of 15 and derives a second global position from it.
+- `return_empty_routine`: the routine performs no operations and immediately returns.
+- `increment_and_reset_pointer_4`: Increments a global variable and resets a pointer to a saved register value, then writes a fixed value to the memory location pointed to by the saved pointer.
+- `check_bounds_and_calc_offset`: Shifts two input values right by four bits and compares them with two global limits.
+- `check_and_set_tile_values`: When a global value is not 29, calls one routine.
+- `return_immediately_4`: The routine is empty and performs no operations other than returning control to the caller.
+- `update_object_velocity`: Computes absolute distance components from a stored position and a byte-scaled target, then stores them in a record field.
+- `probe_map_cells_for_record`: Checks a map cell next to the record and, if it is free, saves the record pointer and calls a routine for each cell in a run, recording row offsets.
+- `stub_return_passthrough`: Returns immediately with the value it was given, without any other work.
+- `update_entity_velocity_axes`: Compares two pairs of position bytes read from a table entry with the record's stored offsets, and for each axis that differs stores a scaled absolute difference as a velocity component.
+- `dispatch_initialization_sequence`: Calls eight routines when a global flag is zero, or four routines otherwise.
+- `setup_blitter_copy_loop_2`: The routine is empty and performs no operations.
+- `call_other_routine`: The routine calls another routine and returns.
+- `copy_global_word_block`: Runs a loop of 400 word copies whose source and destination both start at the same global address, leaving the data unchanged.
+- `call_other_routine_2`: Calls another routine and then returns without performing any other operations.
+- `call_subroutine`: The routine invokes another routine and returns.
+- `copy_global_word_block_2`: Runs a loop of 320 word copies whose source and destination both start at the same global address, leaving the data unchanged.
+- `blit_tile_block`: Waits for the blitter to be free, programs its registers for a two-by-two block copy with fixed masks and modulos, then copies each tile word from a source table to a destination entry.
+- `perform_block_blit_sequence`: When a pointer global is set, runs a no-op 320-word copy loop and then programs the blitter registers.
+- `loop_until_routine_returns_zero`: Calls a routine repeatedly, using each word it returns as the next loop value, until a zero is returned.
+- `setup_blit_table_entries`: Waits for the blitter, programs its control registers once, then fills a small grid of table entries.
+- `setup_blitter_copy_loop`: Waits for the blitter, sets its mask, control and modulo registers, then loops over a range of words.
+- `dispatch_asset_group_setup`: Calls three routines with the same arguments, then when a global flag is set, calls five more.
+- `run_command_table_entries`: Clears two globals and sets a table-state word, then walks a null-terminated list of entries.
+- `spawn_octopus_actor`: Toggles a global counter and, on every second call, allocates a slot from a global table and calls several routines.
+- `advance_until_routine_flags`: Calls a routine and advances a coordinate in steps of 16 while it is below 209.
+- `return_uninitialized_stack_value`: The routine is empty and returns an uninitialized value from the stack.
+- `initialize_entity_list`: Assigns a counter value to a global slot on first use, then loops sixteen times.
+- `initialize_object_slot_fields`: Advances a global counter and replaces a global pointer with the value in A3 around three routine calls.
+- `spawn_pfish_actor`: Toggles a global counter and, on every second call, takes a slot from a global table and calls several routines.
+- `set_object_state_fields`: Advances a global counter and replaces a global pointer with the value in A3 after calling one routine.
+- `append_spawn_entry_set_fields`: When a toggle flag is set and an argument is non-zero, reads a word from a pointer and calls a routine.
+- `append_spawn_entry_set_fields_2`: Reads a word from a pointer and calls a routine.
+- `append_spawn_entry_direct`: Appends a 10-byte entry to a global table without checking any routine result, then sets record fields to 1, 0, minus one, two positions and 200.
+- `append_position_entry_set_fields`: Appends a 10-byte table entry built from two incoming word arguments with a position offset of 16, then calls routines and sets record fields to 1, 0 and minus one, copies two global positions into fields, sets a field to 200 and sets a flag word to 1.
+- `initialize_entity_properties`: Advances a global counter and replaces a global pointer with the value in A3 around two routine calls.
+- `advance_global_counter`: Advances a global counter and replaces a global pointer with the value in a register.
+- `search_spawn_table_for_value`: Returns minus one if a value built from an argument and a sign flag matches an entry of a global table, and zero otherwise.
+- `return_minus_one`: Returns the value minus one in the result register, without other work.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `spawn_bigfishy_actor`: Toggles a global counter and, on every second call, takes a slot from a global table and calls several routines.
+- `call_and_return_pair`: Calls one routine and returns the values held in the two result registers as a 64-bit result.
+- `initialize_expseu_pointer`: Calls two routines, then assigns the next counter value to a global slot if it is still zero and advances the counter by four.
+- `wait_pair_then_set_constants`: Calls a routine in a loop while either of two words at the pointer is non-zero.
+- `wait_pair_then_set_constants_2`: Calls a routine in a loop while either of two words at the pointer is non-zero.
+- `decode_tile_map_data`: Decodes a run-length encoded tile map.
+- `clear_byte_globals`: Sets seven adjacent byte-sized global variables to zero.
+- `scan_slots_and_reset_counters`: Walks three 28-byte slots of a global area.
+- `scan_cells_for_flag_bit`: Scans a global array of 16-bit cells for one whose looked-up value has a particular flag bit set, stopping at a fixed lower bound.
+- `handle_input_state_machine`: Reads an input status value and applies a signed step to a coordinate of the record, choosing a direction code by comparing signs.
+- `scan_actor_records_for_contact`: Scans a table of cell values and, depending on a mode flag, either checks actor state values and position bounds or walks a list of records.
+- `update_hardware_registers`: Modifies certain hardware registers including a color register, a video beam position register, and a CIA register.
+- `trigger_cell_in_range`: Scans a cell list for a byte between 4 and 6.
+- `check_pointer_bounds_and_state`: When a flag is set and a position value is non-negative, checks the byte at a pointer against 27 and loops calling a routine.
+- `clear_record_when_in_region`: Walks a list of entries from a global pointer and checks a byte threshold.
+- `check_collision_bounds`: Calls one routine when a flag word is zero or a table entry lacks a bit, and the record's horizontal and vertical positions fall within a window around the input record.
+- `search_table_for_short_match`: Scans a global table of pointers until it finds a null entry or an entry whose word at offset 94 equals the 16-bit input.
+- `return_empty_routine_2`: The routine performs no operations and immediately returns.
+- `update_lfsr_random_state`: Advances a global 32-bit shift-register state once for each bit of the input count, applying a feedback constant when a bit shifts out.
+- `reset_table_write_pointer`: Sets a global write pointer to the start of the global table, so later stores begin at the first entry.
+- `store_context_to_table`: Writes six values into the next six slots of a global table: the A0 word, four input registers, and a code address formed from a routine base and A1.
+- `search_global_table_entry`: Walks a global table of six-word entries until it reaches an entry whose first long equals the input value in D0, or a null entry.
+- `mark_record_and_dispatch_status`: If the word at offset 96 of the record reached through the input structure is zero, it sets that word to minus one and dispatches the handler when a status table matches the value 1.
+- `scan_status_table_value_1`: Scans a four-entry status table for the value 1 and calls the handler on a valid match.
+- `dispatch_handler_then_call_routine`: Calls the handler in the structure when the index in D1 is between 0 and 3, otherwise waits for a status bit to toggle.
+- `wait_status_bit_then_call`: Writes a fixed control value to a global location, busy-waits until a status bit clears and sets again, then calls one routine.
+- `dispatch_handler_mismatch_call`: Calls the handler in the structure when the byte at offset 34 differs from the low byte of D0 or a per-index global flag is set, then calls one routine.
+- `step_record_into_free_neighbour`: Moves the record by sixteen units in a direction chosen from a sign input, checking a neighbouring entry in a global table.
+- `step_record_when_neighbour_free`: If a global table entry behind the current pointer is negative, sets the record's position sixteen units back and marks the record with minus one.
+- `send_exec_io_request`: Stores two input registers into global variables and points an I/O request block at the global area with command code 37.
+- `abort_and_wait_io_request`: Calls two Exec library functions through pointers held in a global base: AbortIO first, then WaitIO. It cancels an outstanding I/O request and waits for it to finish.
+- `initialize_io_request`: Stores a fixed size value and zero into two fields of a global request block, copies the value passed in the data register into a third field, and then calls a routine through a pointer in the global table.
+- `call_check_i_o`: Wrapper that calls the exec library function CheckIO and returns its result to the caller.
+- `clear_global_data_block`: Zeroes a large global memory region by writing a zero byte and a zero word at each position while stepping forward through it until the counter runs past zero.
+- `clear_global_data_block_2`: Zeroes a large global memory region by writing a zero byte and a zero word at each position while stepping forward through it until the counter runs past zero.
+- `clear_global_memory_2`: Sets a range of bytes in a global memory area to zero.
+- `clear_global_data_block_3`: Zeroes a large global memory region by decrementing a counter and advancing two pointers until the counter reaches minus one, writing zero at each step.
+- `call_routine_in_nested_loops`: Copies a global 16-bit word into another global, then calls a routine in a nested loop that runs three passes, with each pass making as many calls as the high byte of that word.
+- `copy_strided_byte_block`: Copies fourteen bytes from a source pointer to a destination pointer, advancing each pointer by a register-supplied step after every byte.
+- `call_routine_six_times`: Calls the same routine six times in sequence and returns, with no other work between the calls.
+- `call_three_routines_in_order`: Calls three routines one after another and returns.
+- `call_sub_all_routine`: Calls one routine and returns.
+- `initialize_structure_fields_from_table`: Decrements a global counter, calls routines, then writes a value taken from a table indexed by a global variable into one field of a structure, zero into another field and seven into a third, and saves the structure pointer in a global variable.
+- `call_subroutine_indirect`: The routine executes a jump to another routine via an indirect call, then returns.
+- `store_register_between_calls`: Calls one routine, stores the value of the address register into a global variable, then calls a second routine and returns.
+- `store_register_and_increment`: Calls one routine, stores the value of the third data register into a global variable, then increments a separate global counter by one.
+- `initialize_seu_resource_once`: Saves its own entry address in a global variable, then compares a global flag with that address and, if they differ, sets the flag, points a global pointer at a data block and calls three routines.
+- `return_without_action_2`: Returns immediately without any work, so the routine is an empty stub.
+- `iterate_table_after_decrement`: Subtracts two from a byte in a structure addressed by a base register, then walks seven twelve-byte entries of the global data block, storing each entry pointer in a global variable and calling a routine for each one.
+- `iterate_table_entries`: Walks seven twelve-byte entries of a global data block, storing each entry's pointer in a global variable and calling a routine for each one.
+- `update_counter_state`: Steps a signed 16-bit counter in a structure toward zero.
+- `compute_stepped_position`: Works out a new position from a target and a current value, a signed step and a threshold table addressed by the A0 register.
+- `compute_threshold_step_position`: Works out a new position from a target value, a current value, a signed step and a threshold table addressed by the A0 register.
+- `adjust_step_against_threshold`: Adjusts a signed step by comparing a distance with a threshold from a table indexed by a register value, then returns the adjusted step added to a base value.
+- `adjust_step_from_table_entry`: Adjusts a signed step by checking a distance against a threshold table entry, then returns the adjusted step added to a base value.
+- `subtract_step_from_offset`: Subtracts one register input from another, then adds a third register input and returns the sum.
+- `combine_signed_step_with_base`: Negates the second register input when the first is zero or positive, then returns the sum of the first input, that possibly negated second input and a third input.
+- `sum_three_register_inputs`: Returns the sum of three register inputs with no conditions.
+- `do_nothing_routine_2`: The routine is empty and performs no operations or data manipulations.
+- `run_per_frame_update_loop`: Runs an endless per-frame loop that copies one display entry into a buffer and calls scroll, object and sprite routines in a fixed sequence.
+- `update_scroll_row_buffer`: Calls one routine, then when a global flag is set it derives a row index from a scroll position and writes a row count and two pointers into a global buffer.
+- `set_flag_if_difference_large`: Subtracts one global word from another and sets a global flag to one when the difference is greater than one, otherwise to zero.
+- `update_camera_origin`: Converts the camera position into the tile column, tile row offset and map offset the scroll and object code use.
+- `store_constant_when_active`: If a global variable is non-zero, it stores the constant 303 in another global; otherwise it leaves that global unchanged.
+- `wait_next_frame`: Clears the frame flag, runs the per-frame sound and sprite-sort work, then waits until the copper interrupt server sets the flag again before updating the display buffers.
+- `initialize_node_table_entries`: When a global flag is set, walks forty-six entries of a global table, calling a routine for each one, storing each entry pointer and writing zero plus two fixed constant words into the node it points to.
+- `place_entry_after_bit_checks`: Returns unless a global flag is set and no earlier work is pending.
+- `update_state_counter_2`: When a global flag is set, it reduces a countdown by a step chosen from bit flags in another global.
+- `store_words_in_ring_buffer`: Stores two words from fixed global addresses into a 128-byte array at the current index, then advances the index by four and wraps it within zero to 127.
+- `update_position_from_delta`: When a global counter is non-negative, it copies a saved word and, if a pending flag is set, adds a delta computed from two stored values to a position word, clears the flag and calls routines to process the result.
+- `shift_structure_longword_fields`: Copies two longword fields of a structure forward by eight bytes, then moves the next two longword fields into their places.
+- `reset_state_flags`: Clears several global state flags.
+- `reset_state_flags_2`: Clears several global state flags.
+- `clamp_accumulator_and_store_state`: Adds a global delta to an accumulator and clamps it between zero and a limit global, then stores the value and derived nibble and difference fields in a structure.
+- `update_scroll_position`: Clamps a scroll offset between zero and a global limit, updates the stored difference and related flags, and wraps the resulting tile row and column values into a fixed range before storing them in the scroll structure.
+- `advance_counter_and_clear_state`: Increments a global counter, capping it at four, then clears five related global variables to zero.
+- `set_flag_and_show_object_2`: Sets a global flag to all ones, writes one into a field of the structure pointed to by a global pointer and one into a second field at a further offset, then calls a routine that the facts identify as show display object and returns with the data registers unchanged.
+- `fetch_word_from_masked_table`: Reads a word from a table addressed by the A1 register, indexed by the word at the A0 register with its sign bit cleared, and returns that word.
+- `do_nothing_stub`: This routine is empty, as indicated by the immediate return and lack of instructions.
+- `check_flags_and_call_routines`: Checks a global flag: when it is zero it calls two routines; when it is set and a second global is zero it calls one routine and, if a third global is below one, calls another.
+- `store_shifted_combined_word`: Calls two routines, then stores a word combined with itself shifted left by four bits into the location addressed by a pointer held in the frame structure.
+- `process_entity_state`: When a global flag is clear and a value returned by a routine is below 253 with a pending field set, it clears that field, copies two fields into a second pair, stores one into a table slot chosen by the other, then calls routines and clears another field.
+- `adjust_position_from_flag_bits`: When a mode value equals two, it picks a step of minus two or plus two from two bits of a global flag byte.
+- `call_five_routines_in_order`: Calls five routines in sequence and returns, with no other work between the calls.
+- `clamp_sum_and_decrement`: Adds two global values when the first is non-zero and caps the result at 303; when the first is zero the cap is applied directly.
+- `check_event_counter_and_dispatch`: Decrements a global countdown while a flag is clear.
+- `perform_empty_routine`: This routine performs no operations and simply returns.
+- `check_position_distance_limits`: When a global flag is set, it measures the absolute distances of two coordinates from fixed targets of 150 and 100 and compares them with limits of 600 and 500.
+- `clear_global_word_table`: Writes zero to 32 consecutive words of a global table, one after another.
+- `check_and_reset_flags`: When a global flag is zero, it calls a routine, then calls another and sets a global to two when a structure field is non-zero.
+- `fill_table_pointers_and_values`: Computes a starting address from two stored values and a global table, then fills 22 consecutive entries.
+- `compute_offset_and_row_count`: Computes a memory pointer from scroll values and a row offset and stores it in a global.
+- `apply_masked_table_loop`: Loops over the count held in the data register, reading a word from a table and stepping the table pointer by a stride.
+- `copy_seven_words_from_entry`: Copies seven words from a global table entry selected by the data register, where each entry is fourteen bytes, to the start of the same table.
+- `copy_table_start_to_entry`: Copies seven words from the start of a global table into the table entry selected by the data register, where each entry is fourteen bytes.
+- `setup_display_and_run_frames`: Initializes several state variables, then makes a series of calls, each preceded by writes of word pairs to fixed locations.
+- `forward_call_to_routine`: Calls one routine and returns, so it only forwards the call with no other work.
+- `toggle_global_flag`: Inverts every bit of a global variable, so zero becomes all ones and all ones becomes zero.
+- `loop_until_value_matches`: Calls a routine repeatedly until its return value matches a value held in the data register, then calls it again until the return value no longer matches a second value held in the data register.
+- `update_state_counters`: When a global value is zero and a flag is set, a delay counter counts down first.
+- `initialize_pointer_arrays`: Stores the address of a global variable into several pointer locations and calls routines.
+- `fill_structure_with_constant_pairs`: Fills a structure with a fixed list of long-word constants, with one set chosen by a flag, then appends further constant pairs and an end marker.
+- `wait_for_status_bit_cycle`: Stores a fixed value into a global, waits while bit 6 of a status location is set, then waits until it is set again.
+- `fill_words_with_increments`: Writes a running sequence of word values into a table, four words per iteration: a counter, the high half of a 32-bit value, the counter plus two, and the low half of that value.
+- `call_three_routines_per_pass`: When a global flag is zero it calls three routines once; otherwise it repeats those three calls three times.
+- `fill_word_table_by_index`: Fills sixteen consecutive words of a global table with values equal to each index times 320, with bit zero set.
+- `fill_table_with_step`: Writes 272 consecutive longword values into a global table, starting at zero, with each value 220 more than the one before.
+- `clear_flag_and_invoke_callback`: When a flag is set, it clears the flag and calls a function pointer taken from a global table twice, once with no argument and once with a saved register value.
+- `register_two_interrupt_servers`: Clears two blocks of twenty-two bytes in global memory, then fills two interrupt server structures with the values 9 and 2 in fixed fields and a handler pointer, registering each one through the Exec AddIntServer call.
+- `update_loop_counters_and_wait`: Sets a global byte to all ones, sets a bit in one counter, increments two counters, then waits until the byte rises to at least five, calling routines during the wait.
+- `update_global_flags`: Sets one global byte to all ones, sets a bit in a second global and increments a third global.
+- `clear_flag_and_call_callback`: When a flag is non-zero, it clears the flag and calls a function pointer from a global table.
+- `add_priority_interrupt_server`: Calls one routine, clears a field of a server structure, sets its priority to 127 and its type to two, points it at a global block and sets its handler to another routine, then registers it through the Exec AddIntServer call.
+- `set_flag_bit_and_call`: Sets bit zero of one global, clears another global, then calls two routines in sequence and returns the data register unchanged.
+- `set_or_clear_bitmap_bit`: Sets or clears one bit in a byte-addressed bitmap.
+- `clear_bit_at_offset`: Clears one bit, selected by the low three bits of the D2 register, in the byte at an offset from the A0 base given by the D1 register.
+- `lookup_key_character`: Clears a global byte, then for an even input value loads the byte at an index of half that value from a table starting at the global block.
+- `execute_loop_sequence`: Executes a series of calls to another routine while incrementing and decrementing registers.
+- `initialize_game_parameters`: Runs a fixed sequence of initialization calls, choosing between two calls by a flag.
+- `initialize_sequence_table`: Writes seven six-word entries into a global table.
+- `write_incrementing_sequence`: Writes three seven-word entries into a global table.
+- `read_shifted_masked_longword`: Reads a longword at offset four from the A6 base, shifts it right by eight bits, applies a mask that keeps bits zero to eight and sixteen to thirty-one, and returns the result.
+- `call_routines_and_clear_flag`: Calls two routines, calls a third when a global flag is zero, calls one more routine, and then clears a second global flag to zero.
+- `swap_pointers_and_copy_value`: Swaps two global pointer variables, then copies the longword at offset four from the old first pointer into a field of the frame structure.
+- `swap_two_globals`: Exchanges the values of two global longwords.
+- `update_timer_counters`: When a global flag is clear, it decrements a non-zero countdown and subtracts a step from a value when that countdown is negative or has just run out.
+- `call_routines_then_clear_globals`: Calls a routine, then four more when a global flag is zero, then calls two further routines and clears two globals to zero.
+- `advance_state_then_run_frames`: Adjusts pending step counters and a state value, then either returns early or sets state fields and makes a series of calls that write fixed word pairs to locations before entering the per-frame loop that copies a display entry and calls routines in order.
+- `advance_pending_step_counter`: When a pending flag is set, it either raises a ready flag directly or, when another flag is set, increments a step counter and raises the ready flag when the counter reaches three, resetting it to two.
+- `set_ready_state_and_call`: Sets a ready flag, clears a pending flag, sets a state value to five and calls two routines.
+- `setup_frame_states_and_loop`: Makes a series of calls, each preceded by writes of fixed word pairs to locations, and then runs the per-frame loop that copies a display entry and calls routines in order, with some calls chosen by flags.
+- `run_frame_loop_with_flags`: Runs the per-frame loop, which copies a display entry each frame and makes calls chosen by global flags, writing fixed word pairs before each call.
+- `branch_then_run_frame_loop`: Branches on the sign of a global.
+- `reset_state_and_call_routines`: Calls one routine, clears a state variable, then calls three routines.
+- `find_table_entry_and_dispatch`: Calls a routine, then scans a global table in sixteen-byte entries for one whose stored longword matches a global pointer value.
+- `copy_nested_longword_blocks`: Copies longword data from a source pointer to a destination buffer in nested loops.
+- `double_byte_table`: Walks a global byte array and writes each byte, doubled, as a word into a global word array at the same position.
+- `call_routines_if_flag_zero`: When a memory flag is zero it calls a routine, then calls three more routines if a second global is also zero.
+- `copy_state_and_reset_fields`: When two global flags are clear and a routine returns a non-zero check, it copies two longwords from the source structure to the destination, clears a longword in the destination, sets a global to minus one and stores ten into a field of the source.
+- `check_coordinate_proximity`: Checks whether a flag bit in a byte is set, then compares two pairs of coordinates against thresholds of 25 and 6 by absolute difference.
+- `update_state_coordinates`: Calls a routine, then branches on a register value.
+- `compute_movement_delta`: When a flag is clear, it sets a state value to two and, unless an early distance check returns, computes a step of plus or minus 20 from the sign of a value.
+- `call_two_routines_in_order`: Calls two routines in order and returns.
+- `poll_routine_until_threshold`: Calls a routine repeatedly until its return value plus two reaches 44, then repeats this for seventeen passes, or fourteen when a flag is set.
+- `copy_sparse_words_to_buffer`: Copies word values from a source table at widely spaced offsets into a destination buffer at evenly spaced positions, in one long run of paired assignments.
+- `build_trampoline_code_block`: Writes a short run of machine instructions into a memory buffer: it saves A0 on the stack, loads A0 with the address of a global block, calls through A0, then restores A0, with no-op padding.
+- `wait_until_value_reaches`: Reads a value from a routine, then either calls a routine with that value plus four or, when a flag is set, masks a status word.
+- `call_then_wait_for_threshold`: Calls one routine, then calls a second routine repeatedly until its return value reaches the threshold in the data register.
+- `update_control_word_from_input`: Calls a routine picked from a global table by a mode value, then rebuilds a control word from input bits and the previous control word.
+- `decrement_countdown_and_store_flags`: Decrements a countdown; when it has run out it resets it to ten and sets bit fourteen of a control word.
+- `check_flags_without_effect`: Tests two flags and returns in every branch, so it has no visible effect.
+- `check_ciaa_input`: Reads or modifies the CIAA Port A register to check or update hardware input or disk status.
+- `check_input_status`: Checks if certain global flags or a hardware register value (CIAA Port A) meet a specific condition and returns.
+- `check_ciaa_port_a_status`: Reads the CIAA Port A register to check hardware input status.
+- `call_routine_and_set_byte`: When two flags meet a condition, it calls a routine and sets a global byte to seven; otherwise it returns unchanged.
+- `call_routine_then_set_byte`: Calls one routine, then sets a global byte to seven and returns.
+- `empty_stub_routine`: This routine is empty and performs no operations, simply returning control to the caller.
+- `delay_then_clear_high_bit`: Clears the top bit of a global byte, runs a short countdown loop of seven steps, clears the top bit again and then stores an all-ones value into the global.
+- `pulse_bit_in_byte`: Repeatedly sets and then clears one bit, selected by the low three bits of a register, in a byte addressed by the A4 register, for a count taken from the data register.
+- `update_timer_counter`: When a flag is set, it decrements a timer and, when the timer reaches zero, resets it to eight and advances a phase counter.
+- `compute_viewport_offsets`: Calculates horizontal and vertical screen offsets based on input flags and global state, adjusting a pointer into a global table using a scaling factor.
+- `reset_flag_then_call_two`: Clears a global flag, then calls two routines in order and returns.
+- `clamp_offset_between_bounds`: Computes an offset by comparing a global with a structure field, makes adjustments under flag conditions, and clamps the result between zero and 195.
+- `check_condition_and_copy_pointers`: Calls a routine, then if a register value is non-zero calls another and, if it is still non-zero, sets a global flag to one and calls a third routine.
+- `update_position_accumulator`: Tests eight bits of a mask derived from a global word and a register value.
+- `check_bit_flags_loop`: Tests eight bits of a mask derived from a global word and a register value and calls a routine for each set bit.
+- `check_bit_flags_and_update`: Tests eight bits of a mask derived from a global word and a register value and calls a routine for each set bit.
+- `player_walk_input`: Adds or subtracts the walking acceleration to the player's horizontal speed from the left and right input bits, using a faster value in the alternative movement mode, then handles the jump button.
+- `scale_input_by_constants`: Divides two inputs by 200, then multiplies each quotient by a constant, 160 for the first and 190 for the second, and packs the two results into one longword.
+- `call_routine_within_range`: Calls a routine only when a value is non-zero and an input passes range tests against a limit derived from a global.
+- `check_tile_collision_bounds`: Walks a sequence of tile entries through a table, testing status bits and comparing a computed position against threshold values.
+- `compute_tile_collision_mask`: Returns all ones when a value is below one.
+- `tiny_moveq`: Small routine of 1 instruction that loads 0 into d3.
+- `scan_object_list_for_match`: Computes a starting table pointer from two coordinates and calls a routine.
+- `evaluate_tile_collision`: Walks a list of tile indices until it reaches a negative entry.
+- `process_object_table_state`: Iterates an object table, testing per-object state values and tile codes, and dispatches to routines that act on each object.
+- `call_two_routines_if_clear`: When one global flag is set and a second global flag is zero, it calls two routines; otherwise it returns without action.
+- `process_event_packet`: Reads an event code from a pointer and branches on it.
+- `loop_until_flag_then_record`: Calls a routine up to five times.
+- `clear_global_longword_block`: Writes zero to 25 consecutive longwords of a global block, in five groups of five.
+- `return_immediately_5`: The routine is empty and returns control to the caller immediately without performing any operations.
+- `poll_values_until_stable`: Calls two routines, then repeatedly reads a value from a routine four times per pass.
+- `return_word_at_pointer`: Returns the word stored at the address held in the A3 register.
+- `tiny_exg_exg_rts`: Small routine of 3 instructions that exchanges d0 and d2, then exchanges d1 and d3, then returns.
+- `store_four_words`: Writes the four register words D0 to D3 into four consecutive words at the address held in the A3 register.
+- `replace_zeros_with_minus_one`: Walks five consecutive longwords at the A3 address and replaces each zero with minus one, leaving other values unchanged.
+- `clear_minus_one_entries`: Walks five consecutive longwords at the A3 address and replaces each minus-one value with zero.
+- `check_flag_and_dispatch`: When one global flag is zero, a bit test passes and a second global is zero, it calls two routines.
+- `execute_unnamed_routine`: This routine performs no operations other than returning.
+- `check_collision_state`: When a global flag is set, it compares a value against a threshold and sets a state word to one or two.
+- `swap_global_word_arrays`: Swaps 6240 words between two global word arrays, element by element.
+- `update_input_state_flags`: When a global flag is set, it clears several input state flags and runs a cooldown counter that stops at zero, then calls a routine.
+- `update_player_motion_state`: Calls routines that update motion, copies a speed value and an offset from a table, and steps a sequence index through five entries using a countdown of twenty steps, loading a table entry for each step.
+- `compare_motion_and_set_state`: When a motion value is negative or a flag bit is clear, it compares a stored value with another structure's value.
+- `reset_fields_and_copy_longword`: Clears two fields and a flag, sets a state field to two, copies a longword from the source structure, and then subtracts the difference of two fields from a position field when the state field is non-zero.
+- `update_object_state_2`: Calls a routine, subtracts a fixed amount from a longword field of one structure, clears a global flag, sets a field to one and a second field to two, sets another field to four and copies a global longword into a field.
+- `execute_subroutine`: This routine executes a series of instructions without any visible effect on registers or memory in the pseudo-code.
+- `advance_sequence_state_machine`: Copies two global values into place and clears a flag, then advances a phase counter through several countdown phases.
+- `update_state_if_changed`: When a flag is clear, it reads one global table value and, if it differs from the stored value, stores the new value and sets a state flag to two.
+- `update_stored_value_if_changed`: Reads a global value, and if it differs from the stored value, stores the new value and sets a state flag to two.
+- `clear_structure_byte_block`: Writes zero to 6570 consecutive bytes of a structure, starting at a fixed offset from the A5 base.
+- `init_linked_structure_block`: Initializes 200 consecutive 96-byte structures in a block addressed from the A5 base.
+- `fill_pointer_table_stride`: Fills 120 consecutive longword entries with addresses of a global block, each address 24 bytes after the previous one.
+- `store_derived_object_fields`: Looks up a structure through a global table indexed by a register and stores two longwords into it.
+- `fill_entry_grid_fields`: Fills a grid of structure entries from a global table.
+- `reset_sprite_position`: Validates an index and updates position, velocity, and color fields for two sprite objects pointed to by a base table.
+- `store_inputs_and_decrement_counters`: Stores two input words into two global variables, then stores two other inputs, each reduced by one, into a pair of global counters.
+- `calculate_object_velocity`: Calculates velocity components for two objects found through a pointer table.
+- `add_velocity_to_position`: Adds two velocity inputs to the position fields of two object structures found through a pointer table indexed by a register value.
+- `return_immediately_6`: The routine exits immediately without performing any operations.
+- `show_display_object`: Makes display object N visible in both display buffers.
+- `hide_display_object`: Hides display object N in both display buffers and marks it for erasing.
+- `clear_object_table_entry`: Writes zero to a longword field at a fixed offset in two object structures found through a pointer table indexed by a register.
+- `set_object_state_flags`: Copies a longword from a global table, indexed by a register, into a field of two object structures found through a pointer table.
+- `store_ordered_bounds`: Orders two value pairs so that the smaller value of each pair comes first, then writes both pairs into a structure found through a pointer table.
+- `update_pointer_offset`: When a register value is non-zero, it calls routines and, if a pointer value is below that register value, stores the register value at an offset of four in two structures, calling two routines between the writes.
+- `draw_display_list`: Walks the linked display list of the buffer being drawn and draws every visible object, counting the objects drawn and their blit sizes.
+- `clip_and_position_display_object`: Updates one display object: it zeroes a flag field, copies its position and offset fields, and computes a screen position relative to the camera offsets.
+- `copy_nonzero_bytes_by_row`: Sets a source pointer from an object field, then copies non-zero bytes row by row into a buffer.
+- `fill_rect_with_byte`: Fills a rectangle in a buffer with a byte value taken from a structure field.
+- `clear_rectangular_buffer`: Writes zero to a rectangle of bytes in a buffer, using its width, height and row stride fields from a structure.
+- `cull_object_list_to_screen`: Walks a linked list of object records and calls routines for each.
+- `queue_nonzero_rows_for_blit`: Walks rows of an object's buffer.
+- `queue_row_blits_from_buffer`: Walks rows of an object's buffer with a stride taken from a global table.
+- `blit_entries_from_pointer_list`: Walks a pointer list of entries.
+- `blit_pending_rows`: Clears a pending flag and, when it was set, walks rows of a buffer with nested loops, clearing non-zero bytes and programming the blitter for each run.
+- `clear_blitter_control_blocks`: Writes zero to two 16-bit fields in each of eight consecutive 24-byte control blocks in a global block.
+- `set_blit_control_block`: Fills one 24-byte blitter control block selected by a register index.
+- `write_blit_control_entry`: Writes one 24-byte entry at a base pointer, using the same fields as the neighbouring blit control setter: a marker of minus one, a pointer, derived size values, a row stride and a flag value.
+- `queue_table_entries_in_window`: Walks a global table of 24-byte entries, reads their positions and sizes, and for entries inside a window of 312 horizontally and 64 to 470 vertically it calls a routine and writes blit pointer and size values into the block list.
+- `queue_object_list_in_window`: Walks a list of object entries and, for those inside a window of 312 horizontally and 64 to 470 vertically, calls a routine and writes blit pointer and size values into the block list.
+- `shift_in_table_sign_bit`: Takes the low byte of a word from a global table, selected by a register index, and places its sign bit in the top bit of the result.
+- `store_entry_value_and_count`: Writes a word into one field of a 24-byte global table entry selected by the data register, and writes a word one greater than a second input into another field of that entry.
+- `store_value_count_at_offset`: Writes a word at a byte offset given by the data register in a global block, and writes a word one greater than a second input two bytes further on.
+- `update_entity_offset_fields`: Writes a word to a field at a register offset plus 12 within a structure, and stores one more than a second input at a register offset plus 14.
+- `clear_entry_word`: Writes zero to a word field at the start of a 24-byte entry in a global table, selected by the data register.
+- `clear_word_at_offset`: Writes zero to a word located at the base address held in A0 plus the data register offset.
+- `set_global_word_minus_one`: Writes an all-ones word at a global offset given by the data register.
+- `write_minus_one_at_offset`: Writes an all-ones word at the base address in A0 plus the data register offset.
+- `update_entry_value_and_size`: Stores a longword into a 24-byte entry selected by the data register.
+- `update_value_size_at_offset`: Stores a longword and, when a second input is non-negative and changed, updates a value field and a size field at a byte offset given by the data register.
+- `update_object_state`: Stores a long value into the structure at a fixed field.
+- `set_indexed_byte_to_ff`: Writes the all-ones byte into a global table entry selected by an index register; entries are 24 bytes apart.
+- `clear_indexed_structure_word`: Zeroes a 16-bit field of a structure, located from a base pointer, an index register and a fixed field offset.
+- `fill_table_with_swapped_counter`: Walks a global table of words, writing a counter into each entry with its two bytes swapped and incrementing the counter each step.
+- `initialize_sprite_entry`: Fills a 50-byte entry of a global sprite table at an index: stores pointers, width and height values, flag words and cleared counters, computes derived bottom and size fields, then calls one unnamed routine to finish.
+- `build_copper_list`: Writes copper instruction words into a buffer: a header, rows of paired hardware register words for each line derived from the structure's dimensions, and a terminator, then stores the buffer pointers back into the structure and calls one unnamed routine.
+- `store_entry_word_pair`: Stores two input words into fixed fields of an indexed 50-byte entry in a global table, then calls one unnamed routine.
+- `set_sprite_object_position`: Stores a copper-sprite object's world position, converts it to screen coordinates against the camera and passes it on as the object's sprite event position.
+- `set_entry_index_rebuild_list`: If the new index is between zero and forty and differs from the stored one, it saves the index, recomputes a derived offset and writes paired hardware words into a linked buffer before calling an unnamed routine.
+- `update_entry_index_direct`: Same logic as the indexed variant but uses the index register directly as the entry offset.
+- `clear_indexed_table_entry`: Writes a zero word to the first field of an indexed 50-byte entry in a global table.
+- `set_indexed_entry_all_ones`: Writes the all-ones word into the first field of an indexed 50-byte entry in a global table.
+- `program_blitter_pair_rows`: When a counter is zero, fills a table of word pairs and then waits for the blitter to go idle, sets its mask and size registers and loops over programming its channel pointers for each row pair before calling an unnamed routine.
+- `initialize_global_setup_block`: Stores a set of fixed constant words into global variables and copies two input arguments into neighbouring globals.
+- `fill_sprite_data_table`: Writes a fixed list of 32-bit hardware word pairs for each row in a buffer, the row count coming from the input structure.
+- `dispatch_on_negative_flags`: Tests several global words and bytes for a negative sign or a particular value, and calls an unnamed routine for each condition that holds.
+- `clear_flag_sign_call`: Clears the sign bit of one global word and then calls an unnamed routine.
+- `copy_rotated_table_rows`: Repeatedly copies eight bytes from a global table at a stride of ten into a destination buffer at a stride of 120 per row.
+- `clear_second_flag_sign`: Clears the sign bit of a second global word and then calls an unnamed routine.
+- `copy_rotated_nibble_columns`: Clears the sign bit of a global longword, then for eight rounds rotates it by four bits and copies fifteen bytes at a stride of ten from a global table into a column of a destination at a stride of 120.
+- `copy_nibble_columns_second_source`: Performs the same column copy as the neighbouring routine but rotates a different global longword as its index source and does not clear any flag.
+- `clear_third_flag_sign`: Clears the sign bit of a third global word and then calls an unnamed routine.
+- `clear_fourth_flag_sign`: Clears the sign bit of a fourth global word and then calls an unnamed routine.
+- `copy_long_table_with_stride`: Clears the sign bit of a fifth global word, then copies sixty longwords from a global table into a destination, advancing the destination by thirty bytes per copy.
+- `reset_flag_words_to_sign`: Sets the high bit of two flag words and a flag longword, and clears one global word and another flag word.
+- `set_five_flag_sign_bits`: Sets the high bit of five global flag words and leaves their other bits unchanged.
+- `bcd_add_into_digit_array`: Adds a packed-decimal value byte by byte into a global digit array from its low end, using decimal adjustment and carry propagation over three bytes, then sets the sign bit of a flag longword.
+- `bcd_subtract_and_update_flag`: When a mode word is zero, subtracts a packed-decimal value from a two-byte global digit array, copies a second global word into a flag word and sets or clears the sign bit of a counter depending on a third word.
+- `bcd_add_and_clamp_counter`: Adds a packed-decimal value into a two-byte global digit array, then clamps a counter word to a maximum of nine and sets its sign bit.
+- `bcd_subtract_one_and_flag`: When a mode word is zero, may reload a second flag word from a third one, subtracts one from a packed-decimal digit array, then sets or clears the sign bit of the second flag depending on another word.
+- `bcd_add_clamp_second_counter`: Adds a packed-decimal value into a two-byte global digit array, then clamps a second counter word to a maximum of nine and sets its sign bit.
+- `bcd_subtract_set_sign_flag`: Subtracts a packed-decimal value from a two-byte global digit array with borrow propagation, then sets the sign bit of a flag word.
+- `bcd_add_set_sign_flag`: Adds a packed-decimal value into a two-byte global digit array with carry propagation, then sets the sign bit of a flag word.
+- `bcd_subtract_mark_flag`: Subtracts a packed-decimal value from a two-byte global digit array with borrow propagation, then sets the sign bit of another flag word.
+- `bcd_add_mark_flag`: Adds a packed-decimal value into a two-byte global digit array with carry propagation, then sets the sign bit of another flag word.
+- `call_routine_eight_times`: Calls one unnamed routine eight times in a loop.
+- `run_conditional_update_sequence`: Calls two unnamed routines, then calls four more only when two global flags are both zero, and finally calls two more routines.
+- `scale_word_by_entry_size`: Returns the low word of its input multiplied by 28, converting an index into a byte offset for 28-byte table entries.
+- `initialize_object_entry_fields`: Fills one 28-byte entry of a table at a base address selected by an index: stores a long pointer pair, two input words, a flag byte derived from another input and two fields set to all ones, then writes a fixed value into a global counter.
+- `store_parallel_table_fields`: Stores an input word and a pointer-plus-two value into two parallel tables at an index offset, updates a second entry's fields in the same way, and writes a fixed value into a global counter.
+- `set_object_entry_flags`: Sets fields of one 28-byte entry: a flag word derived from an input by halving it and setting the low bit, a second word from another input and a final field set to all ones.
+- `set_sprite_event_position`: Writes the vertical line and horizontal position of copper sprite event N and marks the event list for re-sorting.
+- `clear_entry_word_if_set`: Looks up a word in a 28-byte entry of a table at an index; if it is nonzero, zeroes it and sets a global counter to two.
+- `clear_indexed_word_if_set`: Clears a word in a table at a plain index offset if it is nonzero, and sets a global counter to two when it does.
+- `set_word_negative_if_zero`: If a word in a table at an index offset is zero, sets it to minus one and sets a global counter to two.
+- `sort_sprite_events`: When the event list has changed, sorts the enabled copper sprite events by screen line into the chain the copper list follows, otherwise walks the existing order.
+- `write_linked_entry_copper_words`: Walks a linked list of display entries, writing pairs of hardware words for each entry into a buffer, including a fixed control word and position values taken from the entries, and follows child links until the list ends.
+- `blit_linked_entry_rows`: Walks a linked list of entries and, for each one inside a vertical limit, waits for the blitter to go idle, programs its control, mask and size registers, and updates the entry's buffer pointers before moving on.
+- `fill_control_pair_table`: Clears a global word, sets a global longword and a counter word, then fills 349 pairs of table words: a control word that is either one of two fixed control words depending on the running value, followed by a value that increases by 256 each pair.
+- `init_entry_free_list`: Initialises a free list of 48 sixteen-byte entries in a global block: zeroes each entry's first word, links each entry to the next, and stores the list head pointer.
+- `allocate_and_fill_display_entry`: Takes entries from two free lists in turn and fills each with the input value, a pointer, a position derived by dividing the input by a global divisor, and a derived offset, then returns each entry to its list head.
+- `tick_entry_countdowns`: Walks a linked list of entries whose first word is nonzero, counting down a per-entry counter.
+- `step_entry_stream_word`: Reads the next word from a stream attached to a structure.
+- `init_second_entry_free_list`: Initialises a second free list of 100 eighteen-byte entries in a global block, zeroing the first word of each and linking each entry to the next, and stores the list head pointer.
+- `allocate_and_fill_second_entry`: Takes an entry from the second free list and fills it using the input value, a pointer, a derived position and a count from another routine, then repeats the fill on a further list and returns the entries.
+- `pop_entry_from_second_list`: Removes the head entry from the second free list, copies its words and longwords into the structure passed in, and clears its first word; returns zero.
+- `tick_second_list_countdowns`: Walks the second entry chain, decrementing a per-entry countdown; when one expires it reloads the countdown and calls an unnamed routine with a running value, after first calling another routine.
+- `advance_entry_counter_and_mark`: Advances a counter in an entry by two, clamping it to a maximum; writes it to the entry's buffer word and, when the entry's position falls inside a bounded window, marks the word and programs the blitter with its pointer and offset.
+- `setup_blitter_masks_and_modulo`: Waits for the blitter to be idle, sets its first and last word masks to all ones, writes its A and D modulo registers and writes its control register for a copy.
+- `step_multi_state_sequencer`: Runs one step of a multi-state sequencer.
+- `update_stored_value_on_change`: Compares an input word with a stored word in the structure; when it changes it stores the new value and sets a state flag.
+- `reset_state_and_load_value`: Clears two structure words and a global state word, sets a step word to two, copies a longword from the input structure into the object, and then subtracts a stored difference from a counter when the step word is nonzero.
+- `store_mode_and_dispatch`: Calls one unnamed routine when a global state word equals one; otherwise calls another, and a third only when the input word is nonzero.
+- `find_marker_word_row`: Scans a global word table backwards for the value 84.
+- `run_numbered_state_machine`: Dispatches on paired state codes across many numbered states.
+- `compute_scaled_offset_value`: Looks up a signed byte from a global table at a position given by a stored word.
+- `compare_position_direction_bits`: Compares two pairs of stored position words and stores a direction code in a global: a value when the first pair differs by sign, with flag bits added for the second pair.
+- `evaluate_delta_thresholds_state`: Checks a mode byte and a state word, then compares a computed delta against thresholds to set a state code.
+- `claim_free_slot_or_retry`: When a global flag is clear: if another flag is set, finds the first 28-byte slot whose word is zero, marks it with all ones and calls through a pointer held in a global structure.
+- `select_and_show_display_object`: Scans a table of object indices for one whose slot word is zero, computes its placement from global values and the input structure, and calls show_display_object to make it visible in both display buffers.
+- `set_mode_five_and_call`: Sets a mode word in the structure to five and calls one unnamed routine.
+- `update_state_on_flag_bits`: Checks several global flag bits.
+- `dispatch_state_with_blit_update`: Checks a global enable word and several state codes.
+- `set_object_position_from_globals`: When a global flag is clear and an object pointer is set, copies one word field into another and stores two position values taken from global coordinates offset by fixed amounts.
+- `initialize_object_sequence_state`: When a counter is zero, sets it to 45 and stores two position words and two constants.
+- `locate_marker_and_set_row`: When a row word is negative, searches two words ahead of a pointer for the value 84; when found, derives a row index by a modulo of a stored value and stores it with a column value.
+- `nop_padding_sequence`: This routine is empty and consists only of instructions that perform no operation.
+- `check_points_within_tolerance`: Computes the absolute horizontal and vertical differences between two coordinate pairs and tests each against a tolerance.
+- `reset_and_run_triple_calls`: Clears a global word, then calls three unnamed routines once, or three times per pass for three passes when a mode word is nonzero.
+- `update_countdown_and_scan_entries`: Counts down a global word and, when it is idle, checks an object's position against a window.
+- `copy_word_between_calls`: Calls an unnamed routine, copies one global word into another, then calls a second unnamed routine.
+- `reset_and_hide_display_object`: Clears a global counter word and calls hide_display_object to hide a display object in both display buffers.
+- `tick_nine_slot_countdowns`: When a flag is set, walks ten three-word slots and counts each nonzero countdown down by one.
+- `handle_window_range_entry`: If the input word lies between 160 and 182, stores a type code and a pointer in a structure, calls an unnamed routine and issues a command through a function pointer held in a global structure when a slot check passes.
+- `countdown_and_dispatch_command`: Counts a global countdown down.
+- `initialize_grid_aligned_state`: Sets a state code and offsets, aligns two position values to a sixteen-unit grid, copies them into related globals and sets a flag, then issues a command through a function pointer when a slot check passes.
+- `advance_timed_phase_counter`: When several global counters are zero, runs a timer that reloads at fifty.
+- `countdown_then_call_pointer`: Decrements a global countdown; when it reaches zero it calls through a function pointer held in a global, otherwise it calls an unnamed routine.
+- `dispatch_command_at_state_62`: When a mode word is set and a state word equals 62, issues a command through a function pointer held in a global structure after a slot check, unless a particular code is already present.
+- `tick_counter_and_hide`: Decrements a global counter and, when it expires, calls an unnamed routine.
+- `check_distance_and_show_object`: Computes an offset between a global position and an entry's stored value and tests it against window limits.
+- `arm_timed_callback_state`: When a field in the entry is zero, sets a state word to two, stores a constant and a zero, installs a callback routine pointer, sets a countdown to 125 and marks the entry as active.
+- `reset_timed_state_values`: When a mode word is zero, calls an unnamed routine, copies a global word, sets a counter to 10000, clears two global words and sets a flag.
+- `reset_position_and_double_field`: Calls two unnamed routines.
+- `initialize_timed_state_block`: Sets a counter to 10000, clears several flags and globals, sets a state code to three, stores a fixed longword and a callback routine pointer, sets a countdown to 125 and sets two more state codes and a flag.
+- `number_two_entry_fields`: Calls several unnamed routines in loops, then writes incrementing values starting at seven into a field of two 28-byte entries.
+- `init_entry_and_position`: Initialises an entry: clears a word, sets a position longword from a global offset chosen by direction, sets a counter and dimension words, calls unnamed routines and copies a position from globals with a constant added.
+- `step_two_entry_countdowns`: For two entries with an active flag, increments an age counter and decrements a countdown.
+- `check_entry_cell_codes`: For two active entries, looks up the map cell under each entry's position.
+- `load_cell_values_when_ready`: When two global words are both nonzero, copies them into state words, sets a flag, reads three map bytes at a position computed from them, stores doubled values and calls four unnamed routines.
+- `replicate_block_three_times`: Copies a block of thirteen longwords starting at a global address to three consecutive positions after it, repeating the copy from the same source each time.
+- `clear_120_byte_block`: Writes zero to 120 consecutive bytes starting at the address passed in.
+- `init_two_entries_by_mode`: Calls an unnamed routine, then sets fields of one entry from two global values with constants that depend on a mode word, and sets a second entry's fields with different constants.
+- `advance_position_until_limit`: While a flag is set, advances a vertical accumulator by a fixed step and adds a velocity to the position.
+- `spawn_into_free_slot`: When the object lies within a range of a global position and a timer is zero, resets the timer to twenty and claims the first free entry of an eight-slot table of twelve-byte entries.
+- `spawn_slot_from_entry`: Uses an entry's stored position: when the entry lies within a range and its timer is zero, resets the timer to twenty, claims the first free slot of an eight-entry table, sets the slot position from the entry and calls unnamed routines.
+- `init_slot_numbers_and_refresh`: Stores sequential values starting at ten into the first word of eight table entries, with a zero second word, then calls two unnamed routines in each of eight passes.
+- `advance_active_slot_counters`: For each of eight slots whose counter is nonzero, increments the counter.
+- `reset_table_pointers_and_counters`: Calls two unnamed routines, then points six global table pointers at the base of the global area and clears four global words.
+- `clear_and_number_sixteen_words`: Clears eight global words, then writes the values zero through fifteen into sixteen consecutive words of a table.
+- `read_map_byte_or_zero`: Calls an unnamed routine, then returns the byte at a map position computed from the input pointer, or zero when the pointer is null.
+- `update_stored_value_with_delta`: Stores a new value into a history word and records the XOR of the old and new values.
+- `finish_entry_and_set_offset`: When a flag is set and the entry's flag bit 32 is set, clears related flags, sets a state word to all ones and stores a value derived from two entry fields minus ninety, calling unnamed routines in between.
+- `reset_state_on_flag_bit`: When a flag bit is set, calls an unnamed routine and resets a set of state words and codes, including a state code of four and a mode value of two.
+- `sum_bytes_to_checksum`: Adds up bytes from a start address up to an end address and returns the sum truncated to one byte.
+- `advance_table_index_position`: Counts a delay word down; when it reaches zero it advances a seven-bit index that wraps at 128, then sets a position from a table word times four plus a base value.
+- `set_mode_sequence_values`: Sets three global values to four, seven and eight when a mode word is zero.
+- `tick_mode_counter_reload`: When a mode word is nonzero, decrements a counter; when it reaches zero it reloads it with five and calls an unnamed routine.
+- `rotate_word_run_left`: Rotates a run of words in a global table by one place: the first word moves to the end and the others shift back one slot.
+- `copy_six_byte_records`: Copies a run of six-byte records from a constant table into a global table, saving the first record so that the run is rotated by one record.
+- `rotate_two_word_table_run`: Rotates a run of words in a global table by one place, reading from a constant table at a fixed offset and writing a shadow copy at a second fixed offset.
+- `expand_words_to_longs`: Converts a run of source words into longwords, shifting each value by four bits and storing the result in the destination buffer.
+- `copy_masked_words_doubled`: Copies a run of source words into a destination, masking each to its low twelve bits and writing it twice in consecutive words.
+- `store_word_or_longword_entry`: Stores an input value at an indexed position in a global table and a shadow table.
+- `store_word_to_two_pointers`: Writes one input word to two addresses passed in as pointers.
+- `unpack_packed_fields_to_longs`: Reads a run of packed values, splits each into fields with shifts and masks, and writes the fields as longwords into a buffer, with a stride set by a flag.
+- `busy_wait_short_loop`: When the input is nonzero, spins a three-iteration empty loop as a short delay.
+- `pack_longs_into_records`: For 256 input longwords, writes a six-byte record per entry by splitting each 16-bit half into nibble and byte fields.
+- `divide_word_pairs_by_scalar`: For 256 rows of two words, divides each source word by the input value and stores the quotient in the destination.
+- `divide_differences_by_scalar`: Splits an input longword into fields and stores a byte pattern in a global.
+- `run_routine_256_times`: Stores the input value into a global and calls one unnamed routine 256 times, with the value available as a divisor.
+- `bracket_flag_byte_four_calls`: Sets the high byte of a global word, calls one unnamed routine four times, then clears the flag byte.
+- `mark_word_call_four_times`: Sets the high byte of a global word, calls an unnamed routine four times, then clears the word.
+- `set_and_clear_global`: Writes a specific value to a global variable and then resets that global variable to zero.
+- `process_record_packing`: Performs a series of operations including copying longwords to a global buffer and packing longwords into a custom record format.
+- `process_scaled_division`: Fills a global buffer with a longword and performs a scaled division of word pairs from a source table.
+- `clamp_and_subtract_word_pairs`: Subtracts one signed word pair from another and clamps the high-word result at zero and at an upper limit, then handles the low-word result in the same way and stores both back.
+- `process_rows_with_constant_setup`: Initialises several global words to constants, then loops over a source table calling unnamed routines to process each row.
+- `fill_global_longs_with_value`: Fills 256 longwords of a global buffer with the input longword, then stores its low word in another global.
+- `copy_256_longwords_to_global`: Copies 256 longwords from the source address passed in into a global buffer.
+- `count_matching_entry_nodes`: For each active entry, walks a linked list of words and counts the even values inside a fixed range, calling unnamed routines to process the results.
+- `call_until_flag_one`: Repeatedly calls an unnamed routine until the second input word equals one.
+- `call_until_flag_one_2`: Repeatedly calls an unnamed routine until the second input word equals one; the loop is identical to the neighbouring routine.
+- `compare_and_loop`: Executes a loop that continues until a certain register value equals a specific constant.
+- `loop_until_value`: Repeatedly executes another routine until a certain value in a register or temporary variable equals one.
+- `assign_values_to_matching_nodes`: For each active entry, walks its linked list of words and, for each even value inside a fixed range, writes the next value from a source list into that node, stopping when the count reaches the limit.
+- `infinite_loop_stub`: Executes an infinite loop that never returns and performs no other operations.
+- `stub_return_only_routine_2`: Returns immediately without doing anything; the body is a stub.
+- `stub_bad_instruction_data`: The decoded bytes do not form meaningful code: the routine only rewrites one byte and returns a constant value, so it has no clear behaviour.
+- `return_immediately_7`: This routine is empty and performs no operations before returning to the caller.
+- `scan_cells_in_value_range`: After reading a two-character tag, scans a rectangular table of words and calls an unnamed routine for each word that falls between two input bounds.
+- `read_version_tag`: Reads the two-character tag stored in the game data and recognises 'S2' or 'S4', selecting the matching settings; any other tag gives -1.
+- `write_digit_character_output`: Chooses between text sources based on flags.
+- `load_digit_indexed_word`: Converts the input character code by subtracting 48 and uses the result as an index into a global word table; stores the word found there in a global.
+- `read_next_text_byte`: Reads the next byte from a text pointer and advances it.
+- `set_text_pointer`: Stores the input address as the current text pointer.
+- `reset_text_pointer`: Points the text pointer back at its base address and sets a flag.
+- `step_text_pointer_back`: Decrements a counter and moves the text pointer backwards while the preceding byte is non-negative, returning the byte found.
+- `advance_frame_stage_sequence`: Starts a frame stage update: calls two unnamed routines, sets a mode word to three and calls another routine when a control flag is set.
+- `advance_frame_stage_from_mid`: Shares the body of the neighbouring frame stage routine, entered after its first unnamed-routine call.
+- `advance_frame_stage_from_tail`: Shares the body of the neighbouring frame stage routine, entered after its first two calls are skipped.
+- `build_display_copper_setup`: Sets a display state, calls three unnamed routines, then writes a fixed copper setup of control words, bitplane and display window values into a list and stores a pointer to its end in a global.
+- `populate_list_with_increments`: Fills a range of memory pointed to by a pointer with a sequence of incrementing values.
+- `build_limited_value_list`: Clears a table word and, when two flags are clear, writes up to 32 longwords into a list, each step adding a stored value and keeping only values below a fixed limit, calling unnamed routines as it goes.
+- `build_palette_entries_from_table`: When a flag is clear, converts 30 words from a table into color-register values by halving their 4-bit channels, and writes each as a longword into a list after a leading header value.
+- `reset_frame_counters_and_calls`: Copies a global word into another, calls three unnamed routines, clears four global words, decrements a counter when it is nonzero, clears one more word and calls another unnamed routine.
+- `set_tag_and_call_routines`: Stores a four-letter ASCII tag in a global longword, calls unnamed routines twice, then stores the result of another routine in a global.
+- `compute_layout_from_scale`: Sets several layout globals from a stored scale: a base value that triples in one mode, a doubled value, an offset from a scaled value clamped at zero, and a second offset from another byte clamped at zero, plus a product of two values.
+- `reset_state_and_run_calls`: Calls five unnamed routines, clears a few state globals, sets position-like globals to fixed values, then calls further routines in sequence, twelve in total.
+- `reset_all_runtime_globals`: Clears a long list of runtime global words and flags to zero or a fixed initial value, then calls about forty unnamed routines to set up the remaining state.
+- `clear_word_at_stride_fourteen`: Clears a word at offset two in each of three records spaced fourteen bytes apart.
+- `clear_words_in_pointed_list`: If a stored pointer is set, clears a word at offset two in each of fourteen entries spaced four bytes apart, starting at that pointer.
+- `call_routine_200_times`: Calls one unnamed routine 200 times in a loop.
+- `dispatch_on_counter_value`: When a counter equals 19 calls one unnamed routine, and when it equals 20 calls another.
+- `reset_global_fields`: Clears or updates several fields within a structure or global memory if a certain condition is met.
+- `compare_positions_and_adjust`: Returns early for one state code.
+- `apply_offset_on_mode_change`: When a mode word equals one, sets it to minus one.
+- `invert_mode_value`: checks if a certain value is equal to one and, if so, updates that value to a negative one.
+- `update_mode_on_negative_entry`: When a field is nonnegative and a flag bit is clear, looks up a table entry from an offset.
+- `call_until_value_matches`: Repeatedly calls an unnamed routine, keeping its returned word, until the returned value equals the second input word.
+- `load_indexed_table_row_values`: When a flag is clear, reads a row from a table selected by a global index.
+- `spread_value_across_sixteen_words`: Splits a global word by sixteen into a quotient and remainder, writes the quotient to sixteen consecutive words, then adds the remainder to the last word.
+- `call_routine_three_times`: Calls one unnamed routine three times.
+- `copy_indexed_block_words`: Copies 32 words from a block in a global table, whose position comes from an input code minus 49 times 64, into a fixed global buffer.
+- `store_inputs_and_call_handler`: When a global flag is set, calls an unnamed routine, then stores the input registers into global fields and sets a handler pointer, returning a combined result.
+- `call_for_each_active_byte`: Calls two unnamed routines, then calls another routine for each of four global bytes that is not minus one, using the sentinel value to skip unused entries.
+- `step_audio_channels`: Counts a global countdown down and resets it to six when it expires.
+- `set_audio_channel_control`: Updates the state table entry for an audio channel number.
+- `set_audio_channel_field`: Writes a byte value into one of several fields of an audio channel block, chosen by a small field code.
+- `set_audio_channel_byte_pair`: Stores an input byte into one of two fields of an audio channel state block selected by a code, then updates a counter when a global byte is zero.
+- `enable_audio_channel_bit`: Sets the bit for the chosen audio channel in a global mask when the mask bit is clear, and writes one to that channel's period register.
+- `update_audio_channel_registers`: Updates a channel's volume and period register fields from a set of global state bytes for the selected audio channel.
+- `reset_countdown_to_six`: Sets a global countdown to six.
+- `update_audio_channel_parameters`: Iterates through sound channel records to update frequency, period, and waveform or mixer settings.
+- `advance_sound_channel_records`: Walks a list of sound-channel records, reading a byte from each record's data table at a position taken from a counter.
+- `update_sound_record_deltas`: Walks sound-channel records, clears a flag bit in each one, and when the record's table byte is not the sentinel computes a difference between two global table entries and updates the record, calling unnamed routines.
+- `compute_record_scaled_value`: For each sound record with one flag bit clear and another set, computes a scaled value from two record fields by multiplying words and subtracting, writes the result into the record and calls an unnamed routine.
+- `update_record_counter_by_code`: Walks sound records and updates a per-record counter by a code value: increments it when the code is four, sets it to minus one for other codes except eight, then calls an unnamed routine.
+- `update_record_counter_by_flag`: Like its neighbour, updates a second per-record counter: increments it when the code is sixteen, sets it to minus one for other codes except thirty-two, then calls an unnamed routine.
+- `reset_sound_record`: Sets a channel bit in a global, sets a record's flag to one and clears its state words and counters.
+- `clear_word_and_set_globals`: Clears a word at the input pointer, sets a global to one and then to 255, and returns the input value with some fixed bits set.
+- `copy_table_and_set_defaults`: When an init flag is set, clears it and copies 64 longwords from a constant table into a global block.
+- `return_input_byte`: Returns its byte input unchanged.
+- `store_inputs_handler_2`: When a global flag is set, calls routines, then stores the input registers into global fields and a handler pointer.
+- `stub_single_instruction_routine`: The entry holds one decoded instruction, and the long pseudo-code around it is decompiler artefact rather than behaviour, so the routine has no real action beyond being a stub.
+- `conditionally_save_register_context`: Tests a global flag and, when it is set, calls two unnamed routines and copies the data and address register values into fixed memory slots.
+- `advance_four_voice_sequences`: Steps through four voice records once per tick, decoding each record's command nibble to set volume, period and sequence pointers.
+- `run_voice_effect_commands`: Walks the voice records backwards and applies one effect command to each active record, such as period slides clamped to fixed limits, volume slides clamped to the range zero to 64, or table-driven offsets.
+- `apply_period_slide_and_resume`: Applies a downward period slide with a lower clamp to the current voice record, then jumps into the shared voice effect loop to process the remaining records.
+- `fall_through_into_effect_loop`: A two-instruction fragment that copies the voice's period into its output block and then falls into the shared voice effect loop.
+- `advance_voice_sequence_pointers`: Walks four voice records and returns early while a record's delay counter is non-zero, decrementing it.
+- `fetch_next_sequence_words`: Loops over the four voice records and reads the next sequence word for each, using an indirect table when the word is negative.
+- `mark_records_and_resolve_offsets`: Runs a loop over the voice records that marks each one active, masks its command field and, when an offset is present, stores the resolved address and its contents.
+- `fetch_voice_word_then_loop`: Loads a direct or indirect sequence word for the current voice, stores it, and then enters the shared record loop that marks records active and resolves offsets.
+- `fetch_indirect_sequence_word`: Loads the next word for a voice from its sequence pointer, using an indirect table entry when the word is negative, then runs the shared record loop that marks records active.
+- `stream_voice_sequence_words`: Streams the next sequence word into each voice record, reading a fresh word from the sequence pointer whenever a voice's hold counter has run out.
+- `run_voice_tick_with_delay`: Returns early while a delay counter is non-zero, decrementing it.
+- `run_voice_tick_pending_call`: Clears a flag byte and calls the single-voice effect routine when a pending field is non-zero, then runs the four-voice tick that decodes each record's command nibble and updates volume, period and sequence pointers.
+- `process_active_voice_records`: Loops over the four voice records, skipping any whose active flag is clear.
+- `call_handlers_for_pending_slots`: Calls two unnamed routines, then for each of four consecutive bytes that is not the sentinel value minus one it calls another unnamed routine.
+- `sync_voice_pointers_when_enabled`: When an enable flag is set and a counter is set, clears the flag, waits until a status byte changes, and writes two words.
+- `do_nothing_2`: this routine is empty and performs no operations.
+- `process_voice_records_from_entry`: Loops over the voice records and skips inactive ones, decoding each active record's command nibble to set volume, period or sequence pointers.
+- `init_voice_offsets_from_sequence`: Sets a counter field to 63 and reads four words from a sequence pointer, storing four address offsets into fixed fields of the voice record.
+- `copy_voice_state_audio_regs`: Counts down a counter and, when it reaches zero, calls two unnamed routines and resets it.
+- `clamp_levels_copy_voice_groups`: Masks a value to six bits and lowers four stored level fields in the source record to it where they are larger.
+- `copy_memory_block_then_trap`: Copies words from one memory block to another in a loop until the end address is reached, then raises trap number zero.
+- `stub_single_instruction_entry`: The decompiler timed out and produced no pseudo-code for this one-instruction routine, so the only recovered facts are that it is reached through a pointer held in data.
+
+### Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:PARADOX
+
+- `initialise_hardware_at_entry`: Program entry that clears two blocks of memory, writes the display control and background colour, and sets the copper and interrupt control registers.
+- `fill_pattern_table_by_layout`: Fills a block of records with fixed pattern words, using one of two layouts depending on a flag byte in the calling record.
+- `sequence_two_routine_calls`: Calls two unnamed routines one after the other and returns, with no data handled directly in this body.
+- `pack_nibbles_to_twenty_bits`: Rearranges the nibbles of the low word of its input, combines them with a value taken from the high word shifted up by eight bits, and keeps only the lowest twenty bits of the result.
+- `stub_return_only_routine`: The decompiled body is a single return with no visible effect, so no behaviour is recoverable from the evidence.
+- `render_text_glyphs_into_bitmap`: Converts a zero-terminated text string into glyph rows from an eight-byte-per-character font table, writing them into a bitmap at a computed offset.
+- `stub_pushed_address_return`: Reached through a pushed address and containing only a return in the decompiled output, so it has no recoverable effect.
+- `store_base_and_offset_pointers`: Splits the address in the input register into high and low words and stores them in one pointer pair.
+- `handle_keyboard_serial_event`: When bit five of a status byte is set, it records a marker, waits until a counter byte passes a threshold, and calls two unnamed routines.
+- `reset_serial_control_status`: Checks bit three of a status byte and enters an endless loop when it is set, otherwise it stores the value eight into that byte.
+- `fill_column_table_from_sums`: Reads two index fields from the object record, adds their table entries and stores the sum back into the record.
+- `xor_bit_pattern_into_bitmap`: Loops over 44 rows, XOR-ing one bit per column into two bitmap locations whose offsets come from table words that advance each step.
+- `swap_and_store_pointer_words`: Swaps two 32-bit pointers held in an object record, then stores the low and high words of each pointer, and of each pointer forty-four bytes further on, into matching words.
+- `configure_timer_and_interrupts`: Copies a value from the object record into a stored word and stores a pointer computed from a table offset, then clears a field.
+- `clear_interrupt_and_audio_dma`: Clears bit one of a status byte, then writes to the interrupt-enable register to clear one bit and to the DMA control register to disable the four audio channels.
+- `scale_four_bytes_into_record`: Calls one unnamed routine, then multiplies four consecutive bytes by a scale byte from memory, storing each product shifted down into the object record at a stride of sixteen bytes.
+- `increment_status_byte`: Adds one to a global byte and returns, with no other effect.
+- `store_scaled_step_difference`: Multiplies a global byte by a fixed scale and divides it back out, then stores into a record byte the difference between two successive shifted products of a counter field, giving a per-step increment.
+- `advance_timed_handler_step`: Returns zero when a global flag is clear.
+- `reset_cia_timer_and_interrupt`: Writes a timer value to the CIA B timer control register, adds a fixed offset to a second CIA value and copies a saved word into it.
+- `update_record_field`: A 58-instruction routine that stores a word into a record field and integrates velocity or counters into other fields.
+- `integrate_record_velocity_fields`: Copies a nonzero byte from the record's counter field into a second byte, then adds a scaled copy of that byte to a word field and to a long field, updating the record's position-like values.
+
+### Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 1 of 2).adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### Bubble and Squeak (1994)(Audiogenic)[cr PDX](Disk 2 of 2).adf:bootblock
+
+- `boot_block_library_setup`: Boot-block entry that calls one library function and, when it returns a non-zero pointer, sets a flag bit in the returned structure and calls a second library function.

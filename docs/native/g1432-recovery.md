@@ -1,0 +1,1189 @@
+# Game 1432 (world golf (1997)(apex systems)[cr lfc]): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/01432). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (1802240 top-level bytes in 390 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 14 of 14 units identical (bytes and relocations), 1 raw-word lines |
+| Functions named and described | pass, 909 of 909 named (0 author symbols), 909 of 909 described (68 by rule, 791 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1486 of 1486 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 19370 of 19370 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 249510 |
+| code | 61208 |
+| data | 897951 |
+| padding | 51363 |
+| unused | 542208 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| World Golf (1997)(Apex Systems)[cr LFC](Disk 1 of 2).adf:Golf | 9 | 7918 | 371 |
+| Run | 2 | 117 | 2 |
+| More | 3 | 4288 | 172 |
+| RTDD | 1 | 686 | 46 |
+| Assign | 2 | 117 | 2 |
+| Execute | 2 | 117 | 2 |
+| Copy | 2 | 1671 | 5 |
+| Disk-Validator | 1 | 386 | 1 |
+| 6 | 1 | 2 | 1 |
+| mathtrans.library | 18 | 830 | 97 |
+| Icon.library | 10 | 1375 | 109 |
+| Diskfont.library | 15 | 1040 | 76 |
+| World Golf (1997)(Apex Systems)[cr LFC](Disk 1 of 2).adf:HD_Install | 9 | 813 | 24 |
+| World Golf (1997)(Apex Systems)[cr LFC](Disk 1 of 2).adf:bootblock | 1 | 10 | 1 |
+
+## Cases handled
+
+- world golf (1997)(apex systems)[cr lfc](disk 1 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 1 of 2).adf:Apex.APX: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1272 -> 2572 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole1.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3814 -> 7340 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole10.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (504 -> 7567 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole18.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5782 -> 11700 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole3.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (568 -> 7653 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole16.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3472 -> 6172 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole1.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (706 -> 7725 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole9.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4274 -> 8716 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole14.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5848 -> 10616 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole7.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (6342 -> 11626 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole17.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (538 -> 7602 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole12.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3784 -> 5654 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole5.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (7780 -> 12718 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole15.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (770 -> 7854 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole8.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (570 -> 7630 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole11.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (8178 -> 14598 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole3.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (7052 -> 11244 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole13.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (514 -> 7571 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole6.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (596 -> 7682 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole2.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2094 -> 5442 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole11.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (530 -> 7615 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole4.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (390 -> 7501 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole17.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5094 -> 10300 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole2.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (810 -> 7859 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole15.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3562 -> 8442 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole8.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3024 -> 5252 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole18.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (558 -> 7654 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole13.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3964 -> 8584 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole6.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3080 -> 6026 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole16.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (454 -> 7554 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole9.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (750 -> 7804 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole4.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2670 -> 4504 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole14.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (468 -> 7555 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole7.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (630 -> 7688 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole10.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5970 -> 10010 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole12.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (442 -> 7526 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Muirfield/Hole5.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (756 -> 7805 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole1.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3666 -> 8316 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole10.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1084 -> 8112 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole18.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2440 -> 7046 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole3.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (402 -> 7462 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole16.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2694 -> 4954 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole1.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (880 -> 7838 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole9.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (8228 -> 13590 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole14.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2476 -> 7028 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole7.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3088 -> 5266 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole17.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1008 -> 8072 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole12.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (8078 -> 13536 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole5.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4848 -> 9282 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole15.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1018 -> 8044 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole8.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1454 -> 8485 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole3.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3502 -> 7894 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole11.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2476 -> 4824 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole13.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1182 -> 8191 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole6.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (498 -> 7601 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole2.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4874 -> 8940 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole11.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1024 -> 8049 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole4.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (262 -> 7388 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole17.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5060 -> 9740 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole2.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (556 -> 7596 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole15.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5696 -> 10022 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole8.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2762 -> 8532 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole18.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (706 -> 7724 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole13.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3196 -> 7088 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole6.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4738 -> 9252 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole16.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (520 -> 7593 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole9.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (774 -> 7799 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole4.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2026 -> 4152 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole14.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1250 -> 8290 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole7.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (508 -> 7596 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole10.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4006 -> 8438 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole12.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (930 -> 8003 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:CastPines/Hole5.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (292 -> 7413 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole1.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5088 -> 10278 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole10.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1514 -> 8454 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole18.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4560 -> 8614 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole3.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1000 -> 7970 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole16.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3698 -> 7952 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole1.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (504 -> 7580 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole9.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2062 -> 5194 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole14.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5092 -> 9218 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole7.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5188 -> 9154 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole17.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (620 -> 7702 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole12.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5668 -> 10936 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole5.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3188 -> 4854 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole15.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1292 -> 8286 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole8.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1066 -> 8061 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole3.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5728 -> 10990 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole11.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4892 -> 8486 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole13.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1102 -> 8111 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole6.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1362 -> 8321 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole2.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5034 -> 9730 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole11.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (928 -> 7994 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole4.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (754 -> 7812 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole17.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5926 -> 10748 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole2.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (742 -> 7743 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole15.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (6186 -> 11372 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole8.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4666 -> 8630 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole18.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (794 -> 7794 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole13.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3370 -> 5566 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole6.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (6012 -> 10678 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole16.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (534 -> 7624 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole9.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1046 -> 8065 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole4.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4664 -> 7906 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole14.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1078 -> 8052 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole7.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (862 -> 7863 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole10.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5402 -> 11120 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole12.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (934 -> 8013 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:LitlAston/Hole5.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (432 -> 7501 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole1.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5726 -> 10416 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole10.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (234 -> 7383 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole18.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (9826 -> 18220 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole3.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (456 -> 7558 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole16.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (6436 -> 11188 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole1.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (516 -> 7587 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole9.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4800 -> 9242 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole14.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2804 -> 5158 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole7.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3892 -> 7850 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole17.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (944 -> 7907 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole12.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3208 -> 7376 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole5.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5252 -> 8324 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole15.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (606 -> 7688 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole8.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (338 -> 7407 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole3.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (6006 -> 10586 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole11.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3794 -> 7294 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole13.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (432 -> 7515 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole6.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (452 -> 7539 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole2.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5028 -> 7860 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole11.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (480 -> 7571 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole4.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1350 -> 8296 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole17.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5956 -> 11608 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole2.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (296 -> 7404 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole15.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (6626 -> 12148 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole8.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4166 -> 8192 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole18.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (446 -> 7539 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole13.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4844 -> 9088 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole6.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4608 -> 8512 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole16.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (558 -> 7641 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole9.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (314 -> 7410 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole4.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (6934 -> 14068 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole14.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (424 -> 7530 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole7.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (292 -> 7394 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole10.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2252 -> 4080 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole12.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (396 -> 7471 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Wentworth/Hole5.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (312 -> 7435 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole1.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5924 -> 11034 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole18.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (7172 -> 13242 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole10.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (472 -> 7548 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole3.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (516 -> 7610 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole16.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4858 -> 8560 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole9.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3034 -> 7378 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole1.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (388 -> 7473 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole14.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (9142 -> 14644 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole7.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5394 -> 11548 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole17.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (566 -> 7661 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole12.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5484 -> 10572 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole5.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (5224 -> 8218 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole15.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (482 -> 7569 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole8.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (312 -> 7437 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole3.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4422 -> 8314 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole11.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4316 -> 7944 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole13.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (366 -> 7468 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole6.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (870 -> 7918 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole2.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (7220 -> 12926 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole11.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (266 -> 7396 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole4.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (408 -> 7483 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole17.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3756 -> 7952 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole2.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (676 -> 7698 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole15.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (6474 -> 12026 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole8.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2986 -> 5210 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole18.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (566 -> 7606 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole13.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4684 -> 9560 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole6.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3670 -> 8522 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole16.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (322 -> 7443 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole9.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (448 -> 7564 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole4.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (6168 -> 10912 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole14.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (676 -> 7761 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole7.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (586 -> 7627 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole10.DAT: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (4678 -> 9280 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole12.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (274 -> 7403 bytes)
+- world golf (1997)(apex systems)[cr lfc](disk 2 of 2)/World Golf (1997)(Apex Systems)[cr LFC](Disk 2 of 2).adf:Gleneagle/Hole5.BIN: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (376 -> 7485 bytes)
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- `format_string_data` (More): Populates a buffer with data from various sources and performs a loop to fill a range of memory with spaces or null bytes. Kind: checksum or data integrity trap. Pass path: the branch following the 'tst.b' instruction (the 'bra.b 1b8e' path).
+
+## Functions
+
+
+### World Golf (1997)(Apex Systems)[cr LFC](Disk 1 of 2).adf:Golf
+
+- `initialize_amos_environment`: Identifies the current task and opens required Amiga libraries including graphics, intuition, and the AMOS runtime.
+- `initialize_amos_runtime_structures_2`: Sets up internal runtime data structures by initializing a global table with specific flags and memory addresses.
+- `initialize_amos_runtime_structures`: Sets up internal runtime data structures by initializing a global table with specific flags and memory addresses.
+- `handle_library_error`: The routine attempts to access a library function via a pointer and handles errors related to memory or missing libraries.
+- `free_and_nullify_resources`: It checks a byte at an offset from a pointer to conditionally call a routine, iterates through a list of pointers to free non-zero elements, and conditionally calls a routine to free memory based on a value at an offset from a pointer.
+- `nullify_and_free_memory`: The routine checks if a value at a specific offset from a pointer is non-zero, and if so, sets that value to zero and calls a memory freeing routine.
+- `process_string_data`: Checks if a pointer is non-null and then either calls a function via a pointer or iterates through a string to replace a null terminator with a newline character before calling another function.
+- `clear_cpu_cache`: Checks a value at a memory location and calls a cache clear routine if the value exceeds a specific threshold.
+- `traverse_linked_list`: Iterates through a data structure by reading byte values to calculate offsets and increments a pointer until a counter reaches zero.
+- `allocate_memory`: Calls a memory allocation routine.
+- `call_free_mem`: Library stub: loads its arguments and the exec library base, calls FreeMem and returns its result to the caller.
+- `call_copy_mem`: Library stub: loads its arguments and the exec library base, calls CopyMem and returns its result to the caller.
+- `allocate_and_store_value`: The routine calls a memory allocation routine and, if the input value is not a specific constant, stores that value and a pointer to the next memory location into the allocated block.
+- `nullify_and_free`: Checks if a pointer is non-zero, sets the value at that pointer to zero, and then calls a routine to free memory.
+- `update_table_values`: Iterates through a byte stream to modify values in a table using arithmetic offsets and base addresses.
+- `parse_and_load_resource_metadata`: Identifies resource types by checking magic signatures and parses a structured data block to populate a new metadata object.
+- `swap_and_call`: Swaps values within a memory structure and calls a library routine.
+- `decompress_data_buffer`: Checks a header for a specific magic number and then decompresses a bitstream into a newly allocated memory buffer.
+- `clear_and_free`: Sets two consecutive memory locations to zero and then calls a routine to free memory.
+- `tiny_clr_clr_rts`: Small routine of 3 instructions that clears -(a6), then clears -(a6), then returns.
+- `iterate_and_free_elements`: Loops through a list of pointers, calling a memory free routine for each non-zero element found.
+- `decompress_bitstream_data`: Expands a compressed bitstream into a destination buffer using a variable-length coding scheme.
+- `bk_refill_bit_buffer`: Depacker bit reader refill: fetches the previous longword of the packed stream, folds it into the checksum and shifts out its lowest bit with a marker bit entering at the top.
+- `bk_read_bits`: Depacker bit reader: collects the number of bits given in D1 from the bit buffer into D2, most significant first, refilling from the packed stream whenever the buffer runs empty.
+- `branch_to_offset_3`: Performs a short unconditional branch to another location.
+- `branch_to_offset_4`: Performs a short relative branch to a location specified by a word offset.
+- `branch_to_address_2`: The routine performs a short branch to a specific memory address.
+- `update_state_flags_via_recursion`: Clears a value at a fixed offset from a global pointer, performs a recursive call, and then updates several adjacent memory locations based on the results of subsequent recursive calls and register values.
+- `check_two_flags_and_return`: The routine tests two words located at fixed offsets from a global variable referenced via a5 and calls another routine if either is non-zero, then returns zero.
+- `check_list_result`: Evaluates the zero flag from a previous routine and returns zero if the flag is set, otherwise returns the value from the previous routine.
+- `traverse_linked_list_6`: Iterates through a linked list by comparing a value against a field in a structure and following pointers.
+- `link_list_insert`: The routine checks two short fields in a structure and calls another routine for each non-zero field, then calls it once more.
+- `search_linked_list`: Loads a pointer from a global variable via a register and walks a linked list, comparing a word in a register with a word at offset 8 of each node.
+- `reorganize_object_linked_list`: Iterates through a linked list of objects to perform conditional updates and reorder them into separate destination buffers based on specific property comparisons.
+- `setup_and_call_routine`: Decrements a word, performs a conditional branch, loads a value into a register, and calls another routine.
+- `copy_and_increment_list`: It compares a value from a table to the stack pointer, and if they are not equal, copies a pointer to a destination buffer and increments a counter.
+- `sort_and_manage_object_list`: Copies a list of objects from a source table into a destination buffer and performs an insertion sort based on specific coordinate or priority values.
+- `update_object_physics_state`: Calculates new positional and velocity values based on coordinate comparisons and stores the results into a data structure.
+- `update_physics_state`: Calculates new positional and velocity values based on coordinate comparisons and stores the results into a data structure.
+- `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d0, then returns.
+- `update_coordinate_data`: Calculates new values based on comparisons between input registers and values in a structure, then stores the results into multiple offsets within that structure.
+- `patch_code_bytes`: Iterates over a small range of bytes starting at its own address and rewrites each byte by expanding a bit pattern, effectively modifying its own code in place before returning.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `tiny_movea_move`: Small routine of 2 instructions that copies a1 to a0, then copies d1 to d0.
+- `update_table_entry_flags`: The routine reads a pointer from a global variable, tests a flag word at a fixed offset, XORs an input word with the flag and masks it, then conditionally calls another routine and updates the flag word in the pointed-to structure with the result of the calls.
+- `adjust_table_entry_and_return`: It modifies a short entry in a table pointed to by a1 using arithmetic on the table base, calls another routine, conditionally calls another routine based on an integer at an offset from a0, and returns the concatenation of d0 and d1.
+- `adjust_short_and_conditional_call`: Subtracts one short from another at fixed offsets within a memory block pointed to by a register, calls another routine, and conditionally calls a third routine based on a value at an offset in a second pointer before returning a combined value from two registers.
+- `decrement_registers_and_update_pointer`: Decrements two word-sized registers, moves a word from one register to another, and then performs a logical shift right and a decrement on a third register before moving that register into a pointer register.
+- `shuffle_data_table_2`: Performs a series of byte swaps within a target table using values retrieved from a secondary lookup table through nested loops.
+- `shuffle_data_table`: Performs a series of swaps on bytes within a table using values retrieved from another memory location through nested loops.
+- `transpose_memory_block`: Swaps word elements within a memory block using nested loops to rearrange data based on dimensions provided in registers.
+- `swap_word_blocks_v2`: Swaps word elements between two regions using three nested loops controlled by register values.
+- `process_memory_block`: The routine calculates a value based on memory contents and enters a loop to perform bitwise OR operations across a series of data blocks.
+- `return_negative_one`: Returns a value where all bits are set to 1.
+- `update_blt_entity_bitmasks`: Iterates through a linked list of entities to decrement counters and process bitmask-driven updates.
+- `decrement_and_branch_on_zero`: Decrements a word at a memory location pointed to by a register and branches to another routine based on the result.
+- `update_entity_bitmask_states`: Iterates through a linked list of structures to decrement a counter or process bitmask-driven updates.
+- `update_blt_parameters`: Configures several Blitter registers and iterates through a linked list of structures to perform operations involving external function calls and library functions.
+- `expand_bitfields_to_pointers`: Reads bitfields from a structure and expands them into pointer values and short flags, writing results into arrays within the same structure using a loop controlled by a counter.
+- `initialize_system_state`: The routine calls other routines to update various memory locations and global variables based on conditional checks.
+- `conditional_calls_and_return`: The routine calls another routine four times, then conditionally calls another routine based on a global pointer, and finally returns zero or the result of a further conditional call depending on a different global pointer.
+- `clear_memory_blocks_2`: Clears a block of four words and a larger block of 543 words with zeros, then sets a specific global value to all ones.
+- `update_vertex_attribute_flags`: Iterates through a list of data structures to process bitmask flags.
+- `clear_and_loop_data`: Clears a memory block and then enters a loop that iterates a fixed number of times, loading values from a table into a register.
+- `process_data_list`: Iterates through a list of pointers, performing swaps and arithmetic on data elements, and potentially updating a pointer to a memory block.
+- `initialize_and_populate_structure`: Validates several input parameters before traversing a linked list to find an insertion point.
+- `link_struct_to_list`: If a flag in a structure is set, it clears a word in another structure, finds the end of a pointer list, and links the two structures into the list with a computed offset.
+- `copy_data_block`: If certain conditions are met, this routine copies several bytes and words from a source structure to a destination in a frame, followed by a loop that copies a block of bytes and several words from another location.
+- `update_status_flags`: Fetches values from a table and updates several fields in a structure, setting specific bit flags in a status byte.
+- `insert_sorted_value`: Inserts a value into a list at a specific position and shifts existing elements to maintain order, updating a counter and a flag if a negative value is encountered.
+- `insert_into_sorted_list`: Traverses a linked list to insert a value into a sorted position, updates a counter, and modifies a bitmask in a structure.
+- `write_register_and_constant`: Stores a longword from a register and a constant longword into consecutive memory locations pointed to by a pointer, then performs a short branch.
+- `save_registers_and_jump`: Pushes several data and address registers onto the stack and performs a short branch to another location.
+- `unlink_and_cleanup_node`: Removes a specific node from a linked list and compacts the remaining elements.
+- `clear_memory_blocks`: The routine clears a small block of four-word entries and a larger block of 543 word entries referenced through a frame pointer, then writes a sentinel value to a word in the frame and sets a flag byte in the frame to one, returning zero.
+- `loop_until_entity_filter`: Repeatedly calls another routine until a value in a data register plus one exceeds a value in another register.
+- `set_blitter_parameters_and_copy`: The routine reads a short from a structure pointed to by a global variable, decrements it, and if the result is non-zero and the original value is positive it calls another routine and then calls another routine, returning the decremented value.
+- `execute_sequence_and_copy`: The routine performs a sequence of five consecutive calls to another routine, then copies a block of data between three different memory locations using a loop.
+- `execute_routine_sequence`: Performs a sequence of five consecutive calls to another routine.
+- `call_and_clear_bit`: The routine calls another routine four times, then clears a specific bit in a byte located at an offset from a pointer.
+- `clear_bitmask_flag`: Calls another routine four times and then clears a specific bit in a byte located at an offset from a pointer.
+- `set_blitter_parameters_and_copy_2`: Reads a short from a structure pointed to by a global variable, decrements it, and if the result is non-zero and the original value is positive, calls another routine twice and returns the decremented value.
+- `update_global_pointer`: This routine stores an input address into a global variable and, if the input is not zero, copies a longword from that address into another global variable and a frame location.
+- `get_clamped_value`: This routine reads a word from an offset of a pointer stored in a frame and returns it, or returns all bits set if the value is greater than seven.
+- `check_range`: The routine tests whether the input in d1 is between zero and three inclusive and returns zero if the test succeeds, otherwise returns one.
+- `update_coordinate_fields`: Checks if certain conditions are met and, if so, updates three coordinate fields in a structure and sets a bit flag.
+- `loop_range_clearing`: Tests a long value in a register and, if negative, clears two words in a structure.
+- `clear_structure_on_range_check`: The routine performs range checks on a value and, if successful, clears several fields within a structure pointed to by a register.
+- `fetch_table_entry`: The routine indexes a table located at a fixed offset from the frame pointer using the signed word in d1 scaled by four and returns the dword found at that entry.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `update_region_parameters`: Compares input values against a structure, calls external functions to manage a region, and updates coordinate values in a separate structure.
+- `concatenate_parameters`: This routine combines two parameters into a single 64-bit value.
+- `reset_structure_fields`: The routine checks a value at an offset from a pointer, and if non-zero, clears three specific fields in that structure before clearing two fields in another structure.
+- `calculate_scaled_values`: Runs a loop that performs signed or unsigned multiplication on values from a list and calculates a new pointer offset.
+- `return_all_ones`: This routine returns a value with all bits set.
+- `clear_flag_and_call`: The routine checks a global variable for non-zero, calls another routine, clears two global words, and returns zero.
+- `lookup_and_scale_value`: Loads a pointer from a global variable, compares a word value against a register, and performs a multiplication if the comparison succeeds.
+- `return_all_ones_2`: The routine returns a value consisting of all bits set to one.
+- `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
+- `execute_font_cleanup`: If a pointer and a specific word are valid, this routine clears that word and calls two functions through pointers stored in a frame.
+- `update_structure_and_set_flags`: Copies values from a structure to a global variable, clears specific fields in the source structure, and sets a bit and a word value in another structure.
+- `clear_byte_buffer`: The routine clears a global word at a fixed offset and then zeroes a block of 1,024 bytes starting at another fixed offset, using a countdown loop.
+- `clear_matching_entries`: Increments a global byte, iterates through a table of words to zero out entries that match a specific integer, and then decrements the global byte.
+- `parse_nested_numeric_list`: Parses a string containing nested parenthetical numeric lists into a structured table.
+- `decrement_global_byte`: Decrements a byte stored at a memory location after calling another routine.
+- `parse_numeric_string_2`: The routine initializes a buffer with zeros and then parses a string to populate a structure with numeric values and metadata.
+- `test_and_clear_register`: Tests a byte in a register and either branches or clears the register and performs an unconditional branch.
+- `load_and_branch_2`: Loads a small immediate value into a register and performs an unconditional branch.
+- `count_non_zero_words`: The routine increments a global byte, iterates through a table of words, and counts how many words are non-zero, storing the result in a global byte.
+- `compare_and_store_shifted_values`: Compares masked bits from two values and, if the first is smaller than the second, stores shifted versions of those bits and other data into a global structure.
+- `load_and_branch`: Loads a small immediate value into a register and performs a short branch to another location.
+- `clear_word_buffer`: The routine zeroes a small block of seven words at a fixed offset using a countdown loop.
+- `conditional_flag_clear`: The routine checks a global word and two global integers for equality and, if both conditions hold, clears a global word.
+- `copy_and_propagate_words`: The routine decrements a counter in a global word and, when it reaches zero, copies a range of words from a structure pointed to by a global pointer into a buffer and then propagates each word to a set of destinations indexed via a table.
+- `zero_global_word`: The routine zeroes a global word at a fixed offset.
+- `conditional_word_clear`: The routine compares a global integer plus a constant with another global integer and, if they match, clears a global word.
+- `compare_and_pack_bytes`: The routine initializes several global words, stores an input value and computes a pointer, then iterates over a table comparing nibbles from two sources, packs the nibbles into bytes in a buffer, counts mismatches, and stores the counts in global words before returning the input value.
+- `interpolate_sprite_colors`: Iterates through a list of sprite data to incrementally adjust color components toward target values.
+- `process_decrementing_list`: Checks two bytes in a structure, then iterates through a list to decrement values and update a linked list or table based on specific conditions.
+- `increment_value_at_offset`: Increments a 16-bit word at a location determined by an offset from a pointer.
+- `process_vertex_attribute_flags`: Iterates through a list of data structures to check bitmask flags and update associated coordinate or property values.
+- `populate_vertex_buffer`: Iterates through a sorted table of data structures to find entries within a specific range and writes their properties into a destination buffer.
+- `build_vertex_buffer_list`: Constructs a buffer of vertex data by interleaving coordinate values with incremental identifiers.
+- `initialize_buffer_with_constants`: The routine calls another routine and then stores several constant words into a buffer pointed to by a pointer, using a value read from a global variable as one of the stored words.
+- `write_word_pair_to_buffer`: Conditionally writes two constant words to a buffer pointed to by a pointer and increments a counter in a global variable, then unconditionally writes a word built from an input word and a constant and a constant word to the buffer.
+- `fetch_and_test_dual_pointers`: The routine loads a longword from a memory offset into a register, calls a subroutine, and if the result is not zero, performs a second load and subroutine call using a different offset.
+- `initialize_word_table`: Writes an initial word pair to a destination buffer from a source buffer, then fills both buffers with a sequence of increasing words.
+- `conditionally_call_and_return_value`: The routine checks two global variables and conditionally calls another routine for each, then returns a value obtained from the second conditional call.
+- `update_conditional_structure_values`: Tests a word at an offset, and if non-zero, branches; otherwise, it clears a word, calls another routine, and writes specific constant values to memory locations.
+- `process_conditional_structure_updates`: If a specific word in a structure is zero, it calls another routine multiple times, sets that word to all ones, clears another word in the structure, and calls another routine twice more.
+- `set_memory_value_conditionally`: Tests a word at a specific offset, and if non-zero, branches; otherwise, it writes a constant value to a location pointed to by another offset.
+- `swap_pointers_and_clear_register`: Swaps two pointers stored in a structure, writes one to a hardware register, and clears a word in a structure before returning zero.
+- `return_constant_3`: Returns the constant an address in d0 to the caller without any other effect.
+- `call_external_routine`: Saves registers, calls a routine via a pointer from a table, and restores the registers.
+- `call_library_vector_228`: Library stub: loads a library base from a global variable and calls the library function at offset minus 228 of that base, returning its result to the caller.
+- `call_library_vector_462`: Library stub: loads a library base from a global variable and calls the library function at offset minus 462 of that base, returning its result to the caller.
+- `extract_byte_from_word`: Reads a word from a global variable offset by four bytes, shifts the value right by eight bits and masks it, then returns the result.
+- `manage_memory_list`: Calls another routine to perform memory allocation or deallocation.
+- `call_management_routine`: This routine calls another function and returns the combined results of that call through the data and address registers.
+- `propagate_return_values`: Calls another routine and concatenates its two returned 32-bit values into a single 64-bit result.
+- `invoke_memory_management`: Calls another routine and returns the concatenated results of the call and the previous register state.
+- `branch_to_address`: Performs a short branch to a specific memory address.
+- `validate_ascii_digit`: The routine checks if a byte popped from a list is a numeric character between zero and nine.
+- `empty_routine_2`: The routine contains five instructions and performs no observable work; it ends immediately without accessing memory, registers, or calling another routine.
+- `convert_ascii_digit`: Calls another routine and checks if the returned value is a valid numeric character, returning one if it is or zero otherwise.
+- `return_constant_4`: Returns the constant an address in d0 to the caller without any other effect.
+- `parse_numeric_string`: Iteratively processes characters from another routine to calculate a numeric value from a string, handling a potential negative sign.
+- `empty_routine_3`: The routine contains five instructions and performs no observable work; it ends with a return.
+- `tiny_moveq_rts_2`: Small routine of 2 instructions that loads 1 into d2, then returns.
+- `initialize_data_structure_2`: The routine clears several memory locations and fills a table with zeros using a loop.
+- `store_word_to_offset`: Stores a word from a register into a memory location calculated from a pointer and a negative offset.
+- `traverse_and_unlink_list`: Iterates through a linked list and removes nodes that match a specific value by updating pointers.
+- `traverse_linked_list_4`: The routine traverses a linked list and compares a value derived from a pointer against a calculated product of another value.
+- `search_linked_list_2`: Traverses a linked list to find a node where a value matches or is greater than a specific word.
+- `modify_bit_field`: Tests a word in a register and modifies a specific bit in a memory location based on the result.
+- `link_two_pointers_and_call`: The routine updates two linked pointers in a structure pointed to by an argument, linking them together if present, then calls another routine obtained through a global variable and returns a combined value from two input registers.
+- `initialize_registers_and_branch_2`: Loads specific immediate values into three data registers and performs a short branch to another location.
+- `iterate_list_and_call`: The routine saves and restores a global variable and a global word, then walks a linked list from a global pointer, conditionally calling function pointers stored in each node.
+- `update_fixed_point_coordinates`: Decrements a counter and performs fixed-point arithmetic to update coordinate offsets and scaling factors within a data structure.
+- `call_indirect_via_offset`: Calls a routine using a pointer retrieved from a table via an offset.
+- `calculate_scaled_coordinates`: Performs fixed-point division and scaling to update several values in a structure, including coordinate offsets and status flags.
+- `execute_indirect_calls`: The routine performs three consecutive indirect calls using offsets stored in a table.
+- `process_subroutines_and_callbacks`: The routine performs multiple conditional calls to various subroutines and function pointers based on the values of several global variables and offsets.
+- `signal_task_if_valid`: Checks a task pointer and calls a function to signal it if the pointer is not zero.
+- `copy_data_blocks`: Calls another routine and, if successful, copies two distinct blocks of data from a global table to a destination buffer using loops.
+- `copy_string_loop`: Copies a sequence of bytes from a source pointer to a destination buffer within a loop.
+- `get_value_and_clear`: Retrieves a value from a function pointer and clears a global variable if it is not zero.
+- `nop_placeholder_routine`: This routine is empty and performs no operations.
+- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
+- `update_graphics_state`: Manages hardware registers and library calls to update display settings and DMA configurations based on input values.
+- `cache_clear_and_return`: The routine conditionally calls another routine based on a table value, calls Exec CacheClearU, and returns a combined value from its inputs.
+- `call_data_initialization`: This routine calls another routine that clears memory locations and populates a table with zeros.
+- `load_registers_and_branch`: Loads three immediate values into data registers and performs a short branch to another routine.
+- `copy_data_and_update_pointers`: Copies a block of twenty-three words from a source to a global variable.
+- `conditionally_call_function`: The routine calls another routine if a specific global variable is non-zero.
+- `set_function_conditionally`: Calls a function to set a task function and conditionally calls it again based on a value in a global variable.
+- `fetch_next_table_entry_2`: The routine compares two words in a global variable and, if they differ, computes an index, bounds it, reads three bytes from a table using a pointer, and updates the global variable.
+- `copy_word_and_clear_byte_2`: The routine copies a word from one offset of a global variable to another offset and then stores zero into a byte of the same global variable.
+- `manage_memory_and_list`: The routine calls another routine and performs memory allocation or deallocation based on the result of a function call.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `swap_and_set_bit_2`: The routine calls another routine.
+- `swap_and_set_bit`: If a value pointed to by a register is non-negative, it stores a bitwise right-shifted version of another value with the highest bit set into that location, and then stores the original pointer into the second location.
+- `process_linked_list`: The routine traverses a linked list by reading a pointer, clearing the current list head, and calling a function pointer for each element while iterating through the list.
+- `initialize_interrupt_state`: The routine copies a value from one global field to another and clears several global words.
+- `install_interrupt_server`: Writes constant bytes and a pointer to a global structure, stores its own address as a handler, and invokes a library routine to add an interrupt server.
+- `conditional_callback`: The routine tests a global flag and, if set, calls a function pointer taken from a global variable.
+- `process_sprite_positions`: The routine reads a vertical position register and, using offsets from a global structure, updates word pairs in a set of linked lists by adding base offsets and a scaled value, then clears a flag and propagates counters.
+- `loop_call_with_counter`: The routine loops a number of times determined by an input value, calling a function pointer derived from a global variable each iteration, then returns the two input values concatenated.
+- `infinite_wait`: The routine loops forever by comparing a global variable to itself, then returns zero.
+- `clamp_and_store_values`: The routine clamps two word values against limits stored in global variables, stores the clamped results and their halves back to globals, and writes derived bytes to pointers obtained from globals.
+- `evaluate_conditional_branch`: Tests a word at an offset from a pointer and performs conditional branches.
+- `load_and_branch_5`: Loads a constant value into a register and performs a short branch to another location.
+- `increment_conditional_value`: Tests a value at an offset from a pointer and, if certain conditions are met, increments a word loaded from another offset.
+- `write_and_call`: This routine writes a word to a memory location, performs conditional comparisons, and calls two other routines before returning.
+- `set_flag_and_call`: Writes a word to a location derived from a register, calls another routine twice, writes a different word to the same location, and returns zero.
+- `wait_for_flag_and_loop`: Loops three times, waiting for a specific memory location to become zero before calling another routine in each iteration.
+- `process_indirect_call`: Stores local stack values, calls another routine, and performs conditional logic based on the results.
+- `process_complex_state`: Checks conditions against a global variable and a pointer offset, then performs a sequence of memory writes, a loop, and multiple routine calls.
+- `initialize_state_sequence`: Sets a word at an offset from a pointer, calls another routine, and performs conditional checks to potentially clear several memory locations and call another routine.
+- `initialize_state_and_call_indirect`: The routine clears several global variables, stores an input word and a derived index, then calls another routine and uses its 64-bit result to fill more global variables with sums and shifted values before returning a status flag.
+- `clear_state_if_nonzero`: Checks a global variable and, if non-zero, clears two global words and the variable itself before calling another routine.
+- `duplicate_word_pairs`: The routine copies a 32-bit input value into two parallel structures eight times, writing the high word and low word to each, and adds a global short to the input each iteration.
+- `update_status_word`: The routine clamps an input word, masks a status word from a global structure, optionally selects an alternate table entry and modifies the word, then stores the combined value back.
+- `process_and_call_subroutines`: Loads a value from memory, performs arithmetic on a modified version of that value, and calls two different subroutines before branching to another location.
+- `calculate_scaled_index_offset`: The routine compares a word in a register to a constant and branches if it is lower.
+- `tiny_addq_moveq_rts`: Small routine of 3 instructions that adds 4 to a7, then loads 1 into d0, then returns.
+- `set_flag_after_loop`: The routine repeatedly calls another routine, writes zero to two words in an output area, calls two more routines, and loops until a word output equals a constant.
+- `update_entity_spatial_data`: Updates a structure within a table using values from registers and performs a linked-list insertion or swap to maintain a sorted order based on calculated distance or coordinate values.
+- `update_linked_list_and_buffer`: Updates a structure with new values and performs a series of swaps within a table based on a linked list traversal.
+- `shuffle_four_values`: The routine performs a series of four word-sized swaps between values at offsets determined by the values themselves within a table.
+- `calculate_table_offset`: Multiplies a word by twenty and clears a long value at a calculated offset in a table if a comparison fails.
+- `swap_linked_list_nodes`: Swaps two nodes in a linked list by updating their pointers and clearing the original pointer.
+- `rebuild_priority_queue`: Iterates through a data structure to reorder or update elements based on specific field values.
+- `update_priority_queue`: This routine uses a loop to move a long value from one location to another, clear the destination, and increment a counter.
+- `update_priority_queue_elements_3`: Iterates through a linked list of structured data to update values based on specific conditional checks.
+- `update_priority_queue_elements`: Iterates through a linked list or table to manage a collection of structured data.
+- `update_priority_queue_elements_2`: Iterates through a linked list of structured data to update values based on specific conditional checks.
+- `process_priority_queue_elements`: Iterates through a linked list or table to manage a collection of structured data.
+- `check_pointer_and_branch`: Decrements a register and branches based on whether a pointer at an offset from a register is null or negative.
+- `validate_table_offset`: Calculates the difference between a register and a memory address, tests a specific bit in that difference, and branches based on the result.
+- `process_table_data_entries`: Iterates through a table of entries to validate bounds and update pointer offsets.
+- `adjust_pointer_and_branch`: Increments a pointer by eight and branches to another location.
+- `validate_table_entry`: Decrements a register and performs several checks on a pointer and a value at an offset within a table before branching.
+- `rotate_buffer_elements`: Swaps four values within a structure and calls a routine via a global variable.
+- `fill_message_request`: The routine calls another routine and a library vector, then writes several constants and values derived from the call results into a structure pointed to by a register.
+- `unlink_list_node`: Removes a node from a linked list by updating a global head pointer and the predecessor and successor links of the node.
+- `traverse_linked_list_5`: Iterates through a linked list as long as a specific memory location does not contain zero.
+- `load_and_branch_4`: Loads a small constant into a register and performs a short branch.
+- `update_linked_list`: Manipulates pointers within a linked list structure based on comparisons of data at specific offsets.
+- `process_linked_list_until_empty`: Loops while a global pointer is non-zero, repeatedly calling another routine to conditionally unlink a list node, and returns zero.
+- `execute_conditional_branch`: Saves registers to the stack, moves a pointer to a new register, calls another routine, and branches based on the result.
+- `update_blt_object_parameters`: Copies several fields from one data structure to another, including bitplane and color information, and modifies specific values using bitwise masking.
+- `check_pointer_and_compare`: Loads a pointer from a structure, compares a word at an offset within that pointer to a value, and returns zero if certain conditions are met.
+- `return_constant_5`: Returns the constant an address in d0 to the caller without any other effect.
+- `clear_memory_block`: Clears a block of 39 words in memory and calls a routine via a global variable.
+- `initialize_input_device`: The routine clears a block of 40 words pointed to by a1, then calls a routine via a global variable to obtain a value which it stores at offset 32 in the a1 structure.
+- `close_input_device`: The routine calls two routines via a global variable and then calls another routine via the same global variable.
+- `process_event_linked_list_2`: Iterates through a linked list of event structures to update global state flags and modify game variables.
+- `tiny_movea_move_rts`: Small routine of 3 instructions that copies (a7)+ to a5, then copies a0 to d0, then returns.
+- `set_bit_and_word`: Sets a specific bit in a byte at a negative offset from a register and stores a word of all ones at another offset.
+- `set_bit_and_clear_word`: Sets a specific bit in a byte at a negative offset from a register and clears a word at another offset.
+- `process_event_linked_list`: Iterates through a linked list of data structures and performs conditional updates to global state variables based on type flags.
+- `traverse_and_process_linked_list`: Iterates through a linked list of data structures, performing conditional updates to global state variables based on type flags found within each node.
+- `load_pointer_from_memory`: Loads a long value from a pointer, updates that pointer, and returns if the value is zero.
+- `compare_and_clear_value`: Compares a word at an offset from a pointer to a constant and clears a long value if they match.
+- `process_conditional_bit`: The routine sets a bit in a memory location, calls another routine, and performs conditional branches based on the results of a word comparison.
+- `process_conditional_state`: Checks a word and a bit in a structure, then conditionally saves registers, calls another routine, and restores them.
+- `set_bit_and_branch`: Sets a specific bit in a byte at an offset from a register and then performs a relative branch.
+- `update_bit_table`: Manipulates bits in a buffer or table based on values from a structure and conditionally calls another routine.
+- `check_and_call_routine`: Tests a bit, calculates an offset into a table, and calls another routine if a byte at that offset is non-zero.
+- `set_bit_in_table`: Performs bitwise operations on a byte, calls a function, and sets a bit in a table using a calculated offset.
+- `check_multiple_conditions`: Tests a word for zero, checks a bit in a register, and compares a byte against two different constant values using conditional branches.
+- `set_bit_conditionally`: Sets a specific bit in a byte at an offset from a register if a condition is met, then branches.
+- `set_bit_in_buffer`: Calculates an offset into a table based on a value and sets a specific bit within a byte at that location.
+- `clear_bit_in_byte`: Clears a specific bit within a byte located at an offset determined by a word value.
+- `update_circular_buffer`: Updates a value in a table using an index that wraps around, then stores three bytes into the table and a separate set of bytes into a different location.
+- `copy_word_and_clear_byte`: The routine copies a word from one offset of a global variable to another offset and then stores zero into a byte of the same global variable.
+- `return_zero`: The routine contains no operations and returns zero.
+- `fetch_next_table_entry`: The routine compares two words in a global variable and, if they differ, computes an index, bounds it, reads three bytes from a table using that index and builds a 32-bit value from them.
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `parse_string_data`: Iterates through a string to extract specific byte sequences and stores them into a table at an offset from a global variable.
+- `check_byte_value`: Loads a byte from a pointer in a register and compares it against a specific value.
+- `return_stack_words`: The routine returns two words from the stack as a single 64-bit value.
+- `expand_encoded_text`: Processes a source string by expanding specific characters or sequences into a destination buffer based on a calculated offset.
+- `return_stack_word`: The routine returns the 32-bit value passed on the stack without modification.
+- `copy_data_block_2`: Increments a counter and a pointer, then copies four consecutive bytes from a memory location to a destination pointed to by another register.
+- `write_constant_bytes`: Increments a counter and, if a threshold is met, writes two specific constant bytes to a destination pointed to by a register.
+- `store_routine_pointer`: Stores the address of the current routine into a location pointed to by a register.
+- `execute_sequential_subroutines`: Calls three different subroutines in a fixed sequence before returning.
+- `test_and_recurse_on_table_value`: Checks if a value at a specific offset within a table pointed to by a memory location is zero.
+- `configure_flags_and_tables`: Masks and sets bits in a byte within a frame based on low and high bits of an input word, loads two-word table entries from offsets relative to its own address into several global variables, and then calls another routine before returning zero.
+- `modify_memory_byte`: The routine performs a sequence of bitwise operations on a byte stored at a memory location pointed to by a register.
+- `update_registers`: The routine performs bitwise OR on two registers and then moves the value of one register into another.
+- `cache_and_copy_block`: The routine checks if a cached buffer exists for a specific data structure and validates its size; if the cache is missing or invalid, it allocates a new buffer.
+- `blit_clipping_rectangle`: Calculates a clipped rectangular area by intersecting a source rectangle with a destination range and performs a memory copy.
+- `clipboard_blit_range`: Checks a flag and a pointer in global variables, then intersects a source rectangle with a destination range, clamping the bounds.
+- `conditional_free_and_clear`: The routine returns zero unless a flag in a global variable is set, in which case it calls another routine and clears two fields in the same global variable before returning the call result.
+- `traverse_linked_list_2`: The routine traverses a linked list of structures, performing range checks on values within the structures and comparing them against a parameter.
+- `conditional_byte_copy_with_mask`: The routine checks a flag in a byte from a global variable and, if set, copies eight bytes from a table of pointers into a buffer while applying a mask or an OR operation selected by a bit in a word from the global variable.
+- `conditional_byte_block_copy`: The routine checks a flag in a byte from a global variable and, if set, copies eight bytes from a table of pointers into a buffer using a stride value from another global variable.
+- `initialize_linked_list_node`: Allocates and initializes a new data structure by copying values from a global variable or an existing node.
+- `initialize_and_validate_parameters`: The routine stores several incoming values into fields of a global variable and performs size and range checks using values from another global variable.
+- `restore_and_return`: Calls another routine, performs a branch, restores multiple registers from the stack, and returns.
+- `traverse_linked_list_and_branch`: Loads a pointer from a table, accesses a second pointer from that location, and branches based on a comparison of a word at an offset within the second structure.
+- `manage_linked_list_and_cache`: The routine traverses a linked list to clear values, checks a specific constant against a value from a global variable, and calls several other routines including one that performs a block copy.
+- `perform_multiple_calls`: Adjusts the stack pointer, clears stack memory, and calls several different routines in sequence.
+- `traverse_and_clear_linked_list`: Traverses a linked list starting from a pointer stored in a global variable.
+- `wait_for_nonzero`: Repeatedly calls another routine until the returned value is non-zero, then returns zero.
+- `traverse_list_node`: Saves registers, loads a pointer from a table, and calls another routine before performing a conditional branch.
+- `traverse_and_clear_list`: Iterates through a linked list and clears the contents of a node once a specific condition is met.
+- `find_linked_node_by_field`: The routine loads a pointer from a global variable and walks a linked list by following a pointer field until it finds a node whose field matches an input short or reaches the end of the list.
+- `validate_and_update_global_fields`: Performs several conditional checks and updates various fields within a global structure based on comparisons and range validations.
+- `save_and_restore_register_state`: Saves three fields from a global variable, calls another routine, then restores the three saved fields to the same global variable and returns zero.
+- `update_structure_and_validate_range`: Updates several fields within a structure, calculates a value based on the difference between two structure members, and performs multiple loops to validate or synchronize this value against string lengths and other structure bounds.
+- `loop_until_short_field_changes`: The routine loops a number of times given by a word in a global variable, calling another routine each iteration and comparing a short field in the global variable before and after the call, incrementing a counter when the field changes, and then calls another routine twice before returning.
+- `update_structure_fields`: Updates several fields within a structure by writing constant values, masking a short value, and copying two words from one memory location to another.
+- `store_expanded_pointers`: Stores two 16-bit values and two other 16-bit values into a structure at specific offsets.
+- `conditional_word_fill_loop`: The routine clamps an input word to a limit from a global variable and then fills a series of byte blocks using a word from the global variable as a mask.
+- `clear_and_update_fields`: Tests a word at an offset, and if zero, clears two bytes, writes a word to a new location, and calls another routine.
+- `copy_and_clear_data`: Copies a word from one location in a global variable to another and clears a byte at a different offset within that same variable.
+- `looped_bitmask_setup`: Initializes several fields in a global variable and then loops over a bitmask from a global variable, calling another routine and writing computed pointer and flag values into the global variable for each set bit.
+- `process_nested_bitmask_loops`: Executes nested loops that iterate through a bitmask to perform conditional pointer assignments and data transfers within a global structure.
+- `nested_loop_pointer_setup`: Initializes fields in a global variable and then executes nested loops driven by values from the global variable, calling another routine and writing pointer and byte values into the global variable for each iteration.
+- `setup_pointer_and_multiply`: Loads several values from a structure, performs a multiplication, and branches to another routine.
+- `initialize_and_loop_data`: Initializes several fields in a structure and then enters a loop that checks a bitmask to conditionally call another routine and update fields in a structure.
+- `conditional_looped_pointer_setup`: The routine checks a condition from an input short and, if true, initializes fields in a global variable and loops over a bitmask, calling another routine and writing pointer sums into the global variable for each set bit.
+- `toggle_flag_byte`: The routine clears a bit in a byte from a global variable and sets the same bit if an input short is non-zero.
+- `compare_and_store`: Compares a register with a value from a table and stores the register into a memory location if a condition is met.
+- `increment_structure_field`: The routine increments a word within a structure and, if the new value is within a specific range, calls another routine; otherwise, it writes a different value to that field.
+- `decrement_structure_field`: The routine decrements a word in a structure and calls another routine if the result reaches zero.
+- `increment_structure_counter`: Copies a word from one offset to another within a structure, increments a value, and conditionally calls another routine.
+- `modify_and_call`: Increments a value from a table, compares it against another value, and calls another routine if certain bit conditions are met.
+- `execute_recursive_call`: This routine performs a direct recursive call to itself before returning.
+- `copy_and_clear_then_call`: The routine copies a short from one offset to another in a global variable, clears a byte in the global variable, calls another routine and returns zero.
+- `get_concatenated_fields`: The routine retrieves a pointer from a global variable, accesses a node in a linked list, and returns a value formed by concatenating a byte and a word from that node.
+- `calculate_offset_values`: Performs arithmetic on values from a data structure and stores the results back into that structure.
+- `execute_conditional_subroutines_2`: Calls three different subroutines in sequence before returning.
+- `parse_data_stream_with_logic`: Iterates through a buffer, performing various arithmetic and conditional operations based on the values encountered, including potential jumps and calls to other routines.
+- `compare_and_call_sequentially`: Compares a byte to a constant and branches, or increments a long value and branches again, and performs three sequential calls to another routine while incrementing a pointer.
+- `branch_on_byte_comparison`: Compares a byte to a constant and branches, or increments a long value and branches again.
+- `return_from_subroutine`: The routine is empty and performs no operations before returning.
+- `access_hardware_and_call`: Loads the address of a hardware register, retrieves a pointer from a table, and calls another routine based on a test of a value in a table.
+- `call_and_return_2`: The routine calls another routine and returns.
+- `process_byte_and_branch`: Calls another routine, loads a byte from a pointer, and branches based on a zero check of that byte or a zero check of a word in a register.
+- `copy_and_execute_indirect`: The routine performs two loops to copy data between a structure and a global variable, then calls a function pointer retrieved from the stack.
+- `execute_indirect_call_4`: Loads a function pointer from the stack and executes it.
+- `accumulate_offset_value`: The routine computes a sum of an integer from a global variable, a signed short difference from two shorts in the global variable, and a product of two words from the global variable, then stores the result into a field of the global variable.
+- `copy_fields_between_offsets`: The routine copies two word fields and one long field from one set of offsets in a global variable to another set of offsets in the same global variable.
+- `copy_struct_fields`: The routine copies two 16-bit values from offsets 88 and 90 to offsets 80 and 82, and copies a 32-bit value from offset 16 to offset 12, using an address base in a register, then returns.
+- `count_string_length`: The routine walks a byte string in a register, incrementing a counter for each byte and skipping two bytes after an escape byte, then returns the final count.
+- `call_library_function`: The routine calls a function via a pointer stored in a location relative to a global variable.
+- `apply_bitmask_xor_transform`: Iterates through a list of data structures to perform bitwise XOR operations on memory buffers using a rotating bitmask.
+- `tiny_or`: Small routine of 1 instruction that merges d1 into d0.
+- `apply_bitmask_transform`: Performs a bitwise XOR operation on a memory buffer using a rotating bitmask derived from a source table.
+- `bitwise_or_byte`: The routine performs a bitwise OR operation between a byte in a register and a byte in another register.
+- `apply_bitmask_and_rotate`: Performs a bitwise XOR on a byte, increments a pointer, and uses a loop instruction to repeat a sequence involving bitwise masking and rotation.
+- `execute_looping_call`: Performs an XOR operation on a byte, enters a loop using a decrement instruction, and calls another routine using a calculated address.
+- `return_from_subroutine_3`: The routine is empty and performs no operations.
+- `load_constant_and_branch_2`: Loads a constant into a register and performs a relative branch.
+- `load_constant_and_branch_3`: Loads a different constant into a register and performs a relative branch.
+- `conditional_call_and_return`: The routine compares a global variable with a value from another global variable and, if they differ and the first is non-zero, calls another routine before returning a constant combined with a stack value.
+- `store_word_to_offset_2`: Stores a word from a register into a memory location calculated using a pointer and a negative offset.
+- `execute_conditional_subroutines`: Saves registers to the stack, calls a routine, and then either calls a second routine if the result is positive or branches to a third location, finally performing an unconditional branch to a fourth location.
+- `call_conditional_table_function`: Copies a word and a byte from a global variable and calls a function through a table pointer if a specific byte is non-zero.
+- `save_registers_and_branch_3`: Saves multiple data and address registers to the stack, calls another routine, and then either calls a second routine if the result is positive or branches to a third location if the result is negative.
+- `update_state_and_dispatch_callback`: Copies a word and a byte to new memory locations before conditionally executing a function via a pointer stored in a table.
+- `test_conditional_values`: Tests a byte and a word from a global variable and returns one if specific conditions involving a sign bit and a byte are met.
+- `test_multiple_values`: Tests a byte and a word from a structure and returns a constant value if specific conditions are met.
+- `return_second_parameter`: Returns the value provided in the second parameter.
+- `call_table_function_conditionally`: Copies a byte to a new location and calls a function through a table pointer if the byte is non-zero.
+- `call_function_via_table`: Stores a word into a memory location relative to a global variable and calls a function through a pointer found in a table.
+- `process_string_and_update_graphics`: Calculates string lengths and performs arithmetic on structure values before updating a memory area through a series of nested loops and pointer manipulations.
+- `execute_nested_calls`: Calls two different routines through pointers retrieved from a structure, then clears two values in a global memory area.
+- `clear_stack_and_branch`: Clears the longword at the top of the stack and performs a short relative branch to another location.
+- `conditionally_execute_calls`: Checks a value at a memory offset and, if it meets specific criteria, stores a byte to a global variable and calls a routine three times.
+- `execute_repeated_calls`: Checks a value at a memory offset and, if non-zero, stores a byte to a global variable and calls a function three times.
+- `update_loop_values`: Performs a loop that modifies several values in a structure using arithmetic and bitwise operations, while calling two other routines.
+- `perform_system_operations`: Calls several functions including one that forbids interrupts, modifies a value in a structure, and then calls several other functions.
+- `permit_interrupts_and_call`: Calls a function from a table and then calls a routine to permit interrupts.
+- `update_sprite_position`: Calls a function through a pointer located at a specific offset within a structure.
+- `call_function_via_nested_pointer`: Fetches a pointer from a memory location offset from a base address, then uses the value at a further offset within that pointed-to structure to call another routine.
+- `update_buffer_and_strings`: Sets values in a structure, assigns two pointers to different offsets within a buffer, and copies a null-terminated string from a global variable into a destination.
+- `update_string_and_position`: Parses a string to find a delimiter, updates a pointer and a word in a structure, and modifies a value based on a minimum threshold.
+- `execute_library_call_with_context`: Clears a word and moves a value, saves registers, and calls a routine through a pointer before restoring the registers.
+- `clamp_value_to_maximum`: Compares two words in memory and updates the first word to match the second if the first is smaller.
+- `process_newline_character`: Increments a value in a global variable, stores a character, and if that character is a newline, null-terminates a string and increments another global value.
+- `perform_data_operation`: Iterates through a linked list of structures to copy null-terminated strings into a destination buffer, optionally appending a byte from a register.
+- `copy_block_data`: Performs a nested loop to copy multiple blocks of data from a source table to a destination memory area using calculated offsets.
+- `return_immediately_2`: This routine performs no operations and immediately returns to its caller.
+- `execute_unnamed_subroutine`: Calls an unnamed routine and then returns.
+- `return_from_subroutine_2`: This routine is empty and performs no operations before returning.
+
+### Run
+
+- `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
+- `move_and_branch`: moves a long word from one data register to another and then performs an unconditional short branch.
+
+### More
+
+- `initialize_resource_structure`: Retrieves a pointer from a memory location to populate a large structure with a magic value and specific function pointers.
+- `configure_resource_structure`: Retrieves a pointer from a memory location, populates a large structure with a magic value and specific function pointers, and subsequently executes a function pointer retrieved from that structure.
+- `update_resource_pointer`: Stores a value into a memory location pointed to by a global variable, calls another routine, and then executes a function pointer retrieved from a memory location.
+- `find_null_terminator`: Iterates through a buffer starting at a given pointer until a null byte is found.
+- `copy_string_with_limit`: Copies bytes from a source buffer to a destination buffer until a null terminator is found or a length limit is reached.
+- `clear_buffer_byte`: Sets a byte to zero at a specific offset within a buffer if the offset is within a certain range.
+- `initialize_data_structure`: Populates a large block of memory with specific constant values and pointers based on a conditional check.
+- `call_indirect_via_table`: Fetches a function pointer from a table located via a global variable and executes it.
+- `perform_data_decrunching`: This routine manages memory allocation and copying to process data, as indicated by the referenced text regarding a waiting period.
+- `parse_and_copy_path_string`: Copies a block of data from a source buffer to a destination buffer and then parses a string to extract a substring located between a colon and a forward slash.
+- `manage_memory_allocation`: Routine that performs arithmetic on a value and either updates a global variable or calls a routine to allocate memory and update a linked list.
+- `free_linked_list_elements`: Iterates through a linked list and frees each memory block until the list is empty.
+- `execute_multiple_callbacks`: Retrieves pointers from two different tables and executes several functions based on those pointers and a condition.
+- `reset_state_and_pointers`: Calls a function twice via a table pointer and clears two word-sized values in memory.
+- `initialize_graphics_buffer`: Calculates display dimensions and bitplane offsets to prepare a memory area for graphical data.
+- `clear_flagged_values`: Checks two specific values in a structure and, if non-zero, executes a function from a table before clearing the value.
+- `update_buffer_index`: Checks if two values in a structure are equal, calls a function to update one of them, and increments two counters while updating a byte from a table.
+- `parse_input_string`: Parses a character buffer to build a command or data string based on bitmask flags.
+- `update_and_copy_data_blocks`: Increments a counter and performs nested loops to copy blocks of data between memory locations based on calculated offsets.
+- `increment_and_copy_blocks`: Increments a counter and performs a nested loop to copy blocks of data from one memory location to another.
+- `copy_and_transform_buffer`: Copies a block of data to a local stack buffer, updates a global variable based on a returned value, and performs a reverse loop to transform bytes by subtracting a constant if they exceed a certain threshold.
+- `toggle_byte_and_wait`: Sets a byte to a specific value, calls a function, and then resets that byte if certain conditions in a structure are met.
+- `update_state_and_dispatch`: Updates several global variables and pointers based on the result of a routine call, then executes an indirect function call through a pointer stored on the stack.
+- `update_linked_list_and_copy_blocks`: Advances a pointer through a linked list while decrementing counters and updating global state.
+- `process_callback_and_copy_blocks`: Decrements a value in a global variable and executes a series of callbacks.
+- `decrement_and_copy_blocks`: Decrements a counter and performs a nested loop to copy data blocks before executing an indirect function call.
+- `process_data_blocks`: Decrements a counter and performs a nested loop to copy 32-bit words between memory locations.
+- `execute_block_copy_loop`: Iterates through a list of data blocks, decrementing a counter for each and performing a nested loop to copy 32-bit words between memory locations.
+- `convert_to_string`: Converts a value into a character sequence by iterating through a buffer and storing ASCII digit characters or spaces.
+- `execute_indirect_jump`: Performs an indirect call to an address provided through a jump table.
+- `update_global_counters`: Clears two global values and then adds a signed word from a structure to a third global value.
+- `execute_indirect_call`: Performs an indirect call to a function address.
+- `traverse_linked_list_7`: Iterates through a linked list by following pointers until a null pointer or a counter limit is reached, then performs stack-based updates.
+- `update_pointer_list`: Contains a loop that compares a value to a global variable and updates a pointer from the stack.
+- `iterate_stack_buffer`: Performs a loop that decrements a pointer through a stack-based buffer while updating a global variable and writing specific values to memory.
+- `set_byte_zero`: Stores a zero byte into a specific offset of a global structure.
+- `toggle_flag_and_wait`: Sets a byte in a global structure to one, calls another routine, sets it back to zero, and then performs an indirect jump.
+- `copy_data_structure`: Copies a block of data from a source pointer to a destination within a structure and updates several internal pointers and byte values.
+- `copy_string_and_update_pointers_2`: Copies a string from a source table to a destination and updates two pointer-based structures with the new address.
+- `copy_string_and_update_pointers`: Copies a null-terminated string from a source table to a destination buffer and updates two pointer-based structures if they are non-zero.
+- `update_pointer_targets`: Copies a value from a source table into two different pointer-based locations if they are non-zero.
+- `execute_conditional_call_2`: Checks a byte in a table and, if non-zero, performs an indirect call through a pointer retrieved from a structure.
+- `update_pointer_and_call`: Copies a value from a nested pointer into a memory location and performs an indirect call through a pointer stored in a register.
+- `compare_and_update_value`: Compares a word from a table against a value in a structure and, if it is not greater than or equal, stores a word from a pointer into another location.
+- `search_string_and_update_structure`: Searches for a specific character within a data block by comparing values, potentially performing case conversion, and updates a structure with new pointers and values if a match is found.
+- `increment_table_entry`: Increments a word at a specific offset within a structure and branches to another location.
+- `execute_indirect_jump_2`: Loads an address from a memory location and jumps to it.
+- `format_string_data`: Populates a buffer with data from various sources and performs a loop to fill a range of memory with spaces or null bytes.
+- `initialize_complex_structure`: Performs arithmetic on a global value, populates a large structure with various constants and pointers, and enters a loop involving library calls.
+- `initialize_message_handler_table`: Iteratively populates a table with pointers to specific handler functions and sets an associated status byte to a constant value for each entry.
+- `process_message_loop`: Iterates through messages by calling functions via pointers in a structure, updating a value in a global variable based on a returned longword, and eventually copies a longword to a new location.
+- `reply_message_and_copy`: Sends a reply to a message and copies a longword from one memory location to another.
+- `traverse_linked_structure`: Copies a value to a local variable and enters a loop that follows a pointer chain while decrementing a counter, eventually performing an indirect call.
+- `execute_indirect_jump_4`: Performs an indirect call using a pointer retrieved from a jump table.
+- `check_conditions_and_branch`: Performs several conditional checks on memory values and branches based on the results, eventually loading a constant into a register and branching.
+- `store_byte_and_branch`: Loads an address from the stack into a register, stores a byte at an offset from that address, and performs a relative branch.
+- `toggle_state_and_jump`: Sets a byte to zero and conditionally updates a global byte and a local byte before performing an indirect call.
+- `set_byte_values`: Sets two specific bytes in memory to one and then performs an indirect jump.
+- `modify_status_bytes`: Moves a byte to a global location and performs a bitwise sequence operation on another global byte.
+- `reset_byte_values`: Sets one byte to one and another byte to zero before performing an indirect jump.
+- `process_event_loop_and_state`: Iterates through a nested loop structure that evaluates conditional flags and updates a global state structure.
+- `store_byte_and_branch_2`: Stores a byte from a memory offset relative to a pointer and then performs a short relative branch.
+- `update_status_and_branch`: Moves a byte from a memory offset, pushes a value onto the stack, calls another routine, loads a pointer from a memory offset, tests a longword at that pointer, sets a byte in memory based on the test result, and performs a short relative branch.
+- `process_entity_status_and_flags`: Retrieves a data structure via a pointer, copies a block of memory into a local buffer, and performs bitwise evaluations to update several boolean status flags.
+- `update_entity_status_flags`: Copies a block of data from a source pointer and evaluates bitmasks within a data structure to update several boolean status flags.
+- `update_game_state_flags`: Evaluates various bitmasks and status values within a data structure to update a set of boolean flags.
+- `test_and_branch`: Tests a specific bit in a stack-relative byte and branches based on the result, potentially calling another routine.
+- `evaluate_state_conditions`: Tests a bit in a memory location and compares a word in memory against specific constants.
+- `compare_and_branch`: Compares a word in a register to a constant and branches if they are not equal.
+- `update_state_conditional_logic`: Evaluates a state variable against multiple constant values to execute specific conditional branches.
+- `store_bytes_and_branch`: Stores two bytes from a base pointer plus an offset into memory and then performs a relative branch.
+- `check_limit_and_decrement`: Tests a byte and compares a word to a constant, then decrements a value from a global variable and stores it on the stack.
+- `execute_conditional_branch_2`: Writes a word to the stack, tests a byte, and performs a branch to another routine based on the result.
+- `process_state_command_logic`: Evaluates a state variable against multiple constant values to execute specific conditional branches.
+- `store_bytes_and_set_flag`: Stores two bytes from a base pointer plus an offset into memory, sets the carry flag based on a byte value, and performs a relative branch.
+- `check_limit_and_decrement_alt`: Tests a byte and compares a word to a different constant, then decrements a value from a global variable and stores it on the stack.
+- `execute_conditional_call`: Writes a word to the stack, tests a byte, and calls another routine before performing a conditional branch.
+- `test_and_execute`: Compares a word in a register against two different constants.
+- `compare_and_move`: Compares a word in a register to a constant and branches if they are not equal.
+- `branch_on_value`: Compares a word in a register to a constant and branches if they are not equal.
+- `dispatch_command_handler`: Evaluates a command character or index from a data structure to determine the next action.
+- `update_table_entry_2`: Calculates an offset from a value on the stack, scales it, and moves a longword from a global pointer into a table at that calculated position before branching.
+- `verify_and_execute_handler`: Checks if a register contains a specific word value and, if so, pushes the stack pointer and calls a subroutine.
+- `test_multiple_constants`: Performs several comparisons on a register and a byte on the stack to determine whether to branch to different locations.
+- `check_value_and_update_pointer`: Compares a stack word to a constant, retrieves a byte from a table using an offset, and if that byte matches a specific value, updates a pointer in a structure and calls a subroutine.
+- `compare_and_call_subroutine`: Compares a byte in a register to a constant and, if equal, pushes the current stack pointer and calls a subroutine before branching.
+- `update_state_and_traverse_lists`: Checks a global character variable to determine which logic path to follow, potentially initializing a structure and performing case-insensitive character normalization in a loop.
+- `increment_and_branch_on_flag`: Loads a word from a stack offset, tests a byte at an offset determined by that word, and either increments the word or branches to another location based on the test result.
+- `iterate_and_relink_linked_list`: Traverses a linked list of structures while performing conditional updates to a state variable based on flag checks.
+- `traverse_and_update_linked_list`: Traverses a linked list of structures while performing conditional updates to a state variable based on flag checks.
+- `process_linked_list_and_update_state`: Traverses a linked list of structures while performing conditional updates to a state variable based on flag checks.
+- `clear_and_call_subroutine`: Clears a longword at a displacement from a base pointer, pushes the stack pointer onto the stack, calls a subroutine, and then performs an unconditional branch.
+- `process_state_conditional_lists`: Checks a global character variable and performs different operations based on its value.
+- `accumulate_linked_list_values`: Iterates through a linked list by following pointers, extracts a word from each element, sign-extends it, and adds the result to a global variable.
+- `process_linked_list_and_handle_events`: Iterates through a linked list to accumulate values into a global variable and then enters a loop that checks various global flags to trigger specific subroutines or indirect function calls.
+- `update_game_state_and_process_events`: Decrements a counter and enters a loop that checks various global flags to trigger specific subroutines or indirect function calls.
+- `dispatch_state_driven_events_2`: Evaluates a character in a global variable to execute different sequences of subroutine calls, stack manipulations, and memory updates.
+- `dispatch_state_driven_events`: Evaluates a character in a global variable to execute different sequences of subroutine calls, stack manipulations, and memory updates.
+- `dispatch_state_driven_subroutines`: Evaluates a character in a global variable to execute different sequences of subroutine calls and stack manipulations.
+- `branch_to_subroutine`: Calls a subroutine and then performs a relative branch to another location.
+- `validate_and_dispatch_event`: Compares a byte in a register to a constant and, if it matches, pushes the stack pointer to the stack and calls another routine before branching to a third routine.
+- `compare_status_byte`: Compares a byte in a register against two specific constant values and branches accordingly.
+- `manage_task_synchronization`: Checks specific status flags in a global structure to determine if a task should be signaled or if the current process should wait.
+- `signal_and_wait_loop`: Sets a byte in a global structure, calls a routine, and then enters an infinite loop of calling another routine.
+- `parse_file_path_and_load`: Parses a file path string to identify the directory component and copies the filename into a separate buffer.
+- `assign_global_pointer`: Stores the address of a global variable into a table, sets a byte to one, calls another routine, and re-assigns the global address.
+- `initialize_system_environment`: Increments a reference counter and initializes a large global structure with various pointers, flags, and configuration values.
+- `release_system_resources`: Decrements reference counters for various system components and, when they reach zero, executes cleanup routines from a jump table.
+- `initialize_graphics_library_task`: Increments a counter and, if it is the first occurrence, opens a library and stores the resulting pointer in a structure.
+- `decrement_and_close_library`: Decrements a word in a structure and, if it is not zero, checks a pointer and calls a routine via a jump table.
+- `multiply_signed_fixed_point`: Performs a signed multiplication of two 16-bit values and handles the resulting fractional and integer components.
+- `calculate_complex_product`: Performs a multiplication of two 16-bit values extracted from registers and applies conditional sign adjustments based on the input and a global byte.
+- `perform_fixed_point_division`: Executes a division algorithm on two values, handling sign extraction and using either a modulo-based approach or a bit-shifting loop depending on the divisor's magnitude.
+- `calculate_fixed_point_division`: Performs a loop-based division algorithm using bit shifts and subtractions to process input values.
+- `allocate_memory_block`: Attempts to allocate a memory block and, if successful, stores a value into the block and updates a pointer via a global list.
+- `free_memory_block`: Removes an item from a global list and frees the associated memory block if the provided pointer is not zero.
+- `set_global_value`: Writes a constant value to a memory location and calls another routine.
+- `store_routine_address`: Stores the address of the current routine into a location determined by a stack-based comparison.
+- `initialize_task_structure`: Increments a counter and, if it is the first occurrence, populates a structure with various pointers and values before calling a function via a pointer.
+- `cleanup_task_and_free_memory`: Decrements a counter and, if it reaches zero, iterates through a linked list to call a routine for each element, updates a structure, and conditionally calls other routines.
+- `open_intuition_library`: Increments a word in a structure and, if it is one, calls a routine to open a library and stores the resulting pointer.
+- `close_library_with_cleanup`: Decrements a word in a structure and, if non-zero, branches back to the start.
+- `increment_task_counter`: Increments a word in a structure and calls another routine if the value becomes one.
+- `decrement_task_counter`: Decrements a word in a structure and jumps to a new location if the result is zero.
+- `manage_task_lifecycle`: Increments a reference counter and, if it is the first instance, executes a recursive call and an external function to store a returned value in a structure.
+- `call_memory_copy`: This routine acts as a wrapper that invokes a memory block copying procedure.
+- `copy_memory_block`: Iteratively moves bytes from a source pointer to a destination pointer using nested loops and counter-based logic.
+- `tiny_moveq`: Small routine of 1 instruction that loads 1 into d0.
+- `decrement_byte_cycle_counter`: Decrements a byte register once for each count unit, wrapping to a space character when it reaches zero, and returns.
+- `move_word_to_register`: Moves a word from a memory location offset by a register into another register.
+- `search_and_clear_list_node`: Traverses a linked list to find a node matching specific byte criteria and clears a value at a specific offset within that node.
+- `restore_registers_and_return`: Loads a value into a data register from the stack, restores an address register from the stack, and returns.
+- `clear_and_dispatch_command_stream_2`: Clears two memory blocks using a loop and then iterates through a command stream, executing different routines based on the value of each byte.
+- `transform_signed_value`: Subtracts a constant from a byte, extends it to a word, and performs a series of arithmetic shifts and additions to calculate a new value.
+- `decrement_and_branch_pointer`: Decrements a byte in a register and branches if non-zero, otherwise loads a long value into a register and performs an unconditional branch.
+- `decrement_and_branch_pointer_setup`: Decrements a byte in a register and branches if it is non-zero.
+- `decrement_and_branch_5`: The routine decrements a byte in a register and branches if the result is non-zero.
+- `decrement_and_branch_on_counter`: Decrements a byte in a register and branches if the result is non-zero.
+- `decrement_and_branch_4`: Decrements a byte in a register and branches if non-zero.
+- `decrement_and_branch_address`: Decrements a byte in a register and branches if non-zero, otherwise loads a long address into a register and performs a short branch.
+- `decrement_and_branch_logic_3`: Decrements a byte in a register and branches if non-zero, otherwise loads a long value into a register and performs a short branch.
+- `decrement_and_branch_3`: This routine decrements a byte in a register, branches if non-zero, loads a long value into a register, and performs a short branch.
+- `decrement_and_branch_logic_2`: Decrements a byte in a register, branches if non-zero, loads a long value into a register, and performs a short branch.
+- `decrement_and_branch_logic`: This routine decrements a byte in a register, branches if it is not zero, loads a long value into a register, and performs a short branch.
+- `decrement_and_branch_2`: Decrements a byte in a register and branches if it is non-zero, then loads an address into a register and performs an unconditional branch.
+- `decrement_and_branch_conditional_jump`: Decrements a byte in a register and branches if it is non-zero.
+- `decrement_and_branch`: Decrements a byte and branches if it is not zero.
+- `decrement_and_load_address`: Decrements a byte and, if it is not zero, loads a longword into an address register before branching.
+- `branch_with_register_setup`: Decrements a byte, branches if non-zero, and otherwise loads a longword into an address register before performing a relative branch.
+- `load_address_and_branch_6`: Loads a long value into an address register and performs a short branch to another routine.
+- `execute_indirect_jump_3`: Performs an indirect jump to an address stored in a register or memory location.
+- `branch_to_offset_2`: Performs a short branch to another location.
+- `copy_and_dispatch_bytecode`: Copies a sequence of bytes from one memory location to another using an unrolled write pattern, then iterates through a command buffer to execute specific subroutines based on the value of each byte.
+- `copy_and_dispatch_data`: Copies a sequence of bytes from one memory location to another using an unrolled write pattern, then iterates through a data stream to execute routines based on command byte values.
+- `copy_and_dispatch_data_2`: Copies a block of data from one memory location to another using unrolled writes, then iterates through the copied data to execute routines based on the values found in the buffer.
+- `copy_and_dispatch_command_stream`: Copies a sequence of bytes from a source to a destination using unrolled writes, then iterates through the source bytes to execute a series of indirect function calls based on the byte values.
+- `clear_and_dispatch_command_stream`: Fills a memory range with the value 255 using unrolled writes and then iterates through a subsequent data stream to execute routines based on command byte values.
+- `copy_and_dispatch_data_3`: Copies eight words of data from one memory location to another using unrolled writes, then iterates through a data stream to execute a series of indirect function calls based on byte values.
+- `clear_and_dispatch_commands`: Fills a memory range with the value 255 using unrolled writes and then iterates through a subsequent data stream to execute various routines based on command byte values.
+- `copy_and_dispatch_bytecode_2`: Copies a sequence of bytes using unrolled memory writes and then iterates through the sequence to execute routines based on the value of each byte.
+- `copy_and_dispatch_data_4`: Copies eight words of data from one memory location to another using unrolled writes, then iterates through a list of bytes to execute a series of indirect function calls based on the values found in that list.
+- `clear_and_dispatch_commands_2`: Fills a memory range with the value 255 using unrolled writes and then iterates through a null-terminated list of command bytes to execute corresponding subroutines via an indirect jump.
+- `initialize_and_dispatch_command_list`: Initializes a memory block by writing a series of bytes and padding with a specific value, then iterates through a list of commands to execute corresponding subroutines via an indirect jump table.
+- `copy_and_dispatch_data_5`: Copies a block of eight bytes from one memory location to two separate destination addresses using unrolled writes.
+- `clear_and_dispatch_table`: Fills a memory range with the value 255 using unrolled writes and then iterates through a data table to execute routines based on byte values found in the table entries.
+- `copy_and_dispatch_data_6`: Copies a sequence of bytes from one memory location to another while simultaneously filling an interleaved buffer with a constant value.
+- `clear_memory_block_2`: Fills a specified range of memory with the value 255 using a series of unrolled writes.
+- `tiny_movea_rts`: Small routine of 2 instructions that copies (a7)+ to a5, then returns.
+- `expand_compressed_bitplane_data`: Reads a compressed source buffer and expands it into four distinct bitplanes within a destination buffer.
+- `copy_memory_block_2`: Copies a block of data from a source pointer to a destination pointer using a loop.
+- `reverse_copy_block`: Copies a block of data from a source pointer to a destination pointer in reverse order.
+- `calculate_combined_values`: Performs arithmetic operations on two input values to produce a concatenated 32-bit result.
+
+### RTDD
+
+- `initialize_library_and_verify_data`: Opens a library and checks for a specific command parameter.
+- `find_null_terminated_string`: Iterates through a string until a null terminator is found, then calls a function pointer stored in a global variable.
+- `parse_data_structure`: Compares data from a global table against specific constants and characters to conditionally copy values to a destination buffer and call another routine.
+- `update_table_entry`: Checks if a value in a global table matches a specific constant and an input value, then updates the table with values from a stack-based location.
+- `execute_memory_operation`: This routine calls another routine to perform memory operations and validation.
+- `restore_registers_and_branch`: Restores several data and address registers from the stack and then performs a short relative branch.
+- `process_memory_block_3`: This routine consists of 44 instructions and calls several other routines to perform memory operations and validation.
+- `copy_and_shift_memory`: Copies a block of memory backwards and then copies a separate sequence of bytes forward into a new location.
+- `allocate_and_process_memory`: Allocates memory using a system call, performs memory copies and shifts, validates memory content, and restores registers before branching.
+- `return_word_from_param`: Returns a 16-bit value from a 32-bit parameter.
+- `adjust_stack_and_restore`: Increments the stack pointer twice and restores multiple registers from the stack.
+- `modify_memory_via_pointer`: The routine performs two instructions to write a value from a register to a memory location pointed to by another register.
+- `validate_memory_content`: This routine checks if the value pointed to by a register matches one of two specific constant values and returns either one or zero.
+- `return_constant_one`: Returns the constant one in the D0 register.
+- `execute_and_test_routine`: Pushes a value onto the stack, calls a routine, and branches based on the result in a register.
+- `convert_hex_string`: Compares two strings and, if they match, converts a seven-character hexadecimal string into a longword stored in a table.
+- `process_and_store_value`: Performs arithmetic on a byte, executes a loop, and stores a longword into a table offset by an address register.
+- `verify_pointer_data`: Checks a global pointer for null, compares a value at an offset within the pointed-to structure against D1, and returns one if they match.
+- `return_constant_6`: Returns the constant an address in d0 to the caller without any other effect.
+- `verify_and_clamp_data`: Checks a global pointer for null, compares a value at an offset within the pointed-to structure against a register, stores a longword, and clamps a value between zero and a maximum limit.
+- `store_longword_and_branch`: Stores a longword from a register into a memory location and then performs a relative branch.
+- `clamp_value_between_bounds`: Adds a value to a longword at a specific offset in a structure and then clamps that value between zero and a maximum limit stored at another offset.
+- `execute_gap_instructions`: This routine executes three instructions located within a data gap.
+- `accumulate_table_bytes`: Checks a bit in a register and, if set, executes a routine and then enters a loop that adds each byte in a table to the previous byte's value.
+- `loop_and_modify_bytes`: Calls another routine and then enters a loop that reads, modifies, and writes bytes from a table.
+- `xor_data_with_loop`: Performs a loop that eors values from a table into a destination pointed to by a register, decrementing a counter in a register until it reaches zero.
+- `process_memory_block_2`: Performs a complex sequence of data manipulations including conditional branching, table lookups, and a loop that copies data from one memory location to another.
+- `branch_on_carry_and_call`: Sets up small constants and performs conditional branches that call other routines based on the carry flag.
+- `branch_on_carry`: Calls another routine and branches if the carry flag is set, otherwise loads small values into two registers and performs an unconditional branch.
+- `call_and_load_constants`: Calls another routine and then performs a conditional branch.
+- `branch_and_load_registers`: Calls another routine and then performs conditional branching and loads two small constants into registers.
+- `copy_data_with_conditional_logic`: Performs complex conditional checks and uses a loop to move bytes from one memory location to another based on calculated offsets.
+- `branch_and_initialize`: Calls a subroutine and then performs conditional branching and register initialization.
+- `decrement_and_copy_byte`: Calls another routine, calculates an offset, and uses a loop to move bytes into a destination area.
+- `shift_and_swap_data`: Decrements a register, and if not zero, performs a series of bit shifts and swaps on a longword before returning.
+- `tiny_lsr_rts`: Small routine of 2 instructions that shifts d6 right by 1, then returns.
+- `lookup_table_masked_value`: The routine reads a 16-bit value from a table using an index derived from the input word, and returns that value masked with an input mask.
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `xor_buffer_with_stride`: Performs a bitwise XOR operation on a block of memory using a value loaded from a constant.
+- `populate_memory_tables`: Clears a block of memory and then enters a loop that calls several routines to calculate values and populate tables via memory copying.
+- `execute_indirect_call_2`: Calls a routine using an address calculated by adding a signed offset from a global variable to a base address.
+- `initialize_and_populate_tables`: Clears a block of memory, calls several routines to perform calculations, and populates tables based on returned values.
+- `lookup_table_masked_value_2`: The routine reads a 16-bit value from a table using an index derived from the input word, and returns that value masked with an input mask.
+- `fill_two_tables`: The routine calls another routine to obtain a count, then fills a short table with that many values returned by the same routine, accumulating the values.
+- `fill_accumulated_code_tables`: Sets the first table entry to zero, then runs fifteen steps that accumulate counts from a source array into running sums.
+- `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
+
+### Assign
+
+- `initialize_amos_runtime_environment_3`: Allocates and initializes memory structures for the AMOS runtime environment.
+- `move_and_branch_2`: Moves a longword from one register to another and then performs a short branch.
+
+### Execute
+
+- `initialize_amos_runtime_environment_4`: Sets up the internal data structures and memory tables required for the AMOS interpreter.
+- `transfer_register_and_branch`: Copies the contents of one data register to another and performs a short relative branch to another location in the code.
+
+### Copy
+
+- `copy_files_via_dos`: Iterates through a list of files to perform a copy operation using DOS library functions.
+- `call_two_callbacks_with_flag`: The routine calls a callback stored in a table via a pointer in A1, then calls another routine from the same table and returns its result.
+- `call_function_table`: The routine receives a count and a pointer to a table of function pointers.
+- `check_bitmask_range`: The routine tests whether an input value lies within a numeric range and whether a specific bit in a bitmask is set, returning a flag indicating the result.
+- `compare_strings_case_insensitive`: Compares two null-terminated strings character by character, treating uppercase and lowercase letters as equal.
+
+### Disk-Validator
+
+- `format_numeric_string`: Converts a numeric value into a character representation and stores it in a buffer.
+
+### 6
+
+- `return_all_ones_4`: Returns a value where all bits are set to one.
+
+### mathtrans.library
+
+- `execute_illegal_instruction`: Library code containing an illegal instruction.
+- `store_register_to_global`: Library code that stores the contents of a register into a global variable.
+- `manage_callback_chain`: Library code that updates a linked list of pointers and executes a routine via a pointer.
+- `set_byte_bit`: Library code that sets a specific bit in a byte located at an offset from a pointer.
+- `increment_reference_counter`: Library code that increments a word at an offset within a structure and executes a routine if the value reaches one.
+- `return_all_ones_alt`: Library code that returns a value where all bits are set to one.
+- `decrement_counter_and_call`: Library code that decrements the 16-bit counter at offset 32 of the structure at A6.
+- `execute_empty_call`: Library code that calls another routine and returns.
+- `calculate_bitfield_sequence`: Library code that performs a loop to manipulate a bitfield based on an input value and a series of arithmetic operations.
+- `adjust_bitfield_value`: Library code that sets the bit selected by register D1 in D0, then repeatedly shifts a running difference with a doubling accumulator until a termination condition is met.
+- `execute_masked_call`: Library code that moves a value to a register, calls a routine, and then modifies specific bits in a register before branching.
+- `call_jump_table_entries`: Library code that calls a series of function pointers located at fixed offsets from a register-derived base in an alternating pattern, then calls a third entry once and calls the second entry once more.
+- `clear_and_branch`: Library code that clears a long register and performs a short branch.
+- `dispatch_library_subroutines_3`: Library code that uses a pointer to access a series of subroutines.
+- `dispatch_library_subroutines_2`: Library code that executes various subroutines through pointers stored at offsets from a base address, with branching logic determined by the values of registers.
+- `dispatch_library_subroutines`: Library code that executes various subroutines through pointers stored at offsets from a base address, with branching logic determined by the values in several registers.
+- `call_multiple_subroutines`: Library code that calls a subroutine using an offset from a register, performs a conditional branch, and then calls two more subroutines using specific constant values.
+- `call_and_store_result`: Library code that calls a routine using an offset from a base pointer and stores the returned value back into a register.
+- `conditional_load_constant`: Library code that tests a register and, if non-zero, loads a constant into a register before branching.
+- `mask_return_value`: Library code that calls a function through a pointer stored in a global variable twice, then calls another routine and returns its result with certain bits cleared.
+- `call_library_vector_414`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `call_library_vector_528`: Library stub: loads a library base from a global variable and calls the library function at offset minus 528 of that base, returning its result to the caller.
+- `call_library_vector_552`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `calculate_mathematical_value`: Library code that performs bit-shifting and iterative calculations to determine a value based on input parameters.
+- `initialize_registers_and_branch`: Library code that performs a logical shift right on a longword, initializes several registers with specific constants, and performs a relative branch.
+- `execute_loop_with_branching`: The library code executes a loop that performs bit-shifting and decrementing, potentially calling other routines if a counter reaches a certain value.
+- `push_and_branch`: As library code, this routine pushes a word onto the stack and performs a short branch.
+- `push_all_ones_and_branch`: Pushes a word containing all bits set to the stack and performs a short relative branch.
+- `push_word_and_branch`: Pushes a word with the value one onto the stack and performs a short relative branch to another location.
+- `compare_and_adjust_stack`: Library code compares a byte to a constant, branches if higher, increments the stack pointer, and returns.
+- `perform_table_based_arithmetic`: Library code that performs bitwise shifts and arithmetic operations on values derived from a table and a global variable.
+- `process_table_based_arithmetic`: As library code, this routine performs bitwise shifts and arithmetic operations on values derived from a table and a global variable.
+- `execute_complex_math`: As library code, it performs a loop involving arithmetic operations on registers and a pointer to a table.
+- `execute_complex_loop_2`: Library code that performs a loop involving arithmetic operations on registers and a pointer to a table.
+- `execute_complex_loop`: Library code that executes a loop performing arithmetic on several registers and a pointer.
+- `load_constant_and_branch`: Library code loads a constant value into a register and then performs a short branch.
+- `recursive_call_wrapper`: Calls itself and then returns, with no other operations.
+- `save_and_call_routine`: Pushes a longword onto the stack, calls another routine, and then restores a longword from the stack into a register.
+- `compare_and_branch_long`: The library code compares a longword against a constant and performs conditional branching based on the result.
+- `shift_and_jump`: Library code performs an arithmetic shift right on a register, increments it, and then either branches or jumps to a zero address.
+- `return_without_effect`: Library code calls a routine and then calls it again if a certain condition is met.
+- `call_other_routine_conditionally`: Library code invokes another routine and then, based on a boolean flag that remains false, invokes three additional routines in sequence.
+- `execute_recursive_logic`: Library code checks a byte and performs multiple recursive calls based on the carry flag and the value of that byte.
+- `rotate_and_branch`: Library code loads a constant into a register, performs a rotate right through the carry, and then performs a short branch.
+- `load_constant_to_d7`: As library code, it loads a specific long value into register d7 and then performs a short branch.
+- `pop_and_test_word`: As library code, it pops a word from the stack into d6, tests if it is positive, and branches accordingly.
+- `empty_stub_8`: The library code contains five instructions and performs no observable work; it ends immediately.
+- `return_immediately`: This library routine consists of four instructions and performs no observable work, immediately returning to its caller.
+- `process_recursive_value`: This library code performs a series of conditional checks and recursive calls based on the value of a register.
+- `execute_unreachable_calls`: This library code performs a series of calls to another routine without performing any operations on data.
+- `accumulate_shifted_table_values`: The library code performs arithmetic shifts on two longwords and enters a loop that adds a value from a table to a register and adds the shifted longwords to two other registers.
+- `subtract_and_accumulate_table_entries`: As library code, it subtracts two longwords from two other longwords, then enters a loop that adds values from a table to a register while decrementing a counter.
+- `test_and_branch_byte`: This library code tests a byte in a register and branches if it is zero or negative.
+- `load_byte_to_d7`: As library code, it loads the value ff into register d7 and then performs a short branch.
+- `calculate_complex_bit_shifts`: This library code performs bitwise shifts and arithmetic operations on values derived from registers and a global variable.
+- `complex_loop_with_branching`: The library code executes a loop involving bit-shifting and conditional jumps, potentially calling other routines and performing arithmetic on a value.
+- `call_other_routine_thrice`: Library code that calls another routine three times in succession and then returns.
+- `test_and_branch_2`: Library code that tests a byte, performs a conditional branch, masks a register, and calls another routine.
+- `perform_complex_recursion`: Library code performs multiple recursive calls and executes conditional logic involving bit shifts and sign extensions based on a register value.
+- `return_nothing`: This library routine contains no instructions and performs no operation before returning.
+- `transform_d7_register_bits`: This library code performs a sequence of bitwise swaps, rotations, and logical operations on a word in register d7.
+- `test_byte_and_branch`: This library code compares a byte in a register against two constants and performs arithmetic or branches based on the results.
+- `mask_and_test_long`: As library code, it applies a bitwise AND mask to a long value in d7, tests if the result is zero, and branches.
+- `test_and_shift_byte`: The library code compares a byte against a constant and performs logical shifts and conditional branches.
+- `shift_and_rotate_d7`: As library code, it performs a logical shift left on a word in d7, loads ff into d7, rotates the bits, and sets a carry flag.
+- `clear_d7_and_branch`: As library code, it loads zero into register d7 and then performs a short branch.
+- `invoke_callback_and_return`: Library code that receives a pointer in A0 and a value in D0, calls the routine pointed to by A0, and returns the value originally in D0 unchanged.
+- `call_indirect_return_d0`: Library code that receives a function pointer in A0 and a value in D0, calls the routine pointed to, and then returns the value that was in D0 on entry.
+- `invoke_indirect_routine`: Library code that calls a routine at an address determined by an offset from a global pointer and returns the original value in a register.
+- `invoke_callback_library`: As library code, it clears a register and calls a routine via a pointer.
+- `invoke_callback_wrapper`: Library code that calls a routine pointed to by a register and returns the original value from another register.
+- `pass_through_register_2`: This library code calls another routine and returns the original value held in a register.
+- `invoke_callback`: As library code, this routine calls a routine pointed to by a register and returns a value.
+- `invoke_callback_with_one`: This library code pushes the value one onto the stack, branches to another routine, and returns the original value from a register.
+- `invoke_callback_with_ones`: This library code pushes a word with all bits set onto the stack, branches to another routine, and returns the original value from a register.
+- `store_register_via_pointer`: This library code invokes another routine and then stores a 32-bit value from a register into memory addressed by a pointer passed in a register.
+- `execute_subroutine_and_return`: This routine calls a subroutine via a pointer and returns the original value held in a register.
+- `pass_through_register`: This library code performs a simple jump to another routine and returns the value originally held in a register.
+- `invoke_callback_recursive`: Library code that calls a routine via a pointer and then performs recursive logic based on a byte value.
+- `call_and_return`: Library code that calls another routine and returns the value originally held in a register.
+- `execute_callback_and_return`: Invokes a routine via a pointer provided in a register and returns the original value held in a data register.
+- `invoke_callback_thrice`: Library code that calls a routine via a pointer and then calls another routine three times.
+- `call_indirect_library`: As library code, it calls a routine using a pointer stored in a register.
+- `invoke_empty_callback`: Library code that performs no operation and returns.
+- `execute_callback_and_transform`: Invokes a function pointer provided in a register and subsequently performs bitwise transformations on a value in a register.
+- `call_indirect_offset`: Library code that calls a routine at an address determined by an offset from a global pointer.
+- `call_indirect_offset_alt`: Library code that calls a routine at a different offset from a global pointer.
+- `load_address_and_branch`: Library code that loads a constant address into a register and branches to another location.
+- `load_address_and_branch_2`: Library code loads a specific address into a register and then performs a short branch.
+- `call_indirect_with_offset_2`: Library code calls a routine at an address calculated by adding an offset in a register to a pointer stored in a global variable.
+- `execute_indirect_call_3`: Performs an indirect call to a routine located at an offset from a pointer stored in a global variable.
+- `load_address_and_branch_3`: Loads a specific memory address into a register and performs a short branch to another location.
+- `load_address_and_branch_4`: Loads the address of a global variable into a register and performs a short branch to another routine.
+- `load_address_and_branch_5`: Loads a specific memory address into a register and performs a short branch to another location within the library.
+- `invoke_callback_and_return_concat`: The library code invokes another routine via a pointer stored in a global variable and then returns the concatenation of the two input values.
+- `call_indirect_with_offset`: The library code calls a routine at an address calculated by adding an offset in A0 to a pointer stored in a global variable, then returns the value in D0.
+- `normalize_fixed_point_value`: The library code normalizes a signed 32-bit fixed-point value in D6 by swapping its high and low words, adjusting a shift count based on sign and magnitude, then left-shifting the value while decrementing the count until the count reaches zero or the value overflows, returning early on overflow.
+
+### Icon.library
+
+- `return_error_code`: Library code that returns a constant value of negative one.
+- `increment_counter_clear_bit`: Library code that increments a 16-bit value at a specific offset from a base pointer and clears a single bit in a byte at another offset from the same pointer.
+- `decrement_library_refcount`: The library code decrements a reference counter in a global structure.
+- `modify_library_status`: Library code that either performs a linked list operation to update a pointer or sets a specific bit in a status byte.
+- `set_status_bit`: Library code that performs a bitwise OR operation to set a specific bit in a byte at an offset from a pointer.
+- `return_constant_7`: Returns the constant an address in d0 to the caller without any other effect.
+- `execute_callback_routine`: Library code that stores two pointers from a structure, calls a function via a pointer, and updates global variables based on the result.
+- `copy_two_pointers_from_table`: Library code that copies two 32-bit values from an address derived from a register into two global variables.
+- `clear_data_register`: Library code containing a single instruction that performs a bitwise AND with zero on a data register.
+- `clear_data_byte`: Clears the lowest byte of a data register to zero.
+- `manage_icon_chain`: This library routine calls another routine to manage an icon chain.
+- `call_icon_data_copy`: This library routine unconditionally calls a helper routine to copy icon data to the stack and then returns.
+- `invoke_icon_structure_update`: This library routine calls a function to update various fields within an icon structure or its associated linked lists.
+- `call_icon_data_copy_2`: This library routine unconditionally calls a helper routine to copy icon data to the stack and then returns.
+- `manage_icon_chain_2`: This library routine calls another routine to manage an icon chain.
+- `recurse_with_incremented_parameter`: Library code that calls another routine with the same first argument and an incremented second argument, then returns.
+- `call_library_helper`: Library code that calls another routine to allocate memory and initialize a structure, then returns.
+- `invoke_icon_structure_update_2`: This library routine calls a function to update various fields within an icon structure or its associated linked lists.
+- `execute_callback_chain`: As library code, this routine executes a complex sequence of conditional library calls and parameter updates based on the return values of previous routines.
+- `perform_incremental_recursion_2`: Library code that calls itself recursively.
+- `call_other_routine`: This library code calls another routine and then returns.
+- `execute_nested_callback_2`: As library code, this routine calls another routine and then returns.
+- `convert_string_to_integer`: This routine calls a library function to parse a numeric string into an integer value.
+- `update_data_field`: Library code that calls another routine via a function pointer table using a passed parameter, then stores a second parameter into a memory location at an offset from the returned pointer.
+- `clear_data_register_2`: This routine performs a logical OR operation on a data register with zero.
+- `manage_icon_gadget_state`: As library code, it performs a sequence of conditional calls to other routines and copies a block of data into a structure if successful.
+- `copy_and_assign_data`: Library code that copies a block of eleven words from one memory location to another and then performs several single-byte and multi-byte assignments from one structure to another.
+- `return_zero_stub`: The routine is an empty stub that immediately returns the constant zero.
+- `copy_icon_data_to_stack`: This library routine copies ten longwords from an offset within a structure pointed to by the third argument into a local array on the stack, then copies several additional fields from the same structure into other stack slots and finally calls another routine with the first two arguments and a pointer to a stack-resident header.
+- `update_icon_gadget_state_2`: Updates the internal state and properties of an icon gadget by evaluating callback results and populating structure members.
+- `update_icon_gadget_state`: Updates the internal state and properties of an icon gadget by evaluating callback results and populating structure members.
+- `manage_callback_chain_2`: Library code that executes a series of function pointers and stores their return values into a structure or table.
+- `library_manage_callback_results`: Library code that repeatedly calls a function pointer, updates a pointer, and checks a global variable to determine a return value.
+- `clear_register_and_branch`: This library routine clears a data register and performs a short branch.
+- `empty_routine`: The routine contains four instructions and performs no observable work; it ends immediately with a return.
+- `update_icon_resource_attributes`: Iterates through various resource pointers and callback tables within an icon data structure to update their properties.
+- `process_icon_resource_callbacks`: Iterates through a series of resource pointers and callback tables to execute associated functions.
+- `process_icon_callbacks`: Library code that iterates through multiple potential callback pointers stored in a structure.
+- `process_icon_table`: Library code that iterates through a null-terminated table of pointers and executes a callback for each entry, while also managing a secondary list of pointers.
+- `iterate_icon_table_entries`: Library code that walks a null-terminated table of pointers, calling a routine for each entry, updating a counter, and invoking a callback while potentially processing a secondary entry.
+- `traverse_linked_list_3`: Library code that pushes a value to the stack, loads a pointer from the stack into a register, and branches to another location.
+- `iterate_linked_list_nodes`: The routine traverses a linked list structure by following pointers stored at an offset from the current node.
+- `increment_param_and_recurse`: Library code that calls another routine with the same first argument and the second argument increased by a constant, then returns.
+- `execute_conditional_library_calls`: Library code that attempts to initialize a parameter list and performs a sequence of conditional library function calls based on the returned values.
+- `execute_library_function`: Library code that pushes a pointer to the stack and calls a routine through a pointer.
+- `return_zero_value`: This library routine is empty and simply returns zero to the caller.
+- `update_icon_parameter`: This library code decrements a counter through a pointer and, if the counter reaches zero or less, recursively calls itself.
+- `decrement_counter_and_store_pair`: The routine decrements a short counter through a pointer, then uses the counter value as an index into a table pointed to by a global variable.
+- `coordinate_library_callback_chain`: As library code, it executes a complex sequence of conditional library calls and parameter updates based on the return values of previous routines.
+- `branch_to_offset`: Library code that performs a short branch to a specific offset.
+- `call_library_routine_and_return_zero`: Library code that calls another routine and then returns zero.
+- `perform_incremental_recursion`: Library code that performs a recursive call with an incremented parameter until the callee stops the recursion.
+- `call_subroutine_with_stack_data`: as library code, it saves registers, retrieves a pointer and a value from the stack, calls another routine, and then branches based on the result in a data register.
+- `compare_and_increment`: Library code that calls a routine and then enters a loop to compare bytes against a constant value.
+- `test_and_load_pointer`: Library code that loads a pointer from memory into registers and checks if it is non-zero.
+- `execute_nested_callback`: Saves registers, retrieves two values from the stack, pushes the second value onto the stack, calls another routine, and then restores the stack pointer and returns.
+- `calculate_pointer_difference`: As library code, it pushes a parameter to the stack, calls another routine, and returns the difference between two values.
+- `process_iterative_values`: A loop that repeatedly calls other routines to update a value and checks for zero or specific equality conditions.
+- `increment_and_branch`: This library routine tests a long value, and if it is not zero, increments it and branches to another location.
+- `restore_registers_and_return_2`: Library code that tests a register and either branches or clears a register before restoring several long words from the stack and returning.
+- `parse_string_into_integer`: As library code, it validates a string format and converts a sequence of numeric characters into an integer value.
+- `execute_library_call`: as library code, it pushes two addresses onto the stack, calls another routine, and then performs a conditional branch or a short branch based on the result in a data register.
+- `clear_register_and_branch_2`: Library code that clears a data register and performs an unconditional short branch to another location.
+- `parse_numeric_string_3`: Library code that converts a string of characters into a numeric value through iterative multiplication and addition.
+- `clamp_value_to_range`: This library routine compares a value from the stack against two constants.
+- `return_all_ones_3`: Library code that returns a value of all ones in a register.
+- `call_library_vector_198`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_210`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `call_library_vector_228_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 228 of that base, returning its result to the caller.
+- `call_library_vector_246`: Library stub: loads a library base from a global variable and calls the library function at offset minus 246 of that base, returning its result to the caller.
+- `call_library_vector_264`: Library stub: loads a library base from a global variable and calls the library function at offset minus 264 of that base, returning its result to the caller.
+- `call_library_vector_30`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `call_library_vector_36`: Library stub: loads a library base from a global variable and calls the library function at offset minus 36 of that base, returning its result to the caller.
+- `call_library_vector_42`: Library stub: loads a library base from a global variable and calls the library function at offset minus 42 of that base, returning its result to the caller.
+- `call_library_vector_48`: Library stub: loads a library base from a global variable and calls the library function at offset minus 48 of that base, returning its result to the caller.
+- `propagate_icon_change`: The library routine forwards a set of four parameters to another routine, checks the returned value, and if non-zero calls the same routine again with a modified argument list.
+- `initialize_parameter_list`: Library code that calls another routine and, if successful, populates a provided pointer with a value and performs a subsequent call.
+- `return_zero_2`: Library code that returns zero.
+- `call_subroutine_with_arguments`: Library code that retrieves two values from the stack, pushes them onto the stack, calls a subroutine, and then performs a conditional branch based on the result.
+- `tiny_move_rts`: Small routine of 2 instructions that copies d1 to d0, then returns.
+- `call_library_function_2`: Library code that pushes three values from the stack onto the stack, calls a subroutine, and then conditionally clears a register.
+- `return_void`: Library code that performs an empty return.
+- `rotate_and_divide_32bit`: Library code that performs bitwise rotations and arithmetic operations on 32-bit values.
+- `rotate_32bit_value`: The library code rotates a 32-bit value left by one bit per iteration for sixteen iterations, using a carry flag to move bits between the high and low halves.
+- `multiply_32_bit_integers`: The library code computes the 32-bit product of two 32-bit registers using 16-bit partial products.
+- `invoke_table_entry`: The library code invokes a function pointer retrieved from an offset within a global variable.
+- `tiny_move_rts_2`: Small routine of 2 instructions that copies d0 to (a3)+, then returns.
+- `compute_string_checksum`: The library code iterates through a null-terminated byte string, updating a 32-bit accumulator with a decrementing 1s-complement-style pattern for each character.
+- `compare_and_decrement_pointer`: as library code, it loads a pointer and a byte from memory, compares the byte to a value, and if they match, decrements the pointer and returns.
+- `return_zero_immediately`: As library code, it clears a register and performs a short branch.
+- `copy_c_string`: The library code copies bytes from a source pointer to a destination pointer until a zero byte is encountered, advancing both pointers each iteration.
+- `search_null_byte`: Library code that loops through a memory area to find a zero byte and adjusts a pointer accordingly.
+- `compare_byte_sequences`: This library code decrements a value from a stack parameter and, if it is not negative, compares bytes from two source lists.
+- `set_signed_byte`: This library routine sets a data register to one or negative one based on a comparison and returns.
+- `check_byte_and_branch`: This library code decrements a value from a stack parameter and checks a byte at a pointer.
+- `call_copy_routine`: This library routine calls another routine to copy bytes with a limit.
+- `copy_bytes_with_limit`: Library code that copies bytes from one location to another using a counter to limit the operation.
+- `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
+- `setup_pointer_chain`: Stores the address of its pointer argument into the memory location pointed to by the argument, adds four to that stored value, clears the next word in the pointed-to block, and stores the original pointer value into the following word.
+- `process_icon_request`: Library code that validates a parameter, calls another routine to check a return value, and if successful, performs further calls using a value from a pointer.
+- `save_registers_and_branch`: Library code that saves several registers to the stack and branches to another location.
+- `library_loop_check_values`: Library code that executes a loop checking if two consecutive function calls return non-zero values and inspecting a global variable.
+- `return_zero_3`: This library routine performs no operations and returns zero to the caller.
+- `perform_complex_calculation`: Library code that performs a series of nested routine calls and arithmetic operations to compute a value and store it in a structure.
+- `return_negative_one_2`: Library code that returns a value of all ones.
+- `save_registers_and_branch_2`: Library code that saves multiple registers to the stack and performs a short branch.
+- `execute_callback_with_stack_setup`: Library code that pushes a constant and two registers onto the stack, calls a subroutine, and then performs conditional checks on the result.
+- `library_execute_callback_chain`: Library code that performs a series of nested function calls and checks their return values to update a value in a structure.
+- `return_error_code_2`: This routine returns a value representing a failure or error state.
+
+### Diskfont.library
+
+- `call_table_entry`: Library code that calls a routine via a table entry and stores a value in a structure if the call returns non-zero.
+- `check_and_set_font_handle`: This library routine calls a routine via a table entry using a library base.
+- `release_library_resources`: This library code attempts to call functions via pointers within a structure to release resources.
+- `release_library_and_memory`: This library routine calls two other routines to close a library and free memory.
+- `cleanup_font_resources`: As library code, it iterates through a linked list to remove entries based on a specific value.
+- `update_linked_list_2`: As library code, this routine modifies a structure by setting a bit and performing pointer manipulations to update a linked list.
+- `set_bit_and_clear_register`: Library code that sets a specific bit in a memory location and clears a register.
+- `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
+- `clear_flag_and_increment_counter`: Library code that clears the most significant bit of a byte at a fixed offset and increments a short integer at another fixed offset.
+- `check_status_and_jump`: Library code that checks a bit in a memory location and performs a jump based on the result.
+- `return_constant_8`: Returns the constant an address in d0 to the caller without any other effect.
+- `parse_font_resource_stream_2`: Iterates through a linked list of font resource entries to extract glyph metadata and string data.
+- `load_parameter_and_branch`: This library code loads a value from a pointer into a register and then performs an unconditional branch.
+- `process_font_string_buffer`: Iterates through a linked list of data structures to parse strings and copy character data into a destination buffer.
+- `parse_glyph_metadata_stream_2`: Iterates through a font resource stream to extract and store glyph properties, including dimensions and bitmask flags.
+- `parse_font_resource_stream`: Iterates through a font resource stream to extract glyph metadata and pixel data.
+- `populate_font_glyph_table`: Iterates through a parsed font resource stream to extract glyph metadata and pixel data.
+- `parse_font_resource_data`: Iterates through a data stream to identify specific font resource headers and metadata.
+- `parse_glyph_metadata_stream`: Iterates through a font resource stream to extract and store glyph properties, including dimensions and bitmask flags.
+- `return_zero_stub_2`: As part of library code, this routine returns zero and performs no operations on registers, memory, or hardware.
+- `calculate_weighted_difference`: This library code calculates a value based on the difference between two short integers and adjusts it using a bitwise comparison loop.
+- `calculate_bit_differences`: Library code that iterates through bit positions to compare bytes and subtracts values from a running total based on a table.
+- `update_font_index`: Library code that decrements a value using a scaled index from a table and performs bitwise checks to update a counter.
+- `update_font_index_and_offset`: Increments a counter and updates a destination register by subtracting a value from a table using a scaled index.
+- `return_constant_value`: This library routine returns a constant value without using any arguments or registers.
+- `update_glyph_metadata`: Iterates through a font glyph table to find the entry with the highest value for a specific attribute.
+- `search_font_glyph`: As library code, this routine performs a loop that calls another routine and branches based on the result.
+- `load_and_initialize_font_glyph`: Opens a font file from disk, allocates memory, and reads glyph data into a buffer.
+- `clear_registers_and_branch`: This routine clears two word-sized registers, loads a constant byte into a second register, and performs a short branch.
+- `optimize_font_glyph_table`: Iterates through a font glyph table to identify and reorder entries based on specific criteria.
+- `calculate_glyph_offset`: Library code that calls a routine to unload a segment, performs a multiplication on a value, and clears a byte at a calculated address.
+- `search_font_glyph_table`: Iterates through a table of font glyph data to find a specific entry based on a comparison of values.
+- `parse_disk_font_data`: Iterates through a data structure retrieved from a disk file to build and populate a font table.
+- `load_disk_font_table`: As library code, this routine builds a table for a disk font.
+- `dispatch_font_request`: As part of library code, this routine reads a pointer and an argument from the stack and passes them to another routine.
+- `call_forbid`: Library stub: loads its arguments and the exec library base, calls Forbid and returns its result to the caller.
+- `call_permit`: Library stub: loads its arguments and the exec library base, calls Permit and returns its result to the caller.
+- `call_alloc_mem`: Library stub: loads its arguments and the exec library base, calls AllocMem and returns its result to the caller.
+- `call_free_mem_2`: Library stub: loads its arguments and the exec library base, calls FreeMem and returns its result to the caller.
+- `call_add_tail`: Library stub: loads its arguments and the exec library base, calls AddTail and returns its result to the caller.
+- `call_open`: Library stub: loads its arguments and the dos library base, calls Open and returns its result to the caller.
+- `call_close`: Library stub: loads its arguments and the dos library base, calls Close and returns its result to the caller.
+- `call_read`: Library stub: loads its arguments and the dos library base, calls Read and returns its result to the caller.
+- `call_lock`: Library stub: loads its arguments and the dos library base, calls Lock and returns its result to the caller.
+- `call_un_lock`: Library stub: loads its arguments and the dos library base, calls UnLock and returns its result to the caller.
+- `call_examine`: Library stub: loads its arguments and the dos library base, calls Examine and returns its result to the caller.
+- `call_ex_next`: Library stub: loads its arguments and the dos library base, calls ExNext and returns its result to the caller.
+- `call_current_dir`: Library stub: loads its arguments and the dos library base, calls CurrentDir and returns its result to the caller.
+- `call_io_err`: Library stub: loads its arguments and the dos library base, calls IoErr and returns its result to the caller.
+- `call_load_seg`: Library stub: loads its arguments and the dos library base, calls LoadSeg and returns its result to the caller.
+- `call_un_load_seg`: Library stub: loads its arguments and the dos library base, calls UnLoadSeg and returns its result to the caller.
+- `call_parent_dir`: Library stub: loads its arguments and the dos library base, calls ParentDir and returns its result to the caller.
+- `copy_null_terminated_string`: As part of library code, this routine copies bytes from a source pointer to a destination pointer until a null terminator is encountered.
+- `load_pointers_to_registers`: Library code that loads two values from the stack into registers and branches.
+- `skip_to_string_terminator_and_call`: The routine increments a pointer until it reaches the terminating zero byte of a zero-terminated string and then calls another routine with the pointer to that terminator.
+- `initialize_pointer_and_counter`: Library code that loads a pointer from the stack and clears a register before branching.
+- `count_null_terminated_bytes`: As part of library code, this routine increments a counter while advancing a pointer and reading bytes until a zero byte is encountered, returning the final count.
+- `compare_byte_strings`: Library code that compares two null-terminated strings and returns a result based on their lexicographical order.
+- `skip_zero_bytes`: This library routine tests a byte at a pointer and increments the pointer.
+- `compare_bytes_and_branch`: Library code that compares a byte from one pointer with a byte from another pointer and branches based on the result.
+- `return_constant_9`: Returns the constant an address in d0 to the caller without any other effect.
+- `load_and_branch_3`: Library code that loads a pointer and a byte from the stack and then branches.
+- `compare_and_assign_pointer`: This library routine compares two bytes.
+- `increment_and_check_byte`: Library code that increments a pointer and compares the byte at the new location to zero.
+- `fetch_and_branch_pointer`: This library code retrieves a pointer and a byte from the stack, calls another routine, and then performs arithmetic on the pointer before branching.
+- `compare_memory_byte`: This library routine compares a byte at a pointer with a register.
+- `compare_pointer_limit`: Library code that decrements a pointer and compares it against a value in a register.
+- `search_for_non_zero_result`: This library code calls another routine twice with different constant arguments.
+- `increment_returned_value`: This library routine returns the value passed in D0 incremented by one.
+- `call_open_font`: Library stub: loads its arguments and the graphics library base, calls OpenFont and returns its result to the caller.
+- `call_close_font`: Library stub: loads its arguments and the graphics library base, calls CloseFont and returns its result to the caller.
+- `call_add_font`: Library stub: loads its arguments and the graphics library base, calls AddFont and returns its result to the caller.
+- `call_unknown_handler`: The routine invokes another unnamed function and returns.
+- `call_external_handler`: The routine calls another unnamed routine and returns.
+- `call_pop_and_test`: This library code calls another routine.
+- `call_another_routine`: This library routine is library code that acts as a thin wrapper which immediately invokes another routine and then returns without performing any additional operations.
+
+### World Golf (1997)(Apex Systems)[cr LFC](Disk 1 of 2).adf:HD_Install
+
+- `initialize_amos_runtime_environment`: Identifies the current task and opens required system libraries including graphics, intuition, and the AMOS runtime.
+- `configure_amos_runtime_table`: Initializes a global table with specific flags and memory addresses.
+- `initialize_amos_runtime_environment_2`: Sets up the AMOS runtime environment by initializing internal state structures and loading required library pointers.
+- `cleanup_and_exit_library`: This routine attempts to manage library resources by freeing memory and nullifying pointers, while handling errors related to missing libraries or insufficient memory.
+- `free_resource_structure`: Routine that checks flags within a structure to call various memory freeing and nullification routines for its elements.
+- `nullify_and_free_memory_2`: This routine checks if a value at a specific offset within a structure is non-zero.
+- `process_string_input`: Checks a pointer and a flag, then either calls a routine with a global pointer or iterates through a string to append a newline character before calling another routine.
+- `clear_user_cache`: Checks a value at a specific offset in a global structure and calls a cache clear routine if the value exceeds a threshold.
+- `traverse_data_table`: Iterates through a table of values by using bytes as offsets to jump through memory until a counter reaches zero.
+- `execute_indirect_function`: Fetches a function pointer from a location relative to a global pointer and executes it.
+- `call_free_mem_3`: Library stub: loads its arguments and the exec library base, calls FreeMem and returns its result to the caller.
+- `call_copy_mem_2`: Library stub: loads its arguments and the exec library base, calls CopyMem and returns its result to the caller.
+- `store_value_in_allocated_memory`: This routine calls a memory allocation routine and, provided a specific input value is not negative four, stores that input value and a pointer into the newly allocated memory block.
+- `clear_and_recurse_pointer`: Checks if a value at a pointer location is non-zero, sets that value to zero, and then calls itself recursively.
+- `decompress_data_stream`: Processes a byte stream to update a destination table using specific arithmetic rules for different byte values.
+- `parse_resource_header`: Identifies resource types by checking magic signatures and parses a structured data block.
+- `pop_stack_value`: Retrieves a value from a memory location pointed to by a global variable and updates that global variable with the previous value.
+- `process_compressed_data`: Checks a header for a specific signature and then allocates memory to decompress a bitstream into a destination buffer.
+- `clear_structure_fields`: Sets two consecutive longwords at a specific offset relative to a pointer to zero and then calls a routine to free memory.
+- `zero_memory_fields`: Sets two consecutive longwords at a specific offset relative to a pointer to zero.
+- `iterate_and_free_list`: Iterates through a list of pointers, calling a routine to free memory for each non-zero entry found.
+- `decompress_bitstream_data_2`: Expands a compressed bitstream into a destination buffer using a variable-length coding scheme.
+- `bk_refill_bit_buffer_2`: Depacker bit reader refill: fetches the previous longword of the packed stream, folds it into the checksum and shifts out its lowest bit with a marker bit entering at the top.
+- `bk_read_bits_2`: Depacker bit reader: collects the number of bits given in D1 from the bit buffer into D2, most significant first, refilling from the packed stream whenever the buffer runs empty.
+
+### World Golf (1997)(Apex Systems)[cr LFC](Disk 1 of 2).adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.

@@ -36,6 +36,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - 2 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - jail break (1990)(odyssey)/Jail Break (1990)(Odyssey).adf:Map/jailregback.map: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- 1 never-loaded region(s), 16900 bytes, recorded as UNVERIFIED DATA (0 bytes decode as instruction flows; Karl 4 Nov 2026)
 
 ## Cracktros (kept, not protection)
 
@@ -125,9 +126,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reset_player_state_2_2`: The routine clears several RAM locations to zero and writes constant values to others, stores the incoming A0 and A1 arguments into RAM, then calls animate_prisoner_sprite.
 - `call_init_player_state_2`: The routine calls init_player_state_2 and returns.
 - `trigger_level_event`: The routine calls init_player_state_2 and then returns.
-- `init_game_state`: The routine stores a constant value into a global word, stores a pointer to update_score_display into a global word, calls an indirect function via a pointer derived from a global, and if the result is non-zero it calls two more indirect functions derived from the same global.
-- `handle_jail_customer`: The routine stores a constant in a global and sets another global to point to update_score_display, then calls a function pointer from a base address offset, and if the result is non-zero it calls two other function pointers from the same base, repeats the call and conditionally repeats the two calls.
-- `set_interrupt_mask`: The routine writes to the INTENA hardware register to enable and then disable interrupts, stores addresses for update_score_display and handle_vblank_interrupt in memory, and calls an absolute routine.
+- `init_game_state`: The routine stores a constant value into a global word, stores a pointer to chain_vblank_interrupt into a global word, calls an indirect function via a pointer derived from a global, and if the result is non-zero it calls two more indirect functions derived from the same global.
+- `handle_jail_customer`: The routine stores a constant in a global and sets another global to point to chain_vblank_interrupt, then calls a function pointer from a base address offset, and if the result is non-zero it calls two other function pointers from the same base, repeats the call and conditionally repeats the two calls.
+- `set_interrupt_mask`: The routine writes to the INTENA hardware register to enable and then disable interrupts, stores addresses for chain_vblank_interrupt and handle_vblank_interrupt in memory, and calls an absolute routine.
 - `clear_game_buffers`: The routine clears two memory regions byte by byte by writing zero to each byte.
 - `increment_timer_and_update`: The routine increments a short counter at _u1__d1_0116 and, while the value is below 100, calls wait_one_second, decode_map_data, wait_frames_2 and decode_level_map in sequence.
 - `decrement_timer_and_update`: The routine decrements a byte variable and, if it becomes negative, sets it to zero and calls clear_sprite_buffers.

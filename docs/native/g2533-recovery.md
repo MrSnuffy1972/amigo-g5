@@ -1,0 +1,752 @@
+# Game 2533 (legend (1989)(crl)[cr vf]): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/02533). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (901120 top-level bytes in 134 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 69 raw-word lines |
+| Functions named and described | pass, 684 of 684 named (0 author symbols), 684 of 684 described (6 by rule, 152 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 214 of 214 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 12675 of 12675 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 496226 |
+| code | 39906 |
+| data | 318848 |
+| padding | 40508 |
+| unused | 5632 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| Legend (1989)(CRL)[cr VF].adf:legend | 2 | 10589 | 581 |
+| Legend (1989)(CRL)[cr VF].adf:Disk-Validator | 1 | 386 | 1 |
+| Legend (1989)(CRL)[cr VF].adf:Type | 2 | 117 | 2 |
+| Legend (1989)(CRL)[cr VF].adf:mathieeedoubbas.library | 3 | 568 | 47 |
+| Legend (1989)(CRL)[cr VF].adf:mathieeedoubtrans.library | 2 | 1005 | 52 |
+| Legend (1989)(CRL)[cr VF].adf:bootblock | 1 | 10 | 1 |
+
+## Cases handled
+
+- reference crashes at an address (OSHLE RUNAWAY: PC reached an address after an address (op 4E75) A7=an address (A7)=an address, slid to exec.library -an address): 557 executed addresses of the slide through empty memory after it (an address) are not game code and are excluded from proof 4
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- `build_error_message_text` (legend): Builds a message in a buffer: when no optional formatter is set or it produces an empty string, it copies a fixed string instead. Kind: sabotage path. Pass path: the 'else' branch (where the error message is not built/displayed).
+
+## Functions
+
+
+### Legend (1989)(CRL)[cr VF].adf:legend
+
+- `setup_program_entry_calls`: Program entry routine.
+- `call_library_routines_with_frame`: Passes the address of a stack-held longword to another routine, clears two frame words, then makes two calls through the pointer table.
+- `call_table_routine_twice`: Calls one table routine twice with a small constant each time, stores the address of a global variable into a base-relative slot, clears a longword in the frame, and makes a final call with a constant.
+- `tiny_unlk_rts`: Small routine of 2 instructions that removes the stack frame held in a4, then returns.
+- `reset_slot_then_call`: Clears a longword in a base-relative slot, pushes two constants onto the frame, calls a table routine, then passes the cleared slot value to a second table routine.
+- `pass_slot_value_to_call`: Copies a longword from a base-relative slot into the frame and calls a table routine with it.
+- `call_then_return`: Makes a single call to another routine and returns.
+- `initialise_slot_and_call`: Passes a small constant through a stack word to another routine, clears a base-relative slot, then makes table calls with constant flag values and copies the slot value into the frame.
+- `pass_slot_value_then_call`: Copies a longword from a base-relative slot into the frame, calls a table routine, pushes two constants and makes a second table call.
+- `call_then_table_call`: Calls one routine, pushes two constants onto the frame, then makes a call through the pointer table.
+- `return_immediately`: The decompiled body is a bare return with no other operations.
+- `copy_slot_words_via_calls`: Reads a longword from a base-relative slot, passes its low word to table calls, and stores the address of a second slot with a cleared longword.
+- `return_from_subroutine`: This routine is empty and performs no operations before returning.
+- `store_slot_and_call_table`: Passes a slot-derived word to table calls, stores the address of a base-relative slot, writes a constant longword into it, and makes a final table call with a constant.
+- `return_from_subroutine_2`: This routine is empty and performs no operations before returning to the caller.
+- `store_constants_and_call_table`: Reads a longword from a base-relative slot and passes its low word to a pointer-table call.
+- `return_immediately_5`: The routine performs no operations and returns to its caller immediately.
+- `push_constants_and_call_table`: Writes two fixed longword constants into the frame and makes one call through the pointer table before returning.
+- `return_immediately_6`: This routine is empty and performs no operations before returning to its caller.
+- `loop_slot_table_calls`: Clears two base-relative longwords, then runs a loop that passes slot values to pointer-table calls and stores the results as words in the frame.
+- `store_slot_and_set_flag`: Copies a base-relative longword into the frame, makes one pointer-table call with it, then sets a base-relative flag longword to a constant.
+- `loop_select_slot_value`: Runs a do-while loop of pointer-table calls.
+- `loop_nested_slot_calls`: Runs nested loops that copy base-relative slots into the frame and make pointer-table calls with those values.
+- `copy_slot_and_update_flag`: Copies a longword from a table offset to a destination slot and calls another routine via a pointer.
+- `set_flag_longword`: Sets a base-relative longword to a fixed constant and returns.
+- `conditional_slot_copy_calls`: Passes a base-relative longword to a table call, clears another slot, then makes further table calls where one slot is conditionally copied from a second slot.
+- `clear_slot_conditional_call`: Clears a base-relative longword and makes a table call.
+- `copy_slot_and_chain_calls`: Copies one base-relative longword into another, then makes a chain of pointer-table calls that pass slot values and constants.
+- `call_slot_twice_set_flag`: Makes one table call, passes a base-relative longword to two successive table calls, then sets a flag longword to a constant.
+- `pass_slot_then_set_flag`: Passes a base-relative longword to a pointer-table call, then sets a flag longword to a constant.
+- `chain_slot_calls_with_frame`: Makes a chain of pointer-table calls with values from base-relative slots, storing words into the frame before each call.
+- `pass_slot_then_set_flag_2`: Passes a base-relative longword to a pointer-table call, then sets a second base-relative longword to a constant.
+- `conditional_slot_copy_then_call`: Makes a table call, stores a base-relative longword into the frame, then conditionally copies a second slot before a further call.
+- `pass_slot_then_set_flag_3`: Passes a base-relative longword to a pointer-table call, then sets a flag longword to a constant.
+- `write_long_value`: Stores a long integer into a memory location relative to a pointer.
+- `clear_slot_and_call_chain`: Clears a base-relative longword, passes a slot value to a table call, then makes a second table call with a conditionally copied slot value.
+- `conditional_slot_update`: Clears a value, executes an indirect function, and then performs a conditional update of a structure field before executing a sequence of stack stores and indirect calls.
+- `update_entity_state`: Copies multiple values from a source structure to the stack, executes several indirect functions, and conditionally calls another routine based on a bitmask check.
+- `transfer_and_call_indirect`: Copies a long value from a source to a destination and executes two indirect function calls while storing a constant into a memory location.
+- `transfer_and_call_routine`: Copies a long value from a memory location to a register-relative offset, calls an indirect function, and then stores a constant into another offset.
+- `update_entity_state_table`: Copies multiple values from a source structure into a destination buffer using a series of indirect function calls.
+- `copy_call_store`: Copies a long value from a memory location to another, calls a routine via a pointer, and stores a constant into a third location.
+- `conditional_slot_copy_call`: Makes a table call, passes a base-relative longword on, conditionally copies a second slot into the first, and makes a further table call.
+- `transfer_and_call`: This routine copies a long value from one memory location to another, calls another routine, and then stores a specific constant into a third memory location.
+- `write_long_value_2`: Writes a specific long value to an offset from a pointer.
+- `return_immediately_2`: The decompiled body is a bare return with no other operations.
+- `clear_words_then_call_pair`: Calls one pointer-table entry, stores zero into a frame word, makes a second table call, repeats the first call, then stores zero into another frame word before a final call.
+- `clear_word_then_call`: Calls one pointer-table entry, stores zero into a frame word, then makes a second table call before returning.
+- `execute_sequence_and_clear`: Calls three different routines via a table and clears two words in memory between calls.
+- `call_clear_call`: Calls a routine via a pointer, clears a word in memory, and then calls another routine via a pointer.
+- `return_immediately_3`: The decompiled body is a bare return with no other operations.
+- `execute_sequence`: This routine calls another routine, clears a word in memory, and then calls a final routine.
+- `return_from_subroutine_3`: This is an empty routine that performs no operations before returning.
+- `init_slot_values_sequence`: Runs a sequence of pointer-table calls and stores the constants zero, one and two into base-relative longwords, copies one slot into the frame, then calls an unnamed routine.
+- `set_slot_values_one_two`: Stores the constants one and two into two base-relative longwords, with pointer-table calls between the stores, then calls an unnamed routine.
+- `update_three_slots_calls`: Makes several pointer-table calls with base-relative longwords, stores fixed constants into three slots, and calls three unnamed routines with stack addresses.
+- `shift_three_slot_values`: Cycles three base-relative longword slots: each slot's previous value is passed to a pointer-table call and then replaced with a constant.
+- `replace_slot_values_with_calls`: Stores constants into three base-relative longwords after passing their previous values to pointer-table calls, then clears another slot and makes further table calls.
+- `replace_slot_values_with_calls_2`: Stores a constant into two base-relative longwords after passing earlier values to pointer-table calls, then makes further table calls and clears another slot.
+- `replace_slot_and_sequence_calls`: Stores a constant into one base-relative longword, then runs a sequence of pointer-table calls that clear a slot and store the constants one and two into others.
+- `call_routines_and_set_words`: Calls two different routines twice and writes the values one and two into two consecutive memory slots.
+- `set_word_params_and_call`: Stores fixed word values into base-relative slots, passes the first slot value and its neighbours to pointer-table calls, and reads a word back for a further call.
+- `set_word_params_and_call_2`: Stores fixed word values into base-relative slots, passes slot values to pointer-table calls, and reads a word back for a further call.
+- `set_word_params_and_call_3`: Stores fixed word values into base-relative slots, passes slot values to pointer-table calls, and reads a word back for a further call.
+- `clear_word_slot_after_call`: Passes a word slot to a table call, stores the constant twenty-one into the frame, then clears the same word slot and makes a further table call with it.
+- `clear_word_slot_and_call`: Clears a base-relative word slot, makes one table call with it, then stores the returned word into a longword slot.
+- `init_word_slots_and_call`: Clears a base-relative word slot, passes slot values and constants to table calls, and stores results into further word slots.
+- `set_word_slot_to_two`: Stores the constant two into a base-relative word slot and returns.
+- `loop_until_flag_set`: Repeatedly calls an unnamed routine and passes word slots to table calls until a base-relative flag word equals one.
+- `write_word_value`: Stores a word value into a memory location relative to a pointer.
+- `loop_word_slot_table_calls`: Loops over pointer-table calls that pass a base-relative word slot and a longword slot, adjusting the word slot according to a returned value.
+- `decrement_word_slot_loop`: Decrements a base-relative word slot in an outer loop and makes pointer-table calls with it and a longword slot in an inner loop.
+- `increment_word_slot_loop`: Increments a base-relative word slot in an outer loop and makes pointer-table calls with it and a longword slot in an inner loop.
+- `write_word_value_2`: Writes a word into a specific offset from a pointer.
+- `loop_word_slot_pair_calls`: Loops over pointer-table calls that pass a base-relative word slot with a longword slot, adjusting the word slot after each pass.
+- `recursively_update_slot_data`: This routine performs a recursive traversal of a data structure, updating word and longword values using relative offsets.
+- `update_slot_data_table`: Iterates through a data structure to update word and longword values using relative offsets.
+- `write_word_value_3`: Sets a word at a memory location relative to a pointer.
+- `loop_pass_slot_pairs_calls`: Loops over pointer-table calls that pass a longword slot with a word slot, and a second longword slot with another word slot, adjusting the word slots between passes.
+- `set_word_slot_to_one`: Stores the constant one into a base-relative word slot and returns.
+- `test_slot_pair_combinations`: Iterates through pairs of values from a table, performing operations on them and checking for a specific bitwise match.
+- `return_immediately_4`: The decompiled body is a bare return with no other operations.
+- `process_word_slots_with_calls`: Copies two base-relative word slots, passes them with the constant seven to table calls, reads a longword slot and stores a result word.
+- `set_flag_word_to_one`: Stores the constant one into a base-relative flag word and returns.
+- `clear_flag_word`: Stores zero into a base-relative flag word and returns.
+- `loop_table_calls_with_flags`: Clears two base-relative longwords, then loops over pointer-table calls that pass slot values and fixed constants, storing words into the frame.
+- `pass_slot_then_set_flag_4`: Copies a base-relative longword into the frame, makes one pointer-table call with it, then sets a flag longword to a constant.
+- `update_slot_frame_data`: Iterates through a stack-based frame to populate it with values from a global structure via multiple indirect function calls.
+- `loop_nested_slot_calls_2`: Runs a loop that copies base-relative slots into the frame and makes pointer-table calls with those values, with an inner loop that stores a longword slot each pass.
+- `forward_field_then_store_sentinel`: Pushes one longword state field onto the stack, makes an indirect call through a jump-table entry relative to the A3 base, then writes a fixed sentinel longword with the top bit set into a second state field.
+- `store_sentinel_flag`: Writes the fixed sentinel longword with the top bit set into one state field and returns.
+- `reload_field_on_low_word`: Runs a chain of indirect calls, pushing state fields as arguments, and copies a second state field into the primary field when the low word of a flag field is nonzero.
+- `zero_field_then_reload_chain`: Clears a counter field, makes an indirect call, and then runs a call chain that conditionally reloads the primary field from a fallback field when a flag word is nonzero.
+- `copy_field_then_call_sequence`: Copies a state field into the primary field, then performs a sequence of indirect calls with a short-sized copy and longword arguments pushed from the state block.
+- `dispatch_field_twice_after_sentinel`: Pushes a state field and makes an indirect call, writes the sentinel longword into that field, then passes it to two further indirect calls and sets the completion flag to the sentinel.
+- `push_field_call_store_sentinel`: Pushes one state field, makes one indirect call with it, and writes the sentinel longword into a flag field.
+- `push_short_then_call_pair`: Pushes a short-sized copy of the primary field into an indirect call, then passes another state field to a second indirect call before writing the sentinel longword to the flag field.
+- `update_field_via_pointer_2`: Copies a long word from a memory location to a stack offset, executes a function via a pointer, and stores a constant into a memory location.
+- `update_state_and_reload_fields`: This routine performs a series of indirect calls to update various data fields, including a conditional reload of a value from a fallback location if a specific counter is non-zero.
+- `update_field_via_pointer`: Stores a value from a memory location into a stack-based offset, performs an indirect call, and then stores a constant into another memory location.
+- `store_sentinel_value`: Stores a specific longword constant into a memory location via a pointer.
+- `reload_field_on_alt_word`: Runs a chain of indirect calls with pushed state fields, and copies a fallback field into the primary field when a flag word is nonzero.
+- `zero_field_then_alt_reload`: Clears a counter field, makes an indirect call, and runs a call chain that reloads the primary field from a fallback field when a flag word is nonzero.
+- `execute_indirect_sequence`: Performs a series of operations involving copying values from a table to the stack, executing indirect functions, and updating a global variable with a constant.
+- `execute_indirect_calls_2`: Copies a long word from a memory location to a stack offset, executes a function via a pointer, and repeats this process with different values and offsets.
+- `update_indirect_pointer_data_2`: Copies a long word from a memory location to a destination offset from a register, executes a function via a pointer, and then stores a constant value to a different offset from that register.
+- `push_short_then_call_chain`: Pushes a short-sized copy of the primary field into an indirect call, then passes a state field to a second call and a repeated field to two more calls.
+- `update_indirect_pointer_and_constant`: Copies a long word from a memory location to a destination offset from a register, executes a routine via a pointer, and then stores a constant value to another offset from a register.
+- `update_state_fields`: Performs multiple indirect calls to update various memory locations with values from a table and a constant.
+- `update_indirect_pointer_data`: Copies a long word from a memory location to a destination offset from a register, executes a function via a pointer, and then stores a constant value into another offset from that same register.
+- `write_long_word_to_pointer`: Stores a long word into a memory location calculated by adding an offset to a value held in a register.
+- `stub_return_only`: Routine consisting only of a return, with no calls, memory access or hardware register use; it does no work.
+- `poll_until_zero_mask_byte`: Loops over an indirect call that pushes a zero-initialised word, reading a byte result from a second indirect call on each pass, and stops when the word is nonzero.
+- `execute_return_instruction`: This routine performs a single return from a subroutine.
+- `poll_until_nonzero`: Loops while a value is zero, performing indirect calls and storing a value on the stack before returning a modified byte.
+- `return_from_subroutine_4`: This routine performs a single return instruction.
+- `setup_params_call_store_sentinel`: Writes two short parameters to the stack and makes a series of indirect calls, passes a pointer to a stack word and a state field to a separate routine, then stores a sentinel longword into that state field.
+- `dispatch_tagged_sentinel_calls`: Makes an ordered series of indirect calls that each pass a tagged sentinel longword (differing in tag bits) and a state field, then repeats a group of calls in a loop until a short result is zero.
+- `dispatch_tagged_calls_from_record`: Makes the same kind of ordered indirect calls with tagged sentinel longwords, but takes its state values from a pointer-linked record passed in by the caller before looping until a short result is zero.
+- `dispatch_tagged_sentinel_loop_counter`: Reads a record field, stores it plus one into a state counter, then loops over tagged sentinel calls and a call to another routine, passing the counter and record values, until a short result is zero.
+- `forward_record_and_store_sentinel`: Forwards two record fields into a pair of indirect calls, passes a sentinel longword into another routine, sets two short parameters, and finishes with a call through the base.
+- `dispatch_tagged_loop_from_record`: Makes the same ordered tagged-sentinel calls as its neighbours, taking the record value from a pointer-linked block, and repeats the group in a loop until a short result is zero.
+- `initialize_state_parameters`: Writes several values to memory and performs a series of indirect calls using specific constants.
+- `sentinel_loop_with_pointer_argument`: Stores sentinel longwords into state fields, makes paired indirect calls and a loop of further calls that write small counters into two state fields, and copies a pointer argument into a state field.
+- `load_pointer_then_sentinel_loop`: Loads a state field from a pointer-linked block, stores a sentinel longword, makes an indirect call, then repeats a fixed call sequence that writes counters 1 and 2 into state fields until a short result is zero.
+- `repeat_sentinel_call_loop`: Repeats a fixed sequence of indirect calls that writes counters 1 and 2 and a sentinel longword into state fields, calling another routine each pass.
+- `execute_sentinel_loop`: Performs a loop of indirect calls and updates state fields with constants, terminating when a specific memory value is zero.
+- `process_sentinel_loop`: Repeats a sequence of indirect calls and memory writes, conditionally calling another routine until a short value becomes zero.
+- `execute_sentinel_sequence`: Executes a loop that performs indirect calls and updates state fields, including a conditional call to another routine.
+- `repeat_sentinel_loop_checked_first`: Checks a short field first, then repeats a sequence of indirect calls that writes counters 1 and 2 and a sentinel longword into state fields and calls another routine each pass.
+- `run_sentinel_loop`: Runs a loop that calls another routine and performs a sequence of indirect calls and memory updates until a short value is zero.
+- `copy_state_field_to_slot`: Copies one state field into another state field and returns.
+- `push_zero_then_call_pair`: Makes an indirect call, writes a zero short to the stack, then makes a second indirect call with it before returning.
+- `return_immediately_12`: This routine performs no operations and returns immediately to its caller.
+- `call_with_zero`: Performs an indirect call, writes a zero short to the stack, and then performs another indirect call.
+- `return_from_subroutine_5`: The routine is empty and performs no operations before returning.
+- `initialise_tagged_state_and_forward`: Writes a tagged sentinel into one state field, zeroes a counter, copies values through two pointer arguments, makes calls that pass further tagged sentinels, and forwards the state block with three pointers to another routine.
+- `conditional_pass_doubled_short_call`: Passes the address of a state block to an indirect call; when a short argument is nonzero, it also passes that argument with a value formed by adding a dereferenced short to itself into a second indirect call.
+- `push_doubled_short_call_pair`: Pushes a record field and a short value formed by adding a dereferenced short to itself, calls an indirect routine with them, then makes a second indirect call before returning.
+- `set_bits_and_forward_shorts`: Ors a register value into a table cell at a computed offset, stores a second register value into a state field, then passes two short values read through pointer arguments, together with a state-block pointer, to a sequence of indirect calls.
+- `pass_tagged_pair_to_call`: Stores the address of a global variable into a state field, then passes two tagged sentinel longwords to an indirect call and returns.
+- `return_from_subroutine_10`: performs a return from a subroutine.
+- `call_pair_then_undecodable_tail`: Makes two indirect calls in sequence.
+- `dispatch_tagged_sentinel_arguments`: Passes a series of tagged longword constants through stack argument blocks to three nested routines; the constants differ only in their tag bits.
+- `dispatch_tagged_args_short_fields`: Passes tagged longword constants and short values through stack argument blocks to several routines, makes an indirect call after the first block, and finishes with two indirect calls that take short-sized parameters.
+- `mask_stack_short_and_call`: Sets up short parameters, copies a state field, and applies a bit mask to a stack-held short before making a sequence of indirect calls and a call to another routine.
+- `split_long_field_into_words`: Pushes a state field and makes indirect calls with zeroed short parameters, then splits a longword state field into its high and low short halves and passes them on.
+- `split_long_field_and_call`: Zeroes two short parameters, makes indirect calls over a state-block pointer, then splits a longword state field into high and low shorts and passes them to further indirect calls.
+- `process_split_long_field_sequence`: Runs a long sequence of indirect calls over a split longword state field: it passes zeroed short parameters and a state-block pointer, then divides a stored longword into high and low shorts and forwards them through further calls.
+- `counter_loop_fixed_short_calls`: Stores a record field plus one into a state counter, then loops making indirect calls that pass a state field and a fixed short value, writing the results into stack argument blocks on each pass.
+- `dispatch_tagged_sentinel_records`: Repeatedly fills stack argument blocks with tagged longword constants and state-field pointers, calls a routine with them, and makes further indirect calls on each pass.
+- `loop_copy_then_tagged_calls`: Loops copying one state field into another, making indirect calls with the record value and a tagged constant written into a state field, and repeats the group on each pass.
+- `stage_fields_then_sentinel_loop`: Copies staged state fields, makes an indirect call with a sentinel longword and a pointer, calls two further routines, then enters a loop of indirect calls that writes sentinel and counter values into state fields.
+- `repeat_tagged_record_call_loop`: Repeats a group of indirect calls that pass a state counter and a record value into the next call, writing results back into stack argument blocks until the loop condition fails.
+- `initialize_state_fields`: copies values from a table into state fields, calls several routines, and enters a loop that writes counters into state fields and calls other routines.
+- `repeat_counter_pair_call_loop`: Repeats a fixed call sequence that writes counters 1 and 2 into two state fields and calls another routine on each pass, after first calling two other routines.
+- `execute_state_loop`: Runs a loop of indirect calls and updates state fields, then calls another routine with four arguments after the loop terminates.
+- `loop_state_updates`: executes a loop that writes counters into state fields and calls several routines, then updates a field from a table and calls another routine.
+- `loop_checked_state_updates`: checks a value from a table, then enters a loop that writes counters into state fields and calls several routines, finally updating a field and calling another routine.
+- `repeat_counter_loop_checked_first`: Checks a short field first, then repeats a call sequence that writes counters 1 and 2 into state fields and calls another routine on each pass, ending by storing the last value into a state field when the short field is zero.
+- `update_state_and_dispatch_loop`: Iterates through a loop that updates two state fields with sequential counter values and executes a series of indirect function calls.
+- `forward_sentinel_args_to_routine`: Copies one state field into another, builds four stack arguments (two zero words, a tagged constant and a sentinel longword), and forwards them to another routine.
+- `push_short_pair_then_call`: Writes two short parameters to the stack, makes two indirect calls with them, then calls another routine and returns.
+- `forward_state_field_address`: Passes the address of a state field to another routine and returns.
+- `pass_zero_tagged_to_call`: Pushes a zero longword and a tagged longword constant, then makes an indirect call with them.
+- `return_void`: This is an empty routine that performs no operations and returns immediately.
+- `push_shorts_sentinels_then_call`: Stores the address of a global variable in a state field, passes two short values to an indirect call twice, then passes two tagged sentinel longwords to a further indirect call.
+- `return_immediately_7`: This routine performs no operations and returns to its caller immediately.
+- `clear_field_then_tagged_call`: Clears one state field, pushes two tagged longword constants, makes an indirect call with them, and stores a sentinel longword into another state field.
+- `store_tagged_constant`: stores a tagged constant into a location relative to a pointer.
+- `dispatch_tagged_constant_pairs`: Pushes pairs of tagged longword constants and a state-field pointer into stack argument blocks, makes indirect calls with each pair, and then writes a sentinel longword into a state field.
+- `push_tagged_pairs_store_field`: Pushes pairs of tagged longword constants into stack argument blocks, makes indirect calls with each pair, and stores a further tagged constant into a state field before returning.
+- `push_tagged_values`: stores several tagged constants into memory, calls a routine, updates a field from a table, and calls another routine.
+- `push_tagged_pair_forward_field`: Pushes a sentinel longword and a tagged constant to an indirect call, clears a state field, then forwards a state field to a further indirect call.
+- `forward_field_to_call`: Pushes one state field onto the stack, makes an indirect call with it, and returns.
+- `zero_indirect_target_from_short`: Passes a short copy of a state field to an indirect call, then writes a zero longword through a pointer computed from a state block offset.
+- `forward_param_value_three_times`: Stores a value from the first pointer argument into a state field, then passes it three times to an indirect call, setting a global address pointer before each call.
+- `forward_dereferenced_value_repeated`: Dereferences a pointer held in a record and passes the value to an indirect call, repeating the call with the same value three times while resetting a global address pointer each time.
+- `unroll_indirect_calls_with_offset_writes`: Repeatedly writes a value from a dereferenced pointer into a memory location at decreasing offsets and executes an indirect function call.
+- `forward_dereferenced_value_repeated_2`: Dereferences a pointer held in a record and passes the value to an indirect call, repeating this while resetting a global address pointer before each call.
+- `repeat_dereference_store`: Iteratively stores a dereferenced value into a series of stack offsets and calls an indirect function between each store.
+- `store_dereferenced_chain`: Repeatedly stores a value obtained by dereferencing a pointer into decreasing stack offsets and executes an indirect function after each store.
+- `store_dereferenced_values`: Repeatedly stores a dereferenced value into decreasing stack offsets and executes a function via a pointer after each store.
+- `store_tagged_values_2`: Repeatedly stores a dereferenced value into decreasing stack offsets and performs indirect calls before storing two constants and calling another routine.
+- `store_tagged_values`: Repeatedly stores a dereferenced value into decreasing stack offsets and performs indirect calls before storing a constant.
+- `execute_tagged_calls`: Performs multiple indirect calls while repeatedly updating a global pointer and storing values from a dereferenced pointer into a stack-based structure.
+- `forward_deref_value_tagged_call`: Dereferences a pointer held in a record and passes the value to two indirect calls, then passes a zero longword and a tagged constant to a further indirect call after resetting a global address pointer.
+- `store_constant_and_call_2`: Stores a global variable address into a memory location, stores a dereferenced value into a stack offset, calls a routine, and then stores two constants and calls another routine.
+- `store_constant_and_call`: Stores a global variable address into a memory location, sets two stack values, and performs an indirect call.
+- `do_nothing`: This routine is empty and performs no operations.
+- `tagged_calls_short_flag_store`: Makes a sequence of indirect calls that pass a tagged longword constant and a state pointer, then stores a fixed short value into a state field.
+- `clear_state_field`: Writes zero into one state field and returns.
+- `store_constant_longword`: Stores a specific longword constant into a memory location offset from a register.
+- `forward_short_param_to_calls`: Copies a short argument into a state field, then passes it as a short value to a series of indirect calls, together with a zero word and a tagged constant.
+- `build_short_flags_and_call`: Builds short parameters from a record, sets bit 1 on one of them with a bitwise OR, and passes each value to an indirect call in turn, with a conditional test on a flag field after the calls.
+- `execute_empty_routine`: This routine performs no operations and immediately returns to its caller.
+- `select_address_by_short_code`: Compares a short code read through a record pointer against several constant values and stores a global address pointer into a state field for each matching case.
+- `update_table_with_tag`: Checks a short value to select a constant, performs two indirect calls, and bitwise ORs a register into a table entry.
+- `select_tag_and_or_table`: Selects a tagged constant based on a short value comparison, performs two indirect calls, and bitwise ORs a register into a table cell.
+- `select_tag_by_short_code`: Stores a global address pointer into a state field and a tagged constant into another, choosing among several tags by comparing a short code read through a record pointer.
+- `update_tag_state_and_dispatch`: Sets specific constant values in a structure based on a conditional check, executes two indirect function calls, and performs a bitwise OR operation to update a value within a table.
+- `call_and_update_table`: Performs two indirect calls using a selected tagged constant and bitwise ORs a register value into a table cell at a computed offset.
+- `or_table_cell_after_call`: Makes an indirect call with a tagged constant, calls another indirect routine, ORs a register value into a table cell at a computed offset, and stores a constant into a state field.
+- `or_table_cell_store_register`: Calls an indirect routine, ORs a register value into a table cell at a computed offset, then stores a second register value into a state field.
+- `update_table_cell`: Performs two indirect calls, bitwise ORs a register into a table cell, and stores a constant value into a memory location.
+- `call_and_or_table_cell`: Executes an indirect call and then bitwise ORs a register into a table cell before storing a value into a memory location.
+- `forward_four_pointer_args_tagged`: Takes four pointer arguments, stores tagged constants through them, makes indirect calls with stack argument blocks, and forwards the pointed-to values to further calls.
+- `forward_dereferenced_short_pair`: Passes a dereferenced longword, converted to a short, to two indirect calls, then makes two further indirect calls before returning.
+- `pass_stack_short_all_ones`: Takes a stack argument, passes a short copy of it to an indirect call together with an all-ones short constant, and returns.
+- `pass_param_all_ones_shorts`: Passes a dereferenced argument to an indirect call, then passes two all-ones short constants to a second indirect call, and repeats the argument call before returning.
+- `pass_all_ones_deref_call`: Passes two all-ones short constants to an indirect call, then passes a dereferenced record value to a further indirect call, followed by another pair of all-ones short constants.
+- `execute_repeated_calls`: Repeats a sequence of setting two short registers to all-ones, performing an indirect call, storing a dereferenced longword, and performing another indirect call.
+- `call_with_ones_shorts`: Passes two all-ones short constants to an indirect call, stores a dereferenced value, and performs another indirect call with all-ones shorts.
+- `pass_all_ones_shorts_call`: Passes two all-ones short constants to an indirect call and returns.
+- `pack_four_params_as_shorts`: Passes four pointer arguments through an indirect call each, storing their short-sized results into stack argument blocks, then forwards the packed values to a further indirect call.
+- `pack_two_params_shorts_call`: Passes two pointer arguments through an indirect call each, storing their short-sized results into stack argument blocks, then makes a further indirect call and returns.
+- `pack_two_params_shorts_forward`: Passes two pointer arguments through an indirect call each, storing their short-sized results into stack argument blocks, then forwards them to another indirect call.
+- `dispatch_tagged_pair_twice`: Clears a state field, then passes a sentinel longword and a tagged constant to an indirect call twice with separate argument blocks.
+- `push_tagged_pair_then_call`: Pushes a sentinel longword and a tagged constant onto the stack and makes an indirect call with them.
+- `return_immediately_8`: This routine performs no operations and returns to the caller immediately.
+- `pack_field_with_short_constant`: Splits a longword state field into high and low short halves, packs a short constant alongside them, and passes the packed value with a state pointer to indirect calls.
+- `update_state_field_tags`: Converts longword state fields into short values and stores them into a stack-based argument block.
+- `convert_two_fields_then_call`: Converts two longword state fields to short values through an indirect call each, stores them in stack argument blocks, and passes the blocks to a further indirect call.
+- `populate_entity_state_buffer`: This routine extracts multiple values from a state structure and writes them into a contiguous buffer on the stack.
+- `push_sentinel_short_field_call`: Pushes a sentinel longword and a short value converted from a state field, makes an indirect call, then passes a further state field to another indirect call.
+- `forward_fields_with_sentinel_call`: Pushes two state fields, makes two indirect calls with them, and forwards a sentinel longword to another routine.
+- `tagged_call_then_store_sentinel`: Makes indirect calls that pass a state value and a tagged constant, then stores the sentinel longword into a state field.
+- `build_small_count_argument_blocks`: Makes calls that pass small constant short values and a state pointer, writes a longword from a state field through pointer arguments into argument blocks, then calls further routines.
+- `push_short_one_field_call`: Pushes a short constant of one and a state field onto the stack, passes a sentinel longword to an indirect call, and returns.
+- `push_short_two_field_calls`: Passes a short constant of two and a state field through indirect calls, passes a sentinel longword to another call, then repeats the short-constant call.
+- `push_short_two_sentinel_call`: Pushes a sentinel longword, a short constant of two and a state field, makes an indirect call with them, then calls another routine and stores a further tagged constant into the stack argument block.
+- `dispatch_sentinel_pair_call`: Calls another routine, then passes two sentinel longwords to an indirect call before returning.
+- `return_from_subroutine_6`: An empty routine that immediately returns to its caller.
+- `call_through_state_vector`: Makes one indirect call through a pointer stored near the start of the state block, then returns.
+- `clear_field_forward_short_param`: Clears a state field, pushes a sentinel longword, converts a pointer argument to a short value and passes it to indirect calls.
+- `return_immediately_9`: This routine performs no operations and returns immediately to the caller.
+- `forward_short_field_calls`: Converts a pointer argument to a short value and passes it with a state field to indirect calls, then forwards the results to another routine.
+- `store_tagged_field_forward_short`: Saves a state field, stores a tagged constant into it, passes a short converted from a pointer argument to indirect calls, and continues with further calls.
+- `store_tagged_field_short_call`: Stores a tagged constant and a sentinel longword into state fields, passes a short converted from a pointer argument to indirect calls, and restores the saved state field.
+- `push_field_deref_short_call`: Pushes a state field, passes a dereferenced longword converted to a short to an indirect call, then passes a further state field to a second indirect call.
+- `copy_fields_short_call_sequence`: Copies a state field, converts a dereferenced longword to a short and passes it to indirect calls, then continues through a longer sequence of calls that take state fields as arguments.
+- `zero_pointer_field_short_call`: Passes a dereferenced longword, converted to a short, to an indirect call, then writes zero through a pointer into a state block and returns.
+- `push_zero_one_shorts_sentinel`: Passes a zero short and a one short to an indirect call, then passes a sentinel longword to another routine through a stack argument block.
+- `tagged_sequence_with_three_args`: Makes an indirect call, then passes tagged longword constants and a state field through stack argument blocks to two other routines, using three pointer-sized parameters.
+- `execute_sequence_of_calls`: Performs multiple indirect calls while updating several memory locations with specific constants and values from a table.
+- `update_entity_state_flags`: Retrieves values from a data table and performs conditional logic based on bitmask checks.
+- `execute_complex_sequence`: Executes a series of indirect calls while updating various memory locations with constants and values retrieved from a table.
+- `execute_sequence_of_calls_2`: Performs multiple indirect calls while updating memory locations with specific constants and values from a table.
+- `read_field_state_vector_call`: Reads a state field, makes two indirect calls, then makes one more indirect call through a pointer stored near the start of the state block before returning.
+- `call_then_state_vector_call`: Makes one indirect call, then makes a second indirect call through a pointer stored near the start of the state block, and returns.
+- `conditional_call_after_short_store`: Stores a state field and a short constant into stack argument blocks, makes an indirect call with them, then makes a second indirect call only when a state field is nonzero.
+- `call_indirect_functions`: Performs two consecutive indirect calls using pointers from two different registers.
+- `call_pair_store_sentinel_vector`: Makes two indirect calls, stores a sentinel longword into a state field, then makes an indirect call through the state vector.
+- `store_sentinel_then_state_vector`: Stores a sentinel longword into a state field, then makes an indirect call through the pointer stored near the start of the state block.
+- `push_field_call_state_vector`: Pushes a state field, makes two indirect calls, then makes a call through the state vector pointer near the start of the state block.
+- `execute_indirect_pointers`: Fetches and executes two function pointers stored at specific offsets from two different base addresses held in registers.
+- `execute_conditional_calls`: Stores a value and a short constant into memory, performs two indirect calls, and executes a third indirect call if a specific value is non-zero.
+- `execute_indirect_pointers_2`: Fetches two function pointers from memory using offsets from two different registers and executes them sequentially.
+- `call_and_store_constant`: Performs two indirect calls, stores a constant value into a memory location, and executes an indirect call through a pointer.
+- `store_and_call`: Stores a constant value into a memory location and then performs an indirect call.
+- `call_field_store_sentinel_vector`: Makes an indirect call, passes a state field to a second indirect call, then stores a sentinel longword back into that state field and calls through the state vector.
+- `update_sentinel_state_and_dispatch`: Stores a constant value into a memory location offset from a pointer and then performs an indirect call through a pointer located at another offset from that same pointer.
+- `update_status_and_call`: Performs an indirect call, copies a value from a table to a memory location, performs another indirect call, and then overwrites that memory location with a constant before an indirect call.
+- `update_status_and_call_function`: Writes a constant value to a memory location offset from a pointer and then executes a function through a pointer stored in a table.
+- `forward_short_pair_call_three`: Passes two short constants to an indirect call, makes two further indirect calls, and forwards the results to another routine.
+- `dispatch_tagged_stack_blocks`: Makes an indirect call, then builds stack argument blocks holding tagged longword constants and pointer-supplied values, passing them to two further routines.
+- `dispatch_tagged_event_block`: Processes a sequence of tagged data fields by performing indirect calls and updating a stack-based argument block.
+- `execute_indirect_calls`: Performs a sequence of indirect calls while moving values from a table into a stack-based argument block.
+- `pass_tagged_field_call_block`: Makes an indirect call, then passes a tagged longword constant and a state field through a stack argument block to a further indirect call before continuing with more calls.
+- `dispatch_short_fields_with_counter`: Passes short constants and state fields through stack argument blocks to a sequence of indirect calls, including a short counter of one, and ends with a call through the state vector.
+- `dispatch_short_fields_with_counter_2`: Passes short constants and state fields through stack argument blocks to a sequence of indirect calls, including a short counter of two, and ends with a call through the state vector.
+- `push_sentinel_short_two_call`: Pushes a sentinel longword, a short constant of two and a state field, makes an indirect call with them, then makes a second indirect call with the sentinel and returns.
+- `call_indirect_offset`: Performs an indirect call to an address stored at a specific offset within a pointer passed in a register.
+- `push_sentinel_short_one_call`: Pushes a sentinel longword, a short constant of one and a state field, makes an indirect call with them, then makes a second indirect call with the sentinel and returns.
+- `call_indirect_offset_2`: Executes an indirect call using a destination address located at a fixed offset from a register-held pointer.
+- `push_two_shorts_field_calls`: Pushes short constants of one and two and a state field, makes indirect calls with them in sequence, and returns.
+- `call_routine_and_return`: Makes one call to another routine and returns.
+- `push_short_field_call_sequence`: Pushes a short constant of one and a state field, makes an indirect call with them, then passes a second short constant to a further indirect call before returning.
+- `return_immediately_13`: This routine performs no actions and returns immediately.
+- `update_state_data`: This routine executes several indirect function calls and modifies values in a table using data retrieved from memory.
+- `return_immediately_10`: An empty routine that returns without performing any actions.
+- `forward_pointer_args_call_series`: Passes a zero short and a state field to an indirect call, then passes pointer-supplied values through a longer series of calls, writing the results into a state block.
+- `forward_pointer_args_with_sentinel`: Passes two pointer-supplied values and a sentinel longword to another routine, then copies a state field into a stack argument and makes a series of indirect calls with pointer-supplied values.
+- `duplicate_and_update_entities`: Creates two separate stack-allocated entity records by copying data from global memory and entity pointers.
+- `duplicate_entity_records`: Creates two separate stack-allocated structures by copying data from global memory and entity pointers.
+- `duplicate_entity_update_record`: Creates two separate stack-allocated structures by copying data from global memory and entity pointers.
+- `update_entity_state_record`: Populates a stack-allocated structure with various data fields from global memory and local pointers, then passes this structure through a series of dispatch calls.
+- `forward_sentinel_then_short_calls`: Passes two pointer-supplied values and a sentinel longword to another routine, then converts a state field to a short and passes it through further indirect calls.
+- `push_field_short_one_call`: Pushes a state field and a short constant of one, makes an indirect call with them, then passes another state field to a second indirect call.
+- `marshal_paired_parameter_records`: Reads two words from the caller's parameter block and copies each into a stack record, sending records through the dispatch table between writes.
+- `exchange_pending_state_slot`: Saves a pending value from the state block into a stack record, sends it through the dispatch table, then loads a replacement value through a helper into the same slot.
+- `marshal_parameter_pair_clear_slot`: Copies two parameter words into stack records using a mode of two, sending each through the dispatch table.
+- `emit_marker_records_for_pair`: Clears a pending state slot, copies two parameter words into stack records, and writes a marker record for each pair through the dispatch table.
+- `clear_slots_set_table_bit`: Zeroes two state slots addressed from parameters, calls a routine that returns a flag value, and ORs a bit into a table entry at a computed offset.
+- `clear_slot_set_table_bit`: Zeroes one state slot addressed from a parameter, calls the same bit routine, and ORs a bit into the table entry at a computed offset.
+- `latch_selection_and_dispatch`: Sets a state word to an all-ones sentinel, dispatches a record and a helper call, then latches a mode of one or two depending on whether the selection word is zero.
+- `latch_selection_then_dispatch`: Makes two helper calls, then stores a mode of one or two depending on whether the selection word is zero.
+- `latch_selection_mode_record`: Stores a mode of one or two depending on whether the selection word is zero, copies it into the latched state slot, and emits a marker record through the dispatch table.
+- `emit_latched_value_record`: Writes a mode of one and a marker record containing the latched state value, then sends the record through the dispatch table.
+- `emit_latched_value_mode_two`: Writes a mode of two and a marker record containing the latched state value, then sends the record through the dispatch table.
+- `stub_bare_return_routine`: The routine body is a bare return with no operations, so it does nothing when called.
+- `dispatch_masked_record_update`: Reads a value from the first parameter and a mask from the second, sends a record through the dispatch table, and when the masked bit is set emits a marker record from a state-derived value.
+- `refresh_state_records_conditionally`: Sends a state-derived record and a second record through the dispatch table, then emits a marker record only if the low word of a parameter is non-zero.
+- `emit_parameter_record_sequence`: Copies a parameter word and several state values into stack records, sends a record through the dispatch table, then writes a marker record and a state update through the helper routines.
+- `emit_parameter_record_pair`: Copies a parameter word and a state value into stack records and sends a short sequence of records through the dispatch table.
+- `build_marker_record_chain`: Builds a longer chain of marker records from parameter words and state values, sending each record through the dispatch table and writing a marker into each stack-allocated slot.
+- `write_marker_record_with_count`: Writes a marker record and a count of ten into stack records, then sends the record through the dispatch table together with a state-derived value.
+- `emit_state_value_record_short`: Writes a mode of one and a marker record with the latched state value, then sends the record through a dispatch helper.
+- `return_from_routine`: This routine performs a return from a subroutine.
+- `emit_selection_records_after_probe`: Passes a value to one helper before latching the selection word into two records, with a mode of one or two chosen by a branch on the selection's low word.
+- `emit_mode_one_selection_pair`: Emits a mode-one record and a mode-two record from the selection word, with a branch on its low word that calls two helpers on either path.
+- `emit_mode_two_selection_pair`: Starts with a mode-two record and marker from the selection word, then runs the same branch and helper calls as its siblings.
+- `emit_selection_pair_helper_callback`: Emits a mode-one and mode-two record from the selection word, with a branch that calls two helpers, writes marker records into state slots, and sends a record pair to the shared emitter.
+- `emit_selection_marker_pair_short`: Latches the selection word into a marker slot, emits a mode-one and mode-two record through the table, and sends the pair to the shared emitter before invoking the state-block callback.
+- `emit_selection_marker_after_helpers`: Makes two helper calls, latches the selection word into a marker slot, and emits mode-one and mode-two records to the shared emitter before invoking the state-block callback.
+- `latch_selection_pair_and_callback`: Copies the selection word into two state slots, emits mode-one and mode-two records, and sends a pair through the shared emitter before invoking the state-block callback.
+- `write_marker_pair_and_callback`: Writes a marker constant into two state slots, emits mode-one and mode-two records, and passes them to the shared emitter before invoking the state-block callback.
+- `latch_dual_selection_markers`: Branches on the selection word to pick one of two marker constants, stores them into state slots with a latched selection value, and emits record pairs through the table and a helper routine.
+- `emit_selection_records_routine_refs`: Emits a mode-one and mode-two record from the selection word, then loads routine reference addresses into helper-call arguments before invoking the shared emitter and the state-block callback.
+- `emit_selection_records_callback_table`: Latches the selection word into two state slots, emits a record pair chosen by its low word, and sets up three routine-reference arguments before calling the shared emitter twice.
+- `emit_selection_marker_pair_refs`: Writes marker records from the selection word and emits mode-one and mode-two records, loading routine references as helper arguments.
+- `emit_selection_pair_mode_two`: Starts with a mode-two record and marker from the selection word, runs the branch and helper calls, then emits a record pair through the shared emitter and invokes the state-block callback.
+- `emit_latched_pair_table_refs`: Emits a short latched record and routine-reference argument sequence, sends the pair through the shared emitter, and invokes the state-block callback.
+- `emit_latched_pair_extended_callbacks`: Emits a longer sequence of latched selection records with routine-reference arguments, calling the shared emitter for each record pair and invoking the state-block callback at the end.
+- `emit_latched_pair_alt_refs`: Emits latched selection records using an alternate set of routine references as helper arguments, calling the shared emitter for each pair and invoking the state-block callback at the end.
+- `dispatch_selection_marker_records`: Calls a dispatch routine with the caller's value, writes marker records and the latched selection value into state slots, then emits records through the table and invokes the state-block callback.
+- `emit_selection_pair_latched_out`: Writes a marker and a latched selection record, emits mode-one and mode-two records through the shared emitter, and invokes the state-block callback.
+- `emit_selection_mode_two_alt`: Begins with a mode-two marker record and runs the same helper branch as its siblings, then emits the record pair through the shared emitter and invokes the state-block callback.
+- `emit_selection_records_state_pair`: Emits mode-one and mode-two records from the selection word into a pair of state slots, passes them through the shared emitter, and invokes the state-block callback.
+- `emit_latched_selection_pair_short`: Emits a short latched record pair from the selection word, sending each through the table, and invokes the state-block callback at the end.
+- `emit_latched_selection_pair_callback`: Emits latched record pairs from the selection word and a second state slot, using a branch on the selection's low word, then invokes the state-block callback.
+- `emit_marker_selection_mode_one`: Writes a marker and emits a mode-one record from the latched selection, then a mode-two record, sending each to the shared emitter before invoking the state-block callback.
+- `emit_selection_pair_tail_only`: Emits the tail of a latched selection record sequence, sending mode-one and mode-two records to the shared emitter and invoking the state-block callback.
+- `emit_selection_pair_tail_callback`: Emits the final mode-one and mode-two selection records through the shared emitter and invokes the state-block callback.
+- `latch_marker_pair_emit_records`: Writes two marker constants into state slots, emits mode-one and mode-two records through the table, and sends a record pair to the shared emitter before invoking the state-block callback.
+- `emit_selection_pair_marker_tail`: Emits a marker and selection record pair through the table, then the final mode-one and mode-two records to the shared emitter before the state-block callback.
+- `emit_selection_pair_helper_tail`: Emits selection records through a helper and the shared emitter with a branch on the selection's low word, then invokes the state-block callback.
+- `emit_selection_records_from_args`: Takes several routine arguments, emits mode-one and mode-two records from the selection word, and passes routine references and a mode-four record to the shared emitter.
+- `emit_mode_three_records`: Emits mode-one, mode-two, mode-three and mode-four records from the selection word, passing routine references to helper calls and to the shared emitter.
+- `emit_selection_modes_four_five`: Emits a sequence of selection records using modes one, two, four, five and three, with routine references as helper arguments.
+- `emit_selection_modes_five_three`: Emits a short selection record sequence with modes five and three, then writes a pair of marker records and passes them to the shared emitter before invoking the state-block callback.
+- `invoke_state_callback_only`: Does nothing except invoke the function pointer stored in the state block, then return.
+- `emit_selection_records_arg_refs`: Emits a long sequence of selection records using routine references that come in as arguments, passing each pair through the shared emitter and marker writes before invoking the state-block callback.
+- `emit_selection_modes_two_four`: Emits selection records with modes two, four, one, three and five, using routine references as helper arguments and invoking the state-block callback at the end.
+- `emit_marker_pair_mode_five`: Emits a mode-five then mode-three record from the selection word, writes a marker pair, and passes the result to the shared emitter before invoking the state-block callback.
+- `invoke_state_callback_tail`: Only invokes the function pointer stored in the state block and returns.
+- `dispatch_selection_mode_two_markers`: Calls a dispatch routine with the caller's value, writes a mode-two marker and the latched selection value into state slots, then emits records through the table and invokes the state-block callback.
+- `emit_selection_marker_mode_one`: Latches the selection word into state slots, emits a mode-one record and a marker, and sends the pair through the table after a helper branch.
+- `emit_selection_marker_mode_two`: Latches the selection word into state slots, emits a mode-two record and a marker, and sends the pair through the table after a helper branch.
+- `emit_selection_pairs_alternate_markers`: Emits alternating selection record pairs with a mode-one marker and a mode-two marker, sending each through the table and the shared emitter.
+- `emit_selection_pair_short_tail`: Makes helper calls, latches the selection word into two state slots, and emits a short record pair through a helper routine.
+- `emit_mode_one_two_pair`: Latches the selection word into two state slots, then emits mode-one and mode-two records with marker writes through the helper calls and the shared emitter.
+- `emit_selection_pairs_both_markers`: Emits paired selection records carrying mode-one and mode-two markers, passing each pair through a helper and the shared emitter.
+- `emit_selection_pairs_then_callback`: Emits four selection record pairs with alternating mode-one and mode-two markers, then invokes the state-block callback.
+- `emit_selection_pairs_mode_one`: Emits a run of selection record pairs that begin with a mode-one marker, using helper calls and the shared emitter, then invokes the state-block callback.
+- `emit_marker_pair_alt_helper`: Writes two marker constants into state slots, then emits selection records through the alternate helper and the shared emitter.
+- `emit_selection_pairs_alt_helper`: Emits four selection record pairs through the alternate helper, alternating mode-one and mode-two markers, then invokes the state-block callback.
+- `emit_selection_pairs_alt_tail`: Emits a longer run of selection record pairs with alternating markers through the alternate helper and the shared emitter, then invokes the state-block callback.
+- `emit_selection_mode_four_branch`: Branches on the selection word, calls routine-reference helpers, and emits a mode-four record pair through the table before passing arguments to the shared emitter.
+- `emit_selection_mode_four_extended`: Emits a longer selection record sequence using mode-four and mode-one records with routine-reference helper arguments and a mode-two marker, ending with the shared emitter and the state-block callback.
+- `execute_indirect_pointer_call`: Performs an indirect call to a function pointer located at a fixed offset from a value held in a register.
+- `emit_selection_mode_four_alt`: Emits mode-four selection records with a mode-two marker and routine-reference helper arguments, sending each pair through the shared emitter before invoking the state-block callback.
+- `execute_indirect_call`: Performs an indirect call to a function pointer stored at an offset from a register.
+- `emit_markers_and_clear_latch`: Emits a marker record with a fixed constant, clears the latched state value through two addressed slots, and emits a second marker pair through the shared emitter.
+- `emit_marker_pair_clear_slots`: Clears two addressed slots holding the latched state value after making helper calls, then emits a pair of marker records through the shared emitter.
+- `return_from_subroutine_11`: is an empty routine that returns.
+- `update_status_word_from_flags`: Calls helpers to set up a status word, then tests flag bits of a status word at a fixed state offset in a chain, writing status constants depending on which bits are set.
+- `update_status_flags_short`: Tests flag bits of a status word at a fixed state offset after a helper call, and writes a status constant into it depending on the result.
+- `classify_status_flags_into_word`: Clears a status word, tests its flag bits in sequence, and stores a series of status constants reflecting which bits were found set.
+- `set_status_word_terminal_code`: Makes two helper calls with a value from a fixed state offset, then stores a fixed terminal status constant into the status word.
+- `store_status_word_terminal_constant`: Stores a fixed terminal status constant into the status word at its fixed state offset and returns.
+- `store_status_word_alt_constant`: Stores a second fixed status constant into the status word at its fixed state offset and returns.
+- `classify_status_flags_alt_branch`: Tests a pair of flag bits in the status word, clears it, and stores a sequence of status constants, with a helper call to fetch a value before the final store.
+- `set_status_word_alt_code`: Makes a helper call with a value from a fixed state offset, then stores an alternate fixed status constant into the status word.
+- `write_status_word_constant`: Stores a fixed 32-bit constant into a memory location relative to a register.
+- `store_status_word`: Stores a fixed 32-bit constant into a memory location at an offset from a register.
+- `classify_status_flags_emit_codes`: Tests flag bits of the status word, clears it when a bit is set, and then writes a sequence of status codes, calling a helper after each write.
+- `emit_status_sequence_from_zero`: Clears the status word and writes a sequence of five status codes, calling a helper with each one in turn.
+- `emit_status_sequence_from_c0`: Writes a sequence of status codes starting from a fixed second-class code, calling a helper with each one, and ends with the final code.
+- `emit_status_sequence_from_41`: Writes a sequence of status codes starting from a fixed first-class code, calling a helper with each one, and ends with the final code.
+- `emit_status_pair_from_42`: Writes a pair of status codes, calling a helper with each, and leaves the final code in the status word.
+- `store_status_word_final_code`: Stores a fixed final status code into the status word and returns.
+- `empty_c_function`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
+- `return_from_subroutine_7`: This routine performs a single return instruction to exit the current execution flow.
+- `reset_secondary_status_and_arm`: Clears a secondary status word, makes two helper calls with a count of three, then stores a status constant into the secondary word.
+- `store_secondary_status_constant`: Stores a fixed status constant into the secondary status word at its fixed state offset and returns.
+- `arm_secondary_status_word_b`: Calls a helper, makes a count-two helper call, then stores a fixed final status constant into the secondary status word.
+- `store_secondary_status_final`: Stores a fixed final status constant into the secondary status word and returns.
+- `arm_secondary_status_word_c`: Makes two helper calls, a count-three helper call, then stores a status constant into the secondary status word.
+- `store_secondary_status_second`: Stores a second fixed status constant into the secondary status word and returns.
+- `arm_secondary_status_count_three`: Makes a helper call, then a count-three helper call, and stores a status constant into the secondary status word.
+- `store_secondary_status_first`: Stores a first fixed status constant into the secondary status word and returns.
+- `run_dual_slot_update_sequence`: Points two state slots at a shared object, runs helper calls for each slot, and writes a status constant into one slot while storing derived values in neighboring status words.
+- `run_dual_slot_update_short`: Writes status constants into two slots, runs the same helper sequence on the shared object, and stores the derived values into status words.
+- `run_dual_slot_update_alt`: Runs the helper sequence for a shared object, writes status constants, and stores derived values into neighboring status words.
+- `run_single_slot_update_sequence`: Runs one helper sequence on a shared object, writes status constants into a slot, and stores the derived value into a status word.
+- `update_slot_status_from_latch`: Clears a latch word, runs helper calls on a shared object, writes a status constant and the stored value, then restores the latch from a status word.
+- `run_dual_slot_update_tail`: Finishes the dual-slot update by writing a final status constant and storing derived values from the helper calls into the status words.
+- `restore_latch_word_from_slot`: Reads a stored slot value, calls a helper with a second slot, and writes the result back into the latch word.
+- `invoke_state_callback_after_helper`: Calls a shared routine with no arguments, then invokes the function pointer stored in the state block.
+- `init_constant_slots_and_dispatch`: Writes fixed constants into several state slots, calls the shared routine with pointers to those slots, and repeats the pattern with other constant pairs before returning.
+- `emit_pointer_parameter_records`: Clears a state slot, emits a marker record from a pointer parameter through helper calls, and stores a pointer-derived value into a stack record before invoking a helper.
+- `emit_pointer_parameter_records_tail`: Continues the pointer-parameter record sequence by emitting a marker record and a value derived from a second parameter through the helpers.
+- `emit_pointer_records_store_slots`: Emits a longer sequence of records built from pointer parameters, storing derived values into state slots between helper calls.
+- `emit_offset_record_callback`: Builds a record at a state offset from a helper result, writes a fixed record value into it, and invokes the state-block callback.
+- `emit_offset_record_alt_callback`: Builds a record at a state offset from a helper result, writes an alternate fixed record value into it, and invokes the state-block callback.
+- `emit_offset_record_sequence`: Emits a long sequence of records at computed state offsets, combining helper results with fixed record values before the shared emitter.
+- `emit_offset_records_with_callback`: Emits records at computed state offsets using helper results and fixed values, then invokes the state-block callback.
+- `emit_marker_record_then_callback`: Writes a marker record into a computed state offset from a helper result, then invokes the state-block callback.
+- `emit_flagged_status_record`: Emits status records from a state word and a flag word, tests a flag bit, and invokes a second function pointer when the bit is set before writing the final record.
+- `emit_flagged_status_record_alt`: Emits a status record from a state word, tests a flag bit with a helper call, and invokes a second function pointer when set, then writes the final record.
+- `emit_status_record_after_callback`: Writes a fixed status record, invokes a second function pointer, clears the status word, and writes a final record from a state-derived value.
+- `store_flag_result_into_record`: Clears a status word, reads a state word through a helper, and writes the status word into a computed record slot before invoking a helper.
+- `emit_indexed_table_entry_record`: Writes a record value at a fixed state offset, looks up an entry in a table indexed by a state word, and emits the result through the shared emitter.
+- `emit_indexed_table_entry_callback`: Looks up a table entry by a state index, stores it as a record value, emits a marker through the shared emitter, and returns.
+- `execute_callback_pointer`: Fetches a function pointer from an offset within a structure and executes it.
+- `emit_indexed_table_record_pair`: Emits a pair of records built from a state word and a table lookup indexed by a second state word, passing each through the shared emitter.
+- `emit_indexed_table_record_tail`: Writes a fixed record and a table-indexed record, then branches on a state word to choose which record sequence to emit.
+- `emit_indexed_table_record_branch`: Looks up a table entry from a state index, branches on a state word, and emits the matching record through the shared emitter.
+- `execute_indirect_callback`: Fetches a function pointer from an offset within a structure and executes it.
+- `emit_indexed_table_marker_branch`: Writes a fixed marker record, then emits table-indexed records chosen by a branch on a state word, passing each through the shared emitter.
+- `execute_indirect_callback_2`: Fetches a function pointer from an offset within a structure and executes it.
+- `emit_indexed_record_from_state`: Writes records from a state word and a table entry indexed by a second state word, calling the helpers and the shared emitter.
+- `emit_indexed_record_with_callback`: Writes a table-indexed record and a state-derived value through helper calls, emits them through the shared emitter, and invokes the state-block callback.
+- `store_parameter_status_and_return`: Calls a helper with a value from the caller's stack, reads a parameter word, emits a record through the helpers, and stores a fixed status constant in the status word.
+- `emit_status_sequence_with_probe`: Clears a state word, sends a probe record through the helpers, then writes a sequence of status constants, passing each to a helper call.
+- `emit_status_chain_mid_entry`: Writes a chain of status constants into the shared status word, passing each to a helper, and ends by storing a final value in a secondary status word.
+- `emit_status_chain_from_f0`: Writes a chain of status constants starting from one fixed code, passing each to a helper, and stores the final value in the secondary status word.
+- `emit_status_chain_from_e0`: Writes a chain of status constants starting from a second fixed code, passing each to a helper, and stores the final value in the secondary status word.
+- `emit_status_chain_from_80`: Writes the tail of a status constant chain, passing each value to a helper, and stores the final value in the secondary status word.
+- `emit_status_chain_from_a0`: Writes the tail of a status constant chain starting from a fixed code, passing each to a helper and finishing with a secondary status write.
+- `emit_status_chain_from_41`: Writes the last status constants of the chain, passing each to a helper, and stores the final value in the secondary status word.
+- `emit_status_chain_table_refs`: Writes a long chain of status constants with a branch on a status flag, loading routine references as helper arguments and passing each value to helper calls.
+- `emit_status_record_callback_tail`: Writes a status constant into a shared word, emits a record through the helpers and the shared routine, and ends with a record built from a state word.
+- `emit_status_records_offset_table`: Emits status records with values read through an offset table, branching on a flag and passing each record to the shared routine.
+- `emit_status_records_conditional_branch`: Emits status records, branches on a state word to choose between two record sequences, and passes the results to helper calls.
+- `emit_status_records_probe_tail`: Writes a secondary status constant, emits a record through the helpers and the shared routine, and conditionally emits a further record pair before invoking the state-block callback.
+- `emit_status_pair_then_callback`: Emits a status record pair through the helpers and the shared routine, then invokes the state-block callback.
+- `emit_status_record_then_callback`: Emits a status record through the helpers and the shared routine, then invokes the state-block callback.
+- `emit_status_record_short_callback`: Emits a short status record from a state word through a helper call and the shared routine, then invokes the state-block callback.
+- `emit_status_record_pair_callback`: Emits a longer status record pair with a branch on a state word, passing each record through the shared routine, then invokes the state-block callback.
+- `clear_status_and_emit_marker`: Clears a state word, writes a marker record constant through the shared emitter, and returns.
+- `execute_indirect_call_3`: An empty routine that is invoked via an indirect pointer stored in a memory location.
+- `invoke_state_callback_after_status`: Calls a shared routine with a state-block address, reads the status word into a helper, and invokes the state-block callback.
+- `emit_indexed_status_record_callback`: Looks up a status table entry indexed by the status word, writes it into a state record, emits it through a helper, and invokes the state-block callback.
+- `emit_status_marker_record_callback`: Writes a status marker into a state word and a stack record, emits it through helper calls, and invokes the state-block callback.
+- `invoke_status_callback_tail`: Calls a shared routine with a state-block address, reads a state word through a helper, and invokes the state-block callback.
+- `emit_indexed_status_record_alt`: Looks up an alternate status table entry indexed by the status word, writes it into a state record, and emits it through helper calls before invoking the state-block callback.
+- `emit_status_marker_record_alt`: Writes a status marker, emits a record built from a state word and an offset table entry through helper calls, then invokes the state-block callback.
+- `emit_status_marker_then_callbacks`: Writes a status marker into a state word, invokes a second function pointer, then invokes the state-block callback.
+- `store_and_call_indirect`: Stores a 32-bit constant into a memory location and then performs two consecutive indirect calls using pointers from a register.
+- `reset_slot_on_zero`: Branches on a pointer parameter's value, writes a fixed count record, stores two status constants and emits them through the shared emitter, then clears a flag word.
+- `reset_status_pair_from_parameter`: Uses a count from a parameter block for a record, stores two status constants, emits the pair through the shared emitter, and clears a flag word.
+- `emit_status_pair_clear_flag`: Stores two status constants, emits them through the shared emitter, and clears a flag word at a fixed state offset.
+- `emit_status_pair_clear_alt`: Stores a first status code and an alternate code, emits them through the shared emitter, and clears a flag word.
+- `clear_flag_word_only`: Clears a flag word at a fixed state offset and returns.
+- `clear_status_word_after_routine`: Calls a shared routine with two stack words and a state-block address, stores zero into the status word through a helper, and invokes the state-block callback.
+- `emit_indexed_status_records_marker`: Writes a status marker and emits records from a table indexed by a state word, calling helper and shared routines and writing a status constant into a state record.
+- `emit_status_record_callback_tail_2`: Writes a status constant into a state record, emits a record through a helper, and invokes the state-block callback.
+- `emit_status_marker_then_callbacks_2`: Writes a status marker, invokes a second function pointer, and then invokes the state-block callback.
+- `emit_status_marker_dual_callback`: Writes a status marker, emits a record through the helper, invokes a second function pointer, and then invokes the state-block callback.
+- `emit_status_pair_table_callback`: Calls a shared routine, emits a pair of values from state slots through the shared emitter, writes a status marker, and invokes the state-block callback.
+- `write_status_marker_and_callback`: Writes a status marker into a state slot, emits a state value through a helper, and invokes the state-block callback.
+- `emit_status_record_table_entry`: Emits status records built from a table entry indexed by a state word, using helper calls and a fixed marker, then invokes the state-block callback.
+- `emit_status_records_state_pair`: Emits status records from a pair of state slots, using a table entry indexed by a state word, helper calls and a status marker, before invoking the state-block callback.
+- `write_status_and_call`: Stores a constant value into a memory offset and executes two function pointers.
+- `emit_status_value_then_callback`: Emits a status value through a helper call and invokes the state-block callback.
+- `write_status_and_call_2`: Writes a specific value to a memory location and then invokes two indirect function calls.
+- `emit_alt_status_pair_callback`: Clears a flag word, emits a pair of alternate status markers through the shared emitter, and invokes the state-block callback.
+- `emit_flag_value_then_callback`: Emits a flag value through a helper and invokes the state-block callback.
+- `emit_table_indexed_status_records`: Emits a long run of status records looked up from table entries indexed by a state word, with helper calls between records, then invokes the state-block callback.
+- `emit_marker_record_offset_callback`: Writes a marker record at a state-table offset from a helper result, emits a status constant through helpers, and invokes the state-block callback.
+- `emit_offset_marker_then_callback`: Writes a status marker record at a state-table offset through a helper, passes a state value to the shared routine, and invokes the state-block callback.
+- `process_marker_sequence`: Performs multiple memory writes and executes several indirect function calls using values from a table and stack.
+- `emit_status_pair_shared_routine`: Writes two status words, passes stack-built arguments to the shared routine, stores a state value into a slot, and invokes the state-block callback.
+- `emit_table_status_records_refs`: Calls shared routines on a state slot, looks up a table entry indexed by a status word, emits records through helper calls, and stores a derived value into a status word.
+- `emit_status_records_offset_helper`: Emits records built from a state value and table offsets through helper calls, writing a status constant and passing the records to the shared routine.
+- `emit_status_records_multi_helper`: Emits a longer set of status and offset records using a value from the status table, helper calls and the shared routine.
+- `emit_flag_marker_and_callback`: Sets a flag marker, emits a record through helper calls and a shared routine, clears a flag word, and invokes the state-block callback.
+- `emit_table_status_records_tail`: Looks up a table entry from a status word, writes derived constants and records through the helpers and shared routine, then invokes the state-block callback.
+- `emit_status_record_with_offsets`: Emits status records at table offsets derived from a state word, passing each through helper calls and the shared emitter.
+- `emit_status_marker_pair_return`: Writes a status marker and a secondary marker through the shared emitter and returns.
+- `return_from_status_marker`: This routine is empty.
+- `emit_status_marker_pairs_loop`: Writes status marker pairs, then loops over a table of status-word entries, calling helper routines on each entry.
+- `emit_table_loop_until_flag`: Writes a status marker pair, then loops over table entries indexed by a counter, calling helper routines and storing each entry until a flag word is non-zero, then stores the final counter.
+- `emit_table_loop_flag_short`: Writes a status marker pair and loops over table entries indexed by a counter, storing each entry until a flag word is non-zero, then stores the final counter.
+- `emit_table_loop_remaining_entries`: Continues the table loop by calling a helper on each entry, storing each one on the stack, and stopping when the flag word is non-zero.
+- `store_loop_counter_result`: Stores the loop counter into a result word and returns.
+- `emit_table_loop_body`: Loop body that looks up the table entry for the current counter, writes it to the stack, and repeats until the flag word is non-zero.
+- `copy_memory_word`: Copies a word from one memory location to another.
+- `pass_tag_pair_to_library`: Stores two fixed marker words in the stack frame and calls one library vector with them as arguments.
+- `stub_empty_routine`: The body is a bare return with no work, so calling it does nothing.
+- `pack_record_fields_and_call`: Converts a word field and a long field from the base record into stack arguments through several library calls, passes them to a subroutine, then stores a result long into the record after one more library call.
+- `index_table_and_store_word`: Calls a subroutine on a record field, uses the result to index a table reached through a pointer in the base record, reads a word from that entry and passes it to a library call, then stores the pointer and word in a result field.
+- `conditionally_refresh_marker_entries`: Reads a value from the base record and issues library calls; when a status word masked for two bits is clear, it copies state fields and writes marker long words through indirect library calls.
+- `return_from_marker_handler`: This routine is empty.
+- `post_marker_and_copy_state`: Stores a field into a stack slot and calls a library vector, writes a marker long, calls a subroutine, copies a state field, then writes two more marker longs through indirect library calls.
+- `write_marker_and_update_fields`: Writes a marker long into a record slot and calls a subroutine, copies two fields between record slots, and issues indirect library calls that store marker longs at computed addresses.
+- `write_alt_marker_and_fields`: Writes an alternate marker long into a record slot and calls a subroutine, copies two fields between record slots, and issues indirect library calls that store marker longs at computed addresses.
+- `copy_field_and_post_markers`: Copies one record field into another, then issues library calls that store marker longs at computed addresses, with one value read from a record slot and stored through a pointer.
+- `post_marker_via_library_call`: Stores a marker word on the stack, calls a library routine with a pointer into the record, and writes a marker long through the pointer returned by a second library call.
+- `guarded_convert_and_dispatch`: When a stored word is zero and a flag mask is clear, it converts a value through library calls, stores a count of 100, calls a subroutine with the result, invokes a function pointer from the base record and writes a marker long.
+- `execute_callback_function`: This routine is empty.
+- `convert_value_and_dispatch`: Converts a stored long through library calls into a word, calls a subroutine with a count of 100, invokes a function pointer from the base record, and then writes a marker long.
+- `reset_and_dispatch_marker`: Clears a stored long and calls a subroutine, copies two fields, invokes a function pointer from the base record and writes a marker long.
+- `forward_field_and_signal`: Passes a stored long through a library call, copies a second field into a result slot, invokes a function pointer from the base record, and writes a marker long.
+- `copy_field_then_signal`: Copies a field into a result slot, invokes a function pointer from the base record, and writes a marker long.
+- `copy_second_field_and_signal`: Copies a field into a different result slot, invokes a function pointer from the base record, and writes a second marker long.
+- `pass_marker_pair_to_library`: Places two marker longs in the stack frame and calls one library vector with them.
+- `return_from_subroutine_8`: An empty routine that performs no operations and immediately returns to the caller.
+- `clear_slots_and_pass_pairs`: Clears one record slot, passes a pair of marker longs to a library vector, copies the cleared slot into a library call, then clears a second slot and issues two more marker-pair calls.
+- `clear_slot_after_library_call`: Passes a record slot to a library call, clears a second record slot, and issues two marker-pair library calls.
+- `execute_null_function`: An empty routine that performs no operations and immediately returns to its caller.
+- `clear_slot_and_issue_pairs`: Clears a record slot and issues two marker-pair library calls.
+- `issue_marker_pair_call`: Places two marker longs in the stack frame and makes one library call with them, with no other work.
+- `return_immediately_11`: This routine performs no operations and returns to its caller.
+- `build_indexed_entry_with_tags`: Converts a record value through library calls, writes tag constants into record slots, and computes an index into a table reached through a base pointer, zeroing that entry; it passes marker pairs to library calls and finishes with two subroutine calls.
+- `rebuild_indexed_entry_tags`: Indexes a table through a base pointer with a value from the record, zeroes that entry, writes tag constants and marker pairs, calls a subroutine, and finishes with two subroutine calls.
+- `clear_indexed_entry_and_tag`: Calls a library routine, computes a table entry index from a record value, zeroes that entry, writes marker pairs and tag constants, then calls a subroutine that completes the routine.
+- `index_table_entry_and_tag`: Reads a value from the base record, computes an index into a table reached through a base pointer, zeroes the entry, writes tag constants and calls library routines, then calls a subroutine twice.
+- `write_tags_and_call_subroutines`: Stores a record value and a converted word through library calls, writes two tag constants, and ends with subroutine calls.
+- `emit_tags_and_call_subroutines`: Writes tag constants into the stack frame, passes a record value through library calls, and finishes by calling subroutines.
+- `store_tags_and_call_subroutines`: Writes tag constants into record slots, passes a record value through library calls, and finishes by calling subroutines.
+- `store_offset_value_and_call`: Writes a tag constant into a record slot, calls a subroutine, passes record values to library routines, stores the constant one minus sixty-four into a result slot, and ends with two subroutine calls.
+- `pass_record_value_then_subroutines`: Passes a record long through a library call, passes a value from a record slot to another library routine, stores the constant one minus sixty-four into a result slot, and ends with two subroutine calls.
+- `init_record_then_index_tags`: Initializes a record long with a fixed 16-bit constant and clears a second slot, writes a marker pair and calls library routines, then indexes a table, zeroes the entry and writes tag constants before calling subroutines.
+- `copy_record_value_then_subroutines`: Copies a record long, calls library routines with a converted word, stores the constant one minus sixty-four into a result slot, and ends with two subroutine calls.
+- `forward_call_to_subroutine`: Calls a subroutine and returns; it is a one-line forwarder with no other work.
+- `convert_record_value_and_call`: Converts a record word through library calls, stores the constant one minus sixty-four into a result slot, writes a tag long, and ends with two subroutine calls.
+- `call_subroutines_around_library_call`: Calls a subroutine, copies a record long into the stack frame and passes it to a library call, then calls the subroutine again.
+- `execute_indirect_call_2`: This routine performs an indirect call by executing the instruction located at the address contained within a pointer.
+- `pass_marker_pair_then_subroutine`: Passes a marker pair to a library vector, passes a record long to another library call, and then calls a subroutine.
+- `pass_record_long_then_subroutine`: Passes a record long to a library call and then calls a subroutine.
+- `store_indexed_record`: Converts a record word and stores a long value into an indexed table entry reached through a base pointer.
+- `write_tagged_slots_and_subroutine`: Converts three record values through library calls into word slots, writes tag constants and a marker pair, and computes an indexed table entry through a base pointer.
+- `write_tagged_entries_and_subroutine`: Writes two tag pairs, converts a record word through a library call, zeroes an indexed table entry through a base pointer, and updates it when a status word is nonzero or a flag mask is set.
+- `update_indexed_entry_conditionally`: Passes a record long through a library call, computes an indexed table entry from a converted record word, writes a marker pair, and updates the entry when a status word is nonzero or a flag mask is set, then calls a subroutine.
+- `convert_and_write_entries`: Converts two record words through library calls, computes a table entry through a base pointer, writes tag constants, and writes that entry only when a status word is nonzero or a flag is set, before calling a subroutine.
+- `update_entry_if_flagged`: Passes a record long to a library call, converts a stored word, zeroes a record slot and writes a marker pair, then updates an indexed table entry when a status word is nonzero or a flag is set.
+- `update_flagged_table_entry`: Converts a record word through a library call, zeroes a table entry reached through a base pointer, writes marker pairs, and updates that entry when a status word is nonzero or a flag is set.
+- `update_entry_if_status_set`: Passes record values through library calls and, when a status word is nonzero or a flag is set, updates an indexed table entry; then it calls a subroutine.
+- `zero_entry_then_update`: Converts a record word, zeroes a table entry through a base pointer, writes a marker, and updates that entry when a status word is nonzero or a flag is set, then calls a subroutine.
+- `store_indexed_entry_then_subroutine`: Converts a record word through a library call, stores a record long into an indexed table entry reached through a base pointer, and then calls a subroutine.
+- `wait_for_message_and_parse`: Finds the current task and, when it has no pending message, waits on its port and fetches a message.
+- `skip_decimal_digits`: Advances an input pointer past a run of ASCII decimal digits and stops at the first character that is not a digit.
+- `open_library_or_clean_up`: Opens a required system library and stores its handle in a state field; if the open fails, it closes each non-empty entry in a table of library handles and returns the error code 200.
+- `find_first_empty_entry`: Scans a table of eight-byte entries from a fixed base field and returns the index of the first entry whose leading byte is zero.
+- `read_byte_from_pointer`: Returns the byte at the input pointer without changing any state.
+- `compute_buffer_window_limits`: Stores the input pointers and computes a limit from a size difference scaled by a shift; below that limit it records a scaled size and returns, otherwise it makes a function-pointer call and two library calls on a stored structure before returning the code 103.
+- `initialize_system_structures`: Allocates a message port, inserts a node into a linked list, and populates several fields in a structure using values from a global variable and library calls.
+- `map_code_with_flag_check`: Maps a stack argument of five or six to zero; for other values it returns the argument minus seven, unless that result is zero, 43 or 46 or a flag bit is set, in which case it returns the original input.
+- `execute_string_formatting`: This routine calls a function to copy a fixed string into a buffer and release fourteen table slots.
+- `get_string_pointer`: Returns a pointer to a fixed string.
+- `return_to_caller`: This routine is empty and performs no operations before returning to the calling function.
+- `format_string_and_release_2`: Copies a fixed string into a buffer and releases fourteen table slots.
+- `allocate_signal_and_port`: Allocates a signal bit and a memory block, fills the block in as a message port record with a port type of four, registers the port with the system and returns the record.
+- `remove_port_and_free`: Removes a message port from the system, marks its signal field as unused, frees the signal and then frees the memory block.
+- `clear_pointer_and_call`: If a stored pointer is nonzero, it clears the pointer and calls a function from a library table.
+- `shutdown_io_and_resources`: Calls each registered handler in a table, aborts and waits on any pending I/O request, closes the device, clears stored handles and calls cleanup routines for the remaining objects, then returns a result from a final subroutine when one is set.
+- `notify_flagged_handle`: When a stored handle and a second stored object are both set and a query call returns nonzero, it issues two library calls on them.
+- `validate_size_or_fail`: Checks an input value against a limit of 265 and its low thirteen bits; when it is in range and not aligned, it returns the value passed in the data register after a subroutine call, otherwise it returns 52.
+- `call_subroutine_repeatedly`: Calls a subroutine 265 times in a loop and returns.
+- `call_subroutine_if_zero`: Calls a subroutine, then calls a second subroutine with the data register value when the zero flag from the first call is set.
+- `dispatch_handler_via_table`: Calls through a handler pointer read from a structure reached via the base register.
+- `insert_linked_node`: Inserts a new node into a linked list by updating pointers at a specific offset from a global variable.
+- `traverse_and_modify_list`: Iterates through a linked list and modifies a pointer at the end of the traversal before calling another routine.
+- `drain_list_until_empty`: Repeatedly calls a subroutine while the list head in the base record is nonzero, then returns zero.
+- `format_name_and_release_slots`: Copies a fixed string and then a caller-supplied string into a buffer, inserting a comma, a space and a hash between them when a flag is set, and passes the buffer to a library call.
+- `copy_string_and_release_slots`: Copies a fixed string into a buffer, releases fourteen table slots, and returns the low byte of an earlier call result plus the dollar-sign code plus 300.
+- `format_string_and_release`: Copies a fixed string into a buffer and releases fourteen table slots, returning the low byte of an earlier call result plus the dollar-sign code plus 300.
+- `release_slots_return_byte_offset`: Releases fourteen table slots, runs a closing sequence that calls a stored handler through a pointer, and returns the byte passed on the stack plus 300.
+- `release_slots_return_offset`: Releases fourteen table slots, runs the same closing sequence, and returns the low word of the data register plus 300.
+- `build_error_message_text`: Builds a message in a buffer: when no optional formatter is set or it produces an empty string, it copies a fixed string instead.
+- `copy_numbered_string_entry`: Clears the output buffer and copies a fixed string into it.
+- `prepare_abort_message`: Calls subroutines that prepare the abort message, then makes one library call through a stored library base before returning.
+- `initialize_five_field_record`: Initializes a five-longword record: it clears the first, third and fifth fields, copies the value at the first argument into the second, and sets the fourth from the data register.
+- `close_device_and_free_port`: Closes the device if one is open and clears its handle, then removes the message port, marks its signal as unused, frees the signal and releases the memory block.
+- `record_key_event_code`: Releases a stored handle if present.
+- `scramble_and_reduce_word`: Mixes the input word with fixed XOR and add constants, reduces the result modulo 30268 by repeated subtraction, substitutes 7 for zero, and stores it through the output pointer.
+- `reduce_word_and_store`: Reduces the input word modulo 30268 by repeated subtraction, replaces a zero result with 7, and stores it through the output pointer.
+- `format_signed_decimal_text`: Formats a signed long as decimal text in a buffer: it writes a leading space or minus sign, then extracts each digit by repeated subtraction against a table of descending place values and appends the final digit.
+
+### Legend (1989)(CRL)[cr VF].adf:Disk-Validator
+
+- `validate_disk_bitmap_blocks`: Program entry for the disk validator.
+
+### Legend (1989)(CRL)[cr VF].adf:Type
+
+- `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
+- `copy_sixteen_longs_then_call`: Copies sixteen longs from a fixed structure offset into a caller buffer when one is given, then calls a subroutine.
+
+### Legend (1989)(CRL)[cr VF].adf:mathieeedoubbas.library
+
+- `return_minus_one_status`: Library entry point that returns minus one in the data register and does nothing else.
+- `register_math_resource_entry`: Looks up or creates a resource entry through library calls, stores this library's handler addresses and base values in it, and calls a function on an existing entry when its flag is set.
+- `create_entry_with_handlers`: Creates an entry through a library call and stores this library's handler addresses, a register value and a base pointer in it.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `raise_math_exception_by_code`: Sets a status field to two, then after clearing the second byte of the data register, a low byte of fifty forces a divide-by-zero and fifty-three raises a trap-on-overflow exception.
+- `raise_math_exception_in_range`: Returns unless the data register word falls in one of two fixed ranges.
+- `raise_math_exception_guarded`: Returns for words above a boundary unless they fall in a second window.
+- `raise_math_exception_window`: Returns unless the data register word lies in one fixed window.
+- `raise_math_exception_upper`: Returns for words above one limit; otherwise it sets a status field to two and forces the divide-by-zero or trap for the two special codes.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `poll_status_and_return_long`: Polls a status word in a structure until it is no longer a busy marker, writes a control value into a field, and loops on a subroutine while a sentinel status appears.
+- `wait_status_then_return_long`: Waits while the status word is a sentinel value, calls a subroutine and stores a control value, then polls until the status is ready.
+- `await_status_and_return_long`: Loops while the status word is a sentinel value, calling a subroutine and writing a control value, then polls until ready.
+- `check_status_byte_then_reset`: Returns the high byte of a status field when it is set.
+- `poll_status_store_constant`: Sets a control value in a structure and polls a status word.
+- `wait_marker_then_store_constant`: Waits for a marker status value while calling a subroutine, then stores the constant 144 in the output long, polls until ready and returns zero.
+- `divide_double_precision_values`: Divides two IEEE double-precision values held in register pairs.
+- `return_special_float_result`: Handles a special operand case of the floating-point routine: below the exponent limit it returns zero or an infinity-style value, when the operands are equal it returns the not-a-number constant, and otherwise it adjusts a flag bit before returning the result.
+- `return_nan_constant`: Returns the fixed not-a-number double constant and does nothing else.
+- `return_special_double_form`: Returns a special double built from an operand's high word: when both low operand halves are zero it returns the signed-zero form, otherwise it returns the sign-adjusted exponent constant.
+- `return_signed_infinity`: Returns an infinity-style double whose top word is the sign bit XOR the exponent constant and whose other words are zero.
+- `divide_double_checked`: Divides two double-precision values after checking for zero and special exponents: a zero divisor gives an infinity-style result, both operands zero give the not-a-number constant, and otherwise it normalizes and computes the quotient in 32-bit steps.
+- `return_signed_zero_word`: Returns a double whose top word is the sign and exponent word from the data register and whose other words are zero.
+- `divide_double_alternate`: Divides two double-precision values through the same special-case checks, then computes the quotient in 32-bit steps with an exponent difference.
+- `shift_word_left_forty_eight`: Takes a sixteen-bit value and shifts it left by forty-eight bits to produce a sixty-four-bit result.
+- `divide_double_subroutine_path`: Divides two double-precision values through a subroutine-normalized path: it checks zero and special exponents first, then computes the quotient in 32-bit steps and applies a final correction.
+- `divide_double_scaled_path`: Divides two double-precision values with the exponent adjustment done first, then computes the quotient in 32-bit steps after handling zero and special operands.
+- `divide_double_packed_exponent`: Divides a packed double-precision operand by another using the exponent difference and 32-bit quotient steps, then adjusts the exponent and rebuilds the result.
+- `divide_double_mantissa_steps`: Computes the quotient of two double-precision mantissas in 32-bit steps with an exponent subtraction, then handles the sign and shifts the result into the top word.
+- `divide_double_normalized`: Divides two double-precision values by computing the quotient in 32-bit steps from their mantissas and exponents, returning infinity or zero when the exponent is out of range.
+- `divide_double_fraction_steps`: Divides the fraction parts of two doubles in 32-bit steps and rebuilds the exponent and sign, returning an overflow value when the result exponent is too large.
+- `round_double_quotient`: Rounds a double-precision quotient from its mantissa steps and rebuilds the sign and exponent, returning an overflow value when the exponent is too large.
+- `finalize_double_quotient`: Corrects the last quotient word from a partial product, then rebuilds the sign and exponent.
+- `shift_double_right_sticky`: Shifts a double-precision value right by a computed count in sixteen-bit steps and merges the bits shifted out.
+- `shift_double_right_steps`: Shifts a double-precision value right in sixteen-bit steps to a remaining count and merges the bits shifted out into the result.
+- `normalize_or_shift_double`: Adjusts a double's exponent by the top bits of its mantissa.
+- `normalize_double_mantissa`: Normalizes a double-precision mantissa by shifting it one bit right when its overflow bit is set and adjusting the exponent.
+- `return_max_finite_double`: Returns the largest finite double pattern for the operand's sign, built from the sign-adjusted exponent word and all-ones low words.
+- `count_leading_zero_shift`: Normalizes a 64-bit value by shifting it left until its top bit is set, using a byte lookup table over the top byte to find the final shift count.
+- `normalize_double_with_table`: Normalizes a double by shifting its high word left until the top bit is set, using a byte lookup table for the final count and adjusting the exponent.
+- `shift_double_right_by_exponent`: Shifts a double right by a count derived from the exponent word, merging the bits shifted out, and returns the result.
+- `shift_word_left`: As library code, it shifts a 16-bit value left by 48 bits and returns it as a 64-bit result.
+- `promote_half_to_upper`: As library code, it takes the low 16 bits of a 32-bit value and places them into the upper half of a 64-bit result, leaving the lower half zero.
+- `build_fixed_double_constant`: As library code, it combines a 16-bit value with a constant mask, scales it, and returns a fixed 64-bit constant pattern.
+- `shift_xor_word_left`: As library code, it xors a 16-bit value with a constant, shifts the result left by 48 bits, and returns it as a 64-bit value.
+- `return_hardcoded_64bit`: As library code, it returns a single hardcoded 64-bit constant.
+- `quiet_nan_from_operand`: Builds a not-a-number high long from the data register: when bit three is set it clears that bit and sets bit one, then ORs in the not-a-number exponent constant.
+
+### Legend (1989)(CRL)[cr VF].adf:mathieeedoubtrans.library
+
+- `stub_unimplemented_instruction`: Library entry point whose decoded body is only an unimplemented-instruction trap, so it has no working behaviour in this dump.
+- `tiny_clr_rts`: Small routine of 2 instructions that clears d0, then returns.
+- `register_trans_library_entry`: Looks up the basic math library through a library call and, when present, creates an entry in which it stores this library's handler addresses, a register value and a base pointer.
+- `register_math_resource_entry_2`: Looks up the MathIEEE resource through a library call when a flag bit is clear, creates an entry through another library call, and stores this library's handler addresses, a register value and a base pointer in it.
+- `create_entry_with_handlers_2`: Creates an entry through a library call, stores this library's handler addresses, a register value and a base pointer in it, and calls a function on the entry when a flag is set.
+- `raise_math_exception_by_code_2`: After clearing the second byte of the data register, a low word of fifty forces a divide-by-zero and fifty-three raises a trap-on-overflow exception.
+- `check_range_then_raise_exception`: Returns unless the data register word falls in one of two fixed ranges; inside them it forces a divide-by-zero or a trap for the two special codes, without setting a status field.
+- `check_upper_range_then_raise`: Returns for words above a boundary unless they fall in a second window; otherwise it forces a divide-by-zero or a trap for the two special codes.
+- `check_window_then_raise`: Returns unless the data register word lies in one fixed window; inside it forces a divide-by-zero or a trap for the two special codes.
+- `check_upper_bound_then_raise`: Returns for words above one limit; otherwise it forces a divide-by-zero or a trap for the two special codes.
+- `return_from_subroutine_9`: This routine is an empty function that performs no operations and immediately returns to its caller.
+- `poll_status_store_long`: Writes a control value to a status field, polls a status word until it is ready, stores the input double into a buffer, sets a second control value and polls again.
+- `await_status_store_double`: Waits while a status word is a sentinel value, calling a subroutine and writing a control value.
+- `await_status_and_return_long_2`: Loops while a status word is a sentinel value, calling a subroutine and writing a control value, then waits until the status is ready and returns the stored long in both halves of an eight-byte result.
+- `store_status_pairs_and_return`: Writes two pairs of input longs into a buffer, each after a control value and a poll of a status word, then returns the stored long in both halves of an eight-byte result.
+- `await_store_pairs_and_return`: Waits while a status word is a sentinel, stores two input longs, then stores a second pair after another control value and poll.
+- `store_single_pair_and_return`: Waits on a status word, stores an input long pair into a buffer after a control value and poll, and returns the stored long in both halves of an eight-byte result.
+- `poll_until_ready_return_long`: Loops while a status word is a sentinel value, calling a subroutine and writing a control value, then polls until ready and returns the stored long in both halves of an eight-byte result.
+- `return_zero_status`: Returns zero and does nothing else.
+- `compute_exponential_double`: Computes an exponential-style value of a double-precision argument.
+- `compute_exponential_in_record`: Evaluates the same exponential-style sequence as its sibling routines, using operands kept in the library's base record and fixed coefficient constants, then returns the rebuilt double.
+- `compute_exponential_record_b`: Evaluates an exponential-style double from the library's base record with a range check first and the same coefficient sequence, returning the rebuilt double.
+- `evaluate_long_series_function`: Evaluates a long series function of a double-precision argument through many library calls and fixed coefficient constants, then rebuilds the result.
+- `scale_double_by_exponent`: Adjusts the exponent field of a double by an integer power of two.
+- `rebuild_double_with_exponent`: Rebuilds a double with a new exponent when it is within the upper limit, otherwise it returns the overflow pattern.
+- `set_double_exponent_field`: Replaces the exponent field of a double with a given value, keeps the sign and mantissa, and returns the rebuilt double.
+- `compute_logarithm_double`: Computes a logarithm-style double.
+- `compute_logarithm_series`: Evaluates a logarithm-style double with fixed constants and subroutine calls: it normalizes the mantissa to a range around one, sums a polynomial with fixed coefficients, and scales the result by the natural log of two at the end.
+- `raise_double_to_power`: Raises a double-precision base to a power.
+- `raise_double_power_in_record`: Raises a double-precision base to a power using operands kept in the library's base record.
+- `return_one_double`: Returns the double value one and does nothing else.
+- `power_double_integer_path`: Computes an integer power of a double by repeated squaring, using a supplied function pointer for each multiplication, and returns the result stored in the record.
+- `accumulate_integer_power_terms`: Accumulates the terms of a repeated-squaring integer power of a double, stores the running product in the record and returns it.
+- `apply_double_step_repeatedly`: Repeatedly applies a subroutine step to a double held in the stack frame, for a count passed in the data register, then returns the stored double.
+- `combine_double_steps_odd`: Combines two double values through subroutine calls, applying one more subroutine step when a count is odd, and returns the stored double.
+- `evaluate_via_function_pointer`: Returns zero when the first argument is zero or has the wrong sign; otherwise it calls a supplied function pointer with the four long words of the argument pair and returns its double result.
+- `call_function_pointer_double`: Calls a supplied function pointer with the four long words of its argument pair and returns the double result.
+- `return_zero_word`: As library code, it returns a 32-bit zero value.
+- `chain_three_subroutine_calls`: Passes the two parameters through three subroutine calls in sequence, feeding each result into the next, and returns the final double.
+- `flush_double_underflow_zero`: Applies an exponent adjustment to a double in memory.
+- `store_biased_exponent_field`: Rewrites the exponent field of a double at the output pointer with a given biased value, keeping its sign and mantissa.
+- `call_indexed_function_entry`: Calls a function selected by adding the argument to a stored base value, then returns.
+- `call_relative_library_entry`: Calls a library routine at a fixed offset from a stored base value and returns.
+- `forward_to_trans_routine_one`: Calls a routine of the trans library through a stored library base at a fixed offset and returns; it is a one-line jump thunk with no other work.
+- `jump_to_vector_minus72`: As part of the library code, this routine calls a function at a fixed offset of minus 72 from a stored base value.
+- `jump_to_vector_minus84`: As part of the library code, this routine calls a function at a fixed offset of minus 84 from a stored base value.
+- `jump_to_vector_minus42`: As part of the library code, this routine calls the library routine at a fixed offset of minus 42 from the stored base, passing control through with no other work.
+- `dispatch_trans_routine_by_argument`: Calls a routine of the trans library through a stored library base, with the offset taken from the argument register, and returns.
+- `jump_to_vector_minus30`: As part of the library code, this routine calls a function at a fixed offset of minus 30 from a stored base value.
+- `jump_to_vector_minus36`: As part of the library code, this routine calls a function at a fixed offset of minus 36 from a stored base value.
+- `forward_to_base_library_routine`: Calls a routine of the basic math library through a stored library base at a fixed offset and returns; it is a one-line jump thunk.
+- `jump_to_basic_library_minus90`: As part of the library code, this routine calls a routine in the basic math library through the vector at minus 90 from the stored base, with no other work.
+
+### Legend (1989)(CRL)[cr VF].adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.

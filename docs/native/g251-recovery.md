@@ -1,0 +1,954 @@
+# Game 251 (BubbaNStix v3.0 1323): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/00251). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (1721243 top-level bytes in 177 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 12 of 12 units identical (bytes and relocations), 49 raw-word lines |
+| Functions named and described | pass, 786 of 786 named (0 author symbols), 786 of 786 described (19 by rule, 763 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 2803 of 2803 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 193152 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 15097 of 15858 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 63874 |
+| code | 52588 |
+| data | 1604759 |
+| padding | 22 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| BubbaNStix.slave | 1 | 986 | 74 |
+| Bubba | 2 | 14579 | 480 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 281 | 221 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 3 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 6 |
+| mblk1am.chr#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| mblk3am.chr#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| mblk4am.chr#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| mblk5am.chr#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| mblk6am.chr#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| mblkbam.chr#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+
+## Cases handled
+
+- BubbaNStix_v3.0_1323/BubbaNStix/data/bonus.np: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (19879 -> 35880 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/complete.np: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (9876 -> 12544 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/disk1.spk: high-entropy data file (7.85 bits/byte), classified as packed data
+- BubbaNStix_v3.0_1323/BubbaNStix/data/disk2.spk: high-entropy data file (7.83 bits/byte), classified as packed data
+- BubbaNStix_v3.0_1323/BubbaNStix/data/endseq.bit: high-entropy data file (7.66 bits/byte), classified as packed data
+- BubbaNStix_v3.0_1323/BubbaNStix/data/fgplax1a.dat: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (2287 -> 19598 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/fgplax1b.dat: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (400 -> 2462 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/lev1info.obj: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (895 -> 2408 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/lev3info.obj: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (1170 -> 4636 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/lev4info.obj: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (243 -> 1026 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/lev5info.obj: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (247 -> 1734 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/lev6info.obj: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (937 -> 4650 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/levbinfo.obj: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (571 -> 1960 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/level1.np: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (23559 -> 30916 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/level2.np: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (36160 -> 48732 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/level3.np: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (30461 -> 44582 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/level4.np: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (36565 -> 52314 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/level6.np: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (29974 -> 42930 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblk1am.chr: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (11914 -> 33408 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblk1am.pts: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (3357 -> 4560 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblk3am.chr: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (10589 -> 32128 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblk3am.pts: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (3970 -> 5896 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblk4am.chr: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (8784 -> 22176 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblk4am.pts: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (2042 -> 2744 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblk5am.chr: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (11559 -> 33376 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblk5am.pts: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (3584 -> 5576 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblk6am.chr: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (14871 -> 39456 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblk6am.pts: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (4092 -> 6040 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblkbam.chr: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (11771 -> 32608 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblkbam.pts: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (2880 -> 3752 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mfmap1.dat: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (6393 -> 40590 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mfmap3.dat: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (8603 -> 40960 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mfmap4.dat: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (7783 -> 40902 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mfmap5.dat: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (6533 -> 40896 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mfmap6.dat: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (5463 -> 40960 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mfmapb1.dat: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (3233 -> 40960 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mfmapb2.dat: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (2436 -> 40960 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mfmapb3.dat: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (4675 -> 40960 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mfmapb4.dat: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (1077 -> 40960 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mfmapb5.dat: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (3243 -> 40960 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mparasp1.mac: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (1342 -> 3392 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mparasp3.mac: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (1228 -> 2048 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mparasp4.mac: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (290 -> 2048 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mparasp5.mac: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (924 -> 2048 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mparasp6.mac: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (1570 -> 2048 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mparaspb.mac: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (736 -> 1280 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mplxobj1.hs: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (797 -> 2704 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mplxobjb.hs: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (468 -> 1268 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mtrg1.trg: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (866 -> 1108 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mtrg3.trg: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (1699 -> 2520 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mtrg4.trg: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (1558 -> 2132 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mtrg5.trg: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (1543 -> 2250 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mtrg6.trg: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (1304 -> 1826 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mtrgb1.trg: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (688 -> 1222 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mtrgb2.trg: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (606 -> 944 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mtrgb3.trg: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (1727 -> 2996 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mtrgb4.trg: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (306 -> 478 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mtrgb5.trg: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (744 -> 1240 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/set1.bin: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (6872 -> 15922 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/set2.bin: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (11879 -> 24310 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/set3.bin: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (11261 -> 22464 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/set4.bin: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (8546 -> 18102 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/set5.bin: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (13997 -> 27666 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/setb.bin: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (7692 -> 16432 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/sprites1.adt: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (49404 -> 96384 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/sprites1.ant: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (2714 -> 5214 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/sprites3.adt: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (47506 -> 96172 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/sprites3.ant: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (2702 -> 4458 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/sprites4.adt: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (41241 -> 94776 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/sprites4.ant: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (2747 -> 5318 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/sprites5.adt: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (48322 -> 97800 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/sprites5.ant: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (3306 -> 5698 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/sprites6.adt: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (40190 -> 89064 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/sprites6.ant: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (2721 -> 4934 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/spritesb.adt: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (28242 -> 71552 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/spritesb.ant: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (2089 -> 3746 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/BubbaData/continue.np: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (22753 -> 30412 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/BubbaData/gameover.np: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (2911 -> 3188 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/BubbaData/getready.np: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (2952 -> 3172 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/BubbaData/map.np: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (22744 -> 33760 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/BubbaData/title.np: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (33588 -> 43062 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/BubbaData/titledlt.pak: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (21238 -> 57702 bytes)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/BubbaData/titlepic.pak: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (7345 -> 11818 bytes)
+- 15 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- runtime segment an address: 212 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 6 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblk1am.chr#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblk3am.chr#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblk4am.chr#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblk5am.chr#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblk6am.chr#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/mblkbam.chr#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- BubbaNStix_v3.0_1323/BubbaNStix/data/devs/system-configuration: raw file found loaded verbatim in runtime segment an address at an address; classified through the recovered segment
+- 6 never-loaded region(s), 193152 bytes, recorded as UNVERIFIED DATA (0 bytes decode as instruction flows; Karl 4 Nov 2026)
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- none found
+
+## Functions
+
+
+### BubbaNStix.slave
+
+- `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d0, then returns.
+- `set_globals_and_dispatch`: The routine sets global variables and executes multiple indirect function pointers retrieved from offsets within a register-based structure.
+- `open_library_and_init`: The routine opens the dos.library, allocates memory, and performs initialization steps involving indirect calls and global variable updates.
+- `wait_for_blitter_2`: Polls a global variable in a loop until a specific bit is cleared, effectively waiting for the blitter to finish its current operation.
+- `wait_for_blitter`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
+- `assign_global_self_ref`: Copies a global variable into a local variable and stores a self-reference into the global variable.
+- `set_cia_bit_and_loop`: The routine sets a bit in the CIAA control register, calls another routine, clears the bit in the CIAA control register, and enters an infinite loop.
+- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
+- `halt_infinite_loop`: The routine executes an unconditional infinite loop.
+- `set_global_and_call_indirect`: Sets a global variable to a specific constant and stores that constant into a table indexed by a register.
+- `update_jumptable_and_call`: Calculates an address by adding a constant to a register value and stores it into two offsets of a jumptable structure.
+- `indirect_jump_table`: Performs an indirect jump through a pointer to a jump table, transferring control to one of several target routines based on the table contents.
+- `return_masked_register`: Returns the value of a register with specific bits masked out, preserving only the bits defined by the constant a fixed address.
+- `store_stack_to_global`: Reads a word from the stack and stores it into a global variable, likely handling interrupt request data.
+- `return_zero_constant_5`: The routine immediately returns zero without performing any operations or modifying data.
+- `set_flag_in_struct`: The routine receives a pointer in a register and sets bit 1 in the byte at offset 14 of the pointed-to structure.
+- `execute_dynamic_function_pointer`: Executes a function pointer retrieved from a global variable and updates that variable with a new value.
+- `store_register_to_global`: The routine copies the value from the D0 register into a global variable associated with the CIAB port A register.
+- `call_indirect_from_global`: The routine loads a function pointer from a global variable related to the COP2LCH register and calls the function at that address.
+- `copy_byte_via_pointer`: Copies a single byte from an address derived from one register to an address offset by 2048 from another register.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `check_global_constant`: Compares a global variable to a specific constant value; it returns 4 if the values match, otherwise it returns 1.
+- `initialize_pointer_chain`: Writes a sentinel value into a pointer and stores the address of the next entry into three fields in two different structures.
+- `copy_nested_pointers`: Copies 32-bit values from pointers referenced at offsets four and eight of a source structure into fields of a destination structure.
+- `clear_four_words`: Writes the value -1 to four consecutive 32-bit words ending at an offset in a structure pointed to by a register.
+- `compute_scaled_value`: Reads three values from a global table, performs division, multiplication, and addition arithmetic on them, and stores the resulting integer into a global variable.
+- `check_disk_status_flags`: Reads bytes from a structure to determine disk status, potentially invoking indirect function pointers based on flag values.
+- `negate_short_toggle_bit`: Negates a short value at a specific offset in a structure and toggles the high bit of a byte at an offset in another structure.
+- `set_flag_from_bit`: Reads a bit from a global variable using an index derived from a byte in another memory location.
+- `return_immediately`: The routine executes three instructions and returns control to the caller without performing any data manipulation or hardware interaction.
+- `return_immediately_2`: The routine performs no operations on data or hardware and returns control to the caller immediately.
+- `update_bitmask_counter`: Checks a specific bit in a global byte variable derived from a structure offset.
+- `set_bit_in_byte_array`: The routine disables the exec kernel, calls another routine to obtain an index, stores a byte from a register through a pointer offset by that index, sets a bit in a byte pointed to by a pointer using the index, then calls another routine and enables the exec kernel.
+- `execute_dynamic_function_pointer_2`: Executes a function pointer retrieved from a global variable and updates that variable with a new value.
+- `execute_dynamic_function`: The routine invokes a function pointer stored in a global variable and updates that variable with a new value.
+- `clear_offset_and_save_register`: The routine stores zero to a word-sized location at an offset from a pointer in a register, then saves the value of another register into a global variable before returning.
+- `indirect_jump_dispatch`: Performs an indirect jump or call to a function pointer located at a negative offset from a register, acting as a dispatcher based on register values.
+- `dispatch_indirect_call_2`: The routine compares a register value against a global variable.
+- `set_initial_entry_point`: This routine stores a pointer to itself into a global variable at a fixed address, likely establishing an entry point or callback reference for the slave process.
+- `invalid_terminator_check`: The routine consists of bad instruction data, causing the decompiler to truncate control flow.
+- `allocate_memory_block_2`: Opens the dos.library and allocates memory using exec.AllocMem.
+- `initialize_expansion_library`: The routine allocates memory, initializes structure fields with specific constants, and references the expansion.library.
+- `allocate_and_init_struct`: Calls a routine to allocate memory, stores the pointer in a global variable, and initializes the allocated memory with specific constant values.
+- `call_indirect_function`: Calls a routine to obtain an address, then performs an indirect call to a function pointer located at a positive offset from that address.
+- `call_library_entry_point`: The routine invokes a function pointer located at an offset within a global structure, then calls another function pointer derived from the result of the first call.
+- `handle_message_port`: Manages message port operations by finding tasks, waiting for messages, and retrieving them.
+- `handle_message_and_init_path`: The routine manages message port operations, initializes path strings, and performs boot checks through indirect calls.
+- `handle_message_port_entry`: This routine calls functions to manage message port operations, return immediately, and dispatch indirect function pointers based on register values.
+- `initialize_path_and_dispatch`: This unreached routine calls functions to handle message ports, initialize paths, check boot conditions, and dispatch indirect function pointers.
+- `verify_whdboot_strings`: The routine references text strings for WHDBoot.exe and WHDLoad.
+- `unreached_string_handler`: The routine is unreached code that manages message ports and rotates a null-terminated string.
+- `sync_copper_verify_boot`: The routine waits for the copper coprocessor to finish by polling a hardware register bit.
+- `wait_for_message_and_copper`: The routine waits for message port operations and synchronizes with hardware copper registers by polling specific bits.
+- `wait_for_message_port`: Calls a routine to manage message port operations, waiting for and retrieving messages.
+- `check_boot_path_entry`: This routine calls a function to check and verify boot loader paths, then returns control to the caller.
+- `check_boot_path_and_return`: Invokes a routine to allocate and verify boot loader paths, then immediately returns control to the caller without further processing.
+- `allocate_path_and_handle_messages`: This unreached routine calls functions to handle message ports, check boot paths, allocate and concatenate path strings, and return immediately.
+- `dispatch_message_handlers`: This routine calls functions to manage message port operations and dispatch indirect function pointers based on register values.
+- `poll_message_port_entry`: This unreached routine calls a function to poll message port operations.
+- `poll_message_port_2`: The routine invokes functions to handle and poll message port operations.
+- `poll_message_port`: Invokes a routine to handle message port operations, likely checking for or processing incoming messages.
+- `return_immediately_3`: The routine performs no operations and returns control to the caller immediately.
+- `return_without_action`: The routine consists of three 68000 instructions but its Ghidra pseudo-code reduces to a bare return, so it performs no visible work at the decompiled level.
+- `return_immediately_4`: The routine performs no logic or data manipulation.
+- `rotate_string_and_store_length`: The routine rotates a null-terminated byte string one position to the right by shifting each byte forward and writes the original first byte into the last position, then stores the length of the string minus one as a byte just before the string in memory.
+- `initialize_path_and_boot_check`: Allocates and concatenates path strings, verifies boot loader strings, and conditionally writes values to a structure based on return codes from other routines.
+- `check_and_dispatch_indirect`: The routine checks a register value, retrieves data from a structure, and executes indirect function pointers based on the retrieved values.
+- `allocate_and_concatenate_path`: The routine calculates the length of two string components, allocates memory for a new buffer, and copies the components into it separated by a slash character if necessary.
+- `verify_boot_loader_strings`: Compares strings against references to WHDBoot.exe and WHDBoot.ss.
+- `compare_two_strings`: The routine compares the bytes pointed to by two pointers until a zero byte is found, returning early if the bytes differ, otherwise it falls through after the terminating zero.
+- `call_dynamic_function_pointer`: The routine executes a function pointer retrieved from a global variable and updates that variable with a new value.
+- `wait_for_copper_done`: The routine waits for a specific bit in a hardware register to become zero, then waits for it to become one again, synchronizing with the display hardware.
+- `call_indirect_function_2`: Calls a function pointer retrieved from a global variable offset and updates the global variable with a new value.
+- `call_indirect_function_3`: Calls a function pointer stored in a global variable and updates the global variable with a new value.
+
+### Bubba
+
+- `call_entry_vector`: Invokes a function pointer located at an offset from a global variable and stores the result in a register.
+- `initialize_bubba_sequence`: Initializes the display hardware and blitter context, then processes a data stream to configure sprite rendering parameters and copper lists for the game sequence.
+- `wait_for_blitter_completion`: Polls two global variables in loops until they become zero, ensuring the blitter is idle before returning.
+- `decrement_handler_counter`: Decrements a global counter variable if it is greater than zero.
+- `store_word_to_global`: Stores a 16-bit value from the D0 register into a specific global variable.
+- `wait_for_zero_global`: Polls a global variable in a loop until its value is no longer positive, then returns the final value.
+- `initialize_command_table`: Clears a global array of pointers and then iterates through a byte stream, calling the function pointer at the index specified by each byte.
+- `initialize_copper_list`: Sets up a copper list in memory by writing control words, color registers, and DMA pointers.
+- `initialize_copper_list_2`: The routine sets up a copper list by writing specific hardware control words and data pointers into memory.
+- `initialize_copper_list_3`: The routine sets up a copper list by writing control words and data pointers into a buffer.
+- `tiny_ori_ori_ori`: Small routine of 3 instructions that merges 0 into d0, then merges 0 into d0, then merges 0 into d0.
+- `tiny_ori_ori`: Small routine of 2 instructions that merges 0 into d0, then merges 0 into d0.
+- `initialize_copper_list_4`: Sets up a copper list by writing control words and data pointers to memory.
+- `initialize_copper_list_5`: Sets up a copper list by writing control words and data pointers to a buffer.
+- `initialize_copper_list_6`: Sets up a copper list in memory by writing standard copper instructions for display control and color registers.
+- `initialize_copper_list_7`: Sets up a copper list in memory by writing control words, data pointers, and jump instructions.
+- `initialize_display_and_copper`: Configures hardware registers for DMA and interrupts, initializes global state variables, and constructs a copper list by writing control words and data pointers to memory buffers.
+- `calculate_division_result`: Computes a value by dividing a global variable by a shifted difference of two other globals, storing the result and clearing a counter if the divisor is zero.
+- `configure_blitter_copper`: Calculates display parameters and updates global state variables based on input thresholds.
+- `process_table_and_fill_array`: Iterates through a table structure, copying data into specific offsets, and fills an array with alternating values from a source pointer and an incrementing register.
+- `write_header_and_fill_array`: Conditionally stores two global values if a flag is set and a counter exceeds a threshold; otherwise, it writes a character derived from a register and a fixed byte to a pointer, followed by a loop that fills subsequent short slots with incrementing values from a source table.
+- `fill_short_array`: Iterates through a memory block, writing alternating values from a source pointer and an incrementing register into consecutive short slots.
+- `process_table_entries`: Checks global conditions and iterates through a table structure, copying data from a global variable into specific offsets within the table entries.
+- `initialize_game_state_and_loop`: Checks global counters and flags to determine if the game state should transition, then initializes memory buffers and enters an infinite loop that processes data tables until a negative value is encountered.
+- `update_game_state_counters`: Decrement a global counter and reset it if it reaches zero or goes negative, potentially triggering a state change based on a flag.
+- `copy_pointer_values`: Copies four word-sized values from a source address and a global pointer into a destination buffer at specific offsets.
+- `update_counter_state`: Decrements a global counter, resets it based on conditions, and writes specific byte patterns to a fixed memory region if the counter reaches zero.
+- `write_handler_and_loop_forever`: Searches a table for an entry with a value less than one, writes register contents into that entry, and then enters an infinite loop.
+- `write_handler_data`: Searches a table for an entry with a value less than one, then writes register contents and pointer values into that entry's fields.
+- `search_and_update_structures`: Iterates through a series of structures checking for a negative or zero short value; upon finding one, it copies register values into a target pointer, updates fields within the current structure with pointers and constants, and terminates.
+- `process_structures_with_offset`: Loops through a series of structures, decrementing a byte field at offset 11; when that field reaches zero, it calculates an address using a pointer and an index, reads two bytes from that address, adds them to values pointed to by a field in the structure, and increments the index.
+- `update_blitter_copper_lists`: Iterates through a table of display list entries, calculating bitplane offsets and sizes to update copper list pointers and values.
+- `build_copper_list_entries`: Iterates through a data table to construct copper list entries by copying control words and data pointers, handling conditional jumps and memory block copies based on signed integer values.
+- `store_entry_data`: Calculates an offset based on a global counter, increments the counter, and stores register values and pointer data into a memory block at that offset.
+- `store_signed_value_entry`: Increments a global counter and writes a signed integer value, its sign indicator, and a pointer into a structured data table at an offset derived from the counter.
+- `process_sprite_animation_timers`: Iterates through a linked list of sprite control blocks, decrementing animation timers and updating sprite data pointers based on frame indices and conditional flags.
+- `infinite_loop`: The routine consists solely of an unconditional branch to itself, creating an infinite loop.
+- `infinite_halt`: The routine enters an infinite loop that performs no operations, effectively stopping execution.
+- `infinite_halt_loop`: Enters an unconditional infinite loop that prevents further execution.
+- `infinite_loop_halt`: The routine consists solely of an unconditional infinite loop that prevents execution from proceeding further.
+- `enter_infinite_loop`: The routine contains only an unconditional branch to its own entry point, creating an infinite loop.
+- `loop_forever`: The routine executes an infinite loop without performing any operations or modifying data.
+- `infinite_loop_halt_2`: The routine contains an unconditional infinite loop that prevents execution from returning to the caller.
+- `enter_infinite_loop_2`: The routine executes an unconditional branch to itself, creating an infinite loop.
+- `infinite_loop_halt_3`: The routine consists solely of an unconditional infinite loop.
+- `return_constant_one`: The routine writes a zero value to a global variable and returns the integer one.
+- `initialize_game_state_and_memory`: The routine clears multiple global variables and memory blocks, sets up display and DMA hardware registers, and initializes data structures by copying and zeroing specific memory regions.
+- `copy_memory_blocks`: The routine copies multiple blocks of data from a global variable location to another location using word-sized transfers, followed by writing a specific value to an offset address.
+- `enable_dma_and_check_collisions`: Enables DMA channels by setting bit 15 of the DMACON register.
+- `write_word_sequence`: The routine iterates four times, writing a word value and its upper half to memory locations spaced by eight bytes, incrementing the source value by a fixed amount each iteration.
+- `parse_ilbm_image_data`: Iterates through an ILBM file structure to locate the color map and body chunks.
+- `copy_word_block`: Copies a block of 16-bit words from a source pointer to a destination pointer.
+- `decode_rle_data`: Decodes run-length encoded data from a source buffer to a destination buffer.
+- `update_sprite_animation`: The routine updates a global animation counter and toggles a state flag to determine direction.
+- `update_sprite_position`: Adjusts a global counter and flips a direction flag to determine movement deltas.
+- `update_sprite_animation_state`: Adjusts sprite position counters and direction flags to determine movement deltas, then iterates through a linked list of object pointers to check for active entities and update their memory locations.
+- `load_table_entries`: Calculates an index by multiplying an input word by twelve and loads three 32-bit values from a global table and two fixed memory locations into global variables.
+- `clear_flag_and_return`: Sets a specific global variable to zero and returns the value currently held in the D0 register.
+- `write_incrementing_values_to_list`: Calculates a range based on input pointers and writes a sequence of incrementing short values to a list of memory addresses, decrementing a counter and clearing a global flag when the count reaches zero.
+- `write_accumulating_shorts_to_list`: Iterates through a list of pointers, writing a value that increments by a fixed step to each target address.
+- `write_accumulating_shorts`: Iterates through a list of pointers, writing a value that increments by a fixed step to each target address.
+- `call_accumulator_loop`: Invokes a routine that iterates twice to adjust accumulator and divisor values based on overflow and underflow conditions, then writes processed data to memory.
+- `update_sprite_velocity`: Calculates a new position and velocity for a sprite structure, applying friction and clamping values.
+- `process_accumulator_loop`: Iterates twice to adjust accumulator and divisor values based on overflow and underflow conditions, then writes processed data to memory locations pointed to by a table.
+- `decrement_counter_and_return`: Decrements a global short variable and clears a specific flag if the variable reaches zero or was already non-positive.
+- `decrement_global_counter`: Decrements a global short variable and clears a specific flag if the variable reaches zero or was already non-positive.
+- `check_counter_threshold`: Checks if a global counter is positive; if so, it sets two global variables to specific constants and returns the counter value.
+- `initialize_custom_chip_registers`: Configures the Amiga custom chip by writing to BPLCON1, DMACON, and INTENA to enable interrupts and DMA channels.
+- `initialize_game_hardware_and_input`: Configures Amiga custom chip registers to enable DMA and interrupts, then parses input data structures and validates sequences while handling keyboard and joystick input for game start and options.
+- `parse_and_decode_packet`: The routine validates a data structure by checking for specific magic headers and then iterates through a list of short integers.
+- `parse_packet_stream_data`: Checks for magic headers in a data stream and processes packet contents by copying short values to a global buffer and performing bitwise rotation operations on extracted fields.
+- `reset_collision_handler`: Sets a global code pointer to zero and returns one, likely resetting a collision detection handler.
+- `configure_blitter_registers`: Sets values in the Blitter control registers, including size, depth, and mode, to prepare for a graphics operation.
+- `compute_bitwise_transform`: Iterates through bits of input registers, performing shifts and XOR operations to produce a transformed 64-bit result.
+- `shift_xor_accumulate`: Iteratively shifts two input values and a counter while XORing a bit from the counter into an accumulator.
+- `compute_bitwise_xor_sum`: Iterates through bits of two input values, shifting them right while accumulating the XOR of specific bits from the first operand.
+- `compute_bitwise_xor_sum_2`: Iterates through bits of two input values, shifting them right while accumulating the XOR of specific bit pairs.
+- `decode_bitstream_data`: Processes a 64-bit value by shifting bits and using them as indices to look up values from a global table, storing the results into a memory buffer.
+- `decode_bit_pattern_table`: Processes input data by shifting bits and indexing into a global table to store decoded values in memory.
+- `execute_delay_loop`: Decrements a counter in a loop to introduce a fixed time delay without performing other operations.
+- `decrement_counter_loop`: Initializes a 16-bit value to 98 and decrements it in a loop until it reaches -1.
+- `compare_code_pointers`: Iterates through a list of code pointers, comparing each against a target pointer with a delay loop, likely searching for a specific handler or function address.
+- `validate_data_sequence`: Performs a series of conditional checks on register values and global variables, calling other routines between checks.
+- `decode_variable_length_bits_2`: Iteratively decodes a variable-length bitstream from a source buffer into a destination buffer by rotating bits and using a state machine to reconstruct values.
+- `decode_variable_length_bits`: Iteratively decodes a variable-length bitstream from a source buffer into a destination buffer by rotating bits and using a state machine to determine run lengths.
+- `dispatch_byte_operations`: Stores the difference between two byte registers into a memory location and branches to one of several jump tables based on a short register value.
+- `dispatch_byte_operation`: Stores the difference between two byte registers into a memory location and branches to one of two jump tables based on a short register value and a comparison of two integer registers.
+- `fill_memory_with_byte`: Writes a byte value repeatedly to a memory buffer for a specified count, then branches to a jump table based on a comparison of two integer registers.
+- `rotate_bits_and_dispatch`: Rotates a 32-bit value in a register based on offsets derived from other registers and a table entry.
+- `dispatch_indirect_jump`: Performs an indirect jump to an address determined by a jump table, likely handling multiple cases or states.
+- `dispatch_indirect_jump_table`: Performs an indirect jump to a routine address retrieved from a global jump table.
+- `dispatch_indirect_jump_2`: Performs an indirect jump to an address retrieved from a data table.
+- `dispatch_indirect_jump_3`: Executes an indirect jump using a pointer stored in a data structure.
+- `dispatch_indirect_jump_4`: Carries out an indirect jump to a destination held in a data table.
+- `dispatch_indirect_jump_5`: Initiates an indirect jump to an address located in a data table.
+- `dispatch_indirect_jump_6`: Performs an indirect jump to a code address stored in a data table.
+- `dispatch_indirect_jump_7`: Executes an indirect jump using a pointer from a data structure.
+- `dispatch_indirect_jump_8`: Carries out an indirect jump to a destination held in a data table.
+- `decode_packet_stream`: Reads a stream of data packets identified by magic headers and processes their contents using bitwise rotation and masking operations.
+- `decode_packet_stream_2`: Reads a stream of data packets identified by magic headers and processes their contents using bitwise rotation and masking operations.
+- `scan_table_and_compute_mask`: Iterates through a table of words until a match is found against a global register value.
+- `mask_and_conditional_call`: Masks a word from a register with a word from another register.
+- `return_empty_routine`: The routine is empty; it contains no instructions that modify memory or registers and immediately returns.
+- `accumulate_32bit_from_bytes`: The routine reads four consecutive bytes from a pointer and builds a 32-bit value by concatenating each byte into the result.
+- `process_character_data_table`: Iterates through a table of character codes, masking and shifting values to generate bitmasks stored in a global buffer.
+- `initialize_system_and_loop`: The routine configures hardware DMA and interrupt registers, initializes global state variables and memory blocks, and enters a main processing loop that handles input and updates game entities.
+- `initialize_game_state_and_loop_2`: Configures hardware interrupts and DMA, initializes sprite and copper list data structures, and enters a main processing loop that updates game state variables and handles input or timing events.
+- `wait_for_blitter_idle`: Polls a global variable in a loop until it becomes zero.
+- `configure_blitter_registers_2`: The routine sets up Blitter control registers by writing specific values to global variables mapped to hardware registers, including source/destination pointers, size, and control words.
+- `initialize_blitter_context`: Sets up global variables for blitter operations by storing a constant value and a function pointer, likely preparing for sprite rendering or data transfer.
+- `copy_sprite_data_block`: Iterates through a linked list of data structures, copying word-sized values from a source pointer to a global destination buffer based on a count.
+- `clear_buffered_data_blocks`: The routine iterates through a linked list of data structures, zeroing out word-sized chunks within each block based on a count and stride defined in the structure headers.
+- `copy_buffered_data_blocks`: The routine iterates through a linked list of data structures, copying word-sized chunks from a source pointer to a destination pointer within each block based on a count and stride defined in the structure headers.
+- `decrement_blitter_word_values`: Traverses a linked list of data structures, decrementing specific word values based on nibble checks, and finally decrements a global blitter counter.
+- `decrement_blitter_counter`: Decrements a global variable by one and returns.
+- `process_copperlist_entries`: Iterates through a list of pointers and counts.
+- `update_color_cycle_value`: The routine shifts a global value right by four bits, replacing it with a default if zero, stores the result to a memory location, and decrements a counter in the adjacent memory word.
+- `adjust_blitter_word_offsets`: Iterates through a linked list of data structures, modifying word values by adding offsets based on XOR differences with a global variable.
+- `increment_blitter_word_values`: Traverses a linked list of data structures, incrementing specific word values based on XOR differences with a global variable, and finally decrements a global counter.
+- `decrement_global_counter_2`: Decrements a specific global variable by one.
+- `process_copperlist_xor_entries`: Iterates through a list of pointers and counts.
+- `shift_and_decrement_word`: Shifts a global word right by four bits, replacing the result with a constant if it is zero, stores it to a pointer, and decrements the adjacent word.
+- `adjust_pixel_colors_forward`: The routine iterates through data blocks, comparing pixel values against a threshold derived from a global variable, and increments or decrements the pixel values based on the comparison result before updating the global threshold.
+- `adjust_pixel_colors_reference`: The routine iterates through data blocks, comparing pixel values against corresponding reference values offset by a fixed amount, and increments or decrements the pixel values based on the comparison result before updating the global threshold.
+- `execute_blitter_wait_loop`: The routine calculates Blitter parameters from input registers, writes them to hardware registers while polling a status bit to ensure the Blitter is idle, and finally triggers the Blitter operation.
+- `configure_blitter_sprite_copy_2`: Calculates source and destination offsets, dimensions, and control flags for a sprite data block, then programs the Amiga Blitter hardware registers to perform a copy operation.
+- `configure_blitter_sprite_copy`: Calculates source and destination offsets, dimensions, and control flags for a sprite data block, then programs the Amiga Blitter hardware registers to perform a memory copy operation while managing interrupt states.
+- `prepare_sprite_data_block`: Calculates offsets and dimensions based on input registers, performs arithmetic checks for validity, and writes configuration values to a specific memory region while polling a global status flag.
+- `setup_blitter_sprite_copy`: Calculates source and destination offsets, dimensions, and control flags for a sprite data block, then programs the Amiga Blitter hardware registers to perform the copy operation while waiting for the blitter to become idle.
+- `parse_sprite_command_string`: Parses a command string containing characters and numbers to build a list of sprite data entries in a local buffer.
+- `clamp_and_sync_position_3`: Calculates position deltas, clamps them within defined boundaries, and synchronizes the results to global variables while updating pointer tables.
+- `clamp_and_update_position`: Clamps a position value within a defined range using boundary checks and stores the result in a global variable.
+- `clamp_and_sync_position_2`: Updates a position value by adding an offset, clamps it within defined boundaries, and synchronizes the result to global variables while calculating differences.
+- `clamp_and_sync_position`: Updates a position value by adding an offset, clamps it within defined boundaries, and synchronizes the result to global variables while calculating the difference from previous values.
+- `check_signed_arithmetic_overflow_2`: Tests if a register value is negative and if adding it to another register results in a signed overflow or specific sign change, returning immediately if conditions are met.
+- `compare_and_return_early`: The routine tests whether an unspecified register is greater than an input value in D1 and returns early if so; otherwise it falls through to return.
+- `check_signed_arithmetic_overflow`: Tests if a register value is negative and if adding it to another register results in a signed overflow or specific sign change, returning immediately if the condition is met.
+- `return_immediately_5`: The routine executes a return instruction to exit the function.
+- `calculate_collision_bounds`: Computes sprite collision boundaries by combining values from global variables and registers.
+- `update_sprite_collision_bounds_2`: Evaluates global state variables to configure sprite dimensions and offsets in a data structure.
+- `update_sprite_collision_bounds`: The routine evaluates global state variables to configure sprite dimensions and offsets in a data structure.
+- `update_sprite_collision_state`: The routine evaluates a global condition to configure sprite dimensions and offsets in a data structure, then updates collision bounds and copies table entries while managing a linked list of objects.
+- `setup_sprite_copper_list`: Copies sprite data from a source table to a global buffer and calculates memory offsets for multiple sprite instances.
+- `build_sprite_copper_list`: Calculates sprite memory offsets and writes a sequence of copper list instructions to a buffer, configuring hardware registers for sprite display and collision bounds.
+- `update_sprite_copper_list_3`: Copies sprite data from a source buffer to a destination pointer array and updates global state variables based on calculated offsets and thresholds.
+- `update_sprite_copper_list_2_2`: Calculates sprite positioning and visibility flags based on global state and table lookups, then updates the copper list buffer with control.
+- `update_sprite_copper_list_2`: Calculates sprite positioning and visibility flags based on global state and table lookups, then updates the copper list buffer with control words and color data for rendering.
+- `update_block_pointer_table`: Clamps a register value and stores it into a data structure, then calculates an address using a global table and an offset to swap a specific memory value.
+- `configure_block_table_pointer`: Calculates a pointer based on a global variable and an offset, then stores a specific value (a fixed address) at that address.
+- `check_global_and_dispatch_block`: Calls a helper routine, checks if a global variable is zero, and conditionally calls another routine before invoking block table configuration and vertex transform batch routines.
+- `configure_block_table_entries_2`: Calculates offsets and state values for a block table, then iterates through entries to update their fields while waiting for a hardware interrupt.
+- `write_copper_list_entries`: Calculates addresses based on global variables and writes a sequence of copper list instructions to a buffer, polling a hardware register between writes to ensure bus availability.
+- `process_sprite_table_entries`: Iterates through a sprite data table, configuring copper list entries for each item while waiting for vertical blank interrupts.
+- `render_sprite_chain`: Iterates through a linked list of sprite data structures, configuring copper list entries for each item while waiting for vertical blank synchronization.
+- `execute_blit_operation`: Configures the Amiga custom chip blitter by writing to hardware registers such as BLTCON0, BLTAFWM, and BLTAPTH. It waits for the blitter to become idle, sets up source and destination pointers, and initiates a memory copy operation.
+- `update_sprite_transform_state`: Calculates sprite position and dimensions by applying offsets and bitwise transformations to object data, then dispatches to a specific handler routine via an indirect jump table based on the entity's state.
+- `transform_color_palette_data`: Iterates through a block of word-sized data, applying bitwise arithmetic transformations to color components and storing the results into two separate output buffers.
+- `transform_color_palette_entries`: Iterates through a block of 16-bit color data, applying arithmetic adjustments to the high and low nibbles to modify brightness and intensity values.
+- `transform_color_palette_data_2`: Iterates through a block of word-sized data, applying bitwise arithmetic transformations to color components and storing the results into a single output buffer.
+- `process_sprite_collision_data_2_2`: Iterates through sprite data structures to update positions and check for collision flags, then configures copper list channels and sets global state variables.
+- `set_collision_flag`: Sets a global flag to one and returns immediately.
+- `process_sprite_collision_data_4`: Iterates through a table of sprite data structures to update positions, check for collision flags, and configure blitter parameters for rendering.
+- `process_sprite_collision_data_3`: Iterates through a table of sprite data structures to update positions, check for collision flags, and configure blitter parameters for rendering.
+- `return_zero_value`: The routine returns a zero value immediately without performing any other operations.
+- `return_zero_constant`: Returns a constant value of zero to the caller.
+- `return_zero_constant_2`: Returns a constant zero value to the caller.
+- `return_zero_value_2`: Returns zero immediately without performing any other operations.
+- `return_zero_constant_3`: The routine immediately returns a zero value without performing any other operations or accessing memory.
+- `tiny_moveq_rts_2`: Small routine of 2 instructions that loads 0 into d0, then returns.
+- `handle_disk_insert_prompt`: Checks for a disk insertion condition and displays a 'PLEASE INSERT' prompt by manipulating global variables and checking drive configuration.
+- `check_disk_drive_number`: Examines the drive letter and number characters in a file path string to determine the disk drive configuration.
+- `clear_memory_block`: Iterates through a global pointer, writing zero to each word in a block of 1279 words.
+- `reset_dma_and_globals_2`: Updates several global variables, clears a table of words, and configures DMA control registers, including enabling DMA channels via DMACON.
+- `reset_dma_and_globals`: Updates several global variables, clears a table of words, and configures DMA control registers.
+- `update_global_pointer`: Updates a global variable with an input value and then adds a constant offset to it before returning a byte from a register.
+- `store_offset_pointer`: Stores a pointer value into a global variable, then stores the same pointer incremented by a fixed offset into the same global variable.
+- `update_global_pointer_2`: Updates a global variable with an input value and then adds a constant offset to it.
+- `return_stack_value`: Returns a value located at the top of the stack.
+- `tiny_rte`: Small routine of 1 instruction that returns from the exception.
+- `handle_interrupt_requests`: Polls the INTREQ register for specific interrupt flags, clears them by writing to INTREQR, and updates global state variables associated with each interrupt source.
+- `update_object_position`: Checks a counter in a structure, decrements it if valid, and updates position fields in a target structure.
+- `clear_struct_field`: Writes zero to a word-sized field at an offset of 8 bytes from a pointer passed in a register.
+- `initialize_system_resources`: Opens required Amiga OS libraries and hardware devices, allocates memory blocks, and initializes display, copper, and sprite data structures.
+- `update_bitmask_state`: Iteratively modifies a global bitmask and a secondary data variable using bitwise operations and absolute value calculations until a condition is met, then updates related global counters and clears a pointer if set.
+- `clear_pointer_if_set`: Checks a pointer stored at an offset from a base address; if it is non-zero, it sets the pointer to zero and calls another routine.
+- `start_copper_list`: Points the copper at a new copper list by writing its address to COP1LC, then returns.
+- `clear_collision_handler`: Sets a function pointer to zero and returns.
+- `initialize_stage_loading_display`: Sets up the copper list and display hardware for a stage loading screen by initializing memory buffers, decoding packet streams, and configuring sprite and palette data.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `allocate_and_copy_sprite_data`: Calculates memory offsets for sprite data structures and allocates space in a global memory pool.
+- `process_table_entries_2`: Searches a table for a matching value, then iterates through memory locations to clear or copy data based on conditions, finally setting a global byte to a specific value.
+- `process_sprite_table_entries_2`: Iterates through a table of sprite data, clearing entries and conditionally updating them based on a global offset.
+- `init_copper_list_buffer_3`: Allocates and initializes a copper list structure in memory, setting up header fields, clearing data arrays, and populating instruction pointers.
+- `init_copper_list_buffer_2_2`: Initializes a memory buffer for a copper list by clearing fields, calculating offsets, and setting up interrupt vectors to point to a specific routine.
+- `init_display_list_2_2`: Allocates and initializes a display list structure in memory, setting up control words, copper list pointers, and routine jump addresses for rendering.
+- `process_table_entries_2_2`: Searches a table for a matching value, then iterates through memory locations to clear or copy data based on conditions, finally setting a global flag.
+- `init_display_list_3`: Initializes a display list structure in memory by clearing fields, calculating cumulative vertical offsets from a mode table, and setting up pointers.
+- `initialize_copper_list_9_2`: The routine clears a global buffer and populates a memory region with a sequence of hardware control words and jump pointers.
+- `clear_sprite_table_entry`: Iterates through a sprite data table to find a specific entry matching a target value.
+- `clear_sprite_table_entries`: Iterates through a table of sprite data, clearing entries and conditionally updating them based on a global offset.
+- `decode_planar_tile_data`: Reads four bytes from a source buffer and interleaves their bits into four separate output buffers.
+- `query_memory_availability`: Checks a global flag and register bits, then calls a function pointer to query available memory.
+- `check_memory_availability`: Checks a global flag and a register bit before calling a function pointer stored in a global structure to query available memory.
+- `tiny_moveq`: Small routine of 1 instruction that loads 0 into d0.
+- `allocate_sprite_memory_block`: Allocates a memory block for sprite data by checking a global counter and querying available memory.
+- `allocate_memory_block_4`: Searches a table for the smallest available memory block that fits a requested size, adjusting pointers and sizes accordingly, or returns an error code if no suitable block is found.
+- `allocate_memory_block`: Searches a table for a free memory block of sufficient size, splits it if necessary, updates the table entries, and returns a pointer to the allocated block.
+- `allocate_memory_block_3`: Searches a table for the smallest memory block that fits a requested size.
+- `decrement_and_call_free`: Decrements a global counter and calls a function pointer if the counter remains positive.
+- `decrement_and_call_free_2`: Decrements a global counter and calls a function pointer if the counter remains positive, effectively managing resource cleanup or reference counting.
+- `dispatch_memory_action`: Iterates through a table of memory descriptors, comparing values against input parameters to calculate an index.
+- `empty_stub_6`: The routine is empty and returns immediately.
+- `add_stack_value`: Adds a register value to a word located on the stack and returns the result.
+- `add_to_stack_value`: Adds the value in a register to a word located on the stack and returns the result.
+- `tiny_add_rts`: Small routine of 2 instructions that adds -(a3) to d0, then returns.
+- `find_free_memory_slot_2_2`: Iterates through a table to find the smallest free memory block that fits a requested size and updates the table accordingly.
+- `tiny_add_move_rts`: Small routine of 3 instructions that adds -(a3) to d0, then copies d0 to (a3), then returns.
+- `find_free_memory_slot`: Iterates through a table to find the smallest free memory block that fits a requested size and updates the table with the new allocation details.
+- `find_free_memory_slot_2`: Iterates through a table to find the smallest free memory block that fits a requested size and updates the table.
+- `update_stack_variables`: Adds an input value to an integer stored at a negative offset from a base pointer and stores another input value at a different negative offset from the same base pointer.
+- `update_stack_accumulator`: Adds a register value to a word on the stack and stores the sum back to that stack location.
+- `process_bubba_data_packets`: Iterates through a table of memory descriptors to find free slots, concatenates string data from global variables, and processes compressed data streams using bitwise operations and magic headers.
+- `initialize_system_routines`: Performs a series of initialization steps including calling function pointers, setting global variables, and populating a table with values from another routine.
+- `execute_file_operation`: Dispatches a specific file operation (open, close, or seek) by invoking the corresponding function pointer from a global table.
+- `initialize_game_state`: Calls a sequence of initialization routines from a function table, sets up global variables with specific constants, and populates a memory buffer by repeatedly calling a data generation routine.
+- `initialize_display_list`: Sets up display list entries by writing specific control words and pointers to a memory buffer.
+- `execute_startup_sequence`: Calls a series of function pointers from a data structure to initialize state, then iterates through a table to populate memory with results from another routine.
+- `initialize_game_system`: Calls a sequence of initialization routines via function pointers, sets global variables, and populates a memory table with results from another routine.
+- `call_open`: Library stub: loads its arguments and the dos library base, calls Open and returns its result to the caller.
+- `call_init_routine`: Calls a function pointer derived from a global variable and returns.
+- `call_close`: Wrapper that calls the dos library function Close and returns its result to the caller.
+- `check_file_read_result`: Invokes a function pointer from a global table to perform a file read operation.
+- `invoke_file_write_handler`: Calls a specific function pointer located within a global table structure, corresponding to a file write operation.
+- `call_seek`: Wrapper that calls the dos library function Seek and returns its result to the caller.
+- `call_file_seek`: Invokes a library wrapper to perform a seek operation on a file handle.
+- `get_display_list_pointer`: Returns a 32-bit value located at a specific offset within a global data structure.
+- `enable_interrupts_dma`: Disables interrupts and DMA channels, then executes a routine pointer from a global table.
+- `decrement_and_check_counter`: Decrements a local counter variable.
+- `enable_interrupts_and_call_handler`: Invokes a function pointer from a global table, increments a global counter, sets a global variable to four, and clears another variable.
+- `initialize_game_state_2`: Sets up global variables, initializes a buffer by calling a routine in a loop, and invokes several function pointers stored in a data structure.
+- `duplicate_init_handler`: Performs the same initialization steps as the first routine, including calling function pointers and populating a table, but is referenced as a handler pointer in data.
+- `process_compressed_data_stream`: Reads a file using DOS library calls and processes a stream of data packets identified by magic headers.
+- `initialize_audio_and_dma`: Allocates memory and configures custom chip registers to enable DMA and interrupts, while handling sprite command parsing and collision detection.
+- `clear_memory_block_small`: Iterates through a fixed number of iterations, writing zero to two separate memory locations pointed to by registers.
+- `clear_memory_block_large`: Iterates through a larger fixed number of iterations, writing zero to two separate memory locations pointed to by registers.
+- `update_random_seed`: Performs bitwise XOR and shift operations on a series of global variables to update a pseudo-random number generator state.
+- `process_keyboard_input`: Reads from the CIAA serial data register, processes the bit, and stores the result in a circular buffer if the buffer is not full.
+- `read_keyboard_buffer`: Checks if the keyboard input buffer has data; if so, it retrieves a byte from the buffer and advances the read pointer, otherwise it returns a status code.
+- `save_register_context`: Stores the values of several data registers and address registers into specific global memory locations.
+- `empty_loop_routine`: The routine is empty, containing only an infinite loop with no other operations.
+- `configure_ciab_port`: Writes a specific byte value to the CIAB Port B data register to configure hardware output lines.
+- `allocate_memory_blocks`: Iteratively allocates memory blocks by calling a routine, stores the results in a table, and handles errors by clearing memory and looping indefinitely.
+- `build_display_list`: Constructs a display list in memory by initializing structures, calculating offsets, and copying data from tables.
+- `process_short_array_sum`: Checks a count value in a register.
+- `empty_handler`: This routine is empty and performs no operations.
+- `advance_buffer_pointer`: Increments a byte counter within a pointer structure and advances a data pointer if the counter matches a specific byte value.
+- `update_buffer_pointer_and_flag`: Increments a byte at an offset in a pointer structure.
+- `clear_memory_byte`: Writes a zero byte to a memory address pointed to by an address register and copies a word from another address register to a global variable.
+- `register_sprite_collision_data`: Calculates collision bounds and direction flags for a sprite based on its position relative to global coordinates.
+- `set_copper_channel`: Stores a value passed in a data register into two global variables, likely configuring a copper list channel.
+- `calculate_sprite_collision_bounds`: Iterates through a linked list of object pointers to check for active entities.
+- `calculate_sprite_collision_bounds_2`: The routine iterates through a linked list of objects to check for active entities.
+- `calculate_sprite_collision_bounds_3`: Iterates through a linked list of objects to check for specific flags, then computes vertical and horizontal overlap metrics for a sprite against a target.
+- `calculate_sprite_collision_bounds_4`: Iterates through a linked list of object pointers to check for active entities.
+- `calculate_sprite_collision_bounds_5`: Iterates through a linked list of object pointers to check for active entities.
+- `calculate_sprite_collision_bounds_6`: Iterates through a linked list of object pointers to check for active entities, then computes vertical and horizontal overlap metrics for a specific sprite against a target.
+- `calculate_sprite_collision_bounds_7`: Iterates through a linked list of object pointers to check for active entities.
+- `calculate_sprite_collision_bounds_8`: Iterates through a linked list of object pointers to check for active entities.
+- `calculate_sprite_collision_bounds_9`: Iterates through a linked list of object pointers to check for active entities.
+- `calculate_sprite_collision`: Iterates through a linked list of object pointers to check for active entities.
+- `calculate_sprite_collision_bounds_10`: The routine iterates through a linked list of objects to check for active flags, then computes bounding box coordinates and dimensions for a specific sprite based on global offset variables.
+- `calculate_sprite_collision_bounds_11`: Iterates through a linked list of objects to check for active flags, then computes horizontal and vertical overlap metrics for a specific entity against a target.
+- `calculate_collision_response`: Iterates through a linked list of objects to check for active states, then computes positional offsets and flags based on sprite data and global variables.
+- `calculate_sprite_collision_bounds_12`: The routine iterates through a linked list of object pointers to check for active entities.
+- `calculate_sprite_collision_2`: The routine iterates through a linked list of objects to check for active entities.
+- `calculate_sprite_collision_bounds_13`: Iterates through a linked list of object pointers to check for active entities.
+- `calculate_sprite_collision_bounds_14`: The routine iterates through a linked list of objects to check for active flags.
+- `calculate_sprite_collision_bounds_15`: Iterates through a linked list of object pointers to check for active entities.
+- `calculate_sprite_collision_bounds_16`: The routine iterates through a linked list of object pointers to check for active entities.
+- `render_sprite_collision`: Calculates sprite dimensions and position offsets, then writes rendering parameters and collision data to a global buffer while checking for boundary conditions.
+- `calculate_sprite_collision_bounds_17`: The routine iterates through a linked list of object pointers to check for active entities.
+- `calculate_sprite_collision_bounds_18`: The routine iterates through a linked list of object pointers to check for active entities.
+- `calculate_sprite_collision_3`: Iterates through a linked list of objects to check for non-zero flags, then computes screen coordinates and dimensions for a specific entity.
+- `calculate_sprite_collision_bounds_19`: The routine iterates through a linked list of objects to check for active flags.
+- `calculate_sprite_collision_bounds_20`: The routine iterates through a linked list of objects to check for specific flags, then computes geometric bounds and offsets for a sprite based on global position variables.
+- `render_sprite_with_blitter_2`: Calculates source and destination offsets, dimensions, and control flags for a sprite data block, then programs the Amiga Blitter hardware.
+- `render_sprite_with_blitter`: Calculates source and destination offsets, dimensions, and control flags for a sprite data block, then programs the Amiga Blitter hardware to copy the sprite to the display buffer.
+- `process_sprite_table_entries_3`: Iterates through a linked list of sprite data structures, calculating offsets and invoking a blitter configuration routine for each valid entry.
+- `decrement_blitter_loop_counter`: Reads a global counter variable and decrements it in a loop until it reaches zero.
+- `loop_blitter_setup`: Repeatedly calls a routine to configure blitter hardware for sprite copying, decrementing a counter until it reaches zero.
+- `adjust_bcd_values`: Adds signed bytes from a pointer offset to three global variables and applies BCD adjustment to each result.
+- `increment_collision_flags`: Sets a global flag to one and increments another global counter.
+- `set_collision_threshold`: Assigns a specific constant value to a global variable.
+- `increment_collision_counter`: Increments a global variable by one.
+- `update_sprite_collision_data`: Copies collision bounds and state data from global tables into specific object structures based on a counter value.
+- `render_bcd_sprite_data`: Updates BCD counters and iterates through a digit table to decompose 32-bit values into individual bytes.
+- `copy_block_to_four_buffers`: Copies a contiguous block of data from a source pointer to four separate destination pointers in an interleaved manner.
+- `write_vertex_transform_batch`: Calculates pointers into vertex tables based on global counters and input parameters.
+- `transform_vertex_batch_with_offset_2`: Iterates through a table of short values, applying arithmetic adjustments based on global counters before copying the transformed data into a destination buffer.
+- `transform_vertex_data`: Iterates through a table of short values, performing arithmetic adjustments and copying them into a destination buffer with specific offsets.
+- `transform_vertex_batch_with_offset`: Iterates through a table of short values, applying arithmetic adjustments based on global counters before copying the transformed data into a destination buffer at specific offsets.
+- `compute_tile_indices`: Calculates indices from a source array and stores the results into a destination buffer in a nested loop structure.
+- `initialize_copper_list_8`: Populates a memory buffer with a sequence of copper list instructions, including color registers and jump commands, while inserting data from a global variable at a specific point.
+- `handle_interrupt_routine_a`: Performs bitwise calculations on global variables, waits for a hardware flag, and updates a series of memory locations in a loop, likely part of an interrupt service routine.
+- `update_block_state`: Calculates indices from global configuration data and updates a specific entry in a block table with new state values.
+- `configure_block_table_entries`: Calculates offsets and state values for a block table, then iterates through entries to update their fields while waiting for a hardware interrupt flag.
+- `initialize_block_table_entries`: The routine initializes a block state table by setting specific fields and iterating through entries to update their state values.
+- `update_block_state_table`: Calculates indices from global configuration data and updates a specific entry in a block table with new state values.
+- `update_sprite_copper_list`: Iterates through sprite data structures to calculate display coordinates and flags, writing the resulting control words to a copper list buffer while handling vertical blanking synchronization.
+- `render_sprite_chain_3_2`: Iterates through a linked list of sprite structures, calculating positions and writing rendering data to hardware buffers while handling color and depth parameters.
+- `render_sprite_chain_3`: Iterates through a linked list of sprite structures, calculating positions and writing rendering data to hardware buffers while handling collision or state checks via global variables.
+- `process_sprite_chain`: Iterates through a linked list of sprite structures, updating their positions and rendering flags.
+- `write_copper_list_to_ram`: Generates a copper list by writing control words to a specific memory buffer, handling sprite position updates and waiting for vertical blanking.
+- `render_sprite_chain_2_2`: Iterates through a linked list of sprite data structures, calculating screen coordinates and writing position values to a hardware register.
+- `render_sprite_chain_2`: Iterates through a linked list of sprite data structures, calculating screen coordinates and writing position values to a hardware register table.
+- `initialize_sprite_offset_tables`: Initializes a global table of pointers and counters for sprite offset calculations.
+- `calculate_sprite_offsets`: Computes scaled offsets and flags based on differences between global variables, storing the results in a structured data block.
+- `calculate_sprite_offsets_2`: Computes scaled offsets and indices based on distance differences, storing results in a global structure while handling conditional adjustments for specific bit patterns.
+- `calculate_sprite_offsets_3`: Computes display coordinates and attributes for two entities by comparing their positions against a reference value.
+- `calculate_sprite_offsets_4`: Computes display coordinates and flags for two entities based on their distance from a reference point, storing the results in global memory buffers.
+- `calculate_sprite_offsets_5`: Computes vertical and horizontal position adjustments for sprite data structures based on global timing variables and scaling factors.
+- `clear_offset_0x44_byte`: Stores a zero byte at an offset of negative 68 from the address held in register A1.
+- `build_copper_list`: The routine constructs a copper list by writing color and register values into a buffer, handling split instructions and copying data from a source table.
+- `build_copper_list_2`: Constructs a copper list by writing control words and data values to a global buffer, handling split instructions and color register updates.
+- `build_copper_list_3`: Constructs a copper list by writing color and register values into a buffer, handling split instructions and copying data from a source table.
+- `update_entity_state_and_flags`: Updates entity status flags and position data based on collision checks and global state variables.
+- `update_entity_state_and_sprite`: Decrements a counter in a data structure and conditionally updates a flag and a pointer based on a global table lookup.
+- `initialize_entity_with_offsets`: Sets specific fields in a data structure pointed to by A0 and A1, including writing a constant value and a conditional offset based on a byte at offset 87.
+- `update_entity_state_flags_2`: Evaluates an entity's internal counter and state to determine its next behavior, updating position flags and state fields based on threshold comparisons.
+- `check_wall_collision_and_react`: Validates entity state and position against a global map table to detect wall collisions.
+- `process_entity_state_machine`: Updates entity state counters and flags, handling transitions based on collision data and position thresholds.
+- `update_entity_state_logic_2`: Evaluates entity counters and flags to determine state transitions, updating position data and internal status fields based on threshold checks.
+- `update_entity_state_logic`: Evaluates entity counters and flags to determine state transitions, updating position data and internal status fields based on threshold checks and global table lookups.
+- `update_entity_state_and_sprite_2`: Evaluates an entity's internal counter and state to determine its next behavior, updating position flags and state fields based on threshold.
+- `tiny_moveq_2`: Small routine of 1 instruction that loads 0 into d3.
+- `call_collision_calculator`: Invokes a routine to calculate sprite collision bounds and direction flags.
+- `check_tile_collision_bounds`: Calculates a tile index from object coordinates and iterates through a list to check if specific bits in a global table are set.
+- `check_collision_bounds`: Iterates through a list of structures pointed to by A2, checking if calculated positions (based on offsets 20, 24, 22, 26) fall within bounds defined by registers D2-D5.
+- `iterate_collision_bounds`: Loops through a list of structures pointed to by a register, checking if calculated positions fall within specific bounds.
+- `update_entity_position_flags`: Adjusts a value by adding a fixed address, clamps it to zero if negative, and stores the result divided by four into a field.
+- `update_entity_position_and_flags`: Adjusts a value in register D2 by adding a fixed address, clamping it to zero if negative, and storing the result divided by 4 into a field at offset 2 in the A0 structure.
+- `reset_entity_state_fields`: Clears several fields in a data structure pointed to by A1, including offsets 40, 76, 90, and 108.
+- `clear_movement_flags`: Clears fields at specific offsets in a data structure pointed to by a register.
+- `clear_entity_movement_flags`: Clears fields at offsets 76, 90, and 108 in a data structure pointed to by A1.
+- `call_handler_and_return`: Invokes another routine via an absolute clear address pointer.
+- `return_concatenated_registers`: The routine returns a 64-bit value constructed by concatenating the contents of two data registers.
+- `fetch_sprite_collision_bounds`: Invokes a helper routine to calculate collision bounds and direction flags for a sprite.
+- `update_sprite_collision_data_2`: Computes collision bounds and flags based on global state variables and conditional checks.
+- `restore_registers_and_set_flag`: Restores several register values into specific offsets of a data structure pointed to by A0.
+- `update_sprite_velocity_clamp`: Calculates displacement between two objects and adjusts velocity components based on direction, applying friction and clamping values to a maximum limit.
+- `update_object_state_machine`: Manages the state transitions and lifecycle of a game object by decrementing counters, updating pointers, and applying velocity changes based on boundary conditions.
+- `update_object_physics_2`: Updates the position and velocity of a game object by applying acceleration and checking boundary conditions.
+- `update_object_physics`: Updates the position and velocity of a game object by applying acceleration and checking boundary conditions.
+- `update_object_physics_state`: Updates the physics state of a game object by adjusting its position and velocity based on acceleration limits and directional checks.
+- `update_object_velocity_clamp`: Calculates displacement between two objects and adjusts the primary object's velocity components based on direction, applying friction and clamping limits.
+- `update_physics_velocity`: Calculates and updates object velocity and position based on acceleration limits and directional checks.
+- `adjust_sprite_velocity_clamp`: Calculates the displacement between two objects and adjusts the primary object's velocity components based on direction, applying friction and clamping limits before updating its position.
+- `update_sprite_animation_state_3`: The routine manages sprite animation counters and state flags, decrementing timers and adjusting velocity fields with clamping and decay.
+- `update_sprite_animation_state_2`: The routine modifies a data structure representing a sprite or entity, decrementing counters and adjusting state flags.
+- `update_sprite_velocity_2`: Calculates the signed difference between two sprite positions and adjusts velocity fields with clamping and decay.
+- `clamp_signed_difference`: Calculates a signed difference or sum based on the sign of an input register and clamps the result to zero if it becomes negative.
+- `clamp_sum_to_zero`: Adds two input values and returns the sum if it is non-negative, otherwise returns zero.
+- `calculate_diagonal_direction`: Computes the absolute differences between two pairs of signed 16-bit values passed in registers.
+- `clear_object_table`: Iterates through a table of structures with a fixed stride, writing zero to the first word of each entry.
+- `allocate_struct_entry`: Checks a global counter against a limit, then traverses a linked list of structures to find a free slot, increments the counter, and initializes the structure fields with register values.
+- `empty_stub_2`: This routine is empty and performs no operations, immediately returning to the caller.
+- `process_blit_queue`: Waits for the blitter to become idle, then iterates through a table of entries to configure and trigger blitter operations.
+- `initialize_game_state_and_tables`: Resets global variables and memory regions to specific initial values, including zeroing out arrays and setting configuration flags.
+- `initialize_game_state_3`: Resets global variables and memory regions to default values, initializes pointer tables, and prepares data structures for the start of a new game session.
+- `initialize_game_state_and_tables_2`: Resets global variables and memory regions to specific initial values, including zeroing out tables and setting flags.
+- `initialize_game_state_4`: Resets global variables and memory regions to default values, initializes data structures, and prepares the game environment for execution.
+- `initialize_game_state_5`: Resets global variables and memory regions to default values, initializes pointer tables, and clears data structures to prepare the game environment.
+- `initialize_game_state_and_tables_3`: Resets global variables and memory regions to default values, initializes pointer tables, and prepares data structures for the game loop.
+- `initialize_game_state_6`: Resets global variables and memory regions to default values, initializes pointer tables, and prepares the game environment for execution.
+- `initialize_game_state_7`: Resets global variables and memory regions to default values, initializes a linked list structure, and clears specific data tables.
+- `initialize_game_environment`: Resets global variables, clears memory tables, and initializes pointer structures to prepare the game state for execution.
+- `manage_display_initialization_state`: Checks a global flag to determine whether to initialize display structures or decrement a counter.
+- `initialize_display_state`: Checks a global flag and, if zero, calls a routine to set up display and copper list structures.
+- `check_tile_collision`: Calculates grid coordinates from object position and checks a tile map for collision flags.
+- `calculate_tile_collision_mask`: Computes a collision bitmask by iterating through a tile map table based on object coordinates and dimensions.
+- `process_sprite_collision_response`: Calculates collision bounds and direction flags for a sprite based on its position relative to global coordinates, then updates internal state fields and adjusts position or flags based on the collision result.
+- `do_nothing_stub`: This routine is empty and performs no operations, simply returning immediately to the caller without modifying any data or registers.
+- `set_flag_word_value`: Checks bits in a register and writes either zero or a specific constant to a word-sized field in a structure pointed to by A5.
+- `clear_nf_flag_word`: Checks a boolean condition; if true, writes zero to a 2-byte field in a structure pointed to by register A5.
+- `return_immediately_6_2`: The routine consists of instructions that execute a return to exit the current function.
+- `return_immediately_6`: The routine executes a return instruction to exit the current function.
+- `update_sprite_collision_flags`: Calculates collision response values based on object coordinates and flags, updates internal state fields, and calls a routine to process sprite state.
+- `check_tile_collision_response`: Computes a tile collision mask, checks for overlap with other objects, and adjusts position or flags based on the collision result and object dimensions.
+- `verify_tile_collision_bounds`: Calculates a tile collision mask using object coordinates, checks for overlap, and updates position fields if a collision is detected.
+- `update_sprite_state_flags`: Updates sprite state flags and collision data based on global conditions and internal counters, setting specific memory offsets to predefined values or table lookups.
+- `check_horizontal_collision`: Calculates bounding box coordinates and checks for overlap with other objects in a linked list.
+- `scan_tile_flags`: Iterates through a range of tile indices derived from object coordinates.
+- `add_to_list`: Searches a global linked list for a specific pointer value.
+- `process_object_list_cleanup`: Iterates through a global linked list of objects, checking spatial bounds and flags to determine validity.
+- `remove_object_from_lists`: Clears specific flags in the object structure and decrements global counters.
+- `remove_from_lists`: Removes an object pointer from multiple global linked lists based on specific flags and conditions.
+- `process_object_list_handlers`: Iterates through a list of object pointers, decrements a timer field, dispatches a function based on an index, and updates position and state fields.
+- `copy_object_state_and_dispatch`: Copies two word-sized values from the beginning of an object structure to offsets 32 and 36, then performs an indirect function call using a pointer derived from a global variable and a value within the object structure.
+- `dispatch_function`: Checks a function pointer stored in an object structure.
+- `calculate_velocity`: Computes differences between current and stored position values in an object structure.
+- `dispatch_object_function`: Copies two word-sized values from the beginning of the object structure to offsets 32 and 36.
+- `infinite_loop_stub`: The routine contains no instructions that modify memory or registers and consists of an unconditional infinite loop.
+- `update_position_and_counter`: Adds velocity values to position fields, increments a counter, resets it if it matches a threshold, and updates relative position and pointer fields.
+- `copy_object_offsets_and_dispatch`: Copies two 32-bit values from offsets 2 and 6 of a structure to offsets 32 and 36 respectively.
+- `calculate_velocity_with_offset`: Zeros out two short fields at offsets 76 and 78 and sets a global variable to 255.
+- `update_position_and_velocity`: Adds values from a source pointer to position fields in an object structure, increments a counter at offset 78, resets it if it matches the source value, calculates differences between current and stored positions into offsets 40 and 44, and updates a pointer field.
+- `calculate_velocity_simple`: Computes the difference between current and stored position values into offsets 40 and 44.
+- `process_entity_flag_transitions`: Iterates through an entity list, decrementing a global counter, and modifies entity state flags and coordinates based on specific bit conditions and type codes.
+- `update_entity_state_flags`: Iterates through a linked list of entity structures, updating their status flags and coordinates based on internal state values.
+- `process_entity_state_flags`: Iterates through a linked list of entity structures, updating their status flags and coordinates based on internal state values.
+- `check_entity_collisions`: Iterates through a linked list of entity pointers to perform bounding box overlap tests against global coordinates.
+- `set_collision_flag_bit`: Increments a global index variable and sets a specific bit in a byte at a memory location calculated from that index.
+- `set_collision_state_value`: Increments a global index variable and writes a constant value to a memory location calculated from that index.
+- `increment_collision_index`: Increments a global index variable, writes a constant byte to a memory location calculated from that index, and calls a sprite collision routine.
+- `empty_stub_3`: The routine is empty and returns immediately without performing any operations.
+- `increment_collision_counter_2`: Increments a global counter variable and calls a sprite collision calculation routine.
+- `load_collision_parameters`: Copies position and dimension values from a structure into global variables and calls a sprite collision calculation routine.
+- `set_global_and_call`: Sets a global variable and a function pointer to 255, then invokes the routine pointed to by that pointer.
+- `call_sprite_collision_calc`: Invokes the sprite collision calculation routine to determine bounds and direction flags.
+- `evaluate_signed_condition`: Checks the sign of a register value and the state of the negative and zero flags to return 0, 1, or -1 based on conditional logic.
+- `process_sprite_collision_overlap`: Iterates through a list of objects to detect overlaps with a target sprite using bounding box checks.
+- `resolve_sprite_collision_overlap`: Calculates the center of overlap between a sprite and a collision object, then updates the sprite's state, flags, and position data based on the collision result.
+- `update_sprite_state_and_collision`: Calculates intermediate coordinate values and updates sprite fields based on a linked list of collision data.
+- `process_sprite_collision_list`: Iterates through a linked list of sprite structures, decrementing a timer field and checking for collision bounds against global coordinates.
+- `call_adjust_bcd_values`: Calls a routine that adds signed bytes from a pointer offset to three global variables and applies BCD adjustment to each result.
+- `resolve_collision_links`: Iterates through a linked list of entities to detect overlaps between bounding boxes.
+- `process_entity_collision_data`: Iterates through a table of entity structures, applying bitwise operations and arithmetic to their fields, and updates pointers within the structures based on calculated values.
+- `update_entity_physics`: Iterates through a table of entity structures, calling their update hooks and processing animation data.
+- `update_entity_list`: Iterates through a global table of entity pointers, invoking their update callbacks and processing internal state data.
+- `check_sprite_collision_bounds_2`: Iterates through a linked list of sprite structures to check for valid candidates based on coordinate and flag checks.
+- `process_sprite_collision_results`: Iterates through sprite entries to check bounding box conditions and flags, then dispatches to specific handlers based on sprite type to update entity state and copy data fields.
+- `resolve_sprite_collision_outcome`: Iterates through sprite entries to find valid collision candidates based on bounding box and flag checks.
+- `process_sprite_collision_data_6`: Iterates through a linked list of sprite structures to find a valid candidate based on coordinate and flag checks.
+- `resolve_sprite_collision_hit`: Iterates through a linked list of sprite structures to find a valid candidate based on coordinate and flag checks.
+- `process_sprite_collision_data_5`: Iterates through a linked list of sprite structures to find a valid candidate based on coordinate and flag checks.
+- `select_and_load_sprite_data`: Iterates through a linked list of sprite structures to find a valid candidate based on coordinate and flag checks.
+- `scan_vertical_position_bounds`: Iterates through two pointer lists to find entries where the vertical position field (offset 4) exceeds specific threshold values derived from a global variable.
+- `scan_horizontal_position_bounds`: Iterates through two pointer lists to find entries where the horizontal position field (offset 2) exceeds specific threshold values derived from a global variable.
+- `reverse_scan_vertical_bounds`: Traverses two pointer lists in reverse order to find entries where the vertical position field (offset 4) is less than or equal to specific threshold values derived from a global variable.
+- `scan_sprite_position_bounds`: Iterates through two pointer lists to check if vertical and horizontal position fields exceed specific threshold values.
+- `copy_and_reset_global_data`: Copies a block of data from a global source table to a destination buffer in multiple iterations, then calls another routine and resets several global state variables to zero.
+- `clear_flag_for_valid_entries`: Iterates through a linked list of structures, checking if a specific word field falls within certain numeric ranges.
+- `check_sprite_collision_bounds`: Iterates through sprite entries to perform bounding box collision detection against global variables and other entities.
+- `initialize_sprite_entry`: Allocates a new entry from a pool and initializes its fields by copying data from a source structure and zeroing out various state variables.
+- `allocate_entry_from_pool`: Checks if a counter is below a limit; if so, it increments the counter, finds a free slot in a table by scanning for a zero value, and stores a pointer to that slot in two separate global arrays.
+- `allocate_single_entry_from_pool`: Checks if a counter is below a limit; if so, it increments the counter, finds a free slot in a table by scanning for a zero value, and stores a pointer to that slot in a single global array.
+- `init_display_list`: Initializes a display list structure in memory by clearing fields, calculating cumulative vertical offsets from a mode table, and setting up hardware control words and interrupt vectors.
+- `init_copper_list_buffer`: Allocates and initializes a copper list structure in memory, setting up header fields, clearing data arrays, and populating instruction pointers with references to a specific routine.
+- `init_copper_list_buffer_2`: Initializes a memory buffer for a copper list by clearing fields, calculating offsets, and setting up interrupt vectors to point to a specific handler routine.
+- `init_display_list_2`: Allocates and initializes a display list structure in memory, setting up control words, copper list pointers, and routine jump addresses for the Amiga graphics hardware.
+- `init_sprite_block`: Initializes a sprite data structure in memory by clearing fields, calculating offsets from a source table, and setting up interrupt vectors and control registers for the copper or blitter hardware.
+- `initialize_copper_list_9`: The routine clears a global buffer and populates a memory region with a sequence of hardware control words and jump pointers.
+- `init_copper_list`: Initializes a copper list structure in memory by clearing fields, calculating offsets from a source table, and setting up hardware registers for display control.
+- `initialize_display_and_copper_lists`: The routine initializes display and copper list structures by calculating cumulative vertical offsets from a mode table and setting up hardware registers.
+- `reset_audio_and_dma`: Clears four global variables and manipulates a control variable to disable interrupts and DMA. It then initializes display and copper list structures by calling helper routines.
+- `process_sprite_collision_data_2`: Iterates through sprite data structures to update positions and check for collision flags.
+- `dispatch_collision_handlers`: This routine performs an indirect jump through a jump table, likely dispatching to specific collision handling logic based on an index.
+- `process_collision_data`: Iterates through data structures to update state variables and flags, then dispatches to specific handlers via a jump table based on calculated indices.
+- `dispatch_collision_handlers_2`: Performs an indirect jump through a jump table to dispatch to specific collision handling logic based on an index.
+- `process_collision_table`: Iterates through a data structure to check collision conditions and updates state variables.
+- `process_collision_data_2`: Iterates through a data structure to update state flags and counters, then dispatches to a specific handler routine via an indirect jump table based on a calculated index.
+- `process_sprite_collision_data`: Iterates through sprite data structures to update positions and check for collision flags.
+- `decrement_position_with_clamp`: Subtracts a velocity value from a position field in a sprite structure and clamps the result to a minimum threshold.
+- `increment_position_with_clamp`: Adds a velocity value to a position field in a sprite structure and clamps the result to a maximum threshold.
+- `dispatch_sprite_collision_handler`: Iterates through a linked list of sprite structures, checking for specific collision flags and invoking the corresponding handler routine based on the flag value.
+- `dispatch_collision_handler`: Iterates through a linked list of sprite structures, checking for specific collision flags.
+- `copy_position_to_global`: Copies a position value from a sprite structure to a global variable without modifying the sprite's position.
+- `update_sprite_velocity_3`: Calculates a new velocity value by indexing a global table with sprite state bits and applying sign logic.
+- `update_sprite_velocity_height`: This routine updates a sprite's velocity and height fields by reading values from a data structure, applying arithmetic operations, and clamping results.
+- `update_velocity_and_height`: Updates a velocity byte by adding an acceleration value and checks a specific flag to determine height updates.
+- `update_velocity_and_height_unconditional`: Updates a velocity byte by adding an acceleration value and clamps the resulting height value.
+- `adjust_sprite_position`: Modifies a sprite's position field by adding or subtracting a value stored in the sprite structure, clamping the result against a limit.
+- `process_sprite_collision_logic`: This routine adjusts a sprite's position based on acceleration and limit values, updating global state if thresholds are met.
+- `configure_cia_dma_interrupts`: The routine initializes a sequence of global variables with constants, a self-reference, a pointer to a RAM table, and a mask.
+- `set_audio_channel_lengths`: The routine writes eight 16-bit values from a table into a global variable repeatedly, then writes a 16-bit constant to the same global variable.
+- `dispatch_indirect_call`: The routine calculates an address by shifting a register value and adding it to its own base address, then performs an indirect jump to that calculated location.
+- `clear_memory_block_2`: The routine stores a byte value from a register into multiple memory locations at fixed negative offsets from a pointer.
+- `dispatch_function_call`: The routine calculates an address by adding an offset derived from a register to a global variable and jumps to that address.
+- `empty`: The routine is empty, containing only unimplemented or bad instruction data that truncates control flow.
+- `store_global_from_stack`: Copies a 32-bit value from the stack into a global variable.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `empty_2`: The routine is empty, containing only bad instruction data that truncates control flow.
+- `handles_bad_instruction`: The routine contains no valid 68000 instructions and immediately terminates execution flow due to corrupt or invalid data.
+- `abort_on_bad_data`: The routine contains no valid instructions and terminates immediately due to corrupt or non-executable data at the entry point.
+- `halt_on_bad_data`: The routine contains no valid instructions and immediately terminates execution due to corrupted or invalid data.
+- `halt_execution`: The routine contains no valid instructions and terminates immediately upon entry.
+- `return_immediately_14`: This routine is empty and returns immediately without performing any operations or modifying data.
+- `decode_invalid_data`: The routine contains no valid instructions and terminates immediately due to malformed data.
+- `halt_on_bad_data_2`: The routine contains no valid instructions and immediately terminates execution due to invalid data.
+- `gap_data_placeholder`: The routine contains no valid instructions and represents an unreached code gap.
+- `abort_invalid_data`: The routine contains no valid instructions and immediately terminates execution due to corrupted or invalid data at the entry point.
+- `decode_invalid_data_2`: The routine contains no valid instructions and is unreachable.
+- `handle_bad_data_2`: The routine contains no valid instructions and the decompiler truncates control flow because of bad instruction data.
+- `decode_invalid_data_3`: The routine contains no valid instructions.
+- `handle_bad_instruction`: The routine contains no valid 68000 instructions and immediately terminates execution due to invalid data.
+- `handle_invalid_instruction`: The routine consists of a single bad instruction, causing the disassembler to truncate control flow.
+- `return_immediately_15`: The routine contains no instructions and returns immediately.
+- `return_immediately_16`: The routine contains no executable instructions other than the return.
+- `do_nothing_return_2`: The routine is empty and returns immediately to the caller without performing any operations.
+- `halt_on_bad_data_3`: The routine contains no valid instructions and terminates execution immediately due to corrupted or missing code data.
+- `halt_on_bad_data_4`: The routine is empty and contains no valid instructions, as indicated by the bad instruction data warning.
+- `abort_on_bad_data_2`: The routine contains no valid executable instructions and terminates immediately due to invalid data.
+- `do_nothing_stub_3`: The routine is empty and performs no operations.
+- `halt_on_bad_data_5`: The routine contains no valid instructions and immediately terminates execution due to corrupted or invalid code data.
+- `return_immediately_13_2`: The routine is empty and returns control to the caller immediately without performing any operations or modifying state.
+- `abort_invalid_code`: The routine contains no valid 68000 instructions, terminating the control flow immediately.
+- `abort_invalid_code_2`: The routine contains invalid or non-executable data, causing execution to terminate immediately.
+- `halt_on_bad_data_6`: The routine contains no valid instructions and immediately terminates execution due to invalid data.
+- `handle_invalid_data`: The routine contains no valid executable instructions and terminates immediately due to malformed data.
+- `halt_on_bad_data_7`: The routine contains no valid instructions and immediately terminates execution due to invalid data.
+- `halt_on_bad_data_8`: The routine contains no valid 68000 instructions and immediately terminates control flow due to invalid data at its entry point.
+- `handle_decode_error`: Marks a section of memory as invalid or unreached code.
+- `halt_on_bad_data_9`: The routine contains no valid instructions.
+- `unreached_gap_truncated`: The routine contains no valid instructions and the disassembly is truncated because of bad instruction data.
+- `bad_instruction_handler_2`: The routine contains no valid instructions and the disassembler stops with a bad instruction warning, so it performs no observable operations.
+- `empty_routine`: The routine contains no valid instructions and is truncated by the disassembler, so it performs no observable operations.
+- `halt_on_bad_data_10`: The routine contains no valid instructions and immediately terminates execution due to corrupted or invalid data at the entry point.
+- `handle_invalid_code`: The routine contains no valid instructions and is treated as an error state.
+- `unreachable_gap_stub`: The routine is empty and contains no valid instructions.
+- `halt_on_bad_data_11`: The routine contains no valid instructions and immediately terminates execution due to invalid data.
+- `decode_invalid_data_4`: Contains no valid executable instructions, as the memory region is interpreted as data rather than code.
+- `halt_on_bad_data_12`: The routine contains no valid instructions and immediately terminates execution due to corrupted or invalid data.
+- `empty_stub_routine`: The routine is empty, containing no valid instructions.
+- `halt_on_bad_data_13`: The routine contains no valid instructions and immediately terminates execution due to invalid data at the entry point.
+- `halt_on_bad_data_14`: The routine contains no valid instructions and immediately terminates execution due to invalid data.
+- `handle_bad_instruction_2`: The routine contains no valid 68000 instructions and terminates immediately due to invalid data.
+- `decode_unreachable_bytes`: The routine contains no valid 68000 instructions in the disassembly; the bytes decode as undefined data and the control flow is truncated.
+- `stop_execution_flow`: The routine is empty and contains no valid instructions, effectively acting as a termination point or stub due to invalid data.
+- `halt_on_bad_data_15`: The routine contains no valid instructions and terminates immediately due to invalid data.
+- `halt_on_bad_data_16`: The routine contains no valid instructions and terminates immediately due to invalid data.
+- `handle_invalid_instruction_2`: The routine contains no valid 68000 instructions.
+- `empty_routine_2`: The routine contains no usable instructions; the disassembly ends immediately with a bad instruction and the control flow is truncated.
+- `handle_bad_instruction_data`: The routine contains no valid executable instructions and immediately terminates due to invalid data.
+- `handle_bad_instruction_data_2`: The routine contains no valid executable instructions, indicating that the entry point lands on data or corrupted code.
+- `halt_bad_instruction`: The routine contains no valid instructions and immediately terminates control flow due to invalid data at the entry point.
+- `end_of_code_marker`: The routine is empty and contains no valid instructions.
+- `decode_invalid_data_5`: The routine consists of a single instruction that is invalid or corrupted, causing the execution flow to terminate immediately.
+- `call_single_routine`: The routine invokes a single unnamed function and returns immediately.
+- `unreachable_gap_code`: The routine is a single unreachable instruction in a gap between code blocks.
+- `empty_stub_4`: The routine is empty.
+- `halt_bad_data`: The routine contains no valid instructions and immediately terminates execution due to invalid data.
+- `halt_execution_2`: The routine is empty and contains no executable instructions.
+- `empty_routine_3`: The routine contains no usable instructions and is truncated by bad instruction data, so it performs no observable operations.
+- `halt_on_bad_data_17`: The routine contains no valid instructions and immediately terminates execution due to corrupted or invalid data.
+- `bad_data_truncation`: The routine contains a bad instruction, so the decompiler stops analysis and the routine is effectively empty.
+- `halt_on_bad_data_18`: The routine is empty or corrupted, containing no valid instructions.
+- `decode_invalid_data_6`: The routine consists of a single instruction that the decompiler cannot interpret as valid 68000 machine code.
+- `trap_on_bad_instruction`: The routine consists of a single instruction that decodes as invalid 68000 opcode data, so the decompiler truncates control flow there.
+- `abort_on_bad_data_3`: The routine is empty and contains no valid instructions, likely due to corrupted or unmapped data at this address.
+- `abort_bad_instruction`: The routine consists of a single unreachable byte that the disassembler interprets as an illegal instruction.
+- `halt_on_bad_data_19`: The routine contains no valid instructions and immediately terminates execution due to corrupted or invalid data at the entry point.
+- `halt_on_bad_data_20`: The routine is empty due to a decompiler error interpreting data as instructions.
+- `decode_invalid_data_7`: The routine consists of a single instruction that is not valid Motorola 68000 code.
+- `handle_invalid_data_2`: The routine contains no valid instructions and immediately terminates execution due to corrupted or unmapped code data.
+- `abort_invalid_code_3`: The routine is empty or contains invalid data, causing the control flow to terminate immediately.
+- `bad_instruction_handler_3`: The routine contains no valid instructions and the disassembler stops with a bad instruction warning.
+- `halt_on_bad_instruction`: The routine contains no valid executable instructions and is treated as a control flow terminator due to corrupted or non-code data at the entry point.
+- `abort_on_bad_data_4`: The routine contains no valid instructions and terminates immediately due to invalid data encountered at its entry point.
+- `halt_on_bad_data_21`: The routine contains no valid instructions and is treated as a control flow barrier by the decompiler.
+- `decode_invalid_data_8`: The routine contains no valid instructions and immediately terminates due to malformed data.
+- `abort_invalid_code_4`: The routine contains no valid instructions and terminates immediately due to malformed data.
+- `handle_bad_instruction_5`: The routine contains no usable instructions; the disassembly is truncated because the bytes at its entry cannot be decoded as valid 68000 opcodes.
+- `handle_invalid_data_3`: The routine is empty due to corrupted or non-instruction data at its entry point.
+- `empty_routine_8`: This routine is empty and contains no valid instructions.
+- `halt_on_invalid_data`: Terminates execution because the instruction stream contains invalid data.
+- `halt_on_bad_data_22`: The routine contains no valid instructions and immediately terminates execution due to corrupted or non-code data at the entry point.
+- `decode_gap_as_code`: The routine is a one-instruction fragment that the disassembler cannot interpret, so it ends with a control-flow truncation.
+- `terminate_execution`: The routine is empty or contains invalid data that causes immediate termination of the control flow.
+- `halt_on_bad_data_23`: The routine contains no valid instructions and terminates immediately due to invalid data.
+- `halt_on_bad_data_24`: The routine is empty and contains no executable instructions.
+- `handle_invalid_data_4`: The routine is empty and contains no valid instructions.
+- `halt_on_bad_data_25`: The routine contains no valid instructions and immediately terminates execution due to corrupted or invalid data in the code segment.
+- `empty_routine_4`: The routine contains no valid instructions and is truncated by the disassembler.
+- `abort_on_bad_data_5`: The routine contains no valid instructions and terminates immediately due to corrupted or invalid data in the code segment.
+- `abort_on_bad_data_6`: The routine contains no valid executable instructions.
+- `abort_due_to_bad_data`: The routine is empty and contains no valid instructions.
+- `abort_execution_flow`: The routine contains no valid instructions and terminates immediately due to invalid data.
+- `abort_on_bad_data_7`: The routine is empty or invalid due to bad instruction data encountered by the decompiler.
+- `flag_undecoded_data_gap`: The routine is a single instruction that the disassembler could not decode, sitting in an unreached gap between code and data.
+- `halt_on_bad_data_26`: The routine contains no valid instructions and immediately terminates execution due to invalid data.
+- `halt_on_bad_data_27`: The routine is empty and contains no valid instructions.
+- `decode_unreachable_gap`: The routine is located in an unreached code gap and contains no valid instructions.
+- `abort_invalid_code_5`: The routine is a stub indicating that execution has reached non-instruction data, causing a control flow termination due to bad opcode data.
+- `empty_unreached_stub`: The routine is empty and contains no valid instructions.
+- `halt_on_bad_data_28`: The routine contains no valid instructions and immediately terminates execution due to invalid data encountered in the code stream.
+- `decode_invalid_data_9`: The routine contains no valid instructions and is unreachable.
+- `halt_execution_3`: The routine is empty and contains no valid instructions, causing immediate termination of control flow.
+- `decode_unreachable_gap_2`: The routine contains no valid 68000 instructions, consisting entirely of data or non-code bytes interpreted as a gap in the executable stream.
+- `abort_invalid_data_2`: The routine immediately terminates execution because the instruction stream contains invalid or corrupted data.
+- `abort_execution`: This routine is empty or contains invalid data, causing immediate termination of the control flow.
+- `halt_on_bad_data_29`: The routine contains no valid 68000 instructions and immediately terminates execution due to invalid data encountered at the entry point.
+- `halt_on_bad_data_30`: The routine contains no valid instructions and immediately terminates execution due to invalid data.
+- `halt_on_bad_data_31`: The routine is empty or contains invalid data, causing the decompiler to truncate control flow.
+- `abort_invalid_code_6`: The routine contains no valid instructions and terminates immediately due to malformed data.
+- `empty_routine_5`: The routine contains no usable instructions and the disassembly ends immediately with a bad instruction.
+- `unreachable_stub`: The routine contains no valid instructions and is therefore empty.
+- `abort_on_bad_data_8`: The routine is empty or contains invalid data, causing the decompiler to truncate control flow.
+- `halt_on_bad_data_32`: The routine contains no valid executable instructions and immediately terminates control flow due to encountering invalid data.
+- `abort_on_bad_data_9`: The routine contains no valid 68000 instructions.
+- `decode_unreached_gap`: The routine is empty and contains no valid instructions.
+- `halt_on_bad_data_33`: The routine contains no valid instructions and immediately terminates execution due to invalid data.
+- `truncate_on_bad_data`: The routine contains no valid instructions and the disassembly ends with a control-flow truncation due to bad instruction data.
+- `halt_on_bad_data_34`: The routine contains no valid executable instructions and immediately terminates control flow due to invalid data.
+- `halt_on_bad_data_35`: The routine is empty and contains no valid instructions, causing the disassembler to truncate control flow due to bad instruction data.
+- `halt_baddata`: This routine is empty and contains no valid instructions.
+- `handle_bad_data`: The routine is empty due to bad instruction data preventing decoding.
+- `abort_on_bad_data_10`: The routine contains no valid instructions and immediately terminates due to invalid data in the code segment.
+- `handle_invalid_code_2`: Terminates execution due to encountering corrupted or non-executable data at the entry point.
+- `decode_invalid_data_10`: The routine consists of a single bad instruction that causes a control flow error.
+- `abort_on_bad_data_11`: The routine contains no valid instructions and terminates immediately due to invalid data.
+- `decode_invalid_data_11`: The routine consists of a single instruction that is identified as invalid or unreached data by the disassembler.
+- `abort_on_invalid_data`: The routine contains no valid executable instructions.
+- `halt_on_bad_data_36`: The routine is empty and contains no executable instructions.
+- `stop_execution_flow_2`: This routine is empty.
+- `return_empty_routine_2`: This routine is empty and contains no executable instructions.
+- `halt_on_bad_data_37`: The routine contains no valid executable instructions and immediately terminates control flow due to invalid data.
+- `abort_bad_data`: The routine is empty or contains invalid machine code, causing control flow to terminate immediately.
+- `abort_on_invalid_code`: The routine is empty and contains no valid instructions.
+- `bad_instruction_terminator`: The routine contains no valid instructions and is terminated by invalid data.
+- `abort_on_invalid_data_2`: The routine detects malformed instruction data at its entry point and immediately terminates execution.
+- `halt_execution_4`: The routine is empty and contains no valid instructions.
+- `handle_bad_instruction_6`: The routine contains no valid instructions.
+- `halt_on_bad_data_38`: The routine contains no valid instructions and immediately terminates execution due to invalid opcode data.
+- `abort_invalid_code_7`: The routine contains no valid 68000 instructions.
+- `handle_bad_instruction_3`: The routine contains invalid data or unrecognizable instructions, causing the control flow to terminate immediately.
+- `skip_bad_data`: The routine is empty and contains no instructions.
+- `bad_instruction_handler`: The routine is empty or contains invalid data, causing the decompiler to truncate the control flow.
+- `halt_on_bad_data_39`: The routine contains no valid instructions and immediately terminates execution due to corrupted or invalid data.
+- `contain_invalid_data`: The routine is composed of bad instruction data.
+- `contain_invalid_data_2`: This routine contains data that cannot be parsed as valid instructions.
+- `decode_invalid_data_12`: The routine contains no valid instructions and is identified as unreachable code or data within the executable.
+- `empty_routine_6`: The routine contains no usable instructions; the disassembler reports bad instruction data and truncates control flow immediately.
+- `empty_routine_7`: The routine contains no usable instructions; the decompiler truncates the control flow because of bad instruction data and emits no operations on registers, memory or a global variable.
+- `empty_unreached_gap`: This routine is empty and contains no valid instructions.
+- `empty_executed_entry`: This routine is empty and contains no valid instructions.
+- `invalid_code_halt`: The routine contains no valid 68000 instructions.
+- `empty_routine_9`: The routine contains no valid instructions and performs no operations.
+- `halt_on_bad_data_40`: The routine contains no valid 68000 instructions and terminates immediately due to invalid data in the code segment.
+- `halt_on_bad_data_41`: The routine contains no valid instructions and terminates immediately due to invalid data.
+- `abort_on_invalid_data_3`: The routine contains no valid instructions and immediately terminates execution due to corrupted or missing code data.
+- `terminate_on_decode_error`: The routine is empty and contains no executable instructions.
+- `handle_invalid_instruction_3`: The routine contains invalid opcode data, causing the disassembler to truncate control flow.
+- `abort_on_bad_data_12`: This routine is empty and does not perform any operations.
+- `empty_unreached_gap_2`: This routine is empty and contains no valid instructions.
+- `handle_bad_instruction_7`: The routine contains no usable instructions and the disassembly ends immediately with a bad instruction marker.
+- `abort_on_bad_data_13`: The routine contains no valid instructions and terminates immediately due to invalid data encountered at the entry point.
+- `halt_on_bad_data_42`: The routine is empty and contains no valid instructions, terminating control flow immediately upon entry.
+- `unreachable_truncated_routine`: The routine contains no valid instructions and is truncated by the disassembler.
+- `encounter_invalid_data`: The routine consists entirely of unparseable instruction data, causing the control flow to terminate immediately.
+- `handle_bad_instruction_8`: The routine contains no valid instructions and is truncated by the decompiler.
+- `halt_on_bad_data_43`: The routine contains no valid instructions and terminates immediately due to invalid data in the code segment.
+- `halt_on_invalid_data_2`: The routine is empty or contains invalid data, causing the decompiler to truncate control flow.
+- `unreached_gap_code`: The routine is empty and contains no reachable instructions; it is a gap in the runtime segment that decodes as code but performs no operations.
+- `handle_bad_instruction_data_3`: The routine contains no valid instructions and the decompiler truncates control flow because the instruction stream is invalid.
+- `decode_invalid_data_13`: The routine is empty and contains no valid instructions.
+- `halt_execution_flow`: The routine contains no valid 68000 instructions, consisting solely of invalid data that prevents execution from proceeding.
+- `decode_unreachable_data`: The routine contains no valid 68000 instructions and consists entirely of data or garbage bytes misidentified as code.
+- `handle_bad_instruction_data_4`: The routine contains no usable instructions; the decompiler truncates control flow because the instruction stream is invalid.
+- `halt_on_bad_data_44`: The routine is empty and contains no valid instructions.
+- `decode_invalid_instruction`: The routine consists solely of an unreached gap in the code that decodes as invalid data, causing the decompiler to truncate control flow.
+- `halt_on_bad_data_45`: The routine is empty and contains no executable instructions, likely due to corrupted or invalid data at the entry point.
+- `empty_stub_5`: The routine is empty and performs no operations.
+- `abort_invalid_data_3`: The routine contains no valid executable instructions.
+- `empty_unreached_stub_2`: The routine is empty and contains no valid instructions.
+- `empty_executed_stub`: The routine is empty and contains no valid instructions.
+- `empty_placeholder`: The routine contains no valid instructions and is effectively empty.
+- `halt_on_bad_data_46`: The routine is empty and contains no executable instructions, likely due to corrupted or invalid data at this memory location.
+- `trap_on_bad_instruction_2`: The routine consists of a single instruction that the disassembler could not decode as valid 68000 code, so decompilation truncates to a stop marker.
+- `decode_invalid_code`: The routine is empty because the data at this address is not valid 68000 machine code.
+- `halt_on_invalid_data_3`: The routine terminates execution due to encountering bad instruction data in the static flow.
+- `handle_bad_instruction_data_5`: The routine contains no valid 68000 instructions; the disassembly is truncated because the bytes at the entry point are not a recognizable opcode sequence.
+- `decode_invalid_data_14`: The routine contains no valid instructions and terminates immediately due to malformed data.
+- `halt_on_bad_data_47`: The routine contains no valid instructions and immediately terminates execution due to corrupted or invalid data.
+- `handle_unreached_gap`: This routine is unreached and contains no valid instructions, likely due to a decoding error in the disassembler.
+- `handle_bad_instruction_9`: The routine contains no usable instructions and the disassembly is truncated at the entry point due to bad instruction data, so it performs no observable operations.
+- `handle_bad_data_3`: The routine contains no usable instructions and the disassembler stops because the instruction stream is invalid.
+- `other_routine`: The routine is empty and contains no executable instructions.
+- `decode_unreachable_gap_3`: The routine is a single instruction that the disassembler cannot decode, so control flow is truncated immediately.
+- `contain_invalid_data_3`: This routine contains a single instruction that is invalid.
+- `call_ram_function`: The routine executes a function pointer stored at a specific RAM address and returns the result.
+- `call_indirect_function_pointer`: Executes a function pointer stored at a specific memory location.
+- `call_indirect_function_pointer_2`: Executes a function located at a specific memory address stored in a global variable.
+- `call_indirect_function_pointer_3`: Executes a function located at an address stored in a global variable.
+- `call_indirect_function_pointer_4`: Executes a function located at an address stored in a global variable.
+- `call_indirect_function_4`: Invokes a function pointer stored at a specific memory location.
+- `call_indirect_function_pointer_5`: Executes a function call through a pointer stored in memory.
+- `call_indirect_pointer`: Executes a function pointer stored in a global variable.
+- `call_indirect_function_pointer_6`: Executes a function pointed to by a global variable.
+- `call_indirect_pointer_2`: Executes a routine located at an address stored in a global variable.
+- `return_zero_constant_4`: The routine immediately returns a zero value without performing any other operations or modifying memory.
+- `decrement_word_at_offset`: Decrements a 16-bit value located at offset 32 from a base pointer stored in register A6.
+- `increment_word_at_offset`: The routine increments a 16-bit value located at offset 32 from a base pointer stored in register A6.
+- `halt_on_bad_data_48`: The routine is empty and contains no valid instructions.
+- `handle_bad_data_4`: The routine contains no valid instructions and the decompiler truncates control flow because of bad instruction data.
+- `handle_bad_instruction_4`: The routine contains no valid instructions and terminates immediately due to invalid data.
+- `halt_execution_5`: The routine is empty or contains invalid data, causing control flow to terminate immediately without performing any operations.
+- `empty_stub_routine_2`: The routine contains no usable instructions and is truncated by the decompiler.
+- `return_immediately_13`: The routine executes three instructions to return control to the caller without performing any other operations or modifying state.
+- `empty_return_routine`: The routine performs no operations other than returning immediately to the caller.
+- `tiny_movea_rts`: Small routine of 2 instructions that copies (a7)+ to a5, then returns.
+- `dispatch_indirect_calls`: The routine initializes a global variable, calls several other routines, and executes indirect jumps through function pointers stored in memory tables, passing parameters derived from registers and memory locations.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `test_processor_flags`: The routine checks specific status register flags before encountering invalid data.
+- `return_from_subroutine`: This routine is empty and performs no operations before returning to the caller.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `execute_infinite_loop`: The routine enters an infinite loop that does nothing.
+- `return_immediately_7`: This routine is empty and returns immediately.
+- `return_immediately_8`: This routine is empty and performs no operations before returning.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `nop_instruction_execution`: This routine performs no operations and returns immediately.
+- `return_from_subroutine_2`: This routine is empty and performs no operations before returning to its caller.
+- `return_immediately_9`: This is an empty routine that returns to its caller.
+- `return_from_subroutine_3`: The routine is empty and performs no operations before returning to the caller.
+- `return_immediately_10`: This routine performs no operations and returns immediately to the caller.
+- `perform_no_operation`: This routine is empty and performs no actions before returning.

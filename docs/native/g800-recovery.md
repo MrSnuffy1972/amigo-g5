@@ -6,19 +6,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (909040 top-level bytes in 74 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 12 of 12 units identical (bytes and relocations), 115 raw-word lines |
-| Functions named and described | pass, 1878 of 1878 named (109 author symbols), 1878 of 1878 described (11 by rule, 1867 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1008 of 1008 (100.00%) |
-| Independent decoder cross-check (Ghidra against capstone) | 75888 of 75923 instructions identical in start and length, 0 mismatches |
+| Bytes classified (912592 top-level bytes in 74 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 13 of 13 units identical (bytes and relocations), 113 raw-word lines |
+| Functions named and described | pass, 1939 of 1939 named (109 author symbols), 1939 of 1939 described (16 by rule, 1922 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1560 of 1560 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 19800 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 76893 of 76942 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 242039 |
-| code | 19460 |
-| data | 625328 |
+| asset | 222239 |
+| code | 22618 |
+| data | 645522 |
 | padding | 14021 |
 | unused | 8192 |
 
@@ -36,8 +37,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | powerpacker.library | 2 | 1755 | 129 |
 | explode.library | 1 | 475 | 30 |
 | Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:bootblock | 1 | 10 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1087 | 63 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 929 | 18 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 68 | 2 |
+| balpr-0.tab (raw code file, load address unknown) | 1 | 0 | 0 |
 
 ## Cases handled
 
@@ -60,17 +62,47 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/aawar0-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (11628 -> 32000 bytes)
 - theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/UNION.BM: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (12505 -> 32000 bytes)
 - theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/amap-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (8708 -> 32000 bytes)
-- runtime segment an address: 415 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-long-keys): 350 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 477 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/balpr-0.tab: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:c/LOADPPDATA: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
+- 1 never-loaded region(s), 19800 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
-- none
+- AFLtro
 
 ## Copy protection found
 
-- none found
+- `init_speeder_object` (speeder): The routine clears and sets several global variables, reads a byte from a global variable and branches on its bit, optionally increments a counter, writes constants to a structure pointed to by A0, calls wait routines, resets state, conditionally sets speed and unpacks sprite pixels, and touches CIAA_PRA and CIAB_PRB before returning. Kind: not judged: Extra data: line 1 column 51 (char 50). Pass path: not determined.
+- `set_speeder_speed` (speeder): The routine configures disk DMA control, computes a short value from a register and a constant, writes that value twice to the same offset via a pointer, then invokes another routine and sets a global variable. Kind: not judged: Extra data: line 1 column 51 (char 50). Pass path: not determined.
+- `set_disk_dma_control` (speeder): The routine writes values to a global variable twice, writes a value to a custom hardware register, copies an uninitialized value from the address register A6 into a custom hardware register, writes a value to a global variable, and returns. Kind: not judged: Extra data: line 1 column 51 (char 50). Pass path: not determined.
+- `wait_for_ride_completion` (speeder): The routine repeatedly enables disk DMA, sets a global variable, waits for an interrupt flag and aborts on error. Kind: not judged: Extra data: line 1 column 163 (char 162). Pass path: not determined.
+- `wait_for_disk_load` (main#unpacked): The routine initializes a counter and a flag on the stack, optionally calls another routine, then enters a loop that reads joystick input, waits for an input event, writes to a global variable and to a custom hardware register, and polls for input release. Kind: not judged: Extra data: line 1 column 51 (char 50). Pass path: not determined.
+- `set_disk_dma_parameters` (main#unpacked): The routine writes values to a global variable, to a table entry, to the ADKCON register, to the DSKPTH register, to another global variable, and to the DMACON register. Kind: not judged: Extra data: line 1 column 53 (char 52). Pass path: not determined.
+- `poll_input_wait_release` (main#unpacked): The routine starts a CIAB timer and then repeatedly checks a byte in a table via a pointer obtained from A1. Kind: not judged: Extra data: line 1 column 77 (char 76). Pass path: not determined.
+- `set_adkcon_and_update_input_mask` (main#unpacked): The routine writes a constant to a global variable and, if a short value is negative, computes an index from a word value and writes a byte mask derived from that index to the global variable. Kind: not judged: Extra data: line 1 column 53 (char 52). Pass path: not determined.
+- `set_park_flag` (main#unpacked): The routine reads a 16-bit value from a table, adds three, and uses the low five bits as a bit index. Kind: not judged: Extra data: line 1 column 51 (char 50). Pass path: not determined.
+- `wait_for_ciab_timer` (main#unpacked): The routine clears a global variable, calls another routine, then repeatedly programs the CIAB timer and spins until a global variable clears, repeating until the timer routine returns a specific value. Kind: not judged: Extra data: line 1 column 53 (char 52). Pass path: not determined.
+- `wait_for_button_press` (main#unpacked): The routine reads a byte from another routine, masks it with a global variable and a constant, then enters a loop that starts a CIA timer and spins until a bit in the global variable clears, repeating until the timer routine returns a specific value. Kind: not judged: Extra data: line 1 column 51 (char 50). Pass path: not determined.
+- `read_joystick_input` (main#unpacked): The routine calls another routine and stores its result in a global variable. Kind: not judged: Extra data: line 1 column 51 (char 50). Pass path: not determined.
+- `check_ride_availability_15` (main#unpacked): The routine reads a byte from a global variable, masks it with a bit derived from a byte on the stack, and conditionally clears a bit in the mask based on a flag in a table indexed by a computed offset. Kind: not judged: Extra data: line 1 column 86 (char 85). Pass path: not determined.
+- `lbC000A1A` (breloc): The routine writes to a set of custom chip registers and a global variable, storing the incoming pointer in a RAM location and the incoming word shifted and masked into another global variable. Kind: not judged: Extra data: line 1 column 83 (char 82). Pass path: not determined.
+- `lbC000A7A` (breloc): The routine writes a constant to a global variable, then writes another constant to the same global variable, and returns. Kind: not judged: Extra data: line 1 column 53 (char 52). Pass path: not determined.
+- `lbC000A90` (breloc): The routine writes a constant to a global variable and, if a signed short at an offset from a frame pointer is negative, it reads a 16-bit value from another offset, adds a small constant, and uses the low five bits to build a byte mask that is stored in the global variable. Kind: not judged: Extra data: line 1 column 51 (char 50). Pass path: not determined.
+- `lbC000AA0` (breloc): The routine reads a 16-bit value from a table pointed to by a register, adds a constant, masks the result to 5 bits, and sets the corresponding bit in a global byte variable. Kind: not judged: Extra data: line 1 column 51 (char 50). Pass path: not determined.
+- `lbC000ABE` (breloc): The routine clears a global variable, calls another routine, then repeatedly polls a CIAB_PRB register via a helper until the register’s bit 0 is clear, looping until a helper returns a specific value. Kind: not judged: Extra data: line 1 column 81 (char 80). Pass path: not determined.
+- `lbC000B58` (breloc): The routine reads a byte from another routine, masks it with a condition derived from a carry flag, writes the masked result to a global variable, then polls a hardware port register until the variable’s low bit clears and a status routine returns a specific value, looping until that condition is met. Kind: not judged: Extra data: line 1 column 82 (char 81). Pass path: not determined.
+- `lbC000B7C` (breloc): The routine calls another routine and stores its return value into a global variable. Kind: not judged: Extra data: line 1 column 51 (char 50). Pass path: not determined.
+- `lbC000B86` (breloc): The routine builds an index from the high word of an input value and a byte stored via a frame pointer, then uses that index to test a bit in a table. Kind: not judged: Extra data: line 1 column 137 (char 136). Pass path: not determined.
+- `set_audio_dma_control` (runtime segment an address (play-long-keys)): The routine writes to a global variable, another global variable, a custom chip register, a custom chip register, a global variable, and a global variable. Kind: disk hardware/track validation. Pass path: the branch following the call that does not lead to a crash or error state (e.g., bne.b an address or bne.b an address depending on the specific logic flow).
+- `poll_flag_and_set_timer` (runtime segment an address (play-long-keys)): Polls a byte in a structure for a specific bit flag. Kind: disk hardware status/sync check. Pass path: bne.b an address.
+- `set_bit_from_table` (runtime segment an address (play-long-keys)): Reads a 16-bit value from a table, adds a constant, and uses the masked 5-bit result as an index to set a bit in a global variable. Kind: bitmask-based key/lookup check. Pass path: beq.b an address.
+- `set_bit_in_global_variable` (runtime segment an address (play-long-keys)): It reads a 16-bit value from a table pointed to by a register, adds a constant, and masks the result to 5 bits to use as a bit index. Kind: bitmask-based state flag/checksum trap. Pass path: the branch at an address (implied by the caller's logic flow).
+- `wait_for_bit_clear` (runtime segment an address (play-long-keys)): Sets a global variable to a constant, calls another routine, and then loops until a specific bit in the global variable is cleared. Kind: disk hardware/sync check. Pass path: the loop continues and proceeds to the next instruction after the bit clears.
+- `process_port_input` (runtime segment an address (play-long-keys)): Reads a value, modifies specific bits based on a table lookup, and stores the result in a global variable while looping until a specific bit condition is met. Kind: disk hardware/sync check. Pass path: iVar1 == 1.
+- `update_global_port` (runtime segment an address (play-long-keys)): Stores a value returned from another routine into a global variable. Kind: disk hardware/track check. Pass path: The routine likely returns a status code in D0; a successful check allows execution to continue to the subsequent instructions (e.g., the movem/rts sequence in the first call site), whereas a failure would trigger a jump to an error handler.
+- `build_port_byte_from_table` (runtime segment an address (play-long-keys)): Builds a port byte from a frame field and a bit index, clearing one further bit when a looked-up table entry has its lowest bit set. Kind: lookup table/bitmask check. Pass path: the branch where the bitmask modification is skipped or the returned byte matches the expected valid state.
 
 ## Functions
 
@@ -78,7 +110,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### speeder
 
 - `verify_game_version_and_patch`: The routine checks two global words for a version marker and returns if they do not match.
-- `set_palette_color`: The routine writes a short value derived from a register to a global variable repeatedly in a loop, effectively clearing a table.
+- `clear_palette_table`: The routine writes a short value derived from a register to a global variable repeatedly in a loop, effectively clearing a table.
 - `increment_speeder_counter`: The routine writes a constant to a global variable and then increments a byte at a fixed offset from that global variable by one.
 - `decrement_timer_and_disable_interrupt`: The routine reads a byte from a global variable, decrements it and writes it back.
 - `run_game_loop`: The routine loops forever, calling another routine to process a ride queue and then calling a function pointer taken from a global variable.
@@ -92,15 +124,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_ride_carriage_state`: A routine that uses a pointer from its argument to update fields in a global structure and another structure, conditionally updates several bytes and words, calls another routine in a loop to process a queue, and then calls a sound routine before returning.
 - `process_ride_queue_2`: The routine updates a ride queue entry using a global variable as context, advances a position counter and a speed value, and loops a bounded number of times while calling another routine to process the queue.
 - `update_ride_speed`: Iterates over ride entries using a pointer from a global structure and updates several fields, including a speed counter and a position accumulator.
-- `update_ride_carriage_position`: The routine iterates over a carriage structure referenced via a global pointer, advancing position counters and a queue index, updating flags in a linked structure and calling another routine to process the speeder queue.
+- `update_carriage_position_and_queue`: The routine iterates over a carriage structure referenced via a global pointer, advancing position counters and a queue index, updating flags in a linked structure and calling another routine to process the speeder queue.
 - `process_speeder_queue`: The routine updates a global variable and a pointer-based counter, increments a byte field and a short field, and conditionally calls another routine to play a sound.
-- `play_ride_sound`: The routine calls another routine and then returns.
+- `call_helper_and_return`: The routine calls another routine and then returns.
 - `set_ride_speed`: The routine writes a byte to a location computed from a global variable and then calls another routine.
-- `draw_ride_car`: The routine contains no instructions and returns immediately.
+- `empty_routine`: The routine contains no instructions and returns immediately.
 - `process_ride_queue_3`: The routine reads a pointer from a structure, calls a function, then repeatedly calls another routine to initialise an object and writes a byte from a global variable into memory via that pointer, increments a counter byte in the structure, and exits when a flag is zero or a counter comparison holds; otherwise it continues looping and updates a word in the structure.
-- `check_ride_queue_next`: The routine contains no instructions and returns immediately.
+- `empty_routine_2`: The routine contains no instructions and returns immediately.
 - `init_speeder_object`: The routine clears and sets several global variables, reads a byte from a global variable and branches on its bit, optionally increments a counter, writes constants to a structure pointed to by A0, calls wait routines, resets state, conditionally sets speed and unpacks sprite pixels, and touches CIAA_PRA and CIAB_PRB before returning.
-- `reset_park_speeder`: Increments a counter and clears a speeder state structure, then waits for ride completion and conditionally resets ride state, sets speed, and writes sentinel values into structures referenced by global variables.
+- `reset_speeder_state`: Increments a counter and clears a speeder state structure, then waits for ride completion and conditionally resets ride state, sets speed, and writes sentinel values into structures referenced by global variables.
 - `clear_speeder_state`: Resets ride state and clears speeder-related globals, writes a marker pattern to a structure referenced by a global pointer, sets a short flag if a global bit is clear, and disables a timer interrupt.
 - `reset_ride_state`: The routine clears a block of ten 32-bit words by repeatedly writing zero to a location derived from an uninitialized pointer and advancing the pointer by a fixed stride, then clears ten 16-bit words starting at a global variable by writing zero to each element of the table.
 - `set_speeder_speed`: The routine configures disk DMA control, computes a short value from a register and a constant, writes that value twice to the same offset via a pointer, then invokes another routine and sets a global variable.
@@ -118,18 +150,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_speeder_data`: The routine repeatedly processes entries from a table of pointers until a global flag is set, saving its state on exit.
 - `store_speeder_state`: The routine copies four values from registers into four consecutive locations of a global variable.
 - `unpack_sprite_pixels`: The routine reads 32-bit words from a global table and writes them to a destination buffer using an index derived from a global variable and a running offset.
-- `update_ride_status`: The routine conditionally runs checksum and tile extraction checks using a global flag and a global variable.
-- `reset_speeder_state`: The routine writes two constant words to a global variable via a pointer, calls another routine, calls a checksum routine, calls the same routine again, then decrements a global variable and returns.
+- `validate_ride_status`: The routine conditionally runs checksum and tile extraction checks using a global flag and a global variable.
+- `reset_speeder_state_2`: The routine writes two constant words to a global variable via a pointer, calls another routine, calls a checksum routine, calls the same routine again, then decrements a global variable and returns.
 - `set_ride_speed_2`: The routine writes a constant to a global variable and to a byte in memory using an offset from a register, then writes a constant to a pointer and a constant to the next word in that pointer based on a flag byte, calls another routine twice, updates a checksum table, decrements a global counter, and returns.
 - `set_ride_speed_3`: The routine writes a constant to a global variable and to a byte in memory indexed by an unspecified offset, then writes a constant to a pointer and a constant to the next word of that pointer depending on a flag byte, writes another constant to the following word, calls another routine twice and calls a checksum routine once, then decrements a global counter.
-- `set_ride_speed_4`: The routine writes a constant to a global variable and to a table entry indexed by an unused register, then writes a constant to a memory location pointed to by a pointer argument and a second constant to the next word in that memory, choosing between two constants based on a flag byte at the pointer minus one.
+- `set_ride_speed_four`: The routine writes a constant to a global variable and to a table entry indexed by an unused register, then writes a constant to a memory location pointed to by a pointer argument and a second constant to the next word in that memory, choosing between two constants based on a flag byte at the pointer minus one.
 - `set_speeder_state`: The routine writes a constant to a global variable and to a location addressed by an offset from a register, then stores a constant to a memory location pointed to by a pointer, choosing between two constants based on a flag byte at the preceding address.
 - `set_ride_speed_5`: The routine writes a constant to a global variable and to a byte in memory indexed by an unused register, then writes a constant to a memory location pointed to by a pointer and a different constant to the next word, choosing one of two constants based on a flag byte at offset minus one from the pointer.
-- `run_speeder_update`: The routine waits for the blitter hardware and then calls another routine to set ride speed.
+- `wait_for_blitter_then_set_ride_speed`: The routine waits for the blitter hardware and then calls another routine to set ride speed.
 - `set_ride_speed_6`: The routine resets ride state via another routine, then writes two words from registers to offsets in a structure pointed to by a register, writes two words to other offsets in the same structure, and waits for the blitter to be ready via another routine.
-- `wait_for_blt_ready`: The routine stores a 16-bit value from the data register into a global variable and then spins until the bit corresponding to the blitter ready flag in the BLTSIZE register is cleared.
+- `wait_for_blitter_ready`: The routine stores a 16-bit value from the data register into a global variable and then spins until the bit corresponding to the blitter ready flag in the BLTSIZE register is cleared.
 - `wait_for_blitter`: The routine spins until a global variable no longer has its bit set, then returns.
-- `reset_ride_state_2`: The routine receives a pointer in A0 and a value in D0 and writes a constant to an offset field of the pointed-to structure, clears a 32-bit field at another offset, and clears a 16-bit field at a further offset, then returns the original D0 value.
+- `clear_ride_state_flags`: The routine receives a pointer in A0 and a value in D0 and writes a constant to an offset field of the pointed-to structure, clears a 32-bit field at another offset, and clears a 16-bit field at a further offset, then returns the original D0 value.
 
 ### LOADPPDATA
 
@@ -149,8 +181,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Assign
 
-- `self`: The routine walks a hunk table stored in a global variable, rewrites hunk type markers and copies relocation entries using memory allocation from the Exec library.
-- `wait_for_input_2`: The routine loads a short from a global variable, then repeatedly decrements it until it reaches zero, looping while the value is non-zero.
+- `process_hunk_table`: The routine walks a hunk table stored in a global variable, rewrites hunk type markers and copies relocation entries using memory allocation from the Exec library.
+- `decrement_until_zero`: The routine loads a short from a global variable, then repeatedly decrements it until it reaches zero, looping while the value is non-zero.
 - `assign_park_object`: The routine is empty.
 - `shift_tile_row_2`: The routine processes a compressed stream to shift a row of bytes in a buffer pointed to by a register.
 - `skip_if_flag_set`: The routine tests a single bit of a 32-bit value held in a data register.
@@ -170,43 +202,43 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `jump_to_sub_0_4e0cc`: Jump stub: passes control straight on to sub_0_4E0CC.
 - `jump_to_sub_0_4e964`: Jump stub: passes control straight on to sub_0_4E964.
 - `parse_ride_config`: The routine scans a table of pointers for strings beginning with '-' or '/' and processes the character after the prefix.
-- `update_ride_statistics`: The routine calls another routine four times, each time passing three global variables as arguments.
-- `update_ride_prices`: The routine calls another routine four times, each time passing two global variables as arguments.
-- `handle_interrupt`: The routine contains no instructions and returns immediately.
+- `update_ride_prices_for_three_groups`: The routine calls another routine four times, each time passing three global variables as arguments.
+- `halve_palette_entries_for_four_tables`: The routine calls another routine four times, each time passing two global variables as arguments.
+- `empty_interrupt_handler`: The routine contains no instructions and returns immediately.
 - `initialize_game_state`: The routine sets up a set of globals and pointers, initializes flags and counters, installs an interrupt handler, resets ride state, copies ride data blocks, updates ride prices, loads language strings, resets game state, updates ride statistics and applies them to the display, waits for vblank twice, and saves game slots.
 - `reset_park_state`: The routine installs an interrupt handler, triggers a park event, sets the park state to new and sets the default theme, then clears a series of global variables and writes a constant to one of them before returning.
 - `init_palette_pointers`: The routine stores the address of a global variable into a series of consecutive data words in register d7, effectively initializing a table of pointers.
 - `reset_game_state`: The routine calls another routine to load sound tables with an argument of zero and then returns.
 - `set_park_state_to_new`: The routine contains no instructions and returns immediately.
-- `load_game_assets`: The routine disables interrupts, clears a ride queue structure five times using a global variable and a table entry, then checks park open state twice with values from a table and a constant.
-- `update_ride_prices_2`: The routine iterates over a table of 6-byte entries between two pointers.
+- `reset_park_state_2`: The routine disables interrupts, clears a ride queue structure five times using a global variable and a table entry, then checks park open state twice with values from a table and a constant.
+- `update_price_and_doubles`: The routine iterates over a table of 6-byte entries between two pointers.
 - `halve_palette_entries`: The routine receives two integer parameters and iterates from the first to the second in steps of six.
 - `skip_unused_handler`: The routine is empty.
 - `clear_screen`: The routine is empty and performs no operations.
 - `set_random_seed`: The routine reads a byte from a global variable and uses it to index into a table located at the address of another global variable, storing the result back into that global variable.
-- `repeat_action_loop`: The routine receives a short count and loops that many times, calling wait_for_vblank_2 on each iteration.
-- `reset_ride_state_3`: The routine saves a global variable, clears it, calls another routine with the input parameter, clears two global variables, then restores the saved global variable.
+- `repeat_vblank_wait`: The routine receives a short count and loops that many times, calling wait_for_vblank_2 on each iteration.
+- `reset_ride_state_2`: The routine saves a global variable, clears it, calls another routine with the input parameter, clears two global variables, then restores the saved global variable.
 - `reset_ui_state`: The routine saves a global variable, clears it, calls another routine with the two parameters, clears two global variables, then restores the saved global variable.
 - `set_display_mode`: The routine selects one of two display configurations based on the parameter and updates several global variables and memory areas accordingly.
 - `reset_ride_waiting_times`: Halves two short waiting times and two byte waiting times for each entry in two tables, then calls another routine to update prices, a routine to halve palette entries using two global pointers, and two other routines, and sets two global variables.
-- `self_2`: The routine halves two short values per entry in a range pointed to by two registers, then halves two bytes per entry in a table defined by two global variables, calls another routine to update prices, halves palette entries using two global variables, calls routines to reset ride parameters and set ride status flags, and writes to two global variables.
+- `halve_table_values_and_reset_state`: Halves every signed 16-bit value in a repeating ten-byte table until a pointer reaches a limit, then arithmetic-shifts a run of byte pairs in another table by one.
 - `fade_palette_and_reset_state`: The routine repeatedly halves two bytes starting at an offset from a register, advancing the register by eight bytes until it reaches a global limit, then calls another routine, halves palette entries using two global values, and calls three other routines.
 - `find_nearest_tile`: The routine scans up to sixteen 16-bit entries pointed to by param_1, extracting three 4-bit fields from each entry and comparing them to the scaled values of param_2, param_3 and param_4.
 - `initialize_game_state_6`: The routine is empty; it contains no instructions and returns immediately.
-- `handle_invalid_input`: The routine contains no instructions and returns immediately.
-- `copy_ride_data`: The routine copies sixteen 16-bit entries from a source pointer into a table that starts at a global variable, writing each entry to the first word of a slot and to the word sixteen entries ahead in the same slot.
-- `find_park_objects`: The routine clears a stack array of 100 entries, fills it with results from repeated calls to another routine using a fixed argument, and then calls a second routine for each non-zero entry.
+- `empty_handler_routine`: The routine contains no instructions and returns immediately.
+- `copy_table_entries`: The routine copies sixteen 16-bit entries from a source pointer into a table that starts at a global variable, writing each entry to the first word of a slot and to the word sixteen entries ahead in the same slot.
+- `collect_game_object_ids`: The routine clears a stack array of 100 entries, fills it with results from repeated calls to another routine using a fixed argument, and then calls a second routine for each non-zero entry.
 - `set_current_ride_id`: The routine receives an integer parameter and compares it with a global variable.
 - `trigger_park_event`: The routine checks a global variable and, if a specific bit is set, it writes a constant to a memory location, calls another routine to set a display mode, calls another routine to reset animation state, and writes a constant to another memory location.
 - `burn_park_heat`: The routine receives a 16-bit value and repeatedly writes it to a global variable an address times, incrementing a counter each iteration.
-- `run_game_loop_3`: Executes one iteration of the main loop, updating park state, handling UI input and events, and processing ride queues.
+- `run_game_loop_iteration`: Executes one iteration of the main loop, updating park state, handling UI input and events, and processing ride queues.
 - `initialize_game_data`: The routine clears the screen twice, sets several global variables, copies null-terminated strings from a table of pointers into a global buffer at multiple stride offsets, conditionally writes a byte to a computed location, then calls another routine repeatedly with different constant arguments and finally calls several other routines.
 - `process_ride_queue_4`: The routine increments a global counter and decrements a delay variable if non-zero, then calls another routine.
 - `process_ride_queue_5`: Iterates over a table of ride queue entries, updates counters and statistics for entries that are active, and then, under certain global conditions, uses random values and modular remainders to compute a threshold and conditionally creates ride instances a limited number of times.
 - `process_ride_queue_6`: Iterates over a table of ride entries using an index stored in a register and a global counter.
 - `check_ride_availability`: The routine clamps an input value, uses a random generator and a modular remainder helper to create ride instances under a threshold, then sets a global variable and conditionally renders a building sprite based on several global checks and a further random test.
-- `process_ride_queue_7`: The routine checks a flag in a structure and several global variables to decide whether to call render_building_sprite with a value and then runs a series of normalizations and state updates.
-- `process_ride_queue_8`: The routine checks a set of global variables and a random park value against computed thresholds using modular remainder and fixed point helpers.
+- `process_ride_queue_entry`: The routine checks a flag in a structure and several global variables to decide whether to call render_building_sprite with a value and then runs a series of normalizations and state updates.
+- `process_ride_queue_entry_2`: The routine checks a set of global variables and a random park value against computed thresholds using modular remainder and fixed point helpers.
 - `process_ride_queue_9`: The routine checks a set of global variables and a random value and conditionally calls a rendering routine.
 - `apply_ride_price_adjustments`: The routine updates several global counters and copies 44-byte blocks and 10-byte blocks within a global structure for a number of iterations.
 - `process_ride_statistics`: The routine iterates over a table of structures, accumulating a value for entries marked with a specific byte, then calls another routine with values taken from a global variable.
@@ -214,35 +246,35 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_ride_data_3`: The routine iterates over a count from the stack and copies blocks of bytes from source offsets to destination offsets within two global data structures, using a stride based on the loop index.
 - `update_ride_status_2`: The routine loads two values from a global variable and another global variable, calls another routine to obtain a short remainder value, and passes the three values to a rendering routine.
 - `handle_ui_input`: The routine checks a global variable for a set of disallowed values and returns early; if a flag is not set it dispatches on a second byte parameter to call other routines, update global variables and memory through an index, and return their results, with some branches performing simple arithmetic on globals and returning values derived from them.
-- `process_pending_events`: undescribed.
+- `reset_state_and_iterate_table`: Clears a set of global variables and a flag, then reads a couple of globals and a short from memory to decide whether to call another routine and possibly negate a signed byte.
 - `handle_menu_input`: The routine checks a global flag and, based on an input value, either calls another routine and sets a global variable, or writes a constant to a global variable.
 - `handle_menu_selection`: The routine receives a parameter, adjusts it and returns it for out-of-range values.
 - `handle_ride_event`: The routine checks a global flag and, if clear, dispatches on the input parameter.
-- `process_game_event`: The routine dispatches a game event code to a set of handlers.
-- `trigger_ride_event`: The routine checks a global variable for zero and whether the short parameter is 0, 1, 2, or 3.
-- `handle_ride_interaction`: undescribed.
+- `dispatch_game_event`: The routine dispatches a game event code to a set of handlers.
+- `check_global_and_dispatch`: The routine checks a global variable for zero and whether the short parameter is 0, 1, 2, or 3.
+- `select_entity_by_tile_and_flags`: When a specific global flag is clear and the passed index equals 29, it reads a byte from a table entry and checks a flag value.
 - `update_ride_statistics_2`: The routine adjusts two byte globals based on an input code and a global flag, applying conditional increments or decrements and then clamping both values to a 0–63 range, or computing them from other globals when the flag is clear.
 - `clamp_ride_parameters`: The routine checks a global variable and, if it is non-zero, clamps two global variables to the range zero to sixty-three.
 - `skip_game_loop_iteration`: The routine is empty.
 - `update_ride_price`: The routine obtains a remainder value from another routine and a 16-bit value from a pointer passed in a register.
 - `update_tile_priority`: The routine updates two 16-bit fields in a structure at offsets 6 and 8 from a packed parameter, then reorders a linked list of entries indexed by a global table using a bubble-sort loop that swaps entries based on a byte at offset 9 and updates forward links in the table.
-- `sort_ride_queue`: The routine checks two saved bytes against a structure and conditionally calls two update routines, then writes the saved bytes back.
+- `sort_linked_list`: The routine checks two saved bytes against a structure and conditionally calls two update routines, then writes the saved bytes back.
 - `find_next_ride`: The routine repeatedly rearranges entries in a table of short values using a modular remainder calculation, swapping elements between two pointers and updating a pointer to the next entry.
 - `sort_ride_queue_2`: The routine walks a linked list of entries stored in a global table, comparing a byte field at offset nine of each entry.
-- `sort_linked_list`: The routine implements a bubble sort over a singly linked list whose nodes are stored in a table indexed by a short index.
+- `sort_linked_list_2`: The routine implements a bubble sort over a singly linked list whose nodes are stored in a table indexed by a short index.
 - `allocate_ride_object`: The routine indexes a table of short values using parameters, then walks a linked list of short entries until it finds a free slot, writes a remainder value into the list links and into an extra output pointer.
 - `update_park_object_flags`: The routine walks a table of 16-bit entries using an index register, repeatedly adding a fixed stride to the index while the current entry is non-zero, then writes two values obtained from another routine into the table entry and an output pointer.
-- `write_random_value`: The routine obtains a 16-bit value from another routine and stores it through a pointer.
-- `update_ride_queue`: The routine clears a two-short entry passed by pointer and updates a table indexed by two bytes from the entry.
+- `store_random_word_via_pointer`: The routine obtains a 16-bit value from another routine and stores it through a pointer.
+- `clear_queue_entry_and_update_table`: The routine clears a two-short entry passed by pointer and updates a table indexed by two bytes from the entry.
 - `update_tile_animation`: The routine compares two bytes from param_2 with bytes at offsets six and eight of param_1.
 - `update_ride_object`: The routine compares two bytes from a structure pointed to by param_1 with two bytes from param_2.
 - `set_sprite_offsets`: The routine stores the two 16-bit words from the third argument into the memory locations at offsets 6 and 8 from a global variable referenced via A5.
 - `clear_park_data`: The routine calls another routine with the pointer argument and then clears 123 bytes starting at that pointer by writing zero to each byte.
 - `generate_random_park_value`: The routine reads a global variable, multiplies it by a constant, writes the result back to the same global variable, and returns a 16-bit value formed from the high 16 bits of the old variable and the high 16 bits of the new variable shifted, masked to clear one bit.
 - `disable_ride_elements`: The routine iterates over a table of entries and, for each entry, clears or sets flags in a ride object structure and in a related park data block, calls a routine to process a ride object, calls a routine to check ride access, and updates ride price using values derived from modular remainder computation.
-- `process_ride_queue_10`: The routine walks a table of entries using a global variable as a start pointer and a global variable as an end limit, advancing by a fixed stride each iteration.
+- `clear_ride_objects_for_type_04`: The routine walks a table of entries using a global variable as a start pointer and a global variable as an end limit, advancing by a fixed stride each iteration.
 - `evaluate_ride_condition`: The routine reads a byte from a global variable and uses it as an index into a table of short values, computes offsets with modular remainder operations, compares distances and updates a best distance value.
-- `handle_ride_control_input`: The routine walks a table of bytes using a counter and a base pointer, computes modular remainders and distances from values in a global variable, and updates several global variables and a structure pointed to by the stack.
+- `process_ride_control_input`: The routine walks a table of bytes using a counter and a base pointer, computes modular remainders and distances from values in a global variable, and updates several global variables and a structure pointed to by the stack.
 - `reset_game_state_2`: The routine calls another routine and then stores zero into a global variable.
 - `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
 - `reset_game_state_3`: The routine clears several global memory areas and tables, copies blocks of bytes from one global region to another, initializes a few global variables, and then calls several other routines to set up a ride instance, assign an employee, reset ride state, and disable ride elements.
@@ -253,18 +285,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `wait_for_input_event`: The routine loops calling another routine and a handler until a non-zero result is returned, then restores a saved global variable and optionally saves state and waits for the blitter before looping again.
 - `wait_for_input_event_2`: The routine repeatedly calls another routine with a value from a global variable and a constant, then calls another routine, looping while the first call returns zero.
 - `handle_ride_selection`: The routine saves game slots, clears a global flag, finds two nearest tiles, then loops drawing ride elements from a table and waiting for blitter and game events.
-- `handle_ride_selection_2`: The routine saves game slots, finds nearest tiles, then repeatedly seeds the random generator, waits for the blitter and draws a ride element preview and six slot previews using a table of pointers.
+- `render_selection_preview`: The routine saves game slots, finds nearest tiles, then repeatedly seeds the random generator, waits for the blitter and draws a ride element preview and six slot previews using a table of pointers.
 - `draw_ride_preview`: The routine repeatedly seeds the random generator, waits for the blitter and queues a copy, then draws a base tile and a row of tiles using data from a table.
-- `draw_ride_preview_2`: The routine loops over a byte counter, selects an index within a global table and calls a drawing routine with computed parameters.
+- `iterate_and_draw_elements`: The routine loops over a byte counter, selects an index within a global table and calls a drawing routine with computed parameters.
 - `draw_ride_preview_3`: The routine loops drawing a ride element with a varying offset and a varying pointer value, then processes a game event and conditionally resets global state, loads a game slot or park data, and updates a selection index based on a table lookup and bounds checks.
-- `draw_ride_preview_4`: The routine repeatedly draws ride preview elements using draw_ride_element_2 with a changing index and a flag derived from stack data and a global variable, and updates a loop counter.
-- `check_ride_availability_2`: The routine repeatedly draws a ride element using a counter and a value taken from a table, then processes a game event while checking a global flag and a capacity flag.
-- `trigger_park_event_2`: The routine loads a game slot using a byte-sized index taken from the data register D5 and then returns zero.
-- `self_3`: The routine initializes a selection UI, draws a ride preview and a row of ride elements, tracks the highlighted entry with a local byte and updates it while handling game events.
-- `unimplemented_stub`: The routine contains no instructions and returns immediately.
-- `handle_game_event_2`: The routine dispatches on an input code, calling another routine for many codes, performing a small set of distinct actions for a few codes, and stores the input code into a global variable before returning.
+- `draw_ride_preview_elements`: The routine repeatedly draws ride preview elements using draw_ride_element_2 with a changing index and a flag derived from stack data and a global variable, and updates a loop counter.
+- `draw_and_load_ride_selection`: Draws a centered label in a loop, advancing through a table of pointers while periodically advancing a game state counter and waiting for the blitter.
+- `load_game_slot_by_index`: The routine loads a game slot using a byte-sized index taken from the data register D5 and then returns zero.
+- `draw_ride_selection_menu`: The routine initializes a selection UI, draws a ride preview and a row of ride elements, tracks the highlighted entry with a local byte and updates it while handling game events.
+- `empty_stub_routine`: The routine contains no instructions and returns immediately.
+- `dispatch_game_event_2`: The routine dispatches on an input code, calling another routine for many codes, performing a small set of distinct actions for a few codes, and stores the input code into a global variable before returning.
 - `store_d7_word`: The routine stores the 16-bit value from register D7 into a global variable.
-- `self_4`: Iterates over a table of pointers terminated by a marker, and for each entry runs a bounded loop that waits for hardware, draws ride elements until a terminator is found, then processes events and waits for vertical blank.
+- `process_config_entries_with_text`: Walks through an array of four-byte entries until it finds one starting with an asterisk, clearing a game-state flag and repeatedly drawing centered text lines while advancing the blitter and waiting for the vertical blank.
 - `draw_park_map`: The routine loops over a table of pointers using an index stored in a register, waiting for the blitter and for vertical blank and handling game events each iteration.
 - `process_ride_queue_11`: The routine repeatedly waits for a blitter copy, then walks a table of pointers, stopping at a '+' or '*' marker, and draws each entry with a routine that uses a global variable for positioning.
 - `parse_ride_config_2`: The routine repeatedly draws a ride element using a global variable and a pointer from a table, increments a counter, and updates a width value.
@@ -275,218 +307,218 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_ride_elements`: Iterates a linked list of ride elements using the first parameter as a head index.
 - `process_ride_event`: The routine checks a byte at offset 12 of the first argument and, for a set of values, calls a fixed-point multiply routine, then reads a byte at offset 9 of a pointer returned by that call, shifts it to form a sub-index, and calls a rendering routine with values derived from the pointer, the sub-index, and the second and third arguments.
 - `skip_ride_event`: The routine is empty.
-- `handle_entity_event`: The routine reads a byte from the entity structure, converts it to an index and looks up a pointer in a table.
+- `dispatch_entity_event`: The routine reads a byte from the entity structure, converts it to an index and looks up a pointer in a table.
 - `return_from_intermediate`: The routine contains three 68000 instructions and ends with a return.
 - `draw_ride_vehicle`: The routine computes screen tile coordinates from parameters and a global variable, selects a mask value from a table based on a field in the object structure, and calls set_tile_mask_bits repeatedly to mark tiles for a vehicle shape and optional extra tiles read from tables indexed by object fields.
 - `draw_ride_object`: The routine reads a global variable and a structure pointed to by a register, then calls a tile-mask routine repeatedly with offsets derived from the structure and from a table indexed by the global variable.
 - `draw_ride_elements`: The routine reads a byte from a global variable and, if a flag byte in a structure is non-zero, uses it to drive two loops that call set_tile_mask_bits with offsets derived from the structure and from a table indexed by the global variable.
 - `draw_ride_elements_2`: The routine reads a flag byte and offsets from a structure and a global variable, then loops to apply tile mask bits using a table lookup.
-- `draw_ride_elements_3`: The routine iterates over a count derived from a byte in a structure and calls set_tile_mask_bits twice per iteration with a decreasing vertical offset, then conditionally processes two more blocks of data from a global variable, using bytes from the structure to index into the global variable and compute tile coordinates before calling set_tile_mask_bits.
-- `draw_ride_elements_4`: The routine uses a mask byte from a table and calls set_tile_mask_bits repeatedly to mask tiles in a loop over a range defined by two values, then processes additional entries from a global table based on a byte from another structure, applying further masks.
+- `set_tile_mask_bits_loop`: The routine iterates over a count derived from a byte in a structure and calls set_tile_mask_bits twice per iteration with a decreasing vertical offset, then conditionally processes two more blocks of data from a global variable, using bytes from the structure to index into the global variable and compute tile coordinates before calling set_tile_mask_bits.
+- `draw_ride_tiles_with_mask`: The routine uses a mask byte from a table and calls set_tile_mask_bits repeatedly to mask tiles in a loop over a range defined by two values, then processes additional entries from a global table based on a byte from another structure, applying further masks.
 - `render_ride_sprites`: The routine loops over a range of indices and calls another routine to set tile mask bits using values derived from a global variable and a table, then optionally loops a second time over a byte count to set tile mask bits using a different table.
 - `draw_park_elements`: The routine loops over a range of indices defined by two values in registers.
 - `draw_ride_element`: A routine that walks linked lists in tables using values from a structure and a global variable, updates a global variable, and calls another routine with calculated coordinates and table pointers.
-- `process_ride_queue_12`: The routine walks linked lists of queue entries and for each entry updates a global variable and calls another routine with coordinates derived from the entry and stack values.
+- `iterate_ride_queue_entries`: The routine walks linked lists of queue entries and for each entry updates a global variable and calls another routine with coordinates derived from the entry and stack values.
 - `process_ride_queue_13`: Iterates over a ride queue table using an index from the stack and a global pointer, computes ride coordinates from offsets, and dispatches a condition check for each entry, handling a special case when a flag is set by scanning a secondary table and adjusting coordinates with bytes from two structures.
-- `process_ride_queue_14`: The routine walks a queue of ride entries stored in a global table and, for each entry, computes screen coordinates from stored offsets and a base pointer, then calls another routine to test a ride condition or to draw a map overlay depending on a flag.
-- `process_ride_queue_15`: The routine reads a short from a table entry, computes an address from a global variable and a pointer, and if a condition on a global flag holds it copies several values from the table into a register block and calls another routine; otherwise it loads constants into the register block, calls a modular remainder routine several times, stores the results into the register block and then calls a drawing routine.
+- `process_ride_queue_entry_3`: The routine walks a queue of ride entries stored in a global table and, for each entry, computes screen coordinates from stored offsets and a base pointer, then calls another routine to test a ride condition or to draw a map overlay depending on a flag.
+- `process_ride_queue_entry_4`: The routine reads a short from a table entry, computes an address from a global variable and a pointer, and if a condition on a global flag holds it copies several values from the table into a register block and calls another routine; otherwise it loads constants into the register block, calls a modular remainder routine several times, stores the results into the register block and then calls a drawing routine.
 - `draw_ride_vehicle_2`: The routine loads a global variable and some offsets, writes several values through a pointer derived from a register, calls another routine, and then iterates over a table of entries, updating fields via pointer arithmetic and calling another routine repeatedly.
 - `process_ride_queue_16`: The routine walks a linked list of ride records using a global table and stack pointers, updates a global variable and local offsets, and for each entry calls another routine to check a ride condition or to compute modular remainders and draw a map overlay.
 - `apply_ride_offset`: The routine reads two short values from offsets 2 and 4 of a pointer in A1, adds the contents of D6 and D7 to them, and passes the resulting values to another routine.
-- `find_ride_object`: The routine checks whether a pointer lies within a global pointer range and then walks a linked list of entries.
+- `find_ride_by_type`: The routine checks whether a pointer lies within a global pointer range and then walks a linked list of entries.
 - `find_ride_by_type_id`: The routine checks a pointer against a global range and then walks a linked list of records using a global table base.
 - `find_ride_entry`: The routine walks a linked list of park objects by following a short offset stored at a fixed distance from the current entry and adding it to a global base address.
 - `find_park_object`: The routine walks a table of park objects by repeatedly adding an offset derived from a short index stored in a global variable to a base address in a global variable, then checks that the object’s two byte fields match two input bytes.
 - `process_ride_object`: The routine processes a ride object entry using a table of ride records.
 - `render_park_object`: The routine processes a park object using a table of offsets.
-- `draw_ride_elements_5`: undescribed.
-- `draw_ride_elements_6`: The routine walks a linked list of five-word entries using a global table base and a count, then for each entry it checks a condition involving a global offset and calls another routine with derived coordinates, storing a field from the entry in a global variable.
+- `iterate_ride_entries_with_condition`: Walks a linked list of five-word ride entries using stored offsets, invoking a ride-condition check with adjusted coordinates and an optional tile mask, or spawning park elements when a flag bit is set.
+- `draw_linked_ride_entries`: The routine walks a linked list of five-word entries using a global table base and a count, then for each entry it checks a condition involving a global offset and calls another routine with derived coordinates, storing a field from the entry in a global variable.
 - `process_ride_queue_17`: The routine walks a linked list of entries using a table base and a counter.
 - `process_park_objects`: The routine checks a global variable and either iterates a table of park objects, updating registers and calling another routine for each entry, or computes two remainders and calls a spawn routine with stack and register values.
 - `process_ride_queue_18`: The routine checks a flag in a global variable and, if set, iterates over a linked list of entries in a table.
-- `process_ride_queue_19`: The routine walks a linked list of entries via a table pointer and a counter.
-- `process_ride_queue_20`: The routine indexes a table with param_1 to obtain a handle, then follows a linked list of entries via a field in each entry.
+- `process_linked_entries`: The routine walks a linked list of entries via a table pointer and a counter.
+- `process_ride_queue_7`: The routine indexes a table with param_1 to obtain a handle, then follows a linked list of entries via a field in each entry.
 - `process_ride_queue_21`: The routine walks a linked list of entries stored in a table.
 - `draw_ride_object_2`: The routine checks a flag in a global variable.
-- `self_5`: The routine checks a set of limits derived from a linked list of records and global values, then selects a value based on comparisons with global thresholds and a byte from the parameter block, and may update globals and invoke another routine via a tail branch.
+- `select_ride_entrance`: Scans a table of ride entrance records to find the one closest to a target position, then adjusts a stored ride state and writes updated data to a related structure based on the ride's type.
 - `find_ride_entrance`: Iterates a linked list of ride structures to compute bounding extents, then checks several global flags and ride state values to decide whether to return early.
-- `play_park_announcement`: The routine contains three instructions and performs no observable work; it ends with a return.
-- `process_ride_queue_22`: The routine clears several fields in a global variable, increments a global counter, and then iterates over a block of memory in fixed-size steps.
-- `process_ride_queue_23`: The routine iterates over a linked list of queue entries via a pointer in A3, reads a byte field to test for a specific value and, when matched, dispatches to another routine based on a second byte field, updates a few byte and short fields in the entry, and then follows a next pointer to the following entry.
-- `self_6`: The routine walks an entity list in a loop, reads a state byte from each entity and dispatches to a different handler routine based on its value, updates a few counters in a global variable and decrements a byte field in the entity.
+- `empty_routine_stub`: The routine contains three instructions and performs no observable work; it ends with a return.
+- `reset_ride_state_and_dispatch_queue`: The routine clears several fields in a global variable, increments a global counter, and then iterates over a block of memory in fixed-size steps.
+- `process_ride_queue_entry_5`: The routine iterates over a linked list of queue entries via a pointer in A3, reads a byte field to test for a specific value and, when matched, dispatches to another routine based on a second byte field, updates a few byte and short fields in the entry, and then follows a next pointer to the following entry.
+- `iterate_entity_state`: The routine walks an entity list in a loop, reads a state byte from each entity and dispatches to a different handler routine based on its value, updates a few counters in a global variable and decrements a byte field in the entity.
 - `process_entity_list`: Iterates over a linked list of entities stored in memory, decrementing a counter field and updating statistics based on a short field, then dispatches each entity to a handler chosen by type and subtype bytes.
-- `process_ride_queue_24`: This routine iterates a linked list of ride entities and dispatches sub-routines based on per-entity type and subtype bytes.
-- `process_ride_queue_25`: The routine increments a counter in a global variable and walks a table of queue entries.
-- `process_ride_queue_26`: Iterates over a linked list of ride queue entries stored at fixed offsets, dispatches each entry to a handler selected by a type byte, and accumulates a counter from a global variable and entry fields.
+- `process_ride_queue_entries`: This routine iterates a linked list of ride entities and dispatches sub-routines based on per-entity type and subtype bytes.
+- `iterate_queue_entries`: The routine increments a counter in a global variable and walks a table of queue entries.
+- `process_ride_queue_entries_2`: Iterates over a linked list of ride queue entries stored at fixed offsets, dispatches each entry to a handler selected by a type byte, and accumulates a counter from a global variable and entry fields.
 - `find_next_ride_object`: The routine walks a linked list of ride objects using a global pointer and a global limit, calling a vehicle processing routine on each entry and dispatching a second routine based on a byte field in the object.
-- `process_ride_queue_27`: The routine walks a linked list of queue entries starting from a pointer in a register, processes each entry by calling another routine, and for entries marked with a specific byte value dispatches to a series of different subroutines based on a type byte.
+- `process_ride_queue_entry_6`: The routine walks a linked list of queue entries starting from a pointer in a register, processes each entry by calling another routine, and for entries marked with a specific byte value dispatches to a series of different subroutines based on a type byte.
 - `iterate_ride_entities`: The routine walks a linked list of ride entities stored in a global table, calling an update routine for each entry and then iterating through a per-entity queue of sub-entries.
 - `find_next_ride_object_2`: The routine walks a linked list of ride objects by repeatedly advancing a pointer by a fixed stride, updating a global counter and a global accumulator each iteration, and dispatching a per-object handler chosen from a byte field in the object.
-- `iterate_ride_list`: The routine walks a linked list of ride entries starting from a global pointer, updates a waiting time for each entry, and processes each entry based on a type byte and a sub-type byte.
-- `find_ride_object_2`: The routine walks a linked list of ride objects, processes each entry with a helper, and dispatches a handler based on a byte field in the object.
-- `find_next_ride_object_3`: The routine walks a linked chain of ride objects by advancing a pointer by a fixed stride, updates a global status each iteration, and returns the first object whose type byte matches a mask derived from a global variable.
+- `iterate_linked_ride_entries`: The routine walks a linked list of ride entries starting from a global pointer, updates a waiting time for each entry, and processes each entry based on a type byte and a sub-type byte.
+- `scan_ride_object_list`: The routine walks a linked list of ride objects, processes each entry with a helper, and dispatches a handler based on a byte field in the object.
+- `scan_ride_entity_chain`: The routine walks a linked chain of ride objects by advancing a pointer by a fixed stride, updates a global status each iteration, and returns the first object whose type byte matches a mask derived from a global variable.
 - `dispatch_ride_action`: Routine reads a byte from a structure pointed to by a register, subtracts two and uses the result as an index into a table of word offsets to obtain a function pointer.
 - `toggle_ride_flags`: The routine toggles a single bit in a series of bytes within a structure pointed to by a register, using a bit index derived from an input register, with a repeated write to one of the bytes.
 - `process_ride_object_2`: The routine reads a byte from an object structure, indexes a global table with the value minus eight and dispatches to one of several update routines by storing the object pointer and a return address on the stack.
-- `process_ride_queue_28`: The routine walks a linked list of queue entries, updates a field from a table using an index stored in the entry, and if a timeout condition is met it calls another routine to adjust statistics and clears a counter.
-- `process_ride_queue_29`: undescribed.
-- `process_ride_queue_30`: The routine iterates over a list of fixed-size entries and, for each entry whose type byte equals a specific value, it checks a sub-type byte and dispatches to another routine based on that sub-type.
-- `process_ride_queue_31`: undescribed.
+- `process_ride_queue_entries_3`: The routine walks a linked list of queue entries, updates a field from a table using an index stored in the entry, and if a timeout condition is met it calls another routine to adjust statistics and clears a counter.
+- `dispatch_ride_queue_entry`: Reads a state byte from a per-instance table and dispatches to the matching handler routine, saving the instance pointer and return address on the stack.
+- `process_ride_queue_entries_4`: The routine iterates over a list of fixed-size entries and, for each entry whose type byte equals a specific value, it checks a sub-type byte and dispatches to another routine based on that sub-type.
+- `update_ride_tile_animation`: Combines two fixed-point multiplications with two stored shorts to compute tile-animation coordinates, then decrements a counter stored at a fixed offset.
 - `update_ride_price_2`: The routine reads a byte from a global variable via a pointer, calls another routine to compute a modular remainder and stores the result into a global variable, then calls two fixed-point multiply routines, calls another routine to set state, and returns a constant.
 - `check_ride_operational`: The routine loops over a small index range using a global variable table to test a flag byte in a table, exiting early if the flag is set.
 - `update_ride_price_3`: The routine updates two price-related bytes in a structure under several conditions, using values produced by another routine.
-- `update_ride_status_3`: undescribed.
-- `process_ride_queue_32`: The routine reads a byte from the stack frame, stores a remainder result, and checks ride availability.
-- `update_ride_status_4`: The routine reads bytes from a table using indices derived from a global variable and a pointer, then conditionally writes a byte and a word from a table into a structure, clears a flag in a byte, calls another routine to modify fixed-point values and updates tile animation, returning a status flag.
+- `update_ride_queue_display`: Decrements a counter and, when it reaches zero, refreshes a ride's queue display by recomputing its price and position.
+- `update_queue_entry`: The routine reads a byte from the stack frame, stores a remainder result, and checks ride availability.
+- `update_ride_flags`: The routine reads bytes from a table using indices derived from a global variable and a pointer, then conditionally writes a byte and a word from a table into a structure, clears a flag in a byte, calls another routine to modify fixed-point values and updates tile animation, returning a status flag.
 - `set_ride_price`: The routine stores a byte from a register through a pointer, loads a 16-bit value from a table indexed by a byte from the pointed structure combined with a byte from a global variable, calls another routine, adds a short from the pointed structure to the result of a fixed-point multiply, and calls another routine for tile animation.
-- `process_animation_frame`: The routine updates fields in a structure pointed to by param_1, decrementing a counter and reloading it via another routine when it reaches zero, then loops checking availability with another routine and writes status bytes and animation indices from tables.
+- `decode_ride_frame`: The routine updates fields in a structure pointed to by param_1, decrementing a counter and reloading it via another routine when it reaches zero, then loops checking availability with another routine and writes status bytes and animation indices from tables.
 - `handle_ride_control_input_2`: The routine reads a byte from a pointer, stores the result of a modular remainder calculation into memory via the pointer, then loops checking ride availability.
-- `process_ride_queue_33`: The routine examines a byte-based record via a pointer, clears a flag bit in one byte, sets a temporary flag, checks ride availability, and if available selects a ride object from a table using a random value and writes selection fields before returning.
-- `select_ride_object`: undescribed.
+- `process_ride_queue_entry_7`: The routine examines a byte-based record via a pointer, clears a flag bit in one byte, sets a temporary flag, checks ride availability, and if available selects a ride object from a table using a random value and writes selection fields before returning.
+- `process_ride_queue_entry_19`: Checks whether stored byte values fall within expected ranges and, when they do, writes a value and a table-derived word, recomputes fixed-point products, and updates tile animation before returning.
 - `set_ride_price_2`: The routine writes a byte from a register through a pointer, loads a 16-bit value from a table indexed by a byte from the pointed structure and a byte from a global variable, calls another routine, stores the result of a fixed-point multiply, adds a 16-bit field from the pointed structure, calls another routine and returns.
 - `process_ride_vehicle`: The routine processes a ride vehicle instance referenced by param_1.
 - `set_ride_price_3`: The routine reads a byte from memory via a pointer, calls another routine to compute a modular remainder and stores the result as a word at an offset from the pointer, copies a byte from a register to another offset from the pointer, and loads a word from a table indexed by a byte from the pointer and a global variable into another offset from the pointer.
-- `check_ride_queue_entry`: undescribed.
+- `process_ride_vehicle_state_3`: Initializes a block of data by clearing several fields, then computes two offset values from a global table using a stored byte and a tile index.
 - `process_ride_vehicle_2`: The routine loops over a small set of entries in a global table, testing a flag byte via a table of pointers, and updates fields in a structure pointed to by a register.
 - `spawn_ride_vehicle`: Searches ride structures for an available object, initializes fields in the ride object and a target structure, updates counters and tile flags, and returns success when conditions are met.
-- `check_ride_queue_entry_2`: undescribed.
-- `self_7`: The routine resolves a ride object reference and selects a ride type index using a global table and random values, then writes several fields into a ride structure and updates animation and price data.
-- `check_ride_availability_3`: undescribed.
+- `update_ride_vehicle_state_4`: Loads a byte from a lookup table using a random value, stores it into a structure, and adjusts several of its fields using fixed-point math and tile animation.
+- `spawn_ride_vehicle_2`: Looks up a ride of a given type and, if none exists, picks a random ride index to spawn a new vehicle.
+- `advance_ride_vehicle_state_3`: Generates a random value, masks it against a caller-supplied limit, and uses it to index a global table to produce a byte that is stored into a structure.
 - `set_ride_config`: The routine calls another routine, then writes a constant byte to an offset in a structure pointed to by an uninitialized pointer, clears a 16-bit field at another offset, and copies a 16-bit value from a table indexed by a byte from the structure and a byte from a global variable into a 16-bit field of the structure.
-- `process_ride_queue_34`: undescribed.
-- `process_ride_queue_35`: The routine iterates over a linked list of entries and, for entries with specific flag bytes, checks a counter field and updates animation and tile data using a global table and arithmetic helpers.
+- `advance_ride_vehicle_state`: Adjusts a stored position value using fixed-point multiplies, then looks up a nearby entry in a table.
+- `process_ride_queue_8`: The routine iterates over a linked list of entries and, for entries with specific flag bytes, checks a counter field and updates animation and tile data using a global table and arithmetic helpers.
 - `process_ride_vehicle_3`: The routine processes one ride vehicle record.
-- `check_ride_availability_4`: Iterates a linked list of structures using base pointers and offsets, loads and compares a byte field from each node and a global variable, computes an index into a global table, reads a byte from that table and writes it to a work structure, then updates a 16-bit field in the work structure from a second table.
+- `check_ride_availability_2`: Iterates a linked list of structures using base pointers and offsets, loads and compares a byte field from each node and a global variable, computes an index into a global table, reads a byte from that table and writes it to a work structure, then updates a 16-bit field in the work structure from a second table.
 - `set_ride_price_4`: The routine calls another routine, then writes a constant byte to an offset in a structure pointed to by an uninitialized register, clears a 16-bit field at another offset, and copies a 16-bit value from a table indexed by a byte from the structure and a byte from a global variable into a 16-bit field of the structure.
 - `set_ride_operation_mode`: The routine reads a byte from a global variable indexed by a stack value and a byte from a structure, tests a bit mask derived from an input word, and computes a new index.
 - `set_ride_vehicle_type`: The routine reads a byte from a global variable via an index derived from D1 and D5, stores it into a byte field of a structure pointed to by A5, loads a 16-bit value from a table using the byte and another byte from the structure as indices, stores it into a 16-bit field of the structure, and sets one of two flag bytes in the structure depending on the byte value.
-- `set_tile_flag`: The routine writes a constant byte value to an offset within a structure pointed to by a register and returns zero.
-- `clear_ride_queue_entry`: undescribed.
+- `set_tile_flag_byte`: The routine writes a constant byte value to an offset within a structure pointed to by a register and returns zero.
+- `update_ride_state_table_2`: Computes an index into a table using a value from the start of a structure and stores the resulting address.
 - `reset_ride_state_4`: The routine checks a byte from D0 and calls another routine if the byte is not equal to the character '4'. It then stores zero to a word at an offset from an address in A5 and stores the value ten to a byte at another offset from the same address.
-- `update_ride_state`: undescribed.
-- `reset_ride_state_5`: undescribed.
-- `check_ride_operational_2`: The routine reads a global variable, masks it with seven, and if the result is zero it sets the variable to one and tests a short value from a table indexed by a word taken from the argument.
+- `normalize_and_update_structure`: Reads a fixed-point value from a structure, normalizes it, and stores a word from a related structure into a field.
+- `apply_ride_state_fields`: Normalizes a fixed-point value and, when it is zero, copies a word from one structure into another.
+- `check_ride_flag_and_update_status`: The routine reads a global variable, masks it with seven, and if the result is zero it sets the variable to one and tests a short value from a table indexed by a word taken from the argument.
 - `process_ride_queue_36`: The routine updates a ride queue structure, decrements a counter and, when the counter reaches zero or underflows, marks the ride as finished and iterates over a global table to find an active entry.
-- `update_ride_status_5`: undescribed.
+- `check_ride_queue_collision_2`: Reads a byte from a structure and stores a normalized fixed-point value alongside it.
 - `check_ride_collision`: The routine computes two differences using a remainder value and a word from a structure, clamps each to a minimum, and sets a flag byte in a structure if either difference is below a byte from another structure.
 - `validate_ride_operation`: Validates an operation record in a structure pointed to by a register.
 - `update_ride_state_2`: The routine reads a short from the ride structure, uses it as an index into a table pointed to by a global variable to fetch another short, writes it back, then if a flag byte derived from that short is set it writes a constant to a byte field and overwrites the short with a value taken from another table indexed by two bytes from the structure and a global variable.
-- `update_ride_status_6`: undescribed.
-- `decrement_ride_counter`: The routine takes an address in A1 and decrements a byte located at a fixed offset from that address.
+- `process_ride_state_update`: Loads a value from a table indexed by a field of the passed structure and stores it back into that field.
+- `decrement_byte_field`: The routine takes an address in A1 and decrements a byte located at a fixed offset from that address.
 - `process_ride_queue_37`: This routine updates a queue structure by loading a value from a table, computing fixed-point positions, updating tile animation, decrementing a counter and possibly calling another routine to update ride state.
-- `update_ride_price_4`: undescribed.
+- `update_ride_rating`: Updates a ride object's rating from the park's overall score, then scans the ride list to find a matching ride of the same type and, if it is of a particular kind, refreshes its state and adjusts its rating.
 - `read_park_rating`: The routine reads a byte from a global variable via a pointer in A5, calls another routine to compute a modular remainder, stores the resulting word into a global variable via the same pointer, and returns the constant one.
-- `process_ride_queue_38`: Iterates over a queue of ride entries using counters and table lookups, updates a byte field from a global variable table and writes a name and type from a table into a ride structure, then updates ride state and a price field before returning.
-- `update_ride_price_5`: The routine mixes a value from a global variable with a random park value, stores a byte from a table into a ride structure, writes a short from a table into the structure based on a flag and an index derived from a byte field, and optionally scans a linked list to update a byte and a short in the structure before calling another routine, adding to a ride stat and returning.
-- `update_ride_price_6`: The routine copies a value from a table indexed by a short from the argument block into a field of a structure pointed to by an argument.
+- `process_ride_queue_10`: Iterates over a queue of ride entries using counters and table lookups, updates a byte field from a global variable table and writes a name and type from a table into a ride structure, then updates ride state and a price field before returning.
+- `update_ride_price_from_table`: The routine mixes a value from a global variable with a random park value, stores a byte from a table into a ride structure, writes a short from a table into the structure based on a flag and an index derived from a byte field, and optionally scans a linked list to update a byte and a short in the structure before calling another routine, adding to a ride stat and returning.
+- `update_ride_price_4`: The routine copies a value from a table indexed by a short from the argument block into a field of a structure pointed to by an argument.
 - `update_ride_price_7`: The routine walks a linked list of records using a next pointer and a base table, comparing several bytes between the current record and a reference record, and updates a byte and a word in the reference record based on a modular remainder computation or a constant.
 - `update_ride_status_7`: The routine reads a byte from a global variable via a pointer in A5, calls a modular remainder routine and stores the 16-bit result into another global variable via the same pointer, then calls the modular remainder routine again, calls another routine to add to a ride statistic, and returns zero.
 - `update_ride_waiting_time`: The routine walks a table of ride structures using a global pointer and a global index, compares a waiting-time byte from each entry with the value stored in the current ride structure, and if the entry’s waiting time is larger it copies that byte and a derived two-byte value into the current ride structure.
 - `set_ride_name_and_type`: The routine updates a global state via another routine, copies a byte from an offset in a structure pointed to by a register to another offset in the same structure, then selects a 16-bit value from either a constant-returning routine or a modular-remainder routine depending on whether the copied byte is zero, stores that value at a further offset in the same structure, and returns a constant.
 - `return_constant_zero`: The routine returns the constant zero.
-- `process_ride_queue_39`: The routine updates a ride queue entry’s animation index from a table and advances a frame counter using fixed-point multiplication, then updates the tile animation.
-- `process_ride_queue_40`: The routine updates a ride entry structure, decrements a counter and refreshes tile animation.
+- `update_ride_animation_frame`: The routine updates a ride queue entry’s animation index from a table and advances a frame counter using fixed-point multiplication, then updates the tile animation.
+- `process_ride_queue_entry_8`: The routine updates a ride entry structure, decrements a counter and refreshes tile animation.
 - `find_ride_object_3`: The routine computes a modular remainder, scans a table of ride objects using a global variable and a stack-based index, and for each candidate checks a flag byte and calls another routine to locate a ride object.
 - `set_ride_speed_7`: The routine reads a byte from a global variable via a pointer in a5, stores it into a local variable, calls another routine to compute a modular remainder, stores the resulting word into a global variable via a pointer in a5, and returns a constant.
-- `update_ride_status_8`: Repeatedly reads bytes from a structure via an index, updates status fields and copies a byte from a global table into a byte field and a word field computed from the table.
+- `process_ride_entries`: Repeatedly reads bytes from a structure via an index, updates status fields and copies a byte from a global table into a byte field and a word field computed from the table.
 - `update_ride_price_8`: The routine reads a byte from a global variable via an index derived from two pointers, masks it with another byte, optionally mixes in a random park value, and then writes the resulting byte back through a pointer.
 - `set_ride_vehicle_type_2`: The routine reads a byte from a global variable table using a masked random value, stores it into a byte field of a structure pointed to by a5, and loads a word from a second table into another field of the same structure using the byte and another byte from the structure as indices.
-- `update_ride_state_3`: The routine updates a ride state structure using values from a global table and another routine, then creates a ride instance and processes ride objects with parameters derived from the structure.
-- `update_ride_vehicle_state`: undescribed.
-- `update_ride_status_9`: The routine reads a byte from an argument structure and calls another routine, stores the result, computes two signed differences from fields in the structure, takes their absolute values, compares them and writes a flag byte based on the comparison, then writes a byte from the structure and a global variable into an index to fetch a word from a table and stores it, returning a status.
-- `set_ride_status_flag`: undescribed.
+- `update_ride_state`: The routine updates a ride state structure using values from a global table and another routine, then creates a ride instance and processes ride objects with parameters derived from the structure.
+- `process_ride_update`: Loads a pointer from a structure field, multiplies it by eight, and stores the resulting address into another field.
+- `update_ride_status`: The routine reads a byte from an argument structure and calls another routine, stores the result, computes two signed differences from fields in the structure, takes their absolute values, compares them and writes a flag byte based on the comparison, then writes a byte from the structure and a global variable into an index to fetch a word from a table and stores it, returning a status.
+- `apply_ride_status_flag`: Compares the absolute value of an unmodified short against another short and stores a computed byte into a structure field.
 - `set_ride_status_flag_2`: The routine receives a pointer in a register and a comparison value.
 - `set_ride_price_5`: The routine checks a short value in a data register.
-- `set_tile_flag_2`: The routine writes a byte to an offset in a structure pointed to by a register and returns a constant.
+- `set_tile_flag`: The routine writes a byte to an offset in a structure pointed to by a register and returns a constant.
 - `copy_ride_price`: The routine copies a 16-bit value from a table indexed by a byte from the structure and a byte from a global variable into a 16-bit field of the structure.
-- `set_ride_status`: undescribed.
+- `locate_ride_by_type`: Searches a table for an entry matching a type derived from two byte fields.
 - `clear_ride_state`: The routine writes a byte value to an offset in a structure pointed to by a register and writes a word zero to another offset in the same structure.
 - `process_ride_queue_41`: The routine looks up a ride object from a packed index in the parameter block, reads a global state value for that object and branches on it.
-- `reset_ride_state_6`: Clears several fields in a ride structure and, depending on a flag, updates statistics or loads values from a table.
+- `reset_ride_state_data`: Clears several fields in a ride structure and, depending on a flag, updates statistics or loads values from a table.
 - `reset_ride_waiting`: The routine calls another routine, then checks a short field via an uninitialized pointer and, if non-zero, calls another routine with a value derived from that field and updates a global variable with the same derived value before clearing the field.
-- `process_ride_waiting`: The routine clears a waiting counter by moving its value to a global accumulator and a global variable, then zeroes the counter.
-- `set_ride_vehicle_type_3`: The routine reads a word from a global table using an index taken from memory pointed to by a register, stores the result into a word at an offset from another register, and writes a constant byte to an offset from a third register.
+- `clear_waiting_stats`: The routine clears a waiting counter by moving its value to a global accumulator and a global variable, then zeroes the counter.
+- `set_vehicle_type_from_table`: The routine reads a word from a global table using an index taken from memory pointed to by a register, stores the result into a word at an offset from another register, and writes a constant byte to an offset from a third register.
 - `reset_ride_state_7`: The routine writes a constant byte value to an offset in a structure pointed to by a register and clears a word at another offset in the same structure.
-- `update_ride_vehicle_state_2`: The routine updates fields of a ride vehicle structure, including a timer, position and animation data, and selects a sprite index from tables using bytes from the structure and a global variable.
-- `update_ride_status_10`: The routine updates ride status fields in a structure pointed to by A5 using offsets from the structure and values from a global variable.
-- `update_ride_status_11`: The routine computes the absolute value of an incoming word and compares it with a limit.
+- `update_ride_vehicle_state`: The routine updates fields of a ride vehicle structure, including a timer, position and animation data, and selects a sprite index from tables using bytes from the structure and a global variable.
+- `update_ride_status_flags`: The routine updates ride status fields in a structure pointed to by A5 using offsets from the structure and values from a global variable.
+- `update_ride_price_5`: The routine computes the absolute value of an incoming word and compares it with a limit.
 - `update_ride_status_12`: The routine updates a status byte in a structure based on a comparison with a threshold, then sets a flag byte and clears a word field.
-- `update_ride_state_4`: The routine updates a ride structure in memory using values from the structure and from a global variable.
-- `update_ride_state_5`: A routine that updates pricing information by calling another routine, copies a byte from an offset in a structure to another offset when a short comparison fails, sets a byte field to 6 or 8 based on a flag in a table indexed by a byte from a structure, optionally sets a flag bit, clears a word field, and loads a word from a table indexed by a byte and a word from a global variable.
+- `update_ride_state_data`: The routine updates a ride structure in memory using values from the structure and from a global variable.
+- `update_ride_state_3`: A routine that updates pricing information by calling another routine, copies a byte from an offset in a structure to another offset when a short comparison fails, sets a byte field to 6 or 8 based on a flag in a table indexed by a byte from a structure, optionally sets a flag bit, clears a word field, and loads a word from a table indexed by a byte and a word from a global variable.
 - `set_ride_config_2`: The routine writes a constant byte to an offset in a structure pointed to by a register, clears a 16-bit field at another offset, and copies a 16-bit value from a table indexed by a byte from the structure and a byte from a global variable into a 16-bit field of the structure.
 - `apply_ride_price_modifier`: The routine uses a pointer in A5 to index a table and writes a 16-bit value into the structure at offset 10, then conditionally overwrites that value with another table entry when a flag bit in the structure is set.
 - `find_ride_entry_2`: The routine walks a table of ride entries and selects a best match based on type and parameters, storing the chosen index and a scaled parameter back into the input structure.
 - `validate_ride_operation_2`: The routine loads a value from a global variable, compares it with a constant, and branches to another routine on mismatch.
 - `update_ride_status_13`: The routine loads a global variable, stores a byte from a register through a pointer, and then calls another routine.
-- `check_ride_operational_3`: The routine loads a value from a global variable, compares it with a constant and branches.
-- `update_ride_price_9`: The routine reads a byte from a global variable, adds a constant, and stores the result back through a pointer.
+- `validate_ride_status_2`: The routine loads a value from a global variable, compares it with a constant and branches.
+- `adjust_ride_price`: The routine reads a byte from a global variable, adds a constant, and stores the result back through a pointer.
 - `handle_ride_selection_3`: The routine loads a ride index from a global variable, computes a modular remainder, validates the ride operation via another routine, and then applies a ride setting or copies a ride object using tail branches.
-- `copy_ride_object`: The routine copies a one-byte flag from a source structure to a destination structure and loads a two-byte value into the destination from a table indexed by the flag and another field in the destination.
-- `copy_ride_object_2`: undescribed.
+- `copy_ride_object_header`: The routine copies a one-byte flag from a source structure to a destination structure and loads a two-byte value into the destination from a table indexed by the flag and another field in the destination.
+- `copy_ride_object_fields`: When two unmodified shorts differ by one it computes a value from them and stores it into a structure field, copying flags and a short to other fields.
 - `copy_ride_settings`: The routine writes a byte from a register to a byte at an offset from a pointer, copies a byte from a source pointer at an offset to the same destination pointer at an offset, stores a word from a register to a word at an offset from the pointer, and returns a constant.
 - `copy_ride_config`: The routine copies a byte from a source address held in a register to a destination address held in a register.
 - `apply_ride_setting`: Iterates over four entries in a table and searches a linked structure for a matching byte.
-- `copy_ride_object_3`: undescribed.
+- `apply_ride_setting_value`: Calls a helper routine twice and compares the results, then computes a value from an unmodified short and stores it into a structure field based on a flag.
 - `copy_ride_object_data`: The routine copies a byte from another routine's argument to a structure via a pointer, conditionally writes a computed byte offset into the structure, and copies a byte and a short from the source to the destination.
 - `copy_ride_object_data_2`: The routine writes a byte from a data register to an offset in a structure pointed to by a pointer in a register, copies a byte from an offset in a structure pointed to by another pointer in a register to an offset in the first structure, stores a word from a data register to an offset in the first structure, and returns a constant.
 - `copy_tile_attributes`: The routine copies a byte from a source address in a2 to a destination address in a5 and then writes a 16-bit value to the destination address in a5.
 - `find_ride_match`: The routine iterates over a small fixed set of entries in a global table and, for each entry, checks a byte field against a stack value.
 - `find_ride_variant`: Iterates over a table of ride entries using an index from a global variable and a stack value, compares a byte field with a register value, and updates several bytes in a structure pointed to by a register with a shifted version of another register value under range checks.
 - `apply_ride_restriction`: The routine iterates over a small index range using a table of short pointers and checks a byte field against an input value.
-- `check_ride_availability_5`: The routine scans a table of ride entries using an index and a pointer derived from a stack value.
+- `check_ride_availability_3`: The routine scans a table of ride entries using an index and a pointer derived from a stack value.
 - `find_ride_entry_3`: The routine searches a table of entries for a matching identifier and a type byte, then copies a byte from the entry to a structure and writes a short value into the structure.
 - `find_ride_entry_4`: Iterates over a small index and a table of ride descriptors to locate a matching entry; on success it copies a byte from the descriptor into a structure, stores a short value from a register, and returns one, otherwise it updates one or two signed-byte fields in a structure with a shifted version of a signed short and returns zero.
-- `self_8`: Iterates a table of ride variants using an index and a pointer, compares a byte field and a two-byte field, and updates a target structure’s bytes and short field when the variant matches.
+- `match_ride_variant`: Iterates a table of ride variants using an index and a pointer, compares a byte field and a two-byte field, and updates a target structure’s bytes and short field when the variant matches.
 - `apply_ride_constraint`: Checks a constraint record against a current value and, when the constraint matches, writes a derived byte into a target structure and copies a flag byte and a short value.
 - `apply_ride_constraint_2`: The routine checks a set of ride objects for a matching type and, when found, writes a signed byte derived from a short input into one of two constraint bytes of a target structure and copies a byte from the object into the target, then returns success; otherwise it continues searching through a linked list of objects and returns failure when the search limit is reached.
 - `find_ride_connection`: The routine walks a linked list of ride objects using a global table and a stack pointer, checks direction bytes and a type byte against a direction value and a connection slot, and on a match writes a direction byte, a type byte and a short value into a ride object structure then returns success; otherwise it continues searching and eventually returns failure.
 - `find_ride_connection_2`: The routine loops over a table of 124-byte entries and checks byte fields at offsets 9,7,12 and a short at offset 2 to find a matching entry.
-- `apply_ride_constraint_3`: The routine walks a linked list of ride objects via a global table and checks a set of byte range constraints against a short value, writing signed byte deltas and copying a byte from the found object into a target structure before returning success.
+- `apply_ride_constraints`: The routine walks a linked list of ride objects via a global table and checks a set of byte range constraints against a short value, writing signed byte deltas and copying a byte from the found object into a target structure before returning success.
 - `find_ride_object_4`: The routine iterates a table indexed by a global offset and compares byte fields against values from the stack and registers, updates signed byte fields with half of a signed offset and writes a small index and the offset back to a structure, returning success when a match is found and zero when the index exceeds three.
-- `decrement_ride_timer`: undescribed.
+- `decrement_animation_counter`: Loads a pointer from a structure field, multiplies it by eight, and stores the address into another field.
 - `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
-- `update_ride_waiting_queue`: undescribed.
-- `update_ride_statistics_3`: undescribed.
+- `update_animation_state`: Loads a pointer from a structure field, multiplies it by eight, and stores the address into another field.
+- `handle_ride_maintenance`: Checks an unmodified short and, when it equals a specific value, adds a shifted value to a structure field and increments a global counter.
 - `apply_ride_maintenance`: The routine checks a condition using a short from d0, a byte at an offset from a1, and a short at an offset from a0.
-- `update_ride_state_6`: The routine updates a byte field in a structure by cycling a small state counter and, when a condition on several fields of the structure and a global variable is met, writes a short value to an offset in the structure, sets a timer byte and the state byte, and returns.
+- `update_ride_state_4`: The routine updates a byte field in a structure by cycling a small state counter and, when a condition on several fields of the structure and a global variable is met, writes a short value to an offset in the structure, sets a timer byte and the state byte, and returns.
 - `resolve_ride_object`: The routine computes an index from a byte in a global table using a value derived from the input, then walks a linked chain of entries in the same table, masking and comparing bytes until a zero result is found.
 - `find_park_object_2`: The routine walks a linked list stored in a global table, using a byte mask to skip entries and a flag to avoid loops.
 - `get_ride_price_index`: The routine computes an index by looking up an object via another routine using a value derived from a global variable and two uninitialized registers, then adds a fixed offset from a global variable to a base derived from a field in the found object.
 - `find_ride_object_5`: The routine walks a linked list of objects using a global variable table and a flag byte, repeatedly calling another routine to test each node until a non-zero result is obtained, then returns a computed offset based on that result and a global base address.
-- `set_ride_state`: The routine writes the two short parameters into the structure pointed to by the first argument at fixed offsets and updates a flag byte at a third offset depending on the values of those parameters.
+- `set_ride_state_flags`: The routine writes the two short parameters into the structure pointed to by the first argument at fixed offsets and updates a flag byte at a third offset depending on the values of those parameters.
 - `update_ride_status_14`: The routine writes an input short to a field in the structure pointed to by a1, and if the value is non-zero it sets a byte flag based on its sign and clears a word field.
 - `process_park_ride`: The routine checks a flag in a global structure and, if set, calls another routine to get a count, then loops that many times calling a routine to obtain an object pointer.
 - `update_ride_object_2`: The routine walks a linked list of ride objects starting from a global pointer, finds the first entry whose name field is empty, marks it as active and initializes several of its fields with values derived from modular remainder calculations, a random park value, and global data.
 - `add_to_ride_stat`: The routine adds a signed 16-bit value to a signed 16-bit field located at a fixed offset from a pointer argument and stores the sum back to that field.
 - `resolve_ride_object_id`: The routine reads a byte from the input structure and, depending on its value, selects an offset into a global table to fetch a word.
-- `copy_ride_price_2`: The routine copies a 16-bit value from a table indexed by a byte from the structure and a byte from a global variable into a 16-bit field of the structure.
-- `set_ride_price_6`: The routine reads a byte from an input structure, scales it to an index, and uses that index to look up a short in a global table.
-- `set_entity_animation_frame`: The routine reads a byte from an entity structure and a word from another structure, adds them, uses the sum as an index into a global table of words, loads the selected word and stores it into a word field of the entity structure.
+- `copy_ride_price_word`: The routine copies a 16-bit value from a table indexed by a byte from the structure and a byte from a global variable into a 16-bit field of the structure.
+- `set_price_from_table`: The routine reads a byte from an input structure, scales it to an index, and uses that index to look up a short in a global table.
+- `set_animation_frame_from_table`: The routine reads a byte from an entity structure and a word from another structure, adds them, uses the sum as an index into a global table of words, loads the selected word and stores it into a word field of the entity structure.
 - `clear_ride_instance`: The routine clears a ride instance structure.
 - `clear_input_buffer`: The routine clears a block of input data by writing zero to each byte of a buffer pointed to by a pointer, after first zeroing a byte at an offset within that buffer and calling another routine to update a ride queue.
 - `draw_ride_vehicle_3`: The routine copies a small block of bytes from a global variable into a stack buffer.
-- `check_ride_access`: The routine reads a ride record via a table index, checks a set of flag conditions on a global variable and on bytes in the record, builds an eight-bit mask by testing per-element flags and linked object data, then conditionally writes a byte into the record and calls another routine to redraw a vehicle, and updates per-object fields by calling find_ride_object and a flag computation routine.
+- `verify_ride_access`: The routine reads a ride record via a table index, checks a set of flag conditions on a global variable and on bytes in the record, builds an eight-bit mask by testing per-element flags and linked object data, then conditionally writes a byte into the record and calls another routine to redraw a vehicle, and updates per-object fields by calling find_ride_object and a flag computation routine.
 - `compute_ride_flags`: The routine uses a global variable to index a table and checks a flag in the referenced entry.
 - `check_ride_operational_status`: This routine checks a ride object identified by an index and a type, using a global variable table and helper routines to locate objects, validate them, and update status bytes and pointers.
-- `apply_ride_maintenance_2`: The routine scans a small set of ride objects using a table of indices and a global base pointer, checks a ride identifier against a table derived from a masked word, and accumulates a bitmask and a counter in stack storage.
-- `self_9`: The routine iterates over a small set of ride objects, selects one with a specific type byte, then walks a table of ride entries to update per-ride fields such as a status byte, a price-related word, and several cached bytes, and finally calls two price-update routines and clears a flag in a global structure.
-- `self_10`: undescribed.
-- `get_ride_name`: The routine reads a 16-bit index from the stack and uses it to index into a global variable, returning the byte at that offset.
+- `update_ride_attributes`: The routine scans a small set of ride objects using a table of indices and a global base pointer, checks a ride identifier against a table derived from a masked word, and accumulates a bitmask and a counter in stack storage.
+- `sync_ride_prices_2`: Scans a repeating block of ride records, skipping any whose type field is zero, then for each matching ride copies a shared price value into its type, price, and cost fields.
+- `sync_ride_prices`: Scans a repeating block of ride records, skipping any whose type field is zero, then for each matching ride copies a shared price value into its price fields and updates its stored price.
+- `return_table_entry_by_index`: The routine reads a 16-bit index from the stack and uses it to index into a global variable, returning the byte at that offset.
 - `update_ride_vehicle_state_3`: The routine updates a ride vehicle state structure by iterating over a small fixed set of indices, locating matching ride objects via another routine, copying and transforming several fields from those objects into a local accumulator and then into the target structure, and finally invoking two price update routines.
 - `validate_ride_object`: The routine checks a set of conditions on data pointed to by a register, using a global table and a global variable, and then conditionally calls another routine to update a price and, in a second branch, calls another routine to update a state and clears a byte via a pointer.
 - `handle_ride_status`: The routine checks a flag in D4 and a value in D1.
 - `handle_ride_crash`: The routine checks a short value loaded into a data register.
 - `update_ride_price_10`: The routine looks up a ride object and walks a two-element chain of related objects using a global table, adjusting an accumulator and a flag while propagating a byte value.
 - `get_ride_state`: The routine indexes a table using param_1 to obtain a byte and a short, checks a flag in the byte and a value in a global variable table, and returns a two-bit value derived from the byte.
-- `set_tile_flag_3`: The routine stores a byte from a register into a byte at an offset from a pointer and sets a global variable to one when a condition on a register holds.
+- `set_tile_flag_2`: The routine stores a byte from a register into a byte at an offset from a pointer and sets a global variable to one when a condition on a register holds.
 - `process_ride_queue_42`: The routine processes an entry in a queue.
-- `self_11`: The routine processes a ride object entry and updates related price data.
+- `update_ride_price_6`: Updates the stored price of a ride entry when its type matches the given one, clearing related flags and resetting associated counters.
 - `update_ride_waiting_time_2`: The routine reads a byte from a table indexed by the parameter, checks a flag in a global structure, then updates a byte in the same structure using values from two tables and writes the result back.
-- `update_ride_waiting_time_3`: The routine updates a byte in a per-object data block using values from a global table and a second table, then calls another routine with a derived index and a computed value.
+- `update_waiting_time`: The routine updates a byte in a per-object data block using values from a global table and a second table, then calls another routine with a derived index and a computed value.
 - `update_ride_state_7`: The routine looks up two ride objects derived from the input index via a global table, clears vehicles if their state byte exceeds a threshold, masks state bytes using table entries, updates a word field from a table indexed by the masked byte and another field, optionally updates prices for the two objects, clears park data for the first object and sets a global flag.
 - `trigger_park_event_3`: The routine calls another routine to remove a ride vehicle and then returns.
 - `remove_ride_vehicle`: The routine looks up a ride object via another routine and, if found and a flag is clear, updates counters in a table and a global variable, then walks a chain of linked objects by repeatedly calling the lookup routine, and writes status bytes and a short value derived from a table into each object before setting a global flag.
-- `draw_ride_vehicle_4`: The routine saves a global variable, selects a ride index and an optional alternate index, computes a screen X and Y using fixed-point multiplies and several globals, then calls another routine to test a condition and, for a specific index range, also calls a drawing routine.
+- `draw_vehicle_with_condition_check`: The routine saves a global variable, selects a ride index and an optional alternate index, computes a screen X and Y using fixed-point multiplies and several globals, then calls another routine to test a condition and, for a specific index range, also calls a drawing routine.
 - `clear_pending_messages`: The routine clears a global variable and then copies two six-byte entries from one table to another and zeroes the source entries.
 - `reset_global_flag`: The routine clears a global variable by storing zero to it and then returns.
 - `load_game_slot`: The routine loads a saved game slot, validates the slot, triggers ride events for the slot, updates park objects and state, saves game slots and resets UI state, returning a status flag.
@@ -503,1488 +535,990 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `find_ride_connection_3`: The routine walks a linked list of structures, checks a flag in a byte field of each structure, and follows connection indices stored in a global table.
 - `check_ride_connection_2`: The routine walks a linked list of ride objects using a global index table and verifies a connection flag between two entries.
 - `update_ride_statistics_4`: The routine walks a linked list of ride objects using a global table and accumulates a value from each node, then writes a byte from a global variable into two structures and calls another routine for each ride object.
-- `self_12`: The routine walks a linked list of ride objects using indices stored in a global table, updates per-ride counters and a UI element, and calls another routine to process each object.
-- `find_ride_connection_4`: Iterates over a small index range and checks byte flags in a table to find a ride connection, then uses another routine to test connectivity and possibly resets a UI element before returning.
+- `validate_ride_connection`: Increments a counter when a given value equals a specific number, then walks through a linked list of ride objects following connection links.
+- `validate_ride_connection_loop`: Iterates over a small index range and checks byte flags in a table to find a ride connection, then uses another routine to test connectivity and possibly resets a UI element before returning.
 - `process_ride_vehicle_4`: The routine loops over a fixed number of entries derived from a byte in a structure, calling another routine for each entry and writing a byte from a table through a computed pointer.
-- `check_ride_access_2`: undescribed.
-- `check_ride_availability_6`: The routine walks a linked list of ride structures and validates each ride's state and map tiles before proceeding.
+- `validate_ride_connection_2`: Walks a table of ride entries checking whether a ride of a given type already exists, returning zero if a matching one is found.
+- `check_ride_availability_4`: The routine walks a linked list of ride structures and validates each ride's state and map tiles before proceeding.
 - `validate_ride_operation_3`: The routine scans a null-terminated list in memory and checks a set of five ride objects for flags and existing objects, returning early on failure.
 - `draw_ride_preview_5`: The routine writes fields in a structure pointed to by a register, loads values from a global variable and a table, calls a modular remainder helper and a price update helper, and conditionally writes additional fields to another structure and a stack area before returning.
-- `update_ride_statistics_5`: undescribed.
-- `update_ride_statistics_6`: undescribed.
-- `update_ride_statistics_7`: undescribed.
-- `process_ride_queue_43`: undescribed.
-- `process_ride_event_2`: undescribed.
-- `update_ride_stats`: undescribed.
-- `increment_ride_counter`: undescribed.
-- `increment_ride_counter_2`: undescribed.
-- `set_park_name`: undescribed.
-- `check_ride_path_collision`: undescribed.
-- `process_ride_vehicle_5`: undescribed.
-- `process_ride_queue_44`: undescribed.
-- `process_ride_vehicle_6`: undescribed.
-- `update_ride_state_8`: undescribed.
-- `update_ride_status_15`: undescribed.
-- `process_ride_state`: undescribed.
-- `set_ride_wait_time`: undescribed.
-- `set_ride_price_7`: undescribed.
-- `reset_ride_state_8`: undescribed.
-- `reset_ride_state_9`: undescribed.
-- `clear_ride_instance_2`: undescribed.
-- `update_ride_waiting_time_4`: undescribed.
-- `process_ride_queue_45`: undescribed.
-- `clear_ride_waiters`: undescribed.
-- `process_ride_vehicle_7`: undescribed.
-- `process_ride_queue_entry`: undescribed.
-- `set_ride_operational_flag`: undescribed.
-- `update_ride_queue_entry`: undescribed.
-- `clear_ride_waiting`: undescribed.
-- `process_ride_vehicle_8`: undescribed.
-- `increment_ride_statistic`: undescribed.
-- `process_ride_queue_46`: undescribed.
-- `process_ride_waiting_2`: undescribed.
-- `process_ride_ticket`: undescribed.
-- `reset_ride_state_10`: undescribed.
-- `clear_ride_objects`: undescribed.
-- `process_ride_vehicle_9`: undescribed.
-- `check_ride_availability_7`: undescribed.
-- `check_ride_status_2`: undescribed.
-- `update_ride_wait_time`: undescribed.
-- `set_ride_state_flags`: undescribed.
-- `update_ride_object_state`: undescribed.
-- `set_ride_price_8`: undescribed.
-- `spawn_ride_entity`: undescribed.
-- `create_ride_vehicle`: undescribed.
-- `increment_ride_counter_3`: undescribed.
-- `increment_ride_counter_4`: undescribed.
-- `increment_ride_counter_5`: undescribed.
-- `increment_ride_counter_6`: undescribed.
-- `spawn_ride_vehicle_2`: undescribed.
-- `decrement_ride_waiting_counters`: undescribed.
-- `decrement_ride_counter_2`: undescribed.
-- `decrement_ride_stats`: undescribed.
-- `decrement_ride_counter_3`: undescribed.
-- `decrement_ride_counter_4`: undescribed.
-- `process_ride_queue_47`: undescribed.
-- `update_ride_status_16`: undescribed.
-- `process_ride_queue_48`: undescribed.
-- `update_ride_state_9`: undescribed.
-- `update_ride_state_10`: undescribed.
-- `set_ride_vehicle_type_4`: undescribed.
-- `update_entity_timer`: undescribed.
-- `set_ride_parameters`: undescribed.
-- `update_ride_object_flags`: undescribed.
-- `update_park_object_state`: undescribed.
-- `self_13`: undescribed.
-- `find_ride_entrance_2`: undescribed.
-- `check_ride_queue`: undescribed.
-- `find_ride_for_guest`: undescribed.
-- `find_ride_object_6`: undescribed.
-- `update_ride_state_11`: undescribed.
-- `update_ride_waiting_queue_2`: undescribed.
-- `write_ride_price`: undescribed.
-- `update_ride_status_17`: undescribed.
-- `process_ride_queue_49`: undescribed.
-- `set_ride_type`: undescribed.
-- `set_ride_option`: undescribed.
-- `set_ride_price_9`: undescribed.
-- `return_constant_zero_2`: undescribed.
-- `find_ride_vehicle`: undescribed.
-- `find_ride_vehicle_2`: undescribed.
-- `find_ride_for_placement`: undescribed.
-- `validate_ride_entry`: undescribed.
-- `process_theme_park_object`: undescribed.
-- `update_ride_object_3`: undescribed.
-- `set_ride_price_10`: undescribed.
-- `update_ride_status_18`: undescribed.
-- `process_ride_queue_50`: undescribed.
-- `check_ride_operation`: undescribed.
-- `process_ride_queue_51`: undescribed.
-- `init_ride_vehicle`: undescribed.
-- `check_ride_availability_8`: undescribed.
-- `process_animation_frame_2`: undescribed.
-- `update_ride_price_11`: undescribed.
-- `update_ride_price_12`: undescribed.
-- `update_theme_park_object`: undescribed.
-- `update_ride_object_flags_2`: undescribed.
-- `update_ride_status_19`: undescribed.
-- `update_ride_instance`: undescribed.
-- `set_ride_price_11`: undescribed.
-- `set_ride_price_12`: undescribed.
-- `set_ride_price_13`: undescribed.
-- `decrement_cooldown_counter`: undescribed.
-- `check_park_open_2`: undescribed.
-- `check_ride_availability_9`: undescribed.
-- `process_ride_queue_52`: undescribed.
-- `process_ride_queue_53`: undescribed.
-- `create_ride_instance`: undescribed.
-- `process_park_visitor`: undescribed.
-- `increment_ride_statistics`: undescribed.
-- `process_ride_queue_54`: undescribed.
-- `process_ride_queue_55`: undescribed.
-- `process_guest_departure`: undescribed.
-- `reset_ride_state_11`: undescribed.
-- `add_ride_object`: undescribed.
-- `populate_ride_list`: undescribed.
-- `update_park_ride_state`: undescribed.
-- `update_ride_status_20`: undescribed.
-- `find_park_object_3`: undescribed.
-- `self_14`: undescribed.
-- `skip_invalid_ride_entry`: undescribed.
-- `handle_ride_control`: undescribed.
-- `draw_ride_preview_6`: undescribed.
-- `draw_ride_preview_7`: undescribed.
-- `draw_ride_preview_8`: undescribed.
-- `reset_park_state_2`: undescribed.
-- `increment_theme_counter`: undescribed.
-- `draw_ride_preview_9`: undescribed.
-- `draw_ride_preview_10`: undescribed.
-- `draw_ride_info_panel`: undescribed.
-- `draw_ride_info_panel_2`: undescribed.
-- `draw_ride_preview_11`: undescribed.
-- `draw_ride_preview_12`: undescribed.
-- `draw_ride_info_panel_3`: undescribed.
-- `draw_ride_info_panel_4`: undescribed.
-- `draw_ride_preview_13`: undescribed.
-- `draw_ride_preview_14`: undescribed.
-- `draw_ride_preview_15`: undescribed.
-- `draw_ride_preview_panel`: undescribed.
-- `draw_ride_preview_16`: undescribed.
-- `draw_ride_preview_17`: undescribed.
-- `draw_ride_info_panel_5`: undescribed.
-- `draw_ride_vehicle_5`: undescribed.
-- `draw_ride_preview_18`: undescribed.
-- `draw_ride_preview_19`: undescribed.
-- `draw_ride_preview_20`: undescribed.
-- `draw_ride_info_panel_6`: undescribed.
-- `draw_park_ride_vehicle`: undescribed.
-- `draw_ride_status_indicators`: undescribed.
-- `draw_ride_preview_21`: undescribed.
-- `draw_ride_info_panel_7`: undescribed.
-- `draw_ride_info_panel_8`: undescribed.
-- `draw_ride_preview_22`: undescribed.
-- `draw_ride_preview_23`: undescribed.
-- `draw_ride_vehicle_6`: undescribed.
-- `draw_ride_preview_24`: undescribed.
-- `draw_ride_preview_25`: undescribed.
-- `draw_ride_preview_26`: undescribed.
-- `draw_ride_preview_27`: undescribed.
-- `draw_ride_preview_28`: undescribed.
-- `draw_ride_preview_29`: undescribed.
-- `draw_ride_preview_30`: undescribed.
-- `draw_ride_preview_31`: undescribed.
-- `draw_ride_preview_32`: undescribed.
-- `draw_ride_preview_33`: undescribed.
-- `draw_ride_preview_34`: undescribed.
-- `draw_ride_info_panel_9`: undescribed.
-- `update_ride_status_21`: undescribed.
-- `draw_ride_info_panel_10`: undescribed.
-- `draw_ride_preview_35`: undescribed.
-- `draw_ride_preview_36`: undescribed.
-- `check_ride_entrance_collision`: undescribed.
-- `reset_ride_state_12`: undescribed.
-- `trigger_park_update`: undescribed.
-- `update_ride_queue_2`: undescribed.
-- `update_ride_queue_3`: undescribed.
-- `update_ride_status_22`: undescribed.
-- `update_ride_vehicle_state_4`: undescribed.
-- `update_ride_state_12`: undescribed.
-- `update_ride_vehicle_state_5`: undescribed.
-- `draw_ride_elements_7`: undescribed.
-- `draw_ride_preview_37`: undescribed.
-- `draw_ride_elements_8`: undescribed.
-- `draw_ride_stats`: undescribed.
-- `draw_ride_vehicle_7`: undescribed.
-- `draw_ride_info_panel_11`: undescribed.
-- `draw_ride_info_panel_12`: undescribed.
-- `draw_ride_info_panel_13`: undescribed.
-- `clear_ride_selection_flag`: undescribed.
-- `check_ride_queue_2`: undescribed.
-- `self_15`: undescribed.
-- `check_ride_operation_2`: undescribed.
-- `check_ride_queue_position`: undescribed.
-- `check_ride_bounds`: undescribed.
-- `reset_ride_state_13`: undescribed.
-- `reset_ride_state_14`: undescribed.
-- `reset_global_state`: undescribed.
-- `reset_park_state_3`: undescribed.
-- `reset_ride_state_15`: undescribed.
-- `handle_park_event`: undescribed.
-- `update_park_rating`: undescribed.
-- `handle_text_input`: undescribed.
-- `set_palette_mask`: undescribed.
-- `clear_ride_flag_2`: undescribed.
-- `set_palette_entry`: undescribed.
-- `decrement_counter`: undescribed.
-- `increment_counter_if_needed`: undescribed.
-- `return_error_code`: undescribed.
-- `return_true_flag`: undescribed.
-- `shift_string_left`: undescribed.
-- `shift_string_right`: undescribed.
-- `remove_character_from_name`: undescribed.
-- `decrement_ride_waiting`: undescribed.
-- `insert_character_into_name`: undescribed.
-- `decrement_stack_pointer`: undescribed.
-- `handle_ui_control_input`: undescribed.
-- `reset_park_state_4`: undescribed.
-- `self_16`: undescribed.
-- `render_ride_vehicle`: undescribed.
-- `update_ride_status_23`: undescribed.
-- `update_ride_vehicle_positions`: undescribed.
-- `update_ride_vehicle_positions_2`: undescribed.
-- `update_ride_status_24`: undescribed.
-- `update_ride_car_positions`: undescribed.
-- `update_ride_vehicle_positions_3`: undescribed.
-- `update_ride_vehicle_positions_4`: undescribed.
-- `update_ride_vehicle_positions_5`: undescribed.
-- `render_text_in_box`: undescribed.
-- `render_text_string`: undescribed.
-- `process_ride_queue_56`: undescribed.
-- `render_text_line`: undescribed.
-- `render_text_line_2`: undescribed.
-- `draw_ride_path_segment`: undescribed.
-- `render_text_line_3`: undescribed.
-- `draw_ride_name`: undescribed.
-- `draw_text_line`: undescribed.
-- `self_17`: undescribed.
-- `render_ride_name`: undescribed.
-- `draw_ride_rectangle`: undescribed.
-- `initialize_theme_park`: undescribed.
-- `apply_tile_transform`: undescribed.
-- `draw_park_object`: undescribed.
-- `draw_ride_preview_38`: undescribed.
-- `draw_park_area`: undescribed.
-- `draw_tile_rect`: undescribed.
-- `draw_tile_quad`: undescribed.
-- `draw_ride_elements_9`: undescribed.
-- `compute_tile_delta`: undescribed.
-- `compare_ride_attribute`: undescribed.
-- `compare_two_values`: undescribed.
-- `compare_entity_heights`: undescribed.
-- `compare_entity_heights_2`: undescribed.
-- `clear_ride_building_flag`: undescribed.
-- `self_18`: undescribed.
-- `draw_ride_element_2`: undescribed.
-- `set_ride_price_14`: undescribed.
-- `render_text_string_2`: undescribed.
-- `calculate_string_width`: undescribed.
-- `draw_amusement_map`: undescribed.
-- `draw_ride_preview_39`: undescribed.
-- `update_ride_statistics_8`: undescribed.
-- `process_ride_queue_57`: undescribed.
-- `set_ride_parameter`: undescribed.
-- `find_ride_entry_5`: undescribed.
-- `write_park_ride_data`: undescribed.
-- `check_park_closed_flag`: undescribed.
-- `show_message_box`: undescribed.
-- `self_19`: undescribed.
-- `find_object_by_type`: undescribed.
-- `update_ride_queue_display`: undescribed.
-- `fill_ride_queue_slots`: undescribed.
-- `count_ride_stats`: undescribed.
-- `reset_ride_queue_slots`: undescribed.
-- `count_ride_types_and_mark`: undescribed.
-- `count_ride_vehicles`: undescribed.
-- `place_ride_objects`: undescribed.
-- `process_ride_queue_58`: undescribed.
-- `populate_ride_queue`: undescribed.
-- `set_ride_status_flags`: undescribed.
-- `set_ride_state_flags_2`: undescribed.
-- `fill_ride_object_flags`: undescribed.
-- `fill_ride_flags`: undescribed.
-- `wrap_text_to_width`: undescribed.
-- `init_game_state`: undescribed.
-- `reset_game_state_5`: undescribed.
-- `self_20`: undescribed.
-- `create_ride_instance_2`: undescribed.
-- `increment_ride_waiting`: undescribed.
-- `process_ride_instance`: undescribed.
-- `decrement_ride_waiting_2`: undescribed.
-- `clear_ride_queue_entry_2`: undescribed.
-- `update_ride_configuration`: undescribed.
-- `draw_ride_vehicle_8`: undescribed.
-- `render_ride_queue`: undescribed.
-- `spawn_ride_vehicle_3`: undescribed.
-- `find_ride_object_7`: undescribed.
-- `self_21`: undescribed.
-- `check_ride_availability_10`: undescribed.
-- `find_ride_vehicle_3`: undescribed.
-- `find_ride_vehicle_4`: undescribed.
-- `process_ride_queue_59`: undescribed.
-- `process_ride_queue_60`: undescribed.
-- `process_ride_queue_61`: undescribed.
-- `spawn_ride_vehicle_4`: undescribed.
-- `set_ride_vehicle_type_5`: undescribed.
-- `process_ride_queue_62`: undescribed.
-- `process_ride_chain`: undescribed.
-- `skip_ride_chain`: undescribed.
-- `update_ride_state_13`: undescribed.
-- `clear_ride_flags`: undescribed.
-- `process_ride_queue_63`: undescribed.
-- `process_ride_waiting_3`: undescribed.
-- `update_ride_status_25`: undescribed.
-- `clear_ride_maintenance`: undescribed.
-- `find_next_ride_2`: undescribed.
-- `update_ride_price_13`: undescribed.
-- `update_ride_waiting_time_5`: undescribed.
-- `update_ride_vehicle_state_6`: undescribed.
-- `self_22`: undescribed.
-- `update_ride_waiting_queue_3`: undescribed.
-- `update_ride_waiting_queue_4`: undescribed.
-- `update_ride_queue_position`: undescribed.
-- `process_ride_queue_entry_2`: undescribed.
-- `update_ride_queue_position_3`: undescribed.
-- `process_ride_queue_64`: undescribed.
-- `process_ride_queue_entry_3`: undescribed.
-- `skip_invalid_trigger`: undescribed.
-- `update_ride_queue_entry_2`: undescribed.
-- `self_23`: undescribed.
-- `update_ride_state_14`: undescribed.
-- `update_ride_availability`: undescribed.
-- `validate_ride_entry_2`: undescribed.
-- `validate_ride_constraints`: undescribed.
-- `validate_ride_queue`: undescribed.
-- `validate_ride_entry_3`: undescribed.
-- `validate_ride_access`: undescribed.
-- `validate_ride_constraints_2`: undescribed.
-- `update_ride_status_26`: undescribed.
-- `update_ride_queue_4`: undescribed.
-- `update_ride_object_flags_3`: undescribed.
-- `draw_ride_vehicle_9`: undescribed.
-- `update_ride_object_flags_4`: undescribed.
-- `apply_ride_costume`: undescribed.
-- `process_ride_queue_65`: undescribed.
-- `update_ride_status_27`: undescribed.
-- `check_ride_availability_11`: undescribed.
-- `update_ride_vehicle_state_7`: undescribed.
-- `process_ride_queue_66`: undescribed.
-- `process_ride_queue_67`: undescribed.
-- `process_ride_prices`: undescribed.
-- `process_ride_queue_68`: undescribed.
-- `check_ride_path`: undescribed.
-- `self_24`: undescribed.
-- `check_ride_path_2`: undescribed.
-- `find_ride_connection_5`: undescribed.
-- `handle_ride_queue`: undescribed.
-- `self_25`: undescribed.
-- `draw_park_object_2`: undescribed.
-- `return_magic_constant`: undescribed.
-- `update_ride_status_28`: undescribed.
-- `check_ride_condition`: undescribed.
-- `return_zero`: undescribed.
-- `update_ride_status_29`: undescribed.
-- `update_ride_status_30`: undescribed.
-- `update_ride_waiting_time_6`: undescribed.
-- `update_ride_status_31`: undescribed.
-- `update_ride_status_32`: undescribed.
-- `process_ride_queue_69`: undescribed.
-- `process_ride_queue_70`: undescribed.
-- `process_ride_queue_71`: undescribed.
-- `process_ride_queue_72`: undescribed.
-- `update_ride_instance_2`: undescribed.
-- `process_ride_queue_73`: undescribed.
-- `process_ride_queue_74`: undescribed.
-- `process_ride_queue_75`: undescribed.
-- `find_next_ride_3`: undescribed.
-- `find_ride_object_8`: undescribed.
-- `find_ride_object_9`: undescribed.
-- `set_object_flags`: undescribed.
-- `set_ride_state_2`: undescribed.
-- `process_ride_queue_76`: undescribed.
-- `set_ride_price_15`: undescribed.
-- `set_ride_price_16`: undescribed.
-- `update_ride_state_15`: undescribed.
-- `set_ride_status_2`: undescribed.
-- `update_ride_status_33`: undescribed.
-- `process_ride_queue_77`: undescribed.
-- `update_ride_status_34`: undescribed.
-- `update_ride_status_35`: undescribed.
-- `set_ride_status_3`: undescribed.
-- `set_ride_price_17`: undescribed.
-- `advance_ride_carriage`: undescribed.
-- `find_ride_exit`: undescribed.
-- `find_ride_exit_2`: undescribed.
-- `find_ride_exit_3`: undescribed.
-- `check_ride_availability_12`: undescribed.
-- `find_ride_connection_6`: undescribed.
-- `self_26`: undescribed.
-- `validate_ride_statistics`: undescribed.
-- `test_ride_safety_flags`: undescribed.
-- `process_ride_queue_78`: undescribed.
-- `self_27`: undescribed.
-- `decrement_ride_wait_counter`: undescribed.
-- `update_ride_wait`: undescribed.
-- `check_ride_availability_13`: undescribed.
-- `check_park_closed`: undescribed.
-- `process_ride_queue_79`: undescribed.
-- `update_ride_status_36`: undescribed.
-- `update_ride_status_37`: undescribed.
-- `update_ride_price_14`: undescribed.
-- `self_28`: undescribed.
-- `calculate_ticket_price`: undescribed.
-- `update_ride_vehicle_state_8`: undescribed.
-- `update_ride_status_38`: undescribed.
-- `update_ride_status_39`: undescribed.
-- `update_ride_status_40`: undescribed.
-- `update_park_object_state_2`: undescribed.
-- `set_ride_price_18`: undescribed.
-- `update_ride_status_41`: undescribed.
-- `update_ride_status_42`: undescribed.
-- `update_ride_state_16`: undescribed.
-- `update_ride_status_43`: undescribed.
-- `find_nearest_ride_exit`: undescribed.
-- `update_ride_status_44`: undescribed.
-- `update_ride_status_45`: undescribed.
-- `update_ride_state_17`: undescribed.
-- `update_ride_status_46`: undescribed.
-- `copy_byte_to_offset`: undescribed.
-- `update_ride_status_47`: undescribed.
-- `update_ride_status_48`: undescribed.
-- `update_ride_instance_3`: undescribed.
-- `update_ride_object_state_2`: undescribed.
-- `update_ride_state_18`: undescribed.
-- `update_ride_state_19`: undescribed.
-- `set_ride_price_19`: undescribed.
-- `run_game_loop_5`: undescribed.
-- `update_ride_state_20`: undescribed.
-- `update_ride_waiting_list`: undescribed.
-- `update_ride_state_21`: undescribed.
-- `update_ride_status_49`: undescribed.
-- `process_ride_object_3`: undescribed.
-- `write_park_name_line`: undescribed.
-- `create_ride_instance_3`: undescribed.
-- `find_next_free_ride_slot`: undescribed.
-- `spawn_ride_vehicle_5`: undescribed.
-- `update_ride_waiting_time_7`: undescribed.
-- `increment_ride_wait_counter`: undescribed.
-- `check_ride_status_3`: undescribed.
-- `update_ride_status_50`: undescribed.
-- `update_ride_status_51`: undescribed.
-- `update_ride_status_52`: undescribed.
-- `update_ride_statistics_9`: undescribed.
-- `update_ride_statistics_10`: undescribed.
-- `update_ride_statistics_11`: undescribed.
-- `update_ride_statistics_12`: undescribed.
-- `update_ride_statistics_13`: undescribed.
-- `update_ride_statistics_14`: undescribed.
-- `update_ride_statistics_15`: undescribed.
-- `update_ride_statistics_16`: undescribed.
-- `update_ride_statistics_17`: undescribed.
-- `update_ride_statistics_18`: undescribed.
-- `update_ride_statistics_19`: undescribed.
-- `update_ride_waiting_times`: undescribed.
-- `process_ride_queue_80`: undescribed.
-- `process_ride_queue_81`: undescribed.
-- `process_ride_queue_82`: undescribed.
-- `process_ride_queue_83`: undescribed.
-- `find_next_ride_4`: undescribed.
-- `find_ride_by_id`: undescribed.
-- `find_ride_attraction`: undescribed.
-- `process_ride_queue_84`: undescribed.
-- `process_ride_queue_85`: undescribed.
-- `self_29`: undescribed.
-- `select_random_ride`: undescribed.
-- `process_ride_queue_86`: undescribed.
-- `process_ride_queue_87`: undescribed.
-- `process_ride_queue_88`: undescribed.
-- `process_ride_queue_89`: undescribed.
-- `process_ride_queue_90`: undescribed.
-- `draw_park_object_3`: undescribed.
-- `apply_ride_stats_to_display`: undescribed.
-- `process_ride_queue_91`: undescribed.
-- `process_ride_queue_92`: undescribed.
-- `self_30`: undescribed.
-- `draw_text_box`: undescribed.
-- `format_ride_queue_text`: undescribed.
-- `get_object_data_ptr`: undescribed.
-- `init_game_state_2`: undescribed.
-- `update_ride_statistics_20`: undescribed.
-- `update_ride_waiting_stats`: undescribed.
-- `process_theme_script`: undescribed.
-- `process_menu_command`: undescribed.
-- `process_ride_queue_93`: undescribed.
-- `draw_ride_sign`: undescribed.
-- `spawn_park_object`: undescribed.
-- `update_ride_statistics_21`: undescribed.
-- `draw_ride_preview_40`: undescribed.
-- `draw_ride_info_panel_14`: undescribed.
-- `draw_ride_preview_41`: undescribed.
-- `reset_park_objects`: undescribed.
-- `update_ride_status_53`: undescribed.
-- `process_park_maintenance`: undescribed.
-- `process_dialogue_script`: undescribed.
-- `process_park_maintenance_2`: undescribed.
-- `parse_ride_script`: undescribed.
-- `reset_ride_statistics`: undescribed.
-- `process_park_finances`: undescribed.
-- `process_ride_queue_94`: undescribed.
-- `process_ride_queue_95`: undescribed.
-- `process_ride_queue_96`: undescribed.
-- `process_park_entities`: undescribed.
-- `process_ride_queue_97`: undescribed.
-- `self_31`: undescribed.
-- `reset_ride_state_16`: undescribed.
-- `wait_for_vblank_and_load`: undescribed.
-- `update_ride_bounding_box`: undescribed.
-- `set_game_speed_2`: undescribed.
-- `process_ride_queue_98`: undescribed.
-- `process_message_queue`: undescribed.
-- `process_ride_queue_99`: undescribed.
-- `process_message_queue_2`: undescribed.
-- `draw_ride_preview_42`: undescribed.
-- `render_park_view`: undescribed.
-- `draw_ride_queue`: undescribed.
-- `process_ride_queue_100`: undescribed.
-- `process_ride_queue_101`: undescribed.
-- `update_ride_statistics_22`: undescribed.
-- `reset_ride_state_17`: undescribed.
-- `handle_ride_event_2`: undescribed.
-- `handle_ride_event_3`: undescribed.
-- `process_ride_event_3`: undescribed.
-- `process_ride_queue_102`: undescribed.
-- `reset_game_state_6`: undescribed.
-- `reset_game_state_7`: undescribed.
-- `handle_game_input_loop`: undescribed.
-- `check_ride_collision_2`: undescribed.
-- `process_input_field`: undescribed.
-- `handle_ride_collision`: undescribed.
-- `check_ride_collision_3`: undescribed.
-- `check_ride_collision_4`: undescribed.
-- `trigger_park_event_4`: undescribed.
-- `init_park_stock`: undescribed.
-- `render_ride_preview_2`: undescribed.
-- `update_ride_status_54`: undescribed.
-- `update_ride_statistics_23`: undescribed.
-- `update_ride_status_55`: undescribed.
-- `draw_ride_queue_2`: undescribed.
-- `process_ride_queue_103`: undescribed.
-- `process_ride_queue_104`: undescribed.
-- `draw_ride_info_panel_15`: undescribed.
-- `update_ride_vehicle_state_9`: undescribed.
-- `handle_ride_queue_2`: undescribed.
-- `set_ride_price_and_check`: undescribed.
-- `handle_park_boundary_exit`: undescribed.
-- `handle_park_exit`: undescribed.
-- `reset_ride_state_18`: undescribed.
-- `reset_park_state_5`: undescribed.
-- `reset_ride_state_19`: undescribed.
-- `draw_ride_element_3`: undescribed.
-- `render_ride_queue_2`: undescribed.
-- `draw_ride_element_4`: undescribed.
-- `init_theme_park`: undescribed.
-- `draw_ride_preview_43`: undescribed.
-- `draw_ride_preview_44`: undescribed.
-- `animate_ride_vehicle`: undescribed.
-- `draw_ride_preview_45`: undescribed.
-- `run_ride_simulation`: undescribed.
-- `draw_ride_preview_46`: undescribed.
-- `run_ride_preview`: undescribed.
-- `run_building_screen`: undescribed.
-- `update_park_statistics`: undescribed.
-- `draw_ride_preview_47`: undescribed.
-- `set_active_ride`: undescribed.
-- `set_park_name_2`: undescribed.
-- `draw_park_statistics`: undescribed.
-- `render_map_label`: undescribed.
-- `render_ride_preview_3`: undescribed.
-- `process_ride_queue_105`: undescribed.
-- `check_ride_input`: undescribed.
-- `set_park_visibility_flag`: undescribed.
-- `draw_park_overview`: undescribed.
-- `set_ride_visibility_flag`: undescribed.
-- `assign_ride_to_employee`: undescribed.
-- `process_ride_queue_106`: undescribed.
-- `update_ride_statistics_24`: undescribed.
-- `process_park_visitor_2`: undescribed.
-- `process_ride_queue_107`: undescribed.
-- `process_ride_queue_108`: undescribed.
-- `reset_ride_state_20`: undescribed.
-- `reset_park_state_6`: undescribed.
-- `reset_ride_queue`: undescribed.
-- `process_ride_queue_109`: undescribed.
-- `decrement_ride_wait_times`: undescribed.
-- `update_ride_waiting_times_2`: undescribed.
-- `update_ride_vehicle_state_10`: undescribed.
-- `update_ride_vehicle_state_11`: undescribed.
-- `update_ride_statistics_25`: undescribed.
-- `update_ride_statistics_26`: undescribed.
-- `update_ride_vehicle_state_12`: undescribed.
-- `update_ride_statistics_27`: undescribed.
-- `find_ride_by_type`: undescribed.
-- `find_valid_ride`: undescribed.
-- `load_theme_park_data`: undescribed.
-- `load_end_game_bitmap`: undescribed.
-- `load_end_screen`: undescribed.
-- `wait_for_input_timeout`: undescribed.
-- `render_building_sprite`: undescribed.
-- `update_ride_waiting_queue_5`: undescribed.
-- `update_ride_waiting_time_8`: undescribed.
-- `update_ride_statistics_28`: undescribed.
-- `update_ride_waiting_time_9`: undescribed.
-- `clamp_ride_waiting_time`: undescribed.
-- `clamp_ride_height_limits`: undescribed.
-- `update_ride_wait_time_2`: undescribed.
-- `clamp_ride_waiting_time_2`: undescribed.
-- `handle_park_event_2`: undescribed.
-- `create_ride_instance_4`: undescribed.
-- `init_ride_object`: undescribed.
-- `set_ride_price_20`: undescribed.
-- `update_ride_instance_4`: undescribed.
-- `check_ride_collision_5`: undescribed.
-- `find_ride_by_type_2`: undescribed.
-- `self_32`: undescribed.
-- `process_ride_queue_110`: undescribed.
-- `set_ride_price_21`: undescribed.
-- `validate_ride_entry_4`: undescribed.
-- `self_33`: undescribed.
-- `set_ride_price_22`: undescribed.
-- `process_ride_queue_111`: undescribed.
-- `process_ride_queue_112`: undescribed.
-- `set_ride_operating_mode`: undescribed.
-- `self_34`: undescribed.
-- `update_ride_stats_2`: undescribed.
-- `clear_ride_flag_3`: undescribed.
-- `increment_ride_waiting_2`: undescribed.
-- `set_tile_type`: undescribed.
-- `check_ride_status_4`: undescribed.
-- `update_ride_status_56`: undescribed.
-- `process_ride_vehicle_10`: undescribed.
-- `check_ride_operational_4`: undescribed.
-- `set_ride_price_23`: undescribed.
-- `update_animation_frame`: undescribed.
-- `update_ride_price_15`: undescribed.
-- `update_ride_animation`: undescribed.
-- `update_ride_state_22`: undescribed.
-- `check_ride_status_5`: undescribed.
-- `update_ride_status_57`: undescribed.
-- `update_ride_status_58`: undescribed.
-- `update_ride_status_59`: undescribed.
-- `update_ride_statistics_29`: undescribed.
-- `set_animation_frame`: undescribed.
-- `decrement_animation_counter`: undescribed.
-- `skip_animation_frame`: undescribed.
-- `draw_ride_preview_48`: undescribed.
-- `reset_ride_parameters`: undescribed.
-- `draw_ride_preview_49`: undescribed.
-- `draw_ride_preview_50`: undescribed.
-- `self_35`: undescribed.
-- `rotate_string_substring`: undescribed.
-- `draw_ride_element_5`: undescribed.
-- `draw_ride_vehicle_10`: undescribed.
-- `check_ride_state`: undescribed.
-- `dispatch_theme_park_event`: undescribed.
-- `return_early_exit`: undescribed.
-- `gameplay_scene_end`: undescribed.
-- `build_park_object_key`: undescribed.
-- `wait_for_blitter_and_clear_screen`: undescribed.
-- `spawn_park_elements`: undescribed.
-- `handle_ui_event`: undescribed.
-- `unknown_function`: undescribed.
-- `save_game_slots`: undescribed.
-- `patch_ride_configurations`: undescribed.
-- `init_theme_park_data`: undescribed.
-- `reset_park_state_7`: undescribed.
-- `find_ride_entrance_3`: undescribed.
-- `set_ride_status_flags_2`: undescribed.
-- `compute_ride_waiting_time`: undescribed.
-- `render_ride_preview_4`: undescribed.
-- `draw_ride_object_3`: undescribed.
-- `load_sound_tables`: undescribed.
-- `update_ride_status_60`: undescribed.
-- `update_ride_waiting_time_10`: undescribed.
-- `update_ride_status_61`: undescribed.
-- `update_ride_queue_position_2`: undescribed.
-- `update_ride_price_16`: undescribed.
-- `update_ride_waiting_time_11`: undescribed.
-- `update_ride_waiting_time_12`: undescribed.
-- `update_ride_stats_3`: undescribed.
-- `apply_ride_rating_modifier`: undescribed.
-- `calculate_ride_price`: undescribed.
-- `calculate_ride_rating`: undescribed.
-- `update_ride_price_17`: undescribed.
-- `update_ride_stats_4`: undescribed.
-- `calculate_ride_rating_2`: undescribed.
-- `update_ride_waiting_time_13`: undescribed.
-- `update_ride_waiting_time_14`: undescribed.
-- `update_ride_waiting_time_15`: undescribed.
-- `update_ride_waiting_time_16`: undescribed.
-- `update_ride_statistics_30`: undescribed.
-- `update_ride_status_62`: undescribed.
-- `update_ride_wait_time_3`: undescribed.
-- `calculate_ride_price_2`: undescribed.
-- `evaluate_ride_waiting_time`: undescribed.
-- `set_ride_status_4`: undescribed.
-- `set_ride_status_5`: undescribed.
-- `set_ride_wait_time_2`: undescribed.
-- `set_ride_price_24`: undescribed.
-- `set_ride_parameters_2`: undescribed.
-- `check_ride_queue_wait`: undescribed.
-- `set_ride_status_6`: undescribed.
-- `set_ride_status_flags_3`: undescribed.
-- `set_ride_wait_time_3`: undescribed.
-- `set_ride_wait_time_4`: undescribed.
-- `set_ride_price_25`: undescribed.
-- `set_ride_parameters_3`: undescribed.
-- `check_ride_queue_wait_2`: undescribed.
-- `set_ride_status_icon`: undescribed.
-- `set_ride_status_7`: undescribed.
-- `set_guest_sprite_type`: undescribed.
-- `set_ride_status_8`: undescribed.
-- `set_ride_status_9`: undescribed.
-- `set_ride_status_10`: undescribed.
-- `set_ride_speed_limit`: undescribed.
-- `set_ride_price_26`: undescribed.
-- `set_ride_price_27`: undescribed.
-- `process_ride_vehicle_11`: undescribed.
-- `update_ride_vehicle_position`: undescribed.
-- `update_ride_vehicle_position_2`: undescribed.
-- `update_ride_statistics_31`: undescribed.
-- `update_ride_statistics_32`: undescribed.
-- `reset_ride_instance`: undescribed.
-- `draw_ride_preview_51`: undescribed.
-- `draw_ride_preview_52`: undescribed.
-- `draw_loading_message`: undescribed.
-- `initialize_ride_ride`: undescribed.
-- `init_game_state_3`: undescribed.
-- `check_ride_queue_collision`: undescribed.
-- `check_ride_eligibility_2`: undescribed.
-- `draw_ride_preview_53`: undescribed.
-- `draw_ride_preview_54`: undescribed.
-- `draw_ride_preview_55`: undescribed.
-- `draw_park_overview_2`: undescribed.
-- `draw_ride_preview_56`: undescribed.
-- `reset_ride_state_21`: undescribed.
-- `update_ride_waiting_state`: undescribed.
-- `decrement_ride_wait_time`: undescribed.
-- `clear_ride_flag_4`: undescribed.
-- `update_ride_statistics_33`: undescribed.
-- `update_ride_statistics_34`: undescribed.
-- `update_ride_statistics_35`: undescribed.
-- `update_ride_statistics_36`: undescribed.
-- `unreachable_stub`: undescribed.
-- `draw_aglobe_background`: undescribed.
-- `handle_ride_queue_interaction`: undescribed.
-- `render_ride_info_panel`: undescribed.
-- `return_immediately`: undescribed.
-- `format_number_string`: undescribed.
-- `draw_ride_preview_57`: undescribed.
-- `draw_ride_sprite`: undescribed.
-- `draw_park_tile`: undescribed.
-- `draw_ride_preview_58`: undescribed.
-- `draw_ride_preview_59`: undescribed.
-- `render_ride_preview_5`: undescribed.
-- `process_ride_queue_113`: undescribed.
-- `process_ride_queue_114`: undescribed.
-- `handle_ride_interaction_2`: undescribed.
-- `set_ride_price_28`: undescribed.
-- `set_ride_price_29`: undescribed.
-- `set_ride_price_30`: undescribed.
-- `process_ride_interaction`: undescribed.
-- `process_ride_queue_115`: undescribed.
-- `self_36`: undescribed.
-- `process_ride_queue_116`: undescribed.
-- `handle_ride_queue_3`: undescribed.
-- `process_ride_queue_117`: undescribed.
-- `process_ride_queue_118`: undescribed.
-- `process_park_object_list`: undescribed.
-- `trigger_park_event_5`: undescribed.
-- `set_ride_speed_limit_2`: undescribed.
-- `update_ride_state_23`: undescribed.
-- `draw_ride_preview_60`: undescribed.
-- `copy_ride_data_to_stack`: undescribed.
-- `copy_ride_data_to_stack_2`: undescribed.
-- `copy_ride_data_to_stack_3`: undescribed.
-- `copy_ride_data_4`: undescribed.
-- `copy_ride_config_data`: undescribed.
-- `update_ride_statistics_37`: undescribed.
-- `draw_ride_track_segment`: undescribed.
-- `update_ride_queue_5`: undescribed.
-- `render_ride_preview_6`: undescribed.
-- `render_ride_preview_7`: undescribed.
-- `process_ride_queue_119`: undescribed.
-- `draw_park_text`: undescribed.
-- `process_ride_queue_120`: undescribed.
-- `draw_park_object_4`: undescribed.
-- `update_ride_status_indicators`: undescribed.
-- `draw_ride_preview_61`: undescribed.
-- `draw_ride_preview_62`: undescribed.
-- `render_ride_preview_8`: undescribed.
-- `draw_ride_preview_63`: undescribed.
-- `process_ride_queue_121`: undescribed.
-- `update_park_state`: undescribed.
-- `save_game_state`: undescribed.
-- `reset_display_dma`: undescribed.
-- `disable_interrupt_mask`: undescribed.
-- `process_ride_queue_122`: undescribed.
-- `handle_park_event_3`: undescribed.
-- `process_ride_queue_123`: undescribed.
-- `dispatch_game_event`: undescribed.
-- `find_free_script_slot`: undescribed.
-- `clear_ride_flag_5`: undescribed.
-- `clamp_minimum_value`: undescribed.
-- `process_ride_queue_124`: undescribed.
-- `mask_low_bits`: undescribed.
-- `get_ride_price_index_2`: undescribed.
-- `process_ride_queue_125`: undescribed.
-- `process_ride_queue_126`: undescribed.
-- `copy_tile_row`: undescribed.
-- `increment_ride_counter_7`: undescribed.
-- `self_37`: undescribed.
-- `write_ride_object`: undescribed.
-- `process_ride_queue_127`: undescribed.
-- `set_ride_flag`: undescribed.
-- `wait_for_park_open`: undescribed.
-- `wait_for_input_event_3`: undescribed.
-- `read_park_data`: undescribed.
-- `clear_ride_flag_6`: undescribed.
-- `check_ride_status_6`: undescribed.
-- `copy_name_to_buffer`: undescribed.
-- `process_ride_queue_128`: undescribed.
-- `clear_ride_data`: undescribed.
-- `initialize_game_state_2`: undescribed.
-- `check_ride_availability_14`: undescribed.
-- `parse_ride_name`: undescribed.
-- `parse_date_string`: undescribed.
-- `normalize_input_character`: undescribed.
-- `handle_unreachable_path`: undescribed.
-- `parse_park_path`: undescribed.
-- `check_park_ride_status`: undescribed.
-- `get_park_object_id`: undescribed.
-- `get_ride_price`: undescribed.
-- `sum_negate_score`: undescribed.
-- `reset_park_state_8`: undescribed.
-- `reset_ride_state_22`: undescribed.
-- `reset_ride_state_23`: undescribed.
-- `reset_ride_state_24`: undescribed.
-- `reset_ride_state_25`: undescribed.
-- `set_ride_price_31`: undescribed.
-- `initialize_game_state_3`: undescribed.
-- `trigger_park_event_6`: undescribed.
-- `trigger_park_update_2`: undescribed.
-- `trigger_park_event_7`: undescribed.
-- `trigger_park_event_8`: undescribed.
-- `render_park_tile`: undescribed.
-- `poll_joystick_input`: undescribed.
-- `wait_for_disk_load`: undescribed.
-- `render_park_view_2`: undescribed.
-- `wait_for_ride_completion_2`: undescribed.
-- `check_ride_queue_status`: undescribed.
-- `check_ride_queue_status_2`: undescribed.
-- `set_ride_flag_2`: undescribed.
-- `clear_park_object_list`: undescribed.
-- `combine_random_values`: undescribed.
-- `self_38`: undescribed.
-- `apply_ride_setting_2`: undescribed.
-- `compute_checksum_xor`: undescribed.
-- `compute_checksum_xor_2`: undescribed.
-- `clear_tile_buffer`: undescribed.
-- `unscramble_tile_map`: undescribed.
-- `draw_ride_preview_64`: undescribed.
-- `update_ride_state_flag`: undescribed.
-- `toggle_ride_flag`: undescribed.
-- `decode_tile_index`: undescribed.
-- `set_disk_dma_parameters`: undescribed.
-- `poll_input_wait_release`: undescribed.
-- `set_adkcon_and_update_input_mask`: undescribed.
-- `set_park_flag`: undescribed.
-- `wait_for_input_3`: undescribed.
-- `update_ride_position`: undescribed.
-- `wait_for_ciaa_bit`: undescribed.
-- `wait_for_button_press`: undescribed.
-- `read_joystick_input`: undescribed.
-- `check_ride_availability_15`: undescribed.
-- `wait_for_input_event_4`: undescribed.
-- `reset_ciab_timer`: undescribed.
-- `set_ciab_timer`: undescribed.
-- `wait_for_vblank_and_tick`: undescribed.
-- `wait_for_vblank`: undescribed.
-- `parse_ride_name_2`: undescribed.
-- `update_park_object`: undescribed.
-- `apply_tile_mask_2`: undescribed.
-- `handle_input_event`: undescribed.
-- `handle_ride_interaction_3`: undescribed.
-- `handle_ride_interaction_4`: undescribed.
-- `check_ride_operation_3`: undescribed.
-- `handle_park_event_4`: undescribed.
-- `handle_park_event_5`: undescribed.
-- `update_park_state_2`: undescribed.
-- `trigger_park_event_9`: undescribed.
-- `run_theme_park_init`: undescribed.
-- `handle_park_event_6`: undescribed.
-- `validate_monthly_maintenance`: undescribed.
-- `clear_ride_selection`: undescribed.
-- `trigger_park_event_10`: undescribed.
-- `trigger_park_event_11`: undescribed.
-- `trigger_park_event_12`: undescribed.
-- `trigger_park_event_13`: undescribed.
-- `check_global_flag_then_call`: undescribed.
-- `trigger_park_event_14`: undescribed.
-- `process_ride_queue_129`: undescribed.
-- `process_ride_queue_130`: undescribed.
-- `process_ride_queue_131`: undescribed.
-- `skip_unreachable_code`: undescribed.
-- `parse_script_token`: undescribed.
-- `set_ride_flags`: undescribed.
-- `parse_script_command`: undescribed.
-- `parse_config_token`: undescribed.
-- `increment_ride_counter_8`: undescribed.
-- `increment_ride_counter_9`: undescribed.
-- `increment_ride_wait_time`: undescribed.
-- `update_ride_price_18`: undescribed.
-- `update_ride_waiting_time_17`: undescribed.
-- `update_ride_statistics_38`: undescribed.
-- `update_ride_waiting_time_18`: undescribed.
-- `increment_pointer_until_terminator`: undescribed.
-- `increment_ride_counter_10`: undescribed.
-- `skip_game_loop_iterations`: undescribed.
-- `check_ride_open`: undescribed.
-- `reset_ride_state_26`: undescribed.
-- `reset_ride_state_27`: undescribed.
-- `clear_ride_data_2`: undescribed.
-- `reset_ride_state_27_2`: undescribed.
-- `init_ride_object_2`: undescribed.
-- `clear_ride_data_3`: undescribed.
-- `clear_ride_queue`: undescribed.
-- `return_zero_stub`: undescribed.
-- `reset_ride_state_28`: undescribed.
-- `clear_ride_data_4`: undescribed.
-- `clear_ride_data_5`: undescribed.
-- `clear_ride_data_4_2`: undescribed.
-- `reset_ride_queue_2`: undescribed.
-- `reset_ride_queue_4`: undescribed.
-- `wait_for_frames`: undescribed.
-- `draw_park_background`: undescribed.
-- `clear_pending_message`: undescribed.
-- `initialize_ride_markers`: undescribed.
-- `parse_ride_markers`: undescribed.
-- `parse_trader_record`: undescribed.
-- `return_zero_flag`: undescribed.
-- `parse_ride_markers_2`: undescribed.
-- `return_zero_constant`: undescribed.
-- `decode_variable_length_value`: undescribed.
-- `add_park_rating_modifier`: undescribed.
-- `set_ride_status_flag_3`: undescribed.
-- `clear_ride_flag_7`: undescribed.
-- `parse_script_token_2`: undescribed.
-- `clear_ride_bitmask`: undescribed.
-- `parse_script_token_3`: undescribed.
-- `parse_script_token_4`: undescribed.
-- `write_ride_price_2`: undescribed.
-- `calculate_ride_price_3`: undescribed.
-- `calculate_ride_price_4`: undescribed.
-- `set_tile_height`: undescribed.
-- `set_tile_attribute`: undescribed.
-- `calculate_ride_score`: undescribed.
-- `skip_to_terminator`: undescribed.
-- `add_time_to_ride_times`: undescribed.
-- `run_game_tick`: undescribed.
-- `copy_ride_data_5`: undescribed.
-- `read_tile_attribute`: undescribed.
-- `select_random_theme`: undescribed.
-- `game_theme_park_1994_0_49_a8_a`: undescribed.
-- `read_3_byte_value`: undescribed.
-- `build_ride_layout`: undescribed.
-- `wait_for_blitter_and_set_params`: undescribed.
-- `wait_for_vblank_and_init`: undescribed.
-- `init_blitter_copy`: undescribed.
-- `wait_for_blitter_and_init`: undescribed.
-- `wait_for_blitter_and_queue_copy`: undescribed.
-- `wait_for_blitter_and_init_copy`: undescribed.
-- `copy_ride_data_block`: undescribed.
-- `draw_scaled_sprite`: undescribed.
-- `wait_for_input_bit`: undescribed.
-- `wait_for_vblank_2`: undescribed.
-- `set_tile_mask_bits`: undescribed.
-- `apply_park_flags`: undescribed.
-- `install_interrupt_handler`: undescribed.
-- `install_interrupt_handler_2`: undescribed.
-- `handle_joystick_input`: undescribed.
-- `set_input_flags`: undescribed.
-- `wait_for_vblank_and_clear`: undescribed.
-- `skip_if_no_theme`: undescribed.
-- `set_joystick_button_state`: undescribed.
-- `handle_key_toggle`: undescribed.
-- `clear_coaster_queue`: undescribed.
-- `check_park_capacity`: undescribed.
-- `check_park_capacity_2`: undescribed.
-- `check_park_capacity_3`: undescribed.
-- `check_park_capacity_3_2`: undescribed.
-- `reset_park_state_9`: undescribed.
-- `read_joystick_state`: undescribed.
-- `trigger_park_event_15`: undescribed.
-- `set_interrupt_vector`: undescribed.
-- `set_interrupt_mask`: undescribed.
-- `process_interrupt_handler`: undescribed.
-- `load_park_data_3`: undescribed.
-- `update_joystick_position`: undescribed.
-- `poll_joystick_input_2`: undescribed.
-- `decrement_counter_and_trigger`: undescribed.
-- `update_ride_price_19`: undescribed.
-- `update_ride_queue_6`: undescribed.
-- `update_ride_stats_5`: undescribed.
-- `skip_unused_routine`: undescribed.
-- `write_sprite_tile_data`: undescribed.
-- `reset_game_state_8`: undescribed.
-- `reset_park_state_10`: undescribed.
-- `reset_game_state_9`: undescribed.
-- `reset_game_state_10`: undescribed.
-- `reset_ride_state_29`: undescribed.
-- `reset_game_state_11`: undescribed.
-- `reset_park_state_11`: undescribed.
-- `reset_game_state_12`: undescribed.
-- `reset_ride_state_30`: undescribed.
-- `reset_audio_channels`: undescribed.
-- `set_interrupt_mask_2`: undescribed.
-- `set_interrupt_mask_3`: undescribed.
-- `clear_ride_flag_8`: undescribed.
-- `clear_ride_waiting_queue`: undescribed.
-- `clear_ride_flag_9`: undescribed.
-- `clear_ride_flag_10`: undescribed.
-- `wait_for_vblank_3`: undescribed.
-- `jump_to_sub_3_07ce`: Jump stub: passes control straight on to sub_3_07CE.
-- `add_ride_object_2`: undescribed.
-- `enqueue_ride_event`: undescribed.
-- `check_park_name_and_trigger`: undescribed.
-- `set_ride_flag_3`: undescribed.
-- `process_park_ride_queue`: undescribed.
-- `set_ride_object_data`: undescribed.
-- `reset_park_state_12`: undescribed.
-- `update_audio_channels`: undescribed.
-- `handle_game_event_3`: undescribed.
-- `close_game_libraries`: undescribed.
-- `initialize_ride_data`: undescribed.
-- `initialize_ride_data_2`: undescribed.
-- `set_default_theme`: undescribed.
-- `build_menu_item_table`: undescribed.
-- `set_park_open_flag`: undescribed.
-- `reset_animation_state`: undescribed.
-- `set_active_ride_index`: undescribed.
-- `copy_tile_data`: undescribed.
-- `iterate_park_objects`: undescribed.
-- `clear_ride_queue_2`: undescribed.
-- `verify_park_password`: undescribed.
-- `verify_ride_name`: undescribed.
-- `update_disk_prompt`: undescribed.
-- `handle_alloc_request`: undescribed.
-- `handle_test_input`: undescribed.
-- `process_ride_command`: undescribed.
-- `validate_ride_operation_4`: undescribed.
-- `update_park_object_2`: undescribed.
-- `call_subroutine_4_fa64`: undescribed.
-- `trigger_park_event_16`: undescribed.
-- `trigger_ride_event_2`: undescribed.
-- `get_park_object_state`: undescribed.
-- `rotate_ride_queue`: undescribed.
-- `return_stack_value`: undescribed.
-- `delay_game_loop`: undescribed.
-- `wait_for_frames_2`: undescribed.
-- `skip_unused_branch`: undescribed.
-- `allocate_memory_block`: undescribed.
-- `check_park_open`: undescribed.
-- `check_ride_entrance`: undescribed.
-- `check_ride_condition_2`: undescribed.
-- `self_39`: undescribed.
-- `apply_tile_mask_3`: undescribed.
-- `copy_sprite_masked`: undescribed.
-- `set_blitter_parameters`: undescribed.
-- `set_blitter_line_params`: undescribed.
-- `draw_ride_overlay`: undescribed.
-- `draw_ride_path`: undescribed.
-- `draw_ride_track`: undescribed.
-- `draw_ride_track_2`: undescribed.
-- `draw_ride_map_overlay`: undescribed.
-- `apply_ride_mask`: undescribed.
-- `apply_ride_coverage_mask`: undescribed.
-- `clear_ride_block_flags`: undescribed.
-- `process_ride_queue_132`: undescribed.
-- `poll_event_callback_chain`: undescribed.
-- `handle_theme_park_event`: undescribed.
-- `trigger_global_callback`: undescribed.
-- `count_string_length`: undescribed.
-- `parse_format_string`: undescribed.
-- `clear_event_handlers`: undescribed.
-- `free_linked_list`: undescribed.
-- `swap_memory_bytes`: undescribed.
-- `copy_string_to_buffer`: undescribed.
-- `format_signed_integer`: undescribed.
-- `parse_signed_integer`: undescribed.
-- `initialize_game_state_4`: undescribed.
-- `handle_park_entrance`: undescribed.
-- `set_ride_operation_flags`: undescribed.
-- `reset_ride_state_31`: undescribed.
-- `initialize_ride_instance_2`: undescribed.
-- `initialize_ride_instance_3`: undescribed.
-- `process_ride_queue_133`: undescribed.
-- `process_ride_queue_134`: undescribed.
-- `process_linked_list`: undescribed.
-- `process_event_chain`: undescribed.
-- `process_ride_queue_135`: undescribed.
-- `update_ride_status_63`: undescribed.
-- `update_ride_status_64`: undescribed.
-- `compute_modular_remainder`: undescribed.
-- `normalize_fixed_point`: undescribed.
-- `multiply_fixed_point`: undescribed.
-- `handle_game_event_4`: undescribed.
-- `trigger_park_event_17`: undescribed.
-- `jump_to_sub_0_0210`: Jump stub: passes control straight on to sub_0_0210.
-- `parse_command_line`: undescribed.
-- `check_park_validity`: undescribed.
-- `register_game_input_handler`: undescribed.
-- `get_park_object_by_index`: undescribed.
-- `process_game_tick`: undescribed.
-- `calculate_string_length`: undescribed.
-- `find_string_terminator`: undescribed.
-- `compare_strings_lexicographically`: undescribed.
-- `check_flag_and_return`: undescribed.
-- `return_constant_one`: undescribed.
-- `copy_string_to_buffer_2`: undescribed.
-- `copy_c_string`: undescribed.
-- `copy_memory_block`: undescribed.
-- `copy_memory_block_2`: undescribed.
-- `copy_memory_block_3`: undescribed.
-- `remove_ride_object`: undescribed.
-- `remove_ride_object_2`: undescribed.
-- `remove_negative_ride_link`: undescribed.
-- `remove_ride_object_3`: undescribed.
-- `self_40`: undescribed.
-- `remove_ride_object_4`: undescribed.
-- `free_linked_list_node`: undescribed.
-- `allocate_memory_block_2`: undescribed.
-- `abs_value`: undescribed.
-- `self_41`: undescribed.
-- `process_ride_queue_136`: undescribed.
-- `process_ride_queue_137`: undescribed.
-- `process_ride_queue_138`: undescribed.
-- `check_pointer_validity`: undescribed.
-- `iterate_callback_list`: undescribed.
-- `increment_and_store_byte`: undescribed.
-- `reset_ui_element`: undescribed.
-- `process_text_input_buffer`: undescribed.
-- `process_ride_object_4`: undescribed.
-- `parse_format_specifier`: undescribed.
-- `set_ride_flags_2`: undescribed.
-- `return_stack_value_2`: undescribed.
-- `parse_format_string_2`: undescribed.
-- `clear_park_flag`: undescribed.
-- `check_ride_flag`: undescribed.
-- `get_ride_flag`: undescribed.
-- `get_ride_flag_2`: undescribed.
-- `validate_ride_params`: undescribed.
-- `reset_input_state`: undescribed.
-- `trigger_game_event`: undescribed.
-- `play_sound_effect`: undescribed.
-- `invoke_library_handler`: undescribed.
-- `trigger_game_event_2`: undescribed.
-- `invoke_callback_handler`: undescribed.
-- `trigger_game_event_3`: undescribed.
-- `trigger_game_event_4`: undescribed.
-- `allocate_ride_vehicle`: undescribed.
+- `update_ride_statistics`: The routine updates fields in a structure pointed to by a register, using values from a global table and a modular remainder routine, and conditionally writes bytes and words to several stack-based buffers and to global variables.
+- `update_ride_statistics_6`: The routine stores computed remainder values into a structure pointed to by a register, optionally updates price data for certain ride types, resets global flags, and iterates over a table to count entries matching a stored value, accumulating results into a global structure and updating a counter.
+- `update_ride_statistics_7`: The routine updates several global variables and stack-based counters, iterates a table bounded by two globals and increments a byte when a condition matches a remainder value, then accumulates values into a structure and resets a ride instance before calling another routine.
+- `process_ride_queue_12`: The routine scans a block of structures for a specific marker and a matching remainder value, counts matches, then updates several global variables and a table entry using the remainder and stack data.
+- `update_ride_instance_state`: Updates several counters and flags for a ride instance, then adjusts its price and operational state based on its type.
+- `update_ride_stats`: The routine loops five times, calling another routine with values derived from a global variable and a stack value, then writes a byte from a table into memory via an address on the stack, clears two bytes at offsets from that address, sets a global variable to a constant, and increments a byte in a table indexed by a register value.
+- `clamp_and_increment_byte`: The routine clamps a global 16-bit value to at least the incoming 16-bit argument and then increments a byte located at an offset from a global table using an index register.
+- `increment_ride_counter_2`: The routine updates a global variable with a larger value from a stack value and increments a byte located at an address computed from a table base plus an offset derived from a register and a constant.
+- `set_park_name`: The routine writes a byte to a global variable and then calls another routine with a pointer derived from a global variable and a value loaded from a global table, passing the result to reset_ui_element.
+- `check_ride_path_collision`: The routine walks two tables of short offsets and compares bytes from a global byte table to decide if paths intersect; it updates several counters and writes bytes to two output buffers when a match is found.
+- `process_ride_vehicle_5`: The routine processes a ride vehicle structure pointed to by param_1, updating several fields based on global variables and the vehicle’s state, and may invoke another routine to handle the ride queue or a different vehicle handler.
+- `advance_ride_vehicle_state_2`: Decrements a timer stored in the structure and, when it reaches zero, advances the state machine by loading a new action from a table and updating the associated counters.
+- `process_ride_vehicle_state`: The routine updates fields in a structure pointed to by a register, using several global variables and counters, and conditionally calls other routines to clear waiters, process state, update status and waiting time.
+- `update_ride_state_8`: The routine updates fields in a structure pointed to by A5.
+- `update_ride_status_15`: The routine increments a counter in the structure pointed to by A5 and updates a word field from a byte field.
+- `process_ride_state`: The routine reads a short state from a structure pointed to by a register and, depending on its value, updates several fields in that structure using values from a table indexed by another field, increments a counter, and resets or sets flags.
+- `set_ride_wait_time`: The routine writes the value from a register to a word field at offset ten of a structure pointed to by a register, increments an integer field at offset 26, stores the constant 3 into a word field at offset 46, stores the constant 999 into a word field at offset 50, and stores into a word field at offset 20 the product of two times the byte at offset 19 of the same structure.
+- `set_ride_price_7`: The routine stores a 16-bit value from a data register into a field of a structure pointed to by a register, then writes a 16-bit value computed as twice the byte at an offset of the same structure into another field of the structure.
+- `reset_ride_state_8`: Resets ride state fields using a global variable and a table lookup, and optionally updates another routine with a computed value.
+- `reset_ride_state_9`: The routine clears a word in a structure, masks a global variable and branches.
+- `clear_ride_instance_fields`: The routine clears several fields in a structure pointed to by a register and loads one word field from a table indexed by a value taken from another register-based pointer.
+- `process_ride_waiters`: The routine checks a global flag and returns a small value if set.
+- `process_ride_queue_45`: The routine checks a flag in a structure pointed to by A5.
+- `clear_ride_waiters`: The routine checks a short field in a structure pointed to by A5 and a time difference derived from a global variable and an int field in the same structure.
+- `process_ride_vehicle_7`: The routine updates fields in a vehicle structure using values from a global table and a ride table, clears a waiting flag via a tail call, and then processes the ride queue entry with a tail call.
+- `store_ride_operational_state`: Copies a value from a table into a structure field, then stores a normalized fixed-point result whose source depends on whether a global flag is zero.
+- `set_ride_operational_flag`: The routine reads a byte from an argument structure, calls another routine to compute a remainder and stores the result in the structure, increments a short counter in a second structure and clears a word field if a comparison holds, calls a price routine with a computed address, sets a bit in a byte table indexed by a byte from the stack, and calls another routine to update tile animation.
+- `update_ride_queue_entry`: The routine loops over an indexed table to locate a queue entry that satisfies flag and count conditions, then updates several fields in a stack-based structure and a global state block.
+- `clear_waiting_queue`: The routine checks a global variable and a short field in a structure pointed to by a register.
+- `process_ride_vehicle_8`: The routine updates fields in a ride vehicle structure and a related queue entry, sets flags and counters, calls a modular remainder routine several times, and then calls another routine to set the ride price before returning.
+- `increment_ride_statistic`: The routine updates a byte from a stack value into a bitmask at a computed offset from a pointer in a register, increments two short counters in a second register-based structure, conditionally clears a word in that structure, stores a modular remainder into a word from the first structure, calls another routine to set a price using a word from the first structure, and calls a routine to update tile animation.
+- `process_ride_vehicle_9`: Walks a small table of ride entries, skipping any whose flag byte is set, and for the first valid one records its state, derives a price, and bumps several per-ride counters.
+- `clear_waiting_counter`: The routine checks a short field in a structure pointed to by a5 and a time difference using a global variable.
+- `process_ride_ticket`: The routine validates a ticket structure against a modular remainder and a type byte, then updates price, state fields, a bitmask in a table indexed by a byte from a table, and several counters.
+- `clear_ride_state_field`: The routine clears a two-byte field at a fixed offset from a pointer in A3 and returns zero.
+- `clear_ride_objects`: The routine iterates over a range of entries derived from a count stored in the structure pointed to by param_1 and calls another routine for each entry, then clears a field in each entry.
+- `process_ride_vehicle_6`: Iterates a table of ride entries and updates counters and flags based on type and remainder checks.
+- `check_ride_availability_5`: The routine computes an index from a global table, reads a ride type byte and a ride id, then scans up to four related entries in a global array.
+- `check_ride_status_2`: The routine computes an index from two bytes in the argument structure and a global table, then loops up to four times calling another routine to find an object with a given type.
+- `increment_wait_counter_and_update_status`: The routine increments a counter, derives a new value from counters and a byte, stores it, then calls another routine or sets a flag based on a comparison with a value from a table accessed through a pointer, updates a pointer to a byte and copies a value.
+- `set_ride_state_flags_2`: The routine calls another routine and tests its returned byte.
+- `refresh_ride_object_state`: The routine updates several fields in a ride object structure using values computed from a ride type structure, loads a tile animation index from a table and triggers tile animation, then copies a field from the object to the type structure and decrements a counter in the type structure.
+- `set_ride_price_6`: The routine checks a byte field in a structure, writes a constant byte to the field when it matches a marker, loads an index byte and a table entry from a global variable via an indexed offset, combines them and reads a price from a table, storing it into the structure.
+- `spawn_ride_entity`: The routine attempts to allocate a slot in a global entity pool by scanning for a free entry, then initializes the entry’s fields from a ride-type table and a global variable, updates ride statistics and price, increments a counter in a per-ride table, and finally calls another routine to spawn a vehicle.
+- `create_ride_vehicle`: The routine initializes a ride vehicle structure pointed to by a register, copying values from a table indexed by a word in a register, clearing fields, setting type and flags, computing two remainder values and storing them, then updates price and statistics and increments counters in a table based on a type byte.
+- `increment_ride_counter`: The routine copies a word from a register-based address to another register-based address, then increments a short pointed to by a computed pointer derived from a byte in a global table.
+- `increment_ride_counter_4`: The routine copies a word from a register-based address to another register-based address, then increments a short pointed to by a global table index, calls another routine, and conditionally writes bytes and words to a register-based structure before incrementing a short in a global variable and returning a constant.
+- `increment_ride_counter_5`: The routine increments a short value located through a global table pointer, copies a word from one register-based address to another, calls a modular remainder routine and stores its result in a global variable, conditionally writes bytes and words derived from register-based data to a structure when a global flag is non-zero, increments another global short counter, and returns a constant.
+- `increment_ride_counter_3`: The routine increments a short counter selected via an index derived from a global variable and a table, then conditionally writes a computed 16-bit value and constant bytes to a structure pointed to by an uninitialized register, and increments another global short counter before returning a constant.
+- `initialize_ride_entity_struct`: The routine initializes fields of an entity structure, copies ride data from a table using an index register, sets several bytes to constants and writes remainder results, then conditionally increments counters in a table based on a type byte and updates a ride price.
+- `decrement_ride_waiting_counters`: The routine reads a short from a table indexed by a byte from the argument structure and decrements several short counters in a table indexed by a global byte, then decrements a byte in another table indexed by the same byte, updates two shorts in a global structure, calls another routine with a constant and a value from a table, calls a routine to update a queue, and clears 124 bytes of the argument structure.
+- `decrement_ride_counters`: The routine decrements a short pointed to by a byte-indexed table, decrements a byte pointed to by another byte-indexed table, decrements a short at an offset from a global variable and increments another short at an offset from the same global variable, then calls another routine with a constant and a negated value from a table, calls a queue update routine, and clears 124 bytes starting at an address in A5.
+- `decrement_ride_stats`: The routine decrements a short at a computed address from a global table, decrements a byte at a computed address from another global table, decrements a short at an offset from a global variable and increments another short at an offset from the same variable, calls another routine with an argument derived from a table entry, calls another routine, then clears 123 bytes starting at an address in A5.
+- `decrement_ride_counters_2`: The routine reads a global variable to locate a table entry, decrements a word there, then decrements a byte from a second table indexed by a byte from a pointer.
+- `decrement_ride_counter_4`: The routine decrements several counters derived from a table index and a global variable, increments another counter, calls another routine with a computed argument, updates a ride queue, and clears a 124-byte block pointed to by an address register.
+- `process_ride_queue_47`: The routine normalizes a fixed-point value and updates a counter and several fields in a structure pointed to by param_1.
+- `assign_ride_vehicle_state_2`: Walks a loop over ride entries, checking each one's state flags and searching for a matching ride type.
+- `assign_ride_vehicle_state`: Walks a loop over ride entries, checking each one's state flags and searching for a matching ride type.
+- `update_ride_state_9`: The routine updates fields in a structure pointed to by a5, normalizes a fixed point value and with a random park value adjusts a small counter and selects a 16-bit entry from a table based on a byte field and another byte field, then calls self_13 and conditionally writes the result to the structure and selects a table entry, returning a flag indicating a specific condition.
+- `decrement_index_and_update_pointer`: The routine decrements a byte field in a structure pointed to by A5, masks it to the range 0-3, and loads a 16-bit value from a table indexed by that byte and another byte field into another field of the structure.
+- `set_vehicle_type_from_register`: The routine checks a short value from a register and, if it is non-negative, stores that value as a byte at an offset from a pointer in a register.
+- `update_entity_timer`: The routine updates a timer field in the entity structure and, while the timer is positive, refreshes animation offsets using fixed-point multiplication and a tile animation call.
+- `set_ride_parameters`: This routine computes a small value based on a ride availability check and writes a set of fields into a structure pointed to by the address in a5.
+- `update_ride_object_flags`: The routine loads a byte from a global variable pointed to by a register, compares it with zero, and stores a two-byte value from another routine into a field of the pointed structure.
+- `update_park_object_state`: The routine reads a byte from a structure pointed to by a register, passes it to another routine and stores the returned word back into the structure, copies a byte from a register into the structure, and loads a word from a global table indexed by a byte from the structure and a byte from another field of the structure, storing the result in the structure.
+- `find_ride_object_match`: Computes an address from a table using a byte in the structure, then iterates over five entries while searching for a matching record.
+- `find_ride_entrance_2`: The routine scans a small table of ride objects using a global index and an input pointer.
+- `check_ride_queue`: The routine loops over a linked list of queue entries, using a global variable as a base for indexing and a stack value as an offset.
+- `find_ride_for_guest`: The routine loops over a guest structure and a ride table using indices stored in a global variable and a stack parameter.
+- `find_ride_object_6`: The routine walks a linked list of ride objects using a global table and a stack value, checking each object's type and flags.
+- `update_ride_state_11`: Reads a global variable and a table entry based on an input offset, then conditionally copies bytes from a table indexed by another field of the input structure into fixed offsets of the structure and clears or sets several fields.
+- `update_ride_waiting_queue_2`: The routine updates a waiting entry using a global table and a flag.
+- `store_price_word_via_pointer`: The routine stores a 16-bit value from a data register into the memory location pointed to by a pointer, offset by a constant.
+- `update_ride_status_17`: The routine calls another routine twice, stores the resulting byte values into two bytes of the structure pointed to by param_1, increments a short field, writes constant bytes to two byte fields, loads a word from a table indexed by a byte field and stores it, masks a byte field, and conditionally writes a computed word and constant values based on a global variable flag.
+- `update_structure_and_check_ride`: Increments a counter in the structure and adjusts a value based on a global flag, then calls a fixed-point multiply and a tile-priority routine.
+- `set_ride_type`: Sets a ride type for a structure pointed to by a register.
+- `set_ride_option`: The routine repeatedly calls another routine until it returns a value between 0 and 3 inclusive, using two random park values to fill two bytes at offsets from a pointer in A5.
+- `set_random_ride_price`: The routine repeatedly generates random values, uses a remainder operation, and stores two bytes from the result into an offset of a structure pointed to by a5.
+- `return_constant_zero_2`: The routine is empty except for returning the constant zero.
+- `search_ride_entry_slot`: Searches a small set of ride-entry tables via an index derived from the parameter and a global index table.
+- `find_ride_vehicle`: The routine iterates over a small table in memory and walks a linked list of structures.
+- `find_ride_for_placement`: The routine scans a table using an index from a global variable and checks bytes in the current entry against several constants, advancing the index while conditions hold.
+- `validate_ride_entry`: The routine walks a linked list of ride entries using a global table and a size field, checking a counter and a set of byte flags in each entry.
+- `process_theme_park_object`: The routine updates a theme park object structure, decrements a counter and reloads it when it reaches zero, and updates animation and ride state fields using fixed-point multiplication and table lookups.
+- `handle_ride_object_update`: The routine loads a status from a helper routine and branches based on its value and a flag byte in the object structure.
+- `set_ride_price_10`: The routine reads a byte from memory via a pointer and, if it is zero, obtains a value from another routine, otherwise from a modular remainder routine, then stores the resulting word at an offset from the pointer.
+- `update_ride_status_18`: The routine reads a byte from a structure pointed to by a register, calls another routine to compute a modular remainder and stores the result into the structure, copies a byte from a register into the structure, and writes a 16-bit value from a table indexed by a byte from the structure and a byte from the structure into the structure.
+- `clear_ride_queue_entry`: The routine walks a linked list of ride queue entries and clears fields of each entry while updating a secondary table and invoking another routine for each element.
+- `check_tile_flag_loop`: Iterates a table of four ride structures using a global variable lookup to test a bitmask, and on a match updates a tile animation via another routine.
+- `process_ride_queue_51`: Iterates over a table of ride entries using a loop counter and a global variable, and for each entry calls another routine to update tile animation with data derived from modular remainder computation.
+- `initialize_object_and_set_fields`: Computes an address from a parameter and writes constant bytes and words into the structure at that address, then calls a fixed-point normalization routine.
+- `check_ride_availability_6`: The routine examines a ride structure and a set of flags, walks a small table of four entries derived from the ride data, and clears a bit in a status byte when a condition is met.
+- `process_animation_frame`: The routine updates animation timing fields in a structure pointed to by param_1, advances a frame counter and, when the counter reaches zero, recomputes animation parameters via another routine, checks ride availability via another routine and then either resets animation state and returns a non-zero value or reloads animation timing and frame data from tables and returns zero.
+- `update_price_field`: The routine reads a flag byte via a pointer, selects a 16-bit value from a constant routine or a remainder routine, stores it, copies a byte from a register to memory via the pointer, and writes a 16-bit value from a table indexed by a byte from a register and a byte from memory via the pointer.
+- `update_ride_price_12`: The routine reads a byte from memory via a pointer, calls another routine to compute a remainder and stores the result as a 16-bit value through the same pointer, copies a byte from a register to memory through the pointer, and stores a 16-bit value from a global table indexed by a byte from a register and a byte from memory through the pointer.
+- `update_theme_park_object`: The routine updates a theme-park object structure.
+- `update_ride_object_flags_2`: Stores a byte from a register into an object field, writes a remainder result and a ride availability flag into object fields, selects a remainder or a constant for another field, and copies a 16-bit value from a table indexed by the availability flag and another object byte into an object field.
+- `update_ride_status_19`: The routine reads a byte from memory via a pointer, calls another routine to compute a modular remainder and stores the result, copies a byte from a register to memory via the pointer, and stores a value from a global table indexed by a byte from a register and a byte from memory via the pointer.
+- `update_ride_instance`: The routine updates a ride instance structure each tick.
+- `set_price_from_table_2`: The routine reads a byte and a word from two memory locations referenced by registers, adds them, uses the sum as an index into a global table, loads a word from that table and stores it into a word field at a fixed offset from a pointer in a register.
+- `set_ride_price_12`: The routine reads a byte from a structure pointed to by a register, tests it for zero and selects between two values, stores the chosen 16-bit value into the structure, copies a byte from a register into the structure, and writes a 16-bit value from a table indexed by a byte from a register and a byte from the structure into the structure.
+- `store_ride_price_fields`: The routine reads a byte from memory via a pointer, calls another routine to obtain a remainder value and stores that result as a 16-bit value through the same pointer.
+- `decrement_cooldown_counter`: The routine reads a 16-bit value from an offset in the structure pointed to by param_1, subtracts one, writes the result back, and returns 1 if the new value is zero or the original value was less than one, after calling another routine to decrement ride waiting counters; otherwise it returns 0.
+- `return_constant_zero_3`: The routine is empty and always returns the constant zero.
+- `check_ride_availability_9`: The routine iterates over three entries derived from a global table and a parameter, checks two byte flags in a table and returns zero on failure.
+- `process_ride_queue_52`: The routine loops over a small index and calls another routine with an offset from a global table, then writes a constant byte to a computed location.
+- `process_ride_queue_53`: The routine iterates over ride queue entries, calls another routine for each entry, marks a byte in a table, and if a condition is met it walks a fixed-size table of structures, initializes selected fields from another structure, updates several global counters, calls a price update routine, and sets a few global flags before returning.
+- `create_ride_instance`: The routine initializes a ride record pointed to by a register, copies fields from a template structure, updates several global counters and flags, calls another routine to update the ride price, and then iterates over a table of ride objects to process them and mark them.
+- `process_visitor_stats`: The routine increments counters in a global variable and clears two globals, then calls another routine with an index derived from a global and a register and writes a constant byte to a computed table entry.
+- `increment_statistics_table`: The routine increments two bytes in a global variable, clears a couple of global counters and then repeatedly processes a ride object and updates a related byte.
+- `process_ride_instances`: Increments two global counters, resets a value, and normalizes a fixed-point result.
+- `process_ride_queue_entry_9`: Iterates over a block of queue entries and initializes a new entry from another routine's data when the entry is empty, updating several global counters and flags and then tail-calls a ride creation routine.
+- `process_guest_departure`: The routine scans a global guest table and clears a field for entries matching a type and a computed remainder, then updates several counters in global structures based on fields from the parameter block and a global table entry, adjusts a fixed-point value and possibly triggers an event, and finally iterates over three indices to compute an address, locate an object, clear park data if needed, and clear a flag byte.
+- `reset_ride_state_3`: The routine triggers a park event, saves and restores a global variable, clears several globals, copies ride data from a table entry when a flag is set, waits for vertical blank, initializes state from the table, calls a self routine with a computed address, runs an optional callback from the table, and resets a few globals before returning.
+- `add_ride_object`: The routine stores several 16-bit fields from a parameter block into a table indexed by a global counter, writes a byte derived from the first byte of the parameter block into a byte field of the entry, and increments the global counter.
+- `populate_ride_list`: The routine selects one of several tables based on a global selector and copies entries from that table into a fixed output table.
+- `update_ride_state_table`: The routine iterates over a range defined by a global variable, reads a byte from a table using an index derived from the loop counter, compares it with several constants together with a global byte, and writes the loop index or a modified value back to a global variable.
+- `update_ride_status_20`: The routine iterates over a range of indices, reads a byte from a table via an index, compares it with several constant bytes and a global variable, and writes a value back to a global variable.
+- `find_park_object_3`: The routine loops over a table of ride entries using an index in a register and a limit in a register.
+- `find_valid_ride_entry`: Walks through a table of ride entries, skipping invalid ones, and stops at the first valid entry that matches the current ride type, setting its parameter to 1.
+- `skip_invalid_ride_entry`: The routine loops over a table of ride entries, advancing an index stored in a global variable and skipping entries whose type byte matches certain values depending on a global mode byte.
+- `handle_ride_control`: The routine reads a word from a table, resets a UI element using a global variable and a constant, then selects one of several string pointers based on a byte from the table and copies the string into a stack buffer.
+- `draw_preview_text`: The routine looks up an object of a given type, reads two short values from fixed offsets in that object, and passes them together with a stack address, a constant, and a byte from a global variable to another routine that renders a text string.
+- `draw_ride_preview_7`: The routine builds two parallel arrays of ride preview entries by repeatedly writing object fields, random values and computed offsets into a global variable area, then updates a display queue and draws a few sprites and text using data from an object found by type.
+- `draw_ride_preview_elements_2`: The routine walks two parallel short pointer structures, copying and transforming entries from a global table using a byte offset derived from stack data, then updates pointers and repeats.
+- `reset_park_state_2_2`: The routine increments a global variable while advancing an uninitialized pointer by three bytes until a zero byte is encountered, then clears the global variable and increments it again while scanning a table of three-byte entries until a zero entry is found.
+- `increment_theme_counter`: The routine increments a global variable by one each iteration of a loop that advances an uninitialized pointer by three bytes until the byte it points to is zero, then it clears a global variable and returns.
+- `draw_ride_preview_elements_3`: The routine processes objects of a specific type, iterates over a small range around a global index, conditionally draws scaled sprites and ride elements using data from tables, resets a UI element with computed parameters, and then draws additional ride elements for another object type with further conditional UI resets.
+- `draw_preview_elements`: Iterates over a table of element descriptors and draws scaled sprites and ride elements for each entry, then resets a UI element and draws additional elements based on a global state flag and modular remainder values.
+- `draw_ride_info_panel`: The routine resets a UI element from a table indexed by a global variable, draws a ride element using coordinates from an argument block, finds an object by type and, when a mode flag matches, computes an index from the global variable, selects UI elements from tables via a modular remainder, draws additional ride elements with coordinates from the found object, and wraps text to a width using a string from a table.
+- `draw_ride_info_panel_2`: The routine resets UI elements and draws three ride elements using coordinates from an uninitialized pointer, selects element data via modular remainder and a byte from a global table, and conditionally draws a second element based on a flag and a remainder value.
+- `draw_ride_preview_panel`: The routine prepares a UI element and draws three ride element previews using coordinates from two uninitialized structures and a stack structure, selecting one of ten table entries or a fallback entry based on a modular remainder.
+- `draw_ride_preview_panel_2`: The routine resets a UI element three times with values taken from a table and from stack data, then draws three ride elements using coordinates loaded from two structures and a colour from a table.
+- `draw_ride_info_panel_three`: The routine conditionally resets UI elements, renders text strings and draws ride elements using data from a global variable and a table indexed by the global variable.
+- `draw_ride_info_panel_4`: The routine resets UI elements, renders three text strings, and draws four ride elements using coordinates from a structure, then resets another UI element and wraps text to a width from an object found by type, and calls another routine to update ride status.
+- `draw_ride_preview_2`: Resets UI elements using values from a global variable and a table, draws ride elements with coordinates from a table and a global byte, renders text strings at fixed offsets with the same byte, wraps text to a width using data from an object found by type and a table indexed by a byte from a table, then updates ride status via another routine.
+- `draw_ride_preview_panel_3`: The routine resets a UI element using a global variable, then draws two ride elements using data from an unspecified structure and a table entry, and then wraps text to a width using object data found by type and a string from a table.
+- `draw_ride_preview_15`: The routine resets a UI element using a global variable and a value from a table, then draws a ride element with coordinates taken from an uninitialized pointer and a colour from a table.
+- `draw_ride_preview_panel_4`: The routine processes a park event, finds an object, computes a starting index from two globals and loops over a fixed number of iterations, updating a counter and drawing overlays, scaled sprites and text strings using fields from the object and data from a table.
+- `draw_ride_preview_panel_5`: The routine loops over a range of table entries, checks a global variable and a set of bounds against two global values, updates a global variable and a global table entry when the condition holds, and for each entry it renders a text string and conditionally draws ride overlay and scaled sprite graphics using data from a table and a global state variable.
+- `draw_ride_preview_panel_6`: The routine iterates over a range of entries from a table and, for each entry, renders a text string and conditionally draws ride overlay graphics and ride elements using data from a global variable and a table.
+- `draw_ride_info_panel_5`: Iterates over a set of entries using a loop counter and a base pointer, updating a global state flag under range conditions and drawing overlay rectangles, a scaled sprite and text strings for each entry.
+- `draw_ride_vehicle_panel`: Iterates over an indexed table to render text strings and conditionally draws UI elements using a reset helper and a draw helper.
+- `draw_ride_preview_panel_7`: The routine iterates over a table of entries, resets a UI element and draws two ride elements for each entry, then updates a counter and draws overlays and a scaled sprite when a specific entry matches a global value.
+- `draw_ride_preview_4`: Iterates over a table of UI elements, resetting each and drawing ride elements with offsets derived from a structure.
+- `draw_ride_preview_panel_8`: The routine iterates over a table of strings and draws them in a scrolling preview panel, using a UI element reset and a ride element draw for the panel background.
+- `update_ride_info_panel`: Routine handles a UI panel update.
+- `draw_ride_vehicle_preview`: The routine locates a ride object by type and uses its fields to draw three UI elements via a helper drawing routine, selecting element identifiers from tables based on a normalized fixed-point value and on comparisons between a global timer and object fields.
+- `draw_ride_status_indicators`: The routine normalizes a fixed-point value, selects an entry from a table and draws two UI elements using data from registers, then compares a global time value with a short from a register to choose another table entry and draws two more UI elements, then calls another routine.
+- `draw_ride_preview_21`: The routine maps a value from a register to an index, selects a pointer from a table and a global variable, resets a UI element and draws a ride element twice using data from two structures, then selects another pointer from a table based on comparisons between a global variable and a field, resets the UI element again and draws two more ride elements using data from the structures.
+- `draw_ride_status_text_2`: Clamps an index to a safe range, loads the matching entry from a table, and draws several pieces of centered text.
+- `draw_ride_panel_elements`: The routine clamps an input value, selects a table entry based on that value and two other comparisons, resets a UI element structure and draws four ride element primitives using coordinates from a structure and a colour from a table, then resets and draws another UI element and tail calls another routine.
+- `draw_ride_status_text`: Clamps an index to a safe range, loads the corresponding entry from a table, and then draws several pieces of centered text using the current screen palette.
+- `choose_ride_preview_element`: The routine selects a UI element index using several time-based comparisons, resets a UI element with a global variable and a table-derived value, and draws four ride elements using data from two tables, then resets another UI element and draws a fifth ride element.
+- `select_and_render_preview_element`: Compares a pointer's two values against a threshold and loads a matching four-byte entry from a table, then draws centered text strings and copies a null-terminated string when a matching object is found within a range.
+- `draw_ride_preview_24`: The routine selects one of several values from a table using A0 and A5 comparisons and resets a UI element; it then draws two UI elements from A2 data and resets another UI element using a table indexed by A5.
+- `render_ride_preview_info_4`: Selects a preview image from a table based on a numeric value, draws the ride name centered on screen, then compares the ride's time bounds and copies a text string when the ride is within its active window.
+- `render_ride_preview_info_3`: Selects a preview image from a table based on a numeric value, draws the ride name centered on screen, then compares the ride's time bounds and copies a string into a global variable when they fall within range.
+- `render_ride_preview_info_2`: Selects a preview image from a table based on a numeric value, draws the ride name centered on screen, then compares the ride's time bounds and copies a text string when the conditions match.
+- `render_ride_preview_info`: Selects a ride preview image from a table based on a numeric value, draws the ride name centered on screen, then compares the ride's time bounds against a current value and copies the ride's name into a buffer when it falls within range.
+- `draw_ride_preview_29`: Routine decides which ride preview to render by comparing ride dimensions against global thresholds, resets a UI element, draws two ride elements from a pointer in a2, finds two objects by type and conditionally copies a string from a3 into a buffer while setting some global flags, computes string width and renders text near an object, and calls a ride status update routine.
+- `draw_ride_preview_part`: The routine initializes a UI element buffer using values read from a global structure and a table, draws two ride elements from a local structure, searches for objects of specific types, copies a null-terminated string from an uninitialized pointer to another buffer, updates some global flags, computes a centered text X coordinate from object fields and a string width, renders a text string and updates ride status.
+- `draw_ride_preview_elements_4`: The routine draws two ride elements using data from a structure, resets UI elements, finds objects by type, conditionally updates several global variables and copies a zero-terminated string from one buffer to another, then computes a centered X position for rendering text and updates ride status.
+- `draw_ride_preview_32`: The routine resets a UI element and draws ride elements using data from two structures, then conditionally draws additional elements based on a table lookup, draws a scaled sprite, copies a byte string from a table into a global variable under certain conditions, and renders a text string.
+- `render_ui_element_preview`: The routine resets a UI element twice and draws two ride elements using data from a table, then draws a scaled sprite with a clamped value.
+- `draw_preview_sprite`: The routine resets a UI element and draws a ride element using values from a pointer, then locates objects by type, scales a sprite, and resets another UI element based on a byte offset.
+- `draw_ride_info_panel_9`: The routine resets UI elements and draws ride elements using coordinates from a structure, then conditionally resets UI elements based on flags and table lookups, copies a byte string from a global area to another, and renders a text string at a calculated position before calling another routine to update ride status.
+- `update_ride_status_21`: The routine resets UI elements, draws three ride elements using data from two structures, conditionally draws a fourth element, and then checks a global variable and object fields to possibly clear state and copy a zero-terminated byte string from one structure into a global buffer.
+- `draw_ride_info_panel_elements`: The routine resets UI elements and draws several ride elements using coordinates from a structure, selects UI strings via a modular remainder and conditional checks, then resets another UI element with values derived from a pointer and a stack value before drawing another element.
+- `draw_ride_element_pair`: The routine draws two ride elements using a stack buffer and a global variable, then resets UI state and copies a null-terminated string from the stack into a global variable under a condition involving another routine and a global flag.
+- `draw_ride_preview_6`: The routine resets a UI element, draws two ride elements using data from two structures, resets the UI element again with a remainder value, finds an object by type and conditionally clears a global flag and copies a zero-terminated string from the stack into a global buffer, then computes a centered X position from two shorts and the width of a string and renders that string, and finally updates ride status.
+- `check_ride_entrance_collision`: The routine resets UI elements and draws a ride element using values from a structure, then finds an object by type and tests its fields against global variables to decide whether to clear a flag, copy a string from a table entry to a global buffer, and set a flag.
+- `reset_ride_state_12`: The routine clears a global variable to zero, then calls another routine and returns.
+- `trigger_park_update`: The routine calls another routine and then returns.
+- `update_ride_queue_2`: The routine processes a table of ride queue entries, updates per-entry timers and state bytes, checks ride conditions via another routine, and refreshes two UI text elements using a text rendering routine.
+- `update_ride_queue_entry_2`: The routine walks a linked list of queue entries in a global variable, decodes a few bytes from each entry to select a table offset, calls another routine with those values, and then updates per-entry counters and state bytes, including random checks and table lookups, before continuing to the next entry.
+- `decrement_ride_timer_and_update_state`: The routine walks a linked list of ride entries using a global variable and updates per-entry timers, status bytes and fields by indexing into several global tables.
+- `update_vehicle_state`: The routine walks a linked list of vehicle records, updates counters in each record and, for some records, reads values from tables indexed by fields in the record and writes them back into the record.
+- `update_ride_state_12`: The routine reads a byte from the data pointed to by a register, switches on it, and updates several short and byte fields of that structure, including values loaded from a table indexed with a byte from the structure and a global variable.
+- `update_moving_object_state`: Updates the animation frame and position of a moving park object, rendering it and then advancing its state machine based on its current action.
+- `draw_ride_elements_7`: The routine repeatedly finds objects of a fixed type and, for a selected range of indices, reads a small table entry and uses it to render a park object and wrap text to width.
+- `draw_ride_preview_8`: The routine iterates over a table of ride preview entries using a global variable and a loop counter.
+- `draw_ride_elements_3`: The routine iterates over a table of ride element entries, rendering each park object with adjusted coordinates and wrapping associated text.
+- `draw_ride_stats`: The routine processes a park event, resets two UI elements with values derived from a table indexed by a byte from a global variable, waits for vertical blank, draws a ride preview, finds an object of a given type, resets UI elements and draws four ride elements using fields from the found object, then updates ride status.
+- `draw_ride_vehicle_sprites`: The routine processes a park event and looks up an object by type.
+- `draw_ride_info_panel_3`: The routine clears a flag in a global variable and, when a pointer in A5 is non-zero, resets a UI element and renders a text string, then repeatedly resets UI elements and draws ride elements using coordinates taken from the A5 structure, selecting element indices via a modular remainder computation and a table lookup.
+- `draw_ride_info_panel_12`: The routine prepares a UI element, selects a ride element from a table using a modular remainder and draws it with a palette entry, then draws a second ride element and a text string, updates a third element using an object found by type, wraps text to a width using a string from a table, and calls another routine to update ride status.
+- `draw_ride_info_panel_13`: The routine resets UI elements using a stack buffer and a global variable, draws two ride elements using coordinates from an object and a global table, renders a text string, finds an object by type, draws a third ride element from that object, wraps text to a width using fields from the found object and a table indexed by a byte from an object, then calls another routine and returns.
+- `clear_ride_selection_flag`: The routine clears a selection flag in a global variable and, if a condition is true, resets UI elements, renders a text string, draws two ride elements using data from a structure and from an object found by type, wraps text to a width using a string from a table, and then updates ride status.
+- `check_ride_queue_entry`: The routine scans a table of queue entries using a global index and a global pointer, tests each entry’s flags and coordinates against two global position values, and updates globals and calls another routine when conditions match.
+- `iterate_ride_queue_entries_2`: The routine walks a table of ride queue entries stored in a global variable, testing each entry against two global fixed-point values and a flag byte.
+- `check_ride_operation_2`: The routine walks a table of ride entries and checks whether the current time falls within each entry’s start and end windows.
+- `check_ride_queue_position`: The routine walks a linked list of ride queue entries stored in a global pointer, skips entries whose flag byte is not set, and compares the current coordinates against each entry’s bounds.
+- `check_ride_bounds`: The routine compares two global 16-bit values with a four-element short array pointed to by a register, and on a mismatch clears several global variables, resets state pointers and returns zero.
+- `reset_ride_state_13`: The routine writes constants to a global variable and to a global table entry, clears a global variable and a pointer, enqueues an event, then conditionally decrements a global variable and returns its previous value.
+- `reset_ride_state_14`: The routine checks a byte at an offset from an uninitialized pointer against a constant and a global variable.
+- `reset_global_state`: The routine checks a global variable for a zero byte.
+- `reset_park_state_3`: The routine checks a global variable and, if it equals a specific value, clears two global variables and a game state variable, otherwise it calls another routine to process pending events.
+- `reset_global_flags`: The routine clears two global variables to zero and then clears a third global variable to zero and writes a null pointer into it.
+- `handle_park_event`: The routine initializes game state, then checks a global variable.
+- `wait_for_blitter_and_queue_copy`: The routine calls another routine to wait for the blitter and queue a copy operation using a global variable, a table and a constant size.
+- `handle_text_input`: The routine measures the length of a null-terminated string and keeps a byte counter in a global variable.
+- `set_palette_mask`: The routine writes a constant byte to a global variable and returns a constant value.
+- `clear_ride_flag_2`: The routine stores a zero byte through an unspecified pointer in A3 and then returns.
+- `set_palette_entry`: The routine stores a byte from a data register into the byte pointed to by a pointer register.
+- `decrement_counter`: The routine reads a byte from a pointer in A3 and, if the byte is non-zero, subtracts one from it and writes the result back through the same pointer.
+- `increment_counter_if_needed`: The routine reads a byte from a pointer and compares it as a signed short with an unsigned byte value.
+- `return_error_code`: The routine returns a constant byte value.
+- `return_true_flag`: The routine returns the constant value 1.
+- `shift_string_left`: The routine reads a length from a byte and a pointer, limits the length to the value stored at a byte pointed to by a pointer, then shifts the characters of a string left by one position for that many characters by copying each byte from the next address into the current address until a zero terminator is reached.
+- `shift_string_right`: The routine moves a null-terminated byte string one position to the right by copying each byte from the next address into the current address, advancing a pointer until the terminating zero byte is copied.
+- `remove_character_from_name`: The routine reads a byte from a pointer and builds a 32-bit value from that byte and the high word of an input register.
+- `shift_string_and_decrement`: The routine shifts a null-terminated byte string left by one position using an uninitialized pointer and then decrements a byte located at an offset from a global variable using the value of that global variable as the index.
+- `insert_character_into_name`: The routine inserts a byte from a global variable into a name buffer pointed to by an argument, shifting existing bytes right when the buffer index is below a limit.
+- `decrement_stack_pointer`: The routine copies bytes backwards from a pointer in A1 toward lower addresses until the pointer passes a limit derived from a global variable and an unused register, then writes the global variable to the destination byte and increments the global variable.
+- `handle_ui_control_input`: The routine reads a control identifier from a global pointer and updates several global variables based on its value and on the current UI mode.
+- `reset_park_state_4`: The routine checks an uninitialized byte on the stack and, if it is non-zero, writes zero to a global variable, writes one to another global variable, and calls another routine.
+- `execute_object_commands`: The routine walks a byte list terminated by -3 and for each entry looks up an object by type and then dispatches on a type byte in the object to call different drawing and ride-checking helpers, using fields from the object and a global variable and a table.
+- `render_ride_vehicle`: If a global variable matches a computed value, the routine iterates over an array of structures in a global table.
+- `update_ride_status_23`: The routine saves and restores a global variable, conditionally calls another routine, manipulates a global byte with several branches, checks ride queue state, steps a pair of indices toward each other, and then iterates over a table of short entries to draw objects or initialize theme park tiles based on flags.
+- `update_ride_vehicle_positions`: The routine decrements a global counter and performs a small state machine on it, then if a global flag matches a value from a table it iterates over a table of short entries.
+- `update_vehicle_positions`: The routine updates a global counter and then iterates over a table of short entries, using a byte flag at offset nine to decide whether to draw a tile quad or a ride object via another routine, or to call an initialization routine.
+- `draw_ride_tile_batch`: The routine sets a global variable to a constant and a value from the data register, then conditionally iterates over a table of short entries using a global count.
+- `update_ride_car_positions`: The routine updates a pair of global counters, calls a queue check routine, and then iterates over a table of ride entries.
+- `update_vehicle_positions_2`: Adjusts a global counter up or down based on the value in D1 and calls another routine.
+- `update_vehicle_positions_3`: The routine adjusts a counter when a first input is less than a second input, calls another routine, and if a global short matches a table entry it iterates over a table of short records.
+- `update_ride_vehicle_positions_5`: The routine conditionally renders a ride vehicle, sets a global variable, and then iterates over an array of structures.
+- `render_text_in_box`: The routine copies a null-terminated byte string into a stack buffer, measures its pixel width using a font table and a global variable, and if it fits inside a rectangle described by param_1, draws the characters left-to-right with another routine, tracking the position of a highlighted character indicated by param_2.
+- `render_text_string`: The routine copies a zero-terminated byte string from a pointer into a stack buffer while accumulating a width value from a table indexed by a global variable.
+- `render_ride_queue_text`: The routine walks a queue of ride entries and renders their names and associated text lines into a text box using the text rendering helpers.
+- `render_text_line`: The routine walks a string stored on the stack from left to right, using a global table to map each character to a width and then calling another routine to render each character at a decreasing x position.
+- `render_text_line_with_cursor`: The routine iterates backwards over a stack buffer, computes a per-character advance using a global table and a global variable, and calls another routine to draw each character at a decreasing x position.
+- `draw_ride_path_segment`: The routine loops over a stack buffer and uses a global variable as an index into a table to compute a spacing value, then repeatedly calls another routine to render text strings at decreasing positions.
+- `render_text_line_3`: The routine processes a line of text stored on the stack, using a global variable as an index into a character table to obtain glyph codes.
+- `draw_ride_name`: The routine iterates over a byte string stored on the stack, rendering each character with another routine using coordinates derived from a global variable and a pointer argument.
+- `draw_text_line`: The routine iterates over a null-terminated string on the stack, rendering each character with another routine and advancing a horizontal position using a width table indexed by the character via a global variable.
+- `draw_text_with_spacing`: Walks through a null-terminated string, using a per-character table to accumulate a running position value.
+- `render_ride_name`: Iterates over a stack string and renders characters with a text routine while tracking x position and width.
+- `draw_ride_rectangle`: The routine draws a rectangle by calling another routine to render a scaled sprite using param_1, param_2 and the differences between param_3/param_1 and param_4/param_2 offset by a global variable, and then calls another routine four times with combinations of param_1, param_2, param_3, param_4 offset by the same global variable and entries from a table.
+- `initialize_theme_park`: The routine contains no instructions and returns immediately.
+- `apply_tile_transform`: The routine calls another routine four times with different combinations of its parameters and a global variable, passing the parameters as arguments.
+- `draw_park_object`: The routine calls another routine four times with combinations of its parameters and an offset from a global variable.
+- `draw_scaled_sprite_and_tile_quad`: The routine calls another routine to draw a scaled sprite using two coordinates derived from a global variable and the first two parameters, a size derived from the parameter differences and the global variable, and a pointer from a table.
+- `draw_scaled_sprite_and_tile_quad_2`: The routine reads a global variable, computes a scaled sprite position and size from the four parameters and the variable, then calls another routine to draw a scaled sprite using a table pointer, and then calls another routine to draw a tile quad covering the rectangle defined by the parameters with fixed tile arguments.
+- `draw_tile_rect`: The routine computes a scaled sprite rectangle using a global variable and the four parameters, then calls another routine to draw a tile quad with fixed flags.
+- `draw_tile_quad`: The routine draws a quad of tiles by calling another routine four times with computed coordinates and two different table entries depending on a flag, then applies a tile transform with two table entries swapped by the flag.
+- `draw_ride_elements_4`: The routine computes bounding minima from a table of element entries and then either iterates the entries to draw a map overlay with fixed-point modular arithmetic for each visible element, or iterates the entries to check a ride condition with offset coordinates.
+- `compute_tile_delta`: The routine reads two 32-bit values from the pointers passed in, shifts each right by five bits and returns the difference of the two results.
+- `compare_ride_attribute`: The routine selects a field from each of two structures based on a global variable and returns the signed difference of the selected values.
+- `subtract_pointed_values`: The routine reads two pointers from A0 and A1, dereferences them to obtain two integers, subtracts the value pointed to by A1 from the value pointed to by A0, and returns the difference.
+- `compare_entity_heights`: The routine takes two pointers in A0 and A1 and returns the signed difference between the 16-bit values stored at offset 6 from each pointer.
+- `compare_entity_heights_2`: The routine receives two pointers in A0 and A1.
+- `clear_ride_building_flag`: The routine contains no instructions and returns immediately with a zero value.
+- `center_text_horizontally`: The routine computes the pixel width of a string with calculate_string_width and then calls render_text_string_2 with the x coordinate reduced by that width, keeping the y coordinate, string pointer, color and flags unchanged.
+- `center_text_horizontally_2`: The routine computes a horizontal offset for a string by measuring its width with another routine, subtracting that width from the sum of two parameters, clamping negative results, and halving the offset before calling a text rendering routine with the computed position and the original parameters.
+- `set_ride_price_14`: The routine measures the length of a zero-terminated string pointed to by param_4, computes a signed 16-bit value from param_1, param_2 and the string length with a negative scaling, clamps the result to a non-negative half value, and passes the result together with the original parameters to wait_for_vblank.
+- `render_text_string_2`: Iterates over a null-terminated byte string and for each character looks up an entry in a global table, computes a vertical offset and a horizontal advance, then calls another routine to draw the glyph at an accumulated position, updating the x coordinate.
+- `calculate_string_width`: The routine iterates over a null-terminated byte string and accumulates a width value.
+- `draw_amusement_map`: The routine updates audio, resets UI state if a global flag is clear, waits for the blitter and either queues a copy or clears the screen, swaps two global buffers, sets map scaling globals based on a flag, then iterates over a 64 by 64 tile grid drawing scaled sprites from a table using the current scaling factors, draws a final scaled sprite, and restores the original buffer pointer with intervening preview draws.
+- `draw_scaled_preview_grid`: The routine clears the screen, saves and restores a global variable, and sets up scaling factors for a preview.
+- `draw_scaled_sprite_loop`: The routine runs a nested loop that calls draw_scaled_sprite repeatedly with values derived from a table and two global variables, then updates a global variable and calls another routine twice.
+- `process_ride_queue_57`: The routine repeatedly computes two quotients from a pair of global variables, uses the results together with a running accumulator and a counter to call draw_scaled_sprite with a value read from a table indexed by a byte from a pointer, and increments the pointer and counters each iteration.
+- `set_ride_parameter`: The routine walks a table of 10-byte entries starting from a global variable, stopping when a byte at offset 8 matches param_1 or a bounds check fails, then stores param_2 at offset 9 in the matching entry.
+- `find_ride_entry_5`: The routine scans a table of 10-byte entries starting at a base pointer, comparing a byte at offset 8 of each entry with a 16-bit value.
+- `write_park_ride_data`: The routine walks a table of entries by repeatedly adding a fixed stride to a pointer until a byte at a fixed offset matches a value held in a register.
+- `check_park_closed_flag`: The routine reads a byte from a table indexed by a global variable, compares it to -1 and calls another routine with arguments 2,0 if equal, otherwise calls it with 2,1.
+- `show_message_box`: The routine calls another routine with the arguments 2 and 0, then returns.
+- `map_type_to_category`: Switches on a byte parameter and returns 3 for a set of values, 1 for another set, 2 for one value, and 0 for all other values.
+- `find_object_by_type`: The routine walks a linked list starting at a global variable.
+- `update_display_slots`: The routine sets slot type fields in a global table in two passes, using modular remainder values to place markers and fill the rest with a filler value, then scans a table of entries to count items by their status bytes and writes a second set of markers and filler into the same table.
+- `init_and_count_slots`: Fills a sequence of fixed-size records by writing a different byte value into the same field of each block, advancing through the block array in each loop.
+- `count_ride_stats`: The routine iterates over a table of structures, counts entries with a specific flag and classifies them into four groups based on two small fields, then if any were found it obtains three pseudo-random values and writes constant bytes into a separate global table at a fixed stride, filling the remaining entries with another constant.
+- `reset_ride_queue_slots`: The routine clears a block of queue slots by writing a constant to a byte offset in each 16-byte entry, then scans a table of ride records and counts entries based on type and two small fields, and if any are found it obtains three remainders and writes different constants to a global array of slots, filling the remainder with another constant.
+- `count_ride_types_and_mark`: Initializes a block of ride queue slots by writing a constant to an offset in each slot.
+- `count_ride_vehicles`: Iterates over a range of structures stepping by a fixed stride and increments four counters based on two byte fields and a type byte.
+- `place_ride_objects`: The routine walks a table of ride records using a pointer in A0 and a limit in A1, skipping entries until it finds one with a specific flag byte set.
+- `process_ride_queue_58`: The routine walks a linked list of structures using a pointer in a register, incrementing counters based on byte fields in each structure.
+- `populate_ride_queue`: The routine walks two related tables via a pointer, accumulating counts in registers, skips entries with a particular marker, and then uses a remainder helper three times to set flag bytes in a fixed global structure at fixed offsets.
+- `set_status_flags_by_counters`: The routine writes a constant byte to the same offset in successive structures spaced sixteen bytes apart, driven by three counters and a memory-region loop.
+- `set_ride_state_flags_2_2`: The routine receives a pointer in a register and a count in a register.
+- `fill_ride_object_flags`: The routine writes a byte value to an offset within a structure pointed to by a pointer, repeating the write for a count held in a register, then continues writing a different byte value to the same offset in subsequent structures while a condition on the pointer holds.
+- `fill_ride_flags`: The routine receives a base pointer in a register and a limit pointer in another register.
+- `wrap_text_to_width`: Iterates through a null-terminated string using a global variable to look up character widths, accumulates width, and breaks lines at spaces when the accumulated width exceeds a limit.
+- `init_game_state`: The routine initializes a global flag and a byte, clears the screen once, and then, when the flag is set and a counter is zero, decrements two counters and resets associated state when they underflow, using a jump to update audio channels.
+- `reset_game_state_5`: The routine clears a global variable, calls another routine to update audio channels, and sets a global variable to one.
+- `setup_ride_instance`: Checks a flag in a global table and, when a ride object is not yet fully initialized, calls the routine that sets up the ride object, records its price and related values, and then updates the ride price.
+- `create_ride_instance_2`: The routine walks a linked list of ride slots using a pointer in a register until it finds an empty slot, then initializes the slot fields from a ride definition table and a global counter, updates a few counters and flags, and calls another routine to update the ride price.
+- `increment_ride_waiting`: The routine loops over an index, checks a flag in a table via a global variable, then writes several fields in a structure pointed to by a register, increments a byte in a global variable, calls another routine, stores two bytes from the call results into the structure, updates a price via another routine, increments a byte in a table, and conditionally writes a byte to a global table.
+- `process_ride_instance`: A routine processes a ride record pointed to by A5 and D7 and checks a termination byte.
+- `decrement_waiting_counter`: The routine iterates over a table of entries until a zero sentinel is found.
+- `clear_ride_queue_entry_2`: The routine decrements a byte in a global variable if a field equals a constant, decrements a byte in a table indexed by a word field, clears a word in a table indexed by two byte fields, calls another routine with the entry pointer, then zeroes 124 bytes of the entry starting at the pointer.
+- `update_ride_configuration`: Validates a ride entry against a global table and a set of flags, then updates per-segment bytes and a counter in a global variable.
+- `draw_ride_vehicle_8`: The routine saves nine bytes from a table indexed by a global variable, updates ride configuration, then for each of the nine entries computes two modular values, derives offsets, selects a byte from a fixed table or from the saved bytes depending on a flag, and calls another routine with the computed coordinates and a byte-derived offset.
+- `render_ride_queue`: The routine loops over a table via a pointer and repeatedly calls another routine with values derived from the table entries and two stack values.
+- `spawn_ride_vehicle_3`: The routine initializes fields in a parameter block and walks linked structures, invoking another routine to locate objects.
+- `find_ride_objects_by_type`: The routine uses a global variable to iterate through a small set of ride identifiers, calling another routine to locate each ride object and checking a type byte to filter candidates.
+- `walk_ride_object_chain`: The routine walks a small fixed chain of ride objects using a global table of indices and offsets, checks each object with find_ride_object and validates a type byte, and returns zero on failure.
+- `check_ride_availability_7`: The routine walks a table of ride entries using a global variable as an index, repeatedly calling another routine to locate a ride object and testing a byte field for allowed values.
+- `find_ride_vehicle_3`: The routine walks a linked list of ride objects using a global table and a mask to select entries, skipping objects whose type byte is out of range.
+- `find_ride_vehicle_4`: The routine walks a linked structure using a global table and repeatedly calls another routine to locate ride objects, checking byte fields for allowed ranges and returning zero on failure.
+- `assign_ride_queue_slots`: The routine iterates over a block of queue slots referenced by a global base pointer and an incoming pointer.
+- `process_ride_queue_entry_10`: The routine iterates over a chain of structures linked by a fixed offset, using a global table and a stack value to locate a ride object and then fill fields in the current structure with values derived from another structure and from a remainder routine.
+- `handle_ride_queue_61`: The routine walks a linked list of queue structures for each ride object, computes an index from ride coordinates and a base pointer and searches for a matching object using another routine.
+- `spawn_ride_vehicle_4`: The routine increments a counter and walks a linked list of ride objects, using a table indexed by a short value to select an entry.
+- `set_ride_vehicle_type_3`: The routine writes constants to a ride structure, computes modular remainders and stores the results, allocates a ride object, then iterates through a linked list of ride entries using a global table to locate or create a matching ride object and updates fields in the structures.
+- `process_ride_queue_entry_11`: Iterates over a queue of entries and, when an entry is empty, selects a ride object via a table lookup and object search, writes several fields into the entry including a type byte, flags and remainder values, then allocates a ride object for the entry and marks the entry as processed.
+- `process_ride_chain_loop`: The routine walks a linked chain of records using a global table base and a next-pointer field.
+- `skip_ride_chain`: The routine is empty.
+- `update_ride_state_13`: The routine checks a flag in the entity record and, based on a short state field, either schedules an object state update using a time offset and a global counter, or clears state fields, or processes a ticket, updates a statistic and a global accumulator with a negative value derived from a field, and possibly advances the state.
+- `clear_ride_flags`: The routine clears two 16-bit fields in a structure pointed to by a register by storing zero to each field.
+- `process_wait_queue`: The routine checks a flag in a structure.
+- `clear_waiting_penalty`: The routine checks a short field in a structure referenced by a5; if the field is non-zero and a time difference exceeds a threshold, it calls another routine with a negative value derived from that field and updates a global variable with the same negative value, then clears the field.
+- `update_ride_status_3`: The routine looks up a ride object via an index derived from bytes in the parameter block, checks a status field, and updates several bytes in the block from entries in a global table.
+- `clear_ride_maintenance`: The routine clears a flag in a structure pointed to by A5 and, if a condition on a table entry is met, writes constant values and a byte from the table into the structure.
+- `find_next_ride_entry`: Iterates through a table of ride entries using an offset stored in a field, stopping when a zero price flag is found or the end of the table is reached.
+- `update_ride_price_13`: The routine walks a linked list of ride structures via a global pointer, stopping when the current entry’s next pointer is null or the entry index exceeds a limit.
+- `update_ride_waiting_time_5`: The routine updates fields in a ride waiting-time structure using a global table, computes a derived index from two short fields and a byte flag, and calls another routine to locate a ride object.
+- `update_vehicle_state_2`: The routine reads fields from a vehicle structure and a related ride structure, updates position and timing counters, clamps a short field to a range, adjusts a queue counter and propagates a short value to linked vehicles.
+- `update_ride_vehicle_state_6`: The routine updates fields in two structures pointed to by registers, adjusts a counter and a linked list of entries, and prepares two 16-bit values on the stack before branching to another routine.
+- `update_waiting_queue_entry`: The routine updates fields in two structures passed via registers, adjusts a counter and a queue length, performs a conditional random adjustment using a global table, walks a linked list of entries to propagate an identifier, and prepares two 16-bit values on the stack from structure bytes and caller-provided bytes before tail calling another routine.
+- `update_ride_waiting_queue_4`: The routine clamps a short field in a guest structure to a bounded range, updates a queue position counter and a queue length field in a ride structure, and conditionally modifies a linked list of guests via another routine.
+- `update_ride_queue_position`: This routine adjusts a short offset at a fixed offset in a structure pointed to by a pointer and updates a counter at another fixed offset in a different structure.
+- `reassign_ride_queue_entry`: Moves a queue entry to a different linked-list slot and updates its stored position coordinates based on a direction flag, then recomputes the entry's movement vector from that flag and applies it to the ride object.
+- `return_zero`: The routine contains no instructions and immediately returns zero.
+- `process_ride_queue_entry_12`: The routine processes a queue entry structure pointed to by the registers, clearing a status field and updating linked entries in a table.
+- `process_ride_queue_entry_3_2`: The routine updates fields of a queue entry structure in memory, decrements a counter, walks a linked list of entries via a global table base, copies a short value between entries, and sets two stack words based on a type byte and a flag.
+- `skip_invalid_trigger`: The routine is empty and returns zero.
+- `update_ride_queue_entry_4`: Updates the linked ride queue by reassigning entries to a different queue slot and adjusting the stored position coordinates based on a direction code, then walks the queue chain to verify it.
+- `clear_ride_queue_entry_3`: The routine walks a linked list of queue entries using a modular remainder check and copies a short field from one entry to another, then clears several bytes in the current entry and updates a ride object.
+- `update_ride_state_14`: The routine copies a word from a source structure to a destination structure, clears several bytes in the destination structure, calls another routine, and then performs a series of checks on short and byte fields in two structures and a linked list of structures.
+- `update_ride_availability`: The routine initializes ride state fields, validates ride constraints via tail calls to another routine, walks a linked list of ride entries using an offset table, updates availability bytes by masking with a table-derived bitmask and writes the result back through a computed pointer, then updates a stack-saved byte with a remainder value.
+- `validate_ride_entry_2`: The routine checks several fields of two structures passed via registers, verifies linked entries via an offset table, and then walks a chain of entries updating flags and bytes in the structures using a table lookup and a modular remainder routine.
+- `validate_ride_constraints`: The routine copies bytes from a ride structure, checks linked list pointers and flags, and then walks a chain of ride objects updating a per-ride byte field by looking up a table and applying bit masks.
+- `validate_ride_queue_chain`: Walks a linked list of ride structures and validates each node, clearing fields in a target structure and propagating flags between nodes.
+- `process_ride_status_3`: Initializes a ride record with default values and validates its state and queue chain.
+- `validate_ride_access`: The routine checks a chain of ride objects and returns early on several conditions, then walks the chain updating a byte field by looking up values in a table derived from object data.
+- `process_ride_status`: Initializes a ride record with default values, then validates its state and queue chain.
+- `update_ride_status_26`: The routine iterates over a table of ride entries and for each entry computes an object index, looks up a flag byte from a global table, combines it with a mask derived from a byte in the entry, and writes a modified byte back into the entry.
+- `update_ride_queue_entry_3`: Iterates over a queue of ride objects and updates each entry's position and flags using values from a global table and a ride object lookup, then calls another routine to apply the updated flags.
+- `update_ride_status_10`: Updates the status flags of a ride object by scanning its associated ride entries, recomputing their state based on a per-ride flag table, and writing the resulting values back.
+- `draw_ride_vehicle_nine`: Iterates over a chain of ride objects via a global table, updates flags and positions using remainder and modular arithmetic, then writes transformed coordinates back through a ride object update routine.
+- `update_ride_object_flags_3`: Iterates over a list of ride objects referenced by a pointer in a5, updates a flag byte for each entry using a table lookup and a bitmask derived from object fields, then calls another routine to apply a computed short pair to each object.
+- `apply_ride_costume`: Iterates over a ride queue using ride object pointers, masks ride flags via a byte table and a global variable table, computes a 16-bit costume value with a remainder helper, writes it back with update_ride_object, and then processes a secondary block to adjust ride coordinates when a sign flag is set.
+- `update_ride_queue_entries`: Walks a linked list of ride objects and updates each entry’s status word using remainder results and a byte from a table lookup.
+- `propagate_object_updates`: Iterates a chain of objects via a global pointer table and a per-object link field, deriving small flags from byte fields and a mask table.
+- `check_ride_availability_8`: The routine walks a linked structure pointed to by a global variable, calling another routine to update each entry, then tests a short field to decide whether to return success.
+- `update_ride_vehicle_state_2`: The routine walks a linked list of ride vehicle entries using offsets stored in a global table and updates each entry by calling another routine with a constructed index.
+- `process_ride_queue_entry_13`: Iterates a linked list of ride queue entries using a global table and updates fields in each entry based on flags and a global variable.
+- `process_ride_queue_14`: Iterates over a linked list of ride objects using a global table and a stack frame, updates each object with a packed flag word, computes a flag mask from object and table data, writes a byte derived from a table lookup into the object, and loops with different flag word values until a termination condition is met, returning a status flag.
+- `process_ride_prices`: The routine walks a linked list of ride records using a global table base and a next-pointer field.
+- `process_ride_queue_15`: Iterates a linked list of ride objects using a global table base and a next-pointer field, updating each object with a derived short value.
+- `traverse_linked_nodes`: The routine walks a linked structure using a pointer in a global table, repeatedly calling another routine with the current node and a short value derived from two short fields.
+- `update_ride_objects_along_path`: The routine walks a linked chain of ride objects using a table base and an offset derived from two short fields.
+- `follow_linked_nodes`: The routine walks a linked list of structures using a pointer stored in each node, updates an object with a stack-held offset, and returns a flag when the link points back to the start of the table.
+- `find_ride_connection_5`: The routine computes a connection index from a ride object and a flag, using a global variable table and a ride object lookup.
+- `handle_ride_queue`: The routine loads a pointer from a global variable, checks a byte at an offset from that pointer, and if the byte is non-zero it calls another routine with the pointer and a constant.
+- `process_ride_queue_entry_14`: The routine reads a byte from a global variable through a pointer, stores it into a register, and then tail-calls another routine with that value.
+- `draw_park_object_2`: The routine reads a global variable, loads a pointer from a table using an index derived from that variable, and then calls another routine with the loaded pointer and a constant.
+- `return_magic_constant`: The routine returns a constant 32-bit value.
+- `update_ride_status_28`: The routine reads a short from a global variable and, if it is positive, negates a signed char at a nearby global offset and calls another routine with an index derived from the short and the char, then negates the short and returns the called routine's result.
+- `check_ride_condition`: The routine receives a 16-bit parameter, computes an index by scaling it and adding an offset from a global variable, then calls another routine to look up an object with a constant type.
+- `return_zero_value`: The routine returns a constant zero.
+- `update_ride_status_29`: The routine reads a byte from the parameter block to select which of two short fields are combined and written back, updates a ride object with the combined value, clears a status word under certain byte range conditions, decrements a counter and triggers a global flag and a clear operation when the counter reaches zero, and returns a masked global variable.
+- `process_ride_status_2`: Computes the difference between two offset fields and stores a third field, then adjusts a counter based on a global flag.
+- `handle_ride_status_2`: Sums two offset fields and stores a third field, then adjusts a counter based on a global flag.
+- `update_ride_status_4`: The routine updates a ride object and manipulates several fields in a structure pointed to by A5.
+- `update_ride_status_32`: The routine reads fields from a structure pointed to by A5, updates a short field by subtracting another field, and conditionally clears a word field and writes a byte into a table indexed by two bytes from the structure.
+- `propagate_ride_flags`: The routine computes an index from bytes in the parameter block and a global table, looks up a ride object, and then iterates over two flag slots, clearing park data for found objects and updating flag bytes in a global table and the stack slots.
+- `process_ride_queue_70`: Iterates over two stack slots, checks a byte flag and calls another routine to find an object.
+- `process_ride_queue_71`: The routine updates a stack buffer of ride identifiers by removing bits from a byte table entry for each ride and clearing park data for found rides.
+- `clear_park_data_and_process_queue`: The routine clears park data for a ride object and then manipulates a small stack buffer and a global byte table to build a queue of ride objects.
+- `update_ride_instance_2`: The routine computes an index from a global variable and a table base, then if the index is non-zero it writes several bytes and words into a structure at that index, using values from globals, parameters and the results of another routine, and adjusts a short field based on a byte from a global variable.
+- `process_ride_queue_73`: The routine updates tile animation using values derived from fixed-point multiplication and the parameter block, decrements a counter and reloads it from a constant or a modular remainder, then either clears a linked list of related objects and updates the queue or scans a small table to find a matching entry and writes several fields in the parameter block before returning.
+- `update_ride_queue`: Normalizes a fixed-point value and stores it, then clears all ride entries when a coordinate is at an extreme boundary.
+- `process_ride_queue_75`: The routine walks a linked list of entries using a pointer stored in a global variable.
+- `find_next_ride_3`: The routine repeatedly clears park data and scans an array of ride structures using a table pointer and an index register.
+- `find_ride_object_in_table`: The routine iterates four entries in a table, computes an address from a global variable, a stack value and a base, and checks a byte at offset two.
+- `find_ride_object_9`: The routine searches a small table indexed by a counter, computes an address from a global variable and a register value, and checks a byte at an offset.
+- `set_object_flags`: The routine reads a byte from the argument and uses it to index a table via a global variable, then checks a bitmask in the resulting word.
+- `set_ride_state_2`: The routine writes a byte to an offset in a structure pointed to by a5, writes a word zero to another offset in the same structure, then calls another routine and returns a constant.
+- `process_ride_queue_entry_15`: Increments a counter in the entry and loads a handler pointer from a table using the entry field.
+- `set_ride_price_15`: The routine writes a byte to an offset in a structure pointed to by a5, then selects a 16-bit value by calling another routine if a byte at an offset in that structure is zero or calling a different routine otherwise, stores the selected value at another offset in the same structure, and returns a constant.
+- `set_ride_price_16`: The routine reads a byte from a global variable via a pointer in A5, calls another routine to compute a modular remainder, stores the resulting word into a global variable via the same pointer, and returns a constant.
+- `update_ride_state_5`: Checks a word parameter and copies a byte from an offset to another offset in a structure pointed to by a pointer, then conditionally sets a word field and calls another routine, returning a constant.
+- `set_ride_status_2`: The routine reads a byte from a global variable via a pointer, and if the byte is zero it calls another routine to obtain a 16-bit value, otherwise it calls another routine to obtain a 16-bit value.
+- `update_ride_status_33`: The routine reads a byte from memory via a pointer, calls another routine to compute a modular remainder and stores the result as a word at an offset from the pointer, stores a byte from a data register at an offset from the pointer, then calls another routine to resolve an object identifier and returns.
+- `update_ride_status_and_id`: Increments a counter at offset 48, then adjusts a value at offset 20, returning early when it underflows.
+- `update_ride_status_fields`: The routine reads a short status via a call, stores a remainder or constant into a word field via a pointer in A5, and conditionally copies or sets bytes in the same structure and calls another routine.
+- `update_ride_status_5`: Reads a byte from an object via a pointer, stores the modular remainder result into the object, and conditionally copies or sets object bytes based on a word flag, then calls another routine to resolve an object identifier.
+- `set_object_flags_or_store_byte`: The routine checks a short value from a register.
+- `set_ride_price_17`: The routine checks a short value from a data register against a negative sentinel.
+- `resolve_ride_coordinates_2`: Copies a block of eight values from a global table into a stack buffer, increments a counter, and adjusts a pair of coordinate bytes depending on a mode flag.
+- `find_ride_exit`: Iterates a limited number of times searching for a ride exit and writes state into a structure pointed to by a5.
+- `process_ride_object_setup`: Copies a pair of values into a structure and adjusts a second byte, then checks a flag in a table that either clears the copied values or leaves them intact.
+- `resolve_ride_coordinates`: Adjusts a stored pair of coordinates by decrementing one component and copying another, then validates them against a lookup table.
+- `resolve_ride_object_id_2`: Updates a running total by walking through a four-entry table, adding each entry's two values while skipping negative, oversized, or flagged entries.
+- `find_ride_state_entry`: Loops over a four-entry table while accumulating its values into a running total, and when a matching entry is found it writes several fields into a structure, calls a modulo routine, and returns.
+- `locate_valid_ride_entry`: Skips table entries that fall outside a valid range or have a cleared flag by accumulating their values, and when it reaches a valid entry it writes several fields into a structure, calls a modulo routine, and returns.
+- `select_ride_state_entry`: Walks through a four-entry table, adding each entry's two values plus a running total, and skips entries that are negative, too large, or have certain bits cleared.
+- `test_ride_safety_flags`: The routine iterates four times over a table of short offsets derived from a global variable and a table at a fixed address, loads a short from a global variable using param_1 and the offset, and tests it against param_2.
+- `process_ride_queue_entry_20`: Increments a counter in the structure, updates a table entry using an index from the structure, and conditionally animates tiles based on values in the structure.
+- `update_tile_animation_state`: Updates several fields of a structure pointed to by its parameter, computes two fixed-point products and passes them to another routine to update tile animation, then decrements a counter and, when it reaches zero, looks up an entry by type and conditionally adjusts a table value and a global counter.
+- `decrement_ride_wait_counter`: The routine reads a 16-bit value from a field in the passed structure, decrements it and writes it back.
+- `empty_routine_3`: The routine contains no instructions and immediately returns.
+- `check_ride_availability_13`: The routine reads two bytes from the argument structure, builds an index into a table via a global variable, and tests a bitmask.
+- `empty_stub_routine_2`: The routine contains no instructions and immediately returns zero.
+- `advance_ride_status_counter`: Advances a per-instance counter and, when a global flag is set, remaps a value through a scaled table.
+- `update_ride_status_36`: The routine reads a byte from a structure via a pointer, calls another routine to compute a remainder and stores the result in the structure, copies several bytes within the structure, updates a byte field from a register and conditionally writes a word from a table indexed by that byte, clears a word field, writes a constant byte and returns a constant.
+- `update_ride_status_37`: The routine checks a global table entry for each index and, if a condition on a ride object is met, copies bytes from the object into a structure, updates a few fields with values from a table and a helper routine, clears a field and sets a flag byte, then returns success.
+- `update_ride_price_14`: The routine reads a byte from a global variable via a pointer, calls another routine to compute a modular remainder and stores the result into a global variable, stores a byte from a register into a global variable, then calls another routine to resolve an object identifier and another routine to check ride availability, and returns zero.
+- `find_ride_tile_index`: The routine compares bytes from a structure with a global table entry, computes an index from two bytes and a global offset, walks a direction table using modular remainder and absolute value helpers, and returns a signed offset or a sentinel value in D0.
+- `empty_routine_stub_2`: The routine contains no instructions and returns immediately.
+- `update_ride_status_flags_2_2`: Decrements a counter and, when it reaches zero, compares two stored offsets to record which one is larger, then loads a value from a global table based on those offsets and a direction index.
+- `set_status_byte_and_refresh`: The routine compares a signed value derived from a byte with an input byte and updates a status byte in a structure, handling zero and non-zero cases.
+- `update_ride_status_fields_2`: The routine updates several bytes and words in a structure pointed to by A5 based on input registers and values read from a global variable table.
+- `update_ride_status_fields_3`: Updates a small data block pointed to by an argument, copying one byte to another location and storing a normalized fixed-point value.
+- `copy_byte_and_update_word`: The routine copies a byte from an offset to another offset within a structure pointed to by a5, then selects a 16-bit value by calling another routine if a flag byte is zero or a different routine otherwise, and stores the result at a further offset in the same structure.
+- `store_price_remainder`: The routine reads a byte from memory pointed to by a5 plus an offset, passes it to another routine to compute a modular remainder, stores the resulting word back through a5 at a different offset, and returns a constant.
+- `update_ride_status_6`: The routine reads data from a global variable and a structure pointed to by a register, tests two word flags, and sets a word field from a constant routine or a remainder routine, or sets a word to a fixed value after calling a search routine.
+- `update_ride_status_42`: The routine reads a byte from a structure pointed to by a register, calls another routine to compute a remainder and stores the result into the structure, conditionally calls another routine when a byte in the structure differs from a register value, and conditionally copies a word from a table indexed by a word in the structure into the structure before returning.
+- `update_ride_state_6`: The routine calls another routine to find the nearest ride exit and stores a flag in a word field of a structure pointed to by a register.
+- `update_ride_status_flags_2`: The routine writes a constant word to a field of a structure pointed to by a register, compares a byte from a register with a byte field in the structure and calls another routine if they differ, and if two flag bits in the structure are set it copies a word from a table indexed by another word field in the structure into that field.
+- `update_tile_position_and_flags`: Copies a byte from one offset of a structure to another and derives a 16-bit index from two other bytes.
+- `update_ride_animation_frame_2`: Computes a frame offset from fixed-point multiplies and updates tile animation for the object.
+- `decode_ride_status_flags`: The routine decodes a byte from a register, sets status bytes at offsets from a pointer and copies a byte, updates a short with a constant or modular remainder, and conditionally updates another short via a table lookup.
+- `update_ride_state_17`: The routine updates a ride-state structure pointed to by a register.
+- `copy_status_byte`: The routine copies a byte from one offset to another within the structure pointed to by the register and returns a flag.
+- `copy_byte_to_offset`: The routine copies a byte from an offset within a structure pointed to by a5 to another offset within the same structure and returns a constant.
+- `refresh_ride_state_flags`: The routine checks a global variable table entry for a bit mask and calls another routine if set, then conditionally calls another routine based on a saved byte, computes a value via a constant or remainder routine and stores it in a structure field, and updates another structure field from a table if a flag is set.
+- `update_ride_status_48`: The routine reads a byte from an offset in a structure pointed to by a5, calls another routine to compute a modular remainder, stores the result into a word at an offset in the same structure, and if the stored word has a specific bit pattern it copies a word from a table indexed by another word in the structure into a field of the structure.
+- `advance_object_animation_state`: Maintains a per-object animation counter that increments, decrements, or resets based on a flag byte, then derives two coordinate values from fixed-point math or direct offsets.
+- `update_ride_object_state`: Increments a byte field in the object structure and conditionally sets a flag.
+- `update_ride_state_18`: The routine updates fields in a ride object pointed to by an argument register.
+- `update_ride_state_19`: The routine updates fields in a structure pointed to by A5, conditionally clearing a ride instance, adjusting a price-related field via a table lookup, and branching to another routine.
+- `update_ride_state_10_2`: Loads a value from a table indexed by data at a fixed offset and stores it into a structure at a fixed offset.
+- `clear_ride_instance_2`: The routine calls another routine to clear a ride instance and then returns zero.
+- `update_ride_state_10`: The routine updates a set of fields in a structure pointed to by a5.
+- `update_ride_waiting_list`: The routine checks a set of conditions on a ride structure and a random value.
+- `update_ride_state_21`: The routine computes an index from a field of the first argument and a global variable, then checks a time condition and a random value and a remainder result.
+- `update_ride_state_16`: Checks several fields of a structure alongside a random value and a global table entry, and when the conditions hold it writes a two-byte value from a global variable into the structure and sets a state field.
+- `update_ride_state_15`: Checks a byte in a structure and returns early unless it equals two.
+- `write_park_name_line`: The routine calls another routine to generate a random park value and another routine to compute a modular remainder, then stores a byte from a data register plus a newline character through a pointer, clears a byte at an offset from the same pointer, writes a word value through the pointer, and calls another routine to update a ride object.
+- `create_ride_instance_3`: The routine walks a linked list of ride records by stepping a fixed stride until it finds an entry whose type byte is zero or a limit is reached.
+- `find_next_free_ride_slot`: Iterates through a table of ride slots using a pointer in A3 and a limit in A2.
+- `spawn_ride_vehicle_5`: The routine walks a linked list of ride slots using a pointer in a register and a limit in another register, stopping at the first slot whose name byte is zero.
+- `lookup_and_update_ride_counter`: It stores into a word field a value looked up in a table using the previous word value scaled by eight, then increments or decrements a short counter depending on whether a byte field is zero, sets a flag and resets the counter when it passes a threshold, and clears the instance when the counter reaches zero.
+- `increment_ride_wait_counter`: The routine increments a 16-bit counter stored at an offset from a pointer in A1.
+- `check_ride_status_3`: The routine reads a short value from an offset in memory pointed to by a register and compares it to zero.
+- `update_ride_status_50`: The routine updates a ride object based on an input structure, checks a status byte, iterates a small table and conditionally calls another routine to process a ride chain and update ride state entries, then creates a ride instance and processes ride vehicles, and finally iterates a fixed count applying random checks to modify bytes in a memory area derived from the input structure.
+- `update_ride_status_51`: This routine iterates over a list of ride objects using a table and a global variable, calls another routine to process a ride chain, updates five ride states with calculated offsets, and then creates a ride instance, processes a ride vehicle, and conditionally updates a block of memory entries based on random values before incrementing a global counter.
+- `increment_and_update_ride_state`: It increments a byte field, calls another routine with derived coordinates, updates an accumulator byte and a short counter, clears a flag byte under certain type conditions, and if the counter exceeds a threshold calls another routine, then iterates a fixed number of entries using a random value and a global table to write a constant byte and set a bit in memory.
+- `update_ride_statistics_9`: The routine iterates over twelve entries in a table and, for each non-empty entry, selects a per-ride data block via an index byte and updates several fields using modular arithmetic, fixed-point multiplication and random values.
+- `update_ride_statistics_10`: This routine iterates over a table of ride structures and updates per-ride counters and statistics using modular arithmetic and fixed-point multiplication.
+- `update_ride_statistics_11`: The routine iterates over a table of ride entries using an index in D0, computes modular remainders and fixed-point multiplications, updates per-ride counters and a global accumulator, and conditionally calls two other routines.
+- `update_ride_statistics_12`: The routine repeatedly processes a stack-based structure using modular remainder and fixed-point multiplication helpers.
+- `update_ride_statistics_3`: The routine processes a structure pointed to by a register, adjusting integer fields with values returned by another routine and a fixed-point multiply, and updates two short fields in another structure using a random value and modular remainder.
+- `update_ride_statistics_14`: The routine loops over a table of ride records, updates a 32-bit field by adding a remainder result and subtracting a value left by multiply_fixed_point, then processes each ride’s passenger data similarly.
+- `update_ride_statistics_5`: The routine iterates over a table of ride entries and updates per-ride counters using modular remainder and fixed-point multiplication.
+- `update_ride_statistics_16`: The routine iterates over a table of ride records using an index stored on the stack, skipping empty entries, and updates per-ride fields such as waiting time and capacity using random values and modular remainder calculations.
+- `update_ride_statistics_17`: The routine processes an entry from a table of structures, clamping two short fields to a range and iterating over a secondary table to update counters and fixed-point values.
+- `update_ride_statistics_18`: The routine iterates over a table of ride entries, using a random park value and a modular remainder to adjust a short field in each entry, clamping it to a minimum and maximum.
+- `update_ride_statistics_8`: The routine iterates over a table of entries and, for each non-empty entry, selects a global structure via an index byte and updates several short and int fields in that structure and in the entry.
+- `update_ride_waiting_times`: The routine iterates over a fixed-size table of ride records and updates per-ride waiting-time counters.
+- `process_ride_queue_19`: The routine processes a linked list of entries referenced through a global table and builds a fixed-size stack array of pointers to those entries.
+- `iterate_queue_entries_2`: The routine walks a linked list of entries using a global pointer and a global limit, and for each entry it tests a flag byte and a size comparison before loading a field into a global variable and calling another routine with derived coordinates and an index.
+- `process_ride_queue_20`: Iterates over a queue of ride entries stored in a table, using a global pointer and several stack values to compute offsets and update a global variable.
+- `traverse_ride_records`: Walks through a linked list of ride records, following a next-pointer field in each entry.
+- `find_next_ride_4`: The routine selects a ride entry from a table and writes a value from that entry to a global variable.
+- `find_ride_by_id`: The routine walks a table of ride entries using an index stored in a global variable, checks a condition flag in each entry, and if the flag is set it searches a small stack-based list for a matching attraction.
+- `find_ride_attraction`: The routine walks a linked list of ride records using a global pointer and a table base, checks a flag in each record, and uses a stack-based index to locate a matching entry in a small table.
+- `process_queue_items`: The routine walks a linked list of entries via a global pointer and a global variable.
+- `iterate_ride_queue_entries_3`: The routine walks a linked list of entries using a global table base and an index stored in each entry.
+- `process_ride_queue_entry_16`: Updates a ride queue entry by selecting a random ride index from a table, refreshing cached ride data and coordinates, and then checks ride conditions for the entry and its linked chain of entries.
+- `select_random_ride`: The routine picks a random ride index from a table using a park random value, avoiding the current selection, stores it in a park structure and in a global variable, then loads ride data via a table lookup and updates a ride pointer.
+- `process_ride_queue_86`: The routine computes an index from an input value and a global offset, picks a random park value, stores a derived ride identifier into a structure and updates a global selector.
+- `process_ride_queue_22`: The routine computes an offset from a signed short and an index, loads a pointer from a global table, optionally updates the table entry and checks a flag in the pointed structure.
+- `process_ride_queue_88`: The routine computes an index from a global variable and a stack value, loads a pointer from a table, and optionally updates a ride entry and checks a flag.
+- `iterate_table_check_condition`: The routine walks a table of entries using a global pointer and a global offset, updating a global variable with a field from the current entry and calling another routine with values derived from stack slots and table fields when a comparison of a global variable and a table field holds.
+- `process_ride_queue_90`: Iterates a linked list of entries using a global pointer and an offset field.
+- `draw_park_object_three`: The routine checks a flag in a global variable and, if set, loads values from a pointer in a register and from the stack, calls another routine to compute two modular remainders, then calls another routine to spawn park elements with those values.
+- `apply_ride_stats_to_display`: The routine reads two bytes from a global variable and uses each as an index into a table pointed to by a global variable.
+- `process_ride_queue_91`: The routine walks a linked list of entries indexed through a table.
+- `process_ride_queue_92`: The routine walks a linked list of entries via a pointer stored in a global variable and an offset field.
+- `step_ride_state_machine`: Clears status bytes in two tables until a zero entry is reached, resets a global flag and copies one value to another, then advances a state machine driven by that global variable.
+- `draw_text_box`: The routine prepares a text buffer, measures the string length, and uses a helper routine to draw a box around the text.
+- `format_queue_text`: The routine selects a pointer to a global variable and a value derived from the second argument, using a modular remainder calculation when the absolute value of the argument exceeds certain thresholds, then calls another routine to reset a UI element with the first argument, the chosen pointer and the derived value, and returns the first argument.
+- `get_object_data_pointer`: The routine computes a pointer from an index byte.
+- `initialize_game_state_phase_two`: The routine clears and re-initialises game state data and a ride list, and then drives a small UI flow that may reset UI elements, run an input loop, and update ride statistics based on conditions read from global data.
+- `update_ride_statistics_20`: The routine iterates over a table of ride entries and, for each active entry, computes several fixed-point values from a global data structure and stores them into a global variable array while preserving low bits.
+- `update_ride_waiting_stats`: The routine updates per-ride waiting statistics by accumulating a counter into a table entry and storing a byte value into several adjacent bytes of the same entry, repeating for a range of indices.
+- `process_theme_script`: The routine sets a current ride identifier from a global variable and repeatedly clears pending messages then interprets a byte script stored in memory.
+- `process_menu_command`: The routine reads a command byte from a buffer and, depending on its value, performs blitter waits and UI element resets, calls a draw routine with values taken from the buffer and from stack data, or iterates over a table of entries to locate a matching value and then branches to another routine.
+- `process_ride_queue_23`: The routine iterates over a table of entries and, when an entry is present, it updates a global ride identifier and processes per-entry data.
+- `draw_ride_sign`: The routine reads a byte from a structure pointed to by a5 and, if it is non-zero, dispatches on its value to call another routine with coordinates taken from the structure and offsets from a global table, then prepares arguments for a tail call to another routine.
+- `spawn_park_object`: The routine reads values from a table referenced by a pointer passed in a5 and from a global variable, performs range checks against a pair of global limits, and when the checks succeed it enqueues an event, clears several state fields and resets UI elements using the table data.
+- `draw_ride_statistics_box`: The routine draws a rectangular box of ride statistics using draw_ride_object_2 and multiply_fixed_point.
+- `draw_ride_preview_40`: The routine clears a global variable, then repeatedly reads and updates several short values from the stack and a global variable, and calls another routine to draw ride objects using those values and data from a table.
+- `draw_ride_info_panel_14`: The routine draws a ride object using data from a structure pointed to by a5 and then conditionally draws up to three additional ride objects and resets UI elements based on flag bits in the structure.
+- `draw_ride_preview_41`: The routine draws a ride preview by invoking draw_ride_object_2 and draw_scaled_sprite, updates ride state via set_current_ride_id, enqueue_ride_event, update_ride_status_53, reset_game_state_8, reset_park_objects and reset_ui_element, performs fixed-point multiplication with multiply_fixed_point, wraps text with wrap_text_to_width, and manipulates a set of stack and global variables to control layout and looping.
+- `reset_park_objects`: The routine iterates over a table of park objects and clears several fields in each object’s data block, moving saved values into the cleared slots and zeroing the originals.
+- `update_ride_status_53`: The routine updates a set of ride-related fields by iterating over a table of ride entries and resetting or copying statistics, then draws ride objects and wraps text for a preview.
+- `process_park_maintenance`: The routine loops while a global variable stays within a range and performs a block of operations on a table of ride structures, zeroing and copying fields, updating counters with random values, and then calls several other routines to update statistics, reset state, handle events, set active ride and park name, optionally draw statistics, and then waits for vertical blank and loads data before repeating.
+- `process_ride_event_queue`: Initializes a ride-event queue by enqueuing two events and updating ride statistics, then processes queued ride messages by dispatching on their type to update ride identifiers, fixed-point values, and on-screen text.
+- `reset_ride_statistics`: The routine iterates over a table of ride records and clears several per-ride counters and accumulators, then updates a few global park state fields and calls another routine to parse ride scripts.
+- `parse_script_bytes`: The routine reads script bytes from a table and dispatches them via a switch.
+- `reset_ride_statistics_2`: The routine iterates over a table of ride descriptors and clears several per-ride counters, copying old values into backup fields and adding small random increments under certain conditions.
+- `reset_ride_financials_and_statistics`: The routine clears and moves several per-park accumulators in a table loop, updates park-wide counters, resets game state and ride state, and conditionally draws park statistics.
+- `process_ride_queue_24`: The routine clears a flag, optionally iterates over two tables using a normalized fixed-point threshold and a modular remainder, sets a global ride identifier, marks entries and runs a waiting loop that reseeds randomness and draws while a condition holds, then resets state and calls several generic handlers, clearing a message area, waiting for the blitter, and resetting UI and game state.
+- `reset_ride_queue_state`: Walks through two tables of ride records, resetting each one whose state matches a fixed-point value and clearing a flag while cycling vehicle and event state.
+- `process_ride_queue_25`: Repeatedly seeds the random generator and updates ride drawing and events while scanning a table of ride entries.
+- `process_park_entities`: Iterates over a table of entities using an index and a global variable, updates flags and calls another routine to reset state when a condition on a remainder and a byte flag is met, then clears a global variable and runs post-loop cleanup including waiting for hardware and handling events.
+- `handle_ride_queue_loop`: A routine that repeatedly seeds randomness, draws a ride vehicle and processes a game event, then iterates over a table via a counter using modular arithmetic.
+- `reset_game_state_6`: The routine clears pending messages in a loop, waits for the blitter, processes a game event, optionally clears the screen, resets UI state, stores a byte from the stack into a global variable, selects a value for a game event handler based on a flag in a table, calls the handler, clears a byte in a table, and then resets game state.
+- `reset_state_from_global`: The routine copies a value from a global variable to another global variable, calls another routine with a global variable, clears a byte at an offset from a global pointer, and then calls another routine.
+- `wait_for_vblank_and_load`: The routine initializes game state and UI state, sets up a global variable and a table entry, waits for a blitter operation and queues a copy, updates ride prices using the prepared table, then spins until a global variable flag toggles from set to clear, and returns a value built from two output registers.
+- `update_ride_bounding_box`: The routine walks a table of ride entries, invokes another routine for certain entries, updates a small counter array using a modular remainder and adjusts a running tally, then iterates over a fixed set of slots to merge per-slot minima from two different tables into a set of bounding values stored on the stack.
+- `set_game_speed_2`: The routine advances the simulation by invoking a tick routine, selects a ride identifier, triggers a park event, copies a ride data block, and waits for the blitter and queues a copy.
+- `dispatch_ride_event_loop`: Finds the nearest tile to the cursor and then walks through a table of event records, dispatching each one by its type code.
+- `process_message_queue`: This routine processes entries from a message queue by inspecting a type byte and dispatching to different handling paths that update a global state, render text, wait for vertical blanking, and reset UI elements while iterating over a table of data.
+- `process_ride_queue_99`: Iterates a global queue and dispatches per-entry actions, rendering a text string each pass and calling wait for vblank and reset UI element routines.
+- `process_message_queue_2`: The routine processes a message queue stored in a global variable, iterating over entries and handling different message types.
+- `draw_ride_preview_42`: The routine loops over a table of ride preview entries, computes a modular remainder and a running total, resets a UI element for each entry, waits for vertical blank, formats numbers and draws them, then enqueues an event and clears the screen when a termination condition is met.
+- `render_park_view`: The routine iterates over entries in a table, accumulates a signed integer field, and formats numbers for display.
+- `draw_ride_queue`: The routine iterates over a table of ride records and updates UI elements for each entry, formatting numeric values and waiting for vertical blanking.
+- `process_ride_queue_100`: The routine loops over a table of bytes, using a counter and a stack slot to index entries.
+- `process_ride_queue_101`: The routine iterates over a global variable table, using a counter and a stack buffer to drive wait_for_vblank calls and to format a number string.
+- `update_ride_statistics_22`: The routine updates a per-ride statistics table using a global ride count and two modular remainder values, copying or accumulating counters depending on whether an entry matches the supplied ride identifier and remainder bytes.
+- `reset_ride_state_17`: The routine clears a byte in a global variable and copies a 32-bit value from a table entry to another field in the same global variable.
+- `dispatch_ride_event_3`: Reads a byte at offset 4 of a passed structure to select one of three code paths, then loads a pointer and a value from a table indexed by a 16-bit field at offset 22.
+- `handle_ride_event_3`: The routine reads a byte from a structure pointed to by a5, selects two values from a table using an index from the structure, calls reset_ui_element with those values, optionally calls reset_ui_element again if a short field is non-zero, calls check_ride_collision_2 with a table-derived pointer, and conditionally calls another routine based on the byte and the collision result.
+- `process_ride_event_3`: The routine loads a value via a table lookup using a global variable, calls reset_ui_element twice under different conditions, then calls check_ride_collision_2 and conditionally calls another routine based on a byte in a structure and the collision result, finally returning zero.
+- `process_ride_queue_26`: The routine resets a UI element using a global variable and another table entry, optionally resets a second UI element based on a flag, calls a collision check routine with a value loaded from a global table, and if the result indicates a hit it calls one of two routines depending on a byte field, then returns.
+- `reset_game_state_six`: The routine calls another routine and then returns zero.
+- `reset_game_state_7`: The routine calls another routine to process guest departure and then returns zero.
+- `poll_game_input_loop`: The routine initializes game state, waits for the blitter and queues a copy, then repeatedly reseeds the random number generator, waits for the blitter and queues a copy in the opposite direction, checks a collision routine with the two parameters, and breaks on a non-zero result; otherwise it reinitializes state and handles a game event.
+- `check_tile_bounds_and_draw`: Initializes the game state, draws a set of tiles and a scaled sprite, then checks whether a pair of screen coordinates derived from bytes in a table lie inside a rectangle defined by two global variables.
+- `process_input_field`: Initializes game state, finds nearest tiles, draws a tile rectangle and optionally a ride element, applies a tile transform, seeds the random generator, processes text input into a buffer with length and flag checks, renders the text in a box, checks ride conditions using bytes from a table, and returns a status code after possibly resetting state and enqueuing a ride event.
+- `process_text_input_field`: The routine processes a text input field.
+- `check_text_input_and_reset_state`: The routine reads text input, clears a flag, renders text, checks two ride conditions using bytes from a table, then tests several comparisons involving a global variable and other globals.
+- `evaluate_ride_condition_2`: It reads two offset values from a data block, then queries a ride condition using those offsets.
+- `reset_game_state_and_return`: The routine calls another routine to reset game state and then returns zero.
+- `reset_park_stock_ui`: The routine resets game and UI state, sets a global variable and a global byte, clears a global byte, calls a UI reset routine three times with different tables, waits for the blitter and queues a copy, computes an offset from a UI reset result and a table, updates ride prices using two tables and a byte, stores two table pointers into globals, and activates a ride and sets the current ride identifier.
+- `render_preview_tiles`: Initialises game state and queries nearest tile helpers, builds a presence flag for entries in a global table and processes each entry by computing offsets, invoking condition checks and a reset routine, then waits for vertical blank and draws a scaled sprite and ride elements.
+- `update_ride_status_flags_3`: The routine builds a temporary flag table from a list of structures, then iterates over a global list of structures to conditionally invoke another routine and update UI elements, and finally draws scaled sprites or ride overlays based on the flags.
+- `clear_ride_statistics_cache`: The routine clears a stack-based byte cache indexed by a value in D0, then iterates over a global table of entries.
+- `update_ride_status_55`: The routine iterates over a linked list of structures in memory, processes each entry whose type is listed in a stack table, calls a modular remainder helper and a ride condition checker for each sub-entry, resets a UI element and waits for vertical blank, then draws a ride element and a second pass over the global list draws scaled sprites or overlays based on a type table and condition checks.
+- `draw_ride_queue_list`: Iterates over entries in a table and updates a UI element for each entry, invoking a condition check and a drawing helper and waiting for vertical blank.
+- `process_ride_queue_27`: The routine iterates over a table of entries, using a byte from each entry to index a global table and optionally draws a scaled sprite or performs modular arithmetic, fixed-point multiplication and ride condition checks, updates UI elements, waits for vertical blank and may enqueue an event and clear a global flag.
+- `process_ride_queue_draw`: The routine iterates over a queue structure, draws a scaled sprite for each entry and updates ride-related state.
+- `draw_ride_info_panel_6`: The routine draws a panel using a scaled sprite and a ride element, then renders several pairs of label and value strings built from a global variable table and a string table, with conditional extra rows.
+- `update_ride_vehicle_state_9`: The routine updates a ride vehicle state structure, computes a modular remainder, draws a tile and text, renders a ride preview, and conditionally enqueues an event and modifies fields in the structure based on cursor position checks.
+- `finalize_ride_selection`: It draws a ride preview and, when a ride of type two is selected with an active vehicle slot, records a random queue length and enqueues a ride event.
+- `set_ride_price_and_check`: The routine computes a ride price from a random park value and a modular remainder, clamps it to a minimum, updates several fields in a ride structure, clears a global flag, and then performs a series of conditional checks on screen coordinates and state variables.
+- `handle_park_boundary_exit`: The routine loads a pointer to a global variable, sets the current ride identifier with it, then conditionally clears several global variables and state flags, enqueues an event, resets UI state, updates ride prices, and calls a series of game-event and blitter-wait helpers before returning.
+- `handle_park_exit`: The routine checks several global values and a stack value, selects a pointer to a global variable, and passes it to another routine.
+- `reset_ride_state_18`: The routine selects a global variable pointer based on comparisons between several globals and a stack value, then sets the current ride id.
+- `reset_park_state_5`: The routine conditionally resets a global variable and a reset flag, queues an event, updates UI state twice, updates ride prices, copies a data block, and calls a few other routines, then waits for vertical blanking.
+- `reset_ride_state_19`: The routine sets the current ride identifier and checks park capacity and a global variable against two tables.
+- `draw_ride_element_3`: The routine indexes a global table with param_3 to obtain a base offset, then repeatedly calls another routine with param_1 and param_2 adjusted by bytes read from the table, looping a count times read from the table.
+- `render_queue_labels`: The routine walks a small list of entries indexed from a pointer on the stack, accumulating a byte counter and a short offset and invoking another routine for each entry.
+- `draw_ride_element_4`: The routine reads a ride data structure, selects a sprite index and draws a scaled sprite at the given coordinates, then conditionally draws an additional sprite using values returned by a normalisation routine and an event handler, and finally optionally draws a second sprite pair using modular remainder and fixed-point multiplication.
+- `init_theme_park`: The routine initializes game state, waits for the blitter and sets parameters, handles a game event, and resets UI state.
+- `draw_ride_preview_9`: The routine repeatedly clears pending messages, waits for the blitter and for vertical blank, and resets UI elements before drawing ride elements and ride objects using tile lookup results.
+- `draw_ride_preview_44`: The routine repeatedly clears pending messages, waits for the blitter and for vertical blank, resets a UI element using a global variable and object data pointers, and draws ride elements and ride objects at computed offsets.
+- `animate_ride_vehicle`: The routine repeatedly draws a ride object using data from a table, waits for vertical blanking intervals, resets UI elements, and checks modular remainder values to update UI state and park statistics.
+- `draw_ride_preview_45`: The routine initializes a UI element from a table entry and repeatedly renders a text string and three ride elements using a stack buffer, while polling a global flag and a counter.
+- `run_ride_simulation`: The routine repeatedly resets UI elements, looks up a ride by type and updates park statistics, then renders text and ride elements while waiting for vertical blank and handling game events.
+- `draw_ride_preview_frame`: The routine resets a UI element and repeatedly measures and renders a text string, waits for vertical blank and handles game events while updating a countdown variable.
+- `run_ride_preview`: The routine loops, finds a ride by type, updates park statistics, draws a ride object and UI elements, waits for vblank and blitter, handles game events, and manages a countdown timer.
+- `run_building_screen`: The routine clears pending messages and repeatedly waits for the blitter and vertical blank while polling a game event handler, decrementing a global counter until it reaches a limit, then resets UI and game state globals, sets two global flags, copies a ride data block from a global pointer, and returns a global value.
+- `update_park_statistics`: The routine stores its parameter in a global variable and copies two global variables into other global variables.
+- `draw_ride_preview_47`: The routine obtains a value from a global variable, adds a constant to it, and uses it together with a tile index returned by another routine to draw a scaled sprite at a fixed screen position.
+- `set_active_ride`: The routine waits for the blitter and sets parameters using a global variable, then copies a ride data block from the argument and stores the argument in a global variable.
+- `set_park_name_2`: The routine clears the screen and copies the value from one global variable to another global variable, then returns.
+- `draw_park_statistics`: The routine initializes ride-related state, waits for the blitter and sets parameters, then repeatedly finds nearest tiles, applies a tile transform, resets ride state and renders a ride vehicle.
+- `render_map_label`: The routine processes a switch on a short value, resets a UI element and draws a ride element or calls a helper for cases 0-2, formats numbers into two stack buffers for cases 3-8 using data from tables and sums of table entries, and checks a region overlap against two global values to enqueue an event and clear globals for case 9.
+- `render_preview_items`: The routine walks a table of strings and draws each with scaling and self_18, updates counters, checks global state, and conditionally resets UI elements, measures text, applies a tile transform, handles input, initializes theme park structures, calls preview drawing, waits for blitter, processes game events, updates ride data fields with arithmetic and loops, then continues with UI rendering and returns.
+- `shift_preview_entries`: It runs a bounded retry loop and then shifts a block of entries in a table to make room at the front, copying a palette block and resetting game state as it does so.
+- `check_ride_input`: The routine scans a global variable table by incrementing a stack counter until a zero byte is found at an offset, then loads theme park data if a sentinel is zero.
+- `set_park_visibility_flag`: The routine writes a constant byte value to a global variable and then returns.
+- `draw_park_overview`: The routine runs a loop that waits for the blitter and vertical blank, updates an animation timer and processes game events, then renders a ride vehicle and applies a tile transform using results from two nearest-tile lookups.
+- `empty_routine_4`: The routine contains three instructions and performs no observable work; it ends immediately without accessing memory, registers or calling another routine.
+- `assign_ride_to_employee`: Iterates over a table of ride entries and, when an entry is marked, updates its fields and a global counter, then writes a remainder value into a global table and initializes a set of per-ride parameters in a global area.
+- `process_ride_queue_entries_5`: Iterates over a bounded list of queue entries stored in a global table, skipping empty slots and updating per-entry counters and timers.
+- `update_ride_statistics_24`: The routine updates fields in a structure pointed to by param_1 using arithmetic and random values, clamping a computed short, adjusting two integers, and conditionally resetting or writing several words and dwords via helper routines.
+- `process_visitor_entries`: The routine walks a fixed-size visitor entry table and updates per-entry counters using modular remainder and random values.
+- `process_ride_queue_107`: Iterates a ride queue structure, clears and accumulates a queue counter via a fixed point multiply and modular remainder, copies queue slots, and conditionally resets global theme park state or clears an entry when a match with a global table is found.
+- `reset_ride_queue_data`: The routine walks a global table and a pointer chain, comparing ride queue entries and resetting related game state fields.
+- `reset_ride_state_20`: The routine iterates over a table of structures using a pointer and an index, writes a constant byte to a fixed offset in each structure until a zero terminator is found, then writes a constant byte to a global variable, writes a constant byte to a byte at a fixed offset from another global variable, and sets a global variable to one.
+- `reset_park_state_6`: The routine clears a flag in a global byte, then repeatedly walks a table of fixed-size entries using a pointer, performing arithmetic on a global short and a random value, and updates several global words and a small array via a loop.
+- `reset_ride_queue`: The routine clears fields in a structure pointed to by a register, zeroes two bytes in a buffer, marks an entry in a table, and then repeatedly walks a linked list of entries.
+- `process_ride_queue_28`: The routine walks a linked list of fixed-size records and updates fields in each record using random values and modular remainder calculations.
+- `decrement_ride_wait_times`: The routine walks through a table of structures using a pointer that is advanced by a fixed stride on each iteration.
+- `update_ride_waiting_times_2`: Iterates over a table of ride structures and updates per-ride waiting-time related bytes and a global statistics area.
+- `update_vehicle_state_3`: Iterates over a linked list of vehicle structures via a pointer in A5.
+- `update_vehicle_state_4`: The routine repeatedly reads and writes bytes through two pointers, using a modular remainder routine to compute offsets and adjust six byte fields, ensuring non-zero values, and updates several other byte fields based on a computed value.
+- `update_ride_statistics_13`: Iterates over a table of ride structures, updates several byte fields by subtracting a modular remainder and clamping to a minimum, and decrements counters based on a computed value and a global variable.
+- `update_ride_statistics_26`: The routine updates per-ride counters in a table and a global accumulator using values from a ride descriptor table.
+- `update_vehicle_state_5`: The routine adjusts a vehicle state block by subtracting and adding values from a table indexed by a parameter, updates a global vehicle record with an identifier and accumulates counters, runs a series of remainder and fixed-point operations and stores their results into the record, increments a counter byte in the record, and writes a normalized fixed-point byte into an output buffer.
+- `update_entity_state`: Subtracts a value from a table indexed by the first argument from a 32-bit field in the structure pointed to by the second argument, then, depending on individual flag bits, applies scaled and modulo-normalized updates to four groups of 16-bit fields in a per-entity block, incrementing associated byte counters and a shared counter.
+- `find_ride_by_type_2`: Iterates a global table of ride descriptors, skipping entries whose type field matches the argument and entries marked with a global exclusion flag.
+- `scan_ride_table_for_valid_entry`: The routine steps through a table of fixed-size entries, skipping entries that are empty, marked, or duplicate, and tests a condition involving two integer fields from the current entry.
+- `copy_global_state_and_wait`: The routine copies 32 bytes from a global variable to itself when the parameter is 1 or 2, then resets UI state, waits for the blitter, handles a game event, copies a ride data block, clears flags and waits up to 1000 vertical blanks while flags stay clear, then repeats blitter waits, event handling and a data copy.
+- `copy_end_game_bitmap_data`: The routine copies 32 bytes from a global variable to itself via a loop, then resets UI state, waits for the blitter and handles a game event, copies a ride data block, sets a flag and clears the global variable.
+- `copy_and_advance_game_state`: Copies a block of global state from one location to another using a byte loop, then runs a series of tail calls that reset UI state, rotate game event state, and copy ride data blocks.
+- `wait_for_vblank_with_timeout`: The routine loops, incrementing an unused counter and waiting for vertical blank up to a fixed count, breaking early if a global variable is non-zero.
+- `render_building_sprite`: Initializes game state and UI variables, waits for blitter and vblank, computes offsets from bytes in a table based on a parameter, clamps a value, sets several global offsets, derives dimensions from bytes in a ride data block with a flag-dependent scaling, computes a composite size, and prepares stack data for subsequent drawing operations.
+- `update_waiting_queue_state`: The routine adjusts a global counter toward a target value, clamps a related timer between two bounds, and updates several global variables used for timing and randomness.
+- `update_ride_waiting_time_8`: The routine updates several global variables that track a waiting time delta and a counter, clamps a timer value between two bounds, and copies the current time into a stored time slot.
+- `update_ride_statistics_28`: The routine adjusts a couple of global counters based on an input value and a flag on the stack, clamps a global fixed-point value between two global limits, and copies two global values into other globals.
+- `update_ride_waiting_time_9`: The routine clears a global variable, calls another routine twice and a random value generator, then conditionally calls another routine based on a stack byte and a short field from a global structure, clamping a value stored in a global variable to the range defined by two other globals, and copies two globals to other globals before returning.
+- `clamp_waiting_time_value`: The routine uses a stack byte to select between two short fields in a global structure, clamps a remainder result to a small range, then adjusts a global counter by subtracting a remainder and clamps that counter between two global limits, copying a limit to another global.
+- `clamp_ride_height_limits`: The routine compares two short inputs and conditionally sets a global variable to a constant if a modular remainder exceeds a threshold.
+- `update_ride_wait_time_2`: The routine checks a byte in D0 and, if it equals 4, conditionally calls another routine and clamps a global short value to 4.
+- `clamp_wait_time_values`: The routine adjusts a global variable using a modular remainder and a fixed-point multiply, then clamps the result between two other global variables and copies two more globals.
+- `handle_park_event_2`: The routine calls another routine with the input parameter, then conditionally calls the same routine a second time if a bit in a global variable is set.
+- `create_ride_instance_4`: The routine scans a linked list of ride structures using a global pointer and a global limit, finds the first free entry, writes constant bytes and a price value into the entry, copies a byte from the parameter into the entry, loads a 16-bit value from a table indexed by the parameter and stores it, calls another routine to update the price, and increments a global counter.
+- `init_and_set_ride_price`: Walks a table of ride entries in fixed-size steps until it finds one whose flag byte is zero, then initializes that entry's fields from stack and table values and updates its ride price.
+- `set_ride_price_20`: The routine walks a linked list via a pointer in A5 until a null terminator is found or a limit is reached, then writes several bytes to the current node, copies a byte from the stack into the node, loads a 16-bit value from a table indexed by a stack byte and stores it, then calls another routine with a computed address and two words from the node, and increments a 16-bit counter in a global variable.
+- `update_ride_instance_four`: The routine updates fields of a ride instance structure, computes fixed-point values, updates tile animation, decrements a counter and, if the counter reaches zero, clears park data for the instance.
+- `check_ride_collision_2`: The routine writes a two-byte value derived from a constant or a modular remainder into an object field and then scans four entries from a table addressed via a global variable.
+- `find_ride_by_type_2_2`: The routine computes a remainder, stores it, then iterates over four entries in a table of offsets.
+- `find_and_store_ride_index`: Scans a small table of ride indices until it finds one whose entry matches a specific byte value, then writes a computed index and pointer into the target structure.
+- `process_ride_queue_29`: Checks a flag in a global variable and a byte derived from a ride entry in a table.
+- `set_ride_price_21`: The routine reads a byte from a structure pointed to by a register, calls another routine to compute a modular remainder and stores the result into the structure, copies a byte from a register into the structure, and loads a 16-bit value from a table indexed by a byte from the structure and a global variable into the structure before returning a constant.
+- `validate_ride_entry_4`: The routine increments a counter from a register until a flag in a table is set, then writes a constant byte, a computed word, and a byte derived from the counter into a structure pointed to by a register, and copies a word from a table indexed by the counter and a byte from the structure.
+- `advance_tile_animation`: Advances a tile animation by incrementing a counter and, when it exceeds its bound, reads a byte from a global table and stores it into a structure along with a two-byte value.
+- `set_ride_price_22`: The routine reads a byte from a pointer, calls another routine to compute a remainder, stores the remainder and the byte to memory via the pointer, and loads a 16-bit value from a table indexed by a byte from the pointer and a global variable, storing it to memory via the pointer.
+- `process_tile_animation`: Increments a counter and, once it exceeds its bound, reads a byte from a global table and stores it into a structure along with a two-byte value from an indexed table, optionally remapping that value.
+- `process_ride_queue_entry_17`: The routine processes an entry in a queue using a global variable table and a ride object lookup.
+- `set_ride_operating_mode`: The routine computes a bit mask from a byte in a structure, selects a value from a table using a random value and a mask, stores the selected byte back into the structure, loads a pointer from a table into the structure, optionally indexes another table, calls a fixed-point multiply routine twice and adds a short from the structure, then calls an animation update routine.
+- `set_ride_queue_flags`: The routine picks a byte from a global table using a masked random park value, stores it into a ride structure field and loads a pointer from a table into another field, optionally adjusting it via a second table lookup, then updates a fixed-point value in the ride structure and triggers tile animation.
+- `update_ride_stats_2`: The routine calls another routine twice, then writes a byte derived from a register and two bytes from a structure pointed to by a register to two offsets in that structure, writes a constant word to an offset, clears a word at another offset, and loads a word from a table indexed by a byte from the structure and a global variable into another offset.
+- `clear_ride_flag_3`: The routine clears a bit in a byte at an offset from a pointer in A5, then conditionally loads a word from a table indexed by a word at an offset from the same pointer using a global variable as a selector, calls multiply_fixed_point twice, adds the result of the second call to a short at an offset from the pointer, and calls update_tile_animation before returning.
+- `increment_ride_waiting_2`: The routine marks a byte in the input structure and uses a short field from the structure to index into a table via a global variable.
+- `set_tile_type`: The routine writes a byte value to an offset within a structure pointed to by a register and returns a constant.
+- `check_ride_status_4`: The routine is empty.
+- `adjust_and_check_ride_state`: Adjusts a counter field, then either looks up a value from a table or normalizes a fixed-point number depending on a flag.
+- `set_vehicle_data`: Store remainder, check availability and optionally set price data, status flags, and animation parameters using values derived from a pointer and tables.
+- `update_vehicle_animation_state`: Checks a flag byte and, when it is clear, stores a value and a table pointer, then performs fixed-point multiplications and updates tile animation.
+- `set_ride_price_23`: The routine stores a byte from a register into memory via a pointer, loads a 16-bit value from a table indexed by a byte from the pointed-to structure combined with a byte from a global variable, calls another routine for fixed-point multiplication, adds the result to a 16-bit field from the structure, and calls another routine to update tile animation.
+- `update_animation_frame`: The routine updates animation state for an object.
+- `update_ride_price_15`: The routine reads a byte from a structure pointed to by A5, calls another routine to compute a modular remainder and stores the result in the structure, then calls a second routine to check ride availability and, if the result is less than four, stores that result as a byte in the structure and loads a 16-bit value from a table indexed by a byte from the structure and a global variable, storing it in the structure.
+- `update_ride_animation`: The routine updates animation state for a ride object.
+- `update_ride_state_22`: The routine updates fields in a structure pointed to by A5, stores a remainder value, computes absolute differences from two packed fields, and sets a status byte based on those differences.
+- `update_ride_status_field`: The routine updates a byte field in a structure pointed to by a register and copies a 16-bit value from a table indexed by a byte field and another global variable into a 16-bit field of the structure.
+- `update_ride_status_57`: The routine updates fields in a structure pointed to by a register, using values from registers and bytes from the structure.
+- `update_ride_status_58`: The routine checks a flag in D3 and either updates a status byte and a 16-bit animation pointer from a table indexed by bytes at offsets 4e and 4f, or updates a stored position, looks up an object via another routine, and halves a 16-bit field in a global structure.
+- `update_ride_status_from_state`: The routine reads a value from a structure, compares it with an input register and either sets a status byte and copies a byte and a word from a table, or stores the computed value and calls another routine; if found it loads a short from a global area and, when non-negative, halves a word in a global table.
+- `update_ride_statistics_29`: The routine stores a 16-bit value from a register into a global variable via a pointer, then computes an index from two bytes on the stack and uses it to look up a ride object through another routine.
+- `set_animation_frame`: The routine reads a byte from an offset in a structure pointed to by A5, adds it to a byte from a global variable indexed by a byte from another offset in the same structure, uses the sum as an index into a table to fetch a word, and stores that word at an offset in the structure.
+- `decrement_and_advance_animation`: Conditionally updates a pointer based on a global flag, then decrements a counter and, when it reaches zero or goes below one, copies a byte into a status field, stores a table pointer, clears the counter, and returns one.
+- `skip_animation_frame`: The routine contains no instructions and returns immediately.
+- `draw_ride_preview_10`: The routine saves a global variable and a register value, then conditionally draws an overlay and a park tile using several globals and draws another overlay.
+- `reset_ride_parameters`: The routine initializes a table of ride parameters by writing a constant to the first word of each entry and a constant to the second word of each entry for sixteen entries, then writes several constant values to individual global variables.
+- `draw_scaled_sprite_and_overlays`: The routine draws a scaled sprite at the origin with a given size and flags, then draws two ride overlays at the origin with different offsets and parameters.
+- `draw_ride_preview_11`: The routine conditionally checks several ride conditions using a global variable and a table, normalizes a fixed-point value, resets a UI element, draws a scaled sprite and applies a tile transform, then draws a preview sprite and optionally draws two additional scaled sprites based on a flag and a modular remainder, and finally checks a ride condition and formats a queue text string.
+- `set_ride_flags_and_copy_string`: The routine sets two bytes to a fixed bitmask using an index from D0, calls another routine to check a ride condition, then selects a pointer from a table or a global variable and copies a null-terminated string from it onto the stack.
+- `rotate_string_and_wait_for_vblank`: The routine receives a pointer to a null-terminated string and copies a substring of a given length into a local buffer by rotating the start offset with a modulus based on the string length.
+- `copy_global_table_and_draw_scaled_sprite`: The routine copies sixteen bytes from a global variable into a stack buffer and then calls another routine to draw a scaled sprite using a table entry indexed by the second parameter.
+- `draw_ride_vehicle_4`: The routine indexes a table with the parameter to obtain a short pointer, reads a short from a global table at a fixed offset, and calls another routine eight times with the pointer value and the read short adjusted by constants, passing a global variable each time.
+- `check_ride_state`: The routine reads a byte from an address computed from param_3 plus a constant offset, shifts it right by one, adds a constant, masks the result, and if the result is non-zero it calls another routine.
+- `dispatch_theme_park_event`: The routine loads two short values into registers, computes an index from them, reads a short offset from a global variable table using that index, adds the offset to the base of the global variable area to form a pointer, and calls the routine pointed to by that pointer.
+- `return_early_exit`: The routine is empty.
+- `gameplay_scene_end`: The routine contains three instructions and immediately returns without accessing memory, registers, or calling another routine.
+- `build_park_object_key`: The routine reads a 32-bit value from data register D0, ORs it with a constant, and returns the result shifted left by 32 bits as a 64-bit value.
+- `wait_for_blitter_and_clear_screen`: The routine polls a global variable until a blitter busy flag clears, then writes several values to custom chip registers including BLTCON0, BLTCON1, BLTAFWM, BLTAMOD, BLTDMOD, BLTAPTH, BLTDPTH, BLTSIZE and BLTADAT to set up a blitter operation, and finally waits again for the blitter busy flag to clear.
+- `spawn_park_elements`: The routine processes a table of elements using a modular remainder calculation to select entries and then invokes another routine to render overlay data for each qualifying entry, adding offsets from its parameters.
+- `handle_ui_event`: The routine receives a small index and looks up a value from a table of short entries.
+- `empty_stub_routine_3`: The routine contains no instructions and returns immediately.
+- `save_game_slots`: The routine iterates over a small fixed range of indices and, depending on whether a global variable is zero, either resets a UI element, validates an operation and conditionally writes a byte to a table while updating a park object, or simply writes a constant byte to the table.
+- `patch_ride_configurations`: The routine walks a table of short entries indexed by a byte counter, stopping at a sentinel value, and for entries equal to a specific value it writes a constant offset into a field in the same record.
+- `init_theme_park_data`: The routine checks a global variable and, if it is zero, writes zero to one global word, writes a word with all bits set to another global word, calls another routine, sets the global variable to a non-zero value, copies the contents of one global word to another and clears the source word, then calls another routine with the address of the global variable plus an offset derived from the variable.
+- `reset_park_state_7`: The routine clears two global words to a sentinel value, clears a global variable, copies a byte from a table into a global byte, and calls another routine with a pointer computed from the global variable and the copied byte.
+- `find_ride_entrance_3`: The routine checks a global variable and uses a table of ride pointers to compute widths and update per-ride layout fields, then scans those entries for containment of a cursor region and follows linked entries to pick a selected item.
+- `set_ride_status_flags_2`: The routine reads a global variable, masks it with 5 and then with 10, and writes several constant values to a series of global variables, setting one of them to 6 before returning the masked result.
+- `compute_ride_waiting_time`: The routine walks a linked list of 22-byte entries in the ushort array passed in param_1, accumulating the maximum string widths for two columns and a running horizontal offset.
+- `render_ride_preview_4`: The routine draws a scaled background sprite and an overlay, then iterates over a table of string indices and draws each string with a scaled sprite and text rendering, updating a horizontal offset using a fixed-point multiply.
+- `draw_ride_object_3`: The routine reads a short array, computes scaled coordinates from a global variable and draws a scaled sprite, then iterates over a list of entries terminated by -1.
+- `reset_ui_and_ride_state`: The routine resets two UI elements using a parameter and a global variable, then if a global variable is non-zero it resets a ride state structure and adds time to three ride time values.
+- `adjust_queue_position_offset_2_2`: Reads a byte from a ride entry and adjusts a queue-position offset stored in a structure by applying scaled multipliers from a table of ride.
+- `adjust_queue_position_offset_2`: Reads a byte from a ride entry and adjusts a queue-position offset stored in a structure by applying scaled multipliers from a table of ride entries.
+- `adjust_queue_position_offset`: Adjusts a queue position offset by scanning a table of ride entries and applying scaled multipliers when the current ride's value falls outside a range, then adds a small bonus when a flag is set.
+- `update_queue_position_offset`: The routine walks a linked list of queue entries using a table base, checks a flag byte and compares position fields from two structures, then updates a status byte and an offset in a register with additive adjustments.
+- `update_ride_price_16`: Iterates over a ride list using a linked list and adjusts a short accumulator based on price comparisons, modular remainder and fixed-point multiplication, writing small flags to a ride structure and updating a counter byte.
+- `update_ride_waiting_time_11`: The routine adjusts a waiting-time accumulator using a modular remainder and fixed-point multiplication, updates a status byte in a structure, and then iterates over a linked list of objects, adding offsets derived from bytes in the structure and from a table indexed by a ride object, before tail-calling another routine.
+- `adjust_waiting_time_accumulator`: The routine updates a waiting-time accumulator using a modular remainder and fixed-point multiplication, sets a status byte in a structure, and then iterates over a table of ride entries, accumulating offsets based on flags, a byte mask, and values read from a global table and another structure.
+- `update_ride_statistics_15`: The routine updates a set of ride-related fields in a structure pointed to by a global variable, using values from registers and from a table, and then calls another routine to apply a rating modifier and another to calculate the ride rating.
+- `apply_ride_rating_modifier`: The routine adjusts a short accumulator using two input bytes and a byte from a structure, then adds values from a table indexed by a word from another structure, writes two bytes and a word to a structure, optionally adds constants if a flag byte equals a character, and conditionally adds a shifted byte from a third structure based on two signed bytes and flag bits in the structure, before returning.
+- `adjust_price_modifier`: The routine modifies a short value in memory using several input bytes and flags, adds offsets based on comparisons, updates bytes at fixed offsets from a pointer, and then conditionally adds a scaled byte value to the short depending on flag bits and character ranges.
+- `adjust_ride_rating_and_price`: The routine adjusts a rating accumulator in a structure using several byte and word fields, combines it with table values indexed by a word from the structure, applies a flag-based bonus, writes sentinel bytes and updates a price field, then adds a scaled byte from another structure under mask conditions on two rating bytes and returns.
+- `adjust_ride_price_2`: The routine computes a price adjustment from ride data and tables, updates price-related fields in a structure and conditionally adds bonuses and modifiers based on flags and thresholds.
+- `update_ride_stats_3`: The routine reads and writes fields through several pointers, uses a table indexed from a pointer to compute an offset and adjusts a short value with several conditional additions and subtractions based on bytes and flags in the pointed-to structures.
+- `adjust_ride_rating_and_wait`: The routine reads ride-related fields from a structure pointed to by a register, computes a short rating value from table data and several byte fields, adds modifiers based on flags and a character field, updates two bytes and a short field in the structure, and conditionally tail-calls a waiting-time update routine.
+- `adjust_waiting_time_delta_2`: Adjusts a running counter by a scaled byte value, applying conditional modulo normalization and random offsets depending on state bytes, then stores the result and updates a related value.
+- `adjust_waiting_time_delta`: The routine updates a short waiting-time delta using flags and bytes from a structure pointed to by a5, adds contributions from a byte at a3+10 shifted right, and conditionally modifies a field at a5+100 with random values.
+- `adjust_counter_with_state_2`: Adjusts a running counter by a scaled byte value, applying conditional modulo normalization and random offsets when certain state bytes match, then subtracts the result from a stored value and updates a global flag.
+- `adjust_counter_with_state`: Adjusts a running counter by a scaled byte value, applying conditional modulo normalization and random offsets when certain state bytes match specific codes, then decrements a stored quantity by the computed amount and updates a global flag.
+- `update_ride_statistics_19`: The routine updates a set of fields in a structure pointed to by a register.
+- `update_ride_status_8`: The routine adjusts several fields in a structure pointed to by a parameter, combining values from registers, a global variable and the results of another routine, and updates a short field by subtracting an accumulated delta.
+- `update_ride_wait_time_3`: The routine reads fields from a ride structure and from global variables, updates a few bytes in the ride structure and in globals, calls a few helper routines, and returns a short value derived from the ride’s wait time fields.
+- `calculate_ride_price_2`: The routine writes a constant to a global variable, loads a byte from a table indexed by a global variable and another global variable, loads a byte from a global variable, calls another routine, calls a fixed-point multiplication routine, calls a modular remainder routine, and returns the sum of the two loaded bytes minus the remainder result.
+- `evaluate_ride_waiting_time`: The routine reads fields from two structures, compares a ride identifier with a stored value and checks several flag bytes.
+- `set_status_word_and_flag`: The routine compares a short from a global variable with a short from a pointer and writes a status word to a global variable, then conditionally writes another status word based on a difference of two values and a short threshold, and finally stores a constant byte to a global variable.
+- `set_ride_status_flag`: The routine writes a word to an offset in a structure pointed to by a register, choosing the value based on a comparison involving two registers and a word from the structure; it also writes a constant byte to another offset in the same structure.
+- `set_wait_time_and_price`: The routine reads a 16-bit value from an offset in a structure pointed to by a5, compares it to a constant, and stores a 16-bit constant at another offset in the same structure, then stores a constant byte at a further offset.
+- `set_ride_price_24`: The routine writes a word and a byte to offsets from a pointer in A5 and returns zero.
+- `set_ride_parameters_2`: The routine writes a word and a byte to memory locations offset from a pointer in A5 and then returns zero.
+- `check_ride_queue_wait`: The routine inspects a set of flags and values from two structures pointed to by registers, computes a modular remainder and several arithmetic expressions, and returns a non-zero result when a computed waiting condition is met.
+- `set_status_word_from_fields`: The routine reads a byte and two words from one structure and a word from another structure, compares them against constant thresholds and a global variable, and writes a selected word to a field in the second structure.
+- `set_status_flags`: The routine reads a short from a pointer in a2, compares it to a constant, and writes a word to a location in a5.
+- `set_ride_wait_time_3`: The routine checks a short value from a structure pointed to by a5 and, if it is below a threshold, writes a constant word to an offset in the structure; otherwise it compares another short field with a value from a global variable and writes one of two constant words to the same offset.
+- `set_wait_time_and_price_2`: The routine reads a short from an offset of a5, compares it with a short from a global variable, and stores a 16-bit constant into another offset of a5 depending on the comparison result.
+- `set_ride_price_25`: The routine writes a word and a byte to offsets in a structure pointed to by a5 and returns zero.
+- `set_ride_parameters_3`: The routine writes a word value and a byte value into two fields of a structure pointed to by a register, then returns zero.
+- `check_ride_queue_wait_2`: The routine reads several bytes and words from two structures passed in registers, tests flags and a table entry, and calls another routine to obtain a modular remainder.
+- `set_ride_status_icon`: The routine reads several bytes and words from a structure pointed to by a register and from another structure pointed to by a register, compares them against constants, and writes a 16-bit value to an offset in the first structure.
+- `set_ride_status_icon_2`: The routine writes a sprite identifier into a structure pointed to by a register, choosing the value from a set of constants based on several fields of two structures and a register value, then stores a constant byte at an offset in the same structure.
+- `set_guest_sprite_type`: The routine checks a condition involving a register value and a global variable, then selects one of several sprite identifiers to store at an offset in a structure pointed to by a register, with a final fallback value.
+- `set_sprite_type_by_flags`: The routine reads two flag bytes from a structure pointed to by a register and two values from a structure pointed to by another register, then writes a 16-bit value to an offset in the second structure based on comparisons of those values, writes a constant byte to another offset in the same structure, and returns zero.
+- `set_ride_status_9`: The routine reads bytes and words from a global structure via two pointers and writes a word to an offset in the second structure, then writes a byte to another offset, and returns zero.
+- `set_ride_status_flags`: The routine reads a word from a global variable via an offset from a pointer and compares it with a constant, then reads a short from the same global variable and compares it with a short from a pointer in A0.
+- `set_ride_speed_limit`: The routine compares a short value from a global variable with a short value from a pointer in A0.
+- `set_ride_price_26`: The routine stores a word and a byte into memory at offsets from a pointer in A5 and returns zero.
+- `set_ride_price_27`: The routine writes a word value and a byte value to offsets from a pointer in A5 and then returns zero.
+- `process_ride_vehicle_state_2`: The routine reads ride and vehicle state from a global variable and from the parameter block, checks flags and thresholds computed with another routine, updates several fields in the parameter block and in globals, and tails to another routine when the ride flag is set.
+- `update_vehicle_position`: The routine checks ride-vehicle flags and a distance condition using a modular remainder and several fields from two structures.
+- `update_vehicle_position_2`: The routine updates fields in two structures passed via registers, using a byte field as a divisor and a random value to modify a short offset, adjusts a signed char counter based on direction, increments a short counter on the stack, accumulates a ride-related value into two global accumulators, and calls another routine for statistics.
+- `update_ride_statistics_31`: The routine increments a counter on the stack, reads a word from a structure pointed to by a register, adds a value derived from it to two global accumulators, and adjusts a short field in another structure using a modular remainder result.
+- `name_and_increment_statistics`: The routine updates two global counters by the difference between an input value and a value from a structure, modifies fields in a second structure using a modular remainder result and values from a first structure, and merges several bytes between the two structures.
+- `reset_ride_instance`: The routine clears many fields of a ride instance structure, normalizes and multiplies fixed-point values, stores a modular remainder byte, then iterates over a table of entries using a global pointer and limit, conditionally fills several word fields with modular remainders based on flag bytes, accumulates flags into a byte, and zeroes a set of fields when a short flag is zero.
+- `draw_ride_preview_panel_9`: The routine computes a string width, selects a tile from a global table via a nearest-tile lookup and draws a scaled sprite at the given position.
+- `center_text_in_box`: The routine computes the width of a string and then calls another routine to draw the string centered horizontally within a fixed-width area.
+- `draw_loading_message`: The routine prepares a text buffer on the stack and resets a UI element using a pointer taken from a table and a value derived from the parameter or the table.
+- `initialize_ride_state`: The routine resets several global variables and UI state, copies ride data, updates ride prices, and finds the nearest tile.
+- `initialize_game_state_buffers`: The routine clears a small stack buffer, copies a set of global values into a table and normalizes zero entries, sets a global flag, initializes ride identifiers, then loops over eight entries comparing stored offsets and sizes against limits from a table to decide eligibility, calling another routine for each candidate and updating counters.
+- `check_ride_queue_collision`: The routine loops over entries in a table and tests a set of bounding-box comparisons between a current position stored in globals and each entry’s stored coordinates and size fields.
+- `check_ride_eligibility_2`: The routine iterates over eight entries in a table and performs a series of comparisons between values taken from the table and a set of global variables.
+- `draw_ride_preview_53`: The routine resets a UI element and rotates a string substring using data from a table indexed by a byte in a register, then iterates over a series of entries to compute modular remainders and draw ride objects with tile masks and fixed-point multiplication, updating counters and applying conditional drawing based on computed values.
+- `draw_ride_preview_tiles`: The routine repeatedly draws tiles using draw_ride_object_2 with coordinates read from a structure in a3, applying a modular remainder to choose tile indices, and invokes check_ride_condition_2 and set_ride_price_14.
+- `draw_ride_preview_55`: The routine loops over a table of ride data, applies a tile mask, checks a ride condition, and draws ride objects using modular remainder calculations to select graphics.
+- `draw_ride_preview_grid_2`: Renders a grid of ride preview objects by looping over a table, drawing repeated rows and columns of a fixed size, then draws additional preview objects at computed positions.
+- `draw_ride_preview_grid`: The routine iterates counters and repeatedly calls another routine to draw objects at computed positions, updating offsets and modular values.
+- `process_ride_preview_and_reset_state`: It draws a ride preview grid by repeatedly calling a drawing routine with a computed position, then compares a stored byte against a multiplied value and draws once more if it matches.
+- `update_ride_waiting_state`: The routine indexes a table with param_1 to get a per-ride state pair of bytes.
+- `decrement_ride_wait_time`: The routine decrements a byte at an offset from a pointer in a register and increments another byte at the next offset, but only if a byte in D0 is non-zero.
+- `clear_flag_byte_from_pointer`: The routine tests a byte in D0 and, if the byte is greater than a constant, stores zero into a byte located at an offset from a pointer in A5.
+- `update_ride_stats_4`: Iterates over six ride entries, accumulates a short value and updates a counter, then sets a global variable to a large constant for entries where a condition holds.
+- `update_ride_statistics_21`: The routine iterates over a set of entries using an index from a register, updates accumulator fields in a table and a global variable, and for a specific case performs a nested search over a fixed table using a random value to find a minimum and then updates bytes and words in that table according to a selector.
+- `update_ride_statistics_23`: The routine iterates over a set of entries using an index in D4 and updates a global variable and a per-entry accumulator, then for index zero it scans a table of eight candidates, selects the best candidate by a computed value using a random value and modular remainder, updates a flag byte in the candidate and increments one of several per-candidate counters depending on a remainder value.
+- `update_ride_statistics_25`: The routine iterates over a small fixed set of entries, accumulating a short field into a running total and updating a per-entry counter and a global variable.
+- `unreachable_stub`: The routine contains no instructions and performs no operations.
+- `draw_aglobe_background`: The routine resets UI state, waits for the blitter and queues a 400-byte copy, copies a ride data block, initializes game state, and then conditionally updates a set of global variables based on flag bits in a global variable and a zero test of another global variable.
+- `poll_and_draw_ride_list`: Continuously updates the ride list display and checks mouse position against ride entries; when a ride is selected it enqueues an event, resets state and renders the ride info panel, otherwise it redraws the list and handles UI exit conditions.
+- `render_ride_info_panel`: The routine waits for the blitter and vblank, draws a scaled sprite and a vehicle, applies a tile transform, and then iterates over a table of ride data.
+- `return_immediately`: The routine contains three 68000 instructions and ends with a return.
+- `format_number_string`: The routine formats an integer supplied in param_2 into a character buffer pointed to by param_1 using a temporary buffer prepared by another routine.
+- `draw_ride_preview_57`: The routine initializes game state, finds the nearest tile, waits for the blitter, swaps a global variable, resets ride state, draws a scaled sprite, renders a ride vehicle, applies a tile transform, then loops over a table of UI entries.
+- `draw_ride_sprite`: The routine initializes game state and selects an index into a table based on a flag parameter, a modular remainder and a byte from a global variable, then loads a pointer from a table and computes X and Y offsets from fields of the first parameter.
+- `draw_park_tile`: The routine draws a scaled sprite using the first four parameters and a fifth byte, then draws four ride overlays using the first two parameters, the sum of the first and third parameters, the sum of the second and fourth parameters, and the sixth and seventh bytes.
+- `draw_ride_preview_58`: It clears and swaps buffers with a blitter wait, finds tiles, applies a tile transform, copies a string and iterates over a table from a global variable.
+- `reset_ui_and_draw_preview`: Iterates over a table and draws text and tiles for each entry, applying a tile transform and copying a string.
+- `render_ride_preview_2`: Iterates over a table of ride entries using a fixed-point multiplier for positioning and draws park tiles and ride elements, rendering text strings for some entries and applying a tile transform for others.
+- `draw_ride_queue_preview`: The routine iterates over a queue structure in memory, using fields from the structure to compute tile and element positions and to invoke drawing routines for park tiles and ride elements.
+- `process_ride_queue_30`: Iterates over a queue of ride entries in memory and draws each entry’s preview tiles and text using the drawing helpers, applying tile transforms and rendering vehicles.
+- `process_park_object_entry`: Reads a fixed-point value and compares it against a range, then either enqueues a ride event and resets state when a menu is active, or renders a text string and updates a per-item counter based on a flag byte.
+- `set_global_flag_and_copy_palette`: The routine writes the constant 1 to a global variable and then, if that variable is zero, reads a word from the variable, scales it, and uses it as an index into a table to load a 32-bit value into a global.
+- `set_global_flag_and_copy_palette_2`: The routine writes a constant to a global variable and then conditionally reads from a table indexed by that variable.
+- `set_ride_price_30`: The routine writes a constant to a global variable and, if that variable is zero, reads a word from a table indexed by the variable and stores it into a global location.
+- `process_ride_interaction`: Repeatedly checks flags in a data structure and if set, renders a text string from a table using fields from that structure and a global variable, then updates the global variable and a local byte.
+- `process_ride_queue_115`: The routine reads and updates several stack-based variables, loops over a table referenced through a pointer, compares values against a global variable and other globals, conditionally enqueues an event and clears state variables, then selects a pointer based on a switch on a stack short and performs a small amount of arithmetic and memory store.
+- `advance_and_adjust_ride_index`: It advances a stored index past a non-empty slot, then scans a table of entries comparing their bounds against a fixed range and records a matching index.
+- `process_ride_queue_116`: The routine repeatedly reads short values from a table pointed to by a register, compares them with values from a global variable and stack slots, and conditionally calls another routine to enqueue an event.
+- `handle_ride_queue_3`: The routine loops over a table pointed to by a register, compares a global word with entries in the table and with two stack values, and enqueues an event when the comparisons succeed.
+- `process_ride_queue_117`: The routine loops over a table of ride entries, checks a global variable and several stack values against a range, enqueues an event when the range matches, and resets a global state pointer.
+- `process_ride_queue_entry_18`: Iterates over a list of ride queue entries and updates their on-screen representation.
+- `process_park_object_list`: The routine walks a list of park objects stored in a global table and renders a text box for each entry, updating selection indices and UI state.
+- `trigger_park_event_5`: The routine calls another routine and then returns.
+- `set_ride_speed_limit_2`: The routine writes a computed value to a global variable, calls another routine with a global variable as argument and stores its short result in a global variable, then writes a constant to a global variable.
+- `reset_ride_state_and_update`: The routine clears status bytes in two tables, resets a global flag and copies a value, then steps a state machine driven by a global variable.
+- `draw_ride_preview_overlay`: The routine sets up several global variables, finds the nearest tile, draws two ride overlay rectangles using a global variable as a mode, optionally updates ride status indicators, selects a colour index based on a global variable, iterates over eight data blocks and copies 32-bit values from a set of tables into a stack buffer using an index derived from a stack variable, then processes the buffer.
+- `copy_ride_data_to_stack`: The routine iterates over eight ride slots and, for each active slot, copies three groups of 32-byte blocks from a global data area into a fixed stack region using slot-specific source offsets.
+- `copy_ride_data_to_stack_2`: The routine copies a small block of data from a global table into a fixed area on the stack using a loop over eight indices and three sub-iterations, with a per-index offset selection.
+- `copy_ride_data_to_stack_3`: Copies blocks of four bytes from a set of global tables into a temporary stack area using an index derived from an input value, then tail-calls another routine.
+- `copy_ride_data_4`: The routine copies 32-bit words from a set of source tables selected by an index in stack memory into a temporary stack buffer using a nested loop over two counters, with a special case for one index that reads a byte from a table and writes it via a pointer.
+- `copy_ride_config_data`: The routine copies 12 four-byte values from a global table into a stack buffer for each of several table indices, using a switch to select the source table.
+- `update_ride_statistics_37`: The routine updates a per-ride statistics block by scanning a table of values, tracking min and max, then performing fixed-point multiplies and normalizations to compute display offsets.
+- `draw_ride_track_segment`: The routine iterates over a set of ride track segments using data from a global variable and a stack structure, updating min and max bounds and performing fixed-point multiplication and normalization to compute offsets.
+- `update_ride_queue_5`: The routine updates a queue structure for a ride by computing fixed-point values, normalizing them, and clamping a delay counter between limits derived from stack values.
+- `render_ride_preview_6`: The routine repeatedly computes a fixed-point offset and a clamped width from two stored values, then calls a drawing routine with those values and a table index derived from a byte in a global table.
+- `clamp_and_copy_ride_overlay`: The routine clamps a width value, draws a ride overlay using a global table and stack values, then copies four fixed-point samples from a table into a stack buffer in a loop.
+- `process_ride_queue_119`: The routine processes a queue of ride entries by iterating over a range defined by two input values, drawing an overlay for each entry and updating a fixed-point accumulator.
+- `draw_park_text`: The routine repeatedly resets a UI element from a table using an index, measures the length of the resulting text, and waits for vertical blank with a delay derived from that length.
+- `process_ride_queue_31`: The routine resets a UI element, waits for vertical blank, draws a ride overlay, and loops updating a counter and a fixed-point value, calling reset_ui_element and wait_for_vblank repeatedly.
+- `draw_park_object_4`: The routine resets a UI element, waits for vertical blank using a string length derived delay, then repeatedly calls another routine to draw a ride overlay while stepping through a table of UI element identifiers.
+- `update_ride_status_indicators`: Iterates over three ride slots and eight preview slots, checks global state and a global variable range, resets a game state pointer and a global flag, then draws scaled sprites and applies tile transforms for each slot and calls a price-setting routine with data from a table and a global variable.
+- `update_ride_status_indicators_2`: Initializes a set of global variables and loops three times, drawing a scaled sprite and applying a tile transform for each slot whose flag is set.
+- `update_ride_status_indicators_3`: Clears a set of global flags, then loops three times drawing a scaled sprite and applying a tile transform for each entry while writing a price value from a table.
+- `render_ride_preview_8`: The routine clears several global variables, then loops three times performing scaled sprite draws, tile transforms and a price set call using data from a table indexed by a stack counter.
+- `draw_scaled_sprite_loop_2`: The routine iterates over a series of entries, calling draw_scaled_sprite and apply_tile_transform with values derived from a stack counter and a global variable, and invokes set_ride_price_14 for each entry.
+- `process_ride_queue_121`: The routine repeatedly draws a scaled sprite and applies a tile transform using values derived from a stack counter and a global variable.
+- `reset_display_and_dispatch_event`: The routine calls reset_display_dma, then dispatch_game_event, then disable_interrupt_mask, and returns.
+- `reset_display_and_dispatch_event_2`: The routine calls reset_display_dma, dispatch_game_event and disable_interrupt_mask in that order and then returns.
+- `reset_display_dma`: The routine waits for two vertical blanks, writes the same value twice to a global variable, writes a different value to the same global variable, then waits for two more vertical blanks.
+- `disable_interrupt_mask`: The routine calls another routine twice, sets a global variable, then calls another routine twice and returns.
+- `process_ride_queue_32`: Disables interrupts, resets the display DMA and dispatches a game event, then returns a value built from registers.
+- `reset_display_and_dispatch_event_3`: The routine resets the display DMA, dispatches a game event, and disables the interrupt mask.
+- `process_ride_queue_123`: The routine iterates four times, reading a pointer from a global table, resetting the display DMA, dispatching a game event, and disabling the interrupt mask.
+- `dispatch_game_event_3`: The routine reads a date string and then dispatches based on a value in D0, calling one of several other routines and returning their results combined with a value from D1.
+- `find_free_script_slot`: The routine scans a small table of script slots by stepping through entries.
+- `clear_ride_flag_5`: The routine calls another routine to obtain a ride price index and then stores zero into a field at a fixed offset from an unspecified base pointer.
+- `clamp_minimum_value`: The routine calls another routine and obtains a value in a data register.
+- `process_ride_queue_124`: The routine updates a queue structure pointed to by a register, using values from a table and a global variable.
+- `mask_low_bits`: The routine returns the value in D0 with its low bits masked by a constant.
+- `compute_price_index_from_a4`: The routine reads a 16-bit value derived from the A4 register, multiplies it by 18, and uses the result as an index into a table.
+- `process_ride_queue_125`: The routine returns early on failure of the availability check.
+- `process_ride_queue_126`: The routine repeatedly increments a ride counter and uses the returned value to drive a loop that copies a tile row while accumulating a sum in a local variable.
+- `copy_tile_row`: The routine copies a row of 32-bit words from a source pointer derived from an input pointer plus an offset to a destination pointer, using a count derived from an input register.
+- `increment_ride_counter_7`: The routine checks two fields of a structure pointed to by a1 and, if they match and a flag field is non-zero, it obtains an identifier from another routine and returns it.
+- `process_ride_queue_and_reset_state`: Waits for the park to open and processes ride queue data, copying a ride name into a buffer and resetting ride state.
+- `reset_ride_object_state`: The routine checks a global flag and, if clear, obtains a park object identifier, writes a combined value from a register and a global variable into a table entry, clears a field, stores a negated score value into another field, and triggers an event using a stored index.
+- `process_ride_queue_33`: The routine calls a ride availability check and a ride status check, then conditionally sets ride flags in a loop until a word result is zero, reads a global variable, and if it is zero writes a ride object, clears a global variable, stores the negated score into an output pointer, triggers a park event, and returns.
+- `set_bit_in_table`: The routine takes two input values from registers and computes an index from the first value.
+- `poll_park_data_until_flag`: The routine loads a value from a register, decrements it and repeatedly calls another routine to read park data, comparing the result to a constant.
+- `wait_for_park_open_and_input`: The routine calls wait_for_park_open and then loops reading park data until a read returns a value equal to a specific constant or a flag becomes true.
+- `read_park_data`: The routine receives two 32-bit values in D0 and D1 and returns them concatenated as a 64-bit result.
+- `clear_bit_in_table`: The routine computes an index from the input value in D0, uses it to address a table via the A6 base register, and clears a single bit in a 32-bit word at that table entry.
+- `check_ride_status_6`: The routine reads a global variable and tests whether it is zero.
+- `copy_name_to_buffer`: The routine copies a null-terminated string from a source pointer in A4 to a destination buffer located at an offset from a pointer in A0, byte by byte.
+- `process_ride_availability_queue`: Calls a routine to check ride availability and, when a flag is set, iterates a table of pointers to park objects, retrieves an object ID and returns it.
+- `clear_memory_block`: The routine clears a block of memory by writing zero to each 32-bit word in a table.
+- `initialize_game_state_2`: The routine triggers a park event, then conditionally clears ride data, writes constants and a name into a buffer, sets a flag, loops setting a ride flag until a value is reached, clears a ride flag twice, stores negated sums into two locations, triggers another park event, and if a condition holds fills a table with a constant and calls another initialization routine.
+- `check_ride_availability_10`: The routine checks park ride status and parses a park path, storing intermediate results in a global variable and a table entry.
+- `parse_ride_name`: The routine checks a pointer for null and repeatedly calls another routine to obtain a 32-bit value, storing parts of it in a global variable and a static variable.
+- `parse_date_string`: The routine reads a character via another routine and checks if it is 'D'. If so it reads another character and checks if it is 'F'. It then reads a byte from a pointer, subtracts the ASCII digit offset, and if the byte is between '/' and a value and the next byte is ':', it stores the computed value into a global variable.
+- `normalize_input_character`: The routine reads a byte from a pointer in A0.
+- `empty_stubs`: The routine contains seven instructions that perform no observable work and then return, making it an empty stub with no effect on data or control flow.
+- `parse_park_path`: The routine scans a string for the first '/' character, counting characters before it, and if the slash is found it calls another routine repeatedly to fill a buffer with bytes until a pointer matches, then writes a zero terminator and computes a value from a register and a short returned by the helper, returning a combined 32-bit result.
+- `check_park_ride_status`: The routine calls another routine to obtain an identifier and then returns it.
+- `get_park_object_id`: The routine calls another routine and stores its result.
+- `get_ride_price`: The routine calls another routine and stores the result in a local variable.
+- `sum_negate_score`: The routine receives a pointer in A0 and an initial value in D1.
+- `reset_park_state_8`: The routine stores zero into a field of a structure pointed to by a pointer, stores the negated value returned by a routine that returns a score into another field of a structure pointed to by a different pointer, then calls another routine that triggers a park event.
+- `reset_ride_state_22`: The routine writes zero to a field at a fixed offset from a pointer in A0 and then writes the result of a score negation routine to the same offset using another pointer in A0, and then calls another routine to trigger a park event.
+- `reset_ride_state_5`: The routine stores zero into a field of a structure pointed to by a pointer, then calls a routine that returns a value and stores that value into the same field of another structure pointed to by a second pointer, then calls another routine and returns.
+- `reset_ride_state_24`: The routine clears a field in a structure pointed to by a pointer, stores the negated result of a scoring function into a field in a structure pointed to by another pointer, then calls another routine and returns.
+- `reset_ride_state_25`: The routine clears a value in memory pointed to by a pointer, writes the negated score returned by another routine to a second memory location pointed to by a pointer, and then calls another routine.
+- `clear_price_and_apply_penalty`: The routine clears a 32-bit field at a fixed offset from two pointers passed in a0 and a0, then writes the result of a scoring routine to the same offset in the second pointer and triggers a park event.
+- `initialize_game_state_3`: The routine calls another routine named trigger_park_event_8 and then returns.
+- `trigger_park_event_6`: The routine calls another routine and then returns.
+- `trigger_park_update_2`: The routine calls another routine to render a park tile and then returns.
+- `trigger_park_event_7`: The routine calls another routine to render a park tile and then returns.
+- `trigger_park_event_eight`: The routine calls render_park_tile and then returns.
+- `render_park_tile`: The routine computes a tile index from input values, uses a global variable to decide whether to process, and then repeatedly polls joystick input and optionally waits for disk load while updating a small set of stack variables.
+- `poll_joystick_input`: The routine repeatedly clears three local words, updates ride position, and polls CIAA_PRA and INTREQR via wait_for_ciaa_bit.
+- `wait_for_disk_load`: The routine initializes a counter and a flag on the stack, optionally calls another routine, then enters a loop that reads joystick input, waits for an input event, writes to a global variable and to a custom hardware register, and polls for input release.
+- `render_park_view_2`: The routine writes a constant to a memory location derived from a pointer, then repeatedly calls another routine to update a ride state flag, another routine to toggle a ride flag, and another routine to compute a checksum xor, with the loop controlled by a decrementing counter.
+- `wait_for_ride_completion_2`: The routine repeatedly sets disk DMA parameters and polls input waiting for release, decrementing a counter and returning on timeout, then combines random values and conditionally updates a global variable and two fields in a structure pointed to by a register, returning a status code.
+- `poll_timer_and_dispatch`: Polls a CIAB timer bit in a loop, resetting the timer until the bit changes, then indexes a table using a computed offset and branches on the resulting value to dispatch to several other routines.
+- `check_ride_queue_status_2`: The routine contains five instructions and performs no observable work; it ends immediately with a return.
+- `set_flag_and_increment_counter`: The routine receives a pointer in a register and a bit index in another register.
+- `clear_park_object_list`: The routine clears a list of park objects.
+- `combine_random_values`: The routine calls another routine and receives a 32-bit value.
+- `interleave_word_bits`: The routine reads a 32-bit value from a pointer in A0 and the word at offset one, masks each with a pattern that selects alternating bits, multiplies the low word mask by two and ORs the results, returning the combined 32-bit value.
+- `apply_ride_setting_2`: The routine calls another routine to obtain a 32-bit value and then passes that value to a second routine.
+- `xor_checksum_of_table`: The routine reads ten 32-bit words from a table pointed to by a global variable, XORs them together, and returns the result masked to keep only the even-numbered bit positions.
+- `xor_checksum_words`: The routine XORs a sequence of words pointed to by a pointer, using a word count derived from an input word, and returns the accumulated XOR masked to keep only alternating bits.
+- `clear_tile_buffer`: The routine clears a tile buffer by writing a constant pattern to a block of memory.
+- `unscramble_tile_map`: The routine copies 128 words from a source area starting 128 words after a pointer, interleaving bits from two sources to form each output word, and writes the results to a destination pointer.
+- `draw_ride_preview_64`: The routine receives a value in a data register, shifts it right by two, subtracts one, and then repeatedly calls another routine twice per iteration while decrementing a counter until it reaches -1, after which it calls another routine twice and returns a concatenated value from the input registers.
+- `update_ride_state_flag`: The routine calls another routine twice, then reads a byte from a pointer, tests a flag in the preceding byte, and conditionally sets or clears a bit in the byte before writing it back through the same pointer.
+- `toggle_ride_flag`: The routine reads a byte via a pointer, conditionally clears or sets a bit in it depending on a flag in the preceding byte, and writes the modified byte back through the same pointer.
+- `decode_tile_index`: The routine takes a value from a register and a pointer from a register, computes a transformed value using bitwise operations and a multiplication, optionally masks the result based on a flag byte before the pointer, then stores the combined result through the pointer.
+- `set_disk_dma_parameters`: The routine writes values to a global variable, to a table entry, to the ADKCON register, to the DSKPTH register, to another global variable, and to the DMACON register.
+- `poll_input_wait_release`: The routine starts a CIAB timer and then repeatedly checks a byte in a table via a pointer obtained from A1.
+- `set_adkcon_and_update_input_mask`: The routine writes a constant to a global variable and, if a short value is negative, computes an index from a word value and writes a byte mask derived from that index to the global variable.
+- `set_park_flag`: The routine reads a 16-bit value from a table, adds three, and uses the low five bits as a bit index.
+- `wait_for_ciab_timer`: The routine clears a global variable, calls another routine, then repeatedly programs the CIAB timer and spins until a global variable clears, repeating until the timer routine returns a specific value.
+- `adjust_table_entry`: Reads a joystick input, loads a signed word from a global table using an index, and if the value is negative waits for a CIA bit to be set.
+- `wait_for_ciaa_bit`: The routine polls a global variable flag and repeatedly calls another routine while decrementing a counter.
+- `wait_for_button_press`: The routine reads a byte from another routine, masks it with a global variable and a constant, then enters a loop that starts a CIA timer and spins until a bit in the global variable clears, repeating until the timer routine returns a specific value.
+- `read_joystick_input`: The routine calls another routine and stores its result in a global variable.
+- `check_ride_availability_15`: The routine reads a byte from a global variable, masks it with a bit derived from a byte on the stack, and conditionally clears a bit in the mask based on a flag in a table indexed by a computed offset.
+- `wait_for_ciab_timer_and_flag`: The routine repeatedly starts a CIAB timer and then spins until a global variable's least-significant bit is cleared.
+- `reset_ciab_timer`: The routine checks a global variable and a register value and, if a condition holds, writes three values to a global variable.
+- `set_ciab_timer`: The routine writes three values to a global variable in sequence and then returns.
+- `wait_for_vblank_and_tick`: The routine spins until a global variable’s bit is clear, then increments a global counter, calls another routine, decrements the same counter, and returns the concatenation of the two input registers.
+- `wait_for_vblank`: The routine spins until a global variable’s bit is clear, then increments a global counter, calls another routine, decrements the counter, and returns the concatenation of two input registers.
+- `parse_ride_name_2`: The routine loads values from a structure pointed to by A5, uses them to compute an index into a table and initializes a set of global variables.
+- `update_park_object`: The routine contains nine 68000 instructions but performs no observable data operations and ends with a return.
+- `apply_tile_mask_2`: The routine processes a mask and a source byte table, iterating over a fixed number of entries.
+- `handle_input_event`: The routine calls another routine to initialise a ride object and checks its short result.
+- `init_ride_object_and_validate`: The routine calls a routine to initialize an object and checks its return.
+- `handle_ride_interaction_4`: The routine calls another routine to initialize a ride object and returns if it fails.
+- `check_ride_operation_3`: The routine calls another routine to obtain a short value and returns immediately if the value is non-zero.
+- `handle_park_event_4`: The routine initializes a ride object and, if successful, validates monthly maintenance for the first parameter.
+- `handle_park_event_5`: The routine calls a ride initialization routine and checks its result.
+- `update_park_state_2`: The routine calls another routine, then calls another routine, then returns.
+- `reset_ride_state_via_trigger`: The routine calls another routine to reset ride state and then returns.
+- `run_theme_park_init`: The routine calls another routine, then calls another routine, then calls another routine, and returns.
+- `handle_park_event_6`: The routine checks a global variable and, if it is zero, calls another routine with the input parameter and then calls a routine to add time to ride times using three global values.
+- `validate_monthly_maintenance`: The routine checks a global string for 'MThd' and a flag, then copies a value from the global to a global structure and reads a ride month field.
+- `clear_ride_queue`: The routine calls another routine to clear a ride queue and then returns zero.
+- `clear_ride_queue_and_return_zero`: The routine calls a global routine that clears a ride queue and then returns the constant zero.
+- `clear_ride_queue_2`: The routine clears a ride queue by calling a helper and then returns zero.
+- `clear_ride_queue_and_return`: The routine calls a global routine that clears a ride queue and then returns zero.
+- `clear_ride_queue_3`: Calls another routine to clear a ride queue and returns a constant.
+- `check_global_flag_then_call`: The routine receives a pointer argument.
+- `clear_ride_queue_for_param`: The routine receives a 32-bit parameter and immediately passes it to another routine that clears a ride queue.
+- `process_ride_queue_129`: The routine checks a global flag and a control structure and, if set, iterates over a table of entries.
+- `process_script_queue`: The routine repeatedly advances a script pointer stored in a global variable, parses a token via another routine, and updates a variable-length value field.
+- `decode_script_queue`: The routine repeatedly decodes a variable-length value from a script buffer into a byte field and advances a pointer through the buffer, calling another routine to parse each token.
+- `skip_unreachable_code`: The routine contains three 68000 instructions and performs no observable work.
+- `parse_script_token`: Reads a byte from a script buffer via a pointer stored in the context and advances the pointer.
+- `set_ride_flags`: The routine ORs three bytes in a structure pointed to by an address register, adds a byte at an index derived from a word in D0 to another byte in the same structure, ORs a further byte in the structure, and then adds two to a word located ten bytes after a pointer in A5.
+- `parse_script_command`: The routine decodes a byte from a register into a high nibble command index and a low nibble parameter, looks up a table of handlers via a global variable, and dispatches to a small set of cases that read bytes from a pointer stored in a structure, update counters and flags, and call another routine to increment a ride counter.
+- `parse_config_token`: The routine reads a byte from a pointer stored in a global variable and advances the pointer, returning the byte value or zero for whitespace and control characters.
+- `increment_counter_field`: The routine adds 2 to a 32-bit integer located at an offset from an address in A5 and stores the result back at the same location.
+- `increment_counter_at_offset_10`: The routine increments the 32-bit value located at an offset of 10 bytes from an address in A5 by one.
+- `increment_wait_counter_by_five`: The routine adds five to the 32-bit value located at an offset of ten bytes from a pointer in A5 and stores the result back at the same location.
+- `update_ride_price_18`: The routine reads a variable-length value from a pointer stored in a global variable, advances the pointer by the decoded length, writes a 24-bit little-endian value from the pointed bytes into a global variable, advances the pointer again by a stack value, calls a fixed-point normalizer, and stores the negated result into another global variable.
+- `update_ride_waiting_time_17`: The routine reads a variable-length value from a pointer stored at offset 10 of a structure pointed to by a5, using a helper routine, and writes the decoded value back into the same structure field.
+- `update_ride_statistics_38`: The routine reads a value from a global variable via a pointer in a register, decodes a variable-length value from it using another routine, and adds the decoded value and a stack value to the global variable.
+- `decode_and_accumulate_offset`: The routine reads a value from a global variable via a pointer in A5, decodes a variable-length value from it using another routine, and adds the decoded value and a stack temporary to the original value stored at the same location.
+- `increment_pointer_until_terminator`: The routine checks a condition on a register and, if true, repeatedly loads a pointer from a global variable, increments the stored pointer value, and continues until the byte pointed to equals a terminator.
+- `trampoline_return`: It is a trampoline routine that simply returns to its caller.
+- `skip_game_loop_iterations`: The routine contains a loop that iterates sixteen times with a short counter and performs no operations inside the loop.
+- `check_ride_open`: The routine contains no instructions and returns immediately.
+- `reset_ride_state_26`: The routine clears and initializes fields in a table of ride state structures pointed to by a global variable, then zeroes and sets default byte values in a fixed-size block of memory associated with the same global variable.
+- `reset_ride_state_27`: The routine clears a byte in a global variable and then iterates six times over a table in a global variable.
+- `clear_ride_data`: The routine iterates over a small fixed range of indices and clears fields in a global data structure.
+- `reset_ride_state_27_2`: The routine contains no instructions and returns immediately.
+- `initialize_ride_object`: The routine attempts to allocate a memory block of a fixed size and stores a pointer to it in a global variable.
+- `clear_ride_data_3`: The routine clears a series of fields in a global data structure.
+- `clear_ride_queue_4`: The routine clears a global variable by storing zero to two bytes at its base and then iterates sixteen times, storing zero to four bytes at successive offsets from the base.
+- `return_zero_stub`: The routine is empty and returns zero.
+- `reset_ride_state_28`: The routine checks a global variable and, if non-zero, waits for frames, clears a pending message, triggers a game event with the variable's value and a constant, then clears the variable.
+- `clear_ride_data_4`: The routine writes a byte to a global variable and then clears a table of six entries in a global structure.
+- `clear_ride_data_5`: The routine clears a global variable by zeroing a two-byte field and a block of sixteen four-byte fields for each of five iterations.
+- `empty_routine_5`: The routine contains no instructions and returns immediately.
+- `reset_ride_queue_2`: The routine clears a flag byte in a global variable and then iterates over sixteen entries in a table stored in a global variable.
+- `empty_routine_6`: The routine contains four instructions and performs no observable work; it ends with a return.
+- `wait_for_frames`: The routine contains a loop that iterates sixteen times with no side effects and then returns.
+- `draw_park_background`: The routine contains no instructions and returns immediately.
+- `clear_pending_message`: The routine checks a global variable for a non-zero value.
+- `initialize_ride_markers`: The routine allocates a block of memory sized by a global count times a fixed stride and stores the pointer in a global variable.
+- `parse_ride_markers`: The routine iterates over a table of entries and for each entry reads a marker header, stores the header fields into a global structure and then walks a variable-length script block, decoding values and tokens and setting a flag in a table when a condition is met.
+- `parse_trader_records`: Iterates over a list of trader records, checks a marker string, extracts a 32-bit value and stores parsed fields into a structure.
+- `return_zero_flag`: The routine returns a constant zero.
+- `parse_trader_records_2`: Iterates over a block of records, skipping any that do not begin with the marker text, and for each matching record reads a length field, stores several pointers and that length into a destination structure, then decodes and parses the record contents until its terminator.
+- `return_zero_constant`: The routine is five instructions long and returns the constant zero.
+- `decode_variable_length_value`: The routine decodes a variable-length integer from a byte stream pointed to by param_1, accumulating 7-bit groups while the high bit is set, and writes the resulting value through param_2.
+- `add_rating_modifier`: The routine reads a byte from a register, clears its most significant bit, adds the resulting value to the integer pointed to by a pointer in a register, and stores the sum back through that pointer.
+- `set_status_flag`: The routine checks a byte in a global table at an index derived from param_1 and a flag byte.
+- `clear_ride_flag_7`: The routine stores a zero byte into a byte located at an offset computed from a byte in D7, a pointer in A0 and a constant, then returns whether D5 is zero.
+- `parse_script_token_2`: The routine reads a script token byte from the input pointer and computes a token type value and the length of the token in bytes.
+- `clear_bitmask_bytes`: The routine clears a bit in four consecutive bytes of a byte array pointed to by a pointer, using a bit index taken from a data register, and writes a byte from a data register to a word pointed to by a pointer.
+- `parse_script_token_3`: The routine reads a control byte from a register, extracts its high nibble and, for values greater than seven, advances a byte pointer by a fixed amount or by a variable-length loop depending on the nibble.
+- `parse_script_token_4`: The routine advances a script pointer according to the current token byte and a flag, using a variable-length value decoder for most tokens and special handling for a few control bytes, then stores a byte from a register into a table and returns the pointer delta from a base.
+- `write_ride_price_2`: The routine stores a byte from a register through a pointer to a word location and returns the difference between a pointer plus two and another value.
+- `calculate_ride_price_3`: The routine decodes a variable-length value, stores a byte from a register through a pointer, and returns the sum of a stack value, the decoded value, and another value minus a fifth value.
+- `calculate_ride_price_4`: The routine decodes a variable-length value, stores a byte from a register through a pointer, and returns the sum of a stack value, the decoded value, a constant, and another value minus a further value.
+- `set_tile_height`: The routine stores a byte from a data register into a word pointed to by a pointer in a register, then returns the difference between an index register plus one and another register.
+- `set_tile_attribute`: The routine stores a byte from a register through a pointer and returns the difference between a value derived from a register and another value.
+- `calculate_ride_score`: The routine decodes a variable-length value, stores a byte from a register through a pointer, and returns the sum of a stack value, the decoded value and a register value minus another register value.
+- `skip_to_terminator`: The routine advances a pointer through a byte stream until it finds a terminator byte.
+- `add_time_to_ride_times`: The routine iterates over a range of memory starting at param_1 up to param_2, stepping by 30 bytes each iteration.
+- `run_game_tick`: The routine calls another routine and returns the value it received in D0.
+- `copy_ride_data_5`: The routine reads a three-byte value, selects a random theme, then repeatedly calls a layout builder three times and copies bytes from a source buffer to a destination buffer using tile attributes as copy lengths, updating pointers until a byte count is reached.
+- `read_tile_attribute`: The routine walks a table of 16-bit entries until it finds one whose first half matches a mask derived from an input value, then reads a byte at a fixed offset from the matching entry and uses it as an index into a bitfield stored in the same structure.
+- `select_random_theme`: The routine masks a word from a global variable with a word from D0, then conditionally overwrites the result with the return value of another routine if a byte from D7 is less than a byte from D1, and returns the word.
+- `return_empty_routine`: The routine contains 12 instructions that do not modify memory or registers and immediately returns.
+- `read_3_byte_value`: The routine reads three consecutive bytes from a byte pointer in A0, concatenating them into a 32-bit value in D0 with each iteration shifting the accumulated value and OR-ing the next byte, effectively building a 24-bit little-endian integer.
+- `build_ride_layout`: The routine selects a theme index with another routine, fills a small stack buffer with repeated theme values, then iterates over a 16-bit mask and a 12-byte buffer.
+- `wait_for_blitter_and_set_params`: The routine polls a global variable until a bit is clear, then writes several values to hardware registers and a global variable, and polls again until the same bit is clear.
+- `wait_for_vblank_and_init`: The routine spins until a flag in a global variable is clear, then writes a value from the stack to two locations, computes an offset from the stack value and a constant and stores it in a global variable, clears several global variables and writes constants to them, sets a flag in a global variable to one, and returns the value originally in D0.
+- `init_blitter_copy`: The routine writes a series of constants and a computed value into a global variable and sets another global variable to one, then returns the value it received on the stack.
+- `wait_for_blitter_and_init`: The routine spins until a global variable's bit is clear, then writes several values to a global variable and clears a global flag.
 
-### Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:breloc
-
-- `ProgStart`: undescribed.
-- `lbC00000C`: undescribed.
-- `lbC000060`: undescribed.
-- `lbC00009A`: undescribed.
-- `lbC00015A`: undescribed.
-- `lbC000178`: undescribed.
-- `lbC000184`: undescribed.
-- `lbC0001C6`: undescribed.
-- `lbC000226`: Jump stub: passes control straight on to lbC00039A.
-- `lbC00022A`: undescribed.
-- `lbC000244`: undescribed.
-- `lbC000296`: undescribed.
-- `lbC0002A6`: undescribed.
-- `lbC0002AC`: undescribed.
-- `lbC0002B4`: undescribed.
-- `lbC0002BC`: undescribed.
-- `lbC0002C4`: undescribed.
-- `lbC0002FC`: undescribed.
-- `lbC000302`: undescribed.
-- `lbC000304`: undescribed.
-- `lbC00032A`: undescribed.
-- `lbC00032C`: undescribed.
-- `lbC00034C`: undescribed.
-- `lbC00039A`: Jump stub: passes control straight on to lbC0003AC.
-- `load_park_layout`: undescribed.
-- `lbC0003AC`: undescribed.
-- `wait_for_vertical_blank`: undescribed.
-- `lbC0003BE`: undescribed.
-- `lbC0003F0`: undescribed.
-- `lbC000424`: undescribed.
-- `lbC000468`: undescribed.
-- `lbC000470`: undescribed.
-- `lbC00047C`: undescribed.
-- `lbC000484`: undescribed.
-- `lbC0004AE`: undescribed.
-- `lbC000524`: undescribed.
-- `lbC00053C`: undescribed.
-- `lbC000552`: undescribed.
-- `lbC000584`: undescribed.
-- `lbC000586`: undescribed.
-- `lbC00059A`: undescribed.
-- `lbC0005EE`: undescribed.
-- `lbC000616`: undescribed.
-- `lbC000624`: undescribed.
-- `lbC000630`: undescribed.
-- `lbW000648`: undescribed.
-- `lbL00064C`: undescribed.
-- `lbW000650`: undescribed.
-- `lbL000654`: undescribed.
-- `lbC000674`: undescribed.
-- `lbC000676`: undescribed.
-- `lbC000678`: undescribed.
-- `lbC000686`: undescribed.
-- `lbC00072E`: undescribed.
-- `lbC000762`: undescribed.
-- `lbC000838`: undescribed.
-- `lbC000858`: undescribed.
-- `lbC000884`: undescribed.
-- `lbC000888`: undescribed.
-- `lbC00088C`: undescribed.
-- `lbC000890`: undescribed.
-- `lbC00094C`: undescribed.
-- `lbC000950`: undescribed.
-- `lbC000960`: undescribed.
-- `lbC000970`: undescribed.
-- `lbC000982`: undescribed.
-- `lbC0009A2`: undescribed.
-- `lbC0009B8`: undescribed.
-- `lbC0009C6`: undescribed.
-- `lbC0009CC`: undescribed.
-- `lbC0009E6`: undescribed.
-- `lbC0009F2`: undescribed.
-- `lbC000A1A`: undescribed.
-- `lbC000A58`: undescribed.
-- `lbC000A7A`: undescribed.
-- `lbC000A90`: undescribed.
-- `lbC000AA0`: undescribed.
-- `lbC000ABE`: undescribed.
-- `lbC000AD6`: undescribed.
-- `lbC000B24`: undescribed.
-- `lbC000B42`: undescribed.
-- `lbC000B58`: undescribed.
-- `lbC000B7C`: undescribed.
-- `lbC000B86`: undescribed.
-- `lbC000BB6`: undescribed.
-- `lbC000BC8`: undescribed.
-- `lbC000BD6`: undescribed.
-- `lbC000BF8`: undescribed.
-- `lbC000C24`: undescribed.
-- `lbL000D36`: undescribed.
-- `lbC000DB2`: undescribed.
-- `lbC000E02`: undescribed.
-- `lbC000E52`: undescribed.
-- `lbC000E88`: undescribed.
-- `lbC000E94`: undescribed.
-- `lbC000EAC`: undescribed.
-- `lbC000EB8`: undescribed.
-- `cash1`: undescribed.
-- `cash2`: undescribed.
-- `cash3`: undescribed.
-- `lbC000F40`: undescribed.
-- `lbC000F5A`: undescribed.
-- `lbC000F64`: undescribed.
-- `lbC000FCC`: undescribed.
-- `trainintro`: undescribed.
-- `numtoascii`: undescribed.
-- `calctable`: undescribed.
-- `cls`: undescribed.
-- `dopretty`: undescribed.
-- `print`: undescribed.
-- `dospr`: undescribed.
-
-### powerpacker.library
-
-- `return_error_code_2`: undescribed.
-- `set_library_base`: undescribed.
-- `increment_counter_clear_flag`: undescribed.
-- `decrement_timer_and_trigger_event`: undescribed.
-- `handle_powerpacker_decompress`: undescribed.
-- `check_powerpacker_state`: undescribed.
-- `load_powerpacker_library`: undescribed.
-- `null_function`: undescribed.
-- `initialize_powerpacker`: undescribed.
-- `decode_compressed_block`: undescribed.
-- `decode_compressed_block_2`: undescribed.
-- `decode_compressed_block_3`: undescribed.
-- `decode_powerpacker_block`: undescribed.
-- `decode_powerpacker_stream`: undescribed.
-- `decode_compressed_stream_2`: undescribed.
-- `decode_powerpacker_stream_2`: undescribed.
-- `decompress_powerpacker_data`: undescribed.
-- `decode_powerpacker_block_2`: undescribed.
-- `decode_powerpacker_stream_3`: undescribed.
-- `decode_compressed_data`: undescribed.
-- `decode_powerpacker_block_3`: undescribed.
-- `decode_compressed_stream_3`: undescribed.
-- `decode_powerpacker_block_4`: undescribed.
-- `decode_compressed_block_4`: undescribed.
-- `decode_compressed_data_2`: undescribed.
-- `decode_compressed_stream_4`: undescribed.
-- `decode_powerpacker_block_5`: undescribed.
-- `decode_compressed_stream_5`: undescribed.
-- `decode_compressed_block_5`: undescribed.
-- `dispatch_game_event_2`: undescribed.
-- `decode_compressed_chunk`: undescribed.
-- `self_42`: undescribed.
-- `compute_checksum`: undescribed.
-- `xor_decrypt_block`: undescribed.
-- `process_ride_queue_139`: undescribed.
-- `process_powerpacker_decompression`: undescribed.
-- `self_43`: undescribed.
-- `decode_powerpacker_block_6`: undescribed.
-- `process_powerpacker_chunk`: undescribed.
-- `process_powerpacker_decompression_2`: undescribed.
-- `process_ride_script`: undescribed.
-- `wait_for_vblank_4`: undescribed.
-- `wait_for_vertical_blank_2`: undescribed.
-- `process_powerpacker_decompress`: undescribed.
-- `process_powerpacker_block`: undescribed.
-- `write_powerpacker_header`: undescribed.
-- `verify_park_object`: undescribed.
-- `set_powerpacker_header`: undescribed.
-- `handle_powerpacker_decompression`: undescribed.
-- `check_powerpacker_flag`: undescribed.
-- `handle_powerpacker_decompression_2`: undescribed.
-- `handle_powerpacker_decompression_3`: undescribed.
-- `close_powerpacker_library`: undescribed.
-- `call_powerpacker_decompress`: undescribed.
-- `get_powerpacker_table_entry`: undescribed.
-- `verify_pack_header`: undescribed.
-- `check_powerpacker_header`: undescribed.
-- `open_data_file`: undescribed.
-- `self_44`: undescribed.
-- `validate_powerpacker_header`: undescribed.
-- `read_save_file`: undescribed.
-- `read_powerpacker_header`: undescribed.
-- `check_powerpacker_header_2`: undescribed.
-- `read_file_header`: undescribed.
-- `handle_powerpacker_decompression_4`: undescribed.
-- `check_powerpacker_header_3`: undescribed.
-- `allocate_powerpacker_buffer`: undescribed.
-- `close_and_cleanup_file`: undescribed.
-- `close_file_and_free_memory`: undescribed.
-- `check_ride_status_7`: undescribed.
-- `handle_powerpacker_error`: undescribed.
-- `check_ride_status_8`: undescribed.
-- `check_park_status_flag`: undescribed.
-- `set_powerpacker_flag`: undescribed.
-- `trigger_powerpacker_decompress`: undescribed.
-- `allocate_ride_config`: undescribed.
-- `init_ride_config`: undescribed.
-- `initialize_ride_config`: undescribed.
-- `init_ride_object_3`: undescribed.
-- `init_ride_object_4`: undescribed.
-- `init_ride_config_2`: undescribed.
-- `exit_theme_park`: undescribed.
-- `set_ride_stats`: undescribed.
-- `set_ride_stats_2`: undescribed.
-- `reset_ride_state_32`: undescribed.
-- `self_45`: undescribed.
-- `decode_compressed_chunk_2`: undescribed.
-- `decode_compressed_stream_6`: undescribed.
-- `find_string_in_buffer`: undescribed.
-- `clear_ride_queue_3`: undescribed.
-- `find_shortest_unique_substring`: undescribed.
-- `clear_ride_queue_4`: undescribed.
-- `find_next_match`: undescribed.
-- `clear_ride_queue_5`: undescribed.
-- `process_ride_queue_140`: undescribed.
-- `decode_compressed_chunk_3`: undescribed.
-- `clear_ride_queue_6`: undescribed.
-- `decode_powerpacker_block_7`: undescribed.
-- `clear_tile_buffer_2`: undescribed.
-- `decode_powerpacker_block_8`: undescribed.
-- `clear_tile_buffer_3`: undescribed.
-- `process_powerpacker_block_2`: undescribed.
-- `self_46`: undescribed.
-- `process_powerpacker_block_3`: undescribed.
-- `read_next_input_byte`: undescribed.
-- `decode_powerpacker_block_9`: undescribed.
-- `copy_palette_entry`: undescribed.
-- `get_next_tile_index`: undescribed.
-- `get_tile_offset`: undescribed.
-- `compute_park_rating_delta`: undescribed.
-- `write_tile_mapping`: undescribed.
-- `update_sprite_offsets`: undescribed.
-- `update_sprite_offsets_2`: undescribed.
-- `play_intro_music`: undescribed.
-- `run_powerpacker_decompress`: undescribed.
-- `decode_powerpacker_block_10`: undescribed.
-- `write_output_buffer`: undescribed.
-- `check_buffer_overflow`: undescribed.
-- `generate_random_number`: undescribed.
-- `decode_powerpacker_stream_4`: undescribed.
-- `check_powerpacker_decompress`: undescribed.
-- `check_powerpacker_decompression`: undescribed.
-- `check_ride_capacity`: undescribed.
-- `check_park_capacity_4`: undescribed.
-- `check_buffer_capacity`: undescribed.
-- `return_stack_value_3`: undescribed.
-- `allocate_memory_block_3`: undescribed.
-- `set_stack_value`: undescribed.
-- `free_powerpacker_library`: undescribed.
-
-### explode.library
-
-- `explode_library_entry`: undescribed.
-- `handle_explosion_library`: undescribed.
-- `increment_explosion_counter`: undescribed.
-- `decrement_explosion_counter`: undescribed.
-- `explode_animation_cleanup`: undescribed.
-- `self_47`: undescribed.
-- `set_explosion_flag`: undescribed.
-- `check_library_signature`: undescribed.
-- `check_library_signature_2`: undescribed.
-- `check_library_header`: undescribed.
-- `check_library_name`: undescribed.
-- `decrement_timer_and_trigger_explosion`: undescribed.
-- `init_explosion_effect`: undescribed.
-- `process_explosion_effect`: undescribed.
-- `check_explosion_flag`: undescribed.
-- `copy_tile_block`: undescribed.
-- `copy_explosion_data`: undescribed.
-- `copy_explosion_data_2`: undescribed.
-- `copy_explosion_tile`: undescribed.
-- `decode_explosion_data`: undescribed.
-- `decode_explosion_animation`: undescribed.
-- `decode_explosion_palette`: undescribed.
-- `decode_ride_data`: undescribed.
-- `decode_explosion_sprite`: undescribed.
-- `decode_explosion_pattern`: undescribed.
-- `self_48`: undescribed.
-- `decode_explosion_data_2`: undescribed.
-- `decode_sprite_animation`: undescribed.
-- `free_explosion_library`: undescribed.
-- `wait_for_vblank_5`: undescribed.
-
-### Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:bootblock
-
-- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
-
-### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
-
-- `return_error_code_3`: undescribed.
-- `initialize_game_state_5`: undescribed.
-- `advance_message_queue`: undescribed.
-- `run_game_loop_6`: undescribed.
-- `reset_ride_queue_3`: undescribed.
-- `reset_audio_channels_2`: undescribed.
-- `process_park_tick`: undescribed.
-- `update_music_channel`: undescribed.
-- `update_ride_state_24`: undescribed.
-- `self_49`: undescribed.
-- `copy_ride_config_word`: undescribed.
-- `self_50`: undescribed.
-- `update_ride_wait_time_4`: undescribed.
-- `update_ride_wait_time_5`: undescribed.
-- `handle_joystick_input_2`: undescribed.
-- `set_park_flag_2`: undescribed.
-- `update_ride_waiting_queue_6`: undescribed.
-- `update_ride_statistics_39`: undescribed.
-
-### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
-
-- `load_park_data_4`: undescribed.
-- `update_park_entrance`: undescribed.
+The function list continues in: g800-recovery-functions-2.md.

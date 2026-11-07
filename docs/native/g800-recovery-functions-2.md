@@ -1,0 +1,568 @@
+# Game 800 (theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]): code recovery summary
+
+## Functions (part 2 of 2)
+
+### Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:main#unpacked
+(continued)
+
+- `wait_for_blitter_and_queue_copy_2`: The routine spins until a global variable’s bit indicates the blitter is idle, then writes a series of values to a global variable, including two parameters, constants and a value derived from a table entry and a short parameter, and two table-derived addresses, repeating the sequence three times.
+- `wait_for_blitter_and_init_copy`: The routine polls a global variable until a bit is clear, then writes several values to a set of global variables that correspond to Amiga blitter registers and a size field, and polls the same bit again until it is clear.
+- `copy_ride_data_block`: The routine copies sixteen 16-bit words from the pointer passed in a1 to consecutive locations starting at a global variable.
+- `draw_scaled_sprite`: The routine clips a rectangular source region against a destination rectangle and then sets up Amiga blitter registers to copy a scaled sprite from a source buffer to a destination buffer.
+- `wait_for_input_bit`: The routine reads a global variable and a value passed in a register, combines them, and spins until the least significant bit of the global variable is clear and then set again, returning a combined value built from parts of the input and the global variable.
+- `wait_for_vertical_blank`: The routine reads the vertical position register VPOSR and a global variable, then spins until the low bit of the global variable changes from 1 to 0 and then back to 1, effectively waiting for a vertical blank transition.
+- `set_tile_mask_bits`: The routine computes a pointer into a table of 16-bit mask words using two short indices and a global offset, then iterates four times over consecutive table entries.
+- `apply_park_flags`: The routine repeatedly ANDs a word from a register with the word pointed to by a pointer, then advances the pointer through a table of word offsets and, while a bit mask test succeeds, ORs another word from a register into the pointed-to word.
+- `install_interrupt_handler`: The routine stores a pointer to another routine in a global variable, stores a second pointer to another routine in the same global variable, and stores a constant in the same global variable.
+- `install_interrupt_handler_2`: The routine stores a value in a global variable, then overwrites a global variable with the address of another routine and saves the previous value in a global variable.
+- `handle_joystick_input`: Reads a byte from CIAA_PRA and updates a global variable and a byte flag.
+- `set_input_flags`: The routine tests a byte input for two character values and sets bits in a global variable accordingly, then writes a byte to a table indexed by a word input and clears or sets a flag based on a bit test.
+- `wait_for_vblank_and_clear`: The routine clears a byte at an offset from a pointer using a word from a register, then loops three times waiting for a global variable to indicate a vertical blank period by checking its low byte against a range, writes a value to a hardware register at an offset from another pointer, and sets a global variable.
+- `skip_if_no_theme`: Checks a global variable and, if it is non-zero, writes a constant to it and returns the value from the stack.
+- `set_button_state_from_keyboard`: The routine reads a byte from the keyboard serial register, derives two bytes from the inverted value and uses them to set or clear bits in a global byte.
+- `handle_key_toggle`: The routine inspects two input bytes and conditionally sets bits in a global byte, then toggles a bit in that byte when a specific input value is present, updates a global variable with data from a table or another location, writes a byte derived from the input to an indexed location in memory, and clears a byte at a fixed offset.
+- `clear_coaster_queue`: The routine clears a global flag by masking a byte in a global variable and zeroing a byte in RAM, then writes a value from a global variable into a table entry indexed by a global variable and clears a byte in a table.
+- `check_park_capacity`: The routine compares its integer argument with a global variable and returns 1 if the argument is less than or equal to that variable, otherwise it returns 0.
+- `check_park_capacity_2`: The routine receives an integer parameter and compares it with a global variable.
+- `compare_param_to_global`: The routine compares its integer parameter with a global variable and returns 1 if the parameter is less than or equal to the variable, otherwise it returns 0.
+- `empty_stub_routine_4`: The routine contains no instructions and returns immediately with a constant zero.
+- `reset_two_globals`: The routine clears two global variables by storing zero to each of them and then returns.
+- `read_joystick_state`: The routine calls another routine to set an interrupt vector and then copies bytes from a global variable into four locations in a table.
+- `disable_interrupts_for_event`: The routine calls set_interrupt_mask and then returns.
+- `set_interrupt_vector`: The routine writes a pointer to another routine into a global variable and stores a constant into a second global variable.
+- `set_interrupt_mask`: The routine writes a constant to a global variable, then writes the address of another routine to the same global variable.
+- `process_interrupt_handler`: The routine increments a counter, tests a global variable and, if set, calls another routine to update joystick position and a handler, increments further counters and resets one of them when a threshold is passed, then writes a constant to the global variable and returns the concatenation of two input registers.
+- `load_park_data_3`: The routine is empty.
+- `update_mouse_position`: Reads the mouse delta from the joystick data register, applies signed 8-bit wrap-around to the stored deltas, accumulates them into clamped X and Y position globals, and handles button state with debounce timers and reset flags.
+- `reset_input_state`: The routine clears a game state byte and a global variable, then decrements a counter and reloads it when it reaches zero.
+- `decrement_counter_and_trigger`: The routine clears a global variable, tests a global counter against a constant, decrements the counter, and if the test was true it clears another global variable and resets the counter.
+- `smooth_price_display`: The routine smooths a price value toward a target value stored in a global variable, writing the smoothed result to two global locations and updating a stored previous value.
+- `adjust_price_and_copy_queue`: The routine adjusts a global price variable toward a target price by half the difference and copies 16 entries from a queue pointer into two global tables, then clears the tables' terminators and updates a flag.
+- `update_ride_stats_5`: The routine updates a global variable from the difference of two short inputs, copies a global pointer to another global, calls a sprite tile writer, sets a global byte with a flag, and if a pointer differs from a stored pointer it copies sixteen 32-bit entries from the pointed-to table into two fixed tables and clears the last entries.
+- `skip_unused_routine`: The routine consists of nine 68000 instructions that perform no observable work on memory or registers and finish with a return.
+- `write_sprite_tile_data`: The routine writes four bytes through a pointer in A0 using values derived from D1, D2 and D3 and a global variable.
+- `reset_game_state_8`: The routine clears a series of global variables to zero and then sets one global variable to a constant value, returning the value that was in D0 on entry.
+- `reset_park_state_10`: The routine clears a series of global variables to zero, sets one global variable to a constant, and returns the value originally in D0.
+- `reset_game_state_9`: The routine clears a series of global variables to zero and then stores a constant value into one of them, returning the value that was in D0 on entry.
+- `clear_global_state`: The routine clears a series of global variables to zero and then sets one global variable to a constant value.
+- `reset_ride_state_29`: The routine clears a series of global variables to zero, sets one global variable to a constant, and returns the value originally in D0.
+- `reset_game_state_11`: The routine clears a series of global variables to zero and then sets one global variable to a constant value.
+- `reset_park_state_11`: The routine clears a series of global variables to zero, then writes a constant to one global variable and returns a value from the data register.
+- `clear_global_state_2`: The routine clears a series of global variables to zero and then sets one global variable to a constant value, returning the value originally in D0.
+- `reset_global_flags_2`: The routine clears a series of global variables to zero and then sets one global variable to a constant value.
+- `reset_audio_channels`: The routine writes zero to a series of global variables, then writes a value to a global variable.
+- `set_interrupt_mask_2`: The routine writes to a global variable and then writes the same 16-bit value twice to the INTENA register, which on Amiga controls interrupt masking, and then writes the same value to INTREQ, which acknowledges or triggers interrupts.
+- `set_interrupt_mask_3`: The routine writes a byte to a global variable and then stores a pointer to another routine in a global variable.
+- `clear_ride_flag_8`: The routine computes an offset from the second short parameter and uses it to index a table of short values.
+- `clear_queue_by_id`: The routine compares a short value in D0 with three short fields in the structure pointed to by A0.
+- `clear_ride_flag_9`: The routine compares a short value in a data register with two short fields in a structure pointed to by a pointer register.
+- `clear_ride_flag_10`: The routine compares a short value from a data register with a short field in the structure pointed to by a pointer register.
+- `wait_for_vblank_3`: The routine contains no instructions and returns immediately.
+- `jump_to_sub_3_07ce`: Jump stub: passes control straight on to sub_3_07CE.
+- `add_ride_object_2`: The routine reads values from a global variable and a table indexed by param_1 and param_2, updates counters in a global variable, writes param_3, param_2 and a counter into a structure pointed to by reset_ride_state_29 plus an offset from a global variable, and if a shifted value from the table is non-zero it writes the shifted value, a table entry and a constant into the structure and calls another routine.
+- `enqueue_ride_event`: The routine conditionally reads values from a table using a short parameter as an index, checks a global variable and ride-related limits, then writes several fields into an entry pointed to by a global counter, increments counters and conditionally copies values from another table and a global array, finally calling another routine.
+- `check_global_and_set_flag`: The routine tests whether a global variable is non-zero and, if so, calls another routine.
+- `set_ride_flag_3`: The routine checks a global variable and a table entry indexed by a word in D4.
+- `reset_ride_state_6`: Clears a ride-state table and, while a flag is set, shifts a lookup table, updates ride-object entries, and decrements several countdown counters until they reach zero.
+- `set_ride_object_data`: The routine writes a constant to a word in a structure pointed to by a0, copies a word from a short pointer in a1 into the structure, loads a pointer from a global variable table indexed by d3 into a4, then copies four words from a table pointed to by a2 using an index derived from a1 into the pointed-to structure and two words into the a0 structure using an index derived from d3.
+- `reset_park_state_12`: The routine checks a global variable and, if it is non-zero, clears a series of ten consecutive memory locations by storing zero into each of them.
+- `update_audio_channels`: The routine checks a global flag and a guard variable and, when enabled, decrements two counters and writes to audio channel registers AUD2LCH, AUD2LEN, AUD3LCH, AUD3LEN. It also manipulates DMACON, INTREQ and INTREQR to control DMA and interrupts.
+- `rotate_game_event_state`: The routine rotates several global variables, toggles a flag, reads a value through a pointer derived from a global index and an alternate base when a flag is set, stores that value into globals, clears another global, and returns a combined value built from input and a shifted value.
+- `close_game_libraries`: Closes game libraries.
+- `initialize_ride_data`: The routine sets a global variable to a constant, copies tile data, stores the address of a global variable in three global pointers, stores a constant address in a global variable, builds a menu item table, increments one of the pointers by a constant, builds a menu item table again, and returns a value from a register.
+- `initialize_ride_data_2`: The routine stores a constant into a global variable, calls another routine to copy tile data, sets three pointers in RAM to the same global variable, stores an address into a global variable, calls another routine to build a menu item table, increments one of the pointers by four, calls the menu table builder again, and returns a value from D0.
+- `set_default_theme`: The routine checks a global variable and, if it is zero, copies a 32-bit value from a table into that variable.
+- `build_menu_item_table`: The routine writes a fixed header into a table pointed to by a register, fills a series of 16-bit entries derived from a global variable and an input value, optionally adds an extra entry, then appends a second block of constant and pointer-derived entries and terminates the table.
+- `set_park_open_flag`: The routine calls another routine and then stores the value 1 into a global variable.
+- `reset_animation_state`: The routine calls another routine and then clears a global variable to zero before returning.
+- `set_active_ride_index`: The routine receives a short parameter and stores it in a global variable, then stores the parameter minus one in another global variable.
+- `copy_tile_data`: The routine copies a fixed number of 16-bit words from a source pointer in A0 to consecutive locations starting at a global variable.
+- `iterate_park_objects`: The routine walks a linked list of objects by following a next pointer stored at a fixed offset from the current element and advancing the pointer by a fixed stride until the next pointer is zero.
+- `clear_ride_queue_2_2`: The routine walks a linked list of structures pointed to by a parameter.
+- `verify_park_password`: The routine checks a global variable and either validates a ride operation and triggers park and game events to update park object state with derived values, or delegates to another routine for verification.
+- `verify_ride_name`: Uppercases up to 99 bytes from the input string into a stack buffer and tests the buffer with another routine.
+- `update_disk_prompt`: The routine copies 20 bytes from a global variable into a stack buffer, reads a byte from the caller-supplied pointer, compares it with the global variable and, if different, updates the global variable, waits for the blitter and draws the loading message referenced by the text "INSERT DISK".
+- `handle_alloc_request`: The routine processes a request structure pointed to by param_1.
+- `update_loading_message`: Copies a byte from a global variable into a stack buffer, then repeatedly derives a digit from a byte pointed to by a global variable, updates a text buffer on the stack, and calls another routine to process it while conditionally writing the digit back through a pointer.
+- `process_command_string`: The routine processes a command string pointed to by a parameter.
+- `validate_ride_operation_4`: The routine calls another routine with the two parameters and returns its result.
+- `trigger_game_event_wrapper`: The routine receives a 32-bit argument and immediately passes it unchanged to another routine.
+- `call_trigger_game_event_2`: The routine receives three parameters and immediately passes them unchanged to another routine.
+- `trigger_park_event_16`: The routine receives three 32-bit parameters and immediately forwards them unchanged to invoke_library_handler, then returns.
+- `trigger_ride_event_2`: The routine receives three parameters and immediately passes them unchanged to invoke_callback_handler, then returns.
+- `query_park_object_state`: The routine calls another routine twice with the same first argument and different constants, then returns the result of the second call.
+- `rotate_queue_bytes`: The routine calls a library handler with the three parameters and returns its result.
+- `return_stack_value`: The routine returns the 32-bit value that was passed in a stack slot four words down from the return address.
+- `busy_wait_loop`: The routine executes two nested empty loops that iterate 10,000 times by 10 times, performing no operations inside the inner loop.
+- `wait_for_frames_2`: The routine contains a loop that increments a local counter from zero up to 99999 and then returns.
+- `skip_unused_branch`: The routine contains three 68000 instructions and ends with a return, performing no observable work on registers, memory or a global variable.
+- `allocate_memory_block`: The routine returns a pointer from a heap area tracked by two global pointers and a size counter.
+- `check_park_open`: The routine tests a global variable and, if it is zero, calls another routine with the two parameters and returns its result; otherwise it returns zero.
+- `check_ride_entrance_flag`: The routine copies a word from a global variable and a byte from an object structure into registers.
+- `check_ride_condition_2`: The routine clears a global variable and loads a byte from an offset of the third argument into a global variable.
+- `apply_tile_mask_4`: Computes source and destination pointers from its inputs and a set of global variables, validates bounds against global limits and a global mode flag, and then copies masked tile data row by row using a mask table and a global mode flag.
+- `apply_tile_mask_3`: The routine validates its inputs against several global limits and computes source and destination pointers for a tile mask operation.
+- `copy_sprite_masked`: The routine copies sprite tile data from two source planes into a destination buffer using the Amiga blitter, applying a per-tile mask and handling vertical offsets and clipping.
+- `set_blitter_mask_parameters`: The routine configures Amiga blitter mask registers BLTAFWM and BLTALWM from a table of mask words selected by an input index, using a global flag to choose between two mask patterns and a loop that steps through a count stored in a global variable.
+- `set_blitter_line_params`: The routine computes line step values from the input deltas and stores a direction flag in a global variable, then programs the Amiga blitter registers BLTCON0, BLTCON1, BLTAPTH, BLTBPTH, BLTCPTH, BLTDPTH, BLTAFWM, BLTAMOD, BLTBMOD, BLTCMOD, BLTDMOD, BLTSIZE and DMACONR to perform a line copy, using the calculated parameters and a pointer derived from the inputs.
+- `draw_ride_overlay`: The routine clamps two short inputs to non-negative, stores halved versions of four parameters in globals, and clamps one global to another.
+- `draw_ride_path`: The routine reads bytes from a bit-packed source buffer pointed to by param_1 and writes bits into a destination bit-plane area using stride values from global variables.
+- `draw_ride_track`: The routine reads bytes from a source bitmap pointed to by param_1 and writes bits into a destination bitmap using parameters for stride and dimensions.
+- `draw_ride_track_2`: The routine processes a bit-packed source buffer referenced by param_1 and writes bits into a destination bitmap using stride values derived from param_2, param_3, param_4 and param_5.
+- `draw_ride_map_overlay`: The routine reads bytes from a bitfield pointed to by param_1 and writes bits to a destination bitmap using stride values derived from param_2, param_3, param_4 and param_5.
+- `apply_ride_mask`: The routine computes stride and scaling values into global variables and then iterates over a byte mask, copying or clearing bits between two memory regions using the stored strides.
+- `apply_ride_coverage_mask`: The routine iterates over a set of byte masks using a pointer table and a stride value, and for each mask it clears or sets individual bits in a destination byte array based on the corresponding source byte bits.
+- `clear_block_flags`: The routine iterates over a set of blocks using a pointer table and two base addresses.
+- `process_callback_chain`: The routine walks a linked list of function pointers stored in a global variable, advancing a global offset by a constant each iteration and invoking the current callback until a null pointer is reached.
+- `poll_event_callback_chain`: The routine repeatedly calls a function pointer taken from a table stored in a structure pointed to by a register, advancing the pointer each iteration until a null entry is reached, and returns the result of the last call.
+- `call_indirect_handler_return_constant`: The routine calls an indirect handler through a pointer stored in a global variable, passing the address of a global variable, then returns a constant value.
+- `invoke_global_callback`: The routine calls a function pointer stored in a global table, passing the address of a global variable as argument.
+- `count_string_length`: The routine receives a pointer to a zero-terminated byte string.
+- `parse_format_string`: The routine walks a format string and returns the total length of the formatted output.
+- `clear_event_handlers`: The routine reads a pointer from a global variable, walks a linked list by repeatedly following the pointer stored at the current node, and calls a function through a global table on each node.
+- `free_linked_list`: The routine walks a linked list by repeatedly loading the next pointer from a pointer in A5 and invoking a function from a global table until the pointer becomes null.
+- `swap_memory_bytes`: The routine swaps bytes between two memory areas byte by byte.
+- `copy_string_to_buffer`: The routine copies bytes from a source pointer in A1 to a destination pointer in A0 until a zero byte is encountered, writing each byte to the destination and advancing both pointers.
+- `format_signed_integer`: The routine writes a minus sign through a pointer when the input value in a data register is negative, then repeatedly calls another routine to obtain digits and stores ASCII characters through pointers, and finally reverses the digit bytes in a stack buffer before terminating the string with a null byte.
+- `parse_signed_integer`: The routine reads a signed decimal integer from a zero-terminated string pointed to by a0, handling an optional leading plus or minus sign, and accumulates the value into a signed integer pointed to by a1.
+- `initialize_game_state_4`: The routine writes several offsets within a structure pointed to by a4, initializes a few constants, and then calls through function pointers stored in the structure to obtain handles, storing the results back into the structure and copying a value from one handle into another.
+- `parse_path_and_allocate_data`: The routine walks two strings in the context structure, optionally resolves a path component from a table, checks a length field, allocates a memory block, copies up to three strings into it, calls a callback from a table to fill data, removes an object, possibly repeats the callback, updates several fields in the context with values obtained from two tables, and writes a set of flags and constants.
+- `set_ride_operation_flags`: The routine copies strings to a buffer under certain conditions, obtains values from function pointers stored relative to a structure pointer, writes those values into fields of the structure, clears and sets flag words in the structure, and updates several integer fields including a counter.
+- `reset_ride_state_31`: The routine stores results from three function pointers taken from a table into fields of a structure pointed to by a4, conditionally overwrites one of those fields, increments a counter field, computes a flag based on a zero test of another field, and writes several constant and flag-derived values into fixed offsets of the same structure before returning.
+- `initialize_ride_instance_2`: The routine checks a flag byte in the instance structure and, if clear, allocates a memory block, stores the pointer in two fields, copies a value from a global variable into a field, clears bits in a flags field, and zeroes two fields.
+- `initialize_ride_instance_3`: The routine checks a flag in a structure pointed to by a0 and, if clear, allocates a memory block via another routine, stores the returned pointer in two fields of the structure, copies a value from a global variable into a field, clears specific bits in a flags field, and zeroes two other fields.
+- `process_ride_queue_133`: The routine sets a flag at an offset from a base pointer and iterates two linked lists referenced from the base pointer.
+- `process_linked_lists_and_dispatch`: The routine walks a linked list via a pointer in a register, and for each node it checks two fields and conditionally calls another routine.
+- `process_linked_list`: Iterates a linked list via a pointer in A5, reading a flag word from each node.
+- `process_event_chain`: The routine walks a linked list stored in a pointer and, for each node, checks a flag in a word field.
+- `process_ride_queue_135`: The routine advances a game tick, obtains a park object by index and checks its flag byte.
+- `process_object_status_update`: Advances the global game clock and then looks up an object by index.
+- `update_ride_status_9`: Calls another routine to process a game tick.
+- `normalize_fixed_point_modulo`: The routine computes a remainder of a fixed-point dividend by a fixed-point divisor using a normalization step that aligns the divisor’s high word.
+- `normalize_fixed_point`: The routine takes two 32-bit inputs and normalizes a fixed-point value by scaling the numerator with a variable shift derived from the denominator’s magnitude, performing a division with remainder and a borrow correction, then returns a 64-bit result composed of a signed quotient and a scaled remainder.
+- `multiply_fixed_point`: The routine takes two 32-bit values in registers and treats each as a 16.16 fixed-point number.
+- `handle_game_event_4`: The routine is 21 instructions long but ends with an immediate return, performing no observable work on data or registers.
+- `trigger_park_event_17`: The routine calls another routine and then returns.
+- `jump_to_sub_0_0210`: Jump stub: passes control straight on to sub_0_0210.
+- `parse_command_line`: The routine counts whitespace-separated tokens in a string, handling quoted tokens and * escape sequences, allocates a table for them via a global allocator, fills the table with pointers to the tokens in the input buffer, terminates tokens in place, and then invokes a reset routine and iterates a callback list before jumping to another routine.
+- `check_park_validity`: The routine reads two integer fields from a structure pointed to by a4.
+- `set_input_callback`: The routine repeatedly clears a byte from a global variable, and then checks two global handles for non-zero.
+- `get_park_object_by_index`: The routine clears a field in a global structure, checks an index against a count stored in a global variable, and then walks a linked list stored in a global table by following pointers until the index is reached.
+- `process_game_tick`: The routine checks a flag from a global variable and, if set, dispatches through a function pointer stored in a structure.
+- `calculate_string_length`: The routine receives a pointer to a zero-terminated byte string and advances a pointer until it finds the terminating zero byte.
+- `find_string_terminator`: The routine receives a pointer in a register and a length in a register and a byte in a register.
+- `compare_two_strings`: The routine compares two null-terminated byte strings lexicographically byte by byte.
+- `check_flags_and_return`: The routine tests the processor condition flags ZF and CF that are set by the preceding instruction.
+- `return_constant_one`: The routine returns the constant value 1.
+- `copy_string_to_buffer_2`: The routine finds the terminating zero byte of the destination buffer pointed to by param_1 and then copies bytes from the source pointer param_2 into that location until a zero byte is copied, returning the original destination pointer.
+- `copy_c_string`: The routine copies bytes from a source pointer to a destination pointer until a zero byte is encountered, writing the terminating zero byte as well.
+- `copy_memory_block`: The routine copies param_3 bytes from param_2 to param_1.
+- `copy_memory_block_2`: The routine copies bytes from a source address in A1 to a destination address in A0, decrementing D0 each iteration and stopping when D0 reaches zero.
+- `copy_memory_block_3`: The routine copies a block of bytes from a source pointer to a destination pointer.
+- `remove_ride_object`: The routine checks a pointer in A0 and walks a linked list stored in a global variable to locate a containing block.
+- `remove_ride_object_2`: The routine walks a linked list of ride objects to find the one containing a given offset, then updates a global variable and returns.
+- `remove_negative_ride_link`: The routine follows a linked list via a pointer in memory, checks a range and a sign bit on a word, clears the sign bit, recomputes two signed word offsets, writes the updated offsets and related flag words, advances a counter in the list node, and optionally unlinks the node from a list stored in a global variable then calls another routine.
+- `remove_negative_ride_link_2`: The routine walks a linked list of ride objects, finds the entry whose address matches a pointer, clears its sign bit, updates linked offsets and a global variable, and then calls another routine to continue removal.
+- `remove_negative_ride_link_3`: Routine walks a linked list of 16-bit entries in memory pointed to by D0 and D1, following the offset in each entry until it reaches the target entry.
+- `remove_ride_object_4`: The routine updates a linked list of ride objects by clearing a flag in a byte, recomputing and storing new indices in two list nodes, adjusting a size field in a structure pointed to by a1, and possibly unlinking the current node from a global list and invoking another routine when a size condition is met; otherwise it writes a constant to a global variable.
+- `free_linked_list_node`: The routine receives a pointer in A0 and a pointer in A1 and a value in D1.
+- `allocate_memory_block_2`: The routine tries to find a free chunk inside an existing memory block linked via a global variable and marks it used.
+- `return_absolute_value`: The routine receives an integer parameter, negates it if it is negative, and returns the resulting non-negative value.
+- `iterate_items_with_callback`: Walks through a sequence of items, invoking a per-item callback for each one.
+- `process_ride_queue_136`: The routine processes a queue of items using a callback in A1 and a base offset in D1, repeatedly invoking the callback for each element, counting negative results, swapping memory bytes when indices differ, and recursing until the count drops below two, then performs a final callback check and a memory swap if the result is positive.
+- `process_ride_queue_137`: The routine repeatedly calls a game event handler and a memory swap routine, then iterates over a set of items using a function pointer from the stack, counting negative results and adjusting indices with an offset.
+- `process_queue_with_callback`: The routine repeatedly calls a callback supplied on the stack with two arguments, updates several counters and pointers by adding a stride, and conditionally invokes another routine and a byte swap helper.
+- `check_pointer_validity`: The routine contains three instructions and performs no observable data operations.
+- `iterate_callback_list`: The routine walks a singly linked list whose head pointer is read from a global variable.
+- `increment_and_store_byte`: The routine increments the byte pointed to by a0, increments the word at a0+1, and stores the low byte of d0 into the byte pointed to by the word at a0+1.
+- `reset_ui_element`: The routine clears a byte pointed to by param_1 to zero and then calls parse_format_string_2 with param_2 and a stack buffer.
+- `process_text_input_buffer`: The routine processes a byte from a register using a structure pointed to by a0.
+- `process_ride_object_4`: The routine walks a linked list via a global pointer when the first argument is zero and recursively processes each node, returning a non-zero flag if any call returns non-zero.
+- `parse_format_specifier`: The routine parses a printf-style format specifier from a format string, extracting flags, width, precision and length modifiers and then consumes an argument from an argument pointer.
+- `set_bit_flags_in_tables`: The routine sets a bit in several global byte variables using the low three bits of a value passed in a data register, OR-ing the bit into each byte.
+- `return_stack_value_2`: The routine loads an 8-byte value from the stack at an offset and returns the 4-byte field at offset 2-4 of that value.
+- `parse_format_string_2`: The routine walks a null-terminated string, skipping ordinary characters and literal ‘%%’. When it finds a single ‘%’ it calls another routine to parse a format specifier; if that call returns null it falls back to advancing the pointer and invoking a function pointer from a global variable.
+- `clear_park_flag`: The routine reads a byte from a table at an offset derived from the low byte of the argument plus a constant, masks it with two, and if the bit is set clears the corresponding bit in the argument.
+- `check_ride_flag`: The routine reads a byte from a table using an offset derived from the low byte of its argument and an unspecified base pointer, then returns whether the fourth bit of that byte is set.
+- `get_ride_flag`: The routine reads a byte from memory at an offset derived from a global variable and the low byte of its parameter, then returns the value masked to the two least significant bits.
+- `get_ride_flag_2`: The routine returns the low three bits of a byte taken from a table addressed by an uninitialized pointer plus an offset derived from the low byte of the argument.
+- `validate_ride_params`: The routine contains 35 instructions, but the decompiler reports an empty body because the instructions overlap and cannot be disassembled reliably.
+- `reset_input_state_2`: The routine calls another routine and then returns.
+- `invoke_event_handler`: The routine calls a function pointer taken from a global variable.
+- `play_sound_effect`: The routine calls a function pointer taken from a global variable and then returns.
+- `invoke_library_handler`: The routine calls a function pointer taken from a global variable.
+- `trigger_game_event_2`: The routine calls a function pointer taken from a global variable and then returns.
+- `invoke_callback_handler`: The routine calls a function pointer taken from a global variable offset by a negative displacement.
+- `invoke_callback_from_table`: The routine calls a function pointer taken from a global variable table offset by a constant.
+- `call_indirect_via_table`: The routine calls another routine through a pointer obtained by indexing a global variable.
+- `allocate_ride_vehicle`: The routine checks a global flag and, if set, walks a table of structures via a pointer offset by param_3.
+
+### Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:breloc
+
+- `ProgStart`: The routine initializes three cash pointers and a global variable, performs a trap and several library calls, then copies a fixed number of bytes from a source table to a destination computed from a global variable and finally jumps to the copied code.
+- `lbC00000C`: The routine initializes a global variable, calls several other routines, then copies a block of bytes from a fixed source to a destination table whose address is derived from a global variable.
+- `lbC000060`: The routine calls two other routines, then enters an infinite loop.
+- `lbC00009A`: The routine repeatedly writes to a global variable and to memory locations referenced by a register, sets up three cash-related table entries, calls another routine, invokes a function pointer from a table, writes a constant word to a global variable, updates several global variables and a byte through a pointer, then calls two other routines, writes to a hardware register to enable DMA channels, and loops forever.
+- `lbC00015A`: The routine iterates over a table of pointer/length pairs.
+- `lbC000178`: The routine copies a 32-bit value from a register to memory via a pointer, advancing the destination pointer in an inner loop while decrementing a counter in another register.
+- `lbC000184`: The routine initializes a few global variables and then, if the first word of the input buffer equals a magic value, walks the buffer to locate a header field and processes a list of hunk sizes.
+- `lbC0001C6`: The routine reads a hunk header from a pointer, stores a short field in a global structure and walks a relocation table, updating four accumulators with offsets derived from the table entries.
+- `lbC000226`: Jump stub: passes control straight on to lbC00039A.
+- `lbC00022A`: The routine walks a hunk header table using a pointer and a count, updates a global variable and three registers with the current offsets, then dispatches on the hunk type code read from the table.
+- `lbC000244`: The routine walks a list of hunk headers, using a counter and a size field to skip over data blocks.
+- `lbC000296`: The routine walks a pointer through a table of entries, reading a short tag from each entry and dispatching to another routine based on the tag value.
+- `lbC0002A6`: The routine walks a list of hunk headers in memory, decrementing a counter and dispatching on the hunk type code.
+- `lbC0002AC`: The routine repeatedly calls a helper to advance a pointer through a hunk header table and checks the hunk type field.
+- `lbC0002B4`: The routine processes a table of hunk type codes, repeatedly invoking another routine and then scanning entries for specific hunk markers.
+- `lbC0002BC`: The routine repeatedly calls another routine to obtain a pointer to a hunk header and then inspects the hunk type field.
+- `lbC0002C4`: The routine sets a flag in a global variable and stores a pointer, then copies a length-prefixed list from a source buffer to a destination buffer using the registers as pointers.
+- `lbC0002FC`: The routine contains an infinite loop with no operations.
+- `lbC000302`: The routine contains no instructions and returns immediately.
+- `lbC000304`: The routine walks a linked list whose head pointer is in a0.
+- `lbC00032A`: The routine contains no instructions and immediately returns.
+- `lbC00032C`: The routine copies a variable-length block of words from a source pointer to a destination pointer, using the first word as the count.
+- `lbC00034C`: The routine increments a short counter at an offset from a pointer in a register, then stores a pointer and a count taken from a pointer in a register into a global variable table and advances the table pointer.
+- `lbC00039A`: Jump stub: passes control straight on to lbC0003AC.
+- `empty_load_park_layout_stub`: The routine contains no instructions and returns immediately.
+- `lbC0003AC`: The routine contains an infinite loop with no operations.
+- `wait_for_vertical_blank_2`: The routine contains an infinite loop with no operations and never returns.
+- `lbC0003BE`: The routine obtains a seed value from another routine and, if a flag in a register is zero, replaces it with a 64-bit value returned by another routine, splitting it into high and low 32-bit parts.
+- `lbC0003F0`: The routine reads a value from a global variable and processes an input buffer pointed to by a register.
+- `lbC000424`: The routine fetches a 64-bit value from another routine and uses it to set up loop counters stored in registers and on the stack.
+- `lbC000468`: The routine copies 32-bit words from a source pointer derived from an argument to a destination pointer in A5 using a loop controlled by a bit-masked value in D0.
+- `lbC000470`: The routine copies a word array from a source pointer to a destination pointer using a 32-bit counter in D0, decrementing the low word each iteration until it reaches -1, then copies an additional number of bytes derived from the high word of the counter.
+- `lbC00047C`: The routine copies bytes from a source pointer to a destination pointer, decrementing a word counter until it reaches -1.
+- `lbC000484`: The routine compares two fields in a structure pointed to by a1, and if they match and a third field is non-zero it calls another routine and returns its result.
+- `lbC0004AE`: The routine reads a byte from a pointer and repeatedly processes data from a global variable and a table, using another routine to compare values and update a global variable.
+- `lbC000524`: The routine returns a constant value, and if a byte from a register is not equal to a specific value and a byte pointed to by a pointer is zero, it returns a different constant.
+- `lbC00053C`: The routine reads a pointer from a register and a string pointer from another register, loads a value from a global table using an offset derived from a call, and walks a linked list of table entries comparing values returned by helper calls against a table of expected bytes.
+- `lbC000552`: The routine reads a character from another routine and, if it matches 'D', reads a second character.
+- `lbC000584`: The routine reads a byte from a pointer in A0 and, if the value is a lowercase ASCII letter, converts it to uppercase by clearing the lower-case bit and returns the result.
+- `lbC000586`: Contains no instructions that modify memory or registers and immediately returns.
+- `lbC00059A`: The routine walks a pointer through a string until a slash is found, then copies the characters between the start and the slash into a buffer via another routine, terminates the copy with a zero byte, and returns a value built from a computed offset and an input register.
+- `lbC0005EE`: The routine calls another routine and receives a result.
+- `lbC000616`: The routine calls another routine and tests whether the result is zero.
+- `lbC000624`: The routine calls another routine and stores its result.
+- `lbC000630`: The routine adds 128 bytes from a pointer in A0, accumulating the sum in D0, then returns the negated sum in the upper half of the result with the original D1 value preserved in the lower half.
+- `lbW000648`: It calls another routine once and then returns.
+- `lbL00064C`: The routine calls another routine once and then returns.
+- `lbW000650`: The routine consists of a single call to another routine followed by a return, so it contains no observable data processing or state changes on its own.
+- `lbL000654`: The routine is empty except for an unconditional call to another routine, then it returns.
+- `lbC000674`: The routine invokes another routine and then returns.
+- `lbC000676`: The routine calls another routine and then returns.
+- `lbC000678`: The routine is empty except for a single call to another routine and an immediate return.
+- `lbC000686`: The routine decodes a packed tile index from D0 and D1 using D2 as a length hint, calls a helper to fetch tile data and another to process it, and returns a combined result in D0 and D1.
+- `lbC00072E`: The routine calls another routine and then returns a 32-bit value formed by concatenating a value from D0 with a 32-bit word read from an address computed from A6 plus an offset.
+- `lbC000762`: The routine clears a few words on the stack, then repeatedly polls a global flag and a hardware register that holds joystick/mouse fire buttons and disk status.
+- `lbC000838`: The routine attempts up to ten load operations, calling a helper to perform the load and another to check status, returning the load result if successful or a failure code after the retries are exhausted.
+- `lbC000858`: The routine calls another routine and then checks a zero flag together with a short comparison against a global variable and two byte comparisons.
+- `lbC000884`: The routine returns a constant value.
+- `lbC000888`: The routine returns a constant value.
+- `lbC00088C`: The routine returns a constant value.
+- `lbC000890`: The routine repeatedly reads a global variable and a table entry and calls another routine, then loops while a byte flag is clear and a table entry is zero.
+- `lbC00094C`: The routine is a two-instruction stub that returns a constant all-ones value.
+- `lbC000950`: Performs no observable work and simply returns, with no references to memory, registers, or other routines in its body.
+- `lbC000960`: The routine sets a bit in a 16-bit word located four bytes before a pointer in A6, using the low five bits of D3 as the bit index, and then increments a 16-bit counter located six bytes before the same pointer.
+- `lbC000970`: The routine clears a series of table entries by repeatedly advancing a pointer by a fixed stride and writing zero to the pointed-to word, looping a fixed number of times.
+- `lbC000982`: The routine calls another routine and receives a 32-bit value.
+- `lbC0009A2`: The routine reads a 32-bit value from a pointer in A0 and the next 32-bit value at offset four.
+- `lbC0009B8`: The routine calls another routine to obtain a 32-bit value, then passes that value to a second routine.
+- `lbC0009C6`: The routine reads ten consecutive 32-bit words from an address derived from a5 plus an offset, xors them together into an accumulator, and returns the accumulator masked to keep only the even-numbered bits.
+- `lbC0009CC`: The routine computes a running XOR of a sequence of words starting at a pointer in A0, using a word count derived from D1.
+- `lbC0009E6`: The routine spins until a global variable no longer has its bit set, then returns.
+- `lbC0009F2`: The routine interleaves the low and high bits of two 32-bit word arrays using a mask and a shift, writing the combined result into a destination word array.
+- `lbC000A1A`: The routine writes to a set of custom chip registers and a global variable, storing the incoming pointer in a RAM location and the incoming word shifted and masked into another global variable.
+- `lbC000A58`: The routine calls another routine, then repeatedly checks a flag byte in a structure pointed to by a register.
+- `lbC000A7A`: The routine writes a constant to a global variable, then writes another constant to the same global variable, and returns.
+- `lbC000A90`: The routine writes a constant to a global variable and, if a signed short at an offset from a frame pointer is negative, it reads a 16-bit value from another offset, adds a small constant, and uses the low five bits to build a byte mask that is stored in the global variable.
+- `lbC000AA0`: The routine reads a 16-bit value from a table pointed to by a register, adds a constant, masks the result to 5 bits, and sets the corresponding bit in a global byte variable.
+- `lbC000ABE`: The routine clears a global variable, calls another routine, then repeatedly polls a CIAB_PRB register via a helper until the register’s bit 0 is clear, looping until a helper returns a specific value.
+- `lbC000AD6`: The routine reads a word from a global table using an index stored in a structure, optionally calls another routine if the value is negative, then steps a counter in a loop calling another routine, writes a register value back to the same table entry, and returns.
+- `lbC000B24`: The routine polls the joystick/mouse fire buttons via CIAA_PRA and a global variable, repeatedly calling another routine while a counter runs down.
+- `lbC000B42`: The routine clears a 16-bit entry in a global table.
+- `lbC000B58`: The routine reads a byte from another routine, masks it with a condition derived from a carry flag, writes the masked result to a global variable, then polls a hardware port register until the variable’s low bit clears and a status routine returns a specific value, looping until that condition is met.
+- `lbC000B7C`: The routine calls another routine and stores its return value into a global variable.
+- `lbC000B86`: The routine builds an index from the high word of an input value and a byte stored via a frame pointer, then uses that index to test a bit in a table.
+- `lbC000BB6`: The routine repeatedly calls another routine and then spins while a global variable's least-significant bit is set, looping until the called routine returns 1.
+- `lbC000BC8`: The routine checks a global variable and an input value and, if the conditions are met, writes three values to a global variable.
+- `lbC000BD6`: The routine writes three values to a global variable and then returns.
+- `lbC000BF8`: The routine writes to the INTENA register twice, first with bit 15 set and then without it, which enables and then disables interrupts on the Amiga hardware.
+- `lbC000C24`: The routine writes constant values to several RAM locations and sets a global variable to point to another routine, then returns.
+- `lbL000D36`: The routine moves bytes from a source buffer to a destination buffer using repeated byte copies controlled by two counters obtained from another routine.
+- `lbC000DB2`: The routine copies bytes from a source buffer to a destination buffer using a loop controlled by values returned by another routine.
+- `lbC000E02`: The routine repeatedly calls another routine to obtain a length and then copies a block of bytes from one memory area to another, shifting the source and destination pointers each iteration.
+- `lbC000E52`: The routine walks a table of word pairs using a mask in a register until a match is found, then reads a byte from a fixed offset in the located entry and uses it as a shift amount for a bit extraction from a masked word.
+- `lbC000E88`: The routine masks the word in D0 with a global word value and returns the result.
+- `lbC000E94`: Is empty; it contains no instructions that modify memory or registers and immediately returns.
+- `lbC000EAC`: The routine builds a 32-bit value by concatenating three bytes taken sequentially from a byte pointer in A0, using the incoming D0 as the initial high part.
+- `lbC000EB8`: The routine reads a count from another routine, fills a stack buffer with that many bytes from another routine, then builds a table of bit masks and rotates a 16-bit value for each entry where the buffer byte matches the loop index.
+- `cash1`: The routine copies a block of bytes from a source located at a global variable to a destination table pointed to by a global variable, byte by byte, until a counter reaches zero.
+- `cash2`: The routine copies a block of bytes from a source table to a destination table and then calls the routine pointed to by the destination table.
+- `cash3`: The routine copies a fixed number of bytes from a source located in memory to a destination table via pointer increments, then transfers control to the routine pointed to by the destination table.
+- `lbC000F40`: The routine copies a block of code from another routine into a writable table and then transfers control to the copied code via an indirect jump.
+- `lbC000F5A`: The routine returns the 32-bit value stored at a fixed offset within a global variable.
+- `lbC000F64`: The routine repeatedly calls a function pointer taken from a global variable and, while the result is non-zero, calls another function pointer derived from the same global variable.
+- `lbC000FCC`: The routine spins until a bit in a global variable is set, then sets that bit in the global variable and returns the value it received in a register.
+- `trainintro`: The routine clears the screen, copies a table into a global area, sets up copper lists and sprite data, then enters a loop that polls the keyboard serial register via CIA, decodes key codes into modifier and function-key flags, updates three global counters with a multiplier based on shift and alt flags, clamps the counters, converts them to ASCII and redraws the display until a quit flag is set.
+- `numtoascii`: The routine converts the integer in D0 into an 8-character ASCII representation using a table of powers of ten.
+- `calctable`: The routine writes a constant to a memory location pointed to by a0 and then clears a table of 16 bytes in memory by storing zero to each element.
+- `cls`: The routine clears a global variable by writing zero to each of its 2,048 bytes using a loop.
+- `dopretty`: The routine decrements four byte fields in each of thirty entries of a global table, then rotates the table’s word entries forward and writes a saved word at the end, and finally rotates the table’s word entries backward and writes another saved word at the start.
+- `print`: The routine renders a null-terminated byte stream from a pointer by walking the stream and drawing each character to a planar bitmap using blitter registers.
+- `dospr`: The routine stores the high 16 bits of the value in D0 into the word at offset 2 from the pointer in A0 and stores the low 16 bits of D0 into the word at offset 6 from that pointer.
+
+### powerpacker.library
+
+- `return_error_code_2`: The routine is an entry point in libs/powerpacker.library that returns a constant error value.
+- `set_library_base`: The routine stores the argument in a global variable and writes the library base into a table entry.
+- `increment_counter_clear_flag`: The routine increments a 16-bit counter stored in a structure pointed to by A6 and clears a single bit in a byte field within the same structure.
+- `decrement_timer_and_trigger_event`: The routine decrements a short timer stored in the library’s instance data and checks a flag byte.
+- `handle_powerpacker_decompress`: The routine checks a flag in a structure passed in a register.
+- `check_powerpacker_state`: The routine checks whether a header-checking routine is installed in a table and, if so, runs a series of library calls and returns a value taken from a global variable; otherwise it runs a single library call and returns zero.
+- `initialize_library_state`: The routine calls several library functions via a table and then returns a value read from a global variable.
+- `return_zero_immediately`: The routine is empty library code.
+- `initialize_powerpacker`: The routine calls another routine to open a data file and then returns.
+- `decode_compressed_block`: The routine decodes a PowerPacker compressed block using a bitstream read from a source buffer and writes decompressed bytes to a destination buffer via a table lookup.
+- `decode_compressed_block_2`: The routine decodes a compressed data block using a bitstream read from a global variable and a sliding window referenced by registers, copying bytes from the window to an output buffer while handling literal and back-reference codes.
+- `decode_compressed_block_3`: The routine is library code that decodes a compressed block using a bitstream read from a source pointer and writes bytes to a destination pointer via an output pointer.
+- `decode_powerpacker_block`: The routine is library code in libs/powerpacker.library.
+- `decode_powerpacker_stream`: This library routine decodes a PowerPacker compressed stream.
+- `decode_compressed_stream_2`: This library routine decompresses a bitstream read backwards from an input pointer into an output buffer written backwards, using a sliding window and a bit buffer refilled from the input.
+- `decode_powerpacker_stream_2`: This library routine decodes a PowerPacker compressed stream using a sliding window and bitstream handling, copying bytes from a source buffer to a destination buffer via a table lookup.
+- `decompress_powerpacker_data`: The routine is library code that decompresses PowerPacker data.
+- `decode_powerpacker_block_2`: The routine decodes a PowerPacker compressed block using bit-stream input and a sliding window, copying bytes from the window to the output buffer and updating the window pointers.
+- `decode_powerpacker_stream_3`: This library routine decodes a compressed byte stream using a bitstream read from memory and a sliding window copy.
+- `decode_compressed_data`: The routine reads a bitstream from a buffer pointed to by a register, using a global variable to hold the current bit buffer and fetching more words as needed.
+- `decode_powerpacker_block_3`: The routine decodes a PowerPacker compressed block using a sliding window and bitstream input.
+- `decode_compressed_stream_3`: This library routine decodes a compressed byte stream using a bitstream from an input pointer and a sliding window referenced by output pointers.
+- `decode_powerpacker_block_4`: The routine decodes a PowerPacker block using a bitstream taken from a global variable and writes bytes into a destination buffer via a sliding window.
+- `decode_compressed_block_4`: The routine decodes a compressed block using a bitstream read from a global variable and writes bytes to a destination buffer via a pointer in a register, updating a length counter in a global variable.
+- `decode_compressed_data_2`: This library routine decodes a bitstream from a buffer into an output buffer using a sliding window and a literal table, copying bytes and updating a bit buffer.
+- `decode_compressed_stream_4`: This library routine decodes a bitstream from an input buffer into an output buffer using a sliding window copy with a 3-bit length code and a 6-bit offset built from register and bitstream flags.
+- `decode_powerpacker_block_5`: The routine is library code that decodes a PowerPacker compressed block using a bitstream from a source pointer and writes bytes to a destination buffer via a sliding window.
+- `decode_compressed_stream_5`: This library routine decodes a compressed byte stream using a bitstream from a source buffer into a destination buffer.
+- `decode_compressed_block_5`: This library routine decodes a compressed data block using bitstream input and a sliding window, writing bytes backwards into an output buffer.
+- `dispatch_game_event_2_2`: The routine loads a byte from a pointer, subtracts it from a constant, scales the result, adds it to a global variable to form a table address, and calls the routine found there.
+- `decode_compressed_chunk`: The routine decodes a compressed chunk using a bitstream read from a source buffer into a destination buffer via a sliding window and a Huffman-like table, updating output pointers and bit buffers.
+- `compute_string_checksum`: Computes a checksum over a null-terminated byte string by accumulating a rolling value for each byte until the terminator is reached.
+- `compute_checksum`: This routine computes a checksum over a zero-terminated byte stream pointed to by a0.
+- `xor_decrypt_block`: The routine XORs a block of memory in place using a 32-bit key supplied in a register.
+- `process_hunk_table_2`: The routine decodes a compressed block and builds a table of pointers from a hunk descriptor list, storing sizes and addresses for later use.
+- `process_powerpacker_decompression`: The routine checks a PowerPacker flag and, if set, runs checksum, XOR decryption and block decoding on a buffer, then builds a table of pointers from a list of offsets using a handler from a global table.
+- `process_powerpacker_hunks`: Walks a list of AmigaDOS hunk descriptors, decoding compressed blocks and applying relocations to the target data.
+- `decode_powerpacker_block_6`: The routine prepares a PowerPacker block by calling a decompression helper, then builds a small table of pointers and sizes from a data area using a library routine.
+- `process_powerpacker_chunk`: The routine processes a PowerPacker chunk header, allocates a block for each hunk using the OS library, writes the hunk size and a pointer into a table, and then iterates over the chunk’s relocation entries, applying the relocation offsets to the allocated blocks.
+- `process_powerpacker_hunk_relocation`: The routine processes PowerPacker decompressed hunk data by iterating over hunk headers and performing relocation and executable loading steps.
+- `process_ride_script`: The routine processes a script structure passed in a register, repeatedly iterating over blocks of data and performing pointer arithmetic and memory writes based on values read from the script.
+- `wait_for_vblank_4`: The routine loads a 16-bit value from a global variable into D1 and repeatedly decrements it until it reaches zero, performing a busy-wait loop.
+- `empty_wait_routine`: The routine contains no instructions and returns immediately.
+- `handle_powerpacker_hunk`: The routine processes PowerPacker hunk data by iterating through hunk headers, handling code and data hunks, applying relocation entries, and copying a small fixed block of data while coordinating with the library’s vblank wait.
+- `process_powerpacker_block`: This library routine iterates over a PowerPacker block and applies relocation-style fixups to a memory image.
+- `write_powerpacker_header`: The routine builds a small header in stack memory, writes a four-byte magic value chosen by a flag and copies a four-byte value from a table indexed by an input register, then calls another routine to write the header and returns zero if the write length does not match the expected size.
+- `verify_powerpacker_header`: The routine selects a 32-bit constant based on a flag in D2, stores a value from a table indexed by D1 into a stack slot, then calls a handler obtained from a global table and compares the returned pointer with the expected stack address.
+- `set_powerpacker_header`: The routine writes a magic value to a header structure pointed to by a pointer, copies a value from a table indexed by a register into the header, and then calls another routine via a global variable.
+- `handle_powerpacker_decompression`: The routine calls a function through a pointer stored in a global variable and, if the call returns non-zero, returns a combined value from registers.
+- `check_powerpacker_flag`: The routine calls a handler through a pointer stored in a global variable and, if the call returns non-zero, returns a combined value formed from a register and a local variable.
+- `invoke_handler_or_return_value`: The routine calls a handler obtained from a global variable and, if the call returns non-zero, returns a combined value from registers D0 and D1.
+- `handle_powerpacker_decompression_3`: The routine calls a function through a pointer stored in a global variable and, if the call returns non-zero, returns a combined value from D0 and D1.
+- `close_powerpacker_library`: The routine saves the incoming value from D0 on the stack, loads a constant into another stack slot, then calls another routine through a pointer obtained from a global variable.
+- `call_powerpacker_decompress`: The routine calls a function pointer taken from a global variable and then returns its argument unchanged.
+- `get_powerpacker_table_entry`: The routine takes the value in D0, inverts it, clamps the result to a maximum of 7, and returns the 32-bit word from a global table at that index.
+- `verify_pack_header`: The routine checks a header pointed to by a1 by comparing a 32-bit magic value stored eight bytes before a1 with a constant and by comparing a1 with a pointer stored four bytes before a1.
+- `check_powerpacker_header`: The routine is empty and performs no operations.
+- `open_data_file`: Copies a null-terminated filename from A0 into a stack buffer and repeatedly probes the file with DOS Open until it succeeds, returning an error code on failure.
+- `copy_ride_status_code`: The routine copies a null-terminated code block from another routine into a stack buffer, then invokes a library routine through a table indexed from A4 and checks its result.
+- `validate_powerpacker_header`: The routine validates a PowerPacker archive header by checking a magic value and related fields, using Amiga OS library calls to open and read the file.
+- `read_save_file`: The routine is library code that reads a file header and validates a PowerPacker signature, then dispatches to decompression or header handling based on the signature bytes.
+- `read_powerpacker_header`: The routine reads a PowerPacker header from a file opened through Amiga DOS, using DOS.Read to fetch data into a stack buffer.
+- `verify_powerpacker_header_2`: The routine checks a PowerPacker header via library calls and a global variable.
+- `read_powerpacker_header_2`: The routine opens a file via the DOS library, seeks to the PowerPacker signature offset and reads a small header.
+- `handle_powerpacker_decompression_4`: This routine is part of libs/powerpacker.library.
+- `check_powerpacker_header_2`: The routine validates a PowerPacker header by testing a short marker and a zero byte, then uses a global variable to obtain a file handle and reads from it with DOS Read.
+- `allocate_powerpacker_buffer`: This routine calls another routine via a table and, on failure, returns a constant value.
+- `close_and_cleanup_file`: The routine obtains a library base from an argument and invokes a library routine to close a file.
+- `close_file_and_free_memory`: The routine calls a global function pointer and a function pointer taken from a table, then returns a value from the stack.
+- `store_and_check_status`: It saves three values from registers into a structure pointed to by an argument, then inspects a status word stored inside that structure.
+- `handle_powerpacker_error`: This library routine validates a powerpacker context at param_3.
+- `check_ride_status_8`: This library routine increments a counter stored through a register and uses a helper routine to obtain a value.
+- `check_park_status_flag`: The routine compares the value returned by another routine with a value stored at an offset from a pointer passed in A5.
+- `set_powerpacker_flag`: The routine stores the constant 1 into a global variable accessed via the A5 register and returns zero.
+- `trigger_powerpacker_decompress`: The routine receives a value in a0 and, if it is non-zero, calls a library routine to free the PowerPacker library three times in succession.
+- `allocate_ride_config`: This library routine allocates a block with allocate_memory_block_3 and, if successful, fills it with values derived from registers and constants, stores two pointers from registers, computes two size fields from a shifted value and a conditional constant, allocates two more blocks and stores their pointers, then returns the first block or NULL. If any allocation fails it calls a decompress routine and returns NULL.
+- `init_ride_config`: The routine initializes a ride configuration structure pointed to by a register.
+- `initialize_ride_config`: The routine writes a fixed set of constants into a structure pointed to by a register, copies two incoming values into fields of that structure, computes two scaled values from an input flag and stores them, allocates two memory blocks via another routine and stores the results, and if either allocation fails it invokes a decompression routine.
+- `init_ride_object_3`: The routine writes a fixed set of fields into a structure pointed to by a pointer, using a word from a register and values from registers and a global variable, then computes two scaled values based on a flag in a register and stores them, allocates two memory blocks via another routine and stores the results, and triggers a decompression routine if allocation fails.
+- `init_ride_object_4`: The routine writes a fixed set of constants and values derived from registers into a structure pointed to by a pointer, stores two pointers obtained from another routine into fields of the structure, and if either allocation fails it calls a decompression routine.
+- `init_ride_config_2`: The routine builds a configuration block through a pointer, filling fixed constants and values derived from registers, then computes two size fields from a register flag and stores them.
+- `exit_theme_park_stub`: The routine contains four 68000 instructions and performs no observable work; it ends immediately by returning to its caller.
+- `set_ride_stats`: The routine stores a value from a register into a field of a structure pointed to by a pointer, stores another value from a register into the next field, stores the sum of the two register values into a following field, clears a field in the structure, then calls another routine.
+- `set_ride_stats_2`: The routine stores a value from a register into a field of a structure pointed to by a pointer, stores another register value into a different field of the same structure, stores the sum of those two register values into a third field of the structure, stores a value from an unused register into another field of the structure, then calls another routine and returns.
+- `reset_ride_state_32`: Clears two pointer-based arrays referenced by the structure, copies a size field, selects a destination buffer, initializes several fields of the structure and then processes an array of entries by invoking a callback stored in the structure and updating counters and pointers, finally tail-calling another routine.
+- `process_powerpacker_state`: The routine updates fields in a state structure passed in a register, selects one of three helper routines based on a mode field and calls it, then iterates over a compressed stream using a callback to decode chunks and writes tile mapping data while maintaining offsets and counters.
+- `decode_compressed_chunk_2`: This library routine updates sprite offsets and prepares a small stack frame before entering a loop that processes a compressed stream using a sliding window and a Huffman-like table.
+- `decode_compressed_stream_6`: This library routine updates a shared sprite offset table and initializes several fields in a global context structure, then repeatedly processes a compressed input stream using a sliding window and Huffman-like table lookups.
+- `find_string_in_buffer`: The routine scans a buffer using a jump table to locate a matching substring and updates a global variable with the found offset and a code.
+- `clear_ride_queue_entries`: The routine walks a queue of 16-bit entries using a pointer and a counter stored in a global variable, zeroing each entry and advancing the pointer, wrapping it to a base pointer when the counter expires.
+- `find_shortest_unique_substring`: The routine walks a buffer starting at a0 using a table pointed to by a3 and a context in a4 to locate the shortest substring that is unique within the buffer.
+- `clear_ride_queue_4_2`: The routine clears a queue of ride entries by zeroing a set of words in a table and then calls another routine to update sprite offsets.
+- `find_next_match`: The routine scans a buffer using a table of offsets stored in a global variable to locate the next matching byte sequence.
+- `clear_ride_queue_entries_2`: The routine walks a queue of 16-bit entries pointed to by the first argument and clears them to zero, using a global variable and a global table to manage the queue head and wrap-around.
+- `process_ride_queue_34`: The routine updates sprite offsets and then iterates over a queue structure using fields from a global variable.
+- `decode_compressed_chunk_3`: The routine processes a compressed data chunk using a shared library context.
+- `clear_tile_queue_entries`: The routine iterates over a table pointed to by a global variable and clears entries up to a limit derived from another global variable, using a counter stored in a global variable.
+- `decode_powerpacker_block_7`: A routine in libs/powerpacker.library that processes a block of compressed data using a shared context structure.
+- `clear_tile_buffer_2`: The routine clears a tile buffer by zeroing pairs of words from two tables using counters stored in a structure, then calls a routine to write tile mapping or update sprite offsets depending on a flag.
+- `decode_powerpacker_block_8`: This library routine decodes a PowerPacker block, updates sprite offsets, checks a buffer, and writes output using a global state structure.
+- `clear_tile_buffer_3`: The routine clears a tile buffer by zeroing a block of words pointed to by a table entry, updates sprite offsets, and then runs a series of PowerPacker decompression steps, buffer overflow checks, random number generation and output writes.
+- `process_powerpacker_block_2`: The routine clears a table of sprite offsets and then repeatedly decodes a PowerPacker block, generates random numbers, writes an output buffer and updates a bitmask in a table.
+- `decode_powerpacker_block_2_2`: Decodes a PowerPacker compressed block by dispatching to sub-decoders based on a marker byte, then writes the decompressed data into an output buffer while tracking the current write position.
+- `process_powerpacker_block_3`: The routine decodes a PowerPacker block by invoking a decode helper and then processes a loop that generates random values, writes an output buffer and updates a set of state variables stored in a global structure.
+- `read_next_input_byte`: The routine reads the next input byte from a PowerPacker decompression stream.
+- `decode_powerpacker_block_9`: The routine processes a PowerPacker compressed block by repeatedly generating a random value, writing output bytes, and updating a bit buffer and output pointers.
+- `copy_palette_entry`: The routine writes a 16-bit value built from a register and a stack byte to a word pointed to by a register, then selects an offset from a structure using a flag and returns a pointer computed from that offset and the input parameter.
+- `get_next_tile_index`: The routine reads a byte from a register and a byte from the stack, combines them into a word and stores the result through a pointer.
+- `get_tile_offset`: The routine stores a byte from a register through a pointer and selects a base offset from a structure using a flag.
+- `compute_park_rating_delta`: The routine returns a 64-bit value formed by concatenating the difference between the value in D0 and a global variable with the contents of a stack slot.
+- `write_tile_mapping`: The routine iterates over a block of tile indices and writes mapping entries into two tables.
+- `update_sprite_offsets`: Iterates over a byte range and updates two tables of 16-bit offsets for each referenced entry.
+- `update_sprite_offsets_2`: The routine iterates over a byte range and for each byte that lies before a limit pointer it reads a byte, uses it as an index into a table of pointers, computes an offset from a stored pointer to the current byte, and if the offset is valid writes a derived value into an output table.
+- `write_output_buffer_loop`: The routine writes the output buffer once if a global variable is less than four, otherwise it writes the output buffer once and then writes it repeatedly a number of times derived from the global variable.
+- `run_powerpacker_decompress`: The routine calls write_output_buffer and then check_buffer_overflow, with no other operations.
+- `decode_powerpacker_block_10`: This library routine decodes a PowerPacker block type 10 by extracting three bit flags from the input word and building a small value, then writes the result to an output buffer pointer.
+- `write_output_buffer`: The routine computes a 32-bit value from input registers and writes a derived word to a buffer pointer, checking for overflow against a limit pointer.
+- `check_buffer_overflow`: The routine checks a buffer overflow condition using a flag in a register and a pointer comparison, and if the condition is met it updates a global variable and calls another routine.
+- `generate_random_number`: The routine implements a linear-feedback shift register pseudo-random generator using a 32-bit state split into two halves.
+- `decode_powerpacker_stream_4`: The routine decodes a bit stream passed in registers, shifting the stream and building a value in a register, and returns a combined 32-bit result.
+- `check_powerpacker_decompress`: The routine stores a value from a register into a pointer and returns a combined value from two input registers if a pointer comparison holds.
+- `check_powerpacker_decompression`: The routine copies a value from a register into a memory location and returns a combined value from two registers if a pointer comparison passes.
+- `check_ride_capacity`: The routine stores a value from a register into a pointer and returns a combined value from two registers if a pointer comparison indicates a buffer limit.
+- `check_park_capacity_3`: The routine examines a flag stored through a base pointer.
+- `check_buffer_capacity`: The routine reads a size value from a global variable, adds a fixed offset to it and writes the result back.
+- `return_stack_value_3`: The routine returns the 32-bit value that was passed on the stack.
+- `allocate_memory_block_3`: The routine calls a function through a pointer stored in a global variable, checks the returned pointer for null, and if non-null advances the pointer by one word and writes a size value derived from an input register plus a constant into the word it skipped.
+- `set_stack_value`: The routine copies a 32-bit value taken from the stack into the memory location pointed to by the first argument in D0 and returns a pointer advanced by one word.
+- `free_powerpacker_library`: The routine checks a pointer passed in a1.
+
+### explode.library
+
+- `explode_library_entry`: The routine is a library entry point that immediately returns a constant value.
+- `handle_explosion_library`: The routine stores an input pointer into a structure, calls another routine via a table indexed by a6, stores the result, and on zero returns after invoking a cleanup routine.
+- `increment_explosion_counter`: The routine increments a 16-bit counter in a structure pointed to by A6 and clears a single bit in a byte two bytes after the counter.
+- `decrement_explosion_counter`: This routine is part of a shared library.
+- `explode_animation_cleanup`: The routine is empty.
+- `validate_and_update_library`: Library code that checks magic values and function pointers within a structure to verify its integrity.
+- `set_explosion_flag`: The routine sets a flag in a byte pointed to by an uninitialized register by OR-ing the value 8 into it.
+- `check_library_signature`: The routine obtains a library base pointer from another routine, computes an offset into the library structure and checks a signature field for a known value.
+- `check_library_signature_2`: The routine obtains a library base pointer from a global variable, validates a signature field and a name field in the library header, and if the signature matches it calls a library initialization routine.
+- `check_library_header`: The routine obtains a base pointer from another routine, computes an offset and checks a magic value at the header.
+- `verify_library_name_and_init`: The routine receives a pointer in a0 and compares three words from it against the library name signature.
+- `decrement_timer_and_trigger_explosion`: The routine decrements a short timer stored in a register-based structure, then calls a routine to start an explosion effect and waits for five vertical blank intervals.
+- `init_explosion_effect`: Copies library header data into a local structure and builds a mask table from global data, then initializes pointer and count fields in the structure, waits for vertical blank, and enters a loop that polls an explosion flag via check_explosion_flag, updates counters and copies tiles with copy_explosion_tile, using wait_for_vblank_5 for pacing.
+- `process_explosion_effect`: The routine processes an explosion effect by copying tile data from a source table to a destination table and updating a running sum while waiting for vblank.
+- `check_explosion_flag`: The routine compares two pointers and, if they are equal, calls another routine to copy an explosion tile.
+- `copy_tile_block`: The routine copies a block of tile data from a source area to a destination area using a loop that moves eight words at a time and then handles any remaining words, and it repeatedly waits for vertical blank and checks an explosion flag while updating a counter in a global structure.
+- `copy_explosion_data`: The routine copies blocks of eight words from a source pointer to a destination pointer, looping until a sentinel condition is met, and invokes a helper to fetch a tile when the source reaches a limit.
+- `copy_explosion_data_2`: The routine copies a block of explosion tile data from a source table to a destination buffer using a fast eight-word loop and a scalar tail, then repeatedly polls an explosion flag and a global variable while waiting for vertical blanks; if a counter reaches a limit stored in a structure it performs a timed wait loop and clears a return flag before returning.
+- `copy_explosion_tile`: This library routine copies bytes from a source pointer backwards into a destination buffer using a length and a repeat count stored in a table.
+- `decode_explosion_data`: Library routine that reads a variable-length bitstream backwards from a buffer in A0 using D1 as a bit index, extracts fields with up to five levels of carry propagation, and dispatches to four sub-decoders for animation, palette, pattern and sprite data plus a ride data decoder, looping until a termination condition is met.
+- `decode_explosion_animation`: The routine decodes a packed bitstream from a byte pointer using carry-based bit extraction, using a table referenced through a pointer to select offsets and lengths for each of three passes.
+- `decode_explosion_palette`: The routine decodes a packed bitstream from a source pointer into palette indices using a table of offsets and lengths, then writes the resulting bytes into a destination buffer via a pointer.
+- `decode_ride_data`: The routine decodes a variable-length bitstream from a byte pointer using a carry-based bit extraction loop, consults a table via an index derived from the stream, and writes the resulting bytes into a destination buffer bounded by a limit pointer, advancing the source pointer as bits are consumed.
+- `decode_explosion_sprite`: The routine decodes a bitstream from a byte pointer using carry-based bit extraction, indexes tables via a global variable and a table pointed to by a register, and writes decoded bytes into a destination buffer using pointer arithmetic with a base and an offset.
+- `decode_explosion_pattern`: The routine decodes a bitstream from a byte pointer using carry-based bit extraction and table lookups from a table referenced by a pointer, then writes a byte to a destination buffer pointer offset by computed indices.
+- `decode_explosion_pattern_2`: This library routine decodes a packed explosion pattern from a byte stream using a bit stream extracted from a table, selects a sub-pattern via an index table, and copies bytes from the stream into an output buffer while updating counters in a control block.
+- `decode_explosion_data_2`: The routine decodes a packed bitstream from a source pointer using a carry-based bit extractor, updates a global table entry and a counter, and copies bytes from the decoded stream into a destination buffer with wrap-around handling.
+- `decode_sprite_animation`: The routine decodes a sprite animation from a compressed bitstream stored in a table, using a global variable as a state buffer.
+- `free_explosion_library`: The routine reads a counter from a structure, saves the incremented value, then repeatedly calls a routine from a table pointed to by a global variable while waiting for vertical blank, until the structure counter catches up.
+- `wait_for_vblank_5`: The routine loads a short from an unspecified source into a register, decrements it once, and if the result is not -1, repeatedly decrements it until it reaches -1, effectively performing a short busy-wait loop.
+
+### Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_dma_transfer`: Configures DMA parameters and memory addresses before executing a series of memory copy and relocation operations.
+- `clear_memory_blocks`: Iterates through a nested structure of pointers and counts to clear memory locations within a specific range.
+- `copy_block_loop`: The routine copies 32-bit values from a source pointer to a destination pointer in a loop, decrementing a counter and reloading source and count from a table when the counter underflows, and repeats until a counter reaches zero.
+- `parse_amiga_hunk_overlay`: Iterates through a memory structure containing AmigaDOS hunk type codes to process relocation or executable data.
+- `copy_linked_list_elements`: Copies elements from one memory location to another based on a count from a pointer, potentially initializing a header if a condition is met.
+- `add_values_from_table`: Iterates through a linked list of pointers, adding a value retrieved from a table to the memory location pointed to by each element.
+- `copy_block_and_check_marker`: The routine copies a variable-length block of words from a source pointer to a destination pointer using the first word as the count, then checks the word immediately following the block and calls another routine if it matches a specific marker value.
+- `update_buffer_and_hardware`: The routine increments a value at a specific offset, updates a global pointer and a table with new data, and then iterates through a block of memory to zero out elements that exceed a threshold.
+- `access_hardware_registers`: The routine is unreached but would access the first color register and the video hardware pointer.
+- `enter_infinite_loop`: The routine enters an infinite loop.
+- `seed_random_64bit`: It obtains a seed value from another routine and, if a register is zero, replaces it with a 64-bit value split into high and low 32-bit parts.
+- `consume_length_in_chunks`: Takes a total length from a structure and works through it in chunks no larger than a limit held in another field.
+- `copy_longwords_then_bytes`: Derives a longword count and a byte count from a packed value, then copies that many longwords and the remaining bytes from a source table to a destination.
+- `compare_structure_fields`: Compares two fields of a structure pointed to by a register and, if they match and a flag field is non-zero, obtains an identifier from another routine and returns it.
+- `match_pattern_return_status_code`: Calls unnamed routines in a loop and compares the bytes they return against a stored sequence.
+- `parse_drive_path`: It reads characters from another routine to detect a drive letter pattern, specifically checking for 'D' and 'F' followed by a digit and a colon.
+- `tiny_move`: Small routine of 1 instruction that copies (a0)+ to d0.
+- `empty_routine_7`: It consists of seven instructions that perform no observable work; it does not access memory, registers, or call other routines, and ends with a return.
+- `copy_path_segment_to_buffer`: It scans a null-terminated string from a base pointer, advancing until it reaches a null terminator or a slash character.
+- `check_extraout_flag`: Calls another routine and stores its result, then tests a flag and two fields of a pointer passed in a register.
+- `check_routine_result`: Calls another routine and returns a specific constant if the result is zero, otherwise it calls another routine again.
+- `check_result_and_assign`: The routine calls another routine and, if the zero flag is not set, returns a specific constant value.
+- `sum_negate_array_words`: It adds 128 consecutive 16-bit words pointed to by a pointer in A0, accumulating the sum in a register.
+- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
+- `execute_empty_call`: This routine is empty and performs no operations before returning to its caller.
+- `execute_empty_call_2`: The routine is empty and performs no operations before returning.
+- `perform_recursive_call`: The routine calls itself and then returns.
+- `tiny_moveq`: Small routine of 1 instruction that loads 1 into d2.
+- `tiny_moveq_2`: Small routine of 1 instruction that loads 0 into d3.
+- `execute_recursive_call`: This routine performs a single recursive call to itself before returning.
+- `calculate_scaled_audio_parameters`: Performs division and modulo operations by a constant to derive two values, then enters a loop that iteratively subtracts and adjusts these values based on a comparison.
+- `initialize_audio_buffer`: Clears several fields in a structure and, if certain conditions are met, writes specific patterns to a memory location calculated from a pointer and an index.
+- `validate_input_with_retry`: Repeatedly calls helper functions to check a flag and decrement a counter, returning early if the flag is clear or the counter expires.
+- `validate_sequence_with_timer`: Iterates through a structure to validate specific bit patterns and timing constraints, returning various status codes based on the results of comparisons and helper routine calls.
+- `empty_stub_routine_5`: It performs no observable work and simply returns.
+- `set_flag_and_increment_counter_2`: It sets a bit in a 16-bit word located a few bytes before a pointer in A6, using a bit index derived from D3.
+- `clear_table_entries`: It clears a table by writing zero to successive entries.
+- `extract_high_byte_pair`: It calls another routine to obtain a 32-bit value and reassembles it so the low 16 bits come from the result and the high 8 bits come from the original high byte.
+- `interleave_word_bits_2`: It reads two consecutive words from a pointer and returns a value formed from their low bits.
+- `apply_interleave_xor_mask`: It calls a routine to interleave word bits and obtains a 32-bit value.
+- `compute_xor_checksum`: It XORs a sequence of words into an accumulator and returns the final value masked to retain alternating bits.
+- `compute_xor_checksum_2`: It iterates through a sequence of words pointed to by an input pointer, XORing each into an accumulator.
+- `wait_for_blitter_2`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
+- `interleave_word_bits_3`: It interleaves the low and high bits of two 32-bit word streams pointed to by two input pointers.
+- `set_audio_dma_control`: The routine writes to a global variable, another global variable, a custom chip register, a custom chip register, a global variable, and a global variable.
+- `poll_flag_and_set_timer`: Polls a byte in a structure for a specific bit flag.
+- `set_bit_from_table`: Reads a 16-bit value from a table, adds a constant, and uses the masked 5-bit result as an index to set a bit in a global variable.
+- `set_bit_in_global_variable`: It reads a 16-bit value from a table pointed to by a register, adds a constant, and masks the result to 5 bits to use as a bit index.
+- `wait_for_bit_clear`: Sets a global variable to a constant, calls another routine, and then loops until a specific bit in the global variable is cleared.
+- `update_table_entry`: Reads a word from a global table using an index, conditionally calls another routine if the value is negative, computes the absolute difference against a register, and writes the result back to the table.
+- `wait_for_input_flag_clear`: The routine polls a global variable flag in a loop, decrementing a counter until the flag is cleared or the counter expires.
+- `process_port_input`: Reads a value, modifies specific bits based on a table lookup, and stores the result in a global variable while looping until a specific bit condition is met.
+- `update_global_port`: Stores a value returned from another routine into a global variable.
+- `build_port_byte_from_table`: Builds a port byte from a frame field and a bit index, clearing one further bit when a looked-up table entry has its lowest bit set.
+- `write_timer_constants`: Checks if a bit in a global variable is clear and a register is not one, then writes three specific constant values to a global variable.
+- `set_ciab_timer_2`: It writes three constant values to a global variable in sequence.
+- `copy_memory_block_4`: It performs a complex nested loop to copy and manipulate bytes between memory locations based on values retrieved from other routines.
+- `copy_blocks_from_source`: Obtains a count from another routine and then repeatedly copies blocks of bytes from a source pointer to a destination pointer using counts returned by other routines.
+- `extract_flag_bit_from_table`: Scans a table of word pairs until a condition on a global mask is met, then reads a byte from a table entry and uses it as an index into a global mask to extract a bit, calling another routine if a borrow condition is detected.
+- `mask_and_conditional_call`: The routine masks a word from a register with a word from a register and, if a byte from a register is less than a byte from a register, it calls another routine and uses its returned word as the result; otherwise it returns the masked word.
+- `return_empty_routine_2`: The routine is empty; it contains no instructions that modify memory or registers and immediately returns.
+- `accumulate_32bit_from_bytes`: The routine reads four consecutive bytes from a pointer in a register and builds a 32-bit value in a register by concatenating each byte into the result.
+- `decode_and_fill_table`: Reads a count, fills a buffer from another routine, then iterates over a stack buffer and a table, writing bit masks and derived values into table entries based on matching bytes.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `return_error_code_3`: The routine returns a constant 32-bit value with all bits set.
+- `initialize_game_state_5`: The routine sets up several global variables and tables, copies a block of data from a table into a working area using a loop, then enters a polling loop that waits for a specific value, calls another routine to process a park tick, advances a message queue periodically, runs the game loop, and waits for a flag.
+- `advance_message_queue`: The routine copies seven bytes from a global table starting at an offset derived from a byte stored in a global variable, writing them into seven locations spaced 80 bytes apart in a buffer addressed from a1.
+- `run_game_loop_6`: The routine calls a function pointer stored at an offset from a global variable and then returns.
+- `reset_ride_queue_3`: The routine clears a table of pointers and then repeatedly writes zero to a set of entries while linking them through a global variable.
+- `reset_audio_channels_2`: The routine writes zero to four global variables and then writes a value to a fifth global variable.
+- `run_park_tick_handler`: The routine increments a global counter and, when a wrap condition is met, resets it and runs another routine four times, executes two short busy loops, copies several bytes from RAM into the global variable, and optionally updates music.
+- `update_music_channel`: The routine updates a music channel state by reading and writing several global variables and a table indexed by a byte from memory.
+- `update_ride_state_24`: The routine updates a block of ride state data pointed to by a register, copying configuration words, computing offsets into a table, and writing derived values into the block.
+- `adjust_waiting_queue_counter`: Updates a waiting-queue pointer, then reads a masked counter and dispatches based on its low nibble: it looks up a value in a ride-statistics table, adjusts the counter with clamping and carry handling, or applies a byte delta to a stored counter with carry propagation.
+- `copy_config_word`: The routine copies a 16-bit word from an address derived from an unmodified register plus a constant offset to an address derived from another unmodified register plus a constant offset.
+- `resolve_ride_state_index`: Walks a table of 16-bit values looking for the first entry that is less than or equal to a masked counter, then clamps the found index toward zero if a flag is set.
+- `clamp_and_index_counter`: Clamps a running counter toward zero, adding or subtracting a byte value depending on a flag, then stops once the counter passes zero.
+- `accumulate_wait_time_delta`: Reads a base index from a byte field in a structure and selects a value from a global table or computes it from the index and a mode byte.
+- `handle_joystick_input_2`: The routine reads a byte from a table, masks it and dispatches on the low nibble.
+- `set_park_flag_2`: The routine writes a byte derived from a global variable into another byte of a global variable, masking the source with a low nibble.
+- `update_waiting_queue_pointer`: The routine reads a nibble from a byte at an offset in an uninitialized structure, uses it as an index into a global table to add a signed offset to a byte field, and if the result has its high bit set it clears that field, flips the sign of a byte pointed to by a pointer field, and advances the pointer within a bounded buffer, clamping it to the buffer start if it would exceed the end.
+- `update_ride_statistics_39`: The routine is a stub that returns immediately without performing any observable work.

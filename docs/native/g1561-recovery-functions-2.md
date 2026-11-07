@@ -1,0 +1,157 @@
+# Game 1561 (monkey island 2 - le chuck's revenge (1992)(lucasarts)(sp)[cr crucial]): code recovery summary
+
+## Functions (part 2 of 2)
+
+### Monkey Island 2 - Le Chuck's Revenge (1992)(LucasArts)(Sp)[cr Crucial](Disk 01 of 11).adf:monkey2
+(continued)
+
+- `traverse_linked_list_and_call_2`: It walks a singly linked list whose head pointer is in a register, and for each node calls another routine with a value formed by adding a register byte to a byte at a fixed offset of the node.
+- `traverse_linked_list_and_call`: It walks a singly linked list whose head pointer is in a register.
+- `empty_routine_8`: This routine contains no instructions and simply returns without performing any work.
+- `traverse_linked_list_add_bytes_2`: It walks a singly linked list via a pointer stored in a global variable, and for each node calls another routine with a value formed by adding a byte at an offset of the node to a byte at a fixed offset of the node pointer itself.
+- `traverse_linked_list_add_bytes`: It walks a singly linked list via a pointer stored in a global variable.
+- `find_slot_with_min_byte_2`: It scans a set of slot structures, tracking the entry with the smallest value at a fixed offset and storing its pointer, while advancing a global counter that wraps around, and finally calls another routine with the selected slot before returning its pointer.
+- `scan_table_for_min_byte`: It increments a global counter up to three before resetting it, then walks a table of pointers while tracking the entry with the smallest stored byte.
+- `find_slot_with_min_byte`: It scans a set of slot structures, tracking the entry with the smallest value at a fixed offset and storing its pointer.
+- `reset_slot_state`: Reads two values from a pointer argument, conditionally writes one into an offset of the other, updates a linked list by writing one pointer into the other's next field, clears the head pointer, and returns the first value.
+- `initialize_palette_entry`: Writes a fixed header and several bytes copied from a source byte array into a 22-byte structure, computes a derived 16-bit value from the first byte of the source, and then calls another routine with the filled structure.
+- `store_division_result_2`: It computes a divisor from a byte and a table indexed by the structure, forcing it non-zero, then derives a value from the structure with conditional adjustments.
+- `store_division_result`: Computes the signed quotient and remainder of two short values, storing them along with a sign flag and a cleared word into a structure.
+- `write_flag_and_modulo`: It writes zero at an offset in a structure pointed to by a register, stores the value one at the next offset, writes the remainder of a division of two short values at another offset, and clears a following two-byte field.
+- `set_flag_and_modulo`: It stores the value one at an offset in a structure pointed to by a register, writes the remainder of a division of two short values from registers into another offset, and clears a word at a further offset in the same structure.
+- `index_table_by_signed_word`: It maps a signed word argument to a value from a global table, using the byte and word to compute the offset.
+- `check_bounds_call_routine`: Compares a byte and a signed word against fixed bounds and, when the byte differs from a constant and the word lies outside a range, calls another routine before returning.
+- `index_signed_table_byte`: Indexes a global table using two signed values as an offset and returns the resulting byte with a sign determined by their signs, or a shifted value when the offset is out of range.
+- `load_signed_table_byte`: Indexes a global table using two signed values as an offset and returns the resulting byte with a sign determined by their signs.
+- `return_negated_table_byte`: It computes an offset from an index and a stride, indexes a global table with that offset, negates the byte found there, and returns the result as a short.
+- `return_signed_table_byte`: It selects a sign based on the sign of a value, computes an offset from an index and a stride, indexes a global table with that offset, and returns the byte found there as an unsigned short.
+- `index_global_table`: It computes an offset from two uninitialized values and returns a pointer into a global variable, effectively indexing a table.
+- `shift_global_and_return`: Shifts a byte in a global variable right by one bit, applying an XOR when the shifted-out bit was set, then returns a shifted result from another routine.
+- `store_byte_and_return_shifted_result`: It stores a byte from a register into a global variable, calls another routine, and returns the result of that call shifted right by eight bits.
+- `retry_on_failure`: Calls another routine and, if the result is zero, calls it again, returning zero only if that second call also yields zero, otherwise calling a third routine and returning its result.
+- `call_two_routines`: Calls two other routines in sequence and returns a fixed value.
+- `do_nothing_return_4`: This routine performs no operations; it contains no instructions and returns immediately.
+- `return_empty_routine`: This routine contains no instructions and returns immediately without performing any operation.
+- `initialize_global_table`: Calls another routine to obtain a value and returns a failure code if the result is zero.
+- `reset_game_state_table`: It increments a global counter and then iterates over a table of structures starting at a global variable.
+- `write_dma_control_table`: Writes four 16-bit values taken from a global table into the Amiga custom chip DMA control register, calling another routine before each write.
+- `advance_slot_animations`: Advances four animation slots by copying their data into a destination buffer and decrementing per-slot counters, then updates a shared flag and calls another routine when a slot's state changes or its timer expires.
+- `advance_and_decrement_tables`: Walks a table of four entries, copying fields from each entry into a destination buffer and advancing pointers, then decrements a per-entry counter and invokes another routine based on the resulting state.
+- `update_slot_animation_states_4`: Updates slot animation bookkeeping by copying animation data into a destination buffer and decrementing per-slot counters.
+- `update_slot_animation_states_2`: Iterates over a set of slots, decrementing a counter per slot, writing values into a global structure, setting DMA control bits in the custom chip register, and calling other routines based on the slot state.
+- `update_slot_animation_states`: Iterates over a set of slots while decrementing a counter per slot, writes values into a global structure, sets DMA control bits, and calls another routine for each active slot until all slots are exhausted.
+- `update_slot_animation_states_3`: It iterates over a set of slots, decrementing a counter per slot and writing values into a global structure.
+- `clamp_and_split_time_range`: Clamps a per-object time value into a valid range, stores it, and looks up which time-range entry it falls into.
+- `advance_time_range_loop`: Walks through a list of time-range entries, skipping any whose range contains the current value, then computes a delta from a stored baseline and hands the result to another routine.
+- `advance_time_range_loop_2`: Increments a per-object counter and advances a pointer while walking a table of time-range entries, storing the resulting value both into the object and through a hardware register when the range is exceeded, then branches on a state field to update animation timing and palette data via other routines.
+- `call_initialization_routines`: Checks a field in a structure and, depending on whether another field is zero, calls two initialization routines in sequence.
+- `call_two_initialization_routines`: Calls two other routines sequentially and returns.
+- `reset_animation_state_2`: Clears a flag in a per-slot table and, if a condition is met, copies a value and a word from the table into a global structure, updates several fields in the table including a pointer to a global variable, and then conditionally calls another routine with a constant argument based on a value read through an indirection involving the global variable.
+- `lookup_and_store_value`: Checks whether the first parameter is less than four and, when it is, computes two arguments from that parameter and a second value, calls another routine with them, and stores the returned word into a hardware register area indexed by the first parameter.
+- `set_sprite_frame_and_palette`: It stores half of a value into a short in a global table indexed by a small index, then writes a byte taken from a global variable table into a hardware register.
+- `fill_table_entry`: Fills a table entry by storing a pointer to a global variable into a structure pointed to by a register, then writes two 16-bit values into fixed offsets of that structure.
+- `initialize_table_entry`: It writes a pointer to a global variable into a structure pointed to by a register, then stores two 16-bit values into fixed offsets of that structure.
+- `no_name_in_the_executable`: This routine consists of sixteen instructions and is entered from three other routines via a pointer in the data section.
+- `clamp_table_value`: Advances through a table of short values by a fixed step until the shifted input falls outside the range, then combines several computed values and clamps the result into a bounded range.
+- `clamp_computed_value`: Advances through a table of short values, then combines several computed values, clamps the result into a bounded range, and returns it.
+- `clamp_shifted_value_2`: Loops through a table, doubling a value while it stays negative and below a threshold, then clamps the result into a bounded range before returning it.
+- `clamp_shifted_value`: It takes an uninitialized value, repeatedly doubles it while it stays negative and below a threshold, then caps the result at the maximum signed 16-bit value and returns it.
+- `reset_animation_state`: Clears a flag in a per-object state block and, when a parameter indicates a reset, writes a byte from a global table into a hardware register and initializes several short fields.
+- `store_three_parameters`: It stores its first argument into a global variable, its second argument into the next global variable, and the low 16 bits of its third argument into a third global variable, then returns.
+- `return_constant_value_2`: It returns the constant value fifty-four without reading memory, registers or calling any other routine.
+- `copy_twelve_words_from_global`: It copies twelve 32-bit words from a global variable table into the caller-supplied buffer, then copies the following 16-bit word from the source to the destination, and finally returns zero.
+- `process_table_entries_2`: Processes a sequence of offset entries from a table, adjusting running counters and invoking a callback for each one, then stores the resulting values back into the table.
+- `iterate_entries_with_callback_3_2`: Walks through a table of entries, advancing several offset counters and invoking a callback for each one, while storing a byte from a register into the table and recording a starting offset for the first entry.
+- `iterate_entries_with_callback`: Walks through a table of entries, advancing several offset counters and invoking a callback for each one, while storing a byte from a register through a pointer and incrementing a value at a fixed offset from another pointer.
+- `return_negative_one_10`: Returns the value -1 to its caller without modifying any data.
+- `noop_routine`: This routine performs no operations and returns immediately.
+- `iterate_entries_with_callback_3`: Walks through a table of entries, advancing several offset counters and invoking a callback for each one, while storing a byte from a register, and returns a failure code when the callback fails or the iteration limit is reached.
+- `copy_table_entries_with_offsets`: Validates an index against a global flag and bounds, then walks the referenced entry's data copying bytes from a source pointer to a destination pointer while advancing several offset counters and returning a running total.
+- `process_table_entries_with_offsets`: Looks up an entry in a table using an index, clamps the index to a valid range, then walks through that entry's data advancing several offset counters while invoking a callback for each piece.
+- `process_table_entries_2_2`: Advances several offset counters stored in a table while invoking a callback for each entry, updating running position values and clamping them against a limit, then caches the result so the table does not need to be reprocessed.
+- `iterate_entries_with_callback_2`: Loops over a table of entries, advancing several offset counters and invoking a callback for each one, while storing a value from a register through a pointer and incrementing a value at a fixed offset from another pointer.
+- `copy_data_with_offsets`: Iterates over a table of entries, advancing several offset counters and copying bytes from a source pointer to a destination pointer while updating global counters.
+- `process_byte_flags_2`: It clears a sixteen-byte block, optionally ORs a source block into it during eight iterations based on a flag, then scans the result bit by bit and calls another routine when a set bit is found.
+- `process_byte_flags`: Clears a sixteen-byte block, then for eight iterations optionally ORs a sixteen-byte source block into it when a flag is set, and finally scans the block bit by bit, invoking another routine for each set bit.
+- `process_records_and_bits`: Loops over a set of records, OR-ing a block of bytes into a buffer when a flag is set, then scans a bit table and invokes another routine for each set bit.
+- `or_bytes_and_process_bits`: ORs a block of bytes into a destination buffer while advancing a counter, and once a threshold is reached scans a bit table, invoking another routine for each set bit position.
+- `check_bitmask_table`: Iterates over 128 bit positions using a counter and an index.
+- `decode_compressed_stream_flags_2`: Clears a 15-byte flag table, then walks through a compressed data stream, decoding byte-run markers and branching on special codes to set flag bits in a global bitmap and advance the pointer.
+- `decode_compressed_stream_36`: Walks through a compressed data stream, decoding byte-run markers and branching on special codes to set flag bits in a global bitmap and advance a pointer.
+- `decode_compressed_stream_27_2`: Walks through a compressed data stream, decoding byte-run markers and branching on special codes to set flag bits in a global bitmap and advance a position pointer.
+- `decode_compressed_stream_27`: Walks through a compressed data stream, decoding byte-run markers and branching on special codes.
+- `decode_compressed_text_stream`: Iterates through a byte stream, decoding a compressed text format by tracking a bit position and updating a bitmap of processed characters.
+- `decode_compressed_stream_28`: Decodes a compressed byte stream, tracking a position offset and advancing through marker bytes, while setting individual bits in a global bitmap based on decoded values.
+- `decode_compressed_bitmap_2`: Decodes a compressed bitmap stream by reading variable-length integers and multi-byte markers, then sets the corresponding flag bits in a bitmap buffer.
+- `decode_compressed_bitmap`: Decodes a compressed bitmap stream by reading variable-length integers and multi-byte markers, then sets the corresponding flag bits in a bitmap table.
+- `decode_compressed_stream_34`: Decodes a compressed data stream, interpreting multi-byte markers to set bitmap flag bits and to invoke another routine for each token, while advancing through the buffer until it reaches a terminator or exceeds a length limit.
+- `decode_compressed_stream_29`: Walks through a compressed byte stream, decoding variable-length integers and interpreting control codes.
+- `decompress_text_stream`: Walks through a compressed text buffer, decoding a byte-oriented compression scheme by advancing a pointer and handling several byte categories.
+- `decode_compressed_stream_flags`: Decodes a compressed data stream by reading byte-run markers and branching on special codes to set flag bits in a global bitmap and advance through the buffer.
+- `initialize_imuse_timer_resources`: Invokes a handler through a pointer derived from a global variable and returns an error code when it fails.
+- `reset_flag_and_helpers`: Resets a global variable to zero, calls another routine, and if a flag byte in a global variable is non-zero it clears that flag and calls another routine with a global value and the constant two, then returns zero.
+- `set_flag_and_store_derived_bytes`: Reads a global variable and calls two routines via offsets into it, sets a flag bit in a global byte, and if another global flag is set it invokes a routine and stores derived results into three fixed offsets of a structure.
+- `clear_flag_and_reset_state`: It checks a global variable and, if non-zero, calls another routine with a global value and the constant two, then clears another global variable.
+- `call_cause`: Library stub: loads its arguments and the exec library base, calls Cause and returns its result to the caller.
+- `set_flag_and_call_twice`: Sets a global flag, invokes another routine twice, and then clears that flag while a second global variable indicates pending work.
+- `tiny_moveq_rts_3`: Small routine of 2 instructions that loads 1 into d0, then returns.
+- `return_without_action`: It is empty and simply returns without touching memory, registers or calling any other routine.
+- `return_immediately_6`: This routine performs no operations and returns immediately without reading or writing any data.
+- `empty_return_routine_10`: This routine performs no operations and returns immediately.
+- `copy_byte_to_table_and_increment`: It copies a byte from an input structure at a fixed offset into a global circular table indexed by a global counter, writes a constant word value into another field of the input structure, then increments the global counter and resets it to zero once it reaches a fixed limit.
+- `call_indirect_function`: It fetches a function pointer from a location relative to a global variable and calls it, then returns.
+- `do_nothing_2`: It does nothing.
+- `empty_return_routine_11`: This routine is empty and does nothing; it simply returns immediately.
+- `traverse_resource_tree_2`: Recursively walks a resource structure, inspecting a bitmask field and dispatching through stored function pointers, returning a sentinel when the pointer is null.
+- `parse_format_specifier`: Parses a format specifier by scanning leading flags, then reading the width, precision, and length modifiers.
+- `parse_format_string`: Walks a format string one character at a time until it reaches a null terminator.
+- `delete_file_and_update_state`: It reads a handle from a global structure and calls a library function to obtain an error code, storing that code and setting a status field when the handle is invalid.
+- `iterate_resource_list`: Loops through a list of entries using a count stored in a structure, and for each entry checks a flag byte and a specific bit before calling another routine through a pointer.
+- `parse_quoted_tokens`: Splits a text buffer into up to 32 separate tokens, skipping whitespace and handling quoted strings by inserting a null terminator at each token boundary.
+- `call_conditional_cleanup`: Reads a function pointer from a fixed offset in a global structure and calls it when non-null, then invokes another routine and runs a series of conditional calls that depend on flags stored in that structure.
+- `process_table_entries_4`: Iterates over a range of indices and, for each one, looks up a table entry to clear its trailing byte when a matching flag and reference value are found.
+- `transform_string_characters`: It walks through a null-terminated string and, for each character, checks a bit in a global lookup table indexed by that character.
+- `compare_two_byte_arrays`: It compares two byte sequences element by element while a counter is non-zero and both strings are not yet terminated.
+- `calculate_string_length`: It advances a pointer through a zero-terminated byte string until it reaches the terminating zero byte.
+- `copy_null_terminated_string_2`: It copies bytes from a source string to a destination pointer until it encounters the terminating zero byte, which it also copies.
+- `copy_string_to_buffer`: It locates the terminating zero byte of a destination buffer and then copies bytes from a source string into that location, continuing until the terminator is copied.
+- `skip_characters_by_table`: It advances a pointer through a byte sequence as long as a specific bit is set in a global lookup table indexed by the current byte value.
+- `store_reversed_decimal_string_2`: Repeatedly divides a value by ten, storing each decimal digit as an ASCII character into a stack buffer, then reverses that buffer in place and null-terminates it.
+- `store_reversed_decimal_string`: Repeatedly divides a value by ten, storing each decimal digit as an ASCII character into a stack buffer, then reverses that buffer in place and terminates it with a null byte, returning the number of characters written.
+- `convert_to_octal_string`: Converts a value into base eight ASCII digits into a temporary stack buffer, then copies those digits in reverse order into a caller buffer, terminating the result with a null byte and returning the digit count.
+- `convert_number_to_ascii`: It converts an integer into ASCII decimal digits using a temporary stack buffer, appending one digit per iteration.
+- `parse_or_expand_packed_integer`: Expands a packed value nibble by nibble using a global lookup table and reverses the result when appropriate, otherwise parses a signed ASCII integer by accumulating digits and applies a sign.
+- `reverse_nibbles_from_table`: It expands a packed value nibble by nibble using a global lookup table, writing each expanded result into a temporary location.
+- `parse_signed_integer_string_2`: Skips an optional leading plus or minus sign, accumulates the remaining ASCII digits by multiplying by ten, applies the sign, stores the result, and returns the number of characters consumed.
+- `parse_signed_integer_string`: Walks a null-terminated ASCII string multiplying an accumulator by ten and adding each digit, stops at a newline or non-digit character, negates the result if a minus sign was seen, stores the value through a pointer, and returns the number of characters consumed.
+- `increment_and_store_pointer`: Increments a 16-bit value stored at a fixed offset in a global structure and stores a byte from a parameter into the location pointed to by a pointer held at an adjacent offset, then advances that pointer.
+- `init_and_format_store`: Initializes two adjacent fields in a global structure and then invokes another routine to parse a format string, storing a value into the location pointed to by a parameter while updating the global structure.
+- `store_registers_to_pointer`: Copies the caller's integer registers and stack value into successive 32-bit slots of a pointer passed as an argument, then returns.
+- `set_first_element_and_return_concat`: Reads a field from the second argument, forcing it to one when it is zero, stores the first word of the first argument into an element of that argument, and returns a 32-bit value formed by combining the adjusted field with the read word.
+- `insert_into_sorted_list`: Aligns a requested size, walks a sorted linked list of memory blocks, inserts or merges a new node at the correct position, updates a global usage counter, and reports success or failure.
+- `copy_memory_block_2`: Copies a block of bytes from one memory area to another using a count argument, copying backwards when the source is at or before the destination to handle overlap, otherwise copying forwards.
+- `free_linked_list_elements`: Walks a linked list calling a function pointer for each element to release memory, then clears the head and tail pointers of the list.
+- `free_and_allocate_block`: Frees a previously allocated block tracked in a global structure and then allocates a new block of the requested size, storing its address and returning a pointer offset by two bytes.
+- `traverse_resource_tree`: Calls a routine through a pointer stored in a structure and returns a value, or returns a sentinel when the pointer is null or a flag field is set.
+- `allocate_and_link_node`: Allocates memory for a new node, initializes its fields, and links it into global list pointers, then returns a pointer past the header.
+- `absolutize_signed_integer`: Receives a signed integer and returns its absolute value, negating it only when it is negative and performing no other operations.
+- `manage_sorted_memory_list`: Aligns a requested size, walks a sorted linked list of memory blocks to find or split a matching node, and otherwise allocates a new node and links it into the global list.
+- `traverse_resource_tree_recursive`: Recursively traverses a linked list of resource structures by checking specific bitmask flags and comparing two short integer values within each entry.
+- `process_resource_callback`: Runs a callback routine through a function pointer stored in a global structure, clearing a flag field afterward.
+- `seek_resource_data`: Runs a callback routine through a function pointer stored in a global structure, clearing a flag field afterward.
+- `close_resource_and_call_function`: Checks a global variable to decide whether to call another routine, then invokes a function pointer located in a structure and returns zero.
+- `compute_fixed_point_product`: Takes two 32-bit fixed-point values from registers and returns their product as a 32-bit fixed-point value by combining the high and low 16-bit parts of each input.
+- `divide_signed_fixed_point`: Handles the signs of two operands, normalizes the divisor by counting leading zeros, and performs a 64-bit by 32-bit fixed-point division returning the quotient scaled by sixteen bits.
+- `normalize_fixed_point_divide`: Divides a 32-bit dividend by a 32-bit divisor using a normalized fixed-point method and returns a 64-bit result with the quotient in the high 32 bits and the remainder in the low 32 bits.
+- `validate_index_and_fetch_pointer`: Verifies that a provided index is not negative and does not exceed a stored maximum, then checks whether the matching entry in a table is non-zero.
+- `process_resource_list`: Invokes a function pointer stored in a global structure and, when a signal bitmask is set and a flag field is nonzero, clears that pointer and recurses into itself.
+- `handle_recursive_undefined`: Returns a zero word when its integer parameter is zero, otherwise calls another routine with the parameter, passes the result to a second routine along with a stack slot, and returns the word stored in that slot.
+- `call_indirect_from_table`: Fetches a pointer stored in a table at a fixed offset from a global structure and calls the routine pointed to by that value.
+- `call_indirect_from_table_offset`: Fetches a different pointer stored in a table at another fixed offset from a global structure and calls the routine pointed to by that value.
+- `call_library_vector_18`: Library stub: loads a library base from a global variable and calls the library function at offset minus 18 of that base, returning its result to the caller.
+- `call_library_vector_6`: Library stub: loads a library base from a global variable and calls the library function at offset minus 6 of that base, returning its result to the caller.
+- `call_library_vector_12`: Library stub: loads a library base from a global variable and calls the library function at offset minus 12 of that base, returning its result to the caller.
+
+### Monkey Island 2 - Le Chuck's Revenge (1992)(LucasArts)(Sp)[cr Crucial](Disk 01 of 11).adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.

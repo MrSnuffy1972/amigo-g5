@@ -1,0 +1,1117 @@
+# Game 2085 (secret of monkey island, the (1990)(lucasfilm games)(de)[cr qtx](disk 1 of 4)[a]): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/02085). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (997520 top-level bytes in 31 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 15 of 15 units identical (bytes and relocations), 11 raw-word lines |
+| Functions named and described | pass, 1013 of 1013 named (0 author symbols), 1013 of 1013 described (42 by rule, 970 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 18962 of 18962 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 460794 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 32127 of 32127 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 266564 |
+| code | 98610 |
+| data | 613035 |
+| padding | 7535 |
+| unused | 11776 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| type | 2 | 117 | 2 |
+| endcli | 2 | 117 | 2 |
+| click | 2 | 4 | 1 |
+| loadwb | 12 | 536 | 30 |
+| wait | 2 | 117 | 2 |
+| disk-validator | 1 | 386 | 1 |
+| Secret of Monkey Island, The (1990)(LucasFilm Games)(De)[cr QTX](Disk 1 of 4)[a].adf:Install_Monkey | 17 | 29 | 2 |
+| icon.library | 10 | 1375 | 109 |
+| Secret of Monkey Island, The (1990)(LucasFilm Games)(De)[cr QTX](Disk 1 of 4)[a].adf:monkey_crack | 1 | 18 | 2 |
+| Secret of Monkey Island, The (1990)(LucasFilm Games)(De)[cr QTX](Disk 1 of 4)[a].adf:monkey_island | 7 | 231 | 6 |
+| Secret of Monkey Island, The (1990)(LucasFilm Games)(De)[cr QTX](Disk 1 of 4)[a].adf:bootblock | 1 | 10 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 29185 | 854 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
+| DISK01.LEC (raw code file, load address unknown) | 1 | 0 | 0 |
+| music.dat (raw code file, load address unknown) | 1 | 0 | 0 |
+
+## Cases handled
+
+- runtime segment an address: 18725 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500): 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- secret of monkey island, the (1990)(lucasfilm games)(de)[cr qtx](disk 1 of 4)[a]/Secret of Monkey Island, The (1990)(LucasFilm Games)(De)[cr QTX](Disk 1 of 4)[a].adf:Rooms/DISK01.LEC: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- secret of monkey island, the (1990)(lucasfilm games)(de)[cr qtx](disk 1 of 4)[a]/Secret of Monkey Island, The (1990)(LucasFilm Games)(De)[cr QTX](Disk 1 of 4)[a].adf:Rooms/music.dat: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- secret of monkey island, the (1990)(lucasfilm games)(de)[cr qtx](disk 1 of 4)[a]/Secret of Monkey Island, The (1990)(LucasFilm Games)(De)[cr QTX](Disk 1 of 4)[a].adf:Install_Monkey: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
+- secret of monkey island, the (1990)(lucasfilm games)(de)[cr qtx](disk 1 of 4)[a]/Secret of Monkey Island, The (1990)(LucasFilm Games)(De)[cr QTX](Disk 1 of 4)[a].adf:monkey_island: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
+- 2 never-loaded region(s), 460794 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+
+## Cracktros (kept, not protection)
+
+- Secret of Monkey Island, The (1990)(LucasFilm Games)(De)[cr QTX](Disk 1 of 4)[a].adf:monkey_crack
+
+## Copy protection found
+
+- none found
+
+## Functions
+
+
+### type
+
+- `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
+- `copy_data_block`: Copies sixteen words from a source address to a destination address pointed to by a stack value.
+
+### endcli
+
+- `allocate_and_initialize_data_buffer`: Iterates through a linked list to determine a maximum value, then allocates a buffer and populates it with a header and a sequence of incrementing values.
+- `copy_memory_block`: Copies sixteen bytes of data from a source offset to a destination address.
+
+### click
+
+- `wait_for_fire_button_press`: Polls the CIA port register until bit six reads zero, which the register note ties to the mouse or joystick fire line, then returns zero.
+
+### loadwb
+
+- `parse_command_string`: Parses a command string by splitting it into individual tokens and handling quoted substrings.
+- `restore_patch_state`: Retrieves a pointer from a global structure and saves a parameter into a slot within a structure pointed to by that pointer.
+- `start_tool_from_resident_tag`: XOR-decodes a global string, allocates memory, and uses various library calls to attempt to start a tool from a resident tag.
+- `compare_null_terminated_strings`: Compares two zero-terminated strings byte by byte and returns minus one when the first is lower, one when it is higher, and zero when they match.
+- `build_linked_list_from_table`: Walks a table of pointer and value pairs, allocating a fixed-size node for each entry through a memory allocation call and storing the looked-up value in it.
+- `call_library_vector_96`: Library stub: loads a library base from a global variable and calls the library function at offset minus 96 of that base, returning its result to the caller.
+- `call_library_vector_132`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
+- `call_library_vector_138`: Library stub: loads a library base from a global variable and calls the library function at offset minus 138 of that base, returning its result to the caller.
+- `call_library_vector_198`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_294`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
+- `call_library_vector_366`: Library stub: loads a library base from a global variable and calls the library function at offset minus 366 of that base, returning its result to the caller.
+- `call_library_vector_372`: Library stub: loads a library base from a global variable and calls the library function at offset minus 372 of that base, returning its result to the caller.
+- `call_library_vector_384`: Library stub: loads a library base from a global variable and calls the library function at offset minus 384 of that base, returning its result to the caller.
+- `call_library_vector_414`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `call_library_vector_420`: Library stub: loads a library base from a global variable and calls the library function at offset minus 420 of that base, returning its result to the caller.
+- `call_library_vector_552`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `call_library_vector_624`: Library stub: loads a library base from a global variable and calls the library function at offset minus 624 of that base, returning its result to the caller.
+- `compare_and_pad_strings`: Compares two strings against a global string and, if the global string is exhausted first, copies a sequence of spaces and a period into the target location.
+- `write_space_sequence`: Writes a sequence of four space characters and a period to a memory location.
+- `compare_string_sequences`: Compares two null-terminated strings character by character until a mismatch is found or the end of a string is reached.
+- `stub_return_only`: Contains only a return instruction and performs no work.
+- `call_reschedule`: Library stub: loads its arguments and the exec library base, calls Reschedule and returns its result to the caller.
+- `call_dispatch`: Library stub: loads its arguments and the exec library base, calls Dispatch and returns its result to the caller.
+- `call_find_resident`: Library stub: loads its arguments and the exec library base, calls FindResident and returns its result to the caller.
+- `call_forbid`: Library stub: loads its arguments and the exec library base, calls Forbid and returns its result to the caller.
+- `call_permit`: Library stub: loads its arguments and the exec library base, calls Permit and returns its result to the caller.
+- `call_alloc_mem`: Library stub: loads its arguments and the exec library base, calls AllocMem and returns its result to the caller.
+- `recurse_with_stack_slot`: Calls another routine passing two parameters and a pointer to a specific location on the stack.
+- `call_global_and_checksum_buffer`: Invokes a function pointer stored in a global variable, then computes a rolling checksum over a stack buffer until a null terminator is found.
+- `tiny_move_rts`: Small routine of 2 instructions that copies d0 to (a3)+, then returns.
+
+### wait
+
+- `update_linked_list_buffer`: Traverses a linked list to find the maximum value in a specific field and then expands a data buffer by writing a header and copying data blocks.
+- `copy_data_and_call_function`: Copies a sequence of sixteen bytes from a memory location to a destination and then calls another routine.
+
+### disk-validator
+
+- `update_display_buffer`: Calculates character offsets and populates a memory buffer with numeric string representations of values.
+
+### Secret of Monkey Island, The (1990)(LucasFilm Games)(De)[cr QTX](Disk 1 of 4)[a].adf:Install_Monkey
+
+- `free_install_blocks_and_clear`: Calls a helper and the exec FreeMem entry in a short loop of three passes, then clears a field of the caller's structure.
+- `decrement_until_minus_one`: Decrements a local variable until it reaches negative one and then returns.
+
+### icon.library
+
+- `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d0, then returns.
+- `increment_counter_clear_bit`: Library code that increments a 16-bit value at a specific offset from a base pointer and clears a single bit in a byte at another offset from the same pointer.
+- `decrement_library_refcount`: The library code decrements a reference counter in a global structure.
+- `update_library_status`: Library code that either manipulates a linked list of structures or sets a specific bit in a byte at an offset from a base pointer.
+- `set_status_bit`: Library code that sets a specific bit in a byte at an offset from a base pointer and returns zero.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `execute_library_callback`: The library code copies two pointers from a table, executes a routine via a pointer, and stores the result.
+- `copy_two_pointers_from_table`: Library code that copies two 32-bit values from an address derived from a register into two global variables.
+- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
+- `return_from_subroutine_2`: This routine is an empty function that immediately returns to its caller.
+- `call_handler_callback`: This library routine calls another routine via a pointer and then returns.
+- `call_icon_data_copy_2`: This library routine unconditionally calls a helper routine to copy icon data to the stack and then returns.
+- `trigger_icon_attribute_update`: This library routine invokes a single callback routine to update a linked structure of icon attributes and then returns.
+- `call_icon_data_copy`: This library routine unconditionally calls a helper routine to copy icon data to the stack and then returns.
+- `call_library_handler`: This library routine simply calls another routine and then returns.
+- `recurse_with_incremented_parameter`: This library routine calls another routine with the same first argument and then returns, while incrementing the second argument by a constant during the process.
+- `call_other_routine`: Library code that calls another routine and returns.
+- `call_icon_init_routine`: This library routine invokes a single initialization function to set up icon data structures and then returns.
+- `dispatch_icon_handler`: This library routine acts as a wrapper that calls another routine and then returns.
+- `invoke_recursive_handler`: This library routine calls another routine and then returns.
+- `call_other_routine_2`: This library code calls another routine and then returns.
+- `call_other_routine_3`: The library routine calls another routine and then returns.
+- `call_parse_formatted_string`: This library routine calls another routine to process a formatted string and then returns.
+- `update_data_field`: Library code that calls another routine via a function pointer table using a passed parameter, then stores a second parameter into a memory location at an offset from the returned pointer.
+- `recursively_process_tree_nodes`: This routine performs a recursive traversal of a data structure.
+- `update_icon_attribute_chain_3`: This library routine recursively updates a linked structure of icon attributes by calling a callback routine and performing block copies of data into the structure.
+- `copy_structure_data`: Library code that performs a block copy of data from one location to another and then updates several fields in a structure using values from a source.
+- `return_zero_stub`: The routine is an empty stub that immediately returns the constant zero.
+- `copy_icon_data_to_stack`: This library routine copies ten longwords from an offset within a structure pointed to by the third argument into a local array on the stack, then copies several additional fields from the same structure into other stack slots and finally calls another routine with the first two arguments and a pointer to a stack-resident header.
+- `update_icon_attribute_chain_2`: Recursively updates a linked structure of icon attributes by calling a callback routine and storing the returned values into specific offsets within the structure.
+- `update_icon_attribute_chain`: Updates a linked structure of icon attributes by recursively calling a callback routine and storing the returned values into specific offsets of the structure.
+- `propagate_icon_change_2`: This library routine updates various attribute fields within a linked structure and executes a series of callbacks based on the results.
+- `library_execute_callback_loop`: Library code that executes a series of function calls in a loop, updating a global value based on the results.
+- `call_and_return_zero`: Library code that calls another routine and returns zero.
+- `empty_routine_7`: The routine contains four instructions and performs no observable work; it ends immediately with a return.
+- `execute_icon_tool_chain`: Iterates through a hierarchy of tool pointers and associated data within an icon structure to execute them sequentially.
+- `process_icon_tool_chain`: Iterates through a hierarchy of tool pointers and associated data within an icon structure to execute them sequentially.
+- `library_iterate_icon_table`: Library code that iterates through multiple tables of pointers, executing callback routines for each entry and updating a local counter.
+- `iterate_icon_table`: Library code that iterates through a null-terminated table of pointers, executes a callback, and then processes a secondary list of pointers from a structure.
+- `iterate_icon_table_entries`: Library code that walks a null-terminated table of pointers, calling a routine for each entry, updating a counter, and invoking a callback while potentially processing a secondary entry.
+- `traverse_linked_list_3`: Library code that iterates through a linked list by following pointers and executing a routine on each node.
+- `iterate_linked_list_nodes`: The routine traverses a linked list structure by following pointers stored at an offset from the current node.
+- `increment_param_and_recurse`: Library code that calls another routine with the same first argument and the second argument increased by a constant, then returns.
+- `process_conditional_list_update`: Library code that checks a value and, if non-zero, performs a series of operations including writing a constant to a structure, setting up a pointer chain, and rescheduling.
+- `return_zero_constant`: This routine returns a constant zero value to the caller.
+- `return_zero_stub_2`: Library code that returns the constant zero.
+- `update_list_elements`: Library code that decrements a short counter through a pointer and uses the result to store two values into a table at a specific offset.
+- `decrement_counter_and_store_pair`: The routine decrements a short counter through a pointer, then uses the counter value as an index into a table pointed to by a global variable.
+- `manage_icon_attribute_list`: This library routine traverses a linked list to assign values and update icon attribute chains based on specific conditional checks.
+- `return_zero_5`: This library routine performs no operations and returns zero.
+- `call_library_routine_and_return_zero`: Library code that calls another routine and then returns zero.
+- `incremental_recursive_call`: Library code that performs a recursive call with an incremented parameter until the callee stops the recursion.
+- `search_list_for_character_2`: Library code that traverses a list of pointers and scans the data at those locations for a specific character.
+- `find_character_in_list`: This library routine traverses a list of pointers and returns a pointer to the first occurrence of a specific character within the referenced memory blocks.
+- `search_list_for_character`: Library code that traverses a list of pointers and scans the data at those locations for a specific character.
+- `search_null_terminated_list`: This library routine iterates through a null-terminated list of values.
+- `perform_recursive_search_2`: Library code that performs a recursive search through a sequence of values, checking for specific offsets and null terminations.
+- `perform_recursive_search`: Library code that performs a recursive search by incrementing a value and calling another routine.
+- `perform_recursive_calculation`: A library routine that performs a recursive calculation involving incrementing values and conditional subtractions.
+- `traverse_null_terminated_list`: Iterates through a sequence of values by following pointers or offsets until a null terminator is reached.
+- `parse_formatted_string`: This library routine processes a string to extract and convert numeric values.
+- `parse_numeric_string_3`: Library code that converts a string of characters into a numeric value by iterating through the characters and multiplying a running total by ten.
+- `parse_numeric_string_2`: Library code that converts a string of characters into a numeric value and stores the result in a global variable.
+- `parse_numeric_string`: Library code that converts a string of characters into a numeric value by iterating through the characters and multiplying a running total by ten.
+- `offset_input_value`: A library routine that checks if a value is within a specific range and returns an offset relative to a constant.
+- `return_all_ones_2`: This library routine returns a value consisting of all bits set to one.
+- `call_library_function`: The library code calls a function via a pointer retrieved from a library base address.
+- `call_library_vector_210`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `call_library_vector_228`: Library stub: loads a library base from a global variable and calls the library function at offset minus 228 of that base, returning its result to the caller.
+- `call_library_vector_246`: Library stub: loads a library base from a global variable and calls the library function at offset minus 246 of that base, returning its result to the caller.
+- `call_library_vector_264`: Library stub: loads a library base from a global variable and calls the library function at offset minus 264 of that base, returning its result to the caller.
+- `call_library_vector_30`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `call_library_vector_36`: Library stub: loads a library base from a global variable and calls the library function at offset minus 36 of that base, returning its result to the caller.
+- `call_library_vector_42`: Library stub: loads a library base from a global variable and calls the library function at offset minus 42 of that base, returning its result to the caller.
+- `call_library_vector_48`: Library stub: loads a library base from a global variable and calls the library function at offset minus 48 of that base, returning its result to the caller.
+- `propagate_icon_change`: The library routine forwards a set of four parameters to another routine, checks the returned value, and if non-zero calls the same routine again with a modified argument list.
+- `assign_value_to_list`: Library code that checks a value and, if non-zero, writes a constant to a specific offset in a structure and a pointer to another location.
+- `return_zero_3`: Library code that returns zero.
+- `validate_return_value`: Library code that calls another routine and returns zero if the result does not match a passed parameter, otherwise it returns the result.
+- `tiny_move_rts_2`: Small routine of 2 instructions that copies d1 to d0, then returns.
+- `compare_and_return_zero`: Library code that calls another routine and returns zero if the result does not match a provided parameter.
+- `return_empty_routine`: This library routine is empty and performs no operations before returning.
+- `rotate_and_divide_bits`: A library routine that performs bitwise rotations and arithmetic operations on 32-bit values based on a divisor.
+- `rotate_32bit_value`: The library code rotates a 32-bit value left by one bit per iteration for sixteen iterations, using a carry flag to move bits between the high and low halves.
+- `multiply_32_bit_integers`: The library code computes the 32-bit product of two 32-bit registers using 16-bit partial products.
+- `invoke_table_entry`: A library routine that invokes a function pointer retrieved from an offset within a global variable.
+- `store_byte_at_pointer`: The library code stores a byte from a register into a memory location pointed to by a register.
+- `compute_string_checksum`: The library code iterates through a null-terminated byte string, updating a 32-bit accumulator with a decrementing 1s-complement-style pattern for each character.
+- `find_character_in_string`: Library code that scans a string for a specific character and returns a pointer to its location or zero if not found.
+- `return_zero_6`: A library routine that returns zero.
+- `copy_c_string_3`: The library code copies bytes from a source pointer to a destination pointer until a zero byte is encountered, advancing both pointers each iteration.
+- `copy_string_data`: A library routine that finds the end of a source string and then copies the bytes from a second string to that location.
+- `compare_memory_blocks`: Library code that compares two memory blocks byte by byte up to a specified length and returns one if they match or zero otherwise.
+- `return_one`: A library routine that returns one.
+- `iterate_string_with_limit`: Library code that iterates through a string while decrementing a counter and calls another routine if the end of the string is reached.
+- `call_another_routine`: A library routine that calls another routine and returns.
+- `copy_and_truncate_string`: The library code copies a specified number of bytes from a source to a destination and then fills any remaining length up to the original count with null bytes.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `setup_pointer_chain`: Stores the address of its pointer argument into the memory location pointed to by the argument, adds four to that stored value, clears the next word in the pointed-to block, and stores the original pointer value into the following word.
+- `process_icon_request`: Library code that validates a parameter, calls another routine to check a return value, and if successful, performs further calls using a value from a pointer.
+- `traverse_and_check_zero_2`: This library routine repeatedly calls another routine and, if the return value is non-zero, increments a value through a pointer and checks if it reaches a limit.
+- `traverse_and_check_zero`: Library code that repeatedly calls another routine and, if the return value is non-zero, increments a value through a pointer and checks if it is zero.
+- `return_zero_4`: This library routine performs no operations and returns zero to the caller.
+- `library_propagate_icon_change`: Library code that manages icon changes by performing multiple nested calls to propagate updates and validate return values.
+- `return_negative_one`: Library code that returns a constant value of negative one.
+- `update_icon_node_attributes_2`: This library code iterates through a linked structure to update specific attribute fields within each node.
+- `library_iterate_icon_nodes`: Library code that iterates through a structure, updating values through pointers and returning negative one if a required call fails.
+- `update_icon_node_attributes`: Iterates through a linked structure to update specific attribute fields within each node.
+- `return_all_ones`: This routine returns a value consisting of all bits set to one.
+
+### Secret of Monkey Island, The (1990)(LucasFilm Games)(De)[cr QTX](Disk 1 of 4)[a].adf:monkey_crack
+
+- `copy_code_to_low_memory`: Copies a 48-byte block of code from the routine's own address into low memory at address 48, then returns zero.
+- `write_constant_before_pointer`: Writes a fixed 32-bit constant four bytes before an address argument when both checked values differ from minus one.
+
+### Secret of Monkey Island, The (1990)(LucasFilm Games)(De)[cr QTX](Disk 1 of 4)[a].adf:monkey_island
+
+- `free_blocks_and_clear_field`: Executes a loop of three passes that calls a helper routine and a memory freeing function, then clears a field within the caller's structure.
+- `decrement_word_until_negative_one`: Decrements a 16-bit value stored in a register until it reaches negative one and then returns.
+- `decompress_and_accumulate_data`: Routine that decompresses data and performs bitwise shifts to accumulate values into a memory buffer.
+- `unpack_compressed_data`: Decompresses a stream of data using a bit-shifting algorithm that processes bits through a series of conditional checks.
+- `shift_and_copy_memory`: Performs a bitwise left shift on a block of memory by repeatedly doubling values and propagating carries.
+- `execute_invalid_instruction_2`: The routine is empty due to encountering bad instruction data.
+
+### Secret of Monkey Island, The (1990)(LucasFilm Games)(De)[cr QTX](Disk 1 of 4)[a].adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_callback_execution_environment`: Clears a memory region and initializes a global state before executing a chain of function pointers.
+- `call_decode_routine`: This routine is an empty wrapper that calls another routine.
+- `execute_empty_routine`: This routine performs no operations and returns immediately.
+- `execute_pointer_chain`: Iterates through a chain of pointers retrieved from a global structure, executing a function at each step until a null pointer is encountered.
+- `tokenize_string_input`: The routine parses a string by skipping whitespace and splitting it into tokens delimited by spaces, tabs, newlines, or quotes, storing the resulting pointers in a local array.
+- `return_function_pointer`: Returns a function pointer stored in a register or memory location.
+- `tiny_nop`: Small routine of 1 instruction that does nothing for one instruction.
+- `clear_global_data`: The routine clears several global memory locations to zero and sets a global variable to specific values before returning a value derived from a register.
+- `reset_global_state`: The routine clears multiple global memory locations to zero and sets several global variables to specific constant values.
+- `initialize_state_and_clear_flags_2`: Stores the return value of another routine into a global variable, resets two subsequent global variables to zero, and then executes another routine before returning.
+- `initialize_memory_tables`: The routine sets several global variables, populates a series of memory locations with offsets derived from a pointer, and clears a block of memory using a loop.
+- `update_function_pointers`: Stores a global value into a memory location and updates several pointers and global variables.
+- `clear_and_reset_globals`: Sets a global variable to a constant, calls another routine, and then clears several global variables if they are non-zero.
+- `update_state_from_table`: Calculates an offset using bits from a register to check a byte in a table and subsequently updates several global values and a memory location.
+- `null_operation`: This routine is empty and performs no actions.
+- `clear_memory_block`: Sets numerous specific memory locations and global variables to zero or specific constant values.
+- `check_conditional_branch`: The routine performs a conditional check based on a value in a table and a global variable to decide which of two other routines to call.
+- `update_timers_and_dma`: Decrements active timers, performs fixed-point linear interpolation, and modifies DMA control or video pointer registers.
+- `clear_structure_bytes`: The routine decrements a short counter in a structure and, if it reaches zero, enters a loop that repeatedly calls another routine to clear bytes at a specific offset until a null terminator is reached.
+- `tiny_addq`: Small routine of 1 instruction that adds 4 to a0.
+- `process_compressed_stream_data`: Decodes a stream of bytes by reading control values to update a destination buffer, modify structure offsets, or increment frame indices.
+- `modify_structure_fields`: Sets a byte at a specific offset to a constant value and conditionally updates a byte at another offset based on a comparison.
+- `update_animation_frame`: Updates an animation frame counter and increments or decrements a state byte based on specific threshold values.
+- `decompress_data_stream_2`: Processes a compressed byte stream using a control byte to determine whether to copy data from a table, perform arithmetic updates on a value, or manipulate a buffer.
+- `copy_byte_and_increment`: Copies a byte from one memory location to another and increments a word at a different offset within the same structure.
+- `set_byte_value`: Writes a specific byte value to a memory location at a fixed offset from a pointer.
+- `process_script_command`: Iterates through a sequence of data by incrementing an index and executing different logic branches based on a command byte.
+- `process_script_command_2`: Iterates through a data structure by incrementing an index and executes a series of operations based on a command byte.
+- `process_script_command_3`: Iterates through a list of data entries by incrementing an index and executes specific logic based on a command opcode.
+- `decode_compressed_stream_opcodes_2`: Processes a stream of bytes by interpreting them as control opcodes to update structure offsets, increment indices, or modify buffer values.
+- `execute_opcode_stream`: Interprets a sequence of bytes as control opcodes to manipulate internal state, update buffer indices, and perform conditional jumps or data copies.
+- `clear_specific_fields`: Sets a word at a specific offset within a structure to zero and sets a byte at another offset to a specific value.
+- `decode_compressed_stream`: Processes a stream of encoded bytes by reading a control byte and performing conditional updates to a destination buffer.
+- `clear_memory_fields`: Sets a word at an offset within a structure to zero and sets a byte at another offset to a specific value.
+- `decode_compressed_stream_opcodes`: Processes a stream of bytes by interpreting them as control opcodes to update structure offsets, increment indices, or modify buffer values.
+- `update_script_state`: Iterates through a sequence of instructions stored in a table, updating various state variables and pointers based on the current instruction opcode.
+- `update_entity_attribute_list`: Iterates through a list of data entries to update a structure containing multiple attribute offsets and values.
+- `clear_structure_member`: Clears a single byte at a specific offset within a structure pointed to by a register.
+- `populate_entity_attribute_list`: Reads a sequence of values from a data table and populates a structure with corresponding pointers and status flags.
+- `clear_structure_member_2`: Clears a single byte at a specific offset within a data structure pointed to by a register.
+- `reset_structure_member`: Calls another routine and then clears a byte at a specific offset within a structure.
+- `sync_entity_attribute_pointers`: Updates an entity's attribute list by resolving a sequence of indices from a data table into absolute memory addresses.
+- `populate_entity_attribute_pointers`: This routine reads a sequence of attribute indices from a data table and resolves them into absolute memory addresses.
+- `interpolate_script_timer_values`: Decrements internal counters and performs fixed-point arithmetic to interpolate values between two states.
+- `tiny_addq_2`: Small routine of 1 instruction that adds 4 to a5.
+- `update_script_timers_and_interpolation`: Decrements various internal counters and timers within a script state structure.
+- `execute_script_opcode`: Fetches an opcode from a data table and performs a multi-way branch to execute specific logic.
+- `execute_script_opcode_2`: Fetches an opcode from a data table and performs a multi-way branch to execute specific logic.
+- `execute_script_opcode_3`: Fetches the next instruction from a data table and performs a multi-way branch based on the opcode.
+- `execute_script_opcode_dispatch_3`: Fetches an opcode from a data stream and performs a multi-way branch to execute specific logic.
+- `execute_script_opcode_dispatch_4`: Fetches an opcode from a data stream and performs a multi-way branch to execute corresponding script instructions.
+- `execute_script_opcode_dispatch_8`: Fetches an opcode from a data stream and performs a multi-way branch to execute various script instructions.
+- `execute_script_instruction_stream`: Iterates through a data stream by fetching opcodes and updating a script state structure.
+- `nullify_global_pointer`: Sets a value at a location pointed to by an uninitialized pointer to zero.
+- `execute_script_opcode_13`: Fetches an opcode from a data stream and performs a multi-way branch to execute various script instructions.
+- `execute_script_opcode_14`: Fetches an opcode from a data stream and performs a multi-way branch to execute various script instructions.
+- `execute_script_opcode_dispatch`: Fetches an opcode from a data table and executes a corresponding branch based on the instruction type.
+- `execute_script_opcode_8`: Fetches an opcode from a data stream and performs a multi-way branch to execute specific logic.
+- `execute_script_opcode_18`: Fetches an opcode from a data stream and performs a multi-way branch to execute various script instructions.
+- `execute_script_opcode_11_3`: Fetches an opcode from a data stream and performs a multi-way branch to execute specific script instructions.
+- `execute_script_opcode_15`: Fetches an opcode from a data stream and performs a multi-way branch to execute various script instructions.
+- `execute_script_opcode_dispatch_9`: Fetches an opcode from a data stream and performs a multi-way branch to execute various script instructions.
+- `execute_script_opcode_4`: Fetches an opcode from a data table and performs a multi-way branch to execute specific logic.
+- `execute_script_opcode_dispatch_5`: Fetches an opcode from a data table and performs a multi-way branch to execute various script instructions.
+- `execute_script_opcode_9`: Fetches an opcode from a data stream and updates various state variables, pointers, and counters based on the instruction type.
+- `execute_script_instruction_loop`: Iterates through a script data structure by fetching opcodes and updating an instruction pointer.
+- `execute_script_opcode_16`: Fetches an opcode from a script data structure and executes a corresponding branch or data manipulation.
+- `execute_script_opcode_17`: Fetches an opcode from a data structure and performs a series of conditional branches, pointer updates, and memory writes.
+- `execute_script_opcode_dispatch_6`: Fetches an opcode from a data table and performs a multi-way branch to execute various script instructions.
+- `execute_script_opcode_dispatch_10`: Fetches an opcode from a data stream and performs a multi-way branch to execute various script instructions.
+- `process_script_instruction_2`: Reads an instruction byte from a data stream and executes a corresponding branch based on a large switch statement.
+- `execute_script_opcode_dispatch_11`: Fetches an opcode from a data stream and performs a multi-way branch to execute various script instructions.
+- `process_script_instruction`: Increments an instruction pointer and fetches the next opcode from a data table to execute a multi-way branch.
+- `execute_script_opcode_dispatch_2`: Fetches an opcode from a data table and performs a multi-way branch to handle various script instructions.
+- `update_interrupt_mask_and_state`: Checks specific bits in a global variable to select a pointer from a table and then updates that pointer's memory with a value from an offset.
+- `execute_script_opcode_dispatch_7`: Fetches an opcode from a data stream and performs a multi-way branch to execute various script instructions.
+- `execute_script_opcode_10`: Reads an opcode from a data structure and performs a series of operations based on its value.
+- `execute_script_opcode_11_2`: Fetches an opcode from a data stream and performs a multi-way branch to execute various script instructions.
+- `execute_script_opcode_11`: Fetches an opcode from a data stream and performs a multi-way branch to handle various script instructions.
+- `execute_script_opcode_5`: Fetches an opcode from a data table and performs a multi-way branch to execute specific logic.
+- `execute_script_opcode_12`: Fetches an opcode from a data table and performs a multi-way branch to execute specific script instructions.
+- `execute_script_opcode_6`: Fetches an opcode from a data table and performs specific state updates based on the instruction type.
+- `execute_script_instruction`: Fetches an opcode from a script data structure and performs a branch or data manipulation based on the instruction type.
+- `execute_script_opcode_7`: Fetches an opcode from a data table and performs a multi-way branch to execute specific logic.
+- `update_animation_state`: Updates a structure in memory based on the value of a register, using the register's bits to calculate an offset into a table.
+- `clear_audio_and_state_variables`: The routine writes zero to a set of global variables and to several memory locations, including audio volume registers and DMA and interrupt control registers, effectively resetting state.
+- `initialize_audio_and_script_state`: Clears a set of global variables and audio volume registers, resets DMA and interrupt state, and then loads a block of eight 16-bit entries from a table pointed to by a global variable and a register-derived offset into RAM.
+- `update_status_flags`: Compares a value from a register against a global variable and updates two global variables based on the comparison result.
+- `copy_byte_and_clear_words`: The routine copies a byte from one offset to another within an unspecified structure, clears a byte at a different offset, and clears a word pointed to by an uninitialized pointer.
+- `initialize_state_from_input`: The routine stores constants and the low word of an input value into global variables, computes an address using a table indexed by the high byte of the input and stores the result into a global variable, and clears two other global variables.
+- `update_entry_from_table_2`: Writes several input values and constants into global variables and returns.
+- `update_entry_from_table`: Selects a base address from a global variable or a table entry, checks a byte at a computed offset and calls another routine if it matches, otherwise reads bytes from the selected entry, computes an index and updates several global fields with values derived from the entry and a table, using a conditional mask.
+- `initialize_state_and_clear_flags`: The routine stores the result of another routine into a global variable, clears two global variables, and calls another routine before returning a concatenated value.
+- `initialize_state_with_mask`: The routine stores the result of another routine into a global variable, applies a bitwise mask and an offset to that value, clears a global variable, calls another routine, and returns a concatenated value.
+- `configure_timer_and_pointer`: Clears a global variable, sets it based on a byte test and a memory byte, writes constants to global variables, and conditionally initializes a pointer and several global values while accessing CIAB registers and INTENA.
+- `save_global_and_wait`: Stores a constant into a global variable and conditionally calls another routine based on a flag byte and a signed byte while touching interrupt registers.
+- `update_engine_state`: Performs extensive engine maintenance including timer updates, resource metadata processing, collision boundary searching, and state buffer synchronization.
+- `execute_callback_sequence_2`: Executes a series of function pointers from a dispatch table and performs a conditional call using a constant value.
+- `reset_global_state_variables`: Clears three specific word-sized memory locations by storing zero in each.
+- `log_formatted_string`: Increments a global index and stores a byte into a memory location retrieved from a table, then processes a format string for specifiers.
+- `traverse_data_structure_2`: Iterates through a table to find a matching entry based on several byte and word comparisons, or performs a conditional search through a nested structure using a pointer.
+- `decrement_and_recurse_table`: Decrements a byte at a memory location and recursively calls itself if a value at a calculated offset in a table is not negative one.
+- `update_character_attribute_table`: Iterates through a data structure to calculate and update character-related attributes by comparing values from multiple tables.
+- `process_resource_metadata`: Validates resource integrity via checksums and size constraints before calculating updated boundary dimensions and offsets.
+- `calculate_attribute_window_bounds`: Calculates the starting and ending coordinates for an attribute range based on a source table and applies clipping constraints.
+- `traverse_linked_list`: Recursively traverses a linked structure by following pointers until a null terminator is reached.
+- `dispatch_table_index`: Uses a parameter to index into a table of function pointers and executes the resulting routine.
+- `validate_data_sequence`: Iterates through a sequence of bytes, checking if they match a specific global byte and satisfy non-zero conditions, then clears a memory block if a condition is met.
+- `call_increment_routine`: Calls another routine that compares a global variable to a value and updates a table index.
+- `traverse_linked_list_2`: Walks through a linked list of pointers, checking specific bit flags within each element and calling another routine if certain conditions are met.
+- `check_parameter_range`: Compares a passed parameter against two specific values and sets a status byte in memory after potentially calling another routine.
+- `execute_double_call`: An empty routine that calls itself twice.
+- `nop_routine`: This routine is empty and performs no operations.
+- `check_table_match`: Iterates through a loop and calls another routine if a value from a table matches a global byte.
+- `call_conditional_pointers`: Sets a byte to zero and calls two different function pointers stored in memory if their corresponding values are non-zero.
+- `search_collision_bounds`: Iterates backward through a series of tables to find an index where a coordinate pair falls within specific spatial boundaries and meets several byte-based flag conditions.
+- `sync_text_index`: Compares a provided index against a global short and updates it if the index satisfies specific state conditions in two separate tables.
+- `update_index_state`: Clears a small table of words and then either searches a list for a specific status or decrements a counter while updating global values from a table.
+- `initialize_data_tables_2`: Clears several memory regions, initializes a bitmask table, and performs multiple recursive calls and data processing tasks.
+- `initialize_engine_state_structures`: Initializes a large global state structure by clearing multiple memory buffers, setting default values in several tables, and populating arrays with specific numeric constants.
+- `initialize_hunk_data_structures`: The routine populates several memory locations with specific values based on an index, including clearing various bytes and words and setting a sequence of incremental byte values.
+- `execute_complex_data_loop`: Performs a loop involving numeric string formatting, data XORing, linked list manipulation, and conditional display updates.
+- `initialize_and_process_node`: Calls another routine with a global offset and a constant argument, then calls another routine with no arguments.
+- `initialize_hardware_state`: This routine sets a flag, executes a loop three times, and then calls other routines to pass specific bit-shifted parameters.
+- `initialize_data_structure`: This routine populates a table with specific values and calls other routines to handle memory allocation or buffer management.
+- `fill_table_entries`: The routine iterates through a loop to store a byte and a word into specific offsets of a table calculated from an input index.
+- `find_matching_table_index`: The routine searches through a table of three entries to find an index where a value falls within a specified range, returning the index or a default value.
+- `compute_bitmask_table`: Populates a table by iterating through a bitmask and performing bitwise OR operations on values from a source array.
+- `update_status_values`: Stores a calculated address into a memory location and writes a constant value to a global table.
+- `call_increment_routine_2`: Triggers a routine to check a global variable against a value and increment a counter using a table.
+- `initialize_engine_subsystems`: Performs a sequence of conditional checks and memory allocations to initialize core engine components.
+- `process_structured_data`: Extracts values from multiple memory ranges using a series of conditional calls and stores the results into a global structure.
+- `increment_global_counters`: Adds a parameter value to a 32-bit integer and a 16-bit integer in a global structure, then calls another routine if a threshold is exceeded.
+- `increment_and_store_byte`: Increments a 16-bit value in a global structure and stores a byte at a location pointed to by another global variable.
+- `populate_collision_proximity_matrix`: Calculates a proximity or collision matrix by iterating through a collection of objects and checking their spatial relationships.
+- `process_linked_list_data`: Iterates through a linked list of structures to extract and store specific byte values into a local buffer.
+- `update_object_collision_states`: Iterates through a linked list of objects to update their collision status and bounding box properties.
+- `update_collision_bounding_boxes`: Iterates through a linked list of objects to calculate and update their bounding box dimensions.
+- `rebuild_collision_linked_list`: Iterates through a linked list of objects to recalculate and update their bounding box properties and collision states.
+- `update_dijkstra_path_weights`: Iterates through a linked list of nodes to calculate and update edge weights and shortest path distances.
+- `execute_dijkstra_pathfinding`: Implements a Dijkstra shortest-path algorithm using a priority queue to traverse a graph.
+- `update_priority_queue_nodes_4`: Iterates through a linked list of nodes to find the minimum priority value and updates the priority and parent pointers of neighboring nodes.
+- `update_priority_queue_nodes_3`: Iterates through a linked list of nodes to find the minimum priority value and updates the priority and parent pointers of neighboring nodes.
+- `update_sorted_linked_list`: Traverses a linked list to calculate new values based on indexed data and maintains the list in a sorted order.
+- `update_priority_queue_nodes_2`: Iterates through a linked list to find the minimum value and updates the priority values of neighboring nodes.
+- `update_priority_queue_nodes`: Iterates through a linked list of nodes to find the one with the minimum value and updates the priority of other nodes based on that minimum value.
+- `relax_priority_queue_nodes`: Iterates through a linked list to compare node values and updates them if a smaller value is found.
+- `update_priority_queue`: Performs a relaxation step on a priority queue by comparing values in a linked list and updating them if a smaller value is found.
+- `relax_priority_queue_nodes_2`: Iterates through a linked list of nodes to update their priority values.
+- `reorganize_linked_list_elements`: Iterates through a linked list to compare adjacent elements and reorder them based on specific criteria.
+- `process_linked_list_data_2`: Iterates through a linked list of structures to perform calculations on byte values and update a secondary table.
+- `sort_and_process_linked_list`: Iterates through a linked list to find minimum values and updates a secondary table based on calculated offsets.
+- `sort_linked_list_elements`: Iterates through a linked list of elements to compare adjacent values and reorder them.
+- `reconcile_coordinate_rectangles`: Performs a nested loop to compare and swap pairs of short integer values stored in a global structure.
+- `synchronize_coordinate_rectangles`: Copies a series of word-sized values from a source to a destination and performs a nested loop to compare and swap coordinate pairs.
+- `reconcile_coordinate_bounds`: Compares two sets of word-sized coordinate pairs and performs conditional swaps to synchronize or sort their values.
+- `update_coordinate_bounds`: Compares a pair of short integers against stored minimum and maximum values in a global table and updates those bounds if the new values fall outside the current range.
+- `reconcile_input_event_buffers`: Compares and synchronizes two sets of input event data by checking for matching values and swapping elements to maintain sorted order.
+- `reorder_input_event_buffers`: Compares and swaps values within two distinct sets of input data buffers to maintain a specific sorted order.
+- `sort_input_event_buffers`: Maintains and sorts two separate sets of input data buffers by comparing new input values against existing entries.
+- `update_input_history_buffers`: Shifts values within two separate circular buffers and updates their contents based on new input data.
+- `shift_and_reconcile_input_buffers`: Shifts elements within two separate arrays of short integers and performs a comparison to synchronize or update boundary values.
+- `update_global_counters`: Adds a value to a 32-bit integer and a 16-bit integer within a global structure.
+- `insert_linked_node`: Inserts a new node into a linked list structure by updating pointers and copying data.
+- `update_linked_list`: Manages a linked structure by inserting a new node returned from another routine into a chain.
+- `update_pointer_chain`: The routine reads a value from a global word, stores a result from another routine through a pointer, updates a linked structure by copying a pointer and writing a byte from a global word, then returns a value from a global word.
+- `unlink_doubly_linked_list_node`: Removes a node from a doubly linked list by updating the forward and backward pointers of its neighbors.
+- `update_linked_list_node`: Updates the forward and backward pointers of a node within a doubly linked list.
+- `update_conditional_pointer`: Stores a value into a memory location determined by an offset and a conditional check on a pointer's contents.
+- `update_pointer_via_offset`: Stores a value into a memory location calculated by adding an offset to a register.
+- `return_immediately`: This routine consists of four instructions that perform no observable work and return immediately.
+- `copy_table_words`: Reads multiple 16-bit values from a table at calculated offsets and stores them into a global variable at sequential locations.
+- `store_constant_words`: The routine stores two constant 32-bit values into a global memory location.
+- `perform_bit_shifts`: Executes two loops that repeatedly modify values in a global variable through arithmetic operations and bitwise checks.
+- `realign_clipping_bounds`: Recursively adjusts a coordinate value by increments of eight to align it within a specified range or to match a target value.
+- `update_clipping_bounds`: The routine adjusts a global value based on a comparison with a threshold and a calculated offset, then stores the result into two other global variables.
+- `update_index_bounds`: Calculates the absolute difference between a parameter and a global value, updates several indices in a table, and conditionally calls other routines based on those values.
+- `search_linked_list`: Traverses a linked structure to find a node containing a specific two-byte sequence, updating global counters during the search.
+- `update_system_state_2`: Updates several global values, modifies a table of bytes, and performs conditional logic based on values retrieved from a data structure.
+- `update_index_metadata`: Updates a global index and a table entry based on a provided parameter, then conditionally clears a range of memory.
+- `update_asset_metadata_offsets`: Calculates and stores relative memory offsets for various data elements within a structure.
+- `calculate_and_fill_buffer`: This routine calculates an offset, reads values from memory, and fills a buffer with calculated products.
+- `compare_table_entries`: Iterates through a table of bytes and calls another routine if any entry matches a specific global byte.
+- `parse_resource_metadata_table`: Iterates through a data structure to extract and store properties such as offsets, lengths, and identifiers into several parallel arrays.
+- `process_indexed_data`: Updates a value in a table based on an index and clears a range of memory using a loop.
+- `extend_signed_word`: Checks a word at an offset from a pointer and, if non-zero, sign-extends that word into a longword register.
+- `update_indexed_pointer`: Checks if a value at an indexed location is zero, then calls another routine and updates that location with a value from a global variable.
+- `update_offset_table`: Checks if a value at a specific offset within a table is zero, then calls another routine and stores a value from a global variable into that table entry.
+- `update_pointer_table`: Checks if a value at an index within a table pointed to by a global variable is zero, then calls another routine and stores a value from a global variable into that table entry.
+- `initialize_indexed_structure`: Checks specific offsets in a structure and, if a non-zero value is found, populates several indexed fields in a table with specific constants and copies a value from another part of the structure.
+- `update_entity_state_table_2`: Checks specific global flags and, if a condition is met, retrieves an index to update multiple entries in a data structure.
+- `format_numeric_string`: Converts a numeric value into a three-digit decimal string representation stored in a buffer.
+- `convert_numeric_values`: Converts a short integer into a three-digit decimal string and stores the characters in a buffer.
+- `clear_pointer_array_elements`: The routine checks a global flag and then iterates through a list of pointers, setting the value at each pointer to zero if it is not negative one.
+- `update_pointer_list`: Iterates through a list of pointers and either clears them to zero or updates them with a new value based on a bitwise XOR operation and a comparison against a specific constant.
+- `update_buffer_state`: Increments a global counter and performs conditional logic to copy data or strings into various buffers based on global flags and parameter values.
+- `execute_conditional_logic_2`: Evaluates several global pointers and values to decide which parameters to pass to another routine.
+- `update_game_state_parameters`: Updates a series of global variables and data structures by performing arithmetic operations and copying values into a specific memory block.
+- `unpack_compressed_data_blocks`: Iterates through multiple data segments to decompress and distribute bytes and longwords into specific memory buffers.
+- `initialize_data_tables`: Clears several memory regions by zeroing out specific byte and word counts and filling multiple tables with zero values.
+- `process_indexed_data_elements`: Processes data from an indexed table by performing conditional decrements, testing flags via pointers, and converting numeric values into ASCII strings.
+- `update_state_and_decrement_counter`: Updates a global structure based on conditional logic and decrements a global word, potentially triggering a sequence of data copies and routine calls if the word reaches zero.
+- `fetch_offset_word`: Retrieves a sixteen-bit value from a memory location calculated by adding a constant offset to a value held in a register.
+- `process_script_result`: Calls a routine to reset script state and then performs a bitwise XOR between a global byte and several bytes from the stack.
+- `return_zero_value`: The routine is empty and simply returns a zero value to the caller.
+- `return_immediately_4`: The routine performs no operations and returns to its caller immediately.
+- `process_script_result_short`: Calls a routine to reset script state and then performs a bitwise XOR between a global byte and two bytes from the stack.
+- `update_event_state`: Checks a condition based on a global flag and a null terminator in a specific memory location.
+- `return_byte`: Returns the value pointed to by the provided parameter.
+- `clear_word_at_memory`: Stores a zero as a 16-bit value at a specific memory location.
+- `generate_interpolated_values`: Calculates two hundred interpolated byte values based on a linear relationship between two points and stores them in a destination buffer.
+- `initialize_sequence_tables`: Populates two separate tables with incrementing word values using a loop.
+- `decrement_and_reset_state_counter`: Decrements a value at a memory location derived from a table and clears several status flags and table entries if a specific byte is non-zero.
+- `decrement_table_values`: Decrements a byte in a global variable and uses the result to index into a table, subsequently decrementing a byte at a location derived from that table value.
+- `return_zero_value_2`: This routine is empty and simply returns a zero value to the caller.
+- `xor_global_with_result`: Calls another routine and stores a boolean result based on whether the return value equals a specific constant into a global word.
+- `synchronize_state_buffers`: Checks if two global values differ and, depending on the result, clears memory, iterates through a table to check bitmasks, or resets several global variables.
+- `update_metadata_entry`: Sets a bit in a table entry and updates several global values based on an offset calculation.
+- `update_asset_metadata_table`: Calculates and updates memory offsets and size values within a structured table based on bitstream-derived data.
+- `read_bitstream_value`: Reads a byte from a pointer, increments that pointer, and performs a recursive call if the value is ten.
+- `clear_byte_at_offset`: Sets a single byte at a specific offset within a global structure to zero.
+- `decode_variable_length_bitstream`: Decodes a compressed bitstream using a variable-length encoding scheme and writes the resulting bytes to a destination buffer.
+- `decompress_variable_bitstream`: Decompresses a bitstream using a variable-length encoding scheme and writes the resulting bytes to a destination buffer.
+- `decode_compressed_stream_2`: Decompresses a bitstream using a variable-length encoding scheme and writes the resulting bytes to a destination buffer.
+- `reset_render_bounds_3`: Clears several memory locations and conditionally calls another routine if a value in a table matches a global byte.
+- `initialize_memory_buffers`: Calls a routine with a value from a global variable, sets a byte to one, clears a block of memory, and fills a table with the value two hundred.
+- `decompress_and_copy_data`: Decompresses a data stream using a custom bit-stream algorithm and writes the resulting bytes into a destination buffer.
+- `decompress_data_stream`: Reads data from a source pointer and writes it to a destination pointer with a stride of 40 bytes.
+- `trigger_callback_and_clear_buffer`: Executes a nested callback function via a pointer from a global structure, sets a flag in a global variable, and clears a memory block of forty bytes.
+- `clear_memory_byte`: stores a zero byte into a memory location calculated by adding an offset to a value held in a register.
+- `store_indexed_byte`: Uses a global byte as an index to store a parameter byte into a table, incrementing the index and calling another routine if it exceeds a limit.
+- `populate_lookup_table`: Copies bytes from a source table into a destination buffer based on a list of indices.
+- `search_table_criteria_2`: Iterates through a table to find an index where a bitwise mask check and a high-bit flag check pass, while also ensuring a value from a second parameter falls within a specific range.
+- `search_table_entry`: Iterates through a table to find an index that satisfies specific bitwise and range conditions.
+- `search_table_criteria`: Iterates through a table to find an index where a bitwise mask check and a high-bit flag check pass, while also ensuring a value from a secondary table falls within a specific range defined by another memory location.
+- `traverse_metadata_chain`: Iterates through a sequence of bytes by following pointers or indices, checking specific bitmasks and updating a global byte value based on the contents of a table.
+- `process_byte_array`: Iterates through a sequence of bytes defined by a count in a global variable and calls another routine for each non-zero byte found.
+- `sync_asset_metadata`: Iterates through a range of values to update specific bits and fields in a metadata table.
+- `copy_memory_block_4_2`: This routine copies a sequence of bytes from a source pointer to a destination pointer using a loop.
+- `copy_memory_block_4`: Copies a sequence of bytes from a source pointer to a destination pointer using a loop.
+- `execute_conditional_sequence_2`: Performs a series of conditional checks and subroutine calls, including modifying a byte in a global structure based on a parameter and updating a global word.
+- `execute_conditional_sequence`: Performs a series of subroutine calls and uses a global short value to determine which subsequent routines to execute.
+- `process_conditional_logic`: Performs a recursive call, then checks a global short value to decide whether to execute a routine with a calculated address or call another routine multiple times.
+- `test_flag_via_pointer`: Fetches a pointer from a global variable and checks a specific bit flag using a parameter.
+- `execute_empty_sequence`: Calls two unnamed routines and returns one.
+- `validate_resource_integrity_tables`: Iterates through multiple data tables and arrays to check for null values, specific bit patterns, or non-zero flags.
+- `validate_asset_integrity`: Iterates through multiple tables and arrays to verify data consistency and non-zero values.
+- `verify_resource_data_integrity`: Iterates through multiple data tables and arrays to check for null values, specific bit patterns, or non-zero flags.
+- `validate_resource_integrity`: Iterates through multiple data tables and arrays to check for specific byte patterns, null values, or non-zero flags.
+- `validate_resource_integrity_2`: Iterates through multiple data tables and arrays to check for specific byte patterns, null values, or non-zero flags.
+- `execute_complex_conditional_loops`: Iterates through several loops to check bit flags and byte values in various tables, triggering specific subroutines before executing a final counter-based loop.
+- `execute_multi_stage_loops`: Iterates through multiple tables to conditionally call subroutines based on byte values, and finally executes a while loop that increments a counter based on a returned value.
+- `execute_conditional_loops`: Iterates through a table of bytes to call subroutines based on non-zero values, then performs secondary loops and a counter-based increment sequence.
+- `execute_looping_sequence_2`: Iterates through a table of bytes, calling a routine multiple times if a byte is non-zero, and then performs a secondary loop that increments a counter while calling other routines.
+- `execute_looping_sequence`: Executes a series of subroutines within a loop that increments a counter until it reaches a value returned by another routine.
+- `get_next_table_entry`: Increments a counter in a global structure and returns a 16-bit value from a table using that counter.
+- `deserialize_entity_property_stream_2`: Processes a stream of type identifiers to update various entity properties within global structures.
+- `deserialize_entity_property_stream`: Reads a sequence of type identifiers from a table to update various entity properties.
+- `apply_entity_property_stream_2`: Iterates through a data stream to update entity properties based on specific type identifiers.
+- `update_entity_property_from_stream`: Iterates through a data stream to update specific entity properties based on a type identifier.
+- `parse_indexed_data_stream`: Iterates through a data stream, comparing bytes against a counter and updating specific table entries based on the value of the retrieved byte.
+- `update_entity_state_table`: Iterates through a collection of entities, checking their current state against a global value and updating their properties based on specific state identifiers.
+- `process_table_entry_stream`: Iterates through a data stream, comparing values against a counter and updating specific offsets within a structure based on the value of the current entry.
+- `parse_table_entry_data`: Iterates through a table of entries and extracts specific byte values based on a type identifier.
+- `apply_entity_property_stream`: Reads a sequence of values from a data stream and updates specific entity properties based on a type identifier.
+- `update_entity_property_stream`: Iterates through a data stream to update specific entity properties based on type identifiers.
+- `process_table_entries`: Loops through a range of entries, combining bytes into a 16-bit value and updating an indexed data structure.
+- `combine_table_bytes`: Calls another routine twice to retrieve two consecutive bytes and combines them into a single 16-bit value.
+- `combine_two_word_results`: Calls another routine twice to retrieve two 16-bit results and returns a 32-bit value with the second result in the high word and the first in the low word.
+- `populate_buffer_from_table`: Retrieves two values from other routines, potentially calls another routine, and then fills a memory range starting from a new pointer with values from another routine.
+- `fill_byte_array`: Populates a memory range by repeatedly calling another routine and stores the results in a sequence.
+- `reset_multiple_tables`: This routine clears several memory areas by setting bytes to zero or one based on values stored in a table.
+- `process_recursive_offset`: Checks a byte in a global structure to decide whether to call itself recursively or to update an offset value by adding a byte from a memory location.
+- `execute_recursive_call`: The routine performs a self-referential call to itself before returning.
+- `append_byte_to_offset`: Adds a byte from a source location to a byte stored in a global structure and copies data in segments.
+- `add_byte_to_offset`: Adds a byte from a source location to a byte stored in a global structure.
+- `apply_relocation_hunks`: Iterates through a list of offsets to apply data relocations or load executable segments.
+- `decrypt_word_via_xor`: Performs a multi-byte XOR operation between a 32-bit value and a byte from a global location, then updates a global value and increments a counter.
+- `fetch_pointer_from_table_2`: Retrieves a byte from a location calculated by adding an offset to a pointer stored in a global variable.
+- `copy_data_in_chunks`: Iterates through a memory block and copies data in segments no larger than a fixed maximum size.
+- `call_flag_test_via_pointer`: Fetches a pointer from a global variable and passes it, along with a parameter, to a routine that checks a specific bit flag.
+- `process_nested_data_stream_3`: Performs XOR operations on bytes using a value from a global variable, retrieves a 16-bit value, and updates a global variable and a counter.
+- `fetch_conditional_table_value`: Checks a byte in a global variable against a bitmask in a table to determine if a value should be retrieved from a calculated offset.
+- `update_indexed_byte_array`: Calculates an address by adding a scaled index and a constant offset to a base address retrieved from a global variable, then stores a byte at that location.
+- `clear_and_mask_table`: Resets two global words to zero, calls another routine, and then performs a bitwise AND on two hundred consecutive bytes in a table.
+- `test_table_bit_2`: Checks if a specific bit is set in a byte located within a table using an index from a global variable.
+- `unpack_compressed_buffer`: Decodes a compressed data stream into a global buffer using arithmetic calculations and bitwise manipulation.
+- `execute_indirect_subroutine`: Retrieves a function pointer from a global variable and transfers control to that address.
+- `update_indexed_table_entry`: Calculates an offset into a table using a multiplier and a base address, then stores a 16-bit value at the resulting location.
+- `return_long_from_bytes_2`: Builds a 32-bit value from four consecutive bytes pointed to by its parameter and returns it.
+- `copy_and_xor_data`: Iterates through a memory block in chunks, XORing each byte with a value from a global variable and copying the result to a destination.
+- `check_status_and_increment_counter`: Calls another routine to retrieve a value, then if that value is zero, calls the same routine again to check if the result is negative one.
+- `copy_c_string`: The routine copies a null-terminated byte string from a source pointer to a destination pointer, advancing both pointers until the terminating zero byte is written.
+- `process_text_layout`: Copies a string, parses dialogue text, and updates and clamps attribute ranges based on values retrieved from a global structure.
+- `copy_and_initialize_attribute_data`: Copies a sequence of bytes from a source structure into a destination buffer and populates a series of memory locations with incremented pointer values.
+- `store_object_attributes`: Calculates dimensions and stores multiple properties, including coordinates and various identifiers, into indexed entries within a global table.
+- `initialize_object_attribute_table`: Clears a range of entries in a table by writing a specific value to each index.
+- `process_complex_layout`: Calculates coordinate ranges and executes a series of conditional callbacks based on values stored in a global structure.
+- `recursively_process_spatial_data`: This routine performs a recursive traversal of a hierarchical data structure by retrieving multiple short and byte values from an offset-based table.
+- `find_overlapping_bounds`: Iterates through a table of rectangular boundaries to find the first entry that contains a given coordinate pair.
+- `parse_dialogue_text`: Processes a string of text by parsing control codes and calculating text layout parameters.
+- `adjust_coordinate_differences`: Makes two short fields of the second parameter absolute by subtracting from the first parameter, then calls another routine four times with combinations of those fields.
+- `set_flag_and_recurse`: Stores a byte with the value one into a memory location calculated from a register and then calls itself.
+- `select_lookup_table`: Checks a parameter and calls another routine with a specific offset to store a result in a global variable.
+- `sort_and_process_hunk_types`: Identifies specific byte values within a range, stores their indices in a list, and sorts that list based on values in a secondary table.
+- `update_input_data`: Copies data from a source buffer into several global locations, including a byte, two shorts, and a loop that populates a series of bytes and shorts from a pointer.
+- `update_status_flags_2`: Iterates through a data structure to compare values and sets bytes in a destination buffer based on bitwise matches.
+- `execute_indirect_callback_2`: Retrieves a function pointer from a table via an offset and executes it.
+- `find_non_zero_index_2`: Repeatedly calls another routine until it returns a non-zero value.
+- `copy_byte_array`: Copies a sequence of bytes from one memory location to another based on a specified count.
+- `execute_stored_routine`: Checks if a global variable contains a non-zero value, calls the routine pointed to by that value, and then clears the global variable.
+- `forward_parameter_to_list_insertion`: Passes its single argument directly to a routine that inserts a node into a sorted linked list.
+- `process_event_pointer`: This routine checks a table entry for a non-zero value and, if found, calls another routine with that value before clearing the entry.
+- `search_and_insert_node_2`: The routine traverses a list to find a position matching a parameter, updates a global byte, and potentially inserts a node or calls another routine.
+- `search_and_insert_node`: Traverses a list to find a position matching a parameter, updates a global byte, and potentially inserts a node or calls another routine.
+- `find_highest_priority_event`: Iterates through a list of pointers to find the entry with the largest byte value that meets specific bitwise criteria, then updates a global pointer and calls another routine.
+- `search_event_list`: Traverses a list of pointers to find an entry where a specific byte value matches a global value and has its high bit cleared, then updates a global pointer and calls another routine.
+- `find_first_valid_event`: Scans a list of pointers until it finds an entry where a byte value satisfies specific bitwise conditions, then stores the pointer and calls another routine.
+- `scan_event_table`: Iterates through a list of pointers to find the first entry where a byte value derived from a table index meets specific bitwise criteria, then calls another routine.
+- `search_event_list_2`: Iterates through a list of pointers to find an entry matching specific criteria and updates a global value.
+- `rotate_bytes`: Takes a 32-bit value and returns it with its four bytes rotated to new positions.
+- `populate_resource_lookup_tables`: Iterates through a data structure to categorize pointers into several different tables based on a type identifier.
+- `calculate_max_list_depth`: Traverses multiple linked lists and calculates the maximum sum of values returned by calling another routine on each node.
+- `insert_into_list`: Inserts a new node into a linked list, either by updating a global head pointer or a provided pointer, and handles node splitting if the list length exceeds a threshold.
+- `copy_words`: Copies a block of words from a source pointer to a destination pointer.
+- `check_event_conditions`: Iterates through a range of memory to find a structure with a specific type byte and a non-zero value in a corresponding table, returning one if found.
+- `manipulate_linked_list`: Traverses and modifies a linked list structure by updating pointers and checking conditional values.
+- `insert_sorted_node`: Inserts a new node into a linked list at a position determined by a comparison value.
+- `insert_sorted_node_2`: Inserts a new node into a linked list at a position determined by a comparison value.
+- `insert_into_sorted_linked_list`: Inserts a new node into a sorted linked list by traversing the list to find the correct position.
+- `recursively_call_routine`: Calls another routine with a passed parameter and returns the result of that call.
+- `sort_and_aggregate_data_nodes`: Traverses a linked list to collect pointers and associated values into arrays, then performs a bubble sort on these pairs based on the values.
+- `map_linked_list`: Recursively traverses a linked list to build a new list of pointers based on the input values.
+- `divide_fixed_point_signed`: Performs signed division of two 32-bit fixed-point values.
+- `decrement_and_store_linked_list_value`: Recursively traverses a linked list and decrements the value of the current element by two before storing it at a global offset.
+- `compute_fixed_point_product_2`: Calculates the product of two 32-bit fixed-point values using their high and low 16-bit components.
+- `loop_dispatch_sequence`: Executes a loop that calls a dispatch routine and checks a global word for a non-zero value to break.
+- `process_engine_state_logic`: Evaluates a central state variable against multiple constant values to execute specific branches of logic.
+- `increment_and_call`: Increments a value in a structure and calls another routine if the original value was zero.
+- `decrement_and_check`: Decrements a value in a structure and executes a routine if the value reaches zero or is less than one.
+- `copy_string_to_buffer`: Copies a null-terminated string from a source table into a destination buffer.
+- `update_display_state`: Checks various global flags and status bytes to perform conditional logic, updates multiple values in a global structure, and fills a buffer through a loop.
+- `manage_state_and_buffers`: Modifies data within a buffer and performs conditional checks against a global word to determine whether to execute further routines or jump to a different location.
+- `check_buffer_content`: Retrieves an index from a buffer, clears a byte at that index, and checks if a global word matches the cleared byte or its offset.
+- `compare_strings`: Compares two null-terminated strings and returns a result indicating their relationship.
+- `reset_flag_byte_2`: Checks a byte at an offset from a pointer and sets it to zero if it is non-zero.
+- `return_stored_function_pointer`: This routine retrieves a function pointer from a memory location or register and returns it to the caller.
+- `update_state_index_2`: Resets a global word to zero, updates it with the result of a routine call, and stores that result in another global variable.
+- `update_table_index_and_retrieve_value`: Compares a value in a global variable to a stored short, and if they differ, retrieves a word from a table, clears that table entry, and increments the global variable with a bitwise AND mask.
+- `calculate_string_length`: Calculates the length of a null-terminated string by iterating through its characters.
+- `return_function_pointer_2`: This routine returns a function pointer retrieved from a register or a memory location.
+- `process_conditional_logic_2`: Checks a global short value and, depending on its content, executes a sequence of calls that modify various global variables and table entries.
+- `decrement_and_update_structure`: Decrements a value in a structure and, if it reaches zero, copies data from a table to a new location and executes three function pointers.
+- `fill_buffer_with_byte`: Repeatedly writes a specific byte value into a buffer for a specified number of iterations.
+- `update_system_state`: Updates several global values and status flags, then conditionally calculates a new address and calls another routine with specific parameters.
+- `clear_global_flag`: Sets a byte in a global variable to zero and then calls another routine.
+- `increment_and_check_counter`: Increments a value in a structure and calls another routine if the value equals one.
+- `search_first_nonzero_element`: Repeatedly calls another routine in a loop until it returns a non-zero value.
+- `calculate_linear_interpolation_steps`: Calculates the absolute difference between two coordinate pairs and determines a maximum step count.
+- `update_state_values_2`: Updates two memory locations with a value from a parameter and executes another routine if the value is zero.
+- `store_and_concatenate`: Stores a value from a register into a memory location and returns a combined value containing a modified integer and another register's content.
+- `set_status_flag`: Checks a byte in a global structure and sets it to one after executing conditional subroutines.
+- `clear_and_search_table`: Clears a range of bytes in a table and searches for specific byte patterns to update a status byte.
+- `get_next_pointer`: Increments a pointer stored in a global variable and returns the original address.
+- `get_next_word`: Increments a pointer in a global variable by two bytes and returns the 16-bit value at the original location.
+- `process_data_loop`: Iterates through a list of data, updating various memory locations and executing a function pointer based on a retrieved value.
+- `check_status_and_call`: Checks if a specific byte in a structure is not negative and calls another routine if it is not.
+- `update_table_entry_from_pointer`: If a specific byte does not equal a certain value, it stores a value calculated by adding a global variable to a table entry into another global variable.
+- `store_pointer_difference`: If a specific byte does not equal a certain value, it stores the difference between a global variable and another global variable into a table entry.
+- `execute_two_routines`: Calls another routine twice in succession.
+- `call_stub`: Call stub: calls one other routine as a subroutine and returns to its own caller when that routine returns.
+- `resolve_resource_pointer`: Resolves a resource identifier by traversing a linked list or searching a table to retrieve a memory address.
+- `check_status_flags`: Iterates through a table to check specific byte flags and executes a routine or clears a byte based on matching conditions.
+- `update_matching_entries`: Searches through tables to find entries matching a provided value and updates their status, clears flags, or executes a routine.
+- `update_status_tables`: Iterates through a table of shorts to match a parameter, then updates specific bytes in a global structure and potentially clears flags in a second table.
+- `find_char_in_list`: Increments a global pointer while searching for a specific character in a list, returning a value from another routine if found.
+- `update_indexed_data`: Updates several indexed values in a structure based on a byte index and performs conditional checks on the resulting data.
+- `update_indexed_structure`: Updates multiple fields in a global structure using values retrieved from various lookups and performs a conditional loop to copy or clear a sequence of words.
+- `process_indexed_table_entries`: Iterates through data structures to validate indices, search for null bytes, and update status flags or values within tables.
+- `find_first_null_byte`: Searches through a sequence of bytes to find the index of the first null byte, or returns a default value if none is found.
+- `increment_status_flags`: Sets a bit in a table of bytes, increments several counters, and clears a bit in another table based on specific conditions.
+- `decrement_status_flags`: Decrements several counters and clears bits in a table if the counters reach zero.
+- `check_status_flag`: Checks a short value at a specific offset and calls another routine if the value is non-zero.
+- `resolve_nested_data`: Recursively traverses a data structure by reading words from a table and performing conditional branching based on the value's bit patterns.
+- `modify_indexed_data`: Modifies a byte or word in a global structure based on flags and values retrieved from a global variable and a lookup table.
+- `resolve_nested_data_2`: Recursively processes data by retrieving words and adding them to a global value, applying bitwise masks to the result.
+- `traverse_data_structure`: Recursively traverses a data structure by reading values and branching based on a byte flag.
+- `branch_on_flag_2`: Performs a recursive traversal of data based on the state of a byte flag.
+- `populate_word_table`: Initializes a table of sixteen words to zero and then populates it by recursively fetching values from a data stream.
+- `conditional_script_calls`: The routine checks a bitmask against a global byte and conditionally calls another routine once or twice, performing no other data operation.
+- `store_and_return_byte`: Stores a returned word into a global variable and returns a byte from a table using that word as an index.
+- `store_and_fetch_byte`: Stores a 16-bit value into a global variable and returns a byte from a table using the lower byte of that value as an index.
+- `conditional_script_calls_2`: Checks a bitmask against a global byte and conditionally calls another routine once or twice, performing no other data operation.
+- `store_byte_at_offset`: Copies a byte from a parameter into a global structure at an offset determined by another global variable.
+- `find_first_zero_word`: Iterates through a table of 16-bit words to find the first entry that equals zero, returning the index.
+- `calculate_max_difference_2`: Compares values from a table and memory against parameters, then calculates and returns the largest absolute difference between two pairs of short integers.
+- `calculate_max_difference`: Calculates the absolute difference between two pairs of short integers stored in a table and returns the larger of the two results.
+- `find_maximum_absolute_difference`: Calculates the absolute difference between two pairs of values stored at a memory offset and returns the larger of the two results.
+- `calculate_absolute_difference`: Computes the absolute difference between two pairs of values and returns the largest difference found.
+- `return_immediately_3`: This routine is empty and performs no operations before returning to its caller.
+- `return_immediately_2`: The routine executes a short sequence of instructions and returns without modifying any registers or memory.
+- `return_early`: The routine consists of four instructions and immediately returns without modifying registers or memory.
+- `subtract_from_table_values`: Iterates through a table and subtracts a value from entries marked with a specific byte, resetting them to zero if they fall below that value.
+- `copy_data_segments`: Checks if a range defined by two parameters is valid, then calls another routine three times to copy data from various sources into a local buffer.
+- `perform_recursive_calls`: Performs multiple recursive calls to itself using a value derived from a global variable.
+- `execute_recursive_calls_3`: Executes two recursive calls to itself using a value derived from a global variable.
+- `combine_bytes_to_word`: Takes a pointer to two consecutive bytes and returns them as a single sixteen-bit value with the first byte in the low-order position.
+- `copy_string_to_buffer_2`: Calculates the length of a null-terminated string and then copies the contents of one string into the location of another.
+- `set_temporary_pointer`: Stores a value into a global variable and then calls another routine using that value as a pointer.
+- `copy_string`: Copies a null-terminated string from one memory location to another.
+- `add_to_global_accumulator`: Retrieves a 16-bit value from a pointer and adds it to a value stored in a global variable.
+- `call_reset_status_flag`: This routine executes a single call to a function that checks a status byte and resets specific structure fields and memory bits if a condition is met.
+- `reset_status_flag`: Checks a status byte and, if a specific condition is met, clears a bit in a memory location and resets several structure fields.
+- `process_script_commands`: Interprets a command byte from a data stream and executes specific logic or pointer decrements based on the command type.
+- `store_constant_byte`: Stores a constant byte into a specific memory location.
+- `process_looping_data`: Retrieves a value and enters a loop that executes a routine multiple times based on that value, while incrementing a counter in a global structure.
+- `store_constant_value_entry`: It calls another routine, loads a constant word into a register, calls another routine, then calls another routine with the constant as argument.
+- `execute_nested_data_with_value`: Retrieves a value from a global structure and passes it as an argument to a subsequent routine call.
+- `traverse_nested_data_structures`: Recursively processes a data structure by retrieving values from a table and applying bitwise masks or conditional branching.
+- `branch_on_data_value`: Retrieves a value and either calls another routine or passes a value from a global structure to a routine based on whether the retrieved value is zero.
+- `execute_nested_data_sequence`: Retrieves a value from a global structure, calls a routine with that value, and then calls another routine.
+- `traverse_and_modify_nested_data`: Recursively traverses a data structure by reading values from a table and applying modifications to a global structure based on bitwise patterns and flags.
+- `traverse_nested_data_structure`: Recursively processes a data structure by retrieving values from a table and applying conditional logic based on bit patterns and flags.
+- `traverse_nested_data`: Recursively traverses a data structure by reading words and performing conditional branching.
+- `branch_on_decoded_value`: Reads a little-endian word from a byte pointer, advancing the pointer and adjusting a running offset, then branches to one of two routines based on whether the decoded value is zero.
+- `execute_conditional_logic`: Retrieves two values and performs a branch based on whether the second value retrieved is zero.
+- `compare_and_branch_words`: Reads a little-endian word from a byte pointer, compares two decoded values, and branches to one of two routines depending on which is smaller.
+- `accumulate_word_value`: Reads a little-endian word from a byte pointer and adds the resulting value to a global integer, then returns.
+- `compare_and_dispatch_words`: Reads two little-endian words from memory and compares them, then invokes one of two stored routines depending on whether the first value is greater than or equal to the second.
+- `resolve_nested_data_structure`: Recursively resolves values from a complex data structure by performing bitwise evaluations, table lookups, and arithmetic operations.
+- `branch_on_equality`: Fetches values from a data stream and branches to different routines based on whether a fetched value matches a specific result.
+- `compare_then_branch_value`: Compares two 16-bit values and then performs one of two different dependent routine invocations depending on whether the values are equal.
+- `set_global_flag_2`: Stores a constant word into a local variable, calls another routine with no arguments, and then calls another routine passing that constant as an argument.
+- `traverse_and_update_entries`: Traverses a data structure and calls another routine to update matching entries and clear flags.
+- `populate_data_table`: Populates a table of words by recursively fetching values from a data stream.
+- `process_data_structure`: Fetches a byte and a word from a data stream and passes them to another routine along with a flag derived from the byte.
+- `clear_indexed_table_entry`: Resets a specific entry in a table by clearing a word value and a byte flag.
+- `search_and_set_flag`: Searches a table for a specific value and, if found, sets the high bit of several bytes in a separate data structure.
+- `process_conditional_logic_3`: Performs a series of data retrievals and conditional calls based on a global byte flag.
+- `update_entity_state_and_search_list`: Updates two global state values within a structured table using an index and then performs a reverse linear search through a list to find an entry matching a specific set of four byte-based criteria.
+- `manage_list_node_data`: Copies a block of data from one memory location to another, updates several global variables, and modifies a bit in a global byte based on a calculated index.
+- `set_global_flag`: Compares a value from a routine call to a byte in a data structure and, if they differ, performs a recursive call and a subsequent call before setting a global byte to one.
+- `update_system_state_3`: Updates various global tables and state variables through a sequence of lookups and conditional recursive calls.
+- `update_segment_state`: Copies a byte to a global variable, updates several tables based on that byte, and conditionally stores two words and a byte into a global structure.
+- `execute_nested_calls`: Calls three consecutive routines without performing any data operations.
+- `search_and_compact_list`: This routine searches a list for a specific value, executes a routine if found, and then compacts the remaining list elements to fill gaps.
+- `modify_global_values`: Performs bitwise operations on retrieved values and updates a global word.
+- `parse_nested_resource_structure`: Recursively parses a hierarchical data stream by reading control flags and populating a stack-based array of structures.
+- `copy_byte_to_global`: Copies a byte from a memory location into a global variable and then calls another routine.
+- `transfer_byte_via_routine`: Retrieves a byte from another routine, stores it in a global variable, and then calls another routine.
+- `initialize_call_state`: The routine calls another routine to clear state, loads a constant into a register, obtains a value from another routine, combines it with the constant via another routine, passes the combined result with the earlier value to another routine, and finally calls another routine with no arguments.
+- `set_flag_and_call_handlers`: The routine calls another routine, loads a constant into a register, calls another routine, calls another routine with the constant as argument, then calls another routine.
+- `execute_flag_sequence`: Calls another routine, loads a constant into a register, calls another routine, and calls another routine with that constant as an argument.
+- `execute_nested_calls_2`: Performs a sequence of nested routine calls and evaluates their return values through conditional branching.
+- `search_table_for_match`: Iterates through a table to find an entry where a 16-bit word matches a value, a byte equals two, and a third byte is non-zero.
+- `store_resolved_value`: Retrieves a value from a data structure and stores it in a table at an offset determined by a global byte.
+- `accumulate_resolved_values`: Sequentially retrieves three values and accumulates them into a table entry using bit shifts and additions.
+- `set_variable_and_call_routines`: Loads a constant word into a local variable, calls another routine with no argument, then calls the same routine passing the variable as an argument.
+- `set_constant_and_call_routines`: Loads a constant word into a local variable, calls another routine with no arguments, and then calls that same routine using the local variable as an argument.
+- `update_global_entry`: Stores a 16-bit value into a global structure and calls three subsequent routines.
+- `initialize_global_flag`: The routine stores a constant word in a local variable, calls another routine with no argument, then calls another routine passing the stored constant, and returns.
+- `store_byte_and_branch`: Stores a byte into a global variable, calls another routine with a constant, and conditionally executes two more routines if a returned value is not negative one.
+- `update_coordinate_state`: Stores a byte from a routine return into a global variable and conditionally updates two words in a table based on a specific return value.
+- `set_fixed_values`: Stores two constant values into a table and calls another routine using one of those values and a byte from a table.
+- `update_global_pointers`: Stores a byte into a global variable, then stores two subsequent values retrieved from another routine into a global structure before setting a byte to a constant value.
+- `update_state_indices`: Retrieves values from other routines, stores them in a table, and calls another routine using a value from that table and a byte from a table.
+- `process_table_update`: Updates a byte in a table using a value from another routine and conditionally updates a global address if certain conditions are met.
+- `initialize_call_state_2`: Clears state, loads a constant, and combines it with a value from another routine before passing the result to a subsequent routine.
+- `update_indexed_table`: Increments a counter and updates a table with values and flags based on the result of another routine.
+- `update_recursive_table_state`: Increments a byte at a calculated pointer, updates a counter, and performs recursive calls while populating several table entries with values from a stack or global memory.
+- `decrement_recursive_table_state`: Decrements a byte at a calculated pointer and clears multiple table entries based on a counter before performing a recursive call.
+- `update_pointer_data`: Updates several memory locations based on the result of a subroutine call, either zeroing out specific values or calculating a difference and copying a byte from a global variable.
+- `initialize_global_parameters`: Sets a specific byte in a global structure, calls another routine with a constant, and clears a byte in a global variable.
+- `store_branch_results`: Stores a byte and a word into a global memory area based on a value returned from another routine.
+- `clear_global_byte`: Compares a byte from a global variable to its previous value and, if they differ, performs several calls before setting a global byte to zero.
+- `store_parameter_and_set_flag`: Stores the byte passed as a parameter into a global byte and sets a second global byte to a constant, then conditionally calls another routine.
+- `update_index_and_table`: Updates several global bytes and indices, performs conditional logic based on a table lookup, and increments values in a table if they match a specific byte.
+- `process_state_flags`: Calls another routine and executes different subsequent routines depending on whether the return value is zero.
+- `process_command_switch`: Reads a byte from a source, performs a switch on its lower bits to update various global bytes or call other routines, and then stores two bytes into a destination structure.
+- `set_byte_and_update`: Sets a byte to one, calls another routine, and then stores two bytes into a destination structure.
+- `set_byte_and_update_2`: Sets a byte to zero, calls another routine, and then stores two bytes into a destination structure.
+- `increment_byte_and_update`: Increments a byte, potentially performs a recursive call, and then stores two bytes into a destination structure.
+- `decrement_byte_and_update`: Decrements a byte, calls another routine, and then stores two bytes into a destination structure.
+- `set_byte_and_sync_words`: Sets a byte in a global structure to one and then copies two bytes from a source location into two word-sized destinations.
+- `clear_byte_and_sync_words`: Sets a byte in a global structure to zero and then copies two bytes from a source location into two word-sized destinations.
+- `increment_byte_and_sync_words`: Increments a byte in a global structure and then copies two bytes from a source location into two word-sized destinations.
+- `decrement_byte_and_sync_words`: Decrements a byte in a global structure and then copies two bytes from a source location into two word-sized destinations.
+- `process_bitmask_and_sync_words`: Performs bitmask decompression and data structure traversal before copying two bytes from a source location into two word-sized destinations.
+- `copy_byte_to_word`: Copies two bytes from a source location to two different word-sized locations in a destination structure.
+- `execute_recursive_data_traversal`: Recursively processes data structures by traversing nested elements, resolving values through bitwise masking, and modifying global data based on lookup tables.
+- `perform_recursive_traversal`: Performs recursive traversals and stores a constant value of four or other status bytes into a table based on comparisons of global values.
+- `process_conditional_data`: Traverses a data structure and decompresses a stream to update various global tables based on conditional comparisons and bitwise flags.
+- `assign_pointer_data`: Retrieves three values from a data structure and stores a word or two words into a global variable based on a flag.
+- `write_byte_stream`: Writes a sequence of bytes to a destination pointed to by a global variable, handling special cases when a specific byte value is encountered.
+- `process_script_bytecode`: Recursively parses a data structure by reading command bytes and executing corresponding actions.
+- `update_offset_table_2`: Checks a value at a table offset, calls another routine, and stores a global variable into a memory location using a bitwise mask.
+- `update_pointer_table_2`: Checks a value at a table index, calls another routine, and stores a global variable into a memory location using a bitwise mask.
+- `check_status_mask`: Checks if a byte in a structure is non-negative and performs a bitwise AND operation on a memory location using a value from a table.
+- `process_indexed_data_2`: Updates a table value based on an index, clears a memory range, and performs a bitwise AND operation using a table value.
+- `update_conditional_buffer_mask`: Copies a sequence of bytes into a memory offset using a calculated index, then checks a status byte to conditionally execute another routine and applies a bitwise mask to a memory location using a value from a table.
+- `set_high_bit_offset`: Copies data segments and sets the highest bit of a byte at a calculated offset.
+- `set_high_bit_conditional`: Sets the highest bit of a byte at a calculated offset if a value is less than a byte stored in a structure.
+- `set_high_bit_pointer`: Copies data segments and sets the highest bit of a byte at an offset determined by a pointer in a structure.
+- `set_high_bit_indexed`: Performs a table lookup to resolve an index, copies data segments, and sets the highest bit of a byte at a pointer-based offset.
+- `clear_high_bit_conditional`: Clears the highest bit of a byte at a calculated offset if a value is less than a byte stored in a structure.
+- `clear_high_bit_pointer`: Copies data segments and clears the highest bit of a byte at an offset determined by a pointer in a structure.
+- `mask_byte_from_index`: Uses a value to index into a table, retrieves a byte, and performs a bitwise AND operation on a memory location using that byte.
+- `perform_recursive_checks`: Calls itself recursively and performs conditional calls based on the returned byte value.
+- `perform_infinite_recursion`: The routine calls itself indefinitely without performing any other operations before returning.
+- `execute_recursive_callback`: This routine performs a recursive call to itself before returning.
+- `parse_status_byte`: Reads a byte from another routine, stores it in a global variable, and if a bitmask matches, stores a short value into two consecutive bytes.
+- `process_recursive_data_stream`: Retrieves a byte from a recursive call and stores it at an offset from a global pointer.
+- `store_byte_recursively`: Stores a byte into a calculated offset and performs multiple recursive calls using a passed value.
+- `store_word_recursively`: Stores a 16-bit value into a calculated offset and executes several recursive calls.
+- `process_recursive_word`: Stores a 16-bit value and performs recursive calls using modified versions of the returned value.
+- `execute_recursive_calls_4`: Performs two consecutive calls to another routine before returning.
+- `parse_object_definition_stream`: Reads a stream of data to populate an object property table based on type identifiers.
+- `update_object_state_table`: Finds an available index in an object array and initializes its properties by writing various values to a series of offsets.
+- `update_object_property_table_2`: Iterates through a data structure and updates various object property fields based on a type identifier.
+- `process_object_property_updates`: Iterates through a table of object properties and updates various fields based on a type identifier.
+- `update_object_state_table_2`: Iterates through a data structure and updates various object properties, flags, and numerical values within a table based on a type identifier.
+- `update_object_property_table_3`: Iterates through a data structure and updates various fields in an object property table based on a type identifier.
+- `update_object_state_table_3`: Processes a switch-based state machine that modifies various fields within an object property table.
+- `update_object_property_table_4`: Iterates through a table of object properties and updates various fields based on a type identifier.
+- `update_object_property_table_5`: Iterates through a table of object properties and updates various fields based on a type identifier.
+- `update_object_properties`: Iterates through an object property table and updates various fields based on a type identifier.
+- `update_object_property_table_6`: Iterates through a data structure and updates various object property fields based on a type identifier.
+- `update_object_property_table`: Iterates through a table of object properties and updates various fields based on a type identifier.
+- `parse_object_property_stream`: Iterates through a data stream to populate an object property table by interpreting type identifiers.
+- `traverse_nested_data_2`: Iterates through a byte stream to perform recursive calls based on calculated offsets and table lookups.
+- `iterate_byte_sequence`: Iterates through a sequence of bytes, updating a pointer and a value based on the content of the current byte until a zero byte is encountered.
+- `traverse_byte_stream`: Iterates through a sequence of bytes, using the value of each byte to calculate an offset for a recursive call.
+- `process_node_command`: Retrieves a byte and performs different operations based on its value, such as inserting nodes into a table, updating global pointers, or clearing memory in a loop.
+- `execute_indirect_call`: Performs an indirect call to a function address retrieved from a table using an index.
+- `execute_list_management`: Calls two other routines to manage data structures and table entries.
+- `update_table_entry`: Calculates an index and a value to update a specific entry within a table structure.
+- `store_byte_in_table`: Retrieves two values and uses them to store a byte into a specific offset within a table entry.
+- `perform_recursive_data_traversal`: Recursively traverses a data structure by reading values and branching based on a byte flag.
+- `insert_node_into_table`: Traverses a data structure and inserts a new node into a table, initializing its contents and setting a pointer in a global array.
+- `process_metadata_updates`: Retrieves a value from a pointer and performs conditional loops to either set or clear bytes in a table based on the retrieved value.
+- `clear_table_entries`: Iterates through a table using an index derived from a parameter and clears non-zero entries by calling another routine.
+- `manage_linked_list_nodes`: Traverses a list to find a matching position for insertion, checks structure status flags, and clears entries within a table using an index.
+- `parse_script_opcode`: Reads a byte from a pointer and executes a specific branch of logic based on the lower five bits of that byte.
+- `execute_recursive_calls_2`: Performs a sequence of recursive calls to another routine, passing a constant value and previously returned or calculated values as arguments.
+- `apply_hunk_relocations`: Iterates through a table of data structures and performs memory writes or arithmetic adjustments based on specific type codes.
+- `process_hunk_table`: Iterates through a table of data structures and performs specific memory operations based on type codes.
+- `apply_hunk_relocations_2`: Iterates through a table of data structures and performs specific memory operations or value assignments based on type codes.
+- `apply_hunk_relocations_3`: Iterates through a table of data structures and performs specific memory updates or relocations based on type codes.
+- `process_hunk_table_entries`: Iterates through a data structure and executes specific operations based on type codes that correspond to AmigaDOS hunk types.
+- `apply_hunk_relocations_4`: Iterates through a table of data structures and applies various relocation or initialization operations based on type codes.
+- `process_hunk_table_entries_2`: Iterates through a table of data structures and performs specific operations based on a type code found in each entry.
+- `apply_hunk_relocations_5`: Iterates through a data table and applies specific memory modifications based on type codes.
+- `parse_hunk_table_entries`: Iterates through a table of data structures and performs specific operations based on a type code found in each entry.
+- `parse_hunk_table`: Iterates through a table of data structures and performs specific operations based on a type code found in each entry.
+- `initialize_call_state_3`: Calls another routine to clear state, loads a constant into a register, obtains a value from another routine, combines it with the constant via another routine, passes the combined result with the earlier value to another routine, and finally calls another routine with no arguments.
+- `update_bitmask_table`: Iterates through a list to update a table of bytes using bitwise AND or OR operations based on a flag and a secondary value.
+- `compare_bitmask_data`: Iterates through a list to perform bitwise comparisons between two data sources and updates a flag based on the results.
+- `compare_and_accumulate_data`: Iterates through a list to perform bitwise comparisons between two data sources and updates a global variable based on the results.
+- `execute_duplicate_routine`: Calls another routine two times in succession.
+- `populate_lookup_table_2`: Reads a pointer and then iteratively stores that pointer into a table at indices determined by subsequent byte values.
+- `execute_data_sequence`: Executes a sequence of calls where a constant is passed to a routine after an initial call and a separate routine execution.
+- `search_indexed_table`: Iterates through a table to find an entry where a specific byte mask matches a retrieved value and a counter reaches a target value.
+- `run_empty_loop`: Executes a series of routine calls followed by a loop that iterates a fixed number of times without performing any operations.
+- `traverse_nested_structures`: Executes a sequence of calls to another routine with varying parameters to process data.
+- `increment_and_store_value`: Increments a value in a global variable and stores a two-byte parameter into a table at an offset determined by the previous value.
+- `decrement_and_retrieve_value`: Decrements a value in a global variable and returns a two-byte value from a table using the new value as an index.
+- `dispatch_command_stream`: Reads a stream of bytes and branches to different routine sequences or executes a function pointer from a table based on the value of the current byte.
+- `validate_parameter_and_flag`: Compares a parameter against a global word and checks a second global word before conditionally calling another routine and returning a boolean result.
+- `decrement_matching_values`: Compares a value against a table entry and, if a match is found within a loop, marks the table entry with a specific byte and decrements a value at a calculated memory location.
+- `copy_indexed_byte_block`: Stores a value into two global locations and copies a block of sixteen bytes from a source table to a destination buffer.
+- `increment_table_entry`: Increments a counter in a table and updates a value at a memory location derived from a parameter, while returning a combined value.
+- `initialize_hardware_state_2`: Sets a flag, executes a loop three times, and then calls other routines to pass specific bit-shifted parameters.
+- `build_proximity_collision_matrix`: Initializes a square matrix representing spatial relationships between a collection of objects, marking self-collisions as zero and non-collisions with a specific constant.
+- `update_and_clamp_attribute_ranges`: Increments two numerical bounds and clamps them within specified minimum and maximum limits.
+- `initialize_hunk_data_structures_2`: Populates several memory locations with specific values based on an index, including clearing various bytes and words.
+- `execute_multiple_callbacks`: Calls a routine several times and then calls another routine with a specific word value.
+- `read_long_value_routine`: A routine consisting of 96 instructions that calls a routine to combine four consecutive bytes into a 32-bit integer.
+- `process_long_value`: A routine consisting of 118 instructions that calls a routine to combine four consecutive bytes into a 32-bit integer.
+- `process_nested_string_data`: Copies a local buffer to a global pointer and recursively calls another routine to process a string from a global source, updating that source with the return value.
+- `process_nested_data`: Copies a local buffer to a global pointer, retrieves a value from a global location, and performs a recursive call with a combined value.
+- `parse_dialogue_text_string`: Processes a string of text by parsing control codes and calculating text layout parameters.
+- `validate_and_parse_resource_stream`: Validates a data stream by comparing header values against a reference and handles recursive parsing of nested data structures.
+- `update_resource_bounds_and_metadata`: Validates resource header integrity by checking checksums and size constraints, then calculates updated boundary dimensions and offsets.
+- `reset_render_bounds_2`: Clears specific memory bytes and conditionally updates a global variable and another routine based on a value in a table.
+- `reset_render_bounds`: Clears two bytes in memory and, if a specific short value is not negative one, calls another routine before copying two words from one location to another.
+- `forward_parameter_to_helper`: The routine immediately forwards its parameter to another routine and returns.
+- `convert_integer_to_string`: Converts a signed integer into a sequence of ASCII characters by repeatedly dividing by powers of ten and storing the results in a buffer.
+- `parse_nested_data`: Processes a string by copying characters to a global buffer and handling specific control codes through recursion.
+- `search_table_entry_2`: Searches through a table for a matching value and two zero bytes, then calls another routine with a calculated offset or jumps to a different location.
+- `resolve_nested_data_3`: Recursively traverses a data structure and conditionally calls another routine using either a fixed offset or a value from a global pointer.
+- `update_table_index`: Fetches a value from a table based on an index and stores it in a global variable.
+- `read_long_value`: Combines four consecutive bytes from a memory location into a single 32-bit integer.
+- `initialize_bounds_and_check`: Clears a range of memory, stores two word values, and calls another routine if a specific status flag is set.
+- `update_pointer_from_table`: Calculates a value based on an entry in a table and stores it in a global variable, defaulting to a specific address if the value is zero.
+- `update_pointer_from_table_2`: Compares a parameter against a global short and either sets a global pointer to a fixed address or increments it using a value from a table.
+- `invoke_lookup_helper`: The routine is empty except for a single call to another routine and an immediate return.
+- `lookup_index_data`: Retrieves an index from a table and either searches a list for a matching value to update several global variables or iterates through a table to find a non-zero entry.
+- `evaluate_hunk_status`: Compares a parameter against a global short and returns a value based on the result of another routine.
+- `store_coordinate_data`: Extracts bits from a byte at an offset, calls another routine with a pointer, and stores two words into global variables.
+- `compare_hunk_type`: Compares a byte from a table with a global value and, if they match, copies two two-byte values from another table into a global structure.
+- `process_compressed_data`: Decompresses a data stream and updates several tables and global variables based on the resulting values.
+- `unpack_compressed_data_stream`: Decompresses a bitstream using a variable-length encoding scheme into a destination buffer.
+- `verify_compressed_byte`: Compares a byte from a calculated offset against a parameter and, if they do not match, performs a bitwise loop before updating the byte with a shifted version of the parameter.
+- `decrement_counter_and_reset_state`: Decrements a value in a table and resets several status bytes and flags if certain conditions are met.
+- `parse_data_stream`: Calculates a memory address from a table, initializes several status variables, and iterates through a sequence of data to update them.
+- `parse_coordinate_stream`: Reads a sequence of coordinate data from a stream, updating bounding box bounds and incrementing error counters based on specific character delimiters.
+- `initialize_data_block`: Clears a block of memory and then fills subsequent words in that block with a specific constant value.
+- `copy_memory_block_2`: Copies a fixed number of longwords from one memory location to another based on a value in a global variable.
+- `copy_memory_block_5`: This routine copies a fixed number of double-word elements from one memory location to another.
+- `extract_bits_from_stream`: Reads a stream of bytes, performs bitwise operations to extract nibbles, and handles variable-length bit sequences to update a global variable.
+- `update_coordinate_and_attribute_ranges`: Calculates new coordinate values by reading bytes from a data stream and applying offsets based on direction flags.
+- `decode_and_copy_data`: Decodes a compressed data stream and copies the resulting structured data into a destination buffer.
+- `parse_bitfield_data`: Parses a data stream to update a bitfield and copies structured data into a destination buffer.
+- `decompress_and_copy_data_2`: Expands variable-length compressed data and copies the structured results into a destination buffer.
+- `lookup_and_copy_data`: Performs a table lookup to update memory via bitwise checks and copies structured data into a destination buffer.
+- `copy_structured_data`: Iterates through a data structure to copy bytes from a source table into a destination buffer using multiple pointers and a loop counter.
+- `update_attribute_ranges`: Updates two different sets of data ranges by performing bitwise OR operations on words and assigning byte values based on provided bounds and limits.
+- `update_segment_metadata`: Compares segment properties against a table of AmigaDOS hunk types and updates internal tracking structures.
+- `process_state_machine_transitions`: Iterates through a table of state flags and transition rules to update internal status bytes and integer values.
+- `update_coordinate_metadata`: Compares two 16-bit values against a table and, if they do not match, calculates fixed-point products and stores several 16-bit and 32-bit values into a table based on an offset.
+- `validate_executable_hunk_metadata`: Compares loaded data against a table of expected values and AmigaDOS hunk type codes to verify integrity.
+- `validate_memory_hunk_ranges`: Iterates through a table of memory segments to check for overlaps or valid bounds against specific hunk type codes.
+- `update_state_flags`: Fetches values from multiple tables using an index to toggle bits in a byte and update integer flags based on conditional bitmask checks.
+- `write_constant_to_table`: Stores the constant value four into a memory location calculated from a base address and a shifted input parameter.
+- `find_nearest_valid_point`: Iterates through a list of points to find the one with the minimum squared distance to a target coordinate, provided the point passes specific bitmask and orientation validation tests.
+- `validate_coordinate_range`: Checks if a calculated value falls within specific bounds defined by a series of comparisons against a table of short integers.
+- `find_closest_point`: Iterates through a series of points to find the one with the minimum squared distance to a target, storing the resulting coordinates in a global variable.
+- `find_closest_point_on_segment`: Calculates the point on a line segment defined by two coordinates that is closest to a target point.
+- `compute_squared_distance`: The routine computes the absolute differences of the low and high 16-bit components of two arguments, rejects the pair if either difference is 256 or more, otherwise forms a 32-bit result whose low 16 bits hold the sum of the squares of the differences and whose high 16 bits hold the high 16 bits of the square of the first difference, returning all bits set when rejected.
+- `test_vector_orientation`: Performs multiple orientation tests using a cross product routine and compares the results against several values stored in a table.
+- `orientation_test`: The routine returns true when the signed 16-bit cross product of the vectors from the first point to the second and to the third is less than or equal to zero, computed as the comparison of two 16-bit products of coordinate differences.
+- `update_accumulated_value`: Adds a value retrieved from a table to a base value and stores the result in a global variable.
+- `fetch_pointer_from_table`: Retrieves a pointer from a memory location calculated by adding an offset to a global variable.
+- `get_value_from_offset`: Calculates an address based on a parameter and a global variable to return a byte from that location.
+- `check_conditional_value`: Checks a byte at a specific offset and a bitmask in a table to return either a byte from a calculated address or zero.
+- `store_byte_to_offset`: Stores a byte from a parameter into a calculated address derived from a parameter and a global variable.
+- `test_table_bit`: Checks if a specific bit is set in a byte located within a table, using an index from a global variable.
+- `store_word_to_offset`: Stores a 16-bit value into two consecutive byte locations at a calculated address.
+- `copy_multiple_words`: Reads several 16-bit values from a calculated table offset and stores them into a global variable at sequential locations.
+- `search_data_range`: Iterates through a memory buffer to find a byte within a specific range and returns a corresponding value from a table.
+- `update_state_tables`: Updates several tables and memory locations using values derived from a global index and other memory lookups.
+- `update_state_tables_2`: Updates several 16-bit and 8-bit values in a table using an index and conditionally calls another routine based on a comparison with a global byte.
+- `increment_state_counter`: Checks if a specific byte is zero, then increments a value at a calculated memory location and updates several status flags and table entries.
+- `decrement_state_counter`: Decrements a value at a calculated memory location and clears several status flags and table entries if a specific byte is non-zero.
+- `initialize_data_block_2`: Sets a byte to one, updates a value in a table, and fills a sixteen-byte block of memory with a constant value.
+- `copy_data_block_2`: Loads a pointer from a table and copies sixteen bytes from a source location to a destination, substituting a specific byte value if a condition is met.
+- `update_pointer_target`: Checks if a value at a calculated offset is zero, then calls another routine and stores a value from a global variable into that offset.
+- `update_dialogue_text_metadata`: Updates a table of text layout and display parameters by extracting values from multiple data structures based on an index.
+- `reset_sprite_bounds`: Checks a value in a table, and if it is not negative one, clears a global byte, calls another routine with two table values, and sets the table entry to all ones.
+- `execute_empty_loop`: Executes a loop that calls another routine one hundred times before calling a second routine once.
+- `loop_update_script_objects`: The routine loops a fixed number of times calling another routine with a constant argument and incrementing a register, then calls another routine once before returning.
+- `find_matching_bounds`: Iterates through a series of tables to find an index where several byte and word conditions are met relative to the provided input.
+- `update_text_index`: Compares a provided index against a global short and updates that short if specific conditions in two different tables are met.
+- `search_coordinate_table`: Searches a table for an index where two byte values match the provided input parameters.
+- `clear_text_metadata_entries`: The routine checks a parameter and, if non-zero, clears specific bytes in two tables and then calls another routine to clear entries in a third table.
+- `update_table_metadata`: Calculates several values based on a data stream and updates multiple entries in a table using an index derived from a register.
+- `set_status_flag_2`: Checks a parameter against two specific values and, if they do not match, calls another routine and sets a 16-bit value and a byte in memory.
+- `update_attribute_coordinate_ranges`: Copies and offsets coordinate data from a source table into a destination structure, then iterates through attribute ranges to calculate and store bit-shifted boundary values into two separate byte arrays.
+- `initialize_shuffled_lookup_tables`: Populates a table with sequential values and performs a Fisher-Yates shuffle on them.
+- `get_word_from_memory`: Returns a 16-bit value stored at a specific memory location.
+- `test_bit_flag`: Checks if a specific bit is set within a byte located at an offset from a pointer stored in a global variable.
+- `call_subroutine_via_pointer`: Calls another routine using a pointer retrieved from a global variable.
+- `copy_data_block_3`: Iterates through a specified size in chunks, calling another routine to copy data from a source to a destination.
+- `copy_script_data_block`: The routine iterates through a nested loop structure to copy bytes from a source to a destination, decrementing a counter in a structure and advancing a pointer.
+- `call_script_interpreter`: Calls a routine that interprets script bytecode and manages resource fetching.
+- `read_resource_byte_2`: Retrieves a byte from a pointer and advances it.
+- `update_status_and_counter`: Retrieves a 16-bit value, updates a global variable based on a comparison, and increments a global counter.
+- `reset_and_increment_counter`: Sets a 16-bit global variable to zero and increments another 16-bit global variable by one.
+- `process_nested_data_stream_2`: The routine performs XOR operations on bytes, retrieves a 16-bit value from memory, and updates a global variable and a counter.
+- `reset_and_increment_counter_two`: Sets a 16-bit global variable to zero and increments another 16-bit global variable by two.
+- `xor_decrypt_word`: Performs a multi-byte XOR operation between a 32-bit value and a byte from a global location, then stores the result and increments a global counter.
+- `reset_script_state`: Sets a global short to zero and increments another global short by four.
+- `parse_resource_header_and_update_bounds`: Reads a data stream to extract pointer and length information, then updates global coordinate or boundary ranges by adding or subtracting byte values.
+- `calculate_sprite_render_bounds`: Calculates memory offsets and bounding box coordinates for sprite rendering based on screen dimensions and attribute tables.
+- `update_attribute_ranges_2`: Updates and clamps two sets of numerical bounds by comparing them against provided parameters and specific constant limits.
+- `calculate_coordinate_offsets`: Validates input parameters against specific bounds and uses a table lookup to calculate and store two offset values into global memory.
+- `offset_coordinate_values`: Calls another routine using two values that are the sum of a global variable and the provided parameters.
+- `compute_sprite_position`: Subtracts two parameters, takes their absolute values, determines a maximum, and loops while accumulating sums and conditionally calling another routine with an updated short value.
+- `find_table_index`: Searches through a table of three entries to find an index where a parameter falls within a specific range, returning the index or a default value.
+- `parse_formatted_string_2`: The routine parses a string, handling character sequences and nested formatting, while maintaining a stack of characters and updating two separate buffers.
+- `execute_event_loop`: Executes a sequence of calls that includes searching an event list, managing a linked list, and updating a table via a loop.
+- `search_event_list_3`: Iterates through a list of bytes to find an entry matching specific criteria and updates a global value.
+- `traverse_and_insert_linked_list`: Iterates through a linked list to find a position based on a comparison value and then calls a routine to insert a new node into that list.
+- `update_state_and_parameters`: Updates several fields in a global structure, including a counter and various configuration values, and then enters a loop that conditionally updates a value based on a comparison.
+- `initialize_system_state`: Updates multiple global variables, modifies a table of bytes, and performs complex conditional logic based on values retrieved from a data structure.
+- `find_non_zero_index`: Repeatedly calls another routine in a loop until it returns a non-zero value.
+- `increment_table_index`: Compares a value in a global variable to another, and if they differ, retrieves a word from a table and increments a counter.
+- `update_state_index`: Resets a global word to zero and updates it with the result of a routine call, then stores that result in another global variable.
+- `clear_global_values`: Sets three specific word-sized memory locations to zero.
+- `set_flag_zero`: Sets a byte in a global variable to zero and calls another routine.
+- `set_flag_one`: Sets a byte in a global variable to one and calls another routine.
+- `update_circular_buffer_index`: Checks if a provided value is non-zero, then uses a global index to store that value into a specific entry within a table.
+- `process_input_events`: Iterates through a list of input events, updating specific flags or calling other routines based on the event type code.
+- `parse_input_event`: Extracts data from an Amiga message buffer and translates input event types and coordinates into a custom internal format.
+- `store_bytes_to_table`: Stores two bytes into a table at an offset calculated from a parameter.
+- `decompress_bitmask_data_2`: Reconstructs bytes by iterating through a bitstream and applying bitwise AND and OR operations based on shifting bit values.
+- `decompress_bitstream_data`: Iterates through a bitstream to reconstruct bytes by performing bitwise AND and OR operations based on shifting bit values.
+- `perform_bitmask_decompression`: Iterates through a loop to perform bitwise operations and shifts on data pointed to by a pointer, using bitmasking to modify bytes.
+- `decompress_bitmask_data`: Performs bitwise operations and shifts on data using bitmasking to modify bytes through a loop.
+- `process_state_updates`: Updates several global values based on the results of multiple routine calls and manages a small rotating index and buffer.
+- `fetch_data_from_pointer`: Loads two words from a memory location pointed to by an offset within another pointer into two parameters.
+- `do_nothing`: This routine is empty and performs no operations before returning.
+- `toggle_first_bit`: Checks if the first bit of a byte in a global variable is set, and if so, toggles it using an exclusive or operation.
+- `toggle_second_bit`: Checks if the second bit of a byte in a global variable is set, and if so, toggles it using an exclusive or operation.
+- `handle_object_state_flags`: The routine updates word and byte flags at fixed offsets in a structure based on a code value in a parameter block, modifies the code value in the parameter block, and returns the updated code.
+- `execute_indirect_call_2`: Calls a function through a pointer retrieved from a global variable and stores the result in another global variable.
+- `execute_indirect_calls`: Calls two functions through pointers retrieved from a global variable and a structure.
+- `execute_indirect_call_3`: Calls a routine via a pointer retrieved from a global structure.
+- `execute_indirect_function`: This routine retrieves a function pointer from a nested structure within a global table and executes it.
+- `branch_on_flag`: Checks a byte in a global variable and calls one of two different routines based on its value.
+- `update_state_values`: Updates two specific memory locations with a value from a parameter and performs a conditional check.
+- `execute_indirect_callback`: Retrieves a function pointer from a table via an offset and executes it.
+- `execute_callback_sequence`: Calls a routine and then executes two function pointers retrieved from a structure, repeating this process with a different offset.
+- `toggle_status_flags`: Toggles a byte value and conditionally updates a short integer based on a global flag.
+- `empty_c_function`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
+- `execute_nested_callback_chain`: Performs a recursive traversal of a global data structure to trigger a sequence of nested callback functions.
+- `execute_nested_callbacks`: Calls two different routines using pointers retrieved from a global structure, then repeats the process after a recursive call.
+- `execute_recursive_callbacks`: Retrieves a pointer from a global structure to call two different subroutines, then performs a recursive call before calling another pair of subroutines using the same pointer.
+- `initialize_decode_tables_2`: The routine stores the argument into a global variable and fills several tables derived from that base with values computed from the bits of the input.
+- `apply_conditional_bit_shifts`: Performs iterative arithmetic updates on two memory locations by checking the equality of two specific bits and adding the boolean result to a doubled value.
+- `set_byte_value_2`: Stores a constant byte value into a specific offset within a global structure.
+- `initialize_table_values`: Calls another routine three times with different constant values.
+- `unpack_compressed_data_2`: Calculates a data size, performs arithmetic on a retrieved value, and then iterates through a buffer to decode and store values into a global structure based on bitwise manipulations.
+- `sync_table_data`: Iterates through a table to compare word values between two locations and calls another routine if a mismatch is detected.
+- `validate_and_copy_data_segments`: Checks if a specified memory range is valid based on provided bounds and then performs multiple data copy operations into a local buffer.
+- `update_dynamic_data_buffer`: Iterates through a loop to copy a sequence of bytes into a specific memory offset based on a calculated index.
+- `populate_table_entries`: Iterates through a loop to store a byte and a word into specific offsets of a table calculated from an input index.
+- `initialize_system_subsystems`: Performs a series of complex operations including memory allocation, interrupt registration, and file attribute checks via multiple indirect calls.
+- `dispatch_via_table`: Uses a parameter to index into a table of function pointers and executes the resulting routine, or performs a conditional call and execution if a global variable is non-zero.
+- `initialize_system_resources`: Calls functions via pointers in a global variable to populate two global pointers and sets two values in a table based on a bit test.
+- `call_cleanup_functions`: Calls two functions through pointers retrieved from a global variable and another structure.
+- `allocate_memory_blocks`: Allocates memory and populates a series of offsets in a structure with the returned address and subsequent increments.
+- `execute_indirect_functions`: Retrieves a pointer from a global variable and calls two functions located at specific offsets from that pointer.
+- `register_interrupt_handler`: Sets several values in a global structure and then calls a routine to register an interrupt handler.
+- `call_rem_int_server`: Library stub: loads its arguments and the exec library base, calls RemIntServer and returns its result to the caller.
+- `check_file_attribute`: Uses directory and file information to check if a specific value is present in a global variable.
+- `load_file_data`: Iterates through a linked list to copy data from various sources into a destination buffer while updating a counter.
+- `verify_file_size`: Checks file information to determine if a file size meets specific criteria and returns a status value.
+- `process_file_commands`: Checks a global flag and iterates through a table to load data, verify sizes, allocate memory, and format strings based on specific character matches.
+- `fill_buffer_from_value`: Receives a byte pointer and a parameter containing a byte value and a repeat count, writing the byte value repeatedly into the buffer.
+- `copy_bytes_between_buffers`: Receives two byte pointers and a length, copying bytes from the second buffer to the first buffer one by one.
+- `fill_byte_array_2`: Fills a destination buffer with values retrieved from another routine until a limit is reached or a specific value is found.
+- `clear_byte_at_offset_2`: Sets a byte at a specific offset relative to a pointer to zero.
+- `process_dispatch_and_memory`: Executes a series of routines and returns a value retrieved from a memory location via a pointer.
+- `process_recursive_data`: Decrements a byte at a calculated offset and performs recursive calls based on a flag in a global variable.
+- `accumulate_recursive_values`: Iteratively calls another routine to sum returned values while decrementing a counter, ensuring the counter does not exceed a specific threshold.
+- `execute_recursive_calls`: This routine performs two consecutive calls to itself before returning.
+- `perform_arithmetic_call`: calls another routine using a value calculated by adding a constant to a register and performing arithmetic on other parameters.
+- `clear_word_at_offset`: calls another routine and then stores zero in a word at a specific offset from a pointer.
+- `call_subroutine`: This routine performs a single call to another subroutine and then returns.
+- `return_word_at_offset`: calls another routine and returns a word stored at a specific offset from a pointer.
+- `update_offset_value`: Writes a constant value to a specific offset within a structure.
+- `reset_flag_byte`: checks a byte at an offset from a pointer and sets it to zero if it is non-zero.
+- `copy_byte_to_offset`: Copies a byte from one memory location to another location at a specific offset.
+- `toggle_byte_bit`: Performs a bitwise XOR on a byte at a specific offset to flip its value.
+- `load_table_data`: Retrieves data from a table based on an index and copies various fields into a global structure, including conditional coordinate offsets.
+- `update_coordinate_bounds_2`: Calculates a new value based on several arithmetic operations and updates two entries in a table using values from a global structure.
+- `decode_nibble_tables`: uses a global base pointer to index four tables and decodes nibble-based indices from a word buffer, writing bytes and words into a destination.
+- `process_complex_data`: performs multiple indirect calls and copies data from two source structures into a destination buffer and several global variables.
+- `store_word_to_pointer`: Stores a long value from a global variable into a memory location pointed to by another global structure.
+- `update_data_structure`: If a condition is met, it clears a field in a structure and copies a block of data from a table into a new location.
+- `update_conditional_state`: sets a word in a structure and a global variable based on a parameter, then copies a word from one location to another before calling another routine.
+- `compare_global_values`: Compares two values located at specific offsets within a global structure in a loop.
+- `update_date_data`: Updates a global table and a specific memory location with a value from a date stamp, potentially calling another routine if certain conditions are met.
+- `call_indirect_routine`: Calls a routine through a pointer stored at an offset within a global structure.
+- `execute_indirect_function_pointer`: Retrieves a function pointer from a nested structure within a global table and executes it.
+- `set_global_from_parameter`: calculates a value based on a parameter and stores it in a global variable.
+- `clear_memory_blocks`: Depending on a global variable, this routine either clears a range of memory by writing zeros to it or copies data from a source to a destination while writing zeros at specific intervals.
+- `process_data_stream`: The routine reads from a source pointer and writes or modifies data at a destination pointer.
+- `decode_and_copy_bytes_3`: The routine uses a global base pointer to index four tables and decodes nibble-based indices from a word buffer, writing bytes and words into a destination buffer in a repeated loop controlled by a counter.
+- `initialize_decode_tables`: The routine stores the argument into a global variable and fills several tables derived from that base with values computed from the bits of two 5-bit counters.
+- `return_constant_2`: Returns the constant 24576 in d0 to the caller without any other effect.
+- `decode_compressed_data_stream`: Reads a stream of compressed data using a variable-length encoding scheme and writes decoded values to a destination buffer.
+- `parse_and_update_bitfield`: Parses a data stream to extract nibbles or bytes, then uses those values to perform bitwise checks against a bitfield and update a destination memory area.
+- `decompress_variable_length_data`: Iterates through a data stream using a variable-length encoding scheme to expand compressed bytes into a destination buffer.
+- `perform_table_lookup`: Iterates through a data structure to perform bitwise checks and updates memory via a calculated offset.
+- `copy_data_from_table`: Iterates through a data structure to copy bytes from a source table into a destination buffer.
+- `increment_global_variable`: Multiplies a global variable by two and then adds one to it.
+- `return_word_from_bytes`: The routine builds a 16-bit value from two consecutive bytes pointed to by its parameter and returns it.
+- `return_long_from_bytes`: The routine builds a 32-bit value from four consecutive bytes pointed to by its parameter and returns it.
+- `setup_blitter_and_wait`: This routine programs the Amiga custom chip registers for a blitter copy, writes computed 32-bit sums and 16-bit constants into a structure pointed to by a base address, then calls another routine repeatedly and spins until a flag bit is cleared.
+- `update_struct_fields`: Stores three values into a structure at offsets from a pointer and then waits for a specific bit in a byte at an offset to be cleared.
+- `wait_for_bit_clear`: Repeatedly checks a byte at an offset from a pointer until a specific bit is no longer set.
+- `configure_blitter_copper_wait`: Programs the Amiga blitter and copper registers to perform a series of three blit operations with varying source pointers, destination pointers, and sizes, then waits for the blitter to complete after each phase.
+- `fill_sprite_with_plane_data`: The routine programs the Amiga custom chip registers to set up a blitter copy, then repeatedly triggers a blit and waits for it to finish.
+- `copy_struct_blocks`: The routine uses a global variable as a loop counter and as the base for two pointers.
+- `conditional_copy_struct_fields`: The routine iterates over a set of blocks using a global counter and three pointers derived from a global variable.
+- `decode_and_write_bytes`: Processes a byte stream using a global variable as a key and a global table as a lookup, updating a 32-bit state and writing transformed bytes through a pointer that is advanced each iteration.
+- `interpret_script_and_manage_resources`: A large routine that parses script bytecode, fetches resource data and pointers, allocates memory blocks, and retrieves indexed pointers.
+- `parse_script_token_stream`: Recursively processes a data structure representing a nested command or expression stream.
+- `parse_script_bytecode_stream`: Iterates through a data structure representing a script or command stream, interpreting bytecodes to manage execution flow, nested calls, and operand retrieval.
+- `execute_single_instruction`: This routine executes exactly one instruction and then calls another routine.
+- `transform_string_via_table`: Iterates through a null-terminated string and modifies each byte by subtracting thirty-two if a specific bit is set in a global lookup table.
+- `get_string_length`: Calculates the number of characters in a null-terminated string.
+- `skip_flagged_bytes`: Increments a pointer while the byte at the current location has a specific bit set in a global lookup table.
+- `reverse_string_buffer`: Repeatedly calls another routine to build a string and then reverses a twelve-byte buffer in place.
+- `reverse_engineer`: Repeatedly calls another routine, stores a byte from a register through a pointer, and then reverses a 12-byte buffer in place before terminating it with a null byte.
+- `format_integer_to_string`: Converts an integer into a null-terminated ASCII string by storing digits in a local stack buffer and then reversing them into a destination buffer.
+- `convert_number_to_ascii`: The routine converts an integer into ASCII decimal digits using a temporary stack buffer and copies them in reverse order to a buffer.
+- `parse_nibble_string`: Expands a packed nibble value using a global lookup table and parses a numeric string into a signed integer.
+- `reverse_nibbles_from_table`: The routine expands a packed nibble value using a global lookup table and writes the resulting bytes in reverse order to a destination.
+- `parse_numeric_string_6`: Parses a string of characters to calculate a signed integer value, handling a potential negative sign and stopping at a newline.
+- `parse_numeric_string_4`: This routine parses a string of characters to calculate a signed integer value, handling a potential negative sign and stopping at a newline character.
+- `parse_formatted_buffer`: Iterates through a buffer to identify and process specific character sequences, including handling a special percent character and nested calls.
+- `increment_and_fetch_pointer`: Increments a global index and returns the value stored at the pointer found at that index, returning a maximum value if the original value was zero.
+- `tiny_moveq_move_rts`: Small routine of 3 instructions that loads 255 into d0, then copies (a7)+ to d7, then returns.
+- `push_byte_to_stack`: Increments a global index and stores a byte into a memory location pointed to by a table entry.
+- `format_string_and_store`: Increments a global index and stores a byte into a memory location pointed to by a table entry, then parses a format string for specifiers.
+- `manage_resource_access`: Iterates through a table of resources to perform various open, lock, or delete operations based on provided flags and status.
+- `fetch_resource_data`: Calls another routine to retrieve a pointer and then performs a secondary lookup, returning an error value if a global status is non-zero.
+- `absolutize_signed_integer`: The routine receives a signed integer in a register, negates it when it is negative, and returns the absolute value.
+- `allocate_memory_block`: Searches a linked list of memory blocks to find or split an existing block that matches a requested size, or allocates a new one.
+- `process_nested_data_stream`: The routine iterates through a nested count structure, decrementing a short counter and advancing a byte pointer stored in a structure, reading a byte or calling another routine when the counter reaches zero, writing each byte to an output buffer and returning the outer loop index when a sentinel value is encountered.
+- `process_data_stream_3`: Iterates through a data stream, copying bytes to a destination and decrementing a counter until a condition is met.
+- `process_data_stream_2`: This routine iterates through a data stream, copying bytes to a destination and decrementing a counter, while calling another routine when a specific value is reached.
+- `process_data_nested`: This routine performs a nested loop to copy bytes from a source to a destination, checking a limit and calling another routine if a specific condition is met.
+- `empty_routine`: The routine is empty and performs no work.
+- `compute_adjusted_offset`: The routine checks a flag byte in a structure and conditionally calls another routine with a derived index.
+- `reset_structure_and_seek`: The routine conditionally adjusts a parameter using a short field from a structure based on flag bits, then clears several fields in the structure and masks flag bits.
+- `traverse_and_modify_list`: Recursively traverses a linked list and modifies a value at a global offset using the current list element.
+- `process_script_resource_block`: The routine iterates over a nested count structure, decrementing a short counter and advancing a byte pointer stored in a structure, reading a byte or calling another routine when the counter reaches zero, writing each byte to an output buffer and returning the outer loop index when a sentinel value is encountered.
+- `interpret_script_resources`: A routine that calls a script interpreter, fetches a single byte, and uses a forward call wrapper.
+- `fetch_single_byte`: The routine decrements a short counter in a structure and either calls another routine or retrieves a byte from a pointer and advances it.
+- `forward_call_wrapper`: The routine calls another routine and returns its result unchanged.
+- `parse_command_and_prepare_struct`: The routine examines a command string and a structure to decide flags and an index, obtains a value from another routine using a derived index, and then clears several fields in the structure while writing the obtained value and computed flags into it.
+- `read_resource_byte`: The routine checks a flag in a structure, decrements a counter, and either calls another routine or retrieves a byte from a pointer and advances it.
+- `execute_io_operation`: Checks a global flag, then calls a function pointer from a structure and handles potential errors by setting a value in a structure and a signal.
+- `perform_file_seek`: Executes a function pointer from a structure to perform a seek operation, handles errors by updating a structure, and calculates a new position based on the provided parameters.
+- `execute_read_operation`: Calls a function pointer from a table to perform a read operation and updates a global variable with a status code if the operation fails.
+- `execute_open_operation`: Calls a function pointer from a table to perform an open operation and updates a global variable with a status code if the operation returns zero.
+- `execute_lock_and_open`: Attempts to lock a resource and then open it, updating a global variable with a status code if either operation fails.
+- `execute_delete_and_open`: Attempts to delete a file and then open a resource, updating a global variable with a status code if the open operation fails.
+- `close_resource`: Calls a function pointer from a table to close a resource.
+- `compute_fixed_point_product`: The routine takes two 32-bit fixed-point values from registers and returns their product as a 32-bit fixed-point value.
+- `divide_fixed_point`: Performs a division of two 32-bit values using a normalized fixed-point method and handles sign logic.
+- `normalize_fixed_point_divide`: The routine divides a 32-bit dividend in d0 by a 32-bit divisor in d1 using a normalized fixed-point method.
+- `get_table_index`: The routine checks if an index is within valid bounds and if a specific value in a table is non-zero, returning either a calculated offset or a default value.
+- `execute_indirect_call_4`: Retrieves a function pointer from a nested structure and executes it.
+- `insert_linked_list_node`: The routine allocates memory and initializes a new node, then inserts it into a linked list by updating various pointers in a global structure.
+- `fetch_resource_pointer`: Retrieves a pointer from a resource lookup, validates it against a global status, and performs secondary operations based on the retrieved data.
+- `parse_numeric_string_5`: Parses a sequence of characters from a buffer into a numeric value, handling decimal digits, signs, and potential floating-point or octal formats.
+- `parse_format_specifier`: Parses a format string to extract flags, width, precision, and length, then retrieves arguments from a pointer to produce formatted output.
+- `scan_format_string`: The routine walks a string looking for percent signs, skips escaped percent signs, and for each format specifier calls parse_format_specifier to process it and then calls a function pointer.
+- `allocate_structure_memory`: Attempts to allocate a memory block by checking a structure and calling a memory allocation routine.
+- `execute_callback_chain_2`: Iterates backward through a table of resource structures to execute function pointers stored within them, then calls a final provided function.
+- `execute_callback_chain`: Checks for non-null function pointers in a structure and executes them.
+- `insert_into_memory_map`: The routine manages a list of memory blocks, inserting a new block or merging it with existing adjacent blocks to maintain a sorted map.
+- `retrieve_indexed_pointer`: Invokes another routine to obtain a pointer and performs a secondary lookup, returning a failure code if a specific global variable is non-zero.
+- `copy_memory_block_3`: The routine copies a block of bytes from one memory area to another using a count argument, handling overlapping source and destination by copying backwards when the source address is at or before the destination address, otherwise copying forwards.
+- `traverse_and_map_list`: Recursively traverses a linked list of values, calling another routine at each step and building a new list of pointers based on the input values.
+- `allocate_memory_block_2`: Searches a linked list for a memory block, allocates a new block if none is found, and clears the memory before parsing a command.
+- `process_entry_and_clear_flags`: The routine conditionally obtains a value from another routine using a derived index, then calls another routine with fields from a structure.
+- `release_resource_handle`: Checks the validity of a resource pointer and attempts to release it.
+- `set_system_signal`: This routine calls a library function to set a signal.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `return_constant_3`: Returns the constant -1 in d0 to the caller without any other effect.

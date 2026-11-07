@@ -1,0 +1,116 @@
+# Game 2004 (paradroid 90 (1990)(hewson)[cr cls]): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/02004). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (916064 top-level bytes in 5 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 9 raw-word lines |
+| Functions named and described | pass, 22 of 22 named (0 author symbols), 22 of 22 described (1 by rule, 2 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 118 of 118 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 24576 bytes, 5 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 715 of 1310 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 5893 |
+| code | 4134 |
+| data | 778034 |
+| padding | 3 |
+| unused | 128000 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| Paradroid 90 (1990)(Hewson)[cr CLS].adf:bootblock | 1 | 24 | 1 |
+| logged disk load from Paradroid 90 (1990)(Hewson)[cr CLS].adf boot-block load | 1 | 30 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 112 | 5 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 154 | 5 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 25 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
+| Paradroid 90 (1990)(Hewson)[cr CLS].adf bytes 46592-57856 (code never loaded by a reference run) | 1 | 0 | 0 |
+| Paradroid 90 (1990)(Hewson)[cr CLS].adf bytes 329728-331776 (code never loaded by a reference run) | 1 | 587 | 2 |
+| Paradroid 90 (1990)(Hewson)[cr CLS].adf bytes 332288-343552 (code never loaded by a reference run) | 1 | 377 | 3 |
+
+## Cases handled
+
+- paradroid 90 (1990)(hewson)[cr cls]/Paradroid 90 (1990)(Hewson)[cr CLS].adf: custom-format (non-DOS) disk, 1508 non-empty blocks: matched against track-loaded segments
+- paradroid 90 (1990)(hewson)[cr cls]/Paradroid 90 (1990)(Hewson)[cr CLS].adf: the boot block reads 3584 bytes from disk offset 1024 to an address (found statically); recovered as a unit
+- runtime segment an address: 84 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 16 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 17 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- paradroid 90 (1990)(hewson)[cr cls]/Paradroid 90 (1990)(Hewson)[cr CLS].adf: bytes 46592-57856 look like code no run loaded: recovered position-independently (load address unknown)
+- paradroid 90 (1990)(hewson)[cr cls]/Paradroid 90 (1990)(Hewson)[cr CLS].adf: bytes 329728-331776 look like code no run loaded: recovered position-independently (load address unknown)
+- paradroid 90 (1990)(hewson)[cr cls]/Paradroid 90 (1990)(Hewson)[cr CLS].adf: bytes 332288-343552 look like code no run loaded: recovered position-independently (load address unknown)
+- paradroid 90 (1990)(hewson)[cr cls]/Paradroid 90 (1990)(Hewson)[cr CLS].adf: 4 logged loads cover 28160 bytes of the image
+- paradroid 90 (1990)(hewson)[cr cls]/Paradroid 90 (1990)(Hewson)[cr CLS].adf: 3 track-loaded blocks found in recovered runtime segments and classified through them
+- paradroid 90 (1990)(hewson)[cr cls]/Paradroid 90 (1990)(Hewson)[cr CLS].adf: blocks 22-22 (bytes 11264-11776) outside the filesystem hold data, not code (opcode density 0.000, entropy 0.68)
+- paradroid 90 (1990)(hewson)[cr cls]/Paradroid 90 (1990)(Hewson)[cr CLS].adf: blocks 24-89 (bytes 12288-46080) outside the filesystem hold data, not code (opcode density 0.002, entropy 4.08)
+- paradroid 90 (1990)(hewson)[cr cls]/Paradroid 90 (1990)(Hewson)[cr CLS].adf: blocks 114-412 (bytes 58368-211456) outside the filesystem hold data, not code (opcode density 0.013, entropy 4.95)
+- paradroid 90 (1990)(hewson)[cr cls]/Paradroid 90 (1990)(Hewson)[cr CLS].adf: blocks 416-642 (bytes 212992-329216) outside the filesystem hold data, not code (opcode density 0.038, entropy 5.96)
+- paradroid 90 (1990)(hewson)[cr cls]/Paradroid 90 (1990)(Hewson)[cr CLS].adf: blocks 672-672 (bytes 344064-344576) outside the filesystem hold data, not code (opcode density 0.004, entropy 2.14)
+- 1 never-loaded region(s), 11264 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+- 5 packed track region(s), 438272 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- none found
+
+## Functions
+
+
+### Paradroid 90 (1990)(Hewson)[cr CLS].adf:bootblock
+
+- `allocate_load_and_run_code`: Allocates memory through the exec library, fills an I/O request with a 3584-byte length and type 2, and repeats the device I/O call until its completion flag clears.
+
+### logged disk load from Paradroid 90 (1990)(Hewson)[cr CLS].adf boot-block load
+
+- `copy_block_then_call_entry`: Copies 256 longwords from a fixed global area into the buffer the caller points to, then calls the routine stored at a fixed offset in that copied block.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `sample_mouse_port_state`: Writes the pot-control register to set the button port state, copies the mouse-port movement register into the structure, and dispatches to one of two unnamed routines depending on a mode field.
+- `store_two_derived_bytes`: Stores two byte-sized values derived from its two data inputs into separate structure fields, stores a third input unchanged, then calls a method through the object passed in an address register.
+- `store_table_entry_and_call`: Selects a longword from a global table using bits of the first argument, stores it into a structure field with the second argument, then calls a method through the object passed in an address register.
+- `increment_counter_and_call_method`: Increments a global counter, calls a method through a global object pointer, and returns the values that were in the two data registers on entry, unchanged, as one 64-bit result.
+- `dispatch_masked_interrupt_levels`: Combines the interrupt enable and request registers, masks the bits for three interrupt levels, and acknowledges them by writing the request register.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `write_duplicate_values`: stores a word from a register into a global variable at a fixed offset and then repeats this or writes the same value to two other fixed offsets.
+- `copy_sprite_pointer_block`: Picks a 32-byte source block from one of two pointers, depending on a flag bit in the structure, and copies it into the eight sprite pointer registers of the custom chip.
+- `initialise_object_slot_fields`: Calls several methods through object tables, stores the returned values and a masked flag word into fields of the object record, and decrements a counter with a signed overflow check.
+- `store_object_pointer_and_flag`: Calls methods through object tables, stores the returned object pointer into a location passed by the caller, and sets the top bit of a byte at that location.
+- `forward_call_and_return_zero`: Calls one unnamed routine and returns zero.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `set_bits_in_memory`: performs a bitwise or operation between a constant and a word stored in a memory location, then saves the result back to that same location.
+- `store_word_triple`: Copies three consecutive 16-bit values from a source pointer into three consecutive 16-bit fields of a structure at fixed offsets from its base, then returns minus one.
+- `call_callbacks_along_list`: Walks a singly linked list whose head pointer is stored in the structure, calling a routine stored in each node, and stops when a node's link field is zero.
+- `call_indirect_via_table`: Calls the routine whose address is stored at a fixed offset in a structure pointed to by a base register, then returns.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### Paradroid 90 (1990)(Hewson)[cr CLS].adf bytes 329728-331776 (code never loaded by a reference run)
+
+- `stub_bad_instruction_data`: The decompiler reduced this 432-instruction raw region to a single call to an unresolved address, so the recovered code shows no usable behaviour.
+- `copy_indexed_block_row`: Checks an index against a stored limit, splits it into a row and a column using a stride, and copies a row of eight-long blocks between the source pointer and the destination, in one direction or the other according to a flag argument.
+
+### Paradroid 90 (1990)(Hewson)[cr CLS].adf bytes 332288-343552 (code never loaded by a reference run)
+
+- `decrement_counter_via_method`: Calls a method through an object reference stored in the structure, then decrements a 16-bit counter in the object it returns, calling the trap routine on signed overflow.
+- `call_per_char_until_space`: Walks a character string one byte at a time, calling a routine from a table for each byte, and stops at the first space character or when a count held in a register runs out.
+- `copy_name_into_fixed_field`: Copies a name into a fixed-width field, stopping at a dot, backslash, asterisk or end of string, then skips the remainder of the name.

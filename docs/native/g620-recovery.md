@@ -1,0 +1,801 @@
+# Game 620 (WorldClassLeaderBoard v1.2): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/00620). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (1047902 top-level bytes in 48 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 12 raw-word lines |
+| Functions named and described | pass, 728 of 728 named (262 author symbols), 728 of 728 described (70 by rule, 589 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1880 of 1880 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 2140 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 21561 of 21565 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 333929 |
+| code | 70444 |
+| data | 643466 |
+| padding | 63 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| game.slave | 1 | 1093 | 79 |
+| Golf | 3 | 20155 | 390 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 26 | 26 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 285 | 227 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 6 |
+| HighScores (raw code file, load address unknown) | 1 | 0 | 0 |
+| font (raw code file, load address unknown) | 1 | 0 | 0 |
+
+## Cases handled
+
+- WorldClassLeaderBoard_v1.2/WorldClassLeaderBoard_v1.2.hdf: hard-disk image (AmigaDOS OFS, 1152 blocks): its filesystem parses and all 43 files in it are byte-identical to the extracted tree WorldClassLeaderBoard_v1.2_hdf, which is recovered file by file; no block outside the filesystem holds data
+- 2 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- runtime segment an address: 26 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 205 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 6 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- WorldClassLeaderBoard_v1.2/WorldClassLeaderBoard_v1.2_hdf/WCLeaderBoard/data/WCLB/Data/HighScores: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- WorldClassLeaderBoard_v1.2/WorldClassLeaderBoard_v1.2_hdf/WCLeaderBoard/data/WCLB/Data/font: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- WorldClassLeaderBoard_v1.2/WorldClassLeaderBoard_v1.2_hdf/WCLeaderBoard/data/devs/system-configuration: raw file found loaded verbatim in runtime segment an address at an address; classified through the recovered segment
+- 2 never-loaded region(s), 2140 bytes, recorded as UNVERIFIED DATA (under 1% of bytes decode as instruction flows; Karl 4 Nov 2026)
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- none found
+
+## Functions
+
+
+### game.slave
+
+- `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d0, then returns.
+- `execute_indirect_calls`: Stores a value into a global variable and performs several indirect calls using offsets from a pointer.
+- `update_jump_table`: Stores a calculated address into two different offsets within an unrecovered jump table and then performs an indirect call through that table.
+- `execute_indirect_jump`: Performs an indirect jump to an address stored in a memory location.
+- `mask_global_value`: Returns a global variable after applying a bitwise AND mask to it.
+- `clear_interrupt_request`: This routine clears a bit in the interrupt request register.
+- `store_stack_to_global`: Stores a word from the stack into a global variable.
+- `return_zero_constant`: The routine immediately returns zero without performing any operations or modifying data.
+- `set_flag_in_struct`: The routine receives a pointer in a register and sets bit 1 in the byte at offset 14 of the pointed-to structure.
+- `nop_return_routine`: The routine is empty and performs no operations before returning to the caller.
+- `copy_list_elements`: Iterates through a list of data structures, copying values from one memory area to another while calling a function for each element.
+- `call_library_vector_30`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `find_node_by_string`: Iterates through a linked list and returns a pointer to a node if a string stored within the node matches a provided input string.
+- `store_register_to_global`: The routine copies the value from D0 into a global variable.
+- `transfer_and_jump`: Copies a global variable to another location and then performs an indirect jump.
+- `store_byte_to_offset`: Stores a byte from a source address into a destination address calculated using an offset from a base pointer.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `check_global_constant`: The routine compares a global variable to a specific constant value.
+- `initialize_pointer_chain`: The routine writes a sentinel value into a pointer and stores the address of the next entry into three fields in two different structures.
+- `copy_nested_pointers`: Copies 32-bit values from pointers referenced at offsets four and eight of a source structure into fields of a destination structure.
+- `check_collision_flags`: XORs a global state word with a value from a linked list node and checks for specific bit flags.
+- `tiny_addq_rts`: Small routine of 2 instructions that adds 8 to a7, then returns.
+- `copy_word_if_valid`: Checks if two pointer arguments are non-null.
+- `compute_and_store_byte_logic`: Calls a function pointer from a global structure and combines its result with register values using bitwise logic.
+- `negate_nonzero_flag`: The routine receives a value in a register and returns zero if the value is non-zero, and returns a negative one if the value is zero.
+- `set_vhposr_bit`: The routine sets a specific bit in the vertical position register via a pointer offset.
+- `calculate_table_offset`: Reads values from a global table and performs arithmetic operations including division, multiplication, and addition.
+- `update_status_byte`: Checks a bitmask in a structure and updates a byte in another structure based on a comparison or a bitwise test.
+- `negate_short_toggle_bit`: Negates a short value at a specific offset in a structure and toggles the high bit of a byte at an offset in another structure.
+- `set_flag_from_bit`: Reads a bit from a global variable using an index derived from a byte in another memory location.
+- `return_void`: This routine is empty and performs no operations before returning.
+- `return_from_subroutine`: The routine is empty and performs no operations before returning.
+- `toggle_status_bit`: Tests a bit in a global byte, clears it, and increments a value in a structure if the bit was set.
+- `return_immediately_5`: This is an empty routine that performs no operations and immediately returns to the caller.
+- `do_nothing_stub`: The routine executes five instructions but performs no observable work, ending without modifying memory, registers, or calling another routine.
+- `return_immediately_6`: This is an empty routine that performs no operations and returns to its caller.
+- `clear_offset_and_save_register`: Stores zero to a word-sized location at an offset from a pointer in a register, then saves the value of another register into a global variable before returning.
+- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
+- `execute_indirect_call`: Performs an indirect call to a function pointer stored in a structure based on a comparison.
+- `assign_function_pointer`: Stores a routine address into a memory location.
+- `copy_string_to_buffer`: The routine copies a null-terminated string from an input pointer to a newly allocated buffer, prefixing it with its length byte, and then sets up a structure with fields derived from a global table and a library base, storing the buffer address in the structure.
+- `initialize_expansion_structures`: Uses memory allocation and queueing functions to build descriptor structures, sets flags, and stores global pointers into RAM.
+- `call_indirect_via_library`: The routine calls a function pointer retrieved from a library structure using a value from a register.
+- `dispatch_message_and_call`: The routine prepares a message structure, interacts with a library to manage task or message data, and eventually calls a routine from a table based on a value found in a global variable.
+- `dispatch_message_indirect`: Processes a value from a routine call, updates a structure, and executes a function found by searching a table.
+- `dispatch_message_and_call_5`: Prepares a message structure, executes library functions, and calls a routine found by searching a table.
+- `update_buffer_with_offset_data`: This routine calculates a data length based on a comparison between two values and copies a specific segment of memory into a destination buffer.
+- `update_buffer_and_shift_data`: Increments a counter and updates a high-water mark value.
+- `dispatch_message_and_call_2`: Prepares a message structure and iterates through a table to find a matching value before performing an indirect call.
+- `dispatch_message_conditional_2`: Updates a structure based on a returned value and calls a routine found by searching a table.
+- `dispatch_message_conditional`: Checks a returned value to determine how to update a structure and then executes a function found by searching a table.
+- `process_nested_messages`: Performs conditional checks on returned values to update a structure and then calls a routine found by searching a table.
+- `execute_conditional_library_call`: Checks a value in a structure to optionally call a routine, then calls a routine found by searching a table.
+- `calculate_offset_and_dispatch`: Calculates a new offset based on a conditional check, updates a value in a structure, and executes a function found by searching a table.
+- `dispatch_message_and_call_4`: Prepares a message structure by updating a value in a table and then executes several indirect function calls, including one based on a search through a global table.
+- `dispatch_message_and_call_3`: Populates a message structure with specific values and searches a table for a match to execute an indirect call.
+- `return_no_op_handler`: Returns without doing any work; it is reached through a handler pointer.
+- `return_from_subroutine_2`: This routine is empty and performs no operations before returning to its caller.
+- `return_void_2`: This routine is an empty function that performs no operations and immediately returns to its caller.
+- `rotate_string_and_store_length`: The routine rotates a null-terminated byte string one position to the right by shifting each byte forward and writes the original first byte into the last position, then stores the length of the string minus one as a byte just before the string in memory.
+- `process_file_operations`: Performs a series of checks involving string comparisons and path concatenations, updating a structure with various values or returning an error code based on the results.
+- `execute_library_function`: Checks if a pointer is non-zero and then calls a library function using a value from a structure.
+- `concatenate_file_paths`: Takes two string pointers and merges them into a new buffer by calculating the necessary length and handling directory separators.
+- `compare_string_sequences`: Performs multiple string comparisons and returns a result based on the outcome.
+- `compare_two_strings`: The routine compares the bytes pointed to by two pointers until a zero byte is found, returning early if the bytes differ, otherwise it falls through after the terminating zero.
+- `null_routine`: This routine is empty and contains no valid executable instructions.
+- `return_from_subroutine_3`: The routine performs no operations and immediately returns to the caller.
+- `process_resource_data`: Calls several routines, checks a returned value, and if non-zero, performs a memory operation and calls a function through a pointer.
+- `call_indirect_pointer`: The routine calls a subroutine through a pointer stored in a table.
+- `update_function_pointer`: Copies a value from a global variable to another global variable and then stores the address of the current routine into that same global variable.
+- `check_specific_value`: Compares a register against a constant and a bitmask, then stores a value in a structure and calls another routine if they match.
+- `update_pointer_data`: Stores values into memory locations pointed to by registers and updates a pointer in a table through an indirect call.
+- `store_four_bytes`: The routine stores four specific bytes into the memory location pointed to by a register.
+- `store_four_bytes_alt`: The routine writes four bytes of data to a memory location pointed to by a register.
+- `store_four_bytes_diff`: The routine populates four consecutive bytes in memory starting at the address held in a register.
+- `return_immediately_3`: The routine performs no operations and returns to its caller immediately.
+- `call_calculated_address`: The routine performs an indirect call to an address calculated using a pointer from a table and an offset.
+- `call_library_vector_144`: Library stub: loads a library base from a global variable and calls the library function at offset minus 144 of that base, returning its result to the caller.
+- `compare_strings_until_mismatch`: The routine compares two byte strings byte by byte, advancing a counter for each matching byte and stopping early if the counter reaches the length in D0.
+
+### Golf
+
+- `initialize_golf_application`: Performs application initialization, sets up the screen, and enters a loop that manages course information and main gameplay until a condition is met.
+- `__Corg`: Initializes the golf module and enters a loop that sets up course information and executes the main gameplay logic.
+- `_CountryClubDisplay`: Copies 32 colour entries from a stored table into a local buffer, loads a data file named in the program through a library call, saves the loaded colours back into the table, then sets up a 320 by 200 display and applies the palette.
+- `_SoLong`: Calls another routine and returns.
+- `_ClearScreen`: Calls one library routine with a zero argument, then sets the full 320 by 200 screen rectangle from the origin through a second library call.
+- `_GolfInit`: Sets several state flags and counters to fixed starting values, copies 13 bytes and then 14 bytes from two source tables into a working array, and copies a 10 by 4 block of source bytes into a second working table.
+- `_PuttingGreen`: Clears a counter, copies 13 bytes and then 12 bytes from two source tables into a working array, sets a state value, then calls a library routine and branches on its result to set up further state.
+- `_DrivingRange`: Sets various state flags, copies a 23-byte table into a working array, and initializes selection state using random values.
+- `_SetUpCourseInfo`: Resets course-related data structures and enters a loop to facilitate course selection via a menu.
+- `_ChooseCourse`: Displays a menu of six course options and enters a loop to handle user input for selection or cancellation.
+- `draw_cancel_button_frame`: Sets drawing state, draws a frame rectangle, and then draws a message at the same position.
+- `update_course_parameters`: Executes a sequence of function calls via a pointer table to modify specific data values and update a global variable.
+- `_ClearBoard`: Sets the drawing state, draws a rectangular frame, and renders the text string 'Cancel' at a specific position.
+- `_ReadKbd`: Compares a byte in a global variable against a constant and updates that variable.
+- `_SwitchThemBitmaps`: Exchanges the 32-bit value in a fixed field of a structure with a global slot, so each call swaps the two stored values.
+- `_FadeToFront`: Calls another routine to switch bitmaps and then executes a loop that repeatedly calls a library function to modify display parameters.
+- `_CheckChipHeap`: Compares a value against a threshold and either calls another routine or adds the value to a global variable.
+- `_ReturnMemoryLeft`: Subtracts one global integer value from another and returns the result.
+- `_ReturnChipHeap`: Increments the input parameter by one if it is odd, then subtracts it from a value stored in a global variable.
+- `perform_bitmask_operation`: Iterates through a table to perform bitwise AND and OR operations between two memory buffers using a calculated mask.
+- `_MylesDrawTree`: Performs bitwise AND and OR operations on multiple words in a loop to combine data from two tables.
+- `_MylesTreeColl`: Combines several bytes from a table using bitwise OR and then applies a bitwise AND with a stored byte.
+- `_GolfMain`: Initializes game state and score tracking, then enters a main loop that handles screen updates, matrix generation, and player input.
+- `_AdjustAndHit`: Initialises several state fields, then runs an input loop that reads the pointer position and button state, updates a cursor value within limits, and calls library routines to respond to changes, until the loop state changes.
+- `_InitMousePointer`: Sets the cursor's x and y from stored start values, or from lookup values indexed by a stored byte when a flag is set, clears a state byte, then calls a library routine.
+- `_EraseMousePointer`: Draws a 7 by 7 marker at the stored cursor position through one library call, using a fixed column of 235 and a size argument of 192.
+- `_DrawMousePointer`: Moves the cursor position one step at a time toward a stored target x and y until both match, drawing each step through library calls.
+- `_InitAim`: Draws a block at the stored column in a fixed row, then draws four short tick marks around that column, two above and two below, through library drawing calls.
+- `_EraseAim`: Draws a block of fixed size two pixels left of the stored column, in the fixed row 131, through a library call.
+- `_Gyrate`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
+- `_ComputeDistance`: Calculates the distance between two points using a square root routine and stores the result in a table at an offset determined by an index.
+- `_ComputeDistance2`: Calculates the square root of the sum of squared differences between two points and passes the result to another routine.
+- `_DispTrees`: Clears a visibility buffer and iterates through a list of objects to perform coordinate conversion and depth sorting.
+- `_MylesConvertCoords`: Calls a library routine several times and stores the sums of the returned values, plus a stored offset, into two fields of a record.
+- `_MylesSortTree`: Calls library routines to obtain two values, stores their offsets as the x and y position in the next free sixteen-byte list record, and sets a further field from a stored value.
+- `_DispTrees2D`: Loops a stored number of times, retrieving two values to offset into a screen point and drawing a specific pattern of pixels around that point.
+- `_ShowPin`: Calculates a position from a table, checks if it is within screen bounds, and then draws a diagonal line and a single pixel at that location.
+- `_ShowStake`: Draws short vertical line pairs at fixed columns and rows, with the far end offset by a value, and then draws a further pair scaled by a stored value.
+- `_RandomInit`: Uses the low byte of a stored word as an index into a byte table, stores that index in a separate word and writes the table byte into the low byte of the stored word.
+- `_Random`: Reads the table byte at the stored index and the byte after it, advances the stored index by one, and returns the two bytes as a pair.
+- `_TopView`: Renders a two-dimensional top-down graphical view of the game environment, including green terrain, trees, and boundary lines.
+- `_UnSquonk`: Processes a compressed bitstream by reading control bits to determine whether to copy literal bytes, repeat a byte, or skip ahead in the source.
+- `_ReadSquonk`: Reads a block of data from a source, iterates through five segments to perform an unsquonk operation on each, and executes a callback routine.
+- `_DrawGreen`: Initialises a view rectangle and clears state variables before iterating through a map table to identify terrain types.
+- `_DrawGreen2D`: Walks a count-limited table of records in two passes, calling another routine for records that do not match specific type values in the first pass, and for records that do match in the second pass.
+- `_DrawIsland2D`: Calculates coordinate pairs from a table and calls a routine to draw multiple points to the screen.
+- `_ConvertCoords`: Loops over a count in a record to convert coordinates into local lists, clips those lists against screen boundaries, and stores the resulting valid coordinates into a table.
+- `_AddPad`: Runs twelve passes, each converting two library values into coordinates and writing a 12-byte entry into a table.
+- `_AllocateHoleFile`: Copies a longword from a fixed field of a record reached through a stored pointer into a state field.
+- `_LoadHoleFile`: Loads hole data from disk and parses a sequence of three-word structures into a local table.
+- `sort_and_extract_leaderboard`: Sorts a list of three-word structures in descending order based on a specific field and then iterates through a linked list to copy the data into a structured table.
+- `sort_and_copy_leaderboard_data`: Sorts a list of structured data entries using a bubble sort algorithm and then copies the sorted results into a secondary table.
+- `swap_and_parse_leaderboard_entries`: Swaps elements in a table of three-word structures based on a comparison of their first word, then iterates through a linked list to extract and transform data into a structured array.
+- `update_tree_data_structures`: Iterates through a table of data, performing arithmetic offsets and updating values based on pointer dereferences.
+- `load_hole_data_3`: Extracts several values from a pointer-based table, performs arithmetic subtractions on them, and stores the results into a structure.
+- `_LoadHoleFromDisk`: Opens a file, verifies a specific magic number, and reads data from a calculated offset into a buffer.
+- `execute_disk_load_sequence`: Executes a series of function calls via a pointer table.
+- `load_hole_data_2`: Executes a sequence of function calls via pointers to load data from disk.
+- `load_hole_data`: Calls three consecutive function pointers, the last of which is a tail branch to a routine that loads hole data from disk.
+- `_ClipDown`: Walks a count-prefixed table of 12-byte records and compares one longword with the negated next longword, keeping or moving the records that pass and writing the rebuilt list through a second pointer.
+- `_ClipLeft`: Iterates through a list of coordinate structures and filters them based on a boundary condition.
+- `_ClipRight`: Rebuilds a count-prefixed list of 12-byte records by comparing longword fields of neighbouring records and writing the result through a second pointer, making library calls along the way.
+- `_SetUpInter`: Stores a control value, a handler pointer, and a status value into a structure, then attempts to open the CIA A resource.
+- `_SetClock`: Stores a byte into a global variable and then resets that same variable to zero.
+- `_StopInter`: Stores a byte from a structure into a global variable, then makes a library call with the stored resource, a zero argument and a structure field.
+- `toggle_dma_interrupt_states`: Checks various status flags and toggles bits in a global variable and several memory locations to manage interrupt or DMA states.
+- `update_dma_interrupt_states`: Modifies a global variable and several memory locations based on the status of three different flags.
+- `update_dma_state_2`: Modifies a global variable and memory locations while interacting with DMA and interrupt request hardware registers.
+- `update_dma_state`: Modifies a global variable and several memory locations while interacting with DMA and interrupt request hardware registers.
+- `set_final_request_mask`: Sets the last request bit mask in a global variable and marks its state word as pending, then returns.
+- `_BallInit`: Resets several memory locations to zero and then populates them by performing multiplications or fetching values through function pointers.
+- `update_coordinate_values_2`: Fetches values from two function pointers and stores them into consecutive memory locations.
+- `sync_coordinate_data`: Fetches values from two function pointers and stores them into consecutive memory locations.
+- `sync_coordinate_values`: Fetches values through function pointers and stores them into consecutive memory locations.
+- `update_coordinate_values`: Fetches values from two different function pointers and stores them into consecutive memory locations.
+- `_HookInit`: Reads values from a table and conditionally accumulates results from function pointers into memory locations.
+- `accumulate_library_value`: Stores a value from a function pointer into a memory location and conditionally adds another function pointer result to a previously stored value.
+- `accumulate_library_value_into_state`: Adds two library-derived values together and adds the total into a stored longword state field.
+- `_ReadMousey`: Reads the mouse port movement counter, subtracts the previously stored counter value, limits the difference to a signed byte range and returns the movement delta.
+- `_DrawHole`: Reads two library values into state, selects a frame and offset from position thresholds of 153 and 360, and draws the entity through library calls.
+- `_DrawIsland`: Chooses a graphic index from the current record's type byte: type 2 uses 26, type 6 uses 6, types 18, 19, 20 and 22 pass their own value, and any other type uses 11.
+- `_DrawMud`: Reads a state entry for the current index, sets a drawing mode through a library call, fills a local table of fields from state, and then issues further drawing calls for the entity.
+- `_DrawTees`: Checks a value in a table to determine specific coordinates and then performs multiple drawing operations to render shapes at a location.
+- `_GenerateMatrix`: When two stored state words are both zero and a flag is clear, it sets an index value and continues with further library-driven state updates.
+- `_DrawInfoBack`: Draws a setup panel containing labels for golf shot parameters such as club, power, wind, and slope.
+- `_myles_wrt_txt`: Draws each character of a string in turn through a library call, advancing the x position by seven per character, and stops at the length returned by another library call.
+- `_AbortGamePrint`: Draws a menu bar with the labels ABORT, LOAD and SAVE, using library calls to set the drawing mode, fill the box and place the text.
+- `_mkscreen`: Opens the graphics and intuition libraries, allocates memory for screen structures, and initializes several global pointers and data tables.
+- `_DoMemoryStuff`: Allocates memory, performs conditional loops based on allocation results, and calls a routine to close resources.
+- `_PaletteSet1`: Calls a routine to fill a memory area with thirty-two entries from a specified source.
+- `_CloseThings`: Checks bits of a stored status word and, for each set bit, makes library calls on stored handles to handle the matching event, then continues through the remaining checks.
+- `_MySetPointer`: Makes one library call on a stored handle with a buffer address, the values 2 and 16 and two zero arguments, then returns.
+- `_SetHoleNum`: Displays a menu for selecting a hole number and handles user input to increment or decrement the selection.
+- `_ShowLeaderBoard`: Clears several score-related fields and draws the leader board screen, labelled LEADER BOARD and Round, through nine library calls.
+- `_outline`: Draws a rectangle outline at fixed columns 37 and 282 relative to a row argument, with its top and bottom edges offset by 8, 28 and 38, through library calls.
+- `_DisplayScores`: Draws one player's score row: the name at a fixed column, a score or dash mark chosen by a stored value, a second value at a fixed column and a loop of 18 cells, all through library calls.
+- `_DoHighScores`: Constructs a filename string and attempts to open a file for reading or writing.
+- `_AllocHighScores`: Stores a value from a table into a global variable.
+- `_PrintScores`: Opens a file and iterates through a data table to write formatted scorecard information, including player names and calculated score totals, to the disk.
+- `_DoALine`: Passes its argument together with a reference to a second routine to a called routine, which can then invoke it as a callback.
+- `fill_memory_and_write`: Repeatedly stores a value from a global variable into a series of memory locations and then calls a routine to write data to a file.
+- `_OutputTheSucker`: Calls a library routine with two arguments, then passes the returned value and a constant one to a called routine.
+- `_SetScore_rj`: Converts an integer into a character string by extracting digits through function calls and storing them into a buffer.
+- `_OtherSetScore`: Converts a signed integer into a three-character string representation stored in a buffer.
+- `_ButtonRead`: Updates two status bytes based on the state of hardware registers and a global variable.
+- `_PuttIt`: Iterates through a loop to animate a ball movement by updating its position and drawing it on the screen.
+- `_PrintDropShad`: Iterates through a null-terminated string to call a drawing routine multiple times with varying coordinate offsets and parameters.
+- `draw_shadow_elements`: Iterates through a table to call a drawing routine multiple times with varying coordinate offsets and parameters.
+- `_SetUpFont`: Initializes several memory locations with specific values, loads a font, and copies data to multiple consecutive locations.
+- `copy_font_data`: Copies a block of data to five consecutive locations and then sets three other locations to a specific value.
+- `_LoadFont`: Allocates memory for a font and copies data into the allocated buffer.
+- `_SetFontColor`: Clears a memory area and then iterates five times to store one of two values into a table based on the bits of an integer.
+- `apply_bit_pattern`: Iterates through a loop to set values in a table based on the bits of a shifted integer.
+- `_wrt_dec`: Formats a value into an 80-byte stack buffer, draws the buffer at the given position through a library call, then passes the buffer on for a further call.
+- `_wrt_dec_rj`: Formats a value into an 80-byte stack buffer and, when its length is below a width argument, draws it at a position through library calls, passing the buffer on for a further call.
+- `_wrt_sdec_rj`: Formats a value into an 80-byte stack buffer and, when it fits within a width argument, draws it at a position through library calls, passing the buffer on to a further call.
+- `_wrt_txt`: Sets the drawing position through a library call, measures the string argument through another library call, and draws the string with its measured length through a called routine.
+- `_itoa`: Converts an integer into decimal digit characters in a buffer, adds a minus sign when the input is negative, terminates the string and then passes the text to a called routine.
+- `_reverse`: Measures a string through a library call, then swaps its characters from both ends toward the middle to reverse it in place.
+- `_SquareRoot`: Calculates an integer square root using a loop that increments a counter and a step value.
+- `_timer`: Executes a specific routine a set number of times based on the provided argument.
+- `_MySetAPen`: Sets a pen color through a library call using a value from a global pointer.
+- `_MySetBPen`: Loads a function pointer from a global location and executes it using a value passed in a register as the first argument.
+- `_MyRectFill`: Passes four arguments to a library routine via a pointer stored in a global variable.
+- `_My_wrt_dec`: Fetches a value from a global variable and passes it along with three other parameters to another routine.
+- `_My_wrt_txt`: Calls another routine to write text using a specific attribute retrieved from a global variable.
+- `_My_Move`: Passes a pair of arguments to a library routine on a stored handle, using one library function, then returns.
+- `_My_Draw`: Passes a pair of arguments to a library routine on a stored handle, using a second library function, then returns.
+- `_My_WritePixel`: Passes a pair of arguments to a library routine on a stored handle, using a third library function, then returns.
+- `_My_Line`: Moves to a starting coordinate and then draws a line to a destination coordinate.
+- `_WaitForMessage`: Repeatedly checks for a message and waits using a delay based on a value from a pointer if no message is found.
+- `jump_to__waitformessage`: Jump stub: passes control straight on to _WaitForMessage.
+- `return_from_wait`: This routine is an empty function that performs a simple return.
+- `_TreeInit`: Initializes a series of data structures by setting constant values and copying values from a global source.
+- `_SetUpTrees`: Calculates vertex coordinates and color data for a series of tree structures by performing cumulative additions on coordinate values.
+- `generate_tree_geometry`: Calculates and stores vertex coordinates and color data for a series of tree structures.
+- `_ShowTree`: Looks up a size and two offset values from tables using an index byte, copies them into position fields and loops over four parts to set up the entity's drawing data through library calls.
+- `_TheShrink`: Derives a draw mode from bits of a state word, clips the entity's rectangle to the screen bounds of 224 columns and 199 rows, and draws its parts through library calls.
+- `_BlitTheTree`: Stores an entity's position, size and offsets in the next sixteen-byte list record, checks them against the screen edges of 224 columns and 199 rows, and draws the entity through library calls when it is visible.
+- `_TreeCollide`: Iterates through a table of tree collision data to perform axis-aligned bounding box intersection tests against a target entity.
+- `process_collision_table`: Iterates through a table of collision data to perform axis-aligned bounding box intersection tests against a target entity.
+- `detect_tree_collision`: Iterates through a table of collision data to perform axis-aligned bounding box intersection tests against a target entity.
+- `check_collision_and_resolve_overlap`: Iterates through an object list to perform axis-aligned bounding box intersection tests against a target entity.
+- `resolve_collision_and_calculate_physics`: Iterates through an object list to perform axis-aligned bounding box intersection tests against a target entity.
+- `resolve_tree_collision`: Iterates through an object list to perform axis-aligned bounding box intersection tests against a target entity.
+- `process_collision_list`: Iterates through a linked list of object indices to perform axis-aligned bounding box intersection tests.
+- `check_tree_collision`: Iterates through a list of object indices to perform bounding box intersection tests against a player or entity position.
+- `return_from_collision_check`: This routine is an empty function that performs no operations before returning.
+- `_WompIt`: Updates the ball's position and velocity by accumulating values from a data structure and applying collision detection.
+- `update_golf_ball_animation`: Updates ball movement and drawing parameters by incrementing frame counters and checking bounds.
+- `process_command_sequence_3`: Iterates through a data buffer byte by byte to execute logic branches based on specific control characters.
+- `process_command_sequence`: Iterates through a data buffer byte by byte to execute logic branches based on specific control characters.
+- `process_command_buffer_sequence`: Iterates through a data buffer byte by byte, executing specific logic branches based on control characters.
+- `process_command_sequence_2_2`: Iterates through a data buffer byte by byte, executing specific logic branches based on control characters.
+- `process_command_sequence_2`: Iterates through a data buffer byte by byte, executing specific logic branches based on control characters.
+- `process_command_sequence_buffer`: Iterates through a data buffer byte by byte to execute specific logic branches based on control characters.
+- `parse_command_sequence_2`: Iterates through a data buffer byte by byte, executing specific logic branches based on control characters.
+- `parse_command_sequence`: Iterates through a data buffer byte by byte, executing specific logic branches based on control characters.
+- `process_game_state_events`: Evaluates a state variable to execute different logic branches, including updating coordinate values, calling subroutines for visual effects, and modifying data within a table based on calculated offsets.
+- `process_game_state_logic`: Evaluates a state variable to execute different branches of logic, including updating coordinate values and clamping a short integer between zero and three.
+- `process_event_state_logic`: Evaluates a state variable to execute different branches of logic, including calling subroutines, updating coordinate values in a table, and clamping numerical results within a specific range.
+- `update_game_state_logic`: Evaluates a state variable to execute conditional branches that update game data, modify values within specific ranges, and trigger visual splash effects.
+- `process_game_state_logic_2`: Evaluates a state variable to execute different branches of logic, including updating values within a specific range, calling subroutines to manipulate graphics or data, and performing arithmetic operations to store results in memory.
+- `process_game_state_logic_3`: Evaluates a state variable to execute different branches of logic, including updating values within a table, calling subroutines to refresh graphics, and performing arithmetic on values stored in memory.
+- `process_game_state_events_2`: Evaluates a state variable to trigger specific subroutines, manages splash screen visibility, and updates various data structures based on conditional logic.
+- `update_ball_physics_and_collision`: Updates ball position coordinates by adding velocity vectors and applies gravity or deceleration.
+- `dispatch_game_state_logic`: Evaluates a state variable to execute various logic branches, including updating coordinate values, managing splash screen visibility, and triggering specific subroutines based on the current state.
+- `dispatch_leaderboard_event_logic`: Processes different event types by clamping values, updating score table entries with calculated sums and differences, or copying data to a table based on a state variable.
+- `update_score_table`: Calculates a sum and difference from two function calls and adds these values to specific entries in a table indexed by a global variable.
+- `clamp_value_and_splash`: Clamps a value stored in a memory location between zero and three and then calls a splash routine.
+- `clamp_and_call_splash`: Clamps a value in a memory location to a maximum of three and then calls a splash routine.
+- `check_and_call_routine`: Checks if a value at a specific offset is zero and, if so, calls a routine using a pointer from a table.
+- `reset_table_values`: Calls a routine with a constant, checks a global value, and then copies two values from a table into a table indexed by a global variable.
+- `process_leaderboard_event`: Dispatches different logic based on a register value, including clamping a value, updating a score table with calculated sums and differences, and copying data into a table indexed by a global variable.
+- `return_from_subroutine_4`: The routine executes a single instruction to return from the current execution context to the caller.
+- `_SplashIt`: Checks a value in a global variable and, if it exceeds a threshold, updates several memory locations before calling routines to display a series of images and then erase them.
+- `_Collide`: Checks coordinate bounds and queries a collision table to determine interaction types.
+- `set_byte_flag`: Stores the value one into a byte at a specific offset.
+- `process_collision_consequences`: Checks the result of a collision routine and performs conditional arithmetic on table entries, including bitwise shifts and negation, before calling two function pointers and updating a short value based on a returned result.
+- `invert_and_scale_values`: If a specific byte is zero, it negates one integer, performs bitwise right shifts on two other integers, and updates a table entry with a calculated value.
+- `handle_collision_type_and_tree_impact`: Checks a register against a set of specific values to set a flag, otherwise calls a tree collision routine.
+- `return_zero_immediately`: Returns the value zero without doing any work.
+- `evaluate_collision_outcome`: Checks if a value is within a specific range and validates coordinates against a table to determine a collision result.
+- `validate_input_and_update_state`: Compares two memory values for equality and returns a constant if they match.
+- `evaluate_input_status`: Executes a function call based on input parameters and branches through a switch statement to update memory values, perform iterative function calls, or modify a global variable.
+- `set_flag_and_return`: Stores the value one into a word in a table and calls a routine with a constant.
+- `update_status_table`: Fetches values from multiple function calls to populate a table of four-byte entries.
+- `process_status_input`: Evaluates an input value through a switch statement to perform conditional memory updates, loop-based function calls, or multiple table writes.
+- `update_status_values`: Repeatedly calls two different routines to fetch values and store them into a table, then performs a conditional check on those values to set a flag and return a boolean result.
+- `return_zero`: An empty routine that returns zero.
+- `_MyCopy`: Copies longwords from a source buffer to a destination, reducing a byte count by four per step until the count reaches zero or drops to three or less.
+- `_ClearIt`: Fills a block of memory with zeros by iterating through a destination pointer for eight hundred iterations.
+- `_ClubSuggest`: Determines an optimal club index by comparing current distance values against a table of distance thresholds and adjusting the result based on specific environmental or state conditions.
+- `update_club_selection_state`: Updates a selection index based on a comparison result and modifies a set of graphical elements and text strings.
+- `update_leaderboard_entry_display`: Calculates vertical screen positions for graphical elements based on a table value and conditional flags.
+- `render_leaderboard_entry_graphics`: Updates a set of graphical elements at calculated vertical positions based on a table value and conditional flags.
+- `draw_calculated_position`: Calculates a vertical position based on a table value and draws two elements at specific coordinates using function pointers.
+- `update_state_and_draw`: Updates a byte in a table based on several conditions and performs multiple drawing or state-changing operations via function pointers.
+- `_ClubSuggestErase`: Sets a two-byte value at a specific offset to zero and calls a routine to perform a drawing or erasing operation with specific parameters.
+- `_GolferInit`: Initializes several fields in a structure, populates a list of five values using a function, and then populates a table of twelve values before performing drawing operations.
+- `_ActivateGolfer`: Loads a value from a table, performs a drawing operation, sets several short and byte values, and increments five consecutive entries in two different tables by a fixed amount.
+- `_EraseGolfer`: Calls a routine to perform a drawing or erasing operation using parameters stored in a table and a specific offset.
+- `_DrawGolfer`: Checks if a value has changed, clears the screen, and then calls routines to draw elements using data from multiple tables and offsets.
+- `draw_packed_elements`: Iterates through a loop to determine a count, then performs three separate drawing operations using data from various tables and offsets.
+- `draw_golfer_elements`: Performs three separate drawing or manipulation operations using values from various tables and structure offsets.
+- `_KerPlunk`: Computes a draw position by offsetting the current position fields by fixed amounts, stores a value scaled by 5 from its argument, and calls a graphics helper with a 225-wide region and parameters 5, 8, 16 and 192.
+- `_EraseSplash`: Calls a graphics helper with a 225-wide region and parameters 5, 8, 16 and 192, using the position values stored in the state block.
+- `_SplashImage`: Clears a splash area and then, for sixteen rows, iterates through each bit of a byte to plot points at offsets derived from a table.
+- `_ActivateBall`: Stores the start coordinates 111 and 188 with a second value of 188, sets a flag, draws two bitmap regions from the same position and calls a clear and a fixed-rectangle helper.
+- `_EraseBall`: Draws two bitmap regions to erase a shape and then conditionally draws additional rectangular regions based on comparisons of stored coordinate values.
+- `_BallPlot`: Updates the ball's position by calculating the difference between its current coordinates and a target point, then draws the ball and its shadow within specific screen boundaries.
+- `_DoSomeStuff`: Clamps a 16-bit value in place to the range from minus 10 to 10.
+- `_converthal`: Reads two values, performs arithmetic involving bit shifts and additions, and stores the results into a table.
+- `_InitDigit`: Copies a value from a global variable, performs several operations involving a pointer and a constant, and updates a table with the results.
+- `_DigitSound`: Initializes audio DMA channels by writing sample data and control parameters to hardware registers.
+- `configure_dma_audio_registers`: Configures DMA hardware registers and interrupt masks by writing values from a table to the hardware.
+- `configure_dma_hardware_registers`: Initializes DMA control registers and interrupt masks by writing values from a table to hardware registers.
+- `configure_dma_channels_2`: Initializes DMA control registers and interrupt masks by writing values from a table to hardware registers.
+- `configure_dma_channels`: Updates DMA control and interrupt request registers using values from a table and sets a bitmask in the DMA controller.
+- `configure_dma_channel_mask`: Calculates a bitmask based on a channel index and updates the DMA control and interrupt request registers.
+- `update_dma_mask_2`: Calculates a bitmask from a pointer, stores it in a global variable, and modifies DMA control registers.
+- `update_dma_mask`: Calculates a bitmask based on a value from a pointer, stores it in a global variable, and modifies a DMA control register.
+- `update_dma_control`: Calculates a bitmask based on a value from a pointer and stores it in a global variable, then enables a DMA channel via the DMACON register and calls a sound routine.
+- `_TurnSoundOff`: Sets a global variable to a value that enables DMA channels via the DMACON register.
+- `_FadePaletteOff`: Copies a new palette into a buffer and then iteratively decrements each color component to fade the palette toward black.
+- `_FadePaletteOn`: Clears a palette buffer and then iteratively increments each color component toward the target values provided in an argument.
+- `_LoadGameRoutine`: Initializes a screen update and enters a loop to monitor input for adjusting a numeric value between zero and nine.
+- `handle_numeric_input_loop`: Executes a loop that monitors input to increment or decrement a numeric value between zero and nine.
+- `decrement_numeric_selection`: Decrements a numeric value within a loop, wrapping it from zero to nine, while handling input and updating the display.
+- `increment_numeric_selection`: Increments a numeric value within a loop, wrapping it from nine to zero, while handling input and updating the display.
+- `update_numeric_selection_loop`: Iterates through a range of values by incrementing or decrementing a counter, handling input to modify the value and updating the display via XOR operations.
+- `process_input_loop`: Executes a loop that checks a flag, handles input to increment or decrement a value, and calls routines to update the screen and perform XOR operations.
+- `execute_delayed_task`: Calls a routine with a delay, executes another routine, and returns a boolean based on a comparison.
+- `return_constant_one`: An empty routine that simply returns the integer value one.
+- `_UpdateThatScreen`: Saves a value from a global variable, executes a loading sequence, and restores the original value.
+- `_DoABitOfStuff`: Calls two functions via pointers stored in memory and then calls a third function with several parameters including a value from a global variable.
+- `_MyLine`: Calls a routine twice using different parameter pairs to perform drawing operations.
+- `_MyMove`: Calls a routine with two parameters to perform a single drawing operation.
+- `_MyDraw`: Retrieves a function pointer from a location calculated using a global variable and executes it with two passed parameters.
+- `_SaveGameRoutine`: Copies multiple blocks of data from various memory locations into a destination buffer and writes the resulting buffer to a file.
+- `_LoadAndDisplayGame`: Iterates through a data table to calculate scores by summing specific bytes and shorts, then writes these values and associated status characters to a display buffer.
+- `return_from_subroutine_5`: The routine executes three instructions that result in a return to the calling function.
+- `update_score_display_2`: Calculates a value by summing bytes and shorts from a table and writes the result to a score via another routine.
+- `calculate_and_display_score_totals`: Iterates through a data table to accumulate a sum of values and updates a score via a specific routine.
+- `process_score_data`: Iterates through a table to calculate a sum, updates a score via a routine, and writes character representations to memory.
+- `update_score_display`: Iterates through data to calculate a sum, updates a score via a routine, and writes a character representation to a memory location.
+- `process_score_data_2`: Iterates through a table to calculate a sum, updates a score via another routine, and writes character representations to memory.
+- `_PrintLoadScreen`: Draws a graphical interface consisting of lines and rectangles to form a structured layout.
+- `update_menu_options`: Calls a routine multiple times to update a global variable and another memory location with specific values.
+- `_SetLoadedGame`: Initializes game state by copying blocks of data from a table to new locations and setting several global values.
+- `initialize_game_state`: Sets several global values, copies a block of bytes from a table to a new location, and returns a status from another routine.
+- `return_zero_2`: Returns zero to the caller.
+- `_XorThatBox`: Performs a series of operations on a memory area using a pointer, including a block fill or XOR operation.
+- `_OpenDialogBox`: Prepares course input data and writes three specific integer values to memory locations relative to a pointer before invoking a dialog box routine.
+- `_UpdateLoadSelect`: Enters a loop that waits for messages and dispatches them based on their type and specific command ID. It handles file selection, directory navigation, list scrolling, and resets internal state variables before loading specific directories or exiting the loop.
+- `handle_file_menu_selection`: Processes user input from a menu to select files, navigate directories, or reset file list indices.
+- `jump_to__updateloadselect`: Jump stub: passes control straight on to _UpdateLoadSelect.
+- `return_from_subroutine_6`: This routine is empty and performs no operations before returning to the caller.
+- `_DoLoadDialogBox`: Constructs a graphical user interface for a file loading dialog by drawing a window frame, text labels, and several 3D-shaded buttons.
+- `_Draw3dBox`: draws several rectangles using coordinates passed via parameters to create a three-dimensional box effect.
+- `_SelectFileRoutine`: Performs an XOR operation on a gadget box, waits for a specific value in a message structure, and then replies to the message.
+- `display_message_and_xor`: Calls a routine to display a message and then calls another routine to perform an XOR operation on a gadget box.
+- `_XorGadgetBox2`: calculates a position using a pointer and an offset, then performs an XOR operation on a rectangular area.
+- `_LoadAndDisplayDirectory`: Locks a filesystem resource and iterates through directory entries to populate a local file list and metadata table.
+- `populate_file_list`: Iterates through a directory to copy file names into a local buffer and populates a table with file metadata.
+- `enumerate_file_list`: Iterates through a file list using an enumeration routine, copies data from one table to another, and adds file names to a list before unlocking a resource.
+- `display_files_and_unlock`: Calls a routine to display file names and then unlocks a resource using a pointer from a global variable.
+- `_AddFileName`: Copies a null-terminated string from a provided pointer into a destination buffer located at an offset from a global variable.
+- `return_immediately_4`: This routine performs no operations and returns to its caller immediately.
+- `_TryToOpenDirectory`: Checks if a given index refers to a valid directory entry and updates the directory stack.
+- `process_directory_navigation`: Manages directory traversal by checking file attributes and updating a path string.
+- `build_directory_path_string`: Constructs a file path string by concatenating a base directory with a filename, optionally inserting a slash separator.
+- `copy_directory_data_and_display`: Copies a sequence of bytes from a source, optionally appends a slash character, and populates a string table before calling a routine to load and display a directory.
+- `format_directory_string`: Copies a string from one location to another, conditionally appends a slash character, and populates a table with the resulting string.
+- `copy_and_pad_directory_data`: Copies bytes from one memory location to another, appends a slash character under certain conditions, and then populates a table with string data before padding the remainder of the table with zeros.
+- `_DisplayFileNames`: iterates through a list of entries to draw text strings at specific vertical offsets.
+- `tiny_move_unlk_rts`: Small routine of 3 instructions that copies (a7)+ to d4, then removes the stack frame held in a5, then returns.
+- `_SetUpCourseInput`: Copies one 32-bit word, reached through a pointer chain in the base-relative data area, into a fixed field of the same area.
+- `_fopen`: Claims a free stream record and reopens it for the requested file and mode.
+- `_freopen`: Closes the stream's current file, looks up the requested mode string in a fixed table, and opens the file with the matching flags.
+- `_begin`: Zeroes a long block of words in the data area, saves the stack pointer and a global value into that area, then calls the runtime initialiser.
+- `_strcmp`: Compares two zero-terminated strings byte by byte and returns a negative, zero or positive value by unsigned comparison.
+- `_strncmp`: Compares at most a given number of characters of two strings with the same negative, zero or positive ordering.
+- `_creat`: Opens a file with the flags that create or truncate it for writing.
+- `_open`: Finds a free entry among twenty open-file slots and, when an exclusive flag is set, locks and deletes any existing file first.
+- `compute_signed_quotient`: Sets the sign of the result from the signs of the operands, calls the unsigned division routine, and negates its quotient when the signs require it.
+- `_mods`: Sets the sign from the operand signs, calls the unsigned division routine, and returns its remainder with that sign.
+- `_modu`: Calls the unsigned division routine and returns only the remainder it leaves in the second result register.
+- `_divu`: Divides a 32-bit unsigned dividend by a 32-bit unsigned divisor and returns the quotient and remainder together.
+- `_fwrite`: Writes a block of bytes one at a time through the single-character output routine.
+- `_putc`: Stores one character in the stream buffer and advances the buffer pointer when space remains.
+- `close_all_open_streams`: Walks the table of stream records in fixed-size steps up to a bound, closing each record.
+- `_fclose`: Closes a stream if it is open.
+- `_flsh_`: Writes a stream's pending buffered bytes to its file, then either stores the given character in the buffer or writes it directly.
+- `_newstream`: Scans the stream table for an unused record, clears its pointer fields, and returns it.
+- `_getbuff`: Gives a stream a 1024-byte buffer unless its file is a terminal or the allocation fails.
+- `free_linked_memory_blocks`: Walks a singly linked list of memory blocks, releasing each one with its stored size plus its header, then clears the list head.
+- `free_memory_chain_from_argument`: Frees each block of a linked chain that starts at the pointer passed in the address register, following the stored next pointers.
+- `_lmalloc`: Allocates a block with a header and stores the requested size in it.
+- `_malloc`: Forwards its size argument to the tracked allocator without further processing.
+- `_free`: Searches the allocation list for the block at the given address, unlinks it, and releases it with its stored size plus header.
+- `_isatty`: Looks up the file identifier for a stream slot and asks the operating system whether that file is an interactive device.
+- `_unlink`: Deletes the named file through the operating-system routine.
+- `_write`: Checks that a stream index is in range, that the slot is open, and that it has write access, then writes through the operating system.
+- `_Chk_Abort`: Reads and clears the break signal bit.
+- `verify_word_then_exit`: Compares a 16-bit value with a value derived from another register and calls the stored error handler when they differ.
+- `__main`: Opens the operating-system libraries and reads the start message of the process, showing an alert if a library fails to open.
+- `tiny_move`: Small routine of 1 instruction that copies d0 to d0.
+- `__exit`: Closes the first ten file slots, runs the registered cleanup routine, closes the opened libraries, and frees the saved argument and word buffers before exiting.
+- `_strcat`: Moves to the terminating zero of the first string and copies the second string, including its terminator, onto the end.
+- `_strncat`: Appends characters from the second string to the end of the first, stopping at a zero terminator or after a given count, and terminates the result.
+- `_strcpy`: Copies a zero-terminated string from the source pointer to the destination, including the terminator, and returns the destination pointer.
+- `_strlen`: Walks a zero-terminated string forward to its terminator and returns the number of characters before it.
+- `_strncpy`: Copies up to a given count of characters from the source to the destination, stopping after a zero terminator.
+- `_close`: Checks that a file-slot index is in range and that the slot is in use, then closes its operating-system file unless the slot is flagged as not owned and clears the slot.
+- `_mulu`: The routine takes two 32-bit fixed-point values from registers and returns a 32-bit fixed-point product.
+- `_AddICRVector`: Library stub: loads a library base from a global variable and calls the library function at offset minus 6 of that base, returning its result to the caller.
+- `_RemICRVector`: Library stub: loads a library base from a global variable and calls the library function at offset minus 12 of that base, returning its result to the caller.
+- `_SetICR`: Library stub: loads a library base from a global variable and calls the library function at offset minus 24 of that base, returning its result to the caller.
+- `_Close`: Jump stub: passes control straight on to __Close.
+- `__Close`: Library stub: loads a library base from a global variable and calls the library function at offset minus 36 of that base, returning its result to the caller.
+- `__CurrentDir`: Library stub: loads a library base from a global variable and calls the library function at offset minus 126 of that base, returning its result to the caller.
+- `__DeleteFile`: Library stub: loads a library base from a global variable and calls the library function at offset minus 72 of that base, returning its result to the caller.
+- `_Examine`: Jump stub: passes control straight on to __Examine.
+- `__Examine`: Library stub: loads a library base from a global variable and calls the library function at offset minus 102 of that base, returning its result to the caller.
+- `__Exit`: Calls the operating-system library's exit entry through the library base stored in the data area, ending the program.
+- `_ExNext`: Library stub: loads a library base from a global variable and calls the library function at offset minus 108 of that base, returning its result to the caller.
+- `__Input`: Library stub: loads a library base from a global variable and calls the library function at offset minus 54 of that base, returning its result to the caller.
+- `__IoErr`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
+- `__IsInteractive`: Library stub: loads a library base from a global variable and calls the library function at offset minus 216 of that base, returning its result to the caller.
+- `_Lock`: Jump stub: passes control straight on to __Lock.
+- `__Lock`: Library stub: loads a library base from a global variable and calls the library function at offset minus 84 of that base, returning its result to the caller.
+- `_Open`: Jump stub: passes control straight on to __Open.
+- `__Open`: Calls the operating-system library's open entry through the library base stored in the data area, using arguments the caller has already placed.
+- `__Output`: Library stub: loads a library base from a global variable and calls the library function at offset minus 60 of that base, returning its result to the caller.
+- `_Read`: Calls the operating-system library's read entry through the library base stored in the data area, using arguments the caller has already placed.
+- `_Seek`: Jump stub: passes control straight on to __Seek.
+- `__Seek`: Library stub: loads a library base from a global variable and calls the library function at offset minus 66 of that base, returning its result to the caller.
+- `_UnLock`: Jump stub: passes control straight on to __UnLock.
+- `__UnLock`: Library stub: loads a library base from a global variable and calls the library function at offset minus 90 of that base, returning its result to the caller.
+- `_Write`: Jump stub: passes control straight on to __Write.
+- `__Write`: Library stub: loads a library base from a global variable and calls the library function at offset minus 48 of that base, returning its result to the caller.
+- `_Alert`: Calls the library entry that displays a system alert, reached through the library base stored in the data area.
+- `_AvailMem`: Calls the library entry that reports available memory, reached through the library base stored in the data area.
+- `_CloseLibrary`: Jump stub: passes control straight on to __CloseLibrary.
+- `__CloseLibrary`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `_AllocMem`: Jump stub: passes control straight on to __AllocMem.
+- `__AllocMem`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `__FindTask`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
+- `__Forbid`: Calls the library entry that disables task switching, reached through the library base stored in the data area.
+- `_FreeMem`: Jump stub: passes control straight on to __FreeMem.
+- `__FreeMem`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `_GetMsg`: Jump stub: passes control straight on to __GetMsg.
+- `__GetMsg`: Library stub: loads a library base from a global variable and calls the library function at offset minus 372 of that base, returning its result to the caller.
+- `_OpenLibrary`: Jump stub: passes control straight on to __OpenLibrary.
+- `__OpenLibrary`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `_OpenResource`: Library stub: loads a library base from a global variable and calls the library function at offset minus 498 of that base, returning its result to the caller.
+- `_ReplyMsg`: Jump stub: passes control straight on to __ReplyMsg.
+- `__ReplyMsg`: Library stub: loads a library base from a global variable and calls the library function at offset minus 378 of that base, returning its result to the caller.
+- `__SetSignal`: Library stub: loads a library base from a global variable and calls the library function at offset minus 306 of that base, returning its result to the caller.
+- `_Wait`: Library stub: loads a library base from a global variable and calls the library function at offset minus 318 of that base, returning its result to the caller.
+- `__WaitPort`: Library stub: loads a library base from a global variable and calls the library function at offset minus 384 of that base, returning its result to the caller.
+- `_AreaDraw`: Library stub: loads a library base from a global variable and calls the library function at offset minus 258 of that base, returning its result to the caller.
+- `_AreaEnd`: Library stub: loads a library base from a global variable and calls the library function at offset minus 264 of that base, returning its result to the caller.
+- `_AreaMove`: Library stub: loads a library base from a global variable and calls the library function at offset minus 252 of that base, returning its result to the caller.
+- `_BltBitMap`: Calls the graphics library's bitmap block-transfer entry through the library base stored in the data area.
+- `_BltClear`: Library stub: loads a library base from a global variable and calls the library function at offset minus 300 of that base, returning its result to the caller.
+- `_ClipBlit`: Calls the graphics library's clipped block-transfer entry through the library base stored in the data area.
+- `_Draw`: Library stub: loads a library base from a global variable and calls the library function at offset minus 246 of that base, returning its result to the caller.
+- `_InitArea`: Library stub: loads a library base from a global variable and calls the library function at offset minus 282 of that base, returning its result to the caller.
+- `_LoadRGB4`: Library stub: loads a library base from a global variable and calls the library function at offset minus 192 of that base, returning its result to the caller.
+- `_Move`: Library stub: loads a library base from a global variable and calls the library function at offset minus 240 of that base, returning its result to the caller.
+- `_ReadPixel`: Calls the graphics library's pixel-read entry through the library base stored in the data area.
+- `_RectFill`: Calls the graphics library's rectangle-fill entry through the library base stored in the data area.
+- `_SetAPen`: Library stub: loads a library base from a global variable and calls the library function at offset minus 342 of that base, returning its result to the caller.
+- `_SetBPen`: Library stub: loads a library base from a global variable and calls the library function at offset minus 348 of that base, returning its result to the caller.
+- `_SetDrMd`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
+- `_Text`: Calls the graphics library's text-drawing entry through the library base stored in the data area.
+- `_WaitTOF`: Library stub: loads a library base from a global variable and calls the library function at offset minus 270 of that base, returning its result to the caller.
+- `_WritePixel`: Library stub: loads a library base from a global variable and calls the library function at offset minus 324 of that base, returning its result to the caller.
+- `_ClearPointer`: Calls the library entry that clears the mouse pointer image, reached through a second library base stored in the data area.
+- `_CloseScreen`: Calls the library entry that closes a display screen, reached through the second library base stored in the data area.
+- `_CloseWindow`: Calls the library entry that closes a display window, reached through the second library base stored in the data area.
+- `_CloseWorkBench`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
+- `_MakeScreen`: Calls the library entry that rebuilds a screen, reached through the second library base stored in the data area.
+- `_OpenScreen`: Calls the library entry that opens a display screen, reached through the second library base stored in the data area.
+- `_OpenWindow`: Library stub: loads a library base from a global variable and calls the library function at offset minus 204 of that base, returning its result to the caller.
+- `_OpenWorkBench`: Calls the library entry that opens the Workbench screen, reached through the second library base stored in the data area.
+- `_RethinkDisplay`: Library stub: loads a library base from a global variable and calls the library function at offset minus 390 of that base, returning its result to the caller.
+- `_SetPointer`: Calls the library entry that sets the mouse pointer image, reached through the second library base stored in the data area.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `stub_single_instruction_entry`: Decompiler output timed out, so no pseudo-code is available.
+- `return_from_subroutine_7`: This routine consists of a single instruction that returns control to the caller.
+- `return_from_subroutine_8`: The routine consists of a single instruction that returns control to the caller.
+- `execute_single_instruction`: This routine consists of a single instruction.
+- `execute_single_instruction_2`: This routine consists of exactly one instruction and is entered from outside the static code flow.
+- `execute_single_instruction_3`: This routine consists of a single instruction.
+- `return_from_subroutine_9`: The routine contains a single instruction.
+- `return_from_subroutine_10`: This routine consists of one instruction.
+- `return_from_subroutine_11`: The routine is composed of a single instruction.
+- `return_from_subroutine_12`: This is a one-instruction routine.
+- `return_from_subroutine_13`: The routine contains only one instruction.
+- `return_from_subroutine_14`: This routine is a single instruction long.
+- `return_from_subroutine_15`: The routine consists of exactly one instruction.
+- `return_from_subroutine_16`: This routine contains a single instruction.
+- `return_from_subroutine_17`: The routine is defined by one instruction.
+- `return_from_subroutine_18`: This routine contains only one instruction.
+- `execute_single_instruction_4`: The routine contains exactly one instruction.
+- `execute_single_instruction_5`: This routine consists of a single instruction.
+- `execute_single_instruction_6`: The routine is composed of one instruction.
+- `execute_single_instruction_7`: This routine performs a single instruction.
+- `return_from_subroutine_19`: The routine contains a single instruction that returns control to the caller.
+- `execute_single_instruction_8`: This routine is limited to one instruction.
+- `execute_single_instruction_9`: The routine executes a single instruction.
+- `nop_instruction_execution`: This routine consists of a single no-operation instruction.
+- `execute_single_instruction_10`: This routine consists of a single instruction and is entered from outside the static code flow.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `stub_bad_instruction_data`: The decompiler reports bad instruction data at this entry, so there is no behaviour to describe.
+- `empty_routine`: This routine contains no valid instructions and performs no operations.
+- `empty_routine_2`: This routine is empty and contains no executable instructions.
+- `empty_routine_3`: This routine is empty and contains no valid instructions.
+- `empty_routine_4`: This routine contains no executable instructions.
+- `null_routine_2`: The routine is empty and contains no executable instructions.
+- `return_immediately_stub`: The pseudo-code is a bare return that performs no work of its own, so the routine has no behaviour beyond returning to its caller.
+- `nop_padding_sequence`: The routine is empty and consists of a single instruction that acts as a gap in the executable code.
+- `null_routine_3`: The routine is empty and contains no valid instructions.
+- `nop_padding_byte`: This routine is empty and consists of a single byte of data that does not form a valid instruction.
+- `undefined_op_trap`: The routine contains invalid or non-executable instruction data, causing a control flow interruption.
+- `nop_padding_5`: The routine contains a single instruction that acts as a non-functional padding or gap in the instruction stream.
+- `halt_execution_2`: The routine contains invalid or non-executable instruction data, causing the execution flow to terminate or become undefined.
+- `nop_padding_byte_2`: This routine is empty and consists of a single instruction that does not perform any operation.
+- `empty_routine_5`: The routine is empty and performs no operations.
+- `null_routine_4`: The routine is empty and contains no valid executable instructions.
+- `restore_stack_and_return`: This routine acts as a jump target that restores the stack pointer to its previous state before returning to the caller.
+- `return_to_caller`: This routine is empty and serves solely as a jump target to facilitate stack pointer restoration before returning to a previous routine.
+- `perform_no_operation`: This routine is empty and performs no actions before returning.
+- `return_empty_routine`: The routine contains no executable instructions and performs no operations before returning.
+- `empty_routine_13`: the routine contains no executable instructions or valid instructions.
+- `empty_routine_14`: The routine contains no executable instructions and performs no operations.
+- `return_to_caller_2`: This routine is empty and serves only as a jump target to restore the stack pointer before returning.
+- `empty_routine_15`: the routine contains no executable instructions and performs no operations.
+- `perform_null_operation`: The routine is empty and performs no actions before returning.
+- `return_empty_routine_2`: the routine is empty and performs no operations.
+- `empty_routine_16`: the routine contains no executable instructions.
+- `empty_routine_6`: This routine is empty and performs no operations.
+- `empty_routine_7`: The routine contains no valid instructions and performs no operations.
+- `execute_invalid_instruction`: The routine contains a single instruction that is not recognized as valid machine code, causing the disassembly to fail.
+- `abort_execution`: The routine contains no valid instructions and terminates the program flow immediately.
+- `execute_invalid_instruction_23`: executes a single instruction that triggers a processor exception or error or stops execution.
+- `null_operation_routine`: The routine is empty and performs no actions.
+- `skip_instruction`: This routine consists of a single instruction that does not form a complete valid operation, acting as a data gap in the executable segment.
+- `empty_routine_8`: The routine contains no executable instructions.
+- `empty_routine_9`: This routine contains no valid instructions.
+- `null_routine_5`: The routine contains no valid instructions and performs no operations or data transfers.
+- `execute_invalid_instruction_2`: Consists of a single instruction that is not recognized as valid code.
+- `null_instruction_placeholder_2`: This routine contains no valid instructions and functions as an empty padding block within the executable segment.
+- `terminate_execution`: The routine contains no valid instructions and terminates the current execution flow.
+- `nop_padding_filler`: This routine is empty and consists of a single instruction that does not perform any action.
+- `execute_invalid_instruction_3`: Contains a single instruction that results in a truncation of control flow.
+- `nop_placeholder`: This routine contains a single instruction that prevents further disassembly of the subsequent code block.
+- `execute_invalid_instruction_4`: Contains a single instruction that cannot be processed by the processor.
+- `undefined_halt_routine`: The routine contains invalid or malformed instruction data, preventing any executable logic or data manipulation or any valid instruction or register-based operation.
+- `nop_instruction`: This routine contains a single instruction that does not perform any operation or modify any state.
+- `nop_padding_byte_3`: The routine consists of a single instruction that serves as padding within the executable segment.
+- `return_empty_routine_3`: The routine contains no valid instructions and performs no operations before returning or terminating execution.
+- `return_empty_routine_4`: the routine contains no valid instructions and performs no operations before returning.
+- `undefined_instruction_trap`: The routine contains invalid or missing instruction data, causing the execution flow to terminate or trigger an exception.
+- `null_routine_6`: the routine is empty and contains no executable instructions.
+- `return_empty_routine_5`: The routine contains no valid instructions and performs no operations before returning.
+- `return_empty_routine_6`: The routine contains no valid executable instructions and performs no operations before returning.
+- `null_instruction_trap_3`: The routine contains no valid instructions and terminates immediately upon entry.
+- `nop_instruction_2`: The routine consists of a single instruction that performs no operation.
+- `null_instruction_placeholder`: The routine contains no valid executable instructions.
+- `nop_padding_instruction`: The routine contains a single instruction that acts as a gap or padding, as no valid executable instruction or control flow or data manipulation can be recovered.
+- `return_to_caller_3`: This routine is empty and serves only as a jump target to facilitate stack pointer restoration before returning to a previous routine.
+- `nop_instruction_6`: The routine consists of a single no-operation instruction and performs no actions.
+- `return_empty_routine_7`: The routine contains no executable instructions and performs no operations before returning or terminating control flow.
+- `no_op_stub`: The routine contains no valid executable instructions and acts as a dead or empty instruction slot.
+- `nop_padding_byte_4`: The routine consists of a single non-instruction byte that serves as padding within the executable segment.
+- `null_operation`: The routine contains no valid executable instructions and performs no action.
+- `return_from_subroutine_22`: The routine performs a single return instruction to exit the current function and return control to the caller.
+- `return_empty_routine_8`: This routine contains no valid executable instructions and performs no operations before returning.
+- `terminate_execution_2`: The routine contains no valid instructions and terminates the control flow immediately upon entry.
+- `nop_padding`: This routine is empty and consists of a single instruction that acts as a filler gap in the executable.
+- `undefined_instruction_trap_2`: the routine contains invalid or non-executable instruction data that causes a control flow error.
+- `execute_invalid_instruction_5`: Consists of a single byte of data that does not form a valid instruction.
+- `nop_padding_byte_5`: This routine is empty and consists of a single byte of non-executable data that acts as padding.
+- `execute_invalid_instruction_6`: Contains a single byte of data that cannot be processed as a valid instruction.
+- `execute_invalid_instruction_7`: Consists of an instruction that is invalid according to the processor architecture.
+- `nop_padding_6`: This routine contains no executable instructions and serves as a single-byte padding or gap in the instruction stream.
+- `execute_invalid_instruction_8`: Contains a single byte of data that results in a bad instruction error.
+- `null_instruction_trap`: This routine contains no valid instructions and effectively acts as an execution trap due to encountering invalid data.
+- `execute_invalid_instruction_9`: Contains a single byte of data that is not a valid instruction.
+- `return_empty_routine_9`: The routine contains no valid executable instructions and performs no operations.
+- `null_routine_7`: The routine contains no valid executable instructions and performs no operations or data transfers.
+- `update_pointer_indirect`: Loads a value from a memory location pointed to by a register and stores it into another memory location pointed to by a different register.
+- `nop_padding_byte_6`: This routine consists of a single instruction that acts as a gap or filler between other code segments.
+- `execute_invalid_instruction_10`: Contains a single instruction that cannot be decoded.
+- `halt_execution`: The routine contains no valid instructions and terminates control flow immediately upon entry.
+- `abort_execution_2`: The routine contains no valid instructions and terminates execution immediately.
+- `execute_invalid_instruction_11`: Consists of a single instruction that is not valid code.
+- `null_instruction_trap_4`: This routine contains no valid executable instructions and terminates execution upon entry.
+- `return_empty_routine_10`: The routine contains no valid executable instructions and performs no operations before returning or terminating control flow.
+- `nop_padding_2`: The routine is empty and consists of a single instruction that performs no operation.
+- `halt_execution_3`: The routine contains invalid or undefined instruction data, causing execution to stop or fail.
+- `abort_execution_3`: terminates the program execution immediately due to invalid or missing instruction data.
+- `nop_padding_instruction_2`: the routine contains a single non-functional instruction acting as a gap or padding between executable blocks.
+- `nop_instruction_3`: The routine contains a single instruction that does not perform any operation or modify any state.
+- `execute_invalid_instruction_24`: executes a single instruction that triggers a processor exception or invalid_instruction_error.
+- `return_empty_routine_11`: The routine contains no valid instructions and performs no operations before returning or terminating control flow.
+- `halt_execution_4`: the routine contains invalid or unrecognized instruction data, causing execution to stop or fail.
+- `empty_routine_10`: This routine contains no valid instructions and performs no actions.
+- `nop_padding_7`: the routine contains no executable instructions and serves as a gap in the instruction stream.
+- `empty_routine_17`: This routine contains no instructions.
+- `empty_routine_18`: The routine contains no executable code.
+- `nop_padding_11`: This routine is empty and consists of a single no-operation instruction.
+- `terminate_execution_3`: The routine contains no valid instructions and causes the processor to stop.
+- `empty_routine_19`: No instructions are present in this routine.
+- `nop_padding_3`: The routine is empty and consists only of non-executable data acting as padding.
+- `empty_routine_20`: The routine lacks any instructions.
+- `nop_padding_4`: This routine is empty and consists of a single non-instructional byte used for data alignment or padding.
+- `nop_instruction_4`: The routine contains a single invalid or non-executable instruction that terminates control flow immediately upon entry.
+- `empty_routine_21`: There is no code within this routine.
+- `empty_routine_22`: The routine contains no code.
+- `void_padding_n_op`: The routine contains no executable instructions and acts as a single-byte or multi-byte gap in the instruction stream.
+- `update_score_display_3`: Reads a value from a memory location and writes it to a specific offset within a display buffer.
+- `halt_execution_5`: This routine contains bad instruction data that stops further execution.
+- `nop_padding_instruction_3`: the routine contains a single non-executable instruction used as a padding gap between valid code instructions.
+- `return_from_halt`: This routine terminates execution or enters a stopped state, preventing any further instructions from being processed.
+- `empty_routine_23`: the routine contains no executable instructions or valid instructions to perform any operation.
+- `halt_execution_6`: This routine executes a bad instruction and stops.
+- `halt_execution_7`: The routine contains a single instruction that is not valid code.
+- `null_instruction_gap`: This routine contains no valid instructions and consists of a data gap within the executable segment.
+- `terminate_execution_5`: The routine contains no valid instructions and serves as a terminal point in the execution flow.
+- `halt_execution_8`: An unreached routine that contains bad instruction data.
+- `skip_instruction_2`: This routine consists of one byte of invalid data.
+- `skip_instruction_3`: The routine is composed of a single bad instruction.
+- `stub_bad_instruction_data_2`: The decompiled body is only a bad-instruction trap at undecodable bytes, so no behaviour can be recovered.
+- `skip_instruction_4`: This routine contains one byte that does not decode as valid code.
+- `halt_execution_9`: The routine contains invalid or bad instruction data, causing the processor or disassembler to stop execution or truncate control flow.
+- `empty_routine_24`: The routine contains no instructions.
+- `stub_bad_instruction_data_3`: The decompiled body is only a bad-instruction trap at undecodable bytes, so no behaviour can be recovered.
+- `skip_instruction_5`: The routine contains one byte of undecodable data.
+- `empty_routine_25`: This routine does not perform any operations.
+- `skip_instruction_6`: The routine contains one byte of bad instruction data.
+- `undefined_nop_padding`: The routine contains no executable instructions and acts as a gap in the instruction stream.
+- `halt_execution_10`: stops all further instruction execution.
+- `return_empty_routine_12`: the routine contains no executable instructions and performs no operations before returning.
+- `nop_padding_byte_7`: The routine contains a single byte of data that does not constitute a valid instruction, serving as padding within the executable segment.
+- `execute_invalid_instruction_12`: Contains a single byte of data that cannot be decoded as a valid instruction.
+- `nop_padding_instruction_4`: The routine contains a single non-executable instruction acting as a gap in the instruction stream.
+- `null_instruction_trap_2`: The routine contains no valid executable instructions and immediately triggers a control flow error.
+- `empty_routine_26`: This routine contains no code.
+- `execute_invalid_instruction_13`: Consists of a single byte of data that is not a valid instruction.
+- `null_operation_routine_2`: The routine is empty and performs no operations or data transfers.
+- `empty_routine_27`: This routine contains no instructions or logic.
+- `return_empty_routine_13`: the routine performs no operations and immediately returns.
+- `execute_invalid_instruction_14`: Consists of a single byte that does not form a valid instruction.
+- `execute_invalid_instruction_15`: Contains data that the disassembler cannot interpret as code.
+- `execute_invalid_instruction_16`: The routine contains a single byte of undecodable data.
+- `execute_invalid_instruction_17`: Contains an instruction that is not recognized by the processor.
+- `nop_padding_instruction_5`: this routine consists of a single non-functional instruction acting as a gap between executable instructions.
+- `execute_invalid_instruction_18`: Consists of a single byte that results in a bad instruction error.
+- `execute_invalid_instruction_19`: Contains a single byte of data that cannot be decoded.
+- `execute_invalid_instruction_20`: The routine is unreached and contains undecodable data.
+- `execute_invalid_instruction_21`: Contains a single byte that is identified as bad instruction data.
+- `execute_empty_instruction`: The routine contains a single instruction that cannot be decoded.
+- `execute_empty_instruction_2`: This routine consists of one instruction that results in a decoding error.
+- `nop_instruction_5`: the routine contains a single non-functional instruction that does not alter any register or memory state.
+- `execute_empty_instruction_3`: This routine is unreached and contains a single undecodable instruction.
+- `execute_empty_instruction_4`: The routine consists of one instruction that is not recognized by the disassembler.
+- `execute_empty_instruction_5`: This routine contains a single instruction that fails to decode.
+- `execute_empty_instruction_6`: The routine is unreached and contains a single bad instruction.
+- `execute_empty_instruction_7`: This routine consists of one instruction that cannot be parsed.
+- `return_void_3`: the routine is empty and performs no operations before returning.
+- `execute_empty_instruction_8`: This unreached routine contains a single instruction that cannot be decoded.
+- `return_empty_routine_14`: This routine contains no executable instructions and performs no operations before returning or terminating execution.
+- `empty_routine_11`: The routine contains no valid instructions.
+- `nop_padding_gap`: This routine is empty and consists of a single non-instructional byte used to align subsequent code.
+- `halt_execution_bad_data`: The routine executes a bad instruction that stops further processing.
+- `halt_execution_runtime`: The routine contains a single bad instruction that breaks control flow.
+- `void_padding_nops`: The routine consists of a single non-functional instruction acting as a gap in the executable.
+- `halt_execution_at_invalid_instruction`: The routine contains no valid instructions and terminates execution upon entry.
+- `null_routine_8`: the routine contains no valid executable instructions.
+- `execute_bad_instruction`: Executes an invalid or undefined instruction.
+- `nop_padding_byte_8`: The routine consists of a single byte of data that does not form a valid instruction, serving as padding within the executable segment.
+- `empty_routine_28`: the routine contains no executable instructions or functional logic.
+- `terminate_execution_4`: stops all processor activity and terminates the program execution.
+- `null_operation_2`: The routine contains no executable instructions and performs no action.
+- `undefined_instruction_halt`: The routine contains invalid or non-executable instruction data, causing the instruction pointer to stall or fail.
+- `null_padding_nop`: The routine contains no valid executable instructions and acts as a gap in the instruction stream.
+- `invalid_instruction_trap`: The routine contains no valid executable instructions and triggers a control flow truncation due to bad instruction data.
+- `nop_instruction_7`: This routine consists of a single no-operation instruction and performs no actions.
+- `undefined_instruction_trap_3`: The routine executes an invalid or non-existent instruction, causing the execution flow to terminate or trap.
+- `nop_padding_stub`: The routine contains a single instruction that does not perform any operational task, acting as a gap or padding in the instruction stream.
+- `update_score_display_4`: Reads a value from a memory location and writes it to a specific hardware register to update a visual element.
+- `update_pointer_indirect_2`: Loads a value from a memory location pointed to by a register and stores it into another memory location pointed to by a different register.
+- `nop_padding_byte_9`: This routine consists of a single byte of data that does not form a valid instruction.
+- `trigger_invalid_instruction`: Contains a single byte of data that cannot be decoded as code.
+- `return_from_subroutine_20`: executes a single instruction that terminates the current routine and returns to the caller.
+- `return_empty_routine_15`: The routine is empty and performs no executable instructions.
+- `nop_padding_8`: This routine contains a single non-functional instruction acting as a gap in the executable or a padding byte.
+- `null_instruction_stub`: This routine contains no valid instructions and terminates execution immediately upon entry.
+- `null_padding_nop_2`: the routine contains no executable instructions and acts as a gap in the instruction stream.
+- `null_routine_invalid_instruction`: The routine contains no valid instructions and terminates immediately upon entry due to invalid data.
+- `invalid_instruction_trap_2`: The routine contains no valid executable instructions and triggers a control flow error upon entry.
+- `empty_routine_29`: the routine is empty and performs no instructions.
+- `return_empty_routine_16`: the routine is empty and performs no operations or data transfers.
+- `return_from_subroutine_21`: executes a single return instruction to exit the current routine.
+- `nop_padding_9`: The routine contains a single non-executable instruction that acts as a gap or padding in the instruction stream.
+- `update_score_display_5`: Reads a value from a memory location and writes it to a specific offset within a data structure.
+- `nop_padding_instruction_6`: The routine contains a single non-functional instruction acting as a gap or padding between executable instructions.
+- `invalid_instruction_trap_3`: The routine contains no valid executable instructions and triggers a fault or immediate termination upon entry.
+- `null_routine_invalid_data`: The routine contains no valid instructions and terminates immediately due to invalid data.
+- `execute_empty_instruction_9`: the routine contains no valid executable instructions and acts as a single-byte gap in the instruction stream.
+- `return_empty_routine_17`: the routine contains no valid instructions and performs no operations.
+- `nop_padding_10`: this routine contains no executable instructions and acts as a single-byte padding or a gap in the instruction stream.
+- `halt_execution_11`: The routine contains invalid or non-executable instruction data, causing the processor to stop or enter an undefined state.
+- `empty_routine_12`: This routine contains no executable instructions and performs no operations.
+- `return_from_routine`: the routine performs a single instruction that exits the current routine and returns control to a caller.
+- `execute_null_instruction`: an empty routine that contains no executable instructions or side effects.
+- `execute_bad_instruction_2`: The routine executes a bad instruction and terminates control flow.
+- `call_pointer_return_d1`: Calls one routine through a pointer held in RAM and returns the 32-bit value that call left in register D1.
+- `decrement_word_at_offset_2`: subtracts one from a 16-bit word located at a fixed offset from the frame register.
+- `decrement_word_at_offset_3`: decrements a 16-bit value stored at a specific offset relative to the frame register.
+- `decrement_word_at_offset_4`: performs a subtraction of one from a 16-bit word at a fixed offset from the frame register.
+- `decrement_word_at_offset_5`: reduces a 16-bit word by one at a fixed offset from the frame register.
+- `decrement_word_at_offset_6`: Subtracts one from a 16-bit word located at a fixed offset from the A6 frame register.
+- `decrement_word_at_offset_7`: Decrements a 16-bit value stored at a specific offset relative to the A6 register.
+- `decrement_word_at_offset_8`: Reduces a 16-bit word by one at a constant offset from the A6 frame pointer.
+- `decrement_word_at_offset_9`: Performs a subtraction of one from a 16-bit integer at a fixed offset from A6.
+- `decrement_word_at_offset_10`: Subtracts one from a 16-bit word found at a fixed offset from the A6 register.
+- `return_constant_zero`: Returns a constant zero without touching any other state.
+- `increment_word_at_offset`: Adds one to a 16-bit word at a fixed offset from the A6 frame register, in place, then returns.
+- `decrement_word_at_offset`: Subtracts one from a 16-bit word at a fixed offset from the A6 frame register, then returns zero.
+- `void_instruction_trap`: The routine contains no valid executable instructions and terminates immediately upon entry.
+- `void_padding_nop`: The routine contains no executable instructions and exists only as a gap in the instruction stream.
+- `execute_invalid_instruction_22`: Contains data that does not form a valid instruction.
+- `update_score_display_6`: Reads a value from a memory location and writes it to a specific offset within a data structure.
+- `perform_stack_restoration`: This routine serves as a jump target that restores the stack pointer before returning to a caller.
+- `return_immediately`: The decompiled body is a bare return.
+- `return_after_stack_copy`: The decompiled body is a bare return.
+- `tiny_movea_rts`: Small routine of 2 instructions that copies (a7)+ to a5, then returns.
+- `stub_undecompiled_routine`: The decompiler timed out, so no pseudo-code exists for this single-instruction routine.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `return_immediately_2`: The routine performs no actions and returns immediately.
+- `do_nothing_routine`: the routine is empty and performs no operations or side effects.
+- `return_immediately_7`: This routine is an empty routine that returns without any side effects.
+- `do_nothing`: this routine is empty and performs no operations before returning.
+- `perform_no_operation_2`: The routine is empty and performs no action before returning to the caller.

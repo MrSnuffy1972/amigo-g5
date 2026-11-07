@@ -85,7 +85,11 @@ Each routine climbs the ladder only as far as it must; `work/describe-stats.json
    outside branch targets masked. An identical body (at least 4 instructions, not just a run of calls) takes the accepted
    name and text of the other game with no model call (sentences about callers are dropped); a near-identical body
    (Jaccard 0.90 or more on 3-instruction shingles) is only a draft that the big model reviews. Model texts from naming v1
-   and copies are never used as sources. The library is rebuilt after each game, so later games reuse earlier ones;
+   and copies are never used as sources. CHANGE 7 Nov 2026 (Karl, 21:0x), against the 2 Nov rule that model texts from other games are hints only: an identical
+   body now also takes a model text (trust 1) from another game, before any model call, if the text passes quality() on this
+   routine; tagged `siglib:exact1:<game>`. Off switch: NAMING_SIGLIB_EXACT1=0. Audited by `tools/exact1_audit.py [n]`: samples
+   recent copies, re-runs QC and asks a second local model (M1 ornith) against the routine's own instructions; verdicts in
+   exact1-audit.jsonl, error rate per run in exact1-audit-summary.jsonl. The library is rebuilt after each game, so later games reuse earlier ones;
 4. identical bodies inside one game are named once; each copy gets the text plus "It is an identical copy of ...";
 5. routines of at most three instructions get an exact literal description;
 6. local models, bottom-up (callees before callers, with the callees' accepted names and first sentences in the facts),

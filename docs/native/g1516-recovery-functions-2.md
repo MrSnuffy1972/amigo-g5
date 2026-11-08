@@ -1,0 +1,78 @@
+# Game 1516 (fa-18 interceptor (1988)(electronic arts)[cr maad][m acu]): code recovery summary
+
+## Functions (part 2 of 2)
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+(continued)
+
+- `initialize_memory_and_call`: Library code that clears a range of memory, updates a global variable, and executes an indirect function pointer if a bitmask check passes.
+- `initialize_boot_environment_4`: Initializes a function table and game state tables, and checks a bit in a global variable while executing indirect addresses.
+- `initialize_function_table_and_pointers`: Populates a global structure or table with function pointers and initial values via recursive calls and indirect lookups.
+- `initialize_game_state_tables`: Initializes or updates a set of pointers and values within a global structure, then sequentially calls a series of other routines or function pointers retrieved from various tables.
+- `recurse_self`: the routine calls itself indefinitely via a recursive call.
+- `initialize_data_tables`: Initializes several memory-mapped tables or arrays by copying or zeroing out a fixed number of words.
+- `parse_string_and_update_counters`: Parses a string or character buffer to update a character-based state table and certain counters.
+- `update_and_check_counters`: Decrements a global counter and, if zero, updates a set of three counters by adding a value from a secondary table and conditionally negates certain table entries based on the new counter values before calling another routine.
+- `return_from_subroutine_12`: The routine is empty and performs no operations before returning to the caller.
+- `initialize_boot_environment_3`: A bootblock routine that parses a string, initializes several global or structure-based values, and performs indirect calls, including setting flags or copying strings.
+- `tiny_move`: Small routine of 1 instruction that copies d0 to d5.
+- `parse_string_tokens`: Parses a string to extract or copy tokens, handling quoted strings and skipping whitespace or certain control characters.
+- `tiny_move_2`: Small routine of 1 instruction that copies d0 to d0.
+- `copy_string_pad_zeros`: copies bytes from a source to a destination up to a count or until a null terminator is found, then fills any remaining bytes in the count with zeros.
+- `copy_string_to_buffer_3`: Calculates the length of a source string and copies its contents to a destination buffer until a null terminator or a certain limit is reached.
+- `copy_string_with_limit`: copies bytes from a source pointer to a destination pointer, stopping at a null terminator or when a counter in the third argument reaches -1.
+- `copy_string_to_buffer`: copies bytes from a source pointer to a destination pointer until a zero byte is encountered, including the terminator.
+- `update_pointer_from_nested_calls`: Performs a sequence of indirect function calls, storing a result in a memory location and subsequently updating a pointer in a structure with a value from a table or a result of another routine.
+- `compute_sign_product`: checks the signs of two registers and returns the product of a third routine or value with a sign determined by the logical XOR of the signs of the input registers.
+- `perform_signed_division`: Calculates the quotient and remainder of a 32-bit integer division using inputs in registers and returns a combined 32-bit value while adjusting the sign based on the input signs.
+- `apply_sign_to_division_result`: Checks the sign of an input register and, if negative, negates the result of a 32-bit division before returning the combined result.
+- `perform_32bit_division`: calculates the quotient and remainder of a 32-bit integer division using inputs in registers D0 and D1.
+- `compute_string_length`: receives a pointer to a zero-terminated byte string, walks forward byte by byte until it finds the terminating zero byte, and returns the number of bytes from the start pointer up to but not including the terminator.
+- `execute_single_callback`: Checks if a pointer in a global or relative memory location is non-zero and, if so, executes the routine pointed to by that address.
+- `execute_multiple_callbacks`: Checks several pointers in a table, and if they are non-null, executes the associated functions or calls other routines with specific arguments or offsets.
+- `tiny_move_unlk_rts`: Small routine of 3 instructions that copies (a7)+ to d4, then removes the stack frame held in a5, then returns.
+- `access_table_element`: checks if an index is within a certain range and if a pointer in a table is non-null, then sets a global status and clears a value in a table or calls another routine.
+- `call_close`: Wrapper that calls the dos library function Close and returns its result to the caller.
+- `call_current_dir_2`: Wrapper that calls the dos library function CurrentDir and returns its result to the caller.
+- `call_input_2`: Wrapper that calls the dos library function Input and returns its result to the caller.
+- `call_open`: Wrapper that calls the dos library function Open and returns its result to the caller.
+- `call_output_2`: Wrapper that calls the dos library function Output and returns its result to the caller.
+- `call_library_vector_108`: Library stub: loads a library base from a global variable and calls the library function at offset minus 108 of that base, returning its result to the caller.
+- `execute_indirect_call_3`: Retrieves a function pointer from a table using an offset and executes it.
+- `execute_indirect_call`: loads a function pointer from a table and calls it.
+- `execute_offset_callback`: Retrieves a function pointer from a table using a specific offset and executes it.
+- `execute_indirect_call_offset`: loads a function pointer from a table with a specific offset and calls it.
+- `execute_table_address`: Retrieves an address from a table using an offset and executes it.
+- `call_indirect_address`: Loads an address from a table using an offset and calls that address.
+- `call_indirect_address_2`: Performs an indirect call to an address retrieved from a table via a pointer offset.
+- `call_indirect_address_3`: Retrieves a function pointer from a table and executes it.
+- `call_indirect_address_4`: Executes a call to an address calculated from a pointer and a constant offset.
+- `execute_pointer_table_call`: Retrieves a function pointer from a table via a pointer-based lookup and executes it.
+- `call_indirect_address_5`: Uses a pointer-based table lookup to perform an indirect function call.
+- `call_indirect_address_6`: Performs an indirect jump to a routine found in a table.
+- `call_indirect_address_7`: Loads and calls an address from a table using a subtraction-based offset.
+- `call_indirect_address_8`: Uses an offset or pointer or a table to call a routine.
+- `call_library_vector_492`: Library stub: loads a library base from a global variable and calls the library function at offset minus 492 of that base, returning its result to the caller.
+- `call_indirect_address_9`: Performs an indirect call using an address fetched from a pointer-offset table.
+- `call_library_vector_576`: Library stub: loads a library base from a global variable and calls the library function at offset minus 576 of that base, returning its result to the caller.
+- `call_library_vector_564`: Library stub: loads a library base from a global variable and calls the library function at offset minus 564 of that base, returning its result to the caller.
+- `call_indirect_address_10`: Calculates a target address from a table and calls it via an indirect jump.
+- `call_library_vector_540`: Library stub: loads a library base from a global variable and calls the library function at offset minus 540 of that base, returning its result to the caller.
+- `call_indirect_function`: Performs an indirect call to a function pointer located at an offset from a pointer stored in a global variable.
+- `call_indirect_function_2`: Executes an indirect call using a pointer resolved from a global table with a specific offset.
+- `call_indirect_function_3`: Resolves a function address from a global memory location and calls it.
+- `call_indirect_function_4`: Uses a pointer from a global variable to jump to a target address at a certain offset.
+- `call_indirect_function_5`: Calls a routine located via an offset relative to a pointer in a global variable.
+- `call_indirect_function_6`: Performs a call to a function pointer retrieved from a global table.
+- `call_indirect_function_7`: Uses a pointer-to-pointer or table-based lookup to execute an indirect call.
+- `call_library_vector_426`: Library stub: loads a library base from a global variable and calls the library function at offset minus 426 of that base, returning its result to the caller.
+- `call_indirect_function_8`: Executes a jump or call to a target address calculated from a global pointer.
+- `call_indirect_function_9`: Loads a function pointer from a global offset and transfers control to it.
+- `call_indirect_function_10`: Performs an indirect branch to a routine address found through a global pointer and offset.
+- `call_indirect_pointer`: Loads a function pointer from a pointer in a table and calls it.
+- `call_library_vector_288`: Library stub: loads a library base from a global variable and calls the library function at offset minus 288 of that base, returning its result to the caller.
+- `dereference_indirect_function_pointer`: Loads a function pointer from a table or structure using an offset and executes it.
+- `execute_indirect_function_3`: loads a function pointer from a table and executes it.
+- `execute_indirect_function_4`: loads a function pointer from a table and executes it.
+- `execute_indirect_function_5`: loads a function pointer from a table offset by a constant and calls it.
+- `execute_indirect_function_6`: loads a function pointer from a table using an offset and executes it.

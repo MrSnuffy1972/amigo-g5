@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (903152 top-level bytes in 45 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 5 raw-word lines |
 | Functions named and described | pass, 47 of 47 named (0 author symbols), 47 of 47 described (10 by rule, 1 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 196 of 196 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 269 of 269 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 647 of 647 instructions identical in start and length, 0 mismatches |
 
@@ -40,7 +40,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - escape from colditz (1990)(digital magic)(m4)[cr skr][a]/Escape from Colditz (1990)(Digital Magic)(M4)[cr SKR][a].adf:LOADTUNE.MUS: high-entropy data file (7.82 bits/byte), classified as packed data
 - runtime segment an address: 17 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 55 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 128 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 23 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered

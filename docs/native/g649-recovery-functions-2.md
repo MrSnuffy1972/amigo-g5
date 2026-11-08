@@ -1,0 +1,967 @@
+# Game 649 (TheirFinestHour v1.1 0037): code recovery summary
+
+## Functions (part 2 of 2)
+
+### BOB
+(continued)
+
+- `process_bob_frame_7`: The routine updates a set of global variables that track a BOB frame, increments counters, stores the passed pointer into a table and writes frame timing values to a table addressed via a global pointer.
+- `update_bob_header_and_flags`: The routine reads a word from a global variable, stores it into a pointer table entry and decrements a counter, then writes the word to a structure pointed to by a short offset plus a global base.
+- `set_bob_header_fields`: The routine writes a constant and two values read from a global structure into a block pointed to by a global pointer, clears a flag in the structure, and updates another field in the structure with a computed pointer offset.
+- `process_message_block`: This routine initializes a message block in memory using values from a global variable and writes a short string into it.
+- `initialize_bob_object_6`: The routine builds a block object in memory by copying fields from a global table into a newly allocated structure, initializes several header words and a short string, then runs a loop that repeatedly calls another routine until a flag clears, and finally clears three flag bytes and a global variable mask.
+- `copy_name_and_prepare_bob`: The routine copies up to 28 bytes from a source string into a buffer at an offset from a pointer, writes constant values to fields in the same structure, calls another routine several times, and sets a flag byte.
+- `reset_bob_state_15`: The routine clears and initializes fields in a structure pointed to by a register, repeatedly calls another routine, reads a word from a table indexed by a value in D1 and a base pointer, loops while that word is non-zero, copies 55 bytes from a source area to a destination table, sums 127 integers from that table and stores the negated sum back, then clears four bytes in the structure and returns.
+- `handle_bob_callback`: The routine processes a BOB callback by initializing callback state fields, repeatedly invoking another routine while decrementing a counter and checking status flags, and updates a global variable and pointer fields when the callback is active.
+- `decrement_counter_loop_2`: The routine repeatedly calls another routine and checks a global flag.
+- `decrement_counter_loop_3`: The routine repeatedly calls another routine while a global flag is set, decrementing a counter stored via an indirect pointer and checking a status word.
+- `increment_pointer_and_return_byte`: The routine increments a counter stored in a global variable, copies two words from an input structure into global variables, stores a pointer derived from the input structure into a global variable, reads a byte from the pointed-to table, increments the pointer, decrements a global counter, and returns the byte together with an unused stack value.
+- `clear_ciab_portb`: The routine clears a global variable mask and then writes four zero bytes to a fixed offset in a structure pointed to by A4.
+- `copy_bytes_with_loop`: The routine copies a block of bytes from a source pointer to a destination pointer using a loop count stored in a global variable, updates the destination pointer, and then repeatedly invokes another routine while decrementing a counter stored in a global variable, returning a combined value formed from a difference of two stored integers and a register value.
+- `copy_sprite_pixels`: The routine copies a block of bytes from a source pointer to a destination pointer using a repeat count, updates the destination pointer, and loops while a length field is non-zero.
+- `copy_bob_block`: The routine copies a block of bytes from a source pointer to a destination pointer using a length stored in a global variable, then updates the destination pointer.
+- `compute_difference_from_table`: The routine reads two 32-bit values from a global variable table using an offset from a register, subtracts the second from the first, and returns the 32-bit difference combined with a 32-bit value from the stack.
+- `set_global_word_3`: The routine stores the constant 3 into a word located at a fixed offset from a pointer.
+- `clear_bob_state_and_step`: The routine clears a set of bytes in a global structure, initializes several fields, searches a four-byte table for a matching byte and updates an index, then loops while checking bit flags and other fields, calling another routine repeatedly and decrementing a counter until it reaches zero, after which it returns early if a flag is set.
+- `initialize_and_process_bob_state`: Clears a memory block and initializes several data structures before parsing a path and hashing a string.
+- `decrement_counter_and_fetch_pointer`: The routine checks a status word in a global structure and returns early if it is set.
+- `poll_animation_frames`: Repeatedly calls another routine and checks a short flag at an offset from a base pointer.
+- `decrement_counter_until_zero`: The routine calls another routine and then, depending on a flag byte, either loads an integer from a pointer offset or performs a series of loads, stores and counter decrements using a global structure.
+- `wait_for_bob_frame`: The routine waits for a BOB-related flag to clear and then steps through a frame counter stored in a global variable, calling another routine repeatedly until the counter reaches zero.
+- `copy_bob_header_fields_2`: The routine copies a 32-bit value from one global variable to another, sets a counter to one, and calls another routine.
+- `decrement_counter_until_flag`: The routine repeatedly calls another routine and checks a global flag.
+- `increment_counter_and_copy_fields`: The routine increments a global counter and copies three fields from a source structure pointed to by a0 into three global variables, storing the address of a fourth field as a pointer in a global variable.
+- `clear_flag_and_sum_table`: The routine clears a flag in a global variable and then sums 128 consecutive 32-bit values from a table pointed to by a pointer.
+- `clear_flag_and_compare`: The routine clears a word at a fixed offset from a base pointer and compares a global variable with a value from the argument structure.
+- `clear_flag_and_compare_2`: The routine clears a global word flag and compares two pairs of integers from a global variable with values pointed to by an argument.
+- `set_flag_bytes`: The routine writes a constant byte value to a global variable and then writes the same constant byte value to a byte within a table addressed by an offset stored in another global variable.
+- `set_bit_in_flag_table`: The routine sets a single bit in a 32-bit word inside a global table.
+- `clear_bit_flag`: The routine clears a single bit in a 32-bit word table indexed from an input value.
+- `check_bit_flag_and_advance_counter`: The routine checks a bit in a table indexed by a counter stored in a global variable.
+- `clear_byte_via_pointer`: The routine clears a single byte by writing zero through a pointer derived from a stack value.
+- `compare_name_blocks`: The routine compares three 8-byte blocks from two tables located via a base pointer and stores a match index for each block, or a sentinel if no match is found.
+- `return_stack_value_5`: The routine returns the 32-bit value that was passed on the stack.
+- `store_modulo_indexed_values`: The routine stores the input word into a global variable, computes a modulo value to index a table and writes the scaled result to another global variable, and stores the quotient of the input by a constant into a third global variable.
+- `compare_case_insensitive_strings`: The routine compares two null-terminated strings byte by byte, converting an upper-case letter in the second string to lower case before comparison, and returns early if a mismatch is found or the first string ends.
+- `compare_case_insensitive_strings_2`: The routine compares a zero-terminated string pointed to by a global variable with a byte sequence pointed to by a register, converting upper-case ASCII letters to lower-case before comparison.
+- `empty_routine_29`: The routine contains no instructions and returns immediately.
+- `clear_input_port_state`: The routine writes a value from a register through a pointer to a global variable, then sets a global variable to a constant bitmask, performs a delay loop of about one thousand iterations, and clears four consecutive bytes in a structure pointed to by a register.
+- `parse_and_copy_path`: The routine copies characters from a source pointer into two overlapping buffers located in a global structure, using slash as a delimiter.
+- `copy_string_to_buffer_2`: The routine copies a null-terminated byte string from a pointer in A1 into a fixed buffer located in A4’s address space, advancing both pointers until the terminator is reached.
+- `set_flag_byte`: The routine stores the value 1 into a byte of a global variable via an offset from a pointer.
+- `copy_string_to_buffer_3`: The routine copies a null-terminated byte string pointed to by a register into a buffer located at a fixed offset from a register, byte by byte, until the terminator is reached.
+- `clear_byte_from_pointer`: The routine clears a byte in memory by writing zero through a pointer derived from an argument.
+- `process_joystick_input`: The routine clears two input bytes and then, based on a mode value, selects a per-mode flag byte and a global variable value, calls another routine to update state, and writes a mask to CIAA_PRA while polling CIAB_PRB for button changes.
+- `process_joystick_input_2`: The routine reads a joystick/mouse fire button state from CIAA_PRA and a disk status from CIAB_PRB, compares a short value in a structure to 1 or 2 to select a player slot, and updates per-player input bytes in a table.
+- `check_input_device_state`: The routine reads a flag from a structure and branches based on a character in a string pointed to by a pointer, setting a global variable and calling another routine.
+- `process_input_state`: The routine checks a pointer in A1 and a global variable, writes bytes to a structure pointed to by A4, and reads bytes from that structure using an index from the structure.
+- `check_global_flag_and_write_byte`: The routine tests a global variable for a bit.
+- `clear_flag_byte_2`: The routine calls another routine three times and then stores a zero byte into a byte located at an offset from a pointer passed on the stack.
+- `deinterleave_word_pairs`: The routine repeatedly scans a table of words for a marker value and, for each match, deinterleaves 128 word pairs from a source buffer into a destination buffer selected by a global offset.
+- `fill_bob_pattern_buffers`: The routine clears a byte buffer referenced by a global variable and then fills a series of long-word buffers with a repeated pattern, calls another routine multiple times, and writes its return values into the buffers.
+- `xor_accumulate_words`: The routine XORs a sequence of words pointed to by an uninitialized pointer, using a word counter from D1, and returns the accumulated XOR. It initializes an accumulator to zero, then repeatedly XORs the accumulator with the word at the current pointer, decrements the counter, and advances the pointer until the counter reaches -1.
+- `recursive_self_call`: The routine calls another routine twice in succession and then returns.
+- `extract_bit_field`: The routine takes a value from a register, isolates a set of bits, and returns a value that combines the isolated bits with a transformed version of the remaining bits.
+- `wait_for_disk_ready`: The routine writes values to a global variable, calls another routine, then waits for a flag in the global variable to become set before writing a final value to the global variable.
+- `wait_for_disk_ready_2`: The routine sets a global variable to a constant, calls another routine, then copies a word from an address derived from a register into the global variable, sets the global variable to a constant, and spins until the global variable has a particular bit set.
+- `update_input_state_flags`: The routine updates a global variable that holds input state flags by clearing and setting bits based on the current value of the variable and the return value of another routine, and it reads the joystick/mouse fire buttons and disk status from CIAA_PRA and CIAB_PRB via the called routine.
+- `set_global_flags_from_subroutine`: The routine masks and sets bits in a global variable, calls another routine to obtain a short result, and sets or clears a bit in the global variable based on whether the result is negative.
+- `set_global_flag_and_call`: The routine modifies a global variable by clearing one bit and setting another, then calls another routine.
+- `update_ciab_prb_flag`: The routine sets a flag in a global variable and copies a byte from a table entry into another table entry, updating a global variable based on the copied byte.
+- `poll_hardware_flag`: Modifies a global variable to set specific bits and then enters a loop that waits for a change in a value returned by a register-based routine.
+- `wait_for_flag_clear`: The routine repeatedly calls another routine and compares a returned byte with a previous value.
+- `poll_ciab_prb_loop`: The routine sets a bit in a global variable and then repeatedly clears and sets another bit in the same global variable while polling a hardware register.
+- `poll_global_flag_status`: Repeatedly checks a global flag and modifies a global variable by clearing a bit and setting another.
+- `reset_input_state_and_poll_2`: The routine clears a byte in a table indexed by a word from memory and sets a flag in a global variable.
+- `wait_and_clear_flag`: A helper that combines two input words into a 64-bit value and repeatedly calls another routine, then waits until a global flag bit is cleared, clearing a byte via an offset table and returning the combined value.
+- `clear_byte_from_table`: The routine clears a byte in a table by computing an offset from a global variable and storing zero at the calculated address.
+- `nop_delay_stub`: Executes a sequence of no-operation instructions before returning, likely acting as a brief timing delay.
+- `wait_for_global_flag`: The routine spins in a loop until a global variable no longer has a specific bit set, then returns.
+- `return_concatenated_registers`: The routine calls another routine and then returns the concatenation of the two input values that were passed in registers D0 and D1.
+- `return_concatenated_registers_2`: The routine calls another routine and then returns the concatenation of the two input values it received in registers D0 and D1.
+- `wait_for_bit_in_global`: The routine stores the low and high bytes of the input word into a global variable, then loops until the low bit of that global variable is set, and returns the global variable.
+- `clear_flag_and_spin_until_ready`: The routine clears a 16-bit global variable and then spins in a loop until that variable reaches a value of at least 33.
+- `uppercase_string_and_hash`: The routine uppercases a null-terminated string pointed to by a register, counting its characters in a global variable, then hashes a null-terminated table selected by a global flag using a linear congruential step with the initial seed formed from an input register and the character count, and stores the hash modulo a constant in a global variable.
+- `update_checksum_from_table`: The routine reads a byte from a global variable to choose between two tables, then iterates over the bytes of the chosen table computing a running value with multiplication and addition and masking.
+- `seeded_prng_update`: The routine updates a 16-bit seed stored in a global variable using a byte table from memory.
+- `store_modulo_byte_in_variable`: The routine stores a value derived from a register into a global variable.
+- `clear_screen_and_copy_table`: The routine clears a byte in a global variable, repeatedly calls another routine until a short flag in a global variable becomes zero, then copies 80 words from a table pointed to by a global variable into a destination buffer whose base is computed from a short index in a global variable, and returns the concatenation of the two input registers.
+- `copy_79_words_from_source`: The routine copies 79 words from a source buffer pointed to by a register to a destination buffer pointed to by another register.
+- `clear_bob_buffer_and_copy_name`: The routine clears a small fixed-size buffer in memory and then repeatedly calls another routine until a flag in a global variable becomes zero.
+- `decode_bob_name`: The routine copies a short length-prefixed byte string from a global variable into a buffer pointed to by a register value.
+- `build_bitmask_from_ciaa`: Iteratively calls a routine to check a hardware status and builds a bitmask based on the returned values.
+- `mask_global_with_ciaa_pra`: The routine reads the joystick and disk status from the CIA A port register, masks the low six bits of an input value, inverts the result and stores it into a global variable.
+- `clear_input_byte`: The routine clears a byte in a table and, if a bit in a global variable is clear, writes a different value to that byte.
+- `clear_flag_byte_3`: The routine writes a constant byte value to a byte located at a fixed offset from a register and then returns the contents of a stack slot.
+- `uppercase_string_hash`: The routine uppercases a zero-terminated string in place and counts its length.
+- `update_seed_from_string`: The routine reads a byte string via a pointer and mixes it with a 16-bit seed stored in a global variable using a linear congruential step and a mask, then writes the low 16 bits of the resulting value back to the global variable and stores a derived 8-bit value into the same global variable.
+- `store_modulo_offset`: The routine stores a computed offset into a global variable.
+- `negate_sum_of_table`: The routine reads a pointer from a global variable and a table, clears the sixth entry of the pointed-to table, then sums 128 consecutive 32-bit values from that table.
+- `clear_bob_plane_buffer`: The routine clears a block of 512 bytes by writing zero to each byte.
+- `update_bob_state_table_2`: The routine iterates over four entries in a global state table and updates per-entry timers, counters and animation values.
+- `apply_sprite_mask`: The routine computes a masked pixel block using a global table and a mask pointer.
+- `blend_bob_layers`: The routine blends two byte planes from a table of pointers into a destination buffer using a mask, iterating over a rectangle defined by input offsets and global size limits.
+- `decode_bob_entry`: The routine reads a table entry selected by an index from a global table and updates several global variables with values derived from the entry.
+- `parse_bob_header_and_update_state`: The routine reads a byte stream pointed to by a0 and updates several global variables that track a current index and a running sum.
+- `parse_bob_stream`: The routine reads a byte stream from a pointer, interpreting control bytes and updating several global variables.
+- `parse_bob_header_2`: The routine walks a byte stream pointed to by a register, using a byte from a register as an index into a table of pointers stored in a global variable.
+- `restore_and_return_2`: Restores the saved registers from the stack, restores the frame pointer, and returns without modifying any data.
+- `copy_bob_header_and_set_pointers`: The routine copies sixteen bytes from a source buffer into a word table in a global structure, stores a short field, then selects one of two sets of global pointers based on a flag in the first parameter and writes those pointers and an offset into global slots.
+- `initialize_bob_data_3`: Populates a table with several function pointers and a memory address.
+- `store_bob_parameters`: The routine writes fields from two parameters into offsets of a global structure referenced through a register, copies a word from a table pointed to by another field of that structure, clears two bytes in the structure and then calls another routine.
+- `decode_bob_plane_data`: The routine reads a signed byte from a global variable, takes its absolute value, and uses an index byte from another global variable to look up two bytes from two tables.
+- `clear_two_bytes_and_call`: The routine clears two bytes in memory at fixed offsets from an address in A4 and then calls another routine.
+- `update_bob_object_state_19`: The routine reads a byte from a pointer in A0 and updates several fields in a global structure using values from A0 and from other global variables, then calls another routine twice and processes a byte stream pointed to by a global variable.
+- `decode_sprite_tile_data`: The routine reads a byte stream from a pointer in A0 and writes decoded values into a set of global variables and a working buffer.
+- `parse_bob_header_3`: The routine reads a byte stream pointed to by a pointer in a global structure and decodes a series of 16-bit words into a table in memory.
+- `decode_bob_sprite_indices`: The routine decodes a packed sprite index stream from a source buffer into a temporary table using a global variable as base, applying per-entry offsets and a lookup table to produce short values.
+- `parse_bob_header_and_build_sprite_tables`: The routine reads a byte stream pointed to by a pointer, decodes per-sprite header bytes to index tables for offsets and sizes, and writes computed 16-bit values into a set of working buffers.
+- `write_screen_masked_tiles`: The routine walks a tile list and writes masked bytes into a screen buffer using per-tile masks and offsets.
+- `apply_mask_and_or_to_byte_buffer`: The routine iterates over a byte buffer pointed to by a pointer in a table, applying a bitwise AND with a mask byte and then a bitwise OR with a value from a register, and decrements a counter.
+- `apply_sprite_mask_and_update_scroll`: The routine iterates over a table of short entries using a counter and a pointer, and for each entry it indexes a mask table via a multiplier and applies bitwise AND and OR operations with a byte from a pointer offset by a base value.
+- `update_bob_frame`: The routine updates a BOB frame by adjusting offsets and counters stored in a global structure, copying a pointer and resetting a flag when a condition is met, otherwise it calls another routine and decrements counters, updates position fields and increments or decrements other fields based on flags.
+- `apply_bob_mask_to_pixels_2`: Iterates through a list of pixel data and applies bitwise masking and color injection to a target buffer.
+- `apply_masked_byte_to_buffer`: The routine walks a buffer pointed to by a pointer in A6 and an offset in A1, applying an AND with a byte from D5 and an OR with a word from D3 to each byte while a counter in D1 is decremented.
+- `apply_bob_mask_to_pixels`: The routine iterates over a list of entries in a table passed via a pointer and applies a per-entry mask to a pixel buffer referenced through another pointer.
+- `update_bob_animation_state_6`: The routine updates a set of animation control fields in a structure pointed to by a register, using values from other fields in the same structure and from a global variable.
+- `bob_script_step_update`: The routine advances counters stored in a global variable and updates a pair of short values based on two flags.
+- `decrement_counters_and_decode_bob`: The routine decrements a pair of counters stored in a global structure and, when they reach zero, reloads them from a table and updates two other counters based on flags.
+- `decode_bob_sprite_data_2`: The routine reads a byte stream from a pointer in a global structure and decodes a sequence of sprite or object entries.
+- `bob_sprite_decode`: The routine decodes a packed sprite description from a byte stream stored in a global variable, filling a small table of decoded words for later use.
+- `update_bob_sprite_scroll_buffers`: The routine walks a sprite definition table pointed to by a global variable and decodes a sequence of nibble commands into a table of fixed-point positions and attributes stored in a global buffer.
+- `decode_bob_sprite_data_3`: The routine decodes a byte stream from a pointer into a short table in a global area, using offsets from a table and a sign flag to step through the stream.
+- `return_immediately_6`: This routine is empty and performs no operations before returning to its caller.
+- `clear_flag_and_copy_timer`: The routine clears a word at a fixed offset from a base pointer and calls another routine via an indirect jump table indexed by a short from the base pointer and a global variable.
+- `copy_word_from_offset`: The routine copies a 32-bit word from a global variable to another global variable located four bytes apart.
+- `call_decrement_routine`: fetches a routine address from a table using a value from a global variable and calls it.
+- `adjust_bob_position`: The routine adjusts a 32-bit position value using two global offsets and a table pointed to by a register, writing several intermediate results to global variables.
+- `compute_scroll_offset`: The routine computes a scroll offset from an input index and a 16-bit value, using a table pointed to by a register.
+- `update_bob_state_17`: The routine updates several fields in a structure pointed to by a register, using a signed input value and values from a table pointed to by another register.
+- `lookup_and_clamp_indices`: The routine looks up an index in a short table using a value from D0 and stores the result into a global variable.
+- `update_bob_frame_data_2`: The routine copies a word from a table pointed to by a register into a global variable, updates several short fields in a global structure by adding offsets, clamps a computed short value and stores it, then writes a derived short and a product of two shorts to the structure and returns a 64-bit value built from a flag and a difference of shorts.
+- `compute_scaled_difference`: The routine clears a word in a global variable, adds two short values from the same global variable and stores the result, then computes a signed difference between two short values from the global variable.
+- `compute_sprite_y_position`: The routine reads two 16-bit values from a global structure, stores their difference in a field and uses a table to derive an index.
+- `decrement_counter_and_scale_value`: The routine decrements a short value from a table indexed by an offset and writes the result to a global variable, then updates another global short by adding two other globals.
+- `multiply_d1_by_table_entry`: The routine reads the low word of the value in D1 and multiplies it by a 16-bit value taken from a table located at a fixed offset from the address in A4.
+- `decrement_bob_counters`: The routine increments two short counters in a structure and updates related counters and a table lookup.
+- `decrement_animation_counter`: The routine updates a short counter and related animation timing fields in a structure pointed to by a4.
+- `decrement_and_update_counters`: The routine adjusts several short counters stored relative to a base pointer.
+- `decrement_counter_and_update_value`: The routine reads a short from a global variable and checks it against another global short.
+- `adjust_bob_position_2`: The routine adjusts a 16-bit index and a 32-bit value using two global variables as offsets, writes several derived fields to a global structure, looks up a 16-bit entry from a table using the adjusted index, and returns a signed 16-bit scaled difference or a packed 32-bit value when a range condition is met.
+- `compute_sprite_offset`: The routine updates a set of fields in a global structure using an input index and a 32-bit value, looks up a short from a table using the index, and computes a signed offset multiplied by a global scale factor.
+- `find_bob_frame_and_compute_delta`: The routine searches a table pointed to by an argument for a short matching a value in D0, copies a related table entry into a global variable, updates several global offsets and deltas, then computes a signed product of a difference of two global shorts with a global multiplier and returns it as a 64-bit value.
+- `adjust_bob_position_3`: The routine updates a set of fields in a structure pointed to by a register, copying values from another structure and adjusting offsets.
+- `calculate_scaled_difference`: performs arithmetic on values at various offsets from a pointer and returns a signed or unsigned product based on a comparison.
+- `set_offset_from_animation_table`: The routine reads a short from a global structure and, if non-negative, looks it up in a table referenced via another pointer, then stores the resulting index offset in the structure.
+- `decrement_and_scale_delta`: The routine decrements a short value in a structure pointed to by a pointer and updates two other shorts by adding a pair of shorts from the same structure.
+- `multiply_input_with_table_value`: The routine reads a 16-bit value from register D1 and multiplies it by a 16-bit value taken from a global variable located at a fixed offset from register A4.
+- `set_bob_frame`: A routine that updates a set of destination words from a source structure using a table of offsets, applying sign and add/subtract logic controlled by flags.
+- `apply_signed_offset_table_to_words`: The routine processes a count of word pairs from two input pointers using a table indexed by the second word of each pair.
+- `fill_bob_word_pairs`: The routine fills two parallel word arrays with a fixed marker pattern and computed 16-bit values derived from an input word table and a lookup table.
+- `fill_pattern_from_table`: The routine fills two parallel arrays using a table-driven pattern.
+- `decode_bob_table_2`: The routine processes a table of 16-bit entries pointed to by a pointer, using a base address and a sign flag to index a lookup table and compute signed differences against an accumulator.
+- `fill_bob_frame_table`: The routine writes a sequence of 16-bit values into two parallel tables pointed to by two pointers, using a loop counter and a lookup table indexed by a byte from a table.
+- `update_fixed_point_accumulator`: The routine recomputes a 16.16 fixed-point value from two 16-bit inputs, optionally scales it with two 8.8 factors, stores the high and low parts in a global variable, and if the low part changed it writes the new value and 127 successive cumulative sums into a table.
+- `update_fixed_point_sine_table`: The routine computes a fixed-point sine value from two 16-bit parameters stored in a global structure, optionally scales it with two 16-bit coefficients, writes the result to a global variable and updates a 128-entry running-sum table when the value changes.
+- `update_fixed_point_sine_table_2`: The routine computes a fixed-point sine value from two 16-bit parameters stored in a global structure, optionally scales the result with two 16-bit factors, writes the scaled sine and cosine components to the structure, and if the sine value changed it fills a 128-entry table with a running sum of the sine value.
+- `generate_prefix_sum_table`: calculates a quotient and remainder from two values, then populates a table with a sequence of cumulative sums.
+- `update_fixed_point_sine_table_3`: The routine computes a fixed-point sine value from a global angle and a global scale, stores the result in a global variable and updates a global sine table with cumulative sums when the value changes.
+- `fill_memory_from_register`: The routine copies a running sum from a register to consecutive memory locations pointed to by a pointer.
+- `update_bob_offsets_2`: The routine updates a signed short at a fixed offset from a pointer by scaling its absolute value with a fixed-point factor from another variable, preserving sign.
+- `store_magic_word`: The routine writes a 32-bit value from a register into a global variable and stores the same 16-bit constant into four distinct 16-bit fields of a structure pointed to by a register.
+- `set_bob_sprite_data`: The routine writes a signed 16-bit value and several derived flags and table lookups into a structure pointed to by a pointer, using a base address to index sine/cosine tables and a length value to fill two interleaved arrays with cumulative sums.
+- `fill_bob_object_data`: The routine writes several fields of a structure pointed to by a0 using values derived from d0 and tables pointed to by a4, then builds a small table of accumulated sums and carry counts from a word in a4 and finally compares two short arrays inside the structure to produce a run-length count stored in a global variable and a table.
+- `fill_pattern_and_compare`: The routine writes a short from a global variable into a structure field and then fills a short table with an incrementing counter and an accumulating sum using a base value from a global variable.
+- `fill_bob_pattern_table`: The routine writes a count into a table pointed to by a pointer argument, advancing the pointer and a byte offset each iteration.
+- `count_matching_word_pairs`: The routine counts how many consecutive word pairs match between two tables in the input structure and writes the count to a global variable.
+- `compare_word_pairs`: The routine compares pairs of words from two tables referenced by a pointer and counts matching consecutive pairs.
+- `find_matching_sequences`: compares words in two different memory locations and stores the length of matching sequences into a table.
+- `sign_magnitude_scale_and_concatenate`: The routine takes a 32-bit value, optionally negates a 16-bit field, multiplies it by a 16-bit entry from a table indexed by bits of the value, adds a constant, and builds a 32-bit result by concatenating the scaled value with its high part, flipping the sign of the high part when a sign bit changes.
+- `compute_bob_offset`: The routine computes a 32-bit offset from a 16-bit signed index using a signed table lookup, applies sign handling and a sign-extension rule, and returns the combined value.
+- `compute_bob_sine_offsets`: The routine uses a sine table pointed to by a global variable and two angle words to compute sine and cosine values, then combines them with scale and offset words to produce three signed 16-bit results stored in the structure pointed to by A4.
+- `compute_bob_position`: The routine reads a short offset from a structure, adds a constant, looks up two 16-bit values from a table using the offset, scales them with two other shorts from the structure, combines the results into 32-bit signed values, applies a sign flip based on a flag bit, and stores the results back into the structure.
+- `store_bob_transform`: The routine writes a pointer from a global variable into a global variable and stores parts of two parameters into fields of a structure pointed to by a global variable.
+- `process_scaled_parameters`: extracts sign bits and absolute values from three parameters, stores them in a structure, and calls another routine to perform accumulation.
+- `accumulate_scaled_value`: The routine calls another routine and stores its 16-bit result into a global variable.
+- `set_min_max_range`: The routine stores a zeroed flag in a global variable and then compares two input values.
+- `return_from_subroutine_2`: A routine consisting of sixteen instructions that executes nothing of substance before performing a tail branch to another routine.
+- `empty_routine_32`: The routine contains no instructions that modify memory or registers and performs no observable operation; it is effectively empty.
+- `compute_bob_transform_3`: The routine writes parameters into a structure pointed to by a register, initializes a few fields, calls another routine four times, updates several offsets using additions and fixed-point multiplications, computes sign flags from 16-bit values, stores intermediate results and a flag, and returns a combined value from two registers.
+- `return_without_action`: Returns immediately without modifying any data or registers.
+- `apply_palette_fade_to_bob`: The routine reads a 16-bit value from a structure, adds offsets to it and uses the result to index a table of 16-bit entries.
+- `set_bob_scroll_offset`: The routine clears a field in a structure, computes a signed offset from a short field and stores a derived value into another field, then loads a 16-bit entry from a table indexed by a shifted version of the same short field and stores it into a further field of the structure.
+- `apply_attenuation_tables`: The routine applies two attenuation lookups to a 16-bit input value using a table stored in a global structure, writes the scaled results to two fields of that structure, and copies a byte from a table indexed by a short field of the structure into another field.
+- `compute_bob_offsets_2`: The routine computes two 16-bit offset values from an input word and a signed input word using a table stored in a global variable, applies sign handling and scaling, and writes the results to two fields in a global structure.
+- `apply_bob_scaling_factor`: The routine computes a scaled value from a signed word input using a table of unsigned words addressed via a signed offset, clamps or sign-extends the result for large offsets, and stores the low word shifted into one global variable and a table lookup into another global variable.
+- `scale_and_clamp_value`: The routine scales a 16-bit input by a table value, clamps the high word to a sentinel when non-zero, and stores the low byte shifted and a table lookup value into a global structure.
+- `compute_bob_transform_4`: The routine computes a scaled 3D vector from three input coordinates using fixed-point arithmetic and sign flags stored in a global structure.
+- `compute_bob_transform_5`: The routine computes a fixed-point transform from a 32-bit input and two 32-bit values pointed to by a global structure, using several short coefficients and sign flags stored in the structure.
+- `normalize_bob_tile_color`: The routine normalizes a BOB tile color index using a packed 16-bit delta and per-axis scaling tables stored in a structure pointed to by two registers.
+- `apply_bob_transform_5`: The routine updates a counter while shifting three input values until their high bits clear, then computes signed fixed-point products using a global table and sign flags, stores the resulting 16-bit values, and optionally calls another routine to produce a transformed 32-bit result stored in a global variable.
+- `compute_bob_transform_6`: The routine applies fixed-point multiply-and-add operations using values from a global structure with several signed flags, stores two short results in the structure and conditionally calls another routine.
+- `compute_bob_transform_7`: The routine computes two 16-bit values from inputs in registers using scale factors and sign flags stored in a structure pointed to by a register, writes the results to fields in that structure, then optionally loads a value from the structure, conditionally shifts it, stores it back, and returns a combined value.
+- `transform_bob_matrix`: The routine uses two input words and an unused word to compute two 16-bit results from a global structure using scaled offsets and sign flags, storing them into two short fields of that structure.
+- `return_concatenated_value`: The routine returns a 24-bit value formed by concatenating the constant 2 with a 32-bit value taken from the stack.
+- `transform_bob_coordinates`: The routine reads a value from another routine and stores it into a structure at an offset, splitting the value into high and low words and writing a copy into another field.
+- `apply_bob_transform_6`: The routine writes constants to fields of a structure pointed to by a4, calls another routine and stores its result, then conditionally updates several fields using fixed-point multiplications with values from a table and sign handling based on flag bytes.
+- `update_bob_matrix`: The routine updates two 16-bit matrix components stored in a structure pointed to by a4.
+- `apply_fixed_point_rotation`: The routine reads two 16-bit fixed-point values from a global structure, multiplies them by two other 16-bit coefficients, applies sign from XORed sign flags, and writes the resulting sums to two fields in the same structure.
+- `return_constant_two_4`: The routine returns the constant value two.
+- `apply_fixed_point_transform`: The routine reads two fixed-point values from a structure, applies a 2×2 matrix with sign flips derived from flag words, writes a transformed X coordinate back into the structure, computes the transformed Y coordinate using the same matrix, takes its absolute value, scales it with a constant, adjusts it with another offset, and writes the result back.
+- `scale_value_by_table`: The routine takes a signed 16-bit input, converts it to an absolute value, and if a divisor stored in a global variable is zero it uses the absolute value directly, otherwise it splits the absolute value into integer and fractional parts.
+- `scale_value_by_table_2`: The routine scales an input value using two 16-bit values from a structure pointed to by a4.
+- `decode_bob_index`: The routine decodes a 32-bit index using two lookup tables stored in a global structure and writes the decoded value into a global variable.
+- `set_bob_position_from_table`: The routine reads a byte from a table indexed by a short offset, combines it with a second byte from the same table to form a 16-bit value, scales that value by a word multiplier and a fixed factor, and stores the resulting short into a global variable.
+- `copy_bob_data_to_tables`: The routine copies a 16-bit count from a parameter into a global variable and then repeatedly calls another routine.
+- `store_value_and_call`: The routine stores a value from a register into a global variable and then calls another routine.
+- `transform_points_by_matrix`: The routine computes absolute differences between three input values and two stored values, stores the low and high 16-bit parts of each difference and a sign flag, then forms three dot products using those differences with matrix coefficients from a global structure and accumulates the results into two output fields, applying sign corrections based on stored flags.
+- `save_bob_state_and_transform`: The routine saves a pointer to a global variable, writes two 16-bit values from the parameters into a structure pointed to by an address in a register, calls another routine, restores the original 16-bit values, calls the routine again, swaps the stored 16-bit values, negates one of them, and calls the routine a third time before restoring the original values again.
+- `store_word_pair_twice`: The routine writes a long value from a register through a pointer to a global variable, then calls another routine.
+- `set_bob_position_and_velocity`: The routine writes the incoming word to a global variable and copies a word from a table indexed by the incoming word into another global variable.
+- `extract_high_word_pair_and_combine`: The routine stores the high words of two parameters into a global variable, calls another routine, then conditionally negates or offsets a short result from that call based on the signs of the stored high words, and returns a combined 32-bit value formed from the other routine's outputs and the modified short.
+- `apply_fixed_point_vector`: The routine accumulates a small fixed-point vector using two accumulators in a global variable.
+- `accumulate_16bit_word_products`: The routine accumulates 16-bit word products from a table using a multiplier table, with conditional negation based on sign bits, and updates three 16-bit accumulators in a global structure.
+- `calculate_vector_dot_product`: Calculates the dot product of a 3D vector by computing the differences between two sets of coordinates, applying sign bits based on comparison results, and summing the fixed-point products.
+- `compute_fixed_point_dot_product`: The routine reads fixed-point values from a structure pointed to by a4, multiplies three pairs of 16.16 components, conditionally negates each product based on sign flags, accumulates the results into a 32-bit field, and returns a 32-bit value built from the high word of the last product and a caller-supplied word.
+- `find_and_shift_list_entries`: The routine scans a list of entries pointed to by a global variable, using a global counter and a mask table to locate matching items and updates a global count and mask.
+- `process_bob_table_2`: The routine walks a table of entries pointed to by a global variable, updates a counter and a bitmask in a global structure using values from an input table, then rotates a list of entries in a global buffer and selects the entry with the smallest time value to write a result to a global variable.
+- `update_bob_collision_list`: The routine updates a collision list stored in a global variable by iterating over a table of entries and maintaining a counter.
+- `shift_timer_queue`: The routine maintains a timer queue stored in a table referenced through a global variable, shifting entries forward and removing expired timers.
+- `shift_and_find_min_max`: The routine shifts a block of 32-bit pairs in a buffer up by one slot, updates a counter in a global structure, and then scans the buffer to find the smallest second word and the smallest first word, storing a combined index/value into a global variable.
+- `rotate_and_find_minimum`: The routine rotates a table of 32-bit pairs in place using a counter stored in a global variable, then scans the table to find the smallest high word and the corresponding index.
+- `find_minimum_value`: The routine scans a table of 32-bit values pointed to by a pointer, using a count from a register, and tracks the smallest value seen, updating a global variable with the index of that minimum.
+- `find_minimum_in_table`: The routine scans a table of 32-bit values pointed to by a pointer, first finding the minimum value in a block of entries and then, if that minimum is less than a global threshold, it scans a second block of entries to find the minimum within that block.
+- `find_maximum_word`: The routine scans a table of 32-bit values pointed to by a pointer, stepping by eight bytes each iteration, and keeps the largest value seen in a register.
+- `return_stack_value_6`: The routine returns the 32-bit value that was passed on the stack.
+- `update_bob_object_bounds`: Calculates the minimum and maximum vertical extents of a collection of data points and updates associated bounding box coordinates.
+- `initialize_bob_state`: The routine clears and sets fields in a global structure, conditionally updates several offsets from results of other routines and pointer arithmetic, and performs loops that adjust counters and accumulate values, returning early if a negative sentinel is seen.
+- `update_bob_sprite_timers`: The routine updates timing and position fields for a BOB structure using values from a global variable and a table, calls another routine to obtain offsets, and adjusts counters while handling carry for 16-bit sub-fields.
+- `update_bob_position_6`: The routine updates a global variable from an input argument, copies a length value and computes a delta using a table index derived from a global variable, then adjusts counters and calls another routine repeatedly while modifying several global counters and offsets.
+- `update_bob_subpixel_positions`: Updates subpixel coordinates and scroll window offsets by accumulating fixed-point values and decrementing frame counters.
+- `accumulate_fixed_point_values`: The routine processes two independent accumulators stored in a global structure.
+- `update_bob_animation_timers`: The routine updates several animation timing counters stored in a global structure, decrements frame counters and reloads them from a table when they expire, and propagates carry from 16-bit sub-counters into 32-bit accumulators.
+- `update_bob_sprite_state_18`: A routine that updates a set of sprite-related fields stored through a pointer in A4, repeatedly calling another routine and accumulating values from several fields with carry handling, and returns early when certain counter fields become negative.
+- `update_bob_animation_state_7`: The routine updates several fields in a structure pointed to by A4, using values returned by another routine and values from a table.
+- `update_bob_animation_timers_2`: The routine updates two independent timer pairs stored in a global structure, handling carry from 16-bit sub-timers into 32-bit accumulators and decrementing associated counters.
+- `update_bob_animation_timers_3`: The routine updates several animation timing counters stored in a global structure.
+- `update_bob_state_18`: The routine repeatedly updates several fields in a global structure using arithmetic on 16-bit and 32-bit values with carry handling, decrements counters, and calls another routine multiple times.
+- `update_animation_timers`: The routine repeatedly updates a set of timer counters stored in a global structure, decrementing countdown fields and accumulating 16-bit fractional parts with carry into 32-bit accumulators.
+- `restore_registers_and_return`: Restores registers d1 through d7 and a0 through a3, a6 from the stack, loads a pointer from the global variable at offset -6543 in a4 into a5, then returns.
+- `compute_min_max_and_update`: The routine finds the minimum and maximum 32-bit values in an array pointed to by a0, using a count from a global variable, and stores them in two global variables.
+- `find_min_max_and_update_table`: The routine scans a table pointed to by a pointer in D0 and D1 to find the minimum and maximum values, stores them in two global variables, then computes an index from a global variable and the table, updates another global variable with a value from a table and a global variable, and recursively calls another routine.
+- `find_maximum_value`: Iterates through a list of longwords to find the largest value and stores it in a global variable.
+- `update_bob_offsets_3`: The routine reads two short offsets from a structure, increments each by eight, computes the difference of two 32-bit values from a table using those offsets and stores the result, clamps a second difference to zero and stores it and its successor into the structure, calls another routine and stores its result, and returns a value from a pointer indexed by a short.
+- `copy_and_compute_offset`: The routine computes the difference of two 32-bit entries from a table pointed to by a pointer, clamps the result to zero, stores the value and its successor into fields of a structure, calls another routine and stores its return value and the successor into further fields, then returns a 32-bit entry from another table.
+- `call_indirect_and_return_concat`: The routine calls another routine through a pointer derived from an address in A4 and returns a 64-bit value formed by concatenating the contents of D0 and D1.
+- `update_bob_scroll_window`: The routine updates a scrolling window for a BOB by adjusting two short offsets stored in a structure, wrapping the first offset when it underflows, and computing the difference of two 32-bit values from a table at those offsets.
+- `set_intervals_and_fetch`: The routine computes a difference between two entries in a table pointed to by a pointer, clamps the result to zero, stores the result and its successor into fields of a structure, calls another routine and stores its return value and the successor into further fields, then returns a value fetched from a table using a pointer and an index.
+- `normalize_fixed_point_ratio`: The routine computes a fixed-point ratio between an input value and a divisor, using a global structure for intermediate results.
+- `normalize_fixed_point_ratio_2`: The routine takes a signed 32-bit value in D0 and an unsigned 16-bit divisor in D3 and computes a fixed-point ratio using 16.16 arithmetic.
+- `normalize_fixed_point_ratio_3`: The routine computes a fixed-point ratio from two input values using repeated doubling or halving to bring them into range, then derives a quotient and a fractional part.
+- `calculate_signed_ratio`: performs a division between two values and handles the sign and overflow based on the input operands.
+- `check_signed_division_overflow`: The routine receives an input value and a divisor in registers.
+- `scale_and_round_value`: The routine shifts two input values right until the second fits in 16 bits, divides the first by the low word of the second, stores the quotient in a global variable and returns it.
+- `apply_sprite_mask_2`: The routine copies a mask from a global variable into a destination word buffer pointed to by a global base pointer offset by a computed index, applying the mask with a bitwise AND-NOT operation.
+- `apply_masked_word_pattern`: The routine checks a range condition using a global variable and a table entry, selects a mask from a global variable based on a flag, and writes a masked 32-bit value into a destination buffer computed from an input and a base pointer.
+- `apply_masked_word_pattern_2`: The routine writes two input words into a global variable and then uses a mask stored in another global variable to modify a word in a buffer pointed to by a global pointer.
+- `set_bitmap_bits`: The routine stores a 16-bit mask and a 16-bit offset in two global variables and updates two 32-bit words in a bitmap buffer using a mask from a global variable.
+- `apply_masked_word_pair`: The routine reads a word from a global variable, combines it with an input word to form an index, then loads two 32-bit masks from a table using that index.
+- `compute_fixed_point_interpolation`: The routine reads a pair of indices from its parameter, selects two entries from three tables in memory, computes a fixed-point fractional difference between them, and derives a 16-bit interpolation factor.
+- `normalize_bob_coordinates`: The routine reads two 32-bit values from a table using indices in D0 and D1, computes their difference and a scaled offset using a 16.16 fixed-point factor stored in the object, writes the results to the object, repeats the calculation with a second table, normalizes the two resulting magnitudes to fit within a signed 15-bit range, stores the normalized values and a zero flag in the object, and calls another routine.
+- `scale_and_normalize_coordinates`: The routine computes a fixed-point scale factor from global state and applies it to deltas between two entries in two tables, writing signed results to a global structure.
+- `store_absolute_coordinates`: extracts the absolute values of two signed integers from a table and stores them into a different location before calling another routine.
+- `store_value_and_call_routines`: The routine stores a value from a register into a global variable and then calls another routine eight times in a row.
+- `compute_fixed_point_division`: The routine computes the product of two 32-bit fixed-point values and divides the 64-bit result by a 32-bit divisor, storing intermediate 16-bit parts in a structure pointed to by a register.
+- `fixed_point_multiply_divide`: The routine computes the product of two 32-bit fixed-point values using 16.16 arithmetic, accumulates the 64-bit result in a global variable, then divides that 64-bit value by a 32-bit divisor.
+- `compare_and_shift_values`: The routine reads two 32-bit values from a structure pointed to by a4 and compares them with an input value in d0.
+- `extract_fractional_bits`: The routine extracts the fractional part of a fixed-point value using a shift-and-subtract loop, accumulating the bits into a global variable and a second global variable for the sign, then returns the signed integer formed from the accumulated bits.
+- `shift_accumulate_signed_result`: The routine repeatedly shifts two input values and a control word, compares them, and builds two bit accumulators in a global variable and another global variable.
+- `bitstream_decode`: The routine repeatedly shifts two 32-bit values stored in a global structure and accumulates bits into a 32-bit accumulator in D0, using D4 and D5 as counters.
+- `set_flag_and_return_signed_value`: The routine clears a global variable, sets it to one if a shift-right of an input value is less than or equal to another input value, then returns the value with its sign flipped if another global variable is negative.
+- `normalize_and_store_word_values`: The routine stores three parameters into a global structure after taking their absolute values, then right-shifts all three until the high word of their OR is zero and the combined value is non-negative, re-applies sign based on the stored original signs, writes the three resulting 16-bit values to a global structure, and calls another routine.
+- `store_modified_coordinates`: takes two signed values, applies absolute value logic based on a table, and stores the results into a destination table before calling another routine.
+- `swap_and_update_timers`: The routine stores a byte from the parameter into two global bytes and copies four words from a table indexed by the parameter into a global table.
+- `draw_bob_sprite_9`: The routine updates a set of counters in a structure pointed to by A0, calls another routine to obtain a delta when needed, and then iterates over a bitmask stored in the structure.
+- `draw_bob_sprite_10`: The routine updates a set of sprite parameters using another routine and global variables, then iterates over a bitmask to modify bytes in a bitmap buffer referenced by a global pointer.
+- `empty_routine_34`: The routine contains no instructions and performs no operations.
+- `apply_palette_to_bob`: The routine updates a bitplane object buffer by writing nibbles from two byte globals into bytes indexed by a table of offsets combined with two counters that are incremented with carry from global words.
+- `decrement_and_clear_flag`: The routine decrements a counter and, if it reaches zero and a limit check passes, clears a flag and calls another routine.
+- `update_bob_pixels`: The routine conditionally updates a byte in a bitmap using nibble masks from two byte globals, decrementing a counter each iteration.
+- `empty_routine_35`: The routine has no code and performs no operations.
+- `decrement_and_fill_bob`: The routine decrements a counter stored via a pointer and, if the counter reaches zero and a size check passes, it sets a length field from a global variable and then fills a block of memory by repeatedly writing two nibble-masked bytes using values from global tables and counters, stopping when a counter underflows or a bound is exceeded.
+- `copy_sprite_plane_bits`: The routine copies bits from two registers into the low or high nibble of bytes in a buffer addressed by a pointer.
+- `mask_and_blend_pixels`: The routine repeatedly masks and blends a byte at a pixel address computed from two indices, using two nibbles from registers.
+- `compute_bob_metrics`: The routine computes differences from an input array and stores results in a global structure.
+- `reset_bob_state_16`: The routine obtains a value from another routine, optionally negates it with a borrow flag, then writes the resulting value and flag into fields of a global structure via an address passed in A4.
+- `reset_bob_state_17`: The routine clears a set of fields in a structure pointed to by a register, writes a value from a register into a short field or a constant if the value is too large, sets a flag based on the sign of a global variable, and forces a constant into another field if a previously cleared field is non-zero.
+- `reset_bob_state_18`: The routine writes a value from a register into a global variable and then initializes several adjacent words in a global structure to constant values, with one word set conditionally based on the sign of another global variable.
+- `store_divmod_result`: The routine stores a 32-bit value from a register into two consecutive 16-bit words of a global variable and then computes a division and remainder.
+- `compute_mod_div_pair_2`: The routine takes two inputs and returns a 32-bit value whose high and low 16-bit halves are the remainder and quotient of a division.
+- `swap_high_low_words`: The routine takes two input values and repeatedly doubles them until one becomes zero, then it swaps the high and low 16-bit words of the first value using the high word of the second value as a divisor and multiplier, returning the swapped result.
+- `swap_word_nibble_pairs`: The routine takes two inputs and uses the high word of the second as a divisor.
+- `set_timer_and_wait_counter`: The routine stores a value from a register into a global variable, calls another routine, then repeatedly calls a function pointer from a global table while decrementing a short counter in a global variable until it reaches zero.
+- `decrement_counter_loop_4`: The routine repeatedly calls another routine via a function pointer stored in a global variable and decrements a short counter stored in a global variable until the counter reaches zero.
+- `set_timer_and_wait_counter_2`: The routine stores a value from a register into a global variable, calls another routine, then repeatedly calls a function pointer from a table until a short counter stored in a global variable reaches zero, decrementing the counter each iteration.
+- `decrement_loop_until_zero`: The routine repeatedly calls another routine via a pointer stored in a global variable and decrements a short counter stored in a global variable until the counter reaches zero.
+- `normalize_and_store_angle`: The routine reads a signed 16-bit angle from a global variable, normalizes it to a signed range by wrapping and mirroring, then looks up a sine value from a table using the normalized index.
+- `decode_bob_table_entry`: The routine decodes a 16-bit value from a table using an index derived from an input word, applies sign handling based on flags, and stores the resulting 32-bit values into two global variables and copies a 16-bit value from a global variable to another global variable.
+- `store_bob_transform_2`: The routine writes a signed 16.16 fixed-point value built from a word and the high word of a long into a global variable, writes a sign flag derived from an input word into another global variable, and copies a word from a global variable to a third global variable.
+- `normalize_fixed_point_value`: The routine reads two 16-bit values from a structure pointed to by a4, scales them, combines them into a 32-bit fixed-point value, divides by 1000 to obtain an integer part and a fractional part, normalizes the fractional part into the range 0-99 by subtracting 100 repeatedly, and stores the integer part, the fractional part and the normalized fraction back into the structure.
+- `store_scaled_short`: The routine stores a 16-bit value into a global variable at a fixed offset from a pointer in A4.
+- `scale_short_value`: The routine reads a signed short from a structure field, takes its absolute value and clamps it to a maximum, then scales the value using a 32-bit combination of the input and a high word from the first argument.
+- `scale_and_store_value`: The routine takes a 32-bit input, extracts its high and low words, combines them with a constant offset, scales the result by dividing by a constant and adding a bias, optionally negates the result based on the sign of a global variable, then stores the adjusted value into another global variable.
+- `fill_buffer_from_handler`: iterates through a nested loop structure, calling a function pointer for each iteration to fill a destination buffer with returned bytes.
+- `execute_repeated_handler`: runs a loop that calls a function pointer a specific number of times, returning a count or zero based on the results.
+- `looped_callback_invoker`: The routine repeatedly invokes a callback obtained from a table pointed to by a global variable, once per inner count and for a number of outer iterations.
+- `find_next_table_entry_2`: The routine repeatedly calls another routine through a pointer stored in a global variable and uses the returned short as a loop control.
+- `find_entry_in_table`: The routine walks a table of entries using two counters and returns the value stored at a specific offset when the inner counter exceeds a limit, otherwise it calls another routine repeatedly until it returns -1 and then returns zero.
+- `fetch_next_byte_from_table`: The routine reads a pointer from the first word of the argument and compares it with a second word.
+- `process_data_stream`: checks flags in a structure, potentially processes a list of headers, adjusts a position, and updates a pointer and length values.
+- `execute_cleared_entry`: Calls another routine and returns its result.
+- `find_and_assign_string_slot`: searches a table for a matching string, and if found, finds a free slot to store an index and a flag into a destination structure.
+- `clear_bob_table_and_dispatch_2`: The routine clears a block of words in a structure pointed to by a register, stores a pointer and two integer values from a global variable into the same structure, and then conditionally calls a handler from the global variable.
+- `return_early`: The routine performs no operations and returns immediately.
+- `initialize_bob_object_7`: The routine initializes a BOB object by computing an index from a global variable, allocating a structure, and setting several of its fields.
+- `parse_and_tokenize_string`: The routine reads a string from a table via a pointer, computes a length, allocates a buffer, copies the string into the buffer, then tokenizes the buffer into words handling quoted strings and whitespace, counting tokens and storing their offsets in an allocated table.
+- `parse_quoted_string_tokens`: The routine reads a string from a table, copies it into a buffer and tokenises it into words, handling quoted strings and whitespace.
+- `copy_string_with_limit`: The routine copies bytes from a source pointer to a destination pointer, stopping when a null byte is encountered or when a counter supplied in the third argument reaches zero.
+- `copy_bytes_with_terminator`: The routine copies bytes from a source pointer to a destination pointer, stopping early if a zero byte is encountered or a byte count expires, then writes zero bytes to fill any remaining space in the count.
+- `recursive_call_3`: The routine calls another routine with the same argument it received and then returns.
+- `find_free_slot_in_table`: The routine scans a table of six-byte entries for a zero first word.
+- `adjust_bob_position_4`: The routine receives a pointer to a BOB structure and a pointer to a global variable in a1.
+- `copy_string_with_limit_2`: The routine copies bytes from a source pointer to a destination buffer, stopping at the first null byte or after a fixed number of bytes.
+- `copy_string_with_limit_3`: The routine copies bytes from a source pointer to a destination pointer, stopping at a null terminator or when a counter in the third argument reaches -1.
+- `compare_two_byte_strings`: The routine compares two byte strings byte by byte.
+- `copy_string_to_buffer_4`: The routine copies bytes from a source pointer to a destination pointer until a zero byte is encountered, including the terminator.
+- `multiply_32_bit_values_2`: computes the product of two 32-bit values by combining the cross terms of their 16-bit halves and returns a 64-bit result.
+- `retrieve_window_title`: The routine fetches a string from a global structure using an external library and writes the pointer into two fields of a passed structure.
+- `recursive_self_call_with_stack_param`: The routine calls another routine, passing itself as the first argument, the original parameter as the second argument, and the address of an eight-byte stack slot as the third argument.
+- `self_calling_stub`: The routine calls another routine, passing itself as the first argument, the incoming parameter as the second argument, and a fixed stack address as the third argument.
+- `read_bob_header`: The routine reads a byte from memory through a pointer, stores it into a global variable, then calls another routine twice before returning.
+- `set_bob_frame_and_return_pointer`: The routine reads a signed field from a structure, selects a byte from a table using another routine, and writes it through a pointer while looping until a callback returns zero.
+- `adjust_and_populate_buffer`: The routine checks and possibly flips a sign flag in a structure and clears a flag field.
+- `parse_format_specifiers`: The routine parses a format string containing percent directives, extracts flags, width, precision and conversion specifiers, and uses a callback to read characters while updating a character count.
+- `parse_bob_number_string`: The routine parses a null-terminated ASCII string pointed to by an argument and converts it into a numeric value using a table lookup for digit characters, handling optional decimal point and asterisk wildcards.
+- `parse_bob_script`: The routine reads a byte stream from a pointer, converts ASCII digits into numeric values using a table lookup, and updates a small stack frame with parsed fields.
+- `parse_bob_bytecode`: The routine reads a byte stream from a pointer and decodes numeric values and control tokens into a stack frame, using another routine for sub-decodes and updating length fields in the frame.
+- `parse_bob_command_stream`: The routine reads a byte stream from a pointer, converts ASCII digits to numeric values, and uses a table lookup to decide how to interpret control bytes.
+- `parse_bob_data`: The routine walks a byte stream using a state variable and a pointer stored in a global variable, interpreting control bytes to set a length field and to dispatch to another routine for decoding.
+- `parse_format_string`: The routine parses a format string stored in a global variable using a helper routine to read characters, handling sign and width limits, and returns the number of characters consumed.
+- `parse_format_string_2`: The routine walks a format string in memory and uses another routine to fetch characters, counting characters and handling sign and width fields.
+- `parse_format_string_3`: The routine parses a format string using another routine to fetch characters and writes parsed values into a stack frame.
+- `parse_format_string_4`: The routine parses a format string using a helper routine to read characters and updates counters in a stack frame.
+- `parse_format_specifier`: The routine parses a format specifier from a string, using a helper routine to obtain character codes and updating a stack-based state to track width, precision and flags.
+- `parse_format_string_5`: The routine parses a format string using a callback to fetch characters, handling sign and base prefixes, and counts characters consumed while returning the total count or an error code.
+- `parse_bob_string`: The routine reads a byte-oriented string from a table using an index stored on the stack, updates length and position fields in a structure on the stack, and calls another routine to fetch each character while handling sign characters and a zero terminator.
+- `parse_format_specifier_2`: The routine parses a format string using a callback to fetch characters, handling width, precision and sign modifiers, and returns the number of characters consumed.
+- `parse_format_string_6`: The routine parses a format string using a callback to fetch characters and updates a set of working variables in the caller’s stack frame, handling flags, width, precision and * arguments.
+- `parse_format_string_7`: The routine reads characters from a format string using another routine and processes format specifiers, updating counters and width/precision values stored in a stack frame.
+- `parse_format_string_8`: The routine parses a format string stored in a global variable using another routine to fetch characters, handling % specifiers with optional flags, width and precision, and updates counters in the caller’s stack frame.
+- `parse_format_specifier_3`: The routine reads characters from a format string using another routine and parses a % conversion specifier, extracting flags, width, precision and length modifiers into a small state structure on the stack, then returns the number of characters consumed.
+- `parse_printf_style_format`: The routine walks a NUL-terminated format string, parses % directives with optional minus sign, zero padding, width and precision using * or decimal digits, and a length modifier l, while counting characters via a callback.
+- `parse_format_string_9`: The routine parses a format string character by character, handling percent escapes, optional minus sign, zero padding, width and precision specifiers with optional star arguments, and stores the parsed flags, width, precision and length modifier into a global variable.
+- `parse_format_specifiers_2`: The routine walks a format string and extracts conversion flags, width, precision and length modifiers, storing them in a stack frame and returning the number of processed characters.
+- `parse_printf_format`: The routine parses a format string containing percent directives, extracts flags, width, precision and conversion specifiers, and writes the resulting values into a small stack frame.
+- `parse_printf_format_2`: The routine parses a printf-style format string stored in memory, extracts flags, width, precision and conversion specifiers, and writes the resulting field descriptors into a local buffer.
+- `return_word_from_a5_offset`: The routine returns a 16-bit value read from memory at an offset of -6 bytes from the address in register A5.
+- `sign_combine_and_negate`: The routine reads two signed inputs, flips the sign flag based on their signs, calls another routine and optionally negates its result, then combines that result with the second input into a 32-bit value.
+- `negate_if_negative_and_concat`: The routine calls another routine, takes the value returned in D1, and if the input in D0 is negative it negates that D1 value.
+- `call_and_return_concatenated`: The routine calls another routine and returns a 64-bit value formed by concatenating the original D1 contents with the value left in D1 by the call.
+- `recursive_call_4`: The routine calls another routine and then returns.
+- `modular_divide_16bit`: The routine takes two 32-bit values from registers and performs a 16-bit by 16-bit division with a 32-bit dividend, returning a 32-bit result containing quotient and remainder.
+- `swap_and_rotate_words`: swaps the high and low words of a value, then performs a series of shifts and subtractions to process the data.
+- `compute_string_length`: The routine receives a pointer to a zero-terminated byte string, walks forward byte by byte until it finds the terminating zero byte, and returns the number of bytes from the start pointer up to but not including the terminator.
+- `call_bob_data`: Sets up a frame, pushes an address onto the stack, calls the bob data routine, adjusts the stack pointer, tears down the frame, and returns.
+- `process_bob_data_6`: The routine loads a pointer from a global variable, reads a byte from the pointer, stores it through a pointer, and then calls another routine twice before returning.
+- `empty_stub_routine_16`: The routine contains no instructions and returns immediately.
+- `process_bob_data_7`: The routine reads a pointer from a global variable, loads a value from a table using an index stored in another global variable, and stores the result through a pointer.
+- `store_byte_from_table_4`: The routine reads a byte from a fixed offset within a structure pointed to by a register, writes that byte through a pointer taken from a global variable, and increments the global variable pointer.
+- `iterate_table_entries_2`: The routine walks a range of memory starting at an offset from a register value and repeatedly calls another routine with successive addresses spaced by a fixed stride, stopping when the address reaches the end of the range.
+- `clear_bob_flags_3`: The routine clears a four-word block pointed to by its argument and returns a status word.
+- `process_bob_header`: The routine processes a four-word block pointed to by param_1 and a two-byte parameter.
+- `clear_bob_entry_2`: The routine walks a fixed-size table of entries in memory, each entry 22 bytes apart, and checks a byte three words after the entry start.
+- `set_bob_flags_and_pointer`: The routine calls another routine to obtain a value and, if zero, writes a flag and sets a pointer field in the structure pointed to by the parameter.
+- `clear_callback_list`: The routine walks a singly linked list whose head pointer is stored in a global variable.
+- `clear_linked_list`: The routine walks a singly linked list via a pointer in a register, repeatedly calling another routine with the current node pointer and an offset from the next field, then follows the next pointer until null.
+- `register_callback_and_allocate`: The routine stores a pointer to itself in a global variable and calls another routine with an adjusted argument.
+- `forward_parameter_field`: The routine forwards the second field of its parameter structure to another routine and then returns.
+- `remove_linked_list_node`: The routine walks a singly linked list whose head is stored in a global variable, finds the node whose address matches the parameter minus eight, unlinks it by updating the previous node or the head pointer, and then calls another routine with the removed node and an offset value.
+- `check_bob_entry_validity_2`: The routine checks whether a BOB entry index is within bounds and whether the corresponding entry is non-zero.
+- `check_and_store_value`: The routine calls another routine with the input parameter and checks the returned integer.
+- `decompile_failed_routine`: The routine cannot be decompiled due to a low-level error adjusting input varnodes.
+- `check_flag_and_call_handler`: The routine calls another routine with fixed arguments, tests a bit in the returned value, and if set checks a global variable at an offset from a4.
+- `call_indirect_table_entry`: The routine obtains a value from another routine, passes it to another routine, then calls a function pointer taken from an address computed from an uninitialized register offset by a constant.
+- `recursive_call_5`: The routine consists of a single call to another routine and then returns.
+- `execute_bob_callbacks_2`: The routine processes a set of callback pointers stored in a structure pointed to by A4, invoking another routine repeatedly based on a count field and then calling the stored function pointers if they are non-zero.
+- `process_bob_object_4`: The routine processes a BOB object structure pointed to by a4 and a5.
+- `check_and_update_pointers`: The routine checks a flag in a structure via a global variable and, depending on its value, calls another routine with pointers and offsets derived from the same structure, then returns a value from another structure.
+- `unknown_routine_2`: The routine calls another routine twice, once with no argument and once with a value loaded from a global variable, then returns a value loaded from a global variable.
+- `restore_and_return_3`: Pops a long word off the stack into a register, restores the frame pointer, and returns.
+- `clear_bob_reference`: The routine clears a reference to a BOB entry.
+- `call_close`: Wrapper that calls the dos library function Close and returns its result to the caller.
+- `call_current_dir`: Wrapper that calls the dos library function CurrentDir and returns its result to the caller.
+- `call_delete_file`: Wrapper that calls the dos library function DeleteFile and returns its result to the caller.
+- `call_indirect_via_table_4`: The routine loads a pointer from a global variable, adds an offset, subtracts a constant and calls the routine found at that address.
+- `call_examine`: Wrapper that calls the dos library function Examine and returns its result to the caller.
+- `call_ex_next`: Wrapper that calls the dos library function ExNext and returns its result to the caller.
+- `call_info`: Wrapper that calls the dos library function Info and returns its result to the caller.
+- `call_input`: Wrapper that calls the dos library function Input and returns its result to the caller.
+- `call_io_err`: Wrapper that calls the dos library function IoErr and returns its result to the caller.
+- `call_is_interactive`: Wrapper that calls the dos library function IsInteractive and returns its result to the caller.
+- `call_indirect_via_table_5`: The routine loads a pointer from a global variable, adds an offset, and calls the routine found there via an indirect jump.
+- `call_lock`: Wrapper that calls the dos library function Lock and returns its result to the caller.
+- `call_open`: Wrapper that calls the dos library function Open and returns its result to the caller.
+- `call_output`: Wrapper that calls the dos library function Output and returns its result to the caller.
+- `call_read`: Wrapper that calls the dos library function Read and returns its result to the caller.
+- `call_seek`: Wrapper that calls the dos library function Seek and returns its result to the caller.
+- `indirect_jump_via_table`: The routine performs an indirect jump through a table.
+- `call_un_lock`: Wrapper that calls the dos library function UnLock and returns its result to the caller.
+- `call_write`: Wrapper that calls the dos library function Write and returns its result to the caller.
+- `call_indirect_via_table_6`: The routine loads a function pointer from a global variable table and calls another routine indirectly.
+- `call_indirect_via_table_7`: The routine reads a pointer from a global variable, adds a constant offset, and calls the function located there via an indirect jump.
+- `call_indirect_through_table_3`: The routine calls another routine indirectly via a pointer obtained from a global variable table.
+- `call_indirect_via_table_8`: The routine reads a pointer from a global variable, adds an offset to it, and calls the routine found there via an indirect jump.
+- `call_indirect_via_table_9`: The routine calls another routine indirectly through a pointer obtained from a global variable table.
+- `call_indirect_through_table_4`: The routine calls another routine indirectly via a pointer taken from a global variable table.
+- `call_indirect_via_table_10`: The routine calls another routine indirectly via a pointer stored in a global variable.
+- `call_indirect_handler`: The routine loads a handler pointer from a global variable and calls the routine it points to.
+- `call_indirect_via_table_11`: The routine calls another routine indirectly via a pointer stored in a global variable.
+- `call_indirect_through_table_5`: The routine calls another routine indirectly via a pointer obtained from a global variable.
+- `call_indirect_via_global_table`: The routine calls another routine indirectly via a pointer taken from a global variable table.
+- `call_indirect_via_table_12`: The routine calls another routine indirectly via a pointer stored in a global variable.
+- `indirect_call_via_table`: The routine performs an indirect call through a pointer stored in a global variable.
+- `call_indirect_through_table_6`: The routine calls another routine indirectly via a pointer taken from a global variable.
+- `call_indirect_through_table_7`: The routine reads a pointer from a global variable, adds a constant offset, dereferences it to obtain a function pointer, and calls another routine through that pointer.
+- `call_indirect_via_table_13`: The routine calls another routine indirectly through a pointer obtained from a global variable.
+- `call_indirect_via_global_table_2`: The routine calls another routine through an indirect pointer obtained from a global variable.
+
+### MB
+
+- `initialize_memory_and_dispatch`: The routine clears a block of memory in the BSS area and then sets up a pointer and two integer fields from a global variable.
+- `initialize_mission_builder`: The routine clears a set of global flags, calls several initialization helpers, loads map and icon resources, and then enters a loop that polls input and updates UI state flags based on the current tool selection, toggling display bytes and invoking drawing helpers.
+- `decrement_or_increment_counter_2`: The routine receives a structure and checks a global flag.
+- `decrement_and_wrap_short`: The routine decrements a short stored at an offset from an address in A5 and, if the result is -1, replaces it with the value from another short at a different offset minus one.
+- `render_digit_sequences`: Calls a routine to render digit columns multiple times and executes several indirect function calls using values retrieved from a table.
+- `iterate_and_increment_counter`: Loops up to ten times, updating a byte in a global variable via a counter routine and checking a condition based on a 32-bit multiplication result.
+- `process_multiple_data_fields`: Performs several 32-bit multiplications to index into tables, executes indirect function calls with the retrieved values, and renders digit columns.
+- `draw_text_row`: The routine repeatedly calls another routine with a computed offset and a small constant, then for rows after the first it reads a byte from a table via an index derived from two other routine calls, selects a small constant based on the byte value, and invokes a further routine with an argument taken from a table.
+- `shift_unit_tables`: The routine shifts word entries within three tables and a word table, then copies or writes bytes from another routine's output into two byte tables, with a different byte write when a condition holds.
+- `shift_palette_tables`: The routine shifts a set of word tables and byte tables by one entry, copying each element from the next position into the current position for several palette-related tables.
+- `clear_two_tables`: The routine clears a word entry in a global table and then clears and sets a byte in another global table using values returned by another routine.
+- `clear_two_bytes_from_pointers`: The routine calls another routine and uses its return value to compute an offset from a pointer, then stores a zero byte at that computed address.
+- `reset_game_state`: The routine clears a set of bytes in a global variable area, zeroing several fields and initializing a small table with repeated zero and constant values.
+- `initialize_game_state_4`: The routine calls another routine multiple times with constant arguments and once with an argument loaded from a table indexed by a value from a global variable.
+- `set_flag_and_call_helpers`: The routine writes a byte value to a global variable and then calls a series of other routines with constant and table-derived arguments.
+- `build_unit_list`: The routine resets a counter and, if a flag is set, reads two short values from tables indexed by a byte, adds offsets from another routine to them and stores the results.
+- `iterate_table_calling_handler`: The routine loops over a count stored in a global variable and, for each index, calls another routine through a function pointer stored in a global variable.
+- `iterate_table_calling_callback`: The routine loops over a count stored in a global variable and, for each index, calls another routine through a function pointer stored in a global variable.
+- `execute_table_callbacks`: Iterates through a table and calls an indirect function for each entry, passing a calculated address and a 16-bit value from the table.
+- `iterate_table_call_indirect`: The routine loops over a count stored in a global variable and for each index reads a word from a table of indices and a word from a parallel table of parameters.
+- `call_three_routines`: The routine calls three other routines in sequence and then returns.
+- `call_four_routines`: Sets up a stack frame, then calls four other routines in sequence, restores the frame pointer, and returns.
+- `check_flag_and_call_7`: The routine checks a byte in a global variable.
+- `dispatch_stored_function`: Executes an indirect function call using a pointer stored in a global variable and then calls another routine.
+- `select_and_dispatch_two_entries`: The routine calls another routine, then for three consecutive flag bytes it chooses between two table entries and dispatches each via a function pointer, and finally calls two other routines.
+- `compare_two_sets_and_flags`: The routine iterates over a table of limits and repeatedly calls another routine twice, breaking when the first result is less than the second; if all limits are met it returns success.
+- `compare_adjacent_entries`: The routine walks through two indexed tables using offsets stored in a structure pointed to by A5, reads byte indices from a table pointed to by A4, looks up signed 16-bit values from two tables pointed to by A4, stores the differences into the structure, calls another routine twice and stores the results, and repeats with wrap-around logic.
+- `validate_sequence_consistency`: Iterates through a table of indices to calculate differences between paired values from two separate data tables.
+- `return_constant_two_5`: The routine is a stub that returns the constant value two.
+- `check_flag_from_table`: The routine calls another routine and uses its result as an index into a table to fetch a byte from a global variable.
+- `return_constant_two_6`: This routine always returns the constant value two.
+- `check_and_dispatch_2`: The routine tests two bytes in a global variable and calls another routine if either byte equals one, then calls another routine with the incoming parameter and calls another routine unconditionally.
+- `process_message_flags`: The routine copies a message identifier into a working field, clears flag bytes and, depending on two flag words, fills in size and attribute words.
+- `reset_two_signed_offsets`: The routine calls two other routines and then processes two signed 16-bit values stored at fixed offsets from a base pointer.
+- `scale_loop_iterations`: The routine reads a short from a global variable and selects a base multiplier of 100 or 1000 depending on whether the value equals 3.
+- `scale_and_loop_counter`: The routine stores a constant into a word on the stack, computes a 32-bit product from a short on the stack, a short from a global variable, and a short from the stack, stores the result as a loop bound, clears a counter, then repeatedly multiplies a short from the stack by a short from a global variable, discarding the result, and increments the counter until it reaches the bound.
+- `multiply_and_store_loop`: Multiplies two values from memory and stores the result in a location pointed to by a register, repeating until a counter reaches a limit.
+- `wait_for_flag_clear_2`: The routine repeatedly calls another routine until it returns non-zero or a global flag is set, then if either of two global flags is set it keeps calling another routine until both flags are cleared.
+- `reset_flag_and_wait_for_clear`: The routine clears a two-byte flag in a global variable, then if two short flags in global variables are non-zero it repeatedly calls another routine until both flags become zero, and finally sets the two-byte flag to one.
+- `parse_command_stream`: The routine walks a byte stream pointed to by param_1 until a zero byte is found.
+- `process_decoded_stream`: Decodes a byte stream and stores a calculated word pair into a global variable based on the decoded value and other memory contents.
+- `invoke_two_routines_and_jump`: The routine calls another routine twice with different arguments and then jumps to a routine via an indirect pointer derived from a global variable.
+- `find_matching_entry_in_table`: The routine scans a table pointed to by the first parameter, comparing each entry’s four short fields against four global short values.
+- `render_digit_columns_2`: The routine iterates a count stored in a field of the first argument, repeatedly divides another field of that argument by successive entries from a table located via a global base, keeps the remainder, and clamps the quotient to a range.
+- `dispatch_mission_data`: Executes several indirect calls through various tables and updates multiple global variables based on the results of those calls.
+- `copy_state_block`: The routine copies a block of long words from one area of memory to another area of memory, clears a word, then calls another routine and conditionally calls it again with a global variable.
+- `copy_graphics_state_and_reset`: The routine copies a block of long words from one area of a global structure to another area of the same structure, clears a word flag, then calls another routine and conditionally calls a second routine with a global variable.
+- `reset_copper_dma`: Sets up a stack frame, calls the routine that resets the copper DMA state, restores the frame pointer, and returns.
+- `store_word_pair_to_global_4`: The routine stores the high and low 16-bit halves of its parameter into two consecutive 32-bit slots of a global variable.
+- `store_two_params_to_global`: The routine stores the high and low 16-bit halves of the first parameter into two consecutive 32-bit slots of a global variable, and stores the high and low 16-bit halves of the second parameter into the next two consecutive slots of the same global variable.
+- `store_word_from_parameter_2`: The routine stores a 16-bit value taken from the second word of its parameter into a global variable located at a fixed offset from a4.
+- `store_word_from_param`: The routine stores a 16-bit word from the second word of its parameter into a global variable accessed via an offset from a4.
+- `store_word_into_global_2`: The routine stores a 16-bit word from the second word of its parameter into a global variable via a pointer derived from a register.
+- `recursive_call_6`: The routine calls another routine and then returns.
+- `write_dma_control_register`: The routine writes a value to a global variable that is used as the DMA control register.
+- `empty_c_function_8`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
+- `poll_input_buffer`: The routine reads a flag from a global variable to choose a buffer size, calls another routine to fill a stack buffer, then repeatedly calls that routine and waits a fixed number of iterations before OR-ing the low bits of the buffer entries into a flag.
+- `initialize_and_accumulate_flags`: The routine sets up a small stack frame, initializes a counter and a loop control word, then repeatedly calls another routine with a pointer and a constant.
+- `update_two_counters_loop`: The routine repeatedly updates a word at offset minus six by ORing in a value taken from a table indexed by a counter, then increments that counter.
+- `return_empty_routine`: The routine contains no instructions and immediately returns.
+- `populate_table_entries`: Iteratively adds entries to a table and copies word data while checking for equality between the table and a provided parameter.
+- `check_flag_and_call_8`: The routine checks a global flag and, if it is clear, calls another routine twice in succession.
+- `check_flag_and_call_routines`: The routine tests a global variable and, if it is zero, calls another routine four times with no arguments except one call with a zero argument.
+- `copy_bytes_with_delay`: The routine copies a byte from a global variable through a pointer in a loop, incrementing counters in a global table when a condition on a stack value is met, and repeats the copy while a flag in a structure is clear and a returned value is not a sentinel.
+- `find_next_available_slot`: The routine selects a slot index from a global byte and prepares a temporary buffer, then iterates over a table of bytes, calling another routine for each entry and clearing a flag in a structure pointed to by a global variable.
+- `store_param_bytes_to_global`: The routine stores two bytes from the parameter into two consecutive bytes of a global variable.
+- `save_and_restore_state`: The routine saves a small block of global variables to a temporary area, runs a sequence of other routines and conditional calls, then restores the saved block and clears a flag.
+- `memory_allocation_error_handler`: The routine attempts three memory allocations using a size from a global variable and two fixed sizes, storing each result in a global variable.
+- `set_global_word_and_call_routine`: The routine stores a constant word into a global variable and then calls another routine three times, passing a pointer from a global variable together with either the stored word or a constant word.
+- `reset_game_state_flags`: The routine writes constant values to several words in a global variable and then calls another routine.
+- `copy_key_and_branch_on_value`: The routine copies a word from a global variable into another global variable and then returns the source word.
+- `store_two_word_fields`: The routine stores two 16-bit fields from the parameter structure into two separate 16-bit locations in a global variable.
+- `empty_c_function_9`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
+- `empty_c_function_10`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
+- `recursive_self_call_2`: The routine calls another routine twice and then returns.
+- `store_word_pair_from_params`: The routine stores four 16-bit words taken from two parameters into four consecutive locations of a global variable.
+- `reset_and_update_timer_flags`: The routine clears a word in a global variable and conditionally copies or ORs words from other global variables into it based on flag bytes.
+- `decrement_nibbles_in_word_array_2`: The routine receives a pointer to an array of 16-bit words and a count.
+- `add_to_table_entries`: The routine walks two parallel arrays of a signed short and an unsigned short using a counter in the third argument.
+- `parse_message_header_and_dispatch`: The routine stores the incoming parameters into a global variable area and advances a pointer through a byte stream.
+- `process_message_stream`: The routine reads a byte stream from a pointer table, updates a counter and a set of global variables, and repeatedly calls another routine while adjusting index and mask values based on the stream bytes.
+- `parse_message_stream`: The routine reads bytes from a pointer-based stream stored in a global variable, updates several global counters and fields, and repeatedly calls another routine while adjusting offsets and a loop counter until a terminator byte is encountered, then returns.
+- `decode_message_stream`: The routine reads bytes from a byte pointer stored in a global variable, increments the pointer, and decodes each byte into a sub-index and a value.
+- `restore_registers_and_return_2`: Restores registers d1 through d7 and a0 through a3 plus a6 from the stack, loads the value stored at offset -30668 from the structure in a4 into a5, and returns.
+- `apply_tile_mask_to_planes`: The routine reads a 16-bit index from a global variable, adds a scaled byte, and uses it to fetch a two-byte mask from a table pointed to by a register.
+- `process_input_buffer`: The routine stores a byte from a parameter into a global buffer and, if the byte is not a newline, decodes it via a lookup table.
+- `shift_and_dispatch_loop`: The routine repeatedly shifts two byte flags and updates a byte in memory, then uses values from a global table and a pointer in memory to compute offsets into a table of routine pointers and calls two routines for each iteration.
+- `check_and_accumulate_counter`: The routine checks a flag in a global variable and a comparison between two global counters, and if true it calls another routine.
+- `update_global_counter_2`: The routine reads a global variable and adds a byte from a global table to it, then compares the result with another global variable.
+- `decode_planes_for_overlay`: The routine writes bytes to a destination buffer pointed to by a global pointer.
+- `mask_nested_data`: Iterates through nested loops to apply a masking routine to specific memory offsets determined by a table lookup.
+- `empty_routine_39`: The routine contains no instructions and returns immediately.
+- `empty_stub_routine_17`: The routine contains no instructions and returns immediately.
+- `mask_bytes_at_offset`: The routine masks a single byte at a common offset in five different memory blocks using the same mask byte.
+- `mask_bytes_at_offsets_2`: The routine masks bytes at an offset in four buffers with a byte from a register and ORs a byte from another register into a byte at the same offset in a fifth buffer.
+- `set_dma_control_register`: The routine writes a value to a global variable and then calls another routine.
+- `set_dma_control_register_2`: The routine writes a value to a global variable that controls the Amiga DMACON register and then calls another routine.
+- `copy_byte_to_offset`: The routine copies a byte from one offset relative to a pointer to another offset relative to the same pointer.
+- `set_blitter_parameters`: The routine configures Amiga blitter registers BLTCON0, BLTCON1, BLTDPTH, BLTDMOD, BLTAMOD, BLTAFWM and BLTADAT, and reads DMACONR, to set up a blit operation.
+- `wait_for_bitmask_flag`: The routine repeatedly polls a global variable until its bit is set, increments a counter and a pointer, and checks a bit in a byte table indexed by the counter.
+- `wait_for_blitter_and_write_masked_bytes`: The routine spins until the blitter is idle, then programs the blitter control and mask registers and writes a series of bytes to the blitter source and destination registers.
+- `wait_for_bitplane_dma`: The routine polls a global variable until a bit in a hardware register is set, then returns a value from the stack.
+- `store_pointer_and_call`: The routine writes a value from a register into a global variable and stores the register value into another global variable, then calls another routine via a pointer stored in a global variable.
+- `set_display_mode_and_tables`: The routine configures Amiga custom chip registers for bitplane and sprite DMA and builds two short tables that hold display mode parameters, then stores pointers and values in globals and calls another routine.
+- `reset_copper_dma_state`: The routine clears a global variable, sets it to a constant, and calls two functions from a table pointed to by a global variable, then calls the same function twice more and conditionally calls it twice more.
+- `update_state_and_poll`: Selects a value for a global variable based on a condition, increments a counter, and calls a routine to read joystick buttons.
+- `store_global_and_increment_counter`: The routine reads a 32-bit value from a global variable offset by a frame pointer, stores it into another global variable, clears a 16-bit field, increments a 16-bit counter, calls another routine, then performs an indirect call through a function pointer table.
+- `set_display_and_dma_control`: The routine writes values to a global variable and then writes to hardware registers that control the Amiga display and DMA. It sets BPLCON0, COP1LCH, COPJMP1 and DMACON, with the DMACON write using bit 15 set to enable DMA channels.
+- `copy_word_table_2`: The routine copies a block of word values from a source pointer into two destinations: a global variable table and a second table addressed via a stack-based pointer.
+- `copy_word_table_3`: The routine copies a sequence of 16-bit words from a global table to a caller-supplied buffer, decrementing a counter until it reaches -1.
+- `store_word_pair_from_offsets_2`: The routine writes a 32-bit value from a register into a global variable and then reads two 16-bit values from global offsets, adds constants to them, combines the results with bit operations, and stores the resulting 16-bit words into two global locations.
+- `clear_dma_and_sprite`: The routine writes to DMACON to enable DMA channels and then writes to SPR0POS to set the position of sprite 0.
+- `set_display_mode_and_palette`: The routine writes to a global variable twice and then writes to two hardware registers.
+- `store_value_and_wait_flag_2`: The routine stores a value from a register into a global variable, writes a short from the parameter into another global variable, sets a flag global variable to one, then spins until that flag global variable becomes zero.
+- `set_timer_intervals`: The routine stores a value from a global variable into another global variable and then writes that value plus fixed offsets into five consecutive global variables.
+- `configure_blitter_wait_loop`: The routine writes values to a set of custom chip registers that control the Amiga blitter and DMA, then performs a short wait loop that polls a status bit until it clears, repeating a few times.
+- `multiply_high_low_words`: The routine takes a 32-bit value, extracts its high and low 16-bit words, multiplies them, and returns the high 16 bits of the product.
+- `modulo_division_store`: The routine takes a 32-bit value and a 16-bit divisor from its low word, computes the quotient and remainder of the high word divided by the divisor, stores the quotient as a short into a global variable at a fixed offset, and returns a 32-bit value formed by the remainder in the low word and the high word divided by the low word of the input.
+- `decode_byte_stream`: The routine reads a byte stream from a pointer, skipping a two-byte marker when encountered, and accumulates a sum from a table indexed by the byte value for values above a threshold.
+- `multiply_signed_16x16_to_32`: The routine multiplies two signed 16-bit values and produces a signed 32-bit product, handling sign and overflow via 16-bit intermediate steps.
+- `return_stack_value_7`: The routine returns the 32-bit value that was passed in a stack slot.
+- `evaluate_input_sequence`: Checks a global variable for specific bit patterns and compares values from a table to determine if a specific sequence has been met.
+- `set_joystick_movement_flags`: The routine reads a global variable that is the joystick port movement register and writes three 16-bit flags through a pointer.
+- `set_flag_bits_from_input`: The routine examines a 16-bit input value and a global variable and writes constant word values to three locations in a structure pointed to by an argument.
+- `set_input_flags_from_ciaa_pra`: The routine tests a value in D1 against a bit and, if set, writes a word to a location pointed to by A4.
+- `reset_input_state`: The routine clears a global variable and then writes zero bytes and zero words to several locations referenced through a pointer, effectively resetting input-related state.
+- `read_joystick_buttons`: The routine reads the joystick and mouse button states from the CIAA_PRA and POTGOR hardware registers, clears the stored button flags, and updates a two-word button state structure in memory with the newly read values.
+- `update_two_signed_counters`: The routine clears two 16-bit counters in a structure pointed to by A4 and then updates each counter with the signed difference between the previous and current value of a global byte variable, storing the new byte value back into the structure.
+- `apply_joy0dat_delta_to_accumulators`: The routine reads movement from the mouse port via a hardware register and applies it as a signed delta to two short accumulators stored through a pointer.
+- `subtract_short_from_global`: The routine subtracts a 16-bit value from a 16-bit field in a global variable and stores the result back.
+- `read_joystick_buttons_2`: The routine reads the joystick/mouse fire buttons and disk status from CIAA_PRA and the right/middle buttons from POTGOR, updates a set of flag words in a global state area, and copies and clears pending input counters.
+- `process_joystick_axes`: Reads a global variable and JOY1DAT, updates two pairs of axis state variables and their timers, and clamps two position values based on limits.
+- `update_animation_frame`: The routine swaps two word-sized global variables and then updates a pair of animation counters stored in global variables.
+- `update_sprite_position_and_flags`: The routine updates a set of global variables that appear to hold sprite state, including a flag, a counter and a direction value derived from an input word, and then, if a condition is set, clamps two position accumulators to limits and writes a packed 16-bit value to a global variable and a related offset value to another global variable.
+- `update_animation_state_3`: The routine updates two pairs of animation counters stored through a base pointer, handling decrementing timers and swapping values between slots.
+- `update_display_coordinates`: The routine swaps two word-sized global variables and conditionally updates a set of global counters and flags based on an input word and several global short values.
+- `update_sprite_position`: The routine updates a set of global variables that appear to hold sprite state.
+- `update_animation_frame_2`: The routine updates a pair of 16-bit counters at a global base, selecting a frame index and a step value based on the input word and the current counters, then writes them back.
+- `swap_and_clamp_values`: The routine swaps two 16-bit values in a table and conditionally writes a constant to another table entry.
+- `update_sprite_position_2`: The routine writes constants to a structure, conditionally sets a flag based on a global variable, and if a control flag is set it updates two short counters by adding signed offsets with clamping, then packs the results into two word fields of the structure.
+- `update_animation_frame_3`: The routine updates a pair of short fields used as a countdown and a frame index, copies the countdown to another field, sets a status word to a constant when a global flag is clear, and, if two condition flags are set, advances two position counters within clamped ranges and writes packed 16-bit values derived from those counters to two output words.
+- `swap_and_clamp_values_2`: The routine swaps two word values in a table, optionally writes a constant to a table entry, and if a flag word is non-zero it updates two short counters by adding delta values with clamping to limits, then writes a packed word to two table entries derived from the counters.
+- `set_joystick_cursor_position`: The routine stores constants into a table, updates a flag in a global variable, and, when a condition is met, adjusts two short counters by an offset from a table with clamping, then writes a packed word combining those counters to two locations in a table.
+- `clamp_and_pack_word_pair`: The routine clamps an input word to a lower bound stored in a global variable, stores the clamped value, and if a delta global variable is non-zero it updates a second accumulator with the delta clamped to a range defined by two global limits.
+- `clamp_and_store_word_pair`: The routine clamps a short input value to a lower bound stored in a global variable, stores the clamped value in another global variable, then computes two 16-bit words from the stored value and a second global variable and writes them to two global word locations.
+- `calculate_combined_word`: Performs bitwise operations and arithmetic on multiple input words to store a transformed result into a memory location.
+- `fill_buffer_from_table`: The routine fills a byte buffer pointed to by the first argument with values returned by another routine, repeating the fill for each index up to a limit given in the second argument.
+- `fill_output_buffer_loop`: The routine repeatedly calls another routine with a value taken from a global structure and stores the returned byte into a buffer pointed to by a register.
+- `fill_message_buffer`: The routine repeatedly calls another routine with a value taken from a structure, stores the returned byte into a buffer pointed to by a pointer, and decrements a counter.
+- `fill_buffer_from_table_2`: The routine repeatedly writes a byte taken from a register into memory through a pointer, decrementing a counter and reloading it from a table entry when it reaches zero.
+- `fetch_byte_from_pointer_table`: The routine reads a pointer from a global variable, checks whether the current index is less than the next word in the table, and if so increments the index and returns the byte pointed to by the pointer.
+- `clear_status_flags_update_position`: Clears specific status flags in a byte field and optionally recurses on a related entry and a table of entries selected by a flag.
+- `parse_message_entry`: Clears a zero-terminated table entry and, if successful, parses a message table using the provided parameters.
+- `parse_message_table`: The routine walks a zero-terminated table of six-byte entries using a global pointer, calling another routine for each entry until a zero terminator or a non-zero result is found.
+- `do_nothing_3`: The routine is empty and performs no operations.
+- `initiate_maneuver_entry`: The routine initializes an entry in a global structure for a maneuver, sets several flags and a magic marker, and then branches based on a condition to either load a maneuver from a table or invoke a routine with the supplied parameters.
+- `parse_quoted_string_tokens_2`: The routine reads a string from a table entry, copies it into a buffer, and tokenises it in place, handling quoted strings and whitespace.
+- `parse_message_string`: The routine reads a message string from a table, allocates a buffer for it, and then tokenizes the string in place by replacing delimiters with null terminators and counting tokens.
+- `copy_string_with_limit_4`: Copies bytes from a source pointer to a destination pointer up to a count given in the third argument, stopping early on a null terminator.
+- `copy_string_with_length_limit_2`: The routine copies bytes from a source string to a destination buffer up to a length limit given in the third argument, stopping early on a null terminator.
+- `call_another_routine_2`: The routine receives a 32-bit value and immediately passes it unchanged to another routine, then returns.
+- `clear_message_buffer`: The routine clears a message buffer by iterating over a table of entries and checking each entry for a zero value.
+- `load_and_compare_data`: The routine loads a byte from a global variable through a pointer, compares it with a value from a table, and conditionally branches to another routine.
+- `copy_string_with_limit_5`: The routine copies bytes from a source pointer to the destination buffer starting at the first argument, stopping at a null terminator or after a fixed number of bytes.
+- `copy_string_with_limit_6`: The routine copies bytes from a source string to a destination buffer pointed to by the first argument, stopping at the source null terminator or when a counter in the third argument reaches -1.
+- `compare_two_byte_buffers`: The routine compares two byte buffers byte by byte until a difference is found or a null byte is encountered.
+- `copy_cstring_to_buffer`: The routine copies bytes from a source pointer to a destination pointer until a zero byte is encountered, writing the terminating zero as well.
+- `multiply_32_bit_values`: The routine takes two 32-bit values from registers and returns a 64-bit product formed from the high and low 16-bit halves of each operand.
+- `execute_indirect_chain`: Performs a sequence of indirect function calls through various tables and updates a structure with values retrieved from a table.
+- `call_routine_with_stack_param`: The routine calls another routine, passing itself as the first argument, the incoming parameter as the second argument, and the address of an eight-byte stack area as the third argument.
+- `self_recursive_call`: The routine calls another routine, passing itself as the first argument together with its parameter and a stack address.
+- `load_and_copy_data`: The routine loads a pointer from a global variable, reads a word from memory, and copies a block of bytes from a source address to a destination address using a loop that decrements a counter.
+- `parse_format_string_10`: The routine parses a format string, consuming characters and invoking a code callback for each non-format character, while handling flags, width, precision, length modifiers and conversion specifiers using a supplied argument pointer.
+- `negate_and_combine_values`: The routine receives two signed values, flips the sign of the first if either is negative, calls another routine and optionally negates its result based on the sign condition, then returns a 32-bit value formed by combining the result with the second input.
+- `call_and_return_concatenated_2`: The routine calls another routine and returns a 64-bit value formed by concatenating the routine's D1 result with the original D1 input.
+- `recursive_other_routine_call`: The routine immediately calls another routine and then returns.
+- `perform_32bit_division`: Calculates the quotient and remainder of a 32-bit integer division using a bit-shifting algorithm or standard modulo arithmetic.
+- `compute_string_length_2`: The routine walks a zero-terminated byte string starting at the input pointer until it finds the terminating zero byte, then returns the number of bytes from the start up to but not including the terminator.
+- `call_other_routine_4`: The routine unconditionally calls another routine and then returns.
+- `store_byte_via_pointer`: The routine stores a byte from a register through a pointer.
+- `empty_stub_routine_18`: The routine contains no instructions and returns immediately.
+- `read_and_call_routines`: The routine loads a pointer to a global variable, reads a byte from it, and stores the value into a byte at the address held in a register.
+- `store_byte_from_table_5`: The routine reads a byte from an offset in a table pointed to by a register, writes that byte through a pointer taken from a global variable, and increments the global variable index.
+- `iterate_over_range`: The routine receives a base pointer in a4 and iterates over a range of offsets from that base.
+- `clear_message_flags_and_propagate`: The routine clears a four-word message structure and, when the flags byte is non-zero, recursively processes linked messages indicated by flag bits, combining a 16-bit result from a helper routine with the current result.
+- `process_message_header_flags`: The routine inspects and updates a small message header stored in a four-word structure, using a flag byte at offset three to decide whether to abort, copy a length field, write a byte payload through a pointer, or clear the header.
+- `clear_zero_terminated_table_entry`: The routine walks a table of entries spaced 22 bytes apart, starting from a base derived from the A4 register.
+- `set_message_flags_and_pointer`: The routine calls another routine to obtain a value and, if zero, writes a constant to a word field and stores a pointer to a local byte within the structure.
+- `clear_linked_list_2`: The routine walks a singly linked list whose head pointer is stored in a global variable.
+- `clear_linked_list_3`: The routine walks a singly linked list via a pointer in a register, repeatedly calling another routine with the current node pointer and an offset from the next field, then follows the next pointer until it reaches null.
+- `register_callback_and_allocate_2`: The routine stores a pointer to itself in a global variable and calls another routine with an adjusted argument.
+- `forward_parameter_field_2`: The routine extracts a field from the input parameter and passes it to another routine.
+- `remove_from_linked_list`: The routine walks a singly linked list stored in a global variable, finds the node whose address matches the parameter minus eight, and unlinks it by updating the previous node’s next pointer or the list head.
+- `check_table_entry_2`: The routine checks a global variable and a table entry for the given index.
+- `update_status_flag`: Checks a value via an indirect table and updates a global variable with either a result from another routine or a constant value.
+- `store_byte_from_register`: The routine stores a byte from a register through a pointer.
+- `check_flag_and_call_9`: The routine calls another routine with fixed arguments, tests a bit in the returned value, and if set checks a global variable for zero.
+- `call_chain_with_result`: The routine calls another routine with a global variable and a constant, stores the returned value, then calls another routine with that value, calls another routine with no arguments, and returns.
+- `call_indirect_then_recurse`: The routine checks a global variable and, if non-zero, calls the routine stored in it indirectly.
+- `process_message_queue_3`: The routine checks several fields in a structure pointed to by a4 and, when present, calls other routines with values taken from that structure.
+- `pop_and_return`: Pops a longword off the stack into d4, restores the frame pointer, and returns.
+- `process_table_entry`: Validates an index against a table boundary and, if valid, executes an indirect call before clearing the entry.
+- `call_indirect_table_entry_2`: The routine calls an indirect routine obtained by adding a constant offset to a value read from a global variable.
+- `call_indirect_table_entry_3`: The routine calls a function pointer taken from a table stored in a global variable.
+- `call_indirect_table_entry_4`: The routine calls an indirect routine obtained by indexing a table with an offset from a global variable.
+- `call_indirect_table_entry_5`: The routine reads a pointer from a global variable, adds an offset to it, and calls the routine found at the resulting address.
+- `call_indirect_via_table_14`: The routine calls another routine indirectly through a table.
+- `call_indirect_through_table_8`: The routine calls another routine indirectly through a table referenced by a global variable.
+- `call_indirect_via_table_15`: The routine calls another routine indirectly through a table.
+- `unknown_routine_3`: The routine contains no instructions and returns immediately.
+- `call_indirect_through_table_9`: The routine calls another routine indirectly via a pointer obtained from a table referenced through a global variable.
+- `call_indirect_via_table_16`: The routine calls another routine indirectly via a pointer obtained from a global variable table.
+- `call_indirect_via_table_17`: The routine calls another routine indirectly through a table.
+- `call_indirect_via_table_18`: The routine calls another routine indirectly through a table.
+- `indirect_jump_through_table`: The routine performs an indirect jump through a table.
+- `call_indirect_table`: The routine calls another routine through an indirect table.
+- `unknown_routine_4`: The routine contains an indirect call through a table of function pointers.
+- `invoke_indirect_through_table`: The routine loads a pointer from a global variable, adds an offset, and calls the function found at that address.
+- `call_indirect_via_table_19`: The routine performs an indirect call through a table referenced by a global variable.
+- `call_indirect_through_table_10`: The routine loads a pointer from a global variable table and calls another routine through an indirect jump.
+- `call_indirect_via_global_table_3`: The routine loads a function pointer from a global variable table and calls another routine indirectly via that pointer.
+- `call_indirect_via_table_20`: The routine calls another routine indirectly via a pointer obtained from a global variable.
+- `call_indirect_from_table`: The routine calls another routine through an indirect pointer obtained by adding an offset to a value read from a global variable.
+- `call_indirect_via_table_21`: The routine calls another routine indirectly through a pointer obtained by adding an offset to a value taken from a global variable.
+- `call_indirect_from_table_2`: The routine calls another routine through an indirect pointer obtained from a global variable table.
+- `call_indirect_table_entry_6`: The routine loads a pointer from a global variable, adds an offset to it, and calls the routine found at that address.
+- `call_indirect_through_table_11`: The routine reads a pointer from a global variable via an offset, adds a constant to it, and calls the resulting address indirectly.
+- `call_indirect_from_table_3`: The routine calls another routine via an indirect pointer obtained from a global variable table.
+- `call_indirect_through_table_12`: The routine performs an indirect call through a table referenced by a global variable.
+- `call_indirect_via_table_22`: The routine calls another routine indirectly through a pointer obtained from a global variable table.
+- `call_indirect_via_table_23`: The routine loads a pointer from a global variable offset and adds a constant to it, then calls the resulting address indirectly.
+- `call_indirect_via_table_24`: The routine calls another routine indirectly via a pointer obtained from a global variable table.
+- `call_indirect_via_table_25`: The routine performs an indirect call through a table referenced by a global variable.
+- `call_indirect_via_table_26`: The routine performs an indirect call through a table.
+- `call_indirect_table_entry_7`: The routine reads an address from a table pointed to by a global variable, adds a constant offset to it, and calls the resulting routine indirectly.
+- `call_indirect_via_table_27`: The routine performs an indirect call through a table.
+- `call_indirect_via_table_28`: The routine loads a value from a global variable, adds a constant to it, and then calls the resulting address indirectly.
+- `call_indirect_via_table_29`: The routine calls another routine indirectly through a table.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `empty_routine_41`: The routine contains no instructions that can be decoded and therefore does not perform any operation; it is effectively empty.
+- `set_bit_in_byte`: Sets a specific bit in a byte using a bitwise OR operation with a shift determined by a register.
+- `unreached_gap_routine`: The routine is empty and contains no executable instructions.
+- `read_and_store_byte_via_pointer`: The routine reads a byte from a memory address pointed to by a register, writes that byte into a global variable through a pointer, and then returns.
+- `decompile_failed_routine_2`: The routine could not be decompiled because the flow exceeded the maximum allowable instructions.
+- `copy_memory_block`: The routine copies a block of bytes from a source address to a destination address using a length given in a register.
+- `check_input_length`: A routine checks the length of an input buffer.
+- `unreachable_gap_code`: The routine is a small unreachable fragment in a code gap.
+- `write_to_memory`: The routine stores a byte from a register to the address held in a pointer using a move-byte instruction and then returns.
+- `unreached_gap_decode`: The routine is a single-instruction fragment in a disassembly gap that is never reached by the program.
+- `store_byte_from_pointer_3`: The routine stores a byte from a register through a pointer.
+- `unreachable_code_block`: The routine is an unreachable code block that Ghidra could not decompile because the flow exceeded the maximum allowable instructions.
+- `process_runtime_segment`: The routine processes a runtime segment in memory.
+- `unreached_gap_code`: The routine is an unreached gap that decodes as code but is never called.
+- `process_runtime_segment_2`: The routine copies a block of bytes from a source pointer to a destination pointer and then updates a global variable with the result of the copy.
+- `unreachable_code`: The routine is an unreached code fragment in a gap that decodes as instructions.
+- `copy_bytes_to_buffer_2`: The routine copies a block of bytes from a source pointer to a destination pointer using a length stored in a register.
+- `unreachable_gap_code_2`: The routine is a block of machine code that lies in a gap between reachable code and is never called by the program.
+- `extract_and_store_byte`: The routine reads a byte from a global variable via a pointer, stores it into a register, and writes that byte through a pointer to a global variable.
+- `decompile_failed_routine_3`: The routine could not be decompiled because the flow exceeded the maximum allowable instructions.
+- `unreached_gap_code_2`: The routine is an unreached gap that decodes as code.
+- `unknown_entry_point`: The routine is a single entry point with no recoverable instructions; the decompiler could not produce code and no behavior can be determined from the disassembly.
+- `decode_message_block`: The routine reads a block of bytes from a global variable pointed to by the instruction stream, decodes each byte using a table stored in memory, writes the transformed bytes through a pointer in memory, and then returns.
+- `process_runtime_segment_3`: The routine processes a runtime segment in memory.
+- `unknown_sub_0302`: The routine cannot be reliably decompiled because the decompiler flow exceeded the maximum allowable instructions.
+- `unreachable_instruction_block`: The routine is an unreachable instruction block that the decompiler cannot fully analyze because the flow exceeds the maximum allowable instructions.
+- `copy_bytes_from_memory`: The routine copies bytes from a source address to a destination address using a count in a register, writing each byte via a pointer.
+- `unreached_gap_code_3`: The routine is a block of bytes in a gap that decodes as 68000 instructions but is never reached by any caller.
+- `unknown_routine_5`: The routine is empty and contains no instructions.
+- `unreachable_gap_code_3`: The routine is an unreachable gap that decodes as code.
+- `unknown_routine_6`: The routine is empty; it contains no instructions.
+- `empty_routine_42`: The routine contains no instructions; it is an empty block of code.
+- `copy_byte_to_buffer`: The routine copies a single byte from a source address held in a register to a destination buffer pointed to by another register, then returns.
+- `fill_byte_table`: The routine writes a single byte from a register to memory through a pointer, then loops over a fixed count, incrementing the pointer and repeating the store.
+- `read_and_copy_byte_table`: The routine reads a byte from a table pointed to by a global variable using an index from D0 and stores the result in D1.
+- `decompile_failed_routine_4`: The decompiler could not produce pseudocode for this routine because the control flow exceeded the maximum allowable instructions.
+- `unknown_unreached_routine`: The routine is unreachable and the decompiler could not produce a full pseudo-code listing.
+- `unknown_routine_sub_04a6`: The routine is decompiled but the decompiler reports a flow exceeded error, so no concrete operations can be described.
+- `unreached_gap_code_4`: The routine is a block of code that lies in a gap between other code and is never reached by any caller in the executable.
+- `decode_and_store_byte`: The routine reads a byte from a table pointed to by a global variable, decodes it by shifting and masking, then stores the result to a byte at an address derived from the current stack frame.
+- `decode_gap_bytes`: The routine decodes a small block of bytes and stores the result into a global variable through a pointer.
+- `unknown_routine_7`: The routine is empty and does nothing.
+- `decompile_failed_entry_point`: The routine entry point is reached during execution but the decompiler fails with a flow error, so no code can be recovered.
+- `clear_display_buffer`: The routine clears a block of memory by writing zero bytes through a pointer until a byte count reaches zero.
+- `calculate_next_frame_pointer`: The routine computes a frame pointer for the next animation step by adding a constant offset to the current frame pointer stored in a global variable and writing the result back to the same global variable.
+- `handle_runtime_segment`: The routine processes a runtime segment in memory.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `empty_routine_43`: The routine contains no usable instructions; the disassembly ends immediately with a bad instruction, so it performs no observable operations.
+- `return_from_subroutine_5`: performs a return from a subroutine by popping the program counter from the stack.
+- `return_from_subroutine_6`: The routine performs a single instruction to return from a subroutine call.
+- `empty_routine_56`: This routine contains no executable instructions and performs no operations.
+- `empty_routine_57`: This routine contains no instructions and performs no operations.
+- `halt_on_bad_data`: The routine contains no usable instructions; the disassembler stops at a bad instruction and the control flow is truncated.
+- `returns_immediately`: The routine is empty and returns without performing any operation.
+- `empty_unreached_routine`: The routine contains no reachable instructions and therefore performs no operations.
+- `halt_on_bad_data_2`: The routine is empty and contains no executable instructions.
+- `empty_unreached_routine_2`: The routine is not reachable from the program and contains no usable instructions, so it performs no operations.
+- `nop_instruction`: The routine contains a single no-operation instruction and performs no actions.
+- `decode_gap_as_code`: The routine has no valid 68000 instructions.
+- `return_from_subroutine_7`: Performs a return from a subroutine.
+- `unreached_gap_code_5`: The routine is a single unreached instruction in a gap between code segments.
+- `nop_instruction_2`: The routine consists of a single no-operation instruction.
+- `return_from_subroutine_8`: Ends the current routine by returning.
+- `execute_empty_routine`: The routine is empty.
+- `make_other_routine_call`: The routine does not contain any instructions and immediately returns.
+- `empty_routine_44`: The routine contains no instructions and performs no operations.
+- `bad_instruction_handler`: The routine contains no usable instructions and the disassembler stops with a bad instruction warning.
+- `bad_instruction_handler_2`: The routine contains no valid instructions for the analysis; the disassembly stops immediately because the bytes at the entry point cannot be decoded as a known 68000 opcode.
+- `return_from_subroutine_9`: Returns control to the caller.
+- `jump_to_clear_screen_buffer`: Jump stub: passes control straight on to clear_screen_buffer.
+- `decode_unreachable_bytes`: The routine contains no valid 68000 instructions and the disassembler stops immediately with a bad instruction.
+- `jump_to_store_byte_to_global`: Jump stub: passes control straight on to store_byte_to_global.
+- `invalid_data_truncation`: The routine contains a single bad instruction so the disassembler truncates control flow and calls a halt routine.
+- `describe_unreached_routine`: The routine is empty and contains no instructions.
+- `return_from_subroutine_10`: Uses a return instruction to exit.
+- `return_from_subroutine_11`: Completes the routine via a return.
+- `return_from_subroutine_12`: Triggers a return from the current execution flow.
+- `bad_instruction_handler_3`: The routine contains only a single non-decodable instruction.
+- `discovered_dead_code`: The region contains an instruction sequence that the disassembler flags as invalid, and the generated pseudo-code contains only a bad-instruction halt.
+- `subroutine_with_bad_instruction`: The routine contains an unrecognized opcode, so control flow is truncated at entry.
+- `halt_on_bad_data_3`: The routine contains no usable instructions and the disassembler stops with a bad instruction, so execution halts immediately.
+- `return_from_subroutine_13`: Exits the routine using a return instruction.
+- `return_from_subroutine_14`: Returns to the calling code.
+- `describe_unreached_gap`: The routine is empty.
+- `return_from_subroutine_15`: Performs a single return operation.
+- `describe_routine`: The routine contains no executable instructions; it is an empty block that terminates immediately.
+- `nop_instruction_3`: The routine consists of a single no-operation instruction and performs no actions.
+- `increment_memory_value`: adds one to the value stored at the memory location pointed to by a register.
+- `unknown_routine_8`: The routine is empty and contains no executable instructions.
+- `transfer_byte_to_memory`: Copies a single byte from a source register into a memory location pointed to by another register.
+- `update_pointer_value`: Loads a value from a memory location into a register and stores it back into a different memory location.
+- `unreached_gap_routine_2`: The routine is empty and contains no executable instructions.
+- `clear_memory_block`: fills a specified range of memory with zeros using a loop.
+- `empty_routine_45`: The routine contains no usable instructions; the disassembler stops immediately with a bad instruction and the routine is empty.
+- `clear_register_d0`: sets the contents of a data register to zero.
+- `handle_bad_instruction`: The routine contains no usable instructions and ends with an undefined opcode.
+- `handle_bad_instruction_2`: The routine contains no usable instructions.
+- `clear_memory_block_2`: fills a range of memory with zeros using a loop.
+- `truncate_on_bad_instruction`: The routine contains no decodable instructions; the disassembler emits a bad instruction warning and truncates control flow.
+- `describe_the_routine`: The routine consists of a single instruction that cannot be decoded, so control flow is truncated and the routine does not perform any observable operations.
+- `halt_on_bad_data_4`: The routine contains no usable instructions and the disassembler stops at a bad instruction, so it performs no observable operations and effectively halts.
+- `unreached_gap_code_6`: The routine is an unreached gap that decodes as code but contains no valid instructions.
+- `return_immediately_5`: The routine contains no instructions and returns immediately.
+- `unreached_gap_decode_2`: The routine is empty and contains no reachable instructions.
+- `copy_memory_block_2`: Copies a block of data from a source address to a destination address using a specified count.
+- `update_pointer_value_2`: Loads a byte from a memory location pointed to by a register and stores it into a different memory location pointed to by another register.
+- `unreached_gap_code_7`: The routine is an unreached gap that decodes as a single bad instruction.
+- `unreachable_stub`: The routine contains no usable instructions; control flow is truncated immediately and the body is empty.
+- `unrecognised_routine`: The routine is empty and contains no instructions.
+- `update_timer_value`: decrements a value stored at a memory location pointed to by a register.
+- `check_bad_data`: A routine that contains no valid instructions and stops at a bad instruction.
+- `unreached_gap_decode_3`: The routine is empty and contains no executable instructions.
+- `update_timer_register`: decrements a value stored in a memory location and writes the result back to a hardware register.
+- `truncated_control_flow`: The routine contains an instruction that the disassembler cannot decode, so control flow is truncated and the routine ends with a halt.
+- `unreachable_code_block_2`: The routine is not reachable from the program and contains no decodable instructions, so it performs no operations.
+- `handle_bad_instruction_3`: The routine is empty and contains a bad instruction that causes the disassembler to truncate control flow.
+- `bad_data_handler`: The routine contains an unrecognized instruction and is truncated by the disassembler.
+- `halt_on_bad_data_5`: The routine is empty apart from a halt caused by an unrecognised instruction, so it performs no observable work on registers or memory.
+- `halt_bad_instruction`: The routine consists of a single instruction that the disassembler cannot decode, so execution would stop with a bad instruction.
+- `nop_instruction_4`: This routine contains a single no-operation instruction and performs no actions.
+- `unrecognised_routine_2`: The routine is empty in the recovered listing.
+- `unknown_routine_9`: The routine contains a single instruction that the disassembler cannot decode, so control flow is truncated and the routine is effectively empty.
+- `clear_memory_block_3`: Sets a range of memory to zero by iterating through a specified length.
+- `clear_memory_block_4`: fills a range of memory with zeros using a loop.
+- `unreached_gap_decode_4`: The routine is empty and contains no executable instructions.
+- `nop_instruction_5`: This routine performs no operation and contains only a single no-operation instruction.
+- `invalid_code`: The routine cannot be fully recovered; disassembly is truncated because the instruction stream is invalid, so the recovered control flow ends immediately.
+- `clear_memory_block_5`: fills a specific range of memory with zeros using a loop.
+- `update_timer_value_2`: decrements a value stored in a memory location by one.
+- `describe_bad_instruction`: The routine contains no usable instructions and the disassembler stops at a bad instruction, so it does nothing.
+- `clear_memory_block_6`: fills a range of memory with zeros.
+- `unreachable_truncated_routine`: The routine contains no valid instructions and is truncated by the disassembler, so it performs no observable operations.
+- `decode_control_flow_block`: A routine with a single instruction that cannot be interpreted, so Ghidra inserts a halt and truncates control flow.
+- `halt_on_bad_data_6`: The routine contains only invalid instruction bytes and halts immediately.
+- `unreached_routine`: The routine is not reachable from the analyzed code and contains no valid instructions.
+- `update_timer_value_3`: decrements a value stored in a memory location by one.
+- `unreached_routine_2`: The routine contains no valid instructions and is therefore empty.
+- `halt_on_bad_instruction`: The routine contains a bad instruction, so the disassembler halts the control flow.
+- `empty_routine_46`: The routine contains no valid instructions and is truncated by the disassembler, so it performs no observable operations.
+- `store_byte_via_pointer_6`: Stores a single byte from a data register into a memory location pointed to by another register.
+- `unreached_gap_code_8`: The routine is a single unreached block in a gap between segments that decodes as invalid 68000 instructions.
+- `unknown_routine_10`: The routine does not contain any valid instructions; control flow is truncated and the routine ends immediately.
+- `bad_instruction_handler_4`: The routine contains no valid instructions; the disassembler stops at a bad instruction and the control flow is truncated.
+- `unreached_code_stub`: The routine is empty and contains no executable instructions.
+- `invalid_truncated_routine`: The routine contains no valid instructions and is truncated, so it performs no observable operations.
+- `bad_instruction_handler_5`: The routine contains no valid instructions and the disassembler stops with a bad instruction warning.
+- `empty_routine_47`: The routine contains no usable instructions.
+- `execute_empty_instruction`: The routine contains a single instruction.
+- `unknown_instruction_handler`: The routine consists of a single instruction that Ghidra cannot decode, which causes the disassembler to abort.
+- `bad_instruction_handler_6`: The routine contains no valid instructions and the disassembler stops with a bad instruction warning.
+- `unreachable_gap_code_4`: The routine consists of a single unrecognized instruction that causes the disassembler to stop decoding, so the routine contains no observable operations.
+- `bad_instruction_handler_7`: The routine contains no valid instructions and is truncated by the disassembler, so it performs no observable operations.
+- `unreachable_routine_placeholder`: The routine consists of a single halt directive and therefore contains no executable logic.
+- `truncate_control_flow`: The routine contains a single bad instruction and the disassembler truncates control flow at that point.
+- `unknown_routine_11`: The routine contains no recoverable instructions; the disassembly ends immediately with a bad instruction and no further code is present.
+- `execute_empty_instruction_2`: This routine is unreached and contains a single instruction.
+- `execute_single_instruction`: The routine performs one instruction.
+- `execute_single_instruction_2`: This routine consists of a single instruction.
+- `execute_single_instruction_3`: The routine executes one instruction.
+- `halt_on_bad_instruction_2`: The routine contains an instruction that the disassembler could not decode, so control flow is truncated and a halt routine is invoked.
+- `execute_single_instruction_4`: This is an unreached routine containing one instruction.
+- `halt_on_bad_instruction_3`: The routine contains no usable instructions; execution reaches an invalid instruction and the disassembler halts control flow.
+- `unreachable_stub_2`: The routine contains no valid instructions and is never reached by the program.
+- `execute_single_instruction_5`: The routine contains exactly one instruction.
+- `unreachable_code_2`: The routine contains no valid instructions and is unreached.
+- `execute_single_instruction_6`: This routine performs a single instruction.
+- `execute_single_instruction_7`: The routine consists of one instruction.
+- `execute_single_instruction_8`: This routine executes a single instruction.
+- `return_from_subroutine_16`: The routine performs a single instruction to return to a caller.
+- `unreached_routine_stub`: The routine contains no valid instructions and is truncated by the disassembler.
+- `return_from_subroutine_17`: This routine executes a single instruction to exit to the calling code.
+- `return_from_subroutine_18`: The routine consists of one instruction that returns control to the previous execution flow.
+- `return_from_subroutine_19`: A single instruction routine that exits the current function.
+- `halt_on_bad_instruction_4`: The routine contains no usable instructions.
+- `halt_on_bad_instruction_5`: The routine contains no valid instructions and the disassembler truncates control flow at a bad instruction, so it halts immediately without performing any observable operations on registers or memory.
+- `halt_bad_data`: The routine contains no valid instructions and the disassembler truncates control flow, so it performs no observable operations.
+- `unknown_entry_point_2`: This routine is truncated because it contains an invalid instruction; it does nothing observable in the recovered code.
+- `unreached_routine_3`: The routine contains no reachable instructions and is empty.
+- `unknown_routine_12`: The routine contains no valid instructions and the disassembler truncates control flow, effectively making it empty.
+- `return_from_subroutine_20`: This routine contains one instruction used to return from a call.
+- `handle_bad_data_instruction`: The routine contains only a truncated bad instruction.
+- `describe_bad_instruction_handler`: The routine begins with an instruction that the disassembler cannot decode, so the control flow is truncated.
+- `name_the_routine`: The routine is empty, containing no instructions.
+- `return_from_subroutine_21`: The routine performs a single return operation.
+- `bad_data_halt`: The routine contains an instruction that cannot be decoded.
+- `return_from_subroutine_22`: This is a one-instruction routine that returns to a caller.
+- `empty_routine_48`: The routine contains no usable instructions; the disassembler stops immediately with a bad instruction and the routine is effectively empty.
+- `unreached_gap_routine_3`: The routine is an unreached gap in the runtime segment that decodes as a single bad instruction.
+- `report_bad_instruction`: The routine contains a bad instruction and the decompiler truncates control flow, so no further code is recovered.
+- `return_from_subroutine_23`: The routine executes a single instruction to end its execution.
+- `empty_routine_49`: The routine contains no instructions and contains no operations.
+- `return_from_subroutine_24`: A single instruction routine that returns to the caller.
+- `return_from_subroutine_25`: This routine consists of one instruction to return from a subroutine call.
+- `handle_bad_instruction_data`: The routine contains no usable instructions; analysis stops at a bad instruction and the control flow is truncated.
+- `update_timer_value_4`: decrements a value stored in a memory location by one.
+- `unreachable_routine`: The routine is not reachable from the program and contains no usable instructions, so it performs no observable work.
+- `halt_on_bad_instruction_6`: The routine contains an instruction that the disassembler cannot decode, so control flow is truncated and execution halts at a bad instruction.
+- `return_from_subroutine_26`: This routine executes a single instruction to exit a subroutine.
+- `unreached_routine_stub_2`: The routine contains no valid instructions and is therefore empty.
+- `halt_on_bad_data_7`: The routine contains a single bad instruction and therefore cannot be decoded further.
+- `unimplemented_stubs`: Contains no usable instructions; the routine is empty and appears as a bad‑instruction stub left in the binary.
+- `return_from_subroutine_27`: The routine consists of a single instruction used to return to a caller.
+- `execute_other_routine`: The function is a single entry point that immediately transfers control to another routine.
+- `return_from_subroutine_28`: This routine contains one instruction that returns control to the calling code.
+- `decode_gap_as_dead_code`: The routine is entered via an unreached control-flow gap and its first instruction is not a valid 68000 opcode, so Ghidra halts decoding and truncates control flow.
+- `halt_bad_instruction_2`: The routine is empty and immediately halts because the disassembler encounters a bad instruction at its entry point, truncating control flow.
+- `other_routine_2`: The routine contains no valid instructions.
+- `unreached_gap_code_9`: The routine is an unreached gap that decodes as a single bad instruction.
+- `return_from_subroutine_29`: The routine executes a single instruction to end the current subroutine execution.
+- `return_from_subroutine_30`: This routine performs a single instruction to return to the previous execution context.
+- `return_from_subroutine_31`: The routine consists of a single instruction that exits the subroutine.
+- `decode_gap`: The routine is empty and contains only a single bad instruction.
+- `other_routine_3`: This routine is empty; it contains no instructions and is described as containing no code.
+- `return_from_subroutine_32`: This routine executes a single instruction to return from a call.
+- `unreached_gap_code_10`: The routine is unreachable and contains no valid instructions; the disassembly truncates at a bad instruction and the routine does nothing.
+- `decode_instruction_data`: The routine contains no valid executable instructions, so it performs no operations.
+- `unreached_routine_4`: The routine is empty and contains no executable instructions.
+- `bad_data_halt_handler`: The routine is empty apart from a generated halt because the disassembler could not recognize a valid instruction at the entry point.
+- `the_fix_that`: The routine is a stub.
+- `return_from_subroutine_33`: The routine contains one instruction used to return to the caller.
+- `decode_gap_stub`: The routine contains no executable instructions and ends immediately.
+- `empty_routine_50`: The routine contains no instructions and therefore performs no operation.
+- `set_player_input_flags`: The routine stores the current input state into a global variable and then calls another routine to process the input flags.
+- `store_byte_via_pointer_2`: The routine stores a byte from a register through a pointer.
+- `return_pointer_value`: The routine loads a pointer from a global variable and returns the value stored at that pointer.
+- `reset_state`: The routine stores a byte from a register through a pointer to a global variable.
+- `process_game_segment`: The routine processes a game segment by iterating over a range of memory and writing a fixed byte pattern into each location.
+- `store_byte_from_register_2`: The routine stores a byte from a register through a pointer.
+- `process_game_state`: The routine processes a game-state block by reading and writing fields of a global structure, updates a set of flags and counters, and calls another routine to apply the changes.
+- `store_byte_via_pointer_3`: The routine stores a byte from a register through a pointer.
+- `empty_routine_51`: The routine contains no instructions and therefore performs no operation.
+- `copy_table_entry_to_stack`: The routine copies a fixed-size table entry from a global variable into a stack-allocated buffer using a bytewise loop, then returns.
+- `empty_routine_52`: The routine contains no instructions.
+- `store_byte_via_pointer_4`: The routine stores a byte from a register through a pointer to a global variable and then returns.
+- `load_and_store_byte`: The routine loads a byte from a memory address pointed to by a register and stores it to a global variable.
+- `return_from_subroutine_34`: This routine performs a single instruction to exit the current subroutine.
+- `copy_byte_from_pointer`: The routine reads a byte from a pointer held in a register and stores it into a byte pointed to by another register, effectively copying a single byte between two memory locations.
+- `increment_table_entry`: The routine reads a pointer to a table from a global variable, computes an index from an argument and an offset stored in a register, adds a value to the selected entry and writes the result back through the pointer.
+- `handle_unreachable_code`: The routine contains a single instruction that is never reached because the code is located in a gap.
+- `reset_input_buffer`: This routine clears a memory buffer.
+- `write_debug_output`: The routine stores the contents of a register into a global variable and then calls another routine, writing a byte to the memory pointed to by a pointer.
+- `process_runtime_segment_4`: The routine is empty and returns immediately.
+- `handle_input_message`: The routine reads a byte from a register through a pointer and stores it into a global variable.
+- `store_byte_from_register_3`: The routine stores a byte from a register through a pointer.
+- `load_palette_into_copper`: The routine loads a 16-byte palette from a global variable into copper colour registers by writing the values to a table and updates a pointer.
+- `empty_stub_routine_19`: The routine contains no instructions and therefore performs no operations.
+- `save_restore_state`: Stores a one-byte value into a game-state byte and then calls another routine to perform additional state handling.
+- `store_byte_from_d0_through_pointer`: The routine stores the byte in D0 into memory via a pointer in A0 and then returns.
+- `initialize_subroutine_table`: The routine stores the address of a global variable into an address register and then calls another routine once with an immediate value of 2.
+- `handle_input_interrupt`: The routine reads a byte from a hardware register and stores it in a global variable, then calls another routine to process it.
+- `empty_routine_53`: The routine contains no instructions and returns immediately.
+- `store_byte_from_register_via_pointer`: The routine stores a byte from a register through a pointer.
+- `load_and_clear_object`: The routine loads a value from a global variable, stores it through a pointer, and then clears a byte in memory via a pointer, returning immediately.
+- `store_byte_to_pointer`: The routine stores the low byte of register D0 into the memory location pointed to by address register A0.
+- `check_and_reset_timer_flag`: The routine reads a byte from a global variable, compares it with zero, and if non-zero it stores zero back to the same global variable and then returns.
+- `store_byte_via_pointer_5`: The routine stores a byte from a register through a pointer.
+- `store_word_from_memory_to_register`: The routine stores a word from a global variable into a register via a pointer dereference.
+- `process_game_state_2`: The routine copies a byte from a register through a pointer, then stores the result into a global variable and returns.
+- `return_routine_entry`: The routine is empty; it contains no instructions and returns immediately.
+- `unreachable_routine_2`: The routine is empty and never reached by the program flow.
+- `store_byte_from_pointer_4`: The routine stores a byte from a register through a pointer.
+- `unknown_routine_13`: The routine contains no instructions; it is empty.
+- `clear_screen_buffer`: The routine clears a screen buffer to zero.
+- `store_byte_to_global`: The routine stores a byte from a register into a global variable via a pointer and then returns.
+- `store_byte_from_register_4`: The routine stores a byte from a register into memory through a pointer held in a global variable.
+- `empty_routine_54`: The routine contains no instructions and therefore performs no operation.
+- `set_game_time`: Writes a value from a register to a memory location for the game timer and sets a flag byte in another variable.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `perform_logic_operations`: Executes twelve instructions to manipulate data within the runtime segment.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `return_no_operation`: The routine consists of a single instruction and its decompiled body is empty, so it performs no work beyond returning to its caller.
+- `return_without_effect`: The routine consists of a single instruction and performs no work: it contains no calls, no hardware register access, no memory writes, and no referenced text.
+- `return_without_effect_2`: The routine consists of a single instruction and performs no work: no register or memory is written, no library or hardware register is touched, and no referenced text is used.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `return_no_operation_2`: The routine consists of a single instruction and has no decompiled body, so it performs no computation of its own.
+- `no_op_instruction`: the routine executes a single no-operation instruction and nothing else.
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_operation`: This routine is empty and performs no operations.
+- `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.

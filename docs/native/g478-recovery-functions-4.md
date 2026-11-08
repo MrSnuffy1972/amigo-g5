@@ -1,0 +1,236 @@
+# Game 478 (Dark Queen of Krynn): code recovery summary
+
+## Functions (part 4 of 4)
+
+### Dark Queen of Krynn (1992)(SSI)[cr SKR](Disk 1 of 3)[Advanced Dungeons&Dragons].adf:The Dark Queen of Krynn
+(continued)
+
+- `call_library_vector_270`: Library stub: loads a library base from a global variable and calls the library function at offset minus 270 of that base, returning its result to the caller.
+- `call_library_vector_282_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 282 of that base, returning its result to the caller.
+- `calculate_scaled_value_3`: Performs a series of conditional multiplications and bit shifts on a value derived from a global variable and data in a0, then stores the result in a byte at offset 51 of the structure in a0.
+- `search_and_mask_byte`: Performs a series of checks involving a global variable and a table to find a specific index, then stores a byte masked with the value two through a pointer.
+- `store_byte_masked_with_two`: It masks a byte received in a register with the value two and stores the resulting byte through a pointer.
+- `copy_global_variable`: This routine loads a value from a global variable into a register, stores that value into another global variable, and then returns.
+- `shift_scaled_table_value_2`: Performs arithmetic on values from a structure, potentially calls shift_scaled_table_value and multiply_32bit_fixed_point_2, and iterates through a linked list to update a counter.
+- `shift_scaled_table_value`: Computes a scaled, rounded value from two 16-bit inputs using a global table, then applies an arithmetic right-shift by a count derived from the inputs.
+- `call_stub_6_2`: Calls another routine if a 16-bit value in d1 is not zero, otherwise it returns.
+- `transfer_and_branch`: Moves the contents of register d2 into register d0 and then performs a short branch to a different location in the code.
+- `check_flags_and_update_long`: Loads a long from a structure pointed to by a2 into d0, branches if it is zero, adds d2 to a long at offset 16 of the structure, and performs several bit tests before branching.
+- `compare_and_branch_8`: Compares a byte at offset 49 of a2 with 1, and if it is not 1, branches; otherwise, it copies a2 to a0, calls another routine, and branches.
+- `process_entity_state_transitions`: Updates an entity's state machine by checking a status byte and transitioning through various states based on pointer values and counters.
+- `store_values_and_branch_2`: Stores the byte 4 at offset 31 of a2, stores a word from offset 10 of a5 into offset 28 of a2, stores the long d2 into offset 10 of a2, and then branches to another routine.
+- `update_status_byte_24`: Compares a byte at offset 49 of a structure in a2 to 3, and if equal, copies a pointer from offset 8 of a structure in a5 to offset 8 of the structure in a2, otherwise it sets a byte at offset 49 of the structure in a2 to 1 and branches.
+- `update_entity_state_and_clamped_sum`: Updates a structure by copying a word from one offset to another, shifting a word from a pointer into a long, and performing a clamped addition on a 16-bit value.
+- `store_values_and_branch_short`: Stores the byte 4 at offset 31 of a2, stores the long d2 into offset 10 of a2, and then branches to another routine.
+- `update_structure_and_call_callback`: Stores a pointer at offset 8 of a structure in a2, updates a long at offset 20 of that structure by shifting a word from offset 4 of a0 left by 8 bits, calls another routine, and then updates offset 1c of the structure with the return value.
+- `calculate_clamped_sum`: Adds a word from offset 28 of a structure in a2 to a long from offset 1c of the same structure, then clamps the result to a range where it is set to a negative value if the result is negative or a specific positive value if it exceeds a threshold.
+- `update_global_state_2`: Sets a word at offset 40 of a structure in a2 to 0, subtracts d2 from a long at offset 20 of the structure, calls another routine, and then performs several conditional updates to a structure and a global variable before calling another routine.
+- `update_structure_parameters_3`: Sets a bit in a byte at offset 50 of a structure, updates several fields in a global structure including a bit-shifted value and two 16-bit values, and then calls a routine via a pointer in that structure.
+- `store_words_then_call_table`: It stores a fixed word and a zero word into a structure, then calls a routine stored in a table.
+- `clear_structure_high_bits`: Runs a loop three times calling another routine, then runs a loop fifteen times clearing the high bit of a byte at offset 16 of a structure and incrementing the pointer by 20 each iteration, and finally clears the high bit of a byte in a global variable.
+- `store_pow2_mask_and_flag`: It computes a power-of-two mask from a register value and stores it into a structure, sets a flag byte, and conditionally writes a constant into a hardware register.
+- `update_structure_and_mask`: Decrements a byte at offset 14 and a global variable if a byte at offset 15 of a structure in a0 is not 16, clears several fields in the structure, computes a power-of-two mask based on a byte at offset 46 and stores it in a global variable, calls another routine, and conditionally writes a value to a hardware register.
+- `init_struct_and_toggle_flag`: It initializes several fields of a structure with fixed values, then toggles and clears specific bits of a flag byte.
+- `store_shifted_byte`: Compares a byte from a structure in a1 to 5; if they are equal, it loads a byte from offset 1 of the structure in a1 into d0, shifts it left by 7 bits, and stores the result as a word at offset 6 of a structure in a0.
+- `update_structure_field_2`: Compares the byte in d0 to 37; if it is equal, it loads a word from offset 6 of a structure in a0, applies a bitmask, performs a bitwise OR with a byte from offset 1 of a structure in a1, stores the result back to offset 6 of the structure in a0, and branches to another location; otherwise it returns.
+- `update_entity_state_from_command`: Processes a command byte in d0 by modifying a structure in a0 based on a value in a1.
+- `process_byte_condition`: Compares a byte in d0 to 7 and branches if not equal; otherwise, it loads a byte from offset 1 of a structure in a1 into d0, and if that byte is 0, increments d0 and stores the result at offset 16 of a structure in a0 while setting bit 7 of that same byte, then branches to another routine.
+- `check_byte_and_set_bit`: Compares a byte in d0 to 10, and if not equal, checks if a byte at offset 1 of a structure in a1 is 64; if it is 64 and bit 0 of a byte at offset 15 of a structure in a0 is set, it clears bit 0 of a byte at offset 16 of that structure and branches to another routine, otherwise it branches to another routine.
+- `set_bit_in_structure`: Sets bit 0 of a byte at offset 16 of a structure in a0 and branches to another routine.
+- `test_bit_and_set_byte`: Compares d0 to 64, and if equal, checks bit 6 of a byte at offset 1 of a structure in a1; if that bit is clear, it sets bit 3 of a byte at offset 16 of a structure in a0.
+- `clear_bits_in_structure`: Clears bit 3 of a byte at offset 16 of a structure in a0, compares a long at a pointer in a1 to a0, and if they are equal, clears bit 2 of a byte at offset 50 of the structure in a1, sets a byte at offset 49 of the structure in a1, and enters a loop that runs four times to perform operations using a pointer from the structure in a1 before branching to another routine.
+- `test_byte_and_set_bit`: Compares d0 to 65; if equal, it checks bit 6 of a byte at offset 1 of a structure in a1 and, if that bit is clear, sets bit 2 of a byte at offset 16 of a structure in a0, otherwise it branches to another routine.
+- `clear_bit_and_set_byte`: Clears bit 2 of a byte at offset 16 of a structure in a0, sets a byte at offset 17 of a structure in a2 to 255, and branches to another routine.
+- `compare_byte_and_set_d0_4`: Compares d0 to 81, and if equal, checks a byte at offset 1 of a structure in a1 to set d0 to either 0 or 1 based on whether that byte is 64 or is signed negative.
+- `call_handler_and_branch`: Loads a long from a global variable into d0, calls another routine, and branches to another routine.
+- `compare_byte_and_move_2`: Compares d0 with 100; if it is not 100, it branches, otherwise it moves a byte from offset 1 of a1 to offset 5 of a0 and branches.
+- `compare_byte_and_move`: Compares a byte in d0 to 101, and if not equal, branches to another location; otherwise, it moves a byte from offset 1 of a structure in a1 to offset 4 of a structure in a0 and branches to another location.
+- `compare_byte_and_branch_7`: Compares a byte in d0 to 121, and if equal, calls another routine and then branches.
+- `compare_byte_and_call`: Compares a byte in d0 to 123; if they are equal, it calls another routine, otherwise it returns.
+- `set_flag_and_call_routine`: Compares a byte in d0 to 127; if they are equal, it sets bit 1 of a byte at offset 16 of a structure in a0 and calls another routine, otherwise it returns.
+- `compare_and_branch_byte`: Compares the byte in d0 to 127; if they are equal, it clears bit 1 of the byte at offset 16 of the structure in a0, calls another routine, and then returns.
+- `branch_if_byte_matches`: Compares a byte in d0 to 120 and calls another routine if they are equal.
+- `assemble_value_and_scale_diff`: It assembles a 16-bit value from two bytes, stores it in a structure, computes a scaled difference, and sets a high bit in a flag byte.
+- `perform_signed_division`: Determines the sign of the result based on input registers, calls a routine to perform unsigned 32-bit division, and negates the quotient if the sign flag indicates a negative result.
+- `prepare_division_argument`: Calls another routine and then moves the contents of register d1 into register d0 before returning.
+- `call_stub_6`: Call stub: calls one other routine as a subroutine and returns to its own caller when that routine returns.
+- `perform_32bit_division`: The routine calculates the quotient and remainder of a 32-bit integer division using inputs in registers d0 and d1.
+- `multiply_32bit_fixed_point_2`: The routine takes two 32-bit fixed-point values from registers and returns a 32-bit fixed-point product.
+- `calculate_interpolated_value`: Calculates a value based on a difference between a table entry and a global variable, performs bitwise operations, and returns a result based on a comparison of a register value against 32.
+- `tiny_move_moveq_rts`: Small routine of 3 instructions that copies (a7)+ to d2, then loads 0 into d0, then returns.
+- `initialize_global_state_and_callback`: Checks if a global variable is zero, and if so, calls a routine via a pointer at an offset from that global variable, stores the result in a global variable, and if the result is non-zero, sets several global variables to offsets of that result and calls another routine via a pointer at an offset from a global variable.
+- `execute_callback_and_clear_flags`: Calls another routine twice, then checks a global variable; if a second global variable is non-zero, it calls a routine via a pointer at an offset from the first global variable and clears that second global variable; finally, it checks a third global variable, and if non-zero, calls a routine via a pointer at an offset from the first global variable and clears that third global variable before returning.
+- `initialize_audio_subsystem_structures`: Initializes several data structures by populating tables with descending byte values and zeroed fields, sets up linked lists or pointers within these structures, and calls init_struct_and_toggle_flag and check_ciaa_register_bit during the process.
+- `save_and_return_registers`: Sets register d0 to 2, restores registers d2, a2, a3, and a6 from the stack, and returns.
+- `clear_structure_flags`: Clears bit 0 of a global variable, iterates through a table of four structures to clear bit 3 of a byte at offset 50 if it is set, calls another routine, calls a routine via a pointer from the global variable, and sets a global variable to zero.
+- `manage_entity_list_and_update_state`: Searches a linked list or table for a specific entity pointer, and if not found, inserts a new entry into the list while updating various status flags and structure fields.
+- `initialize_and_update_entity_structure`: Initializes a structure by setting various fields, including a bitmask and a value at offset 38, and then conditionally calls another routine to allocate and configure a new object structure based on values from a source structure.
+- `update_entity_state_and_allocate`: Updates a structure's fields and bitmasks, then calls another routine to allocate a new object structure.
+- `clear_structure_fields_2_2`: Updates a global variable and structure fields, or calls a routine via a pointer to initialize a structure with specific values and bitmasks.
+- `clear_structure_fields_2`: Clears a longword at offset 12 of the structure in a5, clears bytes at offsets 30, 31, and 32 of the same structure, and then branches to another routine.
+- `update_status_byte_6_2`: Compares a byte from a pointer in a1 with a value from a table, then calls set_status_bit or update_status_byte_6 to modify a status byte based on the comparison.
+- `update_status_byte_6`: Compares a byte at offset 44 of the structure in a2 with d0; if they are equal, it checks bit 3 of a byte at offset 16 of a0 and, if that bit is set, writes the value 3 to offset 49 of the structure in a2.
+- `set_status_bit`: Sets bit 2 of a byte at offset 50 of the structure pointed to by a2, then restores a2 from the stack and returns.
+- `process_list_with_flags_2`: Tests a byte at an offset of a0, and if non-zero, enters a loop that checks a bit in a0 and sets a bit in a structure at a1, then repeats until a0 matches a value in a1.
+- `process_list_with_flags`: Writes the value 3 to offset 49 of the structure in a1, advances the pointer in a1 by 52, and loops using a counter in d0 until it reaches zero before returning.
+- `decrement_and_clear_matching_structure`: Loops through a table of four pointers, and if a pointer matches the value in a0 and the byte at offset 15 of the structure in a0 is not zero, calls another routine.
+- `iterate_structures_and_toggle_flags`: Loops four times through a table of pointers, calling another routine if a pointer is nonzero, then loops sixteen times to call another routine, clear bit 1 of a byte at offset 16 of a structure, and set a byte at offset 17 to 255.
+- `store_table_entry_pointer`: Stores the address of a global table entry selected by masking an input value and multiplying by a fixed stride into a pointer supplied in a register.
+- `store_register_and_call_division`: Stores a word taken from a register into a global variable, then calls a division routine purely for its side effects and stores the discarded result into another global variable before returning.
+- `update_flag_from_input`: Calls another routine to check a hardware register, then sets or clears bit 1 of a global variable based on the returned value in d1.
+- `check_ciaa_register_bit`: Checks bit 1 of the CIAA Port A data register and returns 1 if the bit is clear, otherwise returns 0.
+- `update_entity_status_and_process_events`: Iterates through a list of entity pointers to update status bits and decrement timers, then processes a sequence of event commands from a table by updating global counters and calling another routine or a function pointer based on command values.
+- `process_entity_list_and_update_status`: Iterates through a list of entity pointers, performing arithmetic on offsets and updating status bytes within a structure.
+- `process_conditional_data_3`: Compares a byte in d1 to 128 and, if not equal, loads a longword from a structure in a4, shifts it right by 3, compares it to a word at offset 4 of a pointer in a2, and if the result is not negative, sets d0 to a byte from offset 1 of the pointer in a2 shifted left by 4, calls another routine, clears a longword at offset 20 of the structure in a4, and branches to another routine.
+- `parse_event_stream_data`: Iterates through a data stream to update a structure's state, performing various conditional operations such as updating counters, managing a stack of pointers, or calling another routine based on specific byte values.
+- `clear_structure_counters`: Compares a byte in d1 to 255, and if they are equal, tests bit 4 of a byte at offset 111 of a structure in a4; if that bit is set, it loads two pointers from offsets 40 and 40 of a structure in a4 into a0 and a2, clears the word at offset 8 and the word at offset 24 of the structure in a4, and branches.
+- `clear_status_bit_2`: Clears bit 0 of a byte at offset 111 of a structure in a4 and branches to another routine.
+- `process_event_stream_data`: Parses a stream of data bytes to update a structure, managing a list of pointers, incrementing counters, and performing arithmetic on scaled values.
+- `store_scaled_byte`: Compares d1 to 176, and if equal, pushes a byte from offset 4 of a2 and a byte from offset 5 of a2 onto the stack, loads a byte from offset 1 of a2 into d0, masks it with 15, multiplies it by 20, adds it to a constant address in a0, sets a1 to the stack pointer, and calls a routine at a negative offset of a4.
+- `dispatch_table_entry_2`: Checks if d1 is 192; if it is, it moves a byte from offset 5 of a structure in a2 to the stack, masks a byte from offset 1 of a structure in a2, multiplies it by 20, adds it to a base address, and calls another routine.
+- `process_event_stream_commands`: Iterates through a data stream to execute commands that either trigger a function call, append an entry to a list, or remove an entry from a list.
+- `manage_event_queue_and_state`: Manages a linked list of event data by either appending a new entry to a structure or removing an entry based on a command byte in d0.
+- `process_event_queue_and_update_state`: Checks a condition based on a byte in a register and a value in a structure, then decrements a counter and processes a linked list of data entries.
+- `store_byte_and_advance`: Stores the byte from d0 into offset 108 of the structure in a4, advances the pointer in a2 by 6, and branches to another routine.
+- `update_structure_and_flags`: Stores a word from a register into a structure at offset 44, performs arithmetic on values at offsets 12 and 24 of a structure in a4, and then enters a loop that iterates three times to check a global variable and modify a byte at offset 111 of the structure in a4.
+- `merge_voice_flags`: Sets bit 2 of a byte at offset 111 of a structure in a4, then iterates through a list of pointers starting at a global variable, calling another routine if a bit is set in a byte at offset 50 of the pointed-to structure, and finally merges bits from the structure in a4 into a byte at offset 4 of a structure in a5.
+- `merge_voice_flags_into_channel`: Walks a block of records, calling a routine for those with a flag set, then merges one channel flag byte into another and returns zero.
+- `load_pointer_from_table`: Loads a longword from a global variable into a register, copies that value into another register, and calls a routine that decrements a counter in d0 and updates a global variable with the value in a0.
+- `advance_pointer_and_branch_2`: Compares the byte at the pointer in a1 to 255, and if it is not 255, loads a new pointer from a global table and branches to another routine.
+- `check_and_advance_pointer`: Compares the byte at the pointer in a1 to 160, and if it matches, checks if the byte at offset 4 of the pointer is 0; if both conditions are met, it increments the pointer in a1 by 6, moves the new pointer to a0, and branches to another routine, otherwise it branches to another routine.
+- `advance_pointer_and_branch`: Increments the pointer in a1 by 6 and branches to another routine.
+- `update_pointer_and_return`: Decrements a loop counter in d0 and, if the loop has not finished, stores the value in a0 into a global variable before returning.
+- `invoke_routine_wait_flag`: Stores a constant and a parameter into global variables, invokes a routine via a pointer in RAM, then busy-waits until a global flag clears before returning the stored parameter.
+- `load_stack_word`: Loads a longword from offset 4 of the stack into register d0.
+- `reset_global_state`: Calls another routine and, if it returns 0, clears bits 1 and 2 of a global variable, calls another routine, copies a byte from one global variable to another, calls another routine, sets a global variable to 255 four times, calls another routine twice, sets a global variable to 0 and three other global variables to 0, sets a global variable to 1, and returns 1; otherwise it returns 0.
+- `return_zero_3`: Loads a word from the stack into register d2, sets register d0 to 0, and returns.
+- `check_param_and_set_flag`: Compares a longword parameter in a7 against zero and calls another routine.
+- `clear_bit_and_walk_table`: Clears a bit in a global variable twice, then walks a table of integers in fixed strides, invoking a routine through each entry that is not zero.
+- `set_global_bits`: Sets bit 0 of the byte at offset 16 of a global table and bit 0 of the byte at offset 32 of the same table, then returns.
+- `iterate_structures_and_toggle_flags_2`: Compares a value from the stack with a global word, clears bits in two global bytes if the value is negative, calculates an offset into a table, updates a global pointer, and calls another routine before returning one.
+- `return_constant_8`: Returns the constant an address in d0 to the caller without any other effect.
+- `execute_callback_loop_3_2`: Saves registers d2-d4 and a6 to the stack, loads four values from the stack into d0, d1, d2, and d3, and loads a fifth value into d4 before branching to another routine.
+- `execute_callback_loop_3`: Stores a pointer in a global variable, sets a global counter to 1, calls a routine from a table, and loops until the counter is zero.
+- `update_entity_state_and_recurse`: Checks a bit in a structure, calls a function via a pointer to modify a returned object's fields, and either returns a value or clears bits and values in the original structure before calling itself recursively.
+- `clear_bit_and_maybe_recurse`: Clears bit 3 in a byte at offset 50 of the structure in a2, zeroes the 16-bit value at offset 48 and the 32-bit value at offset 12, then calls itself if the bytes at offsets 46 and 47 are not equal.
+- `wait_for_counter_to_zero`: Stores a passed value in a global variable, invokes a routine from a table, then busy-waits until a counter reaches zero before returning that value.
+- `process_entity_command_event`: Reads a command type from a global variable and branches to different logic paths; if the type is one, it calculates an offset into a table and stores a byte and a 16-bit value into a structure; if the type is two, it instantiates and links two entity structures by populating their fields with data from a pointer, updates their status flags, and calls several routines to manage the entity list and state.
+- `instantiate_and_link_entity_structures`: Allocates and initializes two entity structures by copying data from a global pointer and setting specific byte values at various offsets, then attempts to link them via a pointer in a global variable.
+- `call_and_modify`: Copies a3 to a1, loads a pointer from a global variable into a6, calls a routine at an offset from a6, subtracts a3 from a3, clears bit 3 of a byte at offset 50 of a5, and if d3 is not zero, copies d3 to a1, tests a byte at offset 31 of a1, and branches based on the result.
+- `call_library_and_clear_bit`: Loads a pointer from a global variable into a6, calls a routine at an offset from a6, clears bit 3 of a byte at offset 50 of a structure in a1, and branches to another location.
+- `update_structure_fields_7`: Writes the value 2 to offset 48 of a structure in d2, then copies the byte from offset 47 to offset 46 of that same structure.
+- `process_conditional_logic_3`: Performs several conditional checks based on the value in d2, including calling another routine and modifying a global variable or values at various offsets from a calculated pointer.
+- `update_state_based_on_value`: If a 16-bit value in d2 is 4, it compares a global variable with a value from a table and calls another routine, setting a global variable to 1 if the call returns non-zero; otherwise, if d2 is 5 and bit 0 of a global variable is set, it calls another routine and sets that global variable to 1.
+- `clear_global_longword`: Clears a longword in a global variable and then branches.
+- `check_conditional_flag`: Checks if a 16-bit value in d2 is 5 and if bit 0 of a global variable is set; if both are true, it moves a longword from a global variable to d0, clears that global variable, calls another routine, sets d0 to 1, stores d0 in the cleared global variable, and returns.
+- `update_structure_pointer`: Calls a routine through a pointer in a global structure, and if the result is non-zero, updates a field in the returned structure and potentially another pointer.
+- `free_linked_list_entries`: Walks a doubly linked list, freeing each entry, then clears the head pointer of the list.
+- `clear_table_entry_fields`: Clears several fields of a table entry and returns a value retrieved from one of those fields.
+- `clear_table_and_free_entries`: Performs two loops of 63 iterations calling another routine, then iterates through a table to call another routine via a pointer and zero out entries if a value at offset 2 is non-zero, finally clearing several global variables.
+- `synchronize_structure_table_entries`: Iterates through a table of structures to validate and synchronize their contents, updating a global variable and several counters based on the results of calls to other routines.
+- `call_global_routine`: Checks if a global variable is non-zero and, if so, calls a routine through a pointer at a fixed offset from that variable.
+- `call_and_clear_d0_2`: Calls another routine, sets d0 to 0, and returns.
+
+### Dark Queen of Krynn (1992)(SSI)[cr SKR](Disk 1 of 3)[Advanced Dungeons&Dragons].adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_4`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_5`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_6`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_7`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_8`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_9`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_10`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_11`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_12`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_13`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_14`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_15`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_16`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_17`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_18`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_19`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_20`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_21`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_22`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_23`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_24`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_25`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_26`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_27`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_28`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_29`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_30`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_31`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_32`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_33`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_34`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_35`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_36`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_37`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_38`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_39`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_40`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_41`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_42`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_43`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_44`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_45`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_46`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_47`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_48`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_49`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_50`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_51`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_52`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_53`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_54`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_55`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_56`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_57`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_58`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_59`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_60`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_61`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_62`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_63`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_64`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_65`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_66`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_67`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_68`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_69`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_70`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_71`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_72`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_73`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_74`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_75`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_76`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_77`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_78`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_79`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_80`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_81`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_82`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_83`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_84`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_85`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_86`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_87`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_88`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_89`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_90`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_91`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_92`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_93`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_94`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_95`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_96`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_97`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_98`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.

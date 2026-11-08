@@ -1,0 +1,446 @@
+# Game 952 (DGeneration v1.3 0677): code recovery summary
+
+## Functions (part 2 of 2)
+
+### dgen
+(continued)
+
+- `copy_sprite_byte_field`: Copies a byte from a specific offset in a source structure to an offset in a destination buffer, then calls another routine.
+- `empty_stub_10`: Empty routine: returns to the caller immediately without doing anything.
+- `process_pointer_table`: Saves d7 and a3 to the stack, copies d0 to d7, copies a0 to a3, then checks if d7 is less than 10; if so, it doubles dif and jumps to a target or jumps to a target calculated from a table.
+- `return_constant_one_4`: Sets register d0 to one and restores registers d7, a3, and a7 from the stack before returning.
+- `check_conditions_set_byte`: Checks if a byte at offset 2 of a pointer derived from a global variable equals a tab character and a byte at offset 153 of another pointer derived from a global variable is zero; if both conditions are unable to be met, it sets a byte at offset 160 of the first pointer to 1.
+- `empty_stub_11`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_12`: Empty routine: returns to the caller immediately without doing anything.
+- `call_stub_19`: Call stub: calls one other routine as a subroutine and returns to its own caller when that routine returns.
+- `check_overlap_and_update_pos`: Calls a routine, checks the return value, and if not zero, loads a pointer from a global structure and calls another routine.
+- `branch_on_extended_byte`: Saves registers to the stack, then checks if a byte from a register, when sign-extended and multiplied by eight, matches a certain value, and uses a jump table to branch to a new address.
+- `apply_mask_to_structure`: Applies a bitwise OR with 26 to bytes at a certain offset in a structure, then moves a pointer from a3 to a0 and calls another routine before branching back to a previous instruction.
+- `return_constant_zero`: Returns the integer value 0 immediately while restoring registers from the stack.
+- `check_entity_state_flags`: Checks a byte in a structure; if not zero, calls another routine and, if certain conditions are met, updates a word in a structure and calls another routine.
+- `call_stub_20`: Call stub: calls one other routine as a subroutine and returns to its own caller when that routine returns.
+- `load_attribute_pointer_and_call_handler`: Loads a pointer from a table using an offset relative to a4 into a0 and calls a routine that updates sprite attributes from a table.
+- `dispatch_object_config_2`: Sets up registers and calls a routine that acts as a dispatcher for object configuration logic.
+- `pack_sprite_header_three_fields`: Combines bits from three fields of a source structure into a single byte and stores it at an offset in a destination buffer.
+- `check_table_entry_match`: Saves d7, calls a routine, and if a certain byte in a structure is not certain, copies a byte from a global address to an offset in a structure and calls another routine.
+- `initialize_stack_block`: Sets up a stack frame, saves registers, and calls a routine to initialize a block on the stack, then checks the return value to either clear a register or branch.
+- `allocate_object_entry_2`: Constructs a small data block on the stack with specific byte values and copies data from a source pointer.
+- `modify_bytes_and_branch_2`: Saves registers, copies d0 to d7, copies a pointer to a3, sign-extends d0, and uses d0 to index into a table to perform an indirect jump.
+- `modify_bytes_and_branch`: Performs bitwise OR operations on a byte at an offset from a4, modifies a byte at a pointer, moves a pointer, calls a routine, and branches to an earlier instruction.
+- `return_constant_one_5`: Returns the integer value 1 immediately while restoring registers from the stack.
+- `update_global_state_2`: Checks several conditions involving a pointer and a global variable, and if met, writes a value to a structure, sets several bytes on the structure, and calls another routine.
+- `update_global_state`: Checks several conditions involving a pointer and a global variable, and if met, writes a value to a structure, sets several bytes on the stack, and calls two routines.
+- `update_string_buffer_fields`: Checks a byte in a global structure and, if certain conditions are met, calls a routine to initialize a string buffer, updates a byte in a global structure, and uses a jump table to update other global bytes.
+- `return_constant_one_and_unlk`: Returns the integer value 1 immediately, unlocks a5, and restores registers from the stack.
+- `check_range_and_call`: Saves registers, loads a byte from an offset in a4, increments it, and if it equals a constant, calls another routine and branches to another routine.
+- `compare_and_branch_4`: Compares a register with a constant and, if not equal, calls another routine and then branches to another routine.
+- `compare_and_branch_entity_limit_2`: Compares a constant to a register, and if not equal, calls another routine and then branches to another routine.
+- `compare_and_branch_entity_limit`: Loads the constant 8 into a register, compares it to a value in a register, and if not equal, calls another routine and then branches to a different location; otherwise, it continues to a branch that exits the routine.
+- `compare_and_branch_3`: Compares a constant to a register and, if not equal, calls another routine and then branches.
+- `update_buffer_and_pointer`: Clears a word in a global variable, increments a word in a global variable, and swaps a pointer in a global variable.
+- `compare_and_branch_d7_alt`: Compares d7 with 29 and, if not equal, sets d0 to 31 and calls another routine before branching.
+- `compare_and_branch_d7`: Compares d7 with 44 and, if not equal, sets d0 to 32 and calls another routine before branching.
+- `compare_and_branch_2`: Compares d7 with 36, otherwise it branches; if not equal, it sets d0 to 63, calls a routine, calls another routine, sets d0 to 18, compares d7 with 18, otherwise it branches; if not equal, it calls another routine and then branches to another instruction.
+- `process_entity_state_flags`: Evaluates entity state flags and dispatches input handling routines based on status codes.
+- `update_entity_state`: Calls a routine to evaluate entity state flags and then invokes a sprite input handler with a zero argument.
+- `update_entity_with_offset`: Evaluates entity state flags, handles sprite input with a zero argument, performs an additional routine call, and then handles sprite input again with a large offset.
+- `check_byte_and_set_flags`: Checks a byte at a specific offset in a structure; if it is zero, it sets two flag bytes to one and calls another routine.
+- `copy_words_and_load_files`: Copies thirty-two words from a source address passed in a register into a global variable buffer.
+- `process_string_logic`: Initializes a buffer, checks a byte in a structure, and if not zero, calls another routine and, if certain conditions are met, calls another routine and, if certain conditions are met, calls another routine and, if certain conditions are met, calls another routine.
+- `display_invalid_name_passcode`: Calls a routine to initialize a string buffer with the text 'Name/Passcode not Recognized.' for display.
+- `validate_passcode_string`: Checks if a string or character at an offset in a structure is non-zero, then uses a pointer-based lookup or calculation to check if a value exists in a table, calling a routine to display an error message if the check fails or succeeds otherwise it returns.
+- `display_invalid_passcode`: Calls a routine to initialize a string buffer with the text 'Passcode not Recognized.' for display.
+- `handle_exit_control`: References the text string 'EXIT CONTROL SYSTEM' and calls a sprite input handler routine with a zero argument.
+- `call_stub_21`: Call stub: calls one other routine as a subroutine and returns to its own caller when that routine returns.
+- `update_attribute_from_table_alt`: Loads a pointer from a structure in a4 into a0 and calls a routine that copies attribute data from a certain table into global memory.
+- `decode_tile_properties`: Extracts bit fields from a source byte to configure flags and indices in a target structure.
+- `pack_sprite_with_flag_check`: Checks a global flag and specific fields in a source structure; if conditions are met, it clears a field, combines bits from two other fields into a byte, and stores it in a destination buffer before calling another routine.
+- `reset_structure_offsets_3`: Checks if certain bytes at offsets 70 and 3 of a structure are zero, and if so, updates certain word-sized offsets in a structure pointed to.
+- `copy_32_words_to_buffer`: Copies 32 words from a source address in a0 to a global buffer and then jumps to another routine.
+- `update_sprite_attributes_from_table_3`: Checks a condition in a table, then updates a global variable with a calculated offset, copies attribute data from a table into global memory, and calls another routine if the condition is met.
+- `jump_to_state_handler_4`: Performs an unconditional jump to a target address, effectively redirecting execution to a routine that clears the screen and resets several global flags or counters.
+- `find_string_end_2`: Iterates through a buffer until a byte matches a target value or a null terminator is found.
+- `load_aim_pal_files_2`: Calls a routine to load files into a buffer, then copies the buffer pointer to a global variable and calls another routine.
+- `jump_to_collision_routine`: Performs an indirect jump to a routine address stored in a longword at an offset relative to a5, then returns.
+- `jump_to_state_handler_2`: Performs an indirect jump to a target address stored in a longword at a specific memory location, effectively redirecting execution to a routine determined by the state flags or global variables managed by manage_entity_state_flags.
+- `jumps_to_routine`: Calls another routine and returns its result multiplied by two.
+- `load_delta_set_data_2`: Checks a global variable, then calls a routine to load data into a buffer and copies the buffer pointer to a global variable.
+- `update_structure_on_match_2_2_2`: Copies a byte from a structure pointed to by a0 to a global variable, then updates several fields in a structure pointed to by a1 based on the lower 3 bits of that byte and a check against a character in a global variable; otherwise it calls another routine and sets a byte at offset 27 of the structure in a1 to 1.
+- `jump_to_address_18`: Performs a long jump to a specific address.
+- `unpack_bitfield_to_struct`: Reads a byte from a source structure, stores it in a global variable, and distributes its bit-fields into a destination structure, while also performing a table lookup and a subtraction involving a global value and a constant, then sets several bytes in the destination structure to fixed values.
+- `test_pointer_list_properties`: Iterates through a table of pointers, checking if the referenced structures satisfy a set of conditions involving specific byte-values at certain offsets and certain non-zero or non-equal conditions, then calls itself recursively and returns one if any recursive call returns non-zero.
+- `initialize_string_buffer_fields_4`: If a pointer argument is non-null, it calls a helper routine, clears a byte in a global structure, and copies data from an indexed location.
+- `redirect_to_collision_query`: Performs a jump to the routine that queries collision status and updates vertex coordinates in a global structure.
+- `execute_handler_jump`: Performs an indirect jump to a target address.
+- `find_active_object_pointer_2`: Iterates through a table of pointers, checking if a byte at offset 3 of each pointer is zero and calling another routine, otherwise it returns if a limit of 31 or a non-zero return value from the called routine is reached.
+- `allocate_and_init_object_2`: Scans a global pointer table for a null entry and a corresponding status table for a free slot marked by -1, then links the found slot to a target structure and initializes its fields.
+- `swap_and_dispatch_method_2`: Checks a global flag; if clear, it swaps two 32-bit pointers in a structure, then calls a function pointer from a table indexed by a byte found in the second pointer, before restoring the original pointers.
+- `jump_to_clipping_routine`: Performs an indirect jump to the routine that calculates clipping boundaries and prepares blit parameters.
+- `dispatch_input_handler_4`: Calls a routine that checks a global variable for null and compares an input byte against specific character values to set distinct global flags.
+- `jump_to_collision_handler_2`: Performs an indirect jump to the address stored in a memory location, passing control to the routine that processes entity collisions.
+- `process_sprite_input_state_2`: Polls input and checks entity state flags to determine sprite behavior, adjusting positions and decoding command streams based on specific s.
+- `jump_to_address_2`: Performs a jump to a fixed address.
+- `validate_coordinate_proximity`: Calculates the absolute difference between bytes at offset 10 and offset 12 of two different structures, comparing these differences against a threshold in d0, and returns 1 if both differences are within the allowed limit, otherwise it returns 0.
+- `initialize_global_structure_member`: Sets a 16-bit value in a global structure to zero, stores a 32-bit parameter into a different offset of that structure, calls another routine, and then clears the first byte of the stored 32-bit value.
+- `update_and_check_counter_index_2`: Decrements a 16-bit value in a structure, and if negative, updates a byte-based index or counter, potentially resetting it to zero if it reaches a certain value.
+- `pack_sprite_bit_field`: Constructs a byte by masking and shifting bits from a source structure and writes it, followed by two other bytes from that structure, to a destination buffer, then jumps to a target address.
+- `update_pointer_value_2`: Loads a word from a pointer in a0, checks if it is equal to a value from a global variable, and if that value is not greater than the loaded, it updates the pointer value or sets it to zero.
+- `split_word_into_bytes_3`: Calls another routine, then stores the high byte of the returned word into a location pointed to by a0 and the low byte into a location pointed to by a1.
+- `populate_sprite_command_buffer`: Iterates through a command stream, writing certain byte values into a buffer pointed to by a6 and incrementing a counter, while also handling certain command opcodes that decrement the counter or clear the buffer, and calls process_sprite_command_stream_2.
+- `parse_data_stream_2`: Iterates through a buffer, checking for a termination word and dispatching or skipping bytes based on certain bit patterns.
+- `jump_to_input_dispatcher_2`: Performs an unconditional jump to a fixed address, delegating control to the input handling dispatch loop.
+- `set_handler_index_2`: Stores a passed word into a global byte offset and performs a bounds check, then executes several helper routines to update status bits and a table.
+- `jump_to_target_address_9`: Performs an indirect jump to an address stored in a memory location or register.
+- `allocate_object_and_initialize_fields_3`: Calls a routine to allocate a new object structure and then modifies several bytes within that new structure, including setting a byte at offset 27 to one and copying a byte from a global variable or another structure into offset 27, while also updating other offsets with values from the previous object or registers.
+- `execute_conditional_clear`: Calls several subroutines, and if a certain value is non-zero, clears a byte at offset 157 of a structure pointed to by a pointer in a0.
+- `call_collision_check_2`: Prepares a stack frame and calls a routine using an indirect jump to an address loaded from a pointer relative to a5, then returns.
+- `set_flag_via_pointer_2`: Checks a byte in a global structure, clears a byte at an offset, and calls another routine to potentially set a byte at a calculated address and clear another byte.
+- `set_flag_via_pointer`: The routine calculates an address using a global pointer and an unable offset, then stores the value one at that location.
+- `update_offset_with_conditional_logic`: Checks a byte in a structure, modifies a short value at an offset in that structure based on a comparison, and then calls another routine or loops through it.
+- `update_entity_offset_loop`: Increments a short value at a specific offset in a structure by a constant amount, then loops through helper routines to check conditions and return a result.
+- `evaluate_and_update_structure_2`: Saves registers, copies a pointer to a3 and d0, and if the pointer is non-null, checks certain bytes in the structure and potentially clears d0 if certain conditions are met.
+- `evaluate_and_update_structure`: Sets a pointer, calls a routine, performs bitwise operations and a comparison, and if certain conditions are met, updates a byte in a structure and jumps to a branch or a routine.
+- `clears_d0_and_restores_registers`: Clears the d0 register and restores d7 and a3 from the stack before returning immediately.
+- `evaluate_byte_value`: Checks if a byte in d0 is zero, or certain small values, and branches to other routines accordingly.
+- `update_pointer_and_branch`: Copies a pointer from a3 to a0, calls a routine, then branches to another location.
+- `loads_address_and_calls_subroutine`: Loads a pointer from a register into a new register, calls another routine, and then branches to a fixed location.
+- `updates_pointer_and_calls_routine_2`: Copies a pointer from a structure or table into a register and calls another routine, then branches to a subsequent instruction in that routine.
+- `prepare_pointer_and_branch`: Moves a pointer from a register to another register, calls another routine, sets register d0 to one, and then branches to another location.
+- `clears_d0_and_restores_registers_2`: Clears register d0 and restores d7 and a3 from the stack before returning immediately.
+- `copy_byte_and_fail`: The routine copies a byte from a source pointer into a global structure at a specific offset and returns a failure indicator.
+- `initialize_object_fields_5`: Checks a byte in a structure, calls a routine, and if the return value is not zero, performs several writes to a structure, including setting a byte at offset 82 to seven and updating other fields.
+- `set_two_flags`: The routine sets two specific byte fields within a global structure to one.
+- `call_stub_22`: Call stub: calls one other routine as a subroutine and returns to its own caller when that routine returns.
+- `update_attribute_from_structure`: Loads a pointer from a structure in a4 into a0 and calls a routine that checks a flag in a structure and updates a global position or attribute.
+- `dispatch_object_config_5`: Invokes a routine that reads a type byte from a source structure to configure fields in a target structure via a switch statement.
+- `pack_sprite_bytes_with_flag_2_2`: Loads a byte from an offset in a structure, extends it, and shifts it, then checks a byte at another offset in the structure to either branch or set a register value.
+- `pack_sprite_bytes_with_flag_2`: Clears d0, or d1 into d0, and checks a byte at an offset in a structure; if not zero, it clears d1 and jumps to another routine.
+- `pack_sprite_bytes_with_flag`: Combines bits from a source structure field, a register value, and a constant into a single byte, storing it at an offset in a destination buffer.
+- `dispatch_object_config_4`: Swaps source and target pointers and calls a routine that reads a type byte from a source structure to configure fields in a target structure via a switch statement.
+- `copy_byte_and_call_handler`: Copies a byte from a source structure offset to a destination buffer offset, then invokes another routine.
+- `adjust_flag_and_check_collision`: Loads a pointer from a structure, checks if two certain bytes at offsets 158 and 162 are zero, and if so, calls four different routines before returning.
+- `update_structure_and_flags`: Checks a pointer, then if certain, subtracts a value from a structure member, and if that member is not certain, adds a value, clears a byte, and calls another routine before branching.
+- `set_flag_via_pointer_alt`: The routine calculates an address using a global pointer and an offset, then stores the value one at that location.
+- `update_object_status`: Checks if certain structure fields meet a threshold, calls a routine to check a position, and if certain flags are clear, updates status bytes and a global byte or calls another routine.
+- `check_flag_and_swap_pointers`: Checks a global flag byte; if clear, it copies structure fields to the stack, calls a method, and conditionally sets status bytes and updates pointers.
+- `process_string_and_state`: Saves registers, checks several pointers and bytes, and if certain, calls another routine, updates a structure member, and performs a calculation involving a division and a shift before updating a structure member and branching.
+- `clear_byte_if_condition`: Checks if a byte at offset 8 of a passed pointer exceeds 31; if so, it sets a byte at offset 155 of the same structure to zero, then returns.
+- `update_position_and_check_flags`: Checks a byte at offset 157 of a structure in a0; if zero, it calls a routine using a pointer relative to a5, otherwise it checks a byte at offset 154 of the structure and calls several other routines using pointers or stack-passed arguments, then returns.
+- `dispatches_byte_based_jump_table`: Saves registers, checks if a byte in d0 is less than ten, and if so, uses a table-based jump to a destination or otherwise performs an arithmetic operation and jumps to a destination or otherwise returns.
+- `clears_d0_and_restores_registers_3`: Clears the d0 register and restores d7 and a3 from the stack before returning.
+- `check_room_input_condition`: Checks a character value from a global structure against a threshold and conditionally processes room input using a specific byte sequence, then calls a routine to allocate and initialize an object and calls another routine before returning.
+- `call_stub_23`: Call stub: calls one other routine as a subroutine and returns to its own caller when that routine returns.
+- `double_dispatch_sprite_transform_2`: Loads a pointer from a structure, calls a routine to update sprite attributes, and then repeats this process a second time using the same pointer or a duplicate pointer from the structure.
+- `execute_two_subroutines`: Calls one routine and then calls another routine.
+- `subtract_and_clamp_short`: Subtracts a short from a value at an offset from a global pointer, and if the result is negative, sets that value to zero, then returns.
+- `check_clear_overlap_flag`: Checks a byte in a global structure; if non-zero, it calls a routine to check rectangle overlap and clears the byte if the overlap check returns zero.
+- `restore_and_branch_conditional`: Saves registers, copies a pointer, and checks if a certain value is certain, otherwise it subtracts from a register and branches.
+- `set_address_and_branch_3`: Moves a pointer from a register to another register, calls another routine, and then branches to a nearby instruction.
+- `copies_pointer_and_calls_routine`: Copies a pointer from a3 to a0, calls a routine that clears d0 and restores registers, then branches to another routine.
+- `clears_d0_and_restores_registers_4`: Clears the d0 register and restores d7 and a3 from a pointer-incremented stack, then returns.
+- `evaluate_rectangle_overlap`: Performs several checks involving pointer dereferencing, calls multiple routines, and updates a word in a structure if certain conditions are met, or branches to a different location.
+- `update_pointer_value_3`: Writes a word to an offset of a pointer in a register and then branches to another routine.
+- `check_and_invoke_state`: Calls another routine, and if the result is not zero and a byte in a structure does not match a certain value, calls another routine and, if certain conditions are or are not met, calls another routine and, if certain conditions are met, calls another routine and, if certain conditions are met, calls another routine.
+- `initialize_security_key_string`: Extends a byte, increments it, and pushes it to the stack, then calls another routine with a pointer to a structure and a pointer to a global variable, then calls another routine and, if certain conditions are met, branches to another routine.
+- `check_state_and_invoke`: Calls a routine to validate state, and if the return value is non-zero, clears a word-sized field in a structure and sets a byte in a structure to one.
+- `clear_and_invoke_state_check`: Clears a specific word-sized field in a structure pointed to by A4, calls a routine to validate state and invoke methods, and returns the value of that cleared field.
+- `compare_and_set_flag`: Loads a pointer from a global variable, checks if a byte at an offset is certain values, and if a certain condition is met, calls a routine and sets a word in a global structure to one.
+- `compare_structure_byte_2`: Loads a byte from a structure, sign-extends it, and compares it against a constant, otherwise it branches or continues.
+- `compare_structure_byte`: Loads a pointer from a structure, checks a byte at an offset, and if not zero, compares a byte from another offset of that structure against a register value.
+- `compare_structure_bytes`: Loads a byte from an offset of a structure into d0, extends it to a word, and compares it against d6, otherwise it returns or branches to a different location.
+- `invoke_method_and_set_flag`: Stores a register value on the stack, copies a byte from a structure, invokes a method, and conditionally sets a word in a global structure to one.
+- `compare_structure_byte_difference`: Calculates the difference between two bytes located at offset 22 of two different structures pointed to by a4, then checks if the lower 3 bits of that difference are greater than 5.
+- `return_constant_5`: Returns the constant an address in d0 to the caller without any other effect.
+- `call_stub_24`: Call stub: calls one other routine as a subroutine and returns to its own caller when that routine returns.
+- `check_flag_and_dispatch_transform`: Checks a byte in a structure against a specific constant value.
+- `setup_collision_buffer`: Copies a byte to a global variable, calls a routine, clears certain bytes in a structure, sets a byte at offset 14 to ten, and calls two other routines before returning.
+- `pack_sprite_byte`: Loads a pointer, checks a byte at an offset, and if certain conditions are met, packs a bit-shifted byte from a source structure and a masked byte from another source offset into a destination byte.
+- `set_d7_and_branch`: Sets d7 to a constant value and branches to another address.
+- `set_d7_and_branch_alt`: Sets d7 to a different constant value and branches to another address.
+- `pack_sprite_bytes_and_call`: Combines a bit-shifted byte from a source structure and a masked byte from another source offset into a single byte, stores it in a destination buffer, and calls another routine.
+- `recalculate_structure_offsets`: Checks if certain bytes at offsets 3 and 70 of a structure in a0 are zero; if so, it updates certain word-sized offsets in that structure by adding a value from a pointer to the existing offset and stores the previous offset value, otherwise it resets the values at the pointer and a second pointer to zero.
+- `update_sprite_attributes_2`: Checks a flag in a structure, then updates a global position or attribute using an offset, copies attribute data from a table, and updates a global index before calling another routine twice.
+- `jump_to_bounds_calculation`: Redirects execution to the routine that calculates the difference between two words at offsets 10 and 12 from a pointer in a3.
+- `search_byte_in_buffer_4`: Iterates through a buffer pointed to by a register, checking if any byte is equal to a target byte or if a byte is negative, otherwise it returns or jumps to another routine.
+- `jump_to_scaled_value`: Performs a long jump to a routine that returns a value multiplied by two.
+- `jump_to_zero_3`: Performs an indirect jump to address zero.
+- `jump_to_indirect_target_3`: Performs an indirect jump to an address stored at a long-word location.
+- `increment_and_pack_data_2`: Jumps to a routine that increments two word-sized values in a structure, then constructs and updates bytes in a destination buffer using bitwise operations on source.
+- `configure_object_attribute_flags`: Copies a byte from a source pointer, updates several fields in a structure, and sets or clears flags at specific offsets based on the bitmask or value of that byte.
+- `update_timer_and_status`: Checks certain bytes in a structure, and if a certain condition is met, subtracts a value from a short field in a structure, potentially adds a constant to that field, and increments a byte in a structure.
+- `branch_to_target_address`: Performs an indirect jump to an address stored in a memory location.
+- `update_string_buffer_metadata_4`: If the pointer in a0 is non-null, it calls a routine to initialize a string buffer, clears a byte in a global structure, and updates a byte or word in a structure using a value or a lookup from a table or a register-based offset.
+- `redirect_to_collision_query_2`: Performs an indirect jump to the routine that resolves collision status and updates vertex coordinates in a global structure.
+- `setup_object_properties_2`: Copies a byte from a source structure to a global variable, sets certain bytes in a target structure using bit-masked or constant values, and calls another routine.
+- `jump_to_clear_array`: Jumps to a routine that zeroes out a sequence of 11 bytes starting from an address derived from a global pointer.
+- `scan_active_object_list_6`: Jumps to a routine that iterates through a table of pointers up to a fixed limit, checking if a byte at offset 3 of each pointer is zero and calling a function.
+- `dispatch_method_via_table_6`: Jumps to a routine that checks a global flag; if clear, it swaps pointers in a structure, calls a function pointer from a table indexed by a byte in that structure, then restores the original pointers.
+- `jump_to_indirect_address_2`: Jumps to the address stored in a pointer or a register, which is then used to call the input handler.
+- `update_structure_values_3`: Performs an indirect jump to a long-address destination.
+- `redirect_to_collision_routine`: Performs an indirect jump to the address stored in a memory location, effectively delegating execution to the collision processing routine.
+- `copy_target_coordinates`: Copies two words from a source structure pointed to by a register to a target structure pointed to by a global variable, then jumps to another routine.
+- `check_position_tolerance_4`: Jumps to a routine that compares the absolute difference between coordinates in two data structures against a threshold value to determine validity.
+- `initialize_pointer_and_store_zero_4`: Stores a zero word and a passed parameter into specific offsets of a global structure, calls another routine, and then stores a zero byte into a location pointed to by the parameter.
+- `pack_sprite_data_5`: Constructs a byte by combining a bit-shifted byte from a source structure and a masked byte from another source offset, then stores it along with two other bytes into a destination.
+- `update_status_from_byte_2`: Extracts a bitmask from a global byte and writes it to a structure offset, then updates a status byte or a flag in a structure based on further bitmask checks and a comparison against a constant value.
+- `jump_to_indirect_target_2`: Performs an indirect jump to a new address or routine loaded from a pointer in memory.
+- `allocate_and_initialize_object_2`: Calls a routine to allocate a new object structure from a global table and then modifies several bytes within the newly allocated structure, including setting a byte at offset 27 to one and copying a byte from a global variable to offset 3.
+- `redirect_execution_flow_2`: Performs an unconditional jump to a different memory location.
+- `process_entity_buffer_flags`: Saves registers, clears a byte at offset 23 of a structure, and if certain conditions regarding a byte at offset 2 or 14 are met, updates global pointers and calls routines to update buffer flags.
+- `update_buffer_counter`: Writes a zero or a value from a register to a global variable and jumps to a long address.
+- `load_word_from_table`: Loads a 16-bit value from a global table indexed by a register and returns it combined with a shifted version of the index.
+- `load_word_from_alt_table`: Loads a 16-bit value from a different global table indexed by a register and returns it combined with a shifted version of the index.
+- `trigger_trap_zero`: Loads a value from a global variable, updates a global pointer, and executes a trap instruction with vector zero, then restores the original pointer and returns.
+
+### else
+
+- `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
+- `move_and_branch_forward`: Moves the contents of d1 to d0 and then branches forward to a fixed offset.
+
+### endcli
+
+- `find_max_and_prepare_buffer_2`: Walks a linked list of entries to find the maximum value stored in a field, and if a condition is met, writes a header and a sequence of incrementing words into a buffer, sets up a stack frame, and copies a fixed number of words between a temporary area and a global buffer before installing a function pointer and returning success or failure.
+- `move_register_and_branch`: Copies the contents of register d1 to register d0 and then branches to another routine.
+
+### endif
+
+- `tiny_eor_rts`: Small routine of 2 instructions that exclusive-ors d0 into d0, then returns.
+
+### if
+
+- `find_max_and_prepare_buffer_3`: Walks a linked list of entries to find the maximum value stored in a field, and if a condition is met, writes a header and a sequence of words into a buffer, sets up a stack frame, copies sixteen words from a temporary area to a global buffer, installs a function pointer, and returns success or failure depending on the conditions checked during the loop.
+- `transfer_register_and_branch`: Copies the contents of register d1 into register d0 and then branches to another routine.
+
+### setpatch
+
+- `initialize_setpatch_environment`: Checks the Kickstart version and command line arguments to determine if the data cache should be disabled.
+- `check_library_priority`: Increments a byte in a global structure and calls a routine to retrieve a library handle.
+- `zero_d0_register`: Performs a bitwise OR on register d0 with zero.
+- `call_set_signal`: Library stub: loads its arguments and the exec library base, calls SetSignal and returns its result to the caller.
+- `check_expansion_library`: Increments a byte in a global structure and calls a routine to retrieve a library handle.
+- `clears_d0_register_low_byte`: Sets the low byte of d0 to zero.
+- `increment_and_check_byte`: Increments a byte at offset 199 of the structure pointed to by a6 and checks if it has reached 120, otherwise it returns.
+- `set_global_byte`: Stores the byte value 120 into a global variable at offset 295 of a structure pointed to by a6.
+- `enable_interrupts_and_call`: Calls a routine to retrieve a library handle.
+
+### setpatch1.3
+
+- `initialize_patch_environment`: Initializes a patch state structure by retrieving a pointer from a global variable, then calls a routine to check for a valid library pointer.
+- `restore_patch_state`: Retrieves a pointer from a global structure and saves a parameter into a slot within a structure pointed to by that pointer.
+- `dispatch_helper_call`: Checks a global variable; if non-zero, it calls a helper routine with an argument, then calls another routine with the result returned by thehelper.
+- `apply_system_patches`: Performs a series of library calls and pointer updates, including checking certain values, calling subroutines with specific arguments, and clearing a 32-bit field at offset 60 of a structure, before returning.
+- `call_library_vector_132`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
+- `call_library_vector_138`: Library stub: loads a library base from a global variable and calls the library function at offset minus 138 of that base, returning its result to the caller.
+- `call_library_vector_198`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_294`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
+- `call_library_vector_354`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
+- `call_library_vector_390`: Library stub: loads a library base from a global variable and calls the library function at offset minus 390 of that base, returning its result to the caller.
+- `call_library_vector_420`: Library stub: loads a library base from a global variable and calls the library function at offset minus 420 of that base, returning its result to the caller.
+- `call_library_vector_552`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `allocate_and_patch_memory`: Checks fields of a global structure and, if conditions are met, obtains a memory block and a code pointer via library calls, copies a small code stub from another routine into the target, updates a pointer in the global structure, computes a checksum over a short array in the structure and stores its complement, then returns.
+- `sum_and_jump`: Iterates through a table of shorts, adding them to a running sum, stores the bitwise NOT of the sum in a global variable, and performs an indirect jump through a table.
+- `initialize_system_state`: Sets the interrupt enable bit in the INTENA register, updates a global variable with a constant, and copies a value from a register to a memory location.
+- `set_interrupt_enable`: Checks a global variable and writes a value to the INTENA hardware register to enable interrupts if the condition is unable to be met.
+- `set_hardware_registers`: Sets the stack pointer, clears memory, writes a value to a CIA register, clears a bit in a CIA register, and writes a value to a global variable.
+- `set_interrupt_and_reset`: Disables interrupts, writes a value to a hardware register, and loops a certain number of times while setting and clearing a bit in a hardware register, then checks a hardware register and calls a routine pointer from a global variable or otherwise calls a reset routine.
+- `initialize_library_function_pointers`: The routine executes a loop that decrements a register, and if a certain value is not equal to a certain value, calls a routine and checks a value in a structure, then potentially calls another routine and sets a global variable.
+- `open_intuition_library`: Calls library functions to open the intuition.library, retrieves a function pointer from the library base, and stores the result in a global variable before returning the pointer.
+- `tiny_move_clr_rts`: Small routine of 3 instructions that copies d0 to (a3)+, then clears (a3), then returns.
+- `copy_string_with_null`: Copies a null-terminated string from one memory location to another, appending a null byte at the end.
+- `decrement_and_reset`: Decrements a constant value in a loop and calls a reset routine, then calls a routine pointer from a global variable.
+- `initialize_patch_function_table`: Writes a computed offset to a global variable and fills a 16-entry table with successive addresses of a routine, incrementing the pointer each iteration.
+- `set_d0_zero`: Sets the least significant bit of d0 to zero.
+- `call_subroutine_indirectly`: Calls a routine using a relative branch.
+- `call_subroutine_repeatedly`: Calls another routine fifteen times in succession and returns a value from the final call.
+- `return_input_value`: The routine receives a value in D0 and returns it unchanged.
+- `call_if_less_than_limit`: Checks if a value at a global offset is less than or equal to 35, and if so, calls a routine via a pointer relative to a6.
+- `modify_and_call_pointer_2`: Calculates a new size, calls a library routine, and then loops through a list of data, copying values from a source structure to a destination structure and calling an indirect routine for certain entries, or calling another routine if a certain condition is met, before returning a value with a bit set.
+- `decrement_and_call_indirect_routine`: Decrements a 16-bit register and, if not negative, decrements a 32-bit pointer, loads a new pointer and a 32-bit value from a structure, and calls another routine via an indirect pointer.
+- `modify_and_call_pointer`: Shifts a value from a structure member, adds a constant, copies a pointer from a register, calls an indirect routine, and then sets bit 31 of a register before branching to another routine.
+- `execute_patch_logic`: Checks a flag in a structure, calls a routine, and if the flag is set, calls another routine and then a third routine while updating a pointer.
+- `tiny_clr_movea_rts`: Small routine of 3 instructions that clears d0, then copies (a7)+ to a2, then returns.
+- `scan_for_marker`: Iterates through an array of words starting from an input pointer.
+- `calculate_relative_pointer_offset`: Reads a 16-bit value from a pointer, extracts a byte, and calculates a signed or unsigned offset or bit-shifted index to return a new pointer or address.
+- `compute_word_offset`: Reads a 16-bit value from two bytes after an input pointer.
+- `patch_global_pointers`: The routine sequentially calls a helper routine to compute offsets and stores the returned pointers into a series of global variables.
+- `call_reschedule`: Library stub: loads its arguments and the exec library base, calls Reschedule and returns its result to the caller.
+- `call_dispatch`: Library stub: loads its arguments and the exec library base, calls Dispatch and returns its result to the caller.
+- `recurse_with_stack_slot_2`: Saves d2 and d3, loads two values from the stack, pushes a pointer to a stack location, pushes the loaded values onto the stack, calls another routine, and restores registers before returning.
+- `call_global_and_checksum_buffer_2`: Saves registers, calls a function pointer from a global variable, calculates a checksum over a stack buffer, and if the inverted checksum is non-zero, calls another routine with the buffer and checksum before restoring registers.
+- `tiny_move_rts`: Small routine of 2 instructions that copies d0 to (a3)+, then returns.
+
+### stack
+
+- `find_max_and_prepare_buffer_4`: Walks a linked list of entries to find the maximum value stored in a field, then if a condition is met, writes a header and a sequence of incrementing words into a buffer, sets up a stack frame, copies sixteen words from a temporary area to a global buffer, installs a function pointer, and copies another sixteen words from a global source to that buffer before returning success or failure.
+- `copy_register_to_register`: Copies the contents of data register d1 into data register d0 and branches to another routine.
+
+### version
+
+- `parse_string_token`: Parses a string or a quoted string, replacing certain characters with newlines or escape codes, and stores the resulting tokens into a buffer.
+- `process_message_reply`: Handles message processing by updating message fields, calling various functions based on flags, and returning a value from the message structure.
+- `check_library_version`: Parses command-line arguments to open a specified library or device and validates its version and revision numbers against provided thresholds.
+- `process_message_reply_2`: Calls a routine to handle message processing by updating message fields and calling various functions based on flags, then calls a library vector to finalize the operation.
+- `parse_integer_string`: Parses a string to convert it into an integer, handling optional sign characters and digit sequences.
+- `compare_strings`: Compares two null-terminated strings byte by byte and returns a value indicating their lexicographical order or equality.
+- `calculate_string_length`: Calculates the length of a null-terminated string by iterating until the null byte is found.
+- `call_reschedule_2`: Library stub: loads its arguments and the exec library base, calls Reschedule and returns its result to the caller.
+- `call_dispatch_2`: Library stub: loads its arguments and the exec library base, calls Dispatch and returns its result to the caller.
+- `recurse_with_stack_slot`: Calls another routine passing two parameters and a pointer to a specific location on the stack.
+- `call_library_vector_198_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_210`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `call_library_vector_414`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `call_library_vector_444`: Library stub: loads a library base from a global variable and calls the library function at offset minus 444 of that base, returning its result to the caller.
+- `call_library_vector_450`: Library stub: loads a library base from a global variable and calls the library function at offset minus 450 of that base, returning its result to the caller.
+- `call_library_vector_552_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `call_global_and_checksum_buffer`: Invokes a function pointer stored in a global variable, then computes a rolling checksum over a stack buffer until a null terminator is found.
+- `store_byte_and_return`: Stores a byte from d0 into the memory location pointed to by a3 and increments a3, then returns.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_4`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_5`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_6`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_7`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_8`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_9`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_10`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_11`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_12`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_13`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_2`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_3`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_14`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_15`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_16`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_17`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_18`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_19`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_20`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_21`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_22`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_23`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_24`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_25`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_26`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_27`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_28`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_29`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_30`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_31`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_32`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_33`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_34`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_35`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_36`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_37`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_38`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_39`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_40`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_41`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_42`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_43`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_44`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_45`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_46`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_47`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_48`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_49`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_50`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_51`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_52`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_53`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_54`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_55`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_56`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_57`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_58`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_59`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_60`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_61`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_62`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_63`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_64`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_65`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_66`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_67`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_68`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_69`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_70`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_71`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_72`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_73`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_74`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_75`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_76`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_77`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_78`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_79`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_80`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_81`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_82`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_83`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_84`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_85`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_86`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_87`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_88`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_89`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_90`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_91`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_92`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_93`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_94`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_95`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_96`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_97`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_98`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_99`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_100`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_101`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_102`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_103`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_104`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_105`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_106`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_107`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_108`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_109`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_110`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_111`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_112`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_113`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_114`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_4`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_5`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `call_routine_repeatedly`: Calls a single routine four times in succession and then jumps to another routine.
+- `jump_vector_entry_6`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `call_subroutine_and_jump`: Calls a routine and then jumps to another routine.
+- `jump_vector_entry_7`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_8`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_9`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_10`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_11`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_12`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `empty_stub_13`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_14`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_15`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_16`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_17`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_18`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_19`: Empty routine: returns to the caller immediately without doing anything.
+
+### amiga.eff (raw code file, load address unknown)
+
+- `reset_audio_and_dma_settings`: Sets several global memory locations to a maximum value, clears or resets certain audio volume and DMA-related registers, and sets a bit in the custom chip disable register before returning.
+
+### amiga.mus (raw code file, load address unknown)
+
+- `reset_audio_and_hardware_state`: Clears several audio volume registers, sets a bit in the custom chip disable/enable register, and initializes a structure or global memory area by setting certain offsets to certain values or clearing others before returning.
+- `traverse_and_update_table_pointers`: Iterates through a table using an index stored at offset 18 of a structure, updating or replacing pointer-like values or counters based on values found in a secondary table, and may modify a counter at offset 39 or update a value at offset 43.

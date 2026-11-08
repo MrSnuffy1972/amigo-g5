@@ -6,20 +6,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901120 top-level bytes in 47 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 16 of 16 units identical (bytes and relocations), 14 raw-word lines |
-| Functions named and described | pass, 621 of 621 named (0 author symbols), 621 of 621 described (66 by rule, 234 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 32 of 32 (100.00%) |
+| Bytes classified (901648 top-level bytes in 48 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 17 of 17 units identical (bytes and relocations), 16 raw-word lines |
+| Functions named and described | pass, 623 of 623 named (0 author symbols), 623 of 623 described (99 by rule, 218 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1896 of 1896 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 20356 of 20357 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 20395 of 20396 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 645262 |
-| code | 67648 |
-| data | 153741 |
+| code | 67874 |
+| data | 154043 |
 | padding | 9893 |
 | unused | 24576 |
 
@@ -39,15 +39,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Disk-Validator | 1 | 386 | 1 |
 | Ram-Handler | 2 | 10 | 1 |
 | Star Wars (1988)(System Breaker)(PD).adf:    | 1 | 641 | 35 |
-| Star Wars (1988)(System Breaker)(PD).adf:starwars | 3 | 15403 | 411 |
+| Star Wars (1988)(System Breaker)(PD).adf:starwars | 3 | 15405 | 376 |
 | Star Wars (1988)(System Breaker)(PD).adf:cat | 10 | 238 | 3 |
 | Star Wars (1988)(System Breaker)(PD).adf:bootblock | 1 | 176 | 9 |
 | logged disk load from Star Wars (1988)(System Breaker)(PD).adf boot-block load | 1 | 0 | 0 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 37 | 37 |
 
 ## Cases handled
 
 - star wars (1988)(system breaker)(pd)/Star Wars (1988)(System Breaker)(PD).adf: file s/startup-sequence (header 62 bytes, blocks hold 69): its blocks are judged as raw blocks outside the filesystem
 - star wars (1988)(system breaker)(pd)/Star Wars (1988)(System Breaker)(PD).adf: the boot block reads 11264 bytes from disk offset 0 to an address (found statically); recovered as a unit
+- runtime segment an address: 27 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - star wars (1988)(system breaker)(pd)/Star Wars (1988)(System Breaker)(PD).adf: 1 logged loads cover 6656 bytes of the image
 - star wars (1988)(system breaker)(pd)/Star Wars (1988)(System Breaker)(PD).adf: blocks 908-908 (bytes 464896-465408) outside the filesystem hold data, not code (opcode density 0.016, entropy 1.87)
 
@@ -302,24 +304,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_extract_masked_word`: This routine calls another routine to extract a masked word into a destination pointer based on specific byte conditions within a buffer.
 - `extract_masked_word`: Checks two specific byte conditions within a buffer and, if met, stores a masked word into a destination pointer.
 - `update_display_and_input`: Configures copper display registers including bitplane pointers, display enable, and vertical synchronization parameters.
-- `calculate_entity_movement_and_timers`: Calculates velocity increments based on status bits or frame-to-frame differences and applies them to coordinate values with clamping.
-- `update_player_velocity_and_timers`: Calculates velocity changes based on joystick input or previous frame differences and applies them to coordinate values with clamping.
-- `update_entity_velocity_and_timers`: Calculates velocity offsets based on status bits or previous frame differences and applies them to coordinate values with clamping.
-- `update_position_and_trigger_events`: Calculates movement offsets based on bitwise checks of a status word, applies them to coordinate values with clamping, and decrements timers to trigger specific event sequences when they reach zero.
-- `update_coordinates_and_trigger_events`: Updates two coordinate values by adding calculated offsets and clamping them within specific minimum and maximum bounds.
-- `update_and_trigger_events`: Updates two coordinate values by adding offsets and clamping them within defined minimum and maximum bounds.
-- `clamp_and_dispatch_events`: Clamps two short integer values within a specific range and then checks several decrementing counters.
-- `dispatch_event_data_structs`: Checks multiple decrementing counters and, upon reaching a threshold, copies specific data blocks into a destination structure.
-- `process_event_counters`: Checks several decrementing counters in memory and, when a counter reaches one, copies a block of data from a source to a destination structure.
 - `check_and_clear_short`: Checks if a value at a specific offset in a structure is non-zero and clears it if it is, returning the original value.
 - `call_subroutines_with_stack_data`: Retrieves a value via a subroutine, populates a stack buffer with a constant, and then executes two subroutines using the retrieved value and the buffer.
-- `calculate_and_call_subroutines`: Calculates a word-aligned value, stores it in a structure, and then executes two different subroutines using pointers from a global table.
 - `execute_indirect_call_with_parameters`: Retrieves a value via a subroutine and, if successful, calls another subroutine using that value and two provided parameters.
-- `execute_indirect_call`: Executes a subroutine through a pointer stored in a global table.
 - `execute_indirect_call_alt_parameters`: Retrieves a value via a subroutine and, if successful, calls another subroutine using that value and two provided parameters in a different order.
 - `execute_indirect_call_alt`: Performs an indirect call to a subroutine located via a pointer in a global table.
 - `branch_on_retrieval_result`: Retrieves a value and, if it is zero, retrieves a second value to use as an argument for two subroutines; otherwise, it uses the first value for the subroutines.
-- `process_parameter_and_call`: Calls a subroutine to retrieve a value, stores it, and then uses that value as an argument for two subsequent subroutine calls.
 - `update_structure_elements`: Iterates through a structure using a nested loop to update two integer values at specific offsets.
 - `update_counters_and_call_subroutines`: Iteratively increments a value in a structure within a loop, calls two subroutines with calculated offsets, and updates two other values in a structure.
 - `update_structure_values`: Iteratively calls two subroutines using values from a structure and updates two integer values within that structure while decrementing a counter.
@@ -340,8 +330,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `calculate_blitter_source`: Calculates a source address by adding a scaled sum of two short values to a base address and initiates a blitter transfer.
 - `calculate_blitter_destination`: Sets the destination address of a blitter transfer based on a calculated offset from a base address and a scaled sum of two short values.
 - `execute_conditional_subroutine`: Calls a subroutine with a parameter and, if the result is zero, calls another subroutine before returning.
-- `return_dereferenced_value`: Returns a 32-bit value stored at a specific offset from a pointer.
-- `return_immediately`: This routine is empty and performs no operations before returning to its caller.
 - `execute_indirect_call_2`: Calls a function pointer located at an offset from a base address using two passed parameters.
 - `empty_c_function`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
 - `configure_hardware_registers`: Writes values to a global variable and calls subroutines that interact with hardware registers to manage interrupts and DMA.
@@ -599,44 +587,30 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `compute_string_length`: Walks a zero-terminated byte string from the given pointer until it reaches the terminating zero, then returns the number of bytes before that terminator.
 - `call_routine_and_return`: Calls one other routine and returns without changing any data itself.
 - `execute_callback_sequence`: A 21-instruction routine that calls other routines to store a byte from a fixed offset and write a byte to a buffer.
-- `stub_return_immediately`: The decompiled body contains only a return with no work, so the routine does nothing when called.
 - `store_and_advance_byte`: Reads a byte from a fixed offset of a base register, writes it to a pointer, and advances that pointer.
-- `store_byte_advance_pointer`: Reads one byte from a fixed offset of a base register, writes it to the location held in a pointer register, and advances that pointer by one.
 - `call_routine_across_range`: Steps from a computed start address to a computed end address in fixed steps of 22 bytes, calling another routine with each position.
 - `reset_buffer_descriptor_state`: Returns a failure value when given no descriptor.
 - `reset_buffer_descriptor_inline`: Performs the same reset as its sibling routine but reads the descriptor directly from the address register instead of an argument.
 - `write_byte_to_buffer`: Stores a handler routine in a global slot, then writes one byte into a buffer descriptor and returns it.
-- `write_byte_to_buffer_inline`: Writes one byte from a frame offset into a buffer descriptor and returns it, using the same error-flag and storage-allocation checks as its sibling.
-- `write_byte_or_clear_buffer`: Clears the buffer descriptor and returns zero when its size field is -1.
-- `write_byte_through_buffer`: Stores one byte from a frame offset into a buffer descriptor, first requesting storage through a helper when none exists.
-- `write_byte_advance_position`: Writes one byte from a frame offset into a buffer, advances the buffer position, and returns a value packing the end offset with the byte.
 - `find_free_table_entry`: Scans a table of 22-byte records from a computed base and returns the first record whose flag byte is zero, after clearing its three leading words.
 - `claim_free_entry_from_position`: Searches forward from the current record pointer through 22-byte records for one whose flag byte is zero, clears its three leading words and returns it.
 - `clear_record_header_words`: Zeroes the first two longwords and the third longword of the record referenced by the address register.
 - `initialize_buffer_record`: Initializes a buffer record passed by pointer.
-- `setup_buffer_record_direct`: Sets a record's buffer size to 1024 and marks it as allocated, then stores a pointer read from a global slot into the record's buffer field.
 - `release_all_list_nodes`: Walks a singly linked list whose head is held in a global slot, calling a helper with each node and its stored size plus eight.
 - `release_all_list_nodes_inline`: Repeats the list-release loop starting from the node in the address register, calling a helper with each node and its stored size plus eight.
 - `allocate_and_link_node`: Stores a handler routine in a global slot, then allocates a node of the requested size through a helper.
-- `push_node_onto_list`: Pushes a node onto the front of a global list, storing the previous head as the node's link and the caller's pointer in its second field.
 - `forward_low_word_argument`: Forwards the low 16 bits of its argument to another routine and then returns.
 - `remove_node_from_list`: Searches a global linked list for the node whose data area matches the argument, unlinks it when found, and passes it to a helper with its stored size plus eight before returning zero.
 - `remove_node_from_list_inline`: Searches the global list for the node matching the record in the address register, unlinks it, releases it through a helper using its size plus eight, and returns zero.
 - `unlink_node_from_list`: Removes a node from a global linked list by pointing its predecessor, or the list head, at the node's successor.
 - `pop_list_head_node`: Sets the head of a global list to the successor of the node in the address register, makes one helper call, and returns zero.
 - `invoke_table_entry_handler`: Validates a 16-bit index against a stored table count and checks that the table entry at that index is set.
-- `check_interactivity_via_table`: Retrieves a value from a table using an index and calls a routine to check if the system is interactive.
-- `stub_return_zero`: Returns zero unconditionally and does no other work.
 - `handle_io_result`: Calls another routine and, if the result is zero, calls a second routine to store its return value in a global variable before returning a specific value.
 - `return_zero`: An empty routine that simply returns zero.
 - `handle_write_error_2`: A 19-instruction routine that calls routines to check a signal mask bit and process write errors.
-- `process_write_error`: Checks a bitmask in a word, and if certain bits are set, either stores a constant in a global variable or calls another routine to handle an error.
-- `handle_write_error`: Calls a routine with three parameters and, if the result is negative one, calls another routine to store a value in a global variable before returning.
-- `stub_return_immediately_2`: Contains only a return and does nothing when called.
 - `check_signal_mask_bit`: Calls a helper with zero and a mask value, then tests the returned bits against that mask.
-- `call_and_return_zero`: Calls one other routine, ignores its result and returns zero.
 - `perform_io_operations`: Calls an output routine and a write routine before executing an indirect call through a pointer.
-- `run_optional_handler_then_call`: Calls the handler stored in a global slot when that slot is set, then calls another routine and returns.
+- `conditionally_call_resource_release`: Compares a byte from a pointer in a2 to a value in d1, and if they are not equal, calls a routine via a pointer stored at a negative offset from a4 before calling release_all_global_resources.
 - `release_all_global_resources`: Works through the global resources in turn: it calls a helper for each entry of a counted table and then for the table itself, runs an optional handler, and calls a helper on each stored pointer that is set.
 - `release_global_resources_with_supervisor`: Performs the same global sequence as its counterpart: a helper for each table entry and for the table itself, followed by the optional handler and helper calls on the stored pointers that are set.
 - `release_paired_buffers`: When a stored primary pointer is unset, it calls a helper with a second stored pointer and a size scaled by four, provided that pointer is set.
@@ -650,19 +624,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_delay`: Wrapper that calls the dos library function Delay and returns its result to the caller.
 - `call_delete_file`: Wrapper that calls the dos library function DeleteFile and returns its result to the caller.
 - `execute_indirect_function`: Fetches a pointer from a nested memory structure and executes the code located at that address.
-- `call_examine`: Wrapper that calls the dos library function Examine and returns its result to the caller.
 - `call_input`: Wrapper that calls the dos library function Input and returns its result to the caller.
 - `call_io_err`: Wrapper that calls the dos library function IoErr and returns its result to the caller.
 - `call_is_interactive`: Wrapper that calls the dos library function IsInteractive and returns its result to the caller.
 - `execute_indirect_function_pointer`: Fetches a pointer from a nested structure within a global table and executes the function located at that address.
-- `call_lock`: Wrapper that calls the dos library function Lock and returns its result to the caller.
 - `execute_indirect_function_2`: Fetches a function pointer from a nested structure within a data table and executes it.
 - `call_open`: Wrapper that calls the dos library function Open and returns its result to the caller.
 - `call_output`: Wrapper that calls the dos library function Output and returns its result to the caller.
 - `execute_indirect_function_pointer_2`: Retrieves a function pointer from a nested table structure and executes it.
-- `call_read`: Wrapper that calls the dos library function Read and returns its result to the caller.
 - `execute_indirect_call_4`: Performs an indirect call to a function pointer retrieved through multiple levels of pointer indirection.
-- `call_un_lock`: Wrapper that calls the dos library function UnLock and returns its result to the caller.
 - `execute_write_call`: Executes a function call via a pointer located at a specific offset within a data structure.
 - `call_write`: Wrapper that calls the dos library function Write and returns its result to the caller.
 - `call_library_vector_168`: Library stub: loads a library base from a global variable and calls the library function at offset minus 168 of that base, returning its result to the caller.
@@ -672,9 +642,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_414`: Calls one helper in a library at a fixed offset of minus 414 from a stored library base, passing the caller's registers.
 - `call_library_vector_414_2`: Calls a library entry at a fixed offset of minus 414 from a stored library base, passing the caller's registers.
 - `allocate_cleared_record_block`: Returns zero if an earlier check fails.
-- `allocate_cleared_frame_record`: Allocates a cleared public block of 34 bytes through a library call and returns zero if the allocation fails.
-- `initialize_record_from_frame`: Fills an existing record's type, status and pointer fields from the caller's frame, then calls a helper.
-- `forward_record_offset_pointer`: Passes the address twenty bytes past a record pointer to a helper and returns.
 - `release_cleared_record_block`: Calls a helper with the record when its pointer field at offset ten is set, marks the record's status and secondary field as unused, passes the byte at offset fifteen to a helper, and frees the 34-byte block through a library call.
 - `call_library_vector_354`: Calls a library entry at a fixed offset of minus 354 from a stored library base, passing the caller's registers.
 - `call_library_vector_330`: Calls a library entry at a fixed offset of minus 330 from a stored library base, passing the caller's registers.
@@ -727,3 +694,43 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `unpack_packbits_stream_variant`: Decodes a PackBits-style stream from a source pointer into a destination pointer while counting down a total length.
 - `tiny_clr_rts`: Small routine of 2 instructions that clears d0, then returns.
 - `rotate_eight_byte_entry_fields`: Writes the DMA control register value and decrements a frame counter.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `jump_vector_entry_2`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_3`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_4`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_5`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_6`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_7`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_8`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_9`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_10`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_11`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_12`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_13`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_4`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_5`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_14`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_15`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_6`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_16`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_7`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_17`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_18`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_8`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_19`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_20`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_21`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_22`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_23`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_9`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_24`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_10`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_25`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_11`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_26`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_12`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.

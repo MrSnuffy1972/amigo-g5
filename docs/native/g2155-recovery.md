@@ -1,0 +1,733 @@
+# Game 2155 (DeluxePacman v1.0): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/02155). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (1356304 top-level bytes in 15 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 13 raw-word lines |
+| Functions named and described | pass, 661 of 661 named (0 author symbols), 661 of 661 described (212 by rule, 10 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 3454 of 3454 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 11816 of 13715 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 368317 |
+| code | 50886 |
+| data | 937052 |
+| padding | 49 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| game.slave | 1 | 1232 | 81 |
+| PacMan | 6 | 12190 | 349 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 284 | 222 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 7 |
+
+## Cases handled
+
+- DeluxePacman_v1.0/DeluxePacman_v1.0.hdf: hard-disk image (AmigaDOS OFS, 1440 blocks): its filesystem parses and all 9 files in it are byte-identical to the extracted tree DeluxePacman_v1.0_hdf, which is recovered file by file; no block outside the filesystem holds data
+- 21 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- runtime segment an address: 207 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 7 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- none found
+
+## Functions
+
+
+### game.slave
+
+- `return_minus_one_constant`: Loads the immediate value minus one into data register d0 and returns immediately to the caller.
+- `store_base_and_jump_to_entry`: Saves the incoming a0 base pointer to a global and a5, stores a code pointer, calls two offsets off a5, then jumps through the loaded pointer.
+- `set_two_vectors_and_jump_base`: Loads a base pointer from memory, adds offsets to store two pointers at a5 offsets, calls a routine, then jumps to a5.
+- `set_a3_to_1mb_and_jump_a5`: Loads the immediate value an address into address register a3, then jumps to the address held in a5.
+- `return_a4_or_a3_minus_8`: Moves a4 into d0; if a4 is zero, moves a3 into d0 instead, then subtracts 8 from d0 and returns.
+- `read_pc_relative_word_mask_ff8f`: Loads the longword at the program-counter-relative offset 4192 into d0, masks its low word with 65423, and returns.
+- `intreq_ack_and_rte`: Tests the interrupt request register at the custom chip base, restores d0-d1, a0-a1, a5-a6 from the stack and returns from the exception.
+- `pop_intreq_vector_and_rts`: Reads the word on top of the stack, writes it to the interrupt request clear register, advances the stack pointer by two and returns.
+- `build_interrupt_frame_and_return_zero`: Makes room on the stack, copies the saved return address and a3, loads a new a3 from a nearby table, stores it, sets d0 to zero and d1 to a2, then returns.
+- `set_a1_offset_e_bit1_and_return`: Pops d1 from the stack, pushes the address of the following instruction, restores d1, sets bit 1 of the byte at offset 14 in a1, and returns.
+- `load_custom_base_and_branch`: Loads the custom chip base address into a0 and branches to the shared continuation routine, touching no other registers.
+- `deep_copy_pointer_array_with_alloc`: Copies a counted array of pointers from a0 into a newly allocated block, allocating each non-null element, freeing on failure, and returning the block or a flagged null.
+- `call_library_vector_30`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `find_node_by_name_string`: Walks a linked list from the pointer in a0, comparing each node's string at offset 10 against the string in a1, returning the matching node pointer in d0 or zero.
+- `store_d0_to_scratch_and_set_ciab_base`: Copies d0 into the scratch longword referenced by pc-relative address, then loads the CIAB base address into a6 and returns.
+- `write_scratch_to_cop2lch_and_jump_a0`: Loads the saved scratch longword into the Copper COP2LCH register, then jumps to the address held in a0.
+- `copy_a0_offset6_to_a6_800`: Reads the byte at offset 6 from the structure pointed to by a0 and stores it at offset 2048 from a6, then returns.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `check_global_equals_21000_return_4_or_1`: Loads the longword at the pc-relative global, compares it to an address, and returns 4 if equal or 1 otherwise in d0.
+- `init_two_minus2_words_and_store_pointers`: Writes the longword minus two at a3, advances a3, stores the new a3 into a4 offset 132 and a2 offsets 50 and 54, writes minus two again, clears a4 offset 386, skips the return address and returns.
+- `copy_node_offsets_to_a3`: Reads the longwords at offsets 4 and 8 of the structure pointed to by a1, and if nonzero copies the longword at offset 4 of each target into offsets 50 and 54 of a3, then pops 14 bytes and returns.
+- `walk_list_call_4d82_on_matching_nodes`: Checks the flag word at offset 16 of a1 against the library base word, then walks the linked list at a1 calling the library vector at offset -216 for nodes whose word at offset 32 has bits 8192 and 4 set, finally pushing a return trampoline and jumping.
+- `pop_eight_bytes_and_return`: Adds 8 to the stack pointer a7 and returns immediately, discarding the pushed return address and argument left by the caller.
+- `copy_word_offset_20_to_58`: If both a0 and a1 are non-null, copies the 16-bit word at offset 20 of a0 into offset 58 of a1, then returns.
+- `blend_joystick_bits_into_byte_56`: Calls the library routine at offset -84 of a6, then combines the returned byte with d0, d1 and byte 56 of a1, stores the result to byte 56 and returns it ORed with byte 22 of the pointer at 52(a1).
+- `decrement_d0_set_byte_if_nonzero`: Subtracts one from d0, sets the low byte to all ones if the result is nonzero else zero, sign-extends it to a long and returns it in d0.
+- `modify_vhp_register_on_condition`: Checks if a bit-flipped and rotated byte in d0 matches certain immediate values, and if not, writes a longword from the video or pointer register or any other register into a global variable, otherwise it returns.
+- `push_minus_one_and_branch_to_cleanup`: Pushes the immediate value minus one onto the stack and branches forward into the shared cleanup code, transferring control without returning here.
+- `restore_registers_and_reenable_interrupts`: Tests d0, and if nonzero unwinds several saved register sets from the stack, writes the saved interrupt mask back to the interrupt enable register, and returns.
+- `compute_level_offset_store_to_a2`: Reads a pointer from a pc-relative table, multiplies its first word by 1440, adds the second long, scales the sum by 60, adds the third long divided by 50, and stores the result at offset 198 of a2.
+- `update_sprite_frame_from_direction_bits`: Reads direction bits from a3, clears the frame byte at offset 31 of a1, optionally sets frame values, calls two routines through the library base, and returns the frame byte in d0.
+- `data_table_not_executable`: The bytes decode as negated word, register moves and bit operations on a1 and a3, but this is a data table referenced by a pc-relative lea, not executable code.
+- `store_bit_test_result_to_a1_offset`: Tests bit selected by byte at offset 67 of a3 against byte at pc-relative address, stores 0 or 1 to offset 32 of a1, then adds 44 to the stack pointer and returns.
+- `push_pc_relative_long_plus_offset`: Pushes the longword at the pc-relative address onto the stack, adds a large immediate offset to that pushed value, and returns.
+- `push_pc_relative_long_plus_other_offset`: Pushes the longword at the pc-relative address onto the stack, adds a different large immediate offset to the pushed value, and returns.
+- `toggle_bit_and_advance_counter`: Clears a bit indexed by byte at offset 67 of a3 in the byte at the pc-relative table, and if it was set, sets bit 1 of byte at offset 64 of a3, increments the long at offset 294 of a3 and calls a routine.
+- `load_d1_and_jump_to_103c`: Loads the immediate value 65537 into d1 and branches unconditionally to the code at offset 103c, transferring control without returning.
+- `read_indexed_byte_into_d1`: Tests d2 and, if non-negative, loads the byte at a0 indexed by d2 into d3 and copies d3 into d1 before returning; negative d2 leaves d1 unchanged.
+- `set_d1_118_jump_to_103c`: Loads the immediate value 280 into d1 and branches unconditionally to the code at address 103c.
+- `clear_a1_offset_c_store_a4_pointer`: Clears the longword at offset 12 of a1, loads 12 into d4, stores a4 into a pc-relative slot, then returns.
+- `zero_filled_data_area`: A single zero word that decodes as ori.b with immediate zero; this is zero-filled data referenced by address, not executable code.
+- `dispatch_or_restore_regs_via_a5`: Compares a4 with a nearby pc-relative value; if unequal jumps through the pointer at offset minus twelve of a5, otherwise saves all registers, reads a longword from a1, optionally calls a subroutine when d1 is nonzero, restores registers and jumps through a6.
+- `store_self_pointer_and_return_d1`: Loads a pc-relative address into a3, writes a3 into memory at offset minus two hundred twelve from a3, loads another pc-relative address into a3 and copies it to d1 before returning.
+- `open_dos_library_and_init_struct`: Copies a name string into allocated memory, opens dos.library, looks up a symbol, fills a forty-four byte structure with library base, node pointers and shifted addresses, then links it into a list and returns the structure pointer in d0.
+- `open_whdload_and_start_game_task`: Allocates 68 bytes of chip memory, sets bit 4 of the memory attributes, opens expansion.library and whdload.device, creates a message port and task, then sends the startup message to the device.
+- `open_dos_and_jump_to_entry`: Opens dos.library via the library vector, loads the returned structure's field at offset 22 into a0 and jumps to that address.
+- `game_task_message_loop`: Opens dos.library, builds a DOS packet on the stack, sends it to the task's port, waits for replies and dispatches on the reply type until it returns.
+- `find_entity_by_type_and_clear`: Calls three helper routines passing d7 as the search key, then shifts the returned d0 right by two and branches to the shared exit if the result is nonzero.
+- `lookup_entity_then_return_minus_one`: Calls a helper with d7 in d0, calls another helper, then loads minus one into d0 and branches to the shared exit path.
+- `resolve_entity_and_invoke_methods`: Looks up an entity from d7, checks its field at offset 28, calls a method through a2 offset 124 or 88, then calls a helper with d7 and returns minus one in d0.
+- `copy_d7_to_d0_call_e74_clear_d0`: Moves d7 into d0, calls the routine at e74, then sets d0 to zero and d1 to 39 before complementing d1 and branching to 8a0.
+- `load_level_data_or_copy_whdload_name`: Calls two setup routines, then either copies 57 longs from the structure at a0 into d7 or calls the a2 offset 120 function and copies a string to d7 plus 8, finally storing -1 and branching to 8a4.
+- `copy_d7_clear_offsets_and_branch`: Calls the routine at dc6, invokes the a2 offset 124 function with d7, then clears the 8-byte and 144-byte areas at d7 before branching to 8a0.
+- `copy_audio_buffer_with_ring_wrap`: Advances the audio stream position, copies up to the requested bytes from the sample buffer into the output buffer, handling the ring buffer wrap and allocating a buffer via library call when needed, then returns the copied count.
+- `write_audio_bytes_into_ring_buffer`: Adds the requested byte count to the stream position, updates the high-water mark, and copies bytes into the ring buffer at the current write offset, wrapping at the buffer boundary and flushing via the audio device.
+- `flush_audio_segment_and_restart_stream`: Loads the remaining byte count and stream offset into d0 and d1, calls the audio device write routine with the buffer pointers, then returns the requested length and jumps back into the main stream loop.
+- `set_d2_minus_two_and_branch`: Loads the immediate value minus two into data register d2 and branches unconditionally into the following routine.
+- `open_file_and_store_handle`: Calls several helper routines with d7 as argument, tests the returned longword, and on success stores it at offset 36 of the structure pointed to by a0 before returning minus one.
+- `open_file_via_dos_and_chain`: Calls helpers to open a file using d7, invokes a library routine through a2 and a6, then branches into the routine that stores the resulting handle.
+- `release_sound_channel_and_restart`: Loads the sound structure from offset 20 of a4, checks the word at offset 256; if nonzero it reads offset 252, loads the pointer at offset 260 and the object at offset 4, calls through offset 56 of a2, then reloads the structure and calls the restart routine before returning minus one in d0.
+- `accumulate_velocity_into_d2`: Loads the structure pointer from offset 20 of a4, copies the longs at offsets 24 and 28 of a4 into d2 and d1, and if d1 is positive adds the long at offset 148 of the structure to d2.
+- `add_and_clamp_position_delta`: Adds the long at offset 20 of a0 to d2, compares the result with the long at offset 148 of a0, and if not higher stores d2 into offset 20 of a0, clears d1 and branches to the shared exit.
+- `set_d0_ff_and_d1_e4_branch`: Loads d0 with minus one and d1 with thirty-six, complements the low byte of d1 to two hundred nineteen, then branches to another routine.
+- `load_a4_offset_20_shifted_left_two`: Reads the longword at offset twenty from a4 into d7, shifts d7 left by two bits, and returns to the caller.
+- `load_a4_offset_24_shifted_left_two`: Reads the longword at offset twenty-four from a4 into d7, shifts d7 left by two bits, and returns to the caller.
+- `get_shifted_a4_offset_field`: Loads the longword at offset 28 from a4, shifts it left by two bits into d7, and returns it.
+- `shift_bytes_and_store_length`: Shifts bytes in the a0 buffer one position forward until a zero byte, then writes the byte count just before the buffer start.
+- `open_allocate_and_init_file_handle`: Opens a file via dos.library, allocates a 264-byte handle, initializes fields from d2, a5 and a3, and returns the handle in d0 or zero on failure.
+- `close_file_and_free_buffer`: If d0 holds a file handle, saves its buffer pointer and length, closes the file via the dos library, frees the buffer, then closes the handle again and returns.
+- `build_whdload_path_from_args`: Combines the executable path in d0 with the argument string in d1, allocating memory and copying both separated by a slash, trimming trailing slashes and returning the path in d0 or an error code.
+- `check_whdboot_files_present`: Tests for the presence of the WHDBoot.exe and WHDBoot.ss files by calling the file check routine twice, returning zero if both exist or the failing result otherwise.
+- `compare_null_terminated_strings`: Saves a0 on the stack, compares bytes at a0 and a1 until a mismatch or a zero byte, then restores a0 and returns.
+- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `push_pcrel_long_plus_32`: Pushes the longword stored at a program-counter-relative location onto the stack, adds 32 to it, and returns the adjusted value on the stack.
+- `open_pacman_library_and_patch_vector`: Saves registers, opens the Pacman library, allocates a buffer, loads a file, patches a jump vector with a new entry, then jumps to the library entry.
+- `restore_all_regs_and_set_a5_frame`: Pops d0-d7 and a0-a6 from the stack, loads the return address into d0, and copies a0 into a5 as the frame pointer.
+- `patch_rom_vectors_and_clear_flags`: Checks two longwords at offsets 4062 and 4232 in the structure pointed to by d0, replaces matching values with nops and installs a handler at the trap vector, then follows two pointer indirections and clears seven flag fields from value 3 to 0.
+- `vblank_interrupt_return_check_a3`: Compares a3 against the custom chip base, and if different loads d5 from the word before a3, then returns from the interrupt.
+- `zero_filled_data_block_12e`: Twelve consecutive zero words that decode as ori.b #0,d0; this is a zero-filled data area referenced by address, not executable code.
+- `zero_filled_data_word_12ce`: A single zero word that decodes as ori.b #0,d0; this is a zero-filled data area referenced by address, not executable code.
+- `match_command_name_and_jump_table`: Skips colon and slash bytes in a string, sums stack frame sizes, compares the uppercased name against a table of length-prefixed entries, and jumps through a library vector when a match is found.
+
+### PacMan
+
+- `open_dos_and_run_game_main`: Saves d0/a0, clears the global message pointer, opens dos.library via exec, checks the current directory, then calls the main game routine and cleans up the message port before returning.
+- `pacman_game_main_loop_setup`: Saves all registers to global storage, initializes game state, score and level variables, sets DMA and copper registers, then runs the main Pacman game loop calling many subroutines.
+- `branch_to_cleanup_then_call_and_set_flag`: Branches forward to the cleanup code, otherwise calls a subroutine and writes minus one to a global word before continuing.
+- `shutdown_game_and_permit_os`: Calls several teardown routines, releases the exec library with Permit, clears the CIAA fire-button bit, conditionally calls another routine, restores all registers from a table and returns zero in d0.
+- `silence_audio_channels_and_jump`: Points a5 at the custom chip base, clears the four audio volume registers, enables the audio DMA bits in DMACON, calls a sound routine and branches to another routine.
+- `play_selected_sound_and_alloc_memory`: Reads a signed word selector, indexes a pointer table to pick a sound, plays it via a helper, then calls the exec memory allocator for 100 bytes and returns.
+- `pacman_data_table_160_words`: A block of 160 data words decoded as no-op ori.b instructions; it is a data table referenced by address, not executable code, and changes no registers.
+- `pacman_data_table_80_words`: A block of 80 data words decoded as no-op ori.b instructions; it is a data table referenced by address, not executable code, and changes no registers.
+- `pacman_data_table_160_words_alt`: A second block of 160 data words decoded as no-op ori.b instructions; it is a data table referenced by address, not executable code, and changes no registers.
+- `pacman_data_table_at_2f5c`: Eighty words of zero and small data decoded as ori.b instructions to d0; this is a data table referenced by address, not executable code.
+- `pacman_zero_word_data_table`: Eighty consecutive ori.b zero instructions to data registers that change nothing; the bytes are a data table referenced by address, not executable code.
+- `pacman_data_table_at_31dc`: Fifty-five words of zero and small data decoded as ori.b instructions to d0; this is a data table referenced by address, not executable code.
+- `zero_filled_data_block_a`: Six zero words that decode as ori.b #0,d0; this is a zero-filled data area referenced by address, not executable code.
+- `zero_filled_data_block_b`: Six zero words that decode as ori.b #0,d0; this is a second zero-filled data area referenced by address, not executable code.
+- `lookup_tile_and_sprite_offsets`: Saves d2 and a6, uses d4 to index a word table and d3 to index a byte table, adds the byte to d4, loads a word from a third table into d3, then restores registers and returns.
+- `tile_lookup_from_row_and_column`: Saves d2 and a6, reads a word from a table indexed by doubled d4 into d4, adds a byte from a second table indexed by d3, then loads a byte from a third table indexed by d3 into d3, masks it to eight bits and restores registers.
+- `tilemap_offset_from_row_and_column`: Saves d2 and a6, multiplies d4 by forty to get a row offset, adds d3 shifted right three bits, masks d3 to the low three bits and restores registers, returning the byte offset in d4.
+- `clear_eight_sprite_slots`: Loads a base pointer, then for eight slots writes minus two to offset eight, clears the longwords at offsets twenty-four, twenty-eight and twenty, advances the pointer by thirty-six bytes each iteration and returns.
+- `blit_playfield_sprites_and_ready_text`: Waits for the blitter, programs BLTCON0, BLTAFWM, BLTAMOD and BLTDPTH, then blits playfield and sprite blocks and decrements the ready counter, returning after the last blit.
+- `increment_counter_call_and_clear`: Adds one to the word at a fixed global, calls the routine at a fixed address, then clears that global word and returns.
+- `copy_demo_text_and_sync_buffers`: Checks demo flags, draws the demo text via the text routine, then copies up to 10000 longwords from one buffer to the other, skipping equal entries, and returns.
+- `wait_vblank_then_init_sprite_entries`: Polls the DMACONR vertical-blank bit until clear, zeroes d3 and d4, loads sprite table pointers into a1 and a4, then branches to the sprite setup code.
+- `clear_sprite_buffer_block`: Loads the sprite buffer base from memory into a0, sets d7 to 1799, clears 1800 bytes via post-increment writes with dbra, then returns.
+- `run_level_setup_sequence`: Calls a series of setup routines, clears two word flags in memory, then invokes further routines to initialize the level and returns.
+- `increment_two_globals_and_jump`: Loads the address of a global counter pair into a0, increments the word at that address and the word four bytes later, then jumps to another routine.
+- `compute_tile_index_and_set_mode`: Reads two global words, multiplies one by the other plus forty-nine, adds a second global, compares the result against thresholds and stores a mode value of one, two or three into two memory words.
+- `set_bit_zero_in_d1`: ORs the immediate value one into the low byte of d1, setting bit zero, then falls through into the following code.
+- `init_level_and_run_animation_loop`: Calls setup routines for objects 27-29, reads level and tile values into the level pointer, then loops 8 or 11 times swapping sprite pointers and calling the animation step.
+- `zero_filled_data_area_2`: This single zero word decodes as ori.b #0,d0; it is a zero-filled data area referenced by address, not executable code.
+- `blit_tilemap_rows_to_bitmap`: Saves registers, then for 124 rows and 20 columns reads tile indices from a4 and writes looked-up words into a5 bitmap rows, advancing pointers and returning.
+- `blit_playfield_tiles_by_level`: Waits for blitter idle, then copies a level-specific tilemap through a lookup table into the playfield buffer, duplicating rows and columns for the current level index.
+- `build_bitplane_expansion_tables`: Fills eight lookup tables with precomputed bit-expansion words and bytes, converting each index into spread bit patterns for the blitter.
+- `setup_blitter_copy_from_a1`: Waits for the blitter to finish, clears blitter data and modulo registers, loads the source pointer from a1, and programs a copy blit with all ones mask.
+- `setup_sprite_and_play_sound`: Calls a subroutine, loads sprite dimensions into d3 and d4, selects a sprite descriptor based on a flag byte, sets up a1, calls two routines and jumps to another.
+- `zero_filled_data_area_3`: Four zero words that decode as ori.b #0,d0; this range is a zero-filled data area referenced by pointers, not executable code.
+- `build_sprite_descriptors_from_table`: Saves registers, reads a sprite table via a4, computes positions from d0 and d6, fills hardware sprite descriptor fields at offsets in a6, waits on DMACONR bits and restores registers.
+- `open_pacman_preferences_write_mode`: Stores 32 in the preferences word, then if the preferences flag is clear opens the PACMAN.PREFERENCES file in write mode and writes the 32-byte preferences block before closing it.
+- `open_pacman_preferences_read_mode`: Opens the PACMAN.PREFERENCES file in read mode, saves the file handle, reads the preferences block into the preferences buffer and closes the file.
+- `open_pacman_preferences_append_mode`: If the preferences flag is clear, opens PACMAN.PREFERENCES in append mode, saves the handle, appends the preferences block and closes the file.
+- `open_prefs_and_show_dpacman`: Loads two string pointers and a library base into a0, a1 and a2, sets d0 and d1 to one, then calls the nonvolatile library function through a6 and returns.
+- `open_input_device_and_send_io`: If the input-active flag is zero, sets a flag, opens the input device, fills an IO request with command nine and a data pointer, increments the flag and sends the request.
+- `close_input_device_and_remport`: Returns immediately if the input-active flag is zero; otherwise advances a counter, sends a command ten request, closes the input device, clears the flag and removes the port.
+- `forbid_and_scan_object_list`: Saves registers, calls exec Forbid, checks a flag and a pointer, then walks a linked list marking entries with byte 1 as 6, decrements a counter and returns the list head in d0.
+- `permit_and_mark_entity_type`: Sets a countdown to 2, marks the a0 entity as type 6, walks the linked list to the next entry, decrements the countdown and calls exec.Permit before returning.
+- `zero_filled_data_word`: A single zero word that decodes as ori.b #0,d0; it is zero-filled data referenced by address, not executable code.
+- `init_sprite_dma_control_blocks`: Saves all registers, then fills five sprite control blocks in chip memory with control words, data pointers and fixed heights, and enables sprite DMA via DMACON before restoring registers and returning.
+- `dispatch_pacman_animation_flags`: Saves registers, checks a global flag and that d0 is below fifty, indexes a per-entity table by d0 times ninety-eight, then calls the animation step for each set bit in the entity status byte.
+- `step_animation_if_lowest_flag_set`: Tests bit zero of the status byte at offset twenty-nine of the entity pointed to by a1, calls the animation step routine when set, then restores all registers and returns.
+- `check_four_ghost_slots_available`: Loads four ghost slot structures in turn, calls the availability test and the setup routine on each, stopping early if any test fails, then returns.
+- `test_ghost_slot_second_word_zero`: Reads the word at offset two of the a5 structure into d0 and returns one if it is zero, otherwise returns zero.
+- `activate_ghost_from_source_record`: Compares the source record's word at offset twenty with the a5 limit, copies position and sprite fields into the a5 structure, and either copies two sprite blocks or calls the sprite setup routine.
+- `init_level_map_and_clear_cell`: Loads the level map pointer and a fixed destination into a0 and a1, zeroes d0, d1 and d5, calls the map decoder, then stores d5 into two adjacent bytes at fixed memory.
+- `decode_map_text_into_tile_grid`: Walks a text map pointed to by a0, converts characters to tile indices, XORs each tile against the destination grid at a1 offset by row stride, accumulating differences in d5 and advancing rows on newlines.
+- `skip_to_next_map_row_delimiter`: Scans bytes from a0 counting characters in d3 until a comma, zero or newline is found, then adds the count to d0 and increments d1 when the row exceeds thirty-six columns.
+- `init_four_sprite_structures`: Loads four program-relative addresses into a5 in turn and calls the same setup routine for each, then returns.
+- `update_sprite_position_and_dma`: Reads a sprite structure through a5, updates its position fields and animation counters, clamps coordinates, and writes the sprite pointer to DMACON before clearing the structure pointer.
+- `allocate_five_sprite_buffers`: Saves registers, allocates a block of memory, stores five buffer pointers spaced sixty-four bytes apart, restores registers and returns zero on success or minus one on failure.
+- `zero_filled_data_word_at_4b38`: A single zero word that decodes as ori.b with immediate zero to d0; it is zero-filled data referenced by address, not executable code.
+- `free_sound_buffer_and_clear_pointer`: Saves all registers, checks the sound buffer pointer at a fixed pc-relative longword, and if non-zero calls exec FreeMem with size 640 and clears that pointer before restoring registers.
+- `zero_filled_data_area_18`: A single zero word that decodes as ori.b #0,d0; this address is a zero-filled data area referenced by other code, not an executable routine.
+- `wait_two_vertical_beam_ticks`: Loads the custom chip base into a2, stores d0 into DMACON, then reads VHPOSR twice and subtracts the two low bytes into d6, branching away if the difference is at least 8.
+- `set_audio_channels_from_mask`: Writes d0 to DMACON, waits for two vertical beam ticks, then for each set bit in d0 loads a0, d2, d3 and d4 into that audio channel's location, length, period and volume registers before enabling DMA.
+- `install_sprite_ptrs_from_bitmask`: Reads a byte from offset 6 of a2, compares it against itself, then for each set bit in d0 stores the sprite pointer and value 2 into four a2-relative slots and saves d0 at offset 150.
+- `add_intserver_and_increment_counter`: Saves all registers, calls exec AddIntServer for interrupt level 5 with a server structure, calls a setup routine, increments the long counter at 4cf0, restores registers and returns.
+- `rem_intserver_and_clear_counter`: Saves all registers, calls exec RemIntServer for interrupt level 5 with the server structure, calls a teardown routine, clears the word counter at 4cf0, restores registers and returns.
+- `vblank_joy0_mouse_and_timer_tick`: Saves registers, clears a flag, latches JOY0DAT mouse movement into shadow words, optionally pulses a hardware register and calls a routine, decrements three timers and a frame counter, increments two counters, returns minus one in d0.
+- `zero_fill_data_words_4dc4`: Two zero words that decode as ori.b immediate instructions on d5 and d0; this is zero-filled data, not executable code.
+- `zero_fill_data_words_4dcc`: Two words of zero-filled data that decode as ori.b immediate instructions on d0; not executable code.
+- `zero_fill_data_word_4dd4`: A single zero word that decodes as ori.b immediate on d0; this is a zero-filled data area referenced by address, not code.
+- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
+- `zero_filled_data_word_at_4ddc`: A single zero word decoding as ori.b immediate zero to d0; this is zero-filled data pointed to by many callers, not real code.
+- `zero_filled_data_word_at_4de0`: A single zero word that decodes as ori.b with zero immediate to d0; it is zero-filled data referenced by address, not executable code.
+- `zero_filled_data_word_first`: A single zero word that decodes as ori.b with immediate zero; it is data referenced by address, not executable code.
+- `zero_filled_data_word_second`: The next zero word in the same zero-filled data area, referenced by address; the bytes are data, not code.
+- `zero_filled_data_word_third`: A third consecutive zero word in the zero-filled data region, pointed to by handler pointers; it is data, not executable code.
+- `zero_filled_data_word_at_4df0`: A single zero word that decodes as ori.b with immediate zero to d0; it is data referenced by address, not executable code.
+- `zero_filled_data_word_at_4df4`: Another zero word in the same zero-filled data area, decoded as ori.b immediate zero to d0; referenced by address, not real code.
+- `zero_filled_data_word_at_4df8`: A third zero word of the zero-filled data region, decoding as ori.b immediate zero to d0; it is data, not an executable routine.
+- `zero_filled_data_word_at_4dfc`: This single zero word decodes as ori.b #0,d0 but is a zero-filled data area referenced by address, not executable code.
+- `zero_word_data_at_4e00`: One zero word at this offset, decoded as ori.b #0,d0; the bytes are padding data pointed to by handler pointers, not code.
+- `zero_word_data_at_4e04`: A lone zero word here reads as ori.b #0,d0; it is part of a zero-filled data area whose address is taken by several routines.
+- `clear_d0_register`: Sets the lower byte of d0 to zero.
+- `zero_word_data_at_4e0c`: One zero word at this address, decoding as ori.b immediate zero to d0; the bytes are filler data pointed to by handler pointers, not real code.
+- `zero_word_data_at_4e10`: This location holds a lone zero word that decodes as ori.b with zero immediate to d0; it is part of a zero-filled data area, not a routine.
+- `zero_filled_data_area_19`: This single zero word decodes as an ori.b immediate instruction, so the bytes are zero-filled data referenced by address, not executable code.
+- `zero_word_data_at_4e18`: A single zero word that decodes as ori.b #0,d0; it is zero-filled data referenced by many pointers, not executable code.
+- `clear_flag_word_and_test_zero`: Clears the long-addressed word at 4dd4, loads that same word into d0 via pc-relative addressing, and branches if it is zero.
+- `toggle_pacman_sprite_frame_table`: Flips a byte flag and, depending on its new value, copies one of two sets of ten word pairs into the sprite table at the address in a0.
+- `accumulate_d0_and_alloc_mem`: Adds d0 to a running total in memory, loads the exec library base from address 4 into a6 and calls AllocMem, leaving the result in d0.
+- `sum_words_until_zero_terminator`: Walks a zero-terminated list of longword offsets from a0, adding each pointed-to value into d0 until a null entry is reached.
+- `pop_a0_and_return`: Pops a longword from the stack into a0 and returns immediately to the caller; it is an empty routine that only restores a0.
+- `iterate_chunk_list_copy_blocks`: Saves all registers, walks a linked list of chunks in a0, copying each block to the destination in a1 via two helper calls, then restores registers and returns.
+- `decompress_bitstream_to_buffer`: Saves registers, decodes a variable-length bitstream from a0 using two lookup tables, copying bytes into the buffer at a1 until it reaches the limit in d4, then restores and returns.
+- `run_attract_mode_and_high_score_screen`: Saves and clears a flag, sets up sprite pointers, enables bitplane DMA, draws the title and high-score text, scans the high-score table for a matching checksum and copies the score screen into the display buffer.
+- `setup_blitter_pointers`: Loads the address of a certain data location into a1, calls a routine, loads the address of another data location into a1, and then branches to that same routine.
+- `draw_six_score_digit_groups`: Saves all registers, selects the score display base, then draws six digit groups with widths 80, 60, 30, 10, 8 and 1 from successive source tables and restores the registers.
+- `draw_two_tile_objects_loop`: Repeats d7+1 times: loads object type 300 into d0, calls the draw routine, stores the result in d3, loads type 222 into d0, calls the draw routine again, stores the result in d4, then calls another routine before decrementing d7.
+- `clear_state_and_draw_three_objects`: Saves all registers, clears a longword in memory, calls a setup routine, then draws three objects using a0 pointers and counts 26, 7 and 6, accumulating d7 into d6, and repeats until d7 becomes zero.
+- `draw_object_32_until_d7_zero`: Loads 32 into d0 and calls the draw routine, then tests d7 and branches back to repeat the call until d7 is zero, finally returning to the caller.
+- `fill_eleven_tiles_at_0142`: Loops eleven times, each time loading the address at memory location 322 into a0 and calling the tile fill routine with d0 set to 32, then returns.
+- `save_regs_fill_tiles_until_d7_zero`: Saves all registers, fills tiles at the address stored at location 322 with count 32, repeats while d7 is nonzero, then restores registers and returns.
+- `two_stage_tile_fill_with_wait`: Saves all registers, fills 32 tiles at location 322 from two source tables, calls the wait routine with 1 then 2, repeating while d7 is nonzero, then restores registers and returns.
+- `step_packed_bcd_toward_target`: For each of d0 words, compares the packed value at a0 with the target at a1 and adjusts each nibble group one step toward it, writing back to a0 and advancing a1 by two bytes.
+- `decrement_packed_bcd_values`: For each of d0 words, subtracts one from each nonzero nibble group of the packed value at a0, writes the result back and advances a0 by four bytes.
+- `animate_score_digits_toward_target`: Clears a counter, calls the setup routine, then repeatedly steps digit tables toward target values and delays, doubling d7 each pass until it reaches zero.
+- `store_pacman_position_words`: Adds the program-counter-relative long offset to a1, loads a0 with the fixed base 1344, then writes the low word of the sum to offset 354 and the high word to offset 350 of that base.
+- `single_ori_byte_data_byte`: Contains only one instruction, ori.b with immediate 1 on d0; it is a data byte reached by address, not a callable routine.
+- `zero_filled_data_area_4`: Three zero words that decode as ori.b with immediate zero on d0; this is a zero-filled data area referenced by address, not executable code.
+- `init_player_start_positions`: Computes player start offset from level index, stores it, calls two setup routines, writes space and asterisk markers into two tile buffers at computed offsets, then sets a countdown word to 50 and returns -1 in d0.
+- `clear_and_verify_rom_checksum`: Clears a large buffer at a1, calls a setup routine, sums words from a table comparing against zero, and on mismatch writes a marker and copies a block of bytes into the buffer followed by zero fill.
+- `draw_two_player_sprites`: Saves registers, stores a0 in a global, calls setup and draw routines twice for two sprite objects, checks a flag byte and conditionally draws again before restoring registers and returning.
+- `zero_filled_data_word_at_5b24`: A single zero word that decodes as ori.b with zero immediate; it is zero-filled data referenced by address, not executable code.
+- `poll_fire_button_and_credit_state`: Saves all registers, reads CIAA_PRA fire bit and game state words, calls input and credit routines, and returns zero or minus one in d0 depending on the button and state checks.
+- `zero_filled_data_word_at_5bd6`: A single zero word that decodes as ori.b with zero immediate; it is zero-filled data used as a state variable by address, not executable code.
+- `randomize_divisor_from_vhpos`: Saves d2, reads the vertical/horizontal position register, subtracts it from a running seed, rotates it, adds it back to the seed, then divides d0 by that value and masks the swapped quotient with a constant.
+- `fill_eight_copper_entries`: Saves all registers, then writes eight pairs of values into consecutive eight-byte slots starting at the copper list area, storing a fixed word and a swapped word in each entry.
+- `start_copper_list`: Points the copper at a new copper list by writing its address to COP1LC, then returns.
+- `beginner_level_setup_sequence`: Runs the level init calls, copies sprite pointers into the copper list, draws the maze, sets the level counter, and when it wraps reloads the copper list and DMACON before the next round.
+- `copy_memory_block_forward`: Copies a block of bytes or longwords from the address in a0 to the address in a1, using d0 as the byte count and d1 as the row count, then restores all registers and returns.
+- `init_sprite_positions_and_draw_level_text`: Copies five sprite pointer pairs into the sprite table, draws two text strings, then draws nine rows of tiles and increments a counter word.
+- `blit_maze_rows_to_screen`: Loops 46 times, calling the row blit routine on screen and buffer addresses, advancing the destination by 400 bytes and the source row, then waits for the blitter.
+- `setup_sprite_descriptors_and_scroll`: Saves d6-d7/a0-a1, waits while bit 6 of a6+2 is set, stores a0+12 and a1+12 into a6+80 and a6+84, writes constants to a6+100, a6+64 and a6+68, and stores d6*5*64+8 into a6+88.
+- `run_script_with_5c_count`: Saves all registers, loads d3 with 92, points a1 at a nearby table and a4 at another table, calls the routine at 16648, then restores all registers and returns.
+- `update_two_counters_via_callbacks`: Reads a word flag; if clear, zeroes two counters, optionally calls two callback pointers depending on another flag, and increments the counters when the callbacks return nonzero.
+- `find_highscore_slot_and_update`: Scans a table of 20-byte entries for the first whose score field is below d7, then calls the shift and display routines and stores d7 in that entry's score field.
+- `shift_highscore_table_down`: Copies 20-byte highscore entries downward from the table end toward the entry in a0, using d7 as a byte counter, then restores all registers and returns.
+- `highscore_name_entry_loop`: Runs an interactive loop reading input, editing a three-character name buffer with cursor position, and redrawing the highscore display until entry is confirmed.
+- `zero_filled_data_area_5`: A single zero word that decodes as ori.b #0,d0; this is zero-filled data referenced by address, not executable code.
+- `draw_pacman_title_and_score_text`: Saves all registers, calls a setup routine, then draws two text strings at screen positions using the text drawing routine, choosing the second string based on a flag word.
+- `draw_single_text_string_at_position`: Saves all registers, calls a setup routine, then draws one text string at the given screen coordinates via the text drawing routine before restoring registers and returning.
+- `draw_five_rows_at_x_92`: Sets d3 to 92 and d4 to 120, then calls the blitter routine five times with a1 pointing at a table and a4 at a base, adding 2 to d4 each pass.
+- `draw_forty_seven_rows_then_final_blit`: Calls the blitter routine forty-seven times with d4 starting at 72 and stepping by 2, then does one final blit using a1 from a second table.
+- `format_number_into_buffer_via_conversion`: Saves all registers, stores d6 plus 48 and d0 into globals, calls the conversion routine, then copies the resulting string bytes into the buffer at a4 until a zero byte.
+- `call_raw_do_fmt`: Library stub: loads its arguments and the exec library base, calls RawDoFmt and returns its result to the caller.
+- `store_byte_to_a3_postincrement`: Writes the low byte of d0 to the memory pointed to by a3, then increments a3 by one and returns to the caller.
+- `store_word_to_4dca_and_wait_zero`: Stores the low word of d0 at absolute address 4dca, then tests that word and branches back until it reads zero before returning.
+- `fill_key_buffer_with_vhpos_seed`: Seeds a byte from VHPOSR into d0, fills 321 bytes at the buffer with that value, then opens PACMAN.KEY, reads 2884 bytes into the second buffer and closes the file.
+- `draw_multiline_text_advance_rows`: Saves all registers, reads characters from the string at a0, and for each non-newline character calls the glyph draw routine at successive x positions, resetting x and advancing the row offset by 320 bytes on each newline.
+- `draw_character_glyph_to_bitmap`: Saves registers, maps the character in d2 to a glyph index (letters, digits, space, and punctuation), then copies seven bytes spaced 40 apart from the font table into the destination bitmap at a1 plus d0 and d1 offsets.
+- `draw_text_advance_eight_pixels`: Saves registers, reads characters from the string at a0, and for each non-newline character calls the glyph draw routine while advancing the x coordinate in d3 by 8 pixels, resetting x and adding a row offset on newline.
+- `decode_key_to_pacman_direction`: Saves all registers, maps the low byte of d2 from a key code to a direction index, updates the two direction accumulators and the direction flag, calls the movement routine, then restores registers and returns.
+- `checksum_rom_and_read_keyboard`: If a counter is zero, sums 721 longwords from memory, compares a checksum byte, sets a flag and increments the counter; then reads the CIAA keyboard serial register, bit-reverses it and stores the result.
+- `zero_filled_data_area_6`: Two zero words that decode as ori.b instructions; this is a zero-filled data area referenced by address, not executable code.
+- `check_pacman_near_ghost`: Scans four ghost records 100 bytes apart, skipping any with status bits 4, 1 or 3 set, and returns -1 if one is within 8 pixels horizontally and vertically of the player and a flag is zero, else 0.
+- `compute_score_times_ten`: Saves d1 and a5-a6, calls a routine with 500 in d0, increments the result, multiplies it by 10 into d2, then branches into another routine.
+- `award_extra_life_and_reset_ghost`: On reaching 1600 points adds bonuses, scales the score, calls several routines, clears ghost status bits 7, 1 and 6, sets bit 4 and stores 4 in the ghost state word.
+- `zero_word_data_slot_6940`: A single zero word at this address decodes as ori.b with zero immediate; it is zero-filled data referenced by pointer, not executable code.
+- `zero_fill_data_word_at_6944`: One zero word in the zero-filled data area, decoded as ori.b #0,d0; referenced by address from several routines but never executed.
+- `zero_fill_data_word_at_6948`: Another zero word of the zero-filled data region, decoding as ori.b #0,d0; it is data pointed to by address, not a real instruction.
+- `zero_filled_data_area_7`: A single zero word that decodes as ori.b #0,d0; this range is zero-filled data referenced by address, not executable code.
+- `init_four_ghost_actors`: Calls setup, then for four actor records clears state bits, sets the active flag and timer, computes a speed value into globals, and draws each actor.
+- `compose_and_clear_playfield_bitplanes`: ORs five bitplane rows into the destination buffer for 247 rows, fills a small block with ones, then zeroes a table and a flag.
+- `clear_playfield_state_block`: Loads the address of a state block into a0, clears 112 longwords in a loop using dbra on d7, then clears one more longword at a second address and returns.
+- `data_table_28_words`: Twenty-eight zero data words referenced by address from four callers; decoded as ori.b instructions they change nothing, so this is a data table, not executable code.
+- `data_table_112_words`: One hundred twelve zero data words referenced by address from two callers; decoded as ori.b instructions they change nothing, so this is a data table, not executable code.
+- `zero_word_data_slot_6ca2`: This one-instruction range is a zero word used as a data pointer target by three callers; the bytes are padding data, not code.
+- `probe_four_tile_collision_flags`: Saves registers, reads the tile map pointer, tests four offset positions against a bitmask table, and sets bits in d7 for each blocked direction before restoring registers and returning.
+- `zero_fill_data_words_at_6d44`: Three consecutive zero words decoding as ori.b #0,d0; this is zero-filled data pointed to by address, not executable code.
+- `set_bit_one_in_d1`: ORs the immediate value 1 into the low byte of data register d1, setting bit 0, then falls through into the following routine.
+- `pacman_try_four_direction_moves`: Saves registers, reads a tile from the table at a4 indexed by the packed position, then tries four movement checks in turn, returning after the first that succeeds or adjusting d2-d5 by the speed at offset 86 of a6.
+- `check_left_tile_for_wall`: Compares d3 with d0 and, if equal, walks left through the tile table at a4 by subtracting 16 from d2, stopping at a wall bit or when d1 reaches d4, then returns d6 as zero or one.
+- `scan_right_for_wall_bit4`: Compares d4 with d1; if equal, walks d0 upward while d7 bit 4 is clear, incrementing d2 and reading bytes from a4, returning 0 or 1 in d6.
+- `scan_down_for_wall_bit1`: Compares d3 with d0; if equal, walks d1 upward while d7 bit 1 is clear, adding 16 to d2 and reading bytes from a4, returning 0 or 1 in d6.
+- `scan_left_for_wall_bit8`: Compares d4 with d1; if equal, walks d0 downward while d7 bit 8 is clear, decrementing d2 and reading bytes from a4, returning 0 or 1 in d6.
+- `pacman_data_table_17_words`: Seventeen zero data words referenced by address from other code; the bytes are a data table, not executable instructions, and nothing is cleared or called.
+- `pacman_data_table_280_words`: A block of 280 zero data words reached by program-counter-relative address loads; the bytes are table data, not working code, and no registers change.
+- `pacman_data_table_210_words`: A block of 210 zero data words whose address is taken by three callers; the bytes are data, not executable code, and no hardware is touched.
+- `build_division_lookup_tables`: Fills two tables with quotient and remainder pairs: 280 entries divided by 30, then 210 entries divided by the divisor stored at a fixed longword address.
+- `spawn_sprite_with_digit_bitmap`: Finds a free 36-byte slot, stores position and velocity, clears a 150-byte bitmap, then draws the decimal digits of d0 as 5-row nibble glyphs into it.
+- `zero_filled_data_area_8`: Five consecutive zero words that decode as ori.b instructions; this is a zero-filled data area referenced by address, not executable code.
+- `select_random_available_pacman_character`: Saves all registers, seeds a random value, picks a character index from a weighted table, skips already-used slots, stores the chosen index and its pointer, then calls the setup routine.
+- `sum_character_weight_table_into_global`: Walks the word table at the pc-relative address, adding each positive entry into d7 until a negative terminator, then stores the total in the global word.
+- `reset_score_and_screen_dimensions`: Clears the global word at the score address and writes 600 and 400 into two following global words, then returns to the caller.
+- `clears_data_register_byte`: Clears the lower byte of a data register to zero.
+- `zero_word_data_at_7b24`: One zero word stored at this address, decoding as ori.b immediate zero to d0; the bytes are data pointed to by handlers, not real code.
+- `zero_filled_data_word_at_7b28`: A single zero word that decodes as ori.b #0,d0; it is zero-filled data referenced by address and pointer, not executable code.
+- `zero_filled_data_word_at_7b2c`: This single zero word decodes as ori.b with immediate zero on d0; it is zero-filled data referenced by address, not executable code.
+- `zero_word_data_at_7b30`: This address holds one zero word, which decodes as ori.b with zero immediate to d0; it is data reached by absolute and pc-relative references.
+- `set_five_flag_bytes_to_one`: Loads one into d0, then for each of five consecutive flag bytes tests it and, if nonzero, writes one into it, then returns.
+- `check_ghost_state_and_bounds`: Tests the word at a fixed global; if zero returns, otherwise compares it against minus one and five and branches out of range, returning immediately.
+- `scroll_playfield_and_advance_ghost_frames`: Copies columns of two tile buffers shifted by a global offset, clears a five-byte counter, decrements a global, then animates five ghost frame counters and updates score and level globals.
+- `tick_two_timers_and_clear_sprite_priority`: Decrements two global word timers, reloads the second from its period and calls a sound routine, then masks the priority bits of a sprite entry and advances its pointer.
+- `init_level_state_and_ghost_tables`: Sets a flag, clears bits in four ghost records and writes their speed values, clears several state words, then stores a long value into a sprite structure at offset 40.
+- `redraw_maze_tiles_with_flash`: Saves registers, toggles a flash byte, then loops over ten columns and seven rows drawing each maze tile twice via subroutines and restoring saved state.
+- `zero_filled_data_area_9`: This is a single zero word that decodes as ori.b #0,d0; it is a zero-filled data area referenced by address, not executable code.
+- `decrement_timer_and_reset_ghost_state`: Calls a subroutine, reads a timer word from program memory, and if it is nonzero decrements it and branches to the ghost reset code; otherwise returns immediately.
+- `clear_word_and_advance_a0`: Clears the word at the address in a0 to zero and then increments a0 by two, leaving a0 pointing at the next word.
+- `clear_bit_d0_at_a0`: Clears the bit selected by the value in d0 at the byte address held in a0, leaving a0 unchanged.
+- `set_d0_low_byte_bits_6_and_5`: ORs the immediate value 100 into the low byte of d0, setting bits 6 and 5 of d0 and leaving the rest of d0 unchanged.
+- `set_d0_low_byte_bit_4`: ORs the immediate value 16 into the low byte of d0, setting bit 4 of d0 and leaving the other bits of d0 unchanged.
+- `zero_filled_data_area_10`: The bytes here are zero-filled data, not executable code; the zero words decode as ORing zero into d0 and are referenced by address from other code.
+- `set_two_sprite_pointer_slots`: Computes two sprite offsets from a base minus a global, calls the sprite setup routine twice, and stores the resulting pointers and sprite pointers into two global slots.
+- `find_free_sprite_slot_and_draw`: Reads a global flag, computes a sprite table entry from an index, stores it, then scans eight slots calling the draw routine until the matching pointer is found.
+- `zero_filled_data_area_11`: This single zero word decodes as an ori.b instruction but is a zero-filled data area referenced by address, not executable code.
+- `clears_data_register_byte_2`: Performs a logical OR operation on the lowest byte of the data register with zero, effectively leaving the register unchanged.
+- `zero_fill_data_pair_at_80d2`: Two consecutive zero words decoding as ori.b immediate zero to d0; this is a zero-filled data area pointed to by handlers, not code.
+- `zero_fill_data_word_at_80da`: One zero word decoding as ori.b with immediate zero to d0; it is zero-filled data reached by program-counter-relative references, not executable code.
+- `update_pacman_movement_and_eat_pellet`: Reads the player position from a6, looks up direction offsets, computes the tile index, checks the maze byte for walls or pellets, updates score and triggers sound and ghost release, then returns a movement result in d0.
+- `draw_maze_walls_with_vposr_timing`: Saves all registers, verifies a checksum over the maze data, copies the maze to screen memory, then loops over 320 wall entries reading VHPOSR to time drawing and calls the blit routine for each.
+- `copy_maze_rows_to_screen_buffer`: Saves registers, computes source and destination offsets from d0 and d1, then copies eight rows of maze bytes from a0 to a1 with fixed strides, advancing both pointers each iteration.
+- `blit_pacman_sprite_frames`: Reads Pac-Man position from the level data, computes source offsets from lookup tables, programs the blitter registers for both playfields and advances the animation frame counter up to twenty-one.
+- `queue_pacman_frame_blit`: Loads the current Pac-Man position and animation index, selects the sprite descriptor table, computes the frame offset and jumps to the blit routine to draw it.
+- `init_pacman_sprite_slots`: Fills four sprite descriptor slots with default fields, sets pointers and flags, then initializes the Pac-Man position and animation state from the level data.
+- `zero_filled_data_word_at_8a52`: This single zero word is data, not executable code; it decodes as an ori.b immediate but is a zero-filled table entry referenced by address.
+- `zero_word_data_at_8a56`: One zero word decoding as ori.b #0,d0, part of a zero-filled data area whose address is taken by several routines.
+- `zero_word_data_at_8a5a`: A lone zero word read as ori.b #0,d0, zero-fill data reached through a pc-relative address load by two callers.
+- `zero_word_data_at_8a5e`: A single zero word that decodes as ori.b with an immediate zero; it is zero-filled data referenced by address, not executable code.
+- `zero_word_data_at_8a62`: One zero word in the zero-filled data area, decoded as ori.b immediate zero; callers take its address but no real instruction executes here.
+- `zero_word_data_at_8a66`: A zero word used as a data pointer target and handler pointer entry; the bytes are zero-filled data, not a runnable routine.
+- `clears_d0_register`: Clears the least significant byte of the d0 register to zero.
+- `zero_filled_data_word_at_8a6e`: Another single zero word decoding as ori.b #0,d0; this is zero-filled data pointed to by handlers, not a real routine.
+- `level_setup_and_blitter_restore`: Saves registers, computes a level index from a table, loads level data, runs several setup calls, then programs the custom chip blitter registers and restores registers before returning.
+- `play_intro_sound_if_flag_clear`: Checks the word at a fixed global; if nonzero returns immediately, otherwise writes two sound values to a hardware register and calls two sound routines.
+- `load_level_tile_rows_and_play_sounds`: Selects a level tile block, copies seven rows of sixteen bytes to a buffer, then walks ten entries per row writing sound values and calling a sound routine.
+- `zero_filled_data_area_12`: This single zero word decodes as an ori.b immediate instruction but is a zero-filled data area referenced by address, not executable code.
+- `fill_maze_grid_with_walls`: Saves current position globals, clears a flag, then loops over ten columns and seven rows writing value three into the maze byte grid at each cell that is not negative or all-ones, updating screen offsets and restoring saved globals before returning.
+- `draw_pacman_at_grid_cell`: If a pending flag is set it calls the grid fill routine, then computes screen coordinates from the column and row globals, reads the maze byte at that cell, and draws the Pacman sprite via the sprite routine, decrementing the counter.
+- `set_sprite_from_animation_frame`: Multiplies d0 by eighteen to index an animation table, selects one of two sprite descriptor bases depending on a flag byte, loads the current screen offsets into d3 and d4, and jumps to the sprite setup routine.
+- `spawn_entity_from_type_table`: Saves all registers, looks up sprite and position offsets by entity type in d0, fills the entity record at a1 with size, position and screen offset, then calls the update routine.
+- `sprite_offset_data_table`: Bytes are data, not executable code: a table of small offset values used as sprite position deltas, decoded as ori instructions.
+- `sprite_delta_data_table`: Bytes are data, not executable code: a table of position delta values for sprites, decoded as ori instructions on a0, a2 and a4.
+- `toggle_blitter_busy_wait_restore`: Saves d0, reads a byte flag, clears it, calls the blitter setup twice with the flag incremented, waits while DMACONR bit 6 is set, then restores the flag and d0.
+- `blitter_fill_setup_with_dma_wait`: Saves all registers, selects a blitter parameter block, waits for blitter DMA to clear, then writes blit pointers, modulo, control and size to the custom chip registers.
+- `draw_sprite_column_with_blitter`: Checks a busy flag, calls a setup routine, then loops over a sprite index reading bytes from a table and invoking the blitter twice per column with decreasing width.
+- `set_low_bits_of_d3`: ORs the immediate value 3 into the low byte of data register d3, setting its bottom two bits, then falls through into the following routine.
+- `render_score_digits_to_buffer`: Loads a font base pointer, splits d0 into thousands, hundreds, tens and units via repeated division, and calls the glyph copy routine for each digit to write score digits into the destination buffer.
+- `copy_seven_glyph_rows_to_buffer`: Masks d0 to a glyph index, then copies seven bytes from the font table at a1 into the buffer at a0, stepping 40 bytes in the source and 200 in the destination per row, and advances a0.
+- `update_pacman_position_and_redraw_sprites`: Saves all registers, advances the score threshold, clamps the player position between two stored coordinates, writes it to the sprite base, and redraws three sprite objects when their positions change.
+- `zero_filled_data_area_13`: A single zero word that decodes as an ori.b immediate; this byte is zero-filled data referenced by address, not executable code.
+- `zero_word_then_move_to_hardware_register`: A zero word followed by moving a word from the a1 pointer into the hardware register at address five-e-e-zero, likely data or a table fragment.
+- `write_pointer_to_single_sprite`: Loads a long pointer from program-relative memory, then stores its low word and high word into fields of one sprite structure at offset sixteen and returns.
+- `fill_three_sprite_arrays_with_pointer`: Copies a long pointer from program-relative memory into the low and high word fields of seven sprite entries in each of three arrays, then restores registers and returns.
+- `spawn_ghost_sprite_from_player_state`: Checks a flag, reads player position and direction bits, fills a sprite structure with computed coordinates and velocity, decrements a timer and jumps to a sound routine.
+- `clear_word_at_9434`: Writes a zero word to the memory location just after this instruction, clearing a flag word in place, then falls through to the next routine.
+- `init_two_sprite_structures`: Loads a pair of words from a nearby table, splits them into high and low halves, then fills two sprite structures with pointers to graphics and color data and sets their control words.
+- `zero_filled_data_area_14`: Five zero words that decode as ori.b instructions; this is a zero-filled data area referenced by address, not executable code.
+- `zero_filled_data_area_15`: Five zero words that decode as ori.b #0,d0; this range is zero-filled data referenced by address, not executable code.
+- `init_pacman_level_tables`: Computes level-derived values from 34 into tables at fixed addresses, stores constants and zeroes into counters, sets a byte to 65, then frees two memory blocks via exec FreeMem.
+- `load_pacman_hiscore_file`: Saves all registers, opens the PacMan.HISCORE file, reads 10000 bytes into a buffer, closes it, or calls nonvolatile to write the high score text.
+- `open_pacman_hiscore_file`: Saves all registers, calls a setup routine, then opens the PacMan.HISCORE file for reading and writes its handle to a global, closing it afterwards.
+- `pick_opposite_direction_avoiding_walls`: Reads a direction byte from offset 9 of a6, maps it to a bit mask, and probes directions until one is not blocked by d7, returning the chosen direction in d0.
+- `read_joystick_and_keyboard_direction`: Reads CIA fire buttons and JOY1DAT movement, decays four direction timers, compares positions to pick a direction, and falls back to keyboard scancodes, returning a direction bitmask in d0.
+- `zero_filled_data_word_at_c3fe`: A single zero word that decodes as ori.b with immediate zero on d0; it is data referenced by address, not executable code.
+- `zero_filled_data_word_at_c402`: One zero word decoding as ori.b immediate zero to d0; this is a zero-filled data area pointed to by handlers, not real code.
+- `zero_filled_data_word_at_c406`: A lone zero word that decodes as ori.b zero to d0; it is data reached by address from four callers, not executable instructions.
+- `zero_word_data_at_c40a`: One zero word treated as an instruction that ORs zero into the low byte of d0; the bytes are padding data pointed to by handlers.
+- `zero_filled_data_word_at_c40e`: A single zero word decoding as ori.b immediate zero to d0; this is a zero-filled data area pointed to by handler pointers, not code.
+- `zero_filled_data_word_at_c412`: A single zero word that decodes as ori.b immediate zero to d0; it is zero-filled data referenced by several routines, not executable instructions.
+- `free_two_allocated_buffers`: Checks two global pointers, and for each non-null one calls exec FreeMem with its size (12480 and 10120 bytes) via a6 library base, then returns.
+- `backward_byte_copy_dbra`: Decrements d0, copies bytes from a0 to a1 counting down through d0 with dbra, then returns; used as a reverse memory copy.
+- `build_pacman_lookup_tables`: Fills three tables: 300 words of index times 200, 320 bytes of high nibble doubled plus 320 words of low nibble shifted, and 320 byte pairs of quotient and remainder by eight.
+- `free_allocated_mem_and_set_flag`: Clears the flag at a5, allocates 10 bytes of memory type 4, frees the returned block via exec.FreeMem if non-null, then sets the flag to 1 and returns.
+- `allocate_and_init_game_buffers`: Allocates two memory blocks, stores base pointers and derived offsets into globals, fills six-entry pointer tables, copies 45 pairs of words from a source table into a buffer, and returns zero or minus one on failure.
+- `open_libraries_and_init_xpk`: Opens xpkmaster, dos, graphics and intuition libraries via exec.OpenLibrary, stores their bases in globals, calls an init routine, then calls the xpkmaster library entry at offset minus 72 and stores the result.
+- `close_libraries_and_release_audio`: Loads several library name pointers into a5 and calls the close helper for each, then calls a cleanup routine, and if the audio pointer is nonzero closes that library via exec and clears its pointer.
+- `close_library_if_open`: Tests the longword at a5; if nonzero, moves it to a1, clears it, loads exec base from address 4 and jumps to CloseLibrary, otherwise returns immediately.
+- `zero_word_data_at_c734`: This lone zero word decodes as an OR of immediate zero into d0's low byte; it marks a zero-filled data slot reached by address references.
+- `clears_d0_register_2`: Clears the least significant byte of the d0 register using a logical or instruction with zero.
+- `zero_filled_data_word_at_c73c`: One zero word decoding as ori.b immediate zero to d0; this byte pair is zero-filled data pointed to by other code, not a routine.
+- `zero_filled_data_word_at_c740`: A lone zero word that decodes as ori.b with zero immediate to d0; it is part of a zero-filled data area referenced by address.
+- `zero_filled_data_word_at_c744`: Contains a single zero word that decodes as ori.b with immediate zero on d0; it is zero-filled data referenced by address, not executable code.
+- `open_nonvolatile_library_and_cache_base`: Checks a cached library pointer, saves all registers, opens nonvolatile.library via exec, then calls its offset minus fifty-four entry and stores two longs from the returned structure.
+- `zero_filled_data_word_at_c79e`: Contains a single zero word that decodes as ori.b with immediate zero on d0; it is zero-filled data used as a handler pointer, not executable code.
+- `zero_filled_data_word_at_c7a2`: This single zero word decodes as ori.b with immediate zero to d0; it is zero-filled data referenced by address, not executable code.
+- `zero_word_data_at_c7a6`: One zero word read as ori.b #0,d0; this is a zero-filled data slot pointed to by six callers, not a real routine.
+- `zero_word_data_at_c7aa`: A lone zero word decoding to ori.b #0,d0; zero-filled data reached by address from two callers rather than runnable code.
+- `close_library_and_clear_globals`: Saves all registers, then if the library base is set, closes the two open library pointers via the library vector at offset minus thirty-six, clears those pointers, calls the cleanup routine and zeroes two more globals before restoring registers.
+- `open_graphics_library_check_chipset`: Opens graphics.library, stores its base, checks the display chipset flags at offset 236, and returns one if all three bits are set, otherwise minus one.
+- `zero_filled_data_area_16`: This single zero word decodes as an ori.b immediate instruction but is actually a zero-filled data area referenced by address, not executable code.
+- `open_workbench_screen_and_init_display`: Saves copper and interrupt state, opens the Workbench screen via intuition, sets up display pointers, programs ADKCON/DMACON/INTENA/INTREQ copies, initializes sprite position tables to 160 or 152, and calls the setup check.
+- `shutdown_screen_and_audio_dma`: Saves registers, closes the screen and library handles, then restores the copper and audio DMA registers, disables interrupts and DMA, frees the audio channel and closes the remaining library, clearing each global.
+- `increment_counter_when_flag_set`: Tests the word flag at memory location 4cf0; if nonzero, increments the byte counter at 4cf2 and returns once it wraps to zero.
+- `start_copper_list_2`: Points the copper at a new copper list by writing its address to COP1LC, then returns.
+- `copy_sprite_words_to_display_buffer`: Calls a check routine, and if it returns non-negative, calls the setup routine and copies ten words from the sprite source tables into the display buffer at the fixed destination, returning the result.
+- `call_c9e8_then_jump_9552`: Calls the routine at c9e8 and then branches unconditionally to the code at 9552, transferring control without returning here.
+- `allocate_sprite_buffers_and_set_pointers`: Calls the allocator twice for two blocks, stores the returned base pointers and their offsets into global slots, and returns zero on success or minus one with a flag cleared on failure.
+- `open_audio_and_cia_resources_set_volume`: Opens a resource and graphics library, reads a byte from the resource, computes a volume value, opens the audio device and writes volume bytes to CIAA or CIAB registers, looping over two channels.
+- `close_audio_device_and_clear_channel_bit`: If the audio device pointer is set, clears it, clears the channel-active bit in CIAA or CIAB port register, then closes the audio device via the library vector.
+- `vblank_handler_check_and_call_update`: Saves all registers, checks a byte at a fixed address for value fifteen and a longword flag, and if both pass calls the update routine before restoring registers and returning minus one.
+- `init_pacman_level_from_module`: Copies the module header into work memory, builds 30 sprite entries and 128 tile pointers, patches tile indices, then initialises the level state and returns.
+- `save_all_registers_then_jump`: Pushes d0-d7 and a0-a6 onto the stack and branches unconditionally into the middle of another routine, transferring control without returning here.
+- `silence_disabled_audio_channels`: Sets a flag word, then for each of the four audio channels whose enable bit is clear in the config byte, clears that channel's volume register and accumulates the mask into d0, which is written to DMACON.
+- `scale_volume_table_by_d0`: Saves all registers, fills a 64-entry byte table at the pc-relative buffer with entries scaled by d0 (or zero when d0 is zero), then calls the pointer stored in the following longword and restores registers.
+- `update_sprite_animation_frames`: Advances the animation counter and frame pointer for up to four sprite slots, copies frame data into the a5 sprite structure, dispatches per-frame handlers via the jump table, and updates the animation script pointer and counters.
+- `load_sprite_frame_from_table`: Reads frame and direction bytes from a6, indexes the sprite frame table at a2, copies position and image data into the a4 sprite record and a3, and sets the frame index from the direction table.
+- `load_sprite_frame_from_table_2`: Reads two bytes from a6, indexes the sprite table at a2+2074 by the first byte, and copies frame width, image pointer and flags into the a4 structure.
+- `load_scaled_sprite_with_offset`: Stores d7 into a5+150 and a2+752, then indexes the sprite table by the byte at a6, applying a vertical offset from a6+3 and copying the frame data into a3 and a4.
+- `copy_sprite_frame_advance_a0`: Copies a frame width, image pointer and flags from the table at a0 into the a3 and a4 structures, advancing a0 past the frame record.
+- `load_ghost_sprite_frame_from_table`: Stores d4 at offset 14 of a4, and if d1 is nonzero writes d7 to a5+150 and ORs it into a2+752, then indexes a sprite table by a6+3 and a4 word to copy frame data into a3 and a4 fields.
+- `copy_next_sprite_frame_entry`: Advances a0 by two, copies the long and word at a0 into a3 and a4+6, and if the following word is nonzero also stores the long at a4+36 and a4+40 and the word at a4+10.
+- `advance_animation_frame_index`: Decrements d1, doubles it as a byte index, computes a table offset from a4 word and d0, loads a1 from a1 plus that offset and stores the selected word at a4+2 and a6+2 at a4+4.
+- `load_actor_sprite_and_dispatch_state`: Reads actor index and sub-index from a6, copies sprite frame data from the sprite table at a2 into the a4 actor block, sets position fields, calls the shared update routine, then jumps through a state jump table indexed by a6+2.
+- `dispatch_actor_by_high_nibble`: Takes the high nibble of byte 3 of the a6 actor record, doubles it as a word offset and jumps through the jump table at the pc-relative table to the matching actor state routine.
+- `set_or_clear_cia_fire_bit`: Tests bit d4 of byte 3 of the a6 record; if set, sets bit 1 of CIAA port A, otherwise clears it, then returns to the caller.
+- `store_d4_word_if_flags_allow`: Checks byte at offset minus five of a2 and byte at offset one of a6, and if both conditions pass writes the d4 word to offset eighteen of a4, then returns.
+- `copy_a6_word_to_a4_offset`: Tests the byte at offset three of a6 and, when nonzero, copies the word at offset two of a6 into offset twenty-two of a4 before returning.
+- `store_d4_and_split_nibbles_to_a4`: If byte at a2 minus five is not one, stores d4 word at a4 offset eighteen and splits the byte at a4 offset five into high and low nibbles written to offsets twenty-four and twenty-five.
+- `clamp_d5_to_a6_limit_store_a4`: Compares byte d5 with the byte at offset 3 of a6; stores d5 into offset 13 of a4 if not greater, otherwise stores the a6 limit byte, then returns.
+- `read_a6_byte_set_a2_flag_or_store`: Loads the byte at offset 3 of a6 into d0; if zero writes 1 to offset -5 of a2, otherwise stores d0 there when below 32, then returns.
+- `scale_divisor_and_write_playfield_bytes`: Saves d2 and a4, clamps d0 to at least 32, stores it, divides a global by it, and writes the quotient bytes to a4 offsets 1024/1280 or 1536/1792 depending on a flag, then restores and returns.
+- `set_ghost_speed_from_state_byte`: Copies d4 into d0, loads byte at offset 3 of a6, adds 63, stores the word to a2 offset 526, increments the word at a2 offset 4 and returns.
+- `update_four_ghost_animation_slots`: For each of four ghosts checks a bit in a2 offset -14, sets up a3 and a4 pointers, calls the animation helper, dispatches through a jump table and copies a tile byte into a5.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `dispatch_ghost_direction_jump_table`: Takes the high nibble of the byte at a4 offset 5, doubles it, indexes a jump table near pc and jumps to the selected entry using a0 and d0.
+- `advance_ghost_animation_frame`: Reads a per-ghost frame delta from a table indexed by word at offset 32 of a4, adds it to the byte at offset 35 of a4, and if the result overflows the sign bit resets the byte from d4 and toggles the byte pointed to by the pointer at offset 40 of a4, wrapping it to the base at offset 36 of a4.
+- `test_low_nibble_of_a4_offset5`: Loads the byte at offset 5 of a4, masks it with the low nibble, and returns immediately if the result is zero, otherwise branches onward to another routine.
+- `advance_ghost_state_and_copy_sprite`: Increments the word at offset 18 of a4 and, when it equals d0, writes d7 to offset 150 of a5, ors d7 into offset 752 of a2, and copies a 6-byte sprite record from a table indexed by the word at a4 into the structure at a3.
+- `lookup_tile_offset_from_sprite_table`: Reads a sprite index from a2 and a table byte, then scans a per-row word table in a0 to find the matching entry and writes the resulting offset word to 6(a3).
+- `reset_actor_position_from_home`: Calls two subroutines, copies byte at offset 23 of a4 into d2, loads words at offsets 26 and 28 into d0 and d1, calls another routine, then copies word at offset 14 of a4 to offset 26.
+- `load_direction_and_position_words`: Copies d4 into d2, loads byte at offset 5 of a4 into d2, and if nonzero loads byte at offset 23 into d2, then loads words at offsets 14 and 16 of a4 into d0 and d1.
+- `clamp_and_store_pacman_position`: Compares d0 with d1, adjusts d0 by d2, then writes the resulting position to offsets 14, 2 and 6 of a4/a3 and copies 14(a4) to 26(a4) when a2 holds one.
+- `apply_vertical_velocity_from_input_byte`: Reads the high nibble of byte 5(a4) as a vertical delta, adds or subtracts it from the position at 12(a4), clamps against d5 and stores the result to 12(a4) and 54(a4).
+- `apply_low_nibble_vertical_delta`: Masks d0 to its low nibble, subtracts it from the position at 12(a4), clamps against d5 and stores the result to 12(a4) and 54(a4).
+- `store_d5_to_a4_offsets_c_and_36`: Writes the low word of d5 into the two word fields at offsets 12 and 54 from a4, then returns to the caller.
+- `store_d4_to_a4_offsets_c_and_36`: Writes the low word of d4 into the two word fields at offsets 12 and 54 from a4, then returns to the caller.
+- `pacman_level_data_table`: Bytes decoded as long runs of ori.b immediates are level or tile data, not executable code; the address is taken by a pointer and read as data.
+- `build_playfield_and_init_music`: Allocates a buffer, ORs five 200-byte playfield planes into it, computes sprite screen pointers from a table, then installs two music handlers and returns zero.
+- `zero_filled_data_area_20`: A single zero word that decodes as an ori.b instruction; the bytes are data, not executable code, referenced by address from two callers.
+- `zero_fill_handler_slot`: A single zero word that decodes as ori.b #0,d0; it is a zero-filled data slot used as a handler pointer, not executable code.
+- `zero_filled_data_word_at_fe0e`: A single zero word that decodes as ori.b with immediate zero on d0; it is zero-filled data referenced by address, not executable code.
+- `zero_filled_data_word_at_fe12`: A single zero word that decodes as ori.b with immediate zero on d0; it is zero-filled data referenced by address and as a handler pointer, not executable code.
+- `free_three_tracked_memory_blocks`: Checks three stored pointers, and for each non-null one calls exec FreeMem with its size, then clears the pointer; returns zero when the last block was empty.
+- `init_sound_and_load_sample_buffers`: Sets a mode word from d0, saves registers, calls the sound init, polls AvailMem for free memory, allocates buffers via xpkmaster and FreeMem, and returns zero or minus one in d0.
+- `zero_filled_data_table`: Twenty-one zero words decoded as ori.b instructions; this is a data table referenced by address, not executable code, and it changes nothing.
+- `single_zero_word_data_slot`: One zero word decoded as ori.b to d0; it is a zero-filled data slot referenced by address, not working code.
+- `open_console_and_attach_window`: Saves a1 and d0 to globals, opens a console window of size 1005 via exec library, then attaches the saved window and data pointers and returns the handle.
+- `zero_word_data_slot_one`: A single zero word that decodes as ori.b #0,d0; it is a zero-filled data slot referenced by address, not executable code.
+- `zero_word_data_slot_two`: A single zero word that decodes as ori.b #0,d0; it is a second zero-filled data slot referenced by address, not executable code.
+- `clears_d0_register_3`: Sets the least significant byte of the d0 register to zero.
+- `open_and_check_pacman_file`: Opens a file by name, reads four bytes into a buffer, compares them against two magic values, and on a match calls the close routine and sets a flag word to 2.
+- `close_file_if_open`: Checks the stored file handle, and if nonzero calls the close library function, clears the handle to zero, and returns.
+- `zero_filled_data_word_at_10166`: Contains a single zero word that decodes as ori.b #0,d0; this is zero-filled data referenced by address, not executable code.
+- `zero_word_data_at_1016a`: One zero word decoding as ori.b #0,d0; this is a zero-filled data byte pair pointed to by absolute references, not code.
+- `open_and_parse_xpk_archive`: Checks a global flag, opens a file via dos library, parses it with xpkmaster, stores the handle, and returns a value from the parsed structure.
+- `or_d0_with_itself_then_advance_a1`: ORs d0 with itself to set the condition codes, then adds 4 to the word at (a1) and falls through into the following code.
+- `zero_filled_data_words`: Two zero words that decode as ori.b #0,d0; this is zero-filled data referenced by address, not executable code.
+- `zero_filled_data_table_24_words`: Twenty-four zero words that decode as ori.b #0,d0; this is a zero-filled data table referenced by address, not working code.
+- `zero_word_data_padding`: A single zero word that decodes as ori.b #0,d0, part of a zero-filled data area referenced by address, not executable code.
+- `zero_filled_data_block`: Sixty-five zero words that decode as ori.b #0,d0, a zero-filled data table referenced by a program-counter-relative address, not working code.
+- `copy_level_tiles_to_bitplanes`: Saves all registers, selects a level block by checksum, copies tile bytes into the first bitplane buffer, ORs five tile rows into the second buffer, and copies sprite bytes into both buffers.
+- `reply_and_free_message_loop`: Saves all registers, then repeatedly fetches a message from the port at offset 86 of the object in a0 via exec.GetMsg, replies to it with exec.ReplyMsg, and loops until no message remains.
+- `restore_all_registers_and_return`: Pops d0 through d7 and a0 through a6 from the stack with movem, then returns to the caller.
+- `zero_filled_data_area_17`: A single zero word that decodes as ori.b #0,d0; this is zero-filled data referenced by pointers, not executable code.
+- `zero_filled_data_word_first_2`: A single zero word that decodes as ori.b with immediate zero on d0; it is data, not executable code.
+- `zero_filled_data_word_second_2`: The next zero word in the same zero-filled data area, decoding as ori.b with immediate zero on d0; data, not code.
+- `zero_filled_data_word_third_2`: A third consecutive zero word in the zero-filled data region, decoding as ori.b with immediate zero on d0; data, not code.
+- `zero_filled_data_word_2`: Contains a single zero word that decodes as an ori.b immediate instruction; this is zero-filled data, not executable code.
+- `count_chars_until_nul_or_newline`: Pushes a0, sets d0 to zero, then scans bytes at a0 counting until a zero byte or a newline is found, advancing a0 and returning the count in d0.
+- `pop_a0_and_return_2`: Pops a0 from the stack and returns immediately to the caller, restoring the saved address register.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_4`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_5`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_6`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_7`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_to_shared_runtime_entry_one`: Performs an unconditional jump to a shared runtime entry point, transferring execution without saving registers or returning.
+- `undecodable_bytes_8`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_9`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_10`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_11`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_12`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_13`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_14`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_15`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_16`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_to_shared_runtime_entry_two`: Performs an unconditional jump to a second shared runtime entry point, passing control onward without touching registers or the stack.
+- `jump_to_shared_runtime_entry_three`: Performs an unconditional jump to a third shared runtime entry point, handing off execution with no register or memory changes.
+- `jump_to_shared_code_at_c45114`: Performs an unconditional jump to the shared code entry point at the fixed address, transferring execution without saving any registers or return address.
+- `undecodable_bytes_17`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_18`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_19`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_to_target_address`: Performs an unconditional jump to a fixed memory address.
+- `undecodable_bytes_20`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_to_shared_exit`: Branches to a shared exit routine after pushing a string constant and decrementing the stack pointer by eight.
+- `undecodable_bytes_21`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_22`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_23`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_24`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_25`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_26`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_27`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_28`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_29`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_30`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_31`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_32`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_33`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_34`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_35`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_36`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_37`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_38`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_39`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_40`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_41`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_42`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_43`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_44`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_45`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_46`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_47`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_48`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_49`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_50`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_51`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_52`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_to_shared_exit_stub`: Jumps to the shared exit routine at a fixed address, transferring control without touching any registers or stack.
+- `undecodable_bytes_53`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_54`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_55`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_56`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_57`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_58`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_59`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_60`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_61`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_62`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_63`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_64`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_65`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_66`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_67`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_68`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_69`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_70`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_71`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_72`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_73`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_74`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_75`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_76`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_77`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_78`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_79`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_80`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_81`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_82`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_83`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_84`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_85`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_86`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_87`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_88`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_89`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_90`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_91`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_92`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_93`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_94`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_95`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_96`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_97`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_98`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_99`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_100`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_101`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_102`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_103`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_104`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_105`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_106`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_107`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_108`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_109`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_110`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_111`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_112`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_113`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_114`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_115`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_116`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_117`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_118`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_119`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_120`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_121`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_122`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_123`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_124`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_125`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_126`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_127`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_128`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_129`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_130`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_131`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_132`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_133`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_134`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_135`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_136`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_137`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_138`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_139`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_140`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_141`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_142`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_143`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_144`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_145`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_146`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_147`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_148`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_149`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_150`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_151`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_152`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_153`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_154`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_155`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_156`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_157`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_158`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_159`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_160`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_161`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_162`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_163`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_164`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_165`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_166`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_167`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_168`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_169`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_170`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_171`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_172`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_173`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_174`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_175`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_176`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_177`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_178`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_179`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_180`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_181`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_182`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_183`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_184`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_185`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_186`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_187`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_188`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_189`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_190`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `load_47_and_branch_to_common`: Loads the immediate value 47 into d0 and branches unconditionally to a common routine, passing that value as an argument.
+- `load_231_and_branch_to_common`: Loads the immediate value 231 into d0 and branches unconditionally to a common routine, passing that value as an argument.
+- `load_negative_19_into_d0_and_branch`: Loads the sign-extended immediate value -19 into data register d0, then branches unconditionally to a shared routine elsewhere.
+- `load_2_into_d0_and_branch`: Loads the immediate value 2 into data register d0, then branches unconditionally to a shared routine elsewhere.
+- `load_negative_16_into_d0_and_branch`: Loads the sign-extended immediate value -16 into data register d0, then branches unconditionally to a shared routine elsewhere.
+- `load_f1_and_branch_to_shared_exit`: Loads the immediate value 241 into d0 and branches unconditionally to the shared exit routine, which is not called here.
+- `load_f4_and_branch_to_shared_exit`: Loads the immediate value 244 into d0 and branches unconditionally to the shared exit routine, which is not called here.
+- `load_71_and_branch_to_shared_exit`: Loads the immediate value 113 into d0 and branches unconditionally to the shared exit routine, which is not called here.
+- `load_sound_id_109_and_branch`: Loads the immediate value 109 into d0 and branches unconditionally to a shared routine at a fixed offset.
+- `load_sound_id_245_and_branch`: Loads the immediate value 245 into d0 and branches unconditionally to a shared routine at a fixed offset.
+- `load_sound_id_246_and_branch`: Loads the immediate value 246 into d0 and branches unconditionally to a shared routine at a fixed offset.
+- `load_minus_three_and_branch`: Loads the immediate value minus three into d0 and branches unconditionally to a shared routine elsewhere in the segment.
+- `load_ninety_three_and_branch`: Loads the immediate value ninety-three into d0 and branches unconditionally to a shared routine elsewhere in the segment.
+- `load_minus_one_and_branch`: Loads the immediate value minus one into d0 and branches unconditionally to a shared routine elsewhere in the segment.
+- `nop_then_branch_to_4cea`: Executes a no-operation instruction then branches unconditionally to the code at the target address, transferring control without touching registers or memory.
+- `increment_a6_offset_20_and_return_a6`: Executes a no-operation, branches past the following instructions, then increments the word at offset 32 of a6, moves a6 into d0 and returns.
+- `decrement_counter_or_dispatch_via_a5`: Decrements the word at offset 32 of a6 and returns zero, or on the alternate entry saves registers, computes a stack-derived pointer, loads a table entry indexed by d0 and calls through a5.
+- `undecodable_bytes_191`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_192`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_193`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_194`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_195`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `push_string_and_branch_to_shared_exit`: Decrements the stack pointer by eight, pushes the address of a string constant, then branches to the shared exit code at a later address.
+- `push_string_save_a5_and_return`: Decrements the stack pointer by eight, pushes a string address, branches to shared code, stores a5 in the stack frame, loads a local a5 base, stores it, then returns.
+- `pop_a5_from_stack_and_return`: Loads a5 from the top of the stack and increments the stack pointer by four, then returns to the caller.
+- `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_8`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_9`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_10`: Empty routine: returns to the caller immediately without doing anything.

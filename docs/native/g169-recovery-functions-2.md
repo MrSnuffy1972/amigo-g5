@@ -1,0 +1,502 @@
+# Game 169 (HardBall II): code recovery summary
+
+## Functions (part 2 of 2)
+
+### HardBall II.adf:HARDBALL2
+(continued)
+
+- `update_structure_hierarchy`: Copies data between structures, calls three different routines with various parameters, and iterates through a linked list to call functions stored in the list nodes.
+- `call_subroutines_with_offsets`: Saves registers to the stack, pushes a word and a pointer to the stack, calls a routine, increments the pointer in a0 by two, pushes the new pointer to the stack, calls another routine, and returns.
+- `call_subroutine_with_stack_setup`: Saves registers to the stack, pushes a word and a pointer to the stack, calls another routine, and returns.
+- `store_stack_frame`: Copies four words from a global structure into the stack frame and branches to another routine.
+- `traverse_and_store_pointers`: Iterates through a linked list by loading a pointer from a structure, updating several values in a global structure based on data at offsets 238 and 240 of the current node, and calling another routine.
+- `push_data_and_call_subroutine`: Saves registers to the stack, pushes a word from offset 8 of a5 to the stack, pushes a long word from offset -13668 of a4 to the stack, calls another routine, and returns.
+- `execute_library_calls_conditionally`: Checks if a long value at an offset from a base address in a4 is non-zero; if so, it loads a value from a structure into a hardware register, calls another routine, and then calls two more routines.
+- `update_nested_data_tables`: Iterates through a linked list of structures retrieved from a global table, and for each structure, iterates through a second linked list to copy words from a source buffer into a destination table at an offset determined by a byte value at offset 17 of the first structure.
+- `load_pointers_from_structure`: Sets a link register, saves a2 and a3 to the stack, and loads two pointers from a structure in a5 into a0 and a2, then loads another pointer from a structure in a0 into a3 before branching.
+- `traverse_and_copy_linked_list`: Enters a loop that calls a routine to copy a memory block, then calls a library routine using values derived from a structure, and updates pointers to traverse a list until a pointer is zero.
+- `process_limited_data`: Calls a routine, loads two words from the stack, calls another routine, and then calls a third routine.
+- `process_and_call_routines`: Calls another routine, restores d0 through d4 from the stack, calls a second routine, and then calls a third routine before returning.
+- `clamp_and_process_bitstream`: Clamps two input values within a specified range defined in a structure, then iterates through a bitstream to populate a structure in a6 with calculated offsets, bitmasks, and values derived from a table.
+- `process_bitstream_data`: Calculates a scaled offset and iterates through a bitstream to populate a structure in a6 with values derived from a table.
+- `update_table_entries`: If a value at offset 2 of a structure is less than a second value from the same structure, it writes a word from a third structure to a table, increments the value at offset 2, and writes a word from a fourth structure to another table location.
+- `update_multiple_table_entries`: If a value at offset 2 of a structure plus one is less than the value at offset 2, it writes two words to a table, increments the value at offset 2 twice, and writes two more words to a different table location.
+- `clear_word_at_offset`: Sets a two-byte value at an offset of two from the provided pointer to zero.
+- `update_structure_values_2`: Calls a routine using a pointer from a structure, stores the result at offset 4 of that structure, calculates a new word value based on a parameter and stores it at offset 0, then calls another routine and returns 1.
+- `write_long_to_table`: If a value at offset 2 of a structure is less than a second value from the same structure, it increments the value at offset 2 and writes a long word to a table using the original value as an index.
+- `update_complex_table_entries`: If a value at offset 2 of a structure is less than a second value from the same structure, it calculates a new word using bits from two other structures and writes it to a table, then increments the value at offset 2 and writes a word to another table location.
+- `clamp_and_recursively_update_values`: Divides a 16-bit value at offset 12 of a structure by 4, shifts it left by 1, and adds 44 to a 16-bit value at offset 14 of the same structure.
+- `update_buffer_values`: Recursively calls another routine if certain structure members are non-zero, then calculates a difference between two values and uses it to update a buffer with incrementing values and a constant offset.
+- `sync_table_entries`: Calls another routine, then iterates through a loop where it compares values at specific offsets in two structures and calls a third routine to update entries if they differ.
+- `recursively_update_table_values`: Calculates new values for a structure based on comparisons and arithmetic involving offsets 16, 18, 20, 22, and 24, then calls clamp_and_recursively_update_values and update_multiple_table_entries or update_table_entries depending on the input values.
+- `loop_table_updates`: Runs a loop eight times, calling two different routines with specific word values and a pointer from a structure to update table entries.
+- `calculate_overlap_and_distance`: Compares two ranges and, depending on their intersection, writes a calculated distance to one of three provided pointers and returns a boolean result.
+- `process_structure_hierarchy`: Performs complex conditional logic involving multiple structure offsets, calling various routines to update values, manage a linked list, and perform arithmetic.
+- `set_hardware_register`: Uses a value from a structure to calculate an offset, writes a long word to a memory location, writes a constant to a specific offset in a table, and updates a hardware register and a global variable.
+- `start_copper_list`: Points the copper at a new copper list by writing its address to COP1LC, then returns.
+- `execute_conditional_sequence_4`: Checks a word at a negative offset of a4 and, if non-zero, performs a series of operations including clearing several words in a global structure, running a loop to clear a memory block, and making multiple conditional calls to other routines.
+- `invoke_graphics_draw`: Reads a 16-bit word from offset 8 of a structure in a5, pushes it onto the stack, and calls a routine at a relative offset before returning.
+- `handle_conditional_library_calls`: If a global word is non-zero, it clears that word and either calls a routine with two arguments or calls a different routine with three arguments based on the value of a second global word.
+- `increment_and_call_indexed`: Increments a 16-bit value at a negative offset from a4, then compares a word at a negative offset from a4 with d0, and if they are equal, clears a word at a negative offset from a4 and branches to an earlier instruction.
+- `call_indexed_routine_2`: Increments a value at a negative offset from a4, uses that value to index into a table to call a routine, and then branches to an earlier instruction.
+- `clear_registers_and_return`: Clears register d0 and restores registers a0 through a7 from the stack before returning.
+- `store_value_in_indexed_table`: If a global word is not equal to five, it stores a provided long word into a table at an offset determined by that global word, then increments the global word.
+- `load_long_word`: Loads a long word from an offset of 538 of the structure in a4 into d0 and returns.
+- `clear_long_word`: Clears the long word at an offset of 538 of the structure in a4 and returns.
+- `compare_and_test_range`: Compares a long word from the stack with a long word at an offset of 3498 of the structure in a4, returning 1 if they are equal or if the difference is less than an address in hex, otherwise returning 0.
+- `update_sum_values`: Adds a long word from the stack to a long word at an offset of 538 of the structure in a4, then stores the original value from the stack at offset 3466 of the structure and the sum at offset 3470 of the structure.
+- `update_and_call_loop`: Calculates a sum from a value at a negative offset of a4 and a stack parameter, stores this sum in two locations within the a4 structure, and calls another routine in a loop until the result is non-zero.
+- `loop_until_nonzero`: Calls another routine using a value from a negative offset of a4 and repeats the call in a loop until the result is non-zero.
+- `subtract_long_words`: Subtracts a long word from the stack from a long word at an offset of 538 of the structure in a4 and returns the result.
+- `conditional_update_and_call`: Calculates a sum from a value at a negative offset of a4 and a stack parameter, stores it in two locations within the a4 structure, calls another routine, and if the result is non-zero, calls a third routine before returning.
+- `call_and_test_result`: Pushes a long word from a negative offset of a4 onto the stack, calls another routine, adjusts the stack, and returns zero in d0 if the result of the call is zero, otherwise it clears d0 and branches to an earlier instruction.
+- `call_and_test`: Calls another routine and returns if the result in d0 is zero.
+- `write_hardware_ports`: Reads a word from an offset of 14450 of the structure in a4, writes the low byte to one hardware port and the high byte to another hardware port, then writes 1 to a hardware port.
+- `fetch_long_word`: Loads a long word from an offset of 15228 of the structure in a4 into d0 and returns.
+- `store_long_word`: Stores a long word from the stack into an offset of 15228 of the structure in a4 and returns.
+- `mask_and_set_byte`: Reads a byte from a hardware port, masks it with 3f, writes the result back to the same hardware port, and sets a byte at an offset of 15236 of the structure in a4 to 1.
+- `process_joystick_input`: Checks a byte at an offset of 15748 of the structure in a4; if non-zero, it performs bitwise operations on joystick port data and a value from a table to return a 16-bit result.
+- `set_flag_and_call`: Sets a word at a negative offset of a4 to 1, calls another routine, and then clears that word to 0 before returning.
+- `compare_and_store_result`: Calls another routine and compares the result in d0 with a word at a negative offset of a4; if they are not equal, it stores the new value in that offset and returns the result, otherwise it clears d0 and returns.
+- `set_input_flags`: Clears d1 and checks a byte at a negative offset from a4; if non-zero, it performs a series of checks on various bytes at offsets from a structure in a0 to set specific bits in d1.
+- `process_input_flags`: Checks a byte at offset 68 of a structure in a0; if non-zero, it sets bit 5 of d1; then checks a byte at offset 64 of a0; if non-zero, it sets bit 4 of d1; finally, it calls another routine and returns the bitwise OR of d1 and d0.
+- `mask_and_compare_value`: Loads a word from offset 4 of the stack into d0, masks the lower 4 bits, and if the result is less than 11, sets d0 to 0 and returns; otherwise it returns.
+- `fetch_indexed_byte`: Fetches a byte from a table using an offset stored in d0 and returns it in d0.
+- `store_word_to_offset`: Stores a 16-bit value from the stack into a global variable at a negative offset from a4.
+- `initialize_system_state_2`: If a byte at a specific offset is not zero, it clears several fields in a structure, performs a loop to clear a table of 128 longwords, and calls several routines to allocate memory, initialize structures, and update pointers.
+- `reset_and_call_structures`: If a byte at a negative offset from a4 is non-zero, it clears that byte and calls several routines using values from a negative offset of a4, sets a word at offset 28 of a structure in a0 to 10, and sets a long word at offset 40 of a structure in a1 to the address of a structure in a4 before calling another routine.
+- `loop_until_pointer_non_zero`: Calls another routine and loops if the returned value in d0 is zero.
+- `check_status_flag`: Saves registers d1 and d2 to the stack, checks a word at a specific offset in a global variable, and if it is not zero, clears d0 and branches to another routine; otherwise it clears d0 and branches elsewhere.
+- `check_and_set_bit`: Calls a routine, moves d0 to d1 and d2, swaps the upper and lower words of d2, masks d2 with a constant, and if the result is zero, sets bit 0 of a byte at offset -13862 of a4 before branching.
+- `conditional_byte_read`: Compares d1 against several constants and, if it falls within a specific range, pushes d0 to the stack and calls another routine.
+- `test_and_branch_on_bits`: Adds 256 to d0, swaps the high and low words of d1, and performs several conditional branches based on comparisons and bitwise AND operations on d2.
+- `test_and_branch_d2`: Copies d1 to d2, performs a bitwise AND on d2 with 7, and branches to an earlier instruction if the result is zero, otherwise it branches to a later instruction.
+- `add_offset_and_branch`: Adds 1024 to d0 and branches to another location.
+- `test_bits_d2`: Copies d1 to d2 and checks if bit 3 is set; if it is, it checks if any of the lower 3 bits are set, branching to different locations based on the results.
+- `add_offset_and_branch_2`: Adds 512 to d0 and branches to another location.
+- `conditional_stack_restore`: Checks if the lower 3 bits of d1 are zero; if not, it adds 256 to d0 and restores d1 and d2 from the stack before returning.
+- `push_pointer_to_stack`: Pushes a 32-bit pointer from a global variable into the stack and returns.
+- `set_byte_to_one`: Sets a byte at a negative offset from a4 to 1 and returns.
+- `clear_byte_at_offset`: Clears a byte at a negative offset from a4 and returns.
+- `check_table_bit`: If a byte at a negative offset from a4 is non-zero, it checks a bit in a table using an index from the stack and returns 1 in d0; otherwise, it returns 0.
+- `clear_word_at_offset_2`: Sets a 16-bit value at a negative offset from a4 to 0 and returns.
+- `set_bit_zero`: Sets bit 0 of a byte at a negative offset from a4 and returns.
+- `clear_word_at_offset_two`: Clears a 16-bit value at a negative offset from a4 and returns.
+- `store_word_via_offset`: Masks a word from the stack, shifts it left by two, and stores it at an offset from a pointer in a4.
+- `update_bit_flags_from_structure`: Saves registers to the stack and loads a pointer into a4.
+- `update_bit_flags`: Checks several conditions involving d1 and values in a global structure, then either sets or clears a bit in a table based on the value in d2.
+- `clear_bit_and_branch`: Clears bit 0 of a byte at an offset determined by a2 and d4, then branches to another location.
+- `update_table_from_d2`: Checks bit 7 of d2 and, if not set, performs several comparisons and bitwise checks on values at negative offsets from a4 to update two different tables using d2 and d3 as indices and values.
+- `clear_d0_and_move_to_a0`: Checks a word at a negative offset from a4; if it is non-zero, it clears d0, moves d0 to a0, and branches to another location; otherwise it returns.
+- `restore_registers_from_d5`: Moves the value in d5 to a0 and d0, then restores d1 through d5 and a1 through a4 from the stack.
+- `update_buffer_elements`: If a value at a specific offset in a4 is non-zero, it calls two library functions, decrements that value, and enters a loop to copy bytes and words between two tables.
+- `get_byte_from_library`: Initializes a stack frame, calls a library function with several parameters, and returns a byte from the stack if the return value is one.
+- `allocate_memory_block`: Clears several fields in a structure, calls a library function to allocate memory, and if successful, manages a linked list of blocks by updating pointers and setting specific bit flags.
+- `initialize_and_allocate_memory`: Checks a byte at a negative offset from a4; if zero, it sets two 32-bit values at specific offsets in a4, adds 28 to a value at offset 8 of a5, and calls another routine twice with different parameters from a4 and a5 before returning.
+- `allocate_memory_with_cleared_stack`: Checks a byte at a negative offset from a4; if zero, it sets two 32-bit values at specific offsets in a4, clears the stack, and calls another routine twice with parameters from a4 and a5 before returning.
+- `traverse_linked_list_and_compare`: Checks if a 32-bit value at offset 12 of a5 is zero; if not, it calls another routine with parameters from a5 and loops if the result is non-zero, updating the value at offset 12 of a5 from a pointer at offset 2 of a0.
+- `empty_c_function`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
+- `manage_linked_list_nodes`: Updates a pointer in a structure, potentially enters a loop to add nodes to a list, and calls a library function to handle node-related data.
+- `call_multiple_subroutines`: Calls three different routines using pointers from a4 and a5, then calls a fourth routine with a value from a4.
+- `execute_multiple_allocations`: Calls another routine three times using values from offsets -2752, -2748, and -14824 of a4 and offset 8 of a5, then calls a fourth routine using a 16-bit constant, a value from offset 12 of a5, offset 8 of a5, and a value from offset -2756 of a4.
+- `process_linked_list_nodes`: Checks if a pointer at offset 8 of a5 is non-zero; if so, it calls four routines using values from a4 and a5, then performs a conditional call to another routine based on the result of a fifth call.
+- `calculate_total_offset`: Traverses a linked list starting from a pointer in a5, adding or subtracting an offset from a running total based on a byte at offset 13 of the current node.
+- `select_base_address`: Compares a value in a5 against two global values and returns either a specific global address or an address relative to a4.
+- `rebalance_linked_list_offsets`: Traverses a linked list to find nodes where the sum of the node address and its stored offset equals a target address, then updates the list by removing the matching node and adjusting the target address and offset values in the structure.
+- `find_valid_buffer_pointer`: Compares a pointer in a5 against global values and performs range checks to return one of several possible memory addresses.
+- `update_linked_list_nodes`: Compares two pointers, and if they match, updates a field in a structure; otherwise, it traverses a linked list, calling a routine to copy memory for each node and updating the next and previous pointers in the list.
+- `call_and_test_result_2`: Pushes two long words onto the stack, calls another routine, and returns with d0 set to 1 if the called routine returns zero, otherwise it returns the result in d0.
+- `call_and_set_d0`: Pushes a long word from a negative offset of a4 and a long word from an offset of a5 onto the stack, calls another routine, and if the result in d0 is zero, sets d0 to 1, otherwise it returns.
+- `clear_d0_and_branch_to_test_result`: Clears register d0 and branches to call_and_test_result_2.
+- `manage_linked_list_nodes_2`: Performs a series of calls to other routines to manipulate pointers and data within structures, including clearing values and updating a longword in a5 from the result of a call.
+- `update_linked_list_node_values`: Manages a linked list of structures by inserting or updating nodes based on a target value, then adjusts offset values within the nodes and calls another routine to perform a sequence of pointer-based updates and memory operations.
+- `return_if_pointer_is_null`: Saves registers to the stack, tests a long word at offset 8 of a5, and if it is not zero, branches to another location; otherwise it returns.
+- `call_list_handler`: Pushes a word and a pointer onto the stack, calls another routine, and then branches to an earlier instruction.
+- `dispatch_linked_list_node`: Checks if a pointer in a structure in a5 is non-zero; if so, it pushes the pointer to the stack and calls another routine.
+- `call_update_linked_list_node_values`: Pushes a constant value of one and a pointer from an offset of eight in a structure onto the stack, calls update_linked_list_node_values, and then returns.
+- `copy_memory_block`: Copies a block of memory from a source pointer to a destination pointer using an optimized loop that handles word, longword, or byte transfers based on alignment and size.
+- `call_library_with_offsets`: Calls a library function twice using pointers and offsets stored in a4, then clears a byte at a specific offset in a4.
+- `calculate_string_length`: Counts the number of characters in a string until a null terminator or a newline character is encountered.
+- `format_string_data`: Processes a string by counting newlines, calculating scaled values for each line, and writing formatted data into a local buffer before calling other routines with the result.
+- `execute_complex_sequence_2`: Performs a sequence of conditional calls to various routines using pointers from a4 and a5, copies a byte from a negative offset of a4 to a buffer at a negative offset of a5, and calls a routine with a pointer to that buffer.
+- `update_scaled_values`: Performs signed arithmetic on two sets of values stored in a structure at offset a4, applying scaling, division, and clamping to the results.
+- `update_mouse_input`: Reads a 16-bit value from the mouse port, splits it into two bytes stored in a structure, and calls another routine if a specific value is non-zero.
+- `initialize_structure_and_call`: Sets several bytes and words at negative offsets from a4, stores a routine address and a pointer into a structure, clears several words and bytes at negative offsets from a4, and calls another routine.
+- `call_library_function_2`: Checks if a long value at offset -a9e of a structure in a4 is non-zero, then calls a library function with two arguments and clears the value at that offset.
+- `set_flag_and_call_library`: Stores the word one into a global variable at offset -3bcc of a4 and calls a library function.
+- `check_copper_status_and_call`: Clears a 16-bit value at a specific offset from a global variable, checks bit 6 of the copper status register, and calls another routine if bit 6 is not set; otherwise, it calls another routine if bit 6 is set.
+- `set_global_flag_and_call`: Stores a word into a global variable at a specific offset from a pointer in a4, calls two other routines, and returns.
+- `reset_structure_values`: Checks a bit in a structure, and if set, clears several 16-bit fields and copies several pointers into the structure, while also updating a value from a global variable.
+- `store_register_values`: If a register is non-zero, stores the value 5cc into a global variable at offset -3bca of a4, then copies that value and the contents of d0 into a structure at a6.
+- `parse_signed_integer`: Skips leading whitespace and checks for a sign character in a string, then converts the subsequent numeric characters into a signed integer by multiplying by ten and adding the digit value.
+- `convert_to_uppercase`: Checks if an input byte is a lowercase ASCII letter and subtracts a constant to convert it to uppercase if it is.
+- `convert_to_lowercase`: Checks if an input byte is an uppercase ASCII letter and adds a constant to convert it to lowercase if it is.
+- `strncmp`: Reads bytes from two pointers, checks for inequality and returns a signed difference indicator, otherwise it advances both pointers and decrements the counter until a null byte or the limit is hit.
+- `initialize_structure_and_call_library`: Clears a block of memory by filling it with zeros using a loop, saves the stack pointer into the structure, and performs conditional calls to functions via pointers retrieved from a library base.
+- `load_constant_address`: Loads the address 7ffe into register a4 and returns.
+- `allocate_and_initialize_structure_2`: Calculates a size, calls a routine to allocate memory, initializes a structure with specific values and a magic constant, and then calls several other routines based on the structure's contents.
+- `copy_d0_to_d5`: Copies the longword contents of register d0 into register d5.
+- `parse_string_into_tokens`: Allocates memory for a string, copies it, and then parses the string into individual tokens by handling whitespace and double-quote delimiters.
+- `tiny_move_2`: Small routine of 1 instruction that copies d0 to d0.
+- `set_constant_and_branch`: Sets a 16-bit constant in register D0 to 32767 and branches to another location.
+- `copy_string_with_limit_2`: Copies bytes from a source pointer to a destination pointer, stopping at a null terminator or when a counter reaches negative one, and ensures a null terminator is written at the next destination byte if the counter expires first.
+- `copy_string_pad_zeros_2`: Copies bytes from a source to a destination up to a specified count or until a null terminator is found, then fills any remaining bytes in the count with zeros.
+- `process_file_data`: Performs a sequence of library calls to examine, lock, and unlock data, then calculates a sum of two values and stores it in a structure at offset 2 of a table.
+- `multiply_32_bit_values`: Computes the full 64-bit product of two 32-bit values using the cross terms of their 16-bit halves.
+- `process_window_events`: Calls several routines to handle a sequence of operations involving library calls, pointer updates in a structure, and potentially executing a callback function.
+- `copy_register_value`: Copies the contents of register D0 into register D5.
+- `perform_signed_division`: Reads two signed 32-bit integers, determines the sign of the result, calls another routine to perform the division, and returns a 64-bit value containing the result and the second input.
+- `prepare_signed_division`: Clears d4, checks the sign of d0 and d1, negates them if they are negative, and calls another routine to perform division.
+- `call_and_return_concatenated`: Calls another routine and returns a 64-bit value formed by concatenating the original contents of d1 with the value returned in d1.
+- `recursive_call`: Calls itself and then returns.
+- `perform_32bit_division`: Calculates the quotient and remainder of a 32-bit integer division using inputs in registers D0 and D1, returning the result in a concatenated 64-bit value.
+- `execute_stored_callback`: Checks if a pointer at a specific offset from a4 is non-zero, calls the routine at that pointer, and then calls another routine before returning.
+- `execute_callback_chain_2`: Iterates through a series of function pointers and data values stored in a structure, calling various subroutines and library functions based on the presence of non-zero values at specific offsets.
+- `restore_stack_and_return`: Copies a value from the stack into register D4, unlinks register A5, and returns.
+- `access_table_element`: Calculates an offset into a table based on a 16-bit input, checks if the resulting pointer is valid and within range, and if a specific bit is set, calls another routine and clears the table entry.
+- `call_library_vector_6`: Library stub: loads a library base from a global variable and calls the library function at offset minus 6 of that base, returning its result to the caller.
+- `call_library_vector_12`: Library stub: loads a library base from a global variable and calls the library function at offset minus 12 of that base, returning its result to the caller.
+- `jump_to_close_wrapper`: Performs an indirect jump to a routine that calls a library function to close a file.
+- `call_close_2`: Wrapper that calls the dos library function Close and returns its result to the caller.
+- `call_current_dir_2`: Wrapper that calls the dos library function CurrentDir and returns its result to the caller.
+- `jump_to_delete_wrapper`: Performs an indirect jump to a routine that calls a library function to delete a file.
+- `call_delete_file`: Wrapper that calls the dos library function DeleteFile and returns its result to the caller.
+- `jump_to_examine_wrapper`: Performs an indirect jump to a routine that calls a library function to examine a file.
+- `call_examine`: Wrapper that calls the dos library function Examine and returns its result to the caller.
+- `call_info`: Wrapper that calls the dos library function Info and returns its result to the caller.
+- `call_input_2`: Wrapper that calls the dos library function Input and returns its result to the caller.
+- `call_load_seg`: Wrapper that calls the dos library function LoadSeg and returns its result to the caller.
+- `jump_to_lock_wrapper`: Performs an indirect jump to a routine that calls a library function to lock a file.
+- `call_lock`: Wrapper that calls the dos library function Lock and returns its result to the caller.
+- `execute_indirect_function`: Loads a pointer from a table located at an offset from a base address in a register, then performs an indirect jump to the address stored at a second offset within that retrieved pointer.
+- `call_open_2`: Wrapper that calls the dos library function Open and returns its result to the caller.
+- `call_output_2`: Wrapper that calls the dos library function Output and returns its result to the caller.
+- `call_read`: Wrapper that calls the dos library function Read and returns its result to the caller.
+- `call_un_load_seg`: Wrapper that calls the dos library function UnLoadSeg and returns its result to the caller.
+- `execute_indirect_function_pointer`: Performs an indirect jump to a function address retrieved by traversing two pointers starting from an offset within a structure pointed to by a register.
+- `call_un_lock_2`: Wrapper that calls the dos library function UnLock and returns its result to the caller.
+- `execute_indirect_function_2`: Performs an indirect jump to a function address retrieved by traversing a pointer structure starting from an offset of 2452 in a register.
+- `call_write`: Wrapper that calls the dos library function Write and returns its result to the caller.
+- `call_library_vector_168`: Library stub: loads a library base from a global variable and calls the library function at offset minus 168 of that base, returning its result to the caller.
+- `call_library_vector_108_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 108 of that base, returning its result to the caller.
+- `call_library_vector_216`: Library stub: loads a library base from a global variable and calls the library function at offset minus 216 of that base, returning its result to the caller.
+- `call_library_vector_450`: Library stub: loads a library base from a global variable and calls the library function at offset minus 450 of that base, returning its result to the caller.
+- `jump_to_library_stub`: Performs an indirect jump to a library stub that calls a function at a specific offset from a global library base.
+- `call_library_vector_414_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `allocate_and_initialize_structure`: Calls a routine to check a condition, then calls a library function to allocate memory, populates the new structure with values from a provided pointer and other registers, and calls further routines based on the results.
+- `update_and_release_structure`: If a value at offset 10 of a structure is non-zero, it calls another routine, then sets offset 8 to 255, offset 14 to negative one, calls a routine using a byte from offset 15, and finally calls a library function with the structure and a constant.
+- `call_library_vector_354`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
+- `call_library_vector_330`: Library stub: loads a library base from a global variable and calls the library function at offset minus 330 of that base, returning its result to the caller.
+- `call_allocate_with_base`: Pushes the global variable at offset 48 onto the stack and calls another routine passing that value along with the constant 65537, then cleans up the stack and returns.
+- `call_with_frame_pointer`: Pushes the pointer stored at offset 8 of the frame onto the stack, calls a routine via a PC-relative address, removes the pushed value, and returns.
+- `initialize_structure_with_data`: If a parameter is non-zero, it calls a library function to allocate memory, then sets offset 8 to 5, offset 18 to a 16-bit value from a parameter, and offset 14 to the first parameter.
+- `reset_structure_fields_2`: If a parameter is non-zero, it sets offset 8 to 255, offset 20 to negative one, offset 24 to negative one, and calls a library function using the parameter and a 16-bit value from offset 18.
+- `execute_indirect_function_pointer_2`: Loads a pointer from a memory location calculated by adding a negative offset to a base address in a register, then jumps to the address stored at a fixed offset within that target structure.
+- `call_library_vector_198_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_120`: Library stub: loads a library base from a global variable and calls the library function at offset minus 120 of that base, returning its result to the caller.
+- `call_library_vector_456`: Library stub: loads a library base from a global variable and calls the library function at offset minus 456 of that base, returning its result to the caller.
+- `call_library_vector_126`: Library stub: loads a library base from a global variable and calls the library function at offset minus 126 of that base, returning its result to the caller.
+- `execute_indirect_function_pointer_3`: Loads a pointer from a location calculated by adding an offset to a base address found in a structure, then calls the function at that address.
+- `call_library_vector_294_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
+- `call_library_vector_132_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
+- `call_library_function_3`: Calls a library function using a pointer retrieved from a global variable and an offset.
+- `call_library_vector_210_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `call_library_vector_336`: Library stub: loads a library base from a global variable and calls the library function at offset minus 336 of that base, returning its result to the caller.
+- `call_library_vector_372_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 372 of that base, returning its result to the caller.
+- `setup_pointer_chain`: Stores the address of its pointer argument into the memory location pointed to by the argument, adds four to that stored value, clears the next word in the pointed-to block, and stores the original pointer value into the following word.
+- `call_library_vector_444`: Library stub: loads a library base from a global variable and calls the library function at offset minus 444 of that base, returning its result to the caller.
+- `call_library_function_4`: Calls a library function using a pointer retrieved from a global variable and a different offset.
+- `call_library_vector_552_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `call_library_vector_498`: Library stub: loads a library base from a global variable and calls the library function at offset minus 498 of that base, returning its result to the caller.
+- `call_library_vector_174`: Library stub: loads a library base from a global variable and calls the library function at offset minus 174 of that base, returning its result to the caller.
+- `call_library_vector_360`: Library stub: loads a library base from a global variable and calls the library function at offset minus 360 of that base, returning its result to the caller.
+- `call_library_vector_378_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 378 of that base, returning its result to the caller.
+- `call_library_vector_384_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 384 of that base, returning its result to the caller.
+- `call_library_vector_30`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `call_library_vector_300`: Library stub: loads a library base from a global variable and calls the library function at offset minus 300 of that base, returning its result to the caller.
+- `call_library_vector_462`: Library stub: loads a library base from a global variable and calls the library function at offset minus 462 of that base, returning its result to the caller.
+- `call_library_vector_390_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 390 of that base, returning its result to the caller.
+- `call_library_vector_198_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_456_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 456 of that base, returning its result to the caller.
+- `call_library_vector_66`: Library stub: loads a library base from a global variable and calls the library function at offset minus 66 of that base, returning its result to the caller.
+- `call_library_vector_96_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 96 of that base, returning its result to the caller.
+- `call_library_vector_90_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 90 of that base, returning its result to the caller.
+- `call_library_vector_78_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
+- `call_library_vector_90_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 90 of that base, returning its result to the caller.
+- `call_library_vector_48`: Library stub: loads a library base from a global variable and calls the library function at offset minus 48 of that base, returning its result to the caller.
+
+### HardBall II.adf:PARANOIMIA
+
+- `decompress_bitstream_data`: Decompresses a bitstream into a destination buffer using a variable-length coding scheme.
+- `write_decrementing_global_until_wrap`: Writes a 16-bit countdown into a global variable on each pass, looping until the counter wraps back to its starting value, then returns minus one.
+- `bk_refill_bit_buffer`: Depacker bit reader refill: fetches the previous longword of the packed stream, folds it into the checksum and shifts out its lowest bit with a marker bit entering at the top.
+- `bk_read_bits`: Depacker bit reader: collects the number of bits given in D1 from the bit buffer into D2, most significant first, refilling from the packed stream whenever the buffer runs empty.
+
+### HardBall II.adf:songplay
+
+- `__H0_org`: Acts as a command dispatcher that branches to various subroutines based on a command ID in register d0.
+- `update_audio_hardware`: Updates track information by calling two other routines, modifies several fields in a table based on values from a structure, and writes values to the DMA and interrupt hardware registers.
+- `update_track_data`: Loads a longword from a table into offset 6 of a structure in a0, clears offset 14 of that structure, and if a bit is set in a global variable, calculates a value using a division and stores it in a structure pointed to by a table.
+- `PlaySong`: Checks if a register contains a non-zero value and, if so, updates a global state variable and a global song address variable with that value.
+- `_GetSongStat`: Loads a 16-bit value from a global variable into d0 and returns.
+- `SongInt`: Checks four sound effect structures for active status and calls a routine for each active effect.
+- `clear_audio_dma`: Clears a 16-bit value at a specific hardware register location, calls another routine, and then branches to another location.
+- `update_fade_and_tracks`: Decrements a 16-bit fade counter in a global variable; if it is zero, it loads a speed value into the counter and calls another routine four times with different track information structures, otherwise it branches to another location.
+- `decrement_structure_word`: Checks if a 16-bit word at offset 30 of the structure pointed to by a0 is non-zero; if so, it decrements that word and sets d7 to negative 65537, otherwise it returns.
+- `initialize_audio_tracks`: Sets up four track structures by loading pointers from a table, initializing counters and offsets, and setting a play state.
+- `disable_audio_channels`: Turns off the four audio DMA channels and their interrupts by writing clear masks to the DMA and interrupt control registers.
+- `process_audio_command_stream`: Iterates through a command stream to update an audio structure, handling commands to skip data, reset pointers, stop playback, load sample data from a table, or update volume and pitch parameters.
+- `update_volume_parameters`: Decrements a 16-bit value in a structure, and if it reaches zero, copies a value from another offset and updates a volume level through a pointer in a3.
+- `compare_and_branch_2`: Compares a 16-bit value at offset 20 of a structure in a0 with d0, then branches to one of two different locations based on the result.
+- `reset_audio_parameters`: Checks three conditions in a structure pointed to by a3; if they match, it writes a value to the DMA controller, clears a 16-bit value at offset 40 of the structure, writes 314 to offset 44 of the structure, and sets offset 18 of the structure to 65535.
+- `parse_audio_command_stream_2`: Iterates through a command stream to update an audio structure, handling commands for skipping data, resetting pointers, stopping playback, loading new sample data from a table, and setting volume or pitch parameters.
+- `calculate_track_parameters`: Clears a 16-bit value at offset 58 of a structure, performs arithmetic using values from a0 and a3, and branches to another routine.
+- `parse_audio_command_stream`: Iterates through a stream of bytes, using specific values to perform actions such as updating a pointer in a structure, loading a new sample from a table, or modifying a global variable.
+- `update_pointer_from_table`: Increments a value at offset 6 of a structure in a3 and d0, loads a 32-bit value from a table using the incremented d0 as an index into a3 offset 6, and branches to another location.
+- `update_audio_structure`: Clears a long value at an offset in a structure, loads a pointer from an offset in the same structure into a0, moves a long value from that pointer into an offset in the structure, and then loads that same offset value into a1 before branching to another routine.
+- `clear_structure_word`: Clears a 16-bit value at the location pointed to by a3 and then branches to another location.
+- `load_structure_from_table`: Shifts d2 left by 2, uses the result to index into a table pointed to by a pointer at offset 1016 of a structure, stores that pointer at offset 60 of a3, and then copies several 32-bit and 16-bit values from the pointed-to structure into offsets 20, 24, and 28 of a3 before branching.
+- `write_cia_registers`: Writes a byte from d2 to a CIA register, then writes two specific bytes to another CIA register before branching.
+- `modify_and_write_cia`: Inverts the bits of d2, shifts it right by 1, writes the result to a CIA register, and then writes two specific bytes to another CIA register before branching.
+- `update_sample_pointer`: Compares a word at a global address to 4, and if equal, branches to another routine; otherwise, it checks a byte at offset 70 of a structure in a3, and if non-zero, branches to another routine; if zero, it moves a pointer from offset 40 of the structure in a3 to a6, writes the word in d2 to the address in a6 and to offset 30 of the structure in a3, then branches to another routine.
+- `store_word_and_branch`: Stores a 16-bit word from register d2 into a structure at offset 56 of a3, then branches to another routine.
+- `update_track_parameters_2`: Increments a longword at offset 6 of a3, updates several 16-bit values at offsets 14 and 16 of a3 using d2 and d3, and conditionally performs complex pointer arithmetic and data movement to various offsets in a3 based on values in a2 and a global variable.
+- `write_scaled_track_volume`: Scales a volume value by the sound effect music volume and writes the result through a stored pointer.
+- `update_track_parameters`: Calculates a value based on a division involving a global table and a structure field, then writes this value to several offsets within the structure and updates another structure via a pointer.
+- `SongIntHandler`: Saves registers to the stack, sets a6 to a specific address, reads the interrupt status register, and then calls another routine four consecutive times with different parameters for four track structures, before restoring registers and returning from an interrupt.
+- `CheckChannelInt`: Tests a bit in a register and a 16-bit value at offset 70 of a structure; if certain conditions regarding a 16-bit value at offset 18 and a 16-bit value at offset 34 are met, it clears the value at offset 18 and otherwise returns.
+- `reset_audio_channel`: Decrements d1, clears a bit in a global variable, clears a 16-bit value at offset 44 of a0, writes 124 to offset 44 of a0, writes a 16-bit word from d2 to offset 18 of a0, writes 65535 to offset 18 of a0, writes d2 to the DMA controller register, clears offsets 70 and 72 of a0, and branches to another routine.
+- `load_pending_channel_sample`: Copies the pending sample address and period into the channel's pointer and period fields and resets the gate value so the channel plays it.
+- `update_audio_state`: Decrements a 16-bit value at offset 72 of a structure in a0, or if that value is zero, performs a series of operations including calling a routine to get song statistics, calling a routine to play a song, or updating pointers and performing division based on values in a structure.
+- `find_voice_header_chunk`: Scans forward two bytes at a time until it reaches the four-character voice header tag, then leaves the pointer on it.
+- `initialize_music_playback`: Loops through a list until a specific longword is found, then clears playback and track states, calls a routine to load a track, sets up an interrupt handler, and modifies hardware registers to enable interrupts and DMA.
+
+### HardBall II.adf:reset
+
+- `branch_to_reset`: Performs a short branch to another location.
+- `jump_to_reset_2`: Loads the address from a constant into a6, loads a pointer into a5, and calls a routine via a pointer in a6.
+- `jump_to_reset`: Loads the address of a label into a0 and jumps to it.
+- `reset_system_state`: Calls two routines, then enters a loop that clears a range of memory with zeros.
+- `load_address_to_a4_2`: Loads the long value at address 32766 into register a4 and returns.
+- `allocate_and_initialize_manx_structure`: Allocates a memory block based on a table value and initializes it with a specific four-byte signature.
+- `move_d0_to_d5_2`: Moves the contents of register d0 into register d5.
+- `parse_string_into_tokens_2`: Calculates the length of a string from a structure, calls another routine to allocate memory, and then parses the string into individual tokens by handling whitespace and quoted substrings.
+- `set_limit_register`: Moves the value from d0 to d0, sets d0 to 32767, and branches to another routine.
+- `copy_string_with_limit_3`: Copies bytes from a source pointer to a destination pointer, stopping at a null terminator or when a counter reaches zero, and ensures a null terminator is written at the next destination byte if the counter expires first.
+- `copy_string_and_pad_zeros`: Copies bytes from a source pointer to a destination pointer for a specified count, stopping if a null terminator is encountered.
+- `update_window_structure`: Calls another routine and stores the result in a local variable, then if non-zero, follows a chain of pointers through multiple routine calls to retrieve values from a table and update specific offsets in a structure, before finally clearing the local variable and returning.
+- `copy_d0_to_d5_2`: Copies the longword value from register d0 to register d5.
+- `execute_conditional_callback_2`: Checks if a value at a specific offset in a structure pointed to by a4 is non-zero and, if so, executes the function pointed to by that value, then calls another routine.
+- `process_callback_list`: Iterates through a list of function pointers and executes them while performing various conditional checks and data assignments.
+- `restore_a5_and_return`: Moves a long value from the stack into register d4, unlinks register a5, and returns.
+- `access_table_element_2`: Calculates an offset into a table based on a provided value, checks if the index is within bounds and the pointer is non-zero, then either calls another routine if a specific bit is set or clears the pointer and returns.
+- `call_close_3`: Wrapper that calls the dos library function Close and returns its result to the caller.
+- `call_current_dir_3`: Wrapper that calls the dos library function CurrentDir and returns its result to the caller.
+- `call_delay`: Wrapper that calls the dos library function Delay and returns its result to the caller.
+- `call_input_3`: Wrapper that calls the dos library function Input and returns its result to the caller.
+- `call_open_3`: Wrapper that calls the dos library function Open and returns its result to the caller.
+- `call_output_3`: Wrapper that calls the dos library function Output and returns its result to the caller.
+- `call_un_lock_3`: Wrapper that calls the dos library function UnLock and returns its result to the caller.
+- `call_library_vector_108_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 108 of that base, returning its result to the caller.
+- `jump_to_library_function`: Performs an indirect jump to an address calculated from a library base.
+- `call_library_vector_414_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `call_library_vector_198_4`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_294_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
+- `call_library_vector_132_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
+- `call_library_vector_210_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `call_library_vector_372_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 372 of that base, returning its result to the caller.
+- `call_library_vector_552_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `call_library_vector_378_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 378 of that base, returning its result to the caller.
+- `call_library_vector_384_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 384 of that base, returning its result to the caller.
+- `call_library_vector_96_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 96 of that base, returning its result to the caller.
+- `call_library_vector_90_4`: Library stub: loads a library base from a global variable and calls the library function at offset minus 90 of that base, returning its result to the caller.
+- `call_library_vector_78_4`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
+
+### HardBall II.adf:remove_DF1
+
+- `clear_colors_and_close_files`: Clears sixteen words starting at the color register, calls a library function to open a resource, and if successful, writes three long values to a location and calls another library function to close it.
+
+### HardBall II.adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_graphics_and_coordinate_tables`: Initializes several global variables with specific values, clears a large memory range, and populates two buffers by copying data from a table in a loop.
+- `update_function_pointers`: Copies three longwords from one set of global variables to another set of global variables.
+- `update_pointer_table`: Copies two 32-bit values from a table into four 16-bit global variables by swapping their high and low words, then updates the table with new pointers.
+- `swap_global_pointers`: Swaps the values of two longwords stored in global variables and updates a global variable with the high word of a register.
+- `update_buffer_pointer`: Decrements a global word, and if it reaches zero, updates a pointer from a table, potentially copying a sequence of words from a source to a destination before updating the pointer again.
+- `configure_blitter_registers`: Calls a routine, then writes specific values to several hardware registers starting at the custom register base, including a calculated value in the blitter control register.
+- `process_coordinate_tables`: Iterates through a table of indices, calls a routine for valid entries, and then performs a block copy of data from one table to another based on specific marker values.
+- `apply_coordinate_transformation`: Processes a list of 3-word vectors from a0, performing fixed-point multiplication with coefficients from a table and adding a global offset to store the results in a1, continuing until a terminator is met.
+- `scale_and_store_table_values`: Iterates through a list of 12-bit values in a table, calculates a scaling factor based on the difference between two global variables, and applies this factor to each entry using fixed-point multiplication with two different coefficients before storing the results into a destination buffer.
+- `compute_matrix_elements`: Calculates several 16-bit values using combinations of multiplications, subtractions, and bit shifts from a table, and stores the results in a destination table.
+- `wrap_index_values`: Wraps three global word values within a range of 0 to 718, then uses these values as indices to load words from a table into six other global variables.
+- `merge_bitmask_buffers`: Calls a routine three times, each time passing a different pointer from a global variable and a constant value in a register.
+- `merge_bitmask_data`: Reads 16-bit words from a0 and performs bitwise OR operations to update bytes in two different buffers, then stores a pointer or a constant into a global variable based on a comparison.
+- `clear_three_index_buffers`: Sets a termination value of 32768 in register d7 and calls a routine to clear three separate buffers located at global memory addresses, using a list of indices provided in register a0.
+- `clear_buffer_indices`: Iterates through a list of indices in a0, clearing the corresponding bytes in two different buffers until a specific value in d7 is encountered.
+- `wait_for_blitter`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
+- `wait_for_raster_line`: Busy-waits by reading the beam position registers (VPOSR/VHPOSR) until the display beam reaches a given raster line, then returns.
+- `update_obfuscated_value`: Reads a 16-bit value from the video port, performs a bitwise rotation and XOR operation on a constant, stores the result in a global variable, and returns the lower 8 bits of the modified value.
+- `update_structure_with_coordinate_offsets`: Calculates a base address using a pointer in a0 and offsets derived from d0 and d1, then populates a structure pointed to by a5 with several 16-bit and 32-bit values, including calculated differences and bitwise transformations of d0.
+- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
+- `perform_zero_or_instruction`: Performs a bitwise OR operation on register d0 with zero.
+- `clears_data_register_zero`: Performs a logical OR operation on data register zero with zero.
+- `tiny_ori_2`: Small routine of 1 instruction that merges 0 into d6.
+- `clears_data_register_d0`: Performs a logical OR operation on data register d0 with zero.
+- `tiny_ori_3`: Small routine of 1 instruction that merges 128 into d6.
+- `clear_data_d0_register`: Performs a logical OR operation on register d0 with zero.
+- `clear_data_d0_register_2`: Performs a logical OR operation on the d0 register with zero.
+- `clears_data_register_zero_2`: Performs a logical OR operation on data register zero with zero, effectively leaving the register unchanged.
+- `tiny_ori_4`: Small routine of 1 instruction that merges 0 into d5.
+- `tiny_ori_ori_ori`: Small routine of 3 instructions that merges 64 into d5, then merges 128 into d5, then merges 192 into d5.
+- `tiny_ori_5`: Small routine of 1 instruction that merges 24 into d5.
+- `set_register_constant`: Sets register d5 to the value 24.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `return_constant`: Returns the constant -1 in d0 to the caller without any other effect.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_4`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_5`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_6`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_7`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_8`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_9`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_10`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_11`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_12`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_13`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_14`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_15`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_16`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_17`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_18`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_19`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_20`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_21`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_22`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_23`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_24`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_25`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_26`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_27`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_28`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_29`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_30`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_31`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_32`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_33`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_34`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_35`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_36`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_37`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_38`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_39`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_40`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_41`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_42`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_43`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_44`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_45`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_46`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_47`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_48`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_49`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_50`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_51`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_52`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_53`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_54`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_55`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_56`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_57`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_58`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_59`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_60`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_61`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_62`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_63`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_64`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_65`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_66`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_67`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_68`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_69`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_70`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_71`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_72`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_73`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_74`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_75`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_76`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_77`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_78`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_79`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_80`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_81`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_82`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_83`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_84`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_85`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_86`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_87`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_88`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_89`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_90`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_91`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_92`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_93`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_94`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_95`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_96`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_97`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_98`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_99`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_100`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_101`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_102`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_103`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_104`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_105`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_106`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_107`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_108`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_109`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_110`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_111`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_112`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_113`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_114`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_115`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_116`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_117`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_118`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_119`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_120`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_121`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_122`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_123`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_124`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_125`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_126`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_127`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_128`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_129`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_130`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_131`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_132`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_133`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_134`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `load_address_to_a0`: Loads the address of a global variable into register a0 and returns.
+- `load_address_to_a0_2`: Loads a long value from a constant address into register a0 and returns.

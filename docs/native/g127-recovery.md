@@ -1,0 +1,620 @@
+# Game 127 (PushOver v1.11 1267): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/00127). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (1379106 top-level bytes in 196 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 8 raw-word lines |
+| Functions named and described | pass, 500 of 500 named (0 author symbols), 500 of 500 described (24 by rule, 476 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 10851 of 10851 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 14912 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 21006 of 21009 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 98817 |
+| code | 72964 |
+| data | 1207200 |
+| padding | 125 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| ANT | 2 | 20847 | 477 |
+| PushOver.slave | 1 | 133 | 8 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 22 | 9 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 6 |
+| OSEMUMODULE400.BIN (raw code file, load address unknown) | 1 | 0 | 0 |
+
+## Cases handled
+
+- PushOver_v1.11_1267/PushOver/DATA/ANI00.DLX: high-entropy data file (7.97 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI00.PIX: high-entropy data file (7.91 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI01.DLX: high-entropy data file (7.97 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI01.PIX: high-entropy data file (7.91 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI02.DLX: high-entropy data file (7.89 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI02.PIX: high-entropy data file (7.91 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI03.DLX: high-entropy data file (7.97 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI03.PIX: high-entropy data file (7.90 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI04.DLX: high-entropy data file (7.95 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI04.PIX: high-entropy data file (7.91 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI05.DLX: high-entropy data file (7.97 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI05.PIX: high-entropy data file (7.91 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI06.DLX: high-entropy data file (7.96 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI06.PIX: high-entropy data file (7.91 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI07.DLX: high-entropy data file (7.97 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI07.PIX: high-entropy data file (7.91 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI08.PIX: high-entropy data file (7.91 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI09.DLX: high-entropy data file (7.97 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANI09.PIX: high-entropy data file (7.92 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANT00_16.ANX: high-entropy data file (7.95 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANT17_30.ANX: high-entropy data file (7.95 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANT31_46.ANX: high-entropy data file (7.95 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/ANT47_65.ANX: high-entropy data file (7.95 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/CC0.HMX: high-entropy data file (7.97 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/CC1.HMX: high-entropy data file (7.98 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/CC2.HMX: high-entropy data file (7.98 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/CC3.HMX: high-entropy data file (7.97 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/CC4.HMX: high-entropy data file (7.97 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/CC5.HMX: high-entropy data file (7.97 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/DOMINOE0.SPX: high-entropy data file (7.94 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/DOMINOE1.SPX: high-entropy data file (7.89 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/THEME.DAT: high-entropy data file (7.90 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/DATA/TITLE.RUX: high-entropy data file (7.97 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/MUSIC/AZTEC.MOX: high-entropy data file (7.95 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/MUSIC/CASTLE.MOX: high-entropy data file (7.96 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/MUSIC/COLIN.MOX: high-entropy data file (7.98 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/MUSIC/DUNGEON.MOX: high-entropy data file (7.96 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/MUSIC/ELECTRO.MOX: high-entropy data file (7.96 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/MUSIC/GREEK.MOX: high-entropy data file (7.97 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/MUSIC/JAPANESE.MOX: high-entropy data file (7.96 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/MUSIC/MECHANIC.MOX: high-entropy data file (7.97 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/MUSIC/OPTION.MOX: high-entropy data file (7.95 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/MUSIC/PRIZE.MOX: high-entropy data file (7.93 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/MUSIC/SFX.MOX: high-entropy data file (7.97 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/MUSIC/SPACE.MOX: high-entropy data file (7.96 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/MUSIC/TOXCITY.MOX: high-entropy data file (7.96 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/THEMES/AZTEC.BCX: high-entropy data file (7.93 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/THEMES/CASTLE.BCX: high-entropy data file (7.95 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/THEMES/DUNGEON.BCX: high-entropy data file (7.95 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/THEMES/ELECTRO.BCX: high-entropy data file (7.96 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/THEMES/GREEK.BCX: high-entropy data file (7.95 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/THEMES/JAPANESE.BCX: high-entropy data file (7.95 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/THEMES/MECHANIC.BCX: high-entropy data file (7.86 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/THEMES/OPTION.BCX: high-entropy data file (7.94 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/THEMES/SPACE.BCX: high-entropy data file (7.95 bits/byte), classified as packed data
+- PushOver_v1.11_1267/PushOver/THEMES/TOXCITY.BCX: high-entropy data file (7.94 bits/byte), classified as packed data
+- 11 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- runtime segment an address: 8 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 7 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- PushOver_v1.11_1267/PushOver/OSEMUMODULE400.BIN: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- 1 never-loaded region(s), 14912 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- `update_status_flags` (ANT): Compares a byte against several constants to write specific byte values to various offsets of a structure pointed to by a register, and if a word at a specific offset in that structure is non-zero, sets a global flag and calls another routine. Kind: checksum or integrity trap. Pass path: the branch where _u0__d0_075C == 0.
+
+## Functions
+
+
+### ANT
+
+- `initialize_game_environment`: Clears a memory block using a loop, initializes a global structure with stack and library pointers, and calls two library functions to manage system resources.
+- `traverse_and_free_list_2`: Pushes a value from the stack, calls a function pointer found at an offset in a structure, calls another routine, and then performs a series of library calls and function calls based on values in a structure before restoring registers and returning.
+- `configure_dma_channels`: Runs a loop fifteen times, calling a routine to select a DMA channel from a table using a value in d0, clearing a longword at offset 34 of that entry, and enabling the channel.
+- `call_conditional_routine`: Checks if a global variable is non-zero, and if so, calls another routine using a pointer stored at a specific location.
+- `execute_sequence_of_calls_2`: Calls two routines using pointers and parameters from a structure in d0, and if both return non-zero, it performs a series of calls to other routines, updates a global word at offset 541E to -1, and sets a word at offset 02DE to 0.
+- `manage_linked_list_nodes`: Searches a list for a matching pointer, calls a routine to free memory, and then either updates the list by removing a node or modifies a global word by masking it with 8191.
+- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
+- `allocate_and_store_memory`: Calculates a size by adding a shifted value from the stack to a global variable, calls a routine to allocate memory, and then appends the new pointer and size to a null-terminated list.
+- `clear_d0_register`: Performs a bitwise OR operation on register d0 with zero.
+- `branch_to_offset`: Saves registers to the stack, loads a value from the stack into d0, and branches to another location.
+- `allocate_and_store_memory_alt`: Calculates a size by adding a value from the stack to a global variable, calls a routine to allocate memory, and then appends the new pointer and size to a null-terminated list.
+- `clears_data_register_zero`: Performs a logical OR operation on data register zero with zero.
+- `save_registers_and_branch`: Saves registers to the stack, loads a pointer from a global variable into a6, loads a value from the stack into d0, and performs a short branch to another routine.
+- `allocate_and_link_memory_block`: Adds a value from a global variable to another global variable, calls a memory allocation routine with a size of 65537, and appends the resulting pointer to a null-terminated list of pointers.
+- `clear_byte_of_d0`: Performs a logical OR operation on the least significant byte of data register zero with zero.
+- `update_global_counter`: Adds a value from the stack to a global variable and updates that variable if the result is greater than or equal to a second global variable.
+- `update_status_word`: Calls a routine and then sets a global word to zero or 65535 based on a comparison of a longword at a specific address with a constant.
+- `configure_audio_channels`: Sets the channel, length, period, and volume for two audio channels using values from a pointer in d0, then performs a loop that writes to a hardware register before setting that register to a final value.
+- `process_keyboard_input`: Reads a character from a buffer via another routine and compares it against several ASCII constants.
+- `update_status_flags`: Compares a byte against several constants to write specific byte values to various offsets of a structure pointed to by a register, and if a word at a specific offset in that structure is non-zero, sets a global flag and calls another routine.
+- `iterate_and_update_range`: Calculates a count from two input parameters and loops to call another routine for each index in the range.
+- `fill_memory_with_zeros`: Fills two memory areas pointed to by global variables with zero using a loop that runs 9999 times.
+- `decompress_and_reconstruct_data_table`: Validates a magic constant, then performs a decompression routine that reads a source table and writes reconstructed bytes into a destination buffer using bitwise operations and a loop.
+- `extract_flag_bit_from_table`: Scans a table of word pairs until a condition on a global mask is met, then reads a byte from a table entry and uses it as an index into a global mask to extract a bit, calling another routine if a borrow condition is detected.
+- `mask_and_conditional_call`: The routine masks a word from a register with a word from a register and, if a byte from a register is less than a byte from a register, it calls another routine and uses its returned word as the result; otherwise it returns the masked word.
+- `modify_registers_and_stack`: Performs arithmetic on registers d1, d6, and d7 and reads two bytes from the stack to manipulate d6.
+- `accumulate_32bit_from_bytes`: The routine reads four consecutive bytes from a pointer in a register and builds a 32-bit value in a register by concatenating each byte into the result.
+- `decode_and_fill_table`: Reads a count, fills a buffer from another routine, then iterates over a stack buffer and a table, writing bit masks and derived values into table entries based on matching bytes.
+- `copy_interleaved_data`: Copies data from one memory area to another in a loop, placing bytes at specific offsets and conditionally clearing an offset if a global variable equals five.
+- `copy_and_compare_byte`: Saves several values from the stack, calls a library routine, calculates an address from the result, and then copies a byte from a structure to a new location before comparing it to 47.
+- `parse_and_sort_file_data`: Iterates through a file using library calls to find specific byte patterns, copies matching data into a table of sixteen-byte entries, and then performs a bubble sort on that table based on the first byte of each entry.
+- `process_file_data`: Calls several library routines to manage file information, then performs a nested loop to compare and swap bytes between two memory locations based on a value in a global variable.
+- `swap_bytes_and_loop`: Copies a byte from the address in a1 to the address in a0 minus one, then copies the original byte from a0 to the address in a1 minus one, repeating this process in a loop controlled by d4, and finally branches to another routine.
+- `clear_registers_and_load_word`: Increments two pointers by 16, executes two decrementing loops, clears d0, and loads a word from a global address into d0 before returning.
+- `zeroes_data_register_zero`: Performs a bitwise OR operation on data register zero with zero.
+- `zero_d0_register`: Performs a logical OR operation with zero on the data register zero.
+- `tiny_ori_ori`: Small routine of 2 instructions that merges 0 into d0, then merges 0 into d0.
+- `zero_d0_register_2`: Applies a bitwise OR with zero to the d0 register.
+- `increment_pointer_and_clear_d0`: Adds 8 to a word at the address in a5, decrements a0 by 1, moves the contents of d0 to d5, and performs a bitwise OR with zero on d0 eight times.
+- `update_sprite_attribute_buffer`: Calculates a destination address in a table based on input parameters and then either performs bitwise logical operations to merge multiple 16-bit values into specific offsets of the destination buffer or copies 16-bit values from a source structure into the buffer using multiple loops.
+- `process_bitstream_data`: Calculates a value based on a 16-bit word from a global variable, performs a loop that calls another routine to process data from a table using bitwise operations and circular rotations, and stores results in a global structure.
+- `perform_zero_or`: Performs two logical OR operations with zero on register d0.
+- `process_bitstream_rotation`: Reads a sequence of 16-bit values from a table, performs bitwise OR operations, and applies a variable circular rotation and bitwise inversion to the result.
+- `update_memory_buffer`: Calculates an offset using multiplication, calls another routine, and then enters a loop that performs bitwise operations and swaps to update a table of values at regular intervals.
+- `update_buffer_data`: Calculates an offset into a table using values from a structure, then enters a nested loop to copy and transform data from a source buffer into a destination structure at specific 8000-word intervals.
+- `apply_bitmask_to_structure`: Calculates a base address from a structure, then performs bitwise OR or AND operations on five consecutive 8000-word spaced memory locations based on bit manipulation of input parameters.
+- `process_sprite_data_table`: Reads a structure from a table to determine a sprite type and dimensions, then executes a loop that calls another routine multiple times to process a range of memory.
+- `perform_zero_or_single`: Performs a single logical OR operation with zero on register d0.
+- `clear_and_set_buffer_bits`: Reads several 16-bit values from a table, combines them using logical OR, inverts the result, and then uses that result to selectively clear and set bits at 8000-word intervals in a destination structure.
+- `shift_and_modify_bits`: Runs a loop twice to perform bitwise XOR, arithmetic shifts, and bitwise OR operations on a 16-bit value passed in a register.
+- `shift_and_set_bits`: Runs a loop twice to perform bitwise AND, arithmetic shifts, and bitwise OR operations on a 16-bit value passed in a register.
+- `call_and_store_result`: Calls a routine via a pointer, stores the returned value in a global variable, and then stores a modified version of that value in another global variable.
+- `process_system_initialization`: Calls several routines, updates a global counter in a loop, copies seven words from a table to a destination, modifies hardware registers for video synchronization, and executes a series of calls via pointers from a table.
+- `set_global_constants`: Stores the value 65535 in one global variable and the value 1 in another global variable.
+- `allocate_and_track_memory`: Calculates a size from a parameter, calls a memory allocation routine, and if successful, appends the pointer and size to a linked list while updating global tracking counters.
+- `clear_data_register_d0`: Performs a logical OR operation on register d0 with zero.
+- `initialize_graphics_and_audio_buffers`: Allocates multiple memory blocks for data structures, populates a table with calculated 16-bit coordinate values, and performs several library calls to load assets.
+- `handle_pointer_update`: Calls a routine and, if the result is non-zero, stores that pointer in two global variables, calls another routine with a parameter, and finally calls a routine using a pointer retrieved from a global variable.
+- `performs_logical_or_on_d0`: Performs a bitwise logical OR operation on the least significant byte of register d0 using a zero constant.
+- `initialize_and_process_data_pointers`: Loads six pointers from a data table into global variables, then performs a series of conditional checks to either free memory via a linked list manager, execute a data processing routine with specific parameters, or call another routine for each non-zero pointer in reverse order.
+- `process_data_table_pointers`: Stores two pointers from the stack into global variables, calls a routine via a pointer from a table, and if the result is non-zero, stores that result in a third global variable before calling two more routines via pointers from the same table and finally calling another routine with the two stored pointers.
+- `clears_data_register_zero_2`: Performs a logical OR operation on data register zero using a zero constant.
+- `clear_data_register_d0_2`: Performs a bitwise OR operation with zero on data register zero.
+- `tiny_ori_moveq_rts`: Small routine of 3 instructions that merges 0 into d0, then loads 0 into d0, then returns.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `update_tile_bitmask_data`: Calculates a base address from a structure and a range of indices, then performs bitwise AND and OR operations on multiple 16-bit words at specific offsets within a memory block to update bitmask patterns based on provided bitmask parameters.
+- `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
+- `return_constant_3`: Returns the constant an address in d0 to the caller without any other effect.
+- `write_multiple_values`: Depending on a bit test of a value from the stack, it either writes a single byte and a series of words to a destination pointed to by a pointer from the stack, or it writes a series of longwords to that destination using a loop.
+- `copy_memory_block`: Copies a specified number of bytes from a source pointer to a destination pointer, where the count is taken from a stack offset and decremented during the loop.
+- `update_memory_attributes`: Calculates an address based on two values from the stack and a global pointer, then performs several bitwise OR operations on specific offsets from that address, potentially executing a second set of OR operations if a third value from the stack is less than twelve.
+- `apply_xor_data_mask`: Iterates through a list of data, using a value from each entry to determine an offset and performing XOR operations on memory at that offset or a shifted offset, then calls two other routines in a loop.
+- `parse_input_string`: Iterates through a string pointed to by a parameter, updating a global 16-bit value and a global 16-bit counter based on whether characters are line feeds, carriage returns, or other values, and calls another routine when a specific byte value is encountered.
+- `clears_data_register_zero_3`: Performs a logical OR operation on data register zero with zero to ensure its value is cleared.
+- `store_vhpousr_value`: Copies a 32-bit value from the VHPOSR hardware register into a global variable.
+- `modify_global_word`: Reads a word from a global variable, performs bitwise manipulations including a conditional bit flip and a right shift, and then conditionally sets a bit in the word based on its own value before storing the result back to the global variable.
+- `update_joystick_state`: Checks the status of a CIA register and the joystick port to build a bitmask, stores this mask in a global variable, and calls another routine if a specific global value is zero.
+- `copy_memory_blocks`: Calls another routine, then executes a loop that calls another routine to copy memory blocks of size 7936, followed by five individual calls to another routine to copy specific memory blocks of size 7936 at varying offsets, and finally calls another routine one last time.
+- `execute_memory_swaps`: Calls another routine six times with various pairs of values passed in d0 and d1.
+- `swap_memory_blocks`: Calculates two starting addresses using two values from the stack and a global pointer, then enters a loop that swaps 1999 longwords between the two memory locations.
+- `update_coordinate_table`: Calls another routine and then calculates and stores several 16-bit values into a table at specific offsets using two 16-bit values from the stack.
+- `copy_word_table`: Copies 31 words from a source table to a destination table starting at offset 2 of a global variable, or uses a different source if the provided pointer is zero.
+- `copy_structured_data`: Copies blocks of data between two tables based on offsets derived from two input values, performing a conditional fifth copy if a global variable equals 5.
+- `copy_structured_data_alt`: Copies data between two tables using offsets calculated from two input values, with a conditional fifth copy if a global variable equals 5, using a different source table than R2.
+- `return_constant_4`: Returns the constant an address in d0 to the caller without any other effect.
+- `clear_global_shorts`: Sets a 32-bit global variable and a 16-bit global variable to zero.
+- `clear_byte_array`: Clears seven specific bytes in a global structure, calls two functions via a pointer in a global structure, and then clears 79 bytes starting at a global offset.
+- `call_string_parser`: Pushes the address of a global variable onto the stack, calls a routine to parse a string, and then returns.
+- `check_hardware_status`: Checks the high byte of the vertical position register and the low bit of the vertical scroll register, returning if either bit is set.
+- `process_interrupt_logic`: Checks the 5th bit of the value at a fixed address, and if set, executes a loop that clears a range of memory, decrements a word at offset 4A16, updates several bytes at offsets 5427, 5426, 5425, and 5424 based on specific thresholds, and calls a routine if a word at offset 541E is not 65535.
+- `modify_register_d0`: Moves a byte from a table into d0 using an index, performs several bitwise OR operations on d0, and loads 49 into d2.
+- `update_mouse_acceleration`: Calculates the difference between current and previous mouse port values, clamps the result, and updates two different global accumulation variables with limits.
+- `store_word_to_offsets`: Stores a 16-bit value from a stack parameter into three specific offsets of a global table.
+- `store_word_to_single_offset`: Stores a 16-bit value from a stack parameter into a single offset of a global table.
+- `add_to_pointer_if_nonzero`: Checks if the longword pointed to by a0 is non-zero, and if so, adds the value in d1 to it and increments the pointer by four.
+- `process_linked_list_updates`: Iterates through a structure to call another routine multiple times, then processes a list of pointers by adding values to them and performing a loop of additions based on a count in the structure.
+- `configure_dma_channel`: Uses a value in d0 to select a channel from a table, clears a longword at an offset of 34 from the selected entry, and enables a DMA channel by writing a bitmask to the DMACON register.
+- `initialize_dma_channels`: Loops sixteen times calling another routine, clears a longword at a specific address, and calls two other routines before storing a word into a global variable.
+- `update_entity_state_and_pointer`: Calculates an index using values from a table and registers, then updates a structure with a pointer to a new object and various status fields.
+- `update_structure_fields_2_2`: Decrements counters in a structure and, if a counter reaches zero, performs a table-driven update by traversing a sequence of values in a table to update various fields in the structure.
+- `copy_byte_and_branch`: Copies a byte from an offset of 22 plus d0 in a structure pointed to by a0 into offset 56 of a5, then branches to another routine.
+- `update_byte_at_offset`: Moves a byte from a table at offset 22 of a structure indexed by a0 and d0 to offset 48 of a5, increments d0, and branches to another routine.
+- `copy_byte_and_branch_2`: Copies a byte from an offset of 22 plus d0 in a structure pointed to by a0 into offset 54 of a5, then branches to another routine.
+- `negate_and_store_byte`: Copies a byte from an offset of 22 plus d0 in a structure pointed to by a0 into d1, negates d1, stores the result in offset 54 of a5, and then branches to another routine.
+- `clear_and_store_byte`: Copies a byte from an offset of 22 plus d0 in a structure pointed to by a0 into offset 47 of a5, clears offset 49 of a5, and then branches to another routine.
+- `update_structure_fields_2`: Decrements counters in a structure, updates a field from a byte at offset 64, and if a counter reaches zero, performs a table-driven update of various structure fields and a pointer in a3 using values from a global table.
+- `update_structure_field`: Moves a byte from an offset of a structure indexed by a register into another location in a structure, increments a register, and branches to another routine.
+- `move_byte_and_branch`: Moves a byte from a table at offset -8 of a structure indexed by a0 and d0 to offset 63 of a5, then branches to another routine.
+- `increment_structure_field`: Moves a byte from a table at offset -8 of a structure indexed by a0 and d0 to offset 51 of a5, increments the byte at offset 51 of a5, and branches to another routine.
+- `store_byte_as_word`: Moves a byte from a table at offset -8 of a structure indexed by a0 and d0 into d1, stores d1 as a word at offset 52 of a5, and branches to another routine.
+- `negate_and_extend_byte`: Copies a byte from an offset of 8 before the index of a0 and d0 into d1, negates d1, extends d1 to a word, and then branches to another routine.
+- `clear_and_copy_word`: Clears a word at offset 58 of a5, copies a word from offset 18 of a5 to offset 6 of a3, and branches to another routine.
+- `update_structure_fields`: Updates several fields in a structure using the input byte, adjusts a counter with clamping, and modifies a global variable based on a table lookup.
+- `loop_with_beam_position`: Compares the value in d1 with the vertical beam position register and enters an endless loop if they are equal.
+- `copy_target_from_source`: If a bit in d0 is set and a field at offset 24 of the structure in a1 is non-zero, it copies a longword and a 16-bit field from the source through an indirection pointer to a target location.
+- `enable_dma_channels`: Sets bit 3 of a word and moves it to a hardware register, then calls another routine and calls a third routine four times in a loop.
+- `process_table_driven_events`: Clears a word at an offset from a pointer in d0, increments a byte in a local buffer, and if it is less than a value from a table, updates the buffer; it then enters a loop that iterates through a table, performing bitwise checks and arithmetic, and eventually jumps to a routine based on a calculated offset.
+- `modify_memory_values`: Performs several bitwise OR and bit clear operations on various memory locations and registers, then branches to another location.
+- `fetch_entity_attribute_from_table`: Calculates an index based on a division of a value in d3 by 3 and uses it to select a sub-table, then performs arithmetic on a byte from a5 and a4 to fetch a 16-bit word from a table pointed to by a pointer at offset 104 of a5.
+- `update_byte_with_limit`: Copies a byte from d4 to d1, subtracts d4 from a byte at offset 2 of a structure in a5, and if the result is non-negative, stores the result in offset 2 of the structure and in d1, otherwise it stores 0 in offset 2 of the structure and in d0.
+- `modify_byte_with_limit`: Shifts a byte in d1, adds it to d0, and if the result is less than or equal to 64, it writes 64 to an offset of 2 in a5 and branches to another routine; otherwise, it writes 64 to an offset of 2 in a5 and branches to another routine.
+- `compare_and_load_byte`: Compares the value in register d3 with one and, if not equal, branches to another routine; otherwise, it loads a byte from an offset of two from the address in a5 into register d1 and branches to another routine.
+- `update_entity_position_and_state`: Checks if a byte in register d4 is non-zero, then stores it at offset 51 of a structure pointed to by a5.
+- `process_input_command_and_update_state`: Processes input commands based on values in d4 and d3, including toggling bit 1 of the CIAA Port A register, calling update_entity_state_and_pointer with parameters from a structure in a5, and updating a structure in a1 by calculating a value using a multiplication and bit shift.
+- `do_nothing_instruction`: Performs a logical OR on d0 with zero.
+- `clear_data_register_d0_3`: Clears the least significant byte of register d0 by performing a logical OR operation with zero.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `store_global_and_return_offset`: Stores the address of a global variable into a slot in a structure in a5 and returns the sum of the value pointed to by a0 and the value of a0 plus six.
+- `pack_registers_into_block`: Indexes a four-word table using the low bits of a register and stores a four-byte value there, then packs several byte registers into two consecutive bytes of a data block and returns.
+- `do_nothing_instructions`: Performs nine consecutive logical OR operations on d0 with zero.
+- `process_entity_event_and_update_state`: Fetches an event from a table based on an index, updates a structure with new pointer and attribute data, and executes a series of conditional state changes or sub-routine calls based on the event type.
+- `copy_data_table`: Copies data from a source table into a global buffer, or clears the buffer if the source is invalid.
+- `execute_conditional_logic`: Pushes a word onto the stack, calls three different routines, and then either calls another routine and returns zero or calls a fourth routine and returns negative one based on the result of the third call.
+- `execute_conditional_calls`: Checks a byte at a fixed offset from the program counter; if it is zero, it returns, otherwise it calls two different routines and returns.
+- `update_global_pointers`: Stores a pointer into four global variables, calls another routine, and if a byte from a pointer is non-zero, it updates a global variable based on a bit in a structure field, modifies a hardware register, and stores two values into a table.
+- `call_conditional_routine_2`: Checks if a byte at a specific location is non-zero and, if so, calls another routine and returns its result; otherwise it returns.
+- `set_global_to_zero`: Sets a 32-bit global variable to zero and returns zero.
+- `move_register_to_register`: Moves the contents of one register to another and branches to an earlier instruction.
+- `read_and_clear_global_flag`: Reads the current value of a global flag byte, then clears that flag to zero when it was nonzero, returning the value that was read.
+- `process_data_structures`: Pushes a long value from a table onto the stack, checks a pointer from a table, and if non-zero, performs several operations including copying 4999 words from one table to another, calling a routine with a value from the stack, and executing a loop that calls a routine multiple times based on a value from a table.
+- `process_table_entry`: Calculates an offset by multiplying a byte from a table by 4 and adding d0, then if a second byte from the table is non-zero, calls another routine with several parameters and updates a pointer in a table.
+- `swap_and_call_routine`: Compares a word in a global variable to negative 32767; if it is not, it calls another routine with a pointer from a table and the value 8000, otherwise it calls another routine with a different pointer and 8000, then performs a swap of two pointers in a table and compares them.
+- `call_routine_with_pointer`: Calls another routine using a pointer from a table and the value 8000.
+- `parse_and_apply_graphics_data`: Searches for specific magic markers in a data stream to extract dimensions and color information, updates the hardware color registers and a global palette, and then performs a nested loop to copy and manipulate pixel data into a destination buffer.
+- `parse_and_expand_compressed_data`: Searches for a specific header string in a buffer, then performs a multi-stage decompression of data into a destination buffer.
+- `execute_sequence_of_calls`: Stores a long value into a global variable, sets the sign bit of a byte in a global variable, calls a routine, and then based on d0, calls one, two, or three different routines, performs a jump via a pointer in a global variable, and finally calls another routine before branching to an earlier instruction.
+- `copy_memory_block_2`: Copies 10000 words from a source table to a destination table using a loop.
+- `copy_word_table_2`: If a global variable is zero, it copies 32 words from a source table to a destination table in a loop, calls another routine with the destination address, and then sets the global variable to a non-zero value.
+- `decompress_data_stream`: Decompresses a data stream into a destination buffer using bitwise operations and conditional logic, while also configuring DMA registers.
+- `process_command_stream`: Reads a command identifier from a table and executes specific operations based on its value, such as updating audio structures, manipulating nibbles in a table, or copying data between buffers.
+- `setup_audio_structure`: Configures audio hardware registers and populates a structure with values from registers and a pointer.
+- `increment_nibbles`: Increments the non-zero nibbles of a 16-bit value, specifically handling the high, middle, and low nibbles independently.
+- `decrement_nibbles`: Decrements the non-zero nibbles of a 16-bit value, specifically handling the high, middle, and low nibbles independently.
+- `iterate_and_decompress_data`: Loops up to sixteen times calling a routine with a calculated address, and if a specific condition is met, performs a series of calls involving a pointer from a table, a global variable, and a structure in a5.
+- `manage_state_transitions`: Updates a global word to zero and handles three different state transitions based on a parameter, involving calls to other routines and updating various global words and pointers.
+- `initialize_and_call_subroutines`: Sets a global word to one, pushes one hundred onto the stack to call a routine, pushes zero to call another routine, and finally calls a third routine using a pointer retrieved from a global variable.
+- `initialize_global_values`: Sets four consecutive bytes starting at offset 2504 of a structure in a6 to negative one, sets the byte at offset 2507 to 255, sets the byte at offset 2508 to zero, clears the byte at offset 2509, calls another routine, and then calculates a value by subtracting a byte from 59 and storing the result in a global variable and setting a byte at offset 5422 to one.
+- `update_buffer_offsets`: Performs five consecutive calls to another routine, each passing a different set of parameters derived from a structure in a5, including various combinations of signed bytes and words.
+- `initialize_byte_table`: Writes a sequence of specific byte values into a table at an offset from a pointer and sets a global byte to 1.
+- `process_complex_state`: Calculates a value from two bytes at offsets 5424 and 1114 of a global table, updates a byte at offset 5422, and performs several conditional calls to other routines including a routine that takes a pointer and multiple parameters.
+- `update_buffer_sequences`: Checks several global bytes for non-zero values, then performs a series of calls to a routine with varying parameters and calls another routine multiple times with specific word values.
+- `update_sprite_buffer_conditional`: Checks if two values from a structure in a5 are within specific ranges, then if a global variable equals 5, calls another routine with a destination address offset by 800 from a table, otherwise calls another routine with a destination address offset by 640 from a table.
+- `update_sprite_buffer_offset`: Checks if two values from a structure in a5 are within specific ranges, then if a global variable equals 5, calls another routine with a destination address offset by 2720 from a table, otherwise calls another routine with a destination address offset by 2176 from a table.
+- `calculate_sprite_buffer_offsets`: Iterates through a table of sprite data to calculate memory offsets based on sprite dimensions and types, then calls another routine to perform memory operations or buffer updates.
+- `calculate_sprite_buffer_parameters`: Calculates sprite dimensions and buffer offsets by reading values from a global structure, performs range checks on a global variable, and calls process_sprite_data_table, update_sprite_buffer_conditional, update_sprite_buffer_offset, process_bitstream_data, and another routine to update sprite data.
+- `set_table_byte`: Calculates an offset based on two 16-bit values from a structure in a6, calls another routine, and then stores a byte at a calculated address in a table.
+- `update_complex_data`: Performs multiple calls to another routine using various calculated parameters, calls a routine to iterate over a range, and calls a routine to process data from a table.
+- `process_grid_data`: Checks a global variable against two constants, calculates an address using a pointer and a scaled value, and if certain conditions are met, calls another routine and potentially writes a byte to a calculated memory location.
+- `calculate_sprite_parameters`: Validates a block of memory for non-zero bytes, updates several global values, and conditionally calls another routine and a second routine based on calculated offsets and specific byte values.
+- `allocate_and_initialize_resources`: Allocates memory using two different calculated sizes, performs a loop to process data from a table, and executes a sequence of calls to initialize various parameters and global variables.
+- `unpack_structured_data_streams`: Iterates through multiple data streams to copy blocks of 12-byte structures from source buffers to destination pointers.
+- `process_data_table_loop`: Iterates through a table, calls another routine to fetch a word, extracts specific bit fields to store in local stack arrays, and performs arithmetic operations on these values before calling another routine and potentially another routine in a nested loop.
+- `call_interleaved_copy`: Pushes a value from a global variable and a value from a structure in a5 onto the stack and calls another routine.
+- `empty_c_function`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
+- `dispatch_state_handler`: Compares a word at offset 8 of a structure in a5 to 3 and branches if they are not equal; it then loads an address into a3 and either calls a routine at that address, calls another routine if the value at a global word is not 1, or calls a third routine if the global word is 0, before finally calling a routine and returning.
+- `update_structure_fields_via_subroutine`: Checks a byte value against a constant and, if it meets specific criteria, calls another routine to fetch data before writing a series of words into a structure pointed to by a pointer in the stack frame.
+- `update_linked_list_nodes`: Iterates through a sequence of nodes, calling another routine to update structure fields based on bytes retrieved from a table and a structure in a5.
+- `process_grid_callbacks_and_update_state`: Iterates through a 16-element table of structures, calling another routine for each active entry and performing conditional updates to a grid-based data structure.
+- `process_complex_table_logic`: Uses a loop to iterate through a table, performing conditional checks and calling another routine to update a structure with various word and byte values based on calculated offsets and comparisons.
+- `process_grid_callbacks_and_update_state_2`: Iterates through a table of sixteen 16-byte structures, calling another routine for each entry where a specific byte is non-zero, and updating various flags and values in a secondary table based on the results.
+- `execute_state_machine`: Checks a word from a structure in a5, and if non-zero, clears two global variables, sets a global variable to 8, and then uses a global variable to index into a table and jump to a calculated address.
+- `fetch_table_entry`: Multiplies a word from a global variable by 10, uses the result to index into a table to fetch a word into a global variable, and then updates several other global variables from the table entry before incrementing the original global variable.
+- `execute_conditional_callback`: Pushes a byte from a table and two other values onto the stack, calls another routine, and then sets a value in a global variable to 4 before calling a second routine.
+- `trigger_callback_logic`: Pushes a byte and two pointers onto the stack to call another routine, then sets a global word to five and potentially updates it to eight based on the return value.
+- `increment_and_check_counter`: Increments a word in a table, and if the result masked with 15 is zero, sets a global word to 8.
+- `update_grid_and_state`: Updates two global 16-bit values based on joystick bitmasks and specific integer constants, then uses them as indices to fetch a byte from a table and performs a series of subtractions on that byte to determine a branch destination.
+- `configure_and_process_parameter_strings`: Calls several routines to initialize data and check string parameters, then swaps two values in a global structure.
+- `process_theme_data`: Sets a global word to 1, calls several routines to process data, and then enters a loop that clears bytes in a table and conditionally calls another routine based on a global byte.
+- `initialize_and_process_game_state`: Initializes a data table, populates a string buffer with character values, and enters a loop that performs calculations and calls several routines to update a global structure.
+- `copy_table_data_2`: Sets a global word to 1, calls another routine, calls a third routine, and then uses two global pointers to call two more routines before clearing a global word.
+- `update_entity_status_and_display`: Searches a table for a matching value, then updates several global variables and a structure with calculated character values and bitmasks.
+- `copy_and_sync_data_blocks`: If a pointer in a global variable is non-zero, calls another routine twice to copy data blocks, then copies several bytes and words from various global variables into a destination structure at an offset from the pointer.
+- `initialize_system_parameters`: Copies two memory blocks using a pointer from a global structure, updates several global variables with values from that structure, and performs indexed writes to a calculated memory location based on two byte values.
+- `reset_structure_fields`: If a global word is non-zero, calls another routine, then writes a byte from offset 3 of a structure in a0 to a global variable and clears several other byte offsets in that structure.
+- `update_entity_state_2`: Calculates a memory address using values from a structure, checks a byte at that address, and then performs one of several conditional calls to another routine or modifies bytes in the structure.
+- `validate_entity_state`: Checks a series of conditions against a global variable and values within a structure to return a boolean result.
+- `verify_grid_conditions`: Performs complex validation of a structure's contents based on a global variable and specific byte values within the structure.
+- `check_structure_flags`: Evaluates specific byte flags within a structure and compares them against constants to return a status value.
+- `validate_grid_state`: Evaluates a structure's contents and compares specific byte values at various offsets against constants to determine a new state.
+- `process_entity_interaction_and_state`: Calculates a pointer to a structure based on a global variable, then performs complex validation of its contents and flags to determine a new state.
+- `update_indexed_value`: Decrements a byte at an offset in a structure, and if the result is greater than zero, it either increments a 16-bit value at a specific offset or performs a complex calculation involving multiplying a value by 12, accessing a table via an offset, and updating a 16-bit value at offset 4472.
+- `reset_global_state`: Stores 54 in two global locations, calculates an offset using two bytes from a structure and a third byte, writes 20 to that offset, calls another routine, and then performs a series of writes to clear or set multiple global words and bytes before returning a bitwise OR of two bytes from the structure.
+- `decrement_global_counter`: Calls another routine and, if the result is non-zero, decrements a 16-bit value at a global address and returns the value sixty-six.
+- `increment_global_counter`: Calls another routine and, if the result is non-zero, increments a 16-bit value at a global address and returns the value sixty-six.
+- `check_and_set_counter`: Calls another routine, checks if the returned value in d0 is zero, checks a byte at a global address, and if that byte is non-zero, writes 20 to a global word at offset 3328.
+- `reset_global_counters`: Clears a word at offset 3328, decrements a word at offset 332c, and if a word at offset 3330 is not zero, it sets a word at offset 816 to eight and a word at offset 3330 to eight, otherwise it decrements a word at offset 332e and branches.
+- `clear_global_words`: Sets d0 to zero, stores it in two global word locations, and then sets d0 to sixty-six before branching.
+- `return_word_from_address`: Loads a 16-bit word from a global memory address into d0 and returns.
+- `check_and_set_counter_alt`: Calls another routine, checks if the returned value in d0 is zero, checks a byte at a global address, and if that byte is non-zero, writes 21 to a global word at offset 3328.
+- `increment_global_counters`: Sets a word at offset 3328 to one, increments a word at offset 332c, and if a word at offset 3330 is not zero, it sets a word at offset 816 to eight and a word at offset 3330 to eight, otherwise it decrements a word at offset 332e and branches.
+- `update_global_pointers_2`: Clears register d0, writes it as a 32-bit longword to two different global memory locations, sets d0 to 66, and branches to another routine.
+- `fetch_word_value`: Copies a 16-bit word from a fixed memory location into d0 and returns.
+- `process_conditional_counter_reset`: Calls another routine and, if the return value is non-zero and a specific longword is non-zero, writes the value 20 to a word at offset 13100 and branches to another location; otherwise, it returns.
+- `clear_and_decrement_counters`: Clears a word at offset 3328, decrements a word at offset 332c, and if a word at offset 3330 is not zero, it sets a word at offset 816 to eight and a word at offset 3330 to eight, otherwise it branches.
+- `increment_and_clear_words`: Increments a 16-bit global value, sets d0 to zero, stores it in two global word locations, and then sets d0 to sixty-six before branching.
+- `read_global_word`: Moves a 16-bit value from a specific address into d0 and returns.
+- `process_conditional_counter_reset_2`: Calls another routine and, if the return value is non-zero and a specific byte in a global variable is non-zero, sets a word at offset 13128 to 21 and branches to another location; otherwise, it returns.
+- `increment_and_reset_counters`: Sets a word at offset 3328 to one, increments a word at offset 332c, and if a word at offset 3330 is not zero, it sets a word at offset 816 to eight and a word at offset 3330 to eight, otherwise it branches.
+- `increment_and_update_pointers`: Increments a longword in a global variable by one, then stores the value zero into two different global longword locations and branches to another routine with the value sixty-six in register d0.
+- `get_word_data`: Retrieves a 16-bit word from a global address into d0 and returns.
+- `decrement_global_counter_conditionally`: Calls another routine and, if the return value is non-zero, decrements a 16-bit value at a global address and returns the constant sixty-six; otherwise, it returns the value stored at a different global address.
+- `call_subroutine_and_set_word`: Calls a subroutine, and if d0 is not zero, it checks if a byte at offset 80a of a structure is zero; if it is, it sets a word at offset 3328 to nineteen and branches, otherwise it returns.
+- `set_constant_and_decrement`: Sets a global word to nine, decrements a 16-bit global value, sets d0 to sixty-six, and then branches.
+- `load_word_constant`: Loads a 16-bit word from a constant address into d0 and returns.
+- `increment_global_counter_conditionally`: Calls another routine and, if the return value is non-zero, increments a longword at a global address and returns the constant forty-two; otherwise, it returns the value stored at a different global address.
+- `process_conditional_update_10`: Compares a global word to 3, calls another routine if they are equal, calls a third routine, and if the result in d0 is non-zero, writes 10 to a global word at offset 4464 and 66 to another location.
+- `access_word_at_address`: Reads a 16-bit word from a global address into d0 and returns.
+- `process_conditional_update_11`: Compares a global word to 3, calls another routine if they are equal, calls a third routine, and if the result in d0 is non-zero, writes 11 to a global word at offset 4464 and 66 to another location.
+- `retrieve_word_value`: Copies a 16-bit word from a fixed address into d0 and returns.
+- `increment_state_on_nonzero`: Calls another routine, and if the returned word is non-zero, increments a word at offset 4468 of a global table, sets a word at offset 4464 to 1, and calls another routine.
+- `fetch_constant_word`: Moves a 16-bit word from a global address into d0 and returns.
+- `decrement_state_on_nonzero`: Calls another routine, and if the returned word is non-zero, decrements a word at offset 4468 of a global table, clears a word at offset 4464, and calls another routine.
+- `return_fixed_word`: Loads a 16-bit word from a specific memory address into d0 and returns.
+- `update_conditional_global`: Calls another routine and, if the result is not zero, checks if d0 equals a value from a table; if it does, it stores 16 into a global variable at offset 3328, otherwise it stores 236 into d0.
+- `update_global_value`: Stores the value 19 into a global variable at offset 3328 and returns that value in d0.
+- `set_global_from_result`: Calls another routine and, if the result is not zero, stores 11 into a global variable at offset 3328 and returns that value.
+- `set_global_ten`: Calls another routine and, if the result is not zero, stores 10 into a global variable at offset 3328 and returns that value.
+- `return_constant_value`: Returns the value 66 in d0.
+- `return_conditional_value`: Calls another routine and, if the result is not zero, loads 66 into d0, otherwise it returns the value from a global variable at offset 3328.
+- `set_global_fifty_two`: Calls another routine and, if the result is not zero, stores 50 into a global variable at offset 3328 and returns that value.
+- `calculate_indexed_offset`: Calls another routine and, if the result is not zero, stores 38 into a word at offset 4464 of a structure, calculates a new value by multiplying a word from offset 4466 of that structure by 12, adds it to a value from a table at a pointer in a0, adds a value from a global variable, and stores the result at offset 4472 of the structure.
+- `get_global_value`: Loads the word from a global variable at offset 3328 into d0 and returns.
+- `calculate_indexed_offset_alt`: Calls another routine and, if the result is not zero, stores 39 into a word at offset 4464 of a structure, calculates a new value by multiplying a word from offset 4466 of that structure by 12, adds it to a value from a table at a pointer in a0, adds a value from a global variable, and stores the result at offset 4472 of the structure.
+- `update_entity_state_logic_2`: Compares a word to 1, and if equal, performs a series of stack operations and a library call; if the result is 0 and a global word at offset 081C is 0, it calculates an address using values from a table and branches to different routines based on the byte found at that address.
+- `update_specific_values_5`: Writes 5 to a global word at offset 81c, writes 44 to a global word at offset 4fcc, and branches to another routine.
+- `update_specific_values_2`: Writes 2 to a global word at offset 81c, writes 42 to a global word at offset 4fcc, and branches to another routine.
+- `update_specific_values_5_alt`: Writes 5 to a global word at offset 81c, writes 40 to a global word at offset 4fcc, and branches to another routine.
+- `update_word_and_decrement_counter`: Sets a word at offset 332a to nine, and if a word at offset 81c is not zero, it decrements that word; if the word becomes zero, it copies a word from offset 4fcc to offset 3328 and then to d0, otherwise it branches.
+- `decrement_and_set_global`: Calls another routine and, if the result is not zero, decrements a word at offset 332c of a global variable, stores 33 into a global variable at offset 3328, and sets d0 to 66.
+- `fetch_global_word`: Returns the word stored at a global variable offset 3328 in d0.
+- `process_state_logic`: Checks a global word against one, calls another routine, and if the result is zero and a global word is zero, performs a series of table lookups and updates a global word and a global table entry based on the retrieved byte.
+- `update_structure_values_38`: Calls another routine and, if the result is not zero, stores 9 into a word at offset 4466 of a structure and stores 38 into a word at offset 4464 of that structure.
+- `update_structure_values_39`: Calls another routine and, if the result is not zero, stores 9 into a word at offset 4466 of a structure and stores 39 into a word at offset 4464 of that structure.
+- `decrement_and_update_state`: Calls another routine, and if the result is zero, decrements a word at an offset in a structure and calls another routine, then updates a global word and a global table entry if the second routine returns zero.
+- `execute_conditional_state_update`: Calls another routine and, if the result is zero, increments a value from a global memory location, calls another routine using parameters loaded from a table, and if that second call returns zero, writes the values nine and thirty-nine to specific offsets in a global structure.
+- `manage_entity_attributes`: Compares a word at offset 4466 of a global table with 1 and another word with 2, then calls a routine, and if the result is non-zero, performs further conditional checks and calls to update values at offsets 4464, 4470, and 4468.
+- `increment_structure_values`: Calls another routine and, if the result is non-zero, increments a 16-bit value at offset 4468 of a structure in a1, sets offset 4464 of that structure to 48, and updates offset 4470 based on a comparison with 13.
+- `read_global_word_2`: Copies a word from a global variable at offset 3328 into d0 and returns.
+- `decrement_structure_values`: Calls another routine and, if the result is non-zero, decrements a 16-bit value at offset 4468 of a structure in a1, sets offset 4464 of that structure to 48, and updates offset 4470 based on a comparison with 13.
+- `set_global_word_and_branch`: Calls another routine and, if the result is non-zero, stores 30 into a global variable at offset 3328 and then branches.
+- `tiny_moveq_unlk_rts`: Small routine of 3 instructions that loads 32 into d0, then removes the stack frame held in a5, then returns.
+- `update_attribute_on_match_2`: Calls another routine, and if the result is non-zero, writes a word to a structure, increments a word at an offset in a structure, and if that value is greater than thirteen, writes a new value to that structure and increments a global word.
+- `update_attribute_on_match`: Compares a word at offset 4466 of a global table with 4, and if they match, increments a word at offset 4468, calls another routine, and then calls a third routine with a modified value.
+- `increment_global_if_equal`: Compares a word from a global variable at offset 332a with 6; if they are equal, it increments a word at offset 332c in a global variable and returns the word from offset 3328 in d0.
+- `increment_bounded_word`: Calls a routine, and if d0 is non-zero, sets a word at offset 4464 of a structure in d1 to 48, increments a word at offset 4470 of the structure, and if that word is less than or equal to 13, it clamps it to 13 and increments a word at offset 081A of the structure.
+- `decrement_global_counter_2`: Compares a word in a global variable with four, and if it is not equal, decrements a word at an offset in a global variable.
+- `reset_attribute_on_zero`: Decrements a word in d0, and if the result is zero, calls another routine with a word from offset 4470 and 4468, then calls a third routine with the value 255 and returns a word from offset 4464.
+- `process_conditional_state_three`: Checks if a global variable at offset 4466 is three, calls another routine if so, and if a subsequent routine returns a non-zero value, stores 33 at offset 4464 and 66 in d0.
+- `retrieve_global_word`: Moves a word from a global variable at offset 3328 into d0 and returns.
+- `set_global_word_simple`: Calls another routine and, if the result is non-zero, stores 65 into a global variable at offset 3328 and returns that value in d0.
+- `update_state_and_globals`: Checks if a global variable at offset 4466 is three, calls another routine, and if a subsequent routine returns a non-zero value, stores 12 at offset 4466 and 17 at offset 11798 before returning a value from offset 4464.
+- `set_global_word_conditional`: Calls another routine and, if the result is non-zero, stores 17 into a global variable at offset 4fce and loads a word from offset 3328 into d0.
+- `calculate_complex_offset`: Calculates an offset using bytes from a table, multiplies a value by 160, and if a comparison with 23 fails, updates several values in a structure in a1 and calls another routine.
+- `reset_structure_and_global`: Calls another routine and, if the result is non-zero, sets offset 4464 of a structure in a1 to 33, clears a global variable at offset 081e, and returns 66 in d0.
+- `reset_global_values`: Calls another routine, and if it returns a non-zero value, stores -1 at offset 4468 and 65535 at offset 4470, then calls another routine and clears a global variable at offset 0820 if a global variable at offset 0810 is non-zero.
+- `decrement_global_word`: Calls another routine and, if the result is non-zero, stores 56 into a global variable at offset 3328 and decrements a 16-bit value at offset 332c.
+- `return_constant_word`: Calls another routine and, if the result is non-zero, loads 66 into d0 and branches.
+- `check_state_one_and_return`: Checks if a global variable at offset 4466 is one, calls another routine, and if a subsequent routine returns a non-zero value, sets d0 to 66 before returning.
+- `load_global_word`: Returns the word located at a global variable offset 3328 in d0.
+- `execute_conditional_subroutine_chain`: Checks if a global variable equals one; if so, it calls a routine with the value fifteen passed as an argument, then calls another routine with the value three passed as an argument.
+- `fetch_global_word_2`: Loads a 16-bit word from a global variable into register d0, unlocks address register a5, and returns.
+- `execute_conditional_subroutine`: Calls another routine with the value three passed in d0, then either returns immediately or loads the value sixty-six into d0 and continues.
+- `return_global_word`: Copies the word from a global variable at offset 3328 into d0 and returns.
+- `update_grid_state`: Calculates grid dimensions and iterates through a nested loop to check specific byte values in a table, writing a byte to a global array based on conditional checks and updating several local counters and values stored on the stack.
+- `evaluate_grid_conditions`: Iterates through a table using two nested loops to check byte values at specific offsets, then updates a local variable on the stack based on the results of these checks and the state of two global variables.
+- `validate_object_properties`: Reads a structure from memory and performs a series of conditional checks on specific byte values at various offsets to determine a valid state.
+- `update_object_state_and_properties`: Calculates an offset into a table using a global variable and checks if a byte at a specific offset within that table falls within a range of 20 to 23.
+- `dispatch_grid_callbacks`: Calls another routine, retrieves values from a global variable to calculate an address, and then conditionally calls one or two routines from a table based on comparisons and range checks.
+- `update_object_state`: Calculates a pointer to an object structure using a base address, an index, and a multiplier, then performs a series of conditional checks on the object's properties to update a state variable and a global status word.
+- `update_table_data`: Checks a byte at an offset derived from a parameter, then either writes several values from a table to a global structure or writes constant values if the byte is zero.
+- `copy_table_data`: Checks a byte at an offset derived from a parameter, then if non-zero, copies several values from a global structure into a table at an offset derived from the parameter.
+- `process_grid_and_callbacks`: Clears a word in a global variable, calls a subroutine, and then performs several calculations to determine if specific function pointers from a table should be called based on values in a global structure and a comparison with a constant.
+- `update_grid_state_and_call_subroutine`: Calculates an offset by multiplying a word from a structure by ten, clears a word at that offset, and sets a global variable to sixty-six.
+- `update_entity_state`: Calculates an address based on values in a structure, updates several bytes at that address, and calls another routine.
+- `update_entity_state_logic`: Calculates an address for a structure within a table using two input parameters, then performs a series of conditional checks and updates on the structure's bytes at offsets 3, 4, 5, 6, and 7.
+- `modify_structure_values_2`: Performs bitwise OR operations on a long value, then checks a byte in a structure to decide whether to call another routine and update specific offsets or perform a jump via a table.
+- `modify_structure_values`: If a byte at offset 4 of a structure is 8, it calls another routine and then updates offsets 4 and 5 of that structure using values from a second structure.
+- `set_entity_attribute`: Calculates an address based on values in a structure and sets offset 7 of that address to either 96 or 112, then calls another routine.
+- `dispatch_via_table`: Decrements a word from the stack, and if the result is between zero and seventeen, uses it to index into a table and jump to the resulting address.
+- `apply_bitmask`: Performs bitwise OR operations with specific constants on several bytes at offsets relative to a pointer in a register.
+- `empty_c_function_2`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
+- `modify_entity_state`: Updates a byte at offset 4 of a structure based on bytes at offsets 5 and 4, modifies offset 6 based on a comparison, and updates a grid of bytes in a global structure based on a calculated index.
+- `fetch_entity_state_byte`: Calculates an offset into a table using two input values and a multiplier, then loads a single byte from that calculated address into a register.
+- `update_entity_event_data`: Checks specific byte values in structures to determine if an event should be recorded.
+- `write_event_data`: Writes several bytes to a structure in a2 using values from a3, calls another routine, and then calculates an address in a table to write three bytes of value 1.
+- `process_entity_state`: Checks if a word at offset 8 of a structure in a5 is positive, if a byte at offset 2 of a3 is 12, and if a byte at offset -5 of a5 is 11; if these conditions are met, it calculates an address using values from a5, checks a byte at offset -5 of that address, and if non-zero, pushes four values onto the stack and calls another routine.
+- `update_structure_and_grid`: Copies bytes from one structure to another, clears several bytes in the source structure, and then calculates an offset to write several bytes to a location in a global array.
+- `update_entity_buffer`: Checks if a word and a byte meet specific criteria, calculates a memory address, and if a byte at that address is non-zero, calls another routine with parameters derived from a structure.
+- `update_structure_and_grid_alt`: Copies bytes from one structure to another with different constant values, clears several bytes in the source structure, and writes several bytes to a location in a global array using a calculated offset.
+- `clear_byte`: Clears a single byte at offset 5 of a structure in a6.
+- `check_entity_condition`: Compares a byte at offset 7 of a structure against 64 or 112, and if a match is found, calls another routine with three parameters pushed onto the stack.
+- `check_condition_and_call`: Calculates an address based on values in a structure, and if a byte at offset 5 of another structure is one, it pushes three values onto the stack and calls a subroutine.
+- `check_entity_conditions`: Checks several conditions involving bytes in a structure and a global array, and if they are met, calls another routine with parameters from the stack.
+- `process_entity_state_3`: Calculates an address for a structure using values from a table and offsets, then compares bytes at specific offsets of that structure and a second structure to determine whether to set a byte at offset 5 of the second structure and call two other routines.
+- `process_entity_state_2`: Compares bytes at offsets -4, 11, and 12 of a structure in a2, and if they match specific values, sets a byte at offset 5 of a structure in a3, decrements a word at offset 8 of a structure in a5, and calls two routines using values from the stack.
+- `execute_entity_logic`: Decrements a word from a structure, calls another routine, and if the result is non-zero, calls a third routine using values from the structure and a register.
+- `process_entity_state_transitions`: Checks a status byte in a structure and, if it matches specific values, calculates an address in a table to update entity properties or clear several bytes at offsets 3 through 7.
+- `update_entity_state_logic_3`: Calculates an address for an entity structure within a table using two input parameters, then performs a series of conditional checks on bytes at various offsets of that structure and a global entity pointer.
+- `evaluate_entity_state`: Checks a byte in a structure against constants, and if matched, either calls another routine or performs a series of checks on a calculated grid address and calls another routine if specific byte conditions are met.
+- `update_entity_event_state`: Checks specific byte values within a structure and a global table to determine an event type, then updates an entity's properties and calls another routine.
+- `set_grid_and_call`: Calculates an offset to write bytes to a global array, calls another routine, and if a byte at an offset in a structure equals five, writes a byte to a location in the global array.
+- `update_entity_logic`: Retrieves a byte from a table based on a value in a structure, updates a byte at offset -6 of that structure, and if that byte equals 3, performs calculations to access another structure and conditionally calls a routine and decrements a byte at offset -6.
+- `decrement_structure_byte`: Decrements a byte at offset -6 of a structure in a5 and branches to another location.
+- `update_entity_counters`: Checks a byte at offset -6 of a structure against 2, verifies a value in a table, decrements offset -6, and conditionally decrements offset -7 after calling another routine.
+- `decrement_offset_byte`: Decrements a byte at an offset relative to a pointer in a6 and branches.
+- `search_and_update_grid`: Checks if a byte in a structure equals two and if a byte in a grid is zero, then decrements a byte in the structure and clears another byte before branching.
+- `search_and_set_grid`: Loops through a table to find a matching byte, then updates several bytes in a global structure at an offset calculated from a parameter.
+- `decrement_state_byte`: Compares a byte at offset 7 of a structure in a3 against 1 and 112, and if the byte is between these values, decrements the byte at offset 7 and branches to another routine.
+- `call_state_handler`: Pushes a pointer from a3 and two words from offsets 8 and 10 of a structure in a5 onto the stack, calls a routine using a pointer from the stack, and then restores registers and returns.
+- `update_structure_values`: Sets bytes at offsets 3 and 4 of a structure pointed to by a3 to zero, clears byte 2 of the same structure, and then calculates an address based on values from a5 and a3 to perform conditional writes to offset 10 of the calculated address.
+- `write_byte_and_branch`: Stores the byte value 18 at an offset of a structure pointed to by a3 and branches to another routine.
+- `decrement_and_branch_on_value`: Sets a byte at offset 10 of a structure, then decrements d0 based on a byte at offset -6 of the same structure, branching if d0 reaches zero at various stages.
+- `set_grid_flag`: Writes the byte value twelve to an offset of six before the current stack pointer in a structure and branches to another location.
+- `set_grid_flags`: Sets a byte at offset -6 of a structure, then updates several bytes in a global structure at an offset calculated from a parameter.
+- `update_entity_collision_state_2`: Calculates an address in a table using an index and offset from a structure, then writes several bytes to a target structure based on comparison results and calls another routine.
+- `update_entity_collision_state`: Calculates an address in a table using an index and offset from a structure, then writes several bytes to a target structure based on comparisons of values in a3 and a5 before calling another routine.
+- `reset_entity_status_4`: Writes bytes to offsets -5 through -1 of a structure, calls another routine, and then clears offsets 3, 4, and 5 of a second structure.
+- `update_entity_status_2`: Checks if a word in d1 is positive and compares bytes at specific offsets, then calls another routine with parameters derived from a structure.
+- `reset_entity_status_2`: Copies bytes from one structure to another, clears several bytes in the source structure, and then writes several bytes to a location in a global array.
+- `update_entity_status`: Checks if a word in d1 is positive, if a word at offset 10 of a5 is less than 11, and if a byte at offset 2 of a3 is 11; if these conditions are met, it calculates an address using a2, checks a byte at offset -5 of that address, and if non-zero, pushes four values onto the stack and calls another routine.
+- `reset_entity_status_3`: Copies a byte from offset 3 of a structure in a3 to offset -5 of a structure in a2, sets offset -4 of a2 to 14, sets offset -3 of a2 to the byte at offset 5 of a3, sets offset -2 of a2 to 250, sets offset -1 of a2 to 64, clears offsets 3 through 6 of a3, and sets a byte at offset 19 of a structure in a0 to 1.
+- `call_subroutine_with_arguments`: Checks if a byte at offset -5 of a structure in a2 is zero; if so, it performs several writes to offsets -5, -4, and -3 of a2 and offset 5 of a3, otherwise it calls another routine with arguments from a5 and a3.
+- `reset_entity_status`: Writes specific byte values to offsets -5, -4, and -3 of a structure, clears offset 5 of another structure, and updates several bytes in a global structure.
+- `update_entity_event_parameters_2`: Calculates an address within a table using an index and an offset, then checks specific byte values in structures to determine which parameter to update.
+- `update_entity_event_parameters`: Calculates an address within a table using an index and an offset, then checks specific byte values in structures to determine which parameters to write to a global structure before calling another routine.
+- `set_structure_flags`: Writes bytes to offsets 11 through 15 of a structure, calls another routine, and then clears offsets 3, 4, and 5 of a second structure.
+- `process_event_sequence_trigger`: Checks if a value in d1 is less than 19 and if a byte at offset 7 of d2 is 7, then verifies a byte at offset -5 of a5 is 8.
+- `set_entity_flags`: Copies a byte from offset 3 of a3 to offset 11 of a2, sets offset 12 of a2 to 2, sets offset 13 of a2 to the byte at offset 5 of a3, sets offset 14 of a2 to 2, sets offset 15 of a2 to 64, clears offsets 3 through 6 of a3, and sets a byte at offset 1 of a structure in a0 to 1.
+- `dispatch_event_sequence`: Checks if d1 is within a specific range and if a byte at offset 2 of a3 is 8, then writes several bytes to a structure in a2 and calls another routine.
+- `update_entity_flags`: Copies a byte from offset 3 of a3 to offset 11 of a2, sets offset 12 of a2 to 2, sets offset 13 of a2 to the byte at offset 5 of a3, sets offset 14 of a2 to 250, sets offset 15 of a2 to 64, clears offsets 3 through 6 of a3, and sets a byte at offset 21 of a structure in a0 to 1.
+- `call_subroutine_with_offset_increment`: Checks if a byte at offset 11 of a structure in a2 is zero; if so, it writes values to offsets 11, 12, and 13 of a2 and offset 5 of a3, otherwise it calls another routine with arguments from a5 and a3.
+- `clear_and_set_flags`: Writes specific byte values to offsets 11, 12, and 13 of a structure, clears offset 5 of another structure, and updates several bytes in a global structure.
+- `update_entity_state_from_table_2`: Calculates an index into a global table using values from a structure in a5, retrieves a byte from that table, and performs conditional logic to update state bytes in the structure and a global variable.
+- `update_entity_state_from_table`: Calculates an index into a global table using values from a structure in a5, retrieves a byte from that table, and performs conditional logic to update several state bytes within the structure and a global variable.
+- `update_structure_state_2`: Updates state bytes at offsets -13, -12, and -11 of a structure in a5 based on a byte read from a3, then modifies various fields in a global table and structure using offsets 8 and 10 before calling another routine.
+- `set_structure_values`: Stores the value 3 in a byte at offset -13 of a structure in a5, stores the value 1 in a word at offset -10 of the structure, and branches to another routine.
+- `update_structure_state`: Checks if bytes at offsets -12 and -11 of a structure in a5 match specific values, and if so, writes 2 to both offsets and potentially updates the byte at offset -13 based on its current value; otherwise, it checks if the byte at offset -12 is 18 and updates offsets -12 and -11 to 2 and 1 respectively, while also conditionally updating offset -13 and writing a word to offset -10.
+- `write_small_constants_to_structure`: Stores the value 3 as a byte and the value 1 as a word into specific offsets of a structure pointed to by a5, then branches to another routine.
+- `check_and_update_offsets`: Compares the value 18 with a byte at offset -12 of a structure in a5, and if they match, updates that byte to 1 and checks a byte at offset -13 to set d1 to 2 before branching.
+- `write_structure_constants`: Stores the value 3 as a byte at offset 13 of the structure in a5 and the value 1 as a word at offset 10 of the structure in a5, then branches to another routine.
+- `update_status_bytes`: Checks if two bytes at offsets -12 and -11 of a structure in a5 match specific conditions, and if so, updates those bytes to 2 and 1 respectively, then checks a third byte at offset -13 to set d1 to either 1 or 2 before branching.
+- `update_entity_table_2`: Sets two values in a structure in a5, then conditionally calculates addresses in a table to store bytes from the structure into the table and updates a structure in a3.
+- `push_structure_parameters_to_stack`: Pushes a 32-bit pointer from a6, a 16-bit word from offset 10 of a structure in a5, and a 16-bit word from offset 8 of the same structure onto the stack, calls another routine, and restores d2 through d7 and a2 through a3 before returning.
+- `update_event_state_status_2`: Retrieves a byte from a structure, compares it against a constant, and if it matches specific values, updates several fields within the structure and a global table using calculated indices.
+- `update_event_state_status`: Clears a byte at offset -12 of a structure in a5, retrieves a byte from a calculated table index, and updates several fields within the structure and a global array based on the retrieved value and existing state.
+- `update_event_state`: Clears a byte at offset -13 of a structure in a5 and checks a byte at offset -11 against values 3 or 18.
+- `write_event_constants`: Writes the values 1, 2, and 1 to offsets 11, 12, and 10 of a structure pointed to by a5, then branches to another routine.
+- `compare_event_bytes`: Compares a byte at offset -12 of a structure in a5 with a value, and if equal, compares a byte at offset -13 with 3, setting d1 to 2 if both match.
+- `write_event_constants_extended`: Writes the values 1, 2, 2, and 1 to offsets 11, 12, 13, and 10 of a structure pointed to by a5, then branches to another routine.
+- `compare_event_data`: Compares the byte at offset 11 of a structure in a5 with 18, and if equal, compares the byte at offset 12 with 3; if both match, it sets d1 to 2 and branches to another routine, otherwise it sets d1 to 3 and branches to another routine.
+- `write_event_constants_alt`: Writes the values 1, 3, and 1 to offsets 11, 12, and 10 of a structure pointed to by a5, then branches to another routine.
+- `compare_event_fields`: Compares the byte at offset 12 of a structure in a5 with the byte at offset 13, then checks if the byte at offset 11 is 3; if all conditions match, it sets d1 to 2 and branches to another routine, otherwise it branches to another routine.
+- `push_event_data`: Stores several bytes into a structure on the stack, calculates an address in a table, and updates bytes at various offsets within that table structure.
+- `push_event_parameters`: Pushes the contents of a3, a word from offset 10 of a5, and a word from offset 8 of a5 onto the stack, then calls another routine.
+- `update_grid_cells`: Sets a byte in a global structure at a calculated index, then updates several other bytes in the same structure and clears bytes at offsets 3, 4, and 5 of a structure in a6.
+- `set_global_flag`: Pushes three values from a structure in a5 onto the stack, calls another routine, sets a word at a global address to 1, and returns.
+- `trigger_event_and_flag`: Pushes three values from a5 onto the stack, calls another routine, and then writes 1 to a global variable at offset 810.
+- `compare_and_set_byte`: Compares a byte at offset 7 of a structure in a3 with 80; if they are equal, it writes the value 1 to an offset -10 from a5.
+- `update_entity_attribute_table_2`: Calculates an offset into a global table based on values in a structure, reads a byte from that table, and performs conditional writes of four bytes to either the table or another global location based on the value read and other structure members.
+- `update_entity_attribute_table`: Checks a byte at offset 2 of a structure and, depending on its value, either writes a set of four bytes to a calculated position in a global table or clears a range of bytes in a structure.
+- `update_source_data`: If a word at offset 10 of a5 is positive, calculates an offset using a value from a5 and a constant to write bytes to a global table, then clears offsets 3 through 7 of a3 and updates a structure in a0 with values from a5 and the stack.
+- `process_conditional_update`: If a byte from the stack is zero, clears offsets 3 through 7 of a3, writes four bytes to a structure in a2, and updates a structure in a0; otherwise, if a byte at offset 7 of a3 is not 80, it writes four bytes to a global table and clears offsets 3 through 7 of a3.
+- `update_structure_from_source`: If a byte at offset 7 of a structure in a3 is not 80, it calculates an offset using a value from a5 and a constant, copies four bytes from a3 to a table at that offset, modifies a byte in the table using a value from a3 plus 16, sets a byte in the table to 80, and clears the bytes at offsets 3, 4, 5, and 6 of the structure in a3.
+- `update_entity_state_logic_4`: Checks specific byte values at offsets 5, 6, and 7 of a structure pointed to by a3, and compares a word at offset 10 of a5 against a minimum value.
+- `update_entity_state_5`: Checks a byte at offset 6 of a structure in a3 and a word at offset 10 of a structure in a5, then conditionally calculates an address in a table to call another routine and update bytes at offsets 4 and 7 of the structure in a3.
+- `update_entity_state_4`: Compares a byte at offset 6 of a structure in a3 with a constant, and if it matches, checks if a word at offset 10 of a structure in a5 is greater than 1.
+- `update_table_entry_2`: If a word at offset 10 of a structure in a5 is greater than zero, it calculates an offset into a global table using values from offset 8 and offset 10 of the structure in a5, writes several bytes to that table location including a byte from offset 5 of a structure in a3, and then clears bytes at offsets 3, 4, 5, 6, and 7 of the structure in a3; otherwise it clears those same bytes in the structure in a3 and returns.
+- `update_entity_state_3`: Checks a byte at offset 6 of a structure in a3 and a word at offset 10 of a structure in a5, then conditionally calls another routine, updates offset 4 of the structure in a3, and performs a series of calculations to update a table and a structure in a3.
+- `modify_entity_state_2`: If a byte from the stack is not zero and a byte at offset 4 of a3 is 16, sets offset 4 of a3 to 8 and calls another routine with parameters from a5 and a3.
+- `update_object_metadata_state_2`: Compares a byte at offset 7 of a structure to 80; if they match, it writes the value 1 to a 16-bit word at offset 6 of the stack frame, otherwise it returns.
+- `update_object_metadata_state`: Checks a type byte at offset 2 of a structure and, depending on its value, either clears a range of bytes at offsets 3 through 7 of that structure or updates a global table with specific values derived from the structure and a secondary data source.
+- `update_object_metadata`: Checks a type byte at offset 2 of a structure and, depending on its value, either clears a range of bytes at offsets 3 through 7 of that structure and writes specific values to a calculated entry in a global table, or copies values from the structure into the table before clearing the structure's offsets.
+- `update_object_table`: If a word at offset 10 of a5 is positive, calculates an offset to write bytes to a global table, clears offsets 3 through 7 of a3, and updates a structure in a0 with values from a5 and the stack; otherwise, it updates a structure in a0 with values from a5 and the stack.
+- `reset_and_initialize_object_data`: If a byte at offset 24 of the stack is zero, it clears bytes at offsets 3 through 7 of a structure pointed to by a3, writes specific values to offsets 163 through 167 of a structure pointed to by a2, and initializes an entry in a table calculated from a value at offset 26 of the stack.
+- `update_object_table_entry`: Checks if a byte at offset 7 of a structure is not 80; if so, it calculates an index into a table using a value from offset 10 of another structure, copies four bytes from the source structure to the table entry, modifies the fourth byte by adding 16, sets the fifth byte to 80, and then clears the four original bytes and the byte at offset 7 in the source structure.
+- `process_state_transition`: Checks if a byte at offset 7 of a structure pointed to by a3 is 112; if so, it pushes two 16-bit values from offsets 10 and 8 of the structure in a5 onto the stack, calls another routine, and returns.
+- `update_entity_table`: Pushes two 16-bit values from offsets 12 and 10 of a structure in a5 onto the stack, calls another routine, calculates an offset by multiplying a 16-bit value from offset 10 by 20 and adding it to a global address and a value from offset 8, then writes 1 to offset 1 and offset -19 of the resulting address before returning.
+- `process_nested_table_elements`: Iterates through a two-dimensional table, calls a function pointer stored in the table for each valid entry, and updates bytes in a global variable based on the value of a byte at offset 3 of the current table entry.
+- `compare_strings_equality`: Compares two strings byte by byte and returns 0 if they are identical and both terminate with a null byte, otherwise returns -1.
+- `execute_event_sequence_2`: Checks a word at a global address; if non-zero, it iterates through a linked list of pointers, calling another routine to compare strings and potentially calling a third routine if a comparison succeeds, then conditionally calls a fourth routine based on a result and returns.
+- `parse_formatted_string`: Copies up to 10 bytes from a source string until a '*' is encountered, then copies up to 8 bytes from a second string until a space or null is found, and finally copies up to 5 bytes from a third string until a null is found into a destination buffer.
+- `empty_c_function_3`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
+- `initialize_event_stack`: Pushes several pointers and values onto the stack, calls another routine, and then enters a loop that pushes a value from d0 onto the stack and calls another routine if d0 is not zero, finally returning 1 or 0.
+- `initialize_and_populate_data_table`: Calls another routine twice to initialize data, clears several bytes at specific offsets in a structure, and then enters a loop that iterates 260 times, calling another routine to fetch a word, writing it to a table along with several bytes from a structure, and then calls another routine to finalize the process.
+- `execute_event_sequence_3`: Initializes a local word to 1, calls two subroutines with a pointer from a5 and a value from a3, then conditionally calls another routine using a pointer from a global table if the first subroutine returns a non-zero value, and finally calls a third routine if the result of the second subroutine is 12 or if a specific condition involving a negative return value is met.
+- `clear_and_branch`: Clears a word at offset -2 of a structure in a5, loads a long value into a3, and branches to another routine.
+- `process_table_data_2`: Copies a word from a pointer in a3 to offset -32 of a structure in a5, copies two bytes from a3 to offsets -30 and -29 of the structure, and then calls another routine with a pointer to the structure.
+- `iterate_and_process_table`: Increments a word at offset -2 of a structure in a5 and adds 8 to a pointer in a3; if the word is less than 260, it calls another routine and, depending on the result, either calls another routine or continues a loop.
+- `process_table_entry_3`: Unlinks a5, calls another routine with a pointer from the stack, and returns.
+- `initialize_theme_parameters`: Calls a routine to check a condition, then calls another routine to clear a buffer if a specific value is non-zero.
+- `dispatch_table_entry_callback`: Loads a pointer from a structure in a5, calls a routine with a value from a table, and if the result is non-negative, calls another routine using that pointer.
+- `copy_event_buffer`: Calculates a size by shifting a value from a global pointer, calls another routine, and then enters a loop that calls another routine to copy a block of memory and another routine to copy a second block, decrementing a counter in a local variable until it reaches a limit.
+- `manage_linked_list_node_updates`: Searches a linked list for a node matching a provided pointer and, if found, clears a 16-bit value at offset 24 of that node.
+- `iterate_table_entries_2`: Pushes a pointer from a structure in a5 onto the stack, calls another routine, and then enters a loop that calls another routine and updates a pointer based on a word value from the stack.
+- `parse_data_stream`: Calculates a jump destination based on a word from a structure in a3, enters a loop that reads bytes from a source, performs arithmetic involving a global constant, and updates a destination structure and a counter in a structure in a5.
+- `copy_structured_data_2`: Enters a loop that reads bytes from a source pointer, calculates an offset using a global constant and bitwise operations, calls another routine, and updates a destination structure and a counter in a structure in a5.
+- `trim_trailing_spaces`: Finds the end of a string and replaces any trailing space characters with null bytes.
+- `compare_string_parameters`: Pushes two values from a5 onto the stack and calls two separate routines before calling a third routine with both values as arguments.
+- `sum_table_values`: Iterates through a string and sums values retrieved from a table at an offset determined by the character value minus 32, multiplied by 8, using the second argument as the table base.
+- `process_buffer_loop`: Calculates a loop limit based on a value in a5, then enters a loop that adds a byte from a buffer in a3 to a value in a0, calls another routine with several arguments, and continues until the loop limit is reached.
+- `copy_handler_bytes`: Compares a byte from a global variable with the value 82, and if they match, checks a byte at a global offset; if that byte is non-zero, it copies several bytes from a source table to a destination table and calls another routine with a pointer from the destination table.
+- `initialize_localization_data`: Calls another routine to retrieve a string, then iterates through a table of strings to replace tilde characters with spaces and terminate each entry at a carriage return.
+- `call_fatal_error`: Pushes a constant onto the stack, calls another routine, and then returns.
+- `execute_system_init`: Pushes a long value from a structure in a5 onto the stack, calls another routine, clears a word at the top of the stack, and calls a second routine.
+- `get_word_from_stack`: Returns a 16-bit word from the second argument passed via the stack.
+- `initialize_table_with_ones`: Fills a two-dimensional table with the value 1 using nested loops with a row count of 13 and a column count of 20.
+- `process_input_and_loops`: Initializes local variables from a structure in a5, stores several values into a global table, and enters a nested loop structure that calls another routine.
+- `reset_global_flags`: Clears two global bytes, calls two other routines, and then checks a bit in a value from the stack and several global bytes to decide whether to clear the global bytes again before returning.
+- `initialize_handler_data`: Sets a local word to 1, updates two global pointers, calls another routine, and then conditionally calls another routine to update a local word based on a value in a5.
+- `update_collision_tables`: Iterates through nested loops to call another routine with various offsets from two different tables based on a conditional check of a global variable.
+- `process_system_events`: Pushes several values onto the stack, calls another routine, then conditionally calls another routine and a third routine based on the result of the second.
+- `initialize_game_state`: Calls several routines to initialize data, calculates addresses in a table using scaled values, and pushes multiple parameters onto the stack before calling another routine.
+- `update_tile_bitmasks`: Calculates four ranges based on values from a structure, then calls another routine four times to update bitmask data within those ranges.
+- `initialize_system_state`: Clears the stack, calls a routine, calls another routine, pushes a word and a pointer onto the stack, and calls a third routine.
+- `update_sprite_attribute_buffer_2`: Iterates through a table of 20 entries, calculating destination addresses based on a 16-bit value and a global constant, then calls another routine to update the buffer.
+- `process_sprite_grid`: Iterates through a nested loop structure to check a global table, and if conditions are met, calls another routine to update sprite-related data in a table.
+- `update_tile_data`: Iterates through nested loops to check a global table, then conditionally calls several routines to update bitmasks or other structured data based on table contents.
+- `clear_table_entries`: Iterates through a nested structure of 13 by 20 entries, clearing a byte in a table if it is non-zero and calling another routine.
+- `parse_integer_string`: Parses a numeric string into a 16-bit integer by multiplying the current total by 10 and adding the value of each digit, stopping if a non-digit character or a space is encountered.
+- `calculate_scaled_values`: Performs a series of divisions, multiplications, and subtractions on a value from a global variable to update several bytes in two different tables.
+- `clear_global_bytes`: Clears a byte at offset 5422, clears a byte at offset 5438, and sets a word at offset 211c to one.
+- `copy_table_segments`: Clears a byte in a global variable, iterates through a loop to call a routine that copies data to various offsets in a table, and then calls another routine with several parameters.
+- `process_event_loop`: Sets a byte to zero and another to one in a global structure, calls a routine, and then enters a loop that conditionally calls several other routines, updates a global variable, and decrements a local counter stored on the stack until it reaches zero.
+- `process_game_menu_input`: Calculates a menu state based on global flags and converts a numeric value into a two-digit decimal string stored in a table.
+- `initialize_global_constants`: Sets a word at offset 211c to zero, clears a word at offset 4fce, sets a word at offset 211a to one, and then calls three different routines.
+- `manage_system_state`: Sets local values in a5, calls several routines to initialize data, and enters a loop that updates a global word and conditionally calls other routines based on global flags and a value in a5.
+- `initialize_system_sequence`: Loads a pointer from a structure in a5, calls another routine, copies a long value to a global table, calls another routine, calls another routine, performs a multiplication, and then conditionally calls another routine or a subroutine before calling two more routines.
+- `initialize_and_process_game_state_2`: Initializes several global tables and structures, then enters a loop that processes input data by comparing it against specific values to update a global index.
+- `compare_case_insensitive_strings`: The routine compares two byte strings character by character, converting uppercase letters to lowercase for comparison, and returns the difference between the first mismatching characters or zero if equal.
+- `execute_event_sequence`: Checks a value in a table, performs bitwise operations on a word, and conditionally calls several routines to update a structure based on the results.
+- `retrieve_table_index`: Calls another routine, and if the result is non-zero, calls a second routine with parameters from the stack before returning the result.
+- `manage_sorted_list`: Processes a value from the stack by traversing a linked list, potentially inserting a new node, allocating memory via several other routines, and recursively calling itself.
+- `update_linked_list_pointer`: Checks if a pointer in a3 is non-zero; if so, it clears a word on the stack, calls another routine, and updates a global variable at offset 27076 of a4 with the value of the pointer minus two.
+- `process_callback_table`: Checks bits 1 and 2 of a byte at offset 19 of a structure in a3, and if they match a specific pattern, calculates a difference between two words and calls another routine with three parameters pushed onto the stack.
+- `execute_signal_handler`: Checks if a pointer at offset 8708 of a4 is non-zero, calls a routine, clears a word at offset 8684 of a4, and if a library call returns -1, writes a value to offset 8684 of a4 and sets a word at offset 27056 of a4 to 5.
+- `process_event_and_update_state`: Checks a pointer in a structure, calls another routine if it is non-zero, and then calls a function from a table to retrieve a value.
+- `dispatch_signal_handler`: Checks if a pointer at offset 8708 of a structure in a4 is non-zero, and if so, calls another routine.
+- `handle_zero_result`: Checks if a pointer at offset 8708 of a4 is non-zero, calls a routine, clears a word at offset 8684 of a4, and if a library call returns 0, writes a value to offset 8684 of a4 and sets a word at offset 27056 of a4 to 2.
+- `execute_conditional_sequence`: Checks if a pointer at offset 8708 of a4 is non-zero, calls a routine, clears a word at offset 8684 of a4, and if a library call returns a non-zero value, calls another library routine; otherwise, it calls a library routine with a constant, and if that returns -1, writes a value to offset 8684 of a4 and sets a word at offset 27056 of a4 to 2.
+- `execute_complex_sequence`: Checks if a pointer at offset 8708 of a4 is non-zero, calls a routine, clears a word at offset 8684 of a4, and if a library call returns a non-zero value, calls two additional library routines; if a subsequent library call returns 0, it writes a value to offset 8684 of a4 and sets a word at offset 27056 of a4 to 2.
+- `call_library_function`: Checks if a value at an offset of 8644 from a pointer in a4 is non-zero, then calls a routine at an offset of 24 from a pointer in a6.
+- `compute_fixed_point_product`: The routine takes two 32-bit fixed-point values from registers and returns their product as a 32-bit fixed-point value.
+- `normalize_fixed_point_divide_2`: Performs a 32-bit division by normalizing the divisor and handling sign bits for the dividend and divisor before calling another routine.
+- `normalize_fixed_point_divide`: The routine divides a 32-bit dividend in d0 by a 32-bit divisor in d1 using a normalized fixed-point method.
+- `mask_and_call_event_handler`: Extracts a word from the stack, masks the highest bit and sets bits zero, one, and eight, then pushes this modified word along with a version of the original word with the highest bit masked onto the stack before calling execute_event_sequence.
+- `get_table_index`: Checks if a value is within a specific range and not equal to a value in a table, then returns either a calculated offset into a table or a constant value.
+- `traverse_and_free_list`: Iterates through a linked list of pointers, calling a function for each node, and then clears the head and first pointer of the list structure.
+- `insert_into_sorted_list`: Allocates memory for a new node and inserts it into a linked list structure while maintaining order and updating various global pointers.
+- `dispatch_table_callback`: Calls a routine to retrieve an index, and if the result is non-zero, checks a bit in the returned pointer; if the bit is set, it calls another routine with a word and a null pointer, then calls a third routine with a word, a pointer, and a value from the index, before checking a word in a global structure and returning a value.
+- `iterate_table_entries`: Decrements a value from a table at offset 8556 of a4 in a loop, calls another routine if a byte at a calculated offset in a table is non-zero and bit 4 is not set, otherwise calls a third routine with a value from the stack and returns.
+- `execute_indirect_jump`: Performs a jump to an address stored at a specific location.
+- `insert_into_binary_tree`: Inserts a value into a binary tree structure, updating a global counter and managing node pointers and parent links.
+- `validate_table_index`: Calls a routine to check a value, then if the result is non-zero, calls another routine using a pointer from a stack parameter; if the value at offset 8684 of a structure in a4 is non-zero, it returns -1, otherwise it returns the result of the second call.
+- `update_linked_list`: If a global pointer at offset 27076 of a4 is non-zero, it calls another routine to manage a list and updates that pointer, then either increments a value from the stack and calls a third routine to insert it into a tree or stores the incremented value into the new node and returns.
+- `process_table_entry_2`: Calls another routine to get a pointer, then either returns negative one, sets a value in the pointed-to structure to zero, or calls a third routine and sets a value in the structure to zero based on various bit tests and a global word check.
+- `check_signal_and_call_handler`: Calls a library routine to check a signal, and if the result matches a specific bitmask and a pointer at offset 8708 of a4 is non-zero, it calls that pointer and then calls another routine if the return value is zero.
+- `process_linked_list_node`: Calls a function via a pointer in a structure to retrieve a node, then branches based on the result to either update status words in a structure, call a cleanup routine, or call a routine with a pointer from the retrieved node.
+
+### PushOver.slave
+
+- `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d0, then returns.
+- `initialize_system_environment`: Sets up several function pointers in a structure, opens a library, and writes specific values to a table and the DMA control register.
+- `loop_vblank_check`: Calculates a loop count based on a constant, then repeatedly reads the VBlank status register and branches until the status changes.
+- `check_and_return_long`: Compares the value pointed to by d1 with a constant; if they match, it returns the value at that address, otherwise it performs an indirect jump using a value from a table.
+- `verify_and_jump`: Compares d1 with a constant; if they match, it returns, otherwise it performs an indirect jump using a value from a table.
+- `process_table_data`: If d1 matches a constant, it enters a loop that reads bytes from a table using an index derived from d5 and writes them to a destination pointed to by d2, decrementing d3 and d0 until a counter reaches zero or a specific condition is met; otherwise it performs an indirect jump.
+- `check_byte_range`: Checks a byte at a memory location; if the byte is neither zero nor negative one, it returns negative one, otherwise it returns zero.
+- `update_table_entry`: If d0 is between 104 and 255, it updates a byte at a memory location and a second byte at an offset of one using values from a table; otherwise it sets the byte at the location to 0 and the following byte to 0.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `execute_sequence`: Calls the same routine four times and then performs an indirect jump.
+- `jump_vector_entry_2`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `execute_sequence_alt`: Calls the same routine three times and then performs an indirect jump.
+- `jump_vector_entry_3`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_4`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_5`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `store_constant_values`: Stores a constant value into a global variable and another modified constant value into a different global variable.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
+- `return_and_branch`: Returns immediately, otherwise it branches to a constant offset.

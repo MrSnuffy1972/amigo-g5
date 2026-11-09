@@ -1,0 +1,863 @@
+# Game 277 (Kult v1.1b 0661): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/00277). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (921070 top-level bytes in 42 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 9 raw-word lines |
+| Functions named and described | pass, 798 of 798 named (0 author symbols), 798 of 798 described (218 by rule, 580 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 5530 of 5530 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 80682 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 11368 of 11473 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 670242 |
+| code | 44162 |
+| data | 206598 |
+| padding | 68 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| Kult.slave | 1 | 1931 | 119 |
+| KULT | 2 | 9338 | 481 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 195 | 190 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 9 | 8 |
+| PUZZL.BIN (raw code file, load address unknown) | 1 | 0 | 0 |
+
+## Cases handled
+
+- 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- runtime segment an address: 134 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 9 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- Kult_v1.1b_0661/Kult/data/PUZZL.BIN: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- 1 never-loaded region(s), 80682 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- `initialize_system_and_load_resources` (KULT): Initializes global pointers and hardware registers, and sequentially loads required binary resource files. Kind: disk/track check. Pass path: the branch where bVar5 is false and u1__sub_0_5AE2() or u1__sub_0_2B48() continues (preventing the sabotage/failure path or loop-exit or error-state exit or retry loop).
+- `execute_delay_loops_and_modify_register` (KULT): performs several nested decrementing loops and modifies a global variable and hardware registers or certain bitmasks. Kind: sync/track check or timing-dependent delay. Pass path: the loop finishes and execution proceeds to the modification of d7/d6/d5 registers via the delay-dependent uVar2/sVar4-based timing-sensitive bitmasking (e.g., DAT_00bfd100 or the d7/d6/d5 modification or the loop exit condition-based regis.
+
+## Functions
+
+
+### Kult.slave
+
+- `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d0, then returns.
+- `execute_indirect_function_pointers`: Stores the routine's own address and a register value into global memory, then executes a sequence of functions called via pointers stored at fixed offsets from a base address or register.
+- `relocate_amigadp_structure`: Modifies a global variable by setting and clearing bits and calls a routine that retrieves a value to store in a structure member.
+- `write_memory_values`: Stores a word containing all ones to a memory location and stores a pointer-relative address into another memory location.
+- `modify_cia_register_and_return_input`: The routine modifies a global variable by setting and clearing bits, calls another routine, and returns the input register value unchanged.
+- `halt_infinite_loop`: The routine executes an unconditional infinite loop.
+- `tiny_ori_ori`: Small routine of 2 instructions that merges 0 into d0, then merges 0 into d0.
+- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
+- `initialize_structure_members`: Initializes fields within a newly allocated memory block, including setting pointers and updating a global variable with a new address.
+- `allocate_and_init_structure`: Allocates memory, initializes a structure, and populates certain fields with a pointer and a size, then calls another routine with a pointer.
+- `call_function_and_mask`: Calls a function pointer from a global variable and returns a masked version of the stack or register content.
+- `empty_routine`: The routine contains four instructions and performs no observable work; it ends without modifying registers or memory.
+- `count_string_length`: The routine obtains a pointer from another routine and counts the number of bytes until a null terminator, returning the count combined with an input value.
+- `copy_and_initialize_memory`: Allocates memory, copies a certain number of bytes from a global variable to the new memory, and then writes certain values to offsets within that memory.
+- `update_structure_pointer`: Calls a routine, retrieves a value, and stores it into a structure member pointed to by a global pointer.
+- `store_shifted_value`: The routine calls another routine via a table, shifts the result right by two and stores it to a global variable, then returns the input registers combined.
+- `fill_memory_with_patterns`: Allocates memory, fills a range with a specific pattern and a function pointer, and then fills a subsequent range with another pattern.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `call_table_entry`: Calls a routine via a pointer located at an offset from a global variable.
+- `call_indirect_and_return_concat`: The routine calls another routine through a pointer stored in a global variable and then returns the concatenation of the two input values.
+- `call_alloc_mem`: Library stub: loads its arguments and the exec library base, calls AllocMem and returns its result to the caller.
+- `call_free_mem`: Library stub: loads its arguments and the exec library base, calls FreeMem and returns its result to the caller.
+- `increment_pointer_value`: The routine obtains a pointer from another routine.
+- `invoke_indirect_function`: loads a function pointer from a global variable and executes it.
+- `store_value_to_global_2`: The routine stores the value in A0 into a global variable.
+- `shift_left_result`: Calls another routine and returns its result shifted left by two bits.
+- `copy_string_to_buffer_2`: Returns early if a certain value is zero, otherwise clears a global variable and copies bytes from a pointer in A0 to a fixed address until a null byte is found, incrementing a global counter.
+- `update_global_pointers`: Stores the current value of certain global variables and then overwrites those same global variables with the address of the routine itself.
+- `get_function_pointer`: Returns the value stored in a global variable.
+- `return_concatenated_inputs`: Calls another routine and returns a value formed by concatenating two input registers.
+- `return_immediately`: The routine sets up a stack frame, clears registers, and returns without performing any observable work on memory or I/O.
+- `check_pointer_value`: Checks if a pointer or memory location contains a specific constant value and branches accordingly.
+- `branch_if_zero`: Checks if a register contains zero and branches or returns accordingly.
+- `verify_memory_content`: Compares the contents of a memory location against a specific constant value before branching.
+- `get_global_pointer_value`: Returns a value from a global variable or zero if the value matches a register.
+- `return_immediately_2`: The routine returns immediately without any side effects.
+- `install_exception_handlers`: Obtains a base address from another routine and caches it in a global variable.
+- `copy_and_execute_code_block`: Copies a block of code, modifies certain bytes, calls a routine via a pointer, and then executes a routine if a certain condition is met.
+- `call_indirect_through_pointer`: The routine loads a pointer from a register and calls the routine pointed to by that pointer before returning.
+- `tiny_moveq_move_rts`: Small routine of 3 instructions that loads 0 into d0, then copies d0 to d1, then returns.
+- `store_register_to_global`: Stores the contents of a register into a global variable.
+- `store_register_to_global_2`: Writes a value from a register into a global variable.
+- `store_value_to_global`: The routine stores the value from D1 into a global variable and then returns.
+- `return_empty_routine_14`: The routine performs no operations and immediately returns to its caller.
+- `execute_indirect_function_pointer`: loads a function pointer from a table located at an offset from a pointer and executes it.
+- `execute_indirect_calls_2`: Executes an indirect call through a function pointer stored in a table and calls another routine twice.
+- `allocate_string_metadata`: Parses a string to determine its length and then allocates enough memory to store the string and its associated metadata.
+- `check_list_integrity`: Evaluates a return value from a routine and exits if it does not equal a specific error code.
+- `return_immediately_3`: The routine performs no operations and returns.
+- `traverse_pointer_chain`: Uses a register as an index into a table, then repeatedly follows a chain of pointers until a null pointer is encountered.
+- `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
+- `tiny_moveq_rts_2`: Small routine of 2 instructions that loads 1 into d0, then returns.
+- `construct_path_string`: Calculates the length of a string from a global pointer and allocates a new string structure.
+- `parse_and_allocate_string_data`: Checks a string for a specific prefix, calculates its length, and if valid, allocates memory to store string data and associated metadata.
+- `return_immediately_4`: The routine returns without any side effects.
+- `update_size_bounds`: Calculates a difference between two values in a table and updates a global variable if the difference is less than or equal to a certain value.
+- `update_table_entry`: Updates an entry in a table at an offset calculated from a global variable and calls an indirect function pointer.
+- `traverse_linked_list`: Recursively traverses a structure if a certain condition is met and certain memory or register values are non-zero.
+- `conditional_recursive_call`: Checks if a value in a register is non-zero and, if so, calls another routine before returning.
+- `update_table_value`: Checks a global value against a limit and, depending on a flag, increments or decrements a value in a table or stores a new value.
+- `initialize_memory_block`: Writes a series of constant values, including zeros and certain constants, into a memory block pointed to by a register.
+- `loop_until_flag_set`: If the input value in d1 is non-zero, it loops while calling another routine and waiting for a global variable's least significant bit to toggle.
+- `clear_three_long_words`: Receives a pointer in a register and writes zero to three consecutive long words starting at that pointer.
+- `allocate_and_initialize_string_structure`: Allocates a memory block and initializes a structure containing a string and a length-aligned pointer, followed by copying or appending null-terminated strings into the allocated buffer.
+- `empty_routine_16`: The routine performs no operations and returns immediately without modifying any registers or memory.
+- `initialize_string_structure`: Allocates memory and initializes a structure or buffer, copying two null-terminated strings into it, and then calls another routine.
+- `copy_string_to_target`: Copies a null-terminated string from a source pointer to a destination pointer and updates a header field.
+- `execute_empty_routine_4`: Executes a routine twice and then returns.
+- `initialize_structure_fields`: Writes two constant values into a structure at an offset relative to a register and returns the original value in a register.
+- `calculate_offset_value`: Calculates a value by adding a constant to a global variable and returns the result.
+- `initialize_memory_and_copy_data`: If a memory allocation succeeds, it initializes the first word of the new memory and then copies bytes from a source table to the new memory area until a certain count is reached.
+- `empty_routine_2`: the routine contains no executable instructions and performs no operations.
+- `initialize_allocated_memory`: If a memory allocation call returns a non-null pointer, it stores a constant value in the first word of that memory and a different constant in a location offset from a previously obtained pointer.
+- `check_string_content`: Checks if the first character of a string at a pointer location is a null terminator.
+- `store_register_to_global_5`: Stores the value held in a register into a global variable.
+- `append_string_to_buffer`: Copies a null-terminated string into a buffer and updates the buffer's end pointer and length-related metadata or or size-related fields.
+- `copy_string_to_buffer`: Sets certain structure fields and copies a null-terminated string from a global pointer to a buffer, advancing the source pointer.
+- `return_constant_value`: Returns a constant value of all ones.
+- `append_strings_with_separator`: Copies a null-terminated string to a buffer, appends a slash if the string lacks one, and then appends a second null-terminated string.
+- `ensure_path_separator`: Copies a string to a buffer, adds a slash if a slash is not present, and then appends a second string to the same buffer.
+- `update_string_buffer_metadata`: Calculates string lengths, clears trailing bytes in a buffer, and copies string data to a new location.
+- `update_string_and_copy`: If a return value is non-zero, it writes that value to a global array, modifies nearby array elements, and copies a string from a source address to a destination address.
+- `return_immediately_6`: This routine returns without performing any observable work on memory or I/O.
+- `check_string_for_colon_and_call`: If a certain global flag is set, it scans a null-terminated string in a0 for a colon character, calling another routine when the colon is absent, and then calls another routine unconditionally.
+- `find_string_stop_char`: Iterates through a string pointed to by a register until a null terminator or a colon character is encountered.
+- `scan_string_for_terminator`: iterates through a null-terminated string and stops if a colon character is encountered.
+- `call_other_routine_chain`: The routine calls another routine, passes its return value to another routine, then calls another routine and returns.
+- `compare_input_to_constant`: Loads an input value from a register and compares it with a constant.
+- `store_task_reference`: Calls a routine through a pointer stored in a global variable and, if a register value is zero or a table entry is negative, stores the register value into a field of the returned structure.
+- `get_global_address`: Returns the address of a global variable.
+- `find_string_end`: Iterates through a string starting from a calculated offset until a null terminator or a forward slash character is found, then terminates the string at that position.
+- `tiny_clr_move_rts`: Small routine of 3 instructions that clears (a0), then copies d0 to d1, then returns.
+- `copy_string_from_table`: Copies a null-terminated string from a table entry selected by an index in a register to a destination buffer, using a register-based length limit.
+- `copy_string_with_limit`: If a global pointer or value is valid, it copies a string from a global address to a destination address until a null terminator or a certain count is reached.
+- `pass_through_register`: This routine copies the value from a register directly into the return register.
+- `loop_until_flag_set_2`: Executes a loop that calls other routines and checks a global variable's least significant bit, eventually setting a global variable to a constant value.
+- `reset_global_variable`: Sets a global variable to zero.
+- `execute_indirect_calls`: This routine stores a pointer or value into a global or register and then executes several indirect calls via pointers found at certain offsets from a register.
+- `update_jump_table_entry`: This routine calculates a new address and stores it into two different locations in a jump table before executing an indirect call.
+- `execute_indirect_call`: Performs an indirect call to an address stored in an unrecovered jump table.
+- `mask_global_value`: Returns a masked version of a global variable.
+- `set_interrupt_request`: Copies a value from the stack or a register into a global variable, which represents the interrupt request register.
+- `return_zero_constant`: This routine immediately returns zero without performing any operations or modifying data.
+- `set_flag_in_struct`: This routine receives a pointer in a register and sets bit 1 in the byte at offset 14 of the pointed-to structure.
+- `store_routine_address_2`: Stores the address of the current routine into a global variable.
+- `store_routine_address`: stores the address of the current routine into a global variable and triggers a trap exception.
+- `store_register_to_global_3`: Stores the value of a register into a global variable.
+- `store_register_to_global_4`: The routine copies the value from D0 into a global variable.
+- `load_global_to_register`: Loads a value from a global variable into a register and performs an indirect jump.
+- `copy_byte_with_offset`: Copies a byte from a source address plus an offset into a destination address plus an offset.
+- `tiny_moveq_rts_3`: Small routine of 2 instructions that loads 0 into d0, then returns.
+- `check_global_constant`: The routine compares a global variable to a specific constant value.
+- `initialize_pointer_chain`: The routine writes a sentinel value into a pointer and stores the address of the next entry into three fields in two different structures.
+- `copy_nested_pointers`: Copies 32-bit values from pointers referenced at offsets four and eight of a source structure into fields of a destination structure.
+- `clear_four_words`: Writes the value -1 to four consecutive 32-bit words ending at an offset in a structure pointed to by a register.
+- `calculate_table_offset`: Reads values from a global table and performs arithmetic operations including division, multiplication, and addition.
+- `do_nothing_routine`: This routine is empty and performs no operations before returning.
+- `wait_for_flag_toggle`: The routine spins until a global variable's least significant bit is cleared, then spins until that bit is set again.
+- `search_and_update_global`: The routine searches for a specific byte value in a loop and, if a certain condition is met, updates a global variable using a bitwise operation and a loop that waits for a bit or a specific value.
+
+### KULT
+
+- `initialize_system_and_load_resources`: Initializes global pointers and hardware registers, and sequentially loads required binary resource files.
+- `update_audio_state_and_global_logic`: Increments a global variable and replaces its value with an offset-based value from a table, then executes a sequence of conditional checks that update a global variable and clear or set other global variables or pointers.
+- `check_global_self_assignment`: Checks if a global variable is not equal to itself and performs a routine call and assignment if so.
+- `execute_handler_list`: Updates a global variable using a value from a pointer and then iterates through a table of routine pointers using a string-like buffer as an index.
+- `execute_table_based_function`: The routine reads a value from a global variable to determine a target address and then executes a routine or performs conditional pointer arithmetic and table-based lookups.
+- `dispatch_handler_pointer`: Checks a global variable and either executes a routine pointer or traverses a string-like buffer to call further routines based on certain bit patterns or character values.
+- `update_global_values_conditionally`: The routine calls other routines and then conditionally updates several global variables or modifies a global variable based on a threshold check.
+- `store_pointer_and_decrement`: Stores a 16-bit value from a pointer-based memory location into a register and then calls a routine that decrements a register.
+- `reconstruct_word_from_memory`: The routine reads a byte from an offset of a pointer and constructs a 32-bit value using that byte and an existing register value.
+- `recurse_and_return_registers`: This routine calls another routine and returns the contents of two registers.
+- `process_char_and_recurse`: Updates a global variable and a memory location with a character derived from an input, then calls another routine recursively if a terminator is not reached.
+- `traverse_and_update_global_state`: Iterates through a character buffer while updating a global variable and a secondary memory location with the current character.
+- `parse_string_metadata`: Iterates through a string and, for any character that is not a terminator, extracts a value from a fixed offset and passes it to a recursive call.
+- `traverse_string_recursively`: Iterates through a string, updating certain global registers with data from a fixed offset relative to the current pointer, and calls itself recursively until a terminator character is found.
+- `parse_string_struct_table`: Iterates through a table of structures, checking for a terminator character and recursively calling itself with a pointer to a value at a fixed offset within each structure.
+- `clear_memory_range`: Zeros out a range of memory starting from a global variable pointer back to itself.
+- `traverse_string_with_recursive_calls`: iterates through a string until a terminator character is found, passing a pointer or a value from an offset or a constant to another routine recursively.
+- `check_function_and_bounds`: The routine calls a routine via a pointer, and if the result is non-zero, it calls another routine and checks if a value in a table or memory range is within certain bounds.
+- `validate_buffer_bounds`: checks if a pointer-based routine returns a non-zero value and validates that a specific byte in a global structure is a specific constant while ensuring a memory range or buffer size is valid.
+- `return_max_value`: The routine returns a constant maximum unsigned 32-bit value.
+- `execute_conditional_dos_calls`: The routine calls a routine, and if the result is non-zero, it calls two other routines, potentially setting a return value to a maximum unsigned 16-bit value.
+- `execute_conditional_dos_calls_2`: Checks a return value from a routine and, if non-zero, executes two additional routine calls and returns a maximum unsigned value.
+- `call_open_and_store_result`: The routine calls a routine that opens a file or resource and stores the resulting pointer in a global variable.
+- `call_open`: Library stub: loads its arguments and the dos library base, calls Open and returns its result to the caller.
+- `call_read`: Library stub: loads its arguments and the dos library base, calls Read and returns its result to the caller.
+- `call_write`: Library stub: loads its arguments and the dos library base, calls Write and returns its result to the caller.
+- `call_close`: Library stub: loads its arguments and the dos library base, calls Close and returns its result to the caller.
+- `apply_bitmask_to_memory_range`: The routine increments a global variable and then iterates through a list of offsets to apply a bitmask to a range of memory via bitwise operations and bit-rotated values.
+- `traverse_linked_list_and_apply_mask`: Iterates through a linked list of memory offsets, checking bit patterns and updating a global variable or terminating if a specific end-of-list or control-bit pattern is encountered.
+- `scan_for_pattern_and_decrement`: Iterates through a list of values, comparing them against a global value and decrementing a counter if certain conditions or patterns are met.
+- `scan_variable_for_pattern`: Iterates through a memory range or a global buffer, checking if certain bits of a byte match a specific pattern and returning a calculated or incremented counter.
+- `find_maximum_pattern_match`: Iterates through a memory range or buffer using a pattern-searching routine and tracks the highest-value match found.
+- `calculate_pattern_distance`: calculates the unsigned distance between a global variable and a value returned by a pattern-searching routine, updating a global variable with the result.
+- `initialize_global_pointers_2`: The routine checks a global variable and, if it does not equal a certain value, sets several global variables to specific constants and stores a pointer to a global variable before calling another routine.
+- `check_global_value`: Checks if a global variable equals a specific constant and calls another routine if it does not.
+- `set_global_constants`: The routine assigns specific constant values to certain global variables and stores a pointer to a global variable before calling other routines.
+- `process_bit_mask_loop`: Iteratively shifts a value left and updates a mask or bit-manipulation state using a decrementing counter or loop control variable.
+- `sum_and_adjust_global`: Sums the return values of a routine into a local variable and then conditionally adjusts a global variable or executes a loop based on the calculated difference.
+- `decrement_loop_execute`: Executes a loop that calls another routine, decrementing a register-based counter until it reaches a certain value.
+- `decrement_and_apply_mask`: Decrements a global variable and then iterates through a list of offsets to apply a bitmask to a range of memory via bitwise operations.
+- `configure_buffer_traversal_parameters`: Calculates and stores new boundary or stride values into a table of parameters, including a masked bit-check or an offset-based calculation, and then calls another routine with a pointer or offset-based argument depending on a bit-mask-checked byte.
+- `process_bitmask_control_params`: Extracts bitmasking parameters and pointer offsets from a control structure to initialize a bitmasking operation.
+- `write_table_from_memory`: The routine calls another routine and then writes a certain number of bytes from a memory location into a table at a calculated offset.
+- `initialize_and_fill_buffer`: Sets a global pointer and a counter, then executes a loop that writes a null byte to a global variable while iterating through a memory range using a fixed offset.
+- `update_global_pointer_with_offset`: Iterates through a list of pointers, adding a pointer's value to itself, and finally stores a new calculated pointer into a global variable.
+- `traverse_buffer_with_jumps_2`: Checks a global value and, if it exceeds a threshold, traverses a memory buffer by adding or reading bytes to a pointer until a certain number of steps have passed, finally storing the resulting pointer in a global variable.
+- `traverse_buffer_with_jumps`: Updates a global variable with a value and then traverses a buffer, advancing a pointer by a value read from the buffer, until a certain condition is met.
+- `tiny_lsl`: Small routine of 1 instruction that shifts d0 left by 2.
+- `calculate_scaled_index`: Performs a bitwise shift and mask on an input value, then combines it with a multiplied second input value into a single long result.
+- `calculate_scaled_index_2`: masks bits from a register, shifts the result, and combines it with a scaled value from another register into a single 32-bit return value.
+- `update_pointer_table_bitmask`: Iterates through a table of pointers and applies a bitwise mask or bit-manipulated value to the memory pointed to by those pointers.
+- `apply_bitmask_to_pointer_table`: Iterates through a nested table of pointers and applies a bitwise mask or bit-manipulated value to the memory pointed to by those pointers.
+- `apply_bitmask_to_buffer_window`: Performs a bitwise rotation and logical operation on a sequence of words, writing the result back to a destination buffer and a secondary buffer offset by a large amount.
+- `apply_bitmask_to_buffer_nested`: Uses nested loops to perform bitwise rotation and logical masking, updating a destination buffer and a secondary buffer offset by a large amount based on a certain stride.
+- `apply_bitmask_to_buffer_offset`: Performs bitwise rotation and masking on a source buffer, writing results to a destination buffer, using a value stored in a global variable to determine the source pointer stride.
+- `tiny_subq_subq`: Small routine of 2 instructions that subtracts 1 from d2, then subtracts 1 from d3.
+- `apply_bitmask_to_buffer_complex`: A nested loop routine that performs bitwise rotation and logical masking, updating a destination buffer and a secondary buffer offset by a large amount, while adjusting a pointer or counter.
+- `process_nested_pointers`: Performs bitwise rotations and masking on data while iterating through a nested list of pointers and decrementing counters.
+- `permute_bit_patterns`: Performs bitwise masking, shifting, and logical ORing to rearrange specific bits within a 16-bit value while iterating through nested loops.
+- `permute_bits_in_word`: Performs bitwise masking, shifting, and logical ORing to rearrange specific bits within a 16-bit value.
+- `decrement_and_loop_counter`: Decrements a register or memory-based counter value and calls itself or another routine until the counter reaches a terminal value.
+- `decrement_and_loop`: decrements a 16-bit signed integer and repeats a routine call until the value reaches negative one.
+- `execute_loop_with_counter`: Decrements a counter-based loop while executing a routine pointer or a fixed number of times, modifying a global variable.
+- `execute_callback_loop`: Iterates a loop that calls a routine via a pointer-offset, while updating a global index with a masked or decremented value.
+- `apply_bitmask_loop`: Performs a loop that executes a routine via a pointer-offset while updating a global variable using a bitwise mask.
+- `initialize_loop_index`: Sets a global variable to a maximum value and executes a loop that calls a routine via a pointer-offset while incrementing a global index.
+- `increment_loop_index`: Increments a global variable or index within a loop that executes a routine via a pointer.
+- `apply_mask_to_buffer`: Performs a loop that executes a routine via a pointer-offset and updates a global index using a bitwise mask.
+- `execute_loop_with_fixed_index`: Executes a loop that calls a routine via a pointer while modifying a global variable with an incrementing index.
+- `execute_scaled_index_loop`: Executes a loop that calls a routine via a pointer-offset, updating a global variable with a bitwise mask or a fixed value.
+- `execute_masked_index_loop`: Executes a loop that calls a routine via a pointer-offset and updates a global variable using a bitwise mask.
+- `execute_wrapped_pointer_loop`: Iterates through a table of pointers and updates a global index, wrapping the index to a fixed value if it reaches zero.
+- `iterate_with_index_wrap`: Executes a loop that calls a routine via a pointer-offset and updates a global index, wrapping the index to a fixed value if it reaches zero.
+- `decrement_and_loop_with_masking`: Decrements a local variable and a global variable, resetting the global variable to a certain value if it reaches zero, while calling a routine that applies a bit-rotated mask to a buffer and an infinite loop routine.
+- `execute_nested_decrement_loops`: Executes a nested loop structure that repeatedly calls another routine, decrementing a register or a global variable and a local variable, while using an unchecked value or register as a loop counter.
+- `execute_nested_decrement_loops_2`: executes a series of recursive or nested routine calls while decrementing a local register and a global variable.
+- `decrement_and_loop_with_mask_params_2`: Decrements a local variable and a global variable while calling routines that merge or shift data and calculate mask parameters.
+- `execute_conditional_calls`: Executes a fixed number of routine calls, potentially branching or stopping if a certain global variable is zero.
+- `execute_sequence_of_calls`: Executes a fixed number of routine calls, with a branch if a certain global variable is zero.
+- `execute_recursive_subroutine_calls`: Executes another routine twice, or executes a third routine twice if a certain global variable is zero.
+- `execute_recursive_sequence`: executes a sequence of two routine calls, where the first call or the subsequent calls depend on the value of a global variable.
+- `conditional_routine_execution`: Checks if a global variable is zero and calls a sequence of three routines, otherwise calls a sequence of two routines.
+- `conditional_routine_execution_extended`: Checks if a global variable is zero and calls a sequence of four routines, otherwise calls a sequence of two routines.
+- `invoke_routine_conditionally`: Checks a global variable and executes a routine twice, regardless of whether the variable is zero or non-zero.
+- `execute_conditional_pointer_chain`: Checks if a global variable is zero and executes a sequence of two routine calls, or executes two routine calls if the variable is non-zero.
+- `update_table_with_values`: Searches a table for a zero value and then writes several register or local values into a table at a calculated offset.
+- `set_table_entry_with_offset`: Calculates an offset using an input value and stores a constant value into a table at that offset.
+- `set_table_entry_zero`: Calculates an offset based on an input value and sets a value in a table to zero.
+- `search_and_clear_table_entry`: Iterates through a table looking for a matching value, and if found, sets that table entry to zero and returns a value from a certain offset.
+- `decrement_and_loop_with_mask_params_3`: Decrements a local variable and calls a routine that calculates mask parameters and merges or shifts data.
+- `decrement_loop_counter`: decrements a register or temporary value in a loop until it reaches a termination condition.
+- `tiny_addq`: Small routine of 1 instruction that adds 1 to a6.
+- `copy_table_blocks`: Copies large blocks of data from one memory area to another using a loop.
+- `swap_table_elements`: Swaps or mirrors certain blocks of data between two memory areas using a loop.
+- `clear_global_index`: Sets a global variable to zero and calls other routines.
+- `execute_empty_calls`: This routine is empty, calling other routines without further logic.
+- `traverse_and_set_global_bit`: Calculates an offset from a pointer and a byte, then enters a loop that sets a global variable to one and recursively calls another routine while decrementing a counter.
+- `iterate_and_set_global_bit`: Checks a pointer and a bitmask, then enters a loop that sets a global variable to one while recursively calling another routine and decrementing a local variable if certain bits remain set.
+- `return_masked_bit_result`: Executes a series of loops and calls a routine that performs bitwise rotation and inversion, returning a masked version of the result.
+- `rotate_bits_and_invert`: Performs a bitwise rotation and inversion on a value from a global variable and returns it.
+- `execute_empty_call_2`: This routine is empty and only calls itself.
+- `iteratively_mask_and_delay_input`: Repeatedly calls another routine while masking a bit in a global variable, continuing as long as a specific bit remains set, then resets the global variable and executes a final routine call.
+- `conditional_traverse_and_mask`: Iterates through a string or a nested table of pointers, applying a bitmask or bit-manipulated value to the memory pointed to by those pointers.
+- `clear_and_recursively_traverse_table`: Clears a global variable and enters a loop that recursively calls itself while checking a boolean flag and processing data passed via registers.
+- `search_and_clear_table_entry_2`: Iterates through a table looking for a matching value and sets that table entry to zero if found.
+- `clear_table_entry`: Performs a search in a table to clear an entry if a certain value matches.
+- `copy_data_blocks`: Copies a block of words from a source table to a destination buffer using a loop.
+- `merge_and_shift_data`: Merges bits from a source buffer into a destination buffer and shifts pointer or data pointers.
+- `apply_bit_mask_to_buffer`: Applies a bitwise mask or its inverse to a buffer while copying or updating words from a source buffer.
+- `update_buffer_with_mask`: Updates a destination buffer with masked or certain bits from a source buffer.
+- `copy_and_mask_buffer_2`: Copies words from a source buffer to a destination buffer while applying a bitmask and updating a pointer or offset.
+- `execute_infinite_loop_3`: the routine executes an infinite loop without performing any further operations or modifying any registers or memory.
+- `rotate_and_store_data`: Performs bitwise rotation on words and stores the result into a destination buffer.
+- `apply_bitmask_to_buffer`: Iterates through a source buffer and applies a bitmask-based bit-manipulation or bit-reversal-like operation to a destination buffer.
+- `apply_bitmask_and_rotate_to_buffer`: This routine iterates through a source buffer, applying a bitmask-based bit-rotation or bit-shifting (using a rotating bit-mask pattern) and writes the resulting bit-manipulated or bit-aligned words into a destination buffer.
+- `populate_header_and_rotate`: Writes a header or metadata to a table and then performs a bitwise rotation and store routine.
+- `apply_bit_rotation_to_buffer`: Iterates through a source buffer and writes bit-rotated or bit-shifted versions of specific bit-fields or words into a destination buffer.
+- `permute_bits_in_buffer`: Performs bitwise masking and bit-rotation-like operations on a buffer using a calculated bitmask.
+- `calculate_mask_parameters`: Calculates bitmask values and updates a global variable used for masking or bit-width calculation.
+- `initialize_and_rotate_buffer`: Zeros out a buffer range and then applies a bit-rotated mask to a source buffer, writing the results to a destination buffer.
+- `apply_bit_rotation_to_buffer_2`: Iterates through a buffer to apply bitwise masking and bit-rotation-like operations to specific memory offsets.
+- `execute_infinite_loop_4`: the routine enters an infinite loop without modifying any registers or memory or performing any further operations.
+- `apply_rotated_bitmask`: Calculates a bit-rotated mask and uses it to bitwise-AND and OR values into a table, or potentially a buffer, using a loop controlled by a global counter.
+- `apply_mask_to_offset_buffer`: Applies a bit-rotated mask to a buffer using bitwise operations, where the source buffer is an offset version of the destination buffer.
+- `execute_empty_recursion`: The routine performs an infinite or recursive call to itself without performing any operations or modifying any data.
+- `initialize_buffer_and_mask`: Fills a buffer with zeros and updates global variables used for masking or bit-width calculation.
+- `search_string_and_store_data`: Iterates through a buffer checking for a specific bitmask match, then stores bytes from a pointer-based structure into a global variable.
+- `extract_and_store_buffer_data`: Extracts or constructs a 32-bit value from a buffer, then stores parts of that value and other pointer-based bytes into global variables and a table.
+- `decrement_register_loop`: Decrements a value in a register until it reaches a certain limit.
+- `populate_buffer_from_indexed_data`: Calculates an offset into a data table, retrieves values, and performs a series of nested loops to write these values and others into a target buffer.
+- `process_indexed_buffer_data`: Iterates through a buffer, performing conditional branching and calling other routines based on the value of a byte.
+- `process_buffer_with_bitmasks`: Iterates through a buffer, applying bitwise operations and masking before storing a result back to a buffer or updating a global pointer.
+- `iterate_pointer_list_and_set_constants`: Iterates through a list of pointers, checking the high bit of each pointer's value and advancing the pointer by a fixed offset, then writes a sequence of constant values to certain registers or memory locations.
+- `apply_bitmask_to_buffer_2`: Iterates through a buffer, performing bitwise OR, bitwise AND, and bit-rotation or bit-swapping operations before storing the result back to the buffer.
+- `mask_and_store_bytes`: Applies a bitmask or its inverse to bytes in a buffer and stores them back into a buffer located at a calculated offset.
+- `return_void`: the routine is empty and performs no operations before returning.
+- `initialize_buffer_values`: Sets a global variable to a specific value and copies a sequence of words from one memory location to another, while also clearing a global variable.
+- `update_global_pointer_constants`: Sets a global variable to a constant value based on its current state and then updates a pair of global variables with a new pointer value.
+- `set_global_variable`: Assigns a constant value to a global variable based on a condition and copies a word from one memory location to another.
+- `update_state_machine_and_data_tables`: Updates a global state variable or cycles through a set of predefined values while performing a sequence of conditional memory writes to a data table.
+- `apply_bitmask_to_memory_segments`: Iterates through several memory pointers, applying a bitmask and a bit-rotated value to those memory locations, while also updating a secondary pointer or counter.
+- `execute_unconditional_calls`: This routine performs a sequence of unconditional calls to another routine.
+- `initialize_global_state_and_loop`: Checks if a global variable is zero, then initializes several global or table-based values using arithmetic or bit-shifted copies of previous routine return values.
+- `update_buffer_with_scaled_index`: Calculates scaled offsets and increments a counter to check against a limit, while updating a global variable.
+- `update_scaled_index_variable`: Calculates a scaled offset and a limit, then increments a counter and compares it against a calculated value.
+- `update_table_with_rotated_mask`: Uses a bit-rotated mask to perform bitwise AND and OR operations on specific offsets within a table.
+- `compute_and_loop_index`: Computes a value and uses a loop to increment a register until it matches a calculated value, while also calling other routines.
+- `apply_bitmask_to_buffers`: Calculates a bitmask using a bit-rotation-like operation and applies it to several distant memory offsets via a pointer.
+- `invoke_subsequent_routines`: This routine is empty and serves only to call another routine repeatedly.
+- `modify_buffer_bits_2`: Iterates through a buffer and modifies specific bits in a series of words based on whether certain bits in a register are set.
+- `modify_buffer_bits`: Iterates through a buffer and modifies specific bits in a series of words based on a bitmask check.
+- `flip_bits_in_memory`: Iterates through a memory range and flips a specific bit in a word, or updates a word with a bitmask, using pointers to multiple memory locations.
+- `flip_bits_in_buffers`: The routine iterates through a memory range and flips a specific bit in a word, or updates a word with a bitmask, and modifies a pointer or a counter.
+- `flip_bits_in_multiple_buffers`: Iterates through a list of memory buffers and flips a specific bit in a word, using a bitmask derived from a register, while also incrementing pointers.
+- `flip_bit_in_multiple_buffers`: Iterates through a sequence of memory buffers to check and flip specific bits based on a bitmask or bit-index, while simultaneously updating a bit-index counter and a loop-control register.
+- `modify_bit_patterns_2`: Iterates through a pointer and modifies specific bits in a destination pointer, a second pointer, a third pointer, and a fourth pointer base.
+- `modify_bit_patterns`: Iterates through a pointer and modifies specific bits in a destination pointer, a second pointer, a third pointer, and a fourth pointer based on a bitmask.
+- `apply_bitmask_to_memory_strides`: Iterates through a memory range using a pointer, applying or clearing specific bits in a bitmask to a series of memory locations separated by a fixed stride.
+- `update_bit_flags`: Iterates through a memory range and updates specific bits in several remote memory locations using a bitmask and a counter-based loop.
+- `call_empty_routine`: The routine calls another routine and then returns.
+- `execute_branching_calls`: Executes a fixed number of routine calls, including a call with passed parameters, if a certain global variable is zero.
+- `execute_recursive_sequence_2`: Performs a recursive call sequence based on a global variable value before returning.
+- `execute_empty_calls_2`: This routine is empty and calls another routine without any additional logic.
+- `update_bounds_conditionally`: The routine checks a global variable and, if it is zero, calls another routine and stores a register value into a global variable before calling another routine.
+- `store_multiple_global_values`: The routine checks a global variable and, if it is zero, calls another routine and stores register or memory values into two different global variables before calling another routine.
+- `execute_empty_sequence`: The routine calls another routine and then returns, or executes an infinite loop or a sequence of calls that do not modify registers or memory.
+- `copy_memory_block`: Performs a nested loop to copy data from a source pointer to a destination pointer with a fixed stride.
+- `get_unaligned_word`: Reads a 16-bit value from a pointer offset by two bytes.
+- `update_pointer_and_store_value`: Reads a 16-bit value from a pointer, then updates a global pointer and a global variable with a new address.
+- `advance_pointer_with_backup`: Stores the value at a global pointer into another global variable before incrementing that pointer by two bytes.
+- `initialize_global_pointers`: Sets a global pointer to a certain address, sets another global or register value, and sets a third global to a fixed value.
+- `set_global_bounds`: Sets a global variable to a specific value and another global variable to a constant integer.
+- `execute_infinite_loop`: Performs an empty infinite loop.
+- `register_interrupt_handler`: Adds a new interrupt handler to the exec interrupt vector table and then calls the previous handler.
+- `open_library_sequentially`: Sequentially calls a library function using a pointer from a global variable, checking for non-zero returns, and enters an infinite loop if a return is zero.
+- `allocate_and_initialize_pointers`: Calls a memory allocation routine and, if successful, initializes a series of global pointers with offsets or new memory addresses, or enters an infinite loop if any allocation fails.
+- `execute_task_related_functions`: Calls three different functions via pointers retrieved from a global variable and its offsets, involving task and port management.
+- `copy_screen_data`: Copies a fixed number of words from a global source to a destination and calls a library function with a pointer.
+- `update_buffer_pointers`: Updates certain global variables using values derived from a pointer and a source buffer, while storing a byte and a word from that buffer into a destination pointer.
+- `calculate_memory_strides`: Calculates and stores several stride-related values in global variables and enters a loop that modifies a global variable or updates a 32-bit register.
+- `update_global_loop`: Updates a global variable with a swapped-byte value and enters a loop that modifies a global variable via addition or subtraction.
+- `execute_infinite_loop_3_2`: Updates a global variable with a swapped-byte value and enters a loop that modifies a global variable via addition or subtraction while checking a condition or calling another routine.
+- `modify_table_data`: Checks a global variable and, if zero, executes other routines and then iterates through a table to conditionally copy or write data to or from various memory offsets.
+- `scatter_memory_bytes`: Copies bytes from a source table to a destination, potentially using an offset, while checking a counter and updating a pointer.
+- `populate_table_from_source`: Iteratively copies bytes or or related data from a source pointer to a table while calculating offsets and checking for zero values.
+- `distribute_bitstream_to_memory`: Takes a source buffer and redistributes its bits into a destination memory layout using a calculated stride.
+- `interleave_memory_blocks_2`: Distributes words from a source table into a destination or a set of wide memory offsets.
+- `interleave_memory_blocks`: Copies words from a source table to a destination using a stride of 4, distributing words across a wide range of memory offsets (0, 4000, 8000, and 12000 words away).
+- `decompress_bitstream_to_buffers`: Iterates through a bitstream and extracts individual bits to populate or shift into multiple target buffers.
+- `extract_bit_stream`: Iterates through a memory-based bitstream, extracting bits and shifting them into a target buffer or word.
+- `return_empty_routine`: the routine performs no operations and returns immediately.
+- `blend_buffer_segments_with_mask`: Updates a destination buffer by masking existing bytes and ORing them with bytes from a source buffer.
+- `apply_bitmask_to_buffers_2`: Performs bitwise AND and OR operations using a mask and a source buffer to modify or merge data into a destination buffer and its offsets.
+- `apply_bitmask_to_buffers_3`: Applies a bitwise mask and OR operation to a destination buffer using a source buffer, processing or skipping certain memory offsets.
+- `apply_bitmask_to_buffers_reverse`: Executes a bitwise manipulation routine that applies a mask to a buffer, processing pointers with a conditional or decreasing or increasing step.
+- `do_nothing`: the routine is empty and performs no instructions before returning.
+- `update_buffer_range_bounds`: Calculates and writes new range boundaries into global variables and executes a loop that modifies these bounds or pointers.
+- `update_global_counters`: Calculates and stores new values in several global variables and executes a loop that decrements a value while calling another routine.
+- `copy_table_blocks_loop`: Executes a loop that copies a block of words from a source pointer to a destination pointer, where the loop count is determined by a fixed value.
+- `initialize_and_iterate_pointer`: Sets a global byte to zero and iterates a pointer through a memory range, calling another routine during each iteration.
+- `set_pointer_and_loop`: Stores a byte into a global variable and executes a loop that increments a pointer until it reaches a previously stored pointer value.
+- `scan_and_update_bounds`: Iterates through a list of values, checking if bytes fall within a specific range, and updates a global variable with a maximum value or certain bounds-related constants.
+- `process_bit_reordering`: Rearranges bits and checks certain character flags before recursively calling another routine with a calculated word value.
+- `execute_recursive_calls`: An infinite loop that calls itself recursively without any state modification or conditional exits.
+- `recursively_call_routine`: a routine that calls itself indefinitely without performing any operations or modifying any registers or memory.
+- `decrement_table_values`: Decrements a value in a table and updates another table entry with a calculated product, repeating for a certain number of iterations.
+- `update_pointer_metadata`: Calls a routine to populate a pointer table, then executes a loop that decrements a value and modifies a pointer-based structure, specifically decrementing a value at an offset and updating a pointer-based address.
+- `update_table_with_calculation`: Performs a complex calculation involving a table, updates a table entry with a temporary value, and then iterates through a range to modify table values and perform arithmetic.
+- `modify_pointer_table_values`: Calculates a new value based on a pointer, updates a global variable, and then executes a loop that modifies a value in a table.
+- `populate_pointer_table`: Iterates through a list of pointers to calculate and store new pointer values and associated metadata into a table.
+- `execute_loop_with_calls`: Loads a value from a pointer and executes a loop a fixed number of times while calling other routines.
+- `preserve_global_variable`: stores the current value of a global variable on the stack, calls another routine, and restores the original value to that global variable before returning.
+- `initialize_global_buffer`: Sets a sequence of global variables and a global pointer to specific constant values or zero.
+- `unpack_and_store_data`: Reads bytes from a source pointer and selectively stores certain bytes into a destination buffer based on bitmask checks.
+- `update_global_state_4`: Modifies a global variable by setting it to zero or a specific value and conditionally executes other routines based on its state.
+- `process_bitstream_metadata`: Initializes a global variable and certain pointers, then searches through a table to check for a bitmask match or a specific value.
+- `traverse_table_and_clear`: Recursively calls another routine and checks a global variable before setting a global variable to zero.
+- `dispatch_on_char`: Performs unconditional calls to another routine if a global variable matches any of several specific character constants.
+- `check_value_range`: Checks if a value derived from a global variable falls within a range defined by a table.
+- `check_input_range`: Checks if two input bytes fall within a range defined by a table.
+- `search_and_set_globals`: Increments a value and checks it against a range, updating a global variable and a global pointer with specific values if a condition is met.
+- `search_for_valid_index`: Increments a value and checks it against a range, potentially setting a global or updating a pointer if a valid range or value is found.
+- `invoke_subroutines`: Executes two calls to another routine.
+- `find_buffer_index_by_pattern`: Searches through a buffer for a specific byte pattern and, if found, stores a pointer to the matching entry into a global variable.
+- `search_for_matching_pattern`: Iterates through a memory list to find an entry where a certain masked bit pattern matches a changing global value.
+- `process_pointer_list_with_offset`: Iterates through a list of pointers, accessing or updating certain memory locations and calculating a new pointer offset based on a table value.
+- `load_pointer_and_calculate_offset`: Loads a value from a pointer-based offset into a global, updates a global with a byte from a pointer, and calculates a new pointer offset based on a value in memory.
+- `update_global_state_3`: Checks a global variable against a limit and, if certain conditions or non-zero global values are met, modifies a memory location and updates a global variable.
+- `tiny_move`: Small routine of 1 instruction that copies 150 to d1.
+- `call_delay`: Wrapper that calls the dos library function Delay and returns its result to the caller.
+- `update_global_state`: Calculates an offset to load a value and a fixed address into global variables, then checks if a global value has changed to trigger another routine.
+- `load_calculated_addresses`: Calculates an offset based on an input, then loads values from that offset and a fixed address into global variables.
+- `execute_if_value_changed`: Checks if a global value differs from a previously stored value and calls another routine if a change is detected.
+- `process_string_data`: Iterates through a data structure, checking or setting a global variable and a table, while potentially calling other routines or adjusting a global counter based on character comparisons.
+- `set_global_register_value`: Writes a constant value to a global variable and copies a stack value to a global offset.
+- `set_d0_register`: Writes a constant value into a data register.
+- `update_global_variable`: Checks a value in memory and potentially decrements a global variable.
+- `update_table_values`: iterates through a table, checking if a byte equals certain a value and replacing it with a different value.
+- `process_string_data_with_filter`: Checks a character in a table against a set of constant characters and, if a match is found, updates a pointer and a global variable or potentially decrements a global counter.
+- `set_d0_register_alternative`: Writes a different constant value into a data register.
+- `set_table_values`: Initializes a global variable and, if a certain condition is met, writes specific values to a table or memory location and potentially decrements a global variable.
+- `decrement_and_call`: Decrements a global variable and calls another routine twice.
+- `dispatch_handler_logic`: Checks a high-order bitmask in a value, potentially executing a routine pointer or performing complex pointer arithmetic to update or clamp certain values.
+- `dispatch_handler_table_and_buffer`: Checks a flag or offset to either execute a routine or traverse a table/string-like buffer, where certain high-order bit patterns trigger specialized sub-routines or pointer-based jumps.
+- `initialize_global_state`: Sets a global variable to zero or one and checks a character at an offset from a pointer-based address.
+- `initialize_and_dispatch_handler_table`: Initializes a global variable and a loop that increments a global value, then dispatches routine pointers from a table or string-based buffer if certain bitmask conditions or address ranges are met.
+- `resolve_handler_offset`: Calculates an offset from a global variable and loads a word from that calculated address, potentially setting a pointer or a fallback value.
+- `compare_and_update_stack`: Compares a global variable against a register, potentially updates a stack-based value, and modifies a global variable.
+- `invoke_instruction_stream`: Calls a routine that processes a sequence of instructions from a memory buffer.
+- `set_global_to_max`: Sets a global variable to a specific maximum value after executing another routine.
+- `dispatch_handler_pointer_logic_2`: Evaluates a global variable or a value loaded from a table-based offset to determine a dispatch target.
+- `dispatch_handler_pointer_2`: Checks a global variable and either executes a routine pointer or traverses a buffer-like structure if a specific bit is set.
+- `set_handler_value`: Sets a global variable to a specific constant value and then enters a dispatch logic based on that value.
+- `dispatch_handler_instruction_sequence`: Evaluates a global variable or a value loaded from a table to determine a handler type, then either executes a direct routine pointer, jumps to a routine via a table-based offset, or executes a sequence of routine calls based on a string-like buffer or a calculated sequence of offsets or instructions.
+- `load_handler_from_register`: Loads a value from a register into a global variable and executes a dispatch-style routine or pointer traversal.
+- `dispatch_instruction_table_entry`: Checks a high-order bitmask or prefix in a global value to either execute a routine pointer from a table or perform a series of pointer-based jumps, and potentially updates a secondary global variable or a pointer-based lookup table, or iterates through a buffer of function pointers until a null or certain byte value is encountered.
+- `reset_handler_and_global`: Loads a value from a register into a global variable, resets another global variable to zero, and then proceeds with dispatch logic.
+- `set_global_values`: assigns new integer values to a global variable.
+- `execute_hardcoded_dispatch`: Sets a global variable to a hardcoded constant and executes a sequence of routine calls with certain side-effect-driven pointer adjustments.
+- `clear_and_mask_table_elements`: Iterates through a table of 40-byte-aligned entries, clearing the high bit of the second word in each entry.
+- `reorganize_instruction_buffer`: Swaps or rearranges blocks of memory using a fixed offset while checking instruction prefixes and updating a global pointer.
+- `process_instruction_buffer`: Iterates through a memory buffer to swap or reorganize data, while checking instruction prefixes and updating a global pointer or table.
+- `dispatch_instruction_stream_2`: Evaluates a global or or index-based pointer to either execute a routine or iterate through a table of function pointers.
+- `dispatch_handler_logic_2`: Evaluates a global pointer or index and either executes a routine or iterates through a table of function pointers based on a string-like buffer or a calculated offset.
+- `dispatch_instruction_stream_handler`: Evaluates a pointer or command byte to either execute a direct function call, jump to a table-indexed routine, or iterate through a string-like buffer of command bytes to trigger secondary routine calls.
+- `dispatch_instruction_stream`: Checks a global variable to determine if it contains a direct pointer, a table-based function call, or a command byte that triggers a sequence of recursive routine calls.
+- `dispatch_control_parameters`: Checks a global variable and certain bitmasking parameters, then either executes a routine at a calculated address or modifies several global variables using values from a register and a table.
+- `dispatch_from_register_to_buffer`: Loads a value from a register into a global variable and then traverses a buffer-like structure using pointer-based dispatches.
+- `iterate_and_store_data`: Iterates through a table, checks a bitmask against a value, and stores certain bytes and pointers into a global location.
+- `apply_mask_to_pointer_table`: Iterates through a nested table of pointers and applies a bitwise mask or bit-manipulated value to the memory pointed to by those pointers.
+- `dispatch_handler_pointer_logic`: Evaluates a global variable or a pointer-based command buffer to either execute a routine or traverse a sequence of handlers.
+- `traverse_dispatch_buffer`: Sets a global variable to a constant and then iterates through a buffer, calling routines via pointers found in that buffer.
+- `dispatch_conditional_routine`: Checks a bit or a global value, then either calculates a pointer offset, executes a routine via a pointer, or updates several global counters and pointers.
+- `initialize_global_values`: Stores a constant value into a global variable and performs several conditional updates to other global variables based on register or memory contents.
+- `traverse_string_and_execute`: Sets a global pointer to a certain address and executes a sequence of routine pointers or string-based handlers until a terminator or specific byte is encountered.
+- `execute_handler_logic`: Checks certain CPU flags and, if a certain condition is met, calculates several pointer or counter values and may execute a routine via a pointer or write a constant to a memory location.
+- `reset_global_parameters`: Sets several global variables to specific constant values and enters a loop that continues while a specific bit in a global variable is set.
+- `update_global_state_and_pointer_table`: Updates a global variable using a clamped or masked value and applies a bitmask-driven pointer-based update to a table of global variables.
+- `traverse_and_execute_handler_table`: Iterates through a table of function pointers, executing them if certain conditions or string-like buffer values are met, or performing specialized pointer arithmetic and clamped value updates if specific bitmask patterns are detected in a control variable.
+- `iterate_and_scatter_data`: Iterates a local counter and calls another routine, potentially executing a secondary routine if a global variable is non-zero.
+- `scatter_data_to_buffers`: Iterates through a loop, calling a routine that copies or scatters data into a destination, and then executes a secondary loop.
+- `scatter_table_data`: copies bytes or words from a source table to a non-contiguous destination pattern.
+- `parse_custom_bytecode`: reads a sequence of bytes to perform conditional jumps or calls other routines and updates certain memory locations.
+- `parse_instruction_stream`: Iterates through a memory buffer, decoding or executing instructions based on a prefix byte.
+- `calculate_offset_address`: calculates a new address or offset based on specific bits in a register and stores it in a global variable.
+- `clear_and_traverse_buffer`: Clears a 4-byte-aligned memory block with zeros and then traverses a linked list of pointers using a global variable to read or write bytes.
+- `clear_and_process_buffer`: Clears a block of memory to zero and then iterates through a buffer to perform bitwise operations and store results.
+- `initialize_bitstream_decoder_negative`: Sets a global variable to a negative constant and initializes another global variable to one before starting a bitstream decoding loop.
+- `initialize_bitstream_decoder_copy`: Copies a global variable to another and sets a global variable to zero before starting a bitstream decoding loop.
+- `initialize_bitstream_decoder_positive`: Sets a global variable to a positive constant and sets another global variable to zero before starting a bitstream decoding loop.
+- `initialize_bitstream_decoder_decrement`: Decrements a global variable and sets another global variable to zero before starting a bitstream decoding loop.
+- `decode_bitstream_loop`: Iterates through a buffer, extracting bitfields to update a global variable and a secondary global variable, while using nested loops to process or terminate based on bit-shifted values.
+- `modify_global_counter`: Checks or modifies a global variable and a secondary global variable based on bitwise checks and comparisons.
+- `clear_global_variable`: Clears a global variable by setting it to zero.
+- `copy_and_update_buffer_range`: Performs a block memory copy or scatter-gather-style write where data from a source pointer is written to a destination pointer using a nested loop, followed by updating a set of global boundary or limit variables.
+- `fetch_offset_byte_2`: Retrieves a byte from a calculated memory address based on bit-masked flags and an offset or pointer lookup.
+- `evaluate_register_conditions_2`: Checks a bitmask in a register and performs several conditional comparisons between register values before returning.
+- `iterate_string_pointer`: Iterates through a memory buffer, checking a bitmask and incrementing a pointer until a terminator or a specific bit-flag is encountered.
+- `store_byte_conditionally`: Checks a bit in a value and stores a byte from a register into a memory location.
+- `read_unaligned_word`: If a register is zero, it constructs a word from two consecutive bytes located at an offset from a pointer.
+- `process_button_input`: checks certain bits in a register and updates a global variable based on the state of those bits.
+- `update_mouse_position_and_transform_table`: Updates a global counter or coordinate based on mouse port movement and clamps it within a certain range, then performs a bitwise logical transformation on a block of memory using a temporary value and updates a table or global pointer.
+- `increment_and_dereference_global`: Increments a global variable and then replaces its value with the value stored at that new offset in a table.
+- `increment_and_load_pointer`: Increments a global variable and returns the value stored at the address or offset pointed to by that incremented value.
+- `update_register_value`: Sets a register or a global memory location to a specific constant value.
+- `clear_bit_in_table`: Checks a condition or a range and if met, iterates through a table to clear the high bit of certain bytes.
+- `copy_table_elements_2`: copies a fixed number of words from a table or array to a destination address.
+- `copy_data_and_call_function`: Copies a fixed amount of data from a source table to a destination address and then calls a function pointer passed via a register.
+- `copy_word_block`: copies a block of four words from a calculated memory offset to a fixed destination address.
+- `copy_table_elements`: copies a fixed number of words from a table or array or memory or a global variable to a destination address.
+- `execute_function_pointer`: Calls a function pointer located at a certain offset from a global address.
+- `call_load_r_g_b4`: Library stub: loads its arguments and the graphics library base, calls LoadRGB4 and returns its result to the caller.
+- `initialize_and_modify_data_table`: Initializes a block of memory by copying a global buffer to a target, then enters a loop that modifies or decrements specific bit-patterns (nibbles) within a data table.
+- `copy_and_modify_memory`: Copies a block of words from a source to a destination and then enters a loop that modifies certain bits of the copied words before writing them back.
+- `clear_buffer_with_check`: Zeros out a buffer of certain size and calls another routine if a specific bit is set in a table.
+- `rotate_and_store_buffer`: performs a bit-rotation on a value and writes it to a memory location.
+- `copy_large_block`: If a certain range check passes, copies a large block of double-words from one memory area to another.
+- `traverse_memory_range`: Checks if a global variable falls within a specific range, then stores a value to a global and iterates a pointer by a fixed stride until it reaches a previously stored pointer address.
+- `loop_and_call_routine`: Executes a specific number of times, calling another routine in a descending loop.
+- `decrement_and_recurse`: Recursively calls itself while decrementing a local register until a certain value is reached.
+- `check_pointer_and_recurse`: Checks if a pointer or value is non-zero and calls itself if so.
+- `conditionally_call_routine`: Iterates through a table and calls another routine if the value at the current pointer is not zero.
+- `traverse_and_process_buffer`: Iterates through a fixed-size sequence of memory-aligned words and calls another routine if a non-zero value is encountered.
+- `update_bitmask_table_2`: Iterates through a table to check for a bitmask match, then updates a byte in that table and a byte in another memory area.
+- `search_and_update_buffer_2`: Iterates through a table to check for a bitmask match, then updates a byte in the table and a byte in another memory area.
+- `match_and_increment_byte`: Iterates through a table to find a matching bitmask, then increments a byte at a calculated address and masks it.
+- `search_and_update_buffer`: Iterates through a table to check if a byte matches a masked value, then increments a byte at a calculated destination address and updates a global variable.
+- `scan_and_update_pointer`: Updates a pointer or a global variable and calls another routine if certain bit patterns are found in a table.
+- `scan_buffer_for_pattern`: Iterates through a buffer and checks if certain bits in a byte match a specific pattern, then recursively calls another routine and updates a pointer.
+- `set_global_value`: Loads a byte from an offset of a pointer into a global variable and enters a loop that modifies a global variable while checking a bitmask.
+- `reset_global_variable_3`: Sets a global variable to zero and subsequently overwrites it with values from registers before checking a bitmask in a loop.
+- `update_global_state_logic`: Calculates an offset to load a value and a fixed address into a global variable, then checks if a global value has changed to trigger another routine.
+- `set_pointers_and_loop`: Sets several pointers and global variables to specific values and enters an infinite loop that calls a routine via a pointer.
+- `execute_recursive_call`: Performs a recursive call to itself while incrementing a register value.
+- `traverse_memory_recursively`: Executes several routine calls, including a recursive call that increments a register and other routines that process bitmasking or memory offsets.
+- `modify_byte_and_recursively_call`: Performs a recursive call, then applies a bitmask to a byte located at an offset from a register, followed by several other recursive calls.
+- `modify_byte_and_recurse`: Copies a byte from one location to another and clears a bit in a byte at an offset from a pointer.
+- `modify_memory_with_offsets_2`: checks a value from a pointer and writes a modified or offset value to adjacent memory locations.
+- `modify_memory_with_offsets`: Reads a byte from a pointer and writes modified or offset values to adjacent memory locations relative to a register-based address.
+- `dispatch_bytecode_instructions_2`: Parses a custom bytecode instruction or character-based index to perform indirect jumps, recursive routine calls, or a loop of routine dispatches.
+- `dispatch_bytecode_instruction`: Resolves a value or modified character-based index to either a routine, a recursive call, or an iterative loop.
+- `resolve_bytecode_index`: Reads a value from a table using a modified character or index, then branches to a routine or updates a pointer based on a bitmask check of that value.
+- `dispatch_bytecode_instructions`: Evaluates a value or a modified character-based index to either jump to a routine, perform a series of recursive routine calls, or iterate through a table of function pointers.
+- `loop_with_decrementing_counter`: Sets a global variable and certain registers, then enters a loop that decrements a register while calling other routines.
+- `update_buffer_and_set_global`: Copies a word from a source pointer to a destination, calculates and stores two short values in a table, and sets a global variable to a constant.
+- `execute_nested_loop`: Executes a nested loop structure that decrements registers, effectively performing a fixed number of empty or secondary routine calls.
+- `update_masked_buffer`: Performs a bitwise or-not and and-with operation while copying or updating values in a large buffer using a nested loop structure.
+- `copy_buffer_segments`: Copies data from a source buffer to a destination buffer using a nested loop structure.
+- `apply_mask_to_buffers`: Performs a bitwise masking and OR operation on several memory buffers using a nested loop, then enters a loop that increments a counter and compares it against a global value.
+- `conditional_loop_on_byte`: Checks if a byte at a pointer is non-zero and then executes a loop a certain number of times, potentially calling another routine once more if the byte was non-zero.
+- `loop_fixed_count`: Executes a loop that decrements a register from a fixed starting value down to a certain limit, calling another routine within the loop.
+- `decrement_two_counters`: Executes a loop that decrements two different registers simultaneously, calling another routine with a changing or fixed value.
+- `clear_global_in_loop`: Executes a loop that decrements a register and sets a global variable to zero during each iteration.
+- `execute_infinite_loop_2`: This routine is empty and executes an infinite loop.
+- `execute_recursive_loop`: Recursively calls another routine while decrementing a local variable until it reaches a certain value.
+- `execute_descending_loop_sequence`: Executes another routine a fixed number of times while decrementing a local variable in a loop.
+- `return_immediately_7`: This routine performs no operations and returns immediately to its caller.
+- `update_global_pointer_offset`: Calls another routine and sets a global variable to a value derived from a bit-shifted byte.
+- `process_string_with_mask`: Iterates through a buffer, performing bitwise masking and conditional branching based on character or byte values.
+- `validate_global_state`: Sequentially checks a global variable and a return value against hardcoded constants, potentially resetting a global variable to a certain value if certain conditions are met.
+- `reset_global_variable_2`: Sets a global variable to zero and then to a maximum byte value.
+- `apply_relative_offset`: Iterates through a memory range and adds a value stored at a global pointer to the routine's own address if that value is non-zero.
+- `verify_resource_pointers`: Iterates through a memory range adding an offset to pointers, and checks several routine return values or global pointer equality before setting a global variable to a certain value.
+- `reset_global_range`: Sets a global variable to a zero value and then to a maximum byte value.
+- `search_table_and_update_pointer`: Checks if a global variable matches a specific value and, if so, searches a table to update a pointer and potentially modify a memory range or a global variable.
+- `set_register_bounds`: Sets a register to a specific constant value and sets another register to an offset relative to a global variable.
+- `search_and_modify_bitmask`: Searches a memory area for a matching byte, updates a pointer or a register with a new address, and clears a bit in a byte at a calculated offset.
+- `modify_bitmask_and_pointer`: Sets a register to a constant, copies a byte from a memory location, and modifies a byte at a calculated pointer address using a bitmask.
+- `clear_memory_locations`: Sets two specific memory-mapped or global addresses to zero.
+- `search_table_for_match`: Searches through a table for a specific byte pattern, modifies a hardware register, and updates a pointer or a constant value if certain conditions or table-based matches are met.
+- `set_memory_registers`: Assigns a constant to a global variable and updates another global variable with an offset relative to a third global variable.
+- `search_and_update_bitmask`: Searches a memory-resident table for a specific byte value and, if found, updates a global pointer and clears a bit in a bitmask located at a calculated offset in certain memory.
+- `update_pointer_and_bitmask`: Sets a global variable to a constant, copies a byte between memory locations, and modifies a byte at a calculated offset using a bitwise mask.
+- `clear_global_and_address`: Sets a global variable and a specific memory address to zero.
+- `update_global_state_2`: Sets several memory locations to a constant if a certain global variable equals a specific value, otherwise clears certain memory locations and updates a global or pointer.
+- `dispatch_instruction_and_traverse_buffer`: Checks a global variable to select an instruction type, then either executes a routine pointer from a table or traverses a buffer of function pointers, using a masking or offsetting logic to determine the next target.
+- `execute_conditional_handler`: Checks if a global variable equals a specific value, resets that global variable, and then traverses a string-like buffer to call routine pointers.
+- `clear_and_mask_memory`: Clears a byte at a specific pointer location and conditionally clears a bit and a global variable or masks a byte in a buffer.
+- `reset_global_and_recurse`: Sets a global variable to zero and calls another routine multiple times based on certain value checks.
+- `reset_global_and_branch`: Sets a global variable to zero and executes a sequence of other routines based on certain value checks.
+- `tiny_move_2`: Small routine of 1 instruction that copies 63 to d3.
+- `search_for_byte_in_list`: Iterates through a list of bytes, comparing a byte from a register against a value at an offset from a pointer, and returns if a match is found.
+- `set_pointer_to_global_offset`: Sets a pointer to an offset of a global variable and updates other registers based on a bitwise check of a memory location.
+- `update_global_pointer`: Stores a pointer in a global variable and sets another global variable to a calculated address based on a byte and a global variable.
+- `update_global_pointer_2`: Checks a byte at an offset from a register, potentially executes a routine at an offset from a global pointer, and may store the address of a global variable into another global variable.
+- `parse_bitstream_instruction`: Reads a value from a pointer, checks a bitmask, and conditionally updates several global variables or buffers based on certain memory contents.
+- `process_instruction_stream`: Recursively parses a custom instruction buffer to execute or branch to secondary routines.
+- `initialize_dispatch_parameters`: Sets a global variable to a constant and performs a series of conditional updates to several other global variables using register or memory-derived values.
+- `apply_bitmask_to_pointer_table_2_2`: Performs bitwise masking and bit-rotation-based logical operations on a nested table of pointers.
+- `update_handler_pointer`: Checks a bitmask in a memory location and, if a certain condition is met, modifies a byte and updates a global pointer or increments a global variable.
+- `process_instruction_string_metadata`: Parses a string-based instruction buffer to update a global state variable and a secondary metadata buffer.
+- `update_global_with_conditional_value`: Checks the value of a register and a global variable to determine a constant value, then assigns that constant to a global variable.
+- `update_global_based_on_check`: calls another routine and updates a global variable based on the returned value.
+- `modify_memory_buffer`: Sets a global variable, modifies a byte in a table, and updates a memory location via a pointer.
+- `parse_bytecode_command`: Parses a sequence of bytes to identify specific command characters and update a global state or trigger further routine executions.
+- `parse_string_and_dispatch`: Checks a string for certain characters, sets a global variable or a byte in a buffer, and then traverses a buffer to execute routines based on certain byte values.
+- `traverse_bytecode_buffer`: Iterates through a memory buffer, checking for a specific termination value, and executes different routines or updates a global variable based on the value found.
+- `dispatch_bytecode_and_branch`: Updates a byte at a pointer offset and branches to other routines if that byte matches certain certain values.
+- `check_byte_and_branch`: Checks if a byte at a pointer offset equals a specific value and calls another routine or clears a register.
+- `parse_bytecode_sequence`: Reads a sequence of bytes to perform conditional jumps or calls other routines and updates certain memory locations.
+- `update_global_from_pointer_2`: Updates a global variable with a byte from a pointer and assigns a value to a register-based or global variable.
+- `update_global_from_pointer_3`: Updates a global variable with a byte read from a pointer and copies a value to a register-based or global variable.
+- `parse_string_and_update_buffer`: Checks a global variable or string content and, if certain bitmask or value conditions are met, updates a memory pointer or a byte in a buffer.
+- `modify_memory_with_offset`: Clears a bit in a byte at a pointer offset and calculates a new address stored in a register based on a global variable.
+- `mask_matching_string_bits`: Iterates through a memory range to check if a global variable matches a character or a pointer, and conditionally masks a bit in a memory location if a match is found.
+- `reset_and_verify_list`: Resets a global variable and a pointer, modifies a byte in a list, and then iterates through a list to check if a global variable matches a value in the list.
+- `traverse_global_string`: Iterates through a memory range, checking if a global variable matches a character or a pointer, and conditionally masks a bit in a memory location.
+- `execute_subroutine`: empty routine that calls another routine.
+- `blend_buffer_with_mask`: Initializes a memory range with specific values and then blends or adds values from a source buffer into a destination buffer based on a mask.
+- `empty_routine_3`: The routine is empty and performs no operations.
+- `clear_memory_block_with_loop`: Iterates through a memory block using a pointer, setting the contents of each longword to zero until a certain condition is met.
+- `store_values_to_offset_addresses`: calls another routine multiple times and stores the returned values into a sequence of memory locations using an offset.
+- `iterate_fixed_count`: Executes another routine a fixed number of times using a descending counter.
+- `apply_bitmask_to_table_2_2`: Iterates through a table of offsets and bit-patterns to apply a bitwise AND or OR mask to a sequence of memory locations.
+- `apply_bitmask_to_table_2`: Calculates a bit-pattern using a bitwise rotation and applies it to a sequence of memory locations via a bitwise AND or OR. The routine iterates through a table of pointers to apply these bitmasking or bit-setting operations to a range of memory offsets or bitmask tables.
+- `update_bitmask_table`: Calculates a bitmask or bit-pattern using a scaling-based index-to-value mapping and applies it to a table of memory locations using a bitwise OR or AND operation.
+- `apply_bitmask_to_table`: Iterates through a data structure to apply a bitwise AND or OR mask to specific memory locations or a table.
+- `initialize_memory_blocks`: Sets several global pointers, clears or fills large memory blocks with zero or certain values, and enters an infinite loop calling a routine via a pointer.
+- `store_bytes_to_memory`: Stores the value certain byte and the value of a global variable into a memory location pointed to by a register.
+- `write_bytes_to_memory`: Writes a specific byte and a global variable value to a memory location, followed by several other routine calls.
+- `set_pointer_offset`: Calculates a new address for a pointer based on a byte in a memory buffer and a global variable, then stores a constant and a global variable into memory.
+- `update_char_and_global`: Stores a byte into a memory location and increments or decrements a global variable based on a character comparison and a register value.
+- `scan_and_increment_list`: Scans a list for a specific byte pattern, calls another routine, and then increments a global variable if a certain byte is found while scanning a list.
+- `search_and_mask_table`: Searches a table for a specific byte pattern and then increments a global byte if certain characters are found while iterating through a pointer table.
+- `update_ram_values`: Calculates new values based on masked memory contents and updates specific memory addresses with or minus certain offsets.
+- `set_memory_with_offset`: Writes specific calculated byte values to a memory location offset from a pointer and calls other routines.
+- `search_for_char_in_list`: Iterates through a list using a pointer, checking if a byte at a certain offset matches a byte found in the list.
+- `dispatch_handler_and_copy_data`: Executes a routine pointer or traverses a string-like buffer and copies a block of words or table elements to a fixed destination.
+- `execute_self_recursive_calls`: This routine performs a sequence of empty recursive calls to itself.
+- `update_global_values`: Updates a global variable or a set of memory locations with constant values based on conditional checks.
+- `copy_memory_block_3`: Copies a block of data from one memory location to another using a nested loop structure and offsets.
+- `swap_buffer_byte_order`: Stores a value into a memory location via a pointer and then performs a byte swap on the word at that same pointer location.
+- `swap_bytes_in_buffer`: Writes a value to a memory location and then performs a byte swap on a word at a specific pointer location.
+- `parse_bitstream_and_set_pointer`: Parses a bitstream instruction and updates global variables or pointers based on a bitmask check of a memory location.
+- `traverse_and_update_buffer`: Iterates through a string or table to check for bitmask matches and updates bytes in a table or another memory area.
+- `update_string_buffer`: Writes a character or a derived value (based on a global variable) to a memory location and performs a conditional loop based on a bit in a global variable.
+- `modify_and_return_value`: Modifies a global variable and returns a value calculated from a previously returned value, involving bit masking and addition.
+- `loop_until_specific_value`: Repeatedly executes a routine and checks a modified value against a constant, continuing the loop until the returned value equals a specific negative constant.
+- `execute_indirect_call_3`: Performs an indirect call to a function pointer located at an offset from a global pointer.
+- `initialize_memory_and_relocate_segments`: Zeroes a large block of memory, initializes global state, and performs bulk memory copying and pointer adjustments to relocate or initialize data segments.
+- `parse_amigadot_hunk_table`: Iterates through a table of hunk type codes to identify executable or relocation segments, then performs bulk memory copying and zeroing using a block-copying pattern.
+- `load_graphics_and_loop`: Loads an RGB4 image using a library call and enters an infinite loop that updates a global pointer.
+- `execute_infinite_loop_5`: The routine executes a sequence of self-referential calls followed by an infinite loop that performs no operations.
+- `clear_list_elements`: Iterates through a list and sets any byte equal to a specific value to zero, then resets a global variable to zero.
+- `modify_list_bytes`: Iterates through a table, replacing a specific byte with another and storing a global variable in the following byte.
+- `replace_list_bytes`: Iterates through a list, and if a certain byte is found, replaces it with another byte and stores a global variable in the following byte.
+- `modify_table_indices`: Performs a sequence of calls to other routines and decrements bytes at specific offsets relative to a global pointer.
+- `reverse_list_segment`: Reverses a segment of a list by swapping bytes from a start pointer and an end pointer moving towards each other.
+- `process_pointer_data`: Reads a byte from an offset of a pointer and executes a sequence of logic involving updating a global variable and potentially calling a routine that clears a pointer or handles a list.
+- `reset_global_variable_4`: Checks if a global variable is zero and, if so, sets it to a specific value before clearing it.
+- `set_initial_global_state`: Sets a global variable to a constant value and performs a loop that decrements a register until it reaches a certain value.
+- `tiny_clr`: Small routine of 1 instruction that clears d1.
+- `update_audio_dma_registers`: Updates audio registers and enables a DMA channel.
+- `clear_global_variable_2`: Checks a global variable and sets it to zero if it is non-zero, while also touching audio volume and DMA control registers.
+- `update_audio_state`: Increments a global variable and then replaces its value with the value stored at that new offset in a table, followed by updating audio DMA registers.
+- `process_data_pointer`: Checks a global pointer and, if not null, calculates a value based on the difference between a pointer and a global, then calls another routine with a packed result.
+- `calculate_buffer_parameters`: Calculates new size and pointer parameters based on an offset and a global value, then calls other routines recursively.
+- `update_audio_table`: Updates a table of audio-related parameters, including volume and DMA settings, based on a conditional check of a value.
+- `update_audio_parameter_table`: Updates a table of audio-related parameters, including volume and DMA settings, based on a conditional check of a value.
+- `update_audio_parameters`: Updates a global variable with a value or a calculated offset or a constant, and modifies audio-related hardware registers.
+- `initialize_audio_state`: Opens a resource, clears a table of words, and populates a list with a calculated value before executing several indirect calls.
+- `clear_audio_state`: Executes an indirect call to a routine that clears certain audio and DMA related global variables.
+- `find_maximum_byte`: Iterates through a table of bytes and returns a value based on the maximum byte found in that table.
+- `set_cia_register`: Writes a constant value to a global variable and copies a value from a global variable back to itself.
+- `clear_four_word_table`: Clears a table of four-word entries by writing zero to each entry.
+- `reset_audio_and_custom_state`: The routine writes zero to four audio volume registers and a custom register, and clears several global variables used for audio state.
+- `clear_audio_and_dma_state`: Clears several audio and DMA related global variables and sets a global variable to a constant value.
+- `void_return_routine`: The routine calls another routine and then returns a zero value.
+- `increment_and_loop_audio`: Increments a global variable and executes a loop that calls another routine while iterating through audio hardware registers.
+- `update_input_state_and_bounds`: Updates a pointer-based or index-based value based on certain bits or a masked value from a hardware register, while simultaneously adjusting associated boundary limits and a global state or table pointer.
+- `execute_indirect_call_2`: Calculates an offset into a table of function pointers using a global variable and calls the routine located at that address.
+- `find_matching_pointer`: Iterates through a list of pointers until a match with a global pointer is found, then copies a word from a source pointer to a destination pointer.
+- `find_and_copy_pointer`: Iterates through a list of pointers until a match with a global pointer is found, then copies a value from a pointer-indexed table to a destination.
+- `find_and_copy_masked_pointer`: Iterates through a list of pointers until a match with a global pointer is found, then copies a value from a pointer-indexed table using a masked index.
+- `copy_word_from_pointer`: copies a word from a source pointer offset by a certain amount to a destination pointer offset by a certain amount.
+- `update_audio_registers`: Executes a loop that calls another routine, updates a global pointer, and writes certain values from a table into audio hardware registers using DMA enabled writes.
+- `update_table_and_set_limit`: calculates an index based on a byte, loads values from a table, and updates a global value or a pointer-based destination with a clamped or offset value.
+- `execute_delay_loop`: Performs a decrementing loop that executes another routine a fixed number of times, returning a specific value if a certain threshold is met.
+- `execute_delay_loops_and_modify_register`: performs several nested decrementing loops and modifies a global variable and hardware registers or certain bitmasks.
+- `return_immediately_9`: This is an empty routine.
+- `tiny_ori_ori_ori`: Small routine of 3 instructions that merges 0 into d0, then merges 0 into d0, then merges 0 into d1.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_4`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_5`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_6`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_7`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_8`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_9`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_10`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_11`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_12`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_13`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_14`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_15`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_16`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_17`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_18`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_19`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_20`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_2`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_3`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_21`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_22`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_23`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_24`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_25`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_26`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_27`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_28`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_29`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_30`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_31`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_32`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_33`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_34`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_35`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_36`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_37`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_38`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_39`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_40`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_41`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_42`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_43`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_44`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_45`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_46`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_47`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_48`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_49`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_50`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_51`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_52`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_53`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_54`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_55`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_56`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_57`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_58`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_59`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_60`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_61`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_62`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_63`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_64`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_65`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_66`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_67`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_68`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_69`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_4`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_70`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_71`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_72`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_73`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_74`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_75`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_76`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_77`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_78`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_79`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_80`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_81`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_82`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_83`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_84`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_85`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_86`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_87`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_88`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_89`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_90`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_91`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_92`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_93`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_94`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_95`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_96`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_97`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_98`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_99`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_100`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_101`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_102`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_103`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_104`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_105`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_106`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_107`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_108`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_109`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_110`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_111`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_112`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_113`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_114`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_115`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_116`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_117`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_118`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_119`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_120`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_121`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_122`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_123`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_124`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_125`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_126`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_127`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_128`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_129`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_130`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_131`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_132`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_133`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_134`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_135`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_136`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_137`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_138`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_139`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_140`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_141`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_142`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_143`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_144`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_145`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_146`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_147`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_5`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_6`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_7`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_8`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_9`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_10`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_11`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_12`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_13`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_14`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_15`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_16`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_17`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_18`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_19`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_20`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_21`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_22`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_23`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_24`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_25`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_26`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_27`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_28`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_29`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_30`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_31`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_32`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_33`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `chain_indirect_jumps`: Performs four consecutive indirect jumps to the routine at the address stored in the long word at a fixed address, then performs a final indirect jump to the address stored in the long word at a fixed address.
+- `jump_vector_entry_34`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_35`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_36`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `call_routine_then_jump`: Calls a routine once and then jumps to another routine, passing no data to it.
+- `jump_vector_entry_37`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_38`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_39`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_40`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `branch_to_routine`: Unconditionally branches to another routine and does not return.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
+- `return_or_branch`: Returns immediately to the caller, otherwise it branches to another routine.

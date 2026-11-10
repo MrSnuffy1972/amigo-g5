@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (915760 top-level bytes in 17 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 13 of 13 units identical (bytes and relocations), 2 raw-word lines |
-| Functions named and described | pass, 106 of 106 named (0 author symbols), 106 of 106 described (7 by rule, 69 by the local model) |
+| Byte-identical reassembly with vasm | pass, 13 of 13 units identical (bytes and relocations), 4 raw-word lines |
+| Functions named and described | pass, 111 of 111 named (0 author symbols), 111 of 111 described (7 by rule, 74 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2399 of 2399 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 472862 bytes, 22 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 4351 of 4377 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 4555 of 4581 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 154339 |
-| code | 16710 |
-| data | 545942 |
+| code | 17166 |
+| data | 545486 |
 | padding | 2161 |
 | unused | 196608 |
 
@@ -28,7 +28,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Castle Master (1990)(Domark)(M3)[cr MAD][m TFS].adf:tfs | 6 | 231 | 6 |
-| Castle Master (1990)(Domark)(M3)[cr MAD][m TFS].adf:M.A.D | 6 | 29 | 2 |
+| Castle Master (1990)(Domark)(M3)[cr MAD][m TFS].adf:M.A.D | 6 | 233 | 7 |
 | Castle Master (1990)(Domark)(M3)[cr MAD][m TFS].adf:cm | 1 | 116 | 2 |
 | Castle Master (1990)(Domark)(M3)[cr MAD][m TFS].adf:bootblock | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 231 | 7 |
@@ -83,6 +83,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `execute_init_and_free`: Calls an initial routine and a loop that executes a function pointer from a global variable, then clears a value at an offset from a pointer and returns a concatenated register value.
 - `decrement_until_minus_one_2`: Decrements a register-held 16-bit value until it reaches negative one.
+- `expand_and_accumulate_data_stream`: Decompresses two data streams using a variable-length encoding scheme and accumulates the resulting values into a destination table by adding the decompressed integers to existing values at calculated offsets.
+- `load_address_and_set_constant`: Loads a relative address into register a1 and sets register d0 to the constant 2.
+- `expand_compressed_data`: Decompresses a data stream using a variable-length encoding scheme where bytes are expanded based on bit-shifts and carry flags.
+- `push_registers_to_stack`: Clears register d7, sets d0 to 236, and pushes the bytes from d0, d1, and the word from d2 onto the stack pointed to by a4, then restores several registers from the stack and branches to another location.
+- `perform_no_operation`: Performs a logical OR operation on register d0 with zero.
 
 ### Castle Master (1990)(Domark)(M3)[cr MAD][m TFS].adf:cm
 

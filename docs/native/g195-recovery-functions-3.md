@@ -1,0 +1,524 @@
+# Game 195 (MicroProseGolf v1.0): code recovery summary
+
+## Functions (part 3 of 3)
+
+### code
+(continued)
+
+- `scale_and_multiply_values_2`: Loads values from a structure in a5, calls a subroutine, and if a comparison between d2 and d0 passes, performs division and multiplication on d1 before branching to another routine with specific parameters in d3 and d4.
+- `update_player_position_2`: Performs bitwise operations on values loaded from a4 and a0 using a loop controlled by d3, modifying memory at various offsets based on bitwise logic and rotations.
+- `update_sprite_attributes_2`: Checks a byte at offset 556 of a structure and, if non-zero, modifies specific bits in registers d1 through d4 before writing a sequence of three bytes to a memory location pointed to by a6.
+- `update_ball_position_2`: Sets specific bits in d1 through d4, compares values from a table pointed to by a2 with a value from a structure in a5, and enters a loop to write bytes to a structure in a6 based on bitwise conditions and comparisons.
+- `calculate_scaled_offset_2`: Negates d2, calls another routine, masks d0, and if d0 is not lower than d2, performs division, multiplication, and addition on d1 before returning.
+- `process_multiple_structure_values`: Performs several operations involving loading words from offsets 458, 462, 470, and 474 of a structure in a5, calculating differences, calling various subroutines, and storing results at offsets 1768, 1770, 1772, and 1774 of a structure in a5.
+- `set_bits_and_call_subroutines`: Calls two different subroutines, setting bit 3 of the byte pointed to by a1 before each call.
+- `load_values_for_division`: Loads a word from offset 1774 of a structure in a5 into d1 and a word from offset 1772 into d2, then branches to another location.
+- `load_words_from_structure`: Loads a 16-bit word from offset 1742 of a structure in a5 into d1 and a 16-bit word from offset 1740 of the same structure into d2.
+- `divide_by_seventy_two_2`: Calls a subroutine at address 92c4.
+- `calculate_pointer_offset`: Calculates a new address by adding a value multiplied by 3 and a value multiplied by 288 to a pointer stored at offset 8 of a structure in a5, then returns.
+- `process_and_add_values`: Calculates the difference between two words from a structure in a5, calls another routine, and writes the result to offset 60 of a structure in a2; it then repeats a similar process for two other values from a5 and writes them to offsets 62 and 64 of the structure in a2, using a loop that decrements d1 and branches if it is less than 0.
+- `compare_and_add_values`: Negates d2, calls another routine, masks d0, and if d2 is not lower than d0, adds d0 to d1.
+- `load_pointer_and_divide`: Loads words from offsets 1788 and 1790 of a structure in a5 into d1 and d2, calls another routine, loads a pointer from a global variable and an offset, and calls an indirect routine.
+- `process_table_and_clamped_values`: Performs arithmetic on d4 using a value from offset 64 of a2, retrieves a value from a structure in a5, calls a subroutine, performs multiplication and bit shifts on d6, and compares d6 against a constant before performing conditional branches and an arithmetic shift on d5.
+- `subtract_and_branch`: Arithmetically shifts d5 right by 2, subtracts d5 from d6, and branches to an earlier instruction.
+- `compare_and_shift_d5`: Compares a byte at offset 66 of a2 to 1, branches if the carry flag is set or if the byte is 1, and otherwise arithmetically shifts d5 right by 1 bit before branching.
+- `shift_and_branch`: Arithmetically shifts d5 right by 2 bits and then branches to another routine.
+- `perform_scaled_arithmetic`: Copies a word from d6 to offset 128 of a structure in a5, performs a series of arithmetic shifts and multiplications on d1 and d2, calls another routine, calls another routine, and conditionally performs further arithmetic and writes to d6.
+- `empty_stub_131`: Empty routine: returns to the caller immediately without doing anything.
+- `call_handler_twice`: Copies d7 to d6 and then to d0, and calls an indirect routine twice with d1 set to 1 and then to 2.
+- `toggle_structure_bit_and_call_subroutines`: Checks a byte at offset 86 of a structure and, if non-zero, calls another routine, modifies a field in a new structure, and then performs a bitwise NOT and AND operation to update the original byte at offset 86.
+- `execute_dual_state_updates`: Sets a long value at offset 330 of a structure in a5, then performs two identical sequences of calling another routine with specific parameters and updating offset 406 of the structure in a5.
+- `execute_comprehensive_logic_2`: Performs a large sequence of operations including copying memory blocks, calling various subroutines to process data, performing arithmetic on structure values, and executing conditional logic based on bit tests and comparisons.
+- `fetch_table_byte_and_update_structure`: Uses a nibble from a register to index into a table and stores the resulting byte into a structure at a specific offset, then performs a series of conditional branches that update various fields in structures pointed to by a5 and a2.
+- `multiply_and_add_constants_2`: Calls a subroutine at address 92ee.
+- `process_complex_data_structure_3`: Stores words from d1 and d2 into offsets 1796 and 1798 of a structure in a5, calls another routine, moves a longword from a1 to offset 82 of a2, calls another routine, stores a byte at offset 574 of a5, and performs a series of arithmetic operations and subroutine calls involving multiple structures and registers before returning.
+- `calculate_difference_and_store`: Saves d0 through d5 to the stack, subtracts a word at offset 1796 of a structure in a5 from a word at offset 1788 of a5, multiplies the result by itself, subtracts a word at offset 1790 of a structure in a5 from a word at offset 1798 of a5, calls another routine, restores the registers, and stores a byte from offset 574 of a structure in a5 into offset 67 of a structure in a2.
+- `increment_table_entry`: Moves a longword from a1 to offset 82 of a2, sets the sign flag, and if a byte at offset 1804 of a5 is not less than zero and a byte at offset 555 is zero, increments a byte in a table using an index from a word at offset 1786 of a5 before calling another routine.
+- `execute_complex_state_logic_3`: Performs extensive state updates including bit testing, register saving, multiple subroutine calls, and conditional arithmetic on structure offsets, including a loop that uses a decrementing counter to call a subroutine.
+- `compare_and_update_thresholds`: Calls a subroutine, moves a byte from the stack to offset 96 of a structure in a5, and performs several conditional comparisons of d4 against word values at offsets 256 and 260 of a5, calling a subroutine based on the results.
+- `update_state_logic_and_io`: Copies longwords and bytes between structures in a2 and a5, updates a status byte at offset 371 of the structure in a5 based on a conditional jump, and calls several subroutines to manage state, I/O, and graphics updates.
+- `execute_replay_logic`: Calls a subroutine, and if a byte at offset 370 of a5 is non-zero, performs a series of word moves and calls multiple subroutines to update a structure, including a loop that copies bytes from a2 to a3.
+- `update_game_state_and_load_assets`: Updates a structure in a5 by writing bytes to offsets 376 and 413, then performs several calls to routines that load data from tables using offsets 100, 110, and 114.
+- `update_table_and_calculate`: Checks a bit in a structure in a2, updates a word in a table using a value from d0 and an offset derived from a byte in a2, performs arithmetic on values from a structure in a5, calls another routine, and conditionally updates multiple words in a table.
+- `calculate_scaled_value_2_2`: Loads a word from offset 120 of a2, performs conditional checks, and enters a loop that calls a routine to modify d7 based on values from a table and a structure.
+- `calculate_scaled_value_2`: Swaps the high and low words of a longword from offset 116 of a structure in a2, subtracts 28, negates the result, multiplies it by a word at offset 4 of a structure in a7, multiplies it by d0, divides it by 2800, and adds the result to d0 before returning.
+- `clamp_byte_value`: Compares d7 to 16; if d7 is less than 16, it sets d7 to 15, otherwise if d7 is not greater than or equal to 15, it sets d7 to 0, then returns.
+- `shift_and_store_byte`: Loads a byte from offset 68 of a structure in a2, shifts it right by 1 bit, and stores the result in a byte at offset 1825 of a structure in a5.
+- `execute_subroutine_sequence_3`: Performs a series of operations including a routine call and pointer arithmetic before returning.
+- `call_indirect_handler`: Saves a0 to the stack, loads a pointer from a longword at offset 1854, retrieves a pointer from offset 92 of that new address, calls the routine at that address, and then loads a word from offset 122 of a structure in a5 before restoring a0 and returning.
+- `load_table_entry`: Tests a byte at offset 18b of a5, and if non-zero, calculates an offset, loads a pointer from a table at a4, and calls another routine.
+- `process_state_logic`: Checks bytes at offsets 368, 369, and 371 of a5 to call specific subroutines, updates values in a structure at a2 using data from a5, and performs complex conditional logic to update various bytes and words in a structure pointed to by a2 and a5.
+- `decrement_if_bit_set`: Tests a bit in a longword from a pointer in a2 against a bitmask from a structure in a5; if the bit is not set, it decrements d0 and returns.
+- `handle_conditional_updates`: Tests a bit in a longword from a2 using a byte from a5, and if set, increments d0; it also performs multiple conditional checks on d6 and uses a table at a2 to perform comparisons and update bytes in a5.
+- `compare_and_store_results`: Clears d7, loads a pointer into a2, and then performs a sequence of four checks where it tests a bit in d1, d2, d3, or d4, calls a subroutine if the bit is set, compares the result with d6, and stores a value in d0 and a pointer in a2 based on the comparison.
+- `check_status_and_set_d6`: Sets d6 to 0, compares a word at offset 246 of a structure in a5 to 1, and if the comparison fails or the value is low, sets d6 to 32768 before branching.
+- `update_game_state_and_counters_2`: Calculates a value based on a byte from a table and several arithmetic operations to update a 16-bit field in a structure, then performs conditional updates to other fields in the structure, including calling several subroutines and updating status bytes based on specific byte values and bit tests.
+- `compare_signed_value`: Takes the sign of d0, negates it if negative, and compares it against the result of subtracting a word from a structure in a5 and a constant.
+- `update_game_state_and_counters`: Updates various counters and status bytes within a structure pointed to by a5, performing conditional increments or decrements based on comparisons between values in a table and bytes in the structure.
+- `save_and_call_routine`: Saves d0 through d7 and a0 through a6 to the stack, sets a4 to a constant, calls another routine, restores the registers, and returns.
+- `execute_data_processing_2_2`: Pushes d0 to the stack, calculates an offset using a multiplication and subtraction, adds it to a pointer in a2, calls another routine, and then calls another routine with a pointer in a4 before updating a word at offset 404 of a structure in a5.
+- `evaluate_conditional_logic`: Checks a byte at offset 1734 of a structure in a5, and if it meets specific criteria, performs a series of checks against offsets 566, 578, 1737, and 584 of a5, potentially calling other routines and executing a loop using a byte from offset 1734 as a counter.
+- `count_set_bits_in_loop`: Iterates through a loop based on a value from a structure in a5, incrementing d0 for every bit that is set in d1.
+- `process_pointer_data_2`: Calls several routines to manipulate pointers using offsets, updates a word at offset 406 of a5, and uses a loop to perform data processing.
+- `update_status_bits`: Sets the status register bits based on bytes at offsets 96, 294, and 295 of a5, tests bit 0 of a byte at offset 1787 of a5, and if not zero, performs bitwise operations on a byte at a pointer from a5 and enters a loop.
+- `manage_system_and_io`: Performs a wide range of operations including bit testing, subroutine calls, file management via library calls, and loops that update pointer lists or fill memory with ones, depending on various status bytes in a5.
+- `process_data_stream_2`: Performs several library calls via a pointer in a6, updates offsets 115 and 130 of a structure in a5, and enters a loop that calls subroutines and performs conditional jumps based on values in a4 and a7.
+- `parse_and_process_data_block`: Compares a pointer at a3 against several 32-bit constants to identify a specific data block, then either performs a loop to pack nibbles into a table at a4 or executes a sequence of calls and writes to a structure in a5.
+- `process_complex_data_2`: Performs a sequence of operations involving multiple registers and memory accesses to process data.
+- `copy_and_process_data`: Checks a bit in a table and a word at offset 588 of a structure in a5, then enters a loop that calls another routine and updates a counter until a value from offset 1734 of a structure in a5 is reached.
+- `execute_subroutine_logic_4`: Executes a series of instructions to manipulate data and control flow across twenty steps.
+- `execute_complex_logic_sequence`: Performs multiple loops calling subroutines with various parameters, updates a structure in a5, and contains a conditional section that iterates through a list in a1, calling a subroutine via a pointer if a value is positive.
+- `execute_subroutine_sequence_4`: Calls three subroutines, loads a pointer into a1 from a table, stores zero at offset 376 of a structure in a5, and calls another subroutine before returning.
+- `update_structure_member_offsets`: Calls calculate_a1_address_offsets to modify a pointer in a1 using a multiplier of 40 and an additional offset from d1, then performs several arithmetic operations and stores the resulting values into a structure pointed to by a1.
+- `process_complex_data_structure_2`: Loads several values from a table into registers, performs multiple subroutine calls to manipulate data, and conditionally updates various offsets in a structure in a5 based on comparisons and byte checks.
+- `update_structure_and_calculate`: Manipulates a byte from offset 1734 of a5, performs several conditional branches and subroutine calls, and executes a loop that calculates a value and updates offsets in a structure in a5.
+- `conditional_branch_call`: Tests d0 and, if it is not less than or equal to zero, calls another routine and then branches to another location; otherwise it returns.
+- `update_pointer_via_offset`: Adds 65556 to a register, loads a 16-bit word from the resulting address into that same register, and then adds 65556 to the register again.
+- `process_conditional_data_offsets`: Checks a byte and a word at specific offsets within a structure in a5; if conditions are met, it calls several routines to manipulate values, updates offsets 404 and 406 within the structure, and performs data processing using various constants passed via a4.
+- `calculate_offset_address_2`: Calls several routines to manipulate pointers using offsets, updates offsets 406 and 404 of a5, and performs data processing via a routine call.
+- `handle_conditional_structure_updates`: Sets offsets 47 and 176 in a structure in a5, performs multiple comparisons on d0, and calls various subroutines to update offsets 47, 176, and others based on values in a5.
+- `execute_complex_data_operations`: Calls another routine for data processing, calls another routine with parameter 45, and adjusts a4 using a constant offset.
+- `perform_routine_tasks`: Executes fourteen instructions to manipulate data and return.
+- `process_word_math`: Uses a loop to iterate through a table, calling a subroutine with various word pairs in d2 and d3 and a value from d4 at offset 406 of a structure in a5, and performs a multiplication and a subroutine call based on the value in d6.
+- `loop_and_call_subroutine`: Loads a word from offset 1786 of a5, and if not zero, decrements it and enters a loop that calls another routine and increments d4 until d6 reaches 10, then returns.
+- `validate_and_store_word`: Sets a loop counter, calls a subroutine, writes a word to offset 406 of a structure in a5, performs arithmetic on d2 and d1, calls another subroutine, and then uses a loop to add bytes from a table into d0 before calling a final subroutine.
+- `multiply_or_divide_by_table`: Loads a long value from d0 into d1, checks a byte at offset 1736 of a5, and if not negative, uses d6 to index into a table starting at offset 2698 of a5, multiplies the result by 38, calls another routine, and adds the result to d1.
+- `perform_range_check`: Sets a loop counter, calls a subroutine, writes a word to offset 406 of a structure in a5, performs arithmetic on d2 and d1, uses a loop to add bytes from a table into d0, stores the result in offset 558 of a structure in a5, and calls a final subroutine.
+- `store_structure_data`: Writes a word to offset 406 of a structure in a5, calls a subroutine, performs arithmetic on d2 and d1, calls another subroutine, and then calls a third subroutine with a different word pair in d2 and d3.
+- `swap_and_jump_with_stack`: Swaps the contents of d3 and d4 into d2 and d3, then pushes d0 to the stack, calls another routine with parameter 49, and jumps to a pointer loaded from the stack.
+- `swap_registers_and_push_constant`: Swaps the contents of registers d3 and d4, then pushes a constant value from d0 onto the stack and calls another routine.
+- `swap_registers_and_push_constant_2`: Swaps the contents of registers d3 and d4, calls another routine, and then calls another routine to push a constant value onto the stack and execute a subroutine.
+- `process_and_store_structure_data`: Reads a byte from a structure in a5, performs a loop based on a bitmask of that byte, and conditionally calls other routines to update values in a data structure or write bytes to offsets 477 and 406 of the structure in a5.
+- `calculate_offset_differences_2`: Calls a subroutine, performs comparisons on a byte from a structure in a5, and either executes a loop that calls another subroutine or performs a series of subtractions and calls to another routine.
+- `update_table_values_conditionally`: Calls a subroutine, performs multiple comparisons on a byte from a structure in a5, and executes a loop that calls another subroutine to add values to offsets 70 or 72 of a structure in a2.
+- `copy_and_call_routine`: Saves d0 through d7 and a0 through a6 to the stack, sets a4 to a constant, copies a longword from an offset of a5 to an offset of a5, subtracts d7 from d1, sets d2 to d7, calls another routine, restores the registers, and returns.
+- `store_word_via_validation`: Moves the contents of d4 into d2 and d7 into d3, then calls another routine before returning.
+- `swap_and_call_subroutine`: Moves the contents of d3 into d2 and d4 into d3, then calls another routine before returning.
+- `update_player_position_coordinates`: Reads a 16-bit value from a global variable, adds it to a 16-bit value stored at an offset of 116 in a structure pointed to by a2, and stores the result back into that same offset.
+- `push_word_and_jump`: Pushes a word from d0 onto the stack, sets d0 to 49, calls another routine, restores d0 from the stack, and then jumps to an address stored in a location pointed to by the stack.
+- `add_bytes_to_buffer`: Loops nine times to add a byte from d0 to a buffer at a fixed address, incrementing the pointer each time.
+- `push_and_call_routine`: Pushes a 16-bit word from d0 onto the stack, sets d0 to a constant, calls another routine, restores d0 from the stack, and returns.
+- `manage_system_and_io_2`: Calls a subroutine, performs bitwise operations on a byte in a structure in a5, enters a loop that runs a variable number of times based on d7, and performs arithmetic on values from a structure in a2.
+- `sum_table_values`: Loops seventeen times to sum bytes retrieved from a table at an offset of 34 from a pointer in a2 into d0.
+- `execute_parameterized_subroutines`: Calls a subroutine, writes values to offsets 404 and 406 of a structure in a5, and then performs several sequences of calling another subroutine with different values in a4.
+- `manipulate_pointer_and_call`: Pushes four words onto the stack, calls another routine, writes 9 to offset 413 of a structure in a5, and performs two separate sequences of saving registers, setting a pointer in a4, writing a value to offset 406 of a structure in a5, and calling another routine.
+- `populate_data_from_system`: Performs several subroutine calls to initialize a structure in a5, compares values at offsets 254 through 260, and executes a loop that copies bytes and updates a structure in a5.
+- `transfer_table_byte`: Loads a pointer from offset 4 of a structure in a5 into a4, adds a constant to a4, sets d7 to a constant, calls another routine, loads a byte from a pointer in a2 into the address in a4, and loops 17 times using d7 as a counter.
+- `populate_data_structure_from_table`: Compares a word in a structure to a value in a register, then enters a loop that reads bytes from a table and a pointer-based source to perform arithmetic and write a series of bytes and words into a destination structure.
+- `swap_and_check_upper_word`: Swaps the upper and lower words of d0 and compares the new lower word to eighteen; if it is not below eighteen, it swaps again, increments d0, and returns, otherwise it swaps again and returns.
+- `increment_swapped_word`: Swaps the bytes in d0, compares the result to 342, and if it is greater than or equal to 342, swaps the bytes again and adds 1 to the lower word before returning; otherwise it swaps the bytes and returns.
+- `process_word_division`: Checks a byte at offset 228 of a structure in a2; if it is non-zero, it divides d0 by 36 and calls another routine, otherwise it multiplies d0 by 19, divides it by 748, and calls another routine.
+- `compare_and_branch_3`: Tests a long value in d4, and if it is not zero, clears d6 and branches to another location; otherwise it continues.
+- `compare_and_set_d0_2`: Compares a long value in d4 to a constant, and if it is not equal to that constant, sets d0 to 1 and branches to another location.
+- `compare_and_set_constant`: Compares a long value in d4 to a constant and, if it is less than that constant, sets d0 to 250 and branches.
+- `compare_long_value`: Compares d4 to a constant and, if it is not greater than or equal to that constant, sets d0 to a constant and branches.
+- `calculate_scaled_value_3`: Swaps the contents of d4 and d5, performs a division of d4 by 11992, and uses the result to update d0, d2, and d6 through a loop that repeats based on a comparison of d2 and a constant.
+- `tiny_move_rts_3`: Small routine of 2 instructions that copies d0 to d6, then returns.
+- `update_max_value_from_table`: Iterates through a table using a loop, compares a word from the table at an offset of 64 from a pointer in a2 to a value in d6, and updates d6 with the table value if it is larger than the current value.
+- `calculate_complex_animation_parameters`: Performs a series of complex arithmetic operations including multiplications, divisions, and swaps using values from a structure in a5, and includes a loop controlled by a dbra instruction.
+- `calculate_complex_offsets_2`: If d3 is not zero, calls three routines, copies a byte from offset 176 of a5 to a0, performs a series of multiplications, divisions, and bit shifts involving values from a5 and d3, and updates several longwords and words at offsets 290, 292, 294, 296, 298, 300, and 304 of a5.
+- `modify_table_data`: Writes a word to offset 406 of a structure in a5, performs arithmetic on d4 and d5 using values from a structure in a5, calls a subroutine, and conditionally calls another subroutine based on a bit test in a2.
+- `clamp_signed_values`: Subtracts d1 from d3 and if the result is negative, sets d5 to 255 and negates the result; then subtracts d2 from d4 and if the result is negative, sets d6 to 255 and negates the result.
+- `calculate_index_from_division`: Performs arithmetic on d5 and d6, divides an extended d7 by d4, uses the result to load a byte from a table into d7, and updates d5 based on the sign of d5.
+- `calculate_offset_from_d7`: Negates d7, adds the result to d6, and masks the final value to 8 bits.
+- `calculate_table_index`: Negates d5, performs an XOR with d6, and adds 1 to d6.
+- `calculate_offset_from_d7_alt`: Negates d6 using the value in d7, adds the result to d5, and masks the final value to 8 bits.
+- `calculate_offset_values`: Loads a byte from offset 443 of a structure in a5, and if it is not negative or equal to 128, performs arithmetic using d1, d2, and the constant 273 to update d5 and d6 before branching.
+- `calculate_offset_sum`: Adds the contents of d1 and d2, performs arithmetic with a constant, and branches to another routine.
+- `calculate_difference_sum`: Subtracts d1 from a constant, adds d2 to the result, performs further arithmetic, and branches to another routine.
+- `compute_arithmetic_bounds`: Performs several subtractions using d1 and d2 with the constant 368 to update d5 and d6, then checks if d2 is within a specific range and if d1 is between 0 and 60 before potentially incrementing a pointer in a7 and returning.
+- `update_pixel_mask`: Performs arithmetic on d3 using a value from a structure in a5, executes a loop that modifies d6, and uses the resulting index to perform bitwise NOT and OR operations on a memory location.
+- `test_byte_and_compare_word`: Tests a byte at offset 409 of a5, and if it is not positive, compares a word at offset -2 of a5 to 5362, and if it matches, clears d0 and branches to another routine.
+- `execute_conditional_logic_3`: Compares a word at offset -2 of a5 to 5362, and if it matches, calls a routine, moves a word from offset 402 of a5 to a location pointed to by d2, and calls several other routines based on a byte at offset 532 of a5.
+- `fill_table_with_descending_values`: Calls another routine, loads a pointer from a structure in a5, and uses two nested loops to fill a memory range with values starting from 32767 and decreasing via bit rotation.
+- `calculate_table_index_4`: Fills a memory range with a constant, clears offset 312 of a structure in a5, and performs arithmetic on a byte from offset 1 of a structure in a6 to calculate an index for a table lookup.
+- `resolve_table_index`: Loads a word from a structure in a1, masks it, and uses it to calculate an address for a jump to a routine, then performs a jump to another routine based on a byte at offset 2 of a1.
+- `empty_stub_132`: Empty routine: returns to the caller immediately without doing anything.
+- `calculate_and_store_offset_value`: Swaps d5, moves a word from a6 to d5, stores it in a structure in a1, and performs a series of arithmetic operations involving a byte from a6 and a word from a5 before branching.
+- `apply_mask_and_jump`: Masks a word from a structure in a1 using a constant, calculates an address using a pointer in a4, calls another routine via a pointer in a4, and then performs a jump to a location determined by a value in d4.
+- `empty_stub_133`: Empty routine: returns to the caller immediately without doing anything.
+- `update_position_with_offset_logic`: Performs two loops using d7 as a counter to move data from a source to a destination, then calculates a value using d5 and d1, and performs conditional logic based on the results.
+- `apply_masked_jump`: Loads a word from offset 2 of a structure in a1 using d2 as an index, performs a bitwise AND with a mask, calculates an address, calls another routine, and then performs a jump to a location determined by a value in d4.
+- `empty_stub_134`: Empty routine: returns to the caller immediately without doing anything.
+- `update_ball_position_3`: Swaps the high word of d5, moves a word from offset 0 of a6 into d5, and stores d5 into a table at offset d2 of a1.
+- `calculate_table_index_2`: Calculates a value using a byte from a structure at offset 1 of a pointer derived from offset 8 of a5, performs arithmetic including subtractions and shifts, and uses the result to fetch a word from a table at an offset determined by a multiplication and bit manipulation.
+- `execute_dynamic_jump_table_entry`: Calculates a target address by masking a value from a table, adding an offset to a program counter, and performing pointer arithmetic using multiple base registers, then calls the resulting address.
+- `empty_stub_135`: Empty routine: returns to the caller immediately without doing anything.
+- `apply_shifted_mask_and_jump_2`: Performs arithmetic on d5 and d6, uses a loop to move data, and calculates a value to be used in a conditional branch.
+- `apply_shifted_mask_and_jump`: Masks a word from a structure in a1, shifts it left by 4 bits, calculates an address using a pointer in a4, calls another routine via a pointer in a4, and then performs a jump to a location determined by a value in d4.
+- `empty_stub_136`: Empty routine: returns to the caller immediately without doing anything.
+- `update_position_with_offset_logic_variant`: Executes two loops to transfer data using d7, then performs arithmetic on d5 and d1 to determine a value for d4 and d3 before branching.
+- `calculate_jump_address`: Calculates an address by masking a word from a structure in a1 with a value from a structure in a2, adding it to a base address, and calls a routine at that calculated address.
+- `empty_stub_137`: Empty routine: returns to the caller immediately without doing anything.
+- `update_ball_position_5`: Swaps the high and low words of d5, moves a word from a structure in a6 into d5, stores d5 at an offset of a structure in a1, and uses two loops controlled by d7 to update values in a6 and d6.
+- `calculate_offset_index`: Performs arithmetic on a byte from a structure at offset 1 of a pointer derived from offset 8 of a5, including shifts and subtractions, to fetch a word from a table using a calculated offset based on a multiplication and bit manipulation.
+- `execute_dynamic_function_via_table`: Calculates a target address by masking a word from a structure and adding an offset to a base address, then calls another routine at that address.
+- `empty_stub_138`: Empty routine: returns to the caller immediately without doing anything.
+- `update_position_data`: Swaps d5 and stores a word from a structure in a6 into a structure in a1 at an offset determined by d2.
+- `dispatch_table_entry`: Calculates an offset by masking a word from a structure, shifts it, and calls a routine from a jump table, then performs a conditional jump to another routine based on a byte mask.
+- `empty_stub_139`: Empty routine: returns to the caller immediately without doing anything.
+- `calculate_and_index_table_value`: Performs arithmetic on a byte from a structure to derive a value, calculates an index by manipulating a long word, and uses that index to fetch a word from a table before performing conditional branches and calling another routine.
+- `execute_masked_table_jump`: Loads a word from offset 2 of a structure in a1 using d2 as an index, shifts it left by 4, calculates an address, calls another routine, and then performs a jump to a location determined by a value in d4.
+- `empty_stub_140`: Empty routine: returns to the caller immediately without doing anything.
+- `update_ball_position_4`: Swaps the high word of d5, moves a word from offset -291 of a6 into d5, and stores d5 into a table at offset d2 of a1.
+- `calculate_offset_value`: Calculates a value using a byte from offset 1 of a structure in a6 and a word from offset 452 of a5, performs arithmetic, and branches to another routine.
+- `execute_indirect_jump_5`: Calculates an address using a value from offset 2 of a1 and a2, performs an AND operation on a word from offset 2 of a1 and d2, calls a subroutine via a pointer in a4, and then performs a jump to a location determined by a value in d4.
+- `empty_stub_141`: Empty routine: returns to the caller immediately without doing anything.
+- `calculate_animation_offset_5`: Performs arithmetic on d5 and d6, uses a dbra loop, and executes conditional logic involving a subroutine call and a branch based on the sign of d3.
+- `dispatch_animation_jump_2`: Masks a word from offset 2 of a1, uses the result to call a routine at an offset from the program counter, and then performs a jump to a location determined by a value in d4.
+- `empty_stub_142`: Empty routine: returns to the caller immediately without doing anything.
+- `process_animation_data_4`: Performs several operations including swapping, bit shifts, and arithmetic on d5, d6, and d7, and uses a loop to update a pointer in a1 based on values from a6 and a5 before branching.
+- `dispatch_animation_pointer`: Performs bitwise AND on a word from a table, calculates a pointer, calls another routine, and then either jumps to a new address or performs a jump to a routine via a stack push.
+- `empty_stub_143`: Empty routine: returns to the caller immediately without doing anything.
+- `update_ball_position_6`: Swaps d5, moves a word from offset -288 of a6 into d5, stores d5 at offset 0 of a1 plus d2, and then executes two loops using dbra that manipulate d6 and a6 while incrementing d1.
+- `execute_sequence_of_subroutines`: Loads a pointer from the stack into a2 and calls five different subroutines, while also writing a longword to offset 266 of a5.
+- `fill_table_with_values`: Runs a loop 199 times, calculating a value by adding 40 to 65500 and storing it into a table pointed to by a1.
+- `increment_pointer_a0`: Adds 40 to the address in a0.
+- `apply_bitmask`: Performs a bitwise AND on a word at offset 8000 of a0 with d0, then loops based on d3.
+- `empty_stub_144`: Empty routine: returns to the caller immediately without doing anything.
+- `bitwise_or_multiple_offsets`: Inverts d0, then performs a bitwise OR of d0 with 16-bit words at offsets 0, 8000, 16000, and 24512 of the structure in a0, looping based on d3.
+- `bitwise_or_table_entries`: Runs a loop based on d3, and in each iteration, performs a bitwise OR of d0 with values at offsets 40, 8064, 16000, and 24000 from the address in a0.
+- `process_bitmask_blocks_2`: Calls another routine, then calculates a pointer by adding offsets from a2 and a3 to a base address.
+- `process_bitmask_blocks`: Checks if a pointer from a structure in a5 is null, then performs four repeated sequences of bitwise ORing a word from a table with a value from a structure, followed by a bitwise NOT and a final OR.
+- `tiny_moveq`: Small routine of 1 instruction that loads 0 into d1.
+- `execute_subroutine_sequence`: Calls a subroutine, loads two different address constants into registers, calls another subroutine, and then branches to a third subroutine.
+- `set_structure_flags_2`: Sets a byte at offset 445 of a structure in a5, tests bit 6 of a byte at offset 443 of the structure, and if the bit is not set, sets d4 to zero, stores it at offset 436 of the structure, sets d5 to 58, and branches to another location; otherwise it branches to another location.
+- `update_structure_and_call_subroutine`: Sets two 16-bit values at offsets 404 and 406 of a structure in a5, then checks a byte at offset 368 of that structure; if the byte is zero, it calls another routine and a second subroutine after pushing the values onto the stack, finally updating offset 404 with a value retrieved from the stack.
+- `prepare_stack_and_call`: Calls another routine, increments a word at offset 470 of a5 by 1, loads 78 into d1, and pushes a longword onto the stack.
+- `select_d0_value`: Tests a byte at offset 432 of a structure in a5, and if it is non-zero, sets d0 to 60 or 46 depending on bit 6 of offset 443 of a structure in a5.
+- `update_internal_state_2_caller`: Increments a word at offset 406 of a5 by 33, sets d0 based on a bit test at offset 443 of a5, updates offset 404 of a5, and calls another routine with several values pushed onto the stack.
+- `update_animation_state_3`: Calls several routines using values in d1, d2, and d7, stores words at offsets 414 and 418 of a5, and if a byte at offset 67 of a2 is equal to 254, calls another routine with specific values in d1, d2, and d7.
+- `update_structure_parameters`: Calls three subroutines, checks a byte at offset 368 of a structure in a5, and if bit 6 of offset 443 of a5 is not set, subtracts 30 from offset 404 of a5 and from d4 before branching.
+- `update_large_data_structure`: Increments a word at offset 406 of a structure in a5, performs several subroutine calls to update various offsets in a5, and executes conditional logic involving bit manipulation and a subroutine call.
+- `manipulate_structure_values`: Stores a word at offset 192 of a structure in a0, performs arithmetic on a longword from offset 152 of a0, and calls another routine before checking a byte at a pointer in a1.
+- `update_animation_state_4`: Performs complex arithmetic using values from a1 and a2, updates several structure offsets in a5 and a0, calls multiple subroutines, and executes a loop using a dbra instruction.
+- `process_pointer_list`: Loads a pointer from a structure in a5, then loops through a list of values, performing a bitwise NOT on a byte and storing the result at offset 176 of a0.
+- `fetch_and_call_nested_pointers`: Calls another routine, moves two long words from a2 into a0, calls another routine, and then performs three successive calls to routines found by traversing pointers starting from a location in d4, finally storing a byte from a structure in a0 into offset 1805 of a5.
+- `adjust_clamped_value_2`: Loads a byte from offset 176 of a0 into d5, divides d1 by a word at offset 64 of a2, and if the result is at least 128, adds a byte from a table in a3 to d5 and performs further checks and subtractions.
+- `store_byte_to_offset`: Stores a byte from d5 into a memory location at offset 176 from the address in a0.
+- `adjust_clamped_value`: Divides a long value in d1 by a word at offset 64 of a2, then compares it to 128.
+- `calculate_complex_scaled_value`: Performs a series of multiplications, divisions, and bit shifts using values from a structure in a5 and a stack-allocated value, then calls another routine and optionally stores a result in a structure at offset 1816.
+- `dispatch_indirect_routines`: Stores a byte from d1 into offset 68 of a structure in a2, calls a subroutine, loads a word from offset 428 of a structure in a5 into d7, and calls another subroutine.
+- `load_clamped_byte`: Clears d0, clears d1, loads a byte from offset 440 of a5 into d1, and calls another routine.
+- `copy_table_values`: Adds d1 to itself, then fetches two 16-bit words from two different tables using d1 as an index and stores them at offsets 354 and 352 of the structure in a5.
+- `call_indirect_handler_2`: Calls another routine via a branch and stack instruction.
+- `calculate_complex_value_2`: Clears d1, loads a byte from offset 440 of a5 into d1, calls another routine, and then loads a 16-bit word from a table into d1 using a doub, performs multiple multiplications and divisions involving values from a5, and calls another routine before returning.
+- `fetch_clamped_value`: Clears d1, loads a byte from offset 440 of a5 into d1, calls another routine, and then loads a 16-bit word from a table into d1 using a doubled d1 as an offset.
+- `clamp_value_range`: Clamps the value in d1 between 11 and 75 by setting it to 11 if it is 11 or greater, or 75 if it is 4b or less, otherwise it returns.
+- `process_structure_data`: Checks specific bytes in a structure, performs arithmetic to calculate an index, calls three different subroutines, and finally copies two longwords from a structure in a2 to a structure in a5.
+- `scale_and_divide`: Multiplies a word from offset 1820 of a5 by 200, divides it by 21, and shifts it right by one.
+- `calculate_scaled_division_2`: Shifts a 16-bit value from offset 434 of a5 right by one, and if the result is negative, clears it and adds the value from offset 436 of a5, then multiplies by 42, divides by 100, adds 1, and shifts right by one before returning.
+- `copy_byte_and_test_status`: Copies a pointer from a5 to a0, stores a byte at offset 192 of a0, tests a byte at offset 409 of a5, and if it is not positive, compares a word at offset -2 of a5 to 5362, and if it matches, clears d0 and branches to another routine.
+- `update_structure_parameters_2`: Compares a word at offset -2 of a5 to 5362, and if it matches, calls several routines, updates a byte at offset 366 of a5, performs arithmetic and calls more routines, and eventually jumps to a routine using a pointer from a structure in a0.
+- `calculate_parameter_offset`: Clears a 16-bit register, checks a byte at offset 187 of a structure in a0, and if positive, calculates a value by subtracting a byte at offset 235 of a2 from 4, multiplying by 20, and storing the result in a4; otherwise, it stores 32769 in a4 and branches.
+- `increment_value_at_pointer`: Extends d1 to a word, doubles it, loads a byte from a table using d1 as an offset, and if the byte is positive, increments a longword at the address in a4.
+- `update_values_and_call_subroutine`: Subtracts a byte at offset 235 of a2 from 3, and if the result is not positive, clears d0, multiplies d0 by d1, and adds the result to a location in a4; it also calls two subroutines, performs a division by 36, and conditionally adds the result to a location in a4.
+- `update_list_pointer`: Compares a byte at offset 66 of a2 to 2, and if it is not less than, performs arithmetic on d6 and adds it to a location in a4, then calls a routine and potentially performs more arithmetic to update a location in a4.
+- `update_list_and_parameters`: Pushes a pointer to the stack, loads a pointer from a structure in a5, performs arithmetic on values from a2, calls another routine, and updates several values in a structure and a table.
+- `increment_pointer_conditionally`: Moves a pointer from a4 to a3, loads a byte from offset 267 of a structure in a5, and either branches to another location or increments the pointer in a4 by 8 based on comparisons.
+- `transfer_structure_byte`: Sets the sign bit of a byte at offset 427 of a structure in a5, moves a pointer from a3 to a4, calls another routine, and stores a byte from offset 176 of a structure in a0 into offset 1805 of a5.
+- `process_complex_scaled_values`: Stores longwords in a structure in a5, calls several subroutines, performs complex arithmetic involving multiplications, bit shifts, and swaps on d1 and d2, and writes the results to offsets 284 and 286 of the structure in a5.
+- `load_words_from_a2`: Loads a 16-bit word from offset 60 of a2 into d3 and a 16-bit word from offset 62 of a2 into d4.
+- `iterate_and_call_function_pointer`: Calls two routines, loads two 16-bit values from a structure in a5, and enters a loop that calls a function pointer in a0 a variable number of times based on a value derived from a 16-bit integer at offset 64 of a2.
+- `fill_memory_with_constant`: Loads a pointer from offset 4 of a5 into a1 and fills 256 memory locations starting at that pointer with the value 32768 using a loop.
+- `update_structure_and_scale_values`: Updates two bytes at offsets 348 and 350 of a structure in a5 using bitwise operations and arithmetic, calls three different routines, performs 16-bit multiplication and scaling on values from a2, and executes a loop that calls a function pointer 13 times.
+- `write_zero_to_table`: Clears registers d4 and d0, moves d5 to d0, adds d0 to itself, and writes the value of d4 to two consecutive words at offsets d0 and d0 plus 2 from the address in a1.
+- `calculate_complex_value`: Performs a series of arithmetic operations including multiplication, bit shifts, and division on values from d3, d7, and a structure in a5, eventually using the result to index into a table at a0 and modify values at offsets 176 and 189 of a structure in a5.
+- `subtract_byte_from_d3`: Subtracts a byte from offset 176 of a0 from d3 and then returns.
+- `update_table_parameters`: Pushes a pointer from a4 onto the stack, calls a subroutine, performs arithmetic on values from a2 and stores the results in a5, and sets several words in a structure pointed to by a3.
+- `update_state_and_table`: Performs several comparisons and subroutine calls, uses a dbne loop to test bits in a register, and writes a series of values to a stack-allocated structure before calling another subroutine.
+- `empty_stub_145`: Empty routine: returns to the caller immediately without doing anything.
+- `process_complex_data_3`: Clears d0, fetches two 32-bit values from offsets 156 and 160 of a structure pointed to by a5, performs arithmetic shifts and additions on them, calls a routine via a pointer found in a structure, and performs further arithmetic using the result and a constant.
+- `evaluate_scaled_bounds`: Performs several divisions and multiplications on values from a2 and a5, and includes a loop that branches back to an earlier instruction based on the value of d1.
+- `tiny_swap_clr`: Small routine of 2 instructions that swaps the halves of d1, then clears d1.
+- `transfer_pointer_and_value`: Moves the address in a4 to a0, loads a word from offset 334 of a structure in a5 into d3, and branches to another location.
+- `empty_stub_146`: Empty routine: returns to the caller immediately without doing anything.
+- `evaluate_coordinate_bounds`: Calculates a value by subtracting d7 from d6 and negating it, loads a byte from offset 176 of a5 into d5, updates offset 350 of a5, and calls two routines while comparing values against a table and a byte at offset 366 of a5.
+- `evaluate_coordinate_offsets`: Loads a byte from offset 176 of a structure in a0, performs arithmetic to update d1 and d5, compares values from a table and a structure in a5, and calls two subroutines before returning.
+- `test_bits_and_modify_d4`: Moves a 32-bit value from a5 into d0, moves a word from offset 2054 of a2 into d6, performs several bit tests and logical operations on d2, and subtracts 3 from d4.
+- `calculate_scaled_coordinate_bounds`: Calls another routine, performs 16-bit multiplication and bit-shifting on registers to scale values, checks if the results fall within a specific range, and if so, calls another routine to fetch a value before potentially negating it and clearing bits in a register.
+- `process_byte_and_increment`: Calls another routine, clears d0, loads a byte from a6 into d0, and if the byte is not negative, clears d0, modifies bit 4 of d4, and if d4 is not zero, increments d7 and d5 before returning.
+- `restore_registers_from_stack`: Increments the stack pointer by 4 and restores d5, d6, and d7 from the stack.
+- `calculate_scaled_value_4`: Performs bitwise and arithmetic operations on d0 and d3, using a loop controlled by d7, and calculates values based on a byte at offset 235 of a structure in a2.
+- `calculate_scaled_bounds`: Performs several multiplications and subtractions, calls a subroutine, executes a loop that performs division and addition, and finally manipulates d1 and d7 before returning.
+- `push_values_to_stack`: Pushes a byte from offset 68 of a2 to the stack, moves a word from the stack into d2, moves a byte from offset 1784 of a5 into d2, swaps the bytes in d2, pushes d4 to the stack, and moves a word from the stack into d2.
+- `compare_and_increment_list`: Compares the word at the address in a0 with d1, and if d1 is not less than that word, increments a0 by 8 and decrements d3 in a loop.
+- `swap_and_copy_list`: Swaps d1, then enters a loop that swaps d1 and d2 with values from a list pointed to by a0, updates the list pointer, and continues until d3 reaches zero or d1 equals 32767, at which point it writes 32767 to the list and returns.
+- `check_coordinate_bounds`: Calls another routine, performs multiplications and bit shifts on d1 and d2, then compares the results against values at offsets 60 and 62 of a structure in a2 to determine if d0 should be cleared.
+- `calculate_table_offset`: Loads a pointer from an offset of 4 in a5, adds 512 to it, calculates a value by multiplying d4 by 48 and adding it to the pointer along with d3, and then loads a byte from that calculated address into d0.
+- `modify_bit_flags_2`: Loads pointers from a5, performs bitwise operations on a byte in d0 based on bit tests of a word from offset 0 of a structure in a3, and applies bitwise AND operations.
+- `modify_bit_flags`: Performs bitwise AND and OR operations on d0 based on bit tests of a word from offset 3 of a3 against d1 and d2.
+- `test_bit_flags_logic`: Performs bitwise AND and OR operations on d0, tests bits in d4, and branches based on the results of bit tests in d1, d2, d3, and d4.
+- `test_bit_flags`: Performs bitwise operations on d0 and d4, then checks various bits in d1, d2, d3, and d4 to determine which branch to take.
+- `perform_complex_math_and_loops`: Performs division and multiplication to update offsets 60 and 62 of a structure in a2, calls a subroutine, and executes two loops using d6 and d7 to update a byte in a structure in a5.
+- `test_status_byte`: Tests a byte at offset 233 of a5 and branches if it is zero, otherwise tests bit 1 of the memory location pointed to by a1 and returns if bit 1 is clear.
+- `adjust_stack_and_branch`: Increments the stack pointer by 4 and branches to another address.
+- `test_bits_and_return`: Tests bit 0 of a memory location pointed to by a1 and branches if set, otherwise tests bit 1 of the same location and returns if clear.
+- `loop_subroutine_calls`: Tests registers d7 and d6, and if they meet certain conditions, calls a subroutine seven times with varying offsets in a1, then updates a byte in a structure and loops.
+- `empty_stub_147`: Empty routine: returns to the caller immediately without doing anything.
+- `update_pointer_via_empty_stub`: Enters a loop that calls a routine via a pointer found in a structure, then performs several arithmetic and bitwise operations on data loaded from a table and returns.
+- `process_encoded_data`: Pops values from the stack, performs bitwise XOR and arithmetic operations on data from a structure in a5 and a2, and executes a loop that modifies bytes in a structure pointed to by a0.
+
+### golf
+
+- `initialize_game_environment`: A large routine that manages system resources by calling various library functions, initializing structures, and setting up graphics and task parameters.
+- `write_pointer_to_structure`: Writes the contents of register d0 to a long word at an offset of 4 within a structure pointed to by a value found through multiple pointer dereferences, then calls another routine.
+- `update_and_configure_graphics`: Compares two values at offsets 56 and 48 of a structure in a5, updates offset 48 with either offset 52 or a constant, writes a constant to an offset within a structure, and calls three different routines.
+- `call_wait_t_o_f_2`: Library stub: loads its arguments and the graphics library base, calls WaitTOF and returns its result to the caller.
+- `call_enqueue_routine`: Clears registers d2 and d3, loads pointers from offsets 0 and 16 of a structure in a5, and calls a routine at an offset of minus 334 from a library base in a6.
+- `process_data_and_call_subroutine`: Performs several memory writes to a structure, calls a subroutine, performs a division using a value from a global variable and a value from a list, and then calls another subroutine twice.
+- `call_library_vector_30_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `call_library_with_parameters`: Sets three values in a structure at offset 1c, 18, and 1e using a pointer in a1, calls a routine at address 870, and returns the bitwise complement of a byte from offset 1b of that structure.
+- `call_free_signal_2`: Library stub: loads its arguments and the exec library base, calls FreeSignal and returns its result to the caller.
+
+### golfdh0
+
+- `load_game_assets`: A large routine that handles the loading of files from a device, manages memory allocation, and configures graphics and system structures via library calls.
+- `update_structure_field_and_call_library`: Writes the value from register d0 to a long word at offset 4 of a structure found by dereferencing a pointer at offset 44 of another structure, then calls a library routine with the value 16 in register d0 and a pointer from offset 8 of the original structure in register a1.
+- `update_and_configure_graphics_2`: Compares the values at offsets 56 and 48 of a structure in a5; if they are equal, it sets offset 48 to the value at offset 52 and calls three routines via a global pointer, otherwise it sets offset 48 to the value from offset 56 and calls three routines via a global pointer.
+- `call_wait_t_o_f_3`: Library stub: loads its arguments and the graphics library base, calls WaitTOF and returns its result to the caller.
+- `enqueue_message_via_exec`: Clears registers d2 and d3, loads two pointers from offsets 0 and 22 of a structure in a5, and calls a routine at an offset of minus 270 from a library base in a6.
+- `process_structure_and_divide`: Stores d1 into offsets 24, 92, and 160 of a structure in a1, calls another routine, performs a division using a value from a global variable and a value from a table, and writes the results to various offsets in a1.
+- `call_library_vector_30_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `call_library_with_parameters_2`: Sets three values in a structure at offset 1c, 18, and 1e using a pointer in a1, calls a routine at address 866, and returns the bitwise complement of a byte from offset 1b of that structure.
+- `call_free_signal_3`: Library stub: loads its arguments and the exec library base, calls FreeSignal and returns its result to the caller.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_2`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_3`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_4`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_5`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_6`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_to_long_address`: Performs a long jump to a specific destination address.
+- `jump_vector_entry_7`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_8`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_9`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_10`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_11`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_12`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_13`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_14`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_15`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_to_long_address_2`: Performs a long jump to a specific memory location.
+- `jump_to_long_address_3`: Performs a long jump to a specific address and calls jump_and_setup_frames.
+- `jump_to_address`: Performs a long jump to a specific address.
+- `jump_vector_entry_16`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_17`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_18`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `transfer_execution_to_distant_address`: Performs a long jump to a specific location in memory.
+- `jump_vector_entry_19`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_to_target_routine`: Performs a long jump to another routine.
+- `jump_vector_entry_20`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_21`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_22`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_23`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_24`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_25`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_26`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_27`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_28`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_29`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_30`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_31`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_32`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_33`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_34`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_35`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_36`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_37`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_38`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_39`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_40`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_41`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_42`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_43`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_44`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_45`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_46`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_47`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_48`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_49`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_50`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_51`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `transfer_control_to_jump_and_setup_frames`: Performs a long jump to jump_and_setup_frames.
+- `jump_vector_entry_52`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_53`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_54`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_55`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_56`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_57`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_58`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_59`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_60`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_61`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_62`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_63`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_64`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_65`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_66`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_67`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_68`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_69`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_70`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_71`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_72`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_73`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_74`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_75`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_76`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_77`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_78`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_79`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_80`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_81`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_82`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_83`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_84`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_85`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_86`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_87`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_88`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_89`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_90`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_91`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_92`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_93`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_94`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_95`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_96`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_97`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_98`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_99`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_100`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_101`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_102`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_103`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_104`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_105`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_106`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_107`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_108`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_109`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_110`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_111`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_112`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_113`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_114`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_115`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_116`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_117`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_118`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_119`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_120`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_121`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_122`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_123`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_124`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_125`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_126`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_127`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_128`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_129`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_130`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_131`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_132`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_133`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_134`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_135`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_136`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_137`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_138`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_139`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_140`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_141`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_142`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_143`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_144`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_145`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_146`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_147`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_148`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_149`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_150`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_151`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_152`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_153`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_154`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_155`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_156`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_157`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_158`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_159`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_160`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_161`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_162`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_163`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_164`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_165`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_166`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_167`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_168`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_169`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_170`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_171`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_172`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_173`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_174`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_175`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_176`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_177`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_178`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_179`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_180`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_181`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_182`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_183`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_184`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_185`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_186`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_187`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_188`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_189`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_190`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_191`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_192`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_193`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_194`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_195`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_196`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_197`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_198`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_199`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_200`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_201`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `load_and_branch_237`: Loads the value 237 into register d0 and branches to another routine.
+- `load_and_branch_2`: Loads the value 2 into register d0 and branches to another routine.
+- `load_and_branch_245`: Loads the value 245 into register d0 and branches to another routine.
+- `load_and_branch_246`: Loads the value 246 into register d0 and branches to another routine.
+- `load_and_branch_253`: Loads the value 253 into register d0 and branches to another routine.
+- `load_and_branch_93`: Loads the value 93 into register d0 and branches to another routine.
+- `load_and_branch_255`: Loads the value 255 into register d0 and branches to another routine.
+- `nop_and_branch`: Performs a no-operation and branches to another routine.
+- `increment_a6_offset_20_and_return_a6`: Executes a no-operation, branches past the following instructions, then increments the word at offset 32 of a6, moves a6 into d0 and returns.
+- `decrement_counter_or_allocate_via_library`: Decrements the word at offset 32 of a6 and returns zero; the following block saves registers, computes a stack-derived pointer, loads a table entry indexed by d0 and calls a library routine.
+- `jump_vector_entry_202`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_203`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_204`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_205`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_and_setup_frames`: Jumps to a long address and then performs five consecutive sequences of decrementing the stack pointer by eight, pushing a long value from a memory location, and branching to another routine.
+- `setup_frame_and_branch`: Decrements the stack pointer by eight, pushes a long value from a memory location onto the stack, and branches to another routine.
+- `push_literal_and_setup_frame_then_return`: Decrements the stack pointer by eight, pushes a literal long, branches to the shared tail, then stores a5 in the frame, loads a new a5 from pc-relative code, stores it and returns.
+- `tiny_movea_rts_2`: Small routine of 2 instructions that copies (a7)+ to a5, then returns.
+- `jump_vector_entry_206`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `empty_stub_148`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_149`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_150`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_151`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_152`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_153`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_154`: Empty routine: returns to the caller immediately without doing anything.

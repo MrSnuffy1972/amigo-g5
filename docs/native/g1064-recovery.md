@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (1802240 top-level bytes in 170 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 28 of 28 units identical (bytes and relocations), 3 raw-word lines |
-| Functions named and described | pass, 426 of 426 named (55 author symbols), 426 of 426 described (66 by rule, 0 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 190 of 190 (100.00%) |
+| Bytes classified (1831344 top-level bytes in 176 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 34 of 34 units identical (bytes and relocations), 7 raw-word lines |
+| Functions named and described | pass, 525 of 525 named (55 author symbols), 525 of 525 described (71 by rule, 93 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1852 of 1852 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 11634 of 11634 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 14165 of 14166 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 871029 |
-| code | 36470 |
-| data | 705321 |
-| padding | 52204 |
+| asset | 882124 |
+| code | 46582 |
+| data | 713215 |
+| padding | 52207 |
 | unused | 137216 |
 
 ## Code units
@@ -55,6 +55,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr DLT](Disk 2 of 2).adf:Challenge | 7 | 235 | 8 |
 | Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr DLT](Disk 1 of 2).adf:bootblock | 1 | 10 | 1 |
 | Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr DLT](Disk 2 of 2).adf:bootblock | 1 | 18 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 607 | 28 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 290 | 11 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 185 | 8 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 243 | 6 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 483 | 18 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 724 | 28 |
 
 ## Cases handled
 
@@ -63,6 +69,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - populous ii - trials of the olympian gods (1991)(electronic arts)[cr dlt](disk 1 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr DLT](Disk 1 of 2).adf:end.pak: high-entropy data file (7.66 bits/byte), classified as packed data
 - populous ii - trials of the olympian gods (1991)(electronic arts)[cr dlt](disk 1 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr DLT](Disk 1 of 2).adf:judge.pak: high-entropy data file (7.68 bits/byte), classified as packed data
 - populous ii - trials of the olympian gods (1991)(electronic arts)[cr dlt](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr DLT](Disk 2 of 2).adf:NAWARDS.PAK: high-entropy data file (7.70 bits/byte), classified as packed data
+- runtime segment an address: 414 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 231 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 180 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 145 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 303 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 346 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - populous ii - trials of the olympian gods (1991)(electronic arts)[cr dlt](disk 1 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr DLT](Disk 1 of 2).adf:DELIGHT.EXE: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 - populous ii - trials of the olympian gods (1991)(electronic arts)[cr dlt](disk 1 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr DLT](Disk 1 of 2).adf:CREDITS.EXE: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 - populous ii - trials of the olympian gods (1991)(electronic arts)[cr dlt](disk 1 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr DLT](Disk 1 of 2).adf:populous.ii: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
@@ -588,3 +600,120 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr DLT](Disk 2 of 2).adf:bootblock
 
 - `boot_entry_2`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `manage_library_and_memory`: Calls several routines to close a library and free memory, then performs a series of operations involving a structure in a6, including memory allocation and byte manipulation within a buffer.
+- `release_library_and_memory_2`: Closes a library and frees memory pointed to by a register, then calls another routine to perform a task involving a structure in a6.
+- `release_library_and_memory`: Closes a library, frees memory pointed to by a register, and then calls another routine to perform a task involving a structure in a6.
+- `clear_hardware_and_call_subroutines`: Clears 32 words starting at the hardware register address in a1 using a loop, then executes a long sequence of subroutines.
+- `find_task_and_copy_data`: Clears a global variable, finds a task using a library call, and if successful, copies a block of data from one memory location to another and updates hardware registers.
+- `copy_data_and_enable_interrupts`: Copies a block of data from one location to another and updates two hardware registers by setting their most significant bit.
+- `update_registers_and_globals`: Writes specific values to the INTENA hardware register and updates two global variables.
+- `check_bit_and_increment_counters`: Checks bit 5 of a hardware register; if set, it calls a subroutine and increments three different global variables.
+- `execute_subroutines_with_pointers`: Calls a subroutine, then performs two separate calls to another routine using different pointer values and offsets, storing the results in a table.
+- `build_complex_data_table`: Initializes a large data structure with various constants, populates it with values from a table using a loop, and performs several more loops to generate patterned data before updating hardware registers and global pointers.
+- `update_interrupt_and_pointer`: Writes values to the INTENA hardware register and updates a global variable with a new pointer.
+- `open_libraries_and_check_bit`: Opens two libraries, checks bit 2 of a word from the first library, stores that bit in a global variable, and then writes a value to a location within the second library.
+- `update_pointer_and_cop_register`: Swaps two pointers stored in global variables, modifies a global value by XORing it with 4, and then updates a COP1LCH register and a global variable with a value derived from that pointer.
+- `update_joystick_and_status`: Reads a value from the joystick port, performs arithmetic to update several global variables, and conditionally modifies hardware registers and other global status flags.
+- `read_mouse_position`: Reads a 16-bit value from the mouse port, masks it to 8 bits, stores it in a global variable, and then stores the result of the original value shifted right by 3 into another global variable.
+- `calculate_and_store_offsets`: Calculates several values based on a global variable and a constant, then writes these values into specific offsets of a structure pointed to by a table.
+- `execute_with_interrupt_control`: Disables interrupts, copies a pointer from a global variable to another location, sets values in a structure pointed to by a register, calls another routine, and then modifies a byte at a specific hardware address before re-enabling interrupts.
+- `swap_interrupt_pointers`: Disables interrupts, swaps the values of two global variables, and then re-enables interrupts.
+- `calculate_serper_value`: Sets a value in the SERPER register by dividing a constant by a value from a global variable and subtracting one, otherwise it sets a different constant.
+- `update_sprite_position_offset`: Adds a value from a global variable to a 16-bit coordinate stored in a structure pointed to by a6, then calls another routine.
+- `call_rename`: Library stub: loads its arguments and the dos library base, calls Rename and returns its result to the caller.
+- `call_delay_routine`: Populates a structure at a specific memory location with several parameters and calls a routine via a pointer in a global variable, then stores the return value in another global variable.
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
+- `loop_until_condition_and_call_dos`: Enters a loop that calls a routine until it returns zero, then calls three different routines via pointers in global variables and sets a global variable to 1.
+- `forbid_task_and_wait`: Calls a routine via a pointer, waits in a loop until bit 6 of a hardware register is cleared, calls another routine via a pointer, and sets a hardware register to 40.
+- `permit_task_and_wait`: Calls a routine via a pointer, waits in a loop until bit 6 of a hardware register is cleared, calls another routine via a pointer, and sets a hardware register to 8040.
+- `execute_conditional_tasks`: Calls three different routines and performs a comparison on a global variable.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `execute_sequence_and_dispatch`: Calls two separate routines using pointers from global variables, clears a 16-bit value in a global variable, and executes two additional routines.
+- `dispatch_sequence_pointers`: Loads two pointers into registers a2 and a3, then calls two routines using those pointers.
+- `execute_sequence_and_store_byte`: Calls three different routines in sequence and then stores a byte from a register into a location pointed to by a register.
+- `call_and_clear_global`: Calls another routine, clears a 16-bit word in a global variable, and returns.
+- `process_table_data`: Checks a 16-bit value in a global variable against several table values, and if conditions are met, iterates through a table to find and swap specific byte values, then calls another routine and returns a 16-bit value.
+- `parse_string_template`: Processes a source string by expanding placeholders enclosed in braces using data from a secondary pointer list.
+- `process_input_characters`: Compares a byte in d1 against several constants and, if it falls within the range of uppercase letters, performs a loop to shift characters in a buffer or clear a byte.
+- `store_byte_to_table_2`: Compares a byte in register d1 to 32 and, if it is not less than that value, writes the byte to the memory location at offset minus 1 from a table.
+- `store_byte_to_table`: Compares a byte in register d1 to 32 and, if it is not less than that value, writes the byte to the memory location at offset minus 1 from the pointer in a2 and writes zero to the location pointed to by a2.
+- `call_two_subroutines`: Loads a long value from a global variable into a0, calculates an address in a1 by adding a long value from a global variable to a pointer from the same global variable, loads two words from subsequent global variables into d0 and d1, and calls two different routines.
+- `copy_hunk_byte_table`: Reads a byte stream from a pointer in a1 to determine indices, then copies bytes from a global table into a destination buffer at a0 using those indices.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `copy_and_execute_data_2`: Copies 64 sets of word data from a source table to a destination structure using a loop, then decrements a counter and calls two routines and several others based on the results.
+- `set_increment_value_one`: Sets a register to 1 and branches to another routine.
+- `set_increment_value_two`: Sets a register to 2 and branches to another routine.
+- `set_increment_value_three`: Sets a register to 3 and branches to another routine.
+- `increment_table_values`: Uses a loop to increment bytes at specific offsets within a table calculated from a global variable, then decrements a counter in that table.
+- `copy_and_execute_data`: Copies 64 sets of word data from a source table to a destination structure using a loop, then decrements a counter and calls two routines and a function pointer from a calculated table based on a value from a stack-based pointer.
+- `execute_nested_double_call_loop`: Runs a nested loop that executes another routine twice per inner iteration, where the outer loop runs twice and the inner loop runs three times.
+- `transfer_word_blocks`: Copies word data from one memory location to another in blocks of four words at specific offsets, choosing between two different source pointers based on a comparison of a value in d4.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `double_d7_and_branch`: Multiplies the value in d7 by two and branches to another location.
+- `update_blt_parameters`: Calculates and writes new source or destination pointers, or size and mode parameters, to a set of global variables and certain hardware registers, using a table lookup or conditional logic based on input or register values.
+- `extract_and_mask_value`: Calls another routine, stores its 32-bit result in a global variable, then returns the concatenation of the high 24 bits of that result with the low 8 bits of the input register, masked to 43 bits.
+- `multiply_32_bit_integers`: The routine takes two 32-bit values from registers and returns a 64-bit product formed by combining the low 16-bit multiplication and the high 16-bit cross terms, with the high 32 bits placed in the upper half of the result.
+- `copy_16_word_blocks`: The routine copies 500 blocks of 16 words from a source pointer to a destination pointer, word by word, using a fixed loop count.
+- `interpolate_tables_iteratively`: The routine performs a nested loop of 17 iterations, where each iteration calls another routine to fetch data and then performs complex arithmetic to interpolate values between two source tables and store them in two destination tables.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `decode_and_loop`: The routine calls another routine, then XORs two consecutive words pointed to by a pointer with constants, then repeatedly calls another routine until a short value in a register is zero, and finally calls another routine once more.
+- `encode_id_to_base36`: The routine encodes a 32-bit value in D0 into four characters written through a pointer in A1.
+- `swap_bytes_in_struct`: The routine swaps pairs of bytes within a structure pointed to by a0.
+- `rotate_bits_in_place`: Rotates a block of eight bytes in place, shifting each byte right by one bit and feeding the carry into the next byte, then stores a pointer to another routine and a global variable into the buffer.
+- `process_and_xor_structure`: Runs a nested loop that executes another routine twice per inner iteration, then performs an XOR operation on two 16-bit values at specific offsets within a structure pointed to by a0.
+- `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d0, then returns.
+- `decode_four_byte_value`: The routine reads four bytes from a pointer in A0 and adds a constant to each byte.
+- `decompress_bit_stream`: Processes a bit stream by reading bits and using them to index into a table to copy bytes into a destination buffer.
+- `branch_if_not_equal`: Performs a conditional branch if the zero flag is not set, otherwise it returns.
+- `bk_refill_bit_buffer`: Depacker bit reader refill: fetches the previous longword of the packed stream, folds it into the checksum and shifts out its lowest bit with a marker bit entering at the top.
+- `process_bit_stream`: The routine contains a loop that shifts a 32-bit value and performs bitwise operations based on a counter in D1, and if a condition is met, it proceeds to copy and manipulate data from a source pointer into a destination table using multiple loops.
+- `update_resource_table_and_execute`: Iterates through a table to subtract values from a counter based on entries in a secondary table, then executes a sequence of subroutines that includes conditional logic based on the results of those calls and modifies a bit in a global variable before calling several final subroutines.
+- `validate_and_process_entity_list`: Calls validate_and_update_memory to synchronize structure fields, then iterates through a list of entities starting at a specific memory address.
+- `validate_and_update_memory`: Checks a memory range for specific byte values and calls another routine if conditions are met, then updates several fields in a structure pointed to by a1.
+- `check_memory_range`: Compares a pointer derived from a global address against a constant value, and if the condition is met, calls another routine and checks if a value at an offset of 90 from a pointer in a1 matches the incremented value of d1.
+- `initialize_system_state`: Clears three global variables, copies several values from two tables into a stack-based sequence, and if a global variable is zero, initializes a series of bytes and a pointer with specific constants.
+- `calculate_derived_value`: The routine calls another routine twice and then stores a value derived from the low word of a register and another register into a global variable.
+- `swap_two_entries`: The routine swaps a small fixed-size block of bytes and two 16-bit words between two entries indexed by a short in D0 and a global short.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `update_tile_flags_and_neighbor`: The routine indexes a global variable table with an index from the first argument and calls another routine twice with values derived from the entry and a global table, then if a short field is non-zero it repeats the calls for the referenced entry.
+- `update_global_pointer`: If a global variable is non-zero, it increments the variable by four, stores it in another global variable, and calls two other routines.
+- `initialize_interrupt_handlers`: Writes a pointer to a global variable and several subroutine addresses into various locations in RAM, registers an interrupt server, calls an indirect routine through a global variable, and writes three bytes to a global variable before returning the concatenation of the two input registers.
+- `trigger_interrupt_handler`: If a global variable is non-zero, it sets a byte at offset a fixed address to one, calls a routine via a pointer at offset 4, and sets a hardware register to 15.
+- `set_unit_flags_by_mask`: Iterates up to four times through a table of unit structures, using a bitmask derived from the low nibble of the input parameter to select entries.
+- `compare_and_increment_pointer`: Loads a 16-bit word from the address in a0 into d3, compares d3 with d1, and if they are not equal, increments the address in a0 by 4 and loops back to the start.
+- `tiny_movea_move_rts`: Small routine of 3 instructions that copies (a0) to a0, then copies a0 to -(a7), then returns.
+- `set_carry_flag`: Sets the carry flag in the status register and returns immediately.
+- `handle_data_pointer`: The routine receives a pointer in a register, loads a global variable and stores the pointer value into a table entry via an indirect address derived from the pointer.
+- `process_flagged_entities`: The routine iterates over four entries in a table of structures and, for each entry whose flag bit is set in a mask, updates several bytes in the structure based on bits in a 64-bit value returned by another routine, including clearing or writing fields and setting bits in a status word, and may call another routine and continue processing.
+- `update_structure_values`: Clears bit 0 of a byte at offset 11 of a structure in a0, then conditionally updates various fields in the structure and a pointed-to table based on comparisons and arithmetic involving offsets 0, 1, 2, 5, 8, 10, 12, and 13.
+- `set_status_bit`: Sets bit 2 of a byte at offset 11 from a pointer in a0 and returns immediately.
+- `validate_and_reset_entity_attributes`: Checks if two consecutive bytes at offsets 8 and 12 of a structure are both 255; if they are not, it evaluates bit 5 of a status byte at offset 39, and if that bit is clear, it modifies several fields in a linked entity structure by setting bit 8 of a word at offset 38, clearing a byte at offset 43, and clearing bit 1 of a byte at offset 39 before updating a word at offset 38 of the primary structure and returning.
+- `copy_and_clear_data`: Copies a 32-bit word from the address in a3 to the address at offset 12 of a3, clears a 16-bit word at offset 36 of a3, and branches to another routine.
+- `update_entity_index_and_fetch_pointer`: Increments a 16-bit counter at offset 36 of a structure pointed to by a3, then uses a value from d0 to index into a table via a0 to fetch a new pointer which is stored at offset 8 of the structure.
+- `update_entity_state_and_reset_attributes`: Calculates an index from a register and a byte in a structure to fetch two words from a table, then clears several byte and word fields in two separate structures pointed to by offsets 16 and 20 of a structure in a3 before branching to another routine.
+- `branch_on_status_bits`: Checks bit 6 of a register and branches, otherwise checks bit 5 of the register and branches, otherwise masks the register with 31 and stores the result at offset 24 of a structure in a6 before branching.
+- `load_sprite_attribute_data`: Masks the lower four bits of a register and uses the result as an index into a table to load two consecutive bytes into offsets 40 and 41 of a structure pointed to by a3.
+- `initialize_entity_data_from_table`: Checks a bit in a register and, if not set, calculates an offset into a table using a value in a register, extracts a status byte and a data byte, and populates a structure with these values while clearing several fields and setting a flag.
+- `fetch_table_entry_via_index`: Loads a pointer from a table using a value in d0 that has been masked to the lowest three bits and shifted left by two, then pushes that pointer onto the stack before returning.
+- `update_pointer_with_min`: Compares a byte from a pointer to a value at another pointer and stores the minimum or an offset-calculated value into a global pointer.
+- `clear_dma_control_register`: The routine writes zero to the DMACON hardware register and sets a global variable to a bit mask derived from an input value.
+- `update_entity_pointer_and_byte`: Loads a pointer from offset 8 of a structure into a register, reads a byte from that pointer and stores it at offset 42 of the structure, updates the pointer in the structure to point to the next byte, and branches to another routine.
+- `initialize_entity_attribute_structure`: Reads a byte from a pointer stored at offset 8 of a structure, multiplies it by 13, and uses the result to calculate an offset into a data table.
+- `initialize_entity_from_attribute_table`: Reads a byte from a pointer stored at offset 8 of a structure, scales it by 13, and uses the result as an offset into a data table to initialize a new entity structure.
+- `branch_to_subroutine`: Returns immediately by performing a relative branch to another routine.
+- `process_data_structure`: Calculates an offset based on a value in d0, accesses a table at that offset, and enters a loop that calls various routines and updates a global variable based on the results of those calls.
+- `allocate_and_initialize_memory`: Allocates memory using a library call, and if successful, initializes specific entries in a table at offset 20820 before performing a second allocation and potential initialization.

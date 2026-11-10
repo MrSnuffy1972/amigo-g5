@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901120 top-level bytes in 39 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 17 of 17 units identical (bytes and relocations), 12 raw-word lines |
-| Functions named and described | pass, 515 of 515 named (0 author symbols), 515 of 515 described (105 by rule, 0 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 154 of 154 (100.00%) |
+| Bytes classified (904880 top-level bytes in 43 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 21 of 21 units identical (bytes and relocations), 16 raw-word lines |
+| Functions named and described | pass, 537 of 537 named (0 author symbols), 537 of 537 described (107 by rule, 19 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1076 of 1076 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 7793 of 7804 instructions identical in start and length, 3 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 8646 of 8657 instructions identical in start and length, 3 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 509843 |
-| code | 25022 |
-| data | 309337 |
-| padding | 12886 |
+| code | 28434 |
+| data | 309680 |
+| padding | 12891 |
 | unused | 44032 |
 
 ## Code units
@@ -44,9 +44,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | version.library | 2 | 41 | 7 |
 | diskfont.library | 15 | 1040 | 76 |
 | Ultimate Quiz, The (1993)(AGAS)[HD].adf:bootblock | 1 | 10 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 522 | 13 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 12 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 304 | 6 |
 
 ## Cases handled
 
+- 3 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- runtime segment an address (play-rs-m1500): 14 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500): 471 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500): 245 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- self-modifying code at an address (47 bytes change between runtime segment an address (play-rs-m1500) and runtime segment an address): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (37 bytes change between runtime segment an address and runtime segment an address (play-rs-m1500)): both forms recovered; writer: not identified statically (indirect store)
 - ultimate quiz, the (1993)(agas)[hd]/Ultimate Quiz, The (1993)(AGAS)[HD].adf:ami1demo.dat: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 - ultimate quiz, the (1993)(agas)[hd]/Ultimate Quiz, The (1993)(AGAS)[HD].adf:Quiz.exe: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
@@ -626,3 +637,37 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Ultimate Quiz, The (1993)(AGAS)[HD].adf:bootblock
 
 - `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_system_state`: Calls two library routines using a pointer in a6, writes a value from a global variable to a memory location, and then jumps to a location stored in a table.
+- `return_constant_7`: Returns the constant -1 in d0 to the caller without any other effect.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_graphics_and_hardware_state_2`: Clears a global variable, calls a routine to initialize hardware, and if a specific field at offset 172 of the returned structure is non-zero, calls two additional routines and stores the resulting pointer in the global variable.
+- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
+- `initialize_graphics_and_hardware_state`: Opens a library, allocates memory, and clears a block of memory using a loop.
+- `initialize_structure_members`: Clears four 32-bit words at a location pointed to by a5, then stores several calculated pointers into offsets of the structure in a5.
+- `initialize_graphics_buffer_and_hardware`: Copies a list of words from a table into a destination buffer, then populates several memory blocks with specific patterns and values, including interleaved word pairs and data from a source table.
+- `copy_word_list`: Decrements a counter in d0 and enters a loop that copies words from a source pointed to by a1 to a destination pointed to by a0, incrementing both pointers by two each iteration.
+- `store_swapped_words`: Decrements a counter in d0 and enters a loop that swaps the high and low words of d1 and stores them into a destination pointed to by a0, while adding d2 to d1 each iteration.
+- `configure_hardware_parameters`: Writes values to various offsets of a structure in a6, including a value derived from adding a constant to a value at offset 24 of a structure in a5, and waits for a bit to clear in a byte at offset 2 of a6.
+- `configure_hardware_parameters_alt`: Writes values to various offsets of a structure in a6, including a value derived from adding 4 to a value at offset 24 of a structure in a5, and waits for a bit to clear in a byte at offset 2 of a6.
+- `clear_memory_blocks`: Decrements d0 by two bits via a logical shift right and enters a loop that writes zero to the location pointed to by a0 for each iteration.
+- `process_quiz_input_and_update_display`: Decrements a counter in a structure and, if zero, updates a display buffer with a pointer and then parses a string to calculate a value for a counter.
+- `initialize_hardware_settings`: If a byte in a global variable is zero, it configures several hardware registers including DMA and interrupt enable registers, writes specific values to a memory location, and updates two other global variables before returning.
+- `update_hardware_configuration`: If a byte in a global variable is non-zero, it performs a loop checking a bit in a memory location, updates several hardware registers with values derived from a table and bitwise operations, and clears the global variable before returning.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `fill_zero_data`: Performs twelve consecutive logical OR operations on register d0 with zero.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `update_status_byte`: Copies a byte from a memory location to a global variable, sets bit 15 of a 16-bit value at offset 154 of a structure in a6 using a value from a global variable, and clears a byte at offset 234 of a global variable.
+- `process_audio_parameters`: Iterates through a data table to calculate values, stores results into a table via a pointer, clears several 32-bit global variables, clears four 16-bit audio volume registers, and copies a byte from one location to another.
+- `mt_end`: Stops the ProTracker music replay by silencing all four audio channels and switching audio DMA off.
+- `update_audio_channels`: Increments a global counter and, if it reaches six, resets it to zero; otherwise, it checks four specific flags and, if a flag is set, calls a routine to update the hardware audio registers using a pointer to a specific audio channel structure.
+- `update_audio_hardware`: Processes a structure in a6 by performing various arithmetic operations on its fields based on a mode byte, updates a destination structure via a5, calls another routine four times to configure hardware registers, and manages a DMA-related pointer and counter.
+- `update_sprite_attribute_table`: Reads a value from a structure to index into a table, then updates several fields in a destination structure including a pointer, two 16-bit values, and a 32-bit value based on a conditional check.

@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (926064 top-level bytes in 66 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 9 raw-word lines |
 | Functions named and described | pass, 133 of 133 named (0 author symbols), 133 of 133 described (12 by rule, 84 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1202 of 1209 (99.42%) |
+| Executed addresses (reference run) in recovered, described code | pass, 1225 of 1232 (99.43%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 3208 of 3215 instructions identical in start and length, 0 mismatches |
 
@@ -40,12 +40,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Cases handled
 
+- extended reference run ignored: it does not re-execute 433 of the 1373 PCs the canonical run logged (948 PCs logged; the harness no longer reproduces the game), so its PCs and RAM are not used
 - runtime segment an address (play-long-joy): 89 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-long-joy): 17 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 9 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-long-joy): 354 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address (f100): 260 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 381 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (f100): 274 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 390 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - self-modifying code at an address (24 bytes change between runtime segment an address (play-long-joy) and runtime segment an address): both forms recovered; writer: not identified statically (indirect store)
 - blues brothers, the (1991)(titus)[cr qtx]/Blues Brothers, The (1991)(Titus)[cr QTX].adf:blues_brothers: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data

@@ -9,17 +9,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (909968 top-level bytes in 21 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 14 of 14 units identical (bytes and relocations), 185 raw-word lines |
 | Functions named and described | pass, 109 of 109 named (0 author symbols), 109 of 109 described (5 by rule, 82 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1280 of 1280 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 1292 of 1292 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 2483 of 2497 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2484 of 2498 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 147512 |
-| code | 9044 |
-| data | 329842 |
+| code | 9046 |
+| data | 329840 |
 | padding | 2706 |
 | unused | 420864 |
 
@@ -36,7 +36,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 9 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 181 | 5 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 725 | 26 |
@@ -53,9 +53,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address (play-rs-x25k): 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-x25k): 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 153 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 163 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-x25k): 148 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - self-modifying code at an address (60 bytes change between runtime segment an address and runtime segment an address (play-rs-x25k)): both forms recovered; writer: venus the flytrap (1990)(gremlin)[cr miracle][t +6 atz](disk 1 of 2)[h krayzi]/Venus the Flytrap (1990)(Gremlin)[cr Miracle][t +6 ATZ](Disk 1 of 2)[h Krayzi].adf:venus +20A, venus the flytrap (1990)(gremlin)[cr miracle][t +6 atz](disk 1 of 2)[h krayzi]/Venus the Flytrap (1990)(Gremlin)[cr Miracle][t +6 ATZ](Disk 1 of 2)[h Krayzi].adf:venus +214
@@ -185,7 +185,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `return_zero`: The routine is empty and simply returns zero.
+- `load_pointer_and_return`: Loads a pointer stored at offset 22 from the structure in a0 into a0, clears d0, and returns.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 

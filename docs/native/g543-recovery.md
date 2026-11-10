@@ -259,21 +259,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_and_obfuscate_data`: Copies a block of data into global variables and performs a bitwise transformation on a sequence of values.
 - `populate_graphics_buffer`: Allocates a destination buffer and performs a nested loop to copy large blocks of data from source tables.
 - `copy_masked_data`: Iterates through a source buffer and copies bytes to a destination only if a bitwise comparison with a mask table succeeds.
-- `return_zero`: Returns a constant value of zero.
-- `validate_and_process_data_header`: Checks a memory block for a specific magic signature and non-zero length before performing a series of recursive calls and data assignments.
-- `unpack_compressed_data_stream_2`: Iterates through a table of offsets to locate data blocks and performs a custom decompression routine.
-- `traverse_and_decrement_linked_list`: Iterates through a linked list by decrementing values at pointer locations and following next-node offsets.
-- `initialize_interrupt_server`: Sets a global variable to a specific value and calls a function using a pointer from a global variable.
-- `remove_interrupt_server`: Clears a global variable and sets another to a specific value before calling a function via a global pointer.
-- `populate_coordinate_table`: Calculates a series of values based on input register data and populates a table in memory using a decrementing counter.
-- `clear_data_register_bits`: Performs a bitwise OR operation on a data register with zero to clear its bits.
-- `perform_blitter_transfer`: Calculates bitwise values and memory addresses to perform a series of hardware blitter operations using a loop.
-- `setup_blitter_registers`: Writes several values to hardware registers to prepare for a blitter operation.
-- `validate_structure_element`: Checks a byte within a data structure retrieved from another routine.
-- `traverse_offset_list_2`: Iterates through a list of memory locations by adding an offset found within each element until a match is found.
-- `find_linked_list_element_2`: Traverses a linked list of longwords by following pointers stored within the nodes.
-- `update_dma_buffers`: Calculates a sequence of memory addresses and stores them into a series of global variables.
-- `obfuscate_data_block`: Copies a sequence of longwords into global variables and applies a bitwise transformation to a data block.
 - `write_table_values`: Waits for a condition in a global variable to be met, then writes two specific words into a table.
 - `write_long_to_table`: Waits for a condition in a global variable to be met, then stores a 32-bit value into a table as two words.
 - `modify_memory_word`: Performs bitwise manipulations on input values and stores the resulting 32-bit value at a pointer address.
@@ -302,6 +287,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_data_block`: Swaps two values in a global memory location and then performs a series of word-sized transfers from a source table to a destination buffer on the stack.
 - `update_dma_buffer_pointers`: Calculates a series of memory addresses based on an offset and a loop counter, then stores these resulting values into a sequence of global memory locations.
 - `update_vertical_position`: Performs a loop to calculate a series of words based on an input value and stores them in a table, while interacting with a hardware register.
+- `return_zero`: Returns a constant value of zero.
+- `validate_and_process_data_header`: Checks a memory block for a specific magic signature and non-zero length before performing a series of recursive calls and data assignments.
+- `unpack_compressed_data_stream_2`: Iterates through a table of offsets to locate data blocks and performs a custom decompression routine.
+- `traverse_and_decrement_linked_list`: Iterates through a linked list by decrementing values at pointer locations and following next-node offsets.
+- `initialize_interrupt_server`: Sets a global variable to a specific value and calls a function using a pointer from a global variable.
+- `remove_interrupt_server`: Clears a global variable and sets another to a specific value before calling a function via a global pointer.
+- `populate_coordinate_table`: Calculates a series of values based on input register data and populates a table in memory using a decrementing counter.
+- `clear_data_register_bits`: Performs a bitwise OR operation on a data register with zero to clear its bits.
+- `perform_blitter_transfer`: Calculates bitwise values and memory addresses to perform a series of hardware blitter operations using a loop.
+- `setup_blitter_registers`: Writes several values to hardware registers to prepare for a blitter operation.
+- `validate_structure_element`: Checks a byte within a data structure retrieved from another routine.
+- `traverse_offset_list_2`: Iterates through a list of memory locations by adding an offset found within each element until a match is found.
+- `find_linked_list_element_2`: Traverses a linked list of longwords by following pointers stored within the nodes.
+- `update_dma_buffers`: Calculates a sequence of memory addresses and stores them into a series of global variables.
+- `obfuscate_data_block`: Copies a sequence of longwords into global variables and applies a bitwise transformation to a data block.
 - `search_linked_list`: Traverses a linked list of longwords, checking for a specific constant value, and returns a pointer to the element following the match.
 - `traverse_offset_list`: Iterates through a list of structures using an offset stored within each element to find a matching longword.
 - `copy_and_obfuscate_data_block`: Copies a sequence of longwords from a pointer into a series of global variables, performs a bitwise transformation on a data block using a loop, and then overwrites several global variables with the previously stored values.

@@ -6,20 +6,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (2703360 top-level bytes in 103 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 28 of 28 named (3 author symbols), 28 of 28 described (2 by rule, 21 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 177 of 177 (100.00%) |
+| Bytes classified (2708672 top-level bytes in 105 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 0 raw-word lines |
+| Functions named and described | pass, 43 of 43 named (3 author symbols), 43 of 43 described (3 by rule, 34 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 928 of 928 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 445 of 445 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1464 of 1479 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 389848 |
-| code | 1434 |
-| data | 1932431 |
+| code | 5418 |
+| data | 1933759 |
 | padding | 26367 |
 | unused | 353280 |
 
@@ -30,6 +30,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Jungle Strike (1994)(Ocean)[cr Trader's Dream](Disk 1 of 3).adf:JStrike | 1 | 222 | 20 |
 | Jungle Strike (1994)(Ocean)[cr Trader's Dream](Disk 1 of 3).adf:TRDINTRO | 5 | 205 | 7 |
 | Jungle Strike (1994)(Ocean)[cr Trader's Dream](Disk 1 of 3).adf:bootblock | 1 | 18 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1032 | 14 |
 
 ## Cases handled
 
@@ -88,6 +90,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - jungle strike (1994)(ocean)[cr trader's dream](disk 3 of 3)/Jungle Strike (1994)(Ocean)[cr Trader's Dream](Disk 3 of 3).adf:sprites9: high-entropy data file (7.66 bits/byte), classified as packed data
 - jungle strike (1994)(ocean)[cr trader's dream](disk 3 of 3)/Jungle Strike (1994)(Ocean)[cr Trader's Dream](Disk 3 of 3).adf:world6blks: high-entropy data file (7.77 bits/byte), classified as packed data
 - jungle strike (1994)(ocean)[cr trader's dream](disk 3 of 3)/Jungle Strike (1994)(Ocean)[cr Trader's Dream](Disk 3 of 3).adf:mission8stat: high-entropy data file (7.71 bits/byte), classified as packed data
+- runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 712 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - jungle strike (1994)(ocean)[cr trader's dream](disk 1 of 3)/Jungle Strike (1994)(Ocean)[cr Trader's Dream](Disk 1 of 3).adf:TRDINTRO: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
 ## Cracktros (kept, not protection)
@@ -137,3 +141,24 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Jungle Strike (1994)(Ocean)[cr Trader's Dream](Disk 1 of 3).adf:bootblock
 
 - `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `return_constant`: Returns the constant -1 in d0 to the caller without any other effect.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_lookup_tables`: Calculates and populates a two-dimensional lookup table using a multiplication-based scaling algorithm, clears a range of memory, and initializes several global or hardware-related flags and pointers.
+- `split_long_to_word_offsets`: Swaps the high and low words of a 32-bit value in a register and stores the new high word at offset 2 and the new low word at offset 6 from a pointer in a0, then increments the pointer by 8 and returns.
+- `update_blitter_transform_matrix`: Calculates a new transformation matrix using a series of complex, bit-shifted multiplications and additions involving values from a table, then updates certain hardware registers and a global counter or flag.
+- `parse_command_stream`: Iterates through a stream of command bytes in a buffer, performing actions such as clearing memory blocks, copying memory between tables, or updating values based on specific command opcodes.
+- `initialize_audio_and_clear_tables`: Initializes a table of integers with incrementing values, finds the maximum byte value in a memory range, and clears a series of structures in a table based on that maximum value.
+- `mt_end`: Stops the ProTracker music replay by silencing all four audio channels and switching audio DMA off.
+- `manage_recursive_counter_and_table_sync`: Increments a local counter and recursively calls itself until a threshold is reached, at which point it resets several global variables and hardware registers.
+- `update_dma_config`: Writes specific values to a global variable and modifies DMA or interrupt control registers.
+- `set_audio_registers`: Stores a series of specific values into several custom audio registers and sets a global variable.
+- `update_entity_state_from_table`: Loads an entity structure from a pointer, extracts an index from its bytes, and fetches data from a table to update the structure's fields.
+- `update_parameterized_accumulator_and`: Updates a 16-bit field in a structure by adding a value and clamps it to a limit, then modifies various fields in a structure and potentially updates a DMA controller register or a global variable based on a command byte.
+- `update_accumulator_value`: Adds or subtracts a value from a 16-bit field in a structure, clamps it to a limit, and calls another routine if a specific byte is non-zero.
+- `apply_scaled_offset`: Calculates a scaled value using a table lookup and a bitmask, then adds or subtracts it from a memory location while updating a counter.
+- `process_parameterized_accumulator_updates`: Reads a command byte from a structure to determine how to modify various 16-bit and 8-bit fields, including clamping values to specific limits, performing table-based scaling, and updating a 16-bit field at offset 6 of a second structure.

@@ -1,0 +1,1581 @@
+# Game 751 (EnemyTempestOfViolence v1.1): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/00751). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (3772846 top-level bytes in 258 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 6 raw-word lines |
+| Functions named and described | pass, 3523 of 3523 named (0 author symbols), 3523 of 3523 described (458 by rule, 3059 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 2965 of 2967 (99.93%) |
+| Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 73435 of 73512 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 541448 |
+| code | 262688 |
+| data | 2968661 |
+| padding | 49 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| game.slave | 1 | 803 | 55 |
+| CloseWB | 3 | 586 | 39 |
+| Enemy | 3 | 63968 | 2787 |
+| Type | 2 | 433 | 5 |
+| EnIntro | 3 | 7345 | 260 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 135 | 135 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 110 | 110 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 120 | 120 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 8 | 8 |
+
+## Cases handled
+
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1.hdf: hard-disk image (AmigaDOS OFS, 4576 blocks): its filesystem parses and all 251 files in it are byte-identical to the extracted tree EnemyTempestOfViolence_v1.1_hdf, which is recovered file by file; no block outside the filesystem holds data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/BOBS/cromo.bob: high-entropy data file (7.67 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/BOBS/hflinte.bob: high-entropy data file (7.60 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/BOBS/leichen.bob: high-entropy data file (7.61 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/BOBS/pass6.bob: high-entropy data file (7.61 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/BOBS/sflinte.bob: high-entropy data file (7.65 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/BOBS/smg.bob: high-entropy data file (7.65 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/BOBS/smp.bob: high-entropy data file (7.64 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/BOBS/zentrale.bob: high-entropy data file (7.79 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/BOBS/zivil.bob: high-entropy data file (7.64 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/BP/element0.bp: high-entropy data file (7.69 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/BP/element2.bp: high-entropy data file (7.71 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/BP/element3.bp: high-entropy data file (7.74 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/MSX/BAssault.okt: high-entropy data file (7.78 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/MSX/Carpi.okt: high-entropy data file (7.77 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/MSX/Chor.okt: high-entropy data file (7.72 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/MSX/Elite.okt: high-entropy data file (7.79 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/MSX/Herz.okt: high-entropy data file (7.86 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/MSX/Mini.okt: high-entropy data file (7.85 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/MSX/ademo.okt: high-entropy data file (7.89 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/MSX/atitel.okt: high-entropy data file (7.82 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/MSX/drum.okt: high-entropy data file (7.80 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/MSX/jom.okt: high-entropy data file (7.74 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/MSX/orchi.okt: high-entropy data file (7.61 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/MSX/simple.okt: high-entropy data file (7.65 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/MSX/traurig.okt: high-entropy data file (7.79 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/TXT/atext.txt: high-entropy data file (7.80 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/e/TXT/sektor33.txt: high-entropy data file (7.80 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/eni/intromusik.okt: high-entropy data file (7.76 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/eni/BOBS/alien3.bob: high-entropy data file (7.70 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/eni/BOBS/alien4.bob: high-entropy data file (7.67 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/eni/BOBS/mensch1.bob: high-entropy data file (7.66 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/eni/BOBS/mensch2.bob: high-entropy data file (7.66 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/eni/BOBS/mensch3.bob: high-entropy data file (7.63 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/eni/BOBS/mensch4.bob: high-entropy data file (7.62 bits/byte), classified as packed data
+- EnemyTempestOfViolence_v1.1/EnemyTempestOfViolence_v1.1_hdf/EnemyTempestOfViolence/data/eni/BOBS/schiffe.bob: high-entropy data file (7.72 bits/byte), classified as packed data
+- runtime segment an address: 102 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 78 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 80 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 8 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+
+## Cracktros (kept, not protection)
+
+- EnIntro
+
+## Copy protection found
+
+- `validate_and_dispatch_handler` (Enemy): Stores its incoming arguments into global variables, then verifies a four-byte magic marker and checks two flags before running a series of helper routines and clearing several tables. Kind: Disk hardware check (ADKCON) verifying a protected disk by reading a magic header ('ATKO'/'NGOS' reversed) and performin. Pass path: The routine returns normally (the success path) after the header/magic check passes and iRam010429ce == 0; the ADKCON disk access is performed inside the _u2__d1_3B26 == 0 branch.
+
+## Functions
+
+
+### game.slave
+
+- `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d0, then returns.
+- `call_routines_via_pointer_table`: Loads a pointer from register a0, calls the routine stored at offset 96 through that pointer, then calls the routine stored at offset 52 and the one at offset 100, and finally calls the routine at offset 2 of the table pointed to by a global variable, before returning.
+- `clear_fire_button_bit`: Clears bit 1 of the value in the joystick and fire button register, leaving the other bits unchanged, then returns.
+- `load_constant_into_a3`: Loads the long constant an address into register a3 and returns without touching any data.
+- `derive_a0_and_a4_from_pc_relative_pointer`: Loads a longword from a pc-relative location into a0, adds an address to form a0, copies it to a4, adds another an address to a4, and returns.
+- `mask_global_longword_bits`: Reads a longword from a global variable, clears bits 4, 5, 6, and 15 of it, and returns the masked value.
+- `restore_registers_and_rte`: Tests the word at the interrupt request register, restores registers from the stack, and returns via a return from exception instruction.
+- `store_constant_into_global`: Stores the constant 512 into a global variable and returns.
+- `store_pointer_and_copy_field_to_flag_area`: Writes d2 to offset 460 of the structure in a0, copies the longword at offset 50 of a1 to offset 132 of a0, stores d2 and a flag byte into fixed memory, then restores a0 from d2, skips four stack bytes, and returns.
+- `store_d4_to_a0_offset_and_pc_table`: Clears bit 13 of d4, writes the result to offset 476 of a0 and to a pc-relative word, sets the following byte to 255, then restores a0 from d2, skips two stack bytes, and returns.
+- `copy_byte_from_a0_to_a6`: Reads a byte at offset 6 of the structure in a0, stores it into the byte at offset 2048 of the structure in a6, and returns.
+- `update_vposr_bit_c`: Reads a longword from a global variable and sets bit 12 of the VPOSR register when that value equals either constant, otherwise clears bit 12, then returns.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `compare_rotated_byte`: Clears d4, inverts d2, rotates it right by one, then compares the result against two table bytes and branches when either matches, otherwise it returns.
+- `empty_routine`: Pushes a value and adjusts the stack pointer, then returns without modifying any registers or memory.
+- `skip_return_address_2`: Restores the callee-saved registers from the stack, then adjusts a return address on the stack so execution continues past the following code when a global flag bit is clear.
+- `decrement_d0_and_flag`: Decrements d0 by one and then sets d0 to all ones if the decremented value is zero, otherwise zero.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `compute_scaled_offset_value`: Loads a pointer from a global variable, multiplies the longword it references by 1488 in decimal, adds the longword at four bytes past that pointer, and leaves the result in d0.
+- `add_scaled_a0_offset_to_d0_store_a2`: Divides the longword at offset eight of a0 by 50, sign-extends the quotient, adds it to d0, stores the result at offset 64 of a2, then restores d2 and a2-a3 and returns.
+- `toggle_bit7_at_a3_offset`: Flips bit 7 of the byte at offset 97 in the a3 structure, then sets d0 to all ones if the old bit was clear, otherwise zero, and returns.
+- `store_bit_test_result_to_a1_offset`: Clears d0, reads a bit index from a3 offset 99 and a bit mask from pc-relative memory, tests the bit, stores the inverted zero flag as a longword at a1 offset 32, then skips the return address adjustment.
+- `skip_return_address`: Pushes the current return address, overwrites it with a large offset, and returns, effectively skipping over the following code.
+- `set_state_ptr_to_offset_14c`: Loads the address of the structure field at offset 332 into a0, stores it at offset 16 of the a3 context, sets bit 1 of the byte at offset 96, skips two bytes on the stack and returns.
+- `process_flag_bit`: Tests a flag bit derived from a global byte, clears it, and if it was set increments a counter in a structure and calls another routine before restoring the flag and returning.
+- `dispatch_string_table`: Walks a null-terminated string and copies its bytes onto the stack, then calls two routines and jumps to a target selected by a value in a table.
+- `setup_whdload_task`: Restores saved registers, then calls a library entry and jumps to a handler if the result is zero.
+- `call_dos_library_method`: Calls a dos.library function by number to obtain a handle, then jumps through a method pointer stored at offset 22 of that handle.
+- `open_library_lookup`: Opens a library by name, builds a request structure on the stack, and searches a linked list of open instances for a matching entry before returning a selected handler address.
+- `resolve_library_indices`: Calls two library lookup routines to fill registers, scales two structure offsets by dividing by four, and branches based on the results.
+- `open_library_and_jump`: Copies the long word in d7 to d0, calls a routine to open a library, then copies the byte in d0 to d1 and jumps to a routine at offset 962.
+- `open_library_and_store`: Calls a routine to open a library by name, then stores the returned pointer and a second library pointer into a structure, testing the result and returning a failure code when the lookup fails.
+- `open_library_invert_index`: Copies the long word in d7 to d0, calls a routine to open a library, then loads the value 39 into d1, inverts its low byte, and jumps to a routine at offset 95e.
+- `copy_buffers_and_strings`: Calls two helper routines and copies up to fifty-six bytes from one buffer to another when the source is non-null.
+- `invoke_and_copy_strings`: Calls a helper routine, invokes a handler pointer from a table, then copies two strings into a structure at different offsets before branching away to other code.
+- `match_library_name`: Looks up a library entry, compares its name against a string, and when they match copies characters into a stack buffer before calling a string-handling routine.
+- `compare_library_names`: Looks up two library entries and compares their names character by character, returning negative one when they match.
+- `test_two_fields`: Moves a1 into d0 and returns immediately if that value is zero.
+- `clamp_and_call_handler`: Compares a stored pointer against another field and branches away when they differ.
+- `add_and_clamp_store`: Compares a stored pointer against another field and branches away when they differ.
+- `load_flag_and_jump`: Loads the value 254 into d2 and jumps to a routine at offset cf4.
+- `lookup_and_store_library`: Looks up two libraries, checks for an error, and when none occurs stores a result into a structure and returns negative one.
+- `open_libraries_and_resolve`: Calls a routine to open a library, copies the result to d1, calls another routine to open a second library, copies that result to d2, and when the value is zero jumps to a routine at offset 95e.
+- `check_pointer_and_open_lib`: Loads the pointer at offset 20 of the structure in a4 into a0, compares the value at offset 12 of that pointer with a5, and jumps to a routine at offset fb6 when they differ.
+- `clamp_value_with_flags`: Loads two long words, then branches based on whether the second is zero or negative.
+- `call_and_store_index_result`: Calls a routine via a pointer stored at offset 20 of the structure in a4, stores the returned long word at offset 24 of that same structure, and then jumps to a shared routine at address 962.
+- `scale_index_from_a4`: Loads a long word from offset 20 of the structure in a4 into d7, multiplies it by four to scale an index, and returns.
+- `scale_index_from_a4_b`: Loads a long word from offset 24 of the structure in a4 into d7, multiplies it by four to scale an index, and returns.
+- `scale_index_from_a4_c`: Loads a long word from offset 28 of the structure in a4 into d7, multiplies it by four to scale an index, and returns.
+- `shift_string_left_store_length`: Shifts the null-terminated string at a0 one byte toward lower addresses until it reaches the terminator, then stores the number of bytes moved into the byte just before the shifted string and returns.
+- `resolve_path_and_store_result`: Resolves a path through a library, then if the lookup succeeds it stores four values at offsets 4, 8, 12 and 16 of the returned address and returns it.
+- `close_library_request`: Returns immediately when the argument is zero, otherwise clears a field in the structure, calls a library function twice, and jumps to its result.
+- `resolve_path_from_table`: Reads a slash-separated path from a structure in d1, looks up the final component in a library table via a library call, and if found copies the path segments into a new buffer with the middle slashes replaced by spaces, otherwise returns a fixed error value.
+- `push_add_and_return`: Pushes a long word read from a program-relative table onto the stack, adds thirty-two to the stack pointer, returns, then tests three consecutive memory locations before executing an illegal instruction.
+- `search_string_table_call_dos`: Skips past a colon or slash in a byte string at a0, walks a linked list of offsets in a global table, then compares the string against entries case-insensitively and calls a dos library function with a constant when a full match is found.
+
+### CloseWB
+
+- `branch_to_other_routine_3`: Unconditionally branches to another routine and never executes any instruction of its own.
+- `release_resource_structure`: Calls a routine to obtain a pointer, stores the result in a local stack variable, and if the value at offset 52 of that pointer is non-zero, calls another routine using that value as an argument.
+- `load_os_base_a4`: Sets a4 to the base of the operating system's global structure and returns.
+- `close_workbench_resources`: Allocates a buffer through a library, initializes a structure, opens a window, and runs a series of setup and cleanup calls before returning.
+- `tiny_move`: Small routine of 1 instruction that copies d0 to d5.
+- `parse_string_into_tokens`: Reads a 16-bit value from a global variable, adds a parameter and two, then calls a routine to allocate a buffer.
+- `set_negative_one_branch`: Sets d0 to negative one and branches into the middle of another routine without returning on its own.
+- `copy_string_with_limit`: Copies bytes from a source pointer to a destination pointer, stopping at a null terminator or when a counter reaches negative one, and ensures a null terminator is written at the next destination byte if the counter expires first.
+- `copy_string_pad_zeros`: Copies bytes from a source to a destination up to a specified count or until a null terminator is found, then fills any remaining bytes in the count with zeros.
+- `open_window_handle`: Opens a window through the window library, storing the returned handle in a global variable, and returns immediately if the open fails.
+- `copy_d0_to_d5`: Copies the contents of d0 into d5 and then runs straight into the following routine without returning.
+- `cleanup_resource_structure`: Checks if a pointer at offset -31852 of a4 is non-zero and calls it if so, then calls another routine and returns.
+- `cleanup_table_entries`: Iterates over a fixed-size table of entries, calling a cleanup routine for each index, then releases a series of stored pointers and unlocks resources, checking a global bit before returning.
+- `tiny_move_unlk_rts`: Small routine of 3 instructions that copies (a7)+ to d4, then removes the stack frame held in a5, then returns.
+- `close_table_entry_dos`: Indexes into a table using a scaled parameter, and if the entry is valid and not flagged returns by closing it through the dos library and clearing it, otherwise marks a failure flag and returns negative one.
+- `call_close`: Wrapper that calls the dos library function Close and returns its result to the caller.
+- `call_current_dir`: Wrapper that calls the dos library function CurrentDir and returns its result to the caller.
+- `call_input`: Wrapper that calls the dos library function Input and returns its result to the caller.
+- `call_open`: Wrapper that calls the dos library function Open and returns its result to the caller.
+- `call_output`: Wrapper that calls the dos library function Output and returns its result to the caller.
+- `call_un_lock`: Wrapper that calls the dos library function UnLock and returns its result to the caller.
+- `call_library_vector_108`: Library stub: loads a library base from a global variable and calls the library function at offset minus 108 of that base, returning its result to the caller.
+- `jump_library_vector`: Jumps through a computed address derived from a global library base at offset 127 to the library function at offset 414, returning its result.
+- `call_library_vector_414`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `call_library_vector_198`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_294`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
+- `call_library_vector_132`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
+- `call_library_vector_210`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `call_library_vector_372`: Library stub: loads a library base from a global variable and calls the library function at offset minus 372 of that base, returning its result to the caller.
+- `jump_library_vector_2`: Jumps through a computed address derived from a global library base at offset 127 to the library function at offset 552, returning its result.
+- `call_library_vector_552`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `call_library_vector_378`: Library stub: loads a library base from a global variable and calls the library function at offset minus 378 of that base, returning its result to the caller.
+- `call_library_vector_384`: Library stub: loads a library base from a global variable and calls the library function at offset minus 384 of that base, returning its result to the caller.
+- `call_library_vector_96`: Library stub: loads a library base from a global variable and calls the library function at offset minus 96 of that base, returning its result to the caller.
+- `call_library_vector_90`: Library stub: loads a library base from a global variable and calls the library function at offset minus 90 of that base, returning its result to the caller.
+- `call_library_vector_78`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
+- `call_library_vector_72`: Library stub: loads a library base from a global variable and calls the library function at offset minus 72 of that base, returning its result to the caller.
+- `call_library_vector_78_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
+- `call_library_vector_390`: Library stub: loads a library base from a global variable and calls the library function at offset minus 390 of that base, returning its result to the caller.
+
+### Enemy
+
+- `jump_to_entry`: Contains a single jump to another routine and returns immediately after transferring control.
+- `init_enemy_structure_early`: Pops a 16-bit value from the stack into a0, pushes it back, and calls a routine, then returns if the result is nonzero.
+- `handle_enemy_setup_dispatch`: Saves register d2, copies a stack word into a global variable and pushes a stack pointer.
+- `dispatch_enemy_loop`: Initializes global state based on a flag, then repeatedly calls a handler pointer, toggles flags, sets a DMA register, and loops while a global word remains zero.
+- `call_and_test_result`: Calls a routine, then returns immediately when its result is zero.
+- `run_sequential_enemy_updates`: Calls fourteen routines in sequence, then loads a byte from the stack into d0, pushes it, and calls a routine.
+- `decrement_and_update_enemy_state`: Decrements a global word and if it reaches zero or goes negative it calls a routine and updates two global fields based on the result.
+- `dispatch_enemy_sequence`: Loads a pointer from a global word twice, calling two different routines with it, then calls a third routine.
+- `loop_call_enemy_routines`: Loops nine times, calling a routine whose address is loaded from a table indexed by the loop counter and storing the result back into the same slot, then calling that routine again when the result is zero.
+- `initialize_enemy_structure_4`: Allocates a structure, initializes its fields, and stores a computed value at its start, then branches on a global flag to set a byte based on another global and calls a long sequence of routines with various constants and pointers, cleaning up the stack before returning.
+- `allocate_and_init_enemy`: Returns immediately if a global flag byte is nonzero, otherwise allocates a structure, sets offset 16 to 1 or to the constant an address depending on the argument, and calls a setup routine with the pointer.
+- `dispatch_enemy_by_parameters`: Loads two word parameters from the stack and, when a global flag is clear and their sum is not one, calls a routine with the value 101.
+- `compare_and_dispatch_calls`: Combines two stack words into an index, looks up a byte in a table and compares a value against a threshold.
+- `dispatch_enemy_handlers_in_turn`: Reads a word from the stack frame into a0, then calls three different routines in sequence using that value as an argument before restoring the stack and returning.
+- `dispatch_enemy_handler`: Reads a byte from a global table, scales it, loads a word from a second table, pushes it and a library base onto the stack, then calls a dispatch routine and returns.
+- `dispatch_enemy_action_3`: Reads a byte from a global table, scales it, loads a word from a second table, pushes it along with two copies of a stack value, then calls a dispatch routine and returns.
+- `dispatch_enemy_state_2`: Reads a byte from a global table, scales it, loads a word from a second table, pushes it onto the stack, calls a dispatch routine, and returns.
+- `lookup_and_call_enemy_action`: Reads a byte from a global table to index two separate tables, pushes a value and a constant for each, then reads a third value from a long-word table and calls a routine with all three arguments before cleaning up the stack.
+- `update_enemy_table_entries`: Returns immediately when a global flag is clear, otherwise stores a value from a global, loops writing a computed value into a table, and calls two routines.
+- `call_store_argument`: Pushes the address of a global variable onto the stack, calls another routine with it, cleans up the stack, and returns.
+- `call_enemy_routines_in_sequence`: Calls six routines with no arguments, then two more with two global pointers, then four more with no arguments, then loops eight times calling a routine with a pointer and a value looked up from two tables indexed by a counter, then calls four more routines with no arguments and one with a zero argument, and returns.
+- `store_division_quotient`: Reads a word from a global variable, scales it by eight, divides it by fifty into a quotient, and stores that quotient as a byte into another global variable before returning.
+- `save_pointer_and_branch`: Saves register a2 onto the stack, loads the address of a global table at offset 3fd8 into a0, copies that address into a2, and branches into another routine.
+- `compare_state_and_store_pointer`: Compares a global word against four and returns when it matches, then compares another global word against a converted byte from the structure and, when equal, stores a table base address into a global pointer before returning.
+- `dispatch_enemy_state_two`: Compares the global word at offset 18552 against two and branches away when it differs, then checks the byte at offset one of the structure in a2 and, when it is nonzero, pushes a zero, calls a routine at address 86442, stores the result into the global word at offset 18554, and returns.
+- `dispatch_enemy_pointer_3`: Reads a byte from the structure, converts it to a long, pushes it, and calls a routine, storing the result into a global pointer, then advances the stack and branches to another routine.
+- `dispatch_enemy_pointer_check`: Reads a byte from the structure, converts it to a long, pushes it, and calls a routine, storing the result into a global long, then returns immediately when that result is nonzero or sets a global word to five and restores the register before returning.
+- `push_and_dispatch_enemy`: Pushes a pointer from a global table and calls a routine, then returns if a byte at a2 is nonzero; otherwise it pushes the pointer again and calls a second routine before falling through.
+- `dispatch_enemy_pointer_check_2`: Loads a pointer from a global table, masks its low byte with fifteen and returns when the result is zero, otherwise pushes the byte and the structure pointer in a2, calls the routine at address 2ada0, advances the structure pointer by 96 and returns when it reaches a global pointer, then calls the routine at address 2aa50 and loads 1 into d0.
+- `compare_and_increment_field`: Loads a pointer from a structure, compares a byte from a global table against a structure field, and when they differ jumps away, otherwise increments a field and jumps to the shared code.
+- `init_enemy_state_dispatch`: Stores a fixed word and a byte from a global table into a structure, then calls a routine when a byte at offset 24 is not negative.
+- `jump_enemy_dispatch_table`: Tests a register against a constant and branches away when the carry is set, doubles the register, indexes a word table with it, and jumps to the selected entry.
+- `check_byte_and_branch`: Compares a byte at offset 3 of the structure in a2 against 255 and returns when they differ.
+- `check_offsets_and_call_routines`: It calls a routine when the byte at offset 39 of the structure in a2 equals 50, then, when the word at offset 8 is between one and 24 and decrementing the byte at offset 25 of a3 reaches zero, it calls a routine and stores 34 there, and finally it calls a routine when the byte at offset 25 of a2 is not 255.
+- `reset_enemy_status_flags`: Clears three status bytes at offsets 30, 29 and 19 of the structure in a2, stores 8 at offset 31, stores 255 at offset 22 of the referenced structure in a3, and only stores 3 at offset 69 when those three status bytes and a global flag are all zero.
+- `update_enemy_state_machine_4`: Loads a byte from a global variable and a state field from the structure in a2, then calls the enemy setup routine when the state is active.
+- `compare_enemy_state_bytes`: Loads the byte at offset 50 of the structure in a2 into d0, compares it with the value 1, and if they differ checks the byte at offset 49, setting d3 to 1 when it is at least 12.
+- `check_timer_then_store`: Compares byte 49 of the structure in a2 against 21 and returns when it is greater, otherwise clears that byte, stores register d4 into byte 16, sets byte 30 to one, and jumps into another routine.
+- `call_enemy_setup_when_d2_set`: Returns immediately when d2 is nonzero, then when the byte at offset 6 of the structure in a3 is not 17 it pushes the structure pointer and calls a routine before branching away.
+- `mask_d2_check_bits`: Copies the value in d2 into d0, masks its bits 1 and 3, and returns immediately when the result is zero.
+- `set_state_byte_16_when_not_1`: Sets d3 to 1 and reads the byte at offset 16 of the structure in a2.
+- `update_enemy_state_machine_3`: Updates an enemy's internal state by reading its current action byte and a global flag, then adjusts a 16-bit counter at offset 2 of the structure in a2, a timer byte at offset 30, and an animation counter at offset 19, while also updating a status flag at offset 22 of the structure in a3.
+- `decrement_word_and_increment`: Decrements the word at offset 2 of the structure in a2, compares a byte from the structure in a3 with a byte from the structure in a2, and when they match increments byte 19, resetting it to zero when it reaches fifteen.
+- `decrement_enemy_timer_and_update_status`: Decrements a byte counter at offset 19 of the structure in a2, resetting it to 15 when it reaches zero, and sets a flag at offset 22 of the structure in a3 when the counter is a multiple of 8.
+- `toggle_enemy_flag_byte`: Compares the byte at offset 25 of the structure in a2 with 255 and returns when they differ.
+- `update_enemy_status_dispatch`: Increments the byte at offset 31 of the structure in a2 when it is below 16, then dispatches on the byte at offset 69 to update various status fields and call the index table dispatch and copy byte via table index routines.
+- `index_table_dispatch`: Compares the 16-bit value in d0 with 6 and, when it is not greater, doubles d0 and uses it as an offset to load a 16-bit entry from a table, then jumps to the address stored at that table entry.
+- `handle_enemy_state_two_2`: Reads the byte at offset 19 of the structure in a2 and, when it equals 2, calls a routine with a halved index and clears a stack value if the index is non-zero, otherwise returns.
+- `clear_flag_and_set_byte`: Clears the byte at offset 30 of the structure in a2, loads the value 255 into the byte at offset 22 of the structure in a3, and jumps to a routine at offset 12fc.
+- `select_code_and_decrement_flag`: Loads the word at offset 2 of the structure in a2 into a0, pushes it onto the stack, loads the byte at offset 24 of a2 into d0, extends it to a long word, pushes it onto the stack, and calls a routine.
+- `decrement_flag_and_call_handler`: Copies the pointer in a2 to a0, adds offset 49 to it, decrements the byte at that address, and jumps to offset 12EA when it stays non-negative, otherwise clears the byte at offset 49 of the structure in a2 and, if the byte at offset 30 is zero, pushes the pointer and calls the routine at offset 164A before jumping to offset 1294.
+- `check_enemy_flag_state`: Reads two flag bytes from a structure and, if their combined state is inactive, selects a byte from another field; then branches to a routine that processes the enemy condition and updates the flag state.
+- `combine_and_mask_enemy_flags`: Reads the byte at offset 0 and the byte at offset -6 of the structure in a3, combines them with a logical OR, masks the result with 133, and branches away when nonzero, otherwise it loads the byte at offset -4 into d0 and stores it in d3.
+- `restore_registers_return`: Restores the caller's saved registers and returns immediately.
+- `update_enemy_flag_state`: Tests bits of a flag register and a byte in a structure, then either updates a flag byte and a global counter or increments and masks a counter byte in a loop before returning.
+- `load_zero_and_jump_2`: Loads the value 0 into d2 and jumps to a routine at offset 13fe.
+- `loop_update_flag_and_call`: Increments the byte at offset 34 of the structure in a2, masks the byte at offset 34 by three, and calls a routine with a byte from offset 18 of the structure in a6 and the updated byte, repeating up to four times while incrementing the counter in d2 until it reaches four, then calls a routine with a byte from offset 34 and the pointer in a2 and jumps to offset 1436.
+- `check_enemy_flags_and_store`: Reads a byte from a structure and tests bit 0 of it, then if that bit is clear it also checks a flag byte in another structure.
+- `check_bit_and_decrement_flag`: Tests bit 2 of the register d3 and jumps to offset 14E6 when it is clear, otherwise loads a byte from offset minus 2 of the structure in a3 into d0, tests bit 0 of it and jumps to offset 149C when clear, compares the byte at offset 69 of the structure in a2 with one and jumps to offset 1468 when different, clears that byte, increments the global byte at offset 11365, and jumps to offset 1490.
+- `process_enemy_flag_and_call`: Tests a global byte and if it is nonzero it stores a value into a structure field, clears another field, decrements the global byte, then calls a routine with a constant and the structure address before setting a flag and jumping away.
+- `process_enemy_condition`: Checks a bit in a global byte and a flag byte in a structure, and if both pass, calls a routine with three structure fields and stores the result back into the structure before returning.
+- `dispatch_enemy_flag_case`: Indexes a byte table with a computed value, then branches through several cases that call a routine with different arguments and set a return value depending on the tested bits.
+- `test_global_and_call_routine`: It tests a global word and returns when it is non-positive, then calls a routine at a fixed address and returns when the result is zero, otherwise it loads seven into d2 and branches into another routine.
+- `dispatch_enemy_flag_routine`: Tests the byte in d5 and returns immediately when it is zero.
+- `call_index_table_routine`: Masks a byte to its low eight bits, and when bit 2 is set pushes two word arguments onto the stack and calls a routine, then sets a register to six when the result is not negative one.
+- `dispatch_enemy_flag_routine_alt`: Tests the byte in d5 and returns immediately when it is zero.
+- `index_table_and_return_code`: Masks the byte in d5 to its low eight bits, and if bit 2 is set it pushes two word arguments from d3 and d4 onto the stack and calls a routine.
+- `index_and_call_enemy_routine`: Reads a byte from a structure field, calls a routine using that value as an index, then reads another byte from the structure and jumps to a shared routine.
+- `index_jump_table`: Compares a register against a constant and skips the jump table if the value is out of range, then indexes a table with a doubled register and jumps to the selected entry.
+- `restore_a2_register`: Restores the caller's a2 register from the stack and returns.
+- `increment_and_reset_enemy_state_2`: Tests the byte at offset 34 of the structure in a2 and, when it is not zero, returns.
+- `increment_and_reset_enemy_state`: Tests the byte at offset 34 of the structure in a2, increments the byte at offset 24 when it equals 1, resets that byte to 255 when it reaches 3, clears a byte in another structure, and sets several bytes in the structure before branching away.
+- `store_flag_and_call_routine_2`: Writes a byte value into a structure, clears a byte in another structure, and when a third byte is not four calls a routine with two of the values before restoring the registers and returning.
+- `update_enemy_action_flags`: Decrements the byte at offset 24 of the structure in a2 and, when the high bit of a global byte is set, branches to a per-enemy handler that sets the byte at offset 31, calls another routine, and updates a 16-bit field and status bytes based on the byte at offset 34.
+- `index_table_by_enemy_type`: Compares the 16-bit value in d0 with four and, when it is not below four, doubles that value and uses it to index a word table, then jumps through the fetched address.
+- `update_enemy_state_flags_2`: Toggles a flag bit in the structure pointed to by a2, decrements a per-enemy counter indexed by enemy type, sets a flag in a global table, copies a state byte, and branches on the enemy type to set one of two values.
+- `update_enemy_action_loop_2`: Writes the value two at offset 61 of the structure in a3, then calls a routine using a byte from offset 1 of that structure and a byte from offset 34 of the structure in a2.
+- `set_enemy_action_flags`: Writes the value one at offset 27 of the structure in a2 and compares a byte at offset 34 of that structure with one, branching away when they differ.
+- `push_args_and_call_handlers`: Pushes four long values onto the stack and calls the routine at a fixed address, then loads a byte from offset 1 of the structure in a3, sign-extends it to a long, pushes it, and calls the routine at a fixed address.
+- `decrement_and_wrap_enemy_counter`: Clears the bytes at offsets 31 and 27 of the structure in a2, decrements the byte at offset 35, and when it reaches zero increments the word at offset 4, wraps it to 65535 when it exceeds 1, and stores 8 in that byte, otherwise it calls a routine when bit 1 is set.
+- `check_bit_and_call_routine`: Reads a byte from a structure and, when bit 1 is set, calls a routine with a stack value and a structure pointer before restoring the registers and returning.
+- `update_enemy_action_loop`: Reads the byte at offset 31 of the structure in a2 three times and adds the values together, then checks the byte at offset 34.
+- `loop_call_enemy_setup`: Loops while a counter in d2 is less than the value in d4, each iteration calling a routine with a word from offset 2 of the structure in a2, the register d3, a byte from offset 16, the register d2, the register d5, and the constant 64925, then increments the counter in d2 and jumps to offset 1B48 when the counter reaches the limit.
+- `store_enemy_struct_when_conditions`: Verifies the byte at offset 34 of the structure in a2 is zero and the byte at offset 31 is greater than eight, then decrements d3 by ten and, when d2 is between one and twenty-nine, adds the word at offset 4 of the structure pointed to by the long at offset 72 of a2 to d2 before calling the enemy struct storage routine with the pushed arguments.
+- `clear_enemy_state_bytes`: Stores 255 at offset 24 of the structure in a3, then clears offsets 31 and 27 of the referenced structure in a2 before returning.
+- `compare_byte_and_call`: Loads a structure pointer from the stack into a2, compares its byte at offset 69 against the value two, and returns immediately when it differs.
+- `check_flags_and_call_routine`: It returns immediately unless the byte at offset 34 of the structure in a2 is nonzero, the byte at offset 69 is zero, and the word at offset 8 is positive, in which case it stores eight at offset 31 and calls a routine before restoring a2 and returning.
+- `handle_enemy_state_increment`: Compares a structure byte against one and branches away when it differs, increments another byte, and when conditions hold calls a routine with the structure pointer.
+- `compare_word_and_clear`: Compares a word in d2 against 2 and returns when it is below 2.
+- `store_value_from_d2`: Stores 1 into the byte at offset 33 of the structure in a2 when the unaffiliated d2 equals 4, stores 2 when it equals 8, stores 1 when it equals 14, and otherwise stores the value of d2 minus 18 into d0.
+- `set_flag_and_branch`: Sets a flag byte in a structure to one and then falls through into another routine.
+- `set_enemy_state_byte`: Writes the value 2 to the byte at offset 33 of the structure in a2 and calls a routine with several arguments, then tests the byte at offset 28 of that structure and calls another routine when it is nonzero, otherwise it returns.
+- `set_flag_and_call_blitter`: Sets the byte at offset 33 of the structure in a2 to one, pushes the constant 70, a zero long, the pointer at offset 19054, and the constant 65535 onto the stack, calls the routine at offset 27316, restores the stack by 16 bytes, and jumps to offset 1C9A.
+- `clear_flags_and_branch`: Clears two flag bytes in two structures and then falls through into another routine.
+- `decrement_d0_and_branch`: It repeatedly subtracts from d0 and branches to one of four fixed addresses when the decremented value is zero, and falls through to a fifth address when none of the matches occur.
+- `push_value_and_call_config`: Pushes the constant 201 onto the stack, calls the routine at a fixed address, removes the pushed value from the stack pointer, restores registers d2, a2 and a3, and returns.
+- `compare_enemy_state_byte`: Saves several registers, loads a structure pointer from the stack, and compares the byte at offset 34 of that structure with two; when they differ it sets two registers to two and zero and branches away.
+- `compute_enemy_setup_offsets`: Calls another routine twice with the value 3, negates the first result when the byte at offset 16 of the structure in a2 is zero, computes a difference from the second result, and passes several computed values including a byte from offset 34 indexed into a table to another routine before calling yet another routine with an address derived from a 16-bit value at offset 2.
+- `call_enemy_setup_routine`: Loads a byte from offset 34 of the structure in a2, indexes a table with it, and subtracts the result from a pointer taken from offset 4 of that structure.
+- `setup_structure_and_call_routines`: It loads a structure pointer from the stack, sets the byte at offset 18 to one and clears the byte at offset 19, then calls a routine with a constant and the pointer and calls another routine with two words from the structure before restoring a2 and returning.
+- `clamp_and_store_enemy_state`: Reads a byte from a global variable, masks its low byte, and branches away when bits 0 and 2 are both clear.
+- `set_flag_if_bit_set`: Masks the low byte of d2, checks bit 2 of that value, and returns early when the bit is clear.
+- `set_flag_and_branch_2`: Stores 2 in the byte at offset 30 of the structure in a2 and branches into another routine without returning.
+- `select_state_value_by_bit`: Masks the low byte of a register into another and loads 255 into a third register.
+- `compare_state_if_flag_set`: Masks the low byte of d2 and returns early when bit 1 is clear.
+- `store_state_and_branch`: Returns early when the 16-bit value in d3 is -1.
+- `reset_enemy_status_flags_3`: Clears three status bytes at offsets 30, 29 and 19 of the structure in a2, stores 8 at offset 31 and 255 at offset 22 of the referenced structure, then returns.
+- `compare_and_update_enemy_flags`: Loads a structure pointer from the stack and calls two routines, then compares the byte at offset 17 with the one at offset 16.
+- `set_flag_and_call_routine_2`: Stores the value 1 into the byte at offset 51 of the structure in a2, pushes the structure pointer, calls a routine, and then restores the registers and returns.
+- `test_stack_word_bit_zero`: Loads a word from the stack into a register, tests its lowest bit, and when set loads a one into the result register before falling through.
+- `prepare_d0_and_compare`: Clears d0 and d2, copies the word in d3 into d0, sign-extends it to 32 bits, and forces bit pattern 5 into the low bits before comparing the result against 5 and branching away when it does not match.
+- `push_frame_call_flag`: Pushes a stack frame, saves register d2 in a pointer, and calls the enemy flag routine before returning to the caller.
+- `load_flag_and_dispatch_enemy`: Saves registers d2 through d4 and a2, loads the structure pointer in a2 and a byte from a global variable into d0.
+- `check_flag_and_dispatch_2`: Checks bit 2 of a register and, when set, clears it to zero, then compares a bit-0-toggled byte at offset 34 of the structure in a2 with the zero and calls a routine at a fixed address when they match.
+- `check_register_and_dispatch`: Returns unless a register equals one, then compares a byte at offset 52 of the structure with a register and calls a routine with three computed arguments, cleaning up the stack and returning when the result is not negative one.
+- `call_enemy_state_handler`: Saves register a2 on the stack, calls a routine at address 38754, restores the stack pointer, then restores registers d2 through d4 and a2 and returns.
+- `set_and_clear_enemy_bytes`: Stores 10 at offset 29 of the structure in a2, then clears offsets 23 and 49 of the same structure before returning.
+- `increment_and_reset_enemy`: Increments the byte at offset 23 of the structure in a2 and, when that byte reaches twelve, calls the enemy reset routine with the same structure pointer.
+- `process_enemy_structure_3`: Loads a structure pointer into a2 and a second pointer into a3, and returns immediately when the byte at offset 49 is zero.
+- `reset_enemy_when_flag_set`: Checks the byte at offset 23 of the structure in a2 against the value seven and, when it matches, clears three status bytes at offsets 19, 29 and 30, stores eight at offset 31 and twenty-five-five at offset 22, then calls a routine using the words at offsets 2 and 4 of the structure before clearing offset 29 and returning.
+- `configure_enemy_on_spawn`: Sets the byte at offset 29 of the structure in a2 to nine, sets bit 1 of the byte at offset 64, clears the bytes at offsets 19 and 23, sets the byte at offset 25 to 255, then calls the enemy placement routine.
+- `store_enemy_state_values`: Stores 9 at offset 29, 4 at offset 19 and 1 at offset 23 of the structure in a2 before returning.
+- `adjust_enemy_offset_via_table`: Computes a signed offset of 8 or 8 depending on a flag byte at offset 16 and a second flag byte, adds it to the value at offset 2, indexes a lookup table with the result, and stores the offset back at offset 2 only when the table entry masked with 3 equals 2.
+- `call_state_setup_and_return`: Saves a2, loads a structure pointer from the stack, pushes it and calls a routine, then clears the pushed copy from the stack and returns; otherwise it restores a2 and returns.
+- `update_enemy_timer_flag`: Reads a global byte and, if bit 2 is set, sets the flag byte at offset 23 of the structure in a2; otherwise it calls another routine and sets that flag if the routine returns non-zero, then increments the byte at offset 19.
+- `call_placement_then_set_flag`: Pushes the pointer in a2 onto the stack, calls the routine at offset 12278, tests the resulting long in d0, removes the pushed argument from the stack, sets the byte at offset 23 of the structure in a2 to one when the value is zero, and jumps to offset 22E2.
+- `decrement_flag_when_positive`: Tests the byte at offset 19 of the structure in a2 and jumps to offset 22D8 when it is not positive, otherwise decrements that byte and jumps to offset 22E2.
+- `call_enemy_placement_then_jump`: Pushes a2 onto the stack, calls the enemy placement routine at offset 22e4, removes the pushed argument from the stack, then jumps into the routine at offset 2270.
+- `clear_enemy_flag_conditionally`: Calls the enemy placement routine with a flag set to one, clears bit 1 of the byte at offset 64, then clears the byte at offset 29 unless the byte at offset 0 is nonzero, in which case it sets the byte at offset 29 to zero.
+- `handle_enemy_state_check`: Compares a byte at offset 29 of the structure in a2 with two values and, when it matches, calls a routine and writes twelve at that offset while clearing a byte at offset 54.
+- `test_status_and_update_flags`: Returns when a referenced byte is negative one or outside a small range, then branches on a word at offset 8 of the structure to either call a routine and set a flag byte or clear a byte at offset 29.
+- `clear_enemy_state_flag`: Clears the byte at offset 29 of the structure in a2 and then branches into the middle of another routine.
+- `call_enemy_update_setup`: Pushes a pointer onto the stack, calls the enemy state update routine, pushes a constant, calls a setup routine, stores the value two into the byte at offset 19 of the structure in a2, restores the stack, and returns.
+- `update_enemy_state`: Returns early when the structure byte at offset 0 is not 1 or the byte at offset 45 is set, otherwise it clears a stack value, calls a setup routine, and returns if a result is zero.
+- `call_enemy_state_handler_3`: Saves registers d2 and a2, loads the enemy structure pointer from the stack into a2, and calls the state handler when the byte at offset 48 is nonzero, then returns.
+- `increment_enemy_state_then_call`: Reads the byte at offset 48 of the structure in a2 and uses it to index a table, then compares the byte at offset 19 with the resulting value and increments it when it is smaller.
+- `test_structure_word_then_call`: Tests the word at offset 8 of the structure in a2 and returns when it is nonzero, otherwise pushes the structure pointer in a2, calls the routine at address 2b69c, and branches to the routine at address 2608.
+- `dispatch_state_then_call_routine`: Compares the byte at offset 48 of a2 with 3 and calls the routine at address 2710 when it differs, then calls the routine at address 260e when the byte at offset 0 of a2 is zero before restoring the registers and returning.
+- `check_flags_then_set_global`: Pushes registers a2 and a3 onto the stack, then when the byte at offset 27 of a3 is nonzero it branches away; otherwise it checks whether the byte pointed to by a global variable equals 128 and, when it does, branches away unless the word at offset 8 of a2 is negative.
+- `call_and_route_enemy_status`: Pushes a two and the structure pointer in a2 onto the stack, then calls the routine at address 169a2.
+- `clear_enemy_byte_if_flag`: Reads a global variable pointer, and only when the pointed-to byte is zero, clears offset 27 of the structure in a3 before returning.
+- `copy_flag_and_select_routine`: Copies the byte at offset 17 of the structure in a2 to offset 16, reads a byte from a global variable masked to four bits, and calls one of two routines depending on whether that value is zero.
+- `set_flag_if_bit_three`: Loads a pointer from a global variable into a0, reads a byte from it into d0, tests bit 3, and sets the byte at offset 17 of the structure in a2 to one when that bit is set.
+- `clear_flag_and_copy_byte`: Clears the byte at offset 17 of the structure in a2 when bit 1 of the global flag at offset 17 is set, then clears the byte at offset 17 of that structure when the byte at offset 15 of the stack is nonzero, and copies that byte into offset 16 of the structure.
+- `select_code_and_dispatch_state`: Loads the structure pointer from the stack, indexes a byte table using a sign-extended byte from offset 18 and a 16-bit value at offset 2, and calls another routine returning 1 when the result is zero otherwise it calls yet another routine with the structure pointer and returns 0.
+- `setup_and_jump_routine`: Loads two longwords from a global variable into a2 and a3, then jumps to another routine.
+- `update_enemy_positions_loop`: Loops over enemy structures stepping by 96 bytes, calls a routine with 255 when the first byte is non-negative, stores the result at offset 66, sets a global 16-bit value at offset 3174 to 1000, and adjusts that value and a sibling structure based on comparing their 16-bit fields at offsets 2.
+- `update_positions_dispatch`: Stores one into a global word, computes the difference between two words from structures in a2 and a3, stores it, calls a routine, then dispatches to a routine via a table and increments byte 37, resetting it when it exceeds three.
+- `push_value_and_call_config_2`: Pushes the constant 304 onto the stack, calls the routine at a fixed address, removes the pushed value from the stack pointer, and returns.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `dispatch_enemy_call_setup`: Loads a pointer from offset 2 of the structure in a2, converts the byte at offset 18 to a signed word, and calls another routine, then restores the registers and returns.
+- `decrease_enemy_state_counter`: Decrements the byte counter at offset 26 of the structure in a2 and returns when it stays positive, otherwise compares the byte at offset 21 against the constant 3 and returns when it differs.
+- `decrement_enemy_state_counter`: Decrements a byte counter in a structure and, when it reaches zero or underflows, resets it from another field and increments a second counter, then calls a setup routine when a flag byte is set.
+- `advance_enemy_state_when_active`: Loads a word from offset 14 and a pointer from offset 10 of the structure in a2, and when the byte at offset 62 is not 255 it pushes the pointer onto the stack and calls the routine, then branches to the next state handler when the result is zero.
+- `check_enemy_setup_flags`: Tests the byte at offset 48 and the sign of the byte at offset 46 of the structure in a2, then when both conditions hold it pushes the structure pointer and a couple of values onto the stack and calls the setup routine, otherwise it returns.
+- `compare_state_then_setup`: Compares the byte at offset 45 of the structure in a2 with 2 and branches away when they differ, otherwise tests bit 0 of d3 and branches away when it is clear.
+- `compare_state_then_call_setup_2`: Compares the byte at offset 39 of the structures in a2 and a3 and returns when they differ, otherwise pushes the structure pointer in a2, calls the routine at address 2e42, and branches to the routine at address 29aa.
+- `check_d2_bit_and_call_setup`: Tests bit 8 of the value in d2 and returns when it is set, otherwise compares the byte at offset 45 of the structure in a2 with two and the byte at offset 39 of the structures in a2 and a6, then stores the sign-extended low bit of the byte at offset 1 of a2 and calls the routine at address 219c when it is set.
+- `compare_state_then_call_setup`: Reads the byte at offset 67 of a2 and, when its low bits are nonzero or the value in d2 does not match 10, it branches away; otherwise it compares the byte at offset 39 of a2 with that of a3 and, when they differ, pushes several values and calls the routine at address aa20 before cleaning up the stack.
+- `check_enemy_flag_bit1`: Loads the byte at offset 64 of the structure in a3 into register d0 and tests bit 1 of it.
+- `check_setup_state_and_call`: Compares the global word at address 4a95 with 255 and branches away when it matches.
+- `configure_enemy_setup`: Pushes the word at offset 2 of the structure in a3 and the byte at offset 39, then pushes the constant 1 and the structure pointer in a2 before calling the routine at address aa20.
+- `push_and_call_enemy_setup`: Pushes a constant and the enemy structure pointer onto the stack, calls a setup routine, removes the pushed values, and jumps to a shared routine.
+- `process_enemy_flag_update`: Reads the byte at offset 59 of the structure in a2 and tests bit 0, branching away when it is clear.
+- `clear_enemy_flag_59`: Clears bit 0 of the byte at offset 59 of the structure in a2, then branches to the routine at address 2aea.
+- `increment_enemy_flag_21`: Increments the byte at offset 21 of the structure in a2 and compares it with 11.
+- `set_enemy_flag_when_threshold`: Compares the byte at offset 21 of the structure in a2 with sixteen and, when it is at least that value, stores nine at that offset, clears bit 0 of a byte at offset 60, and jumps to a shared routine.
+- `process_enemy_update_2`: Checks bit 8 of the value in d2 and returns immediately if it is set, otherwise checks bit 4 and returns if it is clear, then calls a routine to update the enemy from a table entry and calls a routine to check the enemy setup state.
+- `push_and_call_enemy_update`: Pushes a constant and the enemy structure pointer onto the stack, calls a routine, removes the pushed values, and jumps to a shared routine.
+- `update_enemy_from_table_entry`: Calls a routine, then when a flag in d2 is set and the byte at offset 67 of the structure in a2 is zero, computes a table index from a byte at offset 1 and branches away when the entry is invalid.
+- `validate_enemy_setup`: Pushes the enemy structure pointer and a few values onto the stack, then calls a setup routine.
+- `validate_enemy_call_setup`: Returns when the byte at offset 45 differs from 2 or when masking d2 with 4096 and 4 yields zero, then it calls a routine with the structure pointer and, when the byte at offset 57 is nonzero, the byte at offset 46 is negative, and a global word is not the sentinel, it calls another routine before branching away.
+- `update_enemy_state_byte`: Loads the structure pointer from the stack into a2, masks the byte at offset 66 of that structure by sixty-three and compares it with the signed byte at offset 55, and when the masked value is not greater reads the low nibble of a global variable and stores it at offset 21 unless it exceeds nine, in which case it stores three or increments and wraps the byte at offset 69.
+- `set_byte_when_below_twelve`: Compares d2 against twelve and, when d2 is less, sets the byte at offset 21 of the structure in a2 to three before falling through.
+- `increment_and_wrap_byte`: Increments the byte at offset 69 of the structure in a2, then resets it to zero when its value exceeds one.
+- `load_pointer_and_dispatch`: Pushes a2 onto the stack, loads a pointer from offset 2 of the structure in a2, converts the byte at offset 18 to a signed word, and calls a routine with that value, then checks a flag byte at offset 44 and calls a routine with a shifted byte when it is zero.
+- `branch_to_enemy_flag_check`: Branches unconditionally to the routine at a fixed address and does not contain any instructions of its own.
+- `select_enemy_code`: Loads a pointer from offset 2 of the structure in a2 and a byte from offset 18, converts the byte to a signed word, and calls a routine with both values, returning early when the result is nonzero.
+- `dispatch_enemy_flag_check`: Saves a2 and calls a routine, then tests the flag byte at offset 49 of the structure in a2; when it is nonzero it saves a2 again and calls another routine, otherwise it sets d0 to one and branches away.
+- `index_table_by_state`: Loads the enemy structure pointer from the stack into a2 and sets a value to 8, or to 297 when the word at offset 2 of the structure is greater than 160.
+- `update_enemy_state_and_call`: Loads a byte from offset 19 of the stack into d2 and compares it with the byte at offset 45 of the structure in a2, returning early when the latter is greater.
+- `compare_and_call_routine`: Saves registers d2 through d5 and a2 through a3 onto the stack, loads a structure pointer and reads a word and a pointer from it, then compares that pointer against the address at 19096.
+- `test_byte_a3_offset_54`: Tests the byte at offset 54 of the structure in a3 and, when it is nonzero, branches away; otherwise it falls through to the following code.
+- `check_d3_bits_call_routine`: Copies the value in d3 into d0, masks bits 2 and 12, and returns immediately when the result is zero.
+- `validate_a3_and_call_routine`: Returns immediately when the byte pointed to by a3 is not greater than 1, when a global word at offset 3174 is not below 32, or when bit 3 of d3 is set.
+- `process_offset_and_store`: Reads the byte at offset 59 of the structure in a2 and returns early when its bit 0 is clear.
+- `clamp_offset_and_store`: Tests bit 3 of register d3 and compares a global word against forty, returning early when either condition fails, otherwise computing a value from a byte in the structure in a2 and storing it into register d2.
+- `check_enemy_offset_bounds`: Compares the word at offset 2 of the structure in a2 against eight and against 312, branching away in each case.
+- `compute_clamped_offset_value`: Returns early when a global word is at least 70, when bit 1 of a register is clear, or when the byte at offset 66 of the structure in a2 is nonzero.
+- `clamp_offset_and_call`: Returns early when a global word is at least 20 or the byte at offset 29 of the structure in a3 is nonzero.
+- `adjust_enemy_position_offset`: Subtracts the word at offset 2 of the structure from a passed word and branches away when the result is outside the range between negative 64 and 63.
+- `call_after_adding_offset`: Adds d4 to d3, then pushes the constant 2, the resulting value in d3, and the structure pointer in a2 to call the routine at 887e.
+- `load_one_before_fallthrough`: Loads the value 1 into a register and then falls through to the next routine without returning.
+- `compare_structure_words_clamp`: Restores two registers, compares a global word with 22 and returns when it is not greater.
+- `call_after_adding_base`: Adds the word in d2 to the constant 234, stores the result in d2, then pushes the constant 2, the new d2 value, and the structure pointer in a2 to call the routine at 887e.
+- `configure_enemy_state`: Loads a structure pointer and a related pointer, and when the second pointer differs from a fixed address and its byte is not one it calls a routine and returns; otherwise it calls another routine, clears several flag bytes, adds five and three to two 16-bit fields, adds three to a byte, calls a routine with an offset pointer, writes eleven at offset 29, and returns.
+- `handle_enemy_pointer_check`: Loads a pointer from offset 10 of the structure and branches away when it matches a global pointer or its byte is greater than one.
+- `toggle_flag_and_update_counter`: Toggles bit 0 of the byte at offset 27 and returns when the result is zero.
+- `call_when_state_fifteen`: Returns early when the byte at offset 23 of the structure in a2 is not 15 or the word at offset 8 of the structure in a3 is not positive.
+- `load_table_entry_and_index`: Reads a byte from a table indexed by d2 into offset 20 of the structure in a3, copies d2 into offset 21, and sets offset 21 to two when d2 exceeds two before falling through.
+- `save_registers_compare_slot`: Saves registers d2, d3 and pointers a2, a3 on the stack, loads a table address into a3, and compares a stack word against the decimal value 80, branching away when it is less than or equal.
+- `configure_enemy_slot`: Calls a routine with a constant and a stack value, stores the value 8 at offset 12 of the structure in a3 and the stack value at offset 2, then tests the result of another routine.
+- `push_value_and_call_config_3`: Pushes the constant 300 onto the stack, calls the routine at a fixed address, removes the pushed value from the stack pointer, restores registers d2, d3, a2 and a3, and returns.
+- `advance_state_and_call_setup`: Increments a 16-bit value at offset 4 of the structure in a2 by 6, decrements the byte at offset 38 by 6, increments the byte at offset 19, and when that byte exceeds 4 stores 1 at offset 54 and 6 at offset 37 before calling another routine with the structure pointer and the value 2.
+- `dispatch_enemy_by_offset_23`: Calls a routine with the structure pointer, and when the byte at offset 23 equals 3 it loads a pointer from offset 2, passes a sign-extended byte from offset 24 to another routine, then branches based on whether the result is -1, 10, or 11.
+- `set_byte_when_seven`: Copies d2 into offset 34 of the structure in a2, sets the byte at offset 36 to 50, and sets offset 53 to eight when the byte there equals seven.
+- `clear_byte_if_seven`: Clears the byte at offset 29 of the structure in a2 when the byte at offset 23 of that structure equals seven.
+- `store_high_bytes_table`: Loops over sixteen 16-bit values in a global table, and for each one stores its high byte into consecutive words of a buffer while accumulating the value and advancing the index.
+- `store_pointers_and_flag`: Stores the address of a routine into three global pointers at offsets 1170, 1174 and 1230, then sets the global word at offset 1234 to 65535.
+- `init_structure_from_args`: Initializes a structure from four stack arguments by storing two words and two computed sums at offsets 0 through 6, sets byte 8 to one and byte 16 to 100, then advances the global pointer to that structure by six bytes.
+- `store_division_result_fields`: Loads a pointer to a global structure, computes the distance between it and another global address, calls the signed division routine with that distance and the constant twelve, then stores the quotient and the two passed parameters plus their offsets into the structure fields and advances the pointer by six.
+- `store_enemy_fields_and_call`: Multiplies the word at offset 22 of the stack by 12, adds a table base, and compares the result with a stored pointer, returning via a continuation when it is not below.
+- `store_enemy_field_and_call`: Multiplies the word at offset 10 of the stack by 12, adds a table base, and compares the result with a stored pointer, returning via a continuation when it is not below.
+- `chain_pointer_updates`: Loads a global pointer and calls the routine at a fixed address, passing its returned pointer to the routine at a fixed address, then passing that result to the routine at a fixed address.
+- `store_enemy_struct_when_hundred`: When the 16-bit value in d2 equals 100, stores a pointer from a global variable, adjusts two 16-bit parameters using bits of a global variable, and writes those values plus three bytes and the d2 value into a five-field structure before advancing the pointer.
+- `compare_pointers_then_call`: Saves registers a2 and a3, loads the address of a global variable into a0, loads another global pointer into a1, and returns immediately when the two match.
+- `loop_and_store_enemy_pointer`: Calls another routine for each entry in a range starting at the value in a2 and ending at the value in a3, advancing the pointer by 10 each time, then stores a pointer from a global table at offset 5958 into the long at offset 6058 and adds 10 to it when the byte at offset 5966 equals 100.
+- `select_next_enemy`: Loads the enemy type from the current enemy structure, stores 1000 as a maximum distance and a pointer from a global table, then calls the routine that selects the next enemy.
+- `mask_and_test_enemy_flags`: Reads a word at offset 4 of the structure in a6 and masks it with a byte at offset 8, branching away when the result is zero, then tests a byte at offset 6 and branches away when it is nonzero.
+- `clamp_and_store_enemy_value_2_2`: Reads a 16-bit value from a lookup table using a scaled index derived from a threshold counter, adds whole-table repeats of it, clamps the result to a minimum, then stores the value and a flag into a structure via a pointer.
+- `clamp_and_store_enemy_value_2`: Reads a 16-bit value from a lookup table using a scaled index, adds whole-table repeats of it, clamps the result to a minimum, then stores the clamped value and a second adjusted value into fields of a structure pointed to by a2.
+- `clamp_and_store_enemy_value`: Clamps a value read from a lookup table to a minimum and stores it into a structure, then returns.
+- `compare_enemy_thresholds_2`: Copies the word in d4 into d2 and compares it with a word in a5, branching away when it is greater or equal.
+- `compare_and_store_enemy_fields`: Subtracts the word at offset 4 of the stack from the word at offset 2 of the structure in a6 and compares the result with the words at offsets 2 and 6 of the structure in a2, returning via a continuation when the comparisons fail.
+- `store_word_and_push`: Stores the word at offset 4 of the structure in a2 into offset 4 of the structure in a3, sets the word at offset 4 of that structure to two, saves the a2 pointer at offset 6, then pushes the d2 word onto the stack and jumps away.
+- `compare_enemy_thresholds`: Compares the register d6 with 24 and branches away when it is greater or equal, otherwise it subtracts the word at offset 2 of the structure in a6 from the word at offset 2 of the structure in a2 and stores the difference in d4.
+- `match_enemy_threshold`: Compares two 16-bit values from structures in a2 and a6, and if the difference is positive and below a threshold in a5, searches a table of 16-bit values for the entry that best matches a value derived from d6, then stores the result into a structure pointed to by a3 along with a pointer to the a2 structure.
+- `accumulate_table_threshold`: Walks a table of 16-bit values indexed by a shifted register, accumulating entries until the running total reaches a threshold, then stores the larger of the total and the threshold into a field of a structure and returns.
+- `store_table_lookup_minimum`: Loads a value from a table indexed by a shifted register and compares it with another value, storing the larger of the two into a field of a structure, then branches to a comparison routine when the stored value is not greater.
+- `compare_and_add_when_flags`: Copies d4 into d0 and d2, compares the word at the negative six offset of a5 with d2 and returns when d2 is not greater, then tests the byte at offset six of a6 and, when it is nonzero, adds d3 to the word pointed to by a6.
+- `compute_and_store_difference`: Computes the difference between the word at offset 0 of the structure in a2 and d3, and if the result is below the word at offset 0 of that structure or above the word at offset 4 it jumps away, otherwise it stores the difference at offset 0, checks whether d6 is at least 24 and stores the word at offset 2 along with a one at offset 4, then jumps away.
+- `process_next_enemy`: Pushes the current enemy pointer and register a6 onto the stack, then advances to the next enemy in the list, calling the enemy handler when the list is not exhausted and the enemy is active; otherwise it clears the enemy's flags and returns.
+- `clear_byte_a6`: Clears the byte at offset 8 of the structure in a6, then restores the saved registers and returns.
+- `process_enemy_parameters_4`: Reads a byte at offset 8 of the structure in a3 and, when the corresponding word is non-zero, pushes five parameters onto the stack and calls dispatch_enemy_parameters, then pushes another set and calls the timer dispatch routine before cleaning up the stack and returning.
+- `update_enemy_structure_fields`: Copies two 16-bit values from a source structure into a destination structure, computes a modified value from a byte at offset 7 of another structure and stores it, then adjusts the destination based on a flag and a constant byte.
+- `clamp_global_word_319`: Compares the 16-bit value at offset 55d2 of a global variable with the constant 319 and, when it is not greater, overwrites that global word with 319, then returns.
+- `clamp_and_clear_globals`: Clamps the 16-bit value at offset 55f0 of a global variable to a maximum of 163, then clears the word at offset 55f2 when it is negative.
+- `clamp_global_variable_value`: Compares the global variable at offset 55f2 with one hundred and sixty-three and clamps it to that value when exceeded, then tests the word at offset 55f4 and clears it when negative.
+- `clamp_and_store_structure`: Clamps a global variable to at most 163, and when d2 equals 100 stores a zero at offset 8 of the structure in a3 if the byte at offset 10 of the structure in a0 equals 100 and the word at offset 4 of the structure in a2 is below 2, otherwise it copies the words at offsets 0 and 2 into that structure, then returns.
+- `clear_byte_a3`: Clears the byte at offset 8 of the structure in a3, then restores the saved registers and returns.
+- `invoke_and_jump_to_table`: Loads two 16-bit values from offsets 22 and 26 of the caller's stack frame, calls a routine at a fixed address, then loads the address of a table into a pointer and jumps to a fixed address.
+- `loop_scan_enemy_structures`: Compares a byte at offset 10 of the structure in a2 with the decimal constant 100 and jumps away when they differ.
+- `scan_enemy_structures`: Loops through a sequence of structures stepping six bytes each time, validating several fields against values in d3 and d4 and the stack, and when they pass pushes arguments and calls the timer dispatch routine before returning when the end pointer is reached.
+- `load_enemy_timer_type`: Reads a byte at offset 10 of the structure in a2, sign-extends it to a word and then to a long, then calls select_enemy_timer_slot with that value.
+- `jump_and_do_nothing`: Jumps to the routine at the given address without executing any other instruction, so it does nothing before transferring control.
+- `call_enemy_timer`: Pushes the values from registers d4, d2 and d3 onto the stack, sign-extends the byte at offset 11 of the structure in a2, pushes that value, and calls a routine.
+- `call_dispatch_sign_extend`: Saves register d2 in a pointer on the stack, reads a byte at offset 11 of the structure in a2, sign-extends it to 32 bits, and calls the dispatch routine with the value and the saved register.
+- `dispatch_enemy_timer_value`: Loads a byte from offset 11 of the structure in a2, sign-extends it to 32 bits, and calls the dispatch routine with that value and the contents of d3, then restores the registers and returns.
+- `push_args_and_branch_2`: Pushes three word arguments from registers and two sign-extended bytes from offsets 10 and 11 of the structure in a2 onto the stack, calls a routine, then jumps to another routine without returning.
+- `select_enemy_timer_slot`: Compares the value in d0 against the constants 1, 1, 30, 31 and 38 using subtract-and-branch, jumping to one of four dispatch sites depending on which matches, otherwise it falls through to the default branch.
+- `restore_and_return`: Restores the saved registers and returns immediately.
+- `scan_enemy_records_setup`: Loads two word parameters from the stack, multiplies one by 80, and sets a pointer to a fixed table address.
+- `scan_enemy_records`: Scans a table of records by advancing a pointer in a2 by six bytes while the byte at offset 10 equals 'd', the word at offset 2 equals d3, the pointer at offset 6 is four greater than d3, the word at offset 0 is less than or equal to d2, and the word at offset 4 is at least d2 plus 31, stopping when the pointer reaches a global limit.
+- `compute_difference_and_call`: Computes the difference between the word at offset 4 of the structure in a2 and d2 plus 32, and if that difference is positive it calls the routine at the given address with the computed value, d3, the difference and four, then decrements the word at offset 4 of the structure in a2 and returns.
+- `advance_enemy_records_setup`: Loads three word parameters from the stack, multiplies one by 80, and sets a pointer to a fixed table address.
+- `find_and_call_enemy_record`: Scans a table of 6-byte records looking for one whose second field matches a value and whose fourth field is four greater, then whose first field is greater than another value and whose computed fifth field is positive.
+- `advance_and_call_on_limit`: Advances the pointer in a2 by twelve bytes and returns immediately when it is not past a global limit.
+- `loop_dispatch_enemy_routines`: Calls a routine and then another routine with a global pointer, advancing the stack pointer.
+- `store_byte_global`: Stores the byte argument into the global byte at offset 1262, then returns.
+- `invoke_enemy_action`: Returns immediately when the byte at offset 6062 of a structure equals 40959, otherwise pushes a global pointer and three structure pointers and calls two helper routines, then sets that byte to 40959.
+- `iterate_stack_structures`: Loads a pointer from a structure on the stack and returns immediately when its word at offset 6 is zero, otherwise pushes three of the structure's words and calls a routine at 3a3e2.
+- `scale_and_update_enemy`: Scales the first argument by 80 and subtracts 71 to build a value, clamps the sum of the second and third arguments at 224, then calls a routine with the adjusted arguments.
+- `process_enemy_handlers`: Calls the enemy handler routine for the current enemy type and, if the enemy's status byte at offset 0 has bit 1 set, also for the type plus 32, advancing the type by 64 each iteration while the type is below the value in d4.
+- `initialize_enemy_and_call_handlers`: Pushes a pointer from a global structure plus an offset and two constants, then calls a routine to obtain a pointer, and returns immediately when a flag byte at offset 6106 is already set.
+- `load_flag_byte`: Loads a byte from the global variable at offset 22014 into d0 and returns it.
+- `reset_struct_fields`: Clears a word at offset 22024, stores the address of the structure at offset 22026 into the pointer at offset 22090, clears that structure's first word, clears the flag byte at offset 22014, and stores the value 9 into the word at offset 22016.
+- `test_flags_then_return`: Tests a byte in a global variable and, when it is zero, jumps to another routine; then tests a second global byte and, when it is nonzero, also jumps away; otherwise it returns.
+- `push_and_call_enemy_routine`: Loads a word from the stack twice, pushes both copies onto the stack, then calls a routine and removes the eight pushed bytes, falling through to the following code.
+- `index_and_store_enemy`: Loads a parameter from the stack and, when a flag byte is clear, reloads it from a global variable, then indexes a table using that value and stores a computed byte at offset 4 of the selected structure.
+- `compare_global_register_d2`: Loads a pointer from a global variable and compares the value it holds with the register d2, returning when that value is not greater, otherwise restoring the caller's registers and returning.
+- `store_index_and_byte`: Stores the value in d2 into the structure in a2, then writes the constant 13 to offset 2 of that structure when the byte at offset 55fe is nonzero.
+- `index_table_and_find_minimum`: Masks d2 by thirty-one, shifts it right by one, indexes a table with the result to store a byte at offset 2 of the structure in a2, stores d4 at offset 3 and clears offset 6, then when a global word equals eight searches another table for the smallest value and returns the index.
+- `increment_and_loop_counter`: Compares the word at offset 0 of the structure in a2 with the word at the address loaded from the global variable, and if it is greater stores the a2 pointer in that global variable, increments d3, advances a2 by eight and loops while d3 is below eight, otherwise it jumps away.
+- `test_global_and_load_a2`: Saves d2 and a2 on the stack, tests the byte at offset 5608 of a global variable, branches away when it is nonzero, otherwise loads the address at offset 560a into a0 and a2 and clears d2 before branching onward.
+- `decrement_and_adjust_enemy`: Decrements a byte at offset 2 of the structure in a2 and, when it reaches zero or was negative, updates several status bytes at offsets 3, 5, 7 and 4.
+- `manage_linked_enemy_node_2`: Decrements a byte at offset 7 of the structure in a2 and, when the result is zero or the original was at least four, calls a routine with the byte at offset 5 and the word at offset 0; if that call is zero it increments the byte at offset 5 and adds 80 to the byte at offset 7, otherwise it calls two routines, clears the byte at offset 3 and returns.
+- `increment_byte_and_add`: Increments the byte at offset 5 of the structure in a2, adds seven to a2 and five to the byte at that new address, then jumps away.
+- `iterate_enemy_structures_3`: Compares a byte at offset 7 of the structure in a2 against the decimal value 30 and branches away when it is greater or equal, otherwise calls a helper with a doubled index and, when it returns nonzero, calls another helper and clears a byte at offset 6.
+- `prepare_enemy_copy`: Tests a global word at offset 5608 and, when it is zero, sets up source and destination pointers to two tables, then jumps into a copy routine that moves entries.
+- `copy_enemy_entries_loop`: Loops over a source table by advancing a pointer in a3 by four bytes while a counter in d3 is below a global word, copying a word and a computed byte into a destination table and incrementing a counter in d2.
+- `copy_table_to_stack`: Returns immediately if a global flag byte is nonzero, otherwise it copies a block of words from a global table into a stack buffer in a loop and calls a routine with the buffer and its count.
+- `manage_linked_enemy_node`: Saves register a2, then returns early when a global pointer at offset 6388 is nonzero.
+- `update_linked_node`: Pops a pointer into a2, swaps it with the stored pointer and returns zero if the new value is null, otherwise stores a second global pointer plus the two passed words into offsets 12, 16 and 18 of the popped structure, clears its byte at offset 24, restores a2, and returns.
+- `push_and_jump_routine`: Saves registers d2 and a2, loads a2 with a global pointer, and jumps into the middle of another routine without returning.
+- `check_and_clear_long`: Returns immediately if the long at offset 12 of the structure in a2 is zero, otherwise increments the byte at offset 24, returns if it is still below two, clears the long at offset 12, then jumps away.
+- `advance_enemy_pointer_chain`: Adds sixteen to the long at offset 12 of the structure in a2, follows the pointer stored there into a2, and returns when that pointer is zero, otherwise jumping back into the referenced routine.
+- `dispatch_on_parameter_2`: Reads three arguments from the stack and, when they fall within range, loops over a byte table adding or clearing bits depending on a flag; it then calls a routine and, when a bit of the argument is set, calls another routine before restoring registers and returning.
+- `index_and_select_code`: Clamps the second parameter to a range of 0 to 319, indexes a byte table using the first parameter and the clamped value, and returns a code based on which bits are set, otherwise calling a helper routine.
+- `select_larger_computed_value`: Reads two 16-bit parameters from the stack and calls a routine at 46da for each, once with the second parameter and once with the sum of the two parameters.
+- `search_table_with_helpers`: Loads three passed words from the stack and calls the first helper routine, and returns two when its result has bit set, otherwise calls the second helper routine with the incremented second argument and returns one or zero depending on whether its result is nonzero.
+- `clamp_and_shift_value`: Loads two words from the stack, clamps the second value to a maximum of 320, and returns the shifted result after restoring the registers.
+- `check_table_bit_for_index`: Returns when d2 is negative or at least five, otherwise multiplies d2 by twenty, indexes a table at the address formed by adding that product to d3, and returns one when bit two of the indexed byte is set, otherwise zero.
+- `load_zero_then_jump`: Loads zero into d0 and then jumps away without executing any other instruction.
+- `push_register_pointers`: Loads the two 16-bit values from the hardware registers at the 16272 and 16274 addresses, combines each with a value from d2, pushes the pointers and a third register value onto the stack, then jumps into the middle of another routine.
+- `check_table_entry`: Returns zero if a global flag byte is clear, if the indexed table byte is the -1 marker, or if the two passed values are neither equal nor consecutive, otherwise returns one.
+- `process_table_flags`: Reads a table indexed by the first argument and the high nibble of the second, then sets bits in a result based on comparisons of the low nibble and surrounding table bytes, toggling a bit of the third argument when a bit is set, and returns the modified argument or negative one.
+- `adjust_table_nibbles`: Reads a table indexed by the first argument and the high nibble of the second, then clears the low nibble of the second argument when the caller flag is zero and the nearby table byte has bit 2 set, or sets it when the caller flag is nonzero, and returns the modified argument.
+- `find_table_match`: Searches a table for a byte matching a starting value, expanding outward in both directions by two until it finds a match or exhausts the range, then returns the matching index or negative one.
+- `dispatch_enemy_action_sequence`: Saves register d2, then calls a series of helper routines with various constants and clears several global bytes.
+- `dispatch_enemy_action_4`: Computes table offsets from the argument, reads a byte and two words from global structures, and pushes five values before calling the routine at 3B1DA.
+- `process_enemy_movement_table`: Iterates over a variable number of entries in a table indexed by the argument, computing a running position from offset bytes and calling a helper routine for each entry, then stores the final position back and performs additional helper calls based on flag and count conditions.
+- `decrement_and_update_enemy_2`: Reads an enemy index and its structure, then decrements its timers and adjusts its counters based on the enemy type, calling the object library to create, move, or destroy objects as needed.
+- `decrement_and_move_enemy`: Decrements the byte at offset 11 of the structure in a2 and returns early when any of the bytes at offsets 11, 10, or 9 is out of range.
+- `decrement_and_update_enemy`: Decrements a byte at offset 10 of the structure in a2 and a related byte at offset 11, then compares a derived pointer against a stored value and returns early when it is not greater.
+- `decrement_enemy_flags`: Decrements the byte at offset 11 of the structure in a2 and returns immediately when it is not zero.
+- `dispatch_enemy_zero`: Reads a word argument from the stack and, when it is zero, calls a routine with a global pointer and a zero longword, otherwise it calls the same routine with that pointer and the argument.
+- `call_fill_byte_array`: Pushes the constants 10, 255 and 22510 onto the stack, calls the routine at a fixed address with those arguments, removes the stack entries, and returns.
+- `loop_and_call_routines_2`: Initializes two loop counters to zero, then loops ten times over an inner loop of eight iterations, calling a routine with the two indices and a zero argument each time.
+- `dispatch_structure_bytes`: Sets local constants and a pointer depending on whether a global byte is zero, then pushes those values and calls a routine at 3b1da.
+- `call_mask_routine_conditional`: Tests a byte at offset 3004 of a global structure and returns immediately when it is zero.
+- `process_enemy_command_buffer`: Reads a command byte from a table indexed by a parameter, then based on a global flag and the command value configures several objects via library calls and processes a 20-byte buffer into three 20-bit flag blocks, otherwise it returns.
+- `call_helpers_and_clear_struct`: Loads two pointers from a global table, calls a helper routine with them, then computes a byte-indexed address from a global byte and clears three fields of the first structure.
+- `update_buffer_state_2`: Tests a global flag byte and, when it is not the -1 marker, inspects two bytes of a structure to decide whether to clear a value or copy a byte, then applies an XOR-based update and increments a counter byte.
+- `update_buffer_state`: Sets a byte at offset 21 to 255, XORs two global words and stores the result and one operand into offsets 4 and 8 of the structure when nonzero, increments a counter at offset 20, and clears it with a toggle when it reaches the stored limit.
+- `push_pointers_and_branch`: Loads two global pointers, pushes a constant and a pointer, and calls a routine before jumping to another routine; it contains no loop and makes a single call.
+- `loop_bit_structures`: When bit 0 of the register d3 is set, it pushes a modified value and a pointer and calls a routine at 3a322.
+- `call_helpers_with_flag`: Calls a routine with a flag derived from a global byte, then another with a table address, and a third with a different flag; if the byte is nonzero it calls a fourth routine before returning.
+- `configure_enemy_loop`: Initializes two global pointers, then checks a flag bit and may reload them before calling a routine.
+- `set_selected_bit_2`: Reads the word argument from the stack and returns immediately when it is at least 11.
+- `push_constants_and_call_2`: Pushes two constants and calls two routines in sequence before jumping to another routine; it contains no loop and makes two calls.
+- `process_entry_table`: Loops over a table of six-byte entries, testing a bit in each entry and looking up a 16-bit value, then calls a routine with several computed arguments before advancing to the next entry and clearing a global flag.
+- `process_entry_table_loop`: Pushes a constant and a byte from a structure, then computes an address from a global word and another byte before calling a routine at 3b054.
+- `store_table_value`: Tests a flag byte and returns early when it is clear, otherwise loads a value from a global table, sign-extends it, stores it back, and sets a flag bit when the result is nonzero.
+- `call_stub`: Call stub: calls one other routine as a subroutine and returns to its own caller when that routine returns.
+- `clear_buffer_flags`: Clears bit 0 of a global byte, clears a byte at offset 19, sets bit 4 of the byte at offset 1, clears a table entry, restores the saved register, and returns.
+- `call_helper_with_index`: Loads a pointer and a word from a global table, computes a byte-indexed address from a global byte, and calls a routine with them; if the byte is nonzero it calls another routine with a negative value before returning.
+- `increment_global_counter`: Increments a 16-bit value in a global variable by one and stores it back, clears the 16-bit value at the next offset, then sets that second value to 65535 when a global word is not equal to four.
+- `restore_global_value`: Checks a global 16-bit variable and, unless it holds 65535, overwrites it with the value from another global variable, then returns.
+- `return_global_pointer`: Loads a 16-bit value from a global variable into an address register, copies it into a data register, and returns it.
+- `return_global_pointer_2`: Loads the 32-bit value stored at the global variable located at offset 582c and returns it in register d0.
+- `add_sixty_to_global`: Adds 60 to a 16-bit value in a global variable and stores the result back, then returns.
+- `return_flag_when_valid`: Returns immediately when a global word is not -1.
+- `call_helpers_from_struct`: Computes a byte-indexed address from a global byte, reads three bytes and a word from that structure, and calls two routines with decremented values, then calls a fourth routine with an incremented index before returning.
+- `decrement_globals_and_dispatch`: Decrements a global word and branches to 5e7c when it becomes negative, then decrements another global word and returns when it reaches zero.
+- `dispatch_and_set_flags`: Calls a routine, sets a global byte at offset 10020 to one, pushes a parameter and calls another routine, then clears a global byte at offset 18936, sets bit 3 of a global byte at offset 18919, stores 17 into a global word at offset 22572, and branches into another routine.
+- `check_and_set_enemy_flags`: Compares a global word at offset 160 to the value eight and, when it is not eight, returns.
+- `check_value_call_routines`: Compares a global word at offset 160 to 120 and, when it is smaller, sets bit 1 of a flag byte, checks bit 0 of a global byte, and when that bit is set stores one, pushes a zero argument, calls three routines, and cleans up the stack.
+- `index_table_by_global_byte`: Indexes a table using a global byte scaled by six and reads a word from a global structure, then returns early when a global byte is non-zero.
+- `format_and_store_values`: Calls a stack-storeing routine with several constants, indexes a table using a byte from a structure, clamps a global value to 999, and calls two formatting routines before restoring the registers.
+- `load_word_from_table`: Reads a 16-bit word from the table pointed to by a0 using the index in d3 and stores it into d0.
+- `call_helper_then_loop`: Reads a global byte and a word from a global table, calls a routine once, then loops while a counter is below the byte calling a routine and incrementing the counter and word before returning the last value.
+- `split_value_and_store`: Reads a word from a table indexed by a parameter, clamps it to a maximum, splits it into two parts, stores each part into a structure, and calls a routine once or twice before returning.
+- `check_buffer_flag`: Reads a global byte, checks bit 0, and calls the routine at 23568 when that bit is set before returning.
+- `update_buffer_state_2_2`: Calls a helper routine, then inspects a flag byte and, depending on which low bits are set, decrements a counter, toggles a bit, sets a flag, and calls another helper before returning.
+- `dispatch_enemy_action_bits`: Saves registers d2 and a2, loads a global structure pointer, and when a byte at offset 2 is nonzero calls a helper with that value then clears it, repeating the pattern for the byte at offset 3 before dispatching on the bits of a word.
+- `route_enemy_action_bits`: Reads a word and a byte from the stack, calls a routine, then masks the byte and calls one of three different routines depending on whether bits 0, 1 or 2 are set, cleaning up the stack and returning.
+- `call_store_routines`: Pushes several constants and a global pointer, calls three different routines in sequence, cleans up the stack, and returns.
+- `index_table_and_call_routine`: Loads a 16-bit index from the stack and calls a routine with it, then reads a byte from a table indexed by that value into a register.
+- `compute_and_update_global`: Calls a routine at 365fe and stores its result, then calls a routine at 6302.
+- `call_routine_conditional_index`: Loads a 16-bit value from the stack and returns immediately when it is negative or zero.
+- `call_routine_conditional_pointers`: Loads a 16-bit value from the stack and returns immediately when it is negative or zero.
+- `dispatch_four_routines`: Loads five words from the stack and calls two helper routines four times with different combinations of the loaded values and decremented pointers.
+- `dispatch_four_routines_pointers`: Loads four words from the stack and four pointers, then calls two helper routines four times with different combinations of the loaded values and decremented pointers.
+- `dispatch_six_parameters`: Reads six 16-bit parameters from the stack and pushes them in order before calling a routine at 6490.
+- `clamp_and_fill_buffer`: Clamps a parameter to a maximum of 16, writes it into a local buffer and null-terminates it, then calls two routines to process the buffer before restoring the registers.
+- `call_routine_with_pointer`: Loads a pointer and a word from the stack frame, then calls a routine three times with that pointer as its argument before removing the pushed values.
+- `compute_value_with_routines`: Loads a 16-bit value from the stack, calls a routine, and uses its result to compute a pointer.
+- `format_number_string`: Scans a string for digit characters, and when it finds one within range it calls a formatting routine with a pointer and two values before restoring the registers and returning.
+- `process_string_until_null`: Walks a null-terminated string, and for each entry until it finds a null byte it computes a value, calls a routine and then a pointer-based routine, stopping early when a byte equals the hash character.
+- `lowercase_string_to_upper`: Walks a null-terminated string and converts each lowercase letter in the range sixty-one to one hundred and twenty-one to its uppercase equivalent by subtracting thirty-two, then restores the registers and returns.
+- `advance_past_strings`: Skips past a number of null-terminated strings, advancing one string per iteration up to a given count, then returns a pointer to the following data.
+- `fill_buffer_binary_digits`: Fills a buffer backwards with the characters forty-nine and forty-eight, selecting each from the low bit of a shifting word, repeating for a given number of entries, then restores the registers and returns.
+- `insert_node_list`: Inserts a pointer into a linked list node, using the node's existing next pointer when present and storing the node pointer when empty, then clears the node's payload and returns.
+- `build_pointer_table`: Computes a scaled pointer using a 32-bit multiply, stores a value and a computed address into a structure, then loops filling consecutive entries with incremented pointers before storing a terminator and returning.
+- `clear_and_store_pointer`: Clears the 32-bit value stored at the address in a3, then stores that same address at offset 4 of the structure pointed to by a0, and returns.
+- `link_structures_stack`: Reads two pointers from the stack and links them together through their offset 4 fields, clearing the offset 0 field of the second pointer only when the first pointer is zero.
+- `link_three_pointers`: Reads three pointers from the stack and links them through their offset 4 fields, clearing the first pointer's target when the third argument is zero and otherwise copying the existing link, then returns the third pointer.
+- `swap_pointer_fields`: Reads two pointers from the stack and swaps their offset 0 and offset 4 fields, choosing which stored value to copy based on whether the relevant field is zero.
+- `process_enemy_action_loop`: Verifies three global flag bytes are nonzero, calls a library routine with the constants six and one hundred forty-seven, then loops six times indexing a table to call helper routines, storing results, and when a result is zero it calls two more routines and breaks before storing a scaled value and calling further helpers.
+- `call_clamp_routines`: Reads a global flag byte, selects a constant of 40 or 64 based on it, and calls three different routines with that value and the flag before cleaning up the stack and returning.
+- `parse_file_entry`: Reads a pointer and a word, and when the pointer is non-zero calls a routine with a computed table address and arguments, otherwise clears a table entry before restoring the registers and returning.
+- `invoke_enemy_action_sequence_2`: Loops once, reading a word from a global table, calling the routine at 39C48, and storing the result into another global table.
+- `select_action_by_status`: Compares a stack word with a global status word and, depending on its value, either clears a result, indexes a table, or calls a routine with fixed arguments, then stores the value back when the result is non-negative.
+- `dispatch_by_flag`: Pushes a zero longword and calls the routine at 1CA50, then pushes four values and calls the routine at 3AE04 before adjusting the stack pointer and returning.
+- `call_routine_when_flag_clear`: Tests a byte in a global variable and returns immediately when it is nonzero.
+- `call_routine_when_conditions_met`: Tests a byte argument on the stack and clears a word in a global structure when it is zero, then returns.
+- `call_routine_when_values_match`: Compares a global word with a value from the stack and returns immediately when they differ.
+- `store_flag_and_call_routine`: Multiplies the second parameter by ten, adds a base table address, and stores a byte at the resulting offset in a global array.
+- `set_flag_and_call_routine`: Writes the decimal 3 into byte at offset 6 of the structure in a2, pushes that pointer, calls a routine, cleans the stack, and returns.
+- `compute_and_store_byte`: Saves register d2, loads a word from the stack, and returns immediately if a global byte at offset 585a is zero.
+- `store_byte_and_call_routine`: Computes a byte value from a2's word shifted right by two, stores it at offset 63 of a global byte array, pushes the array address, calls a routine, and returns.
+- `call_routine_with_pointer_2`: Pushes the address of a global variable onto the stack, calls a routine with it, cleans the stack, and returns.
+- `select_enemy_action`: Reads a global word and branches to a dispatch routine, then selects one of three routines based on comparing that value to one and two, decrementing it until it matches.
+- `loop_bits_and_call_routine`: Initializes a mask to one and loops four times, testing each bit against a global byte.
+- `store_word_at_offset`: Reads a pointer and a 16-bit value from the stack and stores that value at offset 8 of the pointed-to structure, then returns.
+- `call_routine_twice_in_loops`: Loops six times calling a routine with a table entry at offset a fixed address and a value at offset a fixed address, then loops once calling it with a table entry at offset a fixed address and a doubled value from offset a fixed address, and returns.
+- `dispatch_enemy_action`: Reads two bytes from a structure passed in a2 and a 16-bit value passed in a5, then dispatches to another routine based on the low nibble of the first byte and the high nibble of the second byte, using a jump table for values below 56.
+- `initialize_enemy_struct`: Reads a pointer argument and, when it is zero, calls a routine to obtain one.
+- `load_args_and_conditional_set`: Loads three word arguments from the stack into registers, sets the result register to zero when the third equals one hundred four, and otherwise leaves it unchanged before falling through to another routine.
+- `load_enemy_state_value`: Loads the word at offset 16 of the stack into d0, sets d0 to one and copies it into d2, then branches into the middle of another routine.
+- `call_and_branch_enemy`: Calls a routine and then branches into the middle of another routine, performing no other work of its own.
+- `push_pointer_call_slot`: Tests the byte in d2 and, when it is zero, jumps to a later point, otherwise loads a pointer from d3, pushes it, calls a routine, removes the pushed value, and branches to a shared exit.
+- `push_args_call_slot`: Tests the byte in d2 and, when it is zero, jumps to a later point, otherwise loads a pointer from d4, pushes it, pushes a negative one constant, calls a routine, removes the pushed values, and branches to a shared exit.
+- `push_word_and_branch`: Copies the word in d3 into a0, pushes it onto the stack, calls the routine at 1b180, discards the pushed value, and branches to the routine at 7ad8.
+- `call_and_branch_forward`: Calls a routine at the long address one f0f6 and then branches to the routine at seven ad8 without executing any further instructions of its own.
+- `push_d3_and_call`: Copies the word in d3 into a0, pushes it onto the stack, calls the routine at the global address, removes the pushed value from the stack, and branches onward.
+- `push_and_branch_enemy`: Moves the register d3 into a pointer, pushes it, calls a routine, removes the pushed value, and then branches into the middle of another routine.
+- `test_flag_then_branch_2`: Tests a byte in register d2 and returns early when it is zero, otherwise pushes a pointer built from d3, calls a routine, removes the pushed value, and branches into another routine.
+- `push_regs_and_call`: Pushes three words from registers d4, d5 and d3 onto the stack, calls a routine at a fixed address, adjusts the stack pointer, and falls through to the caller.
+- `push_words_and_call`: Tests the byte in d2 and returns early when it is zero, otherwise loads the word at offset 26 from the stack into a0 and the word in d3 into a0, pushes both onto the stack, calls the routine at one e6c0, discards the arguments, and branches to the routine at seven ad8.
+- `test_d2_then_call`: Tests the byte in d2 and branches away when it is zero, otherwise copies the word in d3 into a0, pushes it onto the stack, calls the routine at the global address, removes the pushed value, and branches onward.
+- `test_register_dispatch`: Tests register d2 and branches away when it is zero, otherwise calls a routine at a fixed address before jumping back into the surrounding routine.
+- `test_d2_then_call_routine`: Tests the byte in d2 and branches away when it is zero, otherwise calls the routine at the global address and branches onward.
+- `dispatch_enemy_by_d0`: Subtracts a constant from the value in d0 and branches to a handler when it matches one of many cases, otherwise decrements it and branches on further matches, and when no case matches it restores registers d2 through d5 from the stack and returns.
+- `process_enemy_command_stream_5`: Saves registers d2 through d4 and a2, reads a command byte and its high nibble from a structure, and dispatches on the command by calling handlers, looping over a count, or indexing a global table of 32-bit entries.
+- `dispatch_enemy_pointer`: Reads a word argument and, when it is negative, skips a call, otherwise it passes the argument to a routine.
+- `dispatch_enemy_fill`: Reads a word argument from the stack and, when it is zero, calls a routine with a global pointer and two constants, otherwise it calls the same routine with that pointer and the argument.
+- `store_indexed_byte_value`: Reads a byte from a table indexed by the passed parameter and stores the resulting word into the global variable at offset 5864.
+- `clear_enemy_block_array`: Walks a fixed array of blocks, writing the byte value 100 into the first byte of each block ten bytes apart until the end pointer is reached, then resets the pointer and two adjacent words at offsets 7526 and 7528 to zero.
+- `store_enemy_record`: Selects a value from the stack argument, returns immediately when a byte argument is above 135, and otherwise pushes the word 444 before calling the routine at 230DC. It then advances a global pointer by sixteen bytes in a loop while the source byte is not 'd' and its byte at offset 14 is not -1, wrapping the pointer when it passes a limit.
+- `save_regs_branch`: Saves registers d2 and d3 on the stack, copies a word from the stack into d3, and branches to a later point without returning.
+- `process_enemy_loop`: Reads a pointer argument and calls a routine to obtain a value, then splits that value into two parts using shifts and masks.
+- `update_enemy_vertical_movement`: Reads a byte from a lookup table indexed by the enemy's state and flags, then adjusts its vertical speed, position and state based on which flag bits are set.
+- `adjust_enemy_vertical_movement_and_state`: Flips the sign of the byte at offset 8 of the structure in a2 when its flags at offset 2 have bit 0 set and registers d3 and d6 differ, then adjusts that byte toward zero and decrements the byte at offset 9.
+- `update_enemy_vertical_movement_and_state`: Updates an enemy's vertical position by adding its signed vertical speed to its y coordinate, nudges its facing direction, and decrements a timer byte, then checks whether it has reached the bottom of the screen.
+- `decrement_byte_scale_table_lookup`: Decrements the byte at offset 10 of the structure in a2, subtracts 80 from the word at offset 12, scales the decremented value by 20, adds a value from a table indexed by d3, accumulates that into d0, and branches away.
+- `adjust_enemy_byte_and_check_position`: Decrements the byte at offset 0 of the structure in a2 if it is at least 50, then compares the 16-bit values at offsets 4 and 6; if they are equal it sets a result flag based on bits of the value in d2 and the 3-bit value at offset 2, and may call another routine.
+- `increment_offset_0_by_50`: Adds 50 to the byte at offset 0 of the structure in a2, clears the byte at offset 8, and falls through to the next routine.
+- `update_enemy_position_and_divide`: Compares two 16-bit values at offsets 4 and 6 of the structure in a2 and, when they differ, copies the value at offset 6 to offset 4 and updates a byte at offset 10.
+- `update_enemy_entry`: Reads a flag byte at offset 1 of the structure in a2 and, if bit 3 is set, decrements the signed value at offset 9 by two and negates it, then clamps it to zero when it exceeds 254.
+- `test_byte_then_call`: Clears the high byte of register d2, returns when bit 7 of that value is clear, returns early when byte 14 of the structure in a2 equals 255, otherwise pushes a2 on the stack, calls a routine, and jumps into another routine.
+- `initialize_enemy_entry_2`: Loads a pointer from offset 2 of the structure in a2 and pushes it on the stack, then reads a byte from offset 10, sign-extends it to a long, and pushes that on the stack, and calls the enemy initialization routine with those two arguments, then stores the result byte into offset 8 of the structure and returns.
+- `decrement_enemy_status_byte`: Tests the byte at offset 8 of the structure in a2 and branches away when it is non-negative.
+- `increment_status_byte_when_positive`: Tests the byte at offset 8 of the structure in a2 and returns when it is negative.
+- `call_when_status_not_dead`: Returns early when the byte at offset 14 of the structure in a2 is 255.
+- `set_flag_when_status_one`: Clears the high byte of d2 and returns early when bit 4 is clear.
+- `setup_enemy_entry`: Reads the status byte at offset 1 of the enemy structure, saves its bit 5 and the byte at offset 12 on the stack along with the coordinates at offsets 2 and 4, then calls the enemy setup routine.
+- `initialize_enemy_entry`: Initializes an enemy entry by calling setup routines with its coordinates and flags, then if bit 6 of the status byte is set it decrements the column and calls the setup routine again, otherwise it stores 100 in the byte at offset 0 and advances the pointer to the next enemy structure.
+- `advance_enemy_structures_2`: Increments a 16-bit value at offset 6 and a byte at offset 10 of the structure in a2, then, if the 16-bit value at offset 14 is not 255, calls the enemy position clamping routine and advances to the next 16-byte structure in a table, repeating until the table is exhausted.
+- `clamp_enemy_position_value`: Saves register a2 on the stack, loads the caller's argument into a2, and returns immediately when the byte at offset 14 of that structure is nonzero or when the word at offset two is greater than or equal to 319, otherwise clears that word and branches into another routine.
+- `clamp_and_select_enemy_table`: Compares the word at offset 2 of the structure in a2 against one hundred and sixty, clamps it when it is below that value, loads two word parameters from the structure onto the stack, calls the enemy table selection routine, cleans up the stack, and branches onward.
+- `push_a2_and_call`: Pushes the pointer in a2 onto the stack, calls a routine, adjusts the stack pointer, and falls through to the caller.
+- `adjust_structure_flags`: Returns immediately when the byte at offset 14 of the structure in a2 is nonzero.
+- `configure_enemy_when_flags_set`: Checks the byte at offset nine of the structure in a2 against one hundred twenty-five and the byte at offset eleven against zero, branching away when either differs, then loads the words at offsets 4 and 2 into a0, pushes them onto the stack, calls the routine at eleven a1c, stores one hundred and ten at offset nine, discards the arguments, and branches away.
+- `clamp_flag_byte_to_eight`: Compares the byte at offset 9 of the structure in a2 against 8 and, when that value is greater, stores 8 into the same location, otherwise it returns.
+- `read_byte_and_branch`: Loads a structure pointer into a2, reads the byte at offset 14, sign-extends it into d0, and branches to the routine at 8508.
+- `read_offsets_and_call`: Reads a byte at offset 12 of the structure in a2 and three more values from offsets 10, 2 and 4, pushes them onto the stack, calls the routine, restores the stack, stores 255 into the byte at offset 14 and stores 100 into the byte at offset 0 before branching onward.
+- `configure_enemy_from_structure`: Reads a word at offset 6 of the structure in a2, subtracts sixty-eight, and subtracts an additional eighty when the result exceeds twelve.
+- `adjust_value_and_branch`: Subtracts sixty-eight from the word in d0, branches to the routine at eight four ninety-four when the result is zero, and otherwise branches to the routine at eight four c0.
+- `set_enemy_state_flags`: Stores 255 into the byte at offset 14 of the structure in a2 and stores 100 into the byte at offset 0, then returns.
+- `iterate_enemy_table`: Walks a table of structure pointers, calling a routine for each entry whose byte at offset 0 is not 100 and whose byte at offset 14 is not 255, until the pointer reaches the end of the table.
+- `validate_and_call_routine`: Checks a structure field against fifteen, computes a difference of two fields, and when a field is negative clears another byte before pushing several values and calling a routine.
+- `save_registers_and_jump`: Saves registers d2, d3, and a2, loads a word from the stack into d3, points a2 at a global array, clears d2, and jumps into another routine.
+- `store_values_and_call_routine`: Stores two 16-bit values from the stack into a structure at offsets 2 and 4, then returns immediately when a stack value is nonzero.
+- `fill_structure_byte_fields`: Stores a decremented byte from a routine at offset 8 and offset 9 of the structure in a2, sets offset 0 to a register and offset 1 to 2, then branches to fill the rest based on a comparison.
+- `fill_structure_in_loop`: Writes a computed byte into a structure, advances the pointer by a fixed stride in a loop, wraps it when it passes a limit, fills fields at offsets 2, 4, 8, 9 and 12, and stops after a counter reaches a stack value.
+- `accumulate_enemy_position_values`: Iterates over blocks ten bytes apart, adding the byte values at offsets 8 and 9 into the words at offsets 2 and 4, and when either accumulated value exceeds its limit it sets the first byte to 100, stopping before the end pointer, then copies one global word into another.
+- `process_table_markers`: Toggles a global flag, increments a counter, then loops over a table copying bytes into a structure and calling routines based on each marker byte before returning.
+- `initialize_enemy_state_2`: Stores 1 in the bytes at offsets 29 and 30, stores 4 at offset 19, and clears the bytes at offsets 49 and 23 of the structure in a2.
+- `reset_enemy_action_flags`: Stores 1 into the bytes at offsets 29 and 30 of the structure, stores 4 into the byte at offset 19, clears the byte at offset 23, then returns.
+- `handle_enemy_state_two`: Reads the byte at offset 19 of the structure in a2 and, when it equals 2, calls a routine with a halved index and clears a stack value if the result's bits 1 and 3 are clear, otherwise it calls a routine with a zero argument.
+- `lookup_flag_and_store_values`: Clamps a word from the structure, indexes a byte table with it, and when a bit is set stores a computed byte and word values into global memory before calling a routine and returning the table byte.
+- `store_if_bits_valid`: Saves register d2, masks a byte from the stack, and returns immediately if bit one is set.
+- `compute_and_call_routine`: Computes a pointer from a global word, copies a word from another global location, derives a byte from a stack value, and calls a routine with the pointer before returning.
+- `update_enemy_state_flags_3`: Loads the caller's structure pointer from the stack and tests its status byte at offset 28.
+- `process_enemy_state_update_2`: Saves registers d2, d3 and a2, loads the caller's argument into a2, and calls a routine at address 39102 with a constant and structure fields; when that routine returns zero it adjusts a structure word, calls a routine at address 37112, and returns, otherwise it branches into a longer block that updates structure fields and calls further routines.
+- `update_enemy_state_flags`: Checks the byte at the start of a structure in a2 and, when it is nonzero, calls a routine with the address of a global flag byte at offset 752, then increments the byte at offset 18.
+- `configure_enemy_attributes`: Stores 80 into the byte at offset 38, subtracts 80 from the word at offset 4, stores 12 into the byte at offset 37, copies the parameter into the byte at offset 47, stores 8 into the byte at offset 23, stores 5 into the byte at offset 19, copies the byte at offset 16 into the byte at offset 17, and stores 4 into the byte at offset 29.
+- `advance_enemy_state_byte`: Compares the byte at offset 23 of the structure in a2 against constants 9 and 8, incrementing that byte when it is below 9, then pushes the structure pointer and calls the state handler before jumping to the dispatch routine.
+- `increment_state_byte`: Increments the byte at offset 23 of the structure in a2, and when it reaches 16 it pushes a negative constant and the structure pointer in a2 before calling a routine, then restores the saved registers and returns.
+- `lookup_and_adjust_word`: Checks whether the byte at offset 23 of the structure in a2 equals 4, and if so reads that byte, sign-extends it, and stores the corresponding table byte at offset 19.
+- `add_table_indexed_value`: Loads a pointer from a2 plus 2, reads a byte at offset 23 of a2, indexes a table at offset 1222, and adds the result to the word at the derived pointer.
+- `update_structure_flags`: If the byte at offset 0 of the structure is zero, copies offset 16 to offset 17, calls a routine with three fields, and stores the result at offset 2; otherwise sets several flag bytes and returns.
+- `increment_index_and_store`: Increments the byte at offset 23 of the structure in a2 and returns early when the signed value is at least 7.
+- `accumulate_indexed_byte_offsets`: Adds a sign-extended byte from a table indexed by a 16-bit value to the word at offset 4 of the structure in a2, then adds a sign-extended byte from offset 51 to the word at offset 2.
+- `clamp_index_store_byte`: Compares the word in d2 against 37 and, when it is greater or equal, returns; then compares it against 31 and, when it differs, returns; otherwise it pushes a value, calls a routine, restores the stack, computes 72 minus twice that word, indexes a byte table with the result, and stores the fetched byte at offset 25 of the structure in a2.
+- `call_state_one`: Pushes the constant 1 and the structure pointer in a2, then calls a routine with those arguments, restores the saved registers, and returns.
+- `update_enemy_state_and_call_2`: Loads a byte from offset 19 of the stack into d2 and compares it with the byte at offset 45 of the structure in a2, returning early when the two bytes differ.
+- `store_bytes_decrement`: Saves a2, loads a structure pointer from the stack, pushes a one argument, pushes the pointer, calls a routine, stores a byte from the stack at offset 47, stores twelve at offset 37, stores thirty-six at offset 38, decrements a word at offset four by a byte value, restores the stack, and returns.
+- `decrement_enemy_timer_when_ready`: Tests the byte at offset 23 of the structure and branches away when it is nonzero.
+- `decrement_enemy_timer_word`: Compares the word at offset 2 of the structure in a2 against the word at offset 6, decrementing the offset 2 word when it is not greater, then pushes the structure pointer and calls the state handler before jumping to the dispatch routine.
+- `index_increment_byte`: Compares the byte at offset 23 of the structure in a2 against 7 and, when it is greater or equal, returns; otherwise it loads that byte into d0, indexes a table 1260 bytes away, stores the fetched byte at offset 19 of the structure, increments that byte, and returns.
+- `call_state_three`: Pushes the constant 3 and the structure pointer in a2, then calls a routine with those arguments, restores the saved registers, and returns.
+- `advance_timer_and_dispatch`: Adds the byte at offset 37 to the word at offset 4 of the structure in a2 and subtracts it from the byte at offset 38.
+- `toggle_state_by_flags`: Calls a routine with a constant of 1 when a byte at offset 47 is greater than 2 and a word at offset 8 is negative.
+- `load_one_if_equal`: Compares the byte at offset 29 of the structure in a2 against 5 and, when it differs, returns; otherwise it loads the constant 1 into d0 and returns.
+- `call_state_setup_zero`: Loads a zero into d0, pushes it and the structure pointer in a2, calls a routine with those arguments, cleans the stack, and jumps to a later section of the same routine.
+- `handle_input_config_entry`: Pushes the structure pointer in a2 and calls the routine at 64168.
+- `advance_enemy_timer`: Increments a byte at offset 47 and a byte at offset 18 of the structure, adds a constant to offset 38, calls a routine, and returns if the byte at a2 is nonzero.
+- `branch_to_enemy_timer`: Performs a single unconditional branch into the middle of another routine and does not return.
+- `call_enemy_timer_advance`: Saves the pointer in a2 onto the stack, calls the enemy timer advance routine, restores the stack, and branches back into the surrounding routine.
+- `set_enemy_movement_flags`: Stores 7 into the byte at offset 29, clears the byte at offset 23, stores 1 into the byte at offset 19, and stores 1 into the byte at offset 27, then returns.
+- `toggle_enemy_state_flag`: Toggles bit 0 of the byte at offset 27, and when the result is nonzero it increments the byte at offset 23, and while that value stays below 7 it looks up a byte in a table using that value and stores it into the byte at offset 19, otherwise it returns.
+- `check_flag_call_routine`: Saves d2 and a2, loads a structure pointer from the stack, and when a flag byte at offset 44 is zero calls a routine with a shifted byte, then branches away when the result is zero.
+- `reset_enemy_status_byte`: Pushes two constants and the structure pointer onto the stack, then calls a routine with those arguments and restores the stack.
+- `adjust_state_counters`: Adds the byte at offset 37 of the structure in a2 to the word at offset 4, subtracts that byte from the word at offset 38, and increments the word at offset 2 when its low bits are below 15.
+- `decrease_enemy_state_counters`: Decrements a word counter at offset 2 when the value in d3 exceeds 16, then decreases a byte at offset 37 unless it is below -4.
+- `handle_enemy_state_toggle`: Returns when the byte at offset 44 of the structure in a2 is nonzero or the word at offset eight is not greater than zero, otherwise pushes a negative one constant, saves a2, calls a routine at address an address, cleans up the stack, and branches into another routine.
+- `call_enemy_update_clear_d0`: Pushes a negative one constant onto the stack, saves a2, calls the enemy state update routine, cleans up the stack, clears d0, and branches back into the surrounding routine.
+- `branch_to_other_routine`: Performs a single unconditional branch to another routine and does not return.
+- `adjust_offset_and_clear_flags`: Tests the byte at offset 38 of the structure in a2 and returns when it is negative.
+- `check_flag_call_state`: Tests a global flag byte and, when it is set, jumps away, otherwise clears a flag byte at offset 44 of the structure in a2, pushes a one argument, pushes the pointer, calls a routine, clears d0, removes the pushed values, and branches to a later point.
+- `decrement_and_adjust_offset`: Decrements the byte at offset 49, and if it stays above 3 calls a routine and adjusts a word at offset 2 based on a shifted value unless the byte at offset 50 differs from 1.
+- `set_register_and_branch`: Sets a register to 1 and branches into another routine without returning.
+- `clear_enemy_flag_byte`: Clears the byte at offset 49 of the structure in a2 and returns.
+- `process_enemy_state_transition`: Loads the structure pointer from the stack and compares the byte at offset 24 against 1 and 2, branching to a helper when it is 2.
+- `call_enemy_state_handler_2`: Saves register a2 on the stack, calls a routine at address 38754, restores the stack pointer, restores register a2, and returns.
+- `dispatch_enemy_state_5`: Dispatches enemy state handling based on the state byte at offset 8, calling different routines for state 2 and state 5, then updates action flags and toggles a flag at offset 16 depending on comparisons of the values at offsets 2 and 6.
+- `clamp_and_read_table_byte`: Clamps the first parameter between 1 and 2 and the second between 0 and 319, then reads a byte from a table using those clamped values and returns it.
+- `check_table_bits_and_compare`: Adjusts a word at offset 2 by plus or minus 10 based on a flag, checks a table byte for specific bits, and returns 1 or 0 based on comparisons with a clamped value.
+- `loop_input_and_dispatch_enemy`: Saves registers d2 and d3, clears d3, and calls three routines, clearing a global byte.
+- `set_flags_and_call_routines`: Sets a global byte at offset 121 and a global byte at offset 7545, stores 2 into a global byte at offset 3004, pushes two zeros and calls a routine, then calls six more routines in sequence before cleaning up the stack and returning.
+- `call_routines_clear_flag`: Calls three routines in sequence, clears a global flag byte, and returns.
+- `invoke_sequential_routines`: Loads a pointer from a global table and calls a routine with it, then calls five more routines with a pointer, a zero, nothing, nothing, a constant, and nothing in sequence.
+- `load_pointers_and_call`: Calls a routine, then loads two pointers from a global table, pushes them and calls another routine, adds a stack argument to each pointer and calls a third routine, and finally calls a fourth routine before cleaning up the stack and returning.
+- `call_setup_routines_in_order`: Calls five routines in sequence with no arguments.
+- `format_and_scan_strings`: Saves register d2, calls a routine with one parameter, and stores the sixteen-bit first parameter into a global word.
+- `setup_and_clear_memory`: Calls a routine with a single argument, then clears two memory blocks of fixed sizes using a global pointer, and when a flag byte is nonzero calls several setup routines before jumping to the end.
+- `check_bounds_violation_2`: Pushes four constants onto the stack and calls a routine with them, checking whether the returned value equals 1.
+- `call_routine_with_zero`: Pushes a word of zero onto the stack and calls a routine with that zero argument, then removes the argument from the stack and returns without touching any other data.
+- `loop_then_call_routines`: Loops a fixed number of times calling a routine with each index, then calls three routines with constants and pointers before returning.
+- `loop_and_call_with_bits`: Loops three times, reading a byte from a table at an offset that increases by 20 each iteration, and calls a routine twice per iteration with values derived from the byte's bits and the loop counter, incrementing a running offset by 40 each pass.
+- `modify_enemy_flag_bits`: Reads two values from a global table, and when the first is less than 3 and the shifted second is less than 20 it sets a flag byte at offset 7542 to 1 and computes a pointer into a global structure.
+- `process_grid_entries`: Initializes a global variable at offset 32b8 to zero, then loops over a 3x2 grid of entries calling a routine for each one and, when a bitmask bit is set, stores a byte from a table into a structure at a computed address.
+- `clear_memory_blocks`: Clears three memory blocks of sizes 80, 8, and 8 bytes at fixed addresses and returns.
+- `call_four_routines_in_sequence`: Calls four unnamed routines one after another and then returns.
+- `toggle_bit_store_counter`: Toggles a bit in a global byte and stores a running counter through a pointer, writing the resulting byte to a second buffer for 20 iterations and repeating the whole process a second time.
+- `configure_enemy_slots`: Iterates over a small set of enemy slots, computing offsets from a global counter and reading status bits from a byte at offset 20 of a structure, then writes enemy state bytes into a per-slot table.
+- `store_enemy_state_bytes`: Reads bits from a byte at offset 20 of a structure and a table entry to compute a value stored in d2, then writes a byte to offset 1, another byte to offset 2, and the combined flag byte to offset 3 of a target structure, setting a flag bit when a counter is zero.
+- `select_enemy_byte`: Selects a byte value based on two parameters: if the first is 4 or more it returns 50, otherwise it looks up the first in a table of 4 bytes, and depending on that entry and the second parameter it either returns a fixed value (100, 101, 106 or 107), indexes a second table of 4 bytes, or indexes a 20-byte table using a scaled combination of both parameters before returning the low byte.
+- `lookup_clamped_table_byte`: Clamps the first argument to the range 1 through 2 and the second argument to the range 0 through 319, then reads one byte from a table at the offset given by the second argument shifted right by 4 plus the first argument times 20, and returns that byte.
+- `index_byte_from_table`: Multiplies the first 16-bit argument by 20, shifts the second argument right by 4 bits, adds the two results, and reads one byte from the table at that computed index.
+- `copy_byte_and_call_routines`: Copies the byte at offset 39 to offset 40, calls a routine with a sign-extended byte from offset 18 and the word at offset 2, stores the returned byte back at offset 39, then calls another routine with the structure pointer.
+- `compare_table_bytes_return_flag`: Reads a table byte for each of two structures using a sign-extended byte from offset 18 and a shared word, compares it against the byte at offset 39 of each structure, and returns 1 only when both comparisons match, otherwise 0.
+- `set_register_zero_branch`: Sets a register to 0 and branches into another routine without returning.
+- `save_registers_and_test_flag`: Links a5 with a small frame, saves registers d2 through d7 and a2 through a6 and a6 onto the stack, loads the word at offset 1e of a5 into d5, stores the constant fifty-five thousand two hundred forty at offset six, zeroes a3, tests bit zero of the byte at offset 23, and when set clears d7 and decrements the word at offset a before branching away.
+- `load_d7_and_call_routine`: Loads 1 into d7, compares the word at offset 10 of the structure in a5 against 2 and branches away when it is greater, otherwise pushes a global address, calls the routine, clears d0, removes the pushed value from the stack, restores the registers, unwinds the frame and returns.
+- `test_register_load_pointer`: Tests register d7 and branches away when it is zero, otherwise moves a word from offset 11 of the structure in a5 into a6 and jumps back into the surrounding routine.
+- `test_and_branch_enemy`: Tests a global word at offset 38 and returns early when it is nonzero, otherwise moves register d5 into a6 and branches into another routine.
+- `evaluate_enemy_score_delta`: Computes the address of a four-byte record in a table using an index from a global variable, stores that address back into the global variable, then calls another routine to evaluate the record and update a running value.
+- `score_enemy_by_position_2`: Walks a table of four-byte enemy records, computing a score bonus for each entry based on the enemy type, position, and flags, and keeps the highest-scoring record in a global variable.
+- `score_enemy_by_position`: Compares the enemy's type and position fields against stored reference values and adds a score bonus to d2, with larger bonuses for lower position values, then advances a pointer through a table of enemy records until the end is reached.
+- `branch_into_routine`: Branches into another routine without returning.
+- `branch_always_forward`: Unconditionally branches to offset a8e4 without modifying any register or memory, so it performs no work of its own.
+- `add_score_when_match`: Compares the register a6 with the constant 64536 and branches away when they differ, otherwise it adds 1000 to the register d2 and branches away.
+- `compare_and_load_constant`: Compares register a6 with register d6, and when d6 is greater or equal it falls through to load the constant 1 into register d0 before continuing.
+- `accumulate_enemy_score_delta`: Clears a 16-bit value at offset 55 of the structure in a5, then adds 1000 to a register when the low bit of byte 3 of the structure in a2 differs from that cleared value.
+- `test_byte_offset_26`: Tests the byte at offset 26 of the structure in a5 and, when it is nonzero, branches to another routine; otherwise it compares register d4 with the constant 100 and, when d4 is greater or equal, returns.
+- `accumulate_and_increment_counter_2`: Reads a 16-bit value from a global variable at offset 55 and adds a 16-bit value from offset 58 to it, storing the sum back at offset 55, then returns.
+- `find_enemy_by_coordinates`: Computes the absolute difference between two coordinates and subtracts it from a distance value, then walks a table of four-byte entries looking for one whose data matches the coordinates and returns its address, or returns zero when no match is found.
+- `store_accumulated_value`: Compares a 16-bit value in d5 with the constant 63432 and, when they differ, pushes a global word onto the stack and calls a library entry point.
+- `compare_structure_values_and_increment`: Compares a 16-bit value at offset 26 of the structure in a5 with the value at offset 26 of the structure in a5, and if they are equal it compares a 16-bit value at offset 14 of the structure in a5 against the values in d5 and d6, adding 10 to the 16-bit value in d2 when both comparisons are not greater.
+- `accumulate_enemy_score_delta_2`: Increments a 16-bit value stored at offset 55 of a global variable by 10, then walks a table of four-byte records updating a comparison value at offset -6 and advancing the pointer until the end marker is reached.
+- `pass_pointer_and_branch`: Copies the 32-bit pointer held in a3 into d0 and then branches to another routine, passing that pointer as its argument.
+- `initialize_enemy_setup`: Loads a structure pointer from the stack, sets bits in register d4 based on several flag bytes, pushes values onto the stack, calls a routine, and when the result is nonzero multiplies a byte by sixteen and branches based on its bits.
+- `set_initialization_parameters`: Loads the constant three hundred and twenty into d3 and the constant four into d2, then branches away.
+- `set_initialization_flag`: Adds eight to d3, loads the byte at offset 3 of the structure in a3 into d0, and branches away when bit 4 of that byte is clear.
+- `set_init_parameter_d2`: Loads the constant 6 into register d2 and jumps into another routine to begin the initialization sequence.
+- `copy_enemy_flag_bit`: Reads the byte at offset 39 of the structure in a2 and the byte at offset 2 of the structure in a3, sign-extending the latter, and stores bit 0 of the compared result into the byte at offset 17 of the structure in a2 before jumping to the dispatch routine.
+- `push_and_call_init`: Pushes three pointers onto the stack, calls a routine that initializes a structure in a2, loads the constant 1 into d0, restores the registers, and returns.
+- `set_init_parameter_d0`: Loads the constant 0 into register d0 and jumps into another routine to begin the initialization sequence.
+- `lookup_enemy_state_table`: Loads the structure pointer from the stack and returns away when its status byte at offset 28 is zero.
+- `set_d2_to_two_and_branch`: Sets register d2 to the value two and then branches into the middle of another routine.
+- `load_table_and_compare_enemy`: Loads a table address into a0 and a6, sets d2 to two, tests the byte at offset 22 of the structure in a2, compares the word at offset 2 against one hundred and sixty, and when it is below that value loads one hundred and sixty into d0 before branching into the surrounding routine.
+- `load_and_setup_d3`: Loads the value one hundred and one into d0, copies it into d3, and jumps to the shared code.
+- `compare_enemy_byte_select_value`: Reads a byte at offset 22 of the structure in a2 and compares it with the constant 3, returning without changes when it is not equal.
+- `store_shifted_result_byte`: Loads a byte from offset 22 of the structure in a2 and a word from offset 2, passes them along with the constant 107 and other register values to a helper routine, stores the returned pointer, and if it is not null writes the low byte shifted left by four bits into offset 2 of the structure.
+- `call_configure_objects`: Pushes the address of a global variable onto the stack and calls a routine that configures several objects, then clears the return value and restores the stack before returning.
+- `call_and_store_result_2`: Pushes several words and a byte onto the stack, calls the routine at a752, and returns zero when the result is null.
+- `clear_d0_and_branch_4`: Clears the 16-bit result register d0 to zero, then unconditionally branches to the routine at offset CFCC and never returns.
+- `process_entry_blocks`: Loads a pointer from a global variable, then loops over three blocks of four-byte entries, and for each entry branches based on which bits are set in its fourth byte to store a value into a global structure at a computed address.
+- `process_enemy_parameters_loop`: Loads two word arguments from the stack, calls a setup routine and a library function, then loops over a range computing pointer offsets and calling a helper for each aligned block, handling any leftover, and returns.
+- `process_enemy_parameter_loop`: Loads a word argument from the stack, calls a setup routine and a library function, then runs a fixed double loop calling a helper at increasing and decreasing offsets, and returns.
+- `process_enemy_parameter_table`: Calls a setup routine and a library function, then loops a fixed number of times calling a helper with a stepping offset and a table pointer, and returns.
+- `init_table_by_argument`: Reads a byte argument from the stack and, when it is zero, fills a table of 32-byte-spaced entries with the value 255 up to a limit, otherwise it leaves the table untouched.
+- `push_structure_and_call_flag`: Loads the structure pointer from its parameter, pushes it on the stack, and calls a routine with the value one when the word at offset 18 of the structure is odd, then returns.
+- `set_flag_and_check_bit`: Reads a byte from a structure passed in a register and, when it is greater than negative one, sets it to negative one.
+- `dispatch_enemy_byte_handlers`: Reads a byte from the structure in a2 and a 16-bit value from the stack, then, when the value equals 11 and the byte is nonzero, calls a routine with the byte and value.
+- `reset_and_iterate_enemies`: Clears a longword in a global variable, stores the decimal value 60 into a byte at offset 0 of a structure, and clears the bytes at offsets 1 through 255, then iterates over a sequence of 256-byte enemy structures, advancing the pointer by 256 and stopping when it reaches the end.
+- `update_enemy_structures`: Iterates over a sequence of 256-byte enemy structures, updating each one's position and state based on its type and flags, then calls the enemy update routine and the below-threshold handler as needed.
+- `decrement_byte_offset_23`: Reads the byte at offset 23 of the structure in a2 and, when it is less than or equal to zero, branches to another routine; otherwise it decrements that byte by one.
+- `subtract_and_branch_value`: Copies d3 into a0, negates the extended d2 into d0, and compares d0 with a0.
+- `reset_structure_and_call`: Copies the 16-bit value at offset 4 of the structure in a2 to offset 2, sets the 16-bit value at offset 4 to -1, then calls the routine at 45816.
+- `decrement_byte_offset_24`: Tests the byte at offset 24 of the structure in a2 and, when it is less than or equal to zero, branches to another routine; otherwise it subtracts one from that byte and branches to a third routine.
+- `route_by_byte_value`: Reads a byte from offset 1 of the structure in a2, sign-extends it to 32 bits, compares it with the decimal constant 13, and calls dispatch_indexed_routine when they are not equal; otherwise it jumps to the routine at 45798.
+- `dispatch_indexed_routine`: Compares a word in d0 with the decimal constant 13 and returns without changes when they are not equal.
+- `iterate_enemy_structures_5`: Iterates over a sequence of 256-byte enemy structures, advancing the pointer and stopping when it reaches the end.
+- `check_offset_one_value`: Loads a structure pointer from the stack, compares the byte at offset 1 against the constant 1, and returns 1 when they match.
+- `dispatch_enemy_state_handler_2`: Computes a signed value from the byte at offset 22, loads the byte at offset 10, and branches away when it does not match a global value.
+- `push_pointer_and_branch_2`: Pushes the pointer in a2 onto the stack, calls the routine at 25a0a, discards the pushed value, and branches to the routine at b410.
+- `store_byte_and_call_2`: Stores the byte in d2 at offset 22 of the structure in a2, pushes the pointer onto the stack, calls the routine at twenty five a0a, discards the argument, restores d2 and a2, and returns.
+- `check_enemy_state_load_value`: Copies the pointer stored at the top of the stack into the structure in a2, then compares the word at offset 2 of that structure to the decimal constant 160.
+- `store_value_and_call_2`: Loads the constant 351 into d0, stores it as the word at offset 2 of the structure in a2, pushes the pointer onto the stack, calls the routine at 25a0a, discards the pushed value, and branches to the routine at b4e0.
+- `test_offset_one_nonzero`: Tests the byte at offset 1 of the structure in a2 and returns 1 when that byte is not zero.
+- `decrement_counter_and_dispatch`: Decrements the byte at offset 10 of the structure in a2 and stores the result back, then loads a byte from offset 1 and stores 351 as the word at offset 2 when it is nonzero or clears that word when it is zero, and finally calls the input handler with the structure pointer.
+- `store_byte_and_check`: Stores the byte in d2 at offset 10 of the structure in a2, compares the byte at offset 1 against zero, and returns zero when they differ.
+- `store_value_and_call`: Loads the constant three hundred fifty-one into d0, stores it as the word at offset two of the structure in a2, pushes the pointer onto the stack, calls the routine at twenty five a0a, discards the argument, restores d2 and a2, and returns.
+- `update_structure_index`: Reads a byte from a table using an index derived from a structure field, compares it with another field, and if they differ calls a routine with the value 1602.
+- `increment_d2_call_routines`: Increments d2 by 1 and returns when the result is not below 8.
+- `compare_accumulated_values_call_handler`: Reads two signed bytes from a table indexed by the value in d2, adds them to the values in d3 and d4, and compares the results against two global words.
+- `compute_and_call_handler`: Sets d5 to 2 and returns early when it is greater than 1, otherwise stores d3 at offset 10, computes a signed value from d4 and a global word, stores the result at offset 22 and d2 at offset 23, then pushes the structure pointer and calls a helper routine before jumping to the end.
+- `dispatch_enemy_input_2`: Saves registers a2 and a3 on the stack, calls the enemy input handler with the structure pointer at offset 4 on the stack, restores the stack pointer, and returns.
+- `validate_and_dispatch_enemy_3`: Loads a structure pointer from the stack, returns early when a global byte is zero, decrements the byte at offset 22, and returns early when the byte at offset 10 differs from a global word or offset 22 is not 2; otherwise it sets offset 22 to 3, calls a helper routine, and returns when that routine reports zero.
+- `update_state_and_dispatch`: Calls a helper routine, then reads the word at offset 2 shifted right by four, the bytes at offsets 31 and 10, and pushes them before calling another helper, and branches based on its result to increment the byte at offset 22 or to call the input handler.
+- `increment_and_dispatch_state`: Increments the byte at offset 22 of the structure in a2, pushes the structure pointer onto the stack, calls the routine at b9f2, pops the pointer off the stack, and falls through into another routine.
+- `store_byte_offset_18`: Stores the decimal constant 1 in the byte at offset 18 of the structure in a2, then branches forward into another routine.
+- `increment_byte_if_nonzero`: Returns immediately when the byte at the start of the structure in a2 is zero, otherwise increments the byte at offset 22 and calls a helper routine.
+- `call_and_branch_forward_2`: Pushes the pointer in a2 onto the stack, calls the routine at twenty five a0a, discards the argument, and branches to the routine at seven b75a without returning.
+- `init_enemy_structure_bytes`: Stores the decimal constant 7 in the byte at offset 1 of the structure in a2 and the decimal constant 1 in the byte at offset 27.
+- `dispatch_enemy_state_update_2`: Reads a 16-bit value at offset 2 of the structure in a2 and shifts it right by 4, then calls a helper routine with the shifted value plus the bytes at offsets 10 and 31.
+- `dispatch_enemy_state_update`: Reads bytes at offsets 10 and 31 of the structure in a2 and calls a helper routine, then branches based on its result.
+- `validate_enemy_state_dispatch`: Reads a byte at offset 27 of the structure in a2 and branches when it is less than or equal to 2, and reads a byte at offset 0 and branches when it is less than 2.
+- `test_and_set_state_byte`: Tests the byte at a2 and the word at offset 6 of the structure, then loads the constant 11 into d0 and branches into another routine.
+- `store_byte_offset_1`: Stores the decimal constant 11 in the byte at offset 1 of the structure in a2, then branches forward into another routine.
+- `push_pointer_and_call_2`: Pushes the pointer in a2 onto the stack, calls a helper routine, removes the pushed pointer from the stack, and then falls through into another routine.
+- `check_state_and_dispatch`: Checks whether the byte at offset 10 of the structure in a2 equals a global variable and the byte at offset 22 is set, and if so calls the input handler with the structure pointer, otherwise increments the bytes at offsets 22, 31, and 27 and calls the input handler.
+- `increment_counters_and_wrap`: Increments the bytes at offsets 22, 31, and 27 of the structure in a2, compares the byte at offset 1 with the constant 12, and if they are equal subtracts 12 from the word in d2 before branching into another routine.
+- `wrap_and_decrement_byte`: Adds the decimal constant 12 to the word in d2, wraps it back into range when it goes negative, decrements the byte at offset 10 of the structure in a2, then branches forward.
+- `clamp_and_increment_byte`: Compares the value in d2 with 320 and, when it is smaller, subtracts 320 from it and increments the byte at offset 10 of the structure in a2.
+- `compute_index_and_call`: Copies d2 into d0, sign-extends it and arithmetic-shifts it right by 4, then reads bytes at offsets 31 and 10 of the structure in a2, sign-extends them, pushes all three values and calls the routine before testing bit 0 of d0.
+- `clear_byte_and_dispatch_on_result`: Clears the byte at offset 24 of the structure in a2, calls a routine, and if that routine returns zero it pushes the structure pointer and calls another routine before restoring the registers and returning.
+- `compute_enemy_state_fields`: Reads two bytes from the structure in a2 and a global word, stores a computed 16-bit value at offset 8 and a signed byte at offset 31, then calls a decode routine through a table when the stored byte is less than 21.
+- `validate_and_dispatch_enemy_2`: Computes a table index from two structure bytes and a global word, calls a validation routine with three arguments, and returns zero while calling a handler with a constant when the validation fails.
+- `match_and_dispatch_enemy`: Walks through a table of 32-byte structures, comparing fields at offsets 10, 22 and 2, and calls a handler with a constant when a structure matches and its offset 2 value falls within a range.
+- `dispatch_enemy_structures_2`: Walks through a table of 32-byte structures and calls a handler with a stack value for each structure whose offset 0 byte is non-negative.
+- `increment_table_bytes`: Reads a byte from a table and, while it is positive, increments the byte located 17 bytes later in the same table by 8, then advances 32 bytes to the next entry and repeats until a pointer reaches a fixed end address, otherwise it returns.
+- `advance_clamped_global_counter`: Increments a 16-bit value in a global variable by 32, clamps it if it exceeds the value at offset a fixed address, then loops up to 80 times advancing that variable until the byte it points to is non-negative, otherwise it returns.
+- `subtract_byte_from_offset_4`: Reads the byte at offset 17 of the structure in a2, extends it to a word, and subtracts it from the word at offset 4.
+- `store_param_and_call`: Saves the passed parameter into the global variable at offset 5862, copies it into a0, and pushes it on the stack before calling another routine.
+- `compute_enemy_state_bytes`: Iterates over a 20-byte table and, for each entry, reads its bits plus the bits of the neighbouring entries to compute a byte value that is stored into a per-entry slot, using a helper routine to look up a value in a second table.
+- `store_enemy_state_bytes_2`: Stores four bytes from the caller's stack arguments into a 60-byte table at offsets 0, 20, 40 and 60 relative to a base computed from the first two arguments, then stores the fifth argument into offset 80 only when it is a non-negative value.
+- `set_flag_byte`: Sets bit 0 of the byte at offset 34754 in a global variable and returns.
+- `check_flag_then_dispatch_enemy`: Clears a flag byte at offset 10670 of a global variable and returns when it is already clear, otherwise loads a pointer from offset 162 of that global variable and calls another routine with it.
+- `dispatch_enemy_update_cases`: Loads a 20-entry row table using a computed index, then dispatches to one of several subroutines based on a case value, passing a pointer into a per-entry structure and a small offset.
+- `check_enemy_flags_dispatch`: Reads bits from several byte fields of a structure, sets flags accordingly, branches based on a parameter value, and otherwise calls a helper routine before returning.
+- `compare_and_dispatch_enemy`: Loads the constants six and one into registers d7 and d4, then compares a word argument against two and branches away when they differ.
+- `branch_to_enemy_routine_2`: Unconditionally branches to the enemy dispatch routine at offset CF4C and never returns from these instructions.
+- `compare_d6_branch_early`: Compares the byte in d6 with 1 and branches to offset CF10 when they are equal, otherwise falls through to a branch to offset CEFC.
+- `branch_to_enemy_routine`: Branches to the routine at offset CF4C and does not return within these instructions.
+- `compare_d5_d6_dispatch`: Compares the byte in d5 with 1 and branches to offset CF24 when they differ, then compares the byte in d6 with 1 and branches to offset CF26 when they are equal, otherwise falls through to a branch to offset CEFC.
+- `call_and_dispatch_enemy_table`: Pushes two constants on the stack, loads pointers from registers d2 and d4, calls a routine with them, and when the result is 1 it branches to offset CF4C, otherwise it branches to offset CEFC.
+- `index_table_and_dispatch`: Multiplies the word at offset 46 on the stack by 9 to index a table, then calls a helper with that computed address.
+- `load_args_and_select_value`: Loads three word arguments from the stack, clamps the fourth to at least 100, and sets a selector register to 1 when the second argument equals 1 otherwise 6.
+- `load_constant_6_into_d3`: Loads the constant 6 into register d0, copies it into register d3, and branches to another routine.
+- `load_stack_value_and_jump`: Reads a 16-bit value from the top of the stack into a register, then unconditionally branches to another routine.
+- `index_table_via_d0`: Subtracts 10 from the word in d0, then branches to the jump table at offset 210 without returning if the result is at least 4, otherwise it falls through to index the table.
+- `compare_d2_to_limit`: Adds register d4 to register d2, computes an address from it, and when the result is greater than or equal to 20 it restores the saved registers and returns.
+- `setup_and_check_counter`: Establishes a small stack frame, saves the registers, and stores the value 28 into a byte at the base of the frame.
+- `adjust_byte_and_branch`: Decrements a 16-bit counter at offset 10 of the structure in a5, loads a byte from offset 4 into d0 and adds 2 to it, then stores the result back at offset 5.
+- `compute_offset_pointer`: Multiplies the value in d5 by 20, adds it to the base address at offset 16168, stores the resulting pointer in a2, loads a word from offset -2 of a5 into d2, then jumps to offset 5408.
+- `load_byte_then_jump`: Loads a byte from offset -4 of a5 into d6, then jumps to offset 5476 without returning.
+- `read_byte_and_dispatch`: Reads a byte from a pointer and selects a selector register based on bit 1, then calls a helper with the computed arguments.
+- `compare_byte_then_store`: Compares the byte in d3 with 214, and if they differ jumps to offset 518; otherwise it stores 207 in d3 and jumps to offset 528.
+- `store_indexed_byte_conditional`: When the byte in d3 falls between 209 and 216 inclusive it overwrites d3 with the low bit of d2 XORed with 205, then stores d3 into a byte of a table at offset 66668 indexed by a running counter, increments both counters, and returns when the counter reaches a stored limit.
+- `compare_stack_word_dispatch`: Saves the registers, reads a word from the stack, and compares it against one, branching away when they differ.
+- `scan_enemy_table_entries`: Computes a pointer into a table from a base address and an index, then calls three helper routines to process the structure.
+- `test_byte_then_call_helper`: Loads the value 20 into d3, tests the byte at that offset of the structure in a2, and returns early when that byte is zero.
+- `load_seven_into_d4`: Loads the constant 7 into register d0, copies it into register d4, then branches to another routine without returning.
+- `compare_and_load_five`: Compares register d3 with 65535, and when they differ loads the constant 5 into register d0 before branching to another routine.
+- `load_constant_4_into_d4`: Loads the constant 4 into register d0, copies it into register d4, copies register d3 into register d2, and branches to another routine.
+- `compare_d2_to_65500`: Compares register d2 to the value 65500 and, when they differ, loads the constant 27 into register d0.
+- `call_routine_e61c`: Pushes the values from registers d4, d5 and d6 onto the stack and calls a routine at address e61c, then clears a stack area and branches to another routine.
+- `decrement_counter_check`: Decrements the counter in d5, and if it is not zero jumps back to offset 516; otherwise it sets d7 to 1 and jumps to offset 544.
+- `increment_counter_check`: Increments the counter in d5, and if it equals 19 sets d7 to 1; otherwise it jumps back to offset 524.
+- `decrement_counter_check6`: Decrements the counter in d6, and if it reaches 1 sets d7 to 1; otherwise it jumps back to offset 532.
+- `compare_register_and_branch`: Compares a register against the constants 255, 19, and 2, branching to three different targets when each comparison is equal.
+- `compare_and_load_168`: Compares register d2 with 65516, and when they differ loads the constant 168 into register d0 before branching to another routine.
+- `compare_d2_to_65535`: Compares register d2 to the value 65535 and, when they differ, loads the constant 44 into register d0.
+- `call_routine_e61c_set_flag`: Pushes the values from registers d4, d5 and d6 onto the stack and calls a routine at address e61c, sets the word at offset 57c of the global structure to one, then restores the saved registers and returns.
+- `split_byte_and_store`: Reads two word arguments from the stack, computes a table index, and calls two helpers with adjusted pointers.
+- `set_d5_zero_jump`: Sets d5 to 0, then jumps to offset 5604 without returning.
+- `split_byte_and_store_table`: Reads a byte from a source pointer, splits it into two nibbles, and stores the corresponding entries from a 16-entry table into two adjacent bytes of a global structure.
+- `set_flag_and_call_helper`: Clears the flag word at offset 57c of the global structure, then calls a helper with the arguments 178, 20 and 10.
+- `setup_and_index_table`: Loads three 16-bit values from the stack into d3, d4 and d2, then calls a routine with the constants 85 and 12.
+- `compute_table_pointer_branch`: Branches away when d2 is 14 or greater, otherwise multiplies d2 by 10, adds the base of a table at offset 16711, stores the resulting pointer in a2, and branches into another routine.
+- `restore_regs_and_return`: Restores registers d2 through d4 and a2 from the stack and returns without modifying any data.
+- `clear_flag_push_incremented_pointers`: Clears the global flag at offset 57C and pushes two incremented copies of registers d3 and d4 onto the stack, then calls a routine that copies bytes from a pointer and returns.
+- `lookup_table_and_call_conditional`: Reads three word-sized arguments from the stack and, when the third is less than 2, pushes a table byte looked up at that index along with the other arguments and calls a routine, otherwise it branches away.
+- `read_byte_from_table_28981`: Copies register d2 into register d5, adds 3 to register d5, loads the base address 28981 into register a0, reads a byte from the table at that address indexed by register d3, and branches to another routine.
+- `loop_call_routine_e672`: Pushes the values from registers d6, d4 and d2 onto the stack and calls a routine at address e672, then increments register d2 and loops back to the call while d2 is less than the value in register d5.
+- `call_dispatch_enemy`: Multiplies the second parameter by 80, subtracts 44 from the result, pushes it onto the stack along with the first parameter and three constants, then calls a routine at address ed0e and returns.
+- `copy_bytes_via_table`: Calls a routine to load a global address into d0, then reads two bytes from offset 16164 and 16172 of a global structure and subtracts them from values at offsets 16170 and 16166.
+- `push_pointer_and_call`: Pushes the constant 213 onto the stack, copies a pointer from offset 18 of the stack into a0, pushes that pointer three times, calls the routine at offset 59652, removes the pushed values, and returns.
+- `call_and_invoke_helpers_if_result`: Calls a routine with a stack argument, and when it returns a nonzero result it clears the global flag at offset 57C, then pushes several modified copies of that argument and calls five helper routines before setting the flag and returning.
+- `call_dispatch_enemy_params`: Pushes the first parameter twice onto the stack along with three constants, then calls a routine at address ed0e and returns.
+- `push_constants_and_call_3`: Pushes registers d2 and d3 onto the stack, clears the flag at offset 57C, pushes the constants 3, 20, and 120, pushes two zero words, calls the routine at offset 59148, loads 120 into d3 and 3 into d2, restores the stack, and branches into another routine.
+- `loop_call_with_incremented_counters`: Pushes two constants and two register-derived pointers, then calls a routine inside a loop that increments register d3 by 20 each pass, resets it to 121 once it exceeds 199, increments register d2, and repeats until d2 reaches 11.
+- `clamp_and_store_byte`: Reads a byte from a computed table slot and, when that value is zero or 20, stores the low two bits of a register plus one into the byte at the same slot offset.
+- `move_a3_to_d2`: Moves the contents of a3 into d2, then jumps to offset 6740 without returning.
+- `check_byte_and_store_previous`: Reads a byte from a computed address in a global structure and, when that value is zero or 20, stores a fourth register into the byte immediately before it.
+- `load_pointer_and_forward`: Saves registers on the stack, loads a pointer from a global variable, pushes it, and calls a routine.
+- `process_enemy_table_scan`: Loops calling a helper with a stepping index, then scans a byte table and fills a structure field based on the scanned bits, and returns a value.
+- `scan_table_advance_counter`: Reads a byte from a table pointed to by a register and, when its lowest bit is clear, advances both the pointer and a counter.
+- `check_d2_then_load_84`: Tests whether the 16-bit value in d2 is zero and branches away if it is, then loads the constant 84 into d3 and branches into another routine.
+- `build_pointer_from_subtraction`: Loads 90 into d3, subtracts d2 from it, builds a pointer from the table at offset 16224, stores that pointer in a2, loads 0 into d2, and branches into another routine.
+- `check_flag_and_set_value`: Checks bit 0 of the byte at a source pointer and, if it is clear, sets a register to 91 or 84 depending on whether another register is at least 19.
+- `check_enemy_flag_then_load_constants`: Reads a byte from the structure pointed to by a2, checks bit 0 of that value, and if the value is negative or the bit is set it returns without doing anything.
+- `loop_call_with_byte_pointer`: Increments register d3 and resets it to 84 when it exceeds 89, then enters a loop that calls a routine with a pointer and a value, advances a byte pointer, and exits when register d2 reaches 20.
+- `dispatch_stack_via_table`: Loads three 16-bit values from the stack at offsets 14, 18 and 22 into registers, then jumps to a routine selected by a table indexed with the value at offset 18.
+- `lookup_and_jump_via_table`: Compares a 16-bit index register against 7 and, when the index is greater, doubles it to form a byte offset.
+- `restore_regs_and_return_2`: Restores registers d2 and d3 from the stack and returns without modifying any data.
+- `load_stack_words_and_compare`: Saves several data registers, loads three words from the stack into registers, compares the second of them to one, and if it is not equal it loads the value one into a register before falling through to the next routine.
+- `configure_enemy_state_2`: Initializes a counter, calls a configuration routine and a library call, then branches into another routine when a global word equals one and a stack byte is zero.
+- `compute_pointer_and_dispatch`: Computes a pointer from a global variable and two byte tables, then calls a routine with the pointer and a register value.
+- `check_flag_then_call_helper`: Sets a constant in a register, tests another register, and when it is zero calls a helper routine, returning early otherwise.
+- `push_args_and_branch`: Copies d4, d2 and d3 into address registers and pushes them along with the constant 3, then branches into another routine.
+- `compare_global_select_constant`: Compares a global word against one and branches away when they differ.
+- `compare_byte_then_branch`: Compares the byte at global offset 12546 with the constant 3 and branches away when they differ, then branches into another routine.
+- `push_registers_and_call`: Copies d4 into a0 and pushes it, pushes the constant 3, copies d2 into a0 and pushes it, copies d3 into a0 and pushes it, calls the routine at offset 59640, restores the stack, and branches into another routine.
+- `conditional_call_pair`: Loads two 16-bit values from the stack into d2 and d3, then calls a routine with the constant 22 and a pointer based on d2 plus two.
+- `load_args_branch_into_helper`: Loads three word-sized arguments from the stack into registers, clears the global flag at offset 57C, compares a computed value to 20 and loads 20 when it is not less, then branches into another routine without returning.
+- `scan_slots_and_set_flag`: Loops over a range of word-sized slots, calling a routine for each one, then checks a global flag and writes the byte 209 into a table when a matching slot is found.
+- `check_and_modify_table`: Compares a global flag to 2 and, when it differs, checks two table slots for the bytes -43 and -42, writing the byte 209 to the preceding or current slot and setting a flag register accordingly.
+- `set_bit_in_byte_range`: Sets bit 6 of each byte in the range from a2 to a3, advancing the pointer by one byte until it reaches the end, then restores registers and returns.
+- `initialize_enemy_counters`: Loads three 16-bit values from offsets 14, 18 and 22 of the structure in a5, then, when a global flag is clear and the third value is positive, copies the bytes 65, 25 and 83 into the stack and calls a routine that writes a byte to a table, repeating this for each index from the first value up to 19 while decrementing the loop count.
+- `configure_enemy_counters`: Calls a configuration routine with several argument combinations based on two counter registers, toggling a global flag around some calls, then computes a pointer and calls a routine with it.
+- `build_pointer_from_a5`: Tests d5 and branches away when it is zero, otherwise multiplies the word at offset 10 of the structure in a5 by 20, adds the base of a table at offset 16148, stores the pointer in a2, compares the same word with 1, clears it when equal, stores 6 at offset 12, and branches into another routine.
+- `build_pointer_branch_into_helper`: Writes two constants to the stack, builds a pointer from register d3 and register d5, compares it to 20 and loads 20 when it is not less, clears register d7, then branches into another routine without returning.
+- `test_register_then_load_constant`: Tests a register and returns into another routine when it is nonzero.
+- `validate_pointer_then_read_value`: Copies a pointer register into a 16-bit register and compares it against 20, returning early when the value is greater than or equal to that constant.
+- `scan_slots_and_check_bit`: Loops over a range of slots calling a routine for each one, then checks a bit in a table byte and branches into another routine when the condition is met.
+- `read_value_then_jump`: Reads a 16-bit value from the structure pointed to by a5 and stores it into a data register, then jumps to the target address.
+- `loop_and_call_routines`: Calls a routine with the constant 7, then calls another routine with two stack values and a computed address.
+- `set_flag_and_call`: Stores the byte value 60 into a global byte, then when the stack value d2 is 1 or 6 and a bit in a computed table entry is set it overwrites that global byte with 40 and increments it.
+- `decode_enemy_byte_blocks`: Transforms a block of bytes in a global variable by replacing specific marker values with decoded characters from a lookup table, and when a mode flag equals three it decodes a second data block using a value from another routine and writes the results plus a shifted copy into the buffer.
+- `store_byte_if_flag_set_2`: Loads two registers from the stack and, when a global flag is set and the byte at a computed address is nonzero, branches into another routine.
+- `clear_d0_and_branch`: Clears register d0 to zero, then jumps unconditionally into the middle of another routine at the target address.
+- `store_pair_if_both_zero`: Computes an address in a global structure from two registers and, when a global flag is set and the first two bytes there are both zero, stores a third register and that value plus one into those bytes.
+- `load_zero_and_branch`: Loads the value 0 into register d0 and then branches to the routine at 59122.
+- `load_stack_arguments_and_branch`: Reads four word-sized arguments from the stack, and when a global flag is clear it calls a helper routine and branches into it; otherwise it computes two address ranges and branches to a loop.
+- `copy_a2_to_d2_and_branch`: Copies the contents of register a2 into register d2, then jumps unconditionally into the middle of another routine.
+- `store_byte_indexed_table`: Writes the byte at stack offset 43 into a table indexed by a computed offset, then loops over two counters until both reach their limits before restoring registers and returning.
+- `jump_into_helper`: Loads the constant 0 into a data register and jumps into the middle of another routine without returning.
+- `fill_table_from_nibbles`: Reads the low nibble and high nibble of a passed byte, then, unless a global flag is set, fills a table with consecutive values starting from a third argument using nested loops indexed by those nibbles.
+- `copy_a6_to_d2_and_branch`: Copies the contents of register a6 into register d2, then jumps unconditionally into the middle of another routine.
+- `store_d6_in_indexed_table`: Stores the value in register d6 into a table slot computed from two counters, then advances both counters in nested loops until their limits are reached before restoring registers and returning.
+- `zero_register_and_jump`: Clears register d0 and jumps into the middle of another routine.
+- `copy_table_from_byte`: Reads a byte from a pointer and advances that pointer, then, unless a global flag is set, copies consecutive bytes from the pointer into a table using nested loops indexed by the byte's low and high nibbles.
+- `copy_d6_to_d2_and_branch`: Copies the contents of register d6 into register d2, then jumps unconditionally into the middle of another routine.
+- `copy_byte_from_pointer_table`: Copies the byte pointed to by a2 into a table slot computed from two counters, increments the pointer, then loops over two counters until their limits are reached before restoring registers and returning.
+- `load_status_byte_offset_34`: Loads the byte at offset 34 of the structure in a6 into d0, then branches to another routine.
+- `clear_flag_call_and_set`: Clears the global flag at offset 57C, pushes four word-sized values read from the stack into registers, calls a routine, sets the flag, cleans the stack, and returns.
+- `clear_flag_call_pointer_arg`: Clears the global flag at offset 57C, pushes a value read from a pointer plus offset 16 along with three stack arguments, calls a routine, sets the flag, cleans the stack, and returns.
+- `compute_and_scan_table`: Computes a table address from two stack values, sets a counter to 20 minus a third value, and jumps into a helper routine that scans the table for a nonzero byte.
+- `clear_d2_and_branch`: Clears register d2 to zero, then jumps unconditionally into the middle of another routine.
+- `test_byte_then_restore`: Tests the byte at the address in a2 and returns immediately if that byte equals zero.
+- `increment_pointer_and_counter`: Increments a pointer and a counter, then loops over two counters until their limits are reached before setting a return value and jumping away.
+- `compute_and_scan_table_2`: Computes a table address from two stack values, loads the constant 0 into a register, and jumps into a helper routine that scans the table for a nonzero byte.
+- `compare_byte_ranges_then_return`: Compares the byte at the address in a2 against the value 209 and, if it is below or equal, jumps to a target address.
+- `increment_pointer_check_counter`: Increments a pointer and a counter, then loops until the counter reaches its limit before setting a return value and jumping away.
+- `compare_and_branch_2`: Loads two stack values into registers, adds a third and fourth stack value to them, compares a global flag to 2, and branches into a helper routine based on the result.
+- `copy_d2_to_d6`: Copies the 16-bit value from register d6 into register d2 and then branches to another routine.
+- `set_table_slot_if_zero`: Checks whether a table slot is zero and, if so, stores the constant 20 into it, then loops over two counters until their limits are reached before restoring registers and returning.
+- `store_byte_in_indexed_table`: Reads two word values from the stack and compares them against a global word; if that value is not 2 it returns, otherwise it indexes a table using the product of the first value and 20, checks whether the byte at that offset is nonzero, and if it is zero stores the byte 20 at that location before restoring registers and returning.
+- `process_enemy_byte_tables`: Initializes a library, then iterates over three byte tables (11 rows by 20 columns, then 2 rows by 20 columns) reading each byte, clamping values of 193 or higher to 178, dividing by 20, multiplying by 16, and passing the result along with the byte and loop counters to another routine, before calling a final library routine and a cleanup routine if a global byte is nonzero.
+- `dispatch_enemy_with_limits`: Validates two parameters against limits, then calls a library routine, looks up a handler pointer, performs a signed division, and calls another routine with five computed arguments before restoring registers and returning.
+- `dispatch_action_arguments`: Calls three routines with the arguments 2, 14, and 14 in turn, then selects a value of 14 when the argument is zero and 3 otherwise before calling a final routine with that value.
+- `push_stack_values_to_entry`: Checks a global counter against 8 and, while it is below that limit, stores a longword, two words and a byte from the stack into consecutive fields of an entry, advances the counter, then restores registers and returns.
+- `check_flag_and_call_routine`: Checks a global flag word and returns immediately when it is set, otherwise loads a value from a table indexed by another global word and calls a routine with four constant arguments.
+- `check_byte_then_call_routines`: Compares the byte at offset 8 of the structure in a2 against the value 1 and returns if they differ.
+- `iterate_enemy_structures`: Iterates over a linked list of structures, calling a routine for each entry and advancing the pointer by ten bytes, and when the end is reached it clears a global word and returns.
+- `check_flag_and_call`: Loads two stack words into registers, pushes a constant and calls a routine, then returns without changing anything when the result is zero.
+- `allocate_and_fill_structure`: Reads a stack value, scales it, and calls a routine to allocate a block, storing the pointer and several computed fields.
+- `clear_reg_and_branch`: Clears register d5 and then branches to the routine at 61544 without returning.
+- `process_enemy_structure_fill`: Loops calling a helper with computed offsets, then fills structure fields from a table and calls another helper, returning when a condition is met.
+- `store_pointer_and_call_2`: Clears a word at offset 20 of the structure in a3, loads a pointer from a global variable and adds 96 to it, stores the result at offset 8 of that structure, pushes a value onto the stack, and calls a routine.
+- `load_pointers_and_branch`: Saves d2 through d3 and a2 through a3 on the stack, loads two global pointers into a2 and a3, clears d2, and branches onward.
+- `sum_indexed_and_clamp`: Loads a byte from a table indexed by d2 at offset 34 in a2 and a byte from a second table indexed by d2, adds them together, and clamps the result to 15 when it is negative.
+- `sum_indexed_and_clamp_2`: Loads a byte from a table indexed by d2 at offset 34 in a2 and a byte from a second table indexed by d2, adds them together, and clamps the result to 15 when the source byte exceeds 15, storing the sum at offset 16 of the structure in a2.
+- `update_enemy_counter_2`: Copies a word from offset 8 to offset 6 of the structure in a2, calls a routine with several structure values, then decrements a counter and calls handlers when its flags are set.
+- `process_enemy_state_update`: Loads a pointer from a global variable and, when a byte at offset 22 is nonzero, calls a routine with two adjusted pointers.
+- `process_enemy_records_loop`: Loads word arguments from the stack, calls a helper to compute a value, then loops calling another helper with adjusted parameters, and returns.
+- `process_records_in_loop`: Reads two global words, adjusts them by subtracting four and two, and passes several registers and adjusted values to a routine twice with opposite signs.
+- `clear_and_store_address`: Clears a word at one global location and stores the address of a second global location into a third global location, then returns.
+- `set_flag_in_table_entries`: Reads a global word, scales it by four to compute an end pointer into a table, then walks each entry from the start of that table to the end pointer writing the byte 255 at offset 19 of each entry before restoring registers and returning.
+- `store_pointers_and_copy`: Pushes the value at offset 380 of a global structure and a source pointer onto the stack, then calls increment_pointers_and_store.
+- `store_pointer_and_increment_counter`: Reads a pointer from the stack and compares a global counter against 100; if the counter is below the limit it stores the pointer, writes the counter as a byte at offset 19, and increments both counters, otherwise it writes 255 at offset 19 before restoring registers and returning.
+- `shift_and_mark_entry`: Reads a byte at offset 19 of a passed structure and, while it is less than a global counter, decrements two global counters and moves a stored pointer into a scaled table slot before writing the byte into the pointed-to structure.
+- `dispatch_entries_in_loop`: Calls two library routines with constants, then reads two global pointers and calls two more routines.
+- `chain_three_calls`: Scales a global word into a table, pushes the pointed-to value and calls a routine, then pushes another global pointer and calls a second routine.
+- `branch_on_stack_word`: Reads a word from offset 10 of the stack and, when it is zero, stores a fixed pointer at offset 11296 of the structure in a global variable, otherwise it pushes that pointer and the word and calls a dispatch routine.
+- `scan_table_for_entry`: Walks a table by advancing a pointer in steps of 96 until it matches a global base pointer or finds a nonzero byte, returning that pointer.
+- `update_enemy_target_selection`: Loads a value from a global variable, calls a routine to compute a replacement, stores it back, then selects a target from a table of 96-byte structures by comparing offset 45 and offset 40 flags and choosing the closest match, otherwise it returns.
+- `select_enemy_targets`: Iterates over a table of enemy structures, and for each active one selects a target enemy by comparing distances and other flags, then stores the chosen target pointer and calls the target-selection routine.
+- `select_closest_enemy_pointer_2`: Selects the closer of two enemy pointers by comparing their 16-bit values at offset 2, applies a tie-break using a byte at offset 46 of the first structure, and stores the chosen pointer at offset 10 of that structure.
+- `compare_enemy_status_bytes`: Compares a byte at offset 39 of two structures and, when they differ, jumps away; otherwise it compares another byte and, when bit 1 of that byte is set, loads a pointer and jumps away.
+- `select_closest_enemy_pointer`: Computes the absolute difference between the 16-bit value at offset 2 of the structure in a2 and the one in a3, and between the same value and the one in a6, then selects the pointer (a3 or a6) whose value is closer.
+- `load_table_address_register`: Loads a fixed table address into a register, copies it into another register, then jumps away.
+- `scan_enemy_record_table`: Walks a table of 96-byte records by adding 96 to a pointer until the pointer reaches a global limit, skipping records whose first byte is negative or whose byte at offset 54 is zero, and stopping early when a record matches criteria derived from the caller's structure.
+- `select_enemy_target_and_update`: Compares the byte at offset 45 of the structure in a2 with zero and, when it is zero, calls a routine with a flag and the pointer in a2.
+- `check_status_and_dispatch`: Reads a byte from a structure in a2 and returns immediately when it is negative, otherwise loads a pointer from offset 10 and branches based on comparing bytes at offsets 45 and 29 before calling a routine with the structure pointer.
+- `compare_status_byte_offsets`: Compares a byte at offset 27 of a structure in a2 against two other bytes at the same offset in a6 and a3, and jumps to a shared routine at 63850 whenever any comparison fails.
+- `compare_register_table_address`: Compares a register against a fixed table address and, when they match, jumps away; otherwise it copies the register into another and jumps away.
+- `check_flag_then_jump`: Tests a status byte at offset 27 of the structure in a2 and, when it is zero, loads a table address into d2 before jumping to the routine at 63974.
+- `iterate_enemy_status_records`: Walks a table of 96-byte records starting from a pointer in d2, comparing status bytes at offsets 61, 39 and 16, and when a record matches it calls a handler routine, otherwise it advances by 96 bytes and loops until the table is exhausted.
+- `iterate_structures_match_pointer`: Walks a table of structures spaced 96 bytes apart, and for each entry whose status byte at offset 0 is positive and whose pointer at offset 10 matches the argument, calls a per-structure routine.
+- `find_enemy_by_source`: Walks a table of structures spaced 96 bytes apart, testing each flag byte and comparing the source pointer at offset 10 with the argument, and calls the handler at offset 45 of the first matching entry before returning.
+- `assign_source_and_set_flag`: Sets a flag byte at offset 45 of the structure in a3 and stores a source pointer at offset 10, choosing between two tables depending on whether a byte at offset 57 is zero and whether a byte at offset 54 is clear.
+- `update_enemy_status_flags`: Reads a pointer from the stack and inspects a status byte at offset 29; when it is 1 it clears that byte and either copies a byte from offset 55 to offset 27 or, if bit 1 is set, copies a byte from offset 55 to offset 27, and when it is 2 it stores 65535 at offset 6 and clears offset 35, always clearing offset 35 before restoring registers and returning.
+- `build_enemy_setup_data`: Indexes a table of words using a global byte, then calls a sequence of setup routines while storing derived 16-bit values into a structure and finishing with a call that takes two cleared long words.
+- `dispatch_enemy_setup`: Compares two passed bytes against global state and returns early when they match a cached pair with the flag cleared.
+- `call_three_routines`: Loads a global pointer, pushes it on the stack, and calls three routines in sequence, then restores the stack and returns.
+- `invoke_init_routine`: Pushes a zero, the pointer to a global variable, and the constant 320 onto the stack, then calls a routine with those three arguments and returns.
+- `invoke_with_dma_control`: Pushes several constants and a global byte onto the stack, indexes a pointer table by a doubled value, and calls a routine with those arguments, then calls another routine and writes a control word to the DMA control register.
+- `signal_and_delay`: Calls a routine with a global pointer and a flag, then calls a library delay stub, and finally writes a value to the DMA control register before cleaning the stack and returning.
+- `trigger_copier_when_set`: Checks a byte at offset 1707 of a global table, and when it is nonzero calls a routine with a global pointer, then sets a bit in the copper list register and stores one at offset 62 of a global.
+- `refresh_display_and_clear_flag`: Calls the display refresh routine, clears a byte in a global variable, and returns.
+- `clamp_value_in_range`: Calls two routines and loops the second result until it falls outside the range between 16 and 200, then restores the saved registers and returns.
+- `toggle_and_dispatch`: Toggles a flag byte at offset 127, stores whether it is now clear into the word at offset 124, indexes a pointer table by a doubled global value and calls that routine, then indexes another table by the flag and calls it, and finally calls a routine when the byte at offset 11405 is nonzero.
+- `dispatch_via_index_table`: Reads a byte from a global variable, scales it by five, indexes a word table, and calls the routine at that address with the resulting pointer.
+- `compute_and_store_value`: Clears a flag byte at offset 11406, then computes a value from a global word at offset 160 and related bytes, calling a copy routine when the byte at offset 3096 is 255, and finally stores the constant 65436 into the word at offset 11408 before returning.
+- `decrement_clamped_counter_2`: Tests a global word and, when it is zero, loads a pointer from another global and calls a routine, then clears the global word when a comparison with one fails.
+- `decrement_clamped_counter`: Compares the word at global offset 6ab6 with 2 and returns without changing anything when it is not equal, otherwise decrements the word at offset 6ab8, copies it to d0, compares it with the word at offset 6aba, and returns early when the copy is greater.
+- `increment_clamped_counter_2`: Tests bit 0 of the byte at global offset 3eb9 and returns early when it is clear, then increments the word at global offset 6ab8 unless it is already 15 or greater, and finally branches away.
+- `call_when_globals_differ`: Compares two 16-bit values in a global variable and, when they differ, pushes the second value and calls a routine, otherwise it returns.
+- `check_flag_then_load_value`: Loads a 16-bit value from a global variable at offset 22 of the stack frame into d3, and if that value is zero or negative it returns immediately, otherwise it loads the constant 25521 into d2 and branches into another routine.
+- `test_flag_then_load_constant`: Tests the flag at offset 22610 and branches away when it is nonzero, otherwise loads 252 into d2, and branches into another routine.
+- `setup_tables_and_divide`: Sets a global word to 255, then loads the base addresses of three different tables into registers and computes a quotient from a register value by dividing it by two, before jumping to shared code.
+- `fill_table_from_flag`: Loops over a word table, storing a value selected by a flag bit at each index, then calls two routines and sets a flag byte.
+- `copy_block_advance_twelve`: Copies pairs of words from a source range into a destination range, advancing the destination by twelve bytes per step, then calls a cleanup routine and clears a flag byte.
+- `clamp_and_combine_nibbles`: Splits a word into three nibble groups, adds a second word to each, clamps the results between zero and fifteen, and combines them into a single value as the third group plus the second times sixteen plus the first times two hundred and fifty-six.
+- `combine_clamped_values`: Clamps the signed values in d2, d3 and d4 to zero when negative, then combines them into d0 as d2*256 + d3*16 + d4 and returns that value.
+- `store_stack_word`: Stores the 16-bit argument passed on the stack into a global variable at offset 6ab6 and returns.
+- `store_stack_byte`: Stores the byte argument passed on the stack into a global variable at offset 403c and returns.
+- `store_stack_byte_flag`: Stores the byte argument passed on the stack into a global variable at offset 6ab3 and returns.
+- `load_global_byte`: Loads a byte from a global variable at offset 6ab3 into d0 and returns it.
+- `update_max_value`: Compares the 16-bit argument with a global value at offset 6ab4 and, when the argument is larger, stores it at offset 6ab8 and sets the byte at offset 6ab6 to two, otherwise it returns.
+- `adjust_clamped_value`: When a global value at offset 6ba is negative, adjusts it toward five, clamps it to at least negative five, and if it exceeds the value at offset 6b4 stores one at offset 6b6 and the clamped value at offset 6b8, otherwise it returns.
+- `set_flag_value_three`: Sets the byte at a global variable offset 6ab6 to three and returns.
+- `clear_flag_value`: Clears the word at a global variable offset 6ab6 and returns.
+- `decode_nibble_table`: When a global flag at offset 690 is nonzero, it reads a base word, indexes a table of 48 words, and for each of 24 entries decodes three nibbles into a signed value, clamps each nibble contribution, and stores the decoded value and original word into a table of 24 entries, otherwise it returns.
+- `process_pairs_in_loop_2`: Checks a global flag and, when set, either fills a table with two consecutive words sixteen times or loops sixteen times calling a routine on two source pointers and storing the results, then returns.
+- `process_pairs_in_loop`: Loops sixteen times, calling a routine on each of two consecutive words from a source pointer, storing the results into two consecutive words of a destination pointer, advancing both pointers, resetting the source pointer when it reaches a limit, and returning when the counter reaches twenty.
+- `set_zero_and_branch`: Loads zero into d2 and jumps into the middle of another routine, contributing the value to that routine's flow.
+- `copy_struct_in_loop`: Copies a 16-bit value from a global variable at offset 96 to another global at offset 98, then advances the pointer by two bytes and repeats until a counter in d2 reaches 20.
+- `fill_enemy_block_loop`: Reads an index from a global byte, scales it into a table entry, subtracts 33, then stores a repeating block of six words into the destination pointer while incrementing the counter until it reaches 20.
+- `copy_block_if_pointer`: If a pointer global is nonzero, copies pairs of words from a source range into a destination range, advancing the destination by twelve bytes each iteration until the end pointer is reached.
+- `select_pointer_copy_block`: Selects a destination pointer from a table based on a numeric argument, using different ranges and fixed entries, then calls a copy routine with a fixed length of thirty-two bytes.
+- `call_string_handler`: Calls a library routine with a pointer to a constant string at address a fixed address, a pointer to a global variable, the value 0, and the value 6, then returns.
+- `invoke_routine_with_zero`: Pushes a zero onto the stack, calls a routine with that single argument, and returns without performing any other operations on data.
+- `loop_with_delay`: Loops sixteen times calling a routine with a decrementing argument, and when the argument passed to it is positive it additionally calls a delay routine, then restores its registers and returns.
+- `call_with_single_arg`: Pushes a single constant onto the stack, calls a routine, cleans up the stack, and returns.
+- `dispatch_in_loop`: Stores its argument into a word at offset 32B6, then loops sixteen times calling a routine with the loop index, dispatching to a routine by a global byte, and calling either a delay routine or another routine depending on the byte at offset 11624 before returning.
+- `store_arg_to_global`: Stores a 16-bit argument from the stack into a global word at offset 210 and returns immediately.
+- `invoke_clamp_pack`: Loads a word from the stack into a pointer, pushes it along with a zero and a value read from a global variable, then calls a routine to clamp and pack a sequence of 16-bit values, and returns.
+- `wait_and_dispatch`: Copies a stack word onto the stack twice, calls a routine with a global pointer, then either calls a delay routine or a single-argument routine depending on a global flag, and returns.
+- `wait_for_vpos_2`: Pushes the constant 30 onto the stack, calls a routine that polls the vertical position register until it matches that value, cleans up the stack, and returns.
+- `call_with_table_index`: Builds a stack frame with a pointer and a fixed constant, indexes a table using a global variable, and calls a routine with those arguments.
+- `fill_blocks_by_stack_word`: Reads a word from offset 10 of the stack and, when it is zero, fills two byte blocks of sizes 96 and 14, otherwise it passes the word to two fill routines.
+- `dispatch_stack_parameters_3`: Reads two 16-bit parameters from the stack and dispatches on their values, incrementing entries in a global table or calling a handler depending on the case.
+- `return_global_value`: Loads a 32-bit value from a global variable into d0 and returns it to the caller.
+- `jump_into_accumulator`: Saves registers d2 and d3 on the stack, sets d2 to one, and branches into another routine without returning to the following instructions.
+- `accumulate_table_loop`: Loops seven times, adding a table word into a destination word and, when the index is below 4, adding it into another table word, then sets both table bases to 4.
+- `dispatch_enemy_setup_sequence`: Issues a sequence of library and helper calls with constants and global pointers, then reads a global byte and branches when it is zero.
+- `process_structures_in_loop`: Loads several arguments from the stack and issues a series of calls, then loops over a range of structures calling a routine for each entry and incrementing a counter.
+- `dispatch_multiple_calls`: Loads two stack words and a pointer, calls a routine, then makes four more calls with incremented pointer variants and a converted byte argument before restoring registers and returning.
+- `copy_table_fields_to_globals`: Saves registers d2 and a2 on the stack, loads a global table pointer into a2, and copies several bytes and words from offsets of that table into a block of globals, splitting one long value into its four bytes.
+- `populate_structure_and_call`: Fills a structure pointed to by a2 with several bytes and words copied from global variables, computes a 32-bit value from four 16-bit globals, pushes those values on the stack, and calls another routine with the argument 0.
+- `copy_indexed_table_fields`: Multiplies the incoming word argument by 18 to index into a table, saves a2, and copies six bytes and four words from the indexed entry into a block of globals at the corresponding offsets.
+- `copy_table_data_into_struct`: Copies six bytes and four words from a table into the structure pointed to by a2 at offsets 4, 5, 9, 13, 6, 11 and 0, 2, 4, 6, then calls another routine with the value 0 and returns.
+- `handle_enemy_setup`: Reads a byte at offset 11 of the structure in a5, masks it to a value between 0 and 255, and passes it together with a value from another routine to a handler.
+- `format_stored_value`: Loads a stack pointer, calls a routine to obtain a value, pushes that value and calls another routine, cleans the stack, and returns.
+- `store_and_format_number`: Stores the constant 48 into the word at offset 32B6, calls a formatting routine with a pointer and the value 2, stores the constant 32 into the same word, and returns the word at offset 238.
+- `return_global_address`: Loads the address of a global variable into d0 and returns it to the caller.
+- `process_enemy_dispatch_sequence`: Saves registers d2 through d5, loads a stack word into d2, and calls a routine when the argument is 2.
+- `store_enemy_state_from_args`: Saves registers d2 through d5 and a2 through a3, loads two global table addresses into a2 and a3, and calls a routine with a constant and a global pointer.
+- `set_flag_byte_one`: Sets a global byte at offset 600 to 1 and returns immediately.
+- `compare_and_branch`: Compares the word at offset 2338 with 3 and with 65535, branching to another routine when either matches, otherwise setting the register to 1 and returning.
+- `jump_with_zero`: Sets d0 to zero and branches into another routine without returning to the following instruction.
+- `populate_structure_from_globals`: Reads a byte from offset 6 of a structure, derives a shifted and a masked copy of it, and passes both to two setup routines.
+- `copy_table_to_struct`: Loops ten times, copying a table word into two consecutive fields of a destination structure and advancing the destination by two words each iteration.
+- `set_flag_and_call_routines`: Tests a global flag byte and returns immediately when it is set, otherwise calls two routines and then a third routine with two global addresses before setting the flag byte.
+- `run_when_flag_set`: Checks a global flag, and when it is set it calls two routines and clears the flag, otherwise it returns.
+- `wait_for_input_flags`: Checks a flag byte and, if it is nonzero, repeatedly calls a routine that reads input while two flag bytes are set, then pushes a constant and calls a delay routine; if the flag byte is zero it returns immediately.
+- `check_input_flags`: Calls the input flag checker, then calls the button reader, and returns if either of two flag bytes at offsets 5b9b and 5b9c is nonzero, otherwise it returns.
+- `count_input_cycles`: Sets a counter to zero, then loops calling a routine that reads input and a delay routine, breaking out when both flag bytes are zero, and returns the counter value.
+- `read_buttons_and_keys`: Reads the joystick and mouse button registers and stores their states into two global bytes, then, if a flag byte is nonzero, increments two global words by 8 and stores them, and finally clears a global byte when a keyboard register equals 65.
+- `check_range_overlap`: Reads two signed values from the stack and compares them against two global signed values, then sets the return value to one if the second argument plus the first does not exceed the first global and the fourth argument plus the second does not exceed the second global, otherwise it returns zero.
+- `check_bounds_violation`: Reads four signed values from the stack and compares them against two global signed values, returning one when any argument falls outside the range defined by those globals and zero only when all four fall within it.
+- `setup_initial_counter_values_2`: Loads two stack words into registers, compares the second against a constant, and loads a value into a register when the comparison is not less than or equal.
+- `setup_initial_counter_values`: Loads the value 1 into d0 and copies it to d4, then tests the word at stack offset 18 and returns early when it is nonzero, otherwise loading 1 into d2 and adding 12 to d3.
+- `lookup_and_call_handler_2`: Computes an index from two incoming words and reads a byte from a table at that index, negating a value when bit 0 of the byte is set.
+- `push_args_and_call_handler`: Pushes a fixed set of arguments including the pointer from offset 42 of the stack four times, then calls a routine and returns.
+- `select_enemy_table`: Saves several registers, loads two word parameters from the stack into d4 and d6, and sets a0 to the table at offset 6c5e while clearing the word at offset 6c68 of that table.
+- `clamp_and_scan_table_bits_2`: Clamps a value at offset 4 of the structure in a2 to 3, then scans a table starting at offset 1 until it finds a set bit, counting the iterations and storing the resulting position into the structure.
+- `clamp_and_scan_table_bits`: Clamps a value at offset 4 of the structure in a2 to 3, then scans a table starting at offset 1 until it finds a set bit, counting the iterations.
+- `store_and_clamp_structure_values`: Computes an address from d3 and d4, stores it into a global pointer, clamps d3 to 3, increments a word at offset 4 of the structure in a2, and clamps that word to 7 when it exceeds 7.
+- `setup_and_update_values`: Calls a routine at a fixed address with a global pointer, sets the byte at global offset 2363 to 64, then calls two more routines with global pointers and a constant.
+- `loop_call_with_offsets`: Loops twelve times calling a routine with different argument combinations, computing offsets from the returned values, and finally calls a handler routine before restoring the registers.
+- `set_flag_to_max`: Stores the value 65535 into the global word at offset 6c68 and returns.
+- `adjust_and_store_scaled_values`: Reads a signed word counter and, unless it holds the sentinel value -1, adjusts three related word values by plus or minus 16 based on comparisons, then copies a scaled byte value multiplied by 16 into a global long while advancing the source and destination pointers until a marker byte is reached.
+- `check_byte_then_branch`: Compares a byte at a2 with 255, returns if they differ, clears the long at a6, and branches into another routine without returning to the following instructions.
+- `store_scaled_byte_value`: Stores the value read from a byte at a2 scaled by 16 and added to a global long into a long at a6, then advances both pointers and increments a global counter when a2 reaches a limit or a following byte is 255.
+- `increment_global_counter_2`: Increments the signed global word at offset 6c68 by one and returns.
+- `check_limit_and_call_routine`: Compares a global word against four and returns immediately when it is greater or equal, otherwise pushes a constant and a global address onto the stack and calls a routine.
+- `store_and_call`: Stores a byte argument into a global variable, pushes a pointer to that variable onto the stack, calls a routine, cleans the stack, and returns.
+- `prepare_and_call_initializer`: Multiplies a stack word by 80 to form a base address, pushes a value derived from it along with another stack word, and pushes a pointer from a global variable plus 272.
+- `load_stack_args_and_check`: Saves registers d2 through d6 and a2 on the stack, loads four words from the caller's stack frame, and returns immediately when the fourth word is zero.
+- `call_routines_with_offsets`: Loads a global pointer and adds 336 to it, adding 16 more when bit 1 of a register is set.
+- `copy_byte_blocks`: Saves registers, loads a source pointer, then loops eight times while calling a routine to copy blocks of bytes, advancing the source by four or three bytes depending on the inner index, and returns.
+- `compress_flag_data_block`: Looks up two pointers from a global table, reads three bytes from the first pointer to compute a length, then calls a compression routine and copies a computed block of bytes.
+- `configure_objects_via_table_lookup`: Looks up an entry in a table using a value passed in the first parameter, stores the resulting index in a 16-bit global variable at offset 32b8, then calls a configuration routine with the index and a fixed argument.
+- `compress_flag_data`: Checks whether the input pointer is nonzero, then loops up to three times compressing flag data and copying block bytes while advancing the destination, and returns the number of bytes written.
+- `parse_buffer_into_groups`: Walks a byte buffer copying up to five data bytes per group into a table and handling end markers by calling a handler routine, looping until the buffer is consumed or a counter reaches three.
+- `process_and_adjust_buffer_counts`: Initializes two local buffers, then twice runs a loop that reads a structure, extracts a low nibble as an index, and increments or decrements a byte in the buffer depending on the loop counter.
+- `validate_and_update_entry`: Computes an index from a byte at offset 1 of the structure in a2 and compares it against a value looked up in a table, returning one if the caller's pointer does not match the stored entry.
+- `read_flag_table_value`: If the byte at a2 is 255 it reads a value from a table using another byte and calls a routine, otherwise it returns zero when a bit is clear in a table entry, otherwise it returns a masked byte, otherwise it calls a routine with the masked value.
+- `initialize_object_tables`: Initializes a table of object structures by clearing their memory and walking through a byte buffer, then for each entry decodes its fields and sets bits in two global flag arrays based on the decoded values.
+- `dispatch_single_pointer`: Reads a word from the stack and calls a library routine twice with a pointer and two constants, then calls a third routine with the same pointer before restoring its registers and returning.
+- `set_struct_flag_bits`: Sets bit 6 of the byte at offset 9 of the structure passed as argument and sets bit 1 of the byte at offset 20 of the same structure, then returns.
+- `copy_entries_in_loop`: Initializes a local structure with cleared fields and a constant byte, then loops up to 21 times calling a routine to read entries.
+- `call_setup_from_globals`: Looks up two pointers from a global table, pushes a constant and the first pointer, calls a routine, then returns.
+- `apply_alternating_table_values`: Reads a byte from a table and, using it as a length, writes a running alternating value into a block of sixty bytes, then calls a routine pointed to by a global variable before repeating the process for a second alternating value and advancing to the next table entry.
+- `process_buffer_in_loop`: Calls a setup routine and reads a pointer from a global table to obtain a buffer.
+- `process_table_entries`: Reads a table of byte counts and, for three iterations, scans up to twenty entries to call a helper routine that adjusts pointers based on the running sum and flag toggles.
+- `process_enemy_input_buffer`: Processes a byte buffer in a2 by walking each entry and dispatching on its value, handling the 40, 40, 6, and 33 markers and the 255 terminator while calling helper routines to configure objects and update a global counter, then loops over up to four passes until the buffer is exhausted.
+- `process_enemy_entry_2`: Reads two words from offsets 10 and 14 of the structure in a5, computes a table index from the second word, and calls a routine to decode the entry.
+- `process_enemy_command_stream_4`: Loads two 16-bit values from offsets 10 and 14 of the structure in a5, then walks through a byte buffer adding each byte to a running total until it reaches 40, calling a routine that follows table pointers for each byte.
+- `process_enemy_command_stream_2`: Reads a 16-bit parameter, splits it into a high part and a low nibble, and calls a routine to fetch a pointer to a byte buffer.
+- `count_table_entries_within_limit`: Reads a table of byte counts and, across two passes of up to twenty entries, adds each value to a running total and toggles bits in a register whenever the total stays within a limit.
+- `dispatch_input_byte`: Reads a byte from a buffer in a2 and dispatches on its value, calling different routines for the byte at offset 225, the byte at offset 238, and the byte at offset 255, while advancing the pointer and accumulating a running total.
+- `match_enemy_command_byte`: Checks whether a 16-bit parameter is zero and selects the value 10 or 11 accordingly, then calls a routine to fetch a pointer to a byte buffer.
+- `process_enemy_command_stream_5_2`: Reads a command byte from a buffer and dispatches on its value, calling handlers that update a running total and clamp indices into global variables, then continues until the total reaches 40 or an end marker is found.
+- `setup_and_call_routines`: Sets up a stack frame, calls a routine with a pointer from a global table, pushes a negative one onto the stack, and calls another routine before jumping to a later routine.
+- `init_and_scan_enemy_slots`: Initializes eight enemy slots by storing a constant, a computed value and a flag into their per-slot fields, then calls two other routines for each slot.
+- `call_and_store_result`: Pushes a zero word on the stack, loads a pointer from a register, pushes it, calls a routine, stores the result into a global variable at offset 54, cleans up the stack, and branches to another routine.
+- `process_enemy_buffer`: Checks a global variable and, if it is zero, returns; otherwise it reads a byte from the buffer pointer, stores the sum of that byte and the pointer at offset -52, advances the pointer, and calls another routine to process the buffer until a running total reaches 40.
+- `process_enemy_command_stream`: Reads a byte from a pointer and, when it is 40 and the following byte's high nibble is zero, calls another routine with a value masked to its low four bits and saves the result in a6.
+- `test_registers_then_load_table`: Tests d2 and branches away when the sign or high bit is set, compares d2 with 8, compares d4 with 255, loads a table base at offset 14058 into a3, and branches into another routine.
+- `process_enemy_parameter`: Calls a routine with a byte from a register and stores the result, then branches to a table entry when that result is zero.
+- `index_table_when_equal`: Compares a byte against two, and when equal it loads a pointer from a table indexed by a scaled value and branches into another routine.
+- `process_string_table_entry`: Reads a pointer from a table indexed by a masked byte, calls a routine to process it, and stores the result multiplied by six into a 16-bit field.
+- `advance_enemy_pointer`: Advances a pointer by 3 and returns if it has moved before a stored global pointer, otherwise it clears a data register and branches to a loop that processes the command stream.
+- `process_enemy_buffer_2`: Reads a byte from the enemy buffer and, for each of eight enemy slots, increments a per-slot counter and marks the slot active if its counter exceeds thirteen, then walks the buffer decoding enemy commands and calling the handler for each enemy type.
+- `copy_d0_to_d5_2`: Copies the 16-bit value in register d0 into register d5 and returns.
+- `process_enemy_commands`: Initializes a ten-entry enemy command buffer, then repeatedly reads input until a flag clears.
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `process_entry_buffer_dispatch`: Looks up a routine pointer in a table using the parameter, sets up a structure on the stack, then repeatedly calls a routine to process entries and dispatches byte values from the structure to another routine until the structure is exhausted.
+- `copy_d0_to_d5_3`: Copies the 16-bit value in d0 into d5 and returns.
+- `process_power_up_values`: Saves several registers, calls a routine to build a formatted power-up list string, then repeatedly reads a byte from a global variable and uses it to index into a table of per-entry data while accumulating weighted sums, and finally calls a series of routines to store the computed values into a structure.
+- `increment_global_byte`: Reads a byte from a global variable, increments it, stores it back, clears two stack fields, and jumps to a later routine.
+- `compute_enemy_offset_and_accumulate`: Loads a pointer from a global variable, computes an address from a 18-multiple of a 16-bit counter plus a base and offset, reads a byte at offset 12 of that address into d5, and clears a 16-bit counter at offset 28.
+- `accumulate_enemy_byte_scaled`: Adds a scaled byte from a global table to an accumulator indexed by a counter, then loops while the counter is greater than four.
+- `check_enemy_byte_and_scale_d2`: Compares a byte at offset 0 of the structure in a2 with the decimal constant 18 and, when they differ, jumps to the end.
+- `increment_flag_counter`: Adds the decimal constant 254 to the 16-bit value in d5 and then branches to the middle of another routine.
+- `process_enemy_byte_flags`: Reads a 16-bit value from offsets 2 and 3 of the structure in a2 and, when its low bit is set, calls a routine to compute a 32-bit result which is added to a value at offset -36 of a5; otherwise it iterates over a table, accumulating products of bytes and calling routines to process each entry.
+- `process_enemy_power_strings`: Repeatedly reads a byte from a global variable, scales it, and feeds it through a formatting routine that scans the resulting string and indexes a lookup table, for each of several data blocks.
+- `process_entry_with_flags`: Loads two words from offsets 10 and 14 of the structure in a5, and if bit 0 of the second word is set it calls a routine with a decremented pointer and the first word, then reads a byte from the returned pointer and calls another routine with the following byte, storing the result.
+- `map_input_byte_to_value`: Reads a byte from the input buffer in a2 and a 16-bit value from the stack, then for values below 56 looks up a flag byte in a table and, when bit 3 is set, maps the input to a result value (using the high nibble of the next buffer byte for the value 12, or 2 for the value 14).
+- `consume_buffer_until_total`: Walks through a byte buffer in a2, adding each byte to a running total in d2 and advancing the pointer, until the total reaches 40.
+- `follow_table_pointers`: Multiplies the second argument by 23 and adds the first argument to form a count, then repeatedly follows the byte stored at the current table position to advance through the table that many times and returns the resulting pointer.
+- `handle_flag_config`: When the word on the stack equals 1 it stores the constant an address at offset 14 of a global variable and stores the routine's return value at offset 18, then calls a library routine with a pointer to that global.
+- `process_entry_buffer`: Calls a routine with the structure in a2 and returns 1 if it reports success.
+- `advance_entry_buffer`: If a global flag is set and the structure in a2 has a nonzero offset 4 and offset 0, it calls a routine with two words from offsets 10 and 12, stores the result, copies the word at offset 8 to offset 12, clears offset 14, and calls another routine with the byte at the new pointer.
+- `fill_block_in_steps`: Loops over a block in steps of 3556 words, calling two routines and storing offsets at fixed positions, then calls two more routines and returns.
+- `load_indexed_pointers`: Computes a pointer from a global base table and a 16-bit index in d0, then loads two adjacent long pointers from that structure into a6 and a3 before branching into another routine without returning.
+- `copy_bytes_until_marker`: Copies bytes from a source pointer to a destination until a marker is reached, wrapping the source, and loops while a counter stays below 25.
+- `compare_byte_sequence`: Reads a byte from the address in a0 and compares it with the byte at a3, then with the byte at offset 1 of a3.
+- `copy_and_compare_byte_sequence`: Copies a byte from the address in a0 to the byte at a3, sets the byte at offset 1 of a3 to 1, then advances a3 by 2 and loops while the bytes match, returning early when a3 reaches the value at a2 plus 3525.
+- `call_default_entry`: Pushes a zero argument onto the stack, calls the default table entry routine, restores the stack, and returns.
+- `initialize_pointer_table`: Iterates over a sequence of structures spaced 3540 bytes apart, storing a pointer at offset 20 of each structure and copying the byte following that pointer into offset 22 of the structure, then returns.
+- `compute_offset_then_branch`: Sets a flag bit, multiplies a counter by 3556 to compute a table offset, and branches into another routine.
+- `increment_table_pointer`: If a byte at offset 222 of a2 is nonzero it returns, otherwise it increments a word at offset 222 of a2, copies a byte from the structure it points to back into that location, and returns.
+- `check_table_entry_match`: Computes the address of a table entry by adding 1891 to a2, then compares it with the pointer stored at offset 222 of a2.
+- `increment_and_check_table_pointer`: Sets bit 7 of the byte at offset 222 of a2, increments a word counter in d2, and returns when that counter reaches 3, otherwise it returns.
+- `clear_flag_pair_by_state`: Compares a global word at offset 3eae against four and clears either the pair of words at offsets 9a68 and 9a6a or the pair at offsets 9a6c and 9a6e depending on the result, then returns.
+- `accumulate_counter_values`: It increments a 16-bit counter at offset 23726 of a global variable when it is below 47, and when it reaches 85 it adds 2 to a counter at offset 23724 and clears two entries in a table.
+- `advance_and_accumulate_counter`: Increments a 16-bit counter in a global variable when it is below 47, and when it reaches 85 and a global flag byte equals 1 it compares two word arrays against values in the global variable, calling a routine with the constant 3000 or 1881 if they differ.
+- `process_duel_parameters`: Reads two byte parameters from the stack and, if the first is 1 and a global flag byte is nonzero, forces the second to 1 when that flag is 5.
+- `scan_table_for_null`: Multiplies the passed word by 5556, adds the base of a global table, then scans that table in two-byte steps until it finds a zero byte or reaches the end, and returns the adjusted pointer or the constant 3000.
+- `loop_enemy_condition`: Tests a global byte and calls the enemy routine while it is nonzero and returns nonzero, repeating until that condition fails.
+- `check_cia_port_bits`: Reads the byte at the CIA parallel port A and returns one when bits 6 and 7 are not both set, otherwise it returns zero.
+- `check_cia_port_bit7`: Reads the byte at the CIA parallel port A and returns one when bit 7 is clear, otherwise it returns zero.
+- `read_cia_keyboard_and_compare`: Reads the CIAA_SDR keyboard serial register and compares its byte against the characters 117 and 101, storing 1 or 2 in a local variable depending on the match, and returns that value.
+- `read_joystick_and_combine_2`: Calls the joystick-reading routine with a parameter of 1, then with 0 when a global byte is nonzero, combines both results with a bitwise OR, and returns the combined value.
+- `find_enemy_and_dispatch`: Walks a table of 24-byte entries, skipping each one whose fields do not match the two values in d5 and d6, and stops at the first matching entry or at the end of the table.
+- `load_enemy_setup_index`: Saves registers d2 through d5 on the stack and copies a word from the stack into d4, then compares a byte at absolute address an address and, when that byte is zero, loads the value 1 into d0, otherwise loads the value 255 into d0 and stores d4 into d3.
+- `dispatch_enemy_setup_sequence_2`: Loads a value from a table using an index derived from a 16-bit global, looks up a routine pointer in a jump table, and calls the selected routine.
+- `loop_table_after_call`: Calls a routine, then loops over a table in steps of ten calling another routine, and finally restores the registers and returns.
+- `load_parameter_and_index_table`: Loads a byte from offset 3 of the structure in a2 when the byte at offset 19 is zero, otherwise uses 4, stores a long from offset 2 of that structure into a global variable, then indexes a table by that value and calls two routines with the computed arguments.
+- `increment_table_bytes_2`: Adds five to each of six bytes stored in a global table and writes the incremented values back to the same locations.
+- `call_pair_with_pointer`: Passes the incoming pointer argument to one routine, pushes zero and calls another routine, then repeats the two calls and returns.
+- `store_and_iterate_args`: It stores four arguments passed on the stack into a global variable at offsets 23728, 23732, 23734 and 23738, then loops a number of times equal to the second argument, calling a routine with the structure pointer when its offset 6 is nonzero and advancing the pointer by 8 each iteration, and finally calls another routine.
+- `iterate_enemy_entries`: Walks a table of 8-byte entries in a global variable, comparing the loop index against the entry count at the end.
+- `clamp_and_adjust_values`: It reads a byte at offset 3 of the structure in a2, and when bit 0 is clear it calls a routine with the word at offset 6, clamps the result between 1 and that word, and stores it at offset 4.
+- `call_by_flag_select`: Checks a flag byte and calls different routines with arguments read from fixed offsets of a structure, cleaning the stack before returning.
+- `process_indexed_table_entry`: Computes a pointer from a global variable and, when a flag is set and the value is below another global, loads a pointer from a table and calls a routine with it, then checks the returned length and calls a routine with the constant 3000 or 3008.
+- `classify_value_by_threshold`: Compares the passed word against the thresholds 10, 100 and 1000 and returns the matching rank of one, two, three or four.
+- `reset_and_dispatch_state`: It clears four fields of a global variable, sets a byte at offset 23744 to 255, and when the word passed in a2 is zero it stores 1 at offset 23750, otherwise it calls a library routine with a pointer to that field and a constant, then cleans the stack and returns.
+- `dispatch_on_parameter`: Dispatches on a 16-bit parameter by subtracting constants and branching to handlers, clearing several global bytes, and calling a helper with a pointer argument when it is valid.
+- `clear_bits_in_global`: Computes the bitwise complement of the passed word and clears those bits from a global variable, leaving the remaining bits unchanged.
+- `call_five_in_sequence`: Clears a global byte, then calls five routines with various constants and a global pointer, stores the pointer into a global word, and returns.
+- `dispatch_enemy_state_bits`: Reads a 16-bit status word from a global variable and, for each set bit, decrements that word and calls a corresponding routine, branching into its handler when the routine signals activity.
+- `wait_cia_bits_clear`: Calls a routine that reads the CIA parallel port A and returns one when bits 6 and 7 are not both set, looping back to repeat the call while that result equals one, then returns.
+- `loop_caller_and_update_counters`: Calls a routine and loops back to repeat the call while its result equals one.
+- `loop_dispatch_and_update_state`: Repeatedly calls a dispatch routine with a value from a table, the constant 1030, and a second value in sequence, then with a pointer from a table indexed by that value plus the constant 128, stopping when a call returns non-zero.
+- `update_state_counter`: Increments a counter and, when it reaches 32, stores the incremented value into a global variable and subtracts 8192 from another global variable.
+- `test_global_word_flags`: Tests a global word and branches away when it is zero, then loads that word into d2 and branches away when bit 0 of it is set, otherwise falling through to the following code.
+- `process_enemy_state_loop`: Iterates over a table of values, computing two derived indices and calling a dispatch routine for each while advancing a counter, then handles several bit-flag cases that update global variables and call other routines.
+- `clear_flag_byte`: Clears the byte at the global variable address and then branches to the middle of another routine.
+- `update_flag_byte_state`: It reads a byte from a global variable, and when bit 3 is clear it calls a library routine with a table index computed from another byte and two constants.
+- `handle_flag_byte_updates`: Compares a global byte against 5 and, when greater, calls a routine with a table pointer and a routine with several constant arguments.
+- `handle_drive_command_dispatch`: Tests bit 3 of a global byte and, if clear, calls a routine with a pointer offset by 640 and the constant 288.
+- `call_with_global_pointer`: Tests a global pointer, and if it is non-zero pushes it and a constant onto the stack before calling a helper routine and clearing the pointer.
+- `adjust_global_and_set_byte`: Subtracts 128 from a global variable and stores 255 into the following global byte, then returns.
+- `clear_bit10_in_global`: Clears bit 10 of a global variable by masking it with the constant 65279, leaving the other bits unchanged.
+- `clear_global_word`: Clears a global word to zero and returns immediately.
+- `store_table_pointer`: Loads the address of a global table into a register and stores that address into a global pointer, then returns.
+- `find_first_negative_entry`: Walks a 32-byte table, returning the first negative entry, and if none advances a cursor by 32 bytes, returning zero when the cursor reaches the end.
+- `compare_enemy_status_byte`: Restores its saved registers and then compares the byte at offset 52 of the structure in a6 with one, loading the value one into d0 when they match and jumping to the shared exit code, otherwise it falls through to the exit code.
+- `index_enemy_by_status`: Reads the byte at offset 1 of the structure in a6, inverts bit 0, and multiplies it by 96 to build an index.
+- `load_one_and_branch`: Loads the value one into d0 and jumps into the middle of another routine, contributing that value to its execution.
+- `check_enemy_status_byte`: Compares the byte at offset 6 of the structure in a2 with 255 and returns immediately if they differ, otherwise it clears register d0.
+- `call_enemy_update_when_d3_is_2`: Returns when the word at offset 6 of the structure in a2 is nonzero or when d3 is not 2, then it pushes the structure pointer, calls a routine, clears d0, and branches away.
+- `process_enemy_update`: If the 16-bit value in d3 is zero it returns one; otherwise it calls update_enemy_from_source and route_enemy_by_flags_2, computing pointer arguments from values in the structure in a2 and a global variable.
+- `update_library_state`: Computes an index from a global variable and checks two bytes in a table, returning early if either has bit 7 set after masking.
+- `init_library_state`: It stores the constant 19 at two byte locations in a global variable and clears the following byte at each location, then calls two library routines in sequence before returning.
+- `accumulate_table_bytes`: It loops through a table of structures advancing by 32 bytes, adding a byte passed on the stack to a byte at offset 22 of each structure while it is negative, and stops when the pointer reaches a limit.
+- `call_routine_with_constant`: Calls a routine with the constant 3402 and then returns.
+- `iterate_enemy_structures_4`: Walks a chain of structures spaced 96 bytes apart, and for each active one calls a setup routine or a cleanup routine depending on a computed flag derived from its state byte and offsets.
+- `count_and_iterate_structures`: Counts the active structures in a spaced chain, then walks that same chain calling a setup or cleanup routine for each entry whose state matches a flag derived from the total count and its fields.
+- `load_and_call_enemy_update`: Saves registers d2 and a2 on the stack, loads a structure pointer and a word from the stack, tests the byte at that structure, and if it is not negative pushes both values and calls the routine at 16fc4 before branching into another routine.
+- `call_helper_with_stack_args`: Loads a word from the stack into a register, pushes it along with the values of d2 and a2, calls a helper routine, restores the stack, and returns.
+- `route_enemy_by_state`: Returns immediately when the byte at offset 8 of the structure in a2 is negative, otherwise branches to a setup path when that byte is zero and the byte at offset 41 differs from 14, and otherwise reads the byte at offset 57, adds 6, and calls a routine with a value from a global variable at offset 10348 of hunk 1.
+- `update_enemy_from_source`: Returns immediately when the byte at offset 8 of the structure in a3 is negative, otherwise computes an address from the byte at offset 1 scaled by 32 and calls a routine when the byte there is not 255, then branches on the byte at offset 45 to copy fields into the pointed-to structure or update a byte at offset 1.
+- `initialize_enemy_structure_3`: Copies fields from one structure to another, normalizing a 16-bit value into a 0-319 range, then branches on a byte at offset 45 to set up a state and various data before calling two other routines and returning.
+- `build_and_store_block`: Calls a routine to obtain a pointer, and if it is null it calls a routine with the constant 3400.
+- `fill_table_slot_with_pointers`: Fills a 10-byte slot in a table with a pointer, a second pointer, and the value five, then advances to the next slot until the end is reached.
+- `store_scaled_pointer_offset`: Multiplies the byte argument by five and stores the resulting pointer at offset four of the structure passed as the first argument.
+- `setup_and_branch_call`: Links a new stack frame, saves registers d2 through d7 and a2, a3, a6 onto the stack, loads a2 from a global variable, and branches away to the following code.
+- `store_enemy_action_offset_2`: Reads a byte at offset 21 of the structure in a2 and, depending on its value and the byte at offset 58, stores a computed action offset at offset -8 of the stack pointer in a5, then calls the action computation and dispatch routine.
+- `store_enemy_action_offset`: Compares a 16-bit value in d2 with 8 and, while it is greater than or equal to 8, stores that value at offset -8 of the stack pointer in a5, then jumps to another routine.
+- `compute_enemy_action_offset`: Reads a byte at offset 21 of the structure in a2 and uses it to index a table of 16-bit values, then adds the byte at offset 16 of the structure in a2 to that table entry and stores the result at offset -8 of the structure in a5.
+- `compute_and_dispatch_enemy_action`: Computes a 16-bit value from a byte read at offset 21 of the structure in a0, adds a value from a2, subtracts 16, and stores the result at offset -8 of the structure in a5.
+- `index_table_and_jump`: Rejects values above 21, doubles the index, looks up a 16-bit value in a table, and jumps to the matching handler using that value.
+- `compute_enemy_state_offset`: Reads a byte from a table using an index derived from a structure field, then stores a computed 16-bit value at a stack offset based on a switch on another byte, calling a routine to translate the index when the byte is 255.
+- `compute_enemy_state_indices_2`: Computes three signed indices from bytes at offsets 11 and 3 of the structure in a3 and offset 2 of the structure in d3, adding a value from d2 to each and storing them as 16-bit values at offsets -6, -4 and -8 of the structure in a5, then jumps to the routine at 17B84.
+- `compute_enemy_state_indices`: Computes two signed indices from bytes at offsets 7 and 3 of a structure and stores them as 16-bit values, then calls another routine to translate those indices and several other structure fields into pointers into a table.
+- `combine_enemy_state_offsets`: Combines a byte at offset 31 and a signed byte at offset 24 of the structure in a2 into a 16-bit value stored at offset -6 of the structure in a5, then reads a byte at offset 34 of that structure and passes it to another routine to compute an enemy state index.
+- `dispatch_enemy_state_via_d0`: Compares the 16-bit value in d0 with 12 and, when it is not greater, doubles that value and uses it as an index into a jump table in a global variable, then branches to the selected entry.
+- `compute_enemy_state_index`: Reads a byte at offset 34 of the structure in a2 as an index into a table, then computes a signed value from the byte at offset 24 combined with table entries and stores it at offset -2 of the frame in a5, or returns early if the offset 24 byte is 255 or the computed value is out of range.
+- `compute_enemy_action_offsets`: Computes four enemy action offsets from the current enemy state and the enemy's own data, storing them at offsets 8, 4, 12 and 16 of the structure in a6, then advances to the next enemy.
+- `load_enemy_byte_and_dispatch`: Restores several registers from the stack and reads a byte at offset 4 of the structure in a2 into d0, then branches to a routine that indexes a table using that value.
+- `index_table_via_d0_2`: Subtracts 2 from the 16-bit value in d0, then branches to a jump table at offset 1817c indexed by the doubled value when the result is 4 or greater, otherwise it returns.
+- `return_without_changes`: Restores the saved registers and returns immediately without modifying any data.
+- `build_enemy_action_table`: Saves registers onto the stack, loads two word arguments from the stack into d3 and d7, and branches away when a global flag is set, otherwise calling a routine and building a table of four entries from a global address.
+- `fill_structure_from_index`: Initializes a structure in a3 with a pointer, a computed address, and a constant word, then stores a per-index byte and a second computed value into its fields, incrementing the index each pass until it reaches 4.
+- `fill_structure_from_index_2`: Stores a global address plus 3296 at offset 0 of the structure in a6 and increments a counter at offset 2 of that structure, then writes a computed value based on a global byte into offset 4 and another based on a second counter into offset 8.
+- `initialize_structure_fields`: Stores a byte value at offset ten, computes two derived values into offsets four and six, sets a flag byte at offset eight, and stores a byte from the stack at offset nine.
+- `check_flag_then_return`: Saves registers d2, d3, a2 and a3, then checks a global byte at offset 157 of the structure in a3; when that byte is nonzero it restores the registers and returns, otherwise it restores the registers and returns.
+- `dispatch_enemy_structures`: Pushes two constant addresses and calls two handlers in turn, clears the byte at offset 16 of the structure in a3, sets the byte at offset 18 to 32, loads a global pointer into a2, and then jumps to another routine.
+- `copy_word_and_branch`: Copies the 16-bit word at offset 6 of the structure in a2 to offset 10 of the structure in a3, clears d2, then jumps to the routine at 183d8.
+- `copy_word_and_branch_alt`: Copies the 16-bit word at offset 4 of the structure in a2 to offset 12 of the structure in a3, clears d3, then jumps to the routine at 183a0.
+- `process_enemy_structures`: Computes a scaled index from a byte at offset 10 of the structure in a2, stores it at offset 8 of the structure in a3, calls another routine, then increments a counter and adds 16 to a value at offset 12.
+- `populate_enemy_structures`: Fills a table of 10-word structures with a running value, a pointer to a global variable, and the constant 5, advancing both the source value and the table pointer by their sizes each iteration, then returns.
+- `toggle_flag_then_call`: Saves a2, loads the structure pointer from the stack word at offset 8, and calls a routine with that pointer.
+- `setup_ptrs_and_branch`: Saves a5 and several registers, sets up a0 with a global base address, copies it into a3, then sets up a2 with another global base address and branches into another routine without returning.
+- `index_enemy_subroutine`: Reads a byte from offset 1 of the structure in a2 and multiplies it by 8 to form a table index, then uses a second byte at offset 29 of the same structure to select and call one of several subroutines.
+- `dispatch_on_indexed_pointer`: Compares d0 with the decimal value 20 and, when d0 is not less than that value, doubles d0 to use as a table index, loads the pointer at that offset from a table, and jumps to it.
+- `conditional_store_offset`: Skips the store when the byte in d6 is 255 and the flag at offset 31 of the structure in a6 is zero, otherwise it stores 30 at offset -8 of the structure in a5 and branches out.
+- `compute_enemy_indexed_offset`: Computes a 16-bit value from the byte at offset 34 and the byte at offset 24 of the structure in a2, storing it at offset -2 of the structure in a5, then returns.
+- `update_enemy_indexed_offsets_2`: Adds 34 to a 16-bit value from a2 when the byte at offset 34 of the structure in a6 equals 4, stores the result at offset -2 of the structure in a5, then reads a byte at offset 25 of the structure in a2 and, unless it is -1, looks it up in a table to derive two 16-bit values stored at offsets -8 and -6 and a marker at offset -4.
+- `update_enemy_indexed_offsets`: Adds an offset from a lookup table to a 16-bit value in d2 and stores the result into a global table, then updates several 32-bit pointers in a structure using values from another table.
+- `store_indexed_offset`: Returns immediately when d5 is zero or d2 is 22 or greater, otherwise adds 36 to d2, scales the result by 16, adds a global base address, and stores it at offset 12 of the structure in a3 before jumping to 18d72.
+- `load_table_byte_index`: Loads a word from the stack in d2 and returns immediately when it is -1, otherwise loads a byte from a table indexed by d2 into d2 and jumps to the routine at 18d08.
+- `advance_enemy_structures`: Reads two index bytes from the structure in a2, adjusts them using a global table and a flag, and stores four resulting pointers into the structure in a3.
+- `dispatch_indexed_handler_2`: Reads a global counter, increments it, and uses it to index a table of routine pointers, then calls the routine at that address and branches away when the result is null.
+- `dispatch_by_flag_value`: Reads a 16-bit value from a global variable and, depending on whether it equals zero, one, or two, either calls another routine with three arguments, sets bit 6 of byte 2 in each 3-byte block of a table, or writes 255 to bytes 0 and 2 of those blocks, then checks three consecutive flag bytes and calls a routine when they match a specific pattern.
+- `iterate_enemy_entry_table`: Pushes the value 2 and calls a dispatcher, then walks a table of three-byte entries until it finds a byte equal to 255, extracting four masked or shifted bytes from each entry and calling the routine at 19060 for each one.
+- `forward_arguments_to_routine`: Saves registers d2 through d6 and a2 on the stack, loads four word arguments from offsets 26, 30, 34, 38, and 42 of the stack into those registers, copies a stack word into d0, and jumps to a routine further ahead without returning.
+- `push_args_and_dispatch`: Pushes the four unaffixed word registers onto the stack, calls a helper routine, restores the stack pointer, then compares a register to the decimal constant 2 and branches away when it differs.
+- `pack_and_dispatch_args`: Reads five word arguments from the stack, writes scaled and masked values into the first three bytes of a structure, optionally sets a high bit, advances the pointer, and calls a dispatcher and another routine when a flag is set.
+- `validate_and_scan_table`: Validates the two arguments, then either computes a table index and scans for a terminator while storing a byte, or resets the table pointer and flag, before returning.
+- `select_and_dispatch_case`: Reads a word from offset 24 of the stack, selects a case value based on whether it exceeds 80, masks a second stack word, and calls the routine at 191fa with five computed arguments.
+- `dispatch_masked_low_bits`: Reads a word from offset 24 of the stack, masks it with 7, pushes the value four times along with the constant 2, calls the routine at 191fa, and returns.
+- `dispatch_masked_high_bits`: Reads a word from offset 24 of the stack, masks it with 7, pushes the value four times along with the constant 4, calls the routine at 191fa, and returns.
+- `call_helper_triple`: Loads a pointer and three words from the stack, makes three calls with different argument combinations, adjusts the stack pointer, restores the registers, and returns.
+- `scale_enemy_arguments_dispatch`: Saves registers d2 through d6 on the stack and loads three word arguments from offsets 26, 30 and 34.
+- `push_args_and_call_3`: Masks the 16-bit values in registers d5, d2 and d6 and pushes each onto the stack, then pushes the word values from d3 and d4 as a second pointer argument, and calls the argument dispatcher.
+- `push_pointer_and_call_3`: Loads a word from offset 18 of the stack into a pointer four times, pushes it along with a zero word as arguments, and calls the argument dispatcher before returning zero.
+- `adjust_offset_by_table`: Loads a pointer from a stack word, multiplies it by 80 after adding 20, indexes a byte table using a masked value from another stack word, and adds or subtracts 16 from a third stack word depending on whether the table byte is zero.
+- `compute_enemy_offset_3`: Adds 16 to the value in d2, multiplies d0 by 80, subtracts 12 from the result, stores the value into d5, and initializes d4 to zero before branching away to the following code.
+- `iterate_entries_and_dispatch_2`: Loops while a counter is less than 3, skipping entries outside the range 0 to 319 or with bit 0 set, then computes a table index from a3 and d4 and reads a byte from a global table.
+- `adjust_enemy_offset`: Sets a global byte to one and, when the stack word at offset 58 is nonzero, pushes arguments and calls the enemy-record selector, then loops adding or subtracting sixteen from the stack word at offset 34 twice before returning.
+- `adjust_enemy_offset_2`: Decrements a 16-bit value in d2, increments a counter in d4, and loops back while that counter is less than 3.
+- `loop_and_dispatch`: If the stack word is less than 30 it scales a global value by 90 twice, clears a flag byte, and loops that many times pushing a structure pointer to call the argument dispatcher.
+- `store_arguments_to_globals`: Copies the three word arguments into three consecutive global variables and returns.
+- `loop_scaled_dispatch_values`: Reads values from a global variable, calls a helper to compute a bound, then loops scaling and masking values while calling a dispatcher and a second helper before clearing a field and calling a final routine.
+- `scan_and_store_pointer`: Saves a global word on the stack, calls the table scanner with that value, stores the returned pointer back into the global word, cleans up the stack, and returns.
+- `push_extended_byte_arg`: Reads a byte from offset 1 of the structure in a2, extends it to a word, and pushes it onto the stack as an argument for a formatting routine.
+- `dispatch_indexed_handler`: Loads a 32-bit value from a table indexed by a doubled parameter, reads a byte from another table, and branches to a handler routine when the parameter is 4 or greater, otherwise it returns.
+- `process_enemy_by_state`: Advances a pointer in a2 by 96 and compares it against a base address, returning the low byte of d3 when it is below.
+- `return_one_value`: Loads the value one into a register, restores the saved registers, and returns.
+- `index_table_via_d0_small`: Compares d0 with 7 and branches to a jump table at 19da4 indexed by the doubled value, otherwise it returns.
+- `compare_address_and_mask`: Adds 96 to a2, compares it with a base address at 4878 and branches when it is below, masks d3 to its low byte, copies it to d0, then jumps to the routine at 19d9e.
+- `dispatch_enemy_by_state`: Saves register a2 on the stack and loads a pointer from offset 2 of the structure in a2, then calls a routine with that pointer and, when the word at offset 8 of the structure is negative, calls another routine with the argument 4.
+- `call_and_restore_a2`: Pushes a2 onto the stack, calls a routine, removes the pushed value from the stack, restores a2, and returns.
+- `fill_struct_and_dispatch_2`: Saves registers, reads a word and a byte from the stack, allocates a structure, then loops three times calling a routine with an incremented index-scaled pointer and a stack byte.
+- `fill_struct_and_dispatch`: Loops three times calling a routine with an incremented index-scaled pointer and a stack byte, then stores several fields into a structure, calls a routine with a byte, and branches to another routine.
+- `init_and_call_routines`: Clears the byte at offset 112 of the structure in a2, then calls a routine with a constant argument, calls another routine with no arguments, and calls a third routine with a single argument.
+- `push_and_call_routine_2`: Pushes a constant onto the stack and calls a routine, removes the constant from the stack, then jumps to another routine.
+- `jump_from_index_table`: Compares d0 against 6 and branches away when it is greater, doubles d0, loads a word from a table indexed by d0 into d0, and jumps to an address taken from that table.
+- `compute_offset_and_store_2`: Loads the byte at offset 114 of the structure in a2, pushes it along with several zero longs and a constant, then calls a routine.
+- `init_structure_fields`: Returns immediately when the byte at offset 15 of the stack is zero, otherwise stores a global address plus 96 at offset 72 of the structure in a2 and a computed address at offset 92, then jumps to the routine at 1A092.
+- `clear_structure_fields`: Clears two 32-bit fields at offsets forty-eight and ninety-two of the structure in a register, then restores the saved registers and returns.
+- `store_slot_and_clear_flags`: Loads a pointer from a global variable into a2, pushes the constant 2 onto the stack, and calls a routine to allocate a slot, then stores the returned slot address at offset 8 of the structure and copies the word values from the stack frame to offsets 12 and 14, clearing the word at offset 20.
+- `lookup_table_value_2`: Scales d2 by 10, adds a scaled value from d4, indexes a table at 1578 with the result into d3, and returns 0 when that value is -1, otherwise it jumps to 1a0da.
+- `fill_slots_and_store_byte`: Writes a 32-bit value into consecutive 20-byte slots of a structure in a loop, then stores a byte at offset 110 and returns.
+- `load_pointer_and_jump_2`: Pushes d2 and a2 onto the stack, loads a global address into a2, and jumps to another routine.
+- `sign_extend_and_check_byte`: Reads a byte from offset 109 of the structure in a2, sign-extends it to 16 bits and then to 32 bits, then branches to a routine that compares the value with 6 and returns immediately if it is not less than 6.
+- `branch_on_value_table_lookup`: Compares the 16-bit value in d0 with 6 and, if it is not less than 6, returns without doing anything.
+- `call_and_check_pointer`: Pushes a2 and calls a routine, then loads the pointer stored at the start of the structure into a2 and d0.
+- `store_slot_and_clear_flags_2`: Saves a2, loads a pointer from a global variable, compares a byte at offset 109 of the structure to the decimal constant 3, and branches away when they differ.
+- `allocate_slot_and_set_flags`: Pushes a constant and a structure pointer, calls a routine to allocate a slot, clears a stack long, calls another routine with the structure, restores the registers, and returns.
+- `set_enemy_flag_bits`: Saves registers onto the stack, reads a byte argument and a word from offset 104 of the structure in a2, masks bits of the byte, and calls a routine twice with different flag values before storing the byte at offset 111 and restoring the registers.
+- `compute_and_store_offset`: Computes a value from a byte at offset 112 of the structure in a2, calls the argument setter with it, then writes that value into three consecutive 16-bit fields at offsets 20, 32, and 44 before returning.
+- `store_byte_in_enemy_table`: Writes a 16-bit value from d3 into a 32-bit-per-slot table in a6 at the index in d2, increments the index, and repeats while the index is less than 3.
+- `save_regs_and_branch_2`: Saves registers d2, d3 and a2, loads two words from the stack into d2 and d3, loads a global pointer into a2, and branches into another routine without returning.
+- `follow_chain_and_compare`: Follows a chain of pointers until a byte matches a stack value or the pointer becomes null, then either calls a routine with a constant or compares fields and calls a routine when the offsets fall within a range.
+- `invoke_input_handler_3`: Compares a register to the decimal constant 40, branches away when it is at least that value, then reads a byte at offset 113 of the structure and branches away when bit 2 is set.
+- `invoke_input_handler`: Pushes the value 4000 onto the stack and calls handle_input_and_config to set a global flag, check two flag bytes, and configure several objects when allowed, then polls the keyboard register before returning.
+- `loop_enemy_with_clamped_value`: Saves registers on the stack, reads a word at offset 104 and a byte at offset 112 of the structure in a2, clamps the value 191 minus that byte to a minimum of 155, and jumps to a loop that iterates thirteen times while calling a routine with computed arguments.
+- `adjust_index_by_constant`: Compares the 16-bit value in d2 with the decimal constant 3, and if it is greater than or equal it branches away without modifying anything.
+- `fetch_byte_from_indexed_table`: Compares the byte value in d2 with the decimal constant 11 and returns if it is greater than or equal.
+- `accumulate_and_increment_counter_3`: Masks a register with 3 to index a byte table, then loops calling a routine with several computed arguments while incrementing a register and branching out once it exceeds 19.
+- `forward_input_handler`: Saves registers d2 and a2 on the stack, loads a word from offset 14 of the stack into d2, loads an address from a global variable at offset 2992 into a2, and jumps to a routine further ahead without returning.
+- `invoke_input_handler_2_2`: Compares a register against a word at offset 104 of the structure and branches away when it is smaller, then walks a linked list of pointers until the pointer is zero or the list end is reached.
+- `invoke_input_handler_2`: Pushes the decimal value 4242 onto the stack and calls handle_input_and_config, then restores the previous stack pointer and returns.
+- `find_enemy_by_index`: Walks a linked list of structures comparing a 16-bit field at offset 104 with a parameter, and returns the signed byte at offset 112 of the matching structure, otherwise returns zero when the list ends.
+- `select_flag_from_bits`: Saves registers d2 and d3, loads a byte from offset 19 of the stack frame into d3 and a byte from offset 15 into d0, then calls a bit-testing routine with that byte.
+- `set_flag_when_byte_matches`: Restores a2 and a byte argument, compares the byte to one, sets bit 1 of a byte at offset 113 of the structure when they match, and branches to another routine.
+- `dispatch_enemy_byte_args`: Compares d2 against 2 and branches away when it differs, then reads a byte from offset 113 of the structure in a2, branches away when bit 1 is clear, and otherwise pushes two byte arguments and calls a routine before restoring the stack.
+- `push_pair_and_call`: Reads two adjacent bytes from offsets 113 and 114 of the structure in a2, pushes them as arguments, and calls another routine.
+- `push_pair_and_call_2`: Reads two bytes from offsets 113 and 114 of the structure in a2, pushes them as arguments, and calls another routine.
+- `set_flag_bit_in_table`: Computes a table address from a global index, then sets bit 7 of the byte at that address when the parameter is nonzero, otherwise clears bit 7.
+- `check_enemy_flag_value`: Saves d2 onto the stack, selects a value from the stack based on a byte argument, walks a linked list of global pointers calling a routine for each entry, and returns one when the argument is neither zero nor one.
+- `dispatch_byte_arguments`: Reads two byte arguments from the stack, masks the first to its low 8 bits, and calls a routine.
+- `call_bit_test_twice`: Saves registers d2 and d3, extracts the low eight bits of a byte parameter, and calls a bit-testing routine twice using a global table indexed by another global value, once with the parameter and once with the parameter plus one.
+- `return_flag_from_call`: Pushes a copy of the byte at offset 11 of the stack frame twice onto the stack, calls a routine with those arguments, then restores the stack and returns 1 when the result equals 1 otherwise it returns 0.
+- `load_bit0_as_value`: Loads the decimal constant zero into d0, overwrites it with a byte from offset 7 of the stack frame, and tests bit 0 of that byte.
+- `load_zero_and_branch_2`: Loads the decimal constant zero into d0 and then branches into the middle of another routine without returning.
+- `setup_enemy_state_registers`: Reads two 16-bit values from a structure and a global table, then calls another routine with a computed pointer.
+- `compare_and_set_registers`: Compares the word at offset 18 of the a5 structure with 4 and, if greater, loads 2 into register d7, 3 into d3, and 2 into d6, then branches into another routine.
+- `init_enemy_state_registers`: Initializes registers d7, d3 and d6 to 3, 3 and 1, then checks whether the value in d5 equals 1; if it does not, it resets d3 to 6 and d6 to 1 before jumping to another routine.
+- `process_enemy_entry_loop`: When a flag register equals 2 it calls a helper with a pointer from the structure, then computes a value from a global counter and a structure field, clamps it to 316, and stores it.
+- `allocate_when_flag_set`: Allocates a slot when a register equals two, computes a pointer from a global counter, calls a routine, and when the result is nonzero stores several fields into the structure and calls another routine.
+- `clear_enemy_byte_flag`: Clears the byte at offset 28 of the structure in a2, tests d5, and stores one into d0 when d5 is nonzero, otherwise storing zero.
+- `setup_enemy_byte_and_call`: Clears the byte at offset 30 of the structure in a2, loads the byte at offset 31 as a signed value, pushes it plus four zero words onto the stack, and calls a routine using the constant 53, then stores the result at offset 29 and pushes the structure pointer for another call.
+- `allocate_when_flag_set_2`: Branches away when a register is not 2, then increments a global counter, compares it against another global value, and branches away when it is smaller.
+- `load_global_pointer`: Restores the saved registers, loads a pointer from a global variable into a2, and jumps to a later section of the same routine.
+- `advance_enemy_timer_and_dispatch`: Advances a per-enemy timer by incrementing a counter at offset 24 and using it to index a lookup table that updates the field at offset 12, then branches on the counter and status bytes to dispatch enemy behavior, including calling a setup routine and updating counters and flags, and finally follows a linked list of enemy structures until reaching a null pointer.
+- `update_enemy_timer_and_dispatch`: Updates a per-enemy timer counter and a signed delta field, then indexes a lookup table using the enemy's type and a shifted counter value to branch on the decoded flag bits and invoke the appropriate handling routine.
+- `accumulate_and_process_structure`: Adds the value at offset 26 of a structure to a 16-bit counter at offset 18, clears offsets 26 through 28, then calls another routine with the byte at offset 31 and follows it with a loop that walks a linked list of structures.
+- `increment_byte_at_offset_25`: Copies a2 into a0, adds the decimal constant 26 to it, adds the decimal constant 80 to the byte at that address, and increments the byte at offset 25 of the structure in a2.
+- `compare_enemy_state_byte_2`: Compares the byte at offset 26 of the structure in a2 against the values 40 and 20, branching to other routines when the value is greater than or equal to them, and otherwise calls another routine with a sign-extended byte from offset 25 and a word from offset 16 before returning.
+- `advance_enemy_timer_and_dispatch_2`: Advances an enemy's per-frame timer using a counter at offset 24 to index a lookup table that updates the field at offset 12, then dispatches an enemy handler based on a state byte at offset 25 and a doubled index, and finally processes the enemy structure's linked list.
+- `check_pointer_then_setup`: Saves d2 and a2, loads the structure pointer from the stack word at offset 12, and tests the long at that pointer.
+- `compute_and_call_offset`: Reads a byte at offset 9 of the structure pointed to by a2, computes a distance from the word at offset 24, calls the argument setter with those values, restores the saved registers, and returns.
+- `save_regs_and_branch_3`: Saves registers d2, d3 and a2, loads a word from offset 22 of the stack into d3, sets d2 to zero, loads a global pointer into a2, and branches into another routine without returning.
+- `process_enemy_chain_range`: Walks a linked list of enemy structures via their next-pointer, and for each one whose type field is less than three and whose flag byte is zero it checks whether a value at offset 18 falls within plus or minus six of the value in d3, calling a helper with the byte at offset 31 when it does and incrementing a counter.
+- `push_regs_and_branch`: Pushes registers d2 through d7 and a2 onto the stack, loads a pointer from a global variable into a2, then branches into the middle of another routine.
+- `process_enemy_structure`: Walks a linked list of structures by following pointers until reaching a null entry or one whose byte at offset 31 matches a stored value, then calls the library to set a timer to 4096 ticks.
+- `handle_state_by_flags`: Checks two byte fields of a structure, calls a routine to allocate a slot, and when a field equals one stores a value, calls another routine, and loops a number of times.
+- `scale_index_and_store`: Pushes the decimal constant 3 and calls a routine by flag, then moves the result into d2 and compares it with the decimal constant 2.
+- `call_routine_by_flag`: Adds the decimal constant 72 to a value in d2 and clears d5.
+- `dispatch_enemy_by_index_2`: Indexes a table of 32-bit entries using a value scaled by three and, when the result is two or more, stores a byte from a global variable at offset 12 of the structure in a2 before jumping into another routine without returning.
+- `clear_field_and_branch`: Clears the long at offset 12 of the structure in a2 and then branches into another routine without returning.
+- `store_and_call_offset`: Stores three at offset 24 of the structure in a2, and when the long at offset 12 is nonzero replaces it with a global base plus sixteen times that byte, calls the field setter, and jumps to the shared loop.
+- `dispatch_enemy_by_index`: Reads a word parameter from the stack and indexes a table of 32-bit entries using it, then calls the routine at that entry and returns its result.
+- `init_struct_and_set_flag`: Saves a2, pushes a global address, a constant and another constant, then calls a routine and stores the result into a2.
+- `clear_byte_at_offset_24`: Clears the byte at offset 24 of the structure in a2 to zero and restores a2 before returning.
+- `load_global_into_a2`: Saves registers d2 and a2, loads a global variable into a2, and branches to the code at offset a fixed address.
+- `decrement_and_update_enemy_list`: Loops over a linked list, decrementing the byte at offset 24 and writing a computed 32-bit value into offset 12 of each structure until the pointer becomes zero.
+- `compute_enemy_offset_2`: Loads three word arguments from the stack into registers, multiplies one by 80 and subtracts 75, then tests a flag and loads a constant into another register before branching into a later routine without returning.
+- `loop_and_call_routine_2`: Loops while a counter is less than 320, computing a base from a global address and the low bit of a counter, then calling a routine with an address offset by 176 and arguments derived from the counters.
+- `compute_and_store_enemy_state`: Clamps a parameter to a maximum of seven when it exceeds that value, computes a scaled offset from the parameter, and stores two words and two bytes at offsets 104 through 109 of the structure in a2.
+- `store_enemy_state_and_call_2`: Clears the byte at offset 110 of the structure in a2, pushes two constants and two derived pointers, then calls a routine and stores its result at offset 111.
+- `push_flags_and_call_routines`: Pushes a constant and a structure pointer, calls a routine, shifts a register right by four, computes a pointer from another register, and calls two routines before restoring registers and returning.
+- `push_regs_and_branch_2`: Pushes registers d2 through d4 and a2 onto the stack, loads a pointer from a global variable into a2, then branches into the middle of another routine.
+- `decrement_field_and_store`: Calls a routine with a global byte and a structure byte, decrements a structure field, and when it reaches zero stores a pointer into the structure and branches to another routine.
+- `decrement_enemy_timer_and_walk`: Decrements the byte at offset 110 of the structure in a2 and, when it reaches zero, calls a routine with the structure pointer, stores a result at offset 111, and writes a pointer plus several computed offsets into the structure.
+- `push_enemy_flags`: Reads a byte from the stack argument and pushes it, then reads a word from offset 104 of the structure in a2, shifts it right by four bits, and pushes it along with a byte from offset 108 before calling a routine by flag.
+- `update_min_max_values`: Walks a linked list of structures, calls a routine for each one, and when the result is nonzero updates minimum and maximum values stored in a table for the first two cases of a selector byte, otherwise calls another routine.
+- `store_enemy_fields`: Multiplies a parameter by eighty and subtracts seventy-five to form a value, then stores a parameter, that value, and several bytes at offsets 44 through 53 of the structure in a2 before clearing a global variable and returning.
+- `save_registers_and_jump_2`: Saves registers d2 and a2 onto the stack, loads a2 with the address stored in a global variable, then jumps to another routine.
+- `scale_global_into_offset`: Tests the byte at offset 50 of the structure in a2 and returns early when it is zero.
+- `select_flag_from_byte`: Compares the byte at offset 51 of the structure in a2 with the decimal constant 60 and returns if it is not below.
+- `walk_enemy_chain`: Calls a routine with a constant and, when the result is nonzero, calls it again with another constant and a structure field.
+- `load_pointer_and_branch_7`: Saves a2, loads a pointer from a global variable, and branches into the middle of another routine without calling anything.
+- `find_enemy_by_type`: Compares a byte at offset 53 of the structure in a2 with a stack argument and, while they differ and a linked pointer is nonzero, follows that pointer, otherwise it allocates a new enemy and returns it.
+- `process_enemy_when_active`: Tests a byte at offset 50 of the structure in a2 and returns early when it is zero.
+- `process_enemy_command_stream_3`: Reads three word parameters from the stack and calls a routine that fetches a pointer from a table indexed by a global variable.
+- `toggle_global_bit`: Loads a pointer from the stack into a0, pushes it onto the stack, fetches a byte from a global variable into d0, pushes that value, and calls a bit-toggling routine.
+- `toggle_io_byte`: Toggles all bits of the byte at the I/O address and returns immediately.
+- `clear_or_dispatch_list`: When the stack word is zero it clears a block of words and sets their following bytes to one until reaching a global base, otherwise it pushes the value and calls the list dispatcher, then restores the stack and returns.
+- `check_enemy_parameter`: Loads three word arguments from the stack into registers, compares one against seven and branches when it is below, then pushes an address and calls a library routine before branching into a later routine without returning.
+- `store_params_in_enemy_tables_2`: Calls a routine with three constants and stores the returned pointer in a register.
+- `setup_and_branch_list`: Saves registers d2 and a2 through a3 on the stack, loads a pointer from a global variable into a2, and branches into another routine.
+- `walk_structured_list`: Walks a linked list of structures, and for each non-empty entry calls a helper and stores a computed value into a table before following the next pointer.
+- `init_table_loop_counter`: Saves registers d2 and a2 on the stack, loads the address of a table into a0, copies it into a2, sets d2 to zero, and jumps into the middle of another routine to initialize a loop counter for that routine.
+- `decrement_and_call_loop`: Reads a 16-bit value at the address in a2 and returns early when it is zero.
+- `store_params_in_enemy_tables`: Stores a byte parameter into a table indexed by a 16-bit value and writes a 32-bit value derived from both parameters into a second indexed table, then returns.
+- `dispatch_enemy_parameters`: Loads five parameters from the stack, indexes a table using the low two bits of a parameter, and branches to a helper when a fourth parameter is at least 50.
+- `push_args_and_call`: Decrements d2 by 4, derives an address from a global table indexed by the low two bits of a global variable, and pushes four addresses onto the stack.
+- `handle_when_registers_match`: Checks two registers against constants, computes a pointer from a global variable, calls a routine, and when another global equals one calls a second routine before branching.
+- `handle_enemy_flags`: Calls a routine with two structure pointers, and when the result is nine it reads a byte from offset 1 of the structure in a3 and calls another routine, otherwise it branches to a routine that sets enemy bits.
+- `invoke_enemy_with_flags`: Pushes several values including two byte fields from the structure in a2 and two registers, then calls a routine with them.
+- `push_new_enemy_entry_2`: Pushes the decimal constant negative one, computes an address from d2 and d3 masked with the decimal constant 12 plus the byte at offset 2 of the structure in a2, and pushes that address along with copies of d3 and d2.
+- `clear_enemy_table_entries`: Clears twelve 32-bit entries in a table starting at zero, then stores the table's base address into a global pointer.
+- `push_new_enemy_entry`: Initializes a new structure at a growing global buffer with two 16-bit values, a constant byte, and a parameter byte, advances the buffer by ten bytes, and resets it to the start when it reaches the end.
+- `jump_into_dispatch`: Saves registers on the stack, loads two table addresses into a2 and a3, then jumps into an earlier routine without returning on its own.
+- `decrement_and_dispatch_operation`: Decrements a counter in a structure and, based on a mode byte, applies an arithmetic operation to two 16-bit values, then calls a dispatch routine with the result.
+- `compare_byte_offset9`: Compares the byte at offset 9 of the structure in a2 with the constant 1 and, when they differ, jumps away; otherwise it subtracts register d3 from d4 and jumps to a later section of the same routine.
+- `compare_byte_then_add_registers`: Compares the byte at offset 9 of the structure in a2 with the constant 2 and, when they differ, returns; otherwise it adds register d3 to d2 and branches away.
+- `compute_and_dispatch_case`: Subtracts a 16-bit value from another, pushes a constant and the computed values onto the stack, then calls a dispatch routine; when the first result is nonzero it calls the dispatch routine with different arguments, and in both cases it clears a flag byte and returns.
+- `compute_dispatch_index`: Pushes the value 2 and calls a dispatch routine, adds 4 to the returned value, pushes that result along with the low three bits of a global variable and a pointer derived from d2, then compares the word at offset 6 of the structure in a2 with the decimal value 84 and loads the constant 1 into d0 when it is smaller.
+- `push_value_and_call_dispatch`: Pushes the value 2 into a stack slot and calls the routine at 193fa, then advances the stack pointer past the pushed value and clears the four words at the address in a2 before jumping into the middle of another routine.
+- `advance_pointer_and_dispatch`: Increments a long at a2 by 16, advances a2 by 10, and returns immediately when a2 reaches a3, otherwise it restores registers and returns.
+- `call_helper_constants`: Pushes two constants and a global address onto the stack, calls a helper routine, cleans up the stack, and returns.
+- `compare_pointer_with_limit_2`: Saves register a2 on the stack, loads the address of a global variable into a0, copies it into a2, and jumps into the middle of another routine to compare that pointer with a limit value.
+- `test_enemy_registers`: Tests the long word at register a2 and returns zero if it is zero, otherwise it compares the byte at offset 9 with 255 and returns zero when they match.
+- `compare_pointer_with_limit`: Adds the decimal constant 10 to the pointer in a2, loads a global address into a0, and compares the two pointers.
+- `store_enemy_parameters`: Reads a global counter, increments it, and calls a routine that fetches a pointer from a table indexed by that counter.
+- `branch_into_enemy_updater`: Saves register a2 onto the stack, loads a pointer from a global variable into a2, and branches into another routine without returning control here.
+- `process_linked_list_entries_2`: Walks a linked list of structures, calls a routine for each one, and when the result is nonzero branches into another routine based on flag bytes and conditionally stores a returned value into a table, otherwise it returns.
+- `process_linked_structures`: When a global flag is zero it calls the enemy updater with two structure bytes, then for each linked structure it calls the parameter dispatcher and updates a table entry when a flag bit is set, advancing until the list ends.
+- `update_if_active_structure`: Loads a global structure pointer and returns immediately when it is null or its byte at offset 6 is the sentinel, otherwise it calls the enemy updater with two of its bytes and returns the result.
+- `dispatch_by_stack_word`: When the stack word is zero it calls the flag handler if a global byte is clear, otherwise it saves a stack value, calls the list dispatcher, and then either calls the flag handler or the enemy updater depending on whether the value is two.
+- `store_stack_byte_in_global`: Copies a byte from the stack into a global variable and returns.
+- `check_and_handle_input`: Saves two data registers, compares the stack word at offset 14 with twenty, and when it is below that threshold pushes a constant and calls the input handler before jumping to the shared loop.
+- `lookup_table_value_3`: Indexes a byte table using a masked value, and when the indexed value exceeds a threshold calls a routine and returns -1, otherwise returns the indexed value.
+- `dispatch_parameter_and_update_globals`: Dispatches a 16-bit parameter by comparing it against a stored value and a lookup table, then calls different routines depending on the result and on bits of an 8-bit flag, updating several global variables as it goes.
+- `branch_on_global_flags`: Checks a global byte and, when it is zero, pushes a zero and calls a routine, then checks a global long and, when it is not the value 65535, pushes a global long and a byte from the stack and calls another routine, returning 1.
+- `load_zero_and_branch_3`: Loads the value 0 into register d0 and then branches to the target routine, transferring control without returning.
+- `handle_dispatch_by_flag`: Checks a global flag and, when it is not the sentinel value, reads a byte from the stack, and when its low bit is clear clears a global byte, calls a routine with the value 2, sets a flag, and returns; otherwise it calls two routines and zeroes a global flag.
+- `call_with_doubled_pointer`: Saves register d2, loads a pointer from a global variable, doubles it, and pushes it onto the stack before calling a routine.
+- `store_byte_if_flag_set`: If the byte at offset 88 of the global variable is nonzero it leaves it unchanged, otherwise it stores the byte passed in the first stack argument at that same offset, then returns.
+- `wait_flag_byte_set`: Checks a global word at offset 1624 and, when it is not the value 65535, clears a byte at offset 3439 of a global structure and waits at a flag byte at offset 3448 until it becomes nonzero, then returns.
+- `compute_bit_shift_from_index`: It loads a 16-bit value from the second stack argument, masks it to a range of 0 to 63 using the low six bits, and returns 1 shifted left by that amount, computing a table index into a global byte table of 4-byte entries.
+- `lookup_byte_or_negative_one`: It returns -1 when the 16-bit value at the global variable offset 1624 equals -1, otherwise it indexes a global byte table using that value multiplied by four and returns the loaded byte sign-extended.
+- `compute_bit_shift`: Calls another routine to obtain a 16-bit value, and returns 0 when that value is -1, otherwise it returns 1 shifted left by the low 6 bits of the value.
+- `load_argument_and_call_helpers`: Loads a 16-bit value from the first stack argument into d2, calls a routine to obtain a pointer, stores that pointer into a2, and saves the original value into a0.
+- `initialize_enemy_counter_chain`: Calls a routine with a constant and returns early when the result is nonzero.
+- `update_enemy_counter_chain_2`: Tests the 16-bit value at offset 18 of the structure in a2 and returns early when it is not greater than zero, then adjusts a value at offset 12, checks the flag at offset 24, and calls a routine with the pointer when that flag is set.
+- `update_enemy_state_counter`: Loads a pointer from a global variable into a2 and returns early when the 32-bit value at offset 8 is zero.
+- `increment_counter_if_state_two`: When the 16-bit value at offset 20 of the structure in a2 equals two it clears the 32-bit value at offset 8, then it always increments the value at offset 20 by one and restores a2 before returning.
+- `initialize_enemy_struct_offset`: Computes an address from a stack parameter scaled by eighty and calls a routine with a pointer offset from that address.
+- `decrement_enemy_offset`: Tests the 16-bit value at offset 18 of the structure in a2 and returns early when it is zero, then decrements that value and jumps into the middle of another routine to continue processing.
+- `wrap_counter_at_four`: Increments the 16-bit value at a global address, and when it exceeds the decimal constant 3 it clears that value.
+- `update_enemy_offset`: Reads a 16-bit value at offset 48052 of a global variable, subtracts 1, masks the low bit, scales it by 16, adds the value at offset 48046 of another global variable plus 368, and stores the result at offset 48046.
+- `set_flag_when_value_two`: If the 16-bit value at the global variable offset 48052 equals two it sets the 16-bit value at offset 48050 to fifteen, then it returns.
+- `compute_enemy_struct_offset`: Reads a 16-bit value from offset 10 of the structure in a7, multiplies it by 80, and uses the result as an offset into a table.
+- `cycle_and_update_offset_value`: It increments the 16-bit value at offset 48122 by one, resets it to zero when it exceeds five, then stores into offset 48118 the value of a global long at offset 21970 plus the reset value times sixteen plus four hundred, and returns.
+- `clear_multiple_global_fields`: It clears the 16-bit values at offsets 48114 and 48116, the 32-bit value at offset 48110, the 16-bit value at offset 48122, and the 32-bit value at offset 48118, then returns.
+- `store_library_result`: Calls a library function with the address 4400 and stores its result in a global long, then, when that result is zero, calls the library function with the address 4692 and adds 4399 to the stored value before returning.
+- `call_enemy_handler`: Pushes the constant 4368 and a pointer from offset 48124 of a global variable onto the stack, calls another routine with them, cleans up the stack, and returns.
+- `copy_long_between_globals`: It copies the 32-bit value at the global variable offset 48124 to the 32-bit value at offset 48132, then returns.
+- `dispatch_stack_parameters`: Reads a pointer and two values from the stack, adds one value to a global long, and, when the global is not greater than the sum, calls a library function with the address 4693; otherwise it branches on the second value to call a routine with different argument orders before restoring registers and returning.
+- `update_counter_if_changed`: Computes the difference of two global longs, and, when a stored counter is nonzero and differs from the new value, calls a library function with the address 4695; it then stores the new value in the counter and increments a global byte before returning.
+- `compute_and_spawn_enemy`: Clamps the sum of the two words at offsets 22 and 26 of the structure in a7 to a maximum of 320, subtracts the second word from 320, scales the word at offset 18 by 80 and subtracts 60, stores the result in a global variable, clears two adjacent global bytes, and calls a routine to allocate a structure.
+- `shift_and_dispatch_enemy`: Loads a 16-bit value from offset 22 of the structure in a7 into d2, shifts it right by four bits, then loads the value from offset 26 into d4 and shifts that right by four bits.
+- `adjust_enemy_values`: Subtracts 2 from register d2, adds 2 to register d4, scales the adjusted d2 value by 16, sets a mask to 1, and branches into the target routine to process the computed value.
+- `loop_or_accumulate_and_increment`: In a loop that repeats while a counter below the limit in d4 is less than that limit it ors the running value in the global variable with d3, doubles d3, and increments the counter, returning the previous counter value each pass.
+- `allocate_enemy_struct_flag`: Reads a global index and looks up a byte in a table, then subtracts it from another global value and computes a scaled result.
+- `jump_to_enemy_update`: Loads a word from a global variable into d3, sets d4 to two, and calls a routine by flag before jumping into the middle of another routine without returning.
+- `iterate_enemy_nodes`: Calls a routine with a constant, reads a byte from a table indexed by a register, and calls another routine with a global pointer and a computed pointer.
+- `process_enemy_node_list`: Enters a loop that calls a routine with a constant to obtain a pointer, then calls a routine with a global flag and that pointer.
+- `save_and_branch`: Saves registers d2, d3, and a2 on the stack, loads a pointer from a global variable into a2, and branches into the middle of another routine.
+- `update_enemy_counter_chain`: Adds the sign-extended byte at offset 24 of the structure in a2 to the 16-bit value at offset 24, then adjusts the 16-bit value at offset 16 by subtracting 16 when bit 1 of the byte at offset 25 is set.
+- `modify_enemy_counter`: Pushes the value 31 and a pointer from offset 32268 of a global variable onto the stack, calls another routine, and when the result is nonzero it adds 200 to the signed 16-bit value at offset 18 of the structure in a2.
+- `clear_enemy_flags_from_struct`: Saves register a2 on the stack, loads a pointer from a global variable into a2, and jumps into the middle of another routine to clear enemy flags using the value at offset 26 of the structure.
+- `store_enemy_flags`: Calls another routine with the constant 3 and sets register d2 to 0 when the result is not 3, then calls it with 23 and combines the result with 19 when the first result equals 2.
+- `check_enemy_status_flags`: Compares the byte at offset 58 of the structure in a2 with 1 and jumps past the setup when it is higher, otherwise loads the value 10 into d0.
+- `check_enemy_status`: Compares the byte at offset 58 of the structure in a2 with 3 and branches when they differ, otherwise it loads the value 11 into register d0 and continues into the target routine.
+- `write_enemy_status_flags`: Stores the value 255 in the 16-bit field at offset 34 of the structure pointed to by a2, clears the byte at offset 36, then sets bits 11 and 12 of the 16-bit word at offset 22 of the same structure and clears the byte at offset 22, before restoring a2 and d2 and returning.
+- `check_enemy_pointer_flags`: Compares the byte at offset 16 of the structure in a2 with 1 and jumps past the setup when it is greater, otherwise loads the value 10 into d0.
+- `check_enemy_pointer`: Compares the byte at offset 16 of the structure in a2 with 3 and branches when they differ, otherwise it loads the value 11 into register d0 and continues into the target routine.
+- `store_enemy_pointer`: Copies the 16-bit value in d2 into a byte at offset 13 of the structure in a2, clears the byte at offset 12, then stores the pointer a2 plus 18 into the word at offset 0 of a global variable.
+- `select_and_store_value`: Reads a byte at offset 21 of a structure and selects the value 10, 11, or -1 based on whether it is less than 2, equal to 3, or something else; when the value is not -1 it stores it at offset 13, clears the byte at offset 17, sets bits in the structure word, and returns the selected value, otherwise it calls a library function with the address 4900.
+- `init_enemy_flags`: Clears the byte at offset 22 of the structure in a2, sets the byte at offset 23 to 1, copies a byte from a global variable into offset 16, and sets the byte at offset 29 to 20.
+- `dispatch_enemy_state_handler_4`: Saves registers, loads the structure pointer from the stack into a2 and pushes it back, then calls the state comparison routine.
+- `compare_enemy_state_id`: Compares the byte at offset 29 of the structure in a2 against the constant 20 and returns immediately when they are equal, otherwise falls through to the next routine.
+- `check_enemy_state_flag_2`: Tests the byte at offset 23 of the structure in a2 and returns immediately when it is zero, otherwise compares the byte at offset 22 against the constant 5 and returns when it differs.
+- `increment_enemy_state_counter`: Increments the byte at offset 22 of the structure in a2 and branches to the other routine when it reaches 3, otherwise it calls two helper routines with constants and a value from d0, then returns.
+- `validate_enemy_spawn_flags`: Loads a pointer from offset 10 of the structure in a2, selects a value from d2 based on a bit in a byte at offset 64, and when a series of byte and range checks pass it calls the helper routine with two structure bytes and a constant, otherwise it returns.
+- `dispatch_and_decrease_enemy_flags`: Loads a byte from offset 1 of the structure in a3 and a byte from offset 16 of the structure in a2, then calls a helper routine with those values plus the constant 13.
+- `decrement_and_clear_enemy_flags`: Decrements the byte at offset 16 of the structure in a2 and, while it stays positive, clears offsets 16, 19 and 27 of that structure before jumping to the code at offset 1d508.
+- `allocate_enemy_struct_counter`: Reads a stack parameter and checks a global flag, returning early when it is set.
+- `decrement_enemy_reference`: Tests a 32-bit global variable and returns early when it is zero, then compares a second global against one and branches when it is below or equal.
+- `prepare_args_for_routine`: Loads the address stored in a global variable into a pointer, sets a byte register to -1 and a word register to 0, then jumps into another routine.
+- `walk_linked_list_call_lib`: Walks a linked list of longs stored at offset 12 of each structure until reaching a null pointer, incrementing a counter each step, then pushes a constant and calls a library function, stores the result at offset 32294, pushes another constant and calls a second library function, and returns.
+- `call_library_4904`: Pushes the address 4904 onto the stack and calls a library function with that argument, then restores registers and returns.
+- `process_linked_list_4`: Reads a pointer from a global and, when a global word equals 1 and a decremented counter is not negative, branches into another routine when a structure field is nonzero; otherwise it updates that field and a global counter, then loops through a linked list of pointers, updating matching entries and calling routines before returning.
+- `store_and_branch_list`: Stores the decimal value 27 into a global byte, clears a long at offset 12 of the structure in a2, and branches into another routine.
+- `compare_and_store_enemy_address`: Tests whether the long value at offset 12 of the structure in a2 is non-zero and, if zero, compares it against two computed addresses, storing the matching address at offset 12 of that structure.
+- `walk_structured_list_store`: Walks a linked list of structures, and for each entry calls a helper, stores a computed pointer at offset 12, makes two more calls, and sets a global word before following the next pointer.
+- `init_or_call_byte_globals`: Reads a word from the stack, and when it is zero clears a global byte, sets a global byte at the next offset to 255, and clears a third global byte, otherwise pushes a pointer to each of the three global bytes and a constant and calls a routine for each, then restores registers and returns.
+- `store_enemy_parameters_2`: Loads three arguments from the stack into registers, calls a routine with three constants, and stores the returned pointer.
+- `setup_and_branch_enemies`: Saves register a2 on the stack, loads a pointer from a global variable into a2, and branches into another routine.
+- `process_enemy_list`: Walks a doubly linked list of enemy structures using their next pointers, calling a flag-checking routine and a masking routine for each active enemy, then calls a per-enemy routine, and stops when the end of the list is reached.
+- `mask_enemy_flags_when_active`: Loads a 16-bit value from offset 10 of the stack into d2 and, when it is not the value 65535, reads the byte at address 48220, combines it with d2 using a bitwise OR, and stores the result back at address 48204 before jumping to the routine at a fixed address.
+- `update_and_mask_enemy_flags`: Calls a routine with the byte at offset 32296 of a table and the value in d2, stores the returned byte at offset 32296, masks it with the byte at offset 32297, and sets offset 32298 to one when the result is zero.
+- `check_flag_and_call_init`: Tests the byte at offset 174 of the global variable and returns early when it is not ten, then pushes zero onto the stack, calls a routine, removes the argument from the stack, and returns.
+- `iterate_enemy_flag_clear`: Reads the 16-bit value at offset 26 of the structure in a2, pushes it onto the stack, and calls a routine to clear and mask enemy flags.
+- `process_enemy_parameters`: Reads three word arguments from the stack and calls a routine with a constant, returning immediately when it reports failure.
+- `decrement_global_byte`: Tests a global byte, decrements it when nonzero, and returns early when the result is not zero.
+- `decrement_enemy_offset_three`: Tests the 16-bit value at offset 110 of the structure in a2 and returns early when it is not greater than zero, then decrements that value, stores the constant 3 at offset 112, and jumps into the middle of another routine to continue processing.
+- `fill_enemy_table_start`: Loads zero into d2 and jumps into the middle of another routine to fill an enemy table with computed values indexed by a counter.
+- `fill_enemy_table_with_values`: Loops eight times, computing a value from a routine and a counter, then storing that scaled value into a table indexed by the counter, returning when the counter reaches eight.
+- `lookup_flag_via_table_2`: Calls a routine with the value 13 and clears the pushed argument, then returns zero when the result is zero or bit 5 of the byte at offset 32296 is clear.
+- `load_zero_and_jump`: Loads zero into d0 and then jumps to the code at offset 1dc22.
+- `update_enemy_from_args`: Increments a global counter and calls a routine with an indexed pointer, returning when that call fails.
+- `load_enemy_and_branch`: Loads the address from the global variable at 48254 into a2, then jumps to the routine at offset 1DD6A.
+- `check_and_update_enemy`: Checks whether the byte at offset 24 of the structure in a2 equals one, and if not it returns without changing anything.
+- `save_and_branch_enemy`: Saves register a2 onto the stack, loads a pointer from a global variable into a2, and then branches into another routine.
+- `find_and_mark_enemy`: Walks a linked list of structures comparing a byte at offset 26 against a stack value until they match or the list ends.
+- `activate_enemy_and_call_routines`: Tests a byte at offset 24 of a structure and, when it is zero, sets it to 1, stores a pointer at offset 12, looks up a pointer in a table using an index byte, calls a routine with it and another byte, stores the result back, then calls two more routines with a byte, a constant, and a final routine, and returns.
+- `initialize_enemy_struct_6`: Multiplies a parameter by eighty and subtracts seventy-five to form a value, stores a counter byte at offset 51 of the structure in a2, then branches on a result to either clear fields or store a byte at offset 50 before returning.
+- `set_enemy_pointers`: Stores the value 19 at offset 44 of the structure in a2, then writes the address of a global variable plus 96 into both the word at offset 12 and the word at offset 32.
+- `setup_enemy_pointer`: Loads the address stored in a global variable into a2 and jumps into the middle of another routine, which then calls find_and_enable_enemy.
+- `find_and_enable_enemy`: Walks a linked list of structures comparing a byte at offset 51 against a stack value until they match or the list ends.
+- `enable_enemy_and_call_routines`: Tests a word at offset 44 of a structure and, when it is zero, sets it to 1, looks up a pointer in a table using an index byte and calls a routine with it and another byte, stores the result back, then calls a routine with a word and a routine with a byte, and returns.
+- `clear_and_mask_enemy_flags`: Calls a routine with the byte at offset 4 of the stack and the value at offset 46173, stores the returned byte at offset 46173, masks it with the byte at offset 46172, and returns.
+- `enter_enemy_chain`: Pushes registers d2, d3 and a2 onto the stack, loads a pointer from a global variable into a2, and branches into the middle of another routine without returning.
+- `update_enemy_counter`: Tests the word at offset 44 of the structure in a2 and returns early unless it lies between one and nineteen.
+- `process_enemy_chain_2`: Reads a byte from a table indexed by a register and adds it to pointers at offsets 36 and 38 of the structure in a2, then calls a routine and follows a linked pointer while it is nonzero before restoring registers and returning.
+- `call_and_clear_enemy_counters`: Pushes a zero value, calls a routine, clears the word at offset an address and the word at offset 48262, then returns.
+- `select_and_process_enemy`: Compares a stack value against a constant and branches into the middle of another routine when they are equal.
+- `find_next_enemy`: Walks a linked list of 32-bit pointers starting from a global variable, skipping entries whose 12-byte offset is nonzero, and returns the first matching pointer or zero when the list ends.
+- `store_param_byte`: Stores the byte passed on the stack at offset 7 into a global variable and then returns.
+- `prepare_and_call_subroutine`: Reads a pointer from the stack, computes an address from two words in that structure, pushes several constants and the computed address and a byte, calls a routine, restores the stack, and returns.
+- `reload_enemy_structure`: Pushes registers d2, d3 and a2 onto the stack, loads a pointer from a global variable into a2, and branches to another routine without returning.
+- `process_enemy_flag`: Checks whether the enemy structure at a2 has a nonzero value at offset 12, and if so indexes a table using a byte at offset 25 scaled by 20 plus a nibble of the word at offset 16, then calls a helper routine when the fetched byte is non-negative and its bit 2 is set.
+- `process_enemy_flag_2`: Masks d2 to a byte and tests its high bit, and if set loads a pointer from offset 16 of the structure in a2, indexes a table using the byte at offset 25 scaled by 20, adds the result to the word at offset 4 of the structure, and calls a routine with the structure pointer.
+- `load_enemy_stack_values`: Pushes registers d2 through d7 and a2 through a3 onto the stack, loads two values from the stack into d3 and d7, clears d4, and branches to another routine when a global variable is nonzero.
+- `check_enemy_position`: Tests the enemy structure at a2 for a nonzero offset-12 value matching a stack byte and a position within plus or minus 16 of register d7, then selects a value of one or two based on register d4 and calls a helper routine for each matching entry in the linked list.
+- `dispatch_enemy_state_3`: Returns one immediately when the register d3 is zero, otherwise it saves a2 and calls a helper routine.
+- `read_byte_and_dispatch_2`: Reads a byte from offset 24 of the structure in a2, calls a routine with it, and when the result is not the negative one sentinel it calls another routine with the byte, the frame value, and the stored parameter.
+- `process_enemy_structure_2`: Reads bytes from offsets 20 and 25 of the structure in a2, pushes them along with a stack constant and several pointers, then calls a routine and adjusts the stack pointer before branching to another routine.
+- `push_and_dispatch_enemy_state`: Loads zero into d0, reads the byte at offset 26 of the structure in a2, pushes it along with the value in d3, calls a routine, then jumps to the code at offset 1e640.
+- `dispatch_enemy_state_table`: Subtracts 9 from the value in d0, jumps back to a fixed address when the result is not below 6, otherwise doubles d0 and uses it to index a jump table.
+- `dispatch_enemy_state_4`: Pushes a pointer from d6 and the value in a3, pushes the constant 128, and calls a routine to dispatch on a parameter, then advances a2 through a chain until a matching structure is found or the chain ends.
+- `walk_list_and_dispatch_2`: Walks a linked list of structures, and for each occupied entry whose flag byte equals 255 it pushes four byte fields and a pointer to call the slot dispatcher, then advances to the next entry.
+- `reload_enemy_structure_2`: Pushes register a2 onto the stack, loads a pointer from a global variable into a2, and branches to another routine without returning.
+- `find_enemy_by_offset`: Loads the byte at offset 27 of the structure in a2, sign-extends it, and compares it with the word at offset 10 on the stack, returning immediately if they match; otherwise it advances a2 through a chain until a null pointer or a nonzero offset-12 value is reached.
+- `call_enemy_helper`: Pushes the constant four and the structure pointer at a2 onto the stack, calls a helper routine with those arguments, restores the stack, and returns.
+- `store_and_process_enemy`: Saves a2 onto the stack and loads the structure pointer from the first argument.
+- `mark_and_advance_enemy`: Returns immediately when a byte at offset 21 of the structure is 255, otherwise it calls a routine with the next structure.
+- `call_sequence_and_compare`: Calls a routine, then calls another routine with the values 1, 4, 6 and 5 each preceded by a cleared long on the stack, and finally compares two global pointers and, when they differ, calls the routine with the values 0 and 1 before returning.
+- `initialize_enemy_from_index`: Computes a table index from a global counter and the first parameter, then reads a flag byte and a lookup value to derive an offset.
+- `initialize_enemy_struct_7`: Initializes an enemy structure by calling setup routines for its fields, then stores computed values, a flag byte, and a derived byte into the structure before incrementing a global counter and returning.
+- `test_enemy_byte_branch`: Tests the byte at offset negative 7 of the structure in a5, and when that byte is nonzero it clears register d4 and branches into another routine without returning.
+- `clear_and_branch_enemy`: Clears a word at offset negative two of register a5 and then branches into another routine.
+- `fill_enemy_struct_fields`: Loops while a counter is below four, calling a routine with a computed address and decremented values each pass.
+- `fill_enemy_struct`: Writes several values from registers into offsets 104 through 117 of the structure in a2, including decremented copies of a register and bytes copied from another structure, then increments a global counter.
+- `advance_enemy_timer_and_process_2`: Saves registers d2, d3 and a2 on the stack, loads the address of a global variable into a2, then jumps to another routine that advances a per-enemy timer by 16 and increments a byte counter at offset 114 of the structure in a2, resetting it to zero when it reaches 6.
+- `process_enemy_linked_list`: Walks a linked list of enemy structures via their first pointer, and for each active enemy checks a flag at offset 116, calls helper routines using the pointer at offset 104 and the byte at offset 115, sets the flag at offset 116, and stores a per-enemy handler address from a table indexed by a global variable into the slot at offset 112.
+- `test_offset_112_byte`: Tests a byte at offset 112 of the structure in a2 and returns early when it is not greater than zero.
+- `fill_slots_and_store_byte_2`: Pushes the constant 2 onto the stack, calls a routine to fill slots and store a byte, then stores a byte at offset 110 of the structure and returns.
+- `setup_enemy_offset_accumulator_2`: Tests the 16-bit value at offset 108 of the structure in a2 and jumps to a fixed address when it is zero.
+- `advance_enemy_timer_and_process`: Advances a per-enemy timer by 16 and increments a byte counter at offset 114 of the structure in a2, resetting it to zero when it reaches 6.
+- `setup_enemy_offset_accumulator`: Saves d2 and a2 on the stack, loads the pointer at offset 12 of the stack into a2, advances it by 24 bytes, loads zero into d2, then jumps to the code at offset 1ecf2.
+- `accumulate_enemy_offsets`: Loops four times, adding a stack value to the word at offset 14 of a structure and advancing the pointer by 20 bytes each pass, then returns the original stack value.
+- `decrement_enemy_index`: Loads the word at offset 108 of the structure in a2, decrements it, and returns immediately when that value is fifteen or less, otherwise it branches into another routine.
+- `decrement_and_adjust_enemy_index`: Decrements the word at offset 108 of the structure in a2, divides it by four, masks the result by three, scales it by twenty, subtracts sixteen from the word at offset 32 of the resulting structure, then jumps to the code at offset 1ed10.
+- `save_regs_and_branch_on_result`: Saves registers d2-d6 and a2, loads two stack words into d5 and d6, and calls a routine with the stack pointer, returning early when the returned long is nonzero.
+- `setup_and_branch_enemy`: Loads the constant four into register d0, copies it into register d4, loads zero into register d2, and then branches into another routine.
+- `loop_initialize_enemy`: Loops a fixed number of times, initializing a structure and calling two routines with offsets of that structure each pass.
+- `save_regs_call_branch`: Saves registers d2 and a2, calls another routine, then loads a byte from a global variable, sign-extends it into a word, stores that word in d2, loads a pointer from another global variable into a2, and branches into the middle of another routine.
+- `propagate_enemy_values`: Walks a linked list of 32-bit pointers, adding a register to words at offsets 11 of each entry and storing the results at offsets 24 and 56, then decrements a global counter and sets it to 18 when it would go negative.
+- `test_offset_27_byte`: Reads a byte at offset 27 of the structure in a2 and returns early when it is zero.
+- `increment_byte_then_store_two`: Increments a global byte at offset 188 while it stays below three, then stores the value two into a global word at offset 184 when it reaches three.
+- `check_byte_then_clear_words`: Compares a global byte at offset 188 with the value 3 and returns immediately when they differ.
+- `compute_enemy_addresses`: Multiplies a global byte by 16 and adds it to a base address, storing the two results plus 112 and plus 160 into consecutive global variables.
+- `toggle_flag_bit_and_call`: Toggles bit 0 of a global byte at offset 188, then calls a routine and returns.
+- `loop_enemy_table`: Doubles a global word into a counter, then loops five times looking up a byte table using the counter, calling two helper routines with the found value when it is not the negative one marker.
+- `compute_and_call_enemy_routines`: Combines the third stack argument with the first multiplied by 80 minus 76 to compute a value, then pushes several arguments and calls a routine.
+- `decrement_enemy_timer`: Decrements a global counter, resetting it to 5 when it reaches zero, then toggles a flag byte and stores a computed address offset by 288 into a global variable.
+- `check_pointer_advance_and_call`: Compares a pointer stored in a global variable plus sixteen with another stored pointer, and returns immediately when they match.
+- `set_table_entries_to_max`: Writes the value 65535 to each of the two 16-bit fields in a global table, indexed by a counter, and repeats this for three counter values before returning.
+- `store_enemy_state_and_call`: Saves registers, loads three stack words, and calls a routine with a shifted value and constant arguments, then stores a word into a global table when a parameter equals one.
+- `store_enemy_state`: Stores register d2 at a scaled offset in a global table, and when register d5 equals one iterates over a range computed from a helper routine call, otherwise it branches into a helper routine when a global byte equals two.
+- `loop_enemy_structures`: Pushes the constant twelve and the word values from registers d4 and d2, then pushes a2 and two cleared longs before calling a helper routine.
+- `check_flag_then_call_enemy_routine`: Compares a byte in a global structure to 2 and, when it equals 2, pushes several arguments and calls a routine.
+- `index_table_from_stack_word`: Loads two word arguments from the stack into registers and tests a third stack byte, skipping the lookup when it is nonzero.
+- `index_table_bounds_check`: Multiplies the value in register d3 by four and reads the word at that offset from a table into register d2, then returns negative one when that word is all ones or when the value in register d4 falls outside the range from that word plus eight to that word plus forty-eight, otherwise it returns that word plus twenty-four.
+- `load_byte_then_jump_2`: Loads the byte value 255 into register d0, then jumps to the routine at address an address.
+- `read_and_increment_table_field`: Reads a 16-bit value from a global table field selected by a parameter, adding 24 to it unless the stored value is already 65535, then returns that value.
+- `modify_enemy_flag`: Saves registers d2, d3, and a2, loads them from the stack, tests the byte at offset 27, and when it is nonzero clears its least significant bit of the doubled value in register d0 before branching into another routine.
+- `initialize_enemy_struct_4`: Stores the byte from d2 at offsets 51 and 52 and clears the byte at offset 54.
+- `decrement_offset6_pointer`: Loads two words from offsets 2 and 6 of the structure in a2, subtracts eight from the second pointer, compares it with the first pointer, and otherwise decrements the word at offset 6 of that structure by eight and stores it back at offset 2.
+- `increment_offset_6_word`: Reads a word at offset 6 of the structure in a2, adds eight to it, and stores the result back at offset 2.
+- `decrement_and_call_enemy`: Restores its saved registers, decrements the counter at offset 4 and the byte at offset 92 of the structure in a2, then calls the routine whose pointer is stored at offset 76 of that structure.
+
+The function list continues in: g751-recovery-functions-2.md, g751-recovery-functions-3.md.

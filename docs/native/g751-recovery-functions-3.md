@@ -1,0 +1,577 @@
+# Game 751 (EnemyTempestOfViolence v1.1): code recovery summary
+
+## Functions (part 3 of 3)
+
+### EnIntro
+(continued)
+
+- `find_last_path_delimiter`: Finds the length of a zero-terminated string, then walks backward from its end until it reaches a slash or colon byte and returns a pointer to the character after that delimiter.
+- `lowercase_string_in_place_2`: Walks a null-terminated string and converts every uppercase letter between the characters 65 and 90 to its lowercase form by adding 32, then returns.
+- `walk_list_and_compare_strings`: Retrieves a pointer from a global variable, calls a routine to find a string terminator, then walks a linked list comparing fields at a computed offset until a match is found or the list ends, returning the matching pointer or zero.
+- `iterate_linked_list`: Walks a linked list of four-byte entries starting at a global variable, calling a library routine for each non-null entry, then returns.
+- `call_library_with_byte_word`: Returns zero when the pointer argument is null, otherwise builds a two-byte value from a character and a following word and calls a library function with it, returning the result.
+- `remove_node_from_list`: Unlinks a node from a singly linked list by relinking the previous node through offset 4 and the following node through offset 0, and updates the list head when the removed node was the head, then returns the node pointer.
+- `run_intro_library_call`: Clears two long values through a pointer, runs two setup routines, then calls a library function at offset -198 from a base loaded from a global and stores its result.
+- `chain_intro_setup_calls`: Clears a stack slot, calls a setup routine with a structure argument, then calls two more routines and returns the second routine's result.
+- `compare_intro_results`: Pushes a one argument, calls a setup routine and another routine, then compares two values and branches away when they differ before returning a one.
+- `load_byte_and_branch_2`: Loads the byte at the address in a0 into d0 and jumps to the routine at address 3156.
+- `extract_four_char_code`: Clears a stack variable and, when a flag is set, calls a library function to fill it with a four-character code, then right-shifts the result by eight bits and returns it.
+- `mask_intro_setup_result`: Calls a routine, runs a setup routine with a structure argument, masks the result to its low eight bits, calls another routine, and returns the masked value.
+- `process_intro_sequence`: Loads a pointer and a byte from a structure in a5, stores the byte at a global offset and clears two other global fields, then calls a routine to fetch a sub-structure.
+- `branch_and_call_handler`: Pushes registers d2 and a2 onto the stack, loads a pointer and a word from the stack, compares a byte at a global address against one, and calls a routine with the word and pointer when they match, otherwise it returns.
+- `save_regs_and_branch_back`: Pushes registers d2 and a2 onto the stack, calls another routine, restores the stack, and then branches backward into the middle of another routine.
+- `advance_counter_via_call`: Calls the library function at offset -42 when the flag at offset 4576 is set, clamps the result to zero when negative, and otherwise calls the function at offset -624 to advance a counter at offset 4578 by the returned amount, clamping it to the limit at offset 4568.
+- `query_state_when_active`: Returns zero when the flag at offset 4576 is clear, otherwise calls the library function at offset -48 with a zero argument and returns its result.
+- `adjust_counter_after_call`: Calls the library function at offset -66 with two word arguments, then adjusts a counter at offset 4570 using the returned value, clamping it to zero for negative results and to the limit at offset 4568 for values above that limit.
+- `reset_state_after_call`: Calls the routine at offset -36 from the base in a6 when the flag at offset 3756 is set, then clears both the flag at offset 3756 and the value at offset 3760 before returning.
+- `check_intro_code_constant`: Sets up a stack frame, runs two setup routines with pushed arguments, calls another routine, then compares a stack value against a four-character constant and returns a one when they match.
+- `load_zero_and_branch_8`: Loads the value zero into register d0 and then branches to the routine at 13798.
+- `store_flag_byte`: Stores the byte passed on the stack into the variable at offset 3754 and returns.
+- `advance_counter_and_copy_flag`: Increments the counter at offset 3826, and when it reaches one copies the flag byte from offset 3754 into offset 3828 and clears that flag byte before returning.
+- `decrement_global_counter`: Decrements a 16-bit global variable and, when the result is not zero, branches back to the decrement so it keeps counting down.
+- `store_two_parameters`: Stores the first passed 32-bit value into a global variable and then stores the second passed 32-bit value into another global variable, then returns.
+- `compare_and_index_table`: Returns -1 when a global flag is zero, otherwise calls a routine and compares its result against several constants, indexing a table by the result, shifting a byte, and calling a routine with adjusted arguments when the comparison passes.
+- `store_single_parameter`: Stores the passed 32-bit value into a global variable and returns.
+- `copy_d0_to_d5_5`: Copies the 32-bit contents of register d0 into register d5 and returns.
+- `process_percent_encoded_strings`: Selects a table pointer from a global table based on a flag byte at offset 15 of the input structure, then repeatedly decodes a percent-encoded string from that table, builds a formatted result into a stack buffer, and calls a library routine at offset -30 of another global table until it returns zero.
+- `select_default_pointer`: Selects the address of a global variable when the passed pointer is zero, otherwise keeps the passed pointer, stores the chosen value into a global variable, then returns that pointer.
+- `store_string_pointer_if_valid`: Saves register a2, loads a pointer from the stack into it, and returns zero when that pointer is null, otherwise stores a pointer to a string into a global variable and branches into another routine.
+- `store_a2_to_global`: Stores the value held in register a2 into a global variable, restores register a2, and returns.
+- `call_table_routines`: Calls a routine from a table three times, saving each returned value into separate global variables, then clears a global variable.
+- `invoke_table_routines`: Invokes a routine from a table three times in sequence, then checks a global variable.
+- `copy_and_conditional_call`: Copies a byte from one global variable to the adjacent global variable, then compares the original to one.
+- `call_library_vector_198_5`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_198_6`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `conditional_table_call`: Loads a passed pointer and a passed 32-bit value, then returns immediately if either is zero.
+- `call_library_vector_216_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 216 of that base, returning its result to the caller.
+- `store_arg_at_offset`: Adds 50 to the pointer in a0 and stores the 32-bit value passed as an argument at that offset in the referenced global variable, then returns.
+- `setup_and_call_rastport`: Stores a pointer to a graphics routine table into a global variable, pushes several 16-bit values from that structure onto the stack, pushes the table address, then calls the graphics routine that fills the table with 32-bit pointers.
+- `init_rastport_table`: Clears interrupts, then calls a graphics routine once per iteration to fill a table of 32-bit pointers at offset 8, incrementing a second value each time.
+- `call_graphics_routines`: Calls three different graphics routines in sequence, passing the unmodified a6 register as an argument to the second and third, then returns.
+- `setup_and_call_shift_copy`: Loads three stack pointers and calls a routine that shifts a table byte across a 32-bit value, then returns.
+- `shift_and_copy_bytes`: Reads a byte from a table, shifts it across a 32-bit value in d5, then copies bytes backward through a destination buffer in a loop until the pointer reaches its base, otherwise it returns.
+- `shift_d5_and_return`: Arithmetic-shifts the value in d5 right by one bit, then returns immediately whether or not the result is nonzero.
+- `decrement_register_d0`: Decrements the 16-bit value in register d0 by one and then falls through into the following routine.
+- `shift_tables_and_copy`: Performs a 64-bit right shift by repeatedly rotating the value in d5 and pulling in the next 32-bit word from a stack pointer until d0 reaches zero, then falls through.
+- `initialize_intro_chunk`: Verifies a loaded chunk by checking its four-character ID and a following ID for specific magic values, then stores the incoming pointers and values into a global structure, clears several tables and counters, and finally opens the CIAA resource and, depending on a flag, either initializes the library or installs an interrupt handler.
+- `clamp_and_return_values`: Saves registers on the stack, loads two 16-bit values from the return area, calls a routine that clamps them against a global variable, restores the registers, and returns.
+- `clamp_d1_d2_min`: Decrements the 16-bit value read from a global variable at offset 200, then keeps that value in d1 only if it is smaller than the incoming d1.
+- `copy_matching_records_2`: Loops over linked records pointed to by a1 until it finds a null entry or a matching pointer at offset 0 of a table.
+- `filter_records_dword`: Walks a chain of records pointed to by a0 until it reaches the sentinel pointer, copying each record whose 32-bit header equals the constant a fixed address into a destination table and advancing by the record length.
+- `filter_records_slot`: Walks a chain of records pointed to by a0 until it reaches the sentinel pointer, and for each record whose 32-bit header equals the constant a fixed address it stores its payload pointer into a destination table after clearing a slot in a second table that is scanned in 32-byte steps.
+- `handle_audio_disable`: Disables interrupts, then branches on a global flag: if it is zero it calls a graphics routine with a fresh window, and if it is one it disables audio by writing zero to the four audio volume registers and clears interrupts again, otherwise it returns.
+- `increment_global_after_call`: Calls another routine and increments a 32-bit value in a global variable by one, then returns the original value that was in register d1 before the increment.
+- `wait_for_vertical_blank`: Waits for the vertical blank to start and for the top-of-interrupt flag to clear, then increments a 32-bit counter in a global variable before returning.
+- `call_and_increment_word`: Calls two helper routines, increments the word at offset 241 of a global, loads the word at offset 240, compares it with the incremented value, and returns when the comparison is not less than or equal.
+- `increment_clamp_and_copy_table`: Clears a word at offset 4 of a global, adds 16 to the long at offset 0 and increments the word at offset 2, then calls a scaling routine.
+- `increment_and_copy_table`: Increments a global counter and clamps it against two bounds, calls a scaling routine, then copies four longwords from a source table to a destination table and stores a constant, otherwise it returns.
+- `write_cia_port_and_custom`: Returns early when a flag at offset 4 is set, otherwise calls setup routines and sets bit 15 of the DMA control register.
+- `set_cia_port_a_bit`: Sets bit 1 of the CIA port A register, which controls the joystick fire button lines, then returns.
+- `setup_and_call_loop`: Loads several base addresses into registers, calls a helper routine, advances the pointers, then repeats that call three times in a loop before returning.
+- `spawn_enemy_from_table`: Reads two bytes from a table to index a second table, then, when the referenced entry is active, writes a scaled value and a constant into a structure, adjusts two DMA channel registers, and stores a byte from a third table.
+- `compute_scaled_structure_fields`: Reads two 16-bit values from a structure and writes a scaled sum and a shifted difference of them into fields of another structure, then returns.
+- `initialize_structure_fields_2`: Initializes a structure by storing a constant into a 16-bit field, a value into a 32-bit field, and clearing two further fields, then returns.
+- `update_audio_period_registers`: Checks individual bits of a register and, for each set bit, copies a 16-bit value from a table into the corresponding audio channel period register, then returns.
+- `drain_source_table_to_registers`: Loops over eight consecutive 32-bit blocks, moving nonzero 32-bit and 16-bit values from a source table into hardware registers and clearing the source entries, then returns.
+- `setup_registers_and_loop`: Loads several constant addresses into registers, calls a routine once, then loops three times advancing the pointers and decrementing a counter before returning.
+- `call_indexed_routine`: Reads two adjacent bytes from a structure in a2 at offsets 2 and 3, uses the first as an index into a 16-bit pointer table to load a routine address into a1, then performs an indirect call through that vector entry when the second byte is not negative.
+- `conditional_indirect_call`: Tests a global flag and, when it is clear, performs an indirect call through a vector table indexed by a negated register value, then returns.
+- `decrement_and_clamp_field`: Subtracts a register value from a 16-bit field, clamps the result to a positive constant when it goes negative, and stores the outcome into a related field, then returns.
+- `store_indexed_value`: Calls a helper routine to load a 16-bit value from an indexed pointer table into a0, stores that value into the global variable at offset ef9c, then clears the word at offset ef9a before returning.
+- `load_indexed_table_value`: Indexes into a table of pointers using a byte value and returns the 16-bit value stored at the selected entry, then returns.
+- `spin_in_vertical_position_loop`: Reads the vertical position register, compares it against itself in a short loop that never exits, so it spins indefinitely without returning.
+- `decrement_if_unequal`: Loads a byte from one global variable into d1 and a byte from another into d0, compares them, and when they differ decrements the byte pointed to by a0 unless the two values are equal.
+- `increment_pointed_byte`: Increments the byte pointed to by a register by one and returns.
+- `scale_by_percent`: Reads a word from the stack, substitutes the value 100 when it is zero, stores the result into the global variable at offset ef58, then calls a helper routine to scale that value by the percentage stored at offset ef58.
+- `scale_value_by_percent`: Saves the incoming word into the global variable at offset ef2, then multiplies it by the value at offset f58, divides the product by 100, and stores the resulting word at offset ef0 before returning.
+- `store_stack_parameters`: Copies a long parameter from the stack into the global variable at offset f60, then stores the four words passed on the stack into the global variables at offsets f64, f66, f68, f6a and f6c before returning.
+- `store_long_parameter`: Stores the long parameter taken from the stack into the global variable at offset f60, then returns.
+- `store_stack_word_3`: Stores the word parameter taken from the stack into the global variable at offset f6a, then returns.
+- `store_stack_word_80`: Stores the word parameter taken from the stack into the global variable at offset f80, then returns.
+- `store_long_parameter_6e`: Stores the long parameter taken from the stack into the global variable at offset f6e, then returns.
+- `return_global_long`: Loads the long value from the global variable at offset f6e into a register, then returns it.
+- `process_string_blocks`: Pops parameters from the stack, scans a null-terminated string to compute a length, then iterates over its characters calling a handler for each non-space byte and adjusting a counter, otherwise it returns.
+- `apply_bitmask_to_blocks`: For each block in a sequence, it iterates over a count of words and either sets or clears the bits selected by a mask in each target word depending on a per-block flag, advancing pointers by fixed offsets between iterations, then returns.
+- `apply_mask_to_blocks`: Clamps four incoming word parameters against the dimensions of a structure in a6, then iterates over the resulting block range calling a helper routine for each word, applying a mask from a lookup table to the low nibble of each value.
+- `apply_mask_to_word_blocks`: For each block in a sequence, it iterates over a count of words and either bitwise-ands them with an inverted value or bitwise-ors them with a value depending on a per-block flag, advancing pointers by fixed offsets between iterations, then returns.
+- `store_stack_word_7e`: Stores the word parameter taken from the stack into the global variable at offset f7e, then returns.
+- `int_to_decimal_string`: Converts a signed integer into its decimal digit characters, writing them in reverse order into a buffer and inserting a minus sign when the value is negative, then pads the remaining positions with a fill byte from a global variable.
+- `push_byte_loop_decrement`: Decrements a 16-bit counter and, when it is non-negative, pushes a byte from the global variable at offset 126 onto the stack, decrementing the counter again and skipping that push if the counter goes negative.
+- `store_params_shift_values`: Copies a 32-bit parameter onto the stack into two global variables at offsets 4006 and 4002, then stores four 16-bit parameters into global variables at offsets 4014, 4020, 0faa and 0fac.
+- `store_double_word_pair`: Stores a 32-bit parameter onto the stack into two global variables at offsets 4006 and 4002, then returns.
+- `store_word_parameter`: Stores a 16-bit parameter onto the stack into a global variable at offset 4010, then returns.
+- `store_word_offset_fb4`: Stores a 16-bit parameter onto the stack into a global variable at offset 4020, then returns.
+- `move_and_clear_pointer`: Copies a 32-bit global variable at offset 4022 into another global variable at offset 186, then clears the source global variable at offset 4022 to zero and returns.
+- `restore_pointer_value`: Copies a 32-bit global variable at offset 186 into another global variable at offset 4022, then returns.
+- `walk_table_add_entries`: Saves two registers on the stack, stores a 16-bit parameter into a global variable at offset 4010 and copies a 32-bit global variable at offset 4006 into another global variable at offset 4002.
+- `run_blitter_copy`: Sets up and runs one or more blitter copy operations that transfer a block of 16-bit words from a source table to a destination table, computing the source and destination offsets and sizes from the parameters and adjusting them when a parameter is negative, then waiting for each blitter operation to finish.
+- `run_blitter_copy_ops`: Sets up and runs one or more blitter copy operations, adjusting the source and destination pointers for each.
+- `compute_palette_offset`: Saves a register on the stack and computes a byte offset from a 16-bit parameter, adjusting a second parameter when the first is negative and returning negative one if the result is out of range.
+- `store_word_offset_fbe`: Stores a 32-bit parameter onto the stack into a global variable at offset 0fbe, then returns.
+- `program_blitter_loop_2`: Loads seven parameters from the stack, calls the blitter setup routine, writes the blitter control and address registers, then loops that setup for a decremented counter while advancing the source and destination pointers.
+- `wait_for_blitter_2`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
+- `run_nested_loop`: Loads a pointer and a count from the stack, multiplies the count by 10 to offset the pointer, then runs a nested loop that calls a routine for each element while decrementing both counters.
+- `run_double_loop`: Loads a pointer and two counts from the stack, calls a routine for each outer iteration while advancing the pointer and decrementing both counters, then restores the registers and returns.
+- `call_and_restore`: Loads a pointer and two values from the stack, calls a routine with those arguments, restores the registers, and returns.
+- `check_blitter_pointer_and_run`: Returns without action when the pointer in a1 is null or its first field is negative.
+- `loop_blitter_table_entries`: Decrements a count and returns when it is negative.
+- `load_and_call_blitter_helper`: Loads three stack values into registers and calls a helper routine, then restores the registers and returns.
+- `call_blitter_copy`: Checks whether a pointer is null and, if not, reads fields from it and calls a blitter copy routine with the computed source and destination values, otherwise it returns.
+- `test_bit_and_return_flag`: Reads two long values from the stack at offsets 4 and 8, tests bit 0 of the value at offset 8 against the value at offset 4, and returns 1 if that bit is set, otherwise returns 0.
+- `return_constant_3`: Returns the constant an address in d0 to the caller without any other effect.
+- `accumulate_and_shift_globals`: Adds a global word to another global word, increments the second by thirteen, shifts the first result right by eight bits, and returns the original argument masked with the caller's value.
+- `shift_and_multiply_globals`: Shifts three pairs of global words up by one slot, stores a caller long into the first slot, multiplies it by thirteen thousand eight hundred and one, and writes the product into the next two slots.
+- `call_if_threshold_exceeded`: Reads a word from a structure and, only when it exceeds thirty-six, calls a routine at a table offset and stores the returned value into a global variable.
+- `call_if_global_set`: Checks a global variable and, only when it is nonzero, calls a routine at a table offset, returning zero otherwise.
+- `call_decode_percent_string`: Pushes a pointer computed from a global variable minus 28360 and the incoming argument onto the stack, then calls decode_percent_encoded_string and returns its result.
+- `fill_and_setup_fast_memory`: Fills a block of fast memory with a byte value using a loop that decrements a counter, then initializes the memory manager, clears a region, and sets up the DOS library before returning the memory base.
+- `load_fast_memory_base`: Loads the bottom of the fast memory into a4 and returns immediately.
+- `open_file_setup_intro`: Reads a word from a global variable, multiplies it by six, and calls a library routine with the result, storing the handle and returning early when the source value is zero.
+- `copy_d0_to_d5_6`: Copies the contents of d0 into d5 and returns.
+- `tokenize_string_into_table_2`: Reads a numeric index from a structure field, looks up a pointer in a table, and calls a library routine to convert the value to a string.
+- `copy_d0_to_itself`: Copies the contents of d0 into itself and returns.
+- `copy_string_with_limit_3`: Finds the end of the first string, then copies characters from the second string into it, decrementing a counter for each character copied and stopping when the counter reaches zero or the source string ends.
+- `compare_byte_buffers`: Compares two byte buffers pointed to by the two input pointers, advancing both until a differing byte or a zero byte is found, and returns zero if they match, one if the second buffer's byte is smaller, or negative one if the first buffer's byte is smaller.
+- `call_handler_stores_result`: Reads a function pointer from a global structure and calls it, storing the returned value in a global variable, then calls additional handlers and stores their results into fields of the passed structure before clearing the global and returning.
+- `move_d0_to_d5_5`: Copies the 32-bit value from register d0 into register d5 and then falls through into the following routine without returning.
+- `compare_byte_values`: Reads a byte from the table pointed to by a2, extends it to a word, and compares it against 32 or 9, advancing the pointer when the second comparison succeeds before branching back.
+- `compare_byte_and_advance_pointer`: Reads a byte from the table pointed to by a2, extends it to a word, and compares it against the value 45.
+- `check_byte_increment`: Reads a byte from a table into a register, extends it to a word, compares it against a constant, and increments a pointer when they match before branching into another routine, otherwise it returns.
+- `accumulate_signed_bytes`: Accumulates signed bytes from a table into a running total, looking up each byte in a conversion table and looping while a flag bit is set, then negates the total when a sign flag is set before returning it.
+- `restore_registers_d2_d3_a2`: Restores registers d2, d3 and a2 from the stack, having first copied the value of d2 into d0, and then returns.
+- `copy_string_to_null_2`: Advances the first pointer until it reaches the zero terminator of that string, then copies bytes from the second string into the first buffer up to and including the second string's terminator, and finally returns the destination pointer.
+- `compare_buffers_with_limit`: Compares two byte buffers up to a given length, returning zero if they match, one if the second buffer's byte is smaller, or negative one if the first buffer's byte is smaller, and returning zero when either pointer is null or the length is zero.
+- `copy_string_or_pad_2`: Copies bytes from the second string into the first buffer up to a given count or until the source ends, and if the count is zero it pads the destination with zero bytes instead, always leaving the destination null-terminated and returning the destination pointer.
+- `decode_percent_encoded_string`: Parses a zero-terminated string containing percent-encoded bytes and control markers, writing decoded characters into a growing buffer and returning the number of bytes processed, or -1 when the buffer is full.
+- `calculate_string_length_2`: Advances a pointer through a zero-terminated string until it reaches the terminating zero byte, then returns the number of bytes between the original pointer and that terminator.
+- `call_library_vector_294_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
+- `call_library_vector_132_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
+- `call_library_vector_138_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 138 of that base, returning its result to the caller.
+- `call_library_vector_390_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 390 of that base, returning its result to the caller.
+- `iterate_over_address_range_intro`: Computes a starting address from a frame register, calls a routine with it, advances the address by a fixed step, and repeats until an ending address is reached, then restores registers and returns.
+- `process_enemy_entry`: Processes an enemy entry by clearing its active flag, advancing its position pointer and, when a valid byte is available, storing that byte into the enemy's buffer and setting its active flag.
+- `check_flag_structure_validity`: Loads the structure pointer from the local variable at offset 8 and clears register d2, then checks whether the pointer is null; if it is null it restores the saved registers and returns.
+- `convert_flag_value_to_string`: Checks bit 1 of byte at offset 12 and bit 0 of byte at offset 13 of the structure in a2, calling handlers for each set flag, then converts the 16-bit value at offset 20 into a five-character decimal string stored in the stack buffer at -9(a5) and null-terminates it, clearing the first four words of the structure.
+- `clear_d0_branch_forward`: Clears register d0 and then branches into the middle of another routine without returning.
+- `increment_a5_and_d0`: Increments register a5 by two and increments register d0 by eight, then falls through into the following routine without returning.
+- `scan_structures_handler`: Loads a pointer from the stack and, when it is not null, calls a handler with a negative argument and returns its result, otherwise it scans a table of structures calling the handler for each matching entry.
+- `compare_pointer_branch_forward`: Increments a pointer, compares it against a table base address, and if the pointer is not past that address loads a zero value into d0 before falling through into another routine.
+- `push_args_call_handler`: Pushes a negative value and the a2 register onto the stack, calls a handler, removes the pushed items, and then falls through into another routine.
+- `perform_signed_division_2`: Tracks the signs of two signed inputs in a flag, calls a division routine on their absolute values, negates the result when the signs differ, and returns the quotient combined with the original second input.
+- `signed_division_setup`: Pushes registers d1 and d4, negates a value and tracks its sign in a flag, negates a second value when needed, calls a division routine, then loads the result into a register and branches back, otherwise it returns.
+- `call_and_return_concatenated_2`: Saves the d1 register, calls a division routine, restores d1, and returns a 64-bit value formed by concatenating the restored d1 with the value left in d1 by the call.
+- `save_d1_and_call_routine`: Pushes the 32-bit value in d1 onto the stack, calls another routine, restores d1 from the stack, checks whether d0 is zero, and returns.
+- `perform_32bit_division_2`: Computes the quotient and remainder of a 32-bit division using the values in registers d0 and d1, using a bit-shifting loop when the divisor's high word is nonzero and direct word division otherwise, and returning the results as a concatenated 64-bit value.
+- `allocate_and_store_result_3`: Reads a byte at offset 14 and calls a routine that returns zero when the argument is zero.
+- `load_pointer_and_branch_5`: Loads a pointer from a global variable into a2, zeroes a3, and branches to a later instruction without executing any further code in this routine.
+- `compare_and_advance_pointer_2`: Compares a pointer at offset 8 of a2 with a stack pointer and returns early when they match.
+- `conditional_pointer_copy`: Copies the long word pointed to by a2 into the long word pointed to by a3, but only when the value in a3 is not zero, then returns.
+- `store_pointer_call_handler`: Reads a value from a structure into a global variable, saves a6, loads a pointer from the structure, advances it, calls a handler through an OS library entry point, restores a6, and then falls through into another routine.
+- `save_registers_branch_forward`: Saves registers a2 and a3 onto the stack, loads a pointer from a global variable into a2, and then branches into the middle of another routine.
+- `walk_pointer_chain_call_handler`: Follows a chain of pointers in a structure, calling a handler routine at each node through an OS library entry point, and once the chain ends it clears a field in the structure and returns.
+- `allocate_and_store_result_2`: Returns zero when the passed argument is zero, otherwise it calls a library function through a base pointer in a global variable and stores the returned pointer into a structure, filling its first four fields.
+- `copy_string_simple_2`: Copies bytes from the source string in a1 to the destination buffer in a0, advancing both pointers, until the null terminator is copied, then returns the pointer to the start of the destination buffer.
+- `check_table_entry_flag`: Looks up a value in a table using an index, then returns zero if the index is negative, the stored value is not greater than a threshold, or the table entry is empty, otherwise it calls a library function and returns whether its result was nonzero.
+- `check_and_call_enemy_routine`: Loads a pointer from a global structure, compares a signed parameter against a stored value and a table entry, and when the checks pass it stores the value 3 in a global flag and returns -1, otherwise it calls a routine with the parameter and returns its result.
+- `delete_file_with_error`: Calls a library function and, when it returns zero, calls another library function and stores its result at offset 12 of a global structure before returning negative one.
+- `clear_and_branch_3`: Clears the return value in d0, then jumps unconditionally into the middle of another routine at the given address.
+- `validate_and_dispatch_enemy`: Compares a signed parameter against a stored value and a table entry, inspects the low bits and bit 3 of a structure byte to store either 3 or 6 in a global flag, then calls one of two routines with the parameter and returns its result or -1.
+- `call_dos_output`: Loads a DOS library pointer, calls the output routine with a count and string, then checks the result bits and a global flag before either returning the result or calling a helper routine and clearing the return value.
+- `call_dos_output_and_callback`: Pushes a string and a count, then calls a DOS library routine to output the text.
+- `run_callback_lists`: Loops through a linked list calling each stored routine and unlinking its node, then calls a second list and a final callback before returning.
+- `run_guarded_callbacks`: Loops from zero up to a stored limit, calling a per-index routine each iteration, then invokes a handler pointer from a table.
+- `restore_registers_and_return_4`: Restores the callee-saved registers d2 and d3 from the stack and returns immediately.
+- `close_table_entry_flag`: Looks up a value in a table using an index, then returns zero if the index is negative, the stored value is not greater than a threshold, or the table entry is empty, otherwise it clears the entry and calls a library function when the high bit of a field is clear.
+- `multiply_32_bit_values_2`: Computes the full 64-bit product of two 32-bit values using the cross terms of their 16-bit halves.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_2`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_3`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_4`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_5`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_6`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_7`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_8`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_9`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_4`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_5`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_6`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_7`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_8`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_9`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_10`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_11`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_12`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_13`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_14`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_15`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_16`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_17`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_18`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_19`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_20`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_21`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_22`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_23`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_24`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_25`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_26`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_27`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_28`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_29`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_30`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_31`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_32`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_33`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_34`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_10`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_11`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_12`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_13`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_14`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_15`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_16`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_17`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_18`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_19`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_20`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_21`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_22`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_23`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_24`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_25`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_26`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_27`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_28`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_29`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_30`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_31`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_32`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_35`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_33`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_34`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_35`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_36`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_37`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_38`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_39`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_40`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_41`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_42`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_36`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_37`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_38`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_43`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_44`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_45`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_39`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_46`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `undecodable_bytes_40`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_47`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_48`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_49`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_50`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_51`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_52`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_53`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_54`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_55`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_56`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_57`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_58`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_59`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_60`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_61`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_62`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_63`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_64`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_65`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_66`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_67`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_68`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_69`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_70`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_71`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_72`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_73`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_74`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_75`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_76`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_77`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_78`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_79`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_80`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_81`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_82`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_83`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_84`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_85`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_86`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_87`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_88`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_89`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_90`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_91`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_92`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_93`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_94`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_95`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_96`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_97`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_98`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `undecodable_bytes_41`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_42`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_43`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_44`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_99`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_100`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_101`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_102`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_103`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_104`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_105`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_106`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_107`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_108`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_109`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_110`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_111`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_112`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_113`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_114`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_115`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_116`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_117`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_118`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_119`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_120`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_121`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_122`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_123`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_124`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_125`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_126`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_127`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_128`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_129`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_130`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_131`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_132`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_133`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_134`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_135`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_136`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_137`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_138`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_139`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_140`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_141`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_142`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_143`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_144`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_145`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_146`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_147`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_148`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_149`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_150`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_151`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_152`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_153`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_154`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_155`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_156`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_157`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_158`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_159`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_160`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_161`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_162`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_163`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_164`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_165`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_166`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_167`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_168`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_169`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_170`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_171`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_172`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_173`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_174`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_175`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_176`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_177`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_178`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_179`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_180`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_181`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_182`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_183`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_184`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_185`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_186`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_187`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_188`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_189`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_190`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_191`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_192`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_193`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_194`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_195`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_196`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_197`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_198`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_199`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_200`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_201`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_202`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_203`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_204`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `jump_vector_entry_205`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_206`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_207`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_208`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_209`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_210`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_211`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_212`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_213`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_214`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_215`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_216`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_217`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_218`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_219`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_220`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_221`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_222`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_223`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_224`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_225`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_226`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_227`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_228`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_229`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_230`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_231`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_232`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_233`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_234`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_235`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_236`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_237`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_238`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_239`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_240`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_241`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_242`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_243`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_244`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_245`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_246`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_247`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_248`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_249`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_250`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_251`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_252`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_253`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_254`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_255`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_256`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_257`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_258`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_259`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_260`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_261`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_262`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_263`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_264`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_265`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_266`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_267`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_268`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_269`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_270`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_271`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_272`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_273`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_274`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_275`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_276`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_277`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_278`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_279`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_280`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_281`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_282`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_283`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_284`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_285`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_286`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_287`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_288`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_289`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_290`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_291`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_292`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_293`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_294`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_295`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_296`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_297`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_298`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_299`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_300`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_301`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_302`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_303`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_304`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_305`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_306`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_307`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_308`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_309`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_310`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_311`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_312`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_313`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_314`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_315`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_316`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_317`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_318`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_319`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_320`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_321`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_322`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_323`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_324`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `jump_vector_entry_325`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_326`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_327`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_328`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `empty_stub_8`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_9`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_10`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_11`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_12`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_13`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_14`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_15`: Empty routine: returns to the caller immediately without doing anything.

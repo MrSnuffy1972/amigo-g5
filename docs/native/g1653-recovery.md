@@ -97,32 +97,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `release_pending_message_ports`: When a saved value is non-zero, it releases up to two saved handles through the library vector at offset minus 36, then makes exec calls for Forbid, Alert and ReplyMsg.
 - `call_two_library_vectors`: Calls two library functions through the library base held in the register, at offsets minus 384 and then minus 372, and returns nothing.
 - `open_dos_library_or_release`: Opens the dos library through the library-open vector at offset minus 552 and returns the library base if it succeeds.
-- `call_library_vector_132`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
-- `call_library_vector_138`: Library stub: loads a library base from a global variable and calls the library function at offset minus 138 of that base, returning its result to the caller.
-- `call_library_vector_198`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
-- `call_library_vector_210`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
-- `call_library_vector_294`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
-- `call_library_vector_306`: Library stub: loads a library base from a global variable and calls the library function at offset minus 306 of that base, returning its result to the caller.
-- `call_library_vector_318`: Library stub: loads a library base from a global variable and calls the library function at offset minus 318 of that base, returning its result to the caller.
-- `call_library_vector_330`: Library stub: loads a library base from a global variable and calls the library function at offset minus 330 of that base, returning its result to the caller.
-- `call_library_vector_336`: Library stub: loads a library base from a global variable and calls the library function at offset minus 336 of that base, returning its result to the caller.
-- `call_library_vector_354`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
-- `call_library_vector_360`: Library stub: loads a library base from a global variable and calls the library function at offset minus 360 of that base, returning its result to the caller.
-- `call_library_vector_372`: Library stub: loads a library base from a global variable and calls the library function at offset minus 372 of that base, returning its result to the caller.
-- `call_library_vector_378`: Library stub: loads a library base from a global variable and calls the library function at offset minus 378 of that base, returning its result to the caller.
-- `call_library_vector_414`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
-- `call_library_vector_444`: Library stub: loads a library base from a global variable and calls the library function at offset minus 444 of that base, returning its result to the caller.
-- `call_library_vector_450`: Library stub: loads a library base from a global variable and calls the library function at offset minus 450 of that base, returning its result to the caller.
-- `call_library_vector_456`: Library stub: loads a library base from a global variable and calls the library function at offset minus 456 of that base, returning its result to the caller.
-- `call_library_vector_462`: Library stub: loads a library base from a global variable and calls the library function at offset minus 462 of that base, returning its result to the caller.
-- `call_library_vector_474`: Library stub: loads a library base from a global variable and calls the library function at offset minus 474 of that base, returning its result to the caller.
-- `call_library_vector_552`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
-- `parse_quoted_argument_list`: Splits a command-line style string into up to thirty-two entries, storing each quoted argument's start pointer in a global table and skipping whitespace between them.
-- `link_allocated_block_node`: Calls a routine with an offset of 12 from its argument.
-- `return_result_or_minus_one`: Calls one routine with its argument and returns the result if it is non-zero, otherwise minus one.
-- `return_minus_one_stub`: Returns minus one immediately with no other work.
-- `free_linked_memory_blocks`: The routine walks a singly linked list whose head is stored in a global variable.
-- `append_node_to_list_tail`: Appends a node to the tail of a list whose header holds head and tail pointers.
 - `open_required_system_libraries`: Opens the diskfont, graphics, icon, intuition and layers libraries by name through a shared open routine.
 - `allocate_fixed_size_buffers`: Allocates several fixed-size blocks through library calls, including blocks of 400, 880, 200 and 220 bytes, and raises alert code 10 for each allocation that fails.
 - `allocate_large_display_buffers`: Allocates a block of 8000 bytes and a block of 16080 bytes through library calls with a fixed flag, raising alert codes 21 and 31 when they fail.
@@ -211,6 +185,26 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_384`: Library stub: loads a library base from a global variable and calls the library function at offset minus 384 of that base, returning its result to the caller.
 - `call_library_vector_402`: Library stub: loads a library base from a global variable and calls the library function at offset minus 402 of that base, returning its result to the caller.
 - `call_library_vector_468`: Library stub: loads a library base from a global variable and calls the library function at offset minus 468 of that base, returning its result to the caller.
+- `call_library_vector_132`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
+- `call_library_vector_138`: Library stub: loads a library base from a global variable and calls the library function at offset minus 138 of that base, returning its result to the caller.
+- `call_library_vector_198`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_210`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `call_library_vector_294`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
+- `call_library_vector_306`: Library stub: loads a library base from a global variable and calls the library function at offset minus 306 of that base, returning its result to the caller.
+- `call_library_vector_318`: Library stub: loads a library base from a global variable and calls the library function at offset minus 318 of that base, returning its result to the caller.
+- `call_library_vector_330`: Library stub: loads a library base from a global variable and calls the library function at offset minus 330 of that base, returning its result to the caller.
+- `call_library_vector_336`: Library stub: loads a library base from a global variable and calls the library function at offset minus 336 of that base, returning its result to the caller.
+- `call_library_vector_354`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
+- `call_library_vector_360`: Library stub: loads a library base from a global variable and calls the library function at offset minus 360 of that base, returning its result to the caller.
+- `call_library_vector_372`: Library stub: loads a library base from a global variable and calls the library function at offset minus 372 of that base, returning its result to the caller.
+- `call_library_vector_378`: Library stub: loads a library base from a global variable and calls the library function at offset minus 378 of that base, returning its result to the caller.
+- `call_library_vector_414`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `call_library_vector_444`: Library stub: loads a library base from a global variable and calls the library function at offset minus 444 of that base, returning its result to the caller.
+- `call_library_vector_450`: Library stub: loads a library base from a global variable and calls the library function at offset minus 450 of that base, returning its result to the caller.
+- `call_library_vector_456`: Library stub: loads a library base from a global variable and calls the library function at offset minus 456 of that base, returning its result to the caller.
+- `call_library_vector_462`: Library stub: loads a library base from a global variable and calls the library function at offset minus 462 of that base, returning its result to the caller.
+- `call_library_vector_474`: Library stub: loads a library base from a global variable and calls the library function at offset minus 474 of that base, returning its result to the caller.
+- `call_library_vector_552`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
 - `allocate_five_game_buffers`: Allocates five buffers of 2560, 260, 36, 160 and 1024 bytes with memory-type flags, reporting an error code if any allocation fails.
 - `call_routine_with_fallback`: Calls a routine with the fixed argument four and two stored values, then subtracts one from its result.
 - `request_numbered_resource`: Makes a library call with two stored pointers, the identifier 1830 and a flag of one, and passes any nonzero result to a second routine.
@@ -295,6 +289,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_string_with_limit`: Copies a string into a buffer at the position given by a length helper, stopping at the null terminator or after a given count of bytes.
 - `expand_format_into_pointer`: Walks a printf-style format string using a pointer held in the argument, handling doubled percent signs and conversions through a helper.
 - `initialise_list_header`: Points a list header at itself: its head is set to the field just after the header, its tail word is cleared, and its tail pointer refers back to the header.
+- `link_allocated_block_node`: Calls a routine with an offset of 12 from its argument.
+- `return_result_or_minus_one`: Calls one routine with its argument and returns the result if it is non-zero, otherwise minus one.
+- `return_minus_one_stub`: Returns minus one immediately with no other work.
+- `free_linked_memory_blocks`: The routine walks a singly linked list whose head is stored in a global variable.
+- `append_node_to_list_tail`: Appends a node to the tail of a list whose header holds head and tail pointers.
+- `parse_quoted_argument_list`: Splits a command-line style string into up to thirty-two entries, storing each quoted argument's start pointer in a global table and skipping whitespace between them.
 - `count_string_length`: Counts the bytes from a given pointer offset up to the terminating zero byte, and returns that count.
 - `transfer_buffer_for_stream`: Checks the state flags of a stream structure, then calls a transfer routine with its buffer and count.
 - `transfer_stream_block`: Checks a stream's flags and starts a buffer transfer, returning minus one when the stream is unusable.

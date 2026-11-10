@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (911648 top-level bytes in 94 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 48 of 48 units identical (bytes and relocations), 73 raw-word lines |
 | Functions named and described | pass, 104 of 104 named (0 author symbols), 104 of 104 described (10 by rule, 62 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1252 of 1259 (99.44%) |
+| Executed addresses (reference run) in recovered, described code | pass, 1257 of 1264 (99.45%) |
 | Recovered without load address (counted in proof 1, flagged) | 81775 bytes, 4 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 2443 of 2491 instructions identical in start and length, 0 mismatches |
 
@@ -93,7 +93,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - Ghouls 'N Ghosts/Ghouls 'N Ghosts.adf:LEVEL4.T1: high-entropy data file (7.74 bits/byte), classified as packed data
 - Ghouls 'N Ghosts/Ghouls 'N Ghosts.adf:LEVEL5.T1: high-entropy data file (7.82 bits/byte), classified as packed data
 - Ghouls 'N Ghosts/Ghouls 'N Ghosts.adf:LEVEL102.IFF: high-entropy data file (7.72 bits/byte), classified as packed data
-- 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - runtime segment an address: 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-x25k): 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
@@ -132,7 +131,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-x25k): 106 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 94 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 99 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-x25k): 442 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-x25k): 123 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered

@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (2713424 top-level bytes in 50 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 18 of 18 units identical (bytes and relocations), 13 raw-word lines |
-| Functions named and described | pass, 514 of 514 named (0 author symbols), 514 of 514 described (32 by rule, 480 by the local model) |
+| Bytes classified (2717328 top-level bytes in 51 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 19 of 19 units identical (bytes and relocations), 13 raw-word lines |
+| Functions named and described | pass, 515 of 515 named (0 author symbols), 515 of 515 described (34 by rule, 479 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 1094 of 1094 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 144169 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 16534 of 16549 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 16529 of 16544 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 2025689 |
-| code | 52896 |
-| data | 443774 |
-| padding | 12377 |
+| code | 52872 |
+| data | 447646 |
+| padding | 12433 |
 | unused | 178688 |
 
 ## Code units
@@ -42,13 +42,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf:bcdft | 7 | 29 | 2 |
 | Black Crypt (1992)(Electronic Arts)(Disk 2 of 3).adf:bcdfu | 2 | 1490 | 84 |
 | Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 187 | 5 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 180 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 582 | 17 |
 | Black Crypt (1992)(Electronic Arts)(Disk 2 of 3).adf:bcdfx (raw code file, load address unknown) | 1 | 0 | 0 |
 
 ## Cases handled
 
-- runtime segment an address: 33 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- runtime segment an address: 25 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500): 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 217 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - black crypt (1992)(electronic arts)(disk 2 of 3)/Black Crypt (1992)(Electronic Arts)(Disk 2 of 3).adf:bcdfx: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - black crypt (1992)(electronic arts)(disk 2 of 3)/Black Crypt (1992)(Electronic Arts)(Disk 2 of 3).adf: boot area holds bytes but the checksum is invalid, so Kickstart never runs it
@@ -606,11 +609,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `clear_memory_block`: Fills a block of memory with zeros using a loop.
-- `initialize_system_libraries`: Opens graphics.library and intuition.library, verifying success via return values and error strings.
-- `poll_function_pointers`: Repeatedly executes a function pointer from a structure and checks the return value of a second function pointer from the same structure until the latter returns a non-zero value.
+- `execute_complex_sequence`: Performs a series of conditional calls to various function pointers and library functions, updates several global variables, and eventually calls a library function to set a value at a specific memory location.
+- `poll_library_function_until_success`: Calls a function pointer from a global structure and then calls a second function pointer from the same structure, repeating this sequence until the second function returns a non-zero value.
 - `initialize_library_call_state_three_2`: Sets a global state variable to three and stores a parameter in a global variable.
-- `initialize_system_state`: Initializes system libraries, sets specific values in a structure, and performs a bitwise loop to modify a value based on a global variable.
+- `process_data_and_call_subroutine`: Calls a function pointer, updates a value at an offset within the returned pointer, calls another function, updates global variables, calls a routine, and then calls the routine from R3.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 

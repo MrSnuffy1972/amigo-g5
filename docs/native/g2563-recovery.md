@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (1810592 top-level bytes in 103 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 3 raw-word lines |
 | Functions named and described | pass, 68 of 68 named (0 author symbols), 68 of 68 described (6 by rule, 59 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1605 of 1605 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 1655 of 1655 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 48818 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 2634 of 2745 instructions identical in start and length, 0 mismatches |
 
@@ -39,7 +39,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Cases handled
 
-- runtime segment an address: 421 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 471 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-x25k): 337 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 400 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - odyssey (1995)(audiogenic)[cr lsd][t +6 pdy](disk 2 of 2)/Odyssey (1995)(Audiogenic)[cr LSD][t +6 PDY](Disk 2 of 2).adf:FinalMaps/Demo/Map1.CMP: raw code file no run loaded verbatim: recovered position-independently (load address unknown)

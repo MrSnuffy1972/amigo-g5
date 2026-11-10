@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (906864 top-level bytes in 30 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 109 raw-word lines |
 | Functions named and described | pass, 73 of 73 named (0 author symbols), 73 of 73 described (5 by rule, 19 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1071 of 1071 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 1080 of 1080 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 1716 of 1716 instructions identical in start and length, 0 mismatches |
 
@@ -56,7 +56,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - deliverance (1992)(21st century)(disk 1 of 3)[cr flt]/Deliverance (1992)(21st Century)(Disk 1 of 3)[cr FLT].adf:DE_09: high-entropy data file (7.99 bits/byte), classified as packed data
 - runtime segment an address: 91 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 252 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 106 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 108 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 147 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 47 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - deliverance (1992)(21st century)(disk 1 of 3)[cr flt]/Deliverance (1992)(21st Century)(Disk 1 of 3)[cr FLT].adf:Deliverance: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data

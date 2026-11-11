@@ -6,20 +6,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (1808073 top-level bytes in 50 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 16 of 16 units identical (bytes and relocations), 10 raw-word lines |
-| Functions named and described | pass, 149 of 149 named (0 author symbols), 149 of 149 described (9 by rule, 0 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1834 of 1834 (100.00%) |
+| Bytes classified (1809849 top-level bytes in 51 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 17 of 17 units identical (bytes and relocations), 15 raw-word lines |
+| Functions named and described | pass, 168 of 168 named (0 author symbols), 168 of 168 described (9 by rule, 19 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 2027 of 2027 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 18432 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 3265 of 3280 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 3531 of 3546 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 435610 |
-| code | 11422 |
-| data | 1347978 |
+| asset | 436010 |
+| code | 12286 |
+| data | 1348490 |
 | padding | 7 |
 | unused | 13056 |
 
@@ -38,6 +38,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 400 | 16 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 266 | 19 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 5 |
 | Disk.1 bytes 0-512 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Disk.1 bytes 86528-86784 (code never loaded by a reference run) | 1 | 0 | 0 |
@@ -50,11 +51,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - ChaosEngine_v1.2_AGA_1324/ChaosEngineAGA/Disk.2: raw disk image (829440 bytes, no filesystem): matched against track-loaded segments in 256-byte chunks
 - 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - 5 logged WHDLoad disk loads recovered as units built from the disk image bytes
-- runtime segment an address: 1161 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 1200 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 119 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 239 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 7 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 154 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - ChaosEngine_v1.2_AGA_1324/ChaosEngineAGA/Disk.1: bytes 0-512 look like code no run loaded: recovered position-independently (load address unknown)
 - ChaosEngine_v1.2_AGA_1324/ChaosEngineAGA/Disk.1: bytes 86528-86784 look like code no run loaded: recovered position-independently (load address unknown)
@@ -279,6 +281,28 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `check_byte_at_a0_offset_three`: Compares the byte at offset three from a0 with the value two and branches far away if equal, otherwise jumps to an external address.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `iterate_structure_elements`: Calculates a value by masking a byte from a global variable with 3, updates a global byte with the result minus 1, and toggles a bit in another global byte if the mask result is zero.
+- `execute_conditional_script_recursion`: Checks if a pointer at offset 166 of a structure is non-zero and a byte at offset 39 of another structure is non-zero; if both are true, it calls six routines in sequence, including a recursive call to itself.
+- `process_flag_and_pointer`: Clears bit 0 of a byte at offset 57 of a structure, and if that bit was set, updates a pointer at offset 0 with a value calculated from offsets 4 and 22, then copies a word from offset 24 of the structure to offset 4 of the new pointer location.
+- `check_flag_and_set_status`: Clears bit 0 of a byte at offset 56 of a structure, and if that bit was set, sets a byte at offset 57 to 255 and updates a word at offset 150 of another structure by ORing a word from offset 46 with 33280.
+- `process_script_operand_stream`: Reads a pointer from a structure and iterates through a script data stream, decrementing byte counters at offsets 87 and 89 of the structure until they reach zero.
+- `branch_to_update_pointer_routine`: Performs a short branch to the routine that loads a pointer from offset 4e of a structure into a2, sets a byte at offset 58 of the structure to 1, and loads a byte from the address in a2 into int.
+- `update_pointer_from_table`: Loads a pointer from offset 4e of a structure into a2, sets a byte at offset 58 of a structure to 1, loads a byte from the address in a2 into d0, and if d0 is not zero, updates the pointer at offset 4e with the incremented address in a2, calculates an offset using d0, and branches to another routine.
+- `decrement_and_branch_pointer`: Loads a byte from the address in a2 into d0, and if d0 is not zero and not negative, subtracts d0 from a2 before branching to another routine; otherwise it branches to another routine.
+- `fetch_table_entry`: Reads a byte from offset 1 of a structure, uses it to index into a table via a pointer in a5, adds a value from offset 24 of a5 to the resulting pointer, and branches to another routine.
+- `modify_status_bit`: Subtracts a long from a1, sets the carry flag based on a byte at offset 91 of a0, clears a bit in a byte at offset 44 of a5 using a value from offset 45 of a5, and branches to another routine.
+- `call_three_routines`: Calls three different routines in sequence and then returns.
+- `calculate_scaled_value`: Calculates a value by multiplying two words from a structure, shifting right by 6, multiplying by a word from another structure, and shifting right by 6 again, stores the result in the structure, and clamps the value between 0 and 64 before storing it in another structure.
+- `increment_index_and_scale`: Updates a word in a structure by adding a scaled byte retrieved from a table via a pointer, then increments an index and resets it using a value from a table if it reaches a limit.
+- `calculate_scaled_value_2`: Calculates a value by multiplying a byte at offset 59 by a byte at offset 60 and dividing by a byte at offset 61, then stores the result at offset 63.
+- `branch_and_clear_d0`: Branches to another routine, clears d0, and then branches to another routine.
+- `set_constant_word`: Writes the word 64 to offset 50 of a structure, otherwise it returns.
+- `copy_attributes_from_pointer`: Copies a byte from offset 3 of a structure pointed to by a pointer in a0 to offset 62 of a0, derives two other bytes from that same source and stores them at offsets 59 and 61, and sets offset 60 to the second derived byte and offset 58 to 2.
+- `update_index_and_value`: If a pointer in a structure is not null, it calculates a new value using a byte from a table and a word from the structure, stores it, and increments an index, potentially resetting it; if a byte at offset 64 is non-zero, it decrements it and updates a pointer-based field with a sum, finally storing a sum of two values into a structure pointed to by the original pointer.
+- `initialize_object_state`: Populates a structure with values from a referenced table, including pointers and byte attributes, and sets up linked list pointers within the structure.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 

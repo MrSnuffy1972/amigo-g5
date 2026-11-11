@@ -1,0 +1,1178 @@
+# Game 1132 (dreamweb (1995)(empire)(disk 1 of 4)[cr psg]): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/01132). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (901600 top-level bytes in 80 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 15 of 15 units identical (bytes and relocations), 2 raw-word lines |
+| Functions named and described | pass, 1053 of 1053 named (0 author symbols), 1053 of 1053 described (23 by rule, 1016 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1333 of 1333 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 630514 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 15673 of 15673 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 13293 |
+| code | 71552 |
+| data | 796738 |
+| padding | 11825 |
+| unused | 8192 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB | 1 | 14990 | 1022 |
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:type2 | 2 | 117 | 2 |
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:EXIT | 2 | 117 | 2 |
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:BOOT1 | 1 | 45 | 2 |
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:BOOT2 | 1 | 31 | 3 |
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:BaNaNa.exe | 3 | 349 | 18 |
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:bootblock | 1 | 10 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 13 | 2 |
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R53#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R55#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T82#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T84#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R14#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.B01#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+
+## Cases handled
+
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.G00: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (15692 -> 42230 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.G01: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (7791 -> 24562 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.C00: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (5709 -> 32136 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.M05: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (26439 -> 44122 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.M06: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (20569 -> 32748 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.G15: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (4775 -> 11024 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R50: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (60103 -> 207618 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R52: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (66186 -> 224626 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R53: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (53688 -> 163410 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R54: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (22241 -> 91714 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R55: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (73068 -> 215462 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.B99: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (32014 -> 41720 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T80: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (3034 -> 5824 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T81: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (1827 -> 3182 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T82: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (1461 -> 2462 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T83: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (1696 -> 2652 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T84: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (793 -> 1068 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R14: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (57161 -> 189432 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R19: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (32920 -> 96480 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I00: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (9804 -> 16684 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I01: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (5525 -> 15662 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I02: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (10881 -> 25736 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.B01: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (28454 -> 58680 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.S00: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (12861 -> 29810 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I03: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (8760 -> 22581 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.B02: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (19706 -> 31231 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I04: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (8634 -> 20459 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I05: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (11207 -> 24065 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I06: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (2276 -> 9230 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I07: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (16391 -> 34428 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.B06: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (63093 -> 87536 bytes)
+- runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500): 7 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R53#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R55#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T82#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T84#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R14#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.B01#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- 6 never-loaded region(s), 630514 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- `initialize_buffer_structure` (BaNaNa.exe): Clears a memory range with zeros, sets several word values in a structure, and modifies an interrupt request register. Kind: disk hardware/track check. Pass path: the instruction at an address (the branch following the 'beq.b' check).
+
+## Functions
+
+
+### Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB
+
+- `initialize_system_state`: Performs extensive system initialization including audio setup, hardware register configuration, memory buffer filling, and command table dispatching.
+- `dispatch_complex_logic`: Executes a large sequence of conditional branches, recursive calls, and memory operations including filling a block with zeros and copying data to a table.
+- `decompress_bitstream_data`: Decompresses a variable-length bitstream into a destination buffer using a combination of literal byte copies and run-length encoding.
+- `dispatch_conditional_logic`: Checks a global variable against several constants and executes different branches of routine calls based on the value.
+- `initialize_handler_pointers`: Sets several global pointers to specific memory locations and resets a global variable to zero.
+- `search_handler_table`: Iterates through a table of six-byte entries to find a match within a specific range, then executes a function pointer found in the fifth byte of the matching entry.
+- `validate_memory_ranges`: Checks if the differences between two sets of global memory addresses fall within specific bounds before performing further operations.
+- `validate_table_bounds`: Checks if certain global variables and memory offsets fall within specific numeric ranges before performing further checks.
+- `store_register_to_global`: Stores the value of a register into a global variable.
+- `search_range_table`: Iterates through a table of eight-byte entries to find an entry where specific byte values fall within a defined range.
+- `check_boundary_conditions`: Loops through a table of entries to verify if certain byte values satisfy specific comparison constraints against global values.
+- `store_fetched_value`: Calls another routine to retrieve a value and stores the result into a global variable.
+- `fetch_pixel_data`: Calculates an offset into a table using two input values and returns a word from that location.
+- `search_table_for_range`: Iterates backwards through a table of five-byte entries to find a match where multiple bytes fall within specific numeric ranges.
+- `calculate_bitmask_index`: Performs complex arithmetic involving multiple global variables and table lookups to return a single byte value.
+- `find_matching_entry`: Searches a table of five-byte entries for a specific pattern of values and returns a combined 16-bit value if a match is found.
+- `scan_table_for_bounds`: Iterates through a table of five-byte entries to check if specific bytes fall within defined minimum and maximum bounds.
+- `validate_table_entries`: Iterates through a table of entries, performing arithmetic on values and checking if the results fall within specified ranges.
+- `fetch_byte_at_offset`: Retrieves a single byte from a specific offset within a provided memory pointer.
+- `evaluate_input_conditions`: Performs conditional checks on input values and executes various routines based on matching byte patterns.
+- `evaluate_global_conditions`: Performs a series of conditional checks on a global variable and executes recursive calls based on the results.
+- `return_from_subroutine`: This routine is empty and performs no operations before returning.
+- `initialize_global_state_2`: Sets multiple global variables to specific constant values and performs a series of conditional recursive calls.
+- `execute_recursive_sequence_4`: Sets a global variable to a specific value and performs a series of recursive calls and subsequent assignments.
+- `execute_recursive_sequence_2`: Performs a series of recursive calls and sets two global variables to specific values.
+- `initialize_global_state_3`: Sets a series of global variables to specific constant values and executes a loop based on a global variable.
+- `execute_recursive_initialization`: Performs a series of recursive calls while setting various global variables to specific constant values and checking for arithmetic overflow.
+- `set_global_values_4`: Sets a global variable to one and another global variable to two hundred before performing recursive calls.
+- `increment_global_offset`: Calls another routine and adds five to its return value, which is then stored in a global variable.
+- `execute_nested_loops`: Performs a series of nested loops that call another routine multiple times based on counter values.
+- `initialize_lookup_table`: Fills a table with default values and then populates specific entries based on data found in another table.
+- `calculate_offset_and_loop`: Calls a routine, calculates a new value for a global variable based on a returned byte, and executes a loop.
+- `update_table_entries`: Iterates through a table to find matching byte sequences and writes specific values to a destination buffer.
+- `search_and_write_data`: Iterates through a table to find a matching sequence of bytes and then writes a byte and a constant to a destination pointed to by a register.
+- `retrieve_concatenated_value`: Performs multiple recursive table traversals and returns a concatenated 64-bit value.
+- `loop_and_decrement`: Checks a global variable against a constant, then enters a loop that increments a global variable while decrementing a register.
+- `decrement_and_loop`: Decrements a value in a register by a constant in a loop while incrementing a global variable.
+- `execute_recursive_calls_2`: Performs two consecutive calls to itself.
+- `check_and_call`: Sets a global variable to a specific value and performs conditional recursive calls based on a return value.
+- `call_stub`: Call stub: calls one other routine as a subroutine and returns to its own caller when that routine returns.
+- `check_and_set_global_2`: Checks a global variable and sets it to a specific negative value before executing a sequence of calls.
+- `execute_redundant_calls`: Sets a global variable to a specific value and performs a long sequence of recursive calls.
+- `execute_redundant_assignments`: Repeatedly assigns a global variable to itself and performs many recursive calls.
+- `update_state_via_conditional_branching`: Checks a global variable against specific constants to determine a sequence of state updates and function calls.
+- `process_object_data`: Updates global variables and performs word concatenation and memory writes based on conditional checks.
+- `execute_infinite_recursion`: The routine calls itself repeatedly in a pattern of nested and sequential calls while modifying a global variable.
+- `set_global_sequence`: Sets a global variable to a specific value, performs multiple recursive calls, and sets the variable again.
+- `execute_long_recursion`: Performs a long sequence of recursive calls and sets a global variable to zero and then two.
+- `assign_and_recurse`: Repeatedly assigns two hundred to a global variable and adds five to the result of another routine.
+- `validate_sequence_bytes`: Compares a series of bytes at specific offsets within a structure against constant values.
+- `search_table_for_sequence`: Iterates through a table in fixed increments to find a specific four-byte sequence.
+- `scan_table_bytes`: Increments a counter and compares a four-byte sequence at a specific offset within a table until a match is found or a global limit is reached.
+- `execute_recursive_calls_8`: Performs a sequence of five consecutive calls to the same routine.
+- `execute_recursive_calls_9`: Performs a sequence of seven consecutive calls to the same routine.
+- `execute_recursive_calls_7`: Performs a series of recursive calls and updates two global variables with specific byte values.
+- `reset_and_call_repeatedly`: Sets a global variable to zero and then calls another routine sixteen times in succession.
+- `conditional_table_traversal`: Retrieves a byte from a table and, if it is not negative, performs a recursive table traversal.
+- `call_traversal_routine`: Calls another routine that performs a recursive table traversal.
+- `check_global_value`: Recursively calls itself if a global variable matches specific constant values.
+- `initialize_memory_constants`: Sets several global memory locations to specific constant values and performs conditional branching.
+- `check_conditional_branch`: Calls another routine and performs different subsequent calls based on the returned boolean value.
+- `validate_sequence_logic`: Performs a conditional check based on the return value of another routine and executes subsequent routines accordingly.
+- `execute_sequence_of_calls_2`: Sets a global variable to one and executes a long sequence of calls to another routine, eventually resetting the global variable to zero.
+- `nop_and_call`: Performs a redundant assignment of a global variable to itself before calling another routine.
+- `set_and_call`: Assigns a global variable to itself, sets it to a specific byte value, and then calls another routine.
+- `perform_sequence_calls`: Executes a routine twice, updates two global variables, and then calls another routine.
+- `concatenate_and_validate_string`: Concatenates two words into a single string and calls another routine.
+- `concatenate_and_validate_string_2`: Combines two words into a single string and invokes another routine.
+- `evaluate_global_state`: Performs a series of conditional checks and assignments based on the value of a global variable.
+- `concatenate_and_validate_string_3`: Concatenates two words into a single string and passes the result to another routine.
+- `concatenate_and_verify_name`: Combines two words into a single string, calls another routine, and updates two global variables based on a character comparison.
+- `copy_string_with_terminator`: Copies characters from a source to a destination until a specific character or null terminator is encountered, then null-terminates the destination.
+- `execute_recursive_calls_10`: This routine performs a sequence of recursive calls.
+- `execute_complex_recursion`: Performs a long sequence of recursive calls and updates two global variables multiple times.
+- `call_swap_bytes`: Calls another routine and then performs a byte swap on a 16-bit value.
+- `parse_colon_delimited_string`: Processes a string by comparing segments and searching for a colon character while checking a global flag.
+- `compare_string_segments`: Compares two sequences of characters and stops if a colon character is encountered or if a maximum iteration count is reached.
+- `conditional_swap_bytes`: Checks if a byte equals five and calls another routine before performing a byte swap.
+- `toggle_global_flag`: Performs an XOR operation on a global variable and executes a series of conditional routine calls.
+- `toggle_and_recurse`: Toggles a global variable using an XOR operation and then executes a series of recursive calls.
+- `check_global_range`: Checks if a global variable is between one and one hundred ninety-eight before calling another routine.
+- `update_graphics_data`: Uses a global value to check bounds, then processes a data block to update a destination table with values extracted from a source table.
+- `recursively_check_global_range`: Checks a global variable and conditionally calls itself or another routine based on its value and a second global variable.
+- `execute_double_recursion`: Calls itself twice if a global variable is non-zero.
+- `execute_nested_calls`: Calls another routine twice in succession.
+- `execute_nested_data_copy`: Triggers a routine that performs a multi-level nested copy of word-sized data blocks using a specific pointer increment logic.
+- `recurse_on_range`: Recursively calls itself if a global variable is between a specific range and not equal to a specific value.
+- `update_global_state_3`: This routine checks a global variable against a constant, updates it, and conditionally sets it based on the return value of another routine.
+- `dispatch_conditional_routine`: Checks a global variable and calls another routine based on its value.
+- `call_another_routine`: Calls another routine and returns.
+- `validate_and_propagate_global`: Checks a global variable against multiple specific values and performs a sequence of conditional calls.
+- `write_repeated_bytes_2`: Writes a global byte value to four consecutive memory locations if certain conditions and character matches are met.
+- `write_repeated_bytes`: Checks a global variable against specific values and, if conditions are met, writes that variable to four consecutive memory locations.
+- `update_structure_data`: Checks a global variable and writes it to four consecutive memory locations if certain conditions are met.
+- `write_structure_data`: Checks specific bytes in a structure and writes a global variable to four consecutive memory locations.
+- `write_global_to_structure`: Checks specific bytes within a structure and, if conditions are met, writes a global variable to four consecutive memory locations.
+- `write_global_to_memory`: Compares bytes in a structure and, if they match specific values, writes a global variable to four consecutive memory locations.
+- `fill_memory_from_global`: Calls another routine and, if certain bytes in a structure match specific values, writes a global variable to four consecutive bytes in a memory structure.
+- `fill_memory_structure`: This routine writes a global variable to four consecutive bytes in a memory structure and then clears the global variable.
+- `clear_global_range`: Iterates through a memory range in steps of forty-four bytes, setting a global variable to incrementing values.
+- `return_from_subroutine_2`: The routine is empty and performs no operations before returning.
+- `update_memory_structure_2`: Loads bytes from a pointer to compare against a global variable and writes bytes to a memory structure.
+- `update_memory_structure`: Loads two bytes from a pointer into a global variable and writes specific bytes to a memory structure based on the value of those bytes.
+- `populate_memory_structure`: Loads two bytes from a pointer into a global variable and, depending on the value, writes specific bytes to a memory structure.
+- `populate_data_block`: This routine assigns values to a global variable, calls another routine, and writes specific bytes to a memory structure.
+- `process_conditional_data_2`: Updates a global variable, writes specific bytes to a memory location based on a value check, and copies a global variable to four consecutive memory locations.
+- `copy_memory_conditionally`: Reads values from a pointer and writes them to a memory location, then updates a structure with a global variable.
+- `update_memory_from_pointer`: Reads values from a pointer and writes them to a memory location, conditionally setting specific bytes based on the value of a global variable.
+- `store_modified_values`: Saves global values, performs conditional checks on memory contents, and writes a value to four consecutive memory locations.
+- `manipulate_and_store_global`: Saves a global variable, performs a series of calls and assignments, and then writes the saved value to four consecutive bytes in a memory structure.
+- `manipulate_stack_and_memory`: This routine performs multiple assignments to a global variable, manipulates values from the stack, and writes a global variable to four consecutive bytes in a memory structure.
+- `modify_structure_data`: Checks a pointer and a global variable, then conditionally writes a constant and a byte to a memory structure.
+- `update_memory_with_global`: Checks a pointer and a global variable, then conditionally writes a constant, a byte, and a global variable to a memory structure.
+- `conditional_memory_write`: This routine checks a global variable against a constant, performs a conditional branch, and writes a constant, a byte, and a global variable to a memory structure.
+- `store_data_structure`: Calls another routine and then stores a constant, a byte, and a global variable into a memory structure.
+- `update_global_counter`: Iterates through a memory range to calculate a value, then updates a global variable using a combination of multiplication and addition.
+- `return_from_subroutine_3`: the routine performs a single return from a subroutine.
+- `branch_on_structure_values`: Compares a global variable to bytes in a structure and, based on the result of another routine, writes various values to a memory structure.
+- `update_global_from_pointer_2`: Checks a global variable against two bytes from a pointer, potentially updates the global variable with a constant, and performs conditional writes to a memory structure based on a return value.
+- `load_and_store_bytes`: Loads two bytes from a pointer into a global variable and then writes constants to a memory structure.
+- `update_global_from_pointer`: Loads two bytes from a pointer into a global variable and then sets that global variable to one.
+- `validate_and_populate_buffer`: Checks a global variable and performs a series of conditional tests involving a return value and specific byte comparisons.
+- `calculate_buffer_values`: Performs conditional checks and, if certain criteria are met, writes a calculated sequence of bytes into a memory buffer.
+- `execute_state_machine`: Performs a series of conditional checks and writes calculated byte values to a memory buffer based on a global variable.
+- `execute_recursive_state_machine`: Performs a series of conditional recursive calls based on a global variable's state.
+- `calculate_and_store_encoded_bytes`: Performs a series of checks and, if successful, calculates and stores several encoded bytes into a memory structure.
+- `set_global_and_recurse`: Sets a global variable to a specific value and performs a series of recursive calls to another routine.
+- `execute_recursive_calls_11`: Sets a global variable to a specific byte value and then performs a series of recursive calls to itself.
+- `set_global_and_recurse_2`: Sets a global variable and another global variable to specific values before performing a series of recursive calls.
+- `assign_constant_and_recurse`: Sets a global variable to a specific byte value and then calls itself repeatedly through a series of recursive calls.
+- `execute_recursive_calls_12`: Sets a global variable and a secondary global value before performing a series of recursive calls to itself.
+- `set_global_and_recurse_3`: Sets a global variable to a specific value and then calls itself multiple times.
+- `compare_byte_values`: Compares two bytes retrieved from a pointer and a global variable using various conditional logic and recursive calls.
+- `compare_byte_ranges`: Compares two byte values and returns a boolean result based on their relationship and specific thresholds.
+- `compare_register_values`: Compares the value in a register with a value derived from another register and returns a boolean result.
+- `tiny_move_rts`: Small routine of 2 instructions that copies 0 to d0, then returns.
+- `fetch_conditional_byte`: Calls another routine and returns a byte from a specific offset relative to the returned pointer, depending on the value of a global variable.
+- `fetch_byte_at_offset_seven`: Returns a byte from an offset of seven relative to a pointer provided by another routine.
+- `fetch_offset_byte`: Calls another routine and returns a byte located at a fixed offset from the resulting pointer.
+- `compare_bytes_and_branch`: Compares two bytes from a pointer and conditionally updates a global variable based on whether the bytes are identical or match a specific constant.
+- `compare_and_callback`: Compares two input bytes against each other and a constant, then conditionally calls another routine.
+- `call_recursive_functions`: The routine calls itself twice and then calls another routine twice and conditionally a third time.
+- `modify_memory_structure`: Performs conditional checks on a global variable, calls another routine, and writes several multi-byte values to a memory structure using a pointer.
+- `copy_and_modify_data_2`: Copies bytes from a pointer to a global variable and writes several multi-byte values to a memory structure.
+- `check_and_set_global`: Checks if a global variable is not equal to negative one, sets it to negative one, and calls another routine.
+- `reset_global_flag_recursively`: Checks if a global variable holds a specific value, resets it to that value, and then calls itself recursively.
+- `set_global_and_table_values`: Checks a global variable and, if it matches a specific value, performs several calls and sets a global variable and two table entries.
+- `update_global_bytes`: Stores two bytes from registers into a global variable and then calls another routine.
+- `select_byte_by_input_value`: Returns a byte from different offsets of a pointer based on whether an input byte matches two or four.
+- `select_byte_by_global_value`: Returns a byte from different offsets of a pointer based on whether a global variable matches two or four.
+- `conditional_call_and_return`: Calls another routine and returns if a global variable does not equal four.
+- `call_shift_left_four`: This routine calls another routine that shifts the lower byte of a register left by four bits.
+- `shift_left_six`: Shifts the lower byte of a register left by six bits.
+- `shift_left_four`: Shifts the lower byte of a register left by four bits.
+- `shift_left_four_alt`: Shifts the lower byte of a register left by four bits via a different entry point.
+- `copy_block_and_update`: Copies a block of four words to a destination and then populates that destination with various bytes and a global variable.
+- `search_and_update_table`: Iterates through a table to find a match for two bytes, then updates a global variable and calls another routine.
+- `copy_and_modify_data`: Copies a block of four words from one location to another and then writes several values, including a global variable and a constant, to the destination memory.
+- `count_table_entries`: Iterates through a table and increments a global variable until a specific byte value is reached or a terminator is found.
+- `copy_and_calculate_offset`: Copies a block of data from a source table to a destination, calculates a value based on the data, and performs a subsequent block copy.
+- `copy_and_update_global`: Copies data from a table to a destination and updates a global variable using a calculated value derived from the source data.
+- `copy_null_terminated_string`: Stores a word from a routine into a table and then copies a null-terminated string to a new location.
+- `loop_with_conditional_calls`: The routine performs nested loops that check global values to decide whether to call itself or another routine.
+- `scan_table_for_match`: Iterates through a table in sixteen-byte increments to find a match for a byte and a zero value, then calls another routine.
+- `nested_table_search`: Performs multiple nested loops to scan a table for specific byte patterns and conditions, calling another routine if certain criteria are met.
+- `search_table_for_match_3`: Initializes a memory block with all ones and then iterates through a table in increments of sixteen, checking for specific byte matches before calling another routine.
+- `copy_data_with_loop`: Copies a block of data from a source to a destination and executes a loop that performs conditional word writes.
+- `update_string_length`: Calculates the length of a string, updates a global variable, and then copies data to a new location based on that length.
+- `reset_system_state`: Executes a series of calls that manipulate global variables and hardware registers for block transfers.
+- `initialize_hardware_registers`: Sets specific values to hardware registers and performs multiple calls to update global variables.
+- `perform_recursive_calls_3`: Executes a series of recursive calls that involve table traversal, string parsing, and byte swapping.
+- `perform_six_calls`: Calls another routine six times in succession.
+- `perform_four_calls`: Calls another routine four times in succession.
+- `execute_empty_recursion`: The routine calls itself twice before returning.
+- `call_recursive_routine`: Calls another routine twice and then conditionally calls it a third time if a global variable is non-zero.
+- `call_conditional_routine`: Calls another routine and then conditionally calls it again if a global variable is non-zero.
+- `invoke_recursive_table_traversal`: Calls a routine that performs a recursive traversal of a table by reading bytes at calculated offsets and checking bit flags in a global variable.
+- `invoke_table_traversal`: Calls a routine that recursively traverses a table by reading bytes at calculated offsets and checking specific bit flags in a global variable.
+- `execute_sequence_logic`: Checks a global variable against specific values and executes a sequence of routines and constant assignments.
+- `execute_sequence_of_calls_4`: Sets a global variable and performs a series of recursive calls and constant assignments to global variables.
+- `set_global_constants_3`: Updates several global variables and hardware registers with specific constant values.
+- `find_colon_in_string`: Searches for a colon character within a null-terminated string.
+- `recurse_with_string_parsing`: Sets a global variable and performs recursive calls that involve swapping bytes and parsing delimited strings.
+- `process_object_name`: Concatenates two words, calls another routine, and updates two global variables based on a character check.
+- `parse_string_data`: Parses a delimited string and performs a multi-level nested copy of word data while swapping bytes.
+- `store_word_and_recurse`: Stores a word into a global variable and then calls itself twice.
+- `process_delimited_string`: Searches for a colon in a string, parses a delimited string, and swaps bytes.
+- `parse_delimited_string`: The routine iterates through a string, decrementing a global variable until it reaches zero or encounters a null or colon character.
+- `parse_string_segments_2`: Iterates through a string to sum values found at specific intervals based on a delimiter.
+- `parse_string_segments`: Iterates through a string looking for spaces, colons, or null terminators and calls another routine recursively.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `call_if_not_negative_one`: Calls another routine if a value in a register is not equal to negative one.
+- `execute_callback_function`: Retrieves a function pointer from a data structure and executes it.
+- `call_nested_data_copy`: This routine calls another routine that performs a multi-level nested copy of word data.
+- `update_graphics_parameters`: Calculates bitmask and offset values based on register input and writes a series of parameters to a structure in memory.
+- `call_own_blitter`: Library stub: loads its arguments and the graphics library base, calls OwnBlitter and returns its result to the caller.
+- `disown_blitter_resource`: Sets a global variable to zero and calls a function pointer to release a graphics resource.
+- `perform_nested_data_copy`: Performs a multi-level nested copy of word data or configures hardware registers for a DMA transfer depending on a global flag.
+- `copy_nested_data_blocks`: Performs a multi-level nested copy of word data using a specific pointer increment logic and a loop structure.
+- `copy_structured_data`: Performs a multi-level nested copy of word data from a calculated source address to a destination address.
+- `copy_structured_data_alt`: Performs a multi-level nested copy of word data using a different pointer increment logic.
+- `configure_blt_parameters`: Sets several values in a structure, including a calculated offset and a value derived from a global variable, before triggering a routine.
+- `execute_multiple_calls`: The routine calls another routine seven times and then sets a global variable to zero.
+- `reset_global_values`: Sets three global variables to specific values based on a comparison between two other global variables.
+- `fill_table_with_ones`: If a global variable is set, iterates through a table and fills specific word blocks with all ones.
+- `execute_blt_loop`: Iterates through a series of values, configuring hardware registers for a block transfer operation in each step.
+- `execute_blt_loop_offset`: Iterates through a series of values, configuring hardware registers for a block transfer operation with a fixed increment to the source address.
+- `update_calculated_values`: Increments a global variable and performs several arithmetic operations to update multiple global values based on that incremented variable.
+- `modify_global_via_loops`: Executes two loops that modify a global variable using specific increment and decrement steps.
+- `populate_table_from_data`: Clears a destination table with zeros and then fills it by reading values from a source table using an index-based lookup.
+- `calculate_offset_values`: Performs arithmetic operations using various values to update two global variables and increments a global variable if it matches a specific character.
+- `calculate_string_length`: Scans a memory buffer for a null byte and calculates a length based on the distance between two specific characters.
+- `measure_character_distance`: Counts null bytes in a buffer and then counts backwards from a newline character to determine a value stored in a global variable.
+- `scan_for_null_byte`: Iterates through a memory buffer in steps of three bytes, returning if a null byte is encountered within ten iterations.
+- `scan_spaced_null_bytes`: Checks a memory buffer for null bytes at specific intervals of thirty-three bytes for up to nine iterations.
+- `copy_structured_data_blocks_2`: Iterates through a table and performs a nested loop to copy data blocks based on whether a byte is non-zero.
+- `copy_structured_data_blocks`: Copies blocks of data from a source table to a destination table using a loop that handles specific memory offsets.
+- `initialize_and_process_table`: Fills a memory block with negative one, then iterates through a table to perform various data updates and conditional routine calls based on byte values and global flags.
+- `fill_and_iterate_table`: Fills a memory block with negative one and iterates through a table, performing multiple routine calls if a global variable remains zero during the loop.
+- `reset_and_loop_table`: Fills a memory block with negative one and iterates through a table of one hundred entries, performing conditional routine calls based on byte comparisons and global variable states.
+- `load_bytes_from_offset`: Calculates an address using a global variable and loads several bytes from that location into a global variable.
+- `add_bytes_to_global`: Adds the contents of two global variables to a third global variable and returns the value of the first added variable.
+- `store_sequence_to_table`: Writes a sequence of five values derived from a global variable and its offsets into a table.
+- `update_table_entry_2`: Calculates a difference between two values and writes several bytes into a table entry at a specific offset.
+- `modify_table_fields`: Writes specific byte values into a table entry and conditionally updates a global variable based on its current value.
+- `fill_memory_with_ones`: Fills a block of memory with the value one.
+- `terminate_table_entry`: Searches through a table for a terminator and then writes several values into the entry found at that location.
+- `iterate_and_dispatch_table_entries`: Iterates through a table of pointers with a fixed stride, calling another routine for each non-negative entry.
+- `traverse_table_with_flags`: The routine iterates through a table, checking specific byte values and flags to conditionally call another routine.
+- `dispatch_conditional_callbacks`: Checks a global variable and executes a series of conditional calls to other routines based on table entries and state flags.
+- `initialize_and_search_table`: Fills a memory range with a specific byte, increments a global counter, and then iterates through a table to execute a function pointer if certain conditions are met.
+- `update_pointer_data`: Copies bytes from a source location into a destination pointed to by a global variable and then increments that global variable.
+- `call_clamp_value_routine`: Calls a routine that constrains a value within defined limits and updates a global variable based on the resulting range.
+- `manage_table_indices`: Manages a complex state machine that updates a global variable and modifies table entries and offsets.
+- `copy_table_word`: Copies a word from an offset of a pointer into a global variable.
+- `process_table_entries`: The routine iterates through a table using a loop, calling another routine based on the contents of the table entries.
+- `process_control_characters`: Compares a byte at an offset from a pointer against several control characters and modifies a global variable or calls another routine based on the match.
+- `process_control_character`: Compares a byte against several control characters and modifies a global variable by different constant amounts based on the match.
+- `clear_table_offset_two`: Updates a table entry and stores a zero byte at an offset of two from a pointer.
+- `set_table_offset_two`: Updates a table entry and stores a byte with all bits set at an offset of two from a pointer.
+- `clear_table_offset_fifty_eight`: Updates a table entry and stores a zero byte at an offset of fifty-eight from a pointer.
+- `set_table_offset_fifty_eight`: Updates a table entry and stores a byte with all bits set at an offset of fifty-eight from a pointer.
+- `get_table_offset_fifty_eight`: Returns a byte stored at an offset of fifty-eight from a pointer.
+- `search_and_mark_table`: Iterates through a table to compare a byte against entries and writes a specific value to a calculated memory location if a match is found.
+- `search_table_for_byte`: Iterates through a table of four-byte entries until a terminator is found, checking if a specific byte matches a global variable.
+- `update_complex_data_structure`: Checks a condition to either store a byte at a calculated index in a table, update a specific offset in a structure, or store a byte at an offset of fifty-eight from a pointer.
+- `update_table_entry`: Searches a table for a matching set of bytes and either updates an existing entry or adds a new entry if no match is found.
+- `set_byte_to_max`: Sets a specific byte in a table and a global variable to a maximum value.
+- `set_byte_to_one`: Sets a specific byte in a table and a global variable to one.
+- `calculate_scaled_value`: Multiplies a global variable by a constant and returns the result.
+- `execute_callback_chain`: Executes a sequence of function calls by repeatedly invoking a routine through a pointer stored in a data structure.
+- `clamp_value_to_ranges`: Checks a value and sets a global variable to one of three specific thresholds based on the input range.
+- `trigger_table_traversal`: Invokes a routine that recursively traverses a table by reading bytes at calculated offsets and checking specific bit flags in a global variable.
+- `update_structure_fields_2`: The routine modifies various offsets within a structure based on a global variable and performs conditional routine calls.
+- `update_state_variable`: Updates a global variable using bitwise operations and writes zero to a specific offset in a memory structure.
+- `update_global_counter_2`: Increments or decrements a global variable and uses its value to fetch bytes from a table into a structure.
+- `update_global_offsets`: Calculates a memory address by multiplying a global variable by eight and adding an offset, then subtracts a constant from the bytes at that location to update several global variables.
+- `search_table_for_match`: Iterates through a table of two-byte entries to find a match for a global variable based on nibble comparisons, then updates the global variable.
+- `generate_interleaved_sequence`: Calculates the difference between two sets of values and populates a memory buffer with an interleaved sequence of bytes.
+- `calculate_relative_difference`: Computes the absolute difference between two sets of values and uses complex conditional logic to assign a value to a global variable.
+- `scale_and_store_byte`: Scales a global variable by a constant and stores the resulting value into a memory location calculated from that scaled value.
+- `handle_status_flags`: Evaluates a value returned from another routine against various bitmasks and performs conditional logic or calls other routines based on those bits.
+- `modify_memory_with_newline`: Adds a newline character to a global variable, shifts it left by four bits, and stores the result in a memory structure.
+- `modify_memory_with_offset`: Subtracts ten from a global variable, shifts it left by four bits, and stores the result in a memory structure.
+- `modify_memory_with_decrement`: Subtracts eleven from a global variable, shifts it left by four bits, and stores the result in a memory structure.
+- `modify_memory_with_vertical_tab`: Adds a vertical tab character to a global variable, shifts it left by four bits, and stores the result in a memory structure.
+- `reset_global_state_2`: Sets several global variables to zero or specific constants and performs a series of recursive calls.
+- `validate_state_sequence`: Checks a global variable against specific constants and conditionally executes another routine based on structure member values.
+- `execute_conditional_callback`: Checks if a global variable matches two specific values before executing a routine and updating three global variables.
+- `decrement_table_values`: Calculates a pointer using a scaled global variable and decrements two consecutive bytes at that location by twelve.
+- `scale_global_variable`: Returns the product of a global variable and a constant value.
+- `update_audio_buffer`: Decrements a byte in a structure and, if zero, loads a new value from a table into that structure based on a calculated index.
+- `call_audio_update_routine`: This routine acts as a wrapper that calls another routine to update audio parameters.
+- `execute_audio_update_callback`: Calls a routine via a pointer stored in data to update audio parameters.
+- `update_audio_sequence_state`: Manages an audio sequence by comparing a global variable against range limits and decrementing a counter.
+- `update_state_index`: Updates a global variable based on its current value and modifies a byte at an offset within a structure using a value from a table.
+- `update_audio_parameters_3`: Compares a global variable against two values in a table and updates audio registers using data from a table based on a counter.
+- `fetch_scaled_byte`: Returns a byte from a memory location calculated by scaling an input byte and adding an offset.
+- `set_table_byte_high`: If an input byte is not negative one, it scales that byte and sets the byte at the resulting calculated offset to all ones.
+- `set_table_byte_low`: If an input byte is not negative one, it scales that byte and sets the byte at the resulting calculated offset to zero.
+- `set_indexed_byte_high`: Sets a byte to all ones at a memory location calculated from an input byte and an input word used as an index.
+- `clear_indexed_memory_byte`: Calculates a memory address using a byte and a word as indices into a table and writes a zero to that location.
+- `copy_byte_to_multiple_locations`: Copies a byte from one location in a memory structure to two other locations within that same structure.
+- `increment_and_lookup_index`: Increments a byte in a memory structure, uses it as an index into a table, and copies the retrieved value to two different locations.
+- `dispatch_command_table`: Dispatches various commands by setting multiple global variables and table entries based on a character value.
+- `skip_specific_values`: Compares a global variable against several specific constant values and returns without performing further actions if a match is found.
+- `reset_and_retry_routine`: Sets a global variable to zero and calls another routine, then calls that same routine again if the global variable remains zero.
+- `update_status_byte`: Compares a global variable against a value in a table and, if within a specific range, stores a combined byte and offset into a global variable.
+- `update_offset_value`: Checks if a global variable is less than or equal to a value at a specific offset in a table and updates a global variable with a combined value if the difference is less than ten.
+- `initialize_hardware_parameters`: Sets several global variables to fixed values, including values derived from the mouse port.
+- `wait_for_state_change`: Enters loops that wait for a global variable to reach a specific value and then for it to increment.
+- `verify_integer_overflow`: Performs a conditional check to determine if incrementing a global variable results in an arithmetic overflow.
+- `set_transfer_parameters`: Sets four global word values to specific constants or offsets based on the value of a global variable.
+- `initialize_data_table_2`: Stores two word values and two constant values into a set of global variables.
+- `setup_transfer_parameters`: Calculates two new word values by subtracting constants from existing global variables and stores them alongside two other constants in global memory.
+- `check_termination_flag`: Checks if a specific global variable is not equal to negative one before calling another routine.
+- `check_global_and_recurse`: The routine checks a global variable and either sets a global value to all bits set or calls another routine recursively.
+- `set_max_value`: Stores a constant value of all bits set into a global variable.
+- `call_recursive_table_traversal`: Calls a routine that performs a recursive traversal of a table by checking bit flags in a global variable and reading bytes at calculated offsets.
+- `invoke_table_traversal_2`: Calls a routine that recursively traverses a table by reading bytes at calculated offsets and checking bit flags in a global variable.
+- `evaluate_state_flags`: Performs multiple conditional checks on a global variable and another variable to assign a specific integer value to a global variable.
+- `process_mouse_movement`: Reads the mouse port, calculates movement by adding the delta to existing global values, and clamps these values within specific bounds.
+- `clamp_input_values`: Clamps two global variables within specific ranges and updates several other global variables based on bitwise checks.
+- `update_input_status`: Updates several global variables by clamping a value within a specific range and setting bits in a status variable based on other global and memory flags.
+- `update_input_flags_2`: Updates several global variables based on the state of a bitmask, a hardware register, and a comparison of a global value.
+- `update_input_flags`: Sets a global variable and updates other global variables based on the state of a bitmask and a hardware register.
+- `calculate_absolute_difference`: Calculates the difference between two values and returns the absolute value or a modified result based on the sign and magnitude.
+- `tiny_move_sub_rts`: Small routine of 3 instructions that copies 255 to d0, then subtracts d1 from d0, then returns.
+- `calculate_complement`: Returns the two's complement of the input value.
+- `return_constant`: Returns the constant 0 in d0 to the caller without any other effect.
+- `perform_bit_rotation`: Executes a loop seven times that performs complex bitwise shifts and logical operations on a global variable.
+- `traverse_table_recursively`: Recursively traverses a table by reading bytes at calculated offsets and checking specific bit flags in a global variable.
+- `copy_memory_block_3`: Calculates a transfer size and copies a block of data from one memory location to another, potentially using a different destination offset based on a bit in a global variable.
+- `copy_clamped_values`: Clamps two input values against stored minimums and writes them, along with two other values, into a table.
+- `populate_sprite_attribute_table`: Iterates through a loop to write calculated values into a structured data block, likely representing sprite or object attributes.
+- `traverse_and_recurse_table`: Reads a byte from a table using an offset and then calls itself recursively if the byte is non-zero.
+- `blend_bitplane_data`: Performs a bitwise logical combination of source and destination buffers using bitwise AND and OR operations.
+- `wait_dma_busy`: Polls a bit in the DMA controller register until it is cleared.
+- `iterate_pointer_list`: Iterates through a list of pointers stored in memory, calling another routine for each element until a terminator value is encountered.
+- `initialize_data_pointers`: Initializes a series of global variables with offsets derived from a base address.
+- `copy_word_data`: Copies a word from one global variable to another.
+- `copy_word_data_2`: Copies a word from a different global variable to a third global variable.
+- `execute_sequential_callbacks`: Executes a sequence of five indirect function calls via a global variable and performs a redundant assignment to that same global variable.
+- `reset_and_callback`: Updates a global variable, executes a function via a pointer, and populates global variables from a table.
+- `call_and_reset_pointer`: Checks if a global variable is not negative one, sets it to negative one, and calls a function via a pointer offset from that variable.
+- `execute_indirect_callback_2`: The routine calls another routine via a pointer offset from a global variable and updates other values based on the result.
+- `decompress_and_callback`: Decompresses a bitstream into a buffer and then executes an indirect callback using a pointer from a global variable.
+- `execute_chained_callbacks`: Retrieves a function pointer from a global variable and executes it, then passes the returned value as an argument to another function call.
+- `execute_indirect_callback`: Calls a function pointer located at an offset from a global variable.
+- `update_global_pointers`: Calls another routine and then stores two values into global variables using results from the registers.
+- `store_callback_results`: Stores two values from registers into global variables after calling another routine.
+- `store_decompressed_data`: Updates two global variables with values derived from a decompression routine.
+- `call_indirect_pointer`: Calls a function using a pointer located at a specific offset from a global variable.
+- `execute_indirect_function`: Fetches a function pointer from a location relative to a global variable and executes it.
+- `execute_indirect_function_2`: Fetches a function pointer from a global variable and jumps to it.
+- `update_chained_callbacks`: Executes a chained callback and updates three global variables with the results.
+- `execute_indirect_function_3`: Fetches a function pointer from a location relative to a global variable and executes it.
+- `store_decompressed_data_2`: Writes two values to global variables following a decompression process.
+- `execute_indirect_function_4`: Fetches a function pointer from a memory location calculated by an offset from a global variable and jumps to it.
+- `initialize_and_populate_data_structures`: Initializes several global variables and performs a series of complex arithmetic operations and indirect calls to populate a sequence of memory locations.
+- `process_state_transitions`: Checks a global variable against several constants and performs different sequences of routine calls and variable updates based on the match.
+- `execute_loop_until_nonzero`: Executes a loop that calls a function pointer repeatedly until it returns a non-zero value, while updating a global variable from a memory offset.
+- `copy_string_data`: Stores a byte into a global variable and then copies a sequence of bytes from one memory location to another, terminating the sequence with a zero.
+- `execute_function_pointer`: Calls a routine and then executes a function pointer stored at an offset from a global variable, storing the result in another global variable.
+- `call_write`: Wrapper that calls the dos library function Write and returns its result to the caller.
+- `call_indirect_function`: Calls a function through a pointer stored at an offset from a global variable.
+- `call_read`: Wrapper that calls the dos library function Read and returns its result to the caller.
+- `get_word_from_pointer`: Returns a 16-bit word by accessing two consecutive bytes from a pointer.
+- `swap_bytes`: Swaps the high and low bytes of a 16-bit value.
+- `return_immediately`: This routine performs an immediate return to the caller.
+- `call_indirect_and_recurse`: Calls a function through a pointer at an offset from a global variable and then calls itself.
+- `initialize_global_table`: Populates a series of global variables with values returned from another routine or specific constant integers.
+- `retry_allocation`: Calls a function through a pointer at an offset from a global variable and retries if the result is non-zero.
+- `call_memory_allocator`: Calls a function via a pointer stored at an offset from a global variable and returns if the result is non-zero.
+- `clear_color_register`: Performs a series of loops and writes zero to a hardware color register.
+- `set_global_to_negative_one`: Sets a global variable to negative one if it is not already negative one.
+- `fill_memory_with_zero`: Fills a block of memory starting at a global pointer with zeros for a fixed number of iterations.
+- `fill_memory_large_block`: Fills a memory block starting at a global pointer with zeros for a larger fixed number of iterations.
+- `assign_constant_values`: Assigns the values fifteen and three to a global variable multiple times.
+- `set_global_constants_2`: Sets a global variable to three consecutive values.
+- `blend_nibble_buffers`: Decrements a global variable and, if it reaches one, performs bitwise blending of nibbles between two memory buffers.
+- `decrement_global_variable`: Decrements a global variable and calls another routine.
+- `blend_nibble_data`: Iterates through two tables and performs bitwise arithmetic on nibbles to blend their values into a destination buffer.
+- `blend_bitplane_data_4`: Iterates through two buffers and performs bitwise arithmetic on nibbles to combine their values into a destination buffer.
+- `blend_bitplane_data_3`: Performs a complex bitwise blending of two memory buffers by comparing and combining specific bit nibbles and nibble-aligned values.
+- `blend_bitplane_data_2`: Performs a bitwise logical combination of source and destination buffers using bitwise AND and OR operations.
+- `copy_to_hardware`: Copies thirty-two words from a table to a hardware register address.
+- `copy_from_global`: Copies sixty-three bytes from a global variable to a table.
+- `copy_table_segment`: Copies sixty-three bytes from one table to another table.
+- `clear_table_start`: Fills sixty-three bytes starting from a table with zeros.
+- `clear_table_offset`: Fills sixty-three bytes starting from a specific offset in a table with zeros.
+- `reset_global_variable_3`: Sets a global variable to zero and calls another routine twice.
+- `decrement_and_call`: Repeatedly calls another routine while decrementing a local counter until it reaches a specific value.
+- `loop_and_increment_variable`: Increments a global variable within a loop that repeats based on a counter.
+- `check_global_state`: Executes another routine twice within a loop and updates a global variable to a specific value if it matches a certain condition.
+- `zero_and_decrement`: Sets a global variable to zero and then decrements a local value through a loop while calling another routine.
+- `loop_with_conditional_exit`: Iterates a loop calling another routine and checks its return value to decide whether to set a global variable to zero and exit.
+- `swap_global_values`: Swaps the values of two adjacent global variables.
+- `update_structure_state`: Increments a value within a structure, performs conditional updates to a global variable, and handles specific byte resets.
+- `branch_on_characters`: Compares a global variable against three specific characters and executes an indirect call if a match is found.
+- `branch_on_char`: Compares a global variable against two specific characters and executes an indirect call if a match is found.
+- `check_char_and_call`: Compares a global variable to a specific character and calls another routine if they match.
+- `return_immediately_2`: This routine is empty and performs no operations before returning to its caller.
+- `execute_indirect_call_2`: Performs an indirect jump or call to an address retrieved from a pointer in data.
+- `increment_structure_byte`: Increments a word at a specific offset within a structure and resets it to a specific value if it reaches a certain threshold.
+- `update_complex_counter`: Increments a word in a structure with multiple conditional checks that update a byte at a different offset and a global variable.
+- `branch_on_word`: Compares a 16-bit value against two specific constants and executes an indirect call if a match is found.
+- `check_word_and_update`: Compares a 16-bit value against a constant and, if it matches, calls a routine to update global values.
+- `return_no_op_3`: The routine consists of a single return instruction and performs no operations.
+- `trigger_global_value_update`: Calls a routine that calculates and stores the sum of two 16-bit values into global variables.
+- `increment_structure_field_2`: Increments a word at an offset within a structure and conditionally updates a global variable and other structure bytes.
+- `modify_structure_values`: Writes a value from a register and a global variable into a structure at specific offsets.
+- `write_structure_bytes`: Writes a constant byte and a global variable to specific offsets within a structure.
+- `update_structure_word_4`: Modifies a word within a structure based on its current value and updates a global variable accordingly.
+- `store_constant_word`: Stores a specific word into a structure at a fixed offset.
+- `update_structure_word_2`: Modifies a word in a structure based on its current value and updates a global variable accordingly.
+- `store_alternative_word`: Stores a different specific word into a structure at a fixed offset.
+- `update_register_and_structure`: Modifies a value in a register based on its content and stores the result into a structure.
+- `set_structure_word`: Stores a word into a structure at a specific offset, applying a conditional replacement if the value matches a specific constant.
+- `search_table_for_match_4`: Iterates through a table in increments of six bytes until it finds a specific value or a termination marker.
+- `call_update_global_values`: Calls a routine that calculates the sum of two 16-bit values and stores the result and other 16-bit values into global variables.
+- `branch_on_bytes`: Checks if a global variable matches one of three specific byte values before performing a recursive call.
+- `branch_on_byte`: Compares a global variable against two specific byte values and executes an indirect call if a match is found.
+- `recurse_on_byte_match`: Performs a recursive call if a global variable matches a specific byte value.
+- `return_immediately_stub`: The routine consists of a single return instruction and performs no work.
+- `execute_recursive_call`: The routine performs a recursive call to itself before returning.
+- `validate_and_dispatch_event`: Checks if a word value in a register matches one of two specific constants.
+- `execute_indirect_call_5`: Compares a 16-bit value against a constant and, if it matches, executes a function pointer loaded from a data location.
+- `return_immediately_3`: This routine performs no operations and returns immediately to its caller.
+- `execute_indirect_call_3`: Loads a function pointer from a data location and jumps to it.
+- `increment_structure_value`: Increments a word at an offset within a structure and resets it to a different value if it reaches a specific limit.
+- `increment_and_store_byte`: Increments a word in a structure, sets a global variable if a threshold is met, and stores that global variable into the structure.
+- `increment_structure_member`: Increments a word stored at an offset within a structure and updates a global variable when a specific value is reached.
+- `copy_word_to_structure`: Stores a word from a register into a specific offset within a structure.
+- `validate_input_byte`: Compares a global variable against a set of specific byte constants.
+- `filter_byte_constants_2`: Compares a global variable against a series of specific byte constants and calls another routine if a match is found.
+- `filter_byte_constants`: Compares a global variable against a set of specific byte constants and calls another routine if a match is found.
+- `filter_byte_matches`: Compares a global variable against a specific set of byte constants.
+- `dispatch_on_byte_match`: Compares a global variable against a list of specific byte constants and executes another routine if a match is found.
+- `dispatch_on_match`: Compares a global variable against a list of specific byte constants and calls another routine if a match is found.
+- `filter_global_byte`: Checks a global variable against several specific byte constants and calls another routine if a match is found.
+- `filter_special_characters`: Compares a global variable against a set of specific character constants and calls another routine if a match is found.
+- `filter_character_input`: Compares a global variable against a specific set of character constants.
+- `dispatch_on_character`: Compares a global variable against several character constants and executes another routine if a match is found.
+- `branch_on_multiple_values`: Compares a global variable against four different character values and executes an indirect call if any match occurs.
+- `branch_on_multiple_chars`: Checks a global variable against three different character values and executes an indirect call if any match occurs.
+- `call_on_char_match`: Checks if a global variable matches specific character values and calls another routine if a match occurs.
+- `conditionally_call_routine`: Checks if a global variable equals a specific character value and, if true, calls another routine.
+- `execute_indirect_call_4`: Loads a function pointer from a data structure and jumps to it.
+- `increment_and_modify_global`: Increments a word in a structure and, if a specific value is reached, modifies a global variable through arithmetic operations.
+- `check_null_global`: Checks if a global variable is zero and, if so, calls another routine twice.
+- `check_null_pointer_condition`: Compares a global variable against zero and then checks if it is simultaneously non-zero.
+- `execute_indirect_calls`: Performs two consecutive calls to other routines.
+- `process_structured_data`: Updates a value within a structure based on various conditional checks and stores a global variable into a structure offset.
+- `store_word_and_byte_via_pointer`: Stores a word into a memory location at an offset from a pointer and subsequently stores a byte from a global variable into another offset of that same pointer.
+- `set_global_flag_2`: Sets a global variable to one if it is not already one and calls another routine.
+- `execute_indirect_function_6`: Copies a word from a table into a global variable and executes a function pointer fetched from a location relative to a global variable.
+- `check_and_recurse_on_condition`: Checks if a global byte is less than a specific character value and if its lower two bits are zero.
+- `update_state_based_on_range`: Sets a global variable to two or zero based on whether its current value falls within a specific character range.
+- `clear_global_variable`: Sets a global variable to zero.
+- `increment_structure_field`: Checks a 16-bit value within a structure, resets a global variable and another value if the check fails, and conditionally increments the structure field.
+- `return_without_action`: The routine consists of a single return instruction with no operations performed.
+- `validate_and_recurse_on_range`: Checks if a 16-bit value at a specific offset within a structure is between one and eight and is an even number.
+- `update_state_variable_via_loop`: Executes a loop that repeatedly calls another routine to obtain a value, performs a bitwise mask, and adds a constant to the result.
+- `mask_byte_data`: Copies data from a source and performs a bitwise AND operation on a byte within a structure if a global variable is zero.
+- `increment_structure_word_3`: Increments a word at a specific offset within a structure and performs conditional resets based on byte comparisons.
+- `update_structure_word_3`: Increments a word at an offset within a structure, resetting it to a specific value if it matches certain thresholds, and sets a global variable if a byte exceeds a limit.
+- `increment_and_check_word`: Increments a word at a specific offset within a structure, resetting it to a new value if it matches a threshold, and sets a global variable if a byte at another offset exceeds a limit.
+- `increment_and_check_byte`: Copies data from a source, increments a word in a structure, and sets a global variable to one if a specific byte exceeds a threshold.
+- `process_structure_state`: Checks a global variable and a bit in a structure before conditionally incrementing a word at an offset or resetting it to a new value based on specific comparisons.
+- `increment_structure_word_2`: Increments a word at a specific offset within a structure, resetting it to a different value if it reaches a specific threshold.
+- `increment_structure_word`: Copies data from a source and increments a word at a specific offset within a structure.
+- `update_structure_word`: Increments a word at a specific offset within a structure based on a zero flag, applying specific reset values or skipping the increment if certain conditions are met.
+- `decrement_and_rotate_data`: Copies data from a source, performs bitwise rotations, and decrements a value if it meets certain criteria before storing it in a structure.
+- `manage_counter_logic`: Updates a word in a structure based on specific value thresholds and modifies a global variable through a series of conditional increments and resets.
+- `manage_state_counters`: Updates a word in a structure and a global variable through a series of conditional increments and resets based on specific value thresholds.
+- `manage_global_counters`: Copies a word from a table, increments a global variable, and sets various global variables based on the resulting values.
+- `set_global_values`: Sets a global variable to zero and another global variable to two.
+- `reset_global_variable`: Sets a specific global variable to zero.
+- `increment_conditional_word`: Increments a word at a specific offset within a structure if a global variable matches a certain value, and performs additional increments based on a comparison with a specific constant.
+- `mask_byte_value`: Clears the most significant bit of a byte at a specific offset within a structure.
+- `check_byte_bit`: Checks if the most significant bit of a byte at a specific offset is set and sets a global variable to one if it is.
+- `increment_byte_with_reset`: Increments a byte at a specific offset within a structure and resets it to zero if it reaches a target value stored at a different offset.
+- `check_sequence_state`: Monitors a word at an offset within a structure and updates a global variable and another variable based on specific value sequences and matches.
+- `increment_word_on_flag`: Increments a word at a specific offset within a structure if a zero flag is set.
+- `update_state_on_sequence`: Increments a word at a specific offset within a structure and resets a global variable if a specific sequence of values is detected in a global variable.
+- `increment_offset_conditionally`: Checks a word at an offset within a structure and updates it or a global variable based on specific value matches and conditional logic.
+- `increment_word_conditionally`: Sets a global variable and increments a word at a specific offset within a structure if a boolean condition is met.
+- `increment_pointer_offset_on_condition`: Checks if a global variable matches specific byte values and then increments a word located at an offset from a pointer.
+- `check_global_and_update_byte`: Checks a global variable and another global value, then potentially updates a byte at a specific offset within a structure.
+- `transfer_table_data`: Copies data from a source into a destination via a global pointer and then copies a word from a table into a global variable.
+- `increment_word_with_wrap`: Increments a word at a specific offset within a structure and wraps it to a specific value if it reaches a certain threshold.
+- `increment_word_with_wrap_alt`: Increments a word at a specific offset within a structure and wraps it to a different specific value if it reaches a certain threshold.
+- `increment_word_with_wrap_third`: Increments a word at a specific offset within a structure and wraps it to a third specific value if it reaches a certain threshold.
+- `process_structure_state_2`: Checks a word in a structure and performs a large sequence of calls and constant assignments to global variables and hardware registers.
+- `execute_complex_sequence_2`: Performs a large series of nested and sequential calls that manipulate global variables and various data structures.
+- `nop_routine`: This routine is empty and performs no operations.
+- `dispatch_twice_then_return`: The routine consists of three instructions: it calls the same target routine twice in succession and then returns.
+- `execute_recursive_calls_13`: The routine calls itself twice before returning.
+- `check_global_zero`: Checks if a global variable is zero before executing other routines.
+- `increment_word_with_bounds`: Increments a word at a specific offset within a structure if a global variable is non-zero, applying specific reset values when certain thresholds are reached.
+- `store_word_and_recurse_2`: Stores a word at an offset of a pointer and then performs a series of recursive calls, conditionally updating the stored word based on a comparison result.
+- `modify_structure_data_2`: Updates a word in a structure and a byte at a specific offset based on conditional comparisons and recursive calls.
+- `modify_structure_value`: Increments a word at an offset within a structure or resets it to a specific value if it matches certain criteria, and sets a global variable based on a byte threshold.
+- `increment_and_check_word_alt`: Increments a word at a specific offset within a structure, resetting it to a different value if it matches a threshold, and sets a global variable if a byte at another offset exceeds a limit.
+- `increment_and_check_byte_2`: Increments a word at an offset of a pointer and sets a global variable to one if a specific byte exceeds a threshold.
+- `update_state_with_mask`: Masks a byte within a structure and then updates a word at an offset or a global variable based on specific value comparisons and sequences.
+- `increment_word_on_zero_flag`: Checks the zero flag and increments a 16-bit value at a specific offset within a structure pointed to by a register.
+- `conditional_increment_and_reset`: Checks if a global variable matches multiple specific values, then increments a word at an offset of a pointer and resets the global variable.
+- `increment_structure_counter`: Increments a word at an offset within a structure and applies various resets or global variable updates when specific thresholds are reached.
+- `update_conditional_word`: Checks a global variable and, if not set, performs a bitwise rotation and conditionally stores a zero at a pointer offset.
+- `store_zero_and_check_byte`: Stores zero at an offset of a pointer if a global variable is not one, then sets a global variable to one if a specific byte exceeds a threshold.
+- `mask_byte_value_2`: Performs a bitwise AND operation on a byte at an offset of a pointer using a mask.
+- `execute_recursive_calls_14`: This routine calls itself twice before returning.
+- `execute_indirect_calls_2`: This routine performs two consecutive calls to another routine.
+- `increment_structured_word`: Increments a word at a pointer offset and resets it to specific values if it reaches certain thresholds.
+- `compare_and_rotate_data`: Checks if a word at an offset of a pointer equals a specific value, performs a bitwise rotation on a global variable, and conditionally updates the stored word.
+- `update_pointer_data_2`: Increments a word at an offset within a structure or resets it based on specific values, and stores a byte at an offset if a global variable is set.
+- `modify_pointer_data`: Updates a word at a pointer offset by either resetting it to a specific value or incrementing it.
+- `increment_offset_and_conditionally_store`: Increments a word at an offset from a pointer and conditionally stores a byte into another offset of that same pointer based on a global variable.
+- `populate_data_structures`: This routine populates data structures by copying bytes into a destination pointed to by a global variable and copying words from a table into another global variable.
+- `update_state_word`: Checks a word at a pointer offset against specific values and performs recursive calls and global variable updates based on the result.
+- `increment_and_conditional_store`: Increments a global variable and, if it reaches a specific character value, resets it to zero and prepares a word.
+- `process_state_word`: Modifies a word based on its current value and a global variable, then stores it at a pointer offset.
+- `update_state_and_compare_word`: Increments a global variable and stores a word into a pointer offset, then sets two global variables based on whether that word matches specific values.
+- `set_global_values_2`: Sets a global variable to two and another global variable to zero.
+- `clear_and_call_routines`: Clears a global variable and a local register before calling two separate routines.
+- `increment_and_reset_counter`: Increments a global variable and resets it to a specific value once it exceeds a threshold, while updating another global variable.
+- `update_pointer_contents`: Updates a word and a byte within a structure based on specific value thresholds and modifies global variables.
+- `modify_pointer_value`: Updates a word at a pointer offset and a byte at another offset based on conditional logic and recursive calls.
+- `update_state_and_byte`: Increments a global variable and stores a word at a pointer offset.
+- `handle_complex_state`: Performs a series of nested calls and updates global variables before storing a word at a pointer offset.
+- `store_word_and_byte`: Stores a word into a pointer offset and a byte into another offset, then updates two global variables if the stored word matches a specific value.
+- `return_no_operation_stub`: The routine consists of a single instruction that immediately returns to its caller, performing no work, no register or memory access, and no hardware interaction.
+- `clear_global_values`: Sets two different global variables to zero.
+- `process_sequence_word`: Compares a word at a pointer offset to specific values and updates a global variable and the word through recursive calls.
+- `evaluate_sequence_word`: Modifies a word based on its value and a global variable, then stores it at a pointer offset.
+- `recursively_process_char_sequence`: Increments a global variable and checks if it matches a specific character, then stores a value into a structure via a pointer and calls itself recursively.
+- `update_structure_from_globals`: Sets two global variables and then stores the value of one into a structure via a pointer.
+- `assign_constant_to_global`: Stores a constant byte into a global variable and then calls another routine.
+- `invoke_nested_data_copy`: Calls a routine that performs a multi-level copy of word data or configures hardware registers for a DMA transfer based on a global flag.
+- `invoke_nested_data_copy_2`: Calls a routine that performs a multi-level copy of word-sized data blocks using a specific pointer increment logic.
+- `execute_nested_data_copy_2`: Calls a routine to perform a multi-level nested copy of word data or configure hardware registers for a DMA transfer based on a global flag.
+- `invoke_nested_data_copy_3`: Calls a routine that performs a multi-level nested copy of word data using specific pointer increment logic.
+- `update_global_values`: Adds two 16-bit values and stores the result and several other 16-bit values into global memory locations.
+- `update_global_values_2`: Performs arithmetic on two 16-bit values and stores the sum and several other 16-bit values into global memory locations.
+- `update_global_values_3`: Calculates the sum of two 16-bit values and stores the result along with other 16-bit values into global variables.
+- `recursively_decrement_and_compare_counter`: Decrements a global counter and recursively calls itself if the counter is greater than one.
+- `search_table_data`: Iterates through a table of 16-bit values to find a specific match and updates a global variable if a condition is met.
+- `initialize_task_structure`: Allocates memory and signals, then populates a structure with values retrieved from several function calls.
+- `set_handler_data`: The routine checks a pointer argument and, if non-zero, calls a function obtained from a global variable table.
+- `manage_task_structure`: Checks a global variable and, if a specific condition is met, populates a structure with a pointer and a constant value.
+- `check_byte_value`: Compares a byte at a specific offset within a structure to two different constant values.
+- `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
+- `execute_recursive_sequence_6`: Performs a series of recursive calls to itself, followed by a loop that executes the routine while modifying a global variable.
+- `perform_triple_recursion`: Executes three consecutive recursive calls to another routine.
+- `swap_word_bytes`: Swaps the high and low bytes of a 16-bit value.
+- `process_string_data`: Saves a global variable, performs several recursive calls while updating specific memory locations, and restores the original global variable.
+- `swap_and_store_word`: Swaps the high and low bytes of a 16-bit value and stores the result into a memory location.
+- `update_global_state_5`: Checks a global variable and performs recursive calls or updates it with specific constant values.
+- `set_global_constants_5`: Assigns a specific constant value to a global variable and performs a series of conditional updates.
+- `set_global_constants_4`: Assigns a sequence of constant values to a global variable.
+- `parse_nested_delimited_string`: Iterates through a string to identify segments separated by colons or spaces, performing recursive processing on the resulting substrings.
+- `parse_delimited_string_2`: Iterates through a string, checking for null, colon, or space characters while updating a global variable.
+- `execute_recursive_sequence`: Performs multiple recursive calls and decrements a global variable before updating memory locations and executing further recursive calls.
+- `run_recursive_logic`: Executes a series of recursive calls and decrements a global variable before writing values to memory and performing more recursion.
+- `execute_looping_state_machine`: Sets a global variable to zero and three, then enters a loop that repeatedly calls itself and other routines while modifying a global variable and a decrementing register.
+- `clear_global_flag`: Sets a single global variable to zero and returns.
+- `execute_recursive_checks`: Performs a series of recursive calls if a global variable matches specific values.
+- `execute_recursive_calls_16`: Performs a series of recursive calls and executes several subsequent calls to another routine if a specific return value is met.
+- `execute_recursive_calls_15`: Performs a series of recursive calls to another routine.
+- `reset_global_variable_6`: Checks a global variable and sets it to a specific byte value if it does not match certain conditions.
+- `execute_recursive_logic_4`: Performs a complex sequence of recursive calls and updates a global variable through various conditional branches and arithmetic operations.
+- `update_global_state_4`: Sets a global variable to a specific value and conditionally updates it based on the return value of another routine.
+- `set_global_variable`: Sets a global variable to one.
+- `increment_global_loop_2`: Recursively calls itself and then enters a loop that increments a global variable and resets it to zero upon reaching a specific value.
+- `increment_global_loop`: Increments a global variable in a loop, resetting it to zero when it reaches a specific value, and performs multiple recursive calls.
+- `decrement_global_loop_2`: Recursively calls itself and then enters a loop that decrements a global variable and resets it to a specific value upon reaching negative one.
+- `decrement_global_loop`: Decrements a global variable in a loop, resetting it to a specific value when it reaches negative one, and performs multiple recursive calls.
+- `update_memory_values`: Performs a recursive call and then stores two specific bytes into memory locations.
+- `execute_chained_callbacks_2`: Calls a decompression routine and then executes a chain of callback functions.
+- `execute_recursive_calls`: This routine performs two consecutive calls to itself before returning.
+- `perform_double_recursion`: Executes two consecutive recursive calls to another routine.
+- `call_recursive_traversal`: Calls another routine twice before returning.
+- `get_table_entry`: Returns a byte from a table using an index provided in a register.
+- `set_table_entry`: Sets a byte in a table to one using an index provided in a register.
+- `clear_table_entry`: Executes a series of indirect calls based on a byte value and then clears a byte in a global array at an offset determined by that byte.
+- `process_recursive_logic`: Performs a complex sequence of recursive calls, table traversals, and conditional updates to a global variable.
+- `process_character_logic`: Evaluates a global byte against several character constants and performs a series of conditional checks and assignments.
+- `perform_conditional_calls`: Executes a series of recursive calls and conditionally calls another routine based on the value of a global variable.
+- `call_indirect_routines`: Executes two calls to another routine and then conditionally calls another routine based on the value of a global variable.
+- `verify_global_value`: Compares a global variable against two other specific memory locations and returns its value.
+- `update_global_pointers_2`: Calls another routine and stores two values returned in registers into global variables.
+- `set_conditional_flag`: Updates a global variable to a specific value and conditionally sets it to one based on the result of another routine.
+- `increment_indexed_variable`: Stores a value into a table at an index determined by a global variable, then increments that global variable if it is not five.
+- `modify_global_e`: Recursively calls itself and, if a return value is one, updates a global variable with a sequence of three specific values.
+- `update_state_flag`: Checks a global variable against a specific character and, if it does not match, updates it and recursively calls itself.
+- `update_global_state_flag`: Checks if a global variable matches a specific character and, if not, updates it and recursively calls itself.
+- `update_global_state_on_condition`: Checks if a global variable matches a specific character and, if not, updates it and recursively calls itself.
+- `update_conditional_global_state`: Checks if a global variable matches a specific character and, if not, updates it and recursively calls itself.
+- `update_global_state_flag_2`: Checks if a global variable matches a specific character and, if not, updates it and recursively calls itself.
+- `update_global_k`: Checks if a global variable is not the character k, sets it to k, and then performs a recursive call and conditional assignments to a global variable.
+- `update_global_l`: Checks if a global variable is not the character l, sets it to l, and then performs a recursive call and conditional assignments to a global variable.
+- `update_global_m`: Checks if a global variable is not the character m, sets it to m, and then performs a recursive call and conditional assignments to a global variable.
+- `update_global_n`: Checks if a global variable is not the character n, sets it to n, and then performs a recursive call and conditional assignments to a global variable.
+- `update_global_o`: Checks if a global variable is not the character o, sets it to o, and then performs a recursive call and conditional assignments to a global variable.
+- `modify_global_character`: Updates a global variable with a calculated character value and performs several assignments if a specific condition is met.
+- `update_global_variable_if_zero`: If a global variable is zero, it performs a sequence of assignments to that variable, including a conditional check for a newline character, before finally storing a left parenthesis character into it.
+- `transfer_global_values`: Copies the value from one global variable to another and clears the source variable, returning the original value of the first variable.
+- `execute_recursive_traversal`: Calls another routine twice in a recursive manner.
+- `recursively_decrement_global`: Executes a sequence of indirect calls and then recursively calls itself while decrementing a global variable by two until it reaches zero.
+- `invoke_recursive_table_traversal_2`: Calls a routine that performs a recursive traversal of a table by evaluating bit flags at calculated offsets.
+- `process_recursive_chain`: Executes a long sequence of recursive calls and updates a global variable within a loop.
+- `execute_recursive_table_traversal`: Calls another routine twice before returning.
+- `decrement_global_recursively`: Decrements a global variable and calls itself recursively until a threshold is met.
+- `decrement_and_recurse`: Decrements a global variable and then calls itself recursively based on the new value of that variable.
+- `update_variable_with_offset`: Sets a global variable to a specific value and performs a sequence of arithmetic operations and assignments if a condition is met.
+- `update_variable_with_limit`: Sets a global variable to a specific value and performs arithmetic operations, resetting it to zero if it reaches a certain threshold.
+- `execute_recursive_logic_2`: Performs a series of recursive calls and updates two memory locations with specific byte values if a global variable matches a certain value.
+- `manipulate_table_data`: Executes multiple recursive calls and updates several memory locations with specific byte values.
+- `swap_word_bytes_2`: Swaps the high and low bytes of a 16-bit value stored in a memory location.
+- `run_recursive_sequence`: Performs multiple recursive calls and updates a global variable through a loop and conditional checks.
+- `increment_global_state`: Sets a global variable to a specific value and, if a condition is met, increments that global variable and clears a separate memory location.
+- `increment_recursive_counter`: Recursively calls itself based on a global variable and performs several updates to a global variable and a memory location.
+- `increment_and_recurse`: Increments a global variable and performs multiple recursive calls while resetting another global variable.
+- `handle_conditional_recursion`: Executes a long sequence of recursive calls and updates two global variables if a global variable matches specific characters.
+- `execute_conditional_chain`: Checks if a global variable matches a tab character and, if a subsequent routine returns a specific value, executes a long sequence of other routines and memory assignments.
+- `handle_conditional_state`: Checks a global variable against specific values and performs recursive calls or updates the variable based on the results of another routine.
+- `process_conditional_state`: Updates a global variable and performs recursive calls and memory assignments based on the return value of another routine.
+- `decrement_and_branch`: Decrements a global variable and executes a series of recursive calls and memory assignments.
+- `perform_recursive_calls_2`: Executes four consecutive calls to another routine.
+- `process_conditional_recursion`: Sets a global variable to a specific value and then executes various recursive calls based on the value of that global variable.
+- `execute_recursive_table_traversal_2`: Recursively traverses a table by checking bit flags in a global variable and calling another routine multiple times.
+- `invoke_table_traversal_3`: Calls a routine that recursively traverses a table by checking bit flags in a global variable against calculated offsets.
+- `execute_looping_calls`: Calls another routine once, then enters a loop that executes it nine times.
+- `loop_and_write_data`: Executes a recursive call, enters a loop that runs seven times calling another routine, and then enters an infinite loop that writes a byte to memory.
+- `execute_conditional_loop_2`: Executes a loop that performs recursive calls and updates a global variable based on specific conditional checks.
+- `execute_nested_calls_2`: Performs a series of recursive calls and resets a global variable to zero.
+- `compare_global_values`: Checks a global variable against specific values and compares two other global variables to set a third.
+- `evaluate_global_zero`: Checks if a global variable is zero and performs recursive calls to update it based on a return value.
+- `execute_recursive_logic_3`: Checks a global variable and, if it is zero, sets it to a specific constant before recursively calling itself.
+- `execute_recursive_state_check`: Checks a global variable and, if it is zero, sets it to a specific constant before calling itself recursively.
+- `execute_recursive_state_check_2`: Checks a global variable and, if it is zero, sets it to a specific constant and calls itself recursively.
+- `call_other_routine`: An empty routine that simply calls another routine.
+- `copy_nested_data_blocks_2`: Performs a multi-level nested copy of word data using a specific pointer increment logic and a loop structure while performing comparisons.
+- `compare_register_value`: Compares the value in a register against two specific constants and returns if they do not match.
+- `tiny_move_rts_2`: Small routine of 2 instructions that copies 0 to d2, then returns.
+- `tiny_move_rts_3`: Small routine of 2 instructions that copies 6 to d2, then returns.
+- `update_global_state`: Modifies a global variable through a series of conditional increments, decrements, and resets based on its current value.
+- `reset_global_if_match`: Checks if a global variable matches a specific constant and sets it to zero if it does.
+- `decrement_and_wrap_global_variable`: Decrements a global variable and resets it to zero if it reaches a specific negative value or matches a specific positive constant.
+- `reset_global_variable_2`: Sets a global variable to zero if its current value matches a specific constant.
+- `update_global_state_2`: Performs conditional arithmetic and resets on a global variable based on specific value matches.
+- `reset_global_byte_on_match`: Checks if a global variable matches a specific value and resets it to zero if it does.
+- `decrement_and_wrap_global_alt`: Decrements a global variable and resets it to zero or a specific value depending on whether it reaches certain limits.
+- `clear_global_byte`: Checks if a global variable equals a specific value and clears it if so.
+- `search_and_callback`: Iterates through a data structure comparing bytes and executes a function pointer found at an offset if a specific sequence is matched.
+- `search_and_execute_callback`: Iterates through a data structure comparing bytes, and if a specific sequence is found, executes a function pointer stored at an offset within that structure.
+- `execute_unbounded_recursion`: Performs five consecutive calls to another routine without performing any other operations or modifying any data.
+- `execute_nested_recursion`: Performs five consecutive calls to another routine, stores a byte in a global variable, and then calls another routine.
+- `process_conditional_data`: Checks a global variable and performs recursive calls, potentially storing a byte value at an offset from a pointer.
+- `execute_conditional_recursion`: Performs a sequence of recursive calls and stores a byte value at an offset from a pointer if a condition is met.
+- `store_byte_via_pointer`: Performs two recursive calls and then stores the value five at an offset from a pointer held in a register.
+- `execute_recursive_calls_17`: Performs two consecutive recursive calls to itself.
+- `execute_recursive_check`: Performs a series of recursive calls and checks a byte value against a specific character.
+- `execute_self_recursive_calls`: This routine calls itself indefinitely.
+- `store_byte_recursively`: Checks a global variable and performs recursive calls, potentially storing a byte value at an offset from a pointer and updating a global variable.
+- `execute_recursive_store`: Performs recursive calls and, if a condition is met, stores a byte value at an offset from a pointer and sets a global variable.
+- `set_global_and_byte`: Performs two recursive calls, stores the value zero-ff at an offset from a register, and sets a global variable to one.
+- `recurse_and_toggle_global`: Performs multiple recursive calls and sets a global variable to zero and then to one.
+- `execute_recursive_toggle`: Performs recursive calls and, if a condition is met, sets a global variable to zero and then to one.
+- `toggle_global_variable`: Performs two recursive calls and then sets a global variable to zero and then to one.
+- `recurse_with_conditional_exit`: Performs a sequence of recursive calls that terminates early based on a boolean condition.
+- `execute_recursive_sequence_5`: Performs a sequence of recursive calls based on a boolean condition.
+- `perform_recursive_calls_4`: Executes a sequence of calls to itself.
+- `recurse_with_branching`: Executes a sequence of recursive calls where the execution path is determined by a boolean value.
+- `execute_recursive_branching`: Performs a sequence of recursive calls where the execution path is determined by a boolean value.
+- `frag_jsr_rts`: Short code fragment that calls execute_recursive_calls_8, then calls reset_and_call_repeatedly, then returns.
+- `set_global_constants_6`: Sets a global variable to a specific constant value multiple times before setting it to one.
+- `assign_multiple_globals`: Assigns a sequence of four different constant values to a global variable before setting it to one.
+- `recurse_and_reset_global`: Performs several recursive calls and then sets a global variable to zero and then to one.
+- `reset_global_variable_5`: Performs a recursive call and then sets a global variable to zero and then to one.
+- `reset_global_variable_4`: Performs one recursive call and then sets a global variable to zero and then to one.
+- `perform_deep_recursion`: Performs thirteen consecutive recursive calls to itself.
+- `format_numeric_string`: Converts a numeric value into a formatted string of characters separated by slashes and ending with a colon.
+- `perform_complex_recursion`: Executes a long sequence of recursive calls and updates multiple memory locations with various byte values.
+- `set_byte_and_flag`: Performs a sequence of five recursive calls to itself before storing a byte into a memory location offset from a register and setting a global variable to one.
+- `recurse_and_set_byte`: Performs multiple recursive calls and stores a byte with all bits set at an offset from a pointer.
+- `set_byte_and_flag_2`: Performs several recursive calls, stores a byte with all bits set at an offset from a pointer, and sets a global variable to one.
+- `update_table_and_set_flag`: Performs a recursive call, stores a byte with all bits set at an offset of fifty-eight from a pointer, and sets a global variable to one.
+- `recurse_and_write_table`: Performs recursive calls and writes three bytes to a table before conditionally recursing again.
+- `write_table_and_recurse`: Performs a recursive call, writes three bytes to a table, sets a global variable to one, and conditionally performs further recursive calls.
+- `scale_byte_and_recurse`: Performs a recursive call, writes three bytes to a table, sets a global variable to one, and conditionally performs further recursive calls based on a global variable.
+- `check_sequence_and_update`: Checks bytes at an offset from a pointer and, depending on their values and a global variable, performs recursive calls and writes three bytes to a table.
+- `perform_arithmetic_and_recurse`: Performs a sequence of recursive calls, writes three bytes to a table, and updates a global variable to one.
+- `execute_simple_recursion`: Performs a recursive call and sets a global variable to one.
+- `write_table_and_set_value`: Performs recursive calls, writes three bytes to a table, and sets a global variable to a specific value and then to one.
+- `recurse_and_update_table`: Clears a byte at an offset from a pointer and conditionally writes three bytes to a table based on a global variable.
+- `conditionally_update_table`: Clears a byte at an offset from a pointer and, if a global variable matches a specific value, writes three bytes to a table and sets a global variable to one.
+- `conditional_table_update`: Performs recursive calls, clears a byte at an offset of fifty-eight from a pointer, and conditionally writes three bytes to a table and sets a global variable if a character matches a specific value.
+- `recurse_and_clear_byte`: Performs several recursive calls and clears a byte at an offset from a pointer.
+- `clear_byte_and_recurse`: Clears a byte at an offset from a pointer and performs several recursive calls before setting a global variable to one.
+- `clear_offset_and_recurse`: Performs a recursive call, clears a byte at an offset of fifty-eight from a pointer, performs several more recursive calls, and sets a global variable to one.
+- `store_table_values`: Performs a recursive call, writes three bytes to a table, and sets a global variable to one.
+- `decrement_and_set_table`: Performs recursive calls, sets a global variable to four, decrements two consecutive bytes at a calculated location, and writes three bytes to a table.
+- `set_global_and_table`: Performs a recursive call, sets a global variable to one, writes three bytes to a table, and sets the global variable to one again.
+- `increment_and_store_data_2`: Checks a global variable and, if it matches specific values, increments the variable and stores three bytes into a table.
+- `perform_recursive_call`: This routine performs a single recursive call to itself.
+- `recurse_and_increment_table`: Increments a global variable and writes three bytes to a table after performing recursive calls.
+- `increment_and_set_table`: Performs a recursive call and, if a condition is met, increments a global variable and writes three bytes to a table.
+- `increment_and_set_data`: This routine performs a recursive call, increments a global variable, and stores three specific values into a series of data locations.
+- `recurse_and_check_byte`: Performs a recursive call and then executes further recursive calls if a byte at a specific offset matches a certain value.
+- `execute_infinite_recursion_2`: Performs a recursive call to itself without any base case or conditional exit.
+- `recurse_and_set_global`: Checks a global variable and, if it does not match a specific value, performs recursive calls and sets the global variable to eight and then to one.
+- `execute_double_recursion_2`: This routine performs two consecutive recursive calls to itself.
+- `update_audio_state`: Checks a global variable and performs recursive calls before storing several constant values into a global variable and a data location.
+- `update_audio_parameters_4`: This routine performs two recursive calls and then stores several constant values into a global variable and a data location.
+- `validate_global_flag`: Checks a global variable and performs recursive calls, potentially updating the variable with constant values.
+- `validate_and_set_globals`: Performs recursive calls and, if a global variable matches a specific value, stores two constant values into that global variable.
+- `set_constant_values_2`: Performs recursive calls and stores two constant values into a global variable.
+- `set_constant_values`: This routine performs two recursive calls and then stores two constant values into a global variable.
+- `perform_recursive_assignment`: Performs two recursive calls and then assigns a value to a global variable.
+- `write_multiple_values`: This routine performs a recursive call and then stores several constant values into a global variable and a series of data locations.
+- `execute_recursive_sequence_3`: Performs a recursive call to itself before updating a series of global variables with specific constant values.
+- `store_sequence_and_globals`: Performs recursive calls and, if a global variable is not negative one, stores three constant bytes into a table and sets a global variable to one.
+- `store_data_sequence`: Performs recursive calls and stores three constant values into a series of data locations and a global variable.
+- `set_data_sequence`: This routine performs a recursive call and then stores three constant values into a series of data locations and sets a global variable.
+- `update_state_constants`: Sets three consecutive memory locations to specific byte values and performs five identical assignments to a global variable.
+- `write_final_values`: This routine performs a recursive call and then stores three constant values into a series of data locations and sets a global variable multiple times.
+- `store_byte_at_offset_3`: Performs recursive calls and, if a global variable is not negative one, stores the value five at an offset from a pointer held in a register.
+- `store_byte_at_offset_2`: Performs recursive calls and stores the value five at an offset from a pointer held in a register.
+- `store_byte_at_offset`: Stores the value five at an offset of fifteen from a pointer held in a register.
+- `execute_recursive_calls_18`: Performs two consecutive recursive calls to another routine.
+- `update_table_and_globals`: Performs recursive calls and, if a global variable is not negative one, stores a byte at an offset from a pointer, updates three table entries, and sets a global variable to one.
+- `update_globals_and_table_2`: Performs recursive calls and stores a byte at an offset from a pointer, updates three data locations, and sets several global variables.
+- `update_globals_and_table`: Sets three consecutive global variables, updates a global variable to one, and stores the value four at an offset from a pointer.
+- `perform_recursion`: Executes two recursive calls to another routine.
+- `set_global_values_5`: Calls another routine and then sets a global variable to two specific values.
+- `modify_multiple_globals`: Performs eight recursive calls and then sets several global variables to specific values.
+- `initialize_global_sequence`: Assigns a sequence of four different constant values to a global variable and then sets it to one.
+- `modify_global_variable`: Sets a global variable to one and performs recursive calls.
+- `execute_recursive_calls_19`: Performs a sequence of seven consecutive calls to another routine.
+- `execute_recursive_state_toggle`: Checks a global variable and performs a sequence of recursive calls to itself, toggling the variable's value during the process.
+- `call_other_routine_2`: Performs two recursive calls to another routine.
+- `increment_global_variable`: Checks a global variable and performs recursive calls while modifying the value of a global variable.
+- `execute_double_recursion_3`: Calls another routine twice recursively.
+- `set_register_and_globals`: Performs three recursive calls and then sets a global variable and several other values.
+- `dispatch_bytecode_instruction_2`: Compares a global variable against specific byte patterns to execute a sequence of recursive calls and updates a global variable or memory location.
+- `dispatch_bytecode_instruction`: Compares a global variable against specific byte patterns to execute a sequence of recursive calls and updates a global variable or memory locations based on the matched pattern.
+- `process_control_sequence_bytecode`: Compares a global variable against specific byte patterns and executes a sequence of recursive calls and state updates.
+- `parse_control_sequence`: Compares a global variable against several byte patterns and updates multiple global variables or memory locations accordingly.
+- `process_control_sequence`: Compares a global variable against multiple byte patterns and updates several global variables or memory locations accordingly.
+- `evaluate_conditional_logic`: Compares a global variable against several constant values and performs recursive calls or updates multiple memory locations based on the result.
+- `update_conditional_data_2`: Evaluates a global variable against multiple constants and performs recursive calls or updates several memory locations.
+- `perform_conditional_recursion`: Checks a global variable against multiple constant values and performs recursive calls or updates the global variable based on the result.
+- `perform_recursive_logic`: Checks a global variable and performs recursive calls while updating a global variable.
+- `perform_recursive_calls_5`: Performs a sequence of recursive calls to itself.
+- `set_recursive_values`: Sets a global variable to several specific values and performs a recursive call before setting the variable to one.
+- `set_sequence_values`: Assigns a sequence of four different values to a global variable and performs a recursive call.
+- `assign_constant_sequence`: Writes a specific sequence of four values to a global variable and then executes a recursive call.
+- `store_multiple_values`: Stores several constant bytes into specific memory locations and sets a global variable to one.
+- `set_global_flag_3`: Performs recursive calls and sets a global variable to one.
+- `execute_conditional_logic_2`: Performs a recursive call and then sets a global variable to one based on a boolean result.
+- `set_global_flag`: Sets a global variable to a constant value of one.
+- `update_multiple_globals_2`: Performs recursive calls and then sets several global variables to specific constant values.
+- `perform_recursive_data_write`: Recursively calls itself and, upon reaching a base case, writes five specific bytes to a memory location and updates a global variable.
+- `perform_recursive_calls_6`: This routine performs a sequence of recursive calls to itself.
+- `store_constant_word_2`: Checks a global variable and performs recursive calls, eventually storing a constant word in a memory location.
+- `update_memory_and_global`: Performs recursive calls and, if a boolean flag is false and a global variable is not zero, stores a constant word into a memory location and sets the global variable to one.
+- `perform_infinite_recursion_9`: Recursively calls itself based on the value of a global variable.
+- `initialize_global_state`: Calls another routine three times, stores a word in a global variable, and sets a second global variable to one.
+- `perform_infinite_recursion_2`: This routine calls itself indefinitely without a termination condition or branch instruction.
+- `decrement_memory_value`: Checks a global variable and a memory location, performing recursive calls and subtracting a value from that memory location.
+- `decrement_memory_conditionally`: Performs recursive calls and, if a boolean flag is true, a global variable is not zero, and a memory location is not zero, subtracts a constant from that memory location and sets the global variable to one.
+- `execute_recursive_conditional_logic`: Performs multiple levels of recursive calls based on the values of a global variable and a memory location.
+- `perform_infinite_recursion_3`: This routine calls itself indefinitely without a base case or termination condition.
+- `perform_infinite_recursion_4`: This routine calls itself indefinitely, resulting in a stack overflow.
+- `perform_infinite_recursion_5`: The routine calls itself indefinitely without a termination condition.
+- `execute_recursive_conditional_subtraction`: Performs a sequence of recursive calls based on the value of a global variable and conditionally subtracts a constant from a memory location while updating that global variable.
+- `subtract_from_memory_on_match`: Performs recursive calls and, if a boolean flag is true and a global variable is zero, subtracts a constant from a memory location and sets the global variable to one.
+- `execute_recursive_decrement`: Recursively calls itself and, when a global variable matches a specific value, subtracts a constant from a memory location and updates a global variable.
+- `perform_infinite_recursion_6`: This routine calls itself indefinitely without a base case, resulting in a stack overflow.
+- `perform_recursive_call_2`: Performs a single recursive call to itself.
+- `modify_global_and_recurse`: Decrements a global variable and performs a sequence of recursive calls while resetting multiple global variables to specific values.
+- `recurse_on_zero_check`: Performs recursive calls based on the value of a global variable and may store a byte at an offset from a pointer.
+- `replace_byte_recursively`: Executes recursive calls and stores a global variable into a memory location at a specific offset from a pointer.
+- `replace_byte_from_global`: Performs recursive calls and, after reading a byte from an offset of a pointer, stores the value of a global variable at that same offset.
+- `update_pointer_offset_byte`: Recursively calls itself and, upon returning, reads a byte from an offset of a pointer, writes a global variable to that same offset, and checks the original byte value.
+- `perform_infinite_recursion_7`: This routine calls itself twice before returning, resulting in an infinite sequence of recursive calls.
+- `update_global_and_recurse`: Adds a constant to a global variable and performs a sequence of recursive calls while resetting multiple global variables.
+- `write_recursive_bytes`: Recursively calls itself and, if a boolean condition is met, writes three specific bytes to a memory location and increments a global variable.
+- `perform_recursive_calls_7`: This routine calls itself indefinitely.
+- `update_table_and_recurse`: Checks a global variable and, depending on its value, updates three memory locations and performs a sequence of recursive calls.
+- `modify_table_values`: Sets several global variables to specific values and calls another routine multiple times.
+- `increment_and_reset_global`: Performs recursive calls and, if a global variable is not negative one, increments the global variable and then sets it to one.
+- `increment_recursive_global`: Performs multiple recursive calls and, depending on a boolean flag, increments a global variable and resets it to one.
+- `increment_global_and_recurse`: Performs a sequence of five recursive calls, increments a global variable, and then sets a global variable to one.
+- `trigger_infinite_recursion`: Performs two consecutive recursive calls to itself.
+- `write_recursive_sequence`: Recursively calls itself and, if a character match fails and a boolean is true, writes three bytes to a memory location and performs multiple updates to a global variable.
+- `execute_recursive_calls_20`: Performs a sequence of recursive calls to itself.
+- `search_byte_pair`: Iterates through a table in increments of sixteen bytes to find a matching two-byte sequence.
+- `search_data_for_pair`: Iterates through a table of data to find a sequence of two matching bytes, stopping after a fixed number of iterations.
+- `execute_recursive_logic_5`: Performs a series of recursive calls and updates a global variable with several constant values based on its state.
+- `update_recursive_state_logic`: Performs complex recursion and, based on the value of a global variable, writes a byte to a memory location and updates the global variable multiple times.
+- `conditional_update_and_recurse`: Checks a global variable and, depending on its value, performs a sequence of recursive calls and updates several global variables and a memory location.
+- `update_multiple_globals`: Calls another routine three times and then sets several global variables to specific values.
+- `perform_recursive_table_updates`: Performs a sequence of recursive calls and updates a table entry by storing a zero byte and a byte with all bits set at an offset of fifty-eight from a pointer.
+- `execute_recursive_reset`: Sets a global variable to zero and then performs a sequence of recursive calls.
+- `update_conditional_data`: Performs a sequence of recursive calls and stores two specific byte values into consecutive memory locations, potentially updating a global variable based on a comparison.
+- `update_data_bytes`: Stores two specific byte values into two consecutive memory locations.
+- `store_recursive_byte_sequence`: Recursively calls itself and, depending on a global variable and a boolean flag, writes either a set of three bytes or an incremented global value to memory.
+- `increment_and_store_data`: Performs a sequence of recursive calls, increments a global variable, and stores three specific byte values into memory.
+- `call_recursive_and_set_bytes`: Calls another routine and then writes three specific byte values to consecutive memory locations.
+- `write_conditional_bytes`: Performs a sequence of recursive calls and writes two different byte values into consecutive memory locations based on a comparison with a global variable.
+- `update_data_bytes_2`: Writes two different byte values into two consecutive memory locations.
+- `execute_recursive_calls_and_set_constants`: Calls another routine recursively and then performs a conditional sequence of constant byte stores to global memory locations based on a comparison of a global variable.
+- `set_global_constants`: Stores two constant byte values into two consecutive global memory locations.
+- `recurse_and_update_globals`: Calls itself recursively before updating a global variable and several memory locations based on a conditional check of that variable.
+- `set_data_constants`: Stores two constant values into consecutive global memory locations.
+- `write_constant_values_2`: Performs a sequence of recursive calls and stores two specific constant bytes into consecutive global memory locations based on a comparison.
+- `write_constant_values`: Stores two specific constant bytes into two consecutive global memory locations.
+- `recurse_and_increment`: Executes recursive calls and, depending on a condition, increments a global variable and stores three specific bytes into memory.
+- `recurse_and_store_bytes`: Performs recursive calls and, upon a specific condition, increments a global variable and stores three bytes into memory.
+- `increment_and_recursive_store`: Increments a global variable, performs a sequence of recursive calls, and then stores three specific byte values into memory.
+- `assign_and_recurse_2`: Performs a recursive call and then stores two specific byte values into a global variable.
+- `recurse_with_conditional_set_2`: Performs multiple recursive calls and sets a global variable to one if certain conditions are met.
+- `recurse_with_conditional_set`: Executes a series of recursive calls and sets a global variable to one if a specific condition is met.
+- `perform_infinite_recursion_8`: This routine calls itself indefinitely without a base case.
+- `recurse_and_set`: Performs three recursive calls and then sets a global variable to one.
+- `recurse_and_update_global`: Performs recursive calls and updates a global variable with two different values based on a memory comparison.
+- `trigger_recursive_call`: Calls another routine before updating a global variable with two consecutive values.
+- `perform_recursive_calls`: This routine performs two consecutive calls to itself before returning.
+- `search_data_table`: Iterates through a table of 16-byte structures to find a match for four specific bytes at fixed offsets.
+- `search_four_byte_sequence`: Iterates through a table in increments of sixteen bytes to find a matching four-byte sequence, limited by a global variable.
+- `search_table_for_match_2`: Searches through a table of four-byte sequences, incrementing a value until a match with a global variable is found.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `search_data_table_with_offset`: Iterates through a table of 16-byte structures checking for a specific byte at an offset and a match for four other bytes at different offsets.
+- `write_two_bytes`: Stores two specific byte values into a structure pointed to by a register.
+- `recurse_five_times`: Performs five consecutive recursive calls to itself.
+- `execute_recursive_calls_and_assign`: The routine calls itself multiple times before assigning a specific byte value to a global variable and performing one final call to another routine.
+- `execute_complex_initialization`: Performs a series of memory fills, hardware register updates, and indirect function calls involving table traversal and data decompression.
+- `execute_recursive_calls_3`: Performs a series of identical recursive calls to itself until the stack is exhausted or a return condition is met.
+- `store_offset_result`: Executes a routine and then stores a value derived from an addition into a memory location.
+- `write_calculated_word`: Executes a routine and then stores a word into memory where the first word is the result of an addition.
+- `save_processed_word`: Executes two recursive calls and then stores a word into memory using a value derived from an addition.
+- `search_byte_pair_2`: Retrieves a byte from a calculated offset and increments it by one before returning.
+- `return_zero`: This routine is empty and simply returns a zero value to the caller.
+- `perform_nested_loop_calls`: Executes a loop that calls another routine multiple times while decrementing a local counter, followed by two additional calls.
+- `execute_recursive_logic`: Performs a series of recursive calls and conditional checks based on a local counter and a value returned from another routine.
+- `execute_complex_conditional_recursion`: Performs a series of recursive calls and conditional checks based on a value returned from another routine and a local counter.
+- `verify_integer_overflow_2`: Performs a conditional check to determine if incrementing a global variable results in an arithmetic overflow.
+- `execute_recursive_traversal_2`: Recursively calls itself twice before returning.
+- `perform_infinite_recursion`: This routine calls itself twice without performing any other operations before returning.
+- `execute_recursive_calls_4`: Calls itself twice before returning.
+- `call_table_traversal_routine`: Calls a routine that recursively traverses a table by checking bit flags in a global variable.
+- `execute_table_traversal`: Performs a recursive traversal of a table based on bit flags in a global variable.
+- `process_input_loop`: Initializes a block of memory to zero, performs several recursive calls, and then enters a loop that processes characters and updates a table based on specific input values.
+- `update_global_table`: Updates a table using a value from a global variable, performs several recursive calls, and modifies multiple global counters.
+- `return_no_op`: The routine consists of a single return instruction and performs no work, so it does nothing when called by process_input_loop.
+- `process_keyboard_input`: Performs bitwise operations on a global variable and uses the result to index into a table, interacting with the keyboard serial data register.
+- `decrement_and_update_counters`: Decrements a global variable, clears a value in a table, and subtracts a byte from two other global variables before making several recursive calls.
+- `verify_string_match`: Compares a string in a global variable against another sequence, using a counter to track mismatches before executing routine calls based on the result.
+- `compare_character_sequences`: Iterates through two memory locations, comparing characters and incrementing a counter until a space is found or a mismatch occurs.
+- `dispatch_pointer_based_calls`: Compares a value in a register against several constants and executes different routine calls with specific memory addresses based on the match.
+- `copy_bytes_conditionally`: Checks if a byte at a pointer is null and, if not, copies eleven bytes from a global variable to a destination address.
+- `call_string_matcher`: Calls a routine that compares character sequences against a table and updates a global variable upon a match.
+- `invoke_delimited_sequence_processor`: Calls a routine that scans a sequence for specific delimiter characters and updates global variables.
+- `execute_recursive_call_3`: Performs a single call to another routine before returning.
+- `execute_recursive_calls_22`: calls another routine twice before returning zero.
+- `tiny_move_rts_4`: Small routine of 2 instructions that copies 1 to d0, then returns.
+- `pop_stack_values`: Pops six longwords from a memory location pointed to by a register into data registers.
+- `perform_recursive_calls_8`: Performs four consecutive calls to another routine.
+- `copy_bytes_and_recurse`: Checks if a byte at a pointer is null; if not, it copies eleven bytes from a global variable to a destination address using a loop and performs multiple subsequent routine calls.
+- `copy_string_data_2`: Copies eleven bytes from a memory location to another location using a loop.
+- `search_string_delimiter`: Iterates through a character sequence looking for an asterisk delimiter or a double quote character.
+- `return_no_op_2`: The routine consists of a single instruction that immediately returns to its caller, performing no work and touching no registers or hardware.
+- `compare_and_mark_string`: Iterates through a table to compare character sequences and sets a byte in a global variable if a match is found.
+- `compare_string_data`: Compares a sequence of characters in a string against a global table and sets a byte in the string if they match.
+- `compare_memory_sequences`: Compares two sequences of data and sets a global variable to one if the sequences match.
+- `perform_recursive_calls_9`: Performs several recursive calls and stores a value into a memory location pointed to by a stack pointer.
+- `execute_multiple_recursions`: Executes a sequence of eight recursive calls.
+- `recurse_on_null_terminator`: Recursively calls itself as long as the character pointed to by the input pointer is not a null terminator.
+- `recurse_and_write_byte`: Executes recursive calls and stores a single byte into a memory location.
+- `process_delimited_sequence`: Scans a sequence for specific delimiter characters and updates global variables based on the results of nested routine calls.
+- `parse_delimiter_sequence_3`: Iterates through a character sequence looking for specific delimiter characters such as double quotes, equals signs, or asterisks.
+- `parse_delimiter_sequence_2`: Iterates through a character sequence looking for specific delimiter characters like double quotes, equals signs, or asterisks.
+- `parse_delimiter_sequence`: Iterates through a character sequence, checking for specific delimiters and performing recursive calls based on character matches.
+- `process_delimiter_loop`: Executes a loop that performs recursive calls and terminates when a specific character is encountered in a register.
+- `execute_empty_recursion_2`: An empty routine that only performs a single recursive call.
+- `parse_delimited_string_sequence`: Copies a short block of data from a global variable and then scans the resulting string for specific delimiter characters, including quotation marks, asterisks, or equals signs.
+- `copy_and_scan_string`: Copies a block of memory and then iterates through the copied data to find specific delimiter characters.
+- `copy_and_parse_string`: Copies a block of memory and then iterates through a character sequence to find specific delimiter characters.
+- `call_recursive_routine_2`: Calls another routine and then returns.
+- `calculate_offset_and_recurse`: Calculates a value from a character, uses it to index into a table, and performs recursive calls based on the value found.
+- `tiny_movea_move_rts`: Small routine of 3 instructions that copies (a7)+ to a1, then copies 0 to d0, then returns.
+- `compare_characters_with_logic`: Compares characters from two sources using specific conditional rules to return zero or one.
+- `tiny_movea_move_rts_2`: Small routine of 3 instructions that copies a2 to a1, then copies 0 to d0, then returns.
+- `return_constant_one`: This routine is empty and simply returns the integer value one to its caller.
+- `return_from_subroutine_4`: performs a single return instruction to exit the routine.
+- `copy_string_skipping_spaces_2`: Copies a sequence of bytes from a source to a destination, skipping leading spaces and stopping at the first space or null terminator.
+- `copy_string_skipping_spaces`: Skips leading spaces in a source and then copies characters to a destination until a space or null terminator is reached.
+- `copy_string_until_space`: copies bytes from a source pointer to a destination pointer until a null terminator or a space character is encountered.
+- `recurse_and_decrement`: Performs six recursive calls and then decrements a global variable by ten.
+- `execute_recursive_call_2`: This routine performs a direct recursive call to itself before returning.
+- `execute_recursive_calls_5`: An infinite recursion that calls itself twice before returning.
+- `process_conditional_input_loop`: Checks a global variable against a space character and enters a loop that calls another routine until the condition is met.
+- `trigger_recursive_logic_chains`: Executes a sequence of recursive calls and conditional checks driven by a local counter and a value returned from another routine.
+- `execute_triple_recursion`: Executes three consecutive calls to another routine.
+- `set_control_register`: Stores a constant byte into a global variable and calls another routine.
+- `count_plus_characters`: Iterates through a character sequence to count occurrences of a plus sign while decrementing a counter.
+- `parse_formatted_string`: Iterates through a character sequence, handling specific delimiters and performing arithmetic or recursive actions based on the characters found.
+- `parse_character_sequence`: Iterates through a character sequence, performing different recursive actions and memory updates based on the character encountered.
+- `recurse_and_write_byte_2`: Performs a recursive call and then stores a single byte into a memory location.
+- `copy_global_word_values`: Stores two words from specific global memory locations into other global memory locations.
+- `call_if_global_nonzero`: Checks if a global variable is non-zero and calls another routine if the condition is met.
+- `branch_and_clear_global`: Checks a global variable against several character constants to determine a sequence of recursive calls and then clears the global variable.
+- `branch_and_recurse`: Checks a global variable against two different character values to determine whether to perform recursive calls, modifies two global variables, and finally sets the global variable to zero.
+- `execute_conditional_sequence`: Checks if a global variable matches a specific character, and if so, performs a sequence of recursive calls and updates two memory locations before clearing a global variable.
+- `return_immediately_noop`: The routine consists of a single return instruction and performs no work, so it does nothing when called.
+- `perform_complex_sequence`: Executes a sequence of various routines, modifies two global variables, and finally clears a global variable.
+- `execute_conditional_calls`: Performs a series of subroutine calls, some of which are conditionally executed based on the value of a global variable.
+- `execute_nested_conditional_calls`: Executes a deeply nested sequence of subroutine calls that are conditionally triggered by checking a global variable at each level.
+- `execute_indirect_callback_3`: Sets a global variable, calls another routine, and then executes a function through a pointer stored at an offset from a global variable.
+- `decompress_run_length_encoded_data`: Decompresses a data stream using a run-length encoding scheme where specific bit patterns indicate repeated sequences of bytes.
+- `pack_nibbles_into_words`: iterates through a source buffer to extract high nibbles from three consecutive bytes and packs them into a destination word array.
+- `execute_conditional_state_logic`: Sets a global variable and then executes a sequence of conditional recursive calls that update the global variable to various constants.
+- `execute_chained_callback`: Calls a routine via a pointer and updates three global variables with the returned values.
+- `loop_until_state_change`: Enters a loop that repeatedly calls another routine until a global variable reaches a specific value.
+- `conditional_dispatch_sequence`: If a global variable is non-zero, it clears that variable, performs two recursive calls, and then executes a sequence of nine recursive calls after setting the global variable to one.
+- `execute_sequence_of_calls_3`: Sets a global variable to two different values and then executes a long sequence of recursive calls.
+- `execute_complex_sequence`: Executes a long sequence of recursive calls interspersed with assignments of various byte values to a global variable.
+- `process_table_traversal`: Executes a recursive routine to traverse a table using bit flags from a global variable.
+- `execute_looping_calls_2`: Executes a loop that performs several subroutine calls while decrementing a local counter.
+- `call_nested_copy_and_clear`: Calls a routine to perform a multi-level nested copy of word data and then calls another routine to fill a memory block with zeros.
+- `execute_conditional_loop`: Runs a loop that performs multiple subroutine calls and terminates early if a global variable reaches a specific value.
+- `skip_until_colon`: Iterates through a string by calling another routine until a colon character is encountered.
+- `search_for_delimiter`: Repeatedly calls another routine and checks characters in a string until a colon is found.
+- `skip_colon_characters`: increments a pointer while the character at the current location is a colon.
+- `set_initial_state_2`: Sets a global variable to a specific constant and performs a sequence of recursive calls.
+- `execute_complex_loop`: Performs a loop that executes various subroutine calls and modifies global variables and memory-mapped registers.
+- `run_table_traversal`: Recursively traverses a table by checking specific bit flags in a global variable.
+- `set_initial_state`: Sets a global variable to a specific constant and then performs a sequence of recursive calls.
+- `check_conditional_state`: Checks a global variable against specific values and performs recursive calls or updates a global variable if conditions are met.
+- `forward_to_global_check`: The routine consists of a single tail call that forwards control to check_and_set_global, with no other work of its own.
+- `traverse_and_update_hardware`: Updates hardware registers and performs a loop involving recursive calls and conditional checks on a global variable.
+- `execute_recursive_calls_6`: Calls itself three times in succession before returning.
+- `recursively_call_another_routine`: Calls another routine repeatedly until a global variable equals a specific constant value.
+- `call_and_invalidate_global`: Calls another routine and then sets a global variable to negative one if it is not already negative one.
+- `perform_table_traversal`: Recursively traverses a table by reading bytes at calculated offsets and checking bit flags in a global variable.
+- `traverse_data_table`: Recursively iterates through a table by accessing bytes at calculated offsets and evaluating bit flags within a global variable.
+- `call_and_update_pointers`: Calls another routine and then stores two values into global variables using the results from the registers.
+- `initialize_complex_state_2`: Updates a global variable and performs multiple recursive calls, eventually setting several memory locations and a global variable to specific constants.
+- `initialize_complex_state`: Performs a sequence of recursive calls and updates a global variable and hardware registers based on a loop condition.
+- `execute_conditional_logic`: Checks a global variable, calls another routine, and conditionally sets a global variable to a constant value.
+- `call_reverse_copy_and_set_value`: Calls a routine to copy a block of words in reverse order and then stores the value two into a global variable.
+- `execute_state_sequence`: Modifies a global variable through a sequence of checks and calls, including a loop that continues while a global variable is zero.
+- `manipulate_global_state_and_call`: Sequentially modifies a global variable with various values and calls other routines based on those changes.
+- `execute_state_machine_2`: Updates a global variable to a sentinel value and executes a series of recursive calls.
+- `execute_recursive_state_machine_2`: Performs recursive calls while toggling a global variable between specific sentinel values and enters a loop that repeatedly calls itself until a global variable reaches zero.
+- `reset_and_loop_global`: Sets a global variable to zero, performs several recursive calls, and then enters a loop that modifies a global variable until it reaches zero.
+- `copy_structured_data_2`: Checks a global variable and, if a condition is met, copies multiple words from a calculated memory offset into several global variables.
+- `execute_conditional_string_check`: Checks a global variable and, if a specific condition is met, verifies a character at a calculated offset before setting a global variable.
+- `update_global_on_return`: Sets a global variable to two if the result of a recursive call is non-zero.
+- `update_input_state`: Updates a global variable based on input and writes specific values to a memory location pointed to by a register.
+- `update_memory_by_input`: Modifies a global variable and writes specific values to a memory location based on the value of an input byte.
+- `update_global_and_memory`: Increments a global variable and stores its value along with two other constants into a memory location pointed to by a register.
+- `perform_no_operation`: This routine is empty and performs no actions before returning.
+- `perform_nested_operations`: Executes a sequence of nested data copies, string manipulations, and arithmetic overflow checks.
+- `return_global_value`: returns the value stored in a global variable.
+- `invoke_recursive_table_traversal_3`: Calls a routine that recursively traverses a table by checking bit flags in a global variable and reading bytes at calculated offsets.
+- `recurse_and_store_word`: Recursively calls itself twice and stores a word into a global variable.
+- `recurse_and_store_word_2`: Performs multiple recursive calls and writes a word to a global variable.
+- `process_loop_and_recursion`: Performs a series of recursive calls and executes a loop that decrements a value until a condition is met.
+- `execute_recursive_calls_21`: Executes a series of recursive calls to another routine.
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `loop_with_offset_increment`: Executes a loop that increments a value by ten and a counter by one for a fixed number of iterations.
+- `invoke_nested_data_copy_4`: Calls a routine that performs a multi-level nested copy of word-sized data blocks using a specific pointer increment logic.
+- `increment_local_counter`: Increments a local byte variable in a loop until it reaches a specific value while calling other routines.
+- `process_delimited_string_data`: Initializes several global variables and performs string manipulation by inserting a character and terminating a string based on a delimiter.
+- `initialize_global_parameters`: Sets three global variables to specific values and calls another routine.
+- `initialize_string_parameters`: Sets two global variables to specific values, calls another routine, and then clears a third global variable.
+- `copy_memory_block`: copies a block of words from a source table to a destination table.
+- `copy_memory_block_reverse`: copies a block of words from a source table to a destination table in the opposite direction.
+- `execute_sequence_of_calls`: Performs a long sequence of calls to another routine and modifies a global variable to zero at specific intervals.
+- `initialize_and_call_sequence`: Clears a global variable, performs a series of function calls, and then sets a global variable to a constant value.
+- `write_swapped_bytes`: Swaps the bytes of a 16-bit value and writes it using a system call.
+- `store_swapped_word_sequence`: Repeatedly calls a routine that swaps the bytes of a 16-bit value and stores the result into a memory location pointed to by a register.
+- `store_swapped_word`: Swaps the bytes of a 16-bit value and stores the result into a memory location pointed to by a register.
+- `conditionally_call_indirect`: Checks a global variable and, if it is zero, sets it to one and calls a function through a pointer at a specific offset.
+- `recurse_and_store_byte`: Recursively calls itself and stores a byte into a global variable.
+- `update_state_conditionally`: Checks a global variable against a constant, updates it, and calls another routine.
+- `initialize_audio_and_dma`: Fills a memory block with bytes, updates several audio volume and control registers, and enables DMA and interrupts.
+- `update_audio_parameters`: Calculates an index based on a global variable and an input byte to fetch data from a table, then updates audio period, volume, and hardware registers.
+- `set_audio_from_table`: Fetches a word and a short from a table using an index derived from an input byte, then updates audio period and volume registers.
+- `update_state_and_counters`: Increments a counter and updates several memory locations from a table, potentially resetting values and looping based on a comparison.
+- `update_audio_and_counters`: Increments a counter, updates several hardware registers from a table, and modifies a state structure.
+- `process_attribute_buffer`: Iterates through a buffer, clearing specific bytes and incrementing a byte at an offset while performing a comparison against a global value.
+- `search_and_store_word_2`: Searches a table for a word less than or equal to a target value and stores the result into a destination offset.
+- `search_table_for_value`: Iterates through a table to find the first word less than or equal to a target value and stores a value from that table into a destination.
+- `store_word_offset`: Stores a word from one memory location into another location at a fixed offset.
+- `search_and_store_word`: Iterates through a table to find the first word that is less than or equal to a target value, then stores a value from that table into a destination offset.
+- `store_word_to_offset`: Stores a word into a memory location at a specific offset from a pointer.
+- `update_state_and_audio`: Updates several audio hardware registers from a table and modifies a structure containing counters and state flags.
+- `parse_command_parameter_data`: Extracts a command identifier and associated parameters from a data structure, using it to perform table lookups and update various state variables.
+- `process_command_structure`: Updates various fields in a structure based on command bytes, including bitwise inversions and value assignments.
+- `update_dma_and_state`: Configures a DMA transfer by writing to a pointer and a control register, then modifies various state flags and values based on a command byte.
+- `update_dma_and_counters`: Sets several audio registers from a table, increments a counter in a structure, and resets or increments other values within that structure based on specific conditions.
+- `update_structure_status`: Compares a masked value from a structure against another value and updates specific bytes within that structure based on the comparison result.
+- `clear_structure_member`: Sets a word at a specific offset within a structure to zero.
+- `update_clamped_value_2`: Adds or subtracts a byte from a word in a structure and clamps the result to a threshold value stored in another part of the structure.
+- `subtract_and_clamp_word_2`: Subtracts a value from a word in a structure and, if the result is below a threshold, replaces it with a threshold value and clears a secondary value.
+- `calculate_complex_value`: Performs bitwise operations and multiplications using values from a structure to update a word and a byte.
+- `update_score_and_flags`: Writes a short value derived from two inputs to a global variable and updates a byte in another global structure by combining a nibble from a neighboring byte with the existing byte.
+- `copy_word_between_structures`: Copies a word from one location in a structure to another location in a different structure.
+- `process_clamped_attribute_update`: Updates a 12-bit value within a structure based on a command type, performing addition, subtraction, or table-based lookups.
+- `update_clamped_value`: Extracts a nibble from a byte to either add it to a word or subtract a different nibble from that word.
+- `decrement_and_clamp_value`: Subtracts a nibble from a word, clamps the result to zero if negative, and stores the halved result into a global variable.
+- `subtract_and_clamp_word`: Subtracts a byte from a word, clamps the result to a minimum threshold, and stores the lower twelve bits of the result into a global variable.
+- `add_and_clamp_word`: Adds a byte to a word, clamps the result to a maximum threshold, and stores the lower twelve bits of the result into a global variable.
+- `process_command_byte`: Evaluates a byte to perform different actions, including inverting bytes, decrementing values, or clearing bits based on specific bit patterns.
+- `return_without_action_2`: The routine consists of a single return instruction and performs no operations, so it has no effect when called from process_command_byte.
+- `invert_byte`: Inverts the bits of a byte stored at a specific offset from a pointer.
+- `decrement_and_invert`: Decrements a byte at an offset from a pointer and then inverts a byte at another offset from a different pointer.
+- `clamp_and_shift_byte`: Clamps a byte to a maximum value of sixty-four and stores the result of a right shift by one into a global variable.
+- `clear_and_store_bits`: If the lower five bits of a byte are non-zero, it clears a byte at one offset and stores those five bits at another offset.
+- `process_table_data`: Iterates through a table to find a specific value and then populates a series of global variables using values derived from a table and a multiplier.
+- `reset_global_state`: If a global variable equals one, it resets several global variables to zero and sets one to seven.
+- `populate_data_tables`: Copies a block of data from a global variable to a table and configures hardware registers including DMA and interrupt enable bits.
+- `register_interrupt_handler`: Retrieves a pointer from a global variable to access a data structure, populates that structure with specific integer and byte values, and assigns itself as a function pointer within that structure.
+- `update_audio_parameters_2`: Updates hardware registers for audio channel length and position based on a global counter and a table.
+- `fill_address_table`: Populates a table with a series of incrementing memory addresses and high words based on the value of a global variable.
+- `initialize_data_table`: Populates a table with specific word values and then copies alternating high and low bytes from a source into a series of offsets within a global variable.
+- `write_ciaa_interrupt`: Writes a single byte to a hardware register.
+- `write_byte_to_global`: Stores a single byte into a global variable.
+- `manage_hardware_and_state`: Modifies the INTENA register, updates memory tables, processes mouse movement, and performs bitwise nibble blending.
+- `calculate_scaled_value_2`: Multiplies the lower byte of an input register by a constant.
+- `copy_data_blocks`: Copies two consecutive blocks of data from a global variable to two different destination tables.
+- `initialize_memory_buffers`: Fills a memory region with a constant byte value and copies two subsequent data blocks from source tables into a destination buffer.
+- `fetch_indexed_byte`: Uses a global variable as both a pointer and an index to retrieve a byte from a table.
+- `clear_memory_blocks`: Fills three separate memory regions with zero or one with specific byte values using loops.
+- `call_dos_function`: Calls a function pointer retrieved from an offset within a global variable.
+- `call_function_via_pointer`: Fetches a function pointer from a global table and executes it, storing the return value in a global variable.
+
+### Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:type2
+
+- `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
+- `copy_and_execute_block`: Copies a block of sixteen bytes from a source offset to a destination and then calls a function pointer.
+
+### Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:EXIT
+
+- `update_buffer_and_execute_block`: Traverses a linked list to find a maximum value, writes a header to a buffer, and then copies data from a source to a destination before calling a function pointer.
+- `copy_memory_block_2`: Copies sixteen bytes from a memory location offset from a register to a destination address.
+
+### Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:BOOT1
+
+- `check_boot_library_and_exit`: The routine obtains a task and a library base via indirect calls through a global variable table, checks the library open result, and if successful it closes the library and returns a sentinel value.
+- `clear_stack_word`: Clears a word at a specific offset from the stack pointer and moves a word from a data register to another data register.
+
+### Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:BOOT2
+
+- `initialize_library_pointers`: Loads several function pointers from a global table and executes them in a sequence.
+- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
+- `return_from_subroutine_5`: This routine performs a single return instruction to exit the current execution context.
+
+### Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:BaNaNa.exe
+
+- `poll_input_and_update_hardware`: Checks the status of a global variable and hardware registers, including joystick/mouse fire buttons and potentiometer buttons, to conditionally execute indirect function calls and modify hardware control registers.
+- `store_and_clear_memory`: Stores a four-byte value into a table at multiple offsets and then clears a large block of memory starting from a global variable.
+- `clear_memory_block`: Fills a large block of memory starting from a global variable with zeros until a specific end address is reached.
+- `copy_data_loop`: Copies a sequence of words from one location to another using a decrementing counter.
+- `compare_and_update_byte`: Compares three bit-masked segments of an input value against another value and sets a byte in a structure to 255 if any segment differs.
+- `call_supervisor_function`: Checks a bit in a system structure and, if set, calls a function pointer retrieved from that structure, storing the result in a global variable.
+- `execute_conditional_function`: Checks specific bits in a global variable and executes an indirect function call if certain conditions are met.
+- `tiny_ori_2`: Small routine of 1 instruction that merges 46 into d0.
+- `execute_indirect_function_5`: Loads a function pointer from a global variable and calls it.
+- `execute_indirect_call`: Executes a function through a pointer stored in a global variable.
+- `call_supervisor`: Library stub: loads its arguments and the exec library base, calls Supervisor and returns its result to the caller.
+- `initialize_library_context`: Checks a pointer from a global variable, executes several functions through that pointer, and updates hardware registers if a specific bit pattern is found in a global variable.
+- `update_structure_fields`: Executes three function calls through pointers and then stores two values into a structure at specific offsets.
+- `initialize_buffer_structure`: Clears a memory range with zeros, sets several word values in a structure, and modifies an interrupt request register.
+- `populate_structure_data`: Loops until a character in a structure is zero, then writes several constant and register-sourced values into various offsets of that structure.
+- `set_global_values_3`: Stores two specific byte values into a global variable and modifies the interrupt request register.
+- `build_data_structures`: Iterates through a list to calculate values, update a global variable, and populate a series of structures with pointers and modified characters.
+- `copy_linked_list_data`: Traverses a linked list to find a specific terminator and copies blocks of data from a table into a destination buffer.
+
+### Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `tiny_rte`: Small routine of 1 instruction that returns from the exception.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `call_exit_routine`: Executes a routine at a specific memory address and sets a global variable to a constant value.
+- `call_library_vector_144`: Library stub: loads a library base from a global variable and calls the library function at offset minus 144 of that base, returning its result to the caller.

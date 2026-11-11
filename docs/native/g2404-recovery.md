@@ -1,0 +1,1951 @@
+# Game 2404 (base jumpers (1994)(rasputin)[a3]): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/02404). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (1008464 top-level bytes in 124 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 11 raw-word lines |
+| Functions named and described | pass, 1859 of 1859 named (0 author symbols), 1859 of 1859 described (53 by rule, 1785 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 10282 of 10295 (99.87%) |
+| Recovered without load address (counted in proof 1, flagged) | 3736 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 23057 of 23456 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 617423 |
+| code | 77852 |
+| data | 278077 |
+| padding | 32552 |
+| unused | 2560 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| Base Jumpers (1994)(Rasputin)[a3].adf:BaseJump | 13 | 182 | 7 |
+| EndCLI | 2 | 117 | 2 |
+| lowlevel.library | 1 | 371 | 18 |
+| mathtrans.library | 17 | 830 | 97 |
+| Base Jumpers (1994)(Rasputin)[a3].adf:bootblock | 1 | 10 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4877 | 770 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 167 | 23 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 8695 | 542 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 8207 | 399 |
+| level0.aaf.sq1 (raw code file, load address unknown) | 1 | 0 | 0 |
+
+## Cases handled
+
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level3.aaf.sq0: high-entropy data file (7.64 bits/byte), classified as packed data
+- reference run failed (Karl 4 Nov 2026): run ext slid through memory (an address: 144 64 KB pages each with >= 29491 distinct PCs executed, 2359296 of its 2360761 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-long-joy slid through memory (an address: 144 64 KB pages each with >= 29491 distinct PCs executed, 2359296 of its 2360761 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-long-keys slid through memory (an address: 144 64 KB pages each with >= 29491 distinct PCs executed, 2359296 of its 2360761 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-long-mixed slid through memory (an address: 144 64 KB pages each with >= 29491 distinct PCs executed, 2359296 of its 2360761 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- runtime segment an address (play-rs-x25k): 4506 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 165 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 2814 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 2545 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level0.aaf.sq1: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJump: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
+- 1 never-loaded region(s), 3736 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- none found
+
+## Functions
+
+
+### Base Jumpers (1994)(Rasputin)[a3].adf:BaseJump
+
+- `execute_callback_and_free`: Calls a function via a pointer, then calls a library function to free memory.
+- `decrement_to_minus_one`: The routine loads a short value from a register, repeatedly decrements it until it reaches -1, and then returns.
+- `process_data_tables`: The routine performs complex data manipulation involving bit stream shifting, table lookups, and iterative arithmetic operations to populate and transform multiple tables.
+- `shift_bit_stream`: Shifts bits from a register and updates a value using a bitmask or a value from a table.
+- `lookup_table_masked_value`: The routine reads a 16-bit value from a table using an index derived from the input word, and returns that value masked with an input mask.
+- `fill_two_tables`: The routine calls another routine to obtain a count, then fills a short table with that many values returned by the same routine, accumulating the values.
+- `calculate_series_values`: Iterates through a loop to perform arithmetic operations on values from a table and stores the results in another table.
+
+### EndCLI
+
+- `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
+- `copy_and_execute`: The routine copies a block of data from one location to another and then calls a function via a pointer.
+
+### lowlevel.library
+
+- `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d0, then returns.
+- `initialize_device_control_structure`: Initializes a control structure by setting multiple member values, including clearing several offsets and setting specific byte and word constants.
+- `increment_structure_word`: Library code that increments a word stored at an offset from a pointer.
+- `tiny_addq_moveq_rts`: Small routine of 3 instructions that adds 1 to (a1), then loads 0 into d0, then returns.
+- `update_device_status`: Library code that calls several library functions to update a structure with a value and a status byte.
+- `call_library_vector_570`: Library stub: loads a library base from a global variable and calls the library function at offset minus 570 of that base, returning its result to the caller.
+- `return_tristate_check_result`: Library code that calls two library functions and returns zero, one or minus one, depending on whether the first and second checks succeed.
+- `call_conditional_function`: Library code that checks a bit in a byte and, if not set, calls a function via a pointer from a structure.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `update_keyboard_status`: Library code that processes data from a serial register to update a status structure and executes a linked list of handler routines.
+- `update_status_and_execute_handlers`: This library code updates a value in a structure based on bitwise conditions and then walks a linked list of handlers to execute them if a specific comparison is met.
+- `call_handler_list`: The library code checks a condition against a value in a structure and, if met, walks a linked list of handlers to execute them.
+- `call_each_handler_in_list`: Library code that walks a linked list of handler nodes from the given pointer, calling the function at offset 18 of each node until the list ends.
+- `update_state_and_notify`: Library code that manages a structure by decrementing a counter and updating a 32-bit state value.
+- `store_state_and_notify_changes`: Library code that stores a 32-bit state value at offset 46 of the structure, calling a routine first when the top nibble changes from a non-zero value.
+- `process_bitfield_data`: This library code iterates through a data structure, performing bitwise checks and copying values until a specific termination condition is met.
+- `process_input_loop`: The library code iterates through a data structure, performing bitwise checks and copying values until a specific termination condition is met.
+- `post_input_event_message`: Library code that builds an input event record from the code in register D0, setting flag bits when D0 matches a stored value or equals 120, and sends it through library calls.
+
+### mathtrans.library
+
+- `return_empty_routine`: This routine is empty and performs no operations.
+- `store_register_to_global`: Library code stores the contents of a register into a global variable.
+- `update_linked_list`: The library code either inserts a value into a linked list and calls a function or sets a specific bit in a byte at a given offset.
+- `set_byte_bit`: Library code sets a specific bit in a byte located at an offset from a register-derived address.
+- `increment_and_check_counter`: Library code that increments a word at a specific offset in a structure if a bit in a byte at another offset is not set, and calls another routine if the resulting word equals one.
+- `return_all_ones`: Library code returns a value consisting of all bits set to one.
+- `decrement_counter_and_call`: This library code decrements the 16-bit counter at offset 32 of the structure at A6.
+- `return_from_subroutine_4`: This routine performs a single return instruction to exit the current function and return control to the caller.
+- `calculate_bitfield_loop`: Library code that performs a complex iterative calculation involving bit shifts and subtractions to update a value based on an input integer.
+- `adjust_bitfield_value`: Library code that sets the bit selected by register D1 in D0, then repeatedly shifts a running difference with a doubling accumulator until a termination condition is met.
+- `mask_and_modify_result`: Library code that calls another routine and applies a bitwise mask to the result before setting specific bits.
+- `call_jump_table_entries`: Library code that calls a series of function pointers located at fixed offsets from a register-derived base in an alternating pattern, then calls a third entry once and calls the second entry once more.
+- `dispatch_callback_table_2`: Library code retrieves a base address from a global variable and executes a series of conditional function calls.
+- `dispatch_callback_table`: Library code that retrieves a base address from a global variable and executes a series of conditional function calls.
+- `execute_conditional_callbacks_2`: Library code that executes various function pointers from a table based on the values of registers.
+- `execute_conditional_callbacks_variant`: Library code that evaluates multiple conditions to call different routines through pointers at specific offsets from a base address.
+- `execute_conditional_callbacks`: Library code that performs conditional branching based on register values to call various routines via pointers stored at specific offsets from a base address.
+- `call_and_mask_result`: Library code that calls a routine via a pointer at an offset from a base address and returns the result with a bitwise mask applied.
+- `double_call_and_mask_result`: Library code that calls a routine via a pointer at an offset from a base address twice and returns the result of a third routine with a bitwise mask applied.
+- `mask_return_value`: The library code calls a function through a pointer stored in a global variable twice, then calls another routine and returns its result with certain bits cleared.
+- `call_library_vector_414`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `call_library_vector_528`: Library stub: loads a library base from a global variable and calls the library function at offset minus 528 of that base, returning its result to the caller.
+- `call_library_vector_552`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `perform_fixed_point_division`: Library code that implements a division-like algorithm using bit-shifting and subtraction.
+- `execute_loop_with_branching_2`: Library code that executes a loop performing bit-shifting and decrementing, potentially calling other routines if a counter reaches a certain value.
+- `execute_loop_with_branching`: Library code that executes a loop that performs bit-shifting and decrementing, potentially calling other routines if a counter reaches a certain value.
+- `execute_math_loop`: Library code performs complex arithmetic involving bit shifts and iterative modifications to values using a global variable.
+- `process_math_data`: Library code executes a series of arithmetic operations and bit shifts, using a global variable to update values through a pointer.
+- `calculate_iterative_offset`: Library code performs arithmetic based on a byte value and uses a loop to modify a global variable via a pointer.
+- `perform_complex_math`: Library code performs a series of arithmetic operations involving bit shifts and loops based on a byte value.
+- `perform_complex_arithmetic`: Library code performs iterative arithmetic operations involving bit shifts and loops based on a byte value, then modifies a global variable using a pointer.
+- `calculate_concatenated_value`: Library code calls routines via pointers in a global variable and performs iterative arithmetic on the results.
+- `perform_iterative_arithmetic`: Library code executes a loop involving bit-shifting and arithmetic using values from a table.
+- `normalize_fixed_point_2`: Library code performs iterative arithmetic and bit-shifting on values using a pointer to a table.
+- `normalize_fixed_point_value_3`: Library code that performs iterative arithmetic and bit-shifting on values using a pointer to a table.
+- `return_empty`: This library routine is empty.
+- `recursive_call_wrapper`: Calls itself and then returns, with no other operations.
+- `execute_recursive_calls`: Library code that performs two consecutive recursive calls to itself.
+- `normalize_fixed_point_value_2`: Library code that performs iterative shifts and arithmetic to normalize a signed 32-bit fixed-point value.
+- `normalize_fixed_point`: Library code normalizes a signed 32-bit fixed-point value by swapping words and performing iterative shifts.
+- `return_without_effect`: Library code calls a routine and then calls it again if a certain condition is met.
+- `call_other_routine_conditionally`: Library code invokes another routine and then, based on a boolean flag that remains false, invokes three additional routines in sequence.
+- `execute_conditional_callbacks_3`: Library code checks a byte value and performs a sequence of conditional routine calls based on the result.
+- `branch_to_offset`: Sets register d7 to a constant value, performs a right shift on d7, and branches to an offset relative to a6.
+- `return_from_subroutine_2`: This routine is an empty function that performs no operations before returning.
+- `branch_on_sign`: Loads a word from the stack into d6, tests the sign of d6, and if d6 is positive, sets d7 to 0 and branches to an offset relative to the current instruction.
+- `set_negative_flag_and_return`: Sets the negative flag in the condition code register and restores the previously saved registers before returning.
+- `set_status_and_return`: Loads a specific constant into a register, adjusts the stack pointer by an offset of 30, and returns to the caller.
+- `process_complex_conditional_logic`: Library code that evaluates a 16-bit value and performs multiple recursive calls or bitwise manipulations based on the result.
+- `perform_multiple_recursive_calls`: Calls another routine four times in succession before returning.
+- `process_table_accumulator`: Library code that iterates through a table and modifies an accumulator by adding or subtracting table entries based on a sign check.
+- `subtract_table_from_accumulator`: The routine walks through a table pointed to by a pointer and repeatedly adds the current table entry to an accumulator, then subtracts subsequent entries while a counter is decremented.
+- `calculate_shifted_multiplication`: Library code that performs bit-shifting on a value and then enters a loop to perform repeated multiplication.
+- `return_void`: This routine is empty and performs no operations before returning.
+- `execute_complex_loop_and_shift`: Library code that performs a loop involving bit-shifting and conditional jumps, followed by a loop that performs repeated multiplication.
+- `complex_loop_with_branching`: Library code that executes a loop involving bit-shifting and conditional jumps, potentially calling other routines and performing arithmetic on a value.
+- `call_other_routine_thrice`: Library code that calls another routine three times in succession and then returns.
+- `process_complex_arithmetic_2`: Library code performs multiple conditional checks and executes various routine calls based on bitwise manipulations.
+- `process_complex_arithmetic`: Library code performs multiple conditional checks on a value and executes various routine calls based on bitwise manipulations and comparisons.
+- `transform_register_d7_and_return`: Modifies the value in register d7 through a series of arithmetic and bitwise operations including a conditional branch, then returns.
+- `transform_register_d7`: As library code, it swaps d7, rotates d7 left by 7 bits, performs an exclusive OR on the low byte of d7 with 128, adds d7 to itself, and branches based on the overflow flag; otherwise it adds 5 to the low byte of d7, branches based on the overflow flag, performs an exclusive OR on the low byte of d7 with 128, rotates d7 right by 1 bit, and returns.
+- `return_immediately_4`: This routine performs no functional operations and returns control to the caller immediately.
+- `mask_and_test_d7`: As library code, it performs a bitwise AND on d7 with a constant, tests d7, and if the result is not zero, tests the low byte of d7, clears d7, and branches to another routine.
+- `return_empty_2`: Library code that is empty.
+- `modify_register_d7`: As library code, it shifts the value in d7 left by 8 bits, moves 255 into d7, rotates the byte in d7 right by 1 bit, sets the overflow flag in the status register, and branches to another routine.
+- `return_from_subroutine_3`: This routine is an empty function that immediately returns to its caller.
+- `invoke_callback_and_return`: The library code receives a pointer in A0 and a value in D0, calls the routine pointed to by A0, and returns the value originally in D0 unchanged.
+- `call_indirect_return_d0`: The library code receives a function pointer in A0 and a value in D0, calls the routine pointed to, and then returns the value that was in D0 on entry.
+- `return_passed_value`: Library code that calls a routine via a pointer in a register and returns the original value from another register.
+- `execute_callback_and_return_2`: This routine calls another routine via a pointer and returns the original value held in a data register.
+- `invoke_callback_and_return_simple`: Library code calls a routine via a pointer and returns the value originally held in D0.
+- `invoke_callback_and_return_d0`: Library code that calls a routine via a pointer in a register and returns the original value from a data register.
+- `pass_through_register_2`: Library code calls another routine and returns the original value from a register.
+- `return_original_value`: Library code calls another routine and returns the value that was originally in a register.
+- `execute_callback_routine`: Calls a routine via a pointer provided in a register and returns the original value held in a data register.
+- `store_register_via_pointer`: Library code invokes another routine and then stores a 32-bit value from a register into memory addressed by a pointer passed in a register.
+- `execute_callback_and_return`: Invokes a routine via a pointer provided in a register and returns the original value held in a data register.
+- `call_callback_twice`: Library code calls a routine via a pointer in A0 and then calls it again if a condition is met.
+- `execute_conditional_callbacks_4`: Library code performs a sequence of conditional routine calls based on a byte value.
+- `invoke_callback_and_return_d0_alt`: Library code that executes a subroutine through a pointer and returns the initial value held in a data register.
+- `invoke_callback_and_return_2`: Library code calls a routine via a pointer in A0 and returns the original value from D0.
+- `call_routine_thrice`: Library code calls another routine three times in succession.
+- `call_indirect_and_return`: Library code calls a routine via a pointer in A0 and returns the value that was in D0.
+- `pass_through_register`: Library code that calls a routine and returns the original value held in a register.
+- `return_immediately_6`: This library routine is empty and performs no operations before returning.
+- `call_indirect_with_offset_2`: Library code that calls a routine at an address calculated by adding a negative offset to a global pointer.
+- `call_indirect_with_offset_alt`: Library code that calls a routine at an address calculated by adding a different negative offset to a global pointer.
+- `call_and_concatenate_results`: Library code that calls a routine via a pointer at a specific offset from a global base and returns the concatenation of two registers.
+- `call_and_concatenate_results_alt`: Library code that calls a routine via a pointer at a different offset from a global base and returns the concatenation of two registers.
+- `call_indirect_offset_one`: Library code calls a routine at an address calculated by adding an offset to a pointer stored in a global variable.
+- `call_indirect_offset_two`: Library code calls a routine at an address calculated by adding a different offset to a pointer stored in a global variable.
+- `invoke_callback_concat_one`: Library code invokes a routine via a pointer in a global variable and returns the concatenation of the two input values.
+- `invoke_callback_and_concatenate`: Calls a routine via a pointer stored in a global variable and returns the concatenation of the resulting 64-bit value.
+- `invoke_callback_and_concatenate_2`: Calls a routine via a pointer stored in a global variable and returns the concatenation of the resulting two 32-bit values.
+- `invoke_callback_and_return_concat`: The library code invokes another routine via a pointer stored in a global variable and then returns the concatenation of the two input values.
+- `call_indirect_with_offset`: The library code calls a routine at an address calculated by adding an offset in A0 to a pointer stored in a global variable, then returns the value in D0.
+- `normalize_fixed_point_value`: The library code normalizes a signed 32-bit fixed-point value in D6 by swapping its high and low words, adjusting a shift count based on sign and magnitude, then left-shifting the value while decrementing the count until the count reaches zero or the value overflows, returning early on overflow.
+
+### Base Jumpers (1994)(Rasputin)[a3].adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_system_subsystems`: Initializes various system libraries and data structures by calling multiple indirect routines through a global pointer.
+- `cleanup_subsystems_and_resources`: Clears a block of memory, resets several global pointers to a common base, and performs conditional cleanup of various data structures and libraries.
+- `teardown_system_subsystems`: Clears specific global pointers and strings, then iterates through a table of subsystem pointers to call their respective cleanup routines.
+- `initialize_and_cleanup_subsystems`: Clears a block of memory, resets several global pointers to a common base, and performs conditional cleanup of various data structures and linked lists.
+- `initialize_and_clear_data_structures`: Clears a block of memory and updates several global integer values.
+- `branch_on_word_and_call`: The routine tests a word through a pointer against a constant and calls one of two indirect routines through a global variable depending on the result, then returns a concatenated value from two inputs.
+- `call_indirect_via_global`: The routine calls an indirect routine through a global variable.
+- `call_free_mem`: Library stub: loads its arguments and the exec library base, calls FreeMem and returns its result to the caller.
+- `call_copy_mem`: Library stub: loads its arguments and the exec library base, calls CopyMem and returns its result to the caller.
+- `walk_byte_table_and_update_pointers`: The routine walks a byte table until a zero byte is found, and for each byte it either advances a pointer by a fixed amount or computes a new pointer from the byte value and adds an offset from a base pointer, storing the result back into the pointer.
+- `clear_word_and_call_indirect`: The routine clears a word through a pointer and calls an indirect routine through a pointer in memory.
+- `manage_linked_list_nodes`: The routine manipulates a structure by either inserting elements into a linked list or updating a pointer based on a signed short value, then calls another routine.
+- `validate_and_unpack_bitstream`: Checks if a provided length is within bounds for a data buffer, then attempts to unpack a bitstream into memory.
+- `return_immediately_9`: The routine performs no operations and returns control to its caller.
+- `process_string_and_call_indirect`: The routine manipulates a string by appending a newline character and performs several indirect function calls based on various global flags and pointers.
+- `check_table_entry_and_prepare`: The routine examines a table entry pointed to by a global variable, conditionally calls an indirect routine through a global variable, and prepares output registers with values derived from the table and other routines.
+- `reset_counters_and_call`: The routine calls another routine, clears two words through a pointer, and returns an input value.
+- `signal_task_on_switcher`: The routine reads a global variable, calls another routine through a table and, if the result is non-zero, calls a second routine through the same table.
+- `unpack_bitstream_to_memory`: Reads a bitstream from a source buffer and expands it into a destination memory area.
+- `unpack_bitstream_data`: The routine reads a sequence of bits from a source buffer and expands it into a destination buffer by shifting and masking bits.
+- `bk_refill_bit_buffer`: Depacker bit reader refill: fetches the previous longword of the packed stream, folds it into the checksum and shifts out its lowest bit with a marker bit entering at the top.
+- `perform_bit_stream_read`: Reads a sequence of bits from a memory buffer by shifting a value and decrementing a pointer when the value reaches zero.
+- `call_another_routine`: Executes a single instruction that calls another routine.
+- `return_constant_value`: Returns a constant value of all bits set to one.
+- `initialize_data_table`: Stores a series of constant values into a memory block using a pointer held in a register.
+- `populate_data_table`: Stores a series of constant values into a memory buffer using an offset-based addressing scheme.
+- `initialize_data_table_2`: Populates a series of memory locations with specific constant values through a pointer.
+- `initialize_data_table_3`: This routine populates a series of memory locations with specific constant values by performing sequential writes through a pointer and calling another routine after each write.
+- `populate_data_table_2`: Stores a series of constant values into a memory structure or table at offsets relative to a base pointer.
+- `populate_data_table_3`: Stores a series of constant integer values into a memory buffer using offsets from a pointer.
+- `populate_data_table_4`: Stores a series of constant integer values into a memory buffer at specific offsets.
+- `initialize_data_table_4`: Populates a series of memory locations with specific constant values by performing sequential writes through a pointer and calling another routine after each write.
+- `execute_unnamed_routine`: This routine calls another routine and consists of five instructions.
+- `call_unnamed_routine`: This routine performs a call to another routine using five instructions.
+- `invoke_unnamed_routine`: This routine consists of five instructions and calls another routine.
+- `populate_data_table_5`: Stores a series of constant integer values into a memory buffer using an offset-based addressing scheme.
+- `populate_data_table_6`: Stores a sequence of constant integer values into a series of memory locations relative to a pointer.
+- `populate_data_table_7`: Stores a sequence of constant values into a memory buffer via a pointer.
+- `populate_data_table_8`: Stores a sequence of constant values into a memory buffer using a pointer derived from a stack offset.
+- `populate_data_table_9`: Stores a series of constant integer values into a memory buffer using offsets relative to a pointer.
+- `populate_data_table_10`: Stores a sequence of constant integer values into a memory buffer at specific offsets.
+- `populate_data_table_11`: Stores a series of constant integer values into a memory buffer via a pointer.
+- `call_subroutine_via_relative_address`: This routine performs a single call to another routine using a relative address.
+- `populate_data_table_12`: Stores a series of constant integer values into a memory buffer using a pointer derived from a stack offset.
+- `populate_data_table_13`: Stores a sequence of constant values into a memory buffer using a pointer derived from a register.
+- `call_subroutine`: This routine performs a single call to another routine.
+- `initialize_data_table_5`: Populates a structured memory area by writing specific constant values into successive offsets relative to a pointer.
+- `initialize_data_table_6`: Stores a series of constant values into a memory buffer using a pointer derived from a stack offset.
+- `populate_data_table_14`: Stores a series of constant values into a memory buffer using a pointer derived from a register.
+- `initialize_data_table_7`: Populates a memory buffer with a sequence of constant values through a series of pointer-based stores.
+- `initialize_data_table_8`: Populates a memory block with a series of constant values through a pointer.
+- `populate_data_table_15`: Stores a series of constant integer values into a memory buffer using a pointer held in a register.
+- `initialize_data_table_9`: Stores a sequence of constant values into a memory block using a pointer derived from a register.
+- `initialize_data_table_10`: Stores a series of constant values into a memory block using a pointer held in a register.
+- `populate_data_table_16`: Stores a series of constant integer values into a memory buffer using a pointer derived from a register.
+- `populate_data_table_17`: Stores a series of constant integer values into a memory block using offsets from a base pointer.
+- `populate_data_table_18`: Stores a series of constant integer values into a memory buffer using offsets relative to a pointer.
+- `populate_data_table_19`: Stores a sequence of constant values into a memory buffer at specific offsets relative to a pointer.
+- `initialize_data_table_11`: Populates a series of memory locations with a sequence of hardcoded constant values.
+- `initialize_data_table_12`: Populates a series of memory locations with a sequence of constant values through a pointer.
+- `populate_data_table_20`: Stores a series of constant integer values into a memory block using an offset from a pointer.
+- `initialize_data_table_13`: Populates a series of memory locations with specific constant values through a series of immediate stores and subsequent subroutine calls.
+- `populate_data_table_21`: Stores a sequence of constant integer values into a memory buffer via a pointer offset by a register.
+- `populate_data_table_22`: Stores a sequence of constant integer values into a memory block using a pointer derived from a register.
+- `initialize_data_table_14`: Populates a series of memory locations with specific constant values through a sequence of pointer-based stores.
+- `populate_data_table_23`: Stores a series of constant integer values into a memory block using offsets relative to a pointer.
+- `populate_data_table_24`: Stores a series of constant integer values into a memory buffer using an offset relative to a pointer.
+- `initialize_data_table_15`: Stores a series of constant integer values into a memory block using a pointer derived from a stack offset.
+- `initialize_data_table_16`: Populates a series of memory locations with specific constant values through a pointer.
+- `initialize_data_table_17`: Populates a series of memory locations with specific integer values by writing to offsets relative to a pointer and calling another routine after each write.
+- `initialize_data_table_18`: Populates a series of memory locations with specific constant values through a pointer.
+- `populate_data_table_25`: Stores a series of constant integer values into a memory structure via a pointer.
+- `initialize_data_table_19`: Populates a series of memory locations with specific constant values by writing to offsets relative to a pointer.
+- `initialize_data_table_20`: Populates a series of memory locations with specific constant values by writing to offsets relative to a pointer.
+- `populate_data_table_26`: Stores a sequence of constant integer values into a memory block using a pointer derived from a register.
+- `jump_to_subroutine`: Performs a jump to another routine.
+- `jump_to_subroutine_2`: Transfers execution to another routine.
+- `jump_to_subroutine_3`: Executes a jump to a different routine.
+- `jump_to_subroutine_4`: Redirects program flow to another routine.
+- `jump_to_subroutine_5`: Calls another routine via a jump.
+- `jump_to_subroutine_6`: Moves execution to another routine.
+- `jump_to_subroutine_7`: Jumps to the address of another routine.
+- `load_pointer_from_table`: Loads a value from a memory table into a register and then calls another routine using that value as a pointer.
+- `jump_to_subroutine_8`: Performs a jump to a subroutine.
+- `jump_to_subroutine_9`: Transfers control to another routine.
+- `store_byte_via_pointer`: Loads a byte from a memory location pointed to by a register and stores it into a different memory location pointed to by another register.
+- `dereference_and_call_pointer`: Loads a value from a memory location into a register and uses that value as an address for a subroutine call.
+- `load_byte_from_pointer`: Loads a single byte from a memory location pointed to by a value in a register into another register.
+- `update_pointer_via_offset`: Loads a value from a memory location calculated by adding an offset to a base address and stores the result into another memory location.
+- `load_byte_via_pointer`: Loads a single byte from a memory location pointed to by a global variable into a register.
+- `load_byte_to_memory`: Loads a byte from a memory location pointed to by a register into another memory location pointed to by a different register.
+- `load_byte_from_pointer_2`: Loads a single byte from a memory location pointed to by a value in a register into another register.
+- `load_pointer_to_register`: loads a value from a memory location into a register using a pointer stored in another register.
+- `load_byte_from_pointer_3`: Loads a single byte from a memory location pointed to by a value stored in a register and stores it into another memory location pointed to by a different register.
+- `update_pointer_indirect`: Loads a value from a memory location pointed to by a register and stores it into another memory location pointed to by a different register.
+- `load_byte_from_pointer_4`: Loads a single byte from a memory location pointed to by a register into another register.
+- `load_byte_to_memory_2`: Loads a byte from a memory location into a register and then stores that byte into a different memory location via a pointer.
+- `load_byte_from_pointer_5`: fetches a single byte from a memory location pointed to by a register and stores it into another register.
+- `load_byte_from_pointer_6`: Loads a byte from a memory location pointed to by a value stored in a register into another register.
+- `update_pointer_via_offset_2`: Loads a value from a memory location calculated by adding an offset to a global pointer and stores the result into another global variable.
+- `load_byte_from_pointer_7`: Loads a single byte from a memory location pointed to by a value in a register into another register.
+- `load_byte_via_pointer_2`: Loads a single byte from a memory location pointed to by a register into another register.
+- `load_byte_from_pointer_8`: Loads a single byte from a memory location pointed to by a value in a register and stores it into another memory location pointed to by a different register.
+- `load_byte_indirect`: loads a byte from a memory location pointed to by a value stored in a global variable and stores it into another global variable.
+- `store_byte_via_pointer_2`: Loads a byte from a memory location into a register and then stores that byte into a different memory location using a pointer.
+- `load_byte_via_pointer_3`: Loads a single byte from a memory location pointed to by a register into another register.
+- `update_pointer_via_offset_3`: Increments a value stored at a memory location by a constant amount and then stores the result back to that same location.
+- `copy_byte_via_pointer`: Loads a byte from a memory location pointed to by a register and stores it into another memory location pointed to by a different register.
+- `load_byte_from_pointer_9`: Loads a single byte from a memory location pointed to by a value in a register into another register.
+- `load_byte_to_memory_3`: Loads a byte from a memory location pointed to by a register into another memory location pointed to by a different register.
+- `load_byte_from_pointer_10`: fetches a byte from a memory location pointed to by a register and stores it into another memory location pointed to by a different register.
+- `load_byte_from_pointer_11`: Loads a single byte from a memory location pointed to by a register into another register.
+- `load_byte_from_pointer_12`: Loads a single byte from a memory location pointed to by a value in a register into another register.
+- `load_byte_from_pointer_13`: Loads a single byte from a memory location specified by a pointer stored in a register and stores it into another memory location specified by a different pointer.
+- `load_byte_from_pointer_14`: Loads a single byte from a memory location pointed to by a value stored in a register and stores it into another memory location.
+- `call_system_trap`: Loads an address into a4, stores the value 3 into a location pointed to by a3, loads an address into a0 from a6, sets d0 to 1, and calls a routine at a fixed address.
+- `fetch_pointer_and_call`: Loads a pointer from a memory location into a register and performs a subroutine call using that address.
+- `load_byte_from_pointer_15`: loads a byte from a memory location pointed to by a register into another register.
+- `load_byte_from_pointer_16`: Loads a byte from a memory location pointed to by a global variable into a register.
+- `load_byte_from_pointer_17`: Loads a byte from a memory location pointed to by a value in a register into another register.
+- `load_byte_via_pointer_4`: Loads a single byte from a memory location stored in a register into another register.
+- `update_pointer_via_offset_4`: Adds a constant value to a pointer stored in a register and then stores the result back into a global variable.
+- `load_byte_via_pointer_5`: Loads a byte from a memory location pointed to by a register into another register.
+- `load_pointer_from_table_2`: Loads a value from a table into a register using an offset.
+- `update_pointer_via_offset_5`: Adds a constant value to a pointer stored in a memory location and writes the result back to that same location.
+- `load_byte_from_address`: Loads a single byte from a memory location pointed to by a register into another register.
+- `load_byte_via_pointer_6`: Loads a single byte from a memory location pointed to by a register into another register.
+- `load_pointer_from_table_3`: Loads a value from a memory table into a register using a pointer stored in another register.
+- `update_pointer_via_offset_6`: Increments a value stored at a memory location by a constant amount and then stores the result back to that same location.
+- `load_byte_from_pointer_18`: loads a byte from a memory location pointed to by a value in a register into another register.
+- `update_pointer_via_offset_7`: Adds a constant value to a pointer stored in a register and then stores the resulting address into a global variable.
+- `update_pointer_via_offset_8`: Loads a value from a memory location calculated by adding an offset to a base address and stores the result into another memory location.
+- `update_pointer_via_offset_9`: Adds an offset to a value stored in a register and writes the result to a memory location pointed to by another register.
+- `load_byte_from_pointer_19`: loads a byte from a memory location specified by a pointer stored in a register into another register.
+- `load_pointer_from_table_4`: Loads a value from a table into a register and passes it as an argument to another routine.
+- `update_pointer_via_offset_10`: Loads a value from a memory location calculated by adding an offset to a pointer and stores the result into another memory location.
+- `update_pointer_via_offset_11`: Increments a value stored at a memory location pointed to by a register.
+- `load_pointer_from_table_5`: Loads a value from a table into a register and then calls another routine using that value as a pointer.
+- `update_pointer_via_offset_12`: Adds a constant value to a pointer stored in a register and stores the result back into a global variable.
+- `update_pointer_via_offset_13`: Adds a constant value to a pointer stored in a register and then stores the result into a global variable.
+- `store_byte_via_pointer_3`: Loads a byte from a memory location into a register and stores it into a different memory location using a pointer.
+- `update_pointer_via_offset_14`: Loads a value from a memory location calculated by adding an offset to a pointer and stores the result into another memory location.
+- `update_pointer_via_offset_15`: Loads a value from a memory location calculated by adding an offset to a pointer and stores the result into another memory location.
+- `load_byte_from_pointer_20`: Loads a single byte from a memory location pointed to by a register into another register.
+- `load_pointer_from_table_6`: Loads a value from a memory table into a register using a pointer stored in another register.
+- `update_pointer_via_offset_16`: Loads a value from a memory location calculated by adding an offset to a base address and stores the result into another memory location.
+- `update_pointer_indirect_2`: Loads a value from a memory location pointed to by a register and stores it into another memory location pointed to by a different register.
+- `load_byte_from_pointer_21`: Loads a single byte from a memory location pointed to by a register into another register.
+- `copy_byte_to_memory`: Copies a single byte from a memory location pointed to by a register into a destination address stored in another register.
+- `update_pointer_via_offset_17`: Loads a value from a memory location calculated by adding an offset to a pointer, then stores that value into another memory location pointed to by a different register.
+- `store_byte_via_pointer_4`: Loads a byte from a memory location into a register and then stores that byte into a different memory location using a pointer stored in a register.
+- `load_pointer_from_table_7`: Loads a value from a memory table into a register and then calls another routine using that value as an address.
+- `update_pointer_indirect_3`: Loads a value from a memory location pointed to by a register and stores it into another memory location pointed to by a different register.
+- `increment_pointer_and_fetch_byte`: Increments a pointer stored in a register and loads the byte from the new address into a register.
+- `store_byte_via_pointer_5`: Stores a single byte from a register into a memory location pointed to by a value retrieved from a global variable.
+- `load_byte_from_pointer_22`: Loads a byte from a memory location pointed to by a register into another register.
+- `load_register_to_memory`: loads a value from a register into a memory location pointed to by a global variable.
+- `update_pointer_via_offset_18`: Loads a value from a memory location calculated by adding an offset to a pointer and stores the result into another memory location.
+- `load_byte_to_memory_4`: loads a byte from a memory location into a register and then stores that byte into a different memory location via a pointer.
+- `load_byte_via_pointer_7`: Loads a byte from a memory location pointed to by a value in a register into another register.
+- `dereference_and_call_pointer_2`: Loads a value from a memory location into a register and uses that value as the address for a subsequent subroutine call.
+- `load_byte_via_pointer_8`: Loads a single byte from a memory location pointed to by a register into another register.
+- `copy_byte_to_memory_2`: Loads a byte from a memory location into a register and stores it into a different memory location via a pointer.
+- `load_byte_to_memory_5`: loads a byte from a memory location into a register and subsequently stores that byte into a different memory location via a pointer.
+- `load_value_from_table`: loads a word from a memory location specified by a table entry into a register and then calls another routine.
+- `return_from_subroutine_5`: The routine performs a return from a subroutine.
+- `return_from_subroutine_6`: This routine executes a return instruction.
+- `return_from_subroutine_7`: The routine ends by returning to a caller.
+- `return_from_subroutine_8`: This is a short routine that returns from a subroutine.
+- `return_from_subroutine_9`: The routine performs a standard return.
+- `return_from_subroutine_10`: This routine is used to return from a subroutine call.
+- `return_from_subroutine_11`: The routine executes a return to the calling code.
+- `return_from_subroutine_12`: This routine performs a return from a subroutine.
+- `return_from_subroutine_13`: The routine ends with a return instruction.
+- `return_from_subroutine_14`: This routine returns control to another routine.
+- `call_unnamed_routine_2`: The routine performs a jump to another routine.
+- `call_unnamed_routine_3`: This routine executes a call to another routine.
+- `call_unnamed_routine_4`: The routine transfers control to another routine.
+- `call_unnamed_routine_5`: This routine invokes another routine.
+- `call_unnamed_routine_6`: The routine calls a subroutine.
+- `call_unnamed_routine_7`: This routine performs a call to another routine.
+- `call_unnamed_routine_8`: The routine executes a call to a different routine.
+- `call_unnamed_routine_9`: This routine jumps to another routine.
+- `call_unnamed_routine_10`: The routine calls another routine.
+- `update_pointer_via_offset_19`: Adds a constant value to a pointer stored in a memory location and stores the result back to that same location.
+- `update_pointer_via_offset_20`: Increments a value stored at a memory location by a constant offset.
+- `update_pointer_via_offset_21`: Adds a constant value to a pointer stored in a memory location and stores the result back into that same location.
+- `update_pointer_via_offset_22`: Loads a value from a memory location calculated by adding an offset to a base address and stores the result into another memory location.
+- `load_byte_to_memory_6`: Loads a single byte from a memory location into a register and then stores that register's value into a different memory location via a pointer.
+- `update_pointer_via_offset_23`: Adds a value to a pointer stored in a memory location and stores the result back to that same location.
+- `load_byte_to_memory_7`: Loads a single byte from a memory location into a register and stores it into a different memory location via a pointer.
+- `update_pointer_via_offset_24`: Adds a value from a register to a pointer stored in a global variable and stores the result back to that variable.
+- `load_byte_from_pointer_23`: Loads a single byte from a memory location pointed to by a value in a register into another register.
+- `store_byte_via_pointer_6`: Loads a byte from a memory location into a register and stores that value into a different memory location using a pointer.
+- `load_byte_from_pointer_24`: Loads a single byte from a memory location pointed to by a register into another register.
+- `load_byte_from_pointer_25`: Loads a byte from a memory location pointed to by a value in a register into another register.
+- `frag_lea_move_moveq_jsr`: Short code fragment that loads the address of a location in the code into a4, then copies 12 to the memory just below a3 (moving a3 down), then loads the address of the memory at an offset from a6 into a0, then loads 1 into d0, then calls another routine.
+- `copy_byte_to_memory_3`: Copies a single byte from a memory location pointed to by a register into another memory location pointed to by a different register.
+- `load_byte_to_memory_8`: Loads a single byte from a memory location pointed to by a register into another memory location pointed to by a different register.
+- `load_pointer_from_table_8`: loads a value from a table into a register and then calls another routine using that value as an address.
+- `update_pointer_via_offset_25`: Increments a value stored at a memory location pointed to by a register by a fixed amount.
+- `load_byte_to_memory_9`: loads a byte from a memory location into a register and stores it at a different address in memory.
+- `update_pointer_via_offset_26`: Loads a value from a memory location calculated by adding an offset to a base address and stores the result into another memory location.
+- `fetch_pointer_from_table`: Loads a word from a memory table into a register using an offset.
+- `store_word_via_pointer`: Loads a word from a memory location into a register and stores it into a different memory location using a pointer.
+- `call_system_trap_variant`: Loads an address into a4, stores the value 7 into a location pointed to by a3, loads an address into a0 from a6, sets d0 to 1, and calls a routine at a fixed address.
+- `load_skipped_data_2`: The routine contains no visible instructions in the provided snippet.
+- `load_byte_indirect_2`: Loads a byte from a memory location pointed to by a value stored in a global variable and stores it into another global variable.
+- `load_skipped_data_3`: No instructions are available for analysis in this routine.
+- `load_skipped_data_4`: The routine's logic is omitted from the provided data.
+- `update_pointer_via_offset_27`: Increments a pointer stored in a memory location by a value held in a register.
+- `load_skipped_data_5`: The routine contains no executable code in the snippet.
+- `store_multiple_values`: Stores a byte into a memory location via a pointer and transfers a register value to another memory location using pointers.
+- `store_byte_via_pointer_7`: Stores a single byte from a register into a memory location pointed to by a value stored in another register.
+- `load_skipped_data_6`: No instructions are present in this routine.
+- `store_data_via_pointers`: The routine stores a byte into a memory location pointed to by one register and loads a value from a register into another memory location.
+- `store_byte_via_pointer_8`: Stores a single byte from a register into a memory location pointed to by a value in another register.
+- `load_register_to_memory_2`: Loads a value from a register into a memory location specified by a pointer stored in another register.
+- `load_and_increment_byte`: Loads a byte from a memory location into a register and stores it into a destination pointed to by another register, then increments a pointer and loads a value from the resulting address.
+- `load_byte_to_pointer`: Loads a byte from a memory location into a register and stores it into a destination pointed to by another register.
+- `load_incremented_value`: Increments a pointer in one register and loads the value from the resulting address into another register.
+- `increment_pointer_and_load`: Increments a pointer stored in a register and loads the value from the new memory address into another register.
+- `load_incremented_pointer`: The routine increments a pointer in one register and loads the value from the resulting address into another register.
+- `update_pointer_and_store_byte`: The routine updates a pointer by adding a constant offset and stores a byte into a memory location pointed to by another register.
+- `update_pointer_via_offset_28`: Adds a constant value to a pointer stored in a register and then stores the result back into the same memory location.
+- `store_byte_via_pointer_9`: Stores a single byte from a register into a memory location pointed to by another register.
+- `load_pointer_to_register_2`: Loads a memory address from a global variable into a register.
+- `load_register_value`: loads a value from a memory location into a register.
+- `load_pointer_to_register_3`: Loads a value from a memory location into a register.
+- `execute_unnamed_routine_7`: An unnamed routine that calls two other unnamed routines.
+- `update_pointer_via_offset_29`: Calculates a new memory address by adding an offset to a value stored in a global variable and stores the result back into that same global variable.
+- `load_pointer_from_table_9`: Loads a value from a table into a register using an offset.
+- `load_pointer_from_table_10`: loads a value from a table into a register using an offset and then calls another routine.
+- `update_indirect_pointer_data_2`: Increments a value at a memory location via a pointer and writes a byte to a separate location.
+- `copy_byte_from_pointer`: Retrieves a single byte from a memory location pointed to by a register and stores it into a destination address.
+- `copy_byte_to_memory_16`: Copies a single byte from a source memory address into a destination memory address using a pointer to perform the write operation.
+- `decrement_pointer_by_register`: Decrements a pointer stored in a memory location by the value currently held in a register.
+- `increment_pointer_by_register_2`: Increments a pointer stored in a memory location by the value currently held in a register.
+- `update_pointer_via_offset_84`: Increments a pointer stored in a memory location by a value held in a register.
+- `decrement_global_pointer`: Decrements a value stored at a memory location pointed to by a register.
+- `increment_global_pointer_10`: Increments a value stored at a memory location pointed to by a register.
+- `increment_value_by_offset`: Increments a value stored at a memory location by a constant offset.
+- `update_pointer_via_offset_83`: Increments a value stored at a memory location by a constant offset.
+- `write_byte_indirect`: Writes a single byte from a register into a memory location held in another register via an indirect pointer.
+- `store_byte_via_indirect_pointer_6`: Stores a single byte from a register into a memory location pointed to by another register.
+- `store_byte_via_indirect_pointer_5`: Takes a byte value from a register and writes it to a memory location stored in a pointer held within another register.
+- `write_byte_via_indirect_pointer`: Stores a single byte from a register into a memory location defined by a pointer held in another register.
+- `update_byte_via_pointer_12`: Stores a byte from a register into a memory location pointed to by a pointer stored in another register.
+- `write_byte_via_pointer_22`: Writes a single byte to a memory location specified by a pointer.
+- `write_byte_via_pointer_21`: Writes a single byte to a memory location specified by a pointer.
+- `write_byte_via_pointer_20`: Writes a single byte from a register into a memory location pointed to by another register.
+- `copy_byte_to_memory_15`: Copies a single byte from a source address to a destination address using a pointer.
+- `copy_byte_via_pointer_7`: Copies a single byte from one memory location to another using a pointer where the source and destination addresses are retrieved from memory.
+- `transfer_byte_via_pointer_6`: Loads a byte from one memory location and stores it in a different memory location using a pointer.
+- `transfer_byte_via_pointer_5`: Loads a byte from a memory location into a register and stores it in a different memory location using a pointer.
+- `transfer_byte_via_pointer_4`: loads a byte from a memory location into a register and stores that value into a different memory location using a pointer.
+- `increment_indirect_pointer_value_35`: Increments a 32-bit value located at a memory address stored in a register.
+- `increment_indirect_pointer_value_34`: Performs an indirect increment operation on a 32-bit value located at a memory address stored in a register.
+- `increment_indirect_pointer_value_33`: Increments a 32-bit value stored at a memory location pointed to by a register.
+- `increment_indirect_pointer_value_32`: Increments a value stored at a memory location pointed to by a register.
+- `increment_indirect_pointer_value_31`: Increments a value stored at a memory location pointed to by a register.
+- `increment_indirect_pointer_value_30`: Increments a value stored at a memory location pointed to by a register.
+- `increment_indirect_memory_value`: Increments a value stored at a memory location pointed to by a register.
+- `increment_indirect_pointer_value_29`: Increments a value stored at a memory location pointed to by a register.
+- `increment_indirect_pointer_value_28`: Increments a value stored at a memory location pointed to by a register using a pointer held in a register to access the address.
+- `increment_indirect_value_7`: Increments a value stored at a memory location pointed to by a register by a constant amount.
+- `update_pointer_via_offset_80`: Increments a value stored at a memory location pointed to by a register by a constant amount and stores the updated value back into that same location.
+- `update_byte_via_indirect_pointer`: Stores a single byte from a register into a memory location using a pointer and increments a separate byte at a different memory location using another pointer.
+- `update_indirect_pointer_via_register`: Stores a byte from a register into a memory location using a pointer and increments a byte at a separate memory location via a pointer.
+- `update_indirect_pointer_data`: Increments a value at a memory location through a pointer and writes a byte to a separate location.
+- `increment_pointer_value_6`: Increments a byte at a memory location through a pointer and stores a byte from a register into a different memory location.
+- `update_indirect_byte_value`: Increments a byte at a memory location pointed to by a register and stores a byte from another register into a different memory location.
+- `update_indirect_byte_3`: Increments a value at a memory address held in a register and stores a byte from a register into a different memory location.
+- `update_indirect_pointer_and_write_3`: Increments a value at a memory location pointed to by a register and then writes two bytes of data to two different memory locations.
+- `increment_indirect_pointer_value_27`: Increments a value located at a memory address stored within a register by performing an indirect increment on the data pointed to by the register.
+- `increment_indirect_value_6`: Increments a value stored at a memory location pointed to by a register by applying an increment operation to the data at that address.
+- `increment_indirect_pointer_value_26`: Increments a value located at a memory address stored in a register.
+- `increment_indirect_pointer_value_25`: Increments a value located at a memory address stored in a register using a pointer to access and modify the location.
+- `increment_indirect_value_5`: Increments a value at a memory location pointed to by a register.
+- `increment_indirect_pointer_value_24`: Increments a byte located at a memory address stored in a register using a specific offset.
+- `update_pointer_via_offset_79`: Increments a value stored at a memory location pointed to by a register using an offset to access a specific byte within a data structure.
+- `write_byte_via_pointer_19`: Stores a byte from a register into a memory location pointed to by another register through a single indirect byte write.
+- `store_byte_via_pointer_69`: Stores a byte from a register into a memory location pointed to by a value in another register.
+- `modify_stack_and_pointer`: Decrements the stack pointer and stores a constant value.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `store_byte_via_pointer_68`: Stores a single byte from a register into a memory location pointed to by a register.
+- `copy_byte_to_memory_14`: Copies a single byte from a source address to a destination address using pointers held in registers.
+- `copy_byte_via_pointer_6`: Loads a byte from a memory location pointed to by a register and stores it at a destination address held in another register.
+- `copy_byte_from_source_4`: Loads a byte from a memory location and stores it at a different destination address.
+- `relay_byte_through_pointer`: Takes a single byte from a register and stores it into the memory location addressed by a second register, delegating the store to a helper.
+- `write_byte_via_pointer_18`: Stores a single byte from a register into a memory location pointed to by another register.
+- `store_byte_via_pointer_67`: Takes a byte from a register and writes it to a memory location stored in another register.
+- `copy_text_string_bytes`: Routine of five instructions that is called from store_byte_via_pointer_67 and calls store_byte_via_pointer_66 to store a byte from a register into memory addressed by another register.
+- `store_byte_via_pointer_66`: Stores a single byte from a register into a memory location held in another register.
+- `update_byte_via_pointer_11`: Stores a single byte from one register into a memory location held in another register.
+- `store_byte_via_pointer_65`: Stores a single byte from one register into a memory address held in another register.
+- `update_byte_via_pointer_10`: Writes a single byte from a register into a memory location specified by a pointer held in another register.
+- `write_byte_via_pointer_17`: Takes a byte from a register and writes it to a memory location pointed to by another register.
+- `copy_byte_to_memory_13`: Copies a single byte into a memory location.
+- `copy_byte_to_memory_12`: Copies a byte into a memory location.
+- `assign_byte_value`: Assigns a byte value to a memory address.
+- `update_indirect_pointer_and_write_2`: Increments a value at a memory location pointed to by a register and then writes two bytes of data to two different memory locations using a pointer.
+- `modify_byte_at_pointer_2`: Modifies a byte at a location pointed to by a register.
+- `transfer_byte_data`: Transfers a byte of data to a memory address.
+- `set_memory_byte`: Sets a byte at a specific memory location.
+- `update_byte_value`: Updates a byte in memory.
+- `write_byte_to_address_2`: Writes a single byte to a memory address.
+- `store_byte_to_memory_4`: Stores a byte into a memory location.
+- `move_byte_via_pointer_2`: Moves a byte from a register to a memory location specified by a pointer.
+- `move_byte_via_pointer`: Moves a byte between a register and a memory location specified by a pointer.
+- `test_byte_via_pointer`: Tests the value of a byte at a memory location specified by a pointer.
+- `compare_byte_via_pointer`: Compares a byte at a memory location specified by a pointer with a register.
+- `subtract_byte_from_pointer`: Subtracts a byte from a register from the byte at a memory location specified by a pointer.
+- `add_byte_to_pointer`: Adds a byte from a register to the byte at a memory location specified by a pointer.
+- `load_byte_via_pointer_11`: Loads a byte from a memory location specified by a pointer into a register.
+- `store_byte_via_pointer_64`: Stores a byte from a register into a memory location specified by a pointer.
+- `clear_byte_via_pointer`: Sets the byte at a memory location specified by a pointer to zero.
+- `decrement_byte_via_pointer`: Decrements the byte at a memory location specified by a pointer.
+- `update_byte_via_pointer_9`: Increments a byte at a memory location specified by a pointer and then stores a register value into that same location.
+- `increment_byte_via_pointer_2`: Increments the byte at a memory location specified by a pointer and then stores the value from a register into that same location.
+- `increment_byte_via_pointer`: Increments the value at a memory location specified by a pointer and then stores a byte from a register into that same location.
+- `store_byte_via_indirect_pointer_4`: Increments the value stored at a memory location pointed to by a register and then stores a byte from a register into a memory location through an indirect pointer.
+- `update_indirect_pointer_and_write`: Increments a value at a memory location pointed to by a register and then writes two bytes of data to two different memory locations using pointer-based operations.
+- `increment_indirect_pointer_target_2`: Increments the value stored at a memory location pointed to by a register using an indirect addressing mode to modify the data at the target address.
+- `increment_indirect_pointer_value_23`: Increments the value stored at a memory location pointed to by a register using an indirect addressing mode.
+- `increment_indirect_pointer_value_22`: Performs an indirect increment operation on a value in memory.
+- `increment_indirect_pointer_value_21`: Performs an indirect increment operation on a target memory address.
+- `increment_indirect_pointer_value_20`: Increments the value stored at a memory location pointed to by a register.
+- `increment_indirect_pointer_value_19`: Increments the value located at a memory address stored within a register.
+- `increment_indirect_value_4`: Increments a value located at a memory address stored within a register.
+- `increment_indirect_pointer_value_18`: Increments a value located at a memory address held within a register.
+- `increment_indirect_value_3`: Increments a value stored at a memory location pointed to by a register using an indirect update with an offset.
+- `update_pointer_via_offset_78`: Increments a value stored at a memory location pointed to by a register using an offset.
+- `store_byte_and_increment_pointer_8`: Stores a byte from a register into a memory location and increments the destination pointer.
+- `write_bytes_to_memory_2`: Writes two consecutive bytes from registers into memory locations using two different pointer-based operations.
+- `jump_to_null`: Performs an unconditional jump to a location containing no executable code.
+- `jump_to_empty_routine_3`: Performs a jump to a location containing no executable code.
+- `frag_nop_move_moveq_lea_rts`: Short code fragment that pauses for one no-operation step, then copies 273 to the memory just below a3 (moving a3 down), then loads 0 into d2, then loads the address of a fixed memory address into a2, then returns.
+- `jump_to_empty_routine_2`: Performs a jump to a routine that contains no executable code.
+- `jump_to_empty_routine`: Executes a jump to a routine that contains no executable code.
+- `call_empty_routine`: Performs a jump to another routine that contains no executable code.
+- `fetch_byte_via_pointer_2`: Loads a single byte from a memory location stored in a register into another register.
+- `fetch_byte_via_pointer`: Loads a single byte from a memory location stored in a register into another register.
+- `store_byte_via_pointer_63`: Stores a byte from a register into a memory location held in a pointer.
+- `write_byte_via_pointer_16`: Stores a byte from a register into a memory location held in a pointer.
+- `store_byte_via_pointer_62`: Serves as a wrapper for a single memory write operation that stores a byte into a location held in a pointer.
+- `update_byte_via_pointer_8`: Stores a single byte from a register into a memory location stored in a pointer.
+- `frag_nop_move_moveq_lea_rts_2`: Short code fragment that pauses for one no-operation step, then copies 320 to the memory just below a3 (moving a3 down), then loads 0 into d2, then loads the address of a fixed memory address into a2, then returns.
+- `write_byte_via_pointer_15`: Stores a single byte from a register into a memory location held in a pointer.
+- `store_byte_via_pointer_61`: Stores a single byte from a register into a memory location specified by a pointer.
+- `store_byte_via_pointer_60`: Stores a single byte from a register into a memory location specified by a pointer and then transfers control to another routine.
+- `store_byte_via_pointer_59`: Stores a byte from a register into a memory location specified by a pointer and then transfers control to another routine.
+- `write_bytes_to_memory`: Writes two consecutive bytes from registers into memory locations using two different pointer-based operations.
+- `store_byte_and_increment`: Stores a single byte from a register into a memory location specified by a pointer and then increments that pointer.
+- `write_byte_and_increment_pointer_2`: Stores a byte from a register into a memory location pointed to by another register and then increments that pointer.
+- `store_byte_and_increment_pointer_7`: Stores a single byte from a register into a memory location pointed to by another register and then increments that pointer.
+- `store_byte_and_increment_pointer_6`: Stores a single byte from a register into a memory location pointed to by another register and then increments that pointer by a fixed offset.
+- `add_value_to_global`: Adds the contents of a register to a global variable and stores the result back into that variable.
+- `update_pointer_and_store_byte_9`: Increments a value at a memory location pointed to by a register and then stores a byte from a register into a location specified by a pointer.
+- `store_byte_via_pointer_58`: Stores a single byte from a register into a memory location specified by a pointer held in another register.
+- `update_pointer_offset`: Increments a value stored at a memory location pointed to by a register.
+- `call_unnamed_routine_11`: Executes five instructions and calls another routine.
+- `execute_sequence_and_call`: The routine executes a short sequence of instructions and then calls another routine.
+- `write_byte_via_pointer_14`: Stores a single byte from a register into a memory location using a pointer held in a register.
+- `copy_byte_to_memory_11`: Copies a single byte from a source address to a destination address using a pointer to transfer data between two memory locations.
+- `copy_byte_from_source_3`: Copies a single byte from a source address to a destination address by taking an address as an argument.
+- `copy_byte_to_memory_10`: Copies a single byte from a source address to a destination address using a pointer to perform the transfer.
+- `copy_byte_from_source_2`: Copies a single byte from a source address into a destination address using a pointer to transfer data between two memory locations.
+- `copy_byte_to_memory_9`: Copies a single byte from a source address into a destination address.
+- `store_byte_via_pointer_57`: Performs a single byte write from a register to a destination address held in a pointer register.
+- `store_byte_via_pointer_56`: Writes a single byte from a data register to a memory location stored in another register.
+- `save_byte_to_memory`: Writes a byte from a data register to a memory address held in another register.
+- `write_byte_to_location`: Updates a single byte at a memory address provided by a register.
+- `update_byte_at_address`: Stores a byte into a memory location through a pointer.
+- `execute_fifteen_instructions`: Executes a sequence of fifteen instructions and calls another routine.
+- `execute_six_instructions`: Executes six instructions and calls another routine.
+- `load_byte_via_pointer_9`: Loads a byte from a memory location pointed to by a register into another register.
+- `load_byte_to_memory_10`: reads a byte from a memory location and stores it into another memory location via a pointer.
+- `increment_memory_value`: The routine increments a value stored at a memory location pointed to by a register and executes a sequence of instructions.
+- `update_ptr_offset`: Increments a value stored at a memory location pointed to by a register.
+- `load_pointer_from_table_11`: Loads a value from a table into a register using an offset.
+- `execute_twelve_instructions`: Executes a sequence of twelve instructions and calls another routine.
+- `execute_instructions_and_call`: The routine executes a sequence of instructions and calls another routine.
+- `update_pointer_via_offset_30`: Loads a value from a memory location calculated by adding an offset to a base address and stores the result into another memory location.
+- `load_word_from_pointer`: loads a 16-bit word from a memory location pointed to by a global variable into a register.
+- `store_byte_via_pointer_10`: Copies a single byte from a register into a memory location pointed to by another register.
+- `update_pointer_via_offset_31`: Adds a value from a register to a global variable and stores the result at the location pointed to by that variable.
+- `update_pointer_via_offset_32`: Adds a value from a register to a pointer stored in a global variable and stores the result back into that variable.
+- `store_byte_via_pointer_11`: Loads a byte from a memory location pointed to by a register and stores it into a different memory location pointed to by another register.
+- `update_pointer_offset_2`: Increments a value stored in a memory location by a constant amount.
+- `update_pointer_via_offset_33`: Loads a value from a memory location calculated by adding an offset to a base address and stores the result into another memory location.
+- `update_dual_pointers`: Loads a value from a memory location calculated by adding an offset to a base address and stores it in another location, then performs a similar operation to store a value into a global variable.
+- `store_byte_indirectly_2`: Writes a byte to a memory address stored in a register.
+- `assign_byte_to_pointer`: Transfers a byte from a register to a memory location indicated by a pointer register.
+- `set_byte_via_address`: Copies a byte into a memory location using an indirect addressing mode.
+- `modify_memory_byte`: Updates a byte in memory using a value from a data register.
+- `write_byte_at_pointer`: Performs a byte-sized write operation to a destination specified by a pointer.
+- `store_byte_to_memory_3`: Writes a single byte of data to a memory address held in a register.
+- `write_byte_via_pointer_13`: Writes a single byte from a data register into a memory location stored in a pointer register.
+- `update_pointer_via_offset_34`: Loads a value from a memory location calculated by adding an offset to a base address and stores the result into a global variable.
+- `store_byte_via_pointer_12`: Stores a single byte from a register into a memory location pointed to by another register.
+- `update_pointer_offset_3`: Increments a value stored at a memory location pointed to by a register.
+- `update_pointer_via_offset_35`: Calculates a new memory address by adding an offset to a value stored in a register and stores the result back into a global variable.
+- `update_pointer_via_offset_36`: Adds a constant value to a pointer stored in a register and then stores the result back into that same memory location.
+- `load_pointer_from_table_12`: loads a value from a table into a register and then calls another routine using that value as a pointer.
+- `update_pointer_via_offset_37`: adds a constant value to a pointer stored in a register and then stores the result into a global variable.
+- `store_byte_via_register_pointer`: Stores a single byte from a register into a memory location pointed to by another register and then executes two subsequent routines.
+- `update_byte_via_pointer_7`: Stores a byte from a data register into a memory location pointed to by another register.
+- `write_byte_via_pointer_12`: Stores a single byte from a data register into a memory location held in another register.
+- `store_byte_via_register`: Stores a single byte from a data register into a memory location pointed to by a register.
+- `update_and_store_byte`: Updates a memory address stored in a register and writes a single byte from a data register to that location.
+- `update_pointer_and_store_byte_8`: Updates a memory address held in a register and stores a single byte from a data register into that location.
+- `store_byte_via_pointer_55`: Writes a single byte from a register to a memory location stored in a global variable and then increments that pointer.
+- `frag_nop_move_moveq_lea_rts_3`: Short code fragment that pauses for one no-operation step, then copies 156 to the memory just below a3 (moving a3 down), then loads 0 into d2, then loads the address of a fixed memory address into a2, then returns.
+- `execute_subroutine_6`: Performs a single routine call.
+- `load_indirect_pointer`: Loads a memory address from a table into a register and then executes two subsequent routines.
+- `update_indirect_pointer_5`: Loads a memory address from a table into a register using a displacement and then executes two subsequent routines.
+- `update_pointer_via_lea`: Loads a memory address into a register using a displacement and then executes two subsequent routines.
+- `write_byte_and_advance_pointer_2`: Writes a single byte from a register to a memory location pointed to by a global variable and then updates that pointer via another routine.
+- `store_byte_via_pointer_54`: Writes a single byte from a register into a memory location addressed by a global pointer and subsequently increments that pointer.
+- `write_byte_to_incrementing_pointer`: Stores a byte from a register into a memory location pointed to by a global pointer, then increments that pointer by a constant value.
+- `increment_pointer_and_store_byte_5`: Increments a global pointer by a constant value and stores a byte from a register into the updated memory location.
+- `update_global_pointer_byte_2`: Increments a global pointer by a constant value and stores a byte from a register into the new memory location.
+- `store_byte_via_incremented_pointer_3`: Increments a global pointer by a constant value and stores a byte from a register into the resulting memory location.
+- `update_global_pointer_2`: Increments a pointer stored in a global memory location by a constant value and then executes two separate subroutines followed by a third routine.
+- `increment_global_pointer_9`: Adds a constant value to a pointer stored in a global memory location and updates that location with the new address.
+- `increment_pointer_and_store_byte_4`: Increments a pointer stored in a memory location by a specific value and then writes a byte from a register to the resulting address.
+- `store_byte_via_pointer_53`: Writes a byte from a register into a memory location using a pointer.
+- `write_byte_via_pointer_11`: Stores a single byte from a register into a memory location addressed by a pointer held in another register.
+- `store_byte_via_pointer_52`: Copies a single byte from a register into a memory location using a pointer held in a register.
+- `call_multiple_subroutines`: Performs two separate subroutine calls and then calls another routine.
+- `copy_text_to_pointer`: Stores one byte of data from a register into a memory location addressed through another register, and is called from call_multiple_subroutines.
+- `write_byte_via_pointer_10`: Writes a single byte from a register to a memory location pointed to by another register.
+- `store_byte_via_pointer_51`: Stores a single byte from a register into a memory address held in another register through an indirect memory write.
+- `store_byte_via_indirect_pointer_3`: Copies a single byte from a register into a memory location using a pointer stored in another register.
+- `store_byte_via_pointer_50`: Copies a single byte from a register into a memory location using a pointer stored in a register.
+- `call_two_routines_2`: Executes two separate subroutine calls.
+- `copy_byte_via_pointer_5`: Copies a single byte from a memory location into a destination address using a pointer stored in a register.
+- `copy_byte_to_memory_8`: Copies a single byte from a memory location pointed to by a register into a destination address stored in another register.
+- `increment_and_store_byte_2`: Increments a global pointer and stores a byte from a register at the original memory location.
+- `store_byte_at_pointer`: Writes a single byte from a register to a memory location stored in a global variable and increments that pointer.
+- `store_byte_via_pointer_49`: Writes a single byte from a register to a memory location pointed to by a global variable and increments that pointer.
+- `update_pointer_value_and_call_subroutines`: Increments a value at a memory location pointed to by a register and then executes two subsequent subroutine calls.
+- `increment_memory_value_via_pointer`: Increments a value stored at a memory location pointed to by a register by a fixed amount.
+- `increment_pointer_target`: Increments a value stored at a memory location pointed to by a register by a fixed amount.
+- `update_pointer_via_offset_77`: Increments a value stored at a memory location pointed to by a register by a fixed amount and uses the updated value to access another memory location.
+- `store_byte_and_increment_pointer_5`: Stores a single byte from a register into the memory location currently pointed to by a global pointer, then increments that pointer.
+- `store_byte_via_pointer_48`: Stores a single byte from a register into a memory location defined by a global pointer and then increments that pointer.
+- `execute_subroutine_calls`: Performs two calls to other routines.
+- `store_byte_and_increment_pointer_4`: Stores a single byte from a register into a memory location pointed to by a global pointer and subsequently increments that pointer.
+- `store_byte_via_pointer_47`: Stores a single byte from a register into a memory location pointed to by a global pointer and increments that pointer.
+- `update_global_pointer_byte`: Writes a single byte from a register into a memory location defined by a global pointer and subsequently increments that pointer.
+- `increment_pointer_and_store_byte_3`: Stores a byte from a register into a memory location pointed to by a global variable and increments that pointer.
+- `store_byte_via_pointer_46`: Stores a single byte from a register into a memory location pointed to by a global variable and increments that pointer.
+- `store_and_increment_memory`: Stores a byte into a memory location pointed to by a global variable and then increments that pointer and a value at another memory location.
+- `write_byte_and_advance_pointer`: Stores a single byte from a register into a memory location pointed to by a global variable and then increments that pointer.
+- `store_byte_and_increment_pointer_3`: Stores a byte from a register into a memory location pointed to by a global variable and then increments that pointer.
+- `store_byte_via_incrementing_pointer`: Stores a byte from a register into a memory location and then increments a global pointer.
+- `increment_and_store_byte`: Increments a global pointer and stores a byte from a register at the previous pointer location.
+- `store_byte_via_pointer_45`: Stores a single byte from a register into a memory location pointed to by a global pointer and then increments that pointer.
+- `increment_memory_via_offset_2`: Increments a value stored at a memory location by a fixed amount.
+- `increment_memory_via_offset`: Increments a value stored at a memory location by a fixed amount.
+- `update_pointer_via_offset_76`: Increments a value stored at a memory location by a fixed amount.
+- `store_byte_via_pointer_71`: Writes a byte from a register to the memory location addressed by a global pointer, then advances that pointer.
+- `store_byte_and_increment_pointer_2`: Stores a byte from a register into a memory location pointed to by a global pointer and then increments that pointer.
+- `store_byte_via_pointer_44`: Stores a single byte from a register into a memory location pointed to by a global pointer and then increments that pointer.
+- `execute_multiple_routines`: Performs six instructions and calls two other routines.
+- `update_pointer_and_store_byte_7`: Updates a global pointer and stores a byte from a register into the memory location it points to, while also copying a byte from another memory location into a register.
+- `update_pointer_and_store_byte_6`: Stores a byte from a register into a memory location pointed to by a global pointer and then copies a byte from another memory location to a new destination address.
+- `update_pointer_and_store_byte_5`: Updates a global pointer by storing a byte from a register and then copies a single byte from a memory location to a destination address.
+- `update_pointer_and_store_byte_4`: Updates a global pointer by storing a byte from a register and then copies a single byte from a memory location to a destination address using that updated pointer.
+- `update_pointer_and_store_byte_3`: Updates a global pointer by storing a byte from a register and then copies a single byte from a memory location to a destination address using that pointer.
+- `execute_unnamed_routine_5`: An unnamed routine that performs six instructions and calls two other routines.
+- `write_byte_via_pointer_9`: Copies a single byte from a memory location to a destination address using a pointer stored in a register.
+- `copy_byte_to_memory_7`: Copies a single byte from a memory location pointed to by a register into a destination address stored in another register.
+- `write_byte_via_pointer_8`: Stores a single byte from a data register into a memory location addressed by a global pointer and increments that pointer by one byte.
+- `store_byte_and_increment_pointer`: Stores a single byte from a data register into a memory location pointed to by a global pointer and then increments that pointer by one byte.
+- `store_byte_via_pointer_43`: Stores a byte from a data register into a memory location pointed to by a global pointer and increments that pointer by one byte.
+- `transfer_and_store_dual_pointers`: Moves the contents of a data register into a memory location pointed to by an address in another register and stores two separate bytes into memory locations held in pointer registers.
+- `transfer_register_to_memory_2`: Moves the contents of a data register into a memory location pointed to by an address stored in another register.
+- `store_byte_via_incremented_pointer_2`: Increments a global pointer by a value in a register and stores a byte from another register into the new location.
+- `increment_pointer_and_store_byte_2`: Increments a global pointer by a value held in a register and stores a byte from another register into the updated memory location.
+- `store_byte_via_incremented_pointer`: Increments a global pointer by a value held in a register and stores a byte from another register into the resulting memory location.
+- `increment_pointer_and_store_byte`: Increments a global pointer by a value in a register and stores a byte from another register into the new memory location.
+- `write_dual_byte_pointers_2`: Stores two separate bytes into memory locations held in pointer registers.
+- `update_global_pointer_with_offset`: Adds a value from a register to a pointer stored in a global variable and updates that variable with the result.
+- `increment_global_pointer_8`: Adds the contents of a register to a pointer stored in a global variable and writes the updated address back to that variable.
+- `execute_unnamed_routine_4`: Executes five instructions and transfers control to another routine.
+- `update_byte_via_pointer_6`: Stores a single byte from a data register into a memory location pointed to by an address register.
+- `write_byte_to_pointer_5`: Stores a byte from a data register into a memory location held in a pointer register and then transfers control to another routine.
+- `write_dual_byte_pointers`: Stores two separate bytes into memory locations held in pointer registers.
+- `store_byte_via_pointer_42`: Stores a single byte from a data register into a memory address held in a pointer register.
+- `update_byte_via_pointer_5`: Stores a single byte from a data register into a memory location contained within a pointer register.
+- `store_byte_via_pointer_41`: Stores a single byte from a data register into a memory location held in a pointer register.
+- `store_byte_via_offset`: Stores a byte from a data register into a memory location pointed to by a register.
+- `copy_byte_to_indirect_pointer`: Copies a byte from a register into a memory location pointed to by a pointer, then increments that pointer.
+- `store_byte_via_pointer_40`: Stores a single byte from a register into a memory location held in another register.
+- `store_byte_via_pointer_39`: Stores a single byte from a register into a memory location held in another register and then transfers control to another routine.
+- `forward_byte_store_tail_call`: Performs a tail transfer of control to the byte-store routine, which in turn writes a register byte through a pointer held in another register.
+- `update_byte_via_pointer_4`: Stores a byte from a register into a memory location pointed to by another register and then transfers control to another routine.
+- `store_byte_via_pointer_and_call`: Stores a single byte from a register into a memory location pointed to by another register and then transfers control to another routine.
+- `store_byte_and_call`: Writes a single byte from a register to a memory location held in another register and then transfers control to another routine.
+- `call_multiple_routines`: Executes a sequence of instructions that calls two other routines and then another routine.
+- `write_byte_to_pointer_4`: Stores a byte from one register into a memory location pointed to by another register.
+- `write_byte_via_pointer_6`: Writes a single byte from one register into a memory location pointed to by another register.
+- `store_byte_via_indirect_register`: Stores a single byte from one register into a memory location pointed to by another register.
+- `write_byte_via_pointer_5`: Writes a single byte from a register to a memory location held in another register.
+- `store_byte_via_pointer_38`: Writes a single byte from a register to a memory location stored in another register.
+- `call_two_routines`: Executes a sequence of instructions that calls two other routines.
+- `store_byte_via_pointer_37`: Takes a byte from a register and writes it to a memory location pointed to by another register.
+- `store_register_to_pointer`: Stores the contents of a register into a memory location pointed to by another register and then proceeds to execute two subsequent subroutines.
+- `store_register_via_pointer_2`: Stores the contents of a register into a memory location pointed to by another register and then executes two subsequent routines.
+- `update_pointer_and_execute_subroutines`: Stores a value from a register into a memory location pointed to by another register and then executes two subsequent routines.
+- `update_pointer_and_call_routines`: Updates a pointer in memory with a value from a register and then executes two subsequent routines.
+- `execute_multiple_subroutines_2`: Performs a sequence of instructions that calls two other routines.
+- `copy_byte_to_memory_6`: Loads a byte from a memory location into a register and stores it at a different address pointed to by another register.
+- `fetch_and_pass_sprite_pointer`: Retrieves a pointer from a memory location and passes it as an argument to another routine.
+- `fetch_sprite_pointer_and_update`: Loads a pointer from a memory location into a register and passes it to another routine to update a sprite position.
+- `update_sprite_position_via_pointer`: Loads a value from a memory location into a register and passes it to another routine to update a sprite position.
+- `update_sprite_position_5`: Reads a value from a memory location and stores it into a hardware register, then uses that register to update a coordinate in a table.
+- `execute_unnamed_routine_3`: A routine consisting of six instructions that calls two other routines.
+- `perform_unnamed_operation`: The routine performs a sequence of five instructions without any identifiable library calls or specific hardware register interactions.
+- `update_indirect_pointer_4`: Calculates a new memory address by adding a constant offset to a base pointer and stores the result into an indirect pointer.
+- `update_indirect_pointer_via_offset_2`: Calculates a new address by adding a constant offset to a base pointer and stores the result into an indirect pointer.
+- `update_indirect_pointer_by_offset`: Calculates a new address by adding a specific offset to a base pointer and updates an indirect pointer with the result.
+- `update_indirect_pointer_via_offset`: Calculates a new address by adding an offset to a base pointer and updates an indirect pointer with the result.
+- `increment_dual_pointers_5`: Increments two memory locations using addresses stored in registers.
+- `advance_indirect_pointer`: Adds a constant value to an address stored in a memory location and writes the updated address back to that same location.
+- `increment_indirect_pointer_3`: Adds a constant value to a base address and writes the resulting address into a pointer located at a specific memory location.
+- `update_indirect_pointer_3`: Calculates a destination address by adding a fixed offset to a base address and stores the resulting address into a pointer located at that destination.
+- `update_pointer_via_offset_75`: Calculates a destination address by adding a specific offset to a base address and updates a pointer at that location.
+- `update_pointer_via_offset_74`: Calculates a destination address by adding an offset to a base address and updates a pointer at that location, then stores a value into the resulting memory address.
+- `increment_dual_pointers_4`: Increments two memory locations using addresses stored in registers.
+- `increment_dual_pointers_via_register_2`: Increments the values stored at two separate memory locations using addresses held in registers.
+- `increment_dual_pointers_via_register`: Increments the values stored at two memory locations using addresses held in registers.
+- `increment_dual_pointers_3`: Takes two pointers and increments the values they point to.
+- `increment_dual_pointers_2`: Takes two pointers and advances the values they point to.
+- `frag_nop_move_moveq_lea_rts_4`: Short code fragment that pauses for one no-operation step, then copies 233 to the memory just below a3 (moving a3 down), then loads 0 into d2, then loads the address of a fixed memory address into a2, then returns.
+- `increment_dual_pointers`: Increments two separate memory locations using addresses stored in registers by receiving two pointers and updating the values they point to.
+- `update_pointer_via_offset_38`: Calculates a new memory address by adding a signed offset to a value stored in a global variable and stores the result back into that same global variable.
+- `update_pointer_via_offset_39`: Loads a value from a memory location calculated by adding an offset to a pointer and stores the result into another memory location.
+- `update_pointer_via_offset_40`: Loads a value from a memory location calculated by adding an offset to a global pointer, then stores that value into another memory location via a different pointer.
+- `update_dual_pointer_pairs`: Increments two pairs of memory locations by values retrieved from a specific offset relative to a pointer.
+- `increment_indirect_pointer_pair_2`: Loads two addresses from a memory location and increments the values stored at those target addresses.
+- `increment_dual_pointer_pairs_twice`: Calls two separate routines that each increment two memory locations using values stored in a pair of pointers.
+- `increment_dual_pointer_pairs_2`: Increments two separate memory locations using values stored in a pair of pointers.
+- `increment_dual_pointer_pairs`: Increments two separate memory locations using values stored in a pair of pointers.
+- `increment_dual_memory_pointers_2`: Increments two separate memory locations using addresses stored in registers.
+- `increment_indirect_pointer_pairs_3`: Increments two memory locations using values stored in a pair of pointers.
+- `increment_dual_memory_pointers`: Increments two separate memory locations using addresses stored in registers by calling another routine twice with different register values.
+- `increment_dual_indirect_pointers`: Increments two memory locations using values stored in a pair of pointers.
+- `increment_indirect_pointer_pairs_2`: Increments two memory locations by using addresses stored in a pair of pointers.
+- `increment_indirect_pointer_pairs`: Increments two memory locations by using addresses stored in a pair of pointers.
+- `increment_indirect_pointer_pair`: Increments two separate memory locations using addresses stored in registers by performing an increment operation on the values located at those addresses.
+- `increment_indirect_memory_values_pair_2`: Increments the values stored at two memory locations retrieved from a table via pointers.
+- `increment_indirect_memory_values_pair`: Increments two separate memory locations using addresses stored in registers.
+- `update_indirect_memory_pointers`: Retrieves two memory addresses from a table and increments the values stored at those locations.
+- `increment_indirect_memory_values`: Increments two separate values located at memory addresses held in registers.
+- `increment_indirect_pointer_value_17`: Increments a value stored at a memory location pointed to by a register and updates another value using a base address and an offset.
+- `increment_indirect_pointer_value_16`: Increments a value located at a memory address held in a register and updates a global variable using a base address and an offset.
+- `increment_indirect_pointer_and_offset`: Increments a value at a memory location pointed to by a register and updates a global variable using a base address and an offset.
+- `increment_indirect_pointer_value_15`: Increments a value stored at a memory location pointed to by a register.
+- `update_pointer_offset_20`: Increments a value stored at a memory location pointed to by a register.
+- `update_pointer_offset_4`: Increments a value stored at a memory location pointed to by a register.
+- `update_pointer_via_offset_41`: Loads a value from a memory location calculated by adding an offset to a register and stores the result into another memory location.
+- `update_memory_pointer`: Calculates a new address by adding an offset to a register and stores the resulting value into a memory location.
+- `update_global_via_offset`: Calculates a memory address by adding an offset to a base address and stores the resulting value into a global variable.
+- `increment_value_via_pointer`: Increments a value stored in a memory location using a pointer held in a register.
+- `increment_global_pointer_7`: Increments a memory pointer stored in a global variable by the value held in a register.
+- `increment_pointer_via_register`: Increments a memory pointer stored in a global variable by the value currently held in a register.
+- `increment_memory_pointer`: Increments a pointer stored in a memory location by the value held in a register.
+- `update_pointer_via_offset_42`: Loads a value from a memory location calculated by adding an offset to a base address and stores the result into a global variable.
+- `execute_short_sequence`: Performs a five instruction sequence and calls another routine.
+- `execute_sequence_and_update_pointer`: Executes a short sequence of instructions and loads a value from a memory location calculated by adding an offset to a global pointer into another memory location.
+- `increment_pointer_by_register`: Increments a pointer stored in a memory location by the value held in a register.
+- `advance_pointer_by_offset`: Adds a register-held offset to a pointer stored in memory and writes the result back, delegating the arithmetic to a helper routine.
+- `increment_pointer_via_offset_3`: Increments a pointer stored in a memory location by a value held in a register.
+- `update_pointer_via_offset_73`: Increments a pointer stored in a memory location by a value held in a register.
+- `increment_pointer_via_offset_2`: Increments a pointer stored in a memory location by a value held in a register.
+- `update_pointer_via_offset_72`: Increments a pointer stored in a memory location by a value held in a register and stores the updated address back into that location.
+- `increment_indirect_pointer_value_14`: Increments the value stored at the address held in a global pointer and then increments that pointer by a fixed offset.
+- `increment_indirect_pointer_value_13`: Increments the value stored at a memory location pointed to by a global pointer and then increments that pointer by a fixed offset.
+- `increment_indirect_pointer_value_12`: Increments the value stored at the memory location pointed to by a global pointer and then increments that pointer by a fixed offset.
+- `increment_indirect_pointer_value_11`: Increments a value located at the address stored in a global pointer and then increments that pointer by a fixed offset.
+- `increment_global_pointer_indirect_value`: Increments a value at a memory location pointed to by a global pointer and then increments the pointer itself by a constant offset.
+- `increment_global_pointer_indirect`: Increments a value at a location stored in a global pointer and then updates that pointer by a constant offset.
+- `update_pointer_via_offset_43`: Loads a value from a memory location calculated by adding an offset to a global pointer, then stores that value into another memory location pointed to by a different register.
+- `run_minimal_logic`: Contains five instructions and calls another routine.
+- `execute_small_routine`: A five instruction routine that calls another routine.
+- `update_pointer_via_offset_44`: adds a constant value to a pointer stored in a memory location and writes the result back to that same location.
+- `update_pointer_via_offset_45`: Increments a value stored at a memory location pointed to by a register.
+- `execute_five_instructions`: Performs five instructions and calls another routine.
+- `update_pointer_via_offset_46`: Increments a pointer stored in a global variable by a value retrieved from another global variable.
+- `execute_minimal_logic`: Executes a small sequence of instructions and calls another routine.
+- `increment_indirect_pointer_value_10`: Increments the value stored at the memory location pointed to by a global pointer and then increments that pointer by a constant offset.
+- `increment_indirect_pointer_value_9`: Increments the value located at the address stored in a global pointer and then increments that pointer by a constant offset.
+- `increment_indirect_pointer_value_8`: Increments a value located at the address stored in a global pointer and then increments that pointer by a constant offset.
+- `increment_indirect_pointer_value_7`: Increments a value stored at a memory location pointed to by a global pointer and then updates that pointer by a constant offset.
+- `increment_indirect_pointer_value_6`: Increments a value at a memory location pointed to by a global pointer and then updates that pointer by adding a constant offset.
+- `increment_indirect_pointer_and_value`: Increments a value located at an address stored in a global pointer and then updates that pointer by a fixed offset.
+- `increment_indirect_pointer_value_5`: Increments a value located at an address stored in a global pointer and then updates that pointer by a fixed offset.
+- `increment_pointer_via_indirect_offset`: Increments a value at an address stored in a global pointer and then updates that pointer by a fixed offset.
+- `increment_indirect_pointer_offset_2`: Increments a value located at an address stored in a global pointer and then updates that global pointer by a fixed offset.
+- `increment_indirect_pointer_offset_value`: Increments a value stored at a memory location defined by a global pointer and updates the pointer itself by a constant offset.
+- `increment_indirect_pointer_offset`: Increments a value stored at a memory location pointed to by a global pointer and then updates a memory location by adding a specified offset.
+- `update_indirect_pointer_offset_4`: Increments a value stored at a memory location pointed to by a global pointer and then updates a memory location by adding a specified offset to the value retrieved from that address.
+- `increment_indirect_pointer_value_4`: Increments a value stored at a memory location pointed to by a global pointer.
+- `increment_indirect_pointer_value_3`: Retrieves a pointer from a memory address and increments the value located at that destination.
+- `increment_indirect_pointer_2`: Increments a pointer stored in a memory location by a constant value and writes the updated address back to that same memory location.
+- `increment_indirect_pointer_via_register`: Increments a pointer stored in a memory location by a constant value and updates that memory location with the new address using a value held in a register.
+- `increment_indirect_pointer`: Adds a constant value to a pointer stored in a memory location and updates that location with the new address.
+- `update_indirect_pointer_offset_3`: Updates a memory location by adding a specified offset to the value stored at an address retrieved from that location.
+- `update_indirect_pointer_offset_2`: Retrieves a value from a memory location, adds a specified offset to it, and writes the resulting address back to that same location.
+- `update_indirect_pointer_offset`: Calculates a new destination address by adding an offset to a value retrieved from a pointer and writes the result back to that pointer location.
+- `update_indirect_pointer_target`: Calculates a destination address by adding an offset to a pointer and updates the value at that location using an indirect pointer update routine.
+- `update_indirect_pointer_2`: Loads a value from a memory location calculated by adding an offset to a pointer, then stores that value into another memory location.
+- `move_value_via_offset`: Loads a value from a memory location calculated by adding an offset to a pointer and stores it into a destination address held in another pointer.
+- `execute_unnamed_sequence`: Performs a sequence of six instructions involving multiple calls to other routines.
+- `write_byte_via_pointer_4`: Stores a single byte from a register into a memory location using a pointer held in another register.
+- `store_byte_via_pointer_36`: Stores a single byte from a register into a memory location through a pointer held in another register.
+- `increment_indirect_pointer_target`: Increments the value stored at the memory address held within a register.
+- `increment_indirect_pointer_value_2`: Increments the value stored at the memory address held within a register by performing an indirect increment operation on a pointer's target.
+- `increment_indirect_pointer_value`: Increments the value stored at the memory address held within a register.
+- `increment_indirect_long_pointer`: Increments a longword value located at the memory address stored in a register.
+- `increment_indirect_long`: Increments a longword value located at the memory address contained within a register.
+- `increment_indirect_value_via_register`: Increments a value located at the memory address contained within a register using a pointer held in a register.
+- `increment_indirect_value_2`: Increments a value stored at a memory location pointed to by a register through an indirect update.
+- `update_pointer_via_offset_71`: Increments a value stored at a memory location pointed to by a register and uses the result as an offset to access another memory location.
+- `update_global_pointer_via_offset_2`: Calculates a new address by adding a constant offset to a global pointer and stores the result in a memory location.
+- `increment_pointer_value_5`: Increments a value stored at a memory location pointed to by a register and then calls another routine.
+- `advance_pointer_by_increment`: Advances a pointer-held location by stepping the pointer forward and then calling the memory-increment helper on the updated address.
+- `increment_memory_via_pointer`: Increments a value stored at a memory location held in a register by a constant amount.
+- `increment_global_via_pointer`: Loads a value from a memory location pointed to by a register and increments that value by a constant amount.
+- `increment_global_value`: Increments a value stored in a global memory location by a constant amount.
+- `update_indirect_pointer`: Loads a value from a memory location calculated by adding a constant offset to a base address and stores the result into a different memory location.
+- `increment_pointer_value_4`: Increments a value stored at a memory location pointed to by a register and calls another routine.
+- `copy_byte_from_source`: Copies a single byte from a memory location to a destination using two global pointers.
+- `copy_byte_via_global_pointers`: Copies a single byte from a memory location to another destination using addresses retrieved from two global variables.
+- `copy_byte_from_global_3`: Loads a single byte from a memory location defined by a global variable and writes it to a destination memory location defined by another global variable.
+- `copy_byte_via_globals_2`: copies a single byte from a memory location pointed to by one global variable to a destination memory location pointed to by another global variable.
+- `copy_byte_from_global_2`: Copies a single byte from a memory location pointed to by a global variable to a destination memory location pointed to by another global variable.
+- `copy_byte_via_globals`: Copies a single byte from a memory location pointed to by one global variable to a destination memory location pointed to by another global variable.
+- `update_pointer_offset_5`: Increments a value stored at a memory location pointed to by a register.
+- `update_pointer_via_offset_47`: Loads a value from a memory location calculated by adding an offset to a pointer and stores the result into another memory location.
+- `update_pointer_from_offset`: Loads a value from a memory location calculated by adding a constant offset to a pointer and stores the result into another memory location.
+- `store_byte_via_pointer_13`: Loads a byte from a memory location into a register and then stores that byte into a different memory location using a pointer stored in another register.
+- `load_byte_to_memory_11`: loads a byte from a memory location into a register and then stores that byte into another memory location via a pointer.
+- `load_byte_via_pointer_10`: Reads a single byte from a memory location stored in a register and saves it into another memory location pointed to by a different register.
+- `store_byte_via_pointer_26`: Loads a byte from a memory location into a register and stores that byte into a different memory location using a pointer held in a register.
+- `copy_byte_from_global`: Loads a byte from a memory location pointed to by a global variable and copies it to a second memory location pointed to by another global variable.
+- `copy_byte_via_pointers_2`: Copies a single byte from a memory location pointed to by one global variable into a memory location pointed to by another global variable.
+- `copy_byte_via_pointers_alt_2`: Copies a single byte from a memory location pointed to by a global pointer into another location pointed to by a second global pointer.
+- `copy_byte_via_pointers_alt`: Copies a single byte from one memory location to another using two global pointers that are both incremented by fixed offsets.
+- `copy_byte_via_pointers`: Copies a single byte from a memory location to another destination using two global pointers that are both incremented by fixed offsets.
+- `store_byte_via_pointer_14`: Loads a byte from a memory location into a register and stores that byte into a different memory location using a pointer held in another register.
+- `update_pointer_via_indirect_addressing`: Loads a value from a memory location pointed to by a global variable and stores it into another memory location pointed to by a different global variable.
+- `load_byte_from_pointer_26`: Loads a single byte from a memory location specified by a pointer stored in a register and stores it into another register.
+- `load_word_from_pointer_2`: loads a 16-bit word from a memory location pointed to by a register into another register.
+- `load_byte_indirect_4`: Loads a byte from a memory location pointed to by a value stored in a global variable into a register.
+- `load_byte_indirect_3`: loads a byte from a memory location pointed to by a value stored in a global variable into a register.
+- `load_address_to_register`: Loads a constant value into a register using a PC-relative load address instruction.
+- `store_byte_via_pointer_15`: Stores a single byte from a register into a memory location pointed to by a global variable.
+- `load_pointer_to_register_4`: Loads a memory address from a global variable into a register.
+- `load_pointer_from_table_13`: Loads a pointer from a memory table into a register and passes it as an argument to another routine.
+- `load_pointer_from_table_14`: Loads a word from a memory table into a register using an offset.
+- `update_indirect_and_offset_pointers`: Loads a value from a memory location pointed to by an indirect register into another location and loads a value from a memory location calculated by adding an offset to a base address into another location.
+- `update_pointer_via_indirect_register`: Loads a value from a memory location pointed to by an indirect register and stores it into another memory location pointed to by a different register.
+- `store_byte_via_pointer_16`: Loads a byte from a memory location into a register and then stores that byte into a different memory location using a pointer held in another register.
+- `update_pointer_via_offset_48`: Loads a value from a memory location calculated by adding an offset to a base address and stores the result into another memory location.
+- `update_pointer_via_offset_49`: Increments a value stored at a memory location pointed to by a register.
+- `load_byte_from_pointer_27`: Loads a single byte from a memory location pointed to by a value stored in a register into another register.
+- `increment_pointer_value_3`: Increments a value stored at a memory location pointed to by a register.
+- `call_indirect_function`: Loads a function address from a memory location into a register and executes it.
+- `update_pointer_via_offset_50`: Loads a value from a memory location calculated by adding an offset to a base address and stores the result into another memory location.
+- `load_pointer_from_table_15`: Loads a value from a table into a register using an offset.
+- `call_via_offset`: Calculates an address by adding an offset to a register and calls the resulting address.
+- `execute_subroutine_logic`: This routine performs a series of operations and calls another routine.
+- `load_address_to_register_2`: loads a constant value into a register using a relative address calculation.
+- `update_pointer_via_offset_66`: Calculates an address by adding an offset to a value stored in a register and then calls another routine using that address.
+- `load_address_into_register`: Loads a constant value into a register using a PC-relative load effective address instruction.
+- `update_pointer_via_offset_51`: Loads a value from a memory location calculated by adding an offset to a base address and stores the result into another memory location.
+- `execute_subroutine_logic_2`: This routine performs several instructions and calls another routine.
+- `execute_subroutine_logic_3`: This routine executes a sequence of instructions and calls another routine.
+- `update_pointer_offset_6`: Increments a value stored at a memory location pointed to by a register.
+- `update_pointer_via_offset_52`: Adds a constant value to a pointer stored in a memory location and writes the result back to that same location.
+- `perform_unnamed_call`: Executes a sequence of instructions and calls another routine.
+- `perform_unnamed_call_2`: Contains sixteen instructions and invokes a separate routine.
+- `perform_unnamed_call_3`: Processes sixteen instructions before calling another routine.
+- `execute_subroutine_logic_4`: Performs a short sequence of instructions and calls another routine.
+- `load_address_into_register_2`: loads a constant value into a data register using a long immediate operand.
+- `update_pointer_via_indirect_register_4`: Loads a value from a memory location pointed to by an indirect register and stores it into a global variable.
+- `perform_unnamed_call_4`: Executes nine instructions and calls another routine.
+- `perform_minimal_call`: A three-instruction routine that calls another routine.
+- `perform_unnamed_call_6`: Executes a small block of code and then calls another routine.
+- `perform_minimal_call_2`: Contains three instructions and invokes another routine.
+- `update_pointer_via_offset_53`: Adds a value from a register to a base address stored in a global variable and stores the result back into that same global variable.
+- `perform_unnamed_call_5`: Contains twelve instructions and calls another routine.
+- `execute_logic_sequence`: Runs a series of instructions before calling another routine.
+- `update_pointer_offset_7`: Increments a value stored at a memory location pointed to by a register.
+- `load_address_to_register_3`: Loads a constant value into a register.
+- `load_address_to_register_4`: Moves a specific address into a register.
+- `load_and_copy_byte`: Loads a constant value into a register and copies a single byte from one memory location to another.
+- `increment_pointers_and_copy_byte`: Increments two global pointers by fixed offsets and copies a single byte from one memory location to another.
+- `update_global_pointers_3`: Increments two global pointers by constant offsets and copies a single byte from one memory location to another.
+- `update_global_pointers_2`: Updates two global pointers by adding constant offsets to their base addresses and copies a single byte from one memory location to another.
+- `copy_byte_via_pointer_3`: Copies a single byte from a memory location to another memory location using a pointer.
+- `copy_byte_via_pointer_2`: Copies a single byte from a memory location to another memory location using a pointer.
+- `increment_table_indices_2`: Increments two values stored in a table by a fixed amount.
+- `increment_table_indices`: Increments two values stored in a table by a fixed amount.
+- `update_global_pointer_offsets`: Adds constant values to two base addresses and stores the results into two global pointers.
+- `update_pointer_offsets`: Adds constant values to two base addresses and stores the results into two global pointers.
+- `compute_pointer_offsets_and_store`: Adds constant offsets to base addresses and stores the results into global pointer variables.
+- `update_global_pointers`: Adds constant offsets to two base addresses and stores the results into two global pointers.
+- `update_pointers_via_offset`: Calculates a new target address by adding a constant offset to a base address and stores the resulting pointer into a global variable, then increments a global pointer and stores a byte.
+- `update_global_pointer_via_offset`: Calculates a new target address by adding a constant offset to a base address and stores the resulting pointer into a global variable.
+- `update_pointer_and_store_byte_2`: Increments a global pointer by a fixed offset and then stores a byte from a data register into the memory location pointed to by that updated address.
+- `store_byte_via_pointer_35`: Stores a single byte from a data register into a memory location stored in an address register.
+- `write_byte_to_pointer_3`: Stores a single byte from a data register into a memory location held in an address register.
+- `update_pointer_via_offset_54`: Calculates a new address by adding an offset to a value stored in a global variable and writes the result back to that same global variable.
+- `load_address_to_register_5`: Sets a register to a specific memory address.
+- `load_address_to_register_6`: Assigns a constant address to a register.
+- `update_pointer_via_offset_67`: Loads a memory address into a register and increments a value in a memory location by a constant amount.
+- `write_byte_to_pointer_2`: Writes a single byte from a data register into a memory location pointed to by an address register.
+- `store_byte_via_pointer_34`: Stores a single byte from a data register into a memory location pointed to by a value in an address register.
+- `store_byte_at_address`: Stores a single byte into a memory location.
+- `store_byte_via_pointer_33`: Stores a single byte from a register into a memory location pointed to by a value held in another register.
+- `store_byte_via_pointer_32`: Stores a byte from a register through a pointer.
+- `write_byte_to_pointer`: Stores a byte into a memory address held in a register.
+- `store_register_byte`: Places a byte from a register into a memory location.
+- `update_memory_byte`: Changes a byte in memory using a register value.
+- `assign_byte_to_location`: Writes a byte value into a memory address.
+- `transfer_byte_to_memory_2`: Copies a byte from a register to a memory location.
+- `modify_byte_at_pointer`: Stores a byte into a memory location pointed to by a register.
+- `set_byte_value`: Updates a byte in memory using a value from a register.
+- `write_byte_to_address`: Moves a byte from a register into a specific memory address.
+- `store_byte_to_memory_2`: Writes a byte from a register into a memory location.
+- `update_pointer_via_offset_55`: Increments a value stored in a memory location by a constant amount and then stores the result back into that same location.
+- `load_address_to_register_7`: Loads a pointer into a register and calls another routine.
+- `load_address_to_register_8`: Moves a constant into a register and calls another routine.
+- `increment_pointer_offset`: Loads a pointer into a register and increments the value stored at the location pointed to by that register.
+- `store_byte_via_indirect_pointer_2`: Stores a single byte from a register into a memory location determined by the contents of a global variable.
+- `update_byte_from_register`: Stores a single byte from a register into a memory location determined by a global variable.
+- `update_byte_via_pointer_3`: Stores a single byte from a register into a memory location determined by the value held in a global variable.
+- `store_byte_via_indirect_pointer`: Takes a byte from a register and stores it into a memory location pointed to by a global variable.
+- `update_indirect_byte_2`: Stores a byte from a register into a memory location pointed to by a global variable.
+- `write_byte_to_indirect_address`: Writes a single byte from a register into a memory location retrieved from a global variable.
+- `store_byte_via_pointer_31`: Stores a single byte from a register into a memory location retrieved from a global variable.
+- `store_byte_via_pointer_30`: Retrieves a memory address from a global variable and stores a single byte from a register at that location.
+- `update_pointer_offset_8`: Increments a value stored at a memory location pointed to by a register.
+- `load_address_to_register_9`: Loads a value into a register and calls another routine.
+- `load_value_from_pointer`: loads a word from a memory location pointed to by a value stored in a register into another register.
+- `transfer_offset_value`: Loads a value into a register and moves a value from one memory location to another using an offset.
+- `store_byte_indirectly`: The routine retrieves a memory address from a global variable and stores a byte from a register into that location.
+- `store_byte_through_pointer`: Loads a memory pointer from a global variable and writes a single byte from a data register to the address it points to.
+- `update_byte_via_pointer_2`: Retrieves a memory address from a global variable and stores a single byte from a register into that location.
+- `store_byte_via_pointer_29`: Retrieves an absolute memory address from a global location and stores a byte from a register into that address.
+- `fetch_pointer_to_register`: Retrieves an absolute memory address from a global location and stores it in a register.
+- `load_pointer_to_register_10`: Retrieves an absolute memory address from a specific location and stores it in a register.
+- `frag_nop_move_moveq_lea_rts_5`: Short code fragment that pauses for one no-operation step, then copies 2 to the memory just below a3 (moving a3 down), then loads 0 into d2, then loads the address of a fixed memory address into a2, then returns.
+- `load_pointer_from_memory`: Loads an absolute address from a memory location into a register.
+- `load_pointer_to_register_8`: Loads an absolute address into a register using a provided pointer.
+- `load_absolute_address`: Loads an absolute address into a register.
+- `update_pointer_via_offset_56`: Loads a value from a memory location calculated by adding an offset to a base address, then stores that value into a different memory location pointed to by a register.
+- `load_pointer_from_table_16`: loads a value from a memory table into a register using an offset and then calls another routine.
+- `load_pointer_from_table_17`: Loads a value from a memory table into a register using an offset.
+- `load_register_to_memory_3`: Loads a value from a register into a memory location pointed to by a global variable.
+- `update_pointer_via_offset_57`: Calculates a new address by adding an offset to a value stored in a register and stores the result into a global variable.
+- `load_pointer_from_table_18`: loads a pointer from a memory table into a register.
+- `load_pointer_to_register_5`: Loads a memory address from a global variable into a register.
+- `load_register_to_memory_4`: copies a value from a data register into a memory location pointed to by another register.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `nop_padding`: This routine is empty and consists only of no-operation instructions used for data alignment or padding within the executable.
+- `increment_pointer`: adds a constant value to a pointer stored in a register and stores the result back into that register.
+- `execute_short_sequence_2`: performs four instructions and calls another routine.
+- `run_four_instructions`: executes a sequence of four instructions and calls another routine.
+- `execute_three_instructions`: performs three instructions and calls another routine.
+- `run_four_instruction_sequence`: executes four instructions and calls another routine.
+- `execute_six_instructions_2`: performs six instructions and calls another routine.
+- `load_address_to_register_10`: loads a constant value into a register using a PC-relative load effective address instruction.
+- `update_pointer_via_offset_58`: Increments a value stored in a memory location by a constant amount and then stores the result back to that same location.
+- `run_ten_instructions`: executes ten instructions and calls another routine.
+- `load_byte_from_pointer_28`: Loads a byte from a memory location pointed to by a value stored in a register and stores it into another register.
+- `execute_subroutine_sequence`: This routine executes a series of instructions and calls another routine.
+- `call_subroutines`: This routine calls another routine after performing a few instructions.
+- `update_pointer_via_offset_59`: Adds a value from a register to a memory address stored in another register and then stores the resulting pointer into a global variable.
+- `execute_small_routine_2`: This routine performs a short sequence of instructions and calls another routine.
+- `process_complex_routine`: This routine executes a longer sequence of instructions and calls another routine.
+- `execute_small_routine_3`: Runs a brief sequence of instructions and calls another routine.
+- `store_byte_via_pointer_17`: Loads a byte from a memory location into a register and subsequently stores that byte into a different memory location using a pointer.
+- `store_byte_via_pointer_18`: Stores a byte from a register into a memory location pointed to by another register.
+- `call_subroutine_sequence`: Performs a few instructions and then calls another routine.
+- `run_instruction_sequence`: Executes a sequence of ten instructions and calls another routine.
+- `call_routine`: This routine calls another routine using a very small number of instructions.
+- `execute_tiny_routine`: This routine consists of a minimal instruction sequence that calls another routine.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `process_system_subsystems_2`: Updates floating point state, performs floating point math, and executes a sequence of routines to process system data.
+- `iterate_function_tables_short`: Walks a table of function pointers and executes subroutines.
+- `execute_instruction_sequence`: Executes a short sequence of four instructions and calls another routine.
+- `update_memory_pointers_2`: Performs indirect memory transfers by accessing a library function.
+- `load_constant_via_lea`: Loads a constant value into a register using a PC-relative effective address calculation.
+- `allocate_and_call_function`: Allocates system memory and executes a function via a pointer stored in a global variable.
+- `initialize_complex_structures`: Allocates memory and populates it while managing complex data structures, math, and sprite data.
+- `increment_pointer_and_fetch_byte_2`: Increments a pointer stored in a register and loads the byte at the new address into another register.
+- `allocate_and_initialize_memory_2`: Requests a new memory block and populates it by updating multiple values and pointers via specific offsets.
+- `clear_table_entry`: Compares a value from a register against a constant and, if they match, clears a specific entry in a table by writing zero to it.
+- `allocate_and_execute_pointer`: Allocates system memory and then executes a routine via a function pointer retrieved from a global variable.
+- `initialize_complex_data_structures`: Allocates a memory block and populates it by updating multiple values and pointers via specific offsets.
+- `manage_memory_and_bitstreams`: Performs floating point math, allocates and initializes memory, and manages bitstreams and color registers.
+- `process_system_subsystems`: Updates floating point state, executes multiple routines, performs floating point math, and processes system data.
+- `request_memory_block_2`: Requests a memory allocation and updates several pointers and counters using the returned address.
+- `execute_indirect_call`: Performs a single indirect function call.
+- `load_address_lea`: Loads a relative address into an address register.
+- `load_address_lea_2`: Performs a relative address load into a register.
+- `load_address_lea_3`: Calculates a relative address and stores it in a register.
+- `update_pointer_offset_9`: Increments a value stored in a memory location by a constant.
+- `execute_memory_operations`: Performs an indirect function call and manages memory allocation and initialization.
+- `allocate_and_initialize_buffer_2`: Requests a memory block and populates it by writing specific values and pointers to various offsets within the allocated area.
+- `allocate_initialized_memory`: Allocates a memory block and populates it by updating multiple values and pointers via specific offsets.
+- `initialize_memory_block`: Requests a memory allocation and populates the resulting block by writing specific values and pointers to various offsets.
+- `maximize_word_value`: Compares two words pointed to by a register and copies the first into the second if the second is smaller.
+- `perform_arithmetic`: Performs a short sequence of arithmetic operations.
+- `perform_memory_and_hardware_updates`: Performs an indirect function call, manages memory allocation, and updates sprite attributes via a hardware register.
+- `store_register_content`: Stores the contents of a register into a memory location.
+- `load_address_lea_4`: Loads a target address using a PC-relative instruction.
+- `update_pointer_offset_10`: Increments a value stored at a memory location pointed to by a register.
+- `allocate_buffer_and_call`: Requests a new buffer memory block, updates pointers, and performs an indirect function call.
+- `initialize_memory_block_2`: Allocates a block of memory and updates several pointers and counters using the returned address.
+- `initialize_memory_block_3`: Requests a memory allocation and populates the resulting block by writing specific values and pointers to various offsets.
+- `allocate_and_initialize_buffer_3`: Requests a memory block and populates it by writing specific values and pointers to various offsets within the newly allocated area.
+- `invoke_indirect_subroutine`: Executes an indirect function call and then calls another routine.
+- `process_list_and_memory`: Walks a linked list, compares words in a global variable, and manages memory allocation and indirect function calls.
+- `process_linked_list`: Walks a linked list of entries pointed to by a global variable and conditionally clears two words of flags.
+- `allocate_hardware_buffer`: Requests a new memory block and updates hardware pointers and configuration.
+- `execute_list_and_indirect_call`: Performs an indirect function call and walks a linked list of entries pointed to by a global variable.
+- `allocate_and_perform_logic`: Allocates memory and executes a sequence of operations including two subroutine calls.
+- `manage_complex_memory_tasks`: Allocates memory, executes multiple subroutines, and updates various pointers and offsets.
+- `allocate_buffer_and_update_hardware`: Requests a new buffer memory block, updates pointers, and performs an indirect function call and hardware updates.
+- `update_pointer_via_offset_60`: Increments a value stored at a memory location by a constant offset and then stores the result back to that same location.
+- `allocate_multiple_buffers`: Allocates several memory blocks and initializes them by updating various pointers and counters via offsets.
+- `allocate_buffers_and_update_sprites`: Allocates several memory blocks, initializes them via offsets, and updates sprite attributes through a hardware register.
+- `perform_math_and_iterate`: Performs floating point operations, allocates a memory block, and walks a table of function pointers.
+- `update_floating_point_state`: Performs a sequence of floating point calculations and updates system data through a series of nested subroutines.
+- `configure_dma_and_compare`: Allocates memory, configures DMA channels, and compares two consecutive words from a global variable.
+- `allocate_and_configure_dma_2`: Allocates memory blocks and configures DMA channels by writing to hardware registers.
+- `execute_math_and_copy`: Executes floating point math, allocates a memory block, and copies two registers into memory locations pointed to by a register.
+- `compare_math_and_write`: Compares two consecutive words from a global variable, performs floating point math, executes two subroutines, and writes a byte to a global pointer before incrementing it.
+- `compare_global_words`: Loads addresses into registers and compares two consecutive words pointed to by a global variable.
+- `load_address_lea_5`: Loads an address into a register using either absolute or relative addressing modes.
+- `load_address_lea_6`: Loads a relative address into a register.
+- `request_buffer_memory_2`: Requests memory blocks and populates them by updating pointers and counters with the returned addresses.
+- `initialize_memory_block_4`: Allocates a block of memory and populates it by updating multiple values and pointers through specific offsets.
+- `execute_complex_allocation`: Performs a sequence of memory allocations and executes a routine containing two subroutine calls.
+- `configure_dma_memory`: Allocates memory blocks and configures DMA channels by writing to a hardware register.
+- `allocate_and_call`: Allocates a memory block and performs an indirect function call.
+- `perform_math_operations`: Executes floating point math and allocates a memory block.
+- `process_system_floating_point`: Performs floating point math and manages system data through multiple subroutines.
+- `initialize_memory_buffers_2`: Allocates a memory block and updates several indirect pointers and memory addresses.
+- `store_byte_via_pointer_19`: Copies a single byte from a register into a memory location pointed to by a value stored in another register.
+- `update_memory_and_registers`: Performs floating point operations, allocates memory, and updates various memory values and register values.
+- `process_system_data_2`: Performs floating point math and data manipulation while managing memory and system processing routines.
+- `update_complex_data`: Performs floating point math, allocates memory, and updates a global pointer based on a word comparison.
+- `execute_complex_tasks`: Performs floating point math, allocates memory, and configures DMA channels.
+- `process_complex_data_update`: Compares two consecutive words, performs floating point math, executes an indirect function call, and writes a byte to a global pointer before incrementing it.
+- `update_byte_via_comparison`: Compares two consecutive words from a global variable and copies a byte from a register into a memory location pointed to by a global variable.
+- `store_byte_via_pointer_20`: Copies a single byte from a register into a memory location pointed to by a global variable.
+- `load_byte_to_register`: Loads a single byte from a memory location pointed to by a register into another register.
+- `allocate_and_initialize_buffers`: Requests new memory blocks and updates several pointers and counters using the returned addresses.
+- `initialize_memory_block_5`: Requests a memory allocation and populates the resulting block by writing specific values to various offsets.
+- `perform_logic_allocation`: Allocates memory and executes a routine that performs two subroutine calls as part of a larger sequence.
+- `setup_dma_block`: Allocates memory blocks, updates pointers via offsets, and enables DMA channels through a hardware register.
+- `process_complex_tasks`: Performs floating point math, allocates memory, and executes an indirect function call.
+- `execute_complex_math`: Performs floating point math, allocates memory, and executes several data manipulation and system processing routines.
+- `compare_and_load_byte`: Loads a constant into a register, fetches a byte from a pointer, and compares two consecutive words from a global variable.
+- `fetch_and_manage_memory`: Fetches a single byte from a memory location and performs complex memory management and pointer updates.
+- `increment_pointer_and_load_byte`: Increments a pointer stored in memory and then loads a byte from the resulting address into a register.
+- `load_constant_to_register`: Loads a constant value into a register and then calls another routine.
+- `update_logic_pointers`: Compares two words from a global variable and updates several pointers using specific offsets.
+- `update_indirect_pointer_7`: Performs two consecutive subroutine calls to update a value stored at a memory location pointed to by a register.
+- `compare_and_increment_pointer_2`: Compares two words from a global variable and increments a value at a pointer.
+- `increment_pointer_value`: Increments a value stored at a location pointed to by a register.
+- `update_pointer_indirect_4`: Loads a value from a memory location pointed to by a register and stores it into another memory location pointed to by a different register.
+- `compare_and_update_pointers`: Compares two words from a global variable and updates several pointers using offsets.
+- `store_byte_via_pointer_21`: Stores a byte from a data register into a memory location pointed to by a register.
+- `return_from_subroutine_15`: The routine performs a single return operation.
+- `load_byte_and_update_hardware`: Loads a single byte from a memory location and updates sprite attributes and hardware registers.
+- `update_pointer_via_indirect_register_2`: Loads a value from a memory location pointed to by an indirect register and stores it into a global variable.
+- `compare_and_increment_pointer`: Compares two consecutive words from a global variable, increments a value at a pointer, and updates hardware registers.
+- `execute_task_sequence`: Calls a routine to manage internal tasks and then calls another unnamed routine.
+- `execute_logic_with_offsets`: Processes internal tasks and updates several pointers by applying specific offsets.
+- `invoke_logic_tasks`: Calls a routine that executes a sequence of internal tasks to manage memory and pointers, then calls another routine.
+- `load_and_update_hardware`: Loads a byte from a memory location and calls a routine to update hardware registers.
+- `invoke_memory_task`: Calls a routine to manage memory allocation and execute internal logic tasks.
+- `return_from_subroutine_16`: This routine executes a return to the calling code.
+- `compare_and_limit_word`: Compares two words and ensures a maximum value is maintained while updating hardware registers.
+- `ensure_maximum_word`: Compares two words via a register and updates the second word if it is smaller than the first.
+- `load_byte_and_process_logic`: Loads a byte from a memory location pointed to by a register into another register and executes memory and pointer management tasks.
+- `manage_memory_and_library`: Allocates a memory block and updates a global pointer using an Amiga OS library routine.
+- `apply_pointer_offsets_2`: Processes a sequence of internal tasks and updates several pointers using offsets.
+- `load_table_pointer`: Loads a value from a memory table into a register and executes a short sequence of instructions.
+- `call_hardware_update`: Calls a routine that manages system logic and updates sprite attributes via hardware registers.
+- `load_pointer_to_register_6`: Loads a value from a memory location into a register using a pointer stored in another register.
+- `compare_and_update_word`: Compares two words, ensures a maximum value is maintained, and updates hardware registers.
+- `call_logic_tasks`: Calls a routine that manages memory and pointers through a sequence of internal tasks.
+- `process_offset_logic`: Executes internal logic and updates several pointers by applying specific offsets.
+- `update_pointer_via_offset_81`: Loads a value from a memory location calculated by adding an offset to a base address and stores it in another location before calling a task management routine.
+- `update_pointers_via_offsets`: Performs a sequence of internal tasks and updates several pointers using offsets.
+- `update_hardware_and_pointers`: Performs floating point math, compares words from a global variable, and updates several pointers and hardware registers.
+- `load_constant_to_register_2`: Loads a specific constant value into a register.
+- `update_indirect_value`: Performs two consecutive subroutine calls to modify a value located at the address held in a register.
+- `execute_math_and_hardware_logic`: Executes floating point operations and compares values from a global variable before updating hardware registers.
+- `return_from_subroutine_17`: This routine concludes with a return instruction.
+- `update_pointer_offset_11`: Increments a value stored at a memory location pointed to by a register.
+- `process_logic_and_pointers`: Updates a pointer via an offset, manages sprite attributes, and compares two consecutive words from a global variable.
+- `update_pointer_via_offset_68`: Adds a constant value to a pointer stored in a register and stores the result into a global variable.
+- `load_pointer_to_register_7`: loads a value from a memory location into a register via an offset.
+- `update_hardware_logic`: Updates sprite attributes and manages system logic while interacting with hardware registers.
+- `update_pointer_via_indirect_register_3`: Loads a value from a memory location pointed to by an indirect register into another register.
+- `perform_math_and_hardware_update`: Performs floating point operations, compares words from a global variable, and updates hardware registers.
+- `execute_complex_operations`: Performs floating point math, allocates a memory block, and executes a sequence of data manipulation routines.
+- `iterate_function_table_3`: Loads a byte from a pointer, updates several pointers, and iterates through a table of function pointers.
+- `allocate_and_update_pointers_5`: Allocates a memory block, updates several pointers using specific offsets, and increments a value at a memory location.
+- `negate_and_store_byte_2`: Negates the value in a register and stores the result into a memory location pointed to by another register.
+- `modify_pointer_offsets_2`: Updates several pointers by applying specific offsets and increments a memory value.
+- `iterate_function_table_2`: Walks a table of function pointers and clears entries when a specific marker is encountered.
+- `initialize_memory_block_6`: Requests a memory allocation and populates the block by updating multiple values and pointers via specific offsets.
+- `call_subroutine_sequence_2`: Executes an indirect function call and calls another routine.
+- `load_byte_to_address`: Loads a byte from a memory location specified by a register into another memory location specified by a different register.
+- `load_address_into_register_3`: loads a constant value into a data register using a relative address calculation.
+- `load_register_to_memory_5`: loads a value from a register into a memory location pointed to by another register.
+- `update_pointer_offset_12`: Increments a value stored in a memory location by a constant amount.
+- `allocate_and_call_indirect`: Requests a buffer memory block, initializes it with various values, and performs an indirect function call.
+- `request_and_setup_memory`: Requests a memory block and populates it by updating multiple values and pointers via specific offsets.
+- `initialize_memory_block_structure`: Allocates a memory block and populates it by writing specific values and pointers to various offsets within the newly allocated area.
+- `initialize_memory_block_7`: Requests a memory allocation and populates the resulting block by writing specific values and pointers to defined offsets.
+- `update_global_word`: Compares a word stored in a global variable with a value in a register and updates the global variable if the register value is larger.
+- `update_pointer_offset_18`: Calculates a new value by performing arithmetic on a register and stores the result into a memory location pointed to by another register.
+- `allocate_and_call_indirect_2`: Allocates a memory block, initializes it, performs an indirect function call, and updates hardware and sprite attributes.
+- `store_register_to_memory_2`: Stores the contents of a register into a memory location.
+- `load_pointer_from_table_19`: loads a value from a table into a register using an offset.
+- `update_pointer_via_offset_61`: Loads a value from a memory location calculated by adding an offset to a base address, then stores that value into another memory location using a pointer found in a register.
+- `allocate_buffer_and_execute`: Requests a new memory block, initializes it, and executes an indirect function call.
+- `allocate_and_initialize_buffer_4`: Requests a memory block and populates it by writing specific values and pointers to various offsets within the allocated area.
+- `allocate_and_configure_memory`: Requests a memory allocation and populates it by updating multiple values and pointers via specific offsets.
+- `update_pointer_via_offset_82`: Increments a value stored at a memory location by a constant offset.
+- `execute_nested_calls`: Performs an indirect function call and calls another routine.
+- `update_pointer_list`: Compares two words from a global variable and updates a list of pointers using specific offsets.
+- `update_pointer_list_elements`: Calls a routine to update a list of pointers using specific offsets and increments a value at a memory location.
+- `load_pointer_from_table_20`: Loads a value from a memory table into a register using an offset.
+- `traverse_and_store_byte`: Traverses a linked list and stores bytes into memory locations using pointers.
+- `store_byte_via_pointer_22`: Stores a single byte from a data register into a memory location pointed to by an address held in another register.
+- `store_register_to_memory_3`: Stores the contents of a register into a memory location.
+- `traverse_linked_list`: Traverses a linked list starting from a global variable to execute a processing routine for every entry.
+- `initialize_memory_block_structure_2`: Allocates a memory block and initializes its contents by writing specific values and pointers to predefined offsets within the new allocation.
+- `allocate_and_update_hardware`: Allocates a memory block, performs an indirect function call, and updates sprite attributes and hardware registers.
+- `update_pointer_offset_13`: Increments a value stored at a memory location pointed to by a register.
+- `allocate_and_setup_buffers`: Requests memory blocks and updates several pointers, counters, and an indirect function call.
+- `setup_buffers_and_hardware`: Requests memory blocks, updates several pointers and counters, and manages hardware and sprite attributes.
+- `clear_table_entry_2`: Compares a value in a register against a marker in a table and, if they match, clears a specific entry in that table by writing zero to it.
+- `update_pointer_and_math`: Performs floating point calculations and updates multiple pointers and a memory value.
+- `perform_math_and_pointer_updates`: Performs floating point operations and updates several pointers and a value at a memory location.
+- `process_callback_table`: Closes a library and iterates through a table to execute callbacks, clear flags, and update various pointers and indirect values.
+- `iterate_and_clear_callbacks`: The routine walks a table located at an offset from a base pointer and invokes a function pointer found in each entry with a decreasing short argument and several registers.
+- `process_table_entries_with_callback`: Iterates over a fixed number of entries in a table pointed to by a global variable, clears each non-zero entry, calls a function pointer from a global variable, and conditionally clears a field and calls another routine.
+- `invoke_global_function_return`: The routine calls a function pointer taken from a global variable and returns the concatenation of two input registers.
+- `conditional_indirect_call_and_clear`: The routine checks a value stored via an offset from a register and, if non-zero, calls an indirect routine using another offset from that register and then clears the checked value.
+- `conditionally_invoke_and_clear_flag`: Checks a flag in a structure, and if set calls another routine, clears the flag in the structure, and returns the call result, otherwise returns zero.
+- `reset_game_state`: The routine clears a range of word fields in a global variable, resets several flags and counters in the same structure, copies a zero-terminated string from a global pointer into another buffer, initializes a set of control words and bytes, sets up pointers and offsets for a table, and calls another routine multiple times.
+- `update_indirect_pointer_target_2`: Increments a value located at a memory address stored within a pointer.
+- `execute_subroutine_7`: Performs a sequence of operations and calls another routine.
+- `perform_byte_copy`: Copies a byte from a source address to a destination address and calls another routine.
+- `store_byte_via_pointer_70`: The routine writes bytes to memory locations pointed to by a register while incrementing a pointer or counter.
+- `advance_counter_via_wrapper`: Takes no action of its own beyond forwarding to the routine it calls, which increments a value at a memory location addressed through a register by a fixed step.
+- `increment_indirect_value_via_pointer`: Increments a value stored at a memory location pointed to by a register.
+- `loop_call_and_clear_fields`: The routine calls another routine, then repeatedly calls another routine while a field of a global variable is non-zero, using the routine’s output as the next loop value, and finally clears three fields in the global variable structure before returning.
+- `conditional_library_call`: The routine checks a field of a global variable and, if non-zero, calls a function pointer derived from another field of the global variable using a library base, clears the first field, and returns the concatenation of two input registers.
+- `clear_table_entries_3`: Indexes a table using a global variable and a short offset, then clears two words at that location if the entry matches a specific marker.
+- `iterate_function_table`: Walks a table of function pointers stored in a global variable, calling each non-null entry with a decreasing short counter.
+- `iterate_table_call_functions`: The routine walks a table of function pointers stored in a global variable, calling each non-null entry with a decreasing short counter and a set of registers, then returns the concatenation of two input registers.
+- `iterate_table_call_functions_2`: The routine indexes a table via a global variable and a short offset, clears two words in the table when the entry matches a specific marker, then repeatedly calls another routine a number of times derived from a word in the entry and finally returns the concatenation of two input registers.
+- `clear_two_word_flags`: The routine checks two words pointed to by a pointer, conditionally calls another routine, then clears both words to zero.
+- `process_indirect_calls`: Invokes an indirect function, iterates through a table of function pointers, and performs conditional cleanup of a global variable.
+- `invoke_indirect_function`: The routine calls a function pointer computed from a field of a global variable and returns.
+- `conditional_cleanup_and_return`: The routine conditionally calls a function pointer from a global variable, clears several fields of a global variable, and returns a value built from a word field and an input register or from a word field with a sign flag.
+- `iterate_table_call_handlers`: The routine walks a table of function pointers stored in a global variable, calling each non-null entry with a decreasing short counter and a set of registers, then returns.
+- `invoke_global_function`: The routine calls a function pointer taken from a global variable and returns.
+- `open_and_iterate_handlers`: Opens a library and walks a table of function pointers, calling each non-null entry while updating indirect data.
+- `allocate_and_execute`: Allocates a block of memory using a system library and executes a sequence of two routines.
+- `execute_unnamed_subroutine_2`: Performs a sequence of operations involving two unnamed routine calls.
+- `manage_memory_and_pointers`: Allocates a memory block and performs several operations to update pointers and increment values through various offsets.
+- `update_indirect_pointers`: Increments a value at a memory location pointed to by a register and then increments a value at a location pointed to by an offset.
+- `increment_indirect_and_call`: Increments a value at a memory location pointed to by a register and then calls another routine.
+- `execute_subroutine`: The routine performs a sequence of operations and returns.
+- `execute_subroutine_call`: Calls another routine and performs a sequence of operations before returning.
+- `execute_subroutine_sequence_2`: Executes a series of instructions before returning.
+- `execute_subroutine_2`: The routine executes a series of instructions before returning.
+- `allocate_memory_block`: Allocates a block of memory using a system library call.
+- `execute_unnamed_subroutine_3`: Executes a routine that performs a single indirect function call.
+- `allocate_and_initialize_memory_block`: Allocates a new memory block and updates several pointers and counters via offsets.
+- `execute_subroutine_3`: The routine performs a short sequence of operations.
+- `compare_and_set_flag`: The routine reads two consecutive words pointed to by a global variable and compares them.
+- `transfer_memory_block`: Copies a block of data from one memory location to another using a loop.
+- `decrement_and_conditionally_return`: Decrements a 16-bit word in register d1 and returns immediately if the result is zero; otherwise, it loads the value one into register d3 and returns.
+- `test_registers_and_branch`: It performs conditional branches based on the status register, tests the word in d1 and branches, and tests the word in d0 and branches.
+- `compare_equal_and_set_flag`: The routine reads two consecutive words pointed to by a global variable and tests for equality.
+- `transfer_memory_block_2`: Copies a block of data from one memory location to another and then calls a small routine to load a constant into a register and copy it to the stack.
+- `tiny_moveq_move_rts`: Small routine of 3 instructions that loads 255 into d0, then copies d0 to -(a3), then returns.
+- `compare_leq_and_set_flag`: The routine reads two consecutive words pointed to by a global variable and tests if the first is less than or equal to the second.
+- `compare_geq_and_set_flag`: The routine reads two consecutive words pointed to by a global variable and tests if the second is less than or equal to the first.
+- `write_byte_and_increment_pointer`: Writes a single byte from a register to the memory location stored in a global variable and then increments that pointer.
+- `tiny_moveq_move_rts_2`: Small routine of 3 instructions that loads 255 into d0, then copies d0 to (a3), then returns.
+- `write_byte_via_pointer_2`: Stores a single byte from a register into a memory address held in another register.
+- `transfer_byte_to_pointer`: Copies a single byte from a register into a memory location specified by a pointer in another register.
+- `transfer_byte_via_pointer`: Copies a single byte from a register into a memory location specified by a pointer stored in another register.
+- `store_byte_via_pointer_28`: Writes a single byte from a register into a memory location pointed to by another register.
+- `execute_unnamed_subroutine_4`: Executes a routine that performs two unnamed routine calls.
+- `manage_memory_data`: Allocates a memory block and executes a routine that performs two calls.
+- `store_register_to_memory_5`: Copies the contents of a data register into a memory location pointed to by another register.
+- `store_register_to_memory_4`: Copies the contents of a data register into a memory location pointed to by another register.
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `allocate_memory_and_update_pointers`: Allocates a memory block and updates several pointers and values through various offsets.
+- `process_data_sequence`: The routine performs a sequence of eighteen instructions involving data manipulation.
+- `perform_floating_point_math`: Performs floating point operations and allocates a memory block while updating pointers through offsets.
+- `process_system_data`: Executes a sequence of two routines and a sixteen-instruction data manipulation sequence.
+- `process_data_sequence_2`: The routine executes sixteen instructions to manipulate data.
+- `allocate_memory_blocks_2`: Allocates memory blocks and updates several indirect values and pointers using offsets.
+- `allocate_memory_blocks`: Allocates memory blocks by calling a management routine and updates several indirect values and pointers using specific offsets.
+- `allocate_memory_and_execute`: Allocates memory blocks and updates indirect values and pointers using offsets while executing two unnamed subroutines.
+- `allocate_memory_blocks_3`: Calls a routine to allocate memory blocks and updates several indirect values and pointers using offsets.
+- `transfer_register_data`: Copies data between registers and updates pointers via stack-based helper routines.
+- `transfer_register_values`: Copies a value from one register to another and performs two small subroutines.
+- `tiny_move_movea_rts`: Small routine of 3 instructions that copies d4 to d3, then copies (a7)+ to a3, then returns.
+- `tiny_moveq_movea_rts`: Small routine of 3 instructions that loads 0 into d3, then copies (a7)+ to a3, then returns.
+- `execute_short_sequence_3`: A very brief routine consisting of five instructions.
+- `execute_nested_subroutines`: Performs a sequence of operations involving multiple subroutine calls.
+- `execute_nested_subroutines_3`: Triggers a sequence of multiple nested subroutine calls.
+- `execute_nested_subroutines_2`: Performs a sequence of operations involving multiple nested subroutine calls.
+- `perform_subroutine_sequence`: Executes a series of operations by calling two different subroutines.
+- `execute_minimal_sequence`: A short routine consisting of seven instructions.
+- `increment_and_call_routines`: Increments a value at a memory location pointed to by a register and executes a sequence of two other routines.
+- `perform_unreached_task`: This routine contains ten instructions but is not reached during normal execution flow.
+- `update_floating_point_data`: Calculates new values using floating point arithmetic, allocates memory segments, and updates various pointers and memory locations.
+- `manage_memory_and_floating_point`: Allocates memory blocks and updates pointers and values through offsets while performing floating point arithmetic.
+- `call_library_function`: This routine executes sixteen instructions and invokes a library function.
+- `update_floating_point_value`: Calculates a new value using floating-point arithmetic and stores the result into a memory location.
+- `execute_mixed_math`: Executes a variety of instruction sequences including floating-point math and mid-length routines.
+- `execute_mixed_sequences_2`: Executes a variety of instruction sequences including floating-point math, mid-length routines, and an empty subroutine.
+- `process_floating_point`: This routine performs eighteen instructions and utilizes a floating-point math library.
+- `execute_mid_length_sequence`: Executes a sequence of eleven instructions.
+- `execute_mid_length_sequence_2`: Executes a sequence of instructions including a mid-length routine.
+- `execute_mixed_sequences`: Executes a sequence of instructions that includes both a mid-length and a short routine.
+- `execute_short_sequence_two`: Executes a sequence of nine instructions.
+- `execute_instruction_sequences`: Executes two different sequences of instructions.
+- `null_subroutine`: The routine is empty and performs no operations.
+- `allocate_memory_segment`: Allocates a memory segment by calling a management routine.
+- `manage_complex_memory_and_math`: Allocates memory blocks and performs floating-point arithmetic while updating various pointers and hardware sprite attributes.
+- `update_sprite_and_hardware_state`: Updates sprite attributes and manages system logic by calling a routine that interacts with the hardware registers.
+- `update_hardware_and_sprites`: Updates sprite attributes and manages system logic while interacting with the POTGOR hardware register.
+- `manipulate_data_sequence`: A routine consisting of sixteen instructions that is called from outside the static flow.
+- `update_sprite_attribute_list`: Iterates through a list of data structures to update specific byte values using offsets.
+- `manage_system_logic`: Performs complex logic involving memory copying, pointer increments, and library function calls.
+- `call_multiple_libraries`: Invokes three different library functions in succession.
+- `call_library_vector_354`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
+- `copy_memory_block`: Copies a block of data from a source address to a destination address using a loop.
+- `update_indirect_pointers_2`: Allocates a memory block and increments values at locations pointed to by a register and an offset.
+- `execute_three_instructions_2`: Executes a routine consisting of three instructions.
+- `execute_complex_logic`: Executes a sequence of internal tasks, allocates memory while incrementing a pointer, and processes complex logic.
+- `process_complex_logic`: Executes a routine containing sixty instructions.
+- `update_game_state_logic`: Processes a sequence of internal tasks and executes multiple subroutines.
+- `call_library_functions`: Performs a small task and executes multiple calls to library functions via a global base address.
+- `perform_small_task`: Executes a small routine of six instructions.
+- `call_small_task`: Calls another routine to perform a small task.
+- `write_byte_to_memory`: Copies a single byte from a source address to a destination address.
+- `execute_small_task`: calls another routine that executes a small sequence of instructions.
+- `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
+- `copy_byte_to_memory_5`: Copies a single byte from a source address to a destination address.
+- `execute_two_instructions`: Executes a routine consisting of two instructions.
+- `call_library_vector_348`: Library stub: loads a library base from a global variable and calls the library function at offset minus 348 of that base, returning its result to the caller.
+- `call_library_vector_342`: Library stub: loads a library base from a global variable and calls the library function at offset minus 342 of that base, returning its result to the caller.
+- `update_pointer_via_indirect_call`: Loads a value from a memory location into a register and uses it as an address to call another routine.
+- `call_single_library`: Executes five instructions including a call to a library function.
+- `store_byte_via_pointer_23`: stores a byte from a register into a memory location pointed to by another register.
+- `copy_byte_to_memory_4`: Copies a single byte from a source address into a destination address.
+- `execute_complex_subroutine`: Performs a sequence of operations that includes a routine performing two unnamed calls.
+- `execute_subroutine_sequence_3`: Executes a sequence of subroutines including a small routine that loads a constant into a register.
+- `tiny_moveq_rts_2`: Small routine of 2 instructions that loads 74 into d0, then returns.
+- `allocate_and_increment_pointer`: Requests a memory allocation and increments a value stored at a memory location pointed to by a register.
+- `execute_logic_sequence_2`: Processes a sequence of tasks and executes subroutines to manage memory and logic.
+- `execute_subroutine_4`: Performs a series of operations and calls another routine.
+- `execute_logic_tasks`: Processes a sequence of internal tasks, executes subroutines, and manages memory and pointers.
+- `allocate_and_update_pointers_2`: Allocates a memory block and updates indirect values through a subroutine call.
+- `update_pointer_and_increment_value`: Allocates a memory block and updates a pointer by writing a byte to a memory location.
+- `access_library_and_update_hardware`: Allocates a memory block, accesses a library function, and updates hardware sprite attributes.
+- `execute_subroutine_and_return`: Executes a sequence of instructions and then calls another routine.
+- `allocate_and_access_library`: Allocates a memory block and accesses a library function.
+- `update_pointer_via_indirect_register_5`: Loads a value from a memory location pointed to by an indirect register and stores it into another memory location.
+- `process_floating_point_and_library`: Calculates floating point values and accesses a library function while updating a pointer via an indirect register.
+- `clear_register_and_return_5`: Performs a sequence of operations involving two unnamed routine calls and clears a register to zero before returning.
+- `clear_register_and_return`: Clears a register to zero and returns from the subroutine.
+- `process_logic_tasks`: Executes a sequence of internal tasks to manage memory and pointers.
+- `execute_logic_tasks_2`: Processes a sequence of internal tasks and manages memory and pointers.
+- `update_pointer_offsets_2`: Increments a value stored at a memory location and updates several pointers by applying specific offsets.
+- `execute_logic_and_offsets`: Processes a sequence of internal tasks and updates several pointers by applying specific offsets.
+- `allocate_and_update_pointers_3`: Allocates a memory block, updates several pointers by applying specific offsets, and increments a value at a memory location.
+- `update_pointer_offsets_3`: Increments a value stored at a memory location and updates several pointers by applying specific offsets.
+- `modify_pointer_data`: Allocates a memory block and updates several pointers by applying specific offsets while incrementing a memory value.
+- `modify_pointer_data_2`: Updates several pointers by applying specific offsets while incrementing a memory value.
+- `nop_padding_2`: This routine is empty and consists only of no-operation instructions used as padding within the executable segment.
+- `execute_subroutine_5`: Performs a short sequence of instructions.
+- `increment_pointer_list`: Updates several pointers by applying specific offsets and increments a value at a memory location.
+- `store_byte_indirect`: Stores a single byte from a data register into a memory location pointed to by an address register.
+- `tiny_clr_rts`: Small routine of 2 instructions that clears -(a3), then returns.
+- `call_hardware_update_routine`: Calls a routine that updates sprite attributes and manages system logic via hardware registers.
+- `execute_logic_tasks_4`: Processes a sequence of internal tasks, manages memory and pointers, and updates several pointers by applying specific offsets.
+- `process_logic_and_offsets`: Executes a sequence of internal tasks and updates several pointers by applying specific offsets.
+- `allocate_icon_data`: Allocates a memory block and initializes it with data from a specific icon resource.
+- `allocate_and_offset_data`: Allocates a memory block and updates various pointers and values through specific offsets.
+- `allocate_and_offset_pointers`: Allocates a memory block, updates various pointers, and increments a value at a memory location through specific offsets.
+- `allocate_and_process_memory`: Allocates a memory block, updates various pointers, and increments values through several offsets.
+- `allocate_icon_data_2`: Allocates a memory block and initializes it with data from a specific icon resource.
+- `execute_multiple_logic_tasks`: Executes a sequence of internal tasks and manages memory and pointers through several subroutines.
+- `execute_logic_tasks_3`: Executes a sequence of internal tasks and manages memory and pointers.
+- `execute_logic_and_add`: Executes a routine that performs two subroutines and adds a constant value to a register.
+- `tiny_addi_rts`: Small routine of 2 instructions that adds 24 to d0, then returns.
+- `update_pointer_via_subroutines`: Performs two subroutine calls in sequence to update a value stored at a memory location pointed to by a register.
+- `execute_logic_via_move`: Performs two subroutine calls as part of a sequence of internal tasks.
+- `invoke_memory_management_task`: Calls a routine that manages memory allocation and executes a series of internal logic tasks.
+- `process_memory_and_logic`: Allocates a memory block and executes a sequence of internal tasks involving memory management and multiple subroutines.
+- `execute_logic_sequence_3`: Performs a sequence of internal tasks involving memory management and multiple subroutine calls.
+- `execute_logic_tasks_minimal`: Processes a sequence of internal tasks.
+- `process_data_with_library`: Performs a complex sequence of operations and utilizes an Amiga OS library.
+- `update_pointer_via_library`: Updates a pointer stored in a global variable by calling a routine that processes data using an Amiga OS library.
+- `process_library_data`: Executes a sequence of internal tasks and utilizes an Amiga OS library to process data.
+- `tiny_ori_rts`: Small routine of 2 instructions that merges 192 into (a3), then returns.
+- `tiny_ori_andi_rts`: Small routine of 3 instructions that merges 128 into (a3), then masks (a3) with 191, then returns.
+- `update_pointer_offsets_4`: Allocates a memory block and updates several pointers by applying specific offsets.
+- `allocate_and_update_offsets`: Allocates a memory block and updates several pointers by applying specific offsets.
+- `allocate_memory_only`: Allocates a memory block through a specific routine.
+- `call_indirect_via_table`: The routine reads a pointer from a global variable, adds a fixed offset to it, and calls the routine found there.
+- `iterate_function_tables`: Walks a table of function pointers, clears specific table entries when a marker is matched, and executes subroutines.
+- `iterate_table_and_execute`: Walks a table of function pointers and executes a routine that performs two subroutine calls.
+- `allocate_and_return`: Allocates system memory and invokes a function pointer retrieved from a global variable before returning.
+- `increment_global_pointer`: Increments a value stored at a global memory location by one.
+- `invoke_and_allocate_memory`: Invokes a function pointer from a global variable, executes subroutines, and allocates system memory while updating pointers via offsets.
+- `allocate_system_memory`: Allocates memory using a system call and updates pointers through various offsets.
+- `allocate_and_initialize_memory`: Allocates a block of memory and populates it by updating multiple values and pointers via specific offsets.
+- `process_memory_and_subroutines`: Allocates a memory block and updates various pointers and values through several offsets.
+- `update_indirect_pointer_6`: Loads a value from a memory location pointed to by a register and stores it into another memory location.
+- `check_available_memory`: The routine calls a library function to determine the amount of available memory.
+- `check_available_memory_2`: Calls a library function to determine the amount of available memory.
+- `perform_complex_logic`: Executes a routine that performs two subroutine calls as part of a larger sequence of operations.
+- `perform_arithmetic_operation`: The routine performs a short sequence of arithmetic operations.
+- `execute_subroutine_8`: Calls an unnamed subroutine and returns.
+- `call_unnamed_routine_12`: Executes a single unnamed subroutine.
+- `calculate_offset_address`: Loads a value from a pointer and compares it to a register.
+- `modify_register_value`: The routine modifies a register value through a short sequence of instructions.
+- `allocate_and_initialize_buffer`: Requests a memory block and updates several pointers and counters using the returned address.
+- `allocate_initial_buffer`: Requests a memory block and updates several pointers and counters using the returned address.
+- `request_buffer_memory`: Requests a new memory block and updates several pointers and counters using the returned address.
+- `request_memory_block`: Requests a memory allocation and updates several pointers and counters using the returned address.
+- `update_memory_value`: The routine updates a value in memory.
+- `save_registered_values`: Calls another routine, stores a value from a register into a field of a structure, saves several fields from the structure into locals, invokes a function pointer from the structure, and writes back the saved fields and the result.
+- `allocate_and_process_memory_2`: Allocates a memory block and updates several pointers and values through offsets.
+- `execute_unreached_code_2`: Contains a small sequence of instructions that are not reached during normal execution.
+- `execute_unreached_code`: The routine contains a small sequence of instructions that are not reached during normal execution.
+- `manage_complex_tasks`: Performs memory management, executes multiple subroutines, and updates various pointers and offsets.
+- `process_linked_list_and_flags`: Walks a linked list of entries pointed to by a global variable, processes each entry, and conditionally clears two words of flags at a pointer location.
+- `process_table_entry`: The routine walks a linked list of entries pointed to by a global variable and processes each entry using another routine.
+- `update_pointer_via_indirect_register_6`: Loads a value from a memory location pointed to by an indirect register and stores it into a global variable.
+- `process_linked_list_2`: Traverses a linked list starting from a global variable to execute a processing routine for every entry while managing memory and pointers.
+- `iterate_list_and_update_pointers`: Traverses a linked list starting from a global variable to execute a processing routine for every entry, while updating several pointers and flags.
+- `iterate_linked_list_entries`: Traverses a linked list starting from a global variable and executes a processing routine for every entry found in the list.
+- `execute_memory_management`: Allocates a memory block and executes a sequence of operations including complex subroutines.
+- `allocate_and_execute_sequence`: Allocates a memory block and executes a sequence of subroutines that include loading a constant into a register.
+- `update_system_pointers`: Updates pointers via offsets, iterates through a function table, manages complex memory and math, and updates sprite attributes.
+- `manage_table_and_memory`: Indexes a table to clear specific entries, allocates system memory, and processes a linked list of entries while performing table lookups.
+- `process_table_and_allocate_memory`: Iterates through a table to identify and clear specific entries before allocating new memory blocks.
+- `lookup_index_from_table`: Calls another routine, then searches a global table for a matching pointer starting from an address in a global variable, returns a concatenated value of the found index and an input register, and references the text AmBkAmSpAmBsAmIc.
+- `update_sprite_and_memory_pointers`: Allocates memory blocks and performs floating-point calculations to update hardware sprite attributes and various pointers.
+- `update_pointers_via_subroutines`: Calls two subroutines twice and updates a pointer in memory using a register value.
+- `update_pointer_via_subroutine`: Calls two unnamed routines and then updates a pointer stored in a memory location using a value from a register.
+- `process_complex_data_structures`: Updates pointers, manages complex memory and math, allocates and processes memory, and updates sprite and pointer data.
+- `update_sprite_and_pointer_data`: Calculates floating-point values to update hardware sprite attributes and modifies several memory pointers and allocated blocks.
+- `execute_subroutine_sequence_4`: The routine executes a subroutine that performs two other subroutine calls.
+- `update_table_entry_pointer`: Calculates a new address by adding a value from a global variable to a register and stores the result into a memory location pointed to by another register.
+- `update_sprite_offset_table`: Calculates a new value by adding a global variable to a register and passes the result to a routine that updates a pointer within a table.
+- `modify_table_pointer`: Adjusts a pointer within a table using an offset from a global variable.
+- `adjust_sprite_address`: Adds an offset from a global variable to a pointer in a table.
+- `increment_table_pointer`: Updates a table entry pointer based on an offset from a global variable.
+- `update_sprite_attribute_pointers`: Updates multiple pointers in a table by adding offsets derived from values stored in a global variable.
+- `update_sprite_table_entries`: Iterates through a table to update sprite attributes and pointer data.
+- `update_sprite_table_entry`: Updates a sprite and pointer data entry in a table using an offset derived from a global variable.
+- `update_sprite_and_table_data`: Updates sprite and pointer data and updates a pointer in a table using an offset from a global variable.
+- `update_sprite_pointer`: Updates a pointer in a table by adding an offset derived from a value stored in a global variable.
+- `update_sprite_attribute_pointer`: Updates a pointer in a table by adding an offset derived from a value stored in a global variable.
+- `manage_complex_state`: Allocates memory blocks, performs floating-point arithmetic, and updates hardware sprite attributes and various pointers.
+- `call_multiple_library_functions`: The routine makes several calls to library functions.
+- `execute_conditional_logic`: Checks a field of a global variable and, if non-zero, calls a function pointer derived from another field of the global variable before performing floating-point arithmetic and updating pointers.
+- `allocate_indirect_pointers`: Allocates memory blocks by calling a management routine multiple times and updates several indirect values and pointers.
+- `modify_pointer_offsets_3`: Performs multiple memory allocations, updates pointers through various offsets, and executes several library calls and subroutines.
+- `modify_pointer_offsets`: Allocates a memory block and updates pointers and values through various offsets.
+- `call_pointer_modifier`: Calls a routine that performs multiple memory allocations and updates pointers through various offsets.
+- `update_memory_pointers`: Allocates memory and performs indirect memory transfers by accessing a library function.
+- `update_pointer_and_access_library`: Allocates memory, accesses a library function, and performs indirect memory transfers.
+- `update_memory_pointers_alt`: Performs memory block allocation and updates indirect values using library calls.
+- `process_table_and_library`: Iterates through a table to clear entries, accesses a library function, and performs indirect memory transfers.
+- `initialize_task_memory`: Allocates two memory blocks and uses library functions to locate the current and a specific system task.
+- `find_current_task`: The routine calls a library function to locate the current task.
+- `locate_system_task`: The routine uses a library function to find a specific task.
+- `allocate_and_update_pointer`: Allocates a memory block, updates a pointer by writing a byte to a memory location, and performs an indirect memory transfer.
+- `update_memory_with_shifted_value`: Loads two values from a pointer, shifts the first, and compares the second to a constant.
+- `maximize_second_word`: The routine compares two words pointed to by a register and, if the second is smaller than the first, copies the first into the second.
+- `minimize_second_word`: The routine compares two words pointed to by a register and, if the first is smaller than the second, copies the first into the second.
+- `copy_data_to_pointer`: The routine copies the contents of two registers into memory locations pointed to by a register.
+- `tiny_move_rts`: Small routine of 2 instructions that copies d2 to (a0), then returns.
+- `tiny_move_rts_2`: Small routine of 2 instructions that copies d1 to (a0), then returns.
+- `return_immediately_8`: The routine performs a single instruction and returns.
+- `allocate_and_update_pointers`: Allocates a memory block and updates several pointers and values through various offsets.
+- `clear_register`: sets a specific register to zero.
+- `increment_pointer_2`: adds two to a value stored in a register and then stores the result back into a memory location pointed to by another register.
+- `update_system_logic_and_sprites`: Calls a routine to update hardware and sprite attributes followed by two other subroutines.
+- `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
+- `perform_floating_math`: Allocates memory blocks and performs floating point arithmetic while updating pointers and values through offsets.
+- `perform_floating_point_math_2`: performs a floating point operation using a math library and calls another routine to manage memory and pointers.
+- `execute_math_allocation`: Performs floating point operations using a math library and manages memory and pointers.
+- `allocate_memory_block_2`: allocates a memory block and performs multiple updates to indirect values and pointers via offsets.
+- `allocate_memory_block_3`: Requests a memory allocation from a management routine and stores the resulting pointer into a global variable.
+- `invoke_memory_management`: Calls a routine that allocates a memory block and updates various pointers and counters through multiple offsets.
+- `initialize_device_struct`: Writes constant bytes to a structure field, computes a pseudo-random sequence, and conditionally calls indirect routines from global structures.
+- `initialize_and_fill_tables`: Writes constant bytes to a series of bytes pointed to by a structure field, computes a pseudo-random sequence using a multiplier and shift, and stores the results into a short table while updating a structure field and setting a flag.
+- `shutdown_devices_and_audio`: The routine clears a base register field, conditionally calls indirect routines from global structures, then writes constants to global variables and clears custom hardware registers for audio channels, performing Amiga OS device and library cleanup calls.
+- `process_bitmask_and_update_entries`: Builds a bitmask from an input and a global variable, iterates over a set of entries updating counters and flags based on bits, calls another routine when a counter reaches zero, updates a global variable and a hardware register, and finally calls a function pointer if present.
+- `process_short_table_and_update_flags`: The routine reads short values from a structure pointed to by a pointer and updates bytes in a global variable based on a bit mask.
+- `wait_for_flag_and_return`: The routine calls another routine, then loops calling another routine while a field in a structure is non-zero, calls another routine once more, and returns the concatenation of two input registers.
+- `set_word_flags_in_struct`: The routine loads a pointer from an offset of a base register and writes the constant one to four consecutive word fields within the pointed-to structure.
+- `copy_pointer_and_invoke`: The routine copies a value from one pointer to another, calls another routine, and returns the concatenation of two input registers.
+- `update_audio_channels_and_flags`: The routine examines bits in an input mask against a stored mask and writes to custom hardware registers for audio channels.
+- `enable_audio_dma_channels`: The routine checks a short flag in a global variable and writes to custom hardware registers for audio channels based on bits in an input value.
+- `store_word_if_bit_set`: The routine iterates four times over a structure pointed to by a global variable.
+- `no_operation`: This routine is empty and performs no actions.
+- `manage_memory_and_pointers_2`: allocates a memory block and performs several operations to update pointers and increment values through various offsets.
+- `process_complex_data_2`: Allocates system memory, copies values between pointers, updates audio hardware registers, averages byte pairs, and searches a linked list.
+- `average_bytes_to_output`: The routine processes pairs of input bytes, averages each pair by adding them and shifting right by one, and writes the result to an output byte pointer.
+- `find_short_in_linked_list`: The routine walks a linked list obtained from a global variable, comparing an input short with a field in each node.
+- `allocate_memory_block_4`: allocates a memory block and updates several pointers and values through various offsets.
+- `configure_dma_and_memory`: Allocates multiple memory blocks, updates global pointers, and enables DMA channels by writing to a hardware register.
+- `configure_dma_channels`: Updates a global variable based on table flags and enables DMA channels by writing to a hardware register.
+- `update_flags_from_table`: Reads short values from a structure and updates a global variable using a bit mask.
+- `process_short_table_and_update_flags_2`: Reads short values from a structure pointed to by a pointer and updates bytes in a global variable based on a bit mask, while also computing.
+- `configure_dma_transfer`: Sets up a DMA transfer by loading a source address, destination address, and length into registers before calling a routine to enable a DMA channel.
+- `enable_dma_channel`: Writes to the DMA controller register to enable a DMA channel.
+- `allocate_and_update_pointers_4`: Allocates multiple memory blocks and updates various global pointers and values through several offsets.
+- `call_memory_manager_3`: Calls a routine that manages memory and pointers.
+- `call_memory_manager`: calls a routine that manages memory and pointers.
+- `update_memory_pointer_2`: Updates a global pointer by calling a memory management routine.
+- `allocate_and_configure_dma`: Allocates a memory block, updates several pointers and values through offsets, and enables DMA channels by writing to a hardware register.
+- `store_pointer_from_register`: The routine copies a pointer from a register into a location derived from a global variable and then returns.
+- `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
+- `execute_complex_memory_logic`: Allocates a memory block and performs a sequence of operations involving memory management and pointer updates.
+- `execute_complex_logic_2`: performs a sequence of operations including calls to a routine that manages memory and pointers.
+- `register_system_callbacks`: Registers a function address with the system executive and updates a coordinate table by storing a byte at a pointer-based destination.
+- `register_callback_function`: Passes a function address to a library routine to register it for execution by the system executive.
+- `increment_global_pointer_6`: Increments a value stored at a location pointed to by a register.
+- `increment_global_pointer_2`: increments a value stored at a location pointed to by a register.
+- `update_system_resources_2`: Updates table coordinates, copies memory blocks, and modifies global pointers while requesting executive resource permission.
+- `update_system_resources`: Updates table coordinates, copies memory blocks, and modifies global pointers while requesting executive resource permission and disabling interrupts.
+- `update_coordinates_and_pointers`: Adds a value from a global variable to a coordinate in a table, disables interrupts to update a global pointer, requests resource permission from the executive library, and increments a memory location by a constant amount.
+- `update_table_coordinates`: Adds a value from a global variable to a coordinate in a table.
+- `increment_indirect_value`: Increments a value stored at a memory location pointed to by a register.
+- `update_pointer_offset_14`: Increments a value stored at a memory location pointed to by a register.
+- `copy_memory_block_2`: Copies a block of data from a source address to a destination address using a counter.
+- `disable_interrupts_and_update_pointer`: Disables all system interrupts and updates a global pointer with a value from a register.
+- `permit_exec_resource`: Requests permission from the executive library to access a resource.
+- `update_sprite_position`: Reads a value from a global variable and adds it to a coordinate stored in a table.
+- `update_pointer_via_offset_62`: Increments a value stored at a memory location by a constant amount.
+- `manipulate_data_and_coordinates`: Adds a value from a global variable to a coordinate in a table, performs a data manipulation sequence, and references the text System request.
+- `update_sprite_coordinates`: Adds a value from a global variable to a coordinate in a table and copies a formatted byte.
+- `copy_byte_via_format`: Copies a single byte from one memory location to another.
+- `return_from_subroutine_18`: Executes a return instruction to exit the routine.
+- `copy_byte_from_memory`: Copies a single byte from a memory location pointed to by one register into a memory location pointed to by another register.
+- `perform_data_operation`: Executes a sequence of instructions to manipulate data.
+- `set_exec_function`: Registers a function within the executive library.
+- `execute_unnamed_logic`: Performs a short sequence of instructions upon entry.
+- `call_library_function_5`: Executes a function from a library.
+- `call_library_function_2`: Calls a function from a library via a specific offset.
+- `manage_bitstream_and_memory_2`: Manages memory allocation, deallocation, bitstream buffers, and color registers.
+- `manage_bitstream_and_memory`: Manages memory allocation and deallocation, bitstream buffers, and color registers.
+- `call_alloc_mem`: Library stub: loads its arguments and the exec library base, calls AllocMem and returns its result to the caller.
+- `free_memory_block`: Releases a previously allocated block of memory to the executive library.
+- `update_pointer_via_offset_63`: Adds a constant value to a value stored in a memory location and writes the result back to that same location.
+- `update_pointer_via_offset_64`: Loads a value from a memory location calculated by adding an offset to a global pointer and stores the result back into that same memory location.
+- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
+- `manage_bitstream_memory`: Releases memory blocks, manages a bitstream, and performs stack arithmetic and pointer increments.
+- `release_and_refill_buffer`: Releases a memory block, increments a value at a memory location by an offset, and refills a bit buffer.
+- `update_color_register`: Updates a memory location via a buffer management routine and modifies the color register.
+- `update_pointer_and_buffer`: Updates a memory location by adding an offset to a global pointer, clears a register, and manages a memory buffer.
+- `fetch_and_increment_pointer`: Performs several pointer manipulations including incrementing a pointer in memory and fetching values from updated addresses.
+- `modify_pointer_and_fetch`: Updates a memory location by adding a constant and increments a pointer to fetch a value.
+- `increment_pointer_and_fetch`: Increments a pointer stored in a memory location and then loads the value at that new address into a register.
+- `manage_memory_and_bitstream`: Releases a memory block, increments a value at a memory location by an offset, and refills a bit buffer for a depacker.
+- `bk_refill_bit_buffer_2`: Depacker bit reader refill: fetches the previous longword of the packed stream, folds it into the checksum and shifts out its lowest bit with a marker bit entering at the top.
+- `process_data_with_memory_calls`: executes a series of instructions and calls a routine to manage memory and pointers.
+- `adjust_stack_pointer`: Adjusts the stack pointer by a constant value.
+- `modify_stack_pointer`: The routine adjusts the stack pointer by a constant value.
+- `call_memory_manager_2`: Executes a routine that manages memory allocation and updates various pointers and counters through multiple offsets.
+- `initialize_buffer_pointers`: Allocates a memory block and updates several indirect pointers and constant offsets with the new address, then stores the resulting pointer into a global variable.
+- `initialize_memory_buffers`: Allocates a memory block, updates several indirect pointers, and modifies a set of memory addresses by adding offsets.
+- `modify_pointer_values`: Updates a set of memory addresses by adding offsets to them.
+- `update_buffer_pointer_offset`: Stores a byte from a register into a memory location pointed to by a value stored in another register.
+- `call_unnamed_routine_13`: This routine executes a single call to another routine and then returns.
+- `set_handler_pointer`: The routine stores the address of a global variable and the address of another routine into fields of a structure pointed to by a register, then returns a constant.
+- `clear_and_initialize_fields`: The routine loads a base address from a global variable and writes several constant values to fixed offsets within that structure, clearing some fields and setting others.
+- `release_memory_block`: Releases a block of memory using a system library call.
+- `free_memory_block_2`: The routine calls a library function to release a previously allocated memory block.
+- `perform_stack_operations`: The routine manipulates the stack by pushing and popping values.
+- `update_pointer_array`: Iterates through a list of pointers and applies specific offsets to each value using a register to track the current position within the array.
+- `calculate_pointer_addresses`: Clears a register and then adds offsets to a set of pointers to calculate new memory addresses.
+- `tiny_movea_rts`: Small routine of 2 instructions that copies 0 to a0, then returns.
+- `apply_pointer_offsets`: Adds offsets to a set of pointers to calculate new memory addresses.
+- `negate_and_store_byte`: Negates the value in a register and stores the result into a memory location pointed to by another register.
+- `perform_relative_jumps`: Performs a long jump to a relative offset and increments a register pointer before calling another routine.
+- `jump_relative_address`: calculates a relative offset and performs a long jump to a destination address.
+- `increment_pointer_and_call`: Increments a pointer stored in a register by two bytes and then calls another routine.
+- `tiny_neg_rts`: Small routine of 2 instructions that negates d3, then returns.
+- `transfer_data_to_memory`: Copies the contents of a data register to a memory location.
+- `clear_memory_block_2`: fills a specific memory range with zeros using a loop.
+- `transfer_register_to_memory`: Copies the contents of a data register to a memory location pointed to by another register.
+- `nop_padding_3`: This routine is empty and consists of two no-operation instructions.
+- `compare_and_branch`: The routine compares two values and branches based on the result.
+- `store_register_to_memory`: The routine stores the contents of a register into a memory location.
+- `load_value_to_register`: The routine loads a constant value into a register.
+- `pad_with_nops`: Consists only of no-operation instructions, with no logic, memory writes, hardware access or calls beyond a single padding call.
+- `nop_padding_4`: This routine is empty and consists only of two no-operation instructions.
+- `open_and_close_library`: Opens a library and then calls a routine to close it.
+- `perform_unknown_operation`: The routine performs a short sequence of instructions without a clear side effect on global state.
+- `call_close_library`: Library stub: loads its arguments and the exec library base, calls CloseLibrary and returns its result to the caller.
+- `empty_stub_8`: Empty routine: returns to the caller immediately without doing anything.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `manage_system_state_3`: Performs complex state management including closing input devices, updating structure pointers, handling DMA, and managing memory and global data.
+- `manage_system_state_2`: Performs complex state management including closing input devices, updating structure pointers, handling DMA, and managing memory and global.
+- `manage_system_state`: Performs complex state management including closing input devices, updating structure pointers, handling DMA, and managing memory and global variables.
+- `initialize_input_device`: The routine clears a block of 40 words pointed to by a1, then calls a routine via a global variable to obtain a value which it stores at offset 32 in the a1 structure.
+- `close_input_device`: The routine calls two routines via a global variable and then calls another routine via the same global variable.
+- `update_byte_via_pointer`: Updates a byte in memory by writing a value from a register through a pointer.
+- `write_byte_via_pointer_3`: Stores a single byte from a register into a memory location using a pointer and then calls another routine.
+- `update_indirect_byte`: Stores a byte from a register into a memory location using a pointer and then calls another routine.
+- `update_pointer_value`: Stores a byte from a register into a memory location via a pointer and then calls another routine.
+- `store_byte_and_call_library`: Stores a byte from a register into a memory location via a pointer and calls a library function using an offset from a global variable.
+- `tiny_moveq_rts_3`: Small routine of 2 instructions that loads 1 into d0, then returns.
+- `store_byte_via_pointer_24`: Stores a single byte from a data register into a memory location specified by a pointer held in another register.
+- `walk_byte_table`: Walks a byte table until a zero byte is found, updating pointers and memory via a linked list search and library calls.
+- `increment_pointer_3`: adds a constant value to a pointer stored in a register.
+- `update_pointer_table_2`: Updates Blitter hardware registers and modifies memory by iterating through a table of bytes to update associated pointers.
+- `update_blt_registers`: Updates various Blitter hardware registers and modifies memory via a byte table search.
+- `check_flags_and_call_indirect`: Tests two words at fixed offsets from a global variable and calls another routine if either is non-zero, then calls a function obtained via a global variable.
+- `check_two_flags_and_return`: The routine tests two words located at fixed offsets from a global variable referenced via a5 and calls another routine if either is non-zero, then returns zero.
+- `return_zero_if_flag_set`: The routine calls another routine and returns its result, but forces the return value to zero when a zero flag condition is true.
+- `insert_into_linked_list`: Checks two short fields in a structure and calls another routine for each non-zero field, then calls it once more.
+- `link_list_insert`: The routine checks two short fields in a structure and calls another routine for each non-zero field, then calls it once more.
+- `search_linked_list`: The routine loads a pointer from a global variable via a5 and walks a linked list comparing the word in d1 with a word at offset 8 of each node.
+- `process_entity_update_list`: The routine walks a linked list of structures referenced through a global variable and updates fields inside each node, swapping two short fields and copying several words from one node to another based on non-zero flags.
+- `compute_sprite_frame_and_bounds`: The routine reads several words from a structure pointed to by a global variable, computes an index, walks a linked list via an indirect call and then updates a destination structure in a4 with size, position, frame and flag words derived from the source structure in a0 and the values in d1/d2.
+- `patch_code_bytes`: Iterates over a small range of bytes starting at its own address and rewrites each byte by expanding a bit pattern.
+- `return_immediately_stub`: The routine consists of a single instruction and performs no work, so it does nothing when called.
+- `update_table_entry_flags`: The routine reads a pointer from a global variable, tests a flag word at a fixed offset, XORs an input word with the flag and masks it, then conditionally calls another routine and updates the flag word in the pointed-to structure with the result of the calls.
+- `adjust_table_entry_and_return`: Modifies a short entry in a table pointed to by a register using arithmetic on the table base, calls another routine, and conditionally calls another routine based on an integer at an offset from a register.
+- `adjust_short_and_conditional_call`: The routine subtracts one short from another at fixed offsets in a pointer passed in a1, calls another routine, conditionally calls another routine based on a word at an offset in a pointer passed in a0, and returns a combined value from d0 and d1.
+- `update_pointer_offset_15`: Increments a value stored at a memory location pointed to by a register.
+- `swap_bytes_using_table`: The routine swaps bytes in a buffer pointed to by a pointer using a translation table pointed to by a pointer.
+- `update_sprite_position_2`: Reads a coordinate value from a memory location and adds it to a destination address.
+- `swap_word_blocks_v2`: Swaps word elements between two regions using three nested loops controlled by register values.
+- `process_table_and_accumulate_words`: The routine reads several words from a structure pointed to by a global variable, computes an index, walks a linked list via an indirect call until a termination condition, writes a computed value, then accumulates words from a source region into a destination region using nested loops and returns the input d1 value.
+- `set_blitter_parameters_and_copy`: The routine walks a linked list of structures and, for each entry, configures Amiga custom chip blitter registers and triggers a copy operation by writing to the blitter control register.
+- `process_sprite_bitplane`: The routine reads a pointer from a global variable, tests a flag word at a fixed offset, XORs an input word with the flag and masks it, then touches custom copper registers for bitplane DMA and loops over a linked list updating counters and flags based on bits.
+- `fill_struct_from_table_scaled_2`: Initializes several fields of a structure from another structure and then iterates over a bitmask, calling a library routine for each set bit.
+- `copy_scaled_table_fields`: Copies multiple fields from a source structure to a destination structure using scaled values.
+- `initialize_structure_from_table`: Iterates through a data table to populate a structure by writing constant words and executing specific library functions based on a bitmask.
+- `populate_structure_from_table`: Writes constant words to a structure pointed to by a register and iterates over a bitmask to call library functions.
+- `fill_struct_from_table`: Writes constant words to a structure pointed to by a register and then iterates over a bitmask, calling a library routine for each set bit and storing returned values into the structure.
+- `fill_struct_from_table_scaled`: Initializes several fields of a structure from another structure and then iterates over a bitmask, calling a library routine for each set bit and storing returned values and scaled indices into the structure.
+- `fill_struct_with_repeat`: Initializes fields of a structure from another structure and iterates over a bitmask, calling a library routine for each set bit and repeating the call a number of times derived from a register, updating structure fields each time.
+- `expand_bitfields_to_pointers`: Reads bitfields from a structure and expands them into pointer values and short flags, writing results into arrays within the same structure using a loop controlled by a counter.
+- `initialize_state_and_call_indirect`: Clears several global variables, stores an input word and a derived index, then calls another routine and uses its 64-bit result to fill more global variables with sums and shifted values before returning a status flag.
+- `conditional_calls_and_return`: The routine calls another routine four times, then conditionally calls another routine based on a global pointer, and finally returns zero or the result of a further conditional call depending on a different global pointer.
+- `clear_memory_blocks_2`: Clears a small block of four-word entries and a larger block of 543 word entries.
+- `update_buffer_and_sprites_2`: Updates sprite attributes, initializes a buffer with constant words, and conditionally writes word pairs to a buffer while incrementing a pointer.
+- `trigger_sprite_buffer_update`: Calls a routine to update sprite attributes and populate a buffer with constant word data.
+- `trigger_entity_synchronization`: Executes a single instruction to call a routine that manages entity data structures and buffer synchronization.
+- `clear_word_flags`: Checks two words pointed to by a pointer, conditionally calls another routine, then clears both words to zero.
+- `update_entity_and_buffer_2`: Copies fields from an entity structure into a destination buffer, performs conditional copies between structures, and interacts with various other data.
+- `return_from_subroutine_20`: Performs a single instruction to return control to the calling function.
+- `fetch_scaled_dword_from_table`: Uses a signed word multiplied by four as an index to retrieve a double word from a table.
+- `filter_entity_list`: Iterates through a collection of entities by repeatedly calling a filtering routine.
+- `copy_entity_fields_wrapper`: This routine acts as a wrapper that invokes a routine to copy specific fields from one entity structure to another destination buffer.
+- `update_entity_state`: Copies data from an entity structure into a temporary buffer and executes a function via a pointer stored within that entity.
+- `dispatch_entity_callback`: Copies data from an entity structure into a temporary buffer and executes a function via a pointer stored within that entity.
+- `clear_conditional_flag`: Clears a global word if a global word and two global integers are equal.
+- `execute_empty_jump`: This routine performs a jump to another routine that contains no executable code.
+- `increment_and_call_indirect_2`: Calls a function via a pointer stored in a global variable and increments a value at a memory location by a fixed amount.
+- `clear_linked_list`: Repeatedly calls another routine to unlink nodes from a list until a global pointer becomes zero.
+- `clear_register_and_return_3`: Loads zero into a register and returns.
+- `update_entity_data_2`: Iterates through a linked list of data structures to modify specific fields.
+- `initialize_structure_data`: Copies a value from one memory location to another and clears multiple fields within two distinct data structures.
+- `write_byte_via_pointer_7`: Writes a single byte from a register into a memory location pointed to by another register and then transfers control to another routine.
+- `clear_registers_2`: Clears the contents of two specific registers.
+- `process_linked_list_until_empty_2_2`: The routine loops while a different global pointer is non-zero, repeatedly calling another routine to conditionally unlink a list node.
+- `setup_sprite_parameters_2`: Reads words from a structure pointed to by a global variable, computes an index, and walks a linked list via an indirect call.
+- `validate_and_free_range_2`: Tests if a register value is between zero and three inclusive and calls a function retrieved from a global variable if successful.
+- `update_packed_data_structure`: Iteratively updates word fields within a structure by performing range checks and writing packed bytes to memory.
+- `calculate_structure_offset`: Returns a signed offset computed by adding a constant to a short field within a structure.
+- `return_offset_from_struct`: Returns a signed offset computed by adding a constant to a short field from a structure pointed to by a register.
+- `fetch_and_synchronize_data`: Synchronizes entity data and fetches a dword from a table using a scaled index.
+- `perform_entity_synchronization`: Manages the synchronization of entity fields and linked structures.
+- `return_synchronized_table_entry`: Synchronizes entity data, fetches a table entry, and returns a constant combined with a value from the stack.
+- `synchronize_entity_data`: Performs extensive data management including linking structures, copying entity fields to buffers, and synchronizing global structure fields.
+- `return_constant_with_stack`: Returns a constant combined with a value taken from the stack.
+- `link_struct_to_list`: If a flag in a structure is set, it clears a word in another structure, finds the end of a pointer list, and links the two structures into the list with a computed offset.
+- `copy_struct_fields_conditional`: If two pointers in a structure are non-zero and a flag is clear, it copies several bytes and words from one structure to another and then copies a small fixed-size byte block.
+- `copy_entity_state_to_buffer`: Copies fields from an entity structure into a destination buffer and a second structure, then invokes two library routines and performs further data copies.
+- `fetch_table_dword`: Indexes a table using a signed word scaled by four and returns the resulting dword.
+- `retrieve_table_entry`: Returns a dword from a table located at a fixed offset from the frame pointer using a scaled index.
+- `fetch_and_synchronize_data_2`: Indexes a table to retrieve a dword and performs entity data synchronization.
+- `transfer_register_to_memory_3`: Moves the contents of a data register into a memory location specified by a pointer stored in another register.
+- `test_and_clear_flags`: Checks two words at a memory location pointed to by a register and calls another routine if a condition is met, then clears both words to zero.
+- `process_complex_entity_logic`: Manages linked lists, entity state buffers, floating-point updates, and conditional flag clearing through various subroutines.
+- `clear_memory_blocks`: The routine clears a small block of four-word entries and a larger block of 543 word entries referenced through a frame pointer, then writes a sentinel value to a word in the frame and sets a flag byte in the frame to one, returning zero.
+- `loop_until_entity_filter`: The routine repeatedly calls another routine until a value returned in a data register plus one exceeds an unchecked data register value, then returns zero.
+- `update_entity_buffer`: Copies fields from an entity structure into a destination buffer and fetches a dword from a table using a scaled signed word index.
+- `set_blitter_parameters_and_copy_2`: Reads a short from a structure pointed to by a global variable, decrements it, and if the result is non-zero and the original value is positive, calls two other routines.
+- `copy_entity_pointers`: Loads a pointer from a global variable, reads a count word from an offset in the pointed structure, and if the count is positive it either calls another routine repeatedly or copies five words from the structure to two destinations derived from a global table and the structure itself.
+- `copy_entity_pointers_and_clear_flag`: Loads a pointer from a global variable, reads a count word from an offset in the pointed structure, and if the count is positive it either calls another routine repeatedly and clears a bit in a byte at a fixed offset from a global base, or copies five words from the structure to a destination derived from a global table and to an offset within the structure.
+- `update_entity_data`: Walks a linked list of structures to update fields, manipulates bitplane DMA via hardware registers, and performs conditional blitter copies based on structure values.
+- `update_entity_and_buffer`: Copies fields from an entity structure into a destination buffer, performs conditional copies between structures, and interacts with various library functions and blitter hardware registers.
+- `store_byte_to_memory`: Stores a single byte from a data register into a memory location pointed to by an address register.
+- `copy_entity_fields`: Copies fields from an entity structure into a destination buffer and performs conditional copies between structures.
+- `check_range`: The routine tests whether the input in d1 is between zero and three inclusive and returns zero if the test succeeds, otherwise returns one.
+- `validate_input_range`: Tests whether a value is between zero and three inclusive and returns a status result.
+- `process_packed_data`: Iteratively updates word fields in a structure, performs range checks, and writes packed bytes to memory.
+- `shift_and_decrement_loop`: The routine repeatedly copies and updates word fields in a structure pointed to by a register, decrements counters, writes a packed word to a pointer, and updates a global variable, looping indefinitely with inner loops that decrement and test word fields.
+- `shift_and_decrement_loop_2`: Repeatedly copies and updates word fields in a structure pointed to by a register while decrementing counters.
+- `set_constant_and_return_one`: Stores a constant into an offset of a register-based pointer and then calls another routine, returning one.
+- `write_multiple_bytes_via_pointers`: Iteratively stores bytes from a data register into memory locations using a pointer that is updated via an offset.
+- `store_byte_and_return`: The routine copies a byte from a data register to a byte pointed to by a2 and returns a value formed by concatenating the constant one with the input parameter.
+- `validate_and_free_range`: Tests if a value in a register is between zero and three inclusive and, if successful, calls a function retrieved from a global variable.
+- `check_range_and_free`: The routine tests if an input is between zero and three inclusive and, if successful, calls a function obtained via a global variable to return a combined value from two input registers.
+- `fetch_table_entry`: The routine indexes a table located at a fixed offset from the frame pointer using the signed word in d1 scaled by four and returns the dword found at that entry.
+- `tiny_moveq_rts_4`: Small routine of 2 instructions that loads 0 into d0, then returns.
+- `clear_d0_and_return`: The routine loads zero into d0 and returns.
+- `update_struct_fields`: The routine reads two pointers from the frame, writes several short fields in the structures they point to using input words and frame-derived words, and updates a nested structure through a pointer chain.
+- `dispatch_table_routines`: Fetches a function pointer from a global variable table and calls the pointed-to routine, then calls three other routines.
+- `call_table_function`: Fetches a function pointer from a global variable table and calls the pointed-to routine, then calls another routine.
+- `process_memory_and_library_calls`: Calls a routine via a global variable, calls two library functions, and calls two other routines.
+- `execute_unnamed_routine_6`: An empty routine consisting of two instructions.
+- `setup_blt_parameters`: The routine configures several Blitter hardware registers and calls multiple library functions.
+- `call_indirect_via_table_2`: Fetches a function pointer from a global variable table and calls the pointed-to routine.
+- `execute_empty_routine`: Calls a routine consisting of two instructions.
+- `call_free_memory`: The routine calls a function obtained via a global variable and another routine.
+- `return_empty_stub`: The routine consists of a single instruction and performs no work beyond returning to its caller, which is call_free_memory.
+- `clear_structure_fields`: Loads a value from one memory location to another, clears several fields in two different structures, and transfers data between registers.
+- `copy_pointer_data`: Loads a value from a memory location pointed to by a register and stores it into another memory location pointed to by a different register before calling another routine.
+- `transfer_pointer_data`: Loads a value from a memory location pointed to by a register and stores it into another memory location pointed to by a different register, then increments a global pointer and stores a byte.
+- `update_pointer_indirect_5`: Loads a value from a memory location pointed to by a register and stores it into another memory location pointed to by a different register.
+- `clear_flags_and_return`: The routine checks a field in a structure pointed to by a global variable, clears several fields in that structure and in another structure pointed to by a global variable, calls another routine, and returns a combined value from two input registers.
+- `transfer_register_data_2`: Copies data between registers and updates pointers using stack-based helper routines.
+- `clear_memory_block`: The routine performs a short sequence of instructions that clears a small portion of memory.
+- `clear_flag_and_call`: The routine checks a global variable for non-zero, calls another routine, clears two global words, and returns zero.
+- `clear_registers`: The routine clears the contents of two specific registers.
+- `clear_register_value`: Sets a specific register to zero.
+- `clear_register_value_2`: Clears the contents of a specific data register.
+- `copy_bytes_and_invoke`: The routine tests a global pointer and a flag, clears the flag, calls a library function, copies thirteen bytes from a global buffer to a structure pointed to by a global variable, calls another routine, and returns the two input registers combined.
+- `move_fields_and_update`: The routine calls another routine, sets a global word, moves fields from a structure pointed to by a global variable into global storage and clears them, calls another routine, invokes a library function with two words read from the structure, modifies a byte and a word in another structure, and returns a constant combined with an input register.
+- `clear_byte_buffer`: The routine clears a global word at a fixed offset and then zeroes a block of 1,024 bytes starting at another fixed offset, using a countdown loop.
+- `process_entity_and_pointers`: Copies entity fields to a buffer, executes an unspecified task, and updates a global variable by calling a routine via a loaded pointer.
+- `update_sprite_position_4`: Calculates new coordinates for a sprite by adding an offset to a value stored in memory.
+- `return_constant_3`: Returns the constant an address in d0 to the caller without any other effect.
+- `clear_word_buffer`: The routine zeroes a small block of seven words at a fixed offset using a countdown loop.
+- `conditional_flag_clear`: The routine checks a global word and two global integers for equality and, if both conditions hold, clears a global word.
+- `copy_and_propagate_words`: The routine decrements a counter in a global word and, when it reaches zero, copies a range of words from a structure pointed to by a global pointer into a buffer and then propagates each word to a set of destinations indexed via a table.
+- `update_pointer_offset_16`: increments a value stored at a memory location pointed to by a register.
+- `conditional_word_clear`: The routine compares a global integer plus a constant with another global integer and, if they match, clears a global word.
+- `compare_and_pack_bytes`: The routine initializes several global words, stores an input value and computes a pointer, then iterates over a table comparing nibbles from two sources, packs the nibbles into bytes in a buffer, counts mismatches, and stores the counts in global words before returning the input value.
+- `process_data_block`: A routine that performs a series of arithmetic and memory operations on data stored in a block.
+- `update_global_state`: A routine that modifies several global variables based on register values.
+- `return_from_subroutine_19`: This routine performs a single instruction to return control to the calling function.
+- `update_buffer_and_sprites`: Updates sprite attributes, initializes a buffer with constant words, and conditionally writes word pairs to a buffer while incrementing a global counter.
+- `update_sprite_attribute`: Reads a value from a memory location and writes it to a specific offset within a data structure pointed to by a register.
+- `write_word_pair_to_buffer_2`: Conditionally writes two constant words to a buffer pointed to by a pointer and increments a counter in a global variable.
+- `initialize_buffer_with_constants`: The routine calls another routine and then stores several constant words into a buffer pointed to by a pointer, using a value read from a global variable as one of the stored words.
+- `write_word_pair_to_buffer`: Conditionally writes two constant words to a buffer pointed to by a pointer and increments a counter in a global variable, then unconditionally writes a word built from an input word and a constant and a constant word to the buffer.
+- `update_global_pointer`: Increments a global pointer by a fixed offset and then stores a byte from a data register into the memory location pointed to by that update.
+- `initialize_word_table`: Writes an initial word pair to a destination buffer from a source buffer, then fills both buffers with a sequence of increasing words.
+- `conditionally_call_and_return_value`: The routine checks two global variables and conditionally calls another routine for each, then returns a value obtained from the second conditional call.
+- `execute_unnamed_routines`: Performs an infinite wait loop and calls two other routines.
+- `execute_multiple_subroutines`: Initializes a word table, builds a message request table, and performs an infinite wait loop.
+- `copy_byte_via_pointer_4`: Copies a single byte from one memory location to another using a pointer.
+- `copy_byte_and_modify_cop`: Copies a single byte from one memory location to another and modifies a coprocessor register.
+- `clear_register_value_3`: sets a register to zero.
+- `call_library_function_3`: Calls a function from a library.
+- `call_library_vector_228`: Library stub: loads a library base from a global variable and calls the library function at offset minus 228 of that base, returning its result to the caller.
+- `call_library_vector_462`: Library stub: loads a library base from a global variable and calls the library function at offset minus 462 of that base, returning its result to the caller.
+- `extract_byte_from_word`: Reads a word from a global variable offset by four bytes, shifts the value right by eight bits and masks it, then returns the result.
+- `call_indirect_via_global_2`: Calls a function obtained via a global variable and returns.
+- `allocate_memory_buffer`: calls a memory allocation function and returns the resulting pointer.
+- `call_indirect_via_global_table`: The routine fetches a function pointer from a global variable table and calls the pointed-to routine, then returns.
+- `call_indirect_table_entry`: The routine fetches a function pointer from an offset within a global variable and calls the pointed-to routine.
+- `free_memory_and_return`: Calls a function obtained via a global variable and returns a combined value from two input registers.
+- `perform_unspecified_task`: A routine that executes fifteen instructions without a clearly identifiable pattern from the provided metadata.
+- `perform_unspecified_task_2`: The routine executes fifteen instructions without a clearly identifiable pattern.
+- `update_pointer_via_indirect_call_2`: Loads a value from a memory location into a register and uses it as a pointer to call another routine, then updates a global variable with the result.
+- `update_pointer_via_offset_70`: Adds a value to a pointer stored in a memory location and writes the result back to that location.
+- `update_pointer_via_offset_69`: Adds a value to a pointer stored in a memory location and writes the result back to that same location.
+- `update_and_store_bytes`: Updates a pointer via an offset and stores multiple bytes into memory locations using pointers.
+- `store_byte_and_return_3`: Copies a byte from a data register to a memory location pointed to by a pointer and returns a concatenated constant value.
+- `store_bytes_via_pointers`: Updates a pointer via an offset, stores a byte to a pointer, and stores another byte to a pointer while returning concatenated constants.
+- `execute_nop_padding`: The routine performs no actions.
+- `nop_padding_5`: This routine consists of two no-operation instructions and performs no actions.
+- `store_byte_and_return_2`: The routine copies a byte from a data register to a byte pointed to by a pointer and returns a value formed by concatenating a constant one with another value.
+- `initialize_filter_state`: The routine writes zero to several locations in a frame area and writes a constant word to another location, then calls another routine.
+- `conditionally_call_on_flag`: The routine checks a global word and conditionally calls another routine before returning.
+- `link_and_call_pointers_3`: Updates two linked pointers within a structure and calls multiple routines.
+- `execute_unnamed_routine_2`: Calls another routine and returns.
+- `link_and_call_pointers_2`: Calls multiple routines and updates two linked pointers within a structure.
+- `link_and_call_pointers`: Updates two linked pointers within a structure and executes a subsequent routine.
+- `link_two_pointers_and_call`: The routine updates two linked pointers in a structure pointed to by an argument, linking them together if present, then calls another routine obtained through a global variable and returns a combined value from two input registers.
+- `call_linked_pointers`: Calls multiple routines by updating two linked pointers within a structure.
+- `swap_and_clear_global`: The routine checks a global variable and, if it is zero, copies another global variable into it and clears the source.
+- `iterate_list_and_call`: The routine saves and restores a global variable and a global word, then walks a linked list from a global pointer, conditionally calling function pointers stored in each node.
+- `update_pointer_via_offset_65`: Increments a value stored at a memory location by a constant amount and then stores the result back into that same location.
+- `increment_pointer_via_offset`: Increments a value stored at a memory location by a constant amount and then stores the result back into that same location.
+- `store_self_reference`: The routine calls another routine, stores the address of itself into a word located at an offset from a frame pointer, and returns zero.
+- `update_linked_pointers`: Updates two linked pointers within a data structure.
+- `fetch_next_table_entry_2`: The routine compares two words in a global variable and, if they differ, computes an index, bounds it, reads three bytes from a table using a pointer.
+- `copy_word_and_clear_byte_2`: The routine copies a word from one offset of a global variable to another offset and then stores zero into a byte of the same global variable.
+- `clear_table_data`: Clears a global variable, clears entries in a table, and writes words to a location derived from a register.
+- `reset_table_and_set_flag`: Clears a table of entries and writes two words to a memory location determined by a register before calling another routine twice.
+- `update_table_entry`: Clears a global variable and a table of entries before writing a byte to a memory location and updating a derived address with word-sized values.
+- `update_pointer_table_elements`: Iterates through a table of bytes and updates associated pointers based on the values found in that table.
+- `loop_table_entries_3`: Loops over a table to write a byte to a memory location via the stack.
+- `clear_and_build_table`: Clears a global variable and builds a table of offsets derived from a base pointer stored in a global variable.
+- `clear_and_process_table`: Checks a global variable and, if non-zero, clears it along with two associated global words.
+- `scale_and_store_byte_2`: Scales an input word and stores a single byte from a data register into a memory location.
+- `clear_and_loop_data`: The routine repeatedly writes zero to two words in a specific memory location and calls two separate routines.
+- `update_and_clear_table_entry`: Updates a table entry using register values and a pointed-to object, then clears a linked list entry.
+- `clear_table_and_execute_callback`: Clears entries within a table and writes word values to a destination address derived from a register.
+- `update_and_clear_list_entry`: Updates an entry in a table using values from registers and a pointed-to object, then clears a linked list entry based on an index.
+- `reset_filter_parameters`: Clears several values in a memory frame by writing zero to them and assigns a constant word to a specific location before calling another routine.
+- `initialize_global_buffer`: Checks if a global variable is zero and, if so, copies the contents of another global variable into it before clearing the source.
+- `call_blitter_update`: Calls a routine that updates Blitter hardware registers and modifies memory via a byte table search.
+- `accumulate_words_from_structure`: Reads several words from a structure pointed to by a global variable, computes an index, and walks a linked list via an indirect call.
+- `call_blitter_update_alt`: Executes a single instruction to trigger a routine that modifies memory and Blitter registers.
+- `search_byte_table`: Iterates through a byte table until a null byte is encountered.
+- `initialize_filter_state_2`: Writes zero to several locations in a frame area and writes a constant word to another location.
+- `conditionally_call_routine`: Checks a global word and conditionally calls another routine before returning.
+- `return_zero_on_flag`: Calls another routine and returns its result, but forces the return value to zero when a zero flag condition is true.
+- `clear_indirect_pointer`: Sets a register to zero using a routine that clears a register-indirect pointer.
+- `execute_single_call`: The routine performs a single call to another routine.
+- `initialize_interrupt_state`: The routine copies a value from one global field to another and clears several global words.
+- `install_interrupt_server`: The routine writes constant bytes and a pointer to a global structure, stores its own address as a handler, and invokes a library routine to add an interrupt server.
+- `conditional_callback`: The routine tests a global flag and, if set, calls a function pointer taken from a global variable.
+- `process_sprite_positions`: The routine reads a vertical position register and, using offsets from a global structure, updates word pairs in a set of linked lists by adding base offsets and a scaled value, then clears a flag and propagates counters.
+- `loop_call_with_counter`: The routine loops a number of times determined by an input value, calling a function pointer derived from a global variable each iteration, then returns the two input values concatenated.
+- `infinite_wait`: The routine loops forever by comparing a global variable to itself, then returns zero.
+- `clamp_and_store_values`: The routine clamps two word values against limits stored in global variables, stores the clamped results and their halves back to globals, and writes derived bytes to pointers obtained from globals.
+- `mask_input_with_flags`: The routine masks the high word of an input value and, if a global flag is non-zero, ORs in bits derived from a global word using three bit tests.
+- `clear_table_and_transfer`: Clears a global variable and table entries before transferring a byte to memory and writing words to a derived location.
+- `clear_table_and_flag`: Clears a global variable and table entries, transfers a byte to memory, and writes words to a location derived from a register.
+- `clear_table_and_set_flag`: Clears a global variable and table entries, transfers a byte to memory, and writes words to a location derived from a register before calling another routine twice.
+- `clear_table_entries_2`: Clears a global variable and clears entries in a table based on an index and a base pointer.
+- `transfer_byte_to_memory`: Copies a single byte from a source register into a memory location pointed to by a register.
+- `clear_table_and_flags`: Clears a global variable, clears entries in a table, and writes words to a location derived from a register before calling another routine twice.
+- `set_flag_and_clear_table`: Clears entries in a table and writes words to a location derived from a register before calling another routine twice.
+- `clear_table_entries`: Clears a global variable, calls a library function, and clears entries in a table based on an index and a base pointer.
+- `set_flag_and_call`: The routine writes a word to a location derived from a register, calls another routine twice, writes a different word to the same location, and returns zero.
+- `wait_for_flag_then_call`: Clears a global variable, calls a library function, and walks a table of offsets derived from a base pointer stored in a global.
+- `write_byte_via_stack`: Increments a stack pointer by four and writes a single byte from a register into a memory location pointed to by another register.
+- `increment_stack_and_load`: The routine adds four to a stack pointer and loads the value three into a register.
+- `tiny_addq_moveq_rts_2`: Small routine of 3 instructions that adds 4 to a7, then loads 3 into d0, then returns.
+- `write_byte_via_pointer`: Writes a single byte from a register into a memory location pointed to by another register.
+- `update_pointer_table`: The routine iterates through a table of bytes and updates associated pointers.
+- `loop_table_entries_2`: The routine loops over a table using a counter and a pointer, writes a byte to a memory location via the stack, and clears a register before returning.
+- `tiny_moveq_rts_5`: Small routine of 2 instructions that loads 0 into d1, then returns.
+- `loop_table_entries`: Loops over a table using a counter and a pointer, advancing the pointer each iteration and exiting early when the counter reaches zero.
+- `loop_compare_table_entries`: The routine loops over a table using a counter and a pointer, advancing the pointer each iteration and exiting early when the counter reaches a sentinel.
+- `process_table_and_flags`: Clears entries in a table, writes words to a location derived from a register, calls a function via a global variable, and manages various global flags and state clearing.
+- `initialize_state_and_call_indirect_2`: Clears several global variables, stores an input word and a derived index, and calls another routine to populate more global variables with sums and shifted values using its 64-bit result.
+- `clear_state_if_nonzero`: The routine checks a global variable and, if non-zero, clears two global words and the variable itself before calling another routine.
+- `duplicate_word_pairs`: The routine copies a 32-bit input value into two parallel structures eight times, writing the high word and low word to each, and adds a global short to the input each iteration.
+- `update_status_word`: The routine clamps an input word, masks a status word from a global structure, optionally selects an alternate table entry and modifies the word, then stores the combined value back.
+- `manage_state_and_memory`: Clears a global variable and two global words if the variable is non-zero, processes a table, and frees memory using a function from a global variable.
+- `scale_small_value`: The routine returns the input word shifted left by three if it is below a threshold, otherwise it returns one.
+- `set_flag_once`: The routine calls another routine, writes zero to two words in an output area, calls two more routines, sets a bit in a byte in a frame area, and returns zero.
+- `set_flag_after_loop`: The routine repeatedly calls another routine, writes zero to two words in an output area, calls two more routines, and loops until a word output equals a constant.
+- `call_and_return_zero`: The routine calls another routine and then returns zero.
+- `scale_and_store_byte`: The routine scales an input word and then stores a single byte from a data register into a memory location pointed to by another register.
+- `store_byte_via_pointer_25`: Stores a single byte from a data register into a memory location pointed to by another register.
+- `update_and_clear_entries`: The routine updates an entry in a table using values from registers and a pointed-to object, then clears a linked list entry based on an index and a global variable.
+- `update_object_entry`: The routine updates an entry in a table indexed by an input index, using values from registers and a pointed-to object.
+- `clear_linked_list_entry`: The routine indexes a table via a global variable and an input index, clears the entry if the index is below eight, otherwise it removes a linked list node by swapping its links and zeroing its fields.
+- `build_message_request_table`: The routine clears a global variable, calls a library function, and walks a table of offsets derived from a base pointer stored in a global variable to populate a global output table with pointers and zeroed fields.
+- `fill_message_request`: The routine calls another routine and a library vector, then writes several constants and values derived from the call results into a structure pointed to by a register.
+- `copy_word_and_clear_byte`: The routine copies a word from one offset of a global variable to another offset and then stores zero into a byte of the same global variable.
+- `return_zero`: The routine contains no operations and returns zero.
+- `fetch_next_table_entry`: The routine compares two words in a global variable and, if they differ, computes an index, bounds it, reads three bytes from a table using that index and builds a 32-bit value from them.
+- `increment_pointer_value_2`: adds one to the value stored at the memory location pointed to by a register.
+- `increment_global_pointers`: Increments a value stored at a global memory location by one and calls another routine, which also increments a value at a global memory location by one.
+- `increment_global_pointer_5`: The routine increments a value stored at a global memory location by one and calls another routine.
+- `increment_global_pointer_3`: Increments a value stored at a global memory location by one.
+- `process_pointer_and_stack`: Returns a 32-bit value passed on the stack, calls another routine, and loads a value from a memory location pointed to by a register into another memory location pointed to by a different register.
+- `return_stack_word`: The routine returns the 32-bit value passed on the stack without modification.
+- `execute_unnamed_subroutine`: The routine calls another routine and then returns.
+- `update_pointer_indirect_6`: Loads a value from a memory location pointed to by a register and stores it into another memory location pointed to by a different register.
+- `update_global_data_2`: Checks an input byte against a threshold to clear a bit in a byte array and updates global pointers and variables while enabling a DMA channel.
+- `clear_bit_in_byte_array`: The routine checks an input byte and, if it is below a threshold, computes a byte pointer from a global variable and clears a single bit within that byte using a mask derived from the input.
+- `update_global_data`: Increments global pointers, performs arithmetic on register values to update global variables, and enables a DMA channel.
+- `process_global_data`: Increments global pointers, performs arithmetic on register values to update global variables, and processes a data block.
+- `update_global_accumulators`: The routine increments global pointers, updates a global variable with arithmetic results, and processes a data block.
+- `update_global_accumulator`: Performs arithmetic operations on register values and stores the resulting value into a global variable.
+- `process_data_block_2`: The routine performs arithmetic operations on values stored in registers and updates a global variable based on the results.
+- `increment_global_counter`: Increments a value stored at a global memory location by one.
+- `tiny_moveq_rts_6`: Small routine of 2 instructions that loads 255 into d2, then returns.
+- `execute_indirect_calls`: The routine calls a function obtained via a global variable and increments a value stored in a memory location by a fixed amount.
+- `execute_indirect_and_increment`: Calls a function obtained via a global variable and increments a value stored in a memory location by a fixed amount.
+- `increment_memory_value_2`: The routine increments a value stored in a memory location by a fixed amount.
+- `update_pointer_offset_17`: Increments a value stored in a memory location by a fixed amount.
+- `tiny_moveq_rts_7`: Small routine of 2 instructions that loads 21 into d0, then returns.
+- `increment_and_call_indirect`: Calls a function via a pointer stored in a global variable and increments a value at a memory location by a fixed amount.
+- `load_constant_and_return`: Loads the value twenty-one into a data register and returns to the caller.
+- `unlink_list_node`: The routine removes a node from a linked list by updating the global head pointer and the predecessor and successor links of the node.
+- `process_linked_list_until_empty`: Loops while a global pointer is non-zero, repeatedly calling another routine to unlink a list node, and returns zero.
+- `clear_register_and_return_4`: The routine clears a register to zero and returns to the caller.
+- `clear_register_and_return_2`: Clears a register to zero and returns to the caller.
+- `unlink_list_node_conditional`: The routine conditionally calls another routine based on two fields of the node, then removes the node from a linked list by updating the global head pointer and the predecessor and successor links.
+- `process_linked_list_until_empty_2`: The routine loops while a different global pointer is non-zero, repeatedly calling another routine to conditionally unlink a list node, and returns zero.
+- `setup_sprite_parameters`: The routine reads words from a structure pointed to by a global variable, computes an index, walks a linked list via an indirect call, and clears a register.
+- `setup_sprite_draw_params`: The routine reads several words from a structure pointed to by a global variable, computes an index, walks a linked list via an indirect call.
+- `zero_register`: The routine sets a specific register to zero.
+- `clear_register_value_4`: Sets a specific register to zero.
+- `process_pointer_and_byte`: Loads values from memory locations into registers, increments memory values via pointers, and transfers bytes between locations.
+- `tiny_movea_move_rts`: Small routine of 3 instructions that copies (a7)+ to a5, then copies a0 to d0, then returns.
+- `load_pointer_to_register_9`: loads a value from a memory location into a register using a relative offset.
+- `update_pointer_offset_19`: Increments a value stored in a memory location pointed to by a register.
+- `transfer_byte_via_pointer_3`: The routine loads a byte from one memory location and stores it into another location via a pointer.
+- `transfer_byte_via_pointer_2`: The routine loads a byte from a memory location into a register and stores that value into a different memory location via a pointer.
+- `load_byte_to_memory_12`: loads a byte from a memory location into a register and stores that value into a different memory location via a pointer.
+- `handle_input_and_transfer`: Transfers a byte between memory locations and branches based on input and a global flag to call other routines.
+- `transfer_byte_and_handle_input`: Transfers a byte between memory locations and branches based on input and a global flag to call routines from tables and write to hardware registers.
+- `transfer_byte_only`: The routine loads a byte from a memory location and stores it into a different memory location via a pointer.
+- `clear_register_indirect_pointer`: Sets a register to zero.
+- `handle_input_and_dma`: The routine branches on an input value and a flag in a global variable, calls several routines from tables, writes to custom hardware registers and DMACON, and manipulates global variables.
+- `process_input_and_dma`: Branches on an input value and a global flag, then calls routines from a table and writes to custom hardware registers.
+- `initialize_dma_and_wait`: The routine writes to a global word, calls several routines, and waits in a loop until a byte pointed to by a register changes.
+- `copy_conditional_pointer_data`: Checks a global byte flag to determine whether to copy eight bytes from a table of pointers into a destination buffer.
+- `copy_masked_data`: Conditionally copies eight bytes from a table of pointers into a buffer based on a flag in a global byte.
+- `return_immediately_10`: This routine performs no operations and returns to its caller immediately.
+- `copy_conditional_pointer_data_2`: Checks a global flag and, if true, copies eight bytes from a table of pointers into a buffer while interacting with custom hardware registers.
+- `return_immediately_stub_2`: The routine consists of a single instruction and contains no logic, so it performs no work beyond returning to its caller, manage_system_state.
+- `configure_flags_and_tables`: The routine masks and sets bits in a byte within a frame based on low and high bits of an input word, loads two-word table entries from offsets relative to its own address into several global variables, and then calls another routine before returning zero.
+- `increment_global_pointer_4`: Increments a value stored at a global memory location by one.
+- `increment_pointer_and_load_2`: Increments a pointer stored in a memory location and loads the value at the new address into a register.
+- `cache_clear_and_return`: The routine conditionally calls another routine based on a table value, calls Exec CacheClearU, and returns a combined value from its inputs.
+- `copy_tile_block`: The routine copies a rectangular block of bytes from a source buffer pointed to by a pointer stored in a structure to a destination buffer obtained via a global variable.
+- `blit_clipped_rectangle`: The routine checks a flag in a global variable and a pointer in another global variable, then intersects a source rectangle with a destination.
+- `clipboard_blit_range`: The routine checks a flag in a global variable and a pointer in another global variable, then intersects a source rectangle with a destination range stored in registers, clamps the bounds, and for each scanline in the range it computes source and destination addresses using stride values from the globals and copies a row of bytes with a small unrolled loop, using a helper routine to process each line.
+- `conditional_free_and_clear`: The routine returns zero unless a flag in a global variable is set, in which case it calls another routine and clears two fields in the same global variable before returning the call result.
+- `update_sprite_position_3`: Calculates a new coordinate by adding a signed offset to a value stored in memory and writes the result back to a table.
+- `conditional_byte_copy_with_mask`: The routine checks a flag in a byte from a global variable and, if set, copies eight bytes from a table of pointers into a buffer while applying a mask or an OR operation selected by a bit in a word from the global variable.
+- `conditional_byte_block_copy`: The routine checks a flag in a byte from a global variable and, if set, copies eight bytes from a table of pointers into a buffer using a stride value from another global variable.
+- `synchronize_and_update_state_structure`: Synchronizes various fields within a global structure by copying words and longs between offsets, validating parameters, and performing conditional updates based on bitmasks or comparisons.
+- `initialize_and_validate_parameters`: The routine stores several incoming values into fields of a global variable and performs size and range checks using values from another global variable.
+- `compare_and_copy_bytes`: The routine compares a global variable with another and conditionally copies eight bytes from a table of pointers into a buffer.
+- `copy_conditional_blocks`: Compares a global variable with another to conditionally copy eight bytes from a pointer table and validates parameters to copy a rectangular block of bytes.
+- `copy_conditional_tile_block`: Validates parameters, copies a rectangular block of bytes, and conditionally copies bytes from a table of pointers into a buffer based on a global flag.
+- `copy_conditional_fields`: Compares values and conditionally copies bytes from a table of pointers into a buffer while performing arithmetic on offsets and copying fields between offsets in a global variable.
+- `process_global_parameters`: Validates parameters, performs conditional block copies from a table of pointers, and updates global bitmasks and data.
+- `wait_for_nonzero`: The routine repeatedly calls another routine until the returned value is non-zero, then returns a constant zero.
+- `copy_pointer_block`: Checks a flag in a global byte and, if set, copies eight bytes from a table of pointers into a buffer.
+- `manage_memory_and_bitmasks`: The routine interacts with the custom chip, conditionally frees memory, and updates a global variable by looping over a bitmask.
+- `find_linked_node_by_field`: The routine loads a pointer from a global variable and walks a linked list by following a pointer field until it finds a node whose field matches an input short or reaches the end of the list.
+- `synchronize_global_fields`: Validates parameters, copies various field types between offsets in a global variable, and performs conditional subroutine calls.
+- `save_and_restore_register_state`: Saves three fields from a global variable, calls another routine, then restores the three saved fields to the same global variable and returns zero.
+- `initialize_structure_and_jump`: The routine writes constants and copies values within a global variable, calls another routine twice and then performs an indirect jump through a pointer.
+- `loop_until_short_field_changes`: The routine loops a number of times given by a word in a global variable, calling another routine each iteration and comparing a short field in the global variable before and after the call, incrementing a counter when the field changes, and then calls another routine twice before returning.
+- `expand_and_toggle_flags`: The routine expands bitfields from a structure into pointer values and short flags within arrays in that structure, then toggles a specific bit in a global byte based on an input short.
+- `expand_bitfields_to_pointers_2`: The routine reads bitfields from a structure and expands them into pointer values and short flags, writing the results into arrays within the same structure.
+- `conditional_word_fill_loop`: The routine clamps an input word to a limit from a global variable and then fills a series of byte blocks using a word from the global variable as a mask.
+- `update_global_data_3`: Calls a routine to synchronize global fields and another to update a bitmask and associated data.
+- `update_bitmask_and_data`: The routine initializes fields in a global variable, loops over a bitmask to call another routine, and copies a short between offsets in a global variable before calling another routine.
+- `looped_bitmask_setup`: The routine initializes several fields in a global variable and then loops over a bitmask from a global variable, calling another routine and writing computed pointer and flag values into the global variable for each set bit.
+- `execute_nested_loops`: The routine initializes fields in a global variable and then executes nested loops driven by values from the global variable, calling another routine.
+- `nested_loop_pointer_setup`: The routine initializes fields in a global variable and then executes nested loops driven by values from the global variable, calling another routine and writing pointer and byte values into the global variable for each iteration.
+- `setup_conditional_bitmasks`: The routine checks a condition from an input short and, if true, initializes a global variable and loops over a bitmask.
+- `process_bitmask_data`: The routine performs conditional pointer setup and updates a global variable by iterating through a bitmask.
+- `conditional_looped_pointer_setup`: The routine checks a condition from an input short and, if true, initializes fields in a global variable and loops over a bitmask, calling another routine and writing pointer sums into the global variable for each set bit.
+- `toggle_flag_byte`: The routine clears a bit in a byte from a global variable and sets the same bit if an input short is non-zero.
+- `compare_and_store_byte_2`: Compares a global variable with another value and, if they are equal, stores a byte from a register into a memory location via a pointer.
+- `clear_register_a`: Sets the contents of a specific data pointer register to zero.
+- `expand_bitfields_and_store`: Expands bitfields from a structure into pointer values and short flags within arrays, then compares a global variable with another and stores a byte.
+- `accumulate_offset_values_total`: Updates a global variable by iterating through a bitmask and computing sums involving signed short differences and products.
+- `accumulate_offset_values_partial`: Computes sums involving a global variable, signed short differences, and a product.
+- `accumulate_offset_values`: Updates a global variable by iterating through a bitmask and computes sums involving global variables, signed short differences, and products.
+- `accumulate_offset_and_mask`: Initializes a global variable using a bitmask and computes a sum from a global variable, a signed short difference, and a product.
+- `initialize_bitmask`: Checks a condition from an input short and, if true, initializes a global variable and loops over a bitmask.
+- `copy_and_clear_then_call`: The routine copies a short from one offset to another in a global variable, clears a byte in the global variable, calls another routine and returns zero.
+- `compute_short_difference`: The routine loads a pointer from a global variable, follows an indirection to obtain another pointer, and returns the difference between two short fields from that structure.
+- `compare_and_store_byte_5`: Compares a global variable with another, conditionally calls another routine, pushes a register to the stack, and stores a byte.
+- `compare_and_store_byte_3`: Compares a global variable with another, conditionally calls another routine, pushes a register value to the stack, and stores a byte.
+- `copy_masked_byte_data`: Checks a flag in a global byte and conditionally copies eight bytes from a table of pointers into a buffer using a mask or an offset calculation.
+- `copy_conditional_byte_block`: Checks a flag in a byte from a global variable and, if set, copies eight bytes from a table of pointers into a buffer using a bitmask.
+- `load_and_process_byte`: Loads a byte from one memory location into a register and stores it at a different address, then performs arithmetic and bitmask operations.
+- `load_byte_to_memory_13`: loads a byte from a memory location into a register and stores it at a different address pointed to by another register.
+- `execute_conditional_logic_2`: Sets d0 to 0 and d1 to d5, calls a routine to copy a byte with a mask, then either returns or performs a series of checks involving the custom hardware address in a6 and a structure in a5 to call either a pointer copying routine or a structure copying routine.
+- `copy_conditional_pointers`: Checks a flag in a byte from a global variable and, if set, copies eight bytes from a table of pointers into a buffer.
+- `update_pointer_buffer`: Checks a flag in a global variable and, if set, copies eight bytes from a table of pointers into a buffer using a bitmask.
+- `copy_structures_and_call`: The routine tests a flag byte in a structure pointed to by a register.
+- `process_conditional_data`: Checks a global flag and, if set, copies eight bytes from a table of pointers into a buffer while interacting with custom hardware registers.
+- `call_unknown_routine`: Loads an address into a0, calls another routine, restores registers a4 through a6, and returns after testing d0.
+- `accumulate_offset_value`: The routine computes a sum of an integer from a global variable, a signed short difference from two shorts in the global variable, and a product of two words from the global variable, then stores the result into a field of the global variable.
+- `copy_fields_between_offsets`: The routine copies two word fields and one long field from one set of offsets in a global variable to another set of offsets in the same global variable.
+- `copy_struct_fields`: The routine copies two 16-bit values from offsets 88 and 90 to offsets 80 and 82, and copies a 32-bit value from offset 16 to offset 12, using an address base in a register, then returns.
+- `count_string_length`: Walks a byte string in a register, incrementing a counter for each byte and skipping two bytes after an escape byte, then returns the final count.
+- `call_library_function_4`: Loads a library base from a global variable and calls the library function at a specific offset.
+- `process_complex_data`: Performs multiple operations including bitmask initialization, offset accumulation, and conditional byte comparisons and storage.
+- `tiny_or`: Small routine of 1 instruction that merges d1 into d0.
+- `compare_and_store_byte_4`: Compares a global variable with another, conditionally calls another routine, pushes a register value to the stack, and stores a byte, then calls another routine.
+- `return_from_routine`: An empty routine consisting of a single instruction.
+- `compare_and_store_byte_6`: Compares a byte from a register with a global variable and, if they are equal, stores a byte into a memory location pointed to by a register.
+- `compare_and_store_byte`: The routine compares a global variable with another, conditionally calls another routine, pushes a register value to the stack, and stores a byte into a memory location via a pointer.
+- `conditionally_call_routine_2`: The routine compares a global variable with a value from another global variable and, if they differ and the first is non-zero, calls another routine.
+- `compare_and_branch_on_inequality`: Compares two global variables and, if the first is non-zero and the values are not equal, calls another routine.
+- `conditional_call_and_return`: Compares a global variable with a value from another global variable and, if they differ and the first is non-zero, calls another routine before returning a constant combined with a stack value.
+- `store_byte_via_pointer_27`: Copies a single byte from a register into a memory location specified by a pointer held in another register.
+- `compare_and_update_byte`: Compares a global variable with a value and, if a condition is met, calls another routine and stores a byte from a register into a memory location.
+- `compare_and_update_byte_2`: Compares a byte from a register with a global variable and, if they match, calls another routine and stores a value into a memory location via a pointer.
+- `accumulate_partial_sums`: Calculates a sum by combining a global variable, the product of two signed short values, and their difference.
+- `push_register_value`: pushes the value of a register onto the stack.
+- `expand_bitfields`: Expands bitfields from a structure into pointer values and short flags within arrays.
+- `compare_and_store_single_byte`: Compares a global variable with another value and, if equal, stores a byte from a register into a memory location via a pointer.

@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (930928 top-level bytes in 5 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 137 raw-word lines |
-| Functions named and described | pass, 149 of 149 named (0 author symbols), 149 of 149 described (5 by rule, 116 by the local model) |
+| Functions named and described | pass, 145 of 145 named (0 author symbols), 145 of 145 described (4 by rule, 113 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2255 of 2255 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 2560 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 5808 of 5808 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 5899 of 5899 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 1585 |
-| code | 26232 |
-| data | 901573 |
+| asset | 1588 |
+| code | 26636 |
+| data | 901166 |
 | padding | 2 |
 | unused | 1536 |
 
@@ -28,8 +28,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Venus the Flytrap (1990)(Gremlin)[cr QTX][t +6 Inner-City][a].adf:bootblock | 1 | 265 | 28 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3546 | 69 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1631 | 34 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3531 | 61 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1737 | 38 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 189 | 13 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 177 | 5 |
 | Venus the Flytrap (1990)(Gremlin)[cr QTX][t +6 Inner-City][a].adf bytes 1024-3584 (code never loaded by a reference run) | 1 | 0 | 0 |
@@ -132,10 +132,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_audio_parameters`: Updates a global variable using a value fetched from a table and sets certain hardware-related or global values to constants.
 - `call_audio_update`: Calls another routine that updates audio-related registers and enables a DMA channel.
 - `update_audio_registers`: Updates several audio-related registers and enables a DMA channel.
-- `modify_memory_and_decrement`: Sets specific bits in a memory location and decrements a global variable, resetting it to a constant if it reaches zero.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `decrement_global_counter`: Decrements a global variable and resets it to a constant if it reaches zero.
-- `update_dma_and_counter`: Modifies the DMA controller register and decrements a global variable, resetting it to a constant if it reaches zero.
+- `decrement_and_update_dma_control`: Decrements two consecutive global bytes; if the first byte reaches zero, it writes eight to the DMA control register, and if the second byte reaches zero, it writes four to the DMA control register.
 - `branch_on_global_state`: Evaluates a global variable through a series of conditional branches and potentially modifies it or calls another routine.
 - `update_global_buffer`: Modifies a global variable by adding or subtracting values and shifting bytes, potentially wrapping or resetting certain bytes.
 - `initialize_table_entry`: Searches a table for an empty entry and populates its fields with specific constants, pointers, and values from a source pointer.
@@ -146,12 +143,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `read_joystick_fire_state`: Clears several shared state bytes, reads the joystick port and fire-button status, and records them in shared variables while writing to a port control register.
 - `decode_joystick_status_bits`: Decodes bits from a memory location into direction and button flags, storing each in a shared variable.
 - `update_mouse_position_counters`: Reads the mouse port movement register and subtracts the change from two stored position counters, clamping each to its range.
-- `return_d0_long`: Returns a 32-bit value stored in a register.
-- `return_d0_byte`: Returns an 8-bit value stored in a register.
-- `return_register_value`: the routine returns the current value held in a data register.
-- `clear_d0_byte`: Clears a register and returns an 8-bit value.
-- `mask_d0_byte`: Performs a bitwise AND on a register and returns an 8-bit value.
-- `tiny_ori_rts`: Small routine of 2 instructions that merges 0 into d0, then returns.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
 - `update_display_table`: Calculates an offset from a global variable and writes a series of bytes to a table or memory area, then updates a pointer or global variable.
 - `update_object_state_and_position`: Checks a global variable to determine a branch or loop, then iterates through an object table to reset or modify object properties or positions based on certain flag values.
 - `initialize_object_list`: Iterates through a list of pointers until a null-terminated entry is found, then initializes that entry with specific values and clears a separate table.
@@ -169,6 +161,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `traverse_and_update_table`: Iterates through a linked list or table, checking for specific sentinel or termination values, and copies or updates data in a secondary buffer.
 - `traverse_table_bounds`: Iterates through a table or linked list, performing bounds checks and pointer-based calculations to update a global variable.
 - `validate_table_bounds`: Checks if a pointer or index falls within a specific range and, if so, calculates a secondary offset to verify if certain table entries point back to a valid or previously visited memory area.
+- `update_entity_state_and_bounds_2_2`: Calculates an index into a table using values from a structure in a0 and a global variable, then performs conditional updates to the structure's fields and calls several routines in a loop based on bitmasking a value from the structure.
 - `update_entity_state_and_bounds`: Iterates through a table of structures to check for specific type identifiers and update state flags or pointer offsets.
 - `update_entity_state_and_bounds_2`: Iterates through a table of structures to check for specific type identifiers and update state flags or pointer offsets.
 - `process_entity_event_and_update_state`: Checks a condition on a pointer-referenced buffer and, if certain criteria are met, resets several fields in that buffer before branching to different state-update routines based on a byte-value check.
@@ -181,6 +174,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_global_with_bounds_check`: Updates a global variable using a table lookup and checks if a certain value or offset falls within a specific range.
 - `execute_recursive_counter_increment`: Executes a recursive routine that increments a global variable by a fixed amount if it is non-zero, or resets it to zero, or executes a sequence of recursive calls with conditional increments.
 - `traverse_and_update_table_2`: Iterates through a table or list, performing complex pointer arithmetic and checking if a value or pointer is within a certain range.
+- `conditional_dual_updates`: Checks if a global variable equals 1; if so, it calls another routine, otherwise it clears a byte in a global variable, calls another routine with a value in d5, and if a byte at a global address is non-zero, increments that global variable by 4; it then repeats this process with a different value in d5 and a different increment for the global variable.
+- `execute_dual_updates`: Clears a byte in a global variable, calls another routine with a value in d5, and if a byte at a global address is non-zero, increments that global variable by 4; it then repeats this process with a different value in d5 and a different increment for the global variable.
+- `calculate_table_index`: Clears a byte at a global address, performs arithmetic using values from several global variables and a table, and if certain conditions are met, sets bytes at two different global addresses and calls another routine via a tail branch.
 - `initialize_global_with_loop`: Sets a global variable to zero and increments it through a nested loop structure until a certain value is reached.
 - `traverse_and_update_table_recursive`: Performs a table lookup and, if certain conditions are met, recursively calls itself.
 - `write_pattern_to_memory`: Writes a repeating sequence of two specific bytes to a fixed memory location using an incrementing pointer.

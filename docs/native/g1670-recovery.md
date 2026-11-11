@@ -8,26 +8,26 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (903664 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 31 of 31 named (0 author symbols), 31 of 31 described (3 by rule, 0 by the local model) |
+| Functions named and described | pass, 32 of 32 named (0 author symbols), 32 of 32 described (2 by rule, 3 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 463 of 463 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 52224 bytes, 1 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 688 of 958 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 685 of 786 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| code | 5906 |
-| data | 787150 |
-| padding | 16 |
+| code | 5322 |
+| data | 786990 |
+| padding | 760 |
 | unused | 110592 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Starglider 2 - The Egron's Strike Back (1988)(Rainbird)[cr Unit A - WOW][a].adf:bootblock | 1 | 246 | 8 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 594 | 22 |
+| Starglider 2 - The Egron's Strike Back (1988)(Rainbird)[cr Unit A - WOW][a].adf:bootblock | 1 | 60 | 6 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 608 | 25 |
 | Starglider 2 - The Egron's Strike Back (1988)(Rainbird)[cr Unit A - WOW][a].adf bytes 5632-11776 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Starglider 2 - The Egron's Strike Back (1988)(Rainbird)[cr Unit A - WOW][a].adf bytes 67584-98304 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Starglider 2 - The Egron's Strike Back (1988)(Rainbird)[cr Unit A - WOW][a].adf bytes 98816-114176 (code never loaded by a reference run) | 1 | 118 | 1 |
@@ -72,8 +72,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `boot_program_custom_chip_state`: Boot block routine that calls a library function at a fixed offset and writes the colour, DMA control, interrupt enable and interrupt request registers along with one more custom-chip register.
 - `copy_longs_and_set_colour`: Copies a long run of longwords from a source address to low memory, then writes a fixed value to a colour register and patches a byte in the copied area.
 - `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `stub_bad_instruction_data`: The decompiled listing is a single undecodable-bytes marker for 185 instructions, so no behaviour is recovered from this entry.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -82,6 +80,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `write_pair_then_call_loop`: Calls a routine, writes the same constant value to two offsets of a structure, then calls another routine 24 times in a loop.
 - `advance_countdown_timer_entry`: Writes two constant values into a structure, then decrements a countdown word.
 - `copy_longs_to_fixed_block`: Copies sixteen longwords from a global area to a fixed low-memory address and then sets a global to that address.
+- `compare_and_return_exception`: Compares a longword at an offset of 240 to the constant an address; if they are not equal, it branches to another routine, otherwise it loads 496 into d0 and executes an exception return.
+- `jump_to_self`: Performs a relative branch to its own starting address.
 - `step_frame_state_counter`: Decrements a small state counter held in globals and, when it reloads, steps a state word through a fixed sequence with wrap-around.
 - `store_two_buffer_pointers`: Stores two buffer addresses and two counts into four global words and returns.
 - `pack_input_bits_value`: Combines flag bits taken from two input words and a shifted coordinate into a packed 32-bit value, and returns a 16-bit result derived from one input.
@@ -95,6 +95,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_display_list`: When a global counter is zero, copies pairs of words from a table into a buffer and recurses to fill it; it then writes fields of a structure, including a word derived from the counter, and calls another routine.
 - `find_next_nonzero_entry`: Scans a byte table from a rotating global index for the next non-zero entry, decodes it by XOR and tests whether it lies in a fixed range; in-range values trigger a block copy of table entries.
 - `initialize_global_table`: Writes a series of fixed addresses into global variables, clears fifteen entries of a global table to zero, and copies one global pointer into another.
+- `reset_audio_volumes`: Writes 65535 to a global variable, writes zero to four audio channel volume registers and three other global variables, then returns.
 - `clear_audio_volume_state`: Writes zero to six shared globals and fifteen to one more.
 - `tick_audio_step_counter`: Returns at once when a global counter is zero; otherwise it increments the counter and, on reaching six, resets it, calls four routines, runs a short delay loop and adjusts a global.
 - `program_audio_channel_registers`: Decodes a packed control byte for a sound sample and programs the location and length registers of the four audio channels, enabling their DMA through the DMA control register.

@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (901232 top-level bytes in 55 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 39 of 39 units identical (bytes and relocations), 24 raw-word lines |
+| Byte-identical reassembly with vasm | pass, 39 of 39 units identical (bytes and relocations), 6 raw-word lines |
 | Functions named and described | pass, 328 of 328 named (0 author symbols), 328 of 328 described (65 by rule, 125 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 240 of 240 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 10237 of 10254 instructions identical in start and length, 1 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 10234 of 10234 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 71290 |
-| code | 32202 |
-| data | 501504 |
+| code | 32130 |
+| data | 501576 |
 | padding | 14636 |
 | unused | 281600 |
 
@@ -27,7 +27,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Ambermoon (1993)(Thalion)(De)(Disk 01 of 10)(A)[a2].adf:Keymap | 1 | 13 | 1 |
+| Ambermoon (1993)(Thalion)(De)(Disk 01 of 10)(A)[a2].adf:Keymap | 1 | 3 | 1 |
 | Run | 2 | 117 | 2 |
 | Install | 3 | 117 | 2 |
 | Else | 2 | 117 | 2 |
@@ -60,7 +60,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Disk-Validator | 1 | 386 | 1 |
 | Ram-Handler | 2 | 10 | 1 |
 | Ambermoon (1993)(Thalion)(De)(Disk 01 of 10)(A)[a2].adf:AM2_BLIT | 11 | 253 | 7 |
-| d | 1 | 13 | 1 |
+| d | 1 | 3 | 1 |
 | Ambermoon (1993)(Thalion)(De)(Disk 01 of 10)(A)[a2].adf:AM2_CPU | 10 | 45 | 2 |
 | Ambermoon (1993)(Thalion)(De)(Disk 01 of 10)(A)[a2].adf:Ambermoon | 8 | 45 | 2 |
 | Ambermoon (1993)(Thalion)(De)(Disk 01 of 10)(A)[a2].adf:Ambermoon_install | 7 | 45 | 2 |

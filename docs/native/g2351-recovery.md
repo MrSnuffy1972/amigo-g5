@@ -54,30 +54,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clean_up_and_reply`: Calls a helper routine, then calls two library routines at fixed offsets when two stored values are nonzero.
 - `call_two_library_functions`: Calls two library routines through fixed negative offsets from a base register, then returns.
 - `try_dos_library_then_cleanup`: Calls a library routine at a fixed offset and returns its result if nonzero, referring to the text dos.library.
-- `_AllocMem`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
-- `_FreeMem`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
-- `_AvailMem`: Library stub: loads a library base from a global variable and calls the library function at offset minus 216 of that base, returning its result to the caller.
-- `_FindTask`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
-- `_SetSignal`: Library stub: loads a library base from a global variable and calls the library function at offset minus 306 of that base, returning its result to the caller.
-- `_AllocSignal`: Library stub: loads a library base from a global variable and calls the library function at offset minus 330 of that base, returning its result to the caller.
-- `_FreeSignal`: Library stub: loads a library base from a global variable and calls the library function at offset minus 336 of that base, returning its result to the caller.
-- `_AddPort`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
-- `_RemPort`: Library stub: loads a library base from a global variable and calls the library function at offset minus 360 of that base, returning its result to the caller.
-- `_GetMsg`: Library stub: loads a library base from a global variable and calls the library function at offset minus 372 of that base, returning its result to the caller.
-- `_ReplyMsg`: Library stub: loads a library base from a global variable and calls the library function at offset minus 378 of that base, returning its result to the caller.
-- `_WaitPort`: Library stub: loads a library base from a global variable and calls the library function at offset minus 384 of that base, returning its result to the caller.
-- `_OpenLibrary`: Library stub: loads a library base from a global variable and calls the library function at offset minus 408 of that base, returning its result to the caller.
-- `_CloseLibrary`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
-- `_OpenDevice`: Library stub: loads a library base from a global variable and calls the library function at offset minus 444 of that base, returning its result to the caller.
-- `_CloseDevice`: Library stub: loads a library base from a global variable and calls the library function at offset minus 450 of that base, returning its result to the caller.
-- `_DoIO`: Library stub: loads a library base from a global variable and calls the library function at offset minus 456 of that base, returning its result to the caller.
-- `_SendIO`: Library stub: loads a library base from a global variable and calls the library function at offset minus 462 of that base, returning its result to the caller.
-- `split_words_and_get_handles`: Splits a text string into up to 32 words at separator characters, storing a pointer to each word and terminating it with a zero byte.
-- `allocate_sized_block_with_header`: Allocates a memory block 12 bytes larger than its argument and returns zero if the allocation fails.
-- `return_result_or_minus_one`: Calls a routine with its argument and returns that result when it is nonzero, otherwise it returns minus one.
-- `return_minus_one`: The routine is unreachable and consists of a single instruction that returns a constant value.
-- `free_linked_memory_blocks`: Walks a singly linked list whose head is held in a global value.
-- `append_node_to_list`: Appends a node to a list whose head and tail are held in the two words of the first argument.
 - `set_io_parameters`: Stores two parameters and a constant into global variables before calling an I/O routine.
 - `initialize_io_request`: Sets a global variable with a constant, a pointer to a global variable, and a constant before calling an I/O routine.
 - `get_message_from_port`: The routine waits for a port, retrieves a message, and returns the value of a global variable.
@@ -221,6 +197,24 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `_GetDiskObject`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
 - `_PutDiskObject`: Library stub: loads a library base from a global variable and calls the library function at offset minus 84 of that base, returning its result to the caller.
 - `_FreeDiskObject`: Library stub: loads a library base from a global variable and calls the library function at offset minus 90 of that base, returning its result to the caller.
+- `_AllocMem`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `_FreeMem`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `_AvailMem`: Library stub: loads a library base from a global variable and calls the library function at offset minus 216 of that base, returning its result to the caller.
+- `_FindTask`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
+- `_SetSignal`: Library stub: loads a library base from a global variable and calls the library function at offset minus 306 of that base, returning its result to the caller.
+- `_AllocSignal`: Library stub: loads a library base from a global variable and calls the library function at offset minus 330 of that base, returning its result to the caller.
+- `_FreeSignal`: Library stub: loads a library base from a global variable and calls the library function at offset minus 336 of that base, returning its result to the caller.
+- `_AddPort`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
+- `_RemPort`: Library stub: loads a library base from a global variable and calls the library function at offset minus 360 of that base, returning its result to the caller.
+- `_GetMsg`: Library stub: loads a library base from a global variable and calls the library function at offset minus 372 of that base, returning its result to the caller.
+- `_ReplyMsg`: Library stub: loads a library base from a global variable and calls the library function at offset minus 378 of that base, returning its result to the caller.
+- `_WaitPort`: Library stub: loads a library base from a global variable and calls the library function at offset minus 384 of that base, returning its result to the caller.
+- `_OpenLibrary`: Library stub: loads a library base from a global variable and calls the library function at offset minus 408 of that base, returning its result to the caller.
+- `_CloseLibrary`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `_OpenDevice`: Library stub: loads a library base from a global variable and calls the library function at offset minus 444 of that base, returning its result to the caller.
+- `_CloseDevice`: Library stub: loads a library base from a global variable and calls the library function at offset minus 450 of that base, returning its result to the caller.
+- `_DoIO`: Library stub: loads a library base from a global variable and calls the library function at offset minus 456 of that base, returning its result to the caller.
+- `_SendIO`: Library stub: loads a library base from a global variable and calls the library function at offset minus 462 of that base, returning its result to the caller.
 - `_CloseWindow`: Library stub: loads a library base from a global variable and calls the library function at offset minus 72 of that base, returning its result to the caller.
 - `_CurrentTime`: Calls the library function at a fixed offset of 84 bytes below the stored library base and returns.
 - `_DisplayBeep`: Library stub: loads a library base from a global variable and calls the library function at offset minus 96 of that base, returning its result to the caller.
@@ -254,6 +248,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `_UnLock`: Library stub: loads its arguments and the dos library base, calls UnLock and returns its result to the caller.
 - `_IoErr`: Library stub: loads its arguments and the dos library base, calls IoErr and returns its result to the caller.
 - `fill_global_table_entries`: Calls a routine twenty times and passes the address of a global table entry, chosen by each returned index, to a second routine.
+- `allocate_sized_block_with_header`: Allocates a memory block 12 bytes larger than its argument and returns zero if the allocation fails.
+- `return_result_or_minus_one`: Calls a routine with its argument and returns that result when it is nonzero, otherwise it returns minus one.
+- `return_minus_one`: The routine is unreachable and consists of a single instruction that returns a constant value.
+- `free_linked_memory_blocks`: Walks a singly linked list whose head is held in a global value.
+- `append_node_to_list`: Appends a node to a list whose head and tail are held in the two words of the first argument.
+- `split_words_and_get_handles`: Splits a text string into up to 32 words at separator characters, storing a pointer to each word and terminating it with a zero byte.
 - `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 - `stub_bad_instruction_data`: The decoder found bad instruction data here.
 - `divide_with_shift_subtract`: Divides its first argument by its second using a 32-step shift and subtract loop, returning the quotient, or zero when either argument is zero.

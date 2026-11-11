@@ -1,0 +1,2145 @@
+# Game 2249 (eye of the beholder ii - advanced dungeons& dragons (1992)(ssi)[cr skr][a]): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/02249). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (3615968 top-level bytes in 280 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 16 of 16 units identical (bytes and relocations), 8 raw-word lines |
+| Functions named and described | pass, 2343 of 2343 named (0 author symbols), 2343 of 2343 described (58 by rule, 2242 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 2994 of 2994 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 6173 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 63108 of 63108 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 2734191 |
+| code | 192776 |
+| data | 552066 |
+| padding | 70375 |
+| unused | 66560 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 1 of 4).adf:INSTALL | 3 | 7448 | 253 |
+| Disk-Validator | 1 | 386 | 1 |
+| Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 1 of 4).adf:EOBII | 50 | 51428 | 1934 |
+| 6 | 1 | 2 | 1 |
+| 8 | 1 | 2 | 1 |
+| diskfont.library | 15 | 1040 | 75 |
+| Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 1 of 4).adf:SKID_ROW | 1 | 15 | 1 |
+| Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 1 of 4).adf:bootblock | 1 | 10 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2773 | 74 |
+| Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 2 of 4).adf:CHARGEN2.CPS (raw code file, load address unknown) | 1 | 0 | 0 |
+| Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 3 of 4).adf:LEVEL3.SAM (raw code file, load address unknown) | 1 | 0 | 0 |
+| Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 4 of 4).adf:LEVEL7A.SAM (raw code file, load address unknown) | 1 | 0 | 0 |
+| Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 4 of 4).adf:LEVEL9.INF (raw code file, load address unknown) | 1 | 0 | 0 |
+| Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 4 of 4).adf:LEVEL8.SAM (raw code file, load address unknown) | 1 | 0 | 0 |
+
+## Cases handled
+
+- eye of the beholder ii - advanced dungeons& dragons (1992)(ssi)[cr skr][a](disk 2 of 4)/Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 2 of 4).adf:PANFLUTE5.CPS: high-entropy data file (7.61 bits/byte), classified as packed data
+- runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 59 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- eye of the beholder ii - advanced dungeons& dragons (1992)(ssi)[cr skr][a](disk 2 of 4)/Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 2 of 4).adf:CHARGEN2.CPS: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- eye of the beholder ii - advanced dungeons& dragons (1992)(ssi)[cr skr][a](disk 3 of 4)/Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 3 of 4).adf:LEVEL3.SAM: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- eye of the beholder ii - advanced dungeons& dragons (1992)(ssi)[cr skr][a](disk 4 of 4)/Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 4 of 4).adf:LEVEL7A.SAM: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- eye of the beholder ii - advanced dungeons& dragons (1992)(ssi)[cr skr][a](disk 4 of 4)/Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 4 of 4).adf:LEVEL9.INF: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- eye of the beholder ii - advanced dungeons& dragons (1992)(ssi)[cr skr][a](disk 4 of 4)/Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 4 of 4).adf:LEVEL8.SAM: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- eye of the beholder ii - advanced dungeons& dragons (1992)(ssi)[cr skr][a](disk 2 of 4)/Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 2 of 4).adf: boot area holds bytes but the checksum is invalid, so Kickstart never runs it
+- eye of the beholder ii - advanced dungeons& dragons (1992)(ssi)[cr skr][a](disk 3 of 4)/Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 3 of 4).adf: boot area holds bytes but the checksum is invalid, so Kickstart never runs it
+- eye of the beholder ii - advanced dungeons& dragons (1992)(ssi)[cr skr][a](disk 4 of 4)/Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 4 of 4).adf: boot area holds bytes but the checksum is invalid, so Kickstart never runs it
+- 5 never-loaded region(s), 6173 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- `cleanup_system_resources` (EOBII): Performs extensive teardown by calling various cleanup routines, resetting fields in a structure, and invoking multiple function pointers stored within global structures. Kind: trackdisk.device I/O and resource cleanup. Pass path: The routine appears to be a teardown/cleanup function that executes after a disk operation. In the context of Amiga copy protection, this pattern (calling device-specific functions and then cleaning up system resources/pointers) is characte.
+- `update_and_call_function` (EOBII): Stores a two-byte value into a structure offset and calls a function through a pointer retrieved from a global variable. Kind: track/disk integrity check. Pass path: the branch where d0 is non-zero or the code continues to the next instruction after the stack adjustment.
+- `create_message_node_3` (EOBII): Allocates a new node and populates its fields with calculated coordinate values and specific constants before invoking a cleanup routine. Kind: track/disk integrity check. Pass path: the branch where iVar2 != 0 is taken, leading to the creation of a message node and subsequent I/O operations.
+
+## Functions
+
+
+### Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 1 of 4).adf:INSTALL
+
+- `initialize_installation_environment`: Initializes global state and memory structures by clearing a memory block and calling several internal routines.
+- `invoke_routines_from_tables`: It calls a routine stored in a global pointer when that pointer is non-null, then invokes several routines from tables based on the state of specific fields.
+- `parse_command_line_arguments`: Iterates through a string to extract space-delimited or quoted arguments, storing the resulting pointers and argument count into a local structure.
+- `verify_installation_environment`: Checks available system memory and validates the presence of required game files and fonts.
+- `find_last_colon_delimiter`: Iterates through a null-terminated string to locate the position of the final colon character.
+- `execute_installation_sequence`: Performs a series of conditional checks and function calls based on the results of two initial subroutines, potentially invoking a function via a pointer from a global table.
+- `execute_conditional_function`: Calls a function from a table via a pointer, and if the result is non-zero, calls a second function from the same table.
+- `recursively_scale_parameter`: This routine calls itself recursively while bit-shifting a parameter and performing a multiplication.
+- `trigger_recursive_text_drawing`: Immediately calls a routine that performs recursive text rendering.
+- `render_text_with_newlines`: This routine iterates through a string to find carriage return characters and calls several subroutines before recursively processing the remainder of the string.
+- `render_text_with_carriage_return`: Performs several graphics operations using pointers from a structure and recursively calls itself if a carriage return character is detected in the string.
+- `draw_recursive_text`: Iterates through a string to find a terminator, performs multiple graphics operations, and then calls itself recursively if a carriage return is encountered.
+- `compute_fixed_point_product_3`: The routine takes two 32-bit fixed-point values from registers and returns their product as a 32-bit fixed-point value.
+- `free_two_pointers`: Calls a library function to free memory using a pointer stored in a global variable and then calls it again using a second pointer.
+- `free_pointer_list`: Iterates through a list of pointers and calls a routine to free each non-null pointer, then calls a library function to free a global pointer.
+- `conditionally_free_memory`: Checks if a passed pointer is not null and if a certain offset within that pointer contains a non-zero value, then calls a library function to free memory.
+- `free_memory_from_pointer`: Checks if a passed pointer is non-null, and if so, calls a library function to free memory using a pointer stored in a global variable.
+- `call_free_mem_if_valid`: Checks if a pointer passed as an argument is non-null and, if so, calls the memory deallocation library routine using an offset from a global pointer.
+- `traverse_and_free_recursive`: This routine recursively traverses a pointer-based structure, checking a bitmask in a byte at an offset, and calls a deallocation routine while decrementing a counter in a structure.
+- `recursively_deallocate_nested_structure`: A recursive routine that traverses a structure by following pointers, conditionally calls a function based on a bitmask check, and decrements a counter at a specific offset before calling two other functions via pointers in a global table.
+- `free_structure_recursively`: This routine calls another routine using a pointer from a structure, decrements a value at a specific offset, and then calls two other routines.
+- `release_nested_structure`: This routine processes a nested structure by calling a routine with a pointer, decrementing a counter, and then executing two subsequent calls.
+- `conditionally_free_memory_2`: Calls another routine with a pointer, decrements a value at a specific offset within that pointer if it is non-zero, and then calls two different routines using a global pointer.
+- `traverse_and_free_lists`: Recursively traverses two linked lists stored in a global structure and calls a deallocation routine on each node.
+- `sync_hardware_counters`: Decrements four values from a structure, writes them to hardware registers in a loop, and clears specific bytes in a table.
+- `update_hardware_registers`: Decrements values in a structure and writes them to hardware registers, then clears specific bytes in a table and calls another routine.
+- `decrement_and_sync_counters_2`: Decrements a counter in a loop, updating four short values and writing them to hardware registers if they are non-zero.
+- `decrement_counters_and_clear_memory`: This routine decrements a counter in a loop, updating four short values and writing them to hardware registers if they are non-zero.
+- `decrement_and_sync_counters`: Decrements a series of four short values stored at an offset from a pointer and writes the results to a hardware register.
+- `clear_and_execute_final`: This routine clears two word-sized values at specific offsets within a table of pointers and then calls another routine.
+- `execute_final_routine`: Calls another routine and then sets a global variable to one.
+- `cleanup_global_structures`: Recursively traverses two linked lists within a global structure to call deallocation routines and resets various pointers and values.
+- `update_linked_list_node_2`: Iterates through a list to update a value in a node and sets a bit in a global variable based on a count.
+- `update_linked_list_node`: Traverses a list to update a value in a node and sets a bit in a global variable based on a count.
+- `set_bit_from_value`: Calculates a bit position based on a value at a pointer offset and stores a single bit at a specific byte location.
+- `remove_linked_list_node`: Recursively searches a linked list to find and remove a specific node while updating head and tail pointers in a table.
+- `remove_linked_list_node_recursive`: Recursively traverses a linked list to find and remove a specific node, updating head and tail pointers in a table to maintain list integrity.
+- `relink_linked_list_nodes`: Recursively traverses a linked list and performs pointer reassignments to update node connections.
+- `traverse_linked_list_recursive`: Recursively traverses a linked list, updating pointers and potentially assigning values to global variables based on the traversal results.
+- `process_linked_list_nodes_2`: Iterates through a linked list, performing recursive calls and updating global pointers or table entries based on the results.
+- `enable_interrupts`: Calls a library function using an offset from a global variable.
+- `clear_linked_list_and_table`: Disables interrupts, traverses a linked list to clear a specific bit in each node, and then clears entries in a table before re-enabling interrupts.
+- `execute_conditional_callback_5`: Checks a value in a global table and, if a specific bit is not set, calls a function via a pointer before clearing that table entry.
+- `copy_fixed_bytes`: Copies sixty-four bytes one at a time from one pointer to another.
+- `execute_callback_if_valid`: Checks if a global function pointer is non-zero and, if so, calls it before returning.
+- `process_string_data`: Iterates through a data structure to process values and calls a routine to retrieve a value based on a bitwise operation.
+- `execute_graphics_functions`: Retrieves a pointer from a global variable and calls three different functions through offsets from that pointer.
+- `free_data_structures`: Iterates through a table of pointers to call a deallocation routine on non-null entries and then processes a separate array of ten pointers.
+- `search_string_table_2`: Iterates through a table of pointers and performs a case-insensitive string comparison against a provided parameter.
+- `process_data_table_and_sort`: Iterates through a table of data structures to extract specific byte values and indices, allocates memory to store these values, and performs a bubble sort on the collected data.
+- `call_add_int_server`: Library stub: loads its arguments and the exec library base, calls AddIntServer and returns its result to the caller.
+- `traverse_recursive_loop`: Performs a recursive traversal of a structure or linked list, updating a value or pointer with the return value of each recursive call.
+- `execute_recursive_call_7`: The routine performs a single recursive call to itself and returns the resulting value.
+- `execute_recursive_call_6`: This routine calls another routine and returns its result.
+- `execute_iterative_calls`: Executes a sequence of calls to another routine within a loop that continues as long as the return value is zero.
+- `tiny_move_move_rts`: Small routine of 3 instructions that copies d7 to d0, then copies (a7)+ to d7, then returns.
+- `process_circular_table`: Iteratively calls another routine and updates a global variable using a modulo operation when a specific return value is met.
+- `increment_circular_index`: Calls another routine and increments a global variable using a modulo operation if the return value is zero.
+- `restore_registers_and_return`: Moves the contents of register d7 into d0, restores several registers from the stack, and returns.
+- `map_input_value`: A routine that transforms an input value through a series of range checks, table lookups, and bitwise adjustments to produce a new unsigned short.
+- `remap_index_value_2`: Remaps an input value through a series of conditional range checks, table lookups, and bitwise adjustments to produce a new unsigned short.
+- `remap_index_with_bit_offsets`: Remaps an input value using a table lookup or arithmetic offsets based on specific numerical ranges, then applies additive bitwise offsets to the result based on various flags in the registers.
+- `expand_map_index_flags_2`: Modifies an index value by applying a constant offset and remapping specific values within a range.
+- `expand_map_index_flags`: Modifies an index value by applying a constant offset and remapping specific values within a range.
+- `remap_index_value`: Remaps a value by reading from a table or adding an offset, then applies bitwise transformations based on flags in a register.
+- `map_argument_table_flags`: Reads a byte from a table using an index, remaps specific values, and sets high bits in the result based on flags in the argument.
+- `map_argument_table_flags_2`: Reads a byte from a lookup table using the low bits of the argument, remaps some values, then sets result bits according to flag bits in the argument.
+- `update_circular_table_index`: Checks if two global variables are unequal, then executes a function via a pointer from a global variable.
+- `load_table_entry`: Reads a four-byte value from a table indexed by a global variable and returns it, or zero when two global variables are equal.
+- `get_font_handle`: Checks if a font handle is stored in a global variable, if not it initializes it, then calls a function to retrieve a font or related resource.
+- `manage_linked_list_node`: Performs memory allocation and linked list manipulation based on values in a table, potentially updating a pointer and executing a callback if certain conditions are met.
+- `clear_linked_list`: Iterates through a linked list and calls another routine on each node before setting a global pointer to zero.
+- `validate_table_index`: Checks a value returned by another routine against a table of indices and updates a pointer within a structure if conditions are met.
+- `find_max_index`: Iterates through a table of structures to find the index of an entry that satisfies certain conditional checks involving a comparison or a range.
+- `call_avail_mem`: Library stub: loads its arguments and the exec library base, calls AvailMem and returns its result to the caller.
+- `call_function_via_pointer_3`: Checks if a value in a global table is non-zero and then calls a function through a pointer.
+- `call_rem_int_server`: Library stub: loads its arguments and the exec library base, calls RemIntServer and returns its result to the caller.
+- `update_font_parameters`: Updates several global variables and a font handle using data from a provided pointer, then calculates and stores two scaling values.
+- `execute_graphics_callback`: Retrieves a pointer from a memory location and calls a function through a pointer derived from it.
+- `update_bitmask`: Checks a bit in a global variable and then sets a different bit in that same variable.
+- `toggle_bit_in_global`: Checks a bit in a parameter and returns its state from a global variable, then clears a different bit in that same global variable.
+- `initialize_data_structure_2`: Sets several global variables to specific values and stores a pointer to a global variable.
+- `initialize_data_structure`: Sets three consecutive global bytes to specific values and stores a pointer to a global variable into a fourth.
+- `set_global_values`: Stores the value one into a global variable and zero into another.
+- `copy_table_entry`: Copies a block of data from one location in a table to another based on an index, then calculates and stores two values derived from the new data.
+- `execute_sequential_routines`: Calls two routines in sequence and returns the result of the first one.
+- `execute_graphics_calls_2`: Retrieves a pointer from a structure to call three functions via offsets and then clears two values in a table and a global variable.
+- `initialize_context_and_parse_string`: Sets several global variables to specific values and stores a pointer to a provided address.
+- `parse_formatted_string`: Iterates through a character stream to build a buffer, handling special control characters and format specifiers.
+- `perform_block_copy`: Checks several conditions and global pointers before calling a routine to copy a calculated memory block area.
+- `parse_and_copy_string_data`: Searches for a non-space character within a memory range, temporarily clears it, and calls another routine to copy a calculated block of data.
+- `fetch_buffered_byte`: Reads bytes from two different pointer-based buffers, performs a bitwise transformation on the value if a specific bit is set, and stores the result in a destination.
+- `shift_global_byte_buffer`: Moves a byte from one global variable to another and clears the second variable.
+- `update_table_values`: Modifies four different values within a table at an offset determined by a parameter.
+- `find_string_in_table`: Iterates through a table of pointers to compare a target string against entries until a match is found.
+- `return_concatenated_data`: Returns a value formed by concatenating a shifted calculation with a word from a table.
+- `search_string_table`: Iterates through a table of strings to find a match and returns a value derived from the table entry.
+- `return_all_ones`: Returns a value consisting of all bits set to one.
+- `configure_installation_display_parameters`: Updates font scaling and layout dimensions within a data table before executing a series of graphics callbacks.
+- `manage_installation_state`: Updates a state table and performs conditional logic based on a status value to execute various subroutines.
+- `prompt_disk_insertion`: Displays formatted error messages regarding drive insertion and enters a loop that waits for a specific hardware or software signal to indicate a disk is present.
+- `execute_indirect_callback_chain`: Retrieves a function pointer from a table and executes it within a loop, updating a global state based on the return value.
+- `execute_indirect_function_call`: Retrieves a function pointer from a table and executes it.
+- `dispatch_callback_and_update_state`: Executes a function pointer retrieved from a table and subsequently updates several global variables and table entries using values from the stack and a calculated index.
+- `preserve_global_word`: Saves a two-byte value from a global variable, calls another routine, and then restores the original value to that global variable.
+- `log_error_and_terminate`: Formats an error message using a string and a variable, then performs a system teardown and exits the program.
+- `release_system_resources`: Executes a series of cleanup operations including calling function pointers stored in various structures and releasing Amiga OS graphics, intuition, and device resources.
+- `report_memory_allocation_error`: Triggers an error message regarding memory allocation failure.
+- `allocate_linked_node`: Iterates through a list to find an available memory block, then initializes a new structure with a provided parameter and inserts it into a linked list.
+- `free_linked_list_item`: Searches a linked list for a specific address, replaces a pointer if found, calls a function via a pointer, and decrements a global counter.
+- `sum_callback_results`: Checks a global status flag and recursively calls itself if certain conditions are met.
+- `execute_graphics_calls`: Calls three different functions through pointers retrieved from a structure.
+- `find_string_index`: Iterates through a table of strings to find a case-insensitive match for a provided string and returns the index or a failure code.
+- `clear_global_shorts`: Sets two consecutive global words to zero.
+- `call_copy_clamped_block_area`: Calls a routine that copies a rectangular block of memory from a source to a destination using clamped width and height dimensions.
+- `copy_clamped_block_area`: Copies a rectangular block of memory from a source to a destination using nested loops, where the width and height dimensions are clamped to a maximum of 40 and 200 respectively.
+- `scatter_bytes_to_buffers`: Copies bytes from a source pointer to multiple destination buffers using a nested loop structure.
+- `copy_interleaved_data`: Copies data from a source buffer to a destination buffer using a pattern of five-byte increments and large memory strides.
+- `update_indexed_value`: Stores a 32-bit value into a table at an index derived from a global variable, then increments that index modulo sixteen.
+- `update_input_timers_and_state`: Decrements several internal counters and resets them to specific values upon reaching zero, while simultaneously incrementing a primary counter and a series of nested overflow counters.
+- `update_state_flags_2`: Updates a global variable by performing bitwise OR operations based on a comparison between a value at a pointer offset and a previously stored value.
+- `update_state_flags`: Updates a global variable by performing bitwise OR operations based on a comparison between a value at a pointer offset and a previously stored value.
+- `process_input_and_update_table`: Modifies a hardware register based on certain bit patterns and updates a table or a global index using a loop.
+- `call_delay_routine`: Calls a delay routine if the provided argument is non-zero.
+- `align_buffer_nibbles`: Adjusts a sequence of nibble values in a buffer to match a reference buffer, computing the signed differences for each digit.
+- `compress_data_lz77_5`: Performs LZ77 compression on a source buffer by searching for repeating byte sequences within a sliding window.
+- `compress_data_lz77_2`: Performs LZ77 compression by searching for repeating byte sequences within a sliding window.
+- `compress_data_lz77`: Implements an LZ77-based compression algorithm by searching for repeating byte sequences within a sliding window.
+- `find_repeated_substrings`: Searches a buffer for repeating sequences of bytes and records their occurrences and lengths into a structured list.
+- `compress_data_stream`: Performs a variation of the LZ77 compression algorithm on a memory buffer.
+- `compress_data_stream_2`: Performs a custom run-length or dictionary-based compression on a memory buffer.
+- `compress_data_lz77_4`: Performs LZ77 compression by scanning a sliding window for repeating byte sequences and encoding them as length-distance pairs or literal bytes.
+- `compress_data_lz77_3`: Performs LZ77 compression by scanning a sliding window for repeating byte sequences.
+- `set_bit_and_offset`: Writes a constant bit pattern to a memory location and returns a pointer offset by a certain amount.
+- `calculate_scaled_product`: Multiplies the upper and lower halves of a 32-bit value together, masks the product to sixteen bits, and scales the result by five.
+- `call_data_copy_routine`: Calls another routine that transfers data from a source to a destination using a loop that processes five-byte chunks.
+- `copy_interleaved_data_alt`: Transfers data from a source to a destination using a loop that processes five-byte chunks with large memory offsets.
+- `traverse_and_process_list`: Recursively walks a chain by calling itself with a pointer returned by an initial call, and returns the result of the deepest successful step.
+- `check_memory_allocation`: Attempts to allocate memory and checks the resulting pointer for specific attribute flags, returning a status code.
+- `copy_segmented_data_stream`: Copies data from a source stream to a destination buffer by iterating through segments defined by length headers.
+- `unpack_segmented_data_stream`: Reads a stream of data where segments are defined by length headers.
+- `copy_variable_length_data`: Copies bytes from a source pointer to a destination using a loop that handles variable length segments determined by values read from memory.
+- `release_graphics_resources`: Clears two global variables and calls routines to free a sprite and other resources via a pointer.
+- `process_installation_data_table`: Iterates through a table of data structures to retrieve and copy string values into a local buffer.
+- `execute_conditional_function_2`: Loads a pointer from a global structure and calls a function at a specific offset, then conditionally calls another function if the first returns non-zero.
+- `process_command_event_list`: Iterates through a list of command structures to update bitmasks and coordinate values.
+- `update_command_state_3`: Processes a command structure to modify bitmasks and coordinate values within defined bounds.
+- `process_command_linked_list`: Iterates through a linked list of command structures to update bitmasks, modify coordinate values within specific bounds, and manage a circular buffer of command data.
+- `process_command_stream_2`: Iterates through a linked list of command structures to perform bitwise operations on a bitmask, update coordinate values, and manage a circular buffer of command data.
+- `process_command_stream_3`: Iterates through a linked list of command structures to perform bitwise operations on a bitmask and update coordinate values.
+- `process_command_linked_list_4`: Iterates through a linked list of command structures to update coordinate values within bounds and modify bitmasks.
+- `update_command_linked_list`: Iterates through a linked list of command structures to modify coordinate values and update bitmasks.
+- `process_command_linked_list_2`: Iterates through a linked list of command structures to update a bitmask and modify coordinate values.
+- `update_command_state_and_coordinates`: Iterates through a linked list of command structures to perform bitwise operations on a bitmask, update coordinate values based on delta offsets, and manage a circular buffer of command data.
+- `update_command_bitmask_and_coordinates_2`: Iterates through a linked list of command structures to perform bitwise operations on a bitmask and update coordinate values.
+- `update_command_state`: Iterates through a linked list of command structures to modify bitmasks, adjust coordinate values within specific bounds, and update a circular buffer of command data.
+- `update_command_bitmask_and_coordinates`: Iterates through a linked list of command structures to perform bitwise operations on a bitmask and update coordinate values.
+- `update_command_state_2`: Iterates through a linked list of command structures to modify bitmasks in a buffer and update coordinate values based on distance calculations.
+- `process_command_stream_5`: Iterates through a linked list of command structures to perform bitwise operations on a bitmask and update coordinate values.
+- `process_command_stream`: Iterates through a linked list of command structures to perform bitwise operations on a bitmask, update coordinate values, and manage a circular buffer of command data.
+- `process_command_stream_4`: Iterates through a linked list of command structures to perform bitwise operations on a bitmask and update coordinate values.
+- `execute_conditional_function_alt`: Retrieves a pointer from a global structure to call a function, and if that function returns non-zero, calls a second function at a different offset.
+- `return_zero_stub`: Clears the d0 register and returns to the caller.
+- `fetch_and_copy_string_from_table`: Retrieves a pointer from a table using an index and copies the resulting null-terminated string into a local buffer.
+- `initialize_graphics_and_font_resources`: Initializes system libraries, allocates memory for a series of data structures, and populates a table with font handles and scaling parameters.
+- `call_indirect_function`: Loads a function pointer from an offset relative to a value stored on the stack and executes it.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `return_immediately`: This routine is empty and performs no operations before returning to its caller.
+- `check_entity_flag_and_process`: Retrieves a pointer from another routine and, when that pointer is valid, checks a specific bit in the second byte of the pointed-to structure.
+- `copy_string_recursively`: Calculates the length of a null-terminated string and then copies its characters to a destination while decrementing a global counter through recursive calls.
+- `copy_string_data`: Copies a null-terminated string from one memory location to another while decrementing a global counter.
+- `execute_recursive_call_8`: The routine performs a self-referential call to itself before returning.
+- `parse_format_string_13`: Iterates through a string to identify and process format specifiers such as decimal, pointer, string, and hexadecimal.
+- `parse_printf_format_string`: Iterates through a string to identify and process format specifiers such as decimal, pointer, string, and hexadecimal.
+- `parse_printf_format_string_4`: Iterates through a string to identify format specifiers and retrieves corresponding values from a pointer-based argument list.
+- `parse_printf_format_string_2`: Iterates through a string to identify format specifiers and retrieves corresponding values from a pointer-based argument list.
+- `parse_format_string_10`: Parses a format string to process printf-style specifiers such as decimal, pointer, string, and hexadecimal.
+- `parse_format_string_8`: Iterates through a source string to copy characters into a destination buffer, handling special format specifiers triggered by a percent sign.
+- `parse_formatted_string_4`: Parses a string character by character, searching for a delimiter or specific control characters.
+- `parse_format_string_9`: Iterates through a string to identify format specifiers such as decimal, string, pointer, or hexadecimal.
+- `parse_format_string_6`: Parses a string containing format specifiers to extract or manipulate data.
+- `invoke_linked_list_traversal`: Calls a routine that traverses a linked list structure to update node pointers and field values based on bitwise flags.
+- `parse_format_string`: Parses a format string containing tokens like #, +, -, *, leading zeros, ., l, h, p, x, and digits, advancing a pointer through the string while reading values from a parameter list.
+- `process_format_string`: Walks through a character string one byte at a time and stops when it finds a percent sign.
+- `update_structure_status_2`: Checks specific bits and values within a structure to determine if it should be updated via another routine.
+- `update_structure_status`: Updates a structure by writing a returned value to two specific offsets and clearing two other words.
+- `modify_structure_fields`: Writes a value to a structure, clears two words at specific offsets, and performs a bitwise AND on another word within that structure.
+- `update_linked_structures`: Recursively traverses a linked data structure by checking status flags and updating pointer fields.
+- `traverse_and_update_linked_structures`: Recursively traverses a linked data structure by checking status flags and updating pointer fields.
+- `pop_byte_from_list_2`: Decrements a counter in a structure and retrieves a byte from a pointer, storing the byte in a target location.
+- `pop_byte_from_list`: Decrements a counter in a structure and retrieves a byte from a pointer, which is then stored in a specific memory location.
+- `call_and_return_value`: Forwards its argument to another routine and returns whatever that routine produces.
+- `process_recursive_linked_list_updates`: Traverses and modifies a linked structure by updating pointer fields and status flags based on recursive results.
+- `update_entity_state_and_flags`: Updates a structure's field based on the result of a recursive call and modifies specific bit flags within a target structure.
+- `update_structure_fields_2`: Updates a structure by setting a flag bit based on the result of another routine and copying values between specific offsets.
+- `update_linked_list_node_5`: Modifies values within a linked structure by traversing nodes and updating pointers and data fields.
+- `process_linked_structure_difference`: Calculates the difference between two fields in a structure and stores it in a local variable.
+- `update_linked_list_node_4`: Updates a structure by copying a value into a pointed-to location and managing a counter.
+- `update_list_structure`: Updates a structure by copying values from another structure, managing a counter, and potentially performing a recursive call if the counter reaches zero.
+- `update_list_from_structure_2`: Copies a value from a structure into a pointer and decrements a counter within that structure.
+- `update_list_from_structure`: Copies a value from a structure into a pointer and decrements a counter within that structure.
+- `execute_immediate_return`: This routine performs an immediate return to its caller without executing any instructions.
+- `compare_and_branch`: Sets d0 to negative 256, compares it with d4, and branches to another location if they are not equal; otherwise, it sets d0 to zero and performs an unconditional branch.
+- `return_from_subroutine`: Performs a standard return from a subroutine to the calling function.
+- `traverse_and_call_table`: Iterates through a table of structures, checking specific bit flags before calling a routine stored within each entry.
+- `tokenize_quoted_string`: Walks through a text buffer, skipping whitespace and splitting the content into up to 32 tokens while treating double-quoted runs as single tokens, writing a pointer to each token into a stack table and null-terminating each token in place.
+- `convert_uppercase_chars`: Iterates through a null-terminated string and converts uppercase ASCII characters to lowercase based on a flag in a global lookup table.
+- `compare_case_insensitive_strings`: The routine compares two byte strings character by character, converting uppercase letters to lowercase for comparison, and returns the difference between the first mismatching characters or zero if equal.
+- `copy_string_to_buffer`: The routine finds the terminating zero byte of the destination buffer and copies bytes from the source pointer into that location until a zero byte is copied.
+- `find_byte_in_string`: Searches a null-terminated string for a specific byte and returns a pointer to its location, or zero when the byte is not present.
+- `forward_argument_to_search_routine`: Passes a single argument to a routine that searches for a specific byte within a null-terminated string and returns the resulting pointer or zero.
+- `find_last_occurrence`: Iterates through a null-terminated string to find the last occurrence of a specific byte and returns its pointer.
+- `restore_registers_and_return_2`: Moves the address in a2 into d0, restores several registers from the stack, and returns.
+- `convert_and_reverse_buffer`: Repeatedly calls another routine, stores a byte from a register through a pointer, and then reverses a 12-byte buffer in place before terminating it with a null byte.
+- `convert_number_to_ascii_2`: Converts an integer into ASCII decimal digits using a temporary stack buffer and copies them in reverse order to a buffer.
+- `convert_number_to_ascii`: The routine converts an integer into ASCII decimal digits using a temporary stack buffer and copies them in reverse order to a buffer.
+- `convert_nibbles_to_string`: Expands a packed nibble value using a lookup table and writes the resulting bytes in reverse order to a destination.
+- `reverse_nibbles_from_table`: The routine expands a packed nibble value using a global lookup table and writes the resulting bytes in reverse order to a destination.
+- `format_signed_integer`: Converts a signed integer into a null-terminated string of characters, including a negative sign if necessary.
+- `format_signed_number`: Writes a negative sign to a buffer if a value is negative, then repeatedly calls another routine to convert digits into a buffer and reverses them in place.
+- `convert_integer_to_string`: Repeatedly extracts digits from a value to build a character string and then reverses the string in place.
+- `parse_signed_integer`: Converts an ASCII string representing a signed decimal integer into a 16-bit value, handling optional leading plus or minus signs.
+- `increment_and_store`: Increments a global pointer and stores a byte from a parameter into the location pointed to by the incremented global pointer.
+- `set_global_pointer`: Assigns a global pointer to a supplied address, invokes another routine to walk a string, and finally stores a zero byte at the address held in the global pointer.
+- `allocate_heap_block`: It rounds the requested size up to a four-byte boundary and searches a linked list of free blocks for a suitable gap, splitting or merging blocks as needed.
+- `call_and_return_value_2`: Forwards its arguments to another routine and returns whatever that routine produces.
+- `validate_linked_structure`: Recursively traverses a linked structure by retrieving pointers and returns a failure code if a pointer is null or if a global variable is non-zero.
+- `execute_callback_recursive`: Recursively calls another routine using a pointer from a structure and returns a specific error code if a global variable is non-zero.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `copy_memory_block`: Copies a specified number of bytes from a source address to a destination address.
+- `free_linked_list_nodes`: It walks a linked list held in a global pointer, invoking a destructor stored at a fixed offset within each node.
+- `validate_linked_entry`: Recursively checks a linked structure by retrieving pointers and returns an error code if a pointer is null or a global variable is non-zero.
+- `allocate_linked_list_node`: It obtains a memory block and initializes its fields with a provided value and a global pointer.
+- `allocate_free_memory_block`: Searches a linked list of free memory blocks for a segment that fits the requested size, splitting the block if it is larger than needed.
+- `reduce_and_return_value`: Calls itself with a reduced value derived from the input parameter and then returns that value.
+- `copy_and_close_structure`: Loads a value from a routine pointer and returns failure if it is missing.
+- `process_linked_list_flags`: Walks a global linked list of structures, testing two flag bits in a status byte and computing the difference between two integer fields.
+- `invoke_global_callback`: Invokes a callback through a pointer in a global table and, when a global flag is set, recursively calls itself first.
+- `dispatch_callback_with_adjustment`: Invokes a callback through a pointer in a global table and, when a global flag is set, recursively calls itself first.
+- `execute_global_callback_offset_2a`: Checks a global variable and recursively calls another routine if it is non-zero, then invokes a function pointer at an offset from the global variable.
+- `initialize_structure_fields`: It writes a full-byte bitmask at a fixed offset of a structure and writes full-word bitmasks at two other offsets.
+- `cleanup_display_context`: It conditionally invokes a callback when a structure field is nonzero, then writes reset values at two fixed offsets.
+- `invoke_method_if_present`: Checks whether a global pointer is non-null and calls another routine when it is, then invokes a function pointer stored within a structure.
+- `copy_to_stack_and_call`: Calls a function via a pointer in a global variable, copies a block of memory from a source to a stack-based buffer, and then calls two other routines.
+- `compute_fixed_point_product`: The routine takes two 32-bit fixed-point values from registers and returns their product as a 32-bit fixed-point value.
+- `divide_fixed_point`: Performs a 32-bit fixed-point division using a normalization method.
+- `normalize_fixed_point_divide`: The routine divides a 32-bit dividend in d0 by a 32-bit divisor in d1 using a normalized fixed-point method.
+- `allocate_and_set_node`: It allocates memory for a structure through a library call and, if successful, initializes certain bytes and a dword with a provided parameter.
+- `create_message_node`: It obtains a global variable and calls a routine through a table; if the result is a sentinel, it returns zero.
+- `initialize_allocated_node`: Allocates memory for a structure via a function pointer in a global variable and initializes specific offsets with provided parameters.
+- `allocate_and_set_node_2`: It allocates memory for a structure through a library call and, if successful, initializes certain bytes and dwords from caller-held values.
+- `validate_table_entry_index`: Checks if a provided index is within a specific range and if the entry at that index in a global table is non-zero.
+- `check_and_clear_global_pointer`: Invokes a routine through a pointer in a global table, and when a result has certain bits set and a global pointer is non-null, calls another routine and clears that global pointer.
+
+### Disk-Validator
+
+- `update_display_buffer`: Calculates character offsets and updates a memory buffer with numeric string representations of values.
+
+### Eye of the Beholder II - Advanced Dungeons& Dragons (1992)(SSI)[cr SKR][a](Disk 1 of 4).adf:EOBII
+
+- `execute_indirect_call_3`: Performs an indirect call to a function pointer retrieved from a table.
+- `update_command_token_table`: Compares a value in a table against a pointer, and if they differ, clears a linked list of tokens and updates a memory-resident structure.
+- `parse_and_format_command`: Parses an input string into a tokenized array and formats it by wrapping segments with specific delimiters.
+- `invoke_routines_from_table`: Calls a routine stored in a global pointer if it is non-null, then invokes several routines from tables based on the state of specific fields.
+- `return_immediately_stub`: The routine consists of a single return instruction and performs no work, so it does nothing when invoked.
+- `return_immediately_stub_4`: A one-instruction routine whose entire body is a return with no other operations, so it performs no work when called.
+- `free_linked_list`: Iterates through a linked list, calling a destructor function stored within each node, and then clears the global pointer.
+- `tokenize_command_string_71`: Parses an input string into an array of up to thirty-two pointers by splitting the text at whitespace or within double-quoted segments.
+- `tokenize_command_string_66`: Parses a source string into an array of pointers by identifying whitespace or text enclosed in double quotes.
+- `tokenize_input_string_68`: Parses a null-terminated string into an array of pointers by identifying space-delimited or quoted substrings.
+- `process_input_command_string`: Parses a null-terminated input string into tokens, converts characters to uppercase, and updates a global table of values.
+- `parse_and_process_input_string`: Parses a null-terminated string into tokens, converts characters to uppercase, and updates a global table of values.
+- `update_table_and_callback`: Modifies several values in a table based on a global index and then calls a routine using data from that table.
+- `update_data_table`: Performs multiple function calls through pointers and enters a loop to copy sixteen sets of data from a source buffer into a destination table.
+- `parse_resource_configuration_string_2`: Parses a string containing space, tab, or newline-delimited identifiers or quoted strings.
+- `calculate_buffer_offset_2`: Calculates an offset by multiplying three values from a provided pointer and adding a constant if the pointer is not zero.
+- `parse_string_table_4`: Parses a source string into a table of pointers by skipping whitespace and handling quoted or space-delimited substrings.
+- `synchronize_token_table_state`: Compares a value in a table against a pointer and, if they differ, clears a linked list, updates a memory-resident structure, and executes a sequence of cleanup and callback routines.
+- `tokenize_input_string_186`: Parses a source string into an array of pointers by identifying whitespace or text enclosed in double quotes.
+- `tokenize_string_buffer`: Iterates through a character buffer to extract individual strings delimited by whitespace or enclosed in double quotes.
+- `convert_string_to_uppercase`: Iterates through a null-terminated string and converts characters to uppercase if a corresponding bit is set in a global table.
+- `sanitize_and_truncate_string_2`: Calculates the length of a null-terminated string and truncates it to a specified maximum length.
+- `initialize_font_function`: Initializes a global variable via a function call if it is zero, then calls another routine using parameters stored in global variables.
+- `tokenize_input_string_42`: Parses a null-terminated string into an array of pointers to individual tokens.
+- `parse_string_table_with_param_2`: Parses a source string into a table of pointers using a provided parameter.
+- `parse_command_string_8`: Parses a string into a series of space-delimited tokens or quoted substrings and clears a global buffer.
+- `tokenize_input_string_191`: Parses a source string into an array of pointers by identifying whitespace or text enclosed in double quotes.
+- `parse_command_string`: Parses a source string into a series of tokens, supporting both space-delimited words and quoted substrings.
+- `process_string_data_2`: Performs a series of nested function calls and conditionally copies a null-terminated string from a pointer retrieved via a table lookup into a local buffer.
+- `traverse_linked_list_3`: Iterates through a linked list of values, updating each node with the result of a recursive call and executing a function pointer if it is not null.
+- `tokenize_formatted_string_5`: Parses a string into space-delimited or quoted substrings and stores the resulting pointers into a table.
+- `initialize_command_and_message_nodes_2`: Allocates memory for a series of command structures and message nodes, populating them with function pointers and data.
+- `tokenize_input_string_143`: Splits a string into an array of pointers by identifying whitespace or text enclosed in double quotes.
+- `process_tokenized_commands`: Parses a string into tokens and executes a series of indirect function calls using the resulting pointers.
+- `execute_callback_sequence_5`: Performs 39 instructions and calls another routine, a second routine, and a third routine via tail branches.
+- `update_indexed_data_tables`: Copies a null-terminated string and then modifies various memory locations by incrementing values in tables based on bitmask checks and calculated offsets.
+- `process_complex_data`: Performs a nested loop that modifies values in a global table based on bitwise checks and increments values at various calculated offsets.
+- `update_bitmask_indexed_table`: Iterates through a 32-bit bitmask to identify set bits, then uses the corresponding values from a table to increment entries in a secondary indexed table.
+- `unlk_and_return`: Restores several registers from the stack, unlinks a5, and returns.
+- `reset_and_update_entity_timers`: Clears a block of memory within an entity structure and iterates through a table of counters to decrement values.
+- `update_status_effect_durations`: Iterates through a table of status effect counters, decrementing values and updating corresponding status flag bytes in an entity data structure.
+- `update_status_effect_counters`: Iterates through a list of status effect values, comparing them against a target table and decrementing both the effect counters and the table entries.
+- `update_status_flags`: Iterates through a list of values to compare them against a target table, updating specific byte offsets in a data structure based on the comparison results.
+- `decrement_status_counters`: Iterates through a table of up to thirty-two entries, comparing values against a secondary memory location and decrementing them.
+- `decrement_status_counters_and_set_flags`: Iterates through a table of status counters, decrementing non-zero values and updating corresponding status flag bytes in an entity data structure.
+- `process_status_decrement_and_flag_update`: Iterates through a table of values, decrementing entries and comparing them against a target memory location.
+- `update_entity_status_flags`: Iterates through a list of values to compare them against a target table, decrementing values and updating status bytes in a structured data block based on the comparison results.
+- `update_status_table_elements`: Iterates through a table of up to thirty-two entries, comparing values against a secondary memory location and decrementing them.
+- `restore_registers_and_unlock_semaphore`: Restores several data and address registers from the stack, unlocks a semaphore in register a5, and returns.
+- `validate_puzzle_combination`: Iterates through a set of six positions to verify if a specific combination of values satisfies a set of conditions.
+- `solve_recursive_puzzle_2`: Performs a recursive depth-first search to find a valid combination of values from a set of six possible positions.
+- `solve_recursive_puzzle`: Performs a recursive depth-first search to find a valid combination of values from a set of six possible positions.
+- `process_input_command_buffer`: Parses a character buffer to identify control characters and delimiters, updating status bytes based on specific input patterns.
+- `update_status_byte`: Checks a word at a specific offset from a pointer and stores either a specific byte or a different byte into another offset within that same structure.
+- `write_byte_value_49`: Stores the byte value forty-nine into a memory location calculated by adding a negative offset to a value held in a register.
+- `set_conditional_value`: Tests a word at a negative offset from a pointer and writes one of two different byte values to a different offset in the structure.
+- `write_byte_value_48`: Stores the byte value seventy-two into a memory location calculated by adding a negative offset to a value held in a register.
+- `write_byte_to_offset_pointer`: Stores a single byte into a memory location calculated by adding a negative offset to a value held in a register.
+- `parse_input_buffer_tokens`: Iterates through a character buffer to identify specific control characters and delimiters.
+- `parse_command_string_25`: Iterates through a character buffer to identify and extract specific tokens or control characters.
+- `validate_command_token`: Iterates through a character buffer to validate or skip specific characters and control sequences.
+- `parse_input_command_string`: Iterates through a character buffer to identify and tokenize command components by checking for specific character delimiters, whitespace, or control codes.
+- `parse_command_input_string`: Iterates through a string to identify and tokenize command components by checking for specific character delimiters and whitespace.
+- `parse_command_string_15`: Iterates through a string to identify and extract individual tokens by checking for whitespace, specific punctuation, or quoted substrings.
+- `parse_command_input_tokens`: Iterates through a character buffer to identify and extract individual tokens, handling whitespace, quoted substrings, and specific escape characters.
+- `parse_input_string`: Iterates through a character buffer to process input commands, updating an index and skipping null-terminated segments.
+- `process_dialogue_text_buffer`: Iterates through a small buffer of characters, checking for specific control codes to handle line breaks, text skipping, or buffer resets.
+- `evaluate_entity_conditions`: Checks specific attribute flags and numerical thresholds within an entity structure to determine status.
+- `parse_string_list_29`: Parses a space-delimited or quoted string into an array of pointers.
+- `format_conditional_data`: Calculates offsets and values based on a multiplier and writes them to a local stack frame.
+- `format_conditional_string`: Formats a string based on a conditional check of a value.
+- `call_recursive_zero_check`: Calls a routine that checks a global variable for zero and recurses, passing a constant and a value from a pointer as arguments.
+- `call_external_routine`: Passes a constant, a value from a stack offset, and a global variable to another routine.
+- `call_recursive_functions`: Calls two different routines using a value from a register and a global variable.
+- `check_and_recurse_on_zero`: Checks if a global variable is zero; if so, it calls itself recursively.
+- `parse_string_tokens_52`: Parses a source string into an array of pointers by skipping whitespace and handling quoted substrings.
+- `populate_attribute_array`: Iterates through a sequence of values from a table to fill a local array of eight elements.
+- `update_animation_frame_state_2`: Manages a cyclic counter to iterate through a sequence of values and updates state flags based on the current index.
+- `copy_sprite_attribute_data`: Copies eight values from a source table into a local array using an index derived from a pointer.
+- `populate_sprite_attribute_table`: Copies eight values from a source table into a local array based on an index.
+- `update_animation_frame_state`: Manages a cyclic counter to iterate through a sequence of values and updates state flags based on the current index.
+- `parse_and_process_input_tokens`: Splits a string into an array of pointers based on a delimiter or length, then iterates through the resulting tokens to execute a sequence of operations.
+- `execute_callback_sequence_4`: Iterates through a list of function pointers and arguments stored in memory to perform a series of sequential operations.
+- `format_remaining_count_string`: Formats a string containing two integer values representing a current count and a total count.
+- `process_command_token_list`: Iterates through a list of parsed string tokens to execute specific game commands and update internal state counters.
+- `process_command_token_state_2`: Iterates through a list of parsed string tokens to execute specific game commands and update internal state counters.
+- `process_command_token_state`: Iterates through a list of parsed string tokens to execute specific game commands and update internal state counters.
+- `process_token_list_and_state`: Iterates through a list of parsed string tokens to execute specific game commands and update internal state counters.
+- `process_command_tokens`: Iterates through a list of parsed string tokens to execute specific game commands.
+- `process_menu_navigation`: Updates a menu selection index by comparing it against a target value and bounds-checking the result.
+- `update_menu_selection`: Iterates through a table of menu items to check for selection changes and updates a counter.
+- `process_parsed_command_table`: Iterates through a table of parsed string data to execute specific logic based on index and character values.
+- `update_entity_state_logic`: Iterates through a table of data to update internal counters and state flags.
+- `update_menu_selection_2`: Iterates through a table of values to manage a selection index and handles menu navigation logic.
+- `update_menu_selection_3`: Manages a cyclic menu selection by incrementing an index and wrapping it within a specific range.
+- `update_animation_frame`: Iterates through a sequence of bytes from a table to update a frame counter and manage animation state.
+- `update_entity_state_counters_2`: Increments specific byte values in a table based on index comparisons and updates internal state counters.
+- `iterate_string_list_elements`: Iterates through a list of pointers derived from a parsed string, performing decrements on specific character values and updating index counters.
+- `execute_callback_sequence_2`: Performs a series of calls to other routines using values retrieved from the stack and global variables.
+- `tokenize_and_store_result`: Extracts substrings from a string and stores the resulting pointer or an offset into a global variable.
+- `call_tokenization_routine`: Calls another routine using the address of a global variable.
+- `perform_interleaved_copy`: Acts as a wrapper to perform an interleaved data copy from five distinct source buffers into a single destination.
+- `copy_segmented_memory`: Copies a sequence of bytes from a source buffer into five distinct destination memory regions.
+- `parse_and_populate_token_list`: Parses a string into a list of tokens by handling whitespace and double-quoted substrings, then iterates through a table to populate a new data structure with copied values and pointers.
+- `populate_data_structure`: Iterates through a table to copy multiple values from a source into a newly allocated or provided data structure.
+- `reset_global_values`: Calculates an offset based on a global variable to locate a memory address, performs a recursive call, and then sets two consecutive global short variables to zero.
+- `tokenize_string_into_table_6`: Parses a null-terminated string into an array of pointers by identifying space-delimited tokens or substrings enclosed in double quotes.
+- `execute_callback_loop`: Executes a series of function calls retrieved from a pointer within a data structure inside a loop.
+- `perform_recursive_calls`: Stores a two-byte value into a global variable and then performs three subsequent calls to itself using varying arguments.
+- `tokenize_input_list`: Iterates through a linked list of strings and tokenizes each one into an array of pointers.
+- `return_no_op_8`: The routine consists of a single return instruction with no body, so it performs no work and leaves machine state unchanged.
+- `parse_command_string_20`: Parses a string into a list of tokens, handling whitespace and quoted substrings.
+- `process_string_metadata`: Parses a string and calculates length-related values to store in a local structure.
+- `write_and_recurse_node`: Writes two short values to memory offsets relative to a pointer and then calls another routine recursively using a value from memory and a sum of two other memory values.
+- `follow_linked_list_pointer`: Loads a pointer from a memory location offset from a register and passes it as an argument to another routine.
+- `process_linked_list_node_2`: Performs arithmetic on two values retrieved from memory offsets and passes the result along with a new pointer to another routine.
+- `traverse_linked_list_5`: Recursively calls itself by loading a new pointer from a memory location offset from a register.
+- `tokenize_string_into_array_11`: Parses a string into a list of tokens by splitting on whitespace or handling quoted substrings.
+- `populate_selection_table`: Iterates through nested loops to evaluate bitmask conditions and populate a local array with indices.
+- `process_bitmask_selection`: Iterates through a bitmask to identify set bits and populates a temporary list of indices.
+- `filter_token_indices_and_process`: Iterates through a list of token indices, checking them against a bitmask and storing valid indices in a temporary buffer.
+- `filter_and_process_token_indices`: Iterates through a list of indices to identify those that satisfy a bitmask condition, storing valid indices in a temporary buffer.
+- `process_command_token_list_2`: Iterates through a list of pointers derived from tokenized strings to manage a circular buffer of indices.
+- `process_tokenized_input_list`: Iterates through a list of pointers derived from tokenized strings to manage a circular buffer of indices.
+- `iterate_circular_token_list`: Iterates through a circular list of pointers, updating status bitmasks and managing index wrapping based on a dynamic count.
+- `process_token_list_commands`: Iterates through a list of parsed tokens to execute corresponding game commands.
+- `process_circular_token_list`: Iterates through a circular list of pointers, updating status bitmasks and managing index wrapping based on a dynamic count.
+- `update_entity_status_list`: Iterates through a list of active status effects for an entity, updating internal counters and bitmasks.
+- `process_entity_status_updates`: Iterates through a list of active status effects or conditions for an entity, updating internal counters and bitmasks.
+- `manage_circular_list_indices`: This routine manages a circular buffer or list by incrementing and modulo-calculating an index based on a dynamic count.
+- `process_circular_list_iterator`: Iterates through a dynamic list of pointers stored in a table, managing a circular index and a current position tracker.
+- `call_tokenize_input_list`: Calls a routine that tokenizes a linked list of strings into an array of pointers.
+- `tokenize_command_input_string`: Parses a character buffer into an array of pointers by splitting the string at whitespace or quotation marks.
+- `process_command_token_state_3`: Evaluates a command token against a state machine to update status flags and execute associated callback functions.
+- `process_event_state_machine`: Iterates through a list of entries and executes a series of conditional branches based on a state variable.
+- `process_entity_command_logic`: Evaluates a series of command or state identifiers to execute specific logic branches, including updating entity status flags, managing animation frame counters, and iterating through lists to perform conditional updates.
+- `process_entity_state_transitions`: Updates entity status flags and manages state transitions by comparing current and target values.
+- `process_entity_state_transitions_13`: Iterates through a set of entity status flags and updates their internal state by comparing current and target values.
+- `update_entity_state_logic_2`: Manages state transitions for an entity by comparing current and target values stored in a data structure.
+- `manage_entity_state_transitions`: Updates an entity's status and animation state by comparing current and target flags.
+- `update_entity_state_logic_3`: Manages state transitions for an entity by comparing current and target status flags, updating animation frame counters, and executing conditional logic based on specific state values.
+- `process_entity_state_transitions_2`: Updates an entity's state by comparing current and target status flags and managing animation frame counters through a loop.
+- `update_entity_state_and_animation_2`: Manages entity state transitions by comparing current and target status flags and updating animation frame counters through a loop.
+- `update_entity_state_and_animation_3`: Manages entity state transitions by comparing current and target status flags and updating animation frame counters through a loop.
+- `process_entity_state_transitions_3`: Manages state changes and animation sequencing for an entity by comparing current and target status flags.
+- `process_entity_state_transitions_4`: Manages state changes for an entity by comparing current and target status flags and updating animation frame counters through a loop.
+- `process_entity_state_transitions_5`: Manages state changes for an entity by comparing current and target status flags and updating animation frame counters through a loop.
+- `process_entity_state_transitions_12`: Manages entity state changes by comparing current and target status flags and updating animation frame counters.
+- `dispatch_entity_update_tasks`: Acts as a central dispatcher that invokes specialized routines for interleaved data copying and entity state/animation management.
+- `process_entity_state_transitions_6`: Manages state changes for an entity by comparing current and target status flags and updating animation frame counters.
+- `process_entity_state_transitions_7`: Manages state changes and animation updates for game entities by comparing current and target status flags.
+- `update_entity_animation_state`: Manages entity animation cycles and state transitions by comparing current and target status flags.
+- `process_entity_state_transitions_8`: Manages state changes for an entity by comparing current and target status flags and updating animation frame counters through a loop.
+- `process_entity_state_transitions_9`: Manages entity state changes by comparing current and target status flags and updating animation frame counters through a loop.
+- `process_entity_state_transitions_10`: Manages state changes for an entity by comparing current and target status flags and updating animation frame counters through a loop.
+- `process_entity_state_transitions_11`: Manages state changes for an entity by comparing current and target status flags and iterating through a loop to update animation frame counters.
+- `process_entity_state_logic`: Updates an entity's internal state by comparing current and target status flags and managing animation frame counters.
+- `synchronize_entity_state_data`: Updates an entity's current state by comparing it against a target state and managing animation frame counters.
+- `process_entity_state_logic_2`: Updates entity status and animation frames by comparing current and target state flags.
+- `find_active_entity_in_list`: Iterates through a linked list of entities to find the first one that satisfies a specific bitmask check on its status byte.
+- `process_entity_state_updates`: Iterates through a linked list of entities to check status flags and update their internal state.
+- `update_entity_state_and_animation`: Manages entity state transitions by comparing current and target status flags, updating animation frame counters through a loop, and synchronizing coordinate or status data based on specific state identifiers.
+- `process_input_command_sequence`: Iterates through a list of command-related data structures to manage string tokenization, command parsing, and state updates.
+- `parse_inventory_command`: Processes a command string by tokenizing input and checking bitwise flags.
+- `tokenize_input_string_144`: Parses a null-terminated string into a list of pointers by splitting the input at whitespace or double-quote characters.
+- `evaluate_condition_status`: Checks if a value in a table is zero and stores the resulting boolean status in a local variable.
+- `set_status_true`: Sets a local variable to one and executes a sequence of nested routine calls before returning the stored value.
+- `set_status_false`: Sets a local variable to zero and executes a sequence of nested routine calls before returning the stored value.
+- `traverse_linked_list_and_update_state`: Iterates through a linked list of data structures, performing bitmask checks and conditional logic to update state flags and pointer offsets.
+- `process_linked_list_node`: Traverses a linked list of data structures, performing conditional checks on specific bitmasks and byte values within each node.
+- `process_command_tokens_2`: Iterates through a linked list of tokens to match specific command characters or flags.
+- `initialize_font_structure`: Traverses a linked list, initializes a structure using a table of pointers, and stores a word at a fixed offset relative to a global pointer.
+- `tokenize_command_string_34`: Parses a null-terminated input string into an array of pointers by identifying space, tab, or newline delimiters.
+- `update_table_entry_4d`: Updates a global variable by calling a routine that iterates through a range of values and performs conditional updates.
+- `process_tokenized_string_elements`: Iterates through a sequence of values and performs conditional updates to a global variable based on the results of subsequent routine calls.
+- `process_nested_conditional_loop`: Executes a series of nested loops that perform conditional updates to a global variable based on the return values of multiple subroutines.
+- `process_command_sequence_2`: Performs a sequence of conditional updates to a global variable based on the results of multiple subroutine calls.
+- `iterate_and_update_table_entries`: Iterates through a range of values and performs conditional updates to a global variable based on the results of subsequent routine calls.
+- `execute_recursive_branching_logic`: This routine performs a recursive traversal of a logic tree.
+- `test_and_clear_bit_2`: Checks if a specific bit is set in a global variable and then clears that bit.
+- `test_and_set_bit_offset`: Checks if a bit at a specific bitwise offset is set in a global byte and returns that status.
+- `tokenize_command_string_23`: Parses a null-terminated input string into an array of pointers to individual tokens.
+- `tokenize_string_into_list`: Parses a string by skipping whitespace and splitting it into individual tokens based on spaces, tabs, or newlines.
+- `tokenize_string_into_array_10`: Parses a null-terminated string into an array of pointers by identifying tokens delimited by whitespace or enclosed in quotation marks.
+- `tokenize_string_buffer_11`: Parses a character buffer into a list of pointers to individual words or quoted strings.
+- `tokenize_input_string_69`: Parses a string into an array of pointers by splitting it at whitespace or quoted substrings.
+- `tokenize_input_string_43`: Parses a character buffer into an array of pointers by splitting the string at whitespace or between double quotes.
+- `tokenize_input_string_70`: Splits a string into an array of pointers by using whitespace or quotation marks as delimiters.
+- `tokenize_input_string_71`: Parses a null-terminated string into an array of pointers to individual tokens.
+- `update_entity_status_display`: Checks an entity's status flags and numerical thresholds to determine specific conditions and updates the corresponding text display.
+- `normalize_coordinate_pairs_2`: Iterates through a table of byte pairs and applies a transformation to each byte to ensure they fall within a specific range.
+- `parse_quoted_tokens_2`: Iterates through a string to extract substrings delimited by whitespace or quotation marks and stores their pointers into a table.
+- `parse_command_string_arguments_3`: Iterates through a string to extract space, tab, or newline-delimited tokens into an array of pointers.
+- `tokenize_input_string_107`: Parses a source string into a table of pointers by identifying individual words or substrings enclosed in quotation marks.
+- `tokenize_input_string_72`: Parses a source string into an array of pointers by identifying space-delimited words or text enclosed in double quotes.
+- `tokenize_input_string_93`: Parses a null-terminated string into an array of pointers by identifying individual tokens separated by whitespace or enclosed in double quotes.
+- `tokenize_input_string_94`: Parses a string into a list of individual tokens by skipping whitespace and handling quoted substrings.
+- `tokenize_input_string_214`: Parses a string into individual tokens by splitting on whitespace or handling quoted substrings.
+- `validate_command_token_sequence_4`: Iterates through a list of parsed command tokens to verify their validity against a data table.
+- `validate_command_token_sequence_3`: Iterates through a list of parsed command tokens to verify their validity against a data table.
+- `validate_and_process_command_tokens_2`: Iterates through a list of parsed string tokens to validate them against a data table and perform specific actions based on the token content.
+- `validate_and_process_command_tokens`: Iterates through a list of parsed string tokens to validate them against a data table and perform specific actions based on the token content.
+- `process_dialogue_input_tokens`: Iterates through a list of pointers derived from a parsed string to validate and process individual tokens.
+- `process_dialogue_input`: Iterates through a set of character buffers to increment values and validate input against a table of characters.
+- `format_gain_message`: Constructs a formatted string by inserting numeric values into a template to report gains.
+- `parse_input_string_2`: Iterates through a character buffer to validate and process numeric or character-based input.
+- `format_memorized_string`: Iterates through a character stream to process escape sequences and format specifiers, populating a buffer with a string that includes a memorized value.
+- `iterate_entity_data_table`: Iterates through a table of entity structures, performing conditional checks on specific byte values and updating internal counters.
+- `process_entity_attribute_table`: Iterates through a structured table of data to evaluate specific byte values and update associated counters or status flags.
+- `parse_formatted_string_tokens_3`: Iterates through a table of pointers to identify and extract specific control characters within a string.
+- `parse_formatted_string_table`: Iterates through a table of pointers to parse and tokenize strings into structured data.
+- `process_combat_message_tokens`: Parses and iterates through a table of string pointers to construct formatted text.
+- `format_combat_message_string`: Constructs a formatted text string by interpolating entity names and status information into a template.
+- `validate_command_token_sequence_2`: Iterates through a table of pointers derived from a parsed string to validate and process individual tokens.
+- `process_command_string_tokens`: Iterates through a table of pointers derived from a parsed string to validate and process individual tokens.
+- `process_entity_status_updates_2`: Iterates through a list of entities to update status counters and modify specific byte values within their structures.
+- `update_entity_status_counters_3`: Iterates through a list of entities to increment status-related counters and modify specific byte values within an entity structure.
+- `update_entity_status_counters_2`: Iterates through a list of entities to increment status-related counters and modify specific byte values within an entity structure.
+- `update_entity_status_counters`: Iterates through a list of entities to increment status-related counters and modify specific byte values within an entity structure.
+- `iterate_entity_status_list`: Iterates through a list of entities to check specific status flags and numerical thresholds.
+- `parse_command_token_arguments`: Iterates through a list of string pointers to extract and validate command arguments.
+- `parse_and_validate_command_tokens`: Parses a string into tokens and validates them against a data table.
+- `parse_string_list_27`: Parses a space-delimited or quoted string into an array of pointers.
+- `increment_and_return`: adds one to a value and returns the result.
+- `tokenize_input_string_73`: Parses a null-terminated string into an array of pointers by identifying space-delimited tokens or substrings enclosed in double quotes.
+- `parse_format_string_7`: Iterates through a character stream to populate a buffer by processing escape sequences and format specifiers.
+- `tokenize_input_string_213`: Parses a source string into an array of pointers by identifying space-delimited words or substrings enclosed in double quotes.
+- `search_table_entry`: Iterates through a table to find an entry matching specific criteria and updates a global variable with a value from a byte.
+- `scan_table_loop`: Loops through a table to find an entry where a specific byte is not a backspace and a secondary check returns a value less than two.
+- `store_byte_to_global`: stores a byte from a register into a global variable.
+- `validate_entity_and_tokenize_input`: Iterates through a table of entity data to verify attribute conditions and ensure associated fifty-byte data sequences are not null.
+- `validate_string_data`: Traverses a table of pointers to check if associated data strings contain non-zero characters based on nested conditional checks.
+- `validate_entity_data_table`: Iterates through a table of up to six entries to verify specific attribute conditions and ensures that a corresponding fifty-byte data sequence contains at least one non-zero value.
+- `verify_table_contents`: Checks a table of pointers for specific conditions and verifies that a sequence of characters in a data block contains at least one non-zero value.
+- `check_data_sequences`: Iterates through a table to find valid entries and then scans a sequence of fifty bytes to ensure they are not all zero.
+- `return_zero`: Sets d0 to zero, restores several registers from the stack, and returns.
+- `tokenize_string_into_table_7`: Parses a null-terminated string into a table of pointers by identifying space-delimited tokens or substrings enclosed in double quotes.
+- `execute_callback_loop_2`: Calls a function pointer from a table repeatedly in a loop and then stores a value into a global variable.
+- `store_and_recurse`: Stores two words from the stack into global variables and then performs three recursive calls to itself with varying arguments.
+- `tokenize_input_string_95`: Parses a null-terminated string into a table of pointers by splitting the input at whitespace or within double-quoted substrings.
+- `process_search_logic`: Performs a loop that evaluates a condition, updates a local short value, and either calls a search routine or executes a function pointer from a table.
+- `execute_indirect_function_call_2`: Loads a value from a global variable and uses it to perform an indirect function call via a pointer offset.
+- `iterate_party_members_and_update_status`: Iterates through a list of party members to check specific status flags and conditions.
+- `process_command_input_and_update_state`: Parses a command string into tokens and executes corresponding functions based on the extracted data.
+- `parse_and_execute_command_string`: Tokenizes an input string into a table of pointers and executes a series of indirect function calls based on the extracted tokens.
+- `parse_and_process_token_table`: Passes a global variable to a tokenizer routine and then performs a series of calculations and recursive calls using values extracted from a table indexed by that global variable.
+- `pass_pointers_to_tokenizer`: Passes the address of a global variable twice as arguments to a routine that parses a null-terminated string into a table of pointers.
+- `wait_for_condition`: Enters a loop that continues until a specific global value reaches a threshold determined by a parameter.
+- `return_no_op_6`: The routine consists of a single return instruction with no other work, so it performs no action.
+- `tokenize_command_string_57`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or text enclosed in double quotes.
+- `scan_string_for_control_constants`: Iterates through a string to check if any character's absolute value matches one of three specific constants.
+- `search_string_for_values`: Iterates through a string to check if any character's absolute value matches one of three specific constants.
+- `match_character_values`: Iterates through a string and checks if the absolute value of any character matches one of three specific constant values.
+- `clear_d0_and_restore_registers`: Sets register d0 to zero, restores d6, d7, and a3 from the stack, and returns.
+- `find_char_in_string_2`: Scans a string for a specific character while decrementing a counter and returns a pointer to the found character or null.
+- `pass_argument_to_search`: Passes a parameter to another routine that performs a search.
+- `tokenize_input_string_207`: Parses a source string into an array of pointers by identifying space-delimited words or substrings enclosed in double quotes.
+- `find_entity_by_attribute`: Iterates through a table of pointers to find an index where specific byte values in an entity's attribute structure match the provided parameters.
+- `parse_string_data_3`: Parses a string by skipping whitespace and extracting words or quoted substrings into a table.
+- `tokenize_command_string_61`: Parses a character buffer into a table of pointers by identifying space-delimited words or text enclosed in double quotes.
+- `parse_command_string_9`: Iterates through a string to extract space-delimited or quoted tokens, storing pointers to each token and the total count in a local structure.
+- `tokenize_input_string_5`: Parses a null-terminated string into an array of pointers to individual tokens.
+- `tokenize_string_into_table`: Parses a null-terminated string into a table of pointers by identifying space-delimited tokens or substrings enclosed in double quotes.
+- `tokenize_command_string_80`: Parses a source string into an array of pointers by splitting it at whitespace or within quotation marks.
+- `execute_indirect_calls_4`: Performs multiple indirect function calls using pointers retrieved from a global structure.
+- `execute_recursive_call_4`: An empty routine that performs a direct recursive call to itself.
+- `tokenize_input_string_181`: Iterates through a string to identify individual tokens separated by whitespace or enclosed in double quotes.
+- `tokenize_input_string_44`: Parses a source string into an array of pointers by splitting it at whitespace or quoted substrings.
+- `invalidate_table_entries_by_criteria`: Iterates through a multi-dimensional table to find entries matching specific byte-based criteria and comparison operators.
+- `tokenize_input_string_45`: Splits a source string into an array of pointers by identifying whitespace or substrings enclosed in double quotes.
+- `tokenize_input_string_145`: Splits a source string into an array of pointers by using whitespace or quotation marks as delimiters.
+- `tokenize_command_string_27`: Parses a string into a list of pointers to individual tokens, handling whitespace and quoted substrings.
+- `tokenize_input_string_96`: Splits a source string into an array of pointers by identifying tokens separated by whitespace or enclosed in double quotes.
+- `parse_string_tokens_45`: Parses a source string into a series of tokens, handling whitespace, tabs, and newlines.
+- `tokenize_string_buffer_20`: Parses a character buffer into an array of pointers to substrings, using whitespace or double quotes as delimiters.
+- `return_from_subroutine_4`: This routine performs a single return instruction, terminating the current execution flow and returning control to the caller.
+- `tokenize_string_buffer_22`: Parses a character buffer into an array of pointers by using whitespace or double quotes as delimiters.
+- `invoke_string_tokenizer_2`: Calls a routine to parse a character buffer into an array of pointers using whitespace or double quotes as delimiters.
+- `call_string_tokenizer`: Passes zero as an argument to a routine and then returns.
+- `invoke_string_tokenizer`: Calls a routine that parses a character buffer into an array of pointers using whitespace or double quotes as delimiters.
+- `tokenize_input_string_46`: Parses a source string into a table of pointers by skipping whitespace and handling quoted substrings.
+- `tokenize_input_string_74`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or double-quote delimiters.
+- `tokenize_input_string_97`: Splits a source string into an array of pointers by using whitespace, tabs, or newlines as delimiters.
+- `tokenize_input_string_extended`: Parses a source string into a table of pointers and iterates through the resulting string data.
+- `tokenize_input_string_146`: Parses a source string into a table of pointers by identifying individual words separated by whitespace or enclosed in quotation marks.
+- `parse_command_tokens`: Iterates through a table of pointers generated from a source string to identify and process specific command identifiers.
+- `parse_command_bytecode`: Interprets a sequence of opcodes and operands by iterating through a data table.
+- `parse_bytecode_instructions`: Iterates through a data table to interpret a sequence of opcodes and operands.
+- `parse_command_string_recursive`: Performs a recursive depth-first traversal of a character buffer to identify and extract tokens.
+- `parse_nested_string_tokens`: Performs a recursive depth-first traversal of a character buffer to identify and extract tokens.
+- `traverse_nested_data_structure`: This recursive routine performs a depth-first traversal of a hierarchical data structure.
+- `parse_command_tokens_2`: Iterates through a character buffer to identify and extract specific command tokens based on delimiter characters and escape sequences.
+- `parse_command_token_stream`: Iterates through a character buffer to identify and extract tokens by evaluating specific character codes.
+- `parse_command_string_tokens_5`: Iterates through a character buffer to identify and extract tokens based on specific delimiter characters and escape sequences.
+- `parse_command_string_tokens_4`: Iterates through a character buffer to identify and extract tokens based on specific delimiter characters and escape sequences.
+- `parse_command_string_tokens_2`: Iterates through a character buffer to identify and extract tokens based on specific delimiter characters and escape sequences.
+- `parse_command_string_12`: Iterates through a character buffer to identify and extract tokens based on specific delimiter characters and escape sequences.
+- `tokenize_command_string_53`: Parses a string into a table of pointers by splitting it into individual words based on whitespace or quoted substrings.
+- `process_recursive_input`: Performs a recursive operation that parses a string into a table of pointers and stores a result in a local variable.
+- `return_constant_one_4`: Calls another routine and returns the integer value of one.
+- `call_tokenization_routine_2`: This routine calls another routine and returns a constant value of one.
+- `parse_string_token_list_5`: Iterates through a string to extract space-delimited or quoted tokens, storing pointers to each token and the total count into a local data structure.
+- `process_data_structure`: Iterates through a table to find a specific entry and then performs a series of nested calls and data updates involving a loop that modifies values in a table.
+- `update_indexed_data_table`: Calculates an offset into a table, performs a memory copy, and iterates through a loop to update specific short values based on a condition.
+- `manipulate_global_and_call_subroutines`: Sets a global variable to a specific value, performs a series of subroutine calls using derived parameters, and subsequently resets the global variable to zero.
+- `tokenize_input_string_175`: Parses a source string into an array of pointers by identifying individual words separated by whitespace or enclosed in quotation marks.
+- `process_input_string_2`: Parses a string into tokens and performs a conditional bitwise operation on a value derived from a memory location.
+- `process_formatted_string_3`: Parses a string into tokens and processes it through a format string routine.
+- `invert_memory_word`: Fetches a word from a memory location calculated from a register and returns its bitwise complement.
+- `tokenize_string_into_table_5`: Splits a string into a table of pointers by identifying whitespace or quoted segments.
+- `parse_command_string_31`: Parses a null-terminated string into a table of pointers by identifying individual words separated by whitespace or enclosed in quotation marks.
+- `tokenize_command_string_64`: Parses a source string into a table of pointers by identifying individual words separated by whitespace or enclosed in quotation marks.
+- `parse_command_input`: Processes a string by breaking it into individual tokens and storing the resulting pointers in a table.
+- `set_global_bit`: performs a bitwise OR operation to set a specific bit in a global variable.
+- `tokenize_command_string_67`: Parses a source string into a table of pointers by identifying individual words separated by whitespace or enclosed in quotation marks.
+- `set_global_bit_3`: Calls routines to tokenize a string and then sets a specific bit in a global variable.
+- `set_global_bit_2`: Sets a specific bit in a global variable.
+- `clear_global_word`: sets a global word to zero.
+- `tokenize_input_string_196`: Parses a source string into an array of pointers by identifying tokens separated by whitespace or enclosed in double quotes.
+- `clear_command_parsing_state`: Resets the state of the command parser by clearing a global word variable and invoking string tokenization routines.
+- `execute_recursive_calls`: This routine performs three consecutive calls to itself before returning.
+- `reset_command_parsing_state`: Clears a global word variable and invokes two different string tokenization routines to process input data.
+- `tokenize_input_string_200`: Parses a null-terminated string into a table of pointers by identifying individual words or substrings delimited by whitespace or quotation marks.
+- `execute_recursive_string_parsing`: This routine calls itself twice and processes a string from a data pointer to extract location identifiers.
+- `execute_recursive_input_processing`: This routine calls itself twice and processes a null-terminated input string into tokens.
+- `call_subroutines_recursively`: The routine calls itself twice before returning.
+- `parse_command_string_26`: Parses a string into a list of tokens by handling whitespace and quoted substrings.
+- `validate_and_decrement_counter`: Parses a string and compares the result to a value; if they do not match, it iterates through a loop to decrement a global variable based on status checks.
+- `validate_status_flags`: Iterates up to six times to check status flags and updates a global variable with a counter.
+- `copy_byte_via_pointer`: Copies a single byte from a memory location pointed to by a register into a global variable.
+- `tokenize_input_string_154`: Splits a source string into an array of pointers to individual tokens by identifying whitespace or text enclosed in double quotes.
+- `tokenize_input_string_160`: Parses a null-terminated string into a table of pointers by identifying individual words separated by whitespace or enclosed in quotation marks.
+- `tokenize_input_string_161`: Parses a source string into an array of pointers by identifying individual words separated by whitespace or enclosed in quotation marks.
+- `increment_return_value`: Calls another routine and returns the result of that call incremented by one.
+- `tokenize_and_offset_data`: Parses a string into a table of pointers using an offset calculated from input parameters.
+- `tokenize_string_into_pointer_array_3`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or quoted substrings.
+- `tokenize_input_string_176`: Parses a source string into an array of pointers by identifying individual tokens separated by whitespace or enclosed in double quotes.
+- `handle_absolute_value`: Calculates the absolute value of a short integer and passes it along with other data to several subroutines.
+- `parse_input_tokens`: Splits a string into a pointer array and stores coordinate pairs into global variables.
+- `populate_entity_selection_list`: Iterates through a table of entities to identify specific matches based on status flags and character markers, storing their pointers and associated values into a local array.
+- `process_entity_table`: Iterates through a nested structure to extract pointers and values based on specific character matches and updates a local array.
+- `populate_pointer_list`: Iterates through a structure to find specific character patterns and stores calculated pointers and values into a local array.
+- `process_abort_logic`: Processes data from a table and updates a global variable based on character comparisons and memory offsets.
+- `recursively_set_bit_in_table`: If a value is negative, the routine calls itself recursively with the absolute value until a non-zero result is returned.
+- `evaluate_token_result`: Checks the return value of a routine and conditionally calls another routine if the result is non-zero.
+- `set_memory_flag`: Sets a one at a memory location calculated via a register and a constant offset.
+- `set_memory_value_via_offset`: Calculates an offset by multiplying a register by a constant and adding it to a base address, then stores a one at the resulting location in memory.
+- `parse_location_name_string`: Extracts and processes a string from a data pointer, specifically looking for location identifiers like PORTALA. It iterates through a table of parsed tokens to perform conditional logic and string manipulation.
+- `process_command_token_string`: Parses a string of command tokens by iterating through a table of pointers and performing conditional logic based on the extracted values.
+- `process_parsed_tokens`: Iterates through a series of pointers to perform conditional logic and nested function calls based on token values.
+- `iterate_token_pointers`: Iterates through a set of four pointers stored in a structure and passes each to another routine.
+- `restore_registers_and_return_3`: Restores several data and address registers from the stack, unlocks a mutex or semaphore in a5, and returns to the caller.
+- `tokenize_input_string_147`: Parses a string into an array of pointers by splitting it into tokens based on whitespace or double-quote delimiters.
+- `tokenize_input_string_169`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or text enclosed in double quotes.
+- `call_subroutines_sequentially`: Executes a specific routine with an immediate value followed by three subsequent calls to the same routine without arguments.
+- `tokenize_input_string_164`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or text enclosed in double quotes.
+- `tokenize_input_string_148`: Splits a character buffer into a table of pointers to substrings using whitespace or quotation marks as delimiters.
+- `call_segmented_memory_copy`: Calls a routine that copies a sequence of bytes from a source buffer into five distinct destination memory regions.
+- `perform_infinite_recursion`: This routine calls itself indefinitely before returning.
+- `store_coordinate_pairs`: This routine stores four values into global variables and then calls another routine with the minimum of three provided values.
+- `execute_conditional_callback_6`: This routine checks a bit in a table entry, executes a function pointer from a structure if the bit is clear, and then clears the table entry.
+- `execute_infinite_recursion`: Calls itself repeatedly without a termination condition, resulting in an infinite loop of stack growth.
+- `parse_string_tokens_33`: Extracts substrings from a source string and stores their starting addresses into a table.
+- `tokenize_command_string_9`: Parses a character buffer into an array of pointers to substrings by splitting on whitespace or handling text enclosed in double quotes.
+- `tokenize_string_into_table_2`: Parses a string into a table of pointers by splitting it at whitespace or handling quoted substrings.
+- `process_command_input_and_status_2`: Parses a command string into tokens and performs conditional logic based on status codes and input parameters.
+- `tokenize_input_string_6`: Parses a string into a list of individual tokens by splitting on whitespace or double quotes.
+- `tokenize_input_string_155`: Parses a string into a table of pointers by identifying individual words separated by whitespace or enclosed in quotation marks.
+- `calculate_command_output_length_2`: Calculates the total character length of a command response by summing token lengths and adjusting for specific formatting characters.
+- `tokenize_formatted_string_8`: Parses a string into an array of pointers by identifying space-delimited words or text enclosed in quotation marks.
+- `execute_indirect_callbacks`: Loads a pointer from a structure and executes three different function pointers stored at specific offsets within that structure.
+- `execute_conditional_callback_7`: Checks if a value at a specific offset within a global memory location is non-zero.
+- `tokenize_input_string_7`: Parses a source string into a list of pointers to individual tokens by skipping whitespace and handling quoted substrings.
+- `copy_memory_block_conditional`: Copies a specified number of bytes from a source address to a destination address.
+- `invoke_interleaved_data_copy`: This routine acts as a wrapper that calls a procedure to copy data from multiple source buffers into a destination buffer using an interleaved pattern.
+- `swap_and_update_entity_attribute`: Updates an entry in a structured data table with new values and, if an existing index is provided, swaps the new values with the values of the existing entry to maintain a specific mapping.
+- `toggle_dual_flags`: Sets one global variable to one and resets another global variable to zero.
+- `tokenize_input_string_8`: Splits a null-terminated string into an array of pointers to individual tokens, handling both space-separated words and substrings enclosed in double quotes.
+- `tokenize_command_string_40`: Parses a string into an array of pointers to individual tokens, handling both space-separated words and substrings enclosed in double quotes.
+- `execute_recursive_call`: This routine performs a direct recursive call to itself and then returns.
+- `swap_word_bytes_2`: Swaps the high and low bytes of a 16-bit word.
+- `tokenize_command_string_10`: Parses a character buffer into an array of pointers by identifying space, tab, or newline delimiters.
+- `decode_compressed_stream_2`: Processes a byte stream by interpreting control characters to perform recursive decoding or data copying.
+- `tokenize_command_string_41`: Splits a string into a table of pointers based on whitespace or double-quote delimiters.
+- `validate_entity_status_flags_2`: Checks a bitmask against various status flags and numerical thresholds stored in an entity data structure.
+- `tokenize_command_string_11`: Parses a character buffer into an array of pointers by identifying space, tab, or newline delimiters.
+- `execute_conditional_callback_2`: Calls a function via a pointer and, if the return value is non-zero, calls a second function via another pointer.
+- `reset_global_flag`: Sets a specific global word variable to zero.
+- `tokenize_formatted_string_7`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or quoted substrings.
+- `tokenize_quoted_string_list`: Parses a source string into an array of pointers by splitting on whitespace or extracting content within double quotes.
+- `initialize_and_shuffle_index_tables`: Populates two separate index tables with sequential values and performs a series of swaps to shuffle the entries.
+- `call_bit_plane_setter`: This routine acts as a wrapper that calls another routine before invoking a procedure to set or clear specific bits in a destination buffer.
+- `calculate_division_quotient`: Divides a value obtained from another routine by a range derived from input parameters and returns the quotient and remainder.
+- `extract_bit_pattern_2`: Reads bits from a calculated memory location and packs them into a 32-bit value through a loop.
+- `copy_pixel_block_wrapper`: This routine is an unreachable gap of code that, if executed, calls a subroutine to perform a rectangular memory copy using fixed stride offsets.
+- `copy_pixel_block`: Performs a nested loop to copy a rectangular area of data from one memory location to another using fixed stride offsets.
+- `interpolate_nibble_data`: Iterates through two arrays of words to perform bitwise interpolation on specific nibble positions.
+- `execute_conditional_callback_3`: Checks if a provided integer argument is non-zero.
+- `parse_quoted_string_list`: Parses a space-delimited string into a table of pointers, supporting quoted substrings.
+- `execute_callback_list_3`: Iterates through a list of function pointers and executes them while updating several global variables.
+- `parse_string_list_28`: Iterates through a buffer to extract space-delimited or quoted strings and stores their pointers into a table.
+- `tokenize_input_string_149`: Iterates through a string to extract substrings and stores their starting addresses into a table.
+- `compare_case_insensitive_strings_3`: Compares two null-terminated byte strings character by character, treating uppercase and lowercase letters as equivalent.
+- `process_callback_list`: Updates several global variables using data from a provided pointer and then iterates through a list of function pointers to execute them.
+- `perform_recursive_return`: An empty routine that calls itself and returns the result.
+- `find_string_index_2`: Iterates through a table of pointers to null-terminated strings to find the index of a matching string using case-insensitive comparison.
+- `tokenize_input_string_47`: Parses a character stream into an array of pointers by splitting the string at whitespace or within double quotes.
+- `parse_format_string_4`: Iterates through a character stream to populate a buffer, processing escape sequences and format specifiers.
+- `tokenize_input_string`: Parses a character buffer into an array of pointers to substrings, delimited by whitespace or enclosed in double quotes.
+- `append_string_to_buffer_2`: Locates the null terminator of a destination buffer and copies bytes from a source pointer into that position until a null terminator is encountered.
+- `traverse_linked_list_and_recurse`: Iterates through a global linked list of structures, checking specific bit flags in a status byte.
+- `call_buffer_scatter`: Calls a routine that copies bytes from a source pointer into five distinct destination buffers using a nested loop structure.
+- `teardown_engine_subsystems`: Performs a systematic shutdown of engine components by invoking a series of function pointers stored within various global structures and object tables.
+- `initialize_null_terminated_string`: Sets a global pointer to a provided address, processes a string via another routine, and writes a zero byte to the start of that pointer.
+- `scale_product_of_word_halves`: Extracts the upper and lower sixteen bits of a thirty-two bit value, multiplies them, masks the result to sixteen bits, and scales the product by five.
+- `copy_table_entry_2`: Copies a block of data from one location in a table to another based on an index and updates several global variables with derived values.
+- `process_printf_format`: Iterates through a string to identify and process format specifiers such as decimal integers, strings, or hexadecimal values.
+- `invoke_interleaved_copy`: This routine acts as a wrapper that calls another subroutine to perform an interleaved data copy from five distinct source buffers into a single destination buffer.
+- `execute_table_calls`: Retrieves a pointer from a table to execute a function with calculated parameters and then clears two values in a table and a global variable.
+- `call_function_via_pointer_2`: Retrieves a pointer from a memory location and executes the code at that address twice.
+- `search_and_offset_return`: This routine identifies a bit position using a mask and returns a word from a memory location calculated via a negative offset.
+- `find_set_bit`: Iterates through bits to find the position of a bit that matches a specific condition based on a bitwise mask.
+- `perform_bit_search`: Iterates through a loop to find a value based on bitwise operations involving undefined local variables.
+- `restore_registers_and_return_4`: Moves the contents of d4 into d0, restores several registers from the stack, and returns.
+- `parse_string_list_2`: Parses a source string into a list of null-terminated tokens, handling both space-delimited words and quoted substrings.
+- `return_zero_long`: The routine returns a long value of zero.
+- `calculate_bitmask_offset`: Counts the number of set bits in a bitmask and uses that count to calculate a word from a table using a negative offset.
+- `count_set_bits`: Iterates through a bitmask to count the number of bits set to one.
+- `return_offset_value`: Returns a word from a memory location calculated by adding a negative offset to a value in a register.
+- `subtract_two_globals`: Calculates the difference between two global short integers and returns the result.
+- `iterate_string_data`: Iterates through a null-terminated string, calling various functions via pointers to process characters and updating a value from a global structure.
+- `traverse_linked_structure`: Performs a recursive traversal of a linked structure by repeatedly calling itself with updated values.
+- `reset_global_shorts`: Sets two consecutive global short variables to zero.
+- `parse_quoted_string_tokens`: Parses a string into a list of pointers, handling space-delimited tokens and substrings enclosed in quotation marks.
+- `tokenize_input_string_9`: Parses a source string into a list of pointers by identifying space-separated tokens or substrings enclosed in double quotes.
+- `tokenize_input_string_48`: Parses a null-terminated string into an array of pointers by identifying space-separated tokens or substrings enclosed in double quotes.
+- `tokenize_input_string_49`: Parses a source string into an array of pointers by identifying space-separated tokens or substrings enclosed in double quotes.
+- `parse_string_token_list`: Parses a source string into a list of pointers by identifying space-separated tokens or quoted substrings.
+- `tokenize_input_string_10`: Parses a source string into a list of individual tokens by skipping whitespace and handling quoted substrings.
+- `process_conditional_string_data`: Modifies specific bytes via pointers and performs recursive string processing based on the contents of a null-terminated string.
+- `tokenize_input_string_75`: Parses a source string into a list of pointers to substrings by skipping whitespace and handling quoted substrings.
+- `display_entity_status_text`: Checks an entity's status flags and numerical thresholds to determine if specific conditions like being paralyzed, petrified, or poisoned are met.
+- `tokenize_input_string_11`: Splits a source string into an array of pointers to individual tokens by identifying whitespace or quoted substrings.
+- `tokenize_input_string_12`: Parses a string into individual tokens by identifying space, tab, or newline delimiters, while supporting quoted substrings.
+- `perform_recursive_calls_2`: Calls itself twice using a local array on the stack.
+- `tokenize_input_string_13`: Splits a string into an array of pointers to individual tokens, handling both space-delimited words and substrings enclosed in double quotes.
+- `tokenize_command_string_12`: Parses a string into individual tokens by identifying space, tab, or newline delimiters.
+- `tokenize_command_string_13`: Parses a source string into an array of pointers to substrings, using whitespace or double quotes as delimiters.
+- `execute_indirect_structure_callbacks`: Fetches a pointer from a global variable and executes three distinct functions located at fixed offsets within the referenced structure.
+- `parse_formatted_string_tokens_2`: Parses a source string into a list of tokens by skipping whitespace and handling quoted substrings.
+- `parse_formatted_string_tokens`: Parses a source string into a list of tokens by skipping whitespace and handling quoted substrings.
+- `calculate_pointer_offset`: Iterates through a list of integers until a specific value is matched, then returns a calculated difference between a register and the resulting pointer.
+- `update_sprite_tile_attributes`: Iterates through a list of descriptors to update a buffer by copying or masking attribute data.
+- `calculate_table_index`: Calculates an index based on the absolute difference of two values and returns a byte from a table at that index.
+- `copy_memory_block_2`: Copies a block of memory using a loop and then calls a library function while checking a return value against a constant.
+- `calculate_sorted_offset`: Calculates the absolute difference between two values, sorts them, and returns a value containing the smaller difference and a sum.
+- `parse_command_string_2`: Parses a string into a series of space-delimited tokens or quoted substrings.
+- `parse_string_arguments`: Parses a string into a list of tokens, handling quoted substrings and whitespace.
+- `parse_resource_configuration_string`: Parses a string containing quoted or space-delimited resource identifiers and stores the resulting pointers and count into a structured memory block.
+- `parse_command_string_3`: Parses a null-terminated string into a table of pointers to individual tokens.
+- `tokenize_string_stream_2`: Extracts individual tokens from a string by skipping whitespace and handling quoted substrings.
+- `tokenize_string_stream`: Parses a string by skipping whitespace and extracting individual tokens, handling both quoted substrings and space-delimited words.
+- `parse_resource_stream_tags`: Iterates through a data stream to identify and process tagged resource blocks.
+- `parse_tagged_resource_stream_2`: Iterates through a data stream to identify tagged resource blocks, specifically looking for markers that define resource types.
+- `calculate_string_length_2`: An empty routine that attempts to determine the length of a null-terminated string through recursion.
+- `decrement_audio_levels`: Decrements four values retrieved from a table and writes them to audio hardware registers over a fixed number of iterations.
+- `initialize_audio_system_resources_2`: Allocates a memory structure for audio management and populates it with configuration values, function pointers, and buffer data.
+- `deallocate_linked_structure`: Recursively traverses a structure using a function pointer, checks specific bits in a byte to decide whether to continue traversal, and decrements a counter in a structure before freeing memory.
+- `parse_string_list_3`: Parses a space-delimited or quoted string into a list of pointers.
+- `parse_string_data`: Parses a string by skipping whitespace and extracting words or quoted substrings into a table.
+- `process_structure_data`: A routine consisting of 201 instructions that calls functions to retrieve offset values, parse string data, and calculate and write structure data.
+- `calculate_and_write_structure_data`: Calculates a memory address by adding a negative offset to a value and retrieves a word from that location.
+- `copy_sub_tile_block`: Copies a rectangular block of 16-bit words from a source memory location to a destination buffer.
+- `update_tile_attributes`: Iterates through a rectangular area of a grid to check for specific non-zero values in a source table.
+- `parse_string_list_4`: Parses a space-delimited or quoted string into an array of pointers.
+- `parse_and_validate_string_list`: Initializes a memory buffer by zeroing out a range of entries and then parses multiple string lists into pointers.
+- `parse_quoted_string_list_2`: Parses a space-separated list of strings from a source buffer, handling both quoted and unquoted tokens.
+- `parse_structured_data_table`: Iterates through a data structure to extract and process string tokens and offset values.
+- `parse_string_tokens`: Parses a source string into a list of individual tokens by identifying whitespace or quoted substrings.
+- `search_table_for_string_tokens`: Iterates through a global table to find entries matching a specific identifier.
+- `calculate_entity_distance_and_modifiers`: Iterates through a list of entities to calculate distance-based values and apply modifiers.
+- `parse_string_into_tokens`: Iterates through a string to extract individual words or quoted substrings, storing the resulting pointers into a table.
+- `traverse_linked_list_nodes`: Iterates through a linked list of structures to identify and process specific entries based on matching criteria.
+- `tokenize_input_string_14`: Parses a string into a list of pointers to individual tokens by skipping whitespace and handling quoted substrings.
+- `tokenize_input_string_15`: Parses a string into a list of pointers and counts the number of tokens found.
+- `parse_delimited_string_tokens`: Parses a string into a table of pointers by identifying space, tab, or newline delimiters.
+- `return_immediately_3`: This routine performs no operations and returns immediately to its caller.
+- `tokenize_input_string_76`: Parses a string into a table of pointers by identifying individual words or substrings enclosed in quotation marks.
+- `parse_string_tokens_2`: Parses a source string into a table of pointers by skipping whitespace and handling quoted substrings.
+- `tokenize_input_string_98`: Parses a source string into a table of pointers by identifying individual words or substrings enclosed in quotation marks.
+- `tokenize_input_string_2`: Iterates through a string to extract individual words or quoted phrases, storing their locations in a structured table.
+- `swap_global_word_2`: Stores the current value of a global word into a local variable and replaces that global word with a new value provided as a parameter.
+- `calculate_buffer_index`: Computes a memory offset by multiplying two bytes and a word retrieved from a structure, then adding a constant.
+- `adjust_nibble_values`: Iteratively adjusts the nibbles of a target buffer to match a reference buffer by calculating signed differences and calling a function until they match.
+- `expand_variable_bitstream`: Expands a compressed bitstream into a destination buffer by reading variable-length bit sequences from a source.
+- `update_stat_table_values`: Subtracts a global value from five consecutive table entries, ensuring no entry falls below one, and then subsequently adds that same value back to the entries.
+- `process_data_block`: Copies data from a global table into a destination buffer and performs arithmetic adjustments on a set of values in a table.
+- `modify_table_values`: Iterates through a table of five elements to either subtract a global value from an entry or set it to one, then performs a second pass to add the global value to each entry.
+- `update_table_values_2`: Iterates through a structure to set a specific byte to one and subtracts a global value from elements in a table.
+- `update_memory_table`: Calls a memory copy routine and then iterates five times to add a global value to a series of integer values stored in a table.
+- `modify_global_bitmask`: Checks the status of a specific bit within a global byte and subsequently sets a different bit in that same byte.
+- `parse_command_string_4`: Parses a space-delimited or quoted string into an array of pointers and a count.
+- `parse_command_string_16`: Parses a string into tokens by handling whitespace and quoted substrings, storing the resulting pointers into a table.
+- `tokenize_command_string_28`: Parses a string into individual tokens by scanning for whitespace or quotation marks.
+- `update_structure_attribute_tables`: Iterates through a series of structures to decrement specific numerical values by a global constant or reset them to one if they fall below a threshold.
+- `modify_structure_elements`: Iterates through a structure to set values to one and subtracts a global value from elements in a table based on a condition.
+- `adjust_table_entries`: Iterates through a structure and, if a condition is met, subtracts a global value from or sets elements in a table to one.
+- `return_no_op_2`: The routine is a two-instruction stub that performs no work and returns immediately to its caller.
+- `parse_command_string_13`: Iterates through a source string to identify space-delimited words or text enclosed in double quotes.
+- `tokenize_command_string_58`: Parses a null-terminated string into an array of pointers by identifying individual tokens delimited by whitespace or enclosed in quotation marks.
+- `parse_command_string_arguments_2`: Iterates through a string to extract space-delimited or quoted tokens into an array of pointers.
+- `validate_command_token_integrity`: Checks a token against a bitmask in a global variable and validates its length or type.
+- `validate_command_token_array`: Iterates through an array of pointers derived from a string to validate each element and check for null terminators.
+- `process_string_token_array`: Iterates through an array of pointers derived from a string, performing validation and null-terminator checks on each element.
+- `validate_save_file_integrity_2`: Verifies the integrity of a save file by checking a sequence of function results and comparing data structure values against hardcoded constants.
+- `verify_save_file_checksum`: Retrieves a sequence of values from a data structure and compares them against a series of hardcoded constants.
+- `validate_save_file_integrity`: Compares a sequence of values retrieved from a data structure against a series of hardcoded constants.
+- `validate_sequence_of_function_results`: Executes a series of function calls with varying parameters and compares their return values against a set of expected constants and each other.
+- `validate_and_execute_command_callback`: Validates a set of seven values against a global table and, if successful, executes a series of function pointers stored within a structure.
+- `parse_command_string_10`: Splits a character buffer into an array of pointers by identifying whitespace or quoted substrings.
+- `parse_command_string_arguments`: Parses a null-terminated string into a series of space-delimited or quoted tokens.
+- `tokenize_command_string_20`: Parses a null-terminated string into an array of pointers by identifying individual words or substrings enclosed in quotation marks.
+- `tokenize_string_into_array_3`: Parses a null-terminated string into an array of pointers by splitting it into tokens based on whitespace or quoted substrings.
+- `parse_command_string_tokens_3`: Parses a null-terminated string into an array of pointers by identifying individual words or substrings enclosed in quotation marks.
+- `tokenize_command_string_24`: Parses a null-terminated string into an array of pointers by splitting it at whitespace or handling quoted substrings.
+- `update_structure_elements_2`: Calculates an offset into a table using an index multiplied by sixteen and writes four word-sized values into the resulting structure.
+- `parse_string_data_4`: Extracts words or quoted substrings from a string into a table by skipping whitespace and inserting null terminators.
+- `evaluate_status_condition_code`: Calls a series of functions via pointers to retrieve status values and compares them against specific constants.
+- `decode_copy_byte_sequence_2`: Reads a length-prefixed byte sequence and copies the referenced bytes into a destination buffer, decoding several escape codes to repeat or move data.
+- `accumulate_iterative_function_results`: Checks a global flag for specific bit states and then iteratively calls a function pointer retrieved from a table to calculate a cumulative sum.
+- `tokenize_command_string_14`: Parses a source string into an array of pointers by identifying individual words or quoted substrings.
+- `tokenize_input_string_99`: Parses a null-terminated string into an array of pointers by identifying individual tokens.
+- `compress_lzss_data_3`: Performs LZSS compression on a source buffer by searching for the longest repeating byte sequence within a sliding window.
+- `invoke_conditional_callback_2`: This routine calls a sub-routine that executes conditional logic based on a callback.
+- `sanitize_and_truncate_string`: Calculates the length of a null-terminated string and truncates it based on a provided maximum length.
+- `process_string_control_codes_3`: Parses a string buffer to identify and act upon specific control characters, performing operations such as character shifting, buffer truncation, and memory copying.
+- `process_string_control_codes`: Iterates through a null-terminated string and modifies the buffer based on specific character values.
+- `process_string_control_codes_2`: Parses a string buffer to identify and act upon specific control characters, performing operations such as character shifting, buffer truncation, and recursive processing.
+- `update_string_bounds_2`: Iterates through a sequence of characters to update length and boundary markers.
+- `update_string_bounds`: Iterates through a sequence of characters to update length and boundary markers.
+- `parse_tokenized_string_data`: Iterates through a sequence of characters to update length and boundary markers.
+- `process_tokenized_string_data`: Iterates through a sequence of characters to update length and boundary markers.
+- `manipulate_string_token_buffer`: Iterates through a string buffer to extract, shift, or truncate character sequences based on specific control codes.
+- `process_token_string_data`: Iterates through a string to extract tokens and updates a global variable based on character values.
+- `process_token_metadata`: Iterates through a set of extracted string tokens to update a table of values and manage state based on specific character delimiters.
+- `process_string_token_delimiters`: Iterates through a string to identify and extract tokens based on specific character delimiters and length constraints.
+- `process_string_tokens_3`: Iterates through a string to identify and extract tokens based on specific character delimiters and length constraints.
+- `parse_string_tokens_41`: Iterates through a string to identify and extract tokens based on specific character delimiters and length constraints.
+- `process_string_token_data`: Iterates through a data structure to extract and manipulate string tokens based on character comparisons and delimiter checks.
+- `process_string_tokens_2`: Iterates through a null-terminated string to extract and manipulate individual tokens based on specific character values and delimiters.
+- `process_string_tokens`: Iterates through a string to extract and manipulate individual tokens based on specific character values and delimiters.
+- `parse_string_tokens_3`: Iterates through a source string to extract space-delimited tokens or quoted substrings.
+- `parse_string_tokens_4`: Parses a space-delimited string into a table of pointers, supporting quoted substrings.
+- `parse_string_tokens_5`: Parses a space-delimited string into a list of pointers, supporting quoted substrings.
+- `parse_formatted_string_arguments`: Parses a string to extract space-delimited or quoted tokens into a structured array.
+- `parse_formatted_string_7`: Parses a string into an array of tokens by identifying space-delimited words or text enclosed in quotation marks.
+- `parse_string_tokens_6`: Parses a null-terminated string into a list of space-separated tokens or quoted substrings.
+- `parse_string_tokens_7`: Parses a string into a list of tokens by skipping whitespace and handling quoted substrings.
+- `parse_string_tokens_8`: Iterates through a source string to extract space-delimited tokens or quoted substrings.
+- `parse_string_tokens_9`: This routine parses a string by skipping whitespace and extracting individual tokens, handling both quoted substrings and space-delimited words.
+- `parse_string_list_5`: This routine parses a space-delimited or quoted string into a list of pointers stored in a structure.
+- `parse_string_list_6`: This routine parses a space-delimited or quoted string into a list of pointers stored in a local structure.
+- `parse_string_tokens_10`: This routine parses a string into a list of tokens by skipping whitespace and handling quoted substrings.
+- `execute_copy_mem_calls`: This routine performs three indirect calls to functions located at a specific offset within a structure pointed to by a global variable.
+- `tokenize_string_into_array`: Parses a null-terminated string into individual tokens by splitting on whitespace or quoted substrings.
+- `parse_string_tokens_11`: Parses a null-terminated string by skipping whitespace and extracting tokens, including those enclosed in quotation marks, into a table of pointers.
+- `parse_string_tokens_variant`: Iterates through a string to identify and store pointers to individual words or quoted substrings within a data structure.
+- `parse_quoted_string_list_3`: Parses a string into a list of tokens, supporting both space-delimited words and text enclosed in double quotes.
+- `parse_string_tokens_12`: Parses a source string into a series of tokens, handling both quoted substrings and space-delimited words.
+- `parse_string_tokens_13`: Parses a source string into a list of tokens by skipping whitespace and handling quoted substrings.
+- `parse_quoted_string_tokens_2`: Parses a string by skipping whitespace and extracting tokens, handling both space-delimited words and substrings enclosed in quotation marks.
+- `tokenize_string_into_array_4`: Parses a null-terminated string into an array of pointers by splitting on whitespace or quoted substrings.
+- `tokenize_input_string_108`: Parses a string into a table of pointers by identifying words separated by whitespace or enclosed in quotation marks.
+- `parse_string_list_7`: Parses a space-delimited or quoted string into an array of pointers.
+- `update_minimum_value`: Compares two short integers and updates a third if the first is zero and the second is smaller than the third.
+- `return_immediately_4`: This routine consists of four instructions that perform no operations before returning.
+- `tokenize_input_string_16`: Parses a null-terminated string into an array of pointers by splitting on whitespace or quoted substrings.
+- `parse_quoted_string_list_4`: Parses a space-separated list of strings from a source buffer into a destination array.
+- `tokenize_input_string_17`: Parses a character stream into a table of pointers by identifying whitespace or quoted substrings.
+- `convert_signed_int_to_ascii_2`: Converts a signed integer into an ASCII string by handling the negative sign and reversing the digit order into a destination buffer.
+- `format_negative_sign`: Checks if an integer is negative and stores an ASCII minus sign in a local buffer if so.
+- `shift_bit_state`: Performs a bitwise rotation and shift across three consecutive global bytes.
+- `convert_integer_to_string_2`: Converts a signed integer into a null-terminated ASCII string by handling the sign character and reversing the digit order.
+- `execute_recursive_call_5`: This routine performs a single recursive call to itself before returning.
+- `execute_infinite_recursion_2`: This routine calls itself indefinitely without performing any other operations or returning.
+- `call_table_retrieval_routine`: This routine is an empty wrapper that immediately calls another routine and returns.
+- `execute_single_recursion`: An empty routine that performs a single recursive call to itself and returns the result.
+- `execute_indirect_call`: This routine performs an indirect call to another routine and then returns.
+- `call_indirect_pointer`: Executes a function through a pointer located at a fixed offset from a global variable.
+- `compare_and_call`: Compares the lower seven bits of two values within a parameter and calls a function if they do not match.
+- `free_linked_lists`: Recursively traverses and deallocates two linked lists within a global structure using function pointers stored in that structure.
+- `parse_string_tokens_and_update_state`: Parses a string for whitespace and quoted tokens, storing pointers to the extracted segments into a local structure.
+- `process_string_tokens_4`: Extracts tokens from a string, modifies a local structure using bitwise operations, and performs a recursive search through a table based on bit tests.
+- `update_bit_tree_node`: Modifies a value in a local structure using bitwise operations and performs a recursive search through a table based on bit tests.
+- `traverse_bit_tree_2`: Performs a recursive search through a table using bitwise operations and bit tests to modify a value in a global variable.
+- `traverse_bit_tree_3`: Modifies a value in a global variable based on an input comparison before performing a recursive search through a table using bitwise operations.
+- `traverse_bit_tree`: Performs a loop that modifies a value using bitwise operations and recursively calls other routines based on bit tests.
+- `iterate_token_list`: Iterates through a list of values and performs bitwise operations to update a local variable.
+- `frag_movem_unlk_rts`: Short code fragment that copies several registers to or from memory, then removes the stack frame held in a5, then returns.
+- `tokenize_quoted_string_3`: Parses a string into space-separated tokens, supporting substrings enclosed in double quotes.
+- `parse_string_list_8`: Parses a space-separated or quoted string list into a structured table of pointers and counts.
+- `update_global_flags`: Checks a byte at a pointer and sets specific bits in a global variable based on whether the value matches certain constants.
+- `parse_string_list_9`: Parses a space-separated or quoted string into an array of pointers.
+- `tokenize_string_list_3`: Parses a string into an array of pointers by splitting it at whitespace or quoted boundaries.
+- `return_from_subroutine_5`: This is an empty routine that performs no operations and immediately returns.
+- `parse_string_tokens_14`: Iterates through a string to extract space-delimited or quoted tokens, storing pointers to each token in a local array.
+- `update_bitmask_from_table_2`: Iterates through a linked data structure to update a bitmask based on values retrieved from a table.
+- `update_bitmask_from_table`: Iterates through a data structure to update a bitmask using values retrieved from a table based on specific field conditions.
+- `process_linked_data`: Iterates through a data structure to perform bitwise operations and updates a word via an offset.
+- `fetch_word_via_offset`: Fetches a two-byte value from a memory location calculated by subtracting six from a value held in a register.
+- `parse_string_tokens_38`: Iterates through a string to extract space-delimited or quoted tokens, storing pointers to each token in a local array.
+- `search_xor_pattern_3`: Searches for a specific pattern by performing XOR operations on bytes within a table.
+- `search_xor_pattern_2`: Performs a conditional check on a byte in a table or searches for a specific pattern using XOR operations.
+- `modify_byte_on_condition`: Checks a byte in a table and, if it is not negative one, stores a constant byte into a memory location.
+- `search_xor_pattern`: Searches through a memory range by performing XOR operations on bytes and checking the results against a bitmask.
+- `xor_search_bits`: Iterates through a memory range performing XOR operations and checks against a bitmask until a condition is met.
+- `return_max_int`: Returns a value where all bits are set.
+- `tokenize_input_string_50`: Parses a source string into an array of pointers by splitting it at whitespace or quoted boundaries.
+- `parse_quoted_string_tokens_3`: Iterates through a string to extract space-separated tokens, handling quoted substrings by identifying text between double-quote characters.
+- `process_indexed_data_table`: Calculates a pointer into a table based on an index and performs conditional bitwise checks and updates to the table values.
+- `process_string_character_mapping`: Iterates through a data structure using an index and performs conditional bitwise checks on values retrieved from a table.
+- `recursively_update_string_byte`: Calls another routine and, if the returned value is not negative one, stores that value as a byte at a specific offset within a memory block before calling the same routine again.
+- `return_zero_value_10`: This routine is empty and returns zero.
+- `process_string_data_7`: checks a global flag and a character value to conditionally modify a byte in a string and call another routine.
+- `process_string_data_6`: Modifies a byte at a specific offset within a string and conditionally calls another routine based on a global flag and a character check.
+- `tokenize_string_list_4`: Parses a string into a table of pointers by splitting it at whitespace or quoted boundaries.
+- `write_memory_values`: Stores a byte of zero and a word from a table into memory locations relative to a pointer.
+- `parse_string_tokens_42`: Iterates through a source string to extract space-separated or quoted tokens.
+- `store_token_length`: Calls another routine to obtain a value and, if that value is non-negative, stores it as a byte into a structure.
+- `parse_string_table`: Iterates through a source string to extract space-delimited or quoted substrings into a structured table.
+- `return_noop_stub`: The routine consists solely of a return instruction and performs no work, so it acts as an empty placeholder.
+- `tokenize_input_string_205`: Parses a source string into an array of pointers by identifying space-delimited words or substrings enclosed in double quotes.
+- `process_string_table`: Iterates through a table of substrings and performs conditional branching based on a byte value at a specific offset.
+- `process_parsed_string_table`: Iterates through a structured table of substrings extracted from a source string.
+- `call_string_tokenizer_3`: Calls a routine that parses a source string into an array of pointers by identifying space-delimited words or substrings enclosed in double quotes.
+- `process_input_logic`: Tokenizes an input string and then modifies specific bits in a structure passed via a parameter.
+- `tokenize_input_string_182`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or text enclosed in double quotes.
+- `reset_status_flags`: Sets a global variable and a specific word in a table to zero based on a condition.
+- `clear_global_variables`: Sets a global variable and a specific word in a table to zero.
+- `tokenize_input_string_177`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or text enclosed in double quotes.
+- `invoke_recursive_function_calls`: Calls a specific routine multiple times with varying arguments, including a global variable and several calls without arguments.
+- `check_backspace_character`: Calls another routine and checks if a byte at a specific offset in a structure is a backspace character.
+- `parse_string_list_10`: Parses a space-delimited or quoted string into an array of pointers.
+- `fetch_table_byte`: Calculates an offset using a byte from a pointer and a value from a table to return a byte from a global array.
+- `tokenize_input_string_18`: Splits a string into an array of pointers by identifying whitespace or quoted substrings.
+- `return_constant_one`: This routine returns the integer value one to the caller.
+- `execute_token_logic`: A 53-instruction routine that calls routines to parse string tokens and process status effects.
+- `process_status_effects`: Checks various bit flags in a status structure and executes different subroutines or modifies a byte in memory based on those flags.
+- `tokenize_input_string_77`: Parses a source string into an array of pointers by splitting it at whitespace or quoted boundaries.
+- `tokenize_command_string_15`: Parses a character buffer into a table of pointers by splitting the string at whitespace or quoted boundaries.
+- `parse_string_token_array`: Parses a space or tab-delimited string into an array of pointers, supporting quoted substrings.
+- `find_maximum_value`: Iterates through a table to find the largest value that meets specific bitmask and threshold criteria.
+- `find_minimum_offset`: Iterates through a table to find a minimum value and updates associated memory locations.
+- `iterate_token_array`: Iterates through a table of pointers based on a count stored in a local structure.
+- `populate_index_table`: Initializes a small array with a default value and then iterates through a list of structures to find entries matching a specific value.
+- `map_index_to_table`: Iterates through a list of structures to store an index into a table based on a matching value and a masked byte.
+- `function_epilogue_2`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+- `parse_string_list_22`: Iterates through a source string to extract individual tokens, handling both space-delimited words and quoted substrings.
+- `search_table_entry_2`: Iterates through a table to find an entry where a specific value matches a short integer, returning the result of that match.
+- `return_all_bits_set_2`: Takes no arguments and returns the 32-bit value with every bit set, which is the all-ones value (negative one as a signed integer).
+- `tokenize_command_string_68`: Parses a source string into an array of pointers by identifying space, tab, or newline delimiters.
+- `call_tokenizer`: A 4-instruction routine that calls a routine to tokenize an input string.
+- `search_entity_table`: Iterates through a list of structures to find an index matching specific criteria.
+- `find_matching_index`: Searches through a list of structures to find an index that matches a specific byte value within a table.
+- `function_epilogue_3`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `parse_string_tokens_43`: Iterates through a source string to extract up to thirty-two space-delimited or quoted tokens, storing pointers to each token in a destination array.
+- `search_table_entries`: Iterates through a table of structures to find matching entries and stores the resulting indices into a destination buffer.
+- `search_and_index_table_2`: Searches through a table of structures to find matching entries and stores the resulting indices into a destination buffer.
+- `search_and_index_table`: Iterates through a data table to find matches for a specific value, storing the resulting indices into a destination buffer.
+- `populate_index_list`: Iterates through a sequence, calling another routine to find matches and storing the resulting indices in a table.
+- `set_word_to_max`: Stores a word with all bits set through a pointer.
+- `parse_string_tokens_15`: Parses a source string into a list of tokens by skipping whitespace and handling quoted substrings.
+- `return_zero_value`: Sets d0 to zero, restores registers d5 through d7 and a3 from the stack, and returns.
+- `tokenize_input_string_203`: Parses a source string into an array of pointers by identifying space-delimited words or substrings enclosed in double quotes.
+- `tokenize_input_string_19`: Parses a source string into a list of space-delimited or quoted substrings.
+- `execute_empty_routine_2`: This routine consists of a single instruction and is described as unreached.
+- `tokenize_command_string_62`: Splits a character buffer into individual tokens by identifying space, tab, or newline delimiters.
+- `synchronize_command_token_state_primary`: Compares a value in a table against a pointer and, if they differ, clears a linked list of tokens and updates a memory-resident structure.
+- `tokenize_input_string_170`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or text enclosed in double quotes.
+- `initialize_entity_structure_2`: Checks if a global structure list is initialized and, if not, populates a new entry by copying data from a table and parameters.
+- `tokenize_string_list_9`: Parses a source string into a list of pointers by identifying space, tab, or newline delimiters, or content enclosed in double quotes.
+- `tokenize_input_string_156`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or quoted substrings.
+- `validate_entity_status_requirements`: Checks a bitmask against an entity's status flags and numerical thresholds to determine if specific conditions are met.
+- `synchronize_command_token_state_secondary`: Checks a specific table entry against a pointer to determine if a linked list of tokens must be cleared and a memory structure updated.
+- `tokenize_command_string_2`: Parses a character buffer into an array of pointers to substrings by identifying space, tab, or newline delimiters.
+- `tokenize_command_string_49`: Parses a string into a series of tokens by identifying space-delimited words or text enclosed in quotation marks.
+- `parse_input_string_3`: Parses a string into a table of pointers by splitting it into tokens based on whitespace or quoted substrings.
+- `parse_string_arguments_4`: Parses a string into a series of tokens, handling whitespace and quoted substrings.
+- `tokenize_command_string_3`: Parses a character buffer into an array of pointers to substrings, supporting both space-delimited words and text enclosed in double quotes.
+- `process_string_and_memory`: This routine performs a memory copy operation and parses a formatted string into tokens.
+- `tokenize_input_string_20`: Parses a character buffer into an array of pointers to substrings by identifying space, tab, or newline delimiters.
+- `parse_and_update_grid_data`: Parses a string into tokens, handling quoted substrings, and then iterates through a data table to update a grid based on calculated values and byte-swapped identifiers.
+- `update_grid_data`: Processes a grid of data, performing calculations to determine new values and storing them in a global table.
+- `return_from_subroutine_6`: performs a return from a subroutine.
+- `tokenize_string_data`: Iterates through a string to extract space-delimited or quoted tokens.
+- `tokenize_formatted_string_9`: Parses a string into an array of pointers by splitting it based on whitespace or text enclosed in double quotes.
+- `reset_global_word`: Sets a specific global word to zero.
+- `tokenize_formatted_string_10`: Parses a string into an array of pointers by identifying space-delimited words or text enclosed in quotation marks.
+- `clear_global_value`: Writes a zero value into a global memory location.
+- `tokenize_formatted_string_11`: Parses a string into an array of pointers by identifying space-delimited words or text enclosed within quotation marks.
+- `zero_global_variable`: Clears a two-byte global variable by assigning it zero.
+- `parse_command_string_21`: Parses a string into a series of tokens, handling whitespace and quoted substrings.
+- `parse_string_tokens_34`: Parses a string into a list of pointers to individual tokens, handling whitespace and quoted substrings.
+- `tokenize_command_string_35`: Parses a string into individual tokens by skipping whitespace and handling quoted substrings.
+- `parse_data_stream`: Iterates through a data stream to populate a table of structures using indexed offsets.
+- `parse_string_list_11`: Parses a source string into a list of tokens, handling quoted substrings and whitespace delimiters.
+- `parse_string_tokens_16`: Parses a string into a list of pointers to individual tokens, handling whitespace and quoted substrings.
+- `parse_and_execute_command_tokens`: Parses a command string into tokens and executes logic based on specific byte markers and conditional function pointers.
+- `parse_command_string_14`: Splits a source string into an array of pointers by identifying whitespace or quoted boundaries.
+- `parse_and_execute_command_string_2`: Parses a source string into a series of tokens by identifying whitespace or quoted substrings.
+- `tokenize_formatted_string_12`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or substrings enclosed in quotation marks.
+- `parse_formatted_string_arguments_2`: Parses a string into an array of pointers by splitting it into tokens based on whitespace or quoted substrings.
+- `test_and_clear_bit_3`: Checks if a specific bit is set in a global byte and then clears that bit.
+- `test_and_set_bit`: Checks if a specific bit is set in a global byte and then sets a different bit in that same byte.
+- `swap_global_word_3`: Returns the current value of a global word and replaces it with a new value provided in a parameter.
+- `perform_infinite_recursion_2`: This routine calls itself indefinitely without performing any other operations.
+- `store_and_compare_bounds`: This routine stores four short values into global variables and then calls another routine using the minimum value of three different short integers.
+- `execute_conditional_callback_8`: This routine checks a bit in a table entry, executes a function pointer from a structure if the bit is not set, and then clears the table entry.
+- `process_input_command_logic`: Parses a command string into tokens and executes conditional logic based on status flags and input parameters.
+- `interpolate_nibble_values`: Iterates through two arrays of words and performs bitwise interpolation on individual nibbles to minimize the difference between the source and target values.
+- `tokenize_input_string_150`: Parses a string into an array of pointers by splitting it at whitespace characters or between double quotes.
+- `copy_string_via_pointer`: Retrieves a pointer from a table and copies a null-terminated string into a local buffer.
+- `execute_indirect_calls_3`: Loads a pointer from a structure and executes three function pointers located at specific offsets from that pointer.
+- `tokenize_input_string_3`: Parses a character buffer into an array of pointers to substrings, handling both space-delimited words and text enclosed in double quotes.
+- `execute_conditional_function_pointer`: Checks if a value at a specific memory location is non-zero, and if so, executes a function pointer retrieved from a structure offset by a constant value.
+- `tokenize_string_into_table_3`: Parses a source string into a table of pointers by identifying individual tokens separated by whitespace or enclosed in double quotes.
+- `execute_callback_sequence_3`: Executes three consecutive routines in a specific order and returns the result of the second routine's execution.
+- `copy_memory_block_4`: Copies a block of memory from a source to a destination, handling both forward and backward copy directions based on address order.
+- `process_complex_data_structure_2`: Performs a series of nested routine calls involving memory manipulation and conditional logic based on the results of those calls.
+- `swap_word_bytes_3`: Takes a 16-bit value and returns a new value with the high and low bytes swapped.
+- `decode_compressed_stream_3`: Recursively processes a byte stream by interpreting control characters to perform data copying or further decoding.
+- `execute_callback_logic`: Calls a function via a pointer and then calls a second function if the first returns a non-zero value.
+- `parse_string_list_12`: Parses a space-delimited or quoted string into an array of pointers.
+- `tokenize_string_input`: Parses a source string into a list of individual tokens by splitting on whitespace or handling quoted substrings.
+- `tokenize_input_string_21`: Parses a source string into an array of pointers by splitting on whitespace or handling substrings enclosed in double quotes.
+- `parse_string_tokens_17`: Parses a source string into a list of individual tokens by skipping whitespace and handling quoted substrings.
+- `return_from_subroutine_7`: The routine performs a return from a subroutine.
+- `parse_string_tokens_18`: Parses a source string into a list of tokens by skipping whitespace and handling quoted substrings.
+- `function_epilogue_4`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `parse_input_string_4`: Parses a string into a table of pointers by splitting it into tokens based on whitespace or quoted substrings.
+- `get_token_pointer`: Retrieves a pointer to a specific token from a table stored within a global structure.
+- `get_token_value`: Retrieves a value from a global structure and performs conditional checks to clamp or modify the value based on specific bitwise criteria.
+- `parse_and_average_tokenized_values`: Parses a string into a list of tokens by handling whitespace and quoted substrings, then calculates the average of specific values retrieved from a table based on a bitmask.
+- `divide_and_modulo_integer`: Performs integer division and calculates the remainder of a value.
+- `calculate_division_remainder`: Performs integer division and calculates a remainder using a value from a table, then combines the results into a single value.
+- `parse_string_list_13`: Parses a space-separated or quoted string into an array of pointers.
+- `calculate_weighted_sum`: Calculates a running total by adding products of variables and applying weights derived from a table lookup.
+- `accumulate_weighted_product_sum`: Calculates a running total by adding the product of two values, a weighted difference derived from a table lookup, and a secondary product of two other variables.
+- `update_accumulated_value`: Updates a value in memory by adding products of various variables and applying a multiplier from a table.
+- `parse_command_string_5`: Parses a string into a list of space-delimited tokens or quoted substrings.
+- `tokenize_input_string_22`: Parses a source string into an array of pointers by splitting on whitespace or extracting substrings within double quotes.
+- `return_negative_one_2`: Returns a value representing negative one.
+- `parse_string_tokens_19`: Parses a source string into a list of tokens by skipping whitespace and handling quoted substrings.
+- `parse_string_tokens_20`: Parses a string into a table of pointers by splitting on whitespace or handling quoted substrings.
+- `get_table_element`: Parses a string into a table of pointers and returns a specific byte from a table based on provided index parameters.
+- `tokenize_input_string_51`: Parses a null-terminated string into an array of pointers by identifying individual tokens separated by whitespace or enclosed in double quotes.
+- `fetch_word_at_offset`: Parses a string into a table of pointers and returns a two-byte value from an offset within a provided memory block.
+- `tokenize_command_string_42`: Parses a string into an array of pointers by identifying space-delimited or quoted substrings and null-terminating the tokens.
+- `parse_string_arguments_3`: Parses a space-delimited or quoted string into an array of pointers.
+- `tokenize_command_string_52`: Parses a string into an array of pointers by splitting it at whitespace or within double quotes.
+- `update_global_flag`: Checks a value in a register and sets a global variable to one if the value is two, otherwise sets it to the result of another routine.
+- `parse_string_arguments_6`: Calls two routines to split a string into an array of pointers based on delimiters or quotes.
+- `parse_string_list_33`: Parses a space-delimited or quoted string into an array of pointers.
+- `update_state_and_process_status`: Increments a global variable through a sequence of specific integer states and then evaluates a status outcome to update a global value or retrieve a value from a memory offset.
+- `evaluate_status_outcome`: Checks a status value and updates a global variable based on a conditional offset.
+- `process_status_result`: Calls two different routines and returns a value based on whether the second routine returns zero or a non-zero value.
+- `tokenize_string_array`: Calls a routine to parse a string into an array of pointers.
+- `tokenize_input_string_125`: Parses a string into an array of pointers by identifying space-delimited or quoted substrings and null-terminating the tokens.
+- `tokenize_input_string_139`: Parses a string into an array of pointers by identifying whitespace or text enclosed in double quotes.
+- `tokenize_input_string_126`: Parses a string into an array of pointers by splitting on whitespace or extracting substrings enclosed in quotation marks.
+- `parse_string_tokens_48`: Parses a space-delimited or quoted string into an array of pointers stored within a local data structure.
+- `dispatch_table_indexed_calls`: Uses a global variable to determine whether to perform a series of indirect calls using offsets calculated from a table or to perform a single indirect call.
+- `calculate_offset_addresses`: Calculates two memory addresses based on a global variable and an input value, then performs several indirect calls using those addresses.
+- `tokenize_input_string_116`: Parses a string into a table of pointers by identifying whitespace or text enclosed in quotation marks.
+- `tokenize_input_string_52`: Parses a string into a list of up to thirty individual tokens, supporting both whitespace-delimited words and text enclosed in double quotes.
+- `clamp_global_value`: Decrements a global variable and clamps its value between zero and two.
+- `parse_string_list_32`: Parses a space-delimited or quoted string into a list of pointers.
+- `compare_table_values`: Checks a bit in a global variable and then calls another routine with a value retrieved from a table based on an index.
+- `branch_and_call_routine`: Checks a bit in a global variable and calls another routine regardless of the result.
+- `dispatch_action_routine`: Calls another routine using a value or register contents as an index or parameter and returns a constant.
+- `tokenize_input_string_109`: Parses a null-terminated string into an array of pointers by identifying space-delimited or quoted substrings.
+- `tokenize_input_string_208`: Parses a source string into an array of pointers by splitting on whitespace or text enclosed within double quotes.
+- `retrieve_token_pointer`: Calls another routine and returns a word from an offset within the resulting pointer structure.
+- `tokenize_input_string_209`: Parses a source string into an array of pointers by splitting it into words delimited by whitespace or enclosed within double quotes.
+- `fetch_offset_from_pointer`: Calls another routine and returns a word located at a four-byte offset from the value stored in a register.
+- `decrement_and_fetch_word`: Decrements a global variable using a bitwise mask and returns a two-byte value from an offset within a provided memory block.
+- `increment_and_fetch_word`: Increments a global variable using a bitwise mask and returns a two-byte value from an offset within a provided memory block.
+- `tokenize_input_string_210`: Parses a source string into an array of pointers by splitting it into words delimited by whitespace or enclosed within double quotes.
+- `fetch_offset_from_pointer_2`: Calls another routine and returns a word located at an offset from the resulting pointer stored in a register.
+- `tokenize_input_string_211`: Parses a source string into an array of pointers by splitting it into words delimited by whitespace or enclosed in double quotes.
+- `fetch_token_pointer`: Calls another routine and returns a word located at an offset from a value stored in a register.
+- `parse_command_string_23`: Parses a space-delimited or quoted string into an array of pointers.
+- `evaluate_conditional_branch`: Checks a bitmask within a table using an index derived from a pointer, then executes a conditional sequence of subroutine calls based on the result.
+- `process_command_result`: Evaluates the result of a previous routine and updates a global flag based on the outcome.
+- `set_global_flag`: Sets a global variable to one after performing several subroutine calls.
+- `parse_string_tokens_39`: Parses a string into a table of pointers by identifying space-separated words or quoted substrings.
+- `call_token_parser`: This routine calls a routine that parses string tokens.
+- `tokenize_input_string_140`: Parses a string into individual tokens by skipping whitespace and handling quoted substrings.
+- `execute_tokenization_sequence`: Calls three consecutive subroutines, the third of which takes a value derived from a global variable and a constant.
+- `parse_command_string_24`: Parses a space-delimited or quoted string into an array of pointers.
+- `update_status_from_table`: Retrieves a pointer from a table and, based on specific character values, either updates a byte in a structure with a capped sum or calls a routine to reset a value.
+- `increment_status_value`: Adds a value from a table to a byte in a structure, capping the result at one hundred.
+- `modify_table_entry`: Adds a byte from a calculated memory location to a byte in a structure and writes a word to another offset within that structure.
+- `format_text_string`: Checks a global variable and calls a routine to populate a buffer by parsing a character stream.
+- `parse_quoted_string`: Parses a string into an array of pointers by identifying space-delimited or quoted substrings.
+- `parse_command_tokens_3`: Splits a string into a list of pointers by identifying whitespace or text enclosed in double quotes.
+- `parse_string_tokens_46`: Parses a source string into a table of pointers by skipping whitespace and handling quoted substrings.
+- `extract_command_tokens`: Iterates through a string to extract space-separated or quoted substrings and stores them in a local array.
+- `tokenize_input_string_127`: Parses a source string into an array of pointers by identifying space-separated words or substrings enclosed in double quotes.
+- `tokenize_command_string_36`: Parses a character buffer into an array of pointers by identifying space-delimited or quoted substrings.
+- `parse_command_input_string_2`: Iterates through a character buffer to identify and extract space-delimited or quoted substrings.
+- `tokenize_command_string_50`: Parses a character buffer into an array of pointers by identifying space-delimited or quoted substrings.
+- `tokenize_input_buffer`: Splits a character buffer into an array of pointers by identifying whitespace or text enclosed in double quotes.
+- `tokenize_input_string_183`: Parses a source string into an array of pointers by identifying whitespace or text enclosed in double quotes.
+- `tokenize_input_string_165`: Parses a source string into an array of pointers by identifying whitespace or substrings enclosed in quotation marks.
+- `tokenize_input_string_162`: Parses a null-terminated string into an array of pointers by identifying space-delimited or quoted substrings.
+- `invoke_scatter_bytes`: This routine calls another procedure that distributes a sequence of bytes from a source buffer into five distinct destination memory regions.
+- `tokenize_string_buffer_19`: Parses a string by skipping whitespace and identifying tokens delimited by spaces, tabs, newlines, or double quotes, storing the resulting pointers into a table.
+- `tokenize_string_buffer_16`: Parses a source string into a list of pointers to individual tokens by skipping whitespace and handling quoted substrings.
+- `tokenize_input_string_110`: Parses a character buffer into an array of pointers by identifying whitespace or text enclosed in double quotes.
+- `tokenize_input_string_100`: Parses a null-terminated string into an array of pointers by identifying space-delimited or quoted substrings.
+- `tokenize_input_string_23`: Parses a character buffer into an array of pointers and a count by splitting the string at whitespace or within double quotes.
+- `tokenize_command_string_4`: Parses a character buffer into a table of pointers by splitting the string at whitespace or quoted boundaries.
+- `tokenize_input_string_53`: Splits a character buffer into an array of pointers by identifying whitespace or text enclosed in double quotes.
+- `tokenize_formatted_string`: Parses a source string into a list of up to thirty tokens by skipping whitespace and handling quoted substrings.
+- `tokenize_input_string_78`: Parses a source string into an array of pointers by identifying space-separated tokens or substrings enclosed in double quotes.
+- `tokenize_input_string_111`: Parses a source string into a table of pointers by identifying individual words or substrings enclosed in quotation marks.
+- `tokenize_input_string_79`: Parses a source string into an array of pointers by identifying space-delimited words or text enclosed in double quotes.
+- `call_copy_rect_buffer_blocks`: This routine acts as a wrapper that calls a function to perform a block memory transfer between rectangular areas.
+- `tokenize_input_string_24`: Parses a string by identifying space-delimited words or text within double quotes and stores the resulting pointers in a table.
+- `tokenize_string_buffer_12`: Iterates through a string to extract individual words or quoted phrases, storing their locations in a structured table.
+- `tokenize_input_string_206`: Parses a source string into a table of pointers by identifying space-delimited words or text enclosed in double quotes.
+- `parse_string_tokens_47`: Parses a space or tab-delimited string into a table of pointers, supporting substrings enclosed in double quotes.
+- `format_status_message`: Processes a format string and a source string to populate a buffer.
+- `search_and_clear_table_entry`: Iterates through a table to find an entry matching specific criteria, clears it, and calls several other routines.
+- `call_status_display_update`: This routine calls a procedure that checks an entity's status flags and numerical thresholds to determine specific conditions.
+- `parse_string_table_8`: Parses a source string into a table of pointers by skipping whitespace and handling quoted or space-delimited substrings.
+- `update_table_entry`: Fetches a value from a calculated table index, writes a constant to a memory location derived from that value, and returns a concatenated 32-bit result.
+- `calculate_token_offset`: Calculates a memory offset using multiplication and returns a concatenated 32-bit value.
+- `calculate_offset_address`: calculates an address by multiplying a value by a constant and returns a concatenated 32-bit value from that address and a high-word component.
+- `tokenize_input_string_151`: Parses a null-terminated string into an array of pointers by identifying space-delimited or quoted substrings.
+- `check_global_state`: Compares a global variable against a specific value and calls another routine if the condition is not met.
+- `update_entity_attribute_table`: Updates an entry in a structured data table by writing values from parameters into specific offsets.
+- `remove_linked_list_element`: Iterates through a linked list of structures to find an element matching a specified value or identifier.
+- `traverse_linked_list_with_filter`: Iterates through a linked list of structures, comparing specific members against provided criteria.
+- `parse_string_tokens_21`: Iterates through a source string to extract space-delimited or quoted tokens into a structured array.
+- `return_nothing_short`: An empty routine that returns without performing any action.
+- `tokenize_string_into_array_5`: Parses a source string by skipping whitespace and extracting individual tokens, handling both quoted substrings and space-delimited words.
+- `clear_and_parse_linked_list`: Iterates through a linked list of structures, clearing specific fields and optionally recursing into nested lists.
+- `traverse_and_clear_linked_list_2`: Iterates through a linked list of structures by following pointers stored at specific offsets.
+- `return_no_operation_3`: The routine consists of a single return instruction with no other effect, so it performs no work when entered.
+- `tokenize_input_string_25`: Parses a null-terminated input string into a list of individual tokens, supporting whitespace separation and quoted substrings.
+- `tokenize_input_string_54`: Parses a null-terminated string into an array of pointers by identifying tokens separated by whitespace or enclosed in double quotes.
+- `parse_string_list_14`: Iterates through a string, skipping whitespace and extracting tokens delimited by spaces, tabs, newlines, or double quotes.
+- `scan_list_for_sentinel`: Iterates through a list of structures looking for a sentinel value to determine whether to call a function via a global pointer.
+- `scan_list_and_call_function`: Iterates through a list of pointers until a specific value is found, then calls a function via a global pointer.
+- `call_function_via_pointer`: Checks if a value is non-zero and then calls a function through a pointer stored in a global variable.
+- `call_copy_mem`: Library stub: loads its arguments and the exec library base, calls CopyMem and returns its result to the caller.
+- `parse_command_string_tokens`: Iterates through a string to extract space-separated or quoted substrings, storing pointers to each token in a local array.
+- `tokenize_string_into_array_8`: parses a string into an array of pointers by identifying space-delimited or quoted substrings and null-terminating the tokens.
+- `validate_command_action`: Checks if a player's requested action is valid based on item properties and character equipment constraints.
+- `tokenize_input_string_128`: Parses a null-terminated string into an array of pointers by identifying space-delimited or quoted substrings.
+- `call_subroutine_with_offset`: calls another routine using a calculated address based on a global variable and a constant multiplier.
+- `calculate_and_update_entity_attribute`: Calculates an address using a global variable and an offset, then passes that address and a concatenated value to subsequent routines to update an entity attribute table.
+- `parse_string_table_6`: Parses a source string into a table of pointers by skipping whitespace and handling quoted or space-delimited substrings.
+- `update_global_value`: checks a condition based on a global variable and, if met, stores a value into a memory location calculated from a global variable and an offset.
+- `validate_item_usability`: Checks if a specific item can be used by verifying its status flags and type against a set of valid conditions.
+- `parse_string_tokens_22`: Iterates through a source string to extract space-delimited or quoted substrings.
+- `parse_string_tokens_23`: Parses a string into a table of pointers by skipping whitespace and handling quoted substrings.
+- `parse_format_string_5`: Iterates through a character stream to populate a buffer, processing escape sequences and format specifiers.
+- `tokenize_input_string_184`: Parses a source string into an array of pointers by identifying individual tokens separated by whitespace or enclosed in double quotes.
+- `tokenize_input_string_4`: Splits a string into individual tokens by identifying whitespace or quoted text.
+- `tokenize_command_string_16`: Parses a string into a list of pointers to individual tokens by splitting on whitespace or enclosed within quotation marks.
+- `parse_command_string_11`: Splits a string into a list of pointers to individual tokens by identifying whitespace or text enclosed in quotation marks.
+- `tokenize_input_string_55`: Parses a string into a list of individual tokens by splitting on whitespace or within double quotes.
+- `tokenize_input_string_56`: Parses a string into a list of tokens by identifying whitespace or text enclosed in quotation marks.
+- `tiny_move_rts`: Small routine of 2 instructions that copies (a7)+ to d7, then returns.
+- `tokenize_input_string_57`: Splits a string into individual tokens based on delimiters such as spaces, tabs, or newlines.
+- `transfer_and_jump`: Loads a longword from the stack into d7, restores the stack pointer, and jumps to a longword address stored in a memory location.
+- `tokenize_string_into_list_2`: Parses a string by skipping whitespace and splitting it into individual tokens based on spaces, tabs, newlines, or quoted substrings.
+- `parse_string_tokens_24`: Iterates through a source string to extract space-delimited or quoted tokens.
+- `parse_quoted_tokens`: iterates through a string to extract substrings delimited by whitespace or quotation marks and stores their pointers into a table.
+- `parse_string_tokens_25`: Parses a string into a table of pointers by identifying space-separated words or quoted substrings.
+- `parse_string_tokens_26`: Iterates through a string to extract individual tokens, handling both quoted text and whitespace-delimited words.
+- `tokenize_string_into_pointer_array`: Parses a source string into an array of pointers by splitting on whitespace or enclosed within quotation marks.
+- `branch_on_bit_test`: Tests bit 0 of d4 and branches to another location if the bit is set; otherwise, it sets d0 to 255 and branches to another location.
+- `calculate_and_check_value`: Copies d5 to d0, multiplies d0 by 10, adds the result to a base address in a0, masks a byte from offset 4 of that address, and branches to another location based on whether the result is zero.
+- `return_d5_value`: Moves the value from d5 into d0, restores registers d4 through d7 from the stack, unlocks a5, and returns.
+- `parse_string_tokens_27`: Processes a string to populate a list of pointers based on whitespace or quotation marks.
+- `search_entity_attribute_table`: Iterates through a table of pointers to find an index where specific byte values match provided parameters.
+- `find_matching_index_2`: Iterates through a list of pointers to find an index where specific byte values match provided parameters.
+- `return_maximum_value_7`: This routine returns a 32-bit value consisting of all bits set to one.
+- `search_table_for_string_match`: Iterates through a table to find an entry where a calculated offset points to a specific character sequence.
+- `verify_table_entry_criteria`: Iterates through a table to check if an entry exists that matches a specific character and value.
+- `return_zero_3`: The routine returns a value of zero.
+- `parse_command_string_tokens_6`: Iterates through a string to extract space-separated or quoted substrings, storing pointers to each token in a local array.
+- `reset_table_entries`: Iterates through nested loops to find specific entries in a table and reset their values and associated flags.
+- `compare_string_table_entries`: Compares values from a string table and updates a local variable and a table entry based on the results.
+- `parse_string_table_2`: Parses a source string into a table of pointers by skipping whitespace and handling quoted or space-delimited substrings.
+- `parse_string_table_with_param`: Parses a source string into a table of pointers by skipping whitespace and handling quoted or space-delimited substrings.
+- `parse_command_string_22`: Parses a space or tab-delimited string into a table of pointers, supporting substrings enclosed in double quotes.
+- `clear_linked_list_elements`: Iterates through a linked list to clear elements and updates a global variable if it matches a specific value.
+- `clear_string_buffer_element`: Sets a byte to zero at a specific offset within a structure pointed to by an element in a list.
+- `parse_string_tokens_40`: Parses a space or tab-delimited string into an array of pointers.
+- `traverse_linked_list_recursively`: Recursively traverses a linked list by fetching two-byte values from a table based on an index.
+- `parse_string_data_2`: Parses a string by skipping whitespace and extracting words or quoted substrings into a table.
+- `tokenize_command_string_29`: Parses a string into a table of pointers, handling whitespace and quoted substrings, and stores the resulting pointers in a local array.
+- `validate_entity_status_flags`: Checks a bitmask against various status flags and numerical thresholds stored in a data structure.
+- `parse_string_tokens_28`: Iterates through a string to extract space-separated or quoted tokens, storing pointers to each token in a local array and tracking the count.
+- `tokenize_string_input_2`: Parses a null-terminated string into a list of individual tokens, handling whitespace and quoted substrings.
+- `tokenize_command_string_5`: Parses a source string into a list of substrings delimited by whitespace or enclosed in double quotes.
+- `parse_string_tokens_29`: Iterates through a string to extract space-delimited or quoted tokens, storing pointers to the start of each token and null-terminating them in place.
+- `return_zero_4`: Sets d0 to zero, restores registers d2, d6, d7, and a3 from the stack, and returns.
+- `tokenize_string_into_array_14`: Parses a string into an array of pointers by splitting it into tokens based on whitespace or quoted substrings.
+- `call_tokenizer_and_return_one`: Calls a routine to parse a string into an array of pointers and then returns a value of one.
+- `return_zero_value_2`: Sets d0 to zero, restores registers d2 through d7 and a3 from the stack, and returns.
+- `tokenize_input_string_26`: Parses a string into an array of pointers by splitting it at whitespace or handling quoted substrings.
+- `tokenize_input_string_27`: Parses a source string into a list of tokens by skipping whitespace and handling quoted substrings.
+- `tokenize_input_string_141`: Parses a string into an array of pointers by identifying substrings delimited by whitespace or double quotes.
+- `tokenize_input_string_152`: Splits a string into a table of pointers based on whitespace or text enclosed in quotation marks.
+- `parse_string_table_5`: Parses a space-delimited string buffer into a table of pointers and lengths.
+- `return_d4_value`: Moves the value from d4 into d0, restores registers d4 through d7 from the stack, and returns.
+- `search_and_invalidate_table_entries`: Iterates through a multi-dimensional table to find entries matching specific byte-based criteria and comparison operators.
+- `process_table_matching_logic`: Performs a complex search through a table to find entries matching multiple byte-based criteria and updates their status.
+- `subtract_short_values`: The routine subtracts a short value located at a memory offset from a local short value and returns the result.
+- `tokenize_input_string_58`: Parses a null-terminated string into a list of individual tokens by skipping whitespace and handling substrings enclosed in quotation marks.
+- `parse_string_list_15`: Iterates through a source string to extract up to thirty-two individual tokens, handling both space-delimited words and double-quoted substrings.
+- `tokenize_input_string_80`: Parses a null-terminated string into an array of pointers to individual tokens by skipping whitespace and handling substrings enclosed in double quotes.
+- `tokenize_input_string_81`: Parses a null-terminated string into an array of pointers to individual tokens.
+- `tokenize_input_string_101`: Parses a source string into an array of pointers to substrings by skipping whitespace and handling quoted substrings.
+- `pass_argument_through`: Passes a single parameter to another routine.
+- `pass_through_result`: Empty routine that calls another routine and returns its result.
+- `calculate_buffer_index_2`: Computes a memory offset by multiplying two bytes and a word retrieved from a structure, then adding a constant.
+- `fetch_table_byte_2`: Calculates an index based on the absolute differences of two input values and returns a byte from a table at that index.
+- `align_nibble_buffers`: Iteratively adjusts the nibbles of a target buffer to match a reference buffer by calculating signed differences for each nibble position.
+- `tokenize_input_string_28`: Parses a string into a list of pointers by identifying space-delimited tokens or substrings enclosed in quotation marks.
+- `traverse_linked_list_recursive_3`: Performs a recursive traversal of a linked structure, where each call updates a value or pointer using the return value of the subsequent call.
+- `tokenize_input_string_29`: Extracts pointers to individual tokens from a null-terminated string by skipping whitespace and handling quoted text.
+- `copy_table_entry_3`: Copies a block of data from one table entry to another and calculates two derived values based on the new entry.
+- `clear_dual_word_values`: Sets two consecutive 16-bit global variables to zero.
+- `evaluate_status_effect_resistance`: Checks if a character's status effect duration should be reduced based on specific attribute flags and resistance values.
+- `update_status_effect_duration`: Calculates a new duration value by adding a value from another routine to an existing value, then compares this result against a clamped threshold.
+- `validate_status_effect_threshold`: Checks if an entity's status condition meets a specific threshold by comparing a calculated value against a clamped limit.
+- `evaluate_status_conditions`: Performs calculations involving clamped values and bitwise checks on entity data.
+- `evaluate_clamped_condition_3`: Performs a comparison by summing values from multiple sources and clamping the final result between one and twenty.
+- `evaluate_clamped_condition_2`: Parses a string and uses a table to increment a value, which is then clamped between one and twenty to perform a comparison.
+- `evaluate_clamped_condition`: Parses a string into tokens and uses a table to increment a value, which is then clamped between one and twenty to perform a comparison.
+- `calculate_clamped_value`: Increments a value based on a bit check in a table and clamps the result between one and twenty.
+- `increment_and_clamp_value`: The routine checks a bit in a table, increments a short value if the bit is set, and clamps that value between one and twenty.
+- `process_tokenized_values`: A routine that is called by two other routines and utilizes string tokenization and summation.
+- `sum_tokenized_values`: Tokenizes an input string and sums the resulting values into a local variable while ensuring the result is not negative.
+- `sum_and_clamp_result`: Tokenizes an input string and adds the resulting values to a local variable, ensuring the final sum is not negative.
+- `add_and_clamp_zero`: Adds a value to a local variable and ensures the result is not negative.
+- `return_from_subroutine_8`: The routine performs a single return instruction to exit the current execution flow.
+- `parse_string_tokens_30`: Parses a null-terminated string into a list of space-delimited tokens or quoted substrings.
+- `return_one`: The routine returns a value of one.
+- `parse_string_tokens_50`: Iterates through a string to extract space-delimited or quoted tokens, storing pointers to each token in a data structure.
+- `process_status_loop_2`: Iterates through a loop while checking status flags and updating a value in a data structure.
+- `fetch_word_offset`: Returns a word from a memory location calculated by adding a negative offset to a register.
+- `tokenize_input_string_197`: Parses a string into a list of individual tokens by splitting on whitespace or quoted substrings.
+- `parse_indexed_string`: Calculates an offset into a table using a multiplier and passes the resulting address to a string parsing routine.
+- `call_tokenizer_with_offset`: Calls a string parsing routine using a pointer to a global variable modified by a calculated offset and returns a value of one.
+- `parse_string_tokens_51`: Parses a string by skipping whitespace and extracting tokens, handling both quoted substrings and space-delimited words.
+- `process_conditional_logic_2`: Parses string tokens and evaluates conditional masks to update a global variable and local data based on table lookups.
+- `evaluate_conditional_mask`: Sets a global variable and returns a specific bitmask based on a bitwise check of a value retrieved from a table.
+- `return_max_value_minus_one`: Returns a 32-bit value where all bits are set except for the least significant bit.
+- `return_all_bits_set`: Returns a 32-bit value consisting entirely of set bits.
+- `evaluate_conditional_text`: Checks a bitmask in a global table and executes conditional logic to update a global variable and a local byte.
+- `process_conditional_structure`: Checks a value returned by another routine and updates a structure with a constant or a bitwise flag.
+- `return_maximum_value_8`: This routine returns a 32-bit value consisting entirely of set bits.
+- `tokenize_input_string_178`: Parses a string into an array of pointers by identifying individual tokens delimited by whitespace or enclosed in double quotes.
+- `tokenize_input_string_117`: Parses a null-terminated string into an array of pointers by identifying space-separated tokens or substrings enclosed in double quotes.
+- `tokenize_input_string_129`: Parses a null-terminated string into an array of pointers by identifying individual tokens separated by whitespace or enclosed in double quotes.
+- `return_from_subroutine_9`: This routine performs a single return instruction to exit the current execution flow.
+- `parse_string_token_list_4`: Parses a source string into a list of tokens by identifying whitespace-separated words or quoted substrings.
+- `iterate_and_recursively_call`: Checks if a global variable is greater than zero, then executes a loop six times that performs a recursive call and a conditional call based on a division of two other global variables.
+- `return_immediately_6`: This routine is empty and performs no operations before returning to the caller.
+- `tokenize_input_string_118`: Parses a null-terminated string into an array of pointers by identifying individual tokens separated by whitespace or enclosed in double quotes.
+- `calculate_command_output_length`: Calculates the length of a text string resulting from a parsed command by summing character counts from tokens and adjusting for specific formatting constraints.
+- `tokenize_command_string_37`: Parses a string into an array of pointers by splitting it at whitespace or handling quoted substrings.
+- `parse_string_tokens_44`: Iterates through a string to extract space-delimited or quoted tokens, storing pointers to these substrings into a local array.
+- `decrement_value_by_table_lookup`: Retrieves a value from a table using an index and subtracts it from a local variable based on specific conditional checks of two input parameters.
+- `subtract_from_value`: Subtracts a value retrieved from a table using an index from a local variable.
+- `parse_string_list_16`: Iterates through a source string to extract individual words or quoted substrings, storing the resulting pointers and count into a structured table.
+- `return_shifted_register`: Returns the value of a register shifted right by one bit.
+- `shift_word_right`: performs a logical right shift on a 16-bit value by one bit and returns the result.
+- `return_zero_value_3`: Sets d6 to zero, moves d6 into d0, restores registers d6 and d7 from the stack, and returns.
+- `tokenize_input_string_189`: Parses a source string into individual tokens by identifying space, tab, or newline delimiters, while also supporting quoted substrings.
+- `update_state_from_tokens`: Tokenizes an input string and updates a byte in a structure while conditionally storing a value from a global variable into a memory location.
+- `store_if_small_value`: Calls another routine and stores a global value into a memory location if the returned value is less than four.
+- `calculate_modified_item_value`: Calculates a numerical value by performing bitwise checks and conditional bit-shifts based on properties stored in a structure and a global.
+- `calculate_item_modifier_value`: Calculates a numerical value by performing bitwise checks and conditional bit-shifts based on properties stored in a structure and a global table.
+- `check_bitmask_conditions`: Performs bitwise operations on a value and checks it against a table of bitmasks in a loop.
+- `fetch_offset_word`: loads a word from a memory location calculated by subtracting eight from the value held in a register.
+- `tokenize_input_string_192`: Parses a source string into an array of pointers by identifying space, tab, or newline delimiters.
+- `tokenize_input_string_119`: Parses a string into individual tokens by splitting on whitespace or handling quoted substrings.
+- `process_parsed_string_data`: Evaluates a structure containing bitflags and numeric values to update a local variable or a global variable through a series of conditional checks and string parsing calls.
+- `process_formatted_string`: Checks a bit in a structure, parses a character stream into a buffer, and stores the resulting address in a global variable.
+- `parse_command_string_30`: Iterates through a character buffer to identify space-delimited or quoted substrings and stores their starting pointers into a table.
+- `parse_string_list_36`: Iterates through a character buffer to extract space-delimited or quoted strings, storing their starting pointers into a table.
+- `parse_command_string_28`: Iterates through a character buffer to extract space-delimited or quoted strings, storing their starting pointers into a table.
+- `update_entity_state`: Modifies a byte in a structure through subtraction and performs conditional checks on a global variable and a short value.
+- `validate_string_state`: Checks a global variable and a value in a table against a specific constant before calling another routine.
+- `process_string_and_status_data`: This routine performs string parsing and bitwise status flag validation and updates.
+- `update_entity_status_flags_3`: Performs a bitwise OR operation to set a specific bit in a byte within a table.
+- `parse_and_process_command_string`: Splits an input string into an array of pointers by identifying whitespace or quoted substrings.
+- `handle_state_switch`: Performs different data manipulations, such as setting bytes in a structure or updating a global variable, based on a value from a switch statement.
+- `process_state_switch`: Performs different operations on data structures based on a switch value, including bitwise checks and setting bytes.
+- `return_one_value`: Sets d0 to one, restores registers d4 through d7 and a2 through a3 from the stack, and returns.
+- `tokenize_command_string_63`: Parses a string by identifying space-delimited or quoted substrings and stores their starting pointers into a table.
+- `clear_command_flag`: Calls another routine and then clears the second bit of a byte located at an offset from a pointer stored in a register.
+- `execute_callback_list_2`: Updates several global variables from a provided structure and iterates through a list of function pointers to execute them.
+- `tokenize_input_string_187`: Splits a string into an array of pointers to individual tokens, delimited by whitespace or enclosed in double quotes.
+- `divide_fixed_point_values_2`: Performs fixed-point division on two 32-bit values using bit shifts and normalization.
+- `tokenize_input_string_171`: Parses a null-terminated string into an array of pointers by identifying individual tokens delimited by whitespace or enclosed in quotation marks.
+- `tokenize_input_string_172`: Splits a source string into an array of pointers by identifying tokens separated by whitespace or enclosed in double quotes.
+- `tokenize_input_string_185`: Splits a source string into an array of pointers by identifying tokens separated by whitespace or enclosed in double quotes.
+- `tokenize_input_string_82`: Parses a null-terminated string into an array of pointers by identifying space-separated tokens or substrings enclosed in double quotes.
+- `tokenize_input_string_30`: Parses a null-terminated string into an array of pointers to individual tokens.
+- `calculate_sorted_differences`: Calculates the absolute differences of two sets of values, sorts them, and returns a combined result.
+- `update_entity_status_display_2`: Checks an entity's status flags and numerical thresholds to determine if specific conditions like being paralyzed, petrified, or poisoned are present, then updates the corresponding text and graphical status indicators on the screen.
+- `assign_and_null_terminate_string`: Stores a provided address into a global variable and calls another routine to process the string at that address.
+- `tokenize_input_string_120`: Parses a string into an array of pointers by identifying space-delimited words or text enclosed in double quotes.
+- `tokenize_quoted_string_2`: Parses a string into a list of pointers and a count by identifying space-delimited words or substrings enclosed in quotation marks.
+- `tokenize_string_into_pointer_list`: Parses a source string into an array of pointers by identifying space-separated tokens or substrings enclosed in double quotes.
+- `multiply_fixed_point`: Calculates the product of two 32-bit fixed-point values using a specialized multiplication routine.
+- `tokenize_input_string_83`: Parses a string into an array of pointers by splitting it at whitespace or between double quotes.
+- `tokenize_input_string_84`: Parses a string into a table of pointers by identifying words separated by whitespace or enclosed in double quotes.
+- `parse_string_list_17`: Parses a space-delimited or quoted string into an array of pointers.
+- `tiny_moveq_move_rts`: Small routine of 3 instructions that loads 0 into d0, then copies (a7)+ to d7, then returns.
+- `tokenize_input_string_121`: Parses a string into an array of pointers by identifying space, tab, or newline delimiters, while also supporting text enclosed in double quotes.
+- `tokenize_input_string_122`: Parses a source string into an array of pointers by splitting on whitespace or handling substrings enclosed in double quotes.
+- `accumulate_and_pass_fixed_point`: Adds two values together and stores the result into a memory location via a pointer.
+- `normalize_coordinate_pairs`: Iterates through a table of byte pairs, applying a transformation to each byte to ensure they fall within a specific range.
+- `process_byte_pairs_2`: Iterates through a memory buffer to transform pairs of bytes based on their signed values and stores the results in a table.
+- `process_byte_pairs`: Iterates through memory to process pairs of bytes, applying transformations to values based on their sign.
+- `process_coordinate_table`: Iterates through a table of values, applying transformations to bytes and storing them in a destination buffer.
+- `function_epilogue_5`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `tokenize_input_string_123`: Parses a string into an array of pointers by splitting it at whitespace or between double quotes.
+- `append_to_parameter_list`: Searches a global table for an available entry and stores provided parameters into it.
+- `populate_data_buffer`: Copies several bytes and words from a source structure into a memory buffer based on specific offsets.
+- `write_buffer_bytes`: Writes several bytes and a word to a memory buffer using a pointer, including repeated values from a source table.
+- `parse_string_tokens_31`: Parses a source string into a list of up to thirty individual tokens, supporting both space-delimited words and quoted substrings.
+- `parse_string_arguments_2`: Iterates through a string to extract space-separated tokens or quoted substrings.
+- `clear_memory_buffer`: Writes a series of zeroed values and specific bytes to a memory buffer and resets a global variable.
+- `clear_buffer_data`: Writes specific byte values and zeros to a memory buffer using a pointer and updates a global variable.
+- `tokenize_string_into_array_2`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or quoted substrings.
+- `parse_string_token_list_2`: Parses a space-delimited or quoted string into a list of pointers stored in a local structure.
+- `retrieve_concatenated_value_2`: Retrieves a value from a table and performs conditional logic to return either a constant or a concatenated value based on a global variable.
+- `return_constant_nine`: Returns the integer value nine.
+- `retrieve_concatenated_value`: Retrieves a value from a table and concatenates parts of it into a single result.
+- `return_constant_one_3`: Returns the integer value one.
+- `tokenize_input_string_59`: Parses a source string into an array of pointers by splitting on whitespace or handling substrings enclosed in double quotes.
+- `tokenize_input_string_85`: Splits a character string into individual tokens and stores the resulting pointers into a table.
+- `parse_string_token_list_3`: Iterates through a source string to extract space-delimited or quoted tokens, storing the resulting pointers and count into a local structure.
+- `process_bitmask_data`: Iterates through a data table to perform bitwise operations and updates a local value based on results.
+- `function_epilogue_6`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `parse_string_table_7`: Parses a source string into a table of pointers by scanning for whitespace or quotation marks.
+- `iterate_nested_tables`: Performs nested loops to iterate through a table of values, checking a specific bit and a global variable before calling other routines.
+- `iterate_data_table`: Iterates through a table of values and calls another routine if a specific bit is set and a condition involving a global variable is met.
+- `iterate_status_checks`: Executes a loop that repeatedly calls another routine to check entity status conditions.
+- `function_epilogue_7`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+- `parse_string_arguments_5`: Parses a space-delimited string into a table of pointers, handling quoted substrings and skipping whitespace.
+- `process_recursive_bitfields`: Performs recursive bitwise operations and data distribution using values from a global array.
+- `process_bitfield_data_2`: Performs bitwise operations on data from a global array and uses recursion to process bitfield values.
+- `process_bitfield_data`: Performs complex bitwise operations and recursive calls using values from a table and a global array to manipulate data.
+- `scatter_bytes_to_buffers_4`: Iterates through a list of values to distribute bytes into multiple destination buffers.
+- `call_bit_test_routine`: Calls a routine that tests a bit at a specific index in a global byte and returns its status.
+- `parse_string_list_38`: Parses a space-delimited or quoted string into a list of pointers.
+- `get_offset_value`: Returns a two-byte value located at a four-byte offset from a pointer held in a register.
+- `fetch_offset_value`: Calls a routine with a pointer to a global variable and returns a two-byte value from a four-byte offset relative to a register value.
+- `access_offset_pointer`: Calls two separate routines and returns a two-byte value located at a four-byte offset from a value held in a register.
+- `initialize_entity_structure`: Checks if a global structure list is initialized and, if not, populates a new structure entry with data from a table and parameters.
+- `update_structure_data`: Checks a value in a structure and, if it does not equal ten, populates a new structure with various bytes and words from a table and other memory locations.
+- `process_command_argument_logic`: Evaluates command parameters and flags to determine if a specific action should be executed.
+- `parse_and_execute_command_string_3`: Splits a source string into multiple tokens and iterates through them to execute corresponding logic.
+- `validate_and_clear_status`: Checks if a specific bit is set in a data structure and if a character byte is non-zero.
+- `process_entity_status_logic`: Evaluates entity status flags and numerical thresholds to perform conditional state updates.
+- `evaluate_entity_status`: Checks status flags and numerical thresholds against a data structure to update local state and perform conditional logic.
+- `process_command_input_2`: Parses a string into tokens and evaluates conditional logic based on bitmasks in a data structure.
+- `check_status_and_reset`: Checks a bitmask in a data structure and, if a specific value is found at an offset, resets a byte to zero before returning a combined result.
+- `check_and_reset_value`: Checks if a value at a specific offset in a structure is four, and if so, sets a byte at a different offset to zero before returning a byte from that offset.
+- `process_entity_status_effects`: Updates an entity's status flags and numerical attributes based on bitmask checks and conditional logic.
+- `evaluate_entity_conditional_flags`: Checks specific bit flags within a data structure and performs recursive calls based on the state of those bits and a numerical value.
+- `check_bit_flag`: Checks if a specific bit is set within a byte at a given offset and calls another routine if it is.
+- `tokenize_input_string_193`: Parses a source string into an array of pointers by splitting it at whitespace or extracting substrings enclosed in double quotes.
+- `format_error_message`: Prepares a string for display by calculating an offset and passing a pointer to a global variable to another routine.
+- `calculate_and_store_string_offset`: Calculates an offset by multiplying a value from a register by a constant and adding it to a base address, then passes this calculated value and a pointer to a global variable to another routine.
+- `tokenize_input_string_142`: Parses a string into individual tokens by splitting on whitespace or handling quoted substrings.
+- `search_character_in_buffer`: Calculates an offset into a data structure and searches for the first non-zero character within a range, updating a global variable with the result.
+- `increment_global_counter`: Increments a global variable in a loop while checking values against a table until a condition is met.
+- `process_command_input`: Updates a global variable based on character comparisons and calls routines to parse strings and copy data.
+- `parse_string_table_3`: Iterates through a buffer to extract space-delimited or quoted strings, storing pointers to each string and the total count into a structured table.
+- `execute_indirect_functions_2`: Calls a routine and then executes a series of functions using pointers derived from a table.
+- `return_no_op_4`: The routine consists of a single return instruction and performs no work.
+- `parse_string_tokens_32`: Parses a string by skipping whitespace and extracting tokens or quoted substrings into a table.
+- `execute_nested_loops`: Runs a nested loop structure that calls another routine multiple times based on a counter.
+- `return_no_op_9`: The routine consists of a single return instruction and performs no work.
+- `parse_command_string_17`: Iterates through a string to identify and extract tokens, handling whitespace, quoted substrings, and numeric values.
+- `validate_numeric_input_sequence`: Iterates through a sequence of tokens to extract and validate numeric values from a string.
+- `process_numeric_input_sequence`: Iterates through a sequence of tokens to extract and validate numeric values from a string.
+- `parse_and_validate_numeric_input`: Iterates through a sequence of tokens to extract and validate numeric values from a string.
+- `execute_spell_command_sequence`: Iterates through a sequence of command tokens derived from a string and executes specific callback functions retrieved from a lookup table.
+- `parse_spell_abort_string`: Iterates through a string and uses the characters as indices into a table to call specific routines.
+- `parse_spell_string_sequence`: Iterates through a string of characters to retrieve values from a lookup table and execute specific callback functions for each character.
+- `process_spell_abort`: Iterates through a string and executes indirect functions based on values retrieved from a table and global variables.
+- `recursively_validate_condition`: Checks a bitmask in a table and a character value in a string to determine whether to call itself indefinitely.
+- `tokenize_input_string_102`: Parses a source string into an array of pointers by splitting it at whitespace or between double quotes.
+- `parse_string_list_30`: Parses a space-delimited or quoted string into a list of pointers.
+- `update_entity_attributes`: Uses a value from a global variable to calculate offsets and store that value into three consecutive bytes in a table.
+- `process_string_data_3`: Iterates through a string to identify and store individual words or quoted text segments into a destination table.
+- `tokenize_command_string_38`: Parses a character string into a list of pointers to individual tokens.
+- `parse_string_list_34`: Iterates through a source string to extract space-delimited or quoted substrings.
+- `push_and_call`: Pushes the contents of d6 and d7 onto the stack, calls another routine, adjusts the stack pointer by 4, and branches to another location.
+- `decrement_table_entry`: Calculates an offset into a table based on an input value.
+- `decrement_table_byte`: Calculates an address within a table based on an index and decrements the byte stored at that location.
+- `validate_spell_casting_requirements`: Checks if the character has a free hand available to cast a specific spell by evaluating status flags and entity attributes.
+- `process_command_input_3`: Validates a value against a table and updates a global variable based on the result.
+- `process_formatted_output`: Calculates an offset based on a global variable to access a table, performs string formatting, and copies memory blocks.
+- `format_status_output`: Calls a routine to process a formatted string using a calculated offset and a global variable.
+- `format_output_string`: Processes a formatted string using a template and arguments.
+- `calculate_table_address`: Calculates an address by adding a scaled value from a global variable to the address of that global variable and stores the result in another global variable.
+- `update_entity_status_flags_5`: Checks bitmasks within a data structure to determine if specific status conditions are active and updates global status bitmasks or entity status flags.
+- `update_entity_status_flags_4`: Checks bitmasks within a data structure to determine if specific status conditions are active and updates global status bitmasks or entity-specific flags based on the results.
+- `update_status_effect_flags_2`: Checks bitmasks within a data structure to determine if specific status conditions are active.
+- `update_status_effect_flags`: Checks status conditions and updates bitmasks within a data structure or table.
+- `process_status_flags`: Checks various bitmasks and flags within a data structure to conditionally update a table and call other subroutines.
+- `update_status_flags_4`: Checks specific bits in a structure and, if certain conditions are met, sets a bit in a table entry and calls several other routines.
+- `process_input_sequence`: Checks a flag in a global variable and, if a specific condition is met, sets a bit in a table entry and calls several subroutines.
+- `set_flag_and_call_subroutines`: Sets a bit in a byte at a calculated offset and calls three other routines sequentially.
+- `tokenize_string_list_11`: Parses a string into a table of pointers by splitting it at whitespace or extracting substrings enclosed in double quotes.
+- `parse_delimited_string_list_3`: Iterates through a character buffer to extract space, tab, or newline-delimited strings, supporting quoted substrings.
+- `iterate_and_update_global_table`: Iterates through a table using a loop and conditional logic to modify a global variable, then uses that variable to calculate an offset for writing values into two separate memory locations.
+- `update_global_index`: Performs arithmetic on a global variable to derive an index, validates it against a table, and stores the result into a table.
+- `validate_and_store_index`: Performs arithmetic on a global variable to derive an index, validates this index against a table, and then stores the resulting index into two adjacent memory locations using a calculated offset.
+- `parse_and_store_tokenized_data`: Parses a string into an array of pointers and performs arithmetic on a global variable to determine an index.
+- `store_character_data`: Updates a global variable based on a character input and stores that character into two specific locations within a table.
+- `store_character_to_table`: Stores a character into a table at an offset determined by a global variable and performs conditional logic based on that character.
+- `process_table_index`: Evaluates a value from a table to conditionally update a global variable and performs recursive calls to modify table entries based on calculated offsets.
+- `update_table_recursively`: Performs a conditional recursive traversal and updates a table with values derived from a global variable and a bitmask check.
+- `update_table_via_recursive_index`: This routine performs a conditional recursive traversal based on a global variable and a bitmask check in a table.
+- `calculate_offset_value`: Calculates a value based on a global variable and a table, then stores the result into a memory location using a calculated offset.
+- `store_global_value_2`: Stores a byte from a register into a calculated offset within a table based on a global variable.
+- `store_global_value`: Checks a global variable against specific values and then stores that variable into a calculated offset within a table.
+- `tokenize_input_string_173`: Parses a string into a table of pointers by splitting the input at whitespace or extracting substrings enclosed in quotation marks.
+- `resolve_command_string_event`: Searches a table for a matching command identifier and evaluates associated conditional flags.
+- `search_and_execute_conditional_event`: Iterates through a table to find a matching entry based on a specific value, then evaluates a series of conditional checks.
+- `process_conditional_logic`: Evaluates a condition based on a global variable and a bitmask, then performs conditional subroutine calls and updates several global variables.
+- `execute_conditional_logic_2`: Evaluates a condition based on a global variable and a bitmask, then performs a series of conditional subroutine calls and updates global variables.
+- `execute_command_logic`: Evaluates a value from a global variable to select one of several routines to call, while also updating various global status variables.
+- `call_subroutine_with_constants`: Calls another routine passing two specific integer values as arguments.
+- `call_subroutine_with_arguments_2`: Passes two immediate integer values as arguments to another routine and returns.
+- `invoke_subroutine_with_constants`: Calls another routine while passing two immediate integer values as arguments.
+- `call_subroutine_with_arguments`: Passes two immediate integer values as arguments to another routine and returns.
+- `execute_sequential_subroutines`: A routine consisting of 131 instructions that calls four distinct subroutines to update spatial states, manipulate bits, perform division, and parse string lists.
+- `update_entity_spatial_state_3`: Iterates through a list of entities to update their velocity, position, and boundary constraints.
+- `update_entity_spatial_state_2`: Iterates through a list of entities to update their velocity, position, and boundary constraints.
+- `update_entity_spatial_state`: Calculates new coordinates and velocities for entities by applying movement vectors and boundary constraints.
+- `update_entity_position_and_velocity`: Calculates new coordinates and velocities for entities by applying movement vectors and boundary constraints.
+- `copy_global_word`: Calls another routine and then copies a 16-bit value from one global variable to another.
+- `execute_dispatched_subroutines`: This routine calls a sequence of diverse subroutines including coordinate transformations, grid cost updates, bit manipulation, string parsing, mathematical calculations, and indirect function execution.
+- `transform_pixel_coordinate_data`: Applies transformations to pixel coordinate and color data based on a four-way conditional selection.
+- `resample_image_buffer_2`: Performs a two-pass downsampling of a pixel buffer by calculating new pixel values based on bitwise shifts and quotient-remainder scaling.
+- `process_resampled_pixel_buffer`: Performs a multi-pass transformation on a pixel buffer by applying bitwise scaling and arithmetic adjustments to coordinate and color data.
+- `resample_image_buffer_3`: Performs a two-pass downsampling of a pixel buffer by calculating new pixel values based on bitwise shifts and quotient-remainder scaling.
+- `resample_image_buffer`: Performs a two-pass downsampling of a pixel buffer by calculating new pixel values based on bitwise shifts and quotient-remainder scaling.
+- `update_pathfinding_grid_costs_6`: Performs a recursive depth-first traversal of a grid-based data structure to update cumulative movement costs.
+- `update_pathfinding_grid_costs_5`: Performs a recursive depth-first traversal of a grid-based data structure to update cumulative movement costs.
+- `update_pathfinding_grid_costs_4`: Performs a recursive depth-first traversal of a grid-based data structure to update cumulative movement costs.
+- `update_pathfinding_grid_costs_2`: Performs a recursive depth-first traversal of a grid-based data structure to update cumulative movement costs.
+- `update_pathfinding_grid_costs_3`: Performs a recursive depth-first traversal of a grid-based data structure to update cumulative movement costs.
+- `update_pathfinding_grid_costs`: Performs a recursive depth-first traversal of a grid-based data structure to update cumulative movement costs.
+- `calculate_recursive_path_costs`: Performs a recursive depth-first traversal of a grid-based data structure to calculate cumulative costs and update pathing information.
+- `update_pathfinding_costs`: Performs a recursive depth-first traversal of a grid-based data structure to calculate cumulative movement costs and update pathing information.
+- `compute_recursive_path_costs`: Performs a recursive depth-first traversal of a grid-based data structure to calculate cumulative costs and update pathing information.
+- `update_grid_and_path_data`: Iterates through a data structure to update grid values based on arithmetic calculations and performs recursive traversals to modify related tables.
+- `update_grid_values`: Iterates through a data structure to modify values in multiple tables based on arithmetic calculations.
+- `update_grid_coordinates`: Calculates new coordinate values by applying offsets and bit-shifted modifiers to existing data in multiple tables.
+- `increment_and_copy_data`: Copies a 16-bit value to a global variable and increments a 16-bit value at a memory offset before calling another routine.
+- `parse_string_list_35`: Iterates through a character buffer to extract space-delimited or quoted strings, storing their starting pointers into a table.
+- `clear_entity_data`: Iterates through a table to clear specific bytes and longwords, then resets several bytes within a data structure.
+- `clear_command_buffer`: Calls several routines and then clears multiple bytes at specific offsets within a data structure.
+- `tokenize_input_string_60`: Parses a string into an array of pointers by splitting it at whitespace or handling quoted substrings.
+- `search_for_index`: Increments a local counter and a global variable in a loop, calling another routine until a non-zero value is returned or a limit is reached.
+- `tiny_moveq_move_rts_2`: Small routine of 3 instructions that loads 255 into d0, then copies (a7)+ to d7, then returns.
+- `parse_string_list_23`: Iterates through a character buffer to extract space-delimited or quoted strings and stores their pointers into a table.
+- `search_for_index_alt`: Increments a local counter and checks a global variable in a loop, calling another routine until a non-zero value is returned or a limit is reached.
+- `return_negative_one_3`: Returns the value negative one.
+- `test_and_clear_bit_4`: Checks if a specific bit is set in a global variable and then clears a bit at a related index in that same variable.
+- `test_bit_and_set_shifted_bit`: Tests if a bit at a specific index is set in a global byte and returns that status.
+- `call_empty_routine`: This routine calls another routine and then returns.
+- `tokenize_input_string_103`: Parses a string into an array of pointers by splitting it into individual words based on whitespace or content enclosed in quotation marks.
+- `process_string_with_callback`: Iterates through a null-terminated string and executes a callback routine for each character or segment.
+- `store_negative_sign`: If a passed integer is negative, it stores an ASCII minus sign into a local buffer.
+- `shift_bit_buffer`: Performs bitwise shifts and logical operations across three consecutive global bytes to propagate bit states.
+- `calculate_quotient_remainder`: Calculates a quotient and remainder by dividing a value from another routine by a range derived from the input parameters.
+- `execute_infinite_recursion_3`: This routine calls itself indefinitely.
+- `tokenize_input_string_31`: Parses a source string into an array of pointers by identifying space-delimited words or substrings enclosed in double quotes.
+- `execute_indirect_functions`: Loads a pointer from an offset of a base address and executes three functions located at specific offsets within that pointed-to structure.
+- `tokenize_input_string_61`: Splits a string into an array of pointers by identifying whitespace or quoted substrings.
+- `tokenize_input_string_32`: Parses a source string into a list of pointers to individual tokens by skipping whitespace and handling quoted substrings.
+- `tokenize_input_string_33`: Parses a source string into a table of pointers by skipping whitespace and handling quoted substrings.
+- `copy_memory_block_with_overlap_check`: Copies a specified number of bytes from a source address to a destination address.
+- `invoke_scatter_bytes_routine`: This routine calls another procedure that distributes bytes from a source pointer into five separate destination buffers.
+- `tokenize_input_string_34`: Parses a null-terminated string into an array of pointers to individual tokens.
+- `tokenize_input_string_112`: Parses a source string into an array of pointers by identifying space-delimited words or text enclosed in double quotes.
+- `process_structure_data_2`: Calls another routine to retrieve offset values, parse string data, and calculate and write structure data.
+- `tokenize_input_string_86`: Parses a source string into an array of pointers by identifying space-delimited words or text enclosed in double quotes.
+- `process_string_data_5`: Calls another routine to tokenize strings, manage indexed tables, and update a data structure.
+- `call_interleaved_copy_wrapper`: This routine acts as a wrapper that invokes a subroutine to copy data from five source buffers into a single destination buffer using a five-byte increment pattern.
+- `extract_bit_field_from_buffer`: Calculates a memory address using a base pointer, an offset, and a table lookup, then iterates five times to sample specific bits from non-contiguous memory locations.
+- `tokenize_string_into_array_6`: Parses a string into an array of pointers by splitting it based on whitespace or quoted substrings.
+- `tokenize_input_string_62`: Splits a source string into an array of pointers by identifying substrings separated by whitespace or enclosed within double quotes.
+- `execute_indirect_functions_alt`: Loads a pointer from an offset of a base address and executes three functions located at different specific offsets within that pointed-to structure.
+- `tokenize_string_buffer_24`: Parses a character buffer into a table of pointers by identifying space-delimited or quoted substrings.
+- `return_no_op_5`: The routine consists of a single return instruction and performs no work, so it does nothing when called.
+- `parse_string_list_18`: Iterates through a character buffer to extract multiple space-delimited or quoted strings and stores their pointers into a table.
+- `return_from_subroutine_10`: This is an empty routine that performs no operations and immediately returns to its caller.
+- `tokenize_string_into_pointer_list_2`: Parses a source string into a list of pointers by identifying space-delimited or quoted substrings.
+- `tokenize_string_buffer_27`: Parses a character buffer into a list of space-delimited or quoted substrings.
+- `parse_spell_command_tokens`: Iterates through a table of signed bytes to extract substrings using a tokenization routine.
+- `parse_indexed_tokens`: Iterates through a table of signed bytes to extract substrings using a tokenization routine.
+- `set_global_flag_2`: Performs several nested routine calls and sets a global variable to one.
+- `tokenize_input_string_113`: Parses a string into a table of pointers by identifying space-delimited or quoted substrings.
+- `tokenize_input_string_114`: Iterates through a character buffer to extract up to thirty-two substrings, handling both quoted text and space-separated tokens.
+- `parse_delimited_string_list`: Iterates through a character buffer to extract space, tab, or newline-delimited strings, supporting quoted substrings.
+- `tokenize_command_string_72`: Iterates through a string to identify and extract tokens, handling whitespace and quoted substrings, and stores their pointers in a table.
+- `tokenize_command_string_54`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or quoted substrings.
+- `signal_spell_failure_a`: Passes a global variable to another routine with specific arguments and sets a global variable to one.
+- `tokenize_string_buffer_13`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or quoted substrings.
+- `write_zero_to_table`: Calls another routine in a loop and, upon success, writes a zero to a specific offset in a table.
+- `return_no_op_3`: The routine consists of a single return instruction and performs no operations.
+- `parse_string_list_one`: Parses a delimited string into a table of pointers, supporting quoted substrings.
+- `tokenize_command_string_73`: Iterates through a character buffer to extract space-delimited or quoted substrings.
+- `parse_string_list_two`: Iterates through a character buffer to extract up to thirty-two space or tab-delimited strings.
+- `tokenize_command_string_74`: Parses a character buffer into a list of pointers by identifying space-delimited or quoted substrings.
+- `parse_string_list_three`: Processes a string by identifying individual words or quoted phrases.
+- `tokenize_input_string_179`: Parses a character buffer into an array of pointers by identifying whitespace or quoted substrings.
+- `process_status_loop`: Iterates through a loop a fixed number of times while performing string processing and updating status flags based on specific conditions.
+- `return_constant_integer`: This routine returns the integer value one to its caller.
+- `parse_string_list_four`: Extracts multiple strings from a source buffer by skipping whitespace and handling quotation marks.
+- `tokenize_command_string_75`: Iterates through a character buffer to extract space-delimited or quoted substrings.
+- `tokenize_command_string_55`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or quoted substrings.
+- `signal_spell_failure_b`: Passes a global variable to another routine with different arguments and sets a global variable to one.
+- `tokenize_string_buffer_17`: Parses a character buffer into an array of pointers by splitting the string at whitespace or between quotation marks.
+- `tokenize_input_string_130`: Parses a source string into an array of pointers by identifying whitespace or text enclosed in quotation marks.
+- `return_from_subroutine_11`: This routine performs a single return instruction and does nothing else.
+- `parse_string_list_five`: Splits a character sequence into a list of pointers based on delimiters.
+- `tokenize_command_string_76`: Parses a character buffer into a list of pointers by splitting the string at whitespace or quotation marks.
+- `check_pending_command_state`: This routine is reached through a pointer stored in data and is called by tokenize_command_string_76.
+- `tokenize_string_buffer_14`: Parses a character buffer into an array of pointers by splitting the content based on whitespace or quoted substrings.
+- `return_immediately_7`: This routine performs no operations and returns immediately to the caller.
+- `tokenize_input_string_194`: Parses a source string into an array of pointers by identifying space, tab, newline, or double-quote delimiters.
+- `iterate_pointer_table`: Iterates through a table of values until a terminator is reached.
+- `call_string_tokenizer_2`: This routine calls a sub-routine that splits a source string into an array of pointers based on whitespace or double quotes.
+- `parse_string_list_24`: Parses a string into a table of pointers by identifying space-delimited tokens or substrings enclosed in quotation marks.
+- `tokenize_command_string_43`: Parses a source string into an array of pointers by identifying whitespace or quoted substrings.
+- `return_from_subroutine_12`: Performs a return from a subroutine.
+- `tokenize_input_string_87`: Parses a source string into a list of pointers to individual tokens, supporting both whitespace-delimited words and substrings enclosed in double quotes.
+- `function_epilogue_8`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `parse_string_list_and_fill`: Parses a string buffer into a table of pointers and fills a memory block with a specific value.
+- `tokenize_input_string_131`: Parses a character buffer into a list of pointers by identifying space-delimited words or text enclosed in quotation marks.
+- `find_minimum_value_in_list`: Iterates through a list of five entries to find the smallest unsigned integer and stores a calculated result in a table.
+- `update_calculated_value`: Fills a memory block with a specific byte value and performs a calculation involving a multiplication and bit shift to store a result in a global variable.
+- `tokenize_command_string_44`: Parses a source string into an array of pointers by identifying whitespace-delimited words or substrings enclosed in double quotes.
+- `tokenize_input_string_132`: Parses a source string into a table of pointers by splitting it into tokens based on whitespace or content enclosed in double quotes.
+- `trigger_input_tokenization`: Passes a pointer to a global variable to a routine that tokenizes an input string into a table of pointers.
+- `modify_flag_and_parse`: Checks a bit in a byte at a specific offset and clears it if set, then proceeds to parse a string list.
+- `call_stub`: Call stub: calls one other routine as a subroutine and returns to its own caller when that routine returns.
+- `reset_and_parse_strings`: Sets a global variable to one and parses a string list into a table of pointers.
+- `tokenize_string_buffer_2`: Parses a character buffer into a table of pointers by identifying space-delimited or quoted substrings.
+- `parse_command_tokens_4`: Iterates through a character buffer to extract space-delimited or quoted substrings and stores their pointers into a table.
+- `tokenize_input_string_133`: Parses a source string into a table of pointers by identifying whitespace-delimited words or substrings enclosed in double quotes.
+- `tokenize_command_string_69`: Splits a source string into an array of pointers by identifying whitespace or text enclosed in double quotes.
+- `tokenize_input_string_134`: Iterates through a character buffer to extract up to thirty-two individual string pointers.
+- `tokenize_command_string_59`: Parses a null-terminated string into an array of pointers by identifying space-delimited words or text enclosed in double quotes.
+- `update_token_state`: Updates a global structure by storing a returned value into a specific offset and incrementing a short integer at a location derived from a pointer.
+- `execute_tokenization_sequence_2`: Calls a routine with a large constant and then passes a global variable and a bitmask to subsequent routines.
+- `decrement_and_clear_byte`: Subtracts a byte value from a short at a specific offset and clears a byte at another offset.
+- `tokenize_command_string_56`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or quoted substrings.
+- `update_global_state_via_recursion`: Performs three successive calls to another routine using a global variable and its bitwise combinations as arguments, before setting the global variable to one.
+- `tokenize_string_into_pointer_array_2`: Parses a source string into an array of pointers by splitting on whitespace or handling substrings enclosed in double quotes.
+- `call_tokenize_routine`: Calls a routine that parses a string into a table of pointers.
+- `clear_bit_in_byte`: Clears a specific bit in a byte at a given offset within a structure.
+- `update_status_flags_3`: Iterates through a loop to validate status flags and writes a constant value to a table based on the results.
+- `return_from_subroutine_13`: This is an empty routine that performs no operations before returning.
+- `tokenize_string_list`: Parses a character buffer into a table of pointers by splitting the input based on whitespace or double-quote delimiters.
+- `function_epilogue_9`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+- `tokenize_input_string_135`: Parses a string into an array of pointers by splitting it at whitespace or handling quoted substrings.
+- `tokenize_string_list_12`: Splits a source string into an array of pointers using whitespace or double quotes as delimiters.
+- `tokenize_input_string_variant`: Iterates through a character buffer to extract up to thirty-two space-delimited or quoted substrings.
+- `call_tokenize_routine_2`: Invokes a routine to split a string into words based on whitespace or quotes.
+- `tokenize_string_list_13`: Extracts substrings from a character buffer and stores their starting addresses into a table.
+- `split_string_into_tokens`: Scans a string for whitespace or double quotes to identify individual tokens.
+- `parse_string_list_25`: Extracts multiple strings from a buffer and stores their starting addresses into a destination table.
+- `parse_command_string_list_7`: Iterates through a string to extract space-delimited or quoted substrings.
+- `tokenize_string_into_buffer`: Parses a string into individual tokens by handling whitespace and double quotes, storing the resulting pointers in a table.
+- `call_tokenize_routine_3`: Executes a routine that identifies words within a string and stores their pointers in a table.
+- `tokenize_string_list_14`: Processes a string to identify individual tokens and stores their pointers in a list.
+- `tokenize_command_string_45`: Parses a null-terminated string into an array of pointers by identifying space-separated tokens or substrings enclosed in double quotes.
+- `call_tokenize_routine_4`: Triggers a routine to tokenize an input string into a list of pointers.
+- `parse_command_string_list_8`: Parses a character buffer into a list of pointers by identifying whitespace or quoted text.
+- `tokenize_input_string_198`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or substrings enclosed in double quotes.
+- `check_token_status`: Checks a value at an offset from a pointer and conditionally calls another routine before clearing a global variable.
+- `tokenize_string_buffer_25`: Parses a character buffer into a table of pointers by splitting the input based on whitespace or double quotes.
+- `process_disintegrated_string`: Iterates through a sequence of values and performs a calculation to pass a pointer to another routine.
+- `parse_delimited_string_list_2`: Iterates through a character buffer to extract multiple space-delimited or quoted strings, storing their starting pointers into a table and replacing delimiters with null terminators.
+- `loop_through_string_table`: Iterates through a table of pointers while checking a character value at a calculated offset.
+- `return_one_long`: Returns a long value of one.
+- `tokenize_string_buffer_26`: Parses a source string into a table of pointers by splitting it based on whitespace or quoted substrings.
+- `handle_token_pointer`: Checks if a returned value is not negative and, if so, passes a calculated pointer from a table to another routine.
+- `parse_string_list_37`: Iterates through a character buffer to extract space-delimited or quoted strings, storing their starting pointers into a table.
+- `execute_token_sequence`: Repeatedly calls another routine to process elements from a sequence until a termination condition is met, then updates a global variable.
+- `execute_token_loop`: Repeatedly calls another routine to process elements until a specific return value is met.
+- `return_constant_value_2`: The routine returns a constant integer value of one to its caller.
+- `tokenize_command_string_46`: Parses a null-terminated string into an array of pointers by identifying space-separated tokens or substrings enclosed in double quotes.
+- `tokenize_command_string_77`: Parses a character buffer into a table of pointers by splitting the string at whitespace or quoted substrings.
+- `execute_recursive_call_9`: This routine performs a direct recursive call to itself and returns the resulting value.
+- `parse_command_arguments`: Iterates through a string to extract space-delimited or quoted substrings and stores their pointers into a table.
+- `add_offset_value`: Adds a value retrieved from a global table to a parameter and passes the result to another routine.
+- `process_input_string`: An entry point that triggers a routine to tokenize an input string into a table of pointers based on delimiters.
+- `parse_string_list_26`: Processes a character buffer to split it into individual tokens, handling both quoted and unquoted text.
+- `tokenize_input_string_35`: Parses a string into an array of pointers by splitting it at whitespace or handling quoted substrings.
+- `tokenize_input_string_115`: Parses a source string into up to thirty-two space-delimited or quoted tokens.
+- `tokenize_input_string_188`: Splits a source string into an array of pointers by identifying tokens separated by whitespace or enclosed within double quotes.
+- `parse_string_tokens_35`: Iterates through a source string to extract up to thirty-two space-delimited tokens or quoted substrings, storing pointers to each in a table.
+- `fill_memory_block`: Fills a block of memory with a specific byte value.
+- `tokenize_command_string_70`: Parses a source string into an array of pointers by identifying space, tab, or newline delimiters.
+- `tokenize_input_string_63`: Parses a source string into a list of individual tokens by splitting on whitespace or extracting substrings enclosed in double quotes.
+- `parse_string_tokens_36`: Parses a string into a list of tokens by skipping whitespace and handling quoted substrings, then stores the resulting token count in a global variable.
+- `parse_string_tokens_37`: Extracts substrings from a source string by identifying delimiters or quotes and stores the resulting pointers and the total count into a structure.
+- `tokenize_command_string_6`: Parses a character buffer into an array of pointers by splitting the string at whitespace or quoted boundaries.
+- `tokenize_input_string_204`: Parses a source string into a table of pointers by identifying space-delimited words or text enclosed in double quotes.
+- `increment_and_reset_global`: Increments a global word and sets a global byte to specific values.
+- `parse_quoted_string_list_5`: Iterates through a character buffer to extract space-delimited or quoted strings, storing their starting pointers into a table.
+- `iterate_data_table_2`: Loops through a table of structures to extract values and calls another routine to process data segments until a condition is met.
+- `tokenize_string_buffer_3`: Parses a character buffer into a table of pointers by splitting the input based on whitespace or quoted substrings.
+- `tokenize_string_list_8`: Parses a source string into a table of pointers by splitting it into space-delimited or quoted substrings.
+- `update_linked_list_node_6`: Searches a table for a matching entry and updates linked list pointers or index values.
+- `traverse_and_update_linked_list`: Iterates through a table of pointers to find a specific entry and updates linked list elements.
+- `update_table_with_calculated_values`: Performs bitwise operations and arithmetic to update two entries in a table based on values retrieved from a global array.
+- `update_table_values_3`: Searches a table for a matching byte and stores the result into two different locations within a table using calculated offsets.
+- `update_indexed_values`: Stores a byte into two different locations within a table using calculated offsets.
+- `process_formatted_string_2`: Parses a string into tokens and performs conditional arithmetic on table entries.
+- `execute_string_parsing`: Calls two different routines to parse strings into tokens or formatted buffers.
+- `parse_string_list_31`: Iterates through a string to identify space-delimited or quoted substrings, replacing delimiters with null terminators and storing pointers to the substrings in a table.
+- `tokenize_string_buffer_23`: Parses a character buffer into a table of pointers by splitting the input into substrings delimited by whitespace or enclosed in double quotes.
+- `tokenize_string_list_10`: Parses a source string into a table of pointers by splitting it into space-delimited or quoted substrings.
+- `evaluate_bit_status`: Checks a specific bit within a byte located in a table and updates a value based on the result.
+- `check_bit_status`: Checks if a specific bit is set in a byte located via a pointer and returns a value based on the result.
+- `call_tokenize_string_list`: Calls a routine that parses a source string into a table of pointers by splitting it into space-delimited or quoted substrings.
+- `parse_command_string_29`: Parses a character buffer into an array of pointers by splitting the input into tokens based on whitespace or quoted substrings.
+- `update_grid_values_2`: Iterates through a loop to compare values in a table and conditionally updates a global table with specific byte values based on character comparisons.
+- `update_interaction_failure_state`: Compares a value from a table against a returned result and updates a global variable by writing specific byte constants to two calculated locations in a table based on a character check.
+- `modify_table_entries`: Compares a value from a table against a returned result and writes specific byte constants to two calculated locations in a table.
+- `write_constant_bytes`: Writes a constant byte to two different locations calculated from multiple input parameters.
+- `initialize_global_string_buffer`: Clears a global variable by writing a zeroed long value to it and then processes a formatted string into that same location.
+- `return_zero_long_2`: Returns a long value of zero.
+- `tokenize_input_string_174`: Parses a null-terminated string into an array of pointers by splitting it into tokens based on whitespace or enclosed quotation marks.
+- `call_subroutine`: This routine performs a single subroutine call and then returns.
+- `parse_command_string_18`: Iterates through a character buffer to extract space-delimited or quoted strings and stores their starting pointers into a table.
+- `return_zero_value_4`: Clears the accumulator and returns a zero value to the caller.
+- `tokenize_command_string_30`: Parses a character buffer into a list of individual strings by identifying space, tab, or newline delimiters and handling quoted text.
+- `return_zero_value_5`: Sets d0 to zero, restores registers d5 through d7 from the stack, and returns.
+- `tokenize_command_string_31`: Parses a character buffer into a list of individual strings by identifying space, tab, or newline delimiters and handling quoted text.
+- `return_zero_2`: Sets register d0 to zero, restores d5 through d7 from the stack, and returns.
+- `tokenize_command_string_47`: Parses a character buffer into a list of space, tab, or newline-delimited tokens.
+- `process_input_and_return`: Passes a pointer to a global variable to a routine and then calls another routine with a concatenated value before returning one.
+- `process_conditional_input`: Evaluates a value from a table and either calls a routine to process a small value or performs a series of calls to update a table with new parameters.
+- `validate_and_process_input_token`: Checks if a value retrieved from a table via a pointer is less than fifteen.
+- `pass_string_pointer`: Passes a pointer to a global variable to another routine and returns one.
+- `function_epilogue_10`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `parse_string_list_19`: Iterates through a character buffer to extract multiple space-delimited or quoted strings and stores their pointers into a table.
+- `return_zero_value_6`: Sets register d0 to zero, restores d2, d3, d6, and d7 from the stack, and returns.
+- `tokenize_command_string_7`: Parses a character buffer into a table of pointers by splitting the input at whitespace or within double quotes.
+- `tokenize_string_buffer_4`: Parses a character buffer into a list of space-delimited or quoted strings.
+- `tokenize_input_string_64`: Parses a character buffer into a list of space-delimited or quoted strings and stores their pointers into a table.
+- `parse_command_string_list_5`: Iterates through a character buffer to extract multiple space-delimited or quoted strings and stores their pointers into a table.
+- `calculate_pointer_difference`: Subtracts one integer value from another and returns the result.
+- `store_byte_at_calculated_index`: Calculates an offset using a short value from a pointer and stores a byte into a global array at that calculated position.
+- `update_short_from_pointer`: Stores a short value from a pointer into a global variable and returns a modified pointer.
+- `parse_command_string_list_6`: Parses a buffer of space-delimited or quoted strings into a table of pointers.
+- `fill_memory_four_bytes`: Calculates an offset using a multiplier and a base address, then stores a single byte into four consecutive memory locations.
+- `update_table_entry_2`: Calculates an index based on a two-byte value and a multiplier to access a global table.
+- `store_byte_at_offset`: Calculates a memory address using a base, a multiplier, and an offset to store a single byte.
+- `calculate_pointer_difference_3`: Subtracts two values and adds two to the result.
+- `tokenize_input_string_157`: Parses a string into a table of pointers by identifying space-delimited words or text enclosed in double quotes.
+- `tokenize_input_string_158`: Parses a character buffer into a table of pointers by splitting the input into substrings delimited by whitespace or enclosed in double quotes.
+- `tokenize_string_into_array_13`: Parses a character buffer into an array of pointers by identifying space, tab, or newline delimiters.
+- `tokenize_command_string_25`: Parses a null-terminated string into an array of pointers by identifying tokens separated by whitespace or enclosed in double quotes.
+- `update_global_pointer`: Stores a value from a global variable into a memory location and then updates that global variable using the result of another routine.
+- `tokenize_string_list_15`: Parses a character buffer into a table of pointers by splitting the input string at whitespace or quoted boundaries.
+- `parse_and_sync_attribute_stream`: Parses a variable-length data stream of identifiers and values to synchronize them into a large attribute table.
+- `update_command_buffer_state`: Stores several short values from a global variable and specific constants into a memory block via a pointer.
+- `iterate_and_compare_table_entries`: Iterates through a table of entries, comparing a short value within each entry to a value at a specific offset in another memory location.
+- `update_entity_attribute_table_3`: Parses a variable-length data structure to extract identifiers and values, then synchronizes these values into a large attribute table.
+- `sync_entity_attribute_table_2`: Updates a large table of entries by matching specific identifier values and overwriting their corresponding data fields.
+- `sync_entity_attribute_table`: Updates a large table of entries by matching specific identifier values and overwriting their corresponding data fields.
+- `process_entity_updates`: Updates a table of entries by copying data from a source and performs a search through a list to modify specific entries.
+- `update_list_entries`: Iterates through a list of ten pointers to check for matching byte and word values, updating entries or clearing a byte based on a comparison.
+- `search_and_modify_list`: Iterates through a list of pointers to find an entry matching specific criteria and updates a value within that entry.
+- `bulk_update_table`: Loops through six hundred entries in a table to find matches for two specific values and updates those entries with new data.
+- `calculate_difference_and_set_flag`: Sets a global variable to one and returns the result of subtracting a long value from a register.
+- `tokenize_command_string_32`: Splits an input string into an array of pointers by identifying whitespace or quoted substrings.
+- `validate_command_sequence`: Iterates through a sequence of values to check if specific characters in a data table meet certain criteria.
+- `validate_command_token_sequence`: Iterates through an array of pointers generated from a string to check if specific characters at indexed offsets within a data table meet certain criteria.
+- `update_attribute_table`: Checks a condition based on a value in a table and, if met, writes zero to a specific offset in another table.
+- `tokenize_input_string_88`: Parses a character buffer into an array of pointers by splitting the string at whitespace or handling substrings enclosed in double quotes.
+- `parse_formatted_data`: Parses a string to retrieve a value and then stores that value into a location derived from a global variable and a table offset.
+- `parse_command_string_6`: Parses a character buffer into a table of pointers by splitting the string at whitespace or quoted boundaries.
+- `set_bit_in_global`: Sets a specific bit in a bitmask stored within a global variable using a value from a pointer.
+- `set_bit_in_flag`: Sets a specific bit in a global flag variable using a bitwise shift and OR operation.
+- `set_bit_and_clear_byte`: Sets a bit in a byte within a table and clears a preceding byte in the same table structure.
+- `set_flag_and_return_diff`: Sets a global variable to one and returns the difference between two input values.
+- `set_global_and_subtract`: Sets a global variable to zero and returns the difference between two values.
+- `parse_formatted_string_list`: Parses a source string into a table of pointers by identifying tokens separated by whitespace or enclosed in double quotes.
+- `calculate_pointer_difference_2`: Subtracts the value of one register from another and returns the result.
+- `parse_command_string_list`: Parses a character buffer into a table of pointers by identifying space-delimited or quoted substrings.
+- `clear_bit_in_global`: Clears a specific bit in a bitmask stored within a global variable using a bitwise NOT and AND operation.
+- `clear_bit_in_flag`: Clears a specific bit in a global flag variable using a bitwise NOT and AND operation.
+- `reset_and_calculate_difference`: Sets a global variable to zero and returns the result of subtracting one from a value and then subtracting another value from that result.
+- `set_global_and_decrement_subtract`: Sets a global variable to one and returns the difference between a decremented value and another value.
+- `tokenize_command_string_51`: Parses a null-terminated string into an array of pointers by identifying space-separated tokens or substrings enclosed in double quotes.
+- `calculate_register_difference`: Subtracts the value held in one register from the value held in another register and returns the result.
+- `tokenize_command_string_65`: Parses a character buffer into a list of substrings delimited by whitespace or enclosed in double quotes.
+- `calculate_pointer_difference_7`: Subtracts the value of one register from another and returns the result.
+- `tokenize_string_buffer_5`: Parses a character buffer into a list of pointers by splitting the input at whitespace or quoted boundaries.
+- `parse_string_list_and_store`: Parses a string buffer into a table of pointers and stores the resulting table pointer into a global variable.
+- `parse_string_list_with_stack`: Parses a string buffer into a table of pointers and manages a stack-like structure using a global variable and a counter.
+- `set_global_and_subtract_2`: Sets a global variable to one and returns the difference between two values.
+- `tokenize_string_list_2`: Parses a character buffer into a table of pointers by splitting the input based on whitespace or quoted substrings.
+- `parse_string_list_and_populate_table`: Iterates through a character buffer to extract multiple space-delimited or quoted strings and stores their pointers into a table.
+- `calculate_pointer_offset_2`: Updates a global variable, retrieves a short value from a table using an offset, and returns the difference between a calculated pointer and a value from memory.
+- `calculate_complex_difference`: Calculates a value by combining two bytes from a pointer, adding a global variable, and subtracting a value from a memory offset.
+- `tokenize_string_buffer_6`: Parses a character buffer into an array of pointers by splitting the input based on whitespace or quoted substrings.
+- `function_epilogue_11`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `tokenize_string_into_table_9`: Parses a source string into an array of pointers by identifying substrings delimited by whitespace or enclosed in double quotes.
+- `calculate_list_element_distance`: Calculates the difference between two values derived from a linked list traversal.
+- `traverse_linked_list_6`: Recursively traverses a linked list and returns the difference between a register and a value.
+- `tokenize_command_string_81`: Parses a source string into a table of pointers by identifying space-delimited words or text enclosed in double quotes.
+- `execute_tokenized_command`: Parses a string into tokens and uses a table of function pointers to execute a routine based on the results.
+- `parse_string_into_tokens_2`: Iterates through a string to identify space-delimited or quoted substrings and stores their pointers into a table.
+- `tokenize_string_into_pointers_2`: Parses a null-terminated string into an array of pointers by identifying substrings delimited by whitespace or double quotes.
+- `calculate_and_call_offset_routines`: Calculates a value by multiplying a global short integer by ten and adding it to a constant, then calls two other routines using this value and a bit-shifted version of another global variable.
+- `update_attribute_conditionally`: Updates a data table using a calculated value based on a global variable, with different arithmetic applied if a specific condition is met.
+- `calculate_offset_and_subtract`: Calculates a value by multiplying a short integer by ten and adding it to a global constant, then passes this result to another routine.
+- `parse_command_string_list_2`: Parses a string into a table of pointers by identifying space-delimited or quoted substrings.
+- `update_global_and_diff`: Performs a bitwise operation on a global variable, sets it to one, and returns the difference between a value and a memory location.
+- `search_and_modify_table`: Iterates through a table of entries, checking for a specific value and modifying a byte within the entry if a condition is met, then returns a pointer difference.
+- `calculate_pointer_diff`: Returns the difference between an input pointer and a value loaded from a global variable.
+- `update_entity_status_flags_2`: Iterates through a list of entity structures to check a specific bit and, if set, applies a bitwise OR operation to a byte located at a calculated offset within a secondary table.
+- `set_entity_flags`: Iterates through a list of entities and sets a specific bit in a byte located at an offset from a pointer in a table.
+- `calculate_pointer_offset_difference`: Calculates a value by subtracting two integers and returns the result.
+- `tokenize_string_buffer_7`: Parses a character buffer into a list of pointers by identifying space-delimited or quoted substrings.
+- `tokenize_string_into_array_15`: Parses a null-terminated string into an array of pointers by identifying words delimited by whitespace or enclosed in double quotes.
+- `parse_quoted_string_list_6`: Iterates through a string to extract space-delimited or quoted substrings and stores their pointers into a local structure.
+- `parse_string_tokens_49`: Iterates through a character buffer to extract space-delimited or quoted strings, replacing delimiters with null terminators and storing the resulting pointers into a table.
+- `calculate_pointer_difference_4`: Subtracts the value held in one register from the value held in another and returns the result.
+- `calculate_pointer_difference_5`: Subtracts the value of one register from another and returns the result.
+- `calculate_pointer_difference_6`: Subtracts the value held in one register from the value held in another and returns the result.
+- `store_word_from_table`: Retrieves a value from a table based on an index and stores it into a memory location.
+- `calculate_offset_difference`: Calculates the difference between two values and adds a constant offset to the result.
+- `parse_and_store_tokens`: Splits a string into multiple tokens using whitespace or quotes and stores the resulting pointers into a table.
+- `parse_command_string_list_3`: Iterates through a character buffer to extract multiple space-delimited or quoted strings and stores their pointers into a table.
+- `subtract_two_values`: Returns the difference between two values.
+- `parse_command_string_7`: Iterates through a character buffer to extract multiple space-delimited or quoted strings and stores their pointers into a table.
+- `search_linked_list_by_criteria`: Iterates through a linked list of structures, comparing specific members against provided filter values.
+- `tokenize_delimited_string`: Parses a string into an array of pointers by identifying tokens separated by whitespace or enclosed in double quotes.
+- `parse_input_string_5`: Iterates through a string to identify substrings delimited by whitespace or quotes and stores their addresses into a table.
+- `distribute_bytes_to_buffers`: Copies a sequence of bytes from a source buffer into five distinct destination memory regions using nested loops.
+- `tokenize_string_list_6`: Iterates through a list of pointers and parses each corresponding string into a table of tokens.
+- `tokenize_input_string_65`: Parses a string into an array of pointers by splitting it into tokens based on whitespace or quoted substrings.
+- `tokenize_input_string_36`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or double quotes.
+- `tokenize_string_buffer_18`: Parses a space, tab, or newline-delimited string into a table of pointers and lengths.
+- `tokenize_string_into_array_7`: Iterates through a source string to identify individual tokens separated by whitespace or enclosed in double quotes.
+- `tokenize_input_string_136`: Parses a string by skipping whitespace and extracting words or quoted substrings into a table of pointers.
+- `tokenize_string_into_table_4`: Parses a source string into a table of pointers by splitting it into substrings based on whitespace or quoted text.
+- `tokenize_input_string_104`: Parses a null-terminated string into an array of pointers by identifying space-delimited or quoted substrings.
+- `tokenize_input_string_137`: Parses a string into an array of pointers to individual tokens, handling whitespace and quoted substrings.
+- `parse_command_string_19`: Splits a source string into an array of pointers by identifying whitespace or quoted substrings.
+- `check_coordinate_overlap`: Compares two pairs of short integers against values stored in a global structure to determine if they overlap, returning one if they do and zero otherwise.
+- `convert_to_lowercase`: Iterates through a null-terminated string and converts uppercase ASCII characters to lowercase based on a global lookup table.
+- `tokenize_input_string_201`: Parses a null-terminated string into an array of pointers by identifying words delimited by whitespace or enclosed in double quotes.
+- `tokenize_input_string_66`: Parses a source string into an array of pointers by identifying space-delimited words or substrings enclosed in double quotes.
+- `tokenize_input_string_89`: Parses a null-terminated string into an array of pointers by identifying tokens separated by whitespace or enclosed in double quotes.
+- `tokenize_string_list_5`: Parses a string into a list of individual tokens delimited by whitespace or double quotes.
+- `tokenize_input_string_159`: Iterates through a string to extract multiple space-delimited or quoted substrings and stores their pointers into a table.
+- `tokenize_command_string_21`: Parses a character buffer into an array of pointers by identifying whitespace or quoted substrings.
+- `tokenize_command_string_60`: Parses a string into an array of pointers by identifying whitespace or quoted substrings.
+- `tokenize_input_string_37`: Parses a null-terminated string into an array of pointers to individual tokens, delimited by whitespace or enclosed in double quotes.
+- `tokenize_input_string_163`: Parses a source string into an array of pointers by identifying whitespace or text enclosed in double quotes.
+- `tokenize_formatted_string_2`: Parses a source string into an array of pointers to individual tokens by skipping whitespace and handling text enclosed in double quotes.
+- `tokenize_command_string_17`: Parses a string into individual tokens by identifying space, tab, or newline delimiters, while also supporting substrings enclosed in double quotes.
+- `parse_formatted_string_3`: Iterates through a character stream to populate a buffer, processing escape sequences and format specifiers.
+- `tokenize_input_string_38`: Splits a null-terminated string into an array of pointers to individual tokens by searching for whitespace or quotation marks.
+- `tokenize_input_string_166`: Parses a null-terminated string into an array of pointers by identifying individual words separated by whitespace or enclosed in quotation marks.
+- `clear_and_parse_linked_list_2`: Iterates through a linked list of structures, clearing specific fields and optionally recursing into nested lists.
+- `tokenize_string_into_array_9`: Iterates through a string to identify space, tab, or newline delimited tokens or text enclosed in double quotes.
+- `tokenize_string_into_table_8`: Parses a source string into an array of pointers by identifying substrings delimited by whitespace or enclosed in double quotes.
+- `copy_table_entry_4`: Copies a series of words from one table entry to another and calculates two new values using division and bit shifting.
+- `tokenize_command_string_33`: Parses a source string into a table of pointers by identifying individual words or substrings enclosed in quotation marks.
+- `tokenize_string_into_array_12`: Parses a space, tab, or newline delimited string into an array of pointers.
+- `tokenize_command_string_48`: Parses a string into an array of pointers by splitting it at whitespace or within double quotes.
+- `execute_recursive_call_2`: The routine performs a direct call to itself and then returns.
+- `tokenize_input_string_167`: Splits a string into an array of pointers by identifying individual words separated by whitespace or enclosed in double quotes.
+- `parse_command_string_27`: Iterates through a source string to extract tokens, handling whitespace, newlines, and quoted substrings.
+- `tokenize_command_string_8`: Parses a string into individual tokens by identifying whitespace or quoted phrases.
+- `tokenize_command_string_18`: Parses a character buffer into an array of pointers by identifying space, tab, or newline delimiters.
+- `tokenize_input_string_124`: Parses a source string into an array of pointers by identifying individual words separated by whitespace or enclosed in quotation marks.
+- `tokenize_input_string_168`: Parses a source string into an array of pointers by identifying individual words separated by whitespace or enclosed in quotation marks.
+- `tokenize_string_into_list_3`: Parses a source string into a list of pointers to individual tokens, handling both whitespace-separated words and substrings enclosed in double quotes.
+- `tokenize_input_string_90`: Parses a source string into an array of pointers by identifying space-separated words or substrings enclosed in double quotes.
+- `tokenize_input_string_153`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or quoted substrings.
+- `tokenize_input_string_138`: Parses a null-terminated string into an array of pointers by identifying space-separated tokens or substrings enclosed in double quotes.
+- `tokenize_string_buffer_21`: Parses a source string into a table of pointers by identifying space-delimited or quoted substrings.
+- `call_status_display_update_2`: Calls a routine that updates an entity's status text display based on flags and numerical thresholds.
+- `parse_and_update_state`: Parses a delimited string into a table of pointers, handling both quoted and space-separated tokens.
+- `update_structure_fields_3`: Updates a structure by writing a short value, a byte, and decrementing a byte at a specific offset.
+- `parse_buffer_and_return_zero`: Parses a character buffer into a list of space-delimited or quoted strings and returns zero.
+- `update_conditional_state`: Checks specific byte and short conditions to either return zero or update a structure with new values and decrement a byte.
+- `return_zero_with_stack_restore`: Sets register d0 to zero, restores d2, d4, d5, d6, d7, and a3 from a location offset by minus 36 from a5, unlinks a5, and returns.
+- `tokenize_command_string_78`: Parses a character buffer into a table of pointers by splitting the input based on whitespace or quoted substrings.
+- `validate_token_list_entry`: Checks a byte at a pointer location to determine whether to execute a function call via an offset or to iterate through a list of pointers.
+- `iterate_token_list_2`: Iterates through a list of pointers in a loop, calling other routines to validate entries until a success condition is met or the loop limit is reached.
+- `loop_and_test_routines`: Executes a loop up to twenty-nine times, calling two different routines and returning one if they succeed or zero if the loop limit is reached.
+- `check_and_recurse_on_global`: Compares a global variable against a specific value and, if they match, calls itself recursively; otherwise, it returns zero.
+- `return_zero_status`: The routine takes no arguments and returns a constant zero as its result, which the pseudo-code shows as a single return statement.
+- `tokenize_input_string_91`: Parses a source string into an array of pointers by identifying space-delimited words or substrings enclosed in double quotes.
+- `tokenize_command_string_79`: Parses a source string into a list of pointers by splitting it at whitespace or within quotation marks.
+- `process_tokenized_command_data`: Iterates through a data structure to perform conditional lookups and updates based on bitwise flags and table values.
+- `parse_tokenized_command_arguments`: Iterates through a table of pointers to process individual tokens, performing recursive lookups or transformations based on flag bits found in a lookup table.
+- `function_epilogue_12`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `tokenize_formatted_string_6`: Parses a source string into a list of tokens by identifying space-delimited words or text enclosed in double quotes.
+- `update_table_values_4`: Iterates through a table to add a value to specific byte elements based on calculated offsets.
+- `process_formatted_string_tokens`: Iterates through a source string to extract characters and perform arithmetic operations on values within a table.
+- `parse_formatted_string_6`: Parses a source string into tokens and performs arithmetic operations on values stored in a table based on character data.
+- `function_epilogue_13`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `parse_string_list_20`: Iterates through a character buffer to extract multiple space-delimited or quoted strings and stores their pointers into a table.
+- `search_for_characters`: Iterates through a list of pointers to scan for the characters comma or capital J, setting a global variable if found.
+- `return_no_op_stub`: The routine consists of a single return instruction and performs no work, so it does nothing when called.
+- `parse_string_list_loop`: Iterates through a list of entries to parse multiple strings into a table of pointers.
+- `tokenize_input_string_105`: Splits a character buffer into an array of pointers by identifying whitespace or text enclosed in double quotes.
+- `tokenize_string_buffer_8`: Parses a character buffer into a table of pointers by identifying space-delimited or quoted substrings.
+- `tokenize_string_buffer_9`: Parses a source string into a list of pointers by identifying space-delimited words or text enclosed in double quotes.
+- `tokenize_command_string_82`: Parses a source string into an array of pointers by identifying space-delimited words or substrings enclosed in double quotes.
+- `process_string_data_4`: A routine consisting of 37 instructions that calls several subroutines to tokenize strings, manage indexed tables, and update data structures.
+- `manage_indexed_table`: Updates a value if it is less than a stored threshold, then either finds an empty slot in a table to store a long value and a byte, or searches for an existing matching byte to update an entry.
+- `increment_and_store_value`: Increments a counter in a loop and, if a non-zero value is found at a specific offset, stores a value into a table.
+- `search_table_for_index`: Iterates through a table of up to ten entries to find an index where a specific byte value matches or a long value is zero.
+- `update_data_structure`: copies a long value and a byte from one memory location to another using offsets from a pointer.
+- `tokenize_string_list_7`: Parses a source string into a table of pointers by identifying space-delimited or quoted substrings.
+- `process_entity_action_list_2`: Iterates through a list of ten action entries, clearing valid pointers and executing specific logic or calling other routines based on a type byte found in each entry.
+- `execute_entity_action_list`: Iterates through a list of ten action entries, performing specific logic or calling other routines based on a type byte found in each entry.
+- `process_entity_action_list`: Iterates through a list of ten entries, retrieving pointers and executing conditional logic based on a type byte.
+- `find_minimum_value`: Iterates through a table to find the smallest non-zero value and stores the difference between that value and a global variable into another table.
+- `store_calculated_value`: Calculates a value by subtracting a global variable from a register and stores the result into a table at an offset determined by a multiplier.
+- `store_value_to_table`: Stores a long value into a memory location calculated from a pointer and an offset before calling another routine.
+- `tokenize_command_string_19`: Parses a source string into a list of pointers by identifying space-delimited words or text enclosed in double quotes.
+- `tokenize_input_string_106`: Parses a source string into a list of pointers by identifying space-delimited words or text enclosed in double quotes.
+- `call_tokenize_command_string`: Calls a routine that parses a source string into a list of pointers by identifying space-delimited words or text enclosed in double quotes.
+- `tokenize_command_string_26`: Parses a source string into an array of pointers by identifying space-separated tokens or substrings enclosed in double quotes.
+- `return_no_operation_2`: The routine consists of two instructions that perform no work, so it does nothing when called.
+- `tokenize_input_string_67`: Parses a source string into an array of pointers by splitting it into tokens based on whitespace or enclosed within double quotes.
+- `return_without_action_2`: The routine consists of a single return instruction, so it performs no work and leaves all state unchanged.
+- `tokenize_input_string_202`: Parses a source string into an array of pointers by identifying space-delimited words or substrings enclosed in double quotes.
+- `return_without_action_3`: The routine consists of a single return instruction with no body, so it performs no work and has no observable effect.
+- `tokenize_input_string_39`: Parses a source string into a list of space-delimited or quoted tokens.
+- `tokenize_input_string_212`: Parses a source string into an array of pointers by identifying space-delimited words or substrings enclosed in double quotes.
+- `tokenize_command_string_39`: Iterates through a character string to identify and extract individual tokens, handling whitespace, quoted substrings, and numeric values.
+- `tokenize_formatted_string_3`: Parses a source string into a list of up to thirty-two tokens by handling whitespace and quoted substrings.
+- `unlink_list_element_by_id`: Searches a doubly linked list of structures for an element matching a specific identifier or value.
+- `scan_path_table_for_delimiter`: Iterates through a table of short integers to find an entry where a calculated offset points to a specific character sequence starting with a forward slash and matching a provided character.
+- `tokenize_string_into_pointers`: Parses a source string into a list of pointers by splitting it at whitespace or within quotation marks.
+- `tokenize_command_string_22`: Splits a string into a table of pointers by identifying whitespace or text enclosed in double quotes.
+- `tokenize_input_string_190`: Iterates through a string to extract space-delimited or quoted tokens, storing pointers to each token in a data structure.
+- `tokenize_input_string_40`: Splits a source string into a list of up to thirty pointers to individual tokens.
+- `tokenize_input_string_180`: Parses a string into a table of pointers by identifying tokens delimited by whitespace or enclosed in double quotes.
+- `tokenize_input_string_92`: Parses a source string into an array of pointers by identifying space-separated tokens or substrings enclosed in double quotes.
+- `update_entity_status_display_3`: Checks an entity's status flags and numerical thresholds to determine specific conditions and updates the corresponding text display.
+- `assign_and_null_terminate_string_2`: Stores a pointer into a global variable and calls another routine to process a character string.
+- `update_entity_attribute_table_2`: Updates an entry in a structured data table by writing values from parameters into specific offsets.
+- `apply_entity_status_modifiers`: Updates an entity's attributes and status flags by performing bitwise operations and conditional checks against a template.
+- `validate_entity_action_eligibility`: Checks a bitmask against an entity's status flags and numerical attributes to determine if specific conditions are met.
+- `tokenize_input_string_199`: Splits a string into an array of pointers by using whitespace or double quotes as delimiters.
+- `parse_string_list_variant`: Extracts pointers to delimited or quoted strings from a buffer and stores them in a table, returning a pointer to a second parameter.
+- `insert_into_linked_list_3`: Traverses a linked list until a null pointer is found and inserts a new pointer at the end of the list.
+- `parse_command_string_list_4`: Iterates through a character buffer to extract space-delimited or quoted strings, storing their pointers into a table.
+- `update_state_flags_3`: Modifies bits in a structure and updates global variables based on specific bit patterns, then executes a function pointer from that structure.
+- `update_state_and_execute_callback_2`: Checks a bit in a structure and updates a global variable if a condition is met, then executes a function pointer stored in that structure.
+- `update_state_and_execute_callback_3`: Evaluates bits within a structure to conditionally update one of two global variables and then calls a function pointer from that structure.
+- `execute_conditional_callback`: checks a bit in a byte and a global variable to set a value, then executes a function pointer if certain conditions are met.
+- `parse_string_list_21`: Iterates through a character buffer to extract space-delimited or quoted strings, storing their starting addresses into a table.
+- `traverse_linked_list`: Iterates through a linked list of pointers to find an entry that matches a specific value and returns its address.
+- `return_zero_with_address_restore`: Sets register d0 to zero, restores d7 and a3 from the stack, and returns.
+- `update_entity_status_and_parse_commands`: Modifies bit flags within an entity structure, updates global state variables based on specific bit patterns, and executes a callback function if a condition is met.
+- `update_status_flags_2`: Modifies bit flags within a structure and updates global variables based on specific bit patterns.
+- `update_state_flags_alt`: Performs bitwise operations on a structure to update global variables and conditionally executes a function pointer stored in the structure.
+- `update_state_and_execute_callback_4`: Checks a bitmask within a structure and updates a global variable to a specific value if a condition is met.
+- `update_state_flags_and_callback`: Checks specific bits within a byte at an offset from a pointer to update two global variables with a constant value.
+- `update_state_and_execute_callback`: Checks a bitmask in a structure and updates a global variable if a specific condition is met.
+- `tokenize_input_string_41`: Parses a character buffer into an array of pointers by splitting the input at whitespace or between double quotes.
+- `tokenize_string_buffer_10`: Parses a character buffer into a table of pointers by splitting the input into individual strings delimited by whitespace or enclosed in double quotes.
+- `parse_string_list`: Iterates through a character buffer to extract multiple space-delimited or quoted strings and stores their pointers into a table.
+- `tokenize_formatted_string_4`: Iterates through a string to extract space-delimited or quoted substrings.
+- `tokenize_string_buffer_15`: Parses a character stream into a list of space-delimited or quoted strings.
+- `traverse_linked_list_and_recurse_2`: Iterates through a global linked list of structures, checking specific bit flags in a status byte.
+- `tokenize_command_string`: Parses a character buffer into a list of space-delimited or quoted substrings.
+- `trigger_system_event`: calls a library function to cause a system event and returns zero.
+- `update_linked_list_node_3`: If a global variable is non-zero, it adds the value of a pointer to the value at a memory location and calls another routine three times.
+- `process_linked_list_nodes`: Iterates through a linked list, clearing a bit in a byte and searching a table for a minimum value, then updates a pointer in that table and modifies certain fields in a structure or object.
+- `traverse_linked_list_4`: Traverses a linked list, checking bit flags in a node's property byte and updating head or certain pointers while removing nodes from the list.
+- `iterate_and_modify_bit`: Iterates a loop a certain number of times based on a value in a pointer, calls another routine, and potentially clears a bit in a global byte if a condition is met.
+- `process_encoded_instructions`: Decodes a stream of bytes to update a running counter, modify a pointer, or clear a bit in a global register-based bitmask.
+- `calculate_scaled_coordinate_offset`: Calculates a scaled coordinate or offset using bitwise shifts and division based on a divisor found in a data structure.
+- `find_and_prepend_to_list`: Iterates through a list of structures to find an entry where a specific bit in a flag byte is clear, then updates that entry's flag and inserts it at the head of a linked list using a pointer from a global variable.
+- `populate_entity_attribute_structure`: Updates a newly allocated structure with data retrieved from a linked list of entities.
+- `process_event_script_data`: Iterates through a linked list of structures to parse and execute encoded instruction streams.
+- `check_available_memory`: Calls a function via a pointer stored in a global variable and returns whether the result is greater than ten thousand.
+- `free_dual_pointers`: Retrieves a value from a global variable and uses it as a pointer to call a function, then performs the same operation using a second pointer derived from the same global variable.
+- `free_pointer_list_2`: Iterates through a list of four pointers and calls a routine to free each non-null pointer, then calls a library function to free a global pointer.
+- `conditionally_free_memory_block`: Checks if a provided pointer is non-null and if a value at a specific offset within that pointer is non-zero, then calls a memory deallocation function.
+- `free_memory_if_valid`: Checks if a passed pointer is non-null, and if so, calls a function pointer retrieved from a global variable to deallocate memory.
+- `free_memory_if_not_null`: Checks if a provided pointer is non-zero and, if so, executes a function pointer retrieved from an offset of a global variable to deallocate memory.
+- `traverse_and_free_recursive_2`: Recursively traverses a pointer-based structure, checking a bitmask in a byte at an offset, and calls a deallocation routine while decrementing a counter in a structure.
+- `free_linked_structure`: Calls a routine to process a structure and then recursively traverses and deallocates its members using a function pointer from a global variable.
+- `initialize_audio_system_resources`: Allocates memory for a system structure and populates it with configuration values and function pointers.
+- `free_dual_linked_lists`: Iterates through two separate linked lists stored within a global structure, recursively calling a deallocation routine on each node while updating the list head pointers.
+- `update_audio_levels`: Retrieves values from a table, decrements them in a loop, and writes the results to an audio hardware register.
+- `traverse_and_free_lists_2`: This routine recursively traverses two linked lists stored in a global structure and calls a deallocation routine on each node.
+- `process_data_table`: Iterates through a table to copy data between structures, increments a value at a specific offset in another structure, and sets a bit in a byte based on the table size.
+- `parse_resource_data_stream`: Iterates through a data stream containing tagged blocks to identify specific resource types.
+- `parse_resource_stream`: Iterates through a data stream containing tagged chunks to copy or manipulate memory segments.
+- `allocate_and_copy_buffer`: Allocates memory via a library function and copies a specified number of bytes from a source pointer to the new buffer.
+- `parse_tagged_data_stream`: Iterates through a data buffer to identify and process specific four-character tags.
+- `remove_linked_list_nodes`: Traverses a linked list and removes nodes by comparing strings case-insensitively.
+- `insert_into_linked_list`: Inserts a structure into a linked list at a specific position.
+- `calculate_string_length`: Recursively determines the length of a null-terminated string.
+- `parse_tagged_resource_stream`: Iterates through a data stream containing tagged blocks to identify specific resource types and process them.
+- `modify_byte_at_offset`: Calls another routine and, if the result is non-zero, clears a specific bit in a byte at a fixed offset from that result.
+- `clear_list_and_table_entries`: Disables interrupts, traverses a linked list to clear the fifth bit of a byte in each node, and then iterates through a four-entry table to zero out specific memory locations and a global value before re-enabling interrupts.
+- `copy_memory_on_mismatch`: Compares two values within a passed parameter and calls a memory copy function if the values do not match in their lower seven bits.
+- `zero_memory_block`: Calculates a length and a destination pointer from global data and fills that memory range with zeros.
+- `process_flagged_callback`: Checks a byte in a table for a specific bit, executes a function pointer from a structure if the bit is clear, and then clears the table entry.
+- `copy_fixed_bytes_2`: Copies forty bytes one at a time from one pointer to another.
+- `invoke_conditional_callback`: Checks if a global function pointer is non-null and executes it if valid.
+- `traverse_linked_list_and_call_function`: Iterates through a linked list of values, updating each node with the result of a recursive call.
+- `execute_indirect_calls`: Fetches a pointer from a table and executes three different functions stored at specific offsets within the pointed-to structure.
+- `recursively_free_table_entries`: Iterates through a table of pointers to call a deallocation routine on non-null entries and then processes a separate array of ten pointers.
+- `search_string_table_3`: Iterates through a table of pointers and performs a case-insensitive string comparison against a provided parameter.
+- `process_data_table_and_sort_2`: Iterates through a table of data structures to extract specific byte values and indices.
+- `call_function_via_offset`: Calls a function located at a specific offset from a global variable.
+- `set_negative_sign_char`: Checks if an integer is negative and stores an ASCII minus sign in a local buffer if so.
+- `subtract_global_shorts`: Returns the result of subtracting one global short variable from another.
+- `traverse_linked_list_recursive_2`: Performs a recursive traversal of a linked structure, where each call updates a value or pointer using the return value of the subsequent recursive call.
+- `perform_recursive_call`: Calls another routine and returns its result.
+- `perform_recursive_call_2`: This routine performs a single recursive call to itself before returning the result of that call.
+- `execute_recursive_loop`: Executes a loop that performs recursive calls based on the return value of the previous iteration.
+- `function_epilogue_14`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `increment_global_index`: Iterates through a loop, making recursive calls and incrementing a global variable modulo sixteen when a specific condition is met.
+- `map_input_to_index`: Performs range checks and bitwise transformations on an input parameter to return a calculated index or value.
+- `map_argument_table_flags_3`: Reads a byte from a lookup table using the low bits of the argument, remaps specific values within a certain range, and then sets additional result bits based on various bit flags present in the input argument.
+- `execute_conditional_table_update`: Checks if two global variables are unequal, then executes a function via a pointer from a global variable.
+- `get_conditional_table_entry`: Compares two global variables and, if they are not equal, returns a four-byte value from a table indexed by one of those variables.
+- `execute_callback_sequence`: Calls three different routines in sequence and returns the result of the second call.
+- `process_complex_data_structure`: Performs a series of nested routine calls involving memory manipulation and conditional logic based on the results of those calls.
+- `decode_compressed_stream`: Processes a byte stream by interpreting specific control characters to perform recursive decoding or data copying.
+- `initialize_and_call_font_function`: Checks if a global variable is zero to initialize it via a function call, then uses two parameters to call another function from a structure.
+- `update_graphics_parameters`: Iterates through a string to update a value from a table and calls graphics-related functions.
+- `process_command_sequence`: Parses a command string and validates its components against a table to determine if an external function should be executed and a value stored.
+- `traverse_and_clear_linked_list`: Iterates through a linked list by following pointers, calling another routine on each node, and finally sets a global pointer to zero.
+- `update_structure_elements`: Stores four values into a structure located at an offset from a global variable based on an index.
+- `validate_and_reset_table_index`: Checks if a value returned by another routine exists within a ten-entry table by comparing it against stored indices.
+- `find_best_match_index`: Iterates through a table of structures to find the index of an entry that satisfies specific range and comparison checks.
+- `call_external_function`: Executes a function through a pointer stored at a fixed offset from a global variable.
+- `call_structure_function`: Checks if a value in a table is non-zero and then executes a function pointer retrieved from a structure.
+- `execute_indirect_function`: Fetches a function pointer from a global variable and executes it.
+- `execute_conditional_logic`: A routine consisting of 164 instructions that invokes a conditional callback.
+- `execute_callback_list`: Iterates through a list of function pointers stored in a structure and executes each one.
+- `swap_global_word`: Stores the current value of a global word into a local variable and replaces it with a new value provided in a parameter.
+- `call_graphics_function`: Retrieves a function pointer from a table and executes it using a value retrieved from memory.
+- `shuffle_data_array`: Performs a nested loop to rearrange elements within a buffer using values from a lookup table.
+- `iterate_string_and_draw_text`: Iterates through a null-terminated string, searching for specific characters and updating a global value based on data retrieved from a memory structure.
+- `set_bit_in_byte`: Checks if a specific bit is set in a global byte and then sets a different bit in that same byte based on the input parameter.
+- `test_and_clear_bit`: Tests if a specific bit is set in a global variable based on a provided index and returns that state.
+- `update_four_byte_sequence`: Updates a four-byte structure consisting of three bytes and a pointer.
+- `initialize_four_byte_sequence`: Sets three consecutive global bytes to specific values and stores a pointer to a global variable into a fourth position.
+- `set_global_flags`: Sets one global variable to one and another global variable to zero.
+- `clear_global_flag`: Sets a specific global variable to zero.
+- `copy_table_entry_and_derive_values`: Copies a block of data from one location in a table to another based on an index.
+- `frag_movem_move_bsr_addq_rts`: Short code fragment that saves registers on the stack, then copies the memory at an offset from a7 to d7, then copies d7 to the stack, then calls copy_table_entry_and_derive_values, then copies d0 to d6, then calls execute_indirect_calls_2_2, then adds 2 to a7, then copies d6 to d0, then restores saved registers from the stack, then returns.
+- `execute_indirect_calls_2_2`: Retrieves a pointer from a table to execute three functions via specific offsets and then clears two values in a table and a global variable.
+- `initialize_context_and_parse_string_2`: Sets several global variables to specific values and stores a pointer to a provided address within a four-byte structure.
+- `parse_formatted_string_2`: Iterates through a character stream to populate a buffer, handling escape sequences and format specifiers.
+- `validate_and_copy_rect_buffer`: Checks several conditions and global pointers before calling a routine to copy a calculated memory block area.
+- `wrap_and_emit_text_line`: Finds the last space within the remaining wrap width of a text buffer, temporarily terminates the string there, and passes the segment to the text drawing routine.
+- `fetch_buffered_byte_2`: Reads bytes from a pointer-based buffer, advancing the pointer after each read.
+- `consume_global_byte`: Copies a byte from a global variable to a register, clears the global variable, and returns the original byte value.
+- `cleanup_system_resources`: Performs extensive teardown by calling various cleanup routines, resetting fields in a structure, and invoking multiple function pointers stored within global structures.
+- `sum_iterative_values`: Checks a flag in a table and then iteratively calls a function to accumulate a sum based on a provided count.
+- `execute_indirect_calls_2`: Loads a pointer from a table and executes three function pointers stored at specific offsets within that structure.
+- `find_string_index_in_table`: Iterates through a table of pointers to null-terminated strings, comparing each to a provided string using a case-insensitive comparison.
+- `reset_dual_values`: Sets two consecutive global variables to zero.
+- `initialize_clipped_bitmap`: Checks if a specified rectangular area or pointer-based structure falls within certain bounds and initializes a bitmap.
+- `validate_and_fill_buffer`: Checks if a specified range is within the bounds of a defined memory area.
+- `copy_rect_buffer_blocks`: Performs a block memory copy or transfer if a source and destination rectangle or certain boundary limits are valid.
+- `copy_block_area`: Copies a rectangular block of memory from a source to a destination using nested loops and fixed stride offsets.
+- `call_recursive_routine`: Calls itself indefinitely, resulting in infinite recursion.
+- `initialize_clipped_bitmap_2`: Checks a bitmask within a structure and calls another routine recursively using a value retrieved from a table.
+- `extract_bit_pattern`: Reads bits from a source buffer based on an index and packs them into a 32-bit value.
+- `check_flag_bit_in_table`: Looks up a bit in a global byte table using an index derived from the input and returns either all ones or zero depending on whether that bit is set.
+- `recursive_empty_call`: This routine performs a direct recursive call to itself before returning.
+- `allocate_and_initialize_buffer_2`: Calculates a size based on input values, populates a table with incrementing values, and performs a recursive call to manage a buffer.
+- `update_bit_state`: Performs bitwise shifts and logical operations on three consecutive global bytes to update their state.
+- `call_interleaved_copy`: A wrapper routine that invokes a sub-routine to copy data from five source buffers into a single destination buffer using five-byte increments and large memory strides.
+- `copy_interleaved_data_2`: Copies data from five source buffers into a single destination buffer using a pattern of five-byte increments and large memory strides.
+- `update_circular_table_index_2`: Stores a 32-bit value into a table at an offset determined by a global index, then increments that index modulo sixteen.
+- `update_input_counters`: Monitors hardware input registers and increments or decrements various counters in a structure based on state changes and bitmask conditions.
+- `process_input_and_update_table_2`: Modifies a hardware register based on certain bit patterns and updates a table or a global index using a loop.
+- `call_unnamed_routine`: Calls another routine and returns.
+- `check_pointer_nullity`: checks if a pointer is null and returns or branches to another routine if the pointer is non-zero.
+- `modify_structure_bitmask`: Sets a specific bit in a structure, calls another routine recursively, and then clears that bit.
+- `call_conditional_delay`: Checks if a provided argument is non-zero and, if so, executes a routine retrieved from a pointer stored in a global variable.
+- `align_nibble_buffer_recursive`: Iteratively adjusts the nibbles of a target buffer to match a reference buffer by calculating signed differences for each nibble position.
+- `compress_lzss_data_2`: Performs LZSS compression on a source buffer by searching for repeating byte sequences within a sliding window.
+- `compress_data_lzss_2`: Performs LZSS compression on a source buffer by searching for repeating byte sequences within a sliding window.
+- `compress_data_lzss`: Implements an LZSS-style compression algorithm by searching for repeating byte sequences within a sliding window.
+- `find_substring_matches`: Searches for repeating sequences of bytes within a memory buffer.
+- `find_substring_matches_2`: Searches for occurrences of a pattern within a buffer and writes the results, including match lengths and positions, into a destination list.
+- `compress_data_stream_3`: Performs a custom run-length encoding or dictionary-based compression on a memory buffer.
+- `compress_lzss_data`: Performs LZSS compression on a source buffer by searching for repeating byte sequences within a sliding window.
+- `compress_data_lzss_3`: Performs LZSS compression on a source buffer by identifying repeating byte sequences within a sliding window and replacing them with length and offset pairs.
+- `set_bit_and_offset_2`: Writes a constant bit pattern to a memory location and returns a pointer offset by a calculated value.
+- `decode_copy_byte_sequence`: Reads a length-prefixed byte sequence and copies the referenced bytes into a destination buffer, decoding several escape codes to repeat or extend copies.
+- `call_interleaved_data_copy`: Calls a routine that copies data from multiple source buffers into a destination buffer using an interleaved pattern.
+- `copy_interleaved_data_blocks`: Copies data from multiple source buffers into a destination buffer using an interleaved pattern.
+- `set_bit_plane_bits`: Calls a routine to set or clear specific bits in a destination buffer based on a control word.
+- `set_bits_from_word`: Iterates through a word and sets or clears specific bits in a destination buffer at large memory offsets.
+- `apply_bitmask_to_buffer`: Iterates through a buffer and uses bit-testing and bit-setting instructions to modify certain bits based on a lookup table.
+- `swap_word_bytes`: Takes a 16-bit value and returns a new value where the high and low bytes have been swapped.
+- `rotate_word_bits`: Performs a complex bit rotation and byte swapping on a 32-bit or 16-bit input value.
+- `rotate_word_half`: Swaps the upper and lower 16-bit words of a 32-bit value.
+- `call_linked_list_traversal`: Calls a routine that recursively traverses a linked list by checking a bit flag in a structure and following pointers retrieved from a table.
+- `traverse_linked_list_2`: Recursively traverses a linked list by checking a bit flag in a structure and following pointers retrieved from a table.
+- `decompress_bitstream`: Reads a bitstream from a source and expands it into a destination buffer using a lookup table.
+- `calculate_buffer_offset`: Calculates a value by multiplying a byte, a byte, and a word from a pointer-referenced structure and adding a constant.
+- `calculate_scaled_product_2`: Multiplies the upper and lower sixteen bits of a 32-bit value, masks the result to sixteen bits, and scales it by five.
+- `scatter_bytes_to_buffers_2`: Copies a sequence of bytes from a source buffer into five distinct destination memory regions using nested loops.
+- `fill_memory_blocks`: Uses nested loops to copy data from a source buffer into five different destination memory regions offset by large increments.
+- `scatter_bytes_to_buffers_3`: Copies bytes from a source pointer to five distinct destination buffers using a nested loop structure that processes data in five-byte increments.
+- `copy_interleaved_five_byte_chunks`: Transfers data from a source pointer to five distinct destination buffers using a nested loop that processes five-byte increments.
+- `divide_shift_register_output`: Reads a value from a shift register routine, divides it by a computed range derived from the input, and returns the quotient and remainder combined into a single value.
+- `retrieve_table_pointer`: Retrieves a pointer from a table using an index.
+- `traverse_linked_list_with_bit_flag`: Recursively traverses a linked list by setting a specific bit flag in a structure, following a pointer to the next element, and then clearing the bit flag upon returning.
+- `traverse_linked_list_with_flag`: Sets a bit flag in a structure, recursively traverses a linked list, and then clears the bit flag.
+- `traverse_and_process_linked_list`: Recursively traverses a linked list by calling itself with a pointer obtained from a previous call.
+- `cleanup_display_context_3`: Checks if a structure field is non-zero to call a routine, then calls another routine with the structure pointer.
+- `process_list_with_callback`: Recursively traverses a list and executes a function pointer stored in a global variable if a specific condition is met.
+- `execute_callback_if_nonzero`: Checks if a provided pointer is non-zero and, if so, executes a function pointer retrieved from a global variable.
+- `update_and_call_function`: Stores a two-byte value into a structure offset and calls a function through a pointer retrieved from a global variable.
+- `call_trackdisk_device`: Passes a parameter to a routine that interacts with the trackdisk device.
+- `execute_conditional_callback_4`: Checks if a passed parameter is non-zero and, if so, calls a function pointer stored in a global variable.
+- `update_structure_fields`: Populates several fields within a structure using passed parameters and a value returned from another routine.
+- `update_structure_and_call`: Populates a structure with parameters and then calls two different routines using the structure pointer.
+- `call_and_return_offset`: Calls another routine and returns a four-byte value stored at a specific offset within a structure.
+- `store_and_call_routine`: Stores a two-byte value into a structure at a specific offset and then calls another routine.
+- `initialize_recursive_structure`: Recursively populates a data structure with specific constants and values if a threshold is not met.
+- `assign_structure_values`: Assigns a series of values and constants to specific offsets within a structure based on values from registers.
+- `fetch_structure_member`: Calls another routine and returns a four-byte value retrieved from a specific offset within the passed structure.
+- `fetch_structure_member_2`: Calls another routine and then returns a longword retrieved from a specific offset within the provided structure.
+- `call_routine_and_fetch_value`: Calls another routine and then returns the four-byte value located at an offset from the provided pointer.
+- `call_routine_and_fetch_offset`: Calls another routine and returns a longword value located at an offset within the provided structure.
+- `sum_and_negate_table`: Iterates through a table of integers, calculates their sum, and returns the negation of that sum.
+- `return_negated_register`: Returns the negation of a value held in a register.
+- `modify_bitfield_via_index`: Calculates a bit position and index to clear or set a specific bit within a table based on input parameters.
+- `allocate_and_initialize_buffer`: Allocates a memory block and populates it with a specific pattern of data, including a string copy operation.
+- `initialize_entity_data_structure`: Allocates and initializes a large memory block, populating it with a specific constant pattern and zeroing out subsequent entries.
+- `allocate_and_initialize_string_array`: Allocates a memory block and populates an array with a constant value before clearing it.
+- `initialize_string_buffer_and_array`: Allocates and initializes a memory block by filling an array with a specific constant value and then clearing it.
+- `initialize_string_buffer_structure`: Clears a memory block and populates a structure with a null-terminated string by calculating its length and copying the characters into a local buffer.
+- `initialize_and_populate_string_buffer`: Clears a memory block and populates a structure with a null-terminated string by calculating its length and copying the characters into a local buffer.
+- `update_structure_data_2`: Modifies fields in a structure, copies a string into a buffer, and performs a series of calls to other routines and function pointers.
+- `manage_memory_and_structures`: Performs several operations involving a structure, including calls to free memory and executing a function pointer from a global variable.
+- `execute_recursive_callback_2`: Calls itself recursively and then executes another routine based on the returned value.
+- `execute_recursive_callback`: Calls itself recursively before executing a conditional callback and an allocation routine.
+- `validate_recursive_result`: Calls another routine and evaluates its return value to determine a boolean result.
+- `check_conditional_result`: Calls two different routines and returns a boolean value based on whether the result of the second routine is non-zero.
+- `evaluate_status_code`: Calls several functions to retrieve values and returns a specific integer code based on the results and comparisons of those values.
+- `expand_compressed_byte_stream`: Reads a length and source pointer from an input structure to decode a stream into an output buffer.
+- `release_interface_resources`: Sets a global variable to zero and calls three functions retrieved from a pointer structure.
+- `update_sprite_data`: Copies data from a source buffer into a destination table and uses DMA to perform hardware-related operations.
+- `store_coordinate_bounds`: Stores four values into global variables and then calls another routine with the minimum of three provided values.
+- `create_message_node_3`: Allocates a new node and populates its fields with calculated coordinate values and specific constants before invoking a cleanup routine.
+- `offset_coordinate_value`: Adds a value from a global table to a parameter and passes the result to another routine.
+- `check_bounds_overlap`: Compares two sets of coordinate pairs against a global range and returns one if they overlap and zero otherwise.
+- `return_zero_value_8`: Clears a register and returns to the caller.
+- `process_command_input_and_status`: Parses a string into tokens and performs conditional logic based on status codes and input parameters.
+- `check_and_execute_callback`: Calls a function through a pointer and, if the result is non-zero, calls another function through a different pointer.
+- `apply_command_updates`: Iterates through a linked list of command structures to modify bitmasks in a data buffer and update coordinate values.
+- `process_command_data_updates`: Iterates through a linked list of command structures to modify bitmasks in a data buffer and update coordinate values.
+- `process_command_list_updates`: Iterates through a linked list of command structures to update coordinate values and modify bitmasks in a data buffer.
+- `process_event_command_stream_2`: Iterates through a linked list of command structures to modify bitmasks in a data buffer and update coordinate values.
+- `process_command_stream_updates`: Iterates through a linked list of command structures to modify bitmasks in a data buffer and update coordinate values.
+- `process_command_linked_list_5`: Iterates through a linked list of command structures to update coordinate values and modify bitmasks in a data buffer.
+- `update_command_linked_list_2`: Iterates through a linked list of command structures to modify coordinate values and update bitmasks in a data buffer.
+- `process_command_linked_list_3`: Iterates through a linked list of command structures to update bitmasks in a data buffer and modify coordinate values.
+- `process_event_command_stream_3`: Iterates through a linked list of command structures to modify bitmasks in a data buffer and update coordinate values.
+
+The function list continues in: g2249-recovery-functions-2.md.

@@ -7,20 +7,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (907776 top-level bytes in 23 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 14 of 14 units identical (bytes and relocations), 44 raw-word lines |
-| Functions named and described | pass, 243 of 243 named (0 author symbols), 243 of 243 described (57 by rule, 182 by the local model) |
+| Byte-identical reassembly with vasm | pass, 14 of 14 units identical (bytes and relocations), 32 raw-word lines |
+| Functions named and described | pass, 272 of 272 named (0 author symbols), 272 of 272 described (55 by rule, 211 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 421 of 422 (99.76%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 4553 of 4553 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 4822 of 4822 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 557000 |
-| code | 15006 |
-| data | 78669 |
-| padding | 4173 |
+| asset | 556675 |
+| code | 15954 |
+| data | 78042 |
+| padding | 4177 |
 | unused | 252928 |
 
 ## Code units
@@ -28,16 +28,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | type | 2 | 117 | 2 |
-| starsmittel | 2 | 133 | 4 |
-| shades | 2 | 209 | 8 |
+| starsmittel | 2 | 177 | 7 |
+| shades | 2 | 208 | 7 |
 | add21K | 3 | 480 | 33 |
-| border | 3 | 228 | 7 |
+| border | 3 | 223 | 6 |
 | Zzzep.adf:mad | 2 | 79 | 3 |
-| Zzzep.adf:cls | 3 | 2537 | 140 |
+| Zzzep.adf:cls | 3 | 2549 | 141 |
 | Zzzep.adf:1 | 1 | 155 | 3 |
 | Zzzep.adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 329 | 28 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 52 | 6 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 381 | 36 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 219 | 25 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 217 | 6 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
@@ -49,7 +49,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address: 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 154 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- self-modifying code at an address (6 bytes change between runtime segment an address (play-rs-m1500-unpk03) and runtime segment an address): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (6 bytes change between runtime segment an address (play-rs-m1500-unpk03) and runtime segment an address): both forms recovered; writer: runtime segment an address (play-rs-m1500-unpk03) +286, runtime segment an address (play-rs-m1500-unpk03) +298, runtime segment an address (play-rs-m1500-unpk03) +2AA, runtime segment an address (play-rs-m1500-unpk03) +2BC
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 3 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 2 jump target, 1 displacement
 - Zzzep/Zzzep.adf:1: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
 ## Cracktros (kept, not protection)
@@ -74,13 +75,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_two_functions`: Calls two different functions located at offsets from a provided pointer.
 - `call_two_library_functions`: Calls two library functions using offsets from a provided pointer and returns a concatenated result.
 - `call_two_library_functions_alt`: Calls two library functions using different offsets from a provided pointer and returns a concatenated result.
+- `process_data_table`: Iterates through a table of data, performing calculations to determine a bit position and a memory address, then sets a bit at that address and stores the address in the table.
+- `write_and_branch`: Writes a 16-bit word to an offset of a pointer in a2, increments the pointer by 4, and branches to another routine.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
 
 ### shades
 
 - `parse_amigados_hunk_table`: Parses a table of AmigaDOS hunk types to perform memory relocation and data copying.
 - `stub_empty_return_routine`: This routine is empty and contains only a return instruction.
 - `decrement_integer_loop`: Decrements a value in a register until it reaches zero.
-- `tiny_ori`: Small routine of 1 instruction that merges 188 into d0.
 - `decompress_back_reference_stream`: Decodes a packed byte stream by reading control values that either copy literal bytes or repeat earlier output with a length and offset from the stream.
 - `tiny_moveq`: Small routine of 1 instruction that loads 1 into d0.
 - `decrement_byte_cycle_counter`: Decrements a byte register once for each count unit, wrapping to a space character when it reaches zero, and returns.
@@ -127,7 +130,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_system_and_main_loop`: Allocates memory segments and initializes several global variables and counters.
 - `reconstruct_amiga_hunk_segments`: Parses a data stream containing AmigaDOS hunk type codes to allocate memory and relocate segments.
 - `nop_sequence_execution`: This routine executes a series of no-operation instructions and returns without modifying any registers or memory.
-- `process_bitstream_data`: Iterates through a bitstream to perform conditional memory writes and bitwise shifts based on the value of the bits.
 - `unpack_stream_with_pointer_shift`: Decompresses a packed stream like its neighbour, reading bits through a shift routine that takes a 32-bit value from the four bytes before the source pointer, shifts it right and sets its top bit.
 - `shift_pointer_value`: The routine reads a 32-bit value from four bytes before the address in A0, shifts it right by one bit and sets the most significant bit, then returns the result.
 - `shift_bitmask_and_store_pointer`: Shifts a bit mask right one bit per iteration, reloading it from a memory location when it becomes zero, and stores the low word of a pointer into a global variable on each step.
@@ -182,6 +184,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_recursive_call`: A routine consisting of 48 instructions that performs a recursive call and returns a concatenated 64-bit value.
 - `parse_printf_format_string`: Parses a format string to process conversion specifiers, width, precision, and length modifiers.
 - `perform_signed_division`: The routine reads two signed inputs, flips the sign flag based on their signs, calls another routine and optionally negates its result, then combines that result with the second input into a 32-bit value.
+- `prepare_signed_operands`: Clears a register, checks the sign of two different registers, negates them if they are negative, increments a counter if the first register was negative, and calls another routine before branching.
 - `call_and_return_concatenated`: The routine calls another routine and returns a 64-bit value formed by concatenating the original D1 contents with the value left in D1 by the call.
 - `recursive_call`: The routine calls another routine.
 - `perform_32bit_division`: The routine calculates the quotient and remainder of a 32-bit integer division using inputs in registers D0 and D1.
@@ -298,26 +301,34 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_memory_blocks_2`: Depending on a global flag, either clears a series of memory blocks at fixed intervals or sets several global variables to zero.
 - `fill_memory_table`: Fills a memory area with a repeating pattern of values derived from a global table and specific constants.
 - `iterate_and_call`: Iterates through a list of values pointed to by a register and calls another routine for each non-negative value encountered.
-- `set_interrupt_request`: Writes a value to the interrupt request register.
 - `copy_data_block`: Performs a series of indirect calls and then copies a sequence of data blocks from one memory location to another using a loop.
-- `tiny_ori_2`: Small routine of 1 instruction that merges 0 into d0.
-- `execute_jump_table_entry`: Checks a global variable and performs an indirect call using a value from a table indexed by that variable.
-- `execute_indirect_jump_table`: Checks if a global variable is greater than zero, then performs an indirect jump through a table using that variable as an index.
-- `execute_indirect_jump`: Checks a global variable and, if non-zero, performs an indirect call using an offset calculated from that variable into a table of function pointers.
-- `execute_indirect_jump_table_2`: Checks if a global variable is greater than zero and, if so, performs an indirect call using a value from a table indexed by that variable.
+- `dispatch_via_table`: Checks a longword in memory, and if it is not negative, uses a value from a global variable to index into a table and jumps to the address found there.
 - `execute_recursive_calls`: This routine performs two consecutive calls to itself before returning.
 - `update_dual_counters`: Decrements and wraps one global variable before adjusting the value of another global variable based on its current sign.
-- `increment_clamped_value`: Increments a global variable and caps its value at a specific maximum.
+- `call_two_subroutines_2`: Calls two subroutines in sequence and then returns.
+- `call_two_subroutines_3`: Calls two subroutines in sequence and then returns.
+- `increment_two_clamped_globals`: Calls increment_clamped_global and increment_clamped_global_alt to increment two separate 16-bit global variables, each capped at a value of 16, then returns.
+- `update_clamped_counters`: Calls a routine to adjust a global counter and then calls another routine to increment a different 16-bit global variable while capping its value at 16.
+- `decrement_and_increment_clamped_values`: Decrements a clamped value and then increments a different 16-bit global variable capped at 16, before returning.
+- `call_two_subroutines`: Calls two different subroutines in sequence and then returns.
+- `call_two_subroutines_alternate`: Calls two different subroutines in sequence and then returns.
+- `increment_clamped_global`: Increments a 16-bit global variable and caps its value at 16.
 - `decrement_clamped_value`: Decrements a global variable and ensures it does not fall below a specific minimum value.
+- `increment_clamped_global_alt`: Increments a different 16-bit global variable and caps its value at 16.
 - `decrement_and_wrap_variable`: Decrements a global variable and resets it to a specific negative value if it falls below zero.
 - `adjust_global_counter`: Decrements a global variable if it is positive, or increments it if it is negative.
 - `increment_global_variable`: Increments a global variable by one.
 - `modify_global_value`: Changes a global variable by decrementing it if positive or incrementing it if negative.
 - `increment_global_variable_2`: Increments a specific global variable by one.
-- `update_conditional_values`: Modifies a global variable based on a bitwise check, potentially setting a constant or clamping a value, or otherwise decrements a global variable.
+- `update_global_from_table`: Checks if a global variable is zero, and if so, adds a value from a table-based pointer to another global variable; otherwise, it adds a value from a table-based pointer to a different global variable.
+- `add_to_global_variables`: Performs bitwise OR operations on a register, adds a register to a global variable, and then adds the value of another global variable to a third global variable.
+- `modify_ciaa_registers`: Clears a 32-bit value at a global address, reads a byte from a CIAA register, sets bit 6 of that register, performs a bitwise NOT and a rotate right on the byte, stores the result in the global address, and clears bit 5 of the same CIAA register.
+- `decrement_global_word`: Checks if a 16-bit word at a global address is zero; if not, it decrements the word by one and branches to another routine.
 - `update_conditional_globals`: Sets a global variable to a constant value and clamps another global variable to zero or negative based on a condition.
 - `clear_global_variable`: Sets a global variable to zero.
 - `configure_audio_hardware`: Writes several constant values to audio hardware registers and enables DMA channels.
+- `configure_audio_channels`: Sets the DMA controller to enable audio channels, performs two delay loops, configures both audio channels with specific starting addresses, lengths, periods, and volume levels, enables DMA, performs another delay loop, and finally updates the audio channel addresses and lengths.
+- `invert_global_word`: Performs a bitwise NOT on a 16-bit word at a global address and returns.
 - `store_constant_and_call`: Stores a pointer to a global variable and a constant value into a global location, then calls another routine.
 - `perform_multiple_stores_and_calls`: Stores a pointer and constant values into a global location multiple times, calling various routines between operations.
 - `execute_loop_with_bitwise_ops`: Performs bitwise OR operations on a value and enters a loop that continues until a specific memory location contains a specific value.
@@ -327,9 +338,28 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_functions_2`: Calls a library function using a pointer from a global variable, stores the result in a global variable, then calls another library function using a pointer from a global variable and stores that result in a different global variable before returning.
 - `close_library_handles`: Loads the library base into a6 and calls a routine at offset -414, then repeats the process with a second library base and routine before returning.
 - `execute_library_calls_conditionally`: Loads a routine pointer from a table, calls a library routine, and if the return value in d0 is not zero, calls two more library routines using pointers from a table, otherwise it clears a global variable and returns.
-- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (ori.b) and then falls through into the code that follows, with no return of its own.
-- `fall_through_entry_2`: Entry point part-way through straight-line code: runs one instruction (ori.b) and then falls through into the code that follows, with no return of its own.
-- `decrement_loop_counter`: Multiplies the low word of d7 by 2560, then decrements the result in a loop until it reaches -1 before returning the incoming values of d0 and d1.
+- `calculate_scaled_value`: Multiplies the lower 16 bits of a register by 2560, subtracts 1 from the result, and enters a loop that decrements the result until it is no longer negative.
+- `decompress_bitstream_data`: Reads a bitstream from a source pointer, using a bit reader to extract variable-length bit sequences that determine how many bytes to copy from a lookup table into a destination buffer.
+- `jump_with_registers`: Loads the values 8 into registers d1 and d4 and jumps to another routine.
+- `branch_on_register_value`: Calls a subroutine, compares the value in d2 to 2 or 3, and either branches to another routine or calls a subroutine again before jumping to a third routine.
+- `copy_bytes_from_table`: Sets d1 to 9 plus the value in d2, increments d2 by 2, moves the new d2 into d3, calls another routine, decrements a2, copies a byte from a table at a2 plus d2 into a2, and loops using d3 until the loop finishes; it then compares a1 and a2 and either branches or restores registers and returns.
+- `bk_refill_bit_buffer_2`: Depacker bit reader refill: fetches the previous longword of the packed stream, folds it into the checksum and shifts out its lowest bit with a marker bit entering at the top.
+- `bk_read_bits_2`: Depacker bit reader: collects the number of bits given in D1 from the bit buffer into D2, most significant first, refilling from the packed stream whenever the buffer runs empty.
+- `decompress_data_block`: Searches for a specific four-byte marker in memory, then enters a loop that either copies a sequence of bytes or repeats a single byte a specified number of times based on the value of a byte in a buffer.
+- `loop_negate_and_store`: Reads a byte from a0 into d0, negates it, stores the byte from the next address in a0 into the address in a1 and increments a1, and loops using d0 as a counter; it then increments a0 by 2 and branches to another routine.
+- `increment_and_branch`: Increments the pointer in a0 by 4 and branches to another routine.
+- `function_epilogue_2`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+- `unpack_and_store_data`: Searches for a specific four-byte pattern in memory, then iterates a number of times defined by a register to unpack three bytes into a single word and store it along with a counter into a destination table.
+- `reset_hardware_and_globals`: Clears two global variables, writes 1 to a hardware register, checks a bit in a hardware register, and branches based on the status of a global variable and a bit test.
+- `initialize_global_values`: Writes 1 to a global variable, writes 65535 to another global variable, and branches to another routine.
+- `clear_and_set_threshold_three`: Clears two 16-bit global variables, compares d0 to 3, and if equal, writes the value 3 to a global variable before branching to another routine; otherwise it branches to another routine.
+- `update_global_threshold_768`: Compares d0 to 768, and if equal, writes the value 7 to a global variable before branching to another routine; otherwise it branches to another routine.
+- `update_global_threshold_256`: Compares d0 to 256, and if equal, writes the value 1 to a global variable before branching to another routine; otherwise it branches to another routine.
+- `update_global_threshold_one`: Compares d0 to 1, and if equal, writes the value 5 to a global variable before branching to another routine; otherwise it branches to another routine.
+- `update_global_threshold_two`: Compares d0 to 2, and if equal, writes the value 4 to a global variable before branching to another routine; otherwise it branches to another routine.
+- `compare_and_write_value`: Compares d0 to 259; if they are not equal, it branches to another routine, otherwise it writes the value 2 to a global variable and branches to another routine.
+- `check_threshold_and_write`: Compares a 16-bit register to 481; if they are not equal, it branches to another routine, otherwise it writes the value 6 to a global address and branches to another routine.
+- `update_global_on_threshold`: Compares a 16-bit register to 512; if they are equal, it writes 8 to a global variable, otherwise it continues to copy data from one memory location to another until a specific word is encountered.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 

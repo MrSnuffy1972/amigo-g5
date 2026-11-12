@@ -2,9 +2,373 @@
 
 ## Functions (part 2 of 2)
 
-### info.library
+### Sim City (1989)(Infogrames)[cr Tristar - DCS].adf:SimCity
 (continued)
 
+- `process_buffered_stream`: Updates a structure's internal state and counters based on comparison results, then conditionally copies a byte to a pointer and increments that pointer.
+- `update_buffered_byte_stream`: Checks a bitmask in a structure to determine if a short value should be zeroed or copied, then updates a pointer and decrements a counter while writing a byte from a register to the memory location pointed to by the structure.
+- `copy_and_decrement_counter`: Copies a 4-byte value and a 2-byte value from a structure, then decrements a counter and copies a byte if the counter is positive.
+- `process_and_branch_on_flag`: Moves a 32-bit value from d7 to d0, clears d1, copies the byte from d0 to d1, and moves d1 back to d0.
+- `return_immediately_8`: Performs a sequence of five instructions that results in an immediate return to the caller.
+- `return_from_subroutine_2`: Performs a standard return from a subroutine to the calling function.
+- `return_immediately_4`: This routine is empty and performs no operations before returning to the caller.
+- `return_from_subroutine_3`: performs a standard subroutine return.
+- `compare_strings_with_limit`: Compares two strings character by character up to a specified count and returns the difference of the first non-matching characters.
+- `compare_two_strings`: Compares two strings character by character and returns the difference of the first non-matching characters or a status code.
+- `compare_string_nulls`: checks if two strings are non-null and returns a value based on their termination status.
+- `check_string_null_termination`: Checks if a character at a pointer is null and returns zero or a negative one based on the result.
+- `return_zero_constant_2`: This library routine returns a zero value to the caller.
+- `append_bounded_string`: Appends a source string to the end of a destination buffer, copying at most a given count of characters, and terminates the result.
+- `copy_c_string`: Advances to the terminating zero of the string at A0, then copies the bytes from A1 onto its end, including the zero.
+- `find_first_set_bit`: Increments a pointer while checking a specific bit in the memory it points to until that bit is no longer set.
+- `tiny_move_movea_rts`: Small routine of 3 instructions that copies a3 to d0, then copies (a7)+ to a3, then returns.
+- `format_fixed_point_string`: Links a stack frame, calls another routine to perform a division, and loops to convert the resulting digits into characters stored in a buffer pointed to by a1.
+- `parse_signed_integer_string`: Converts a numeric string into a signed integer and stores it in a provided memory location.
+- `store_signed_value_from_string`: Stores a value through the caller's pointer, negating it when the string begins with a minus sign, and returns the number of characters consumed.
+- `fill_memory_with_byte`: Copies a single byte from a register into a memory range specified by a pointer and a count.
+- `insert_into_sorted_list`: Inserts a value into a linked list of memory blocks, managing block sizes and merging adjacent blocks to maintain order.
+- `call_insert_into_sorted_list`: This routine acts as a wrapper that calls a function to insert a value into a sorted linked list of memory blocks.
+- `check_io_result`: Performs an I/O read and returns a specific error value if a global variable is non-zero.
+- `execute_io_read`: Calls another routine and returns its result, or returns a specific error value if a global variable is non-zero.
+- `restore_registers_and_return_2`: Moves a 32-bit value from d5 to d0 and restores several registers from the stack before returning.
+- `update_pseudo_random_value`: Updates a global 16-bit value by multiplying it by a constant and applying a bitmask.
+- `store_word_to_global`: Stores a 16-bit value from a register into a global variable.
+- `move_memory_block`: Moves a block of memory from a source to a destination, handling both overlapping and non-overlapping memory regions.
+- `allocate_and_insert_node`: Acts as a wrapper that calls a function to insert a value into a sorted linked list of memory blocks.
+- `perform_io_operation_2`: Executes a sequence of two routine calls and returns a value, potentially returning an error code if any call fails or if a global variable is non-zero.
+- `allocate_memory_block`: manages a linked list of memory blocks by searching for a suitable size, splitting existing blocks, or merging them.
+- `request_memory_allocation`: Calls a memory management routine to allocate a block of memory.
+- `insert_node_wrapper`: Calls another routine and stores a modified version of the input pointer into a structure offset.
+- `iterate_function_table_2`: Traverses a linked list of pointers and calls another routine if specific bitwise conditions are met within the structure's data.
+- `execute_io_operation`: Calls a function via a pointer in a structure and handles the return value by updating a status field.
+- `execute_io_operation_with_seek`: Calls a function via a pointer in a structure and conditionally executes another routine if a parameter matches a specific value.
+- `execute_io_read_operation`: Calls a function via a pointer in a structure and updates a status field if the return value indicates an error.
+- `cleanup_message_port`: Frees memory associated with a message port, clears signal bits, removes the port from the system, and resets related global state variables.
+- `call_function_via_pointer`: Checks a value at an offset from a register and calls a function through a pointer stored in a structure.
+- `compute_fixed_point_product`: The routine takes two 32-bit fixed-point values from registers and returns their product as a 32-bit fixed-point value.
+- `divide_fixed_point_numbers`: Performs signed fixed-point division using normalization and bit shifting.
+- `normalize_fixed_point_divide`: The routine divides a 32-bit dividend in d0 by a 32-bit divisor in d1 using a normalized fixed-point method.
+- `copy_and_check_task_2`: Copies a block of memory to a local buffer, checks a task structure for specific values, and performs conditional function calls.
+- `copy_and_check_task`: copies a block of memory, checks a task structure for a specific value, and performs conditional operations using a function pointer.
+- `call_intuition_function_2`: Checks a global variable, calls a function through a pointer, and performs a calculation involving a library function.
+- `return_zero_constant_3`: The routine returns a constant zero value without performing any other operations or memory accesses.
+- `initialize_task_structure`: The routine allocates memory and populates a structure with several values from registers and other memory locations before potentially linking it into a list.
+- `calculate_table_offset`: The routine checks if an index is within valid bounds and if a specific table entry is non-zero, returning either a calculated memory offset or a default value.
+- `check_signal_status`: Checks a bitmask from a function return and conditionally calls another routine based on a value in a structure.
+- `call_check_signal_status`: Call stub: calls check_signal_status, then returns to its own caller.
+- `initialize_memory_block`: Calculates a size from two input values, calls another routine to obtain a pointer, and then fills the resulting memory area with zeros.
+- `call_intuition_function`: The routine calls a function pointer located within a structure pointed to by a value at a specific offset from a register.
+- `parse_integer_from_pointer_2`: Parses an integer from a pointer if the pointer is not null.
+- `parse_integer_from_pointer`: finds a set bit in memory and returns a signed integer parsed from a string.
+- `clear_callback_list`: iterates through a linked list of function pointers, executing each one before clearing the list pointers.
+- `parse_command_string_5`: Parses a space-delimited string into an array of pointers, supporting quoted substrings.
+- `iterate_and_call_functions`: loops through a table of values and calls a function via a pointer if certain bitwise conditions are met.
+- `execute_indirect_callbacks`: Checks several pointers in a structure and executes them if they are not null, eventually calling a memory free routine.
+- `insert_into_linked_list`: The routine allocates memory for a new node and inserts it into multiple linked lists stored at various offsets in a structure.
+- `reset_structure_values`: The routine sets specific bytes and dwords to maximum values within a structure and then calls another routine.
+- `initialize_allocated_node`: Calls a routine to allocate memory and, if successful, populates specific offsets within that memory with provided values.
+- `allocate_and_set_node`: It allocates memory for a structure through a library call and, if successful, initializes certain bytes and dwords from caller-held values.
+- `call_clip_blit`: Library stub: loads its arguments and the graphics library base, calls ClipBlit and returns its result to the caller.
+- `call_blt_template`: Library stub: loads its arguments and the graphics library base, calls BltTemplate and returns its result to the caller.
+
+### Sim City (1989)(Infogrames)[cr Tristar - DCS].adf:ZoneEvolutionChart
+
+- `initialize_zone_data`: Clears a block of memory and updates several global variables and function pointers.
+- `null_routine_placeholder`: This routine is empty and contains no executable instructions.
+- `increment_and_validate_evolution_state`: Increments a value in a table via a pointer and then performs a series of conditional checks by calling other routines to validate or reset a state based on returned values.
+- `initialize_library_resources`: attempts to initialize resources through a series of function calls and stores the resulting pointers in a table.
+- `execute_stored_callbacks`: checks two global pointers and, if they are not null, calls the routines they point to.
+- `call_another_routine`: Calls another routine passing the input pointer as an argument.
+- `decompress_data_stream`: processes a compressed data stream by reading length headers and copying bytes into a destination buffer.
+- `iterate_function_table`: Iterates through a table of four pointers and calls each non-zero routine with a value derived from the product of two global shorts.
+- `initialize_graphics_and_display_buffers`: Attempts to allocate bitmap resources and initialize a display window.
+- `manage_record_lifecycle`: Initializes a structure, attempts to update its fields, and handles error cleanup by releasing records.
+- `execute_nested_function`: Recursively traverses a nested structure to execute a function pointer found at a specific offset.
+- `initialize_complex_record`: Initializes a structure with several fields, copies data from a table, and performs multiple indirect calls.
+- `execute_indirect_calls_5`: Calls a routine with a specific constant and, if the return value is non-zero, calls another routine using that return value and a constant.
+- `process_complex_callback`: Performs multiple indirect calls and library functions, using bitwise operations on bytes from structures to determine which routines to execute and whether to update a boolean flag.
+- `scan_string_for_null`: Iterates through a memory buffer until a null byte is encountered.
+- `return_from_subroutine_4`: The routine performs no operations and immediately returns to the caller.
+- `initialize_display_resources`: Allocates memory, initializes display buffers, and populates a structure with icon data and specific magic constants.
+- `tiny_move_4`: Small routine of 1 instruction that copies d0 to d5.
+- `parse_quoted_string_tokens`: Parses a source string into individual tokens by handling whitespace and quoted substrings.
+- `copy_string_with_limit_2`: Copies bytes from a source pointer to a destination pointer, stopping at a null terminator or when a counter in the third argument is reached.
+- `copy_string_with_limit`: The routine copies bytes from a source pointer to a destination pointer, stopping at a null terminator or when a counter in the third argument reaches -1.
+- `copy_string_pad_zeros`: The routine copies bytes from a source to a destination up to a count or until a null terminator is found, then fills any remaining bytes in the count with zeros.
+- `retrieve_icon_data`: Performs a series of indirect calls to retrieve data from a structure and stores the results into another structure.
+- `return_from_subroutine_5`: This routine performs a standard return from a subroutine.
+- `update_buffer_status_2`: Calls another routine to check or update status bits within a structure.
+- `update_buffer_status`: Calls a routine to check or update buffer status bits within a structure.
+- `manage_buffer_state_2`: A routine consisting of 22 instructions that calls a routine to check or update buffer status bits.
+- `loop_through_data`: Iterates through a range of memory by incrementing a pointer in a loop and calls another routine at each step.
+- `clear_recursive_structure`: Recursively traverses a structure to clear its members and nested pointers based on bit flags.
+- `clear_resource_structure`: Recursively traverses a structure to clear its members and handles conditional calls based on bit flags in a byte field.
+- `manage_buffer_state`: Checks status bits in a structure to determine if a buffer should be cleared or updated.
+- `search_and_clear_entry`: Iterates through a table to find an entry where a specific byte is zero, then clears the first three words of that entry and returns its pointer.
+- `search_and_clear_table_entry`: Iterates through a table looking for an entry where a specific byte is zero, then clears the first three words of that entry.
+- `clear_memory_block_2`: Clears the first three words of a memory location by setting them to zero.
+- `update_parameter_status`: Updates a structure with a status value and a pointer based on the result of a validation check.
+- `traverse_linked_list`: Traverses a linked list of pointers, calling a routine for each element, and sets a global variable to zero upon completion.
+- `traverse_and_call_linked_list`: Traverses a linked list of pointers, calling a routine for each element, and finally clears a global variable.
+- `insert_into_linked_list_2`: Inserts a new node into a linked list by setting its pointers and updating a global head pointer.
+- `forward_parameter_field`: The routine forwards the second field of its parameter structure to another routine and then returns.
+- `remove_linked_list_node`: Traverses a linked list to find a specific node and removes it by updating the pointers of the preceding node or a global variable.
+- `traverse_linked_list_2`: Traverses a linked list and stores a value from a source pointer into a destination pointer or a global variable if a pointer is null.
+- `store_and_call_routine_2`: If a provided pointer is not null, stores a value from a source pointer into a destination pointer; otherwise, stores it into a global variable, then calls another routine.
+- `store_and_call_routine`: Stores a value from a pointer into a global variable and then calls another routine.
+- `check_index_validity`: The routine verifies if an index is within the bounds of a table and checks a value at a calculated offset, returning a boolean result based on whether the value is non-zero.
+- `check_file_operation`: Calls a routine and, if it returns zero, calls another routine to retrieve an error value which is stored in a global variable.
+- `return_zero_24`: An empty routine that simply returns zero.
+- `process_io_output`: Checks a return value against a bitmask and, depending on a global variable, performs error reporting or writes data via the DOS library.
+- `process_conditional_output`: Checks a return value against a bitmask and, if a specific bit is set, checks a global variable before calling another routine.
+- `chain_result_to_output`: Checks a global variable against a constant, executes a conditional function using the result, and passes the returned value to a write wrapper followed by an output wrapper.
+- `execute_indirect_call_5`: Checks if a global variable is non-zero and, if so, executes the routine pointed to by that variable.
+- `process_resource_table`: Iterates through a table to close resources, executes several indirect function calls from a structure, and performs conditional logic based on a global byte flag.
+- `tiny_move_unlk_rts`: Small routine of 3 instructions that copies (a7)+ to d4, then removes the stack frame held in a5, then returns.
+- `close_resource_entry`: The routine checks if an index is valid and then calls another routine to close a resource before setting the entry in a table to zero.
+- `call_close`: Wrapper that calls the dos library function Close and returns its result to the caller.
+- `call_current_dir_2`: Wrapper that calls the dos library function CurrentDir and returns its result to the caller.
+- `call_delete_file`: Wrapper that calls the dos library function DeleteFile and returns its result to the caller.
+- `call_input`: Wrapper that calls the dos library function Input and returns its result to the caller.
+- `call_io_err`: Wrapper that calls the dos library function IoErr and returns its result to the caller.
+- `call_is_interactive`: Wrapper that calls the dos library function IsInteractive and returns its result to the caller.
+- `call_open`: Wrapper that calls the dos library function Open and returns its result to the caller.
+- `call_output`: Wrapper that calls the dos library function Output and returns its result to the caller.
+- `call_un_lock_2`: Wrapper that calls the dos library function UnLock and returns its result to the caller.
+- `call_write`: Wrapper that calls the dos library function Write and returns its result to the caller.
+- `call_library_offset_one`: The routine performs an indirect call to a function located at a specific offset within a library structure.
+- `call_library_vector_108`: Library stub: loads a library base from a global variable and calls the library function at offset minus 108 of that base, returning its result to the caller.
+- `execute_indirect_function_pointer`: Retrieves a function pointer from a nested offset within a structure pointed to by a global variable and executes it.
+- `execute_indirect_function_pointer_2`: Retrieves a function pointer from a nested offset within a structure pointed to by a global variable and executes it.
+- `execute_indirect_pointer`: Performs an indirect call to a routine located at a specific offset from a pointer stored in a structure.
+- `execute_indirect_function_pointer_3`: Retrieves a function pointer from a nested offset within a structure pointed to by a global variable and executes it.
+- `initialize_data_structure_3`: Initializes a structure with several fields including an integer, a byte, and a pointer, then calls a routine with the new structure.
+- `release_and_reset_record`: If a pointer at a specific offset is non-zero, calls a routine to release it, then sets a byte and a long value to all ones and calls two other routines.
+- `call_indirect_function_2`: Performs an indirect call to a function address retrieved from a table using an offset.
+- `call_indirect_function_3`: Executes a function call via a pointer located at a specific offset within a structure.
+- `update_record_fields`: Calls a routine to obtain a pointer and, if successful, populates several fields in that structure using the provided arguments.
+- `reset_record_values`: Sets a byte and two long values to all ones within a structure and then calls another routine using a value from the structure.
+- `call_offset_routine`: Executes a subroutine by dereferencing a pointer found at a calculated offset from a base address.
+- `call_indirect_function_4`: Calls a subroutine by dereferencing a pointer found at a calculated offset from a base address.
+- `trigger_indirect_function`: Calls a function using a pointer retrieved from a data structure at a specific offset.
+- `call_indirect_function_5`: Uses a pointer from a data structure to jump to another routine.
+- `call_indirect_function_6`: Triggers an indirect function call based on an offset from a global pointer.
+- `jump_to_table_entry`: Performs an indirect jump to a routine address stored within a table.
+- `call_indirect_function_7`: Performs an indirect jump to a routine address stored in a table.
+- `call_indirect_function_8`: Calls a routine through a pointer retrieved from a memory offset.
+- `execute_indirect_callback`: Retrieves a function pointer from a nested offset within a structure and executes it.
+- `call_indirect_function_9`: Executes a function by dereferencing a pointer at a specific offset from a base address.
+- `setup_pointer_chain`: Stores the address of its pointer argument into the memory location pointed to by the argument, adds four to that stored value, clears the next word in the pointed-to block, and stores the original pointer value into the following word.
+- `call_indirect_function_10`: Performs an indirect call to a routine using an offset from a base pointer.
+- `call_library_offset`: Performs an indirect call to a library function using an offset from a base address stored in a table.
+- `call_library_function`: Performs an indirect call to a function within a library using an offset from a base address stored in a table.
+- `call_library_function_2`: Executes a function located at a specific offset within a library retrieved from a global structure.
+- `call_library_function_3`: Calls a library function by accessing a pointer through a multi-level offset calculation.
+- `call_library_vector_378`: Library stub: loads a library base from a global variable and calls the library function at offset minus 378 of that base, returning its result to the caller.
+- `call_library_function_4`: Invokes a routine from a library using a pointer found at a specific offset from a base address.
+- `call_library_function_5`: Triggers a library function call via an indirect pointer stored in a data structure.
+- `call_library_vector_318`: Library stub: loads a library base from a global variable and calls the library function at offset minus 318 of that base, returning its result to the caller.
+- `call_library_function_6`: Calls a function from a library by dereferencing a pointer at a specific offset from a base address.
+- `call_library_function_7`: Performs an indirect jump to a library function using an offset from a base pointer.
+- `call_library_function_8`: Executes a library routine by calculating an address from a base pointer and a specific offset.
+- `call_library_vector_576`: Library stub: loads a library base from a global variable and calls the library function at offset minus 576 of that base, returning its result to the caller.
+- `call_library_vector_570`: Library stub: loads a library base from a global variable and calls the library function at offset minus 570 of that base, returning its result to the caller.
+- `call_library_function_9`: Calls a function within a library using a pointer retrieved from a global table.
+- `call_library_function_10`: Invokes a library function through an indirect pointer located at a specific offset from a base address.
+- `call_library_vector_192`: Library stub: loads a library base from a global variable and calls the library function at offset minus 192 of that base, returning its result to the caller.
+- `execute_indirect_call_2`: Performs an indirect call to a function pointer located at a specific offset within a structure pointed to by a value in a register.
+- `execute_indirect_call_3`: Performs an indirect call to a function pointer located at a different offset within a structure pointed to by a value in a register.
+- `execute_indirect_function`: Fetches a function pointer from a nested offset within a structure pointed to by a global variable and executes it.
+- `call_library_vector_66`: Library stub: loads a library base from a global variable and calls the library function at offset minus 66 of that base, returning its result to the caller.
+- `execute_indirect_function_pointer_4`: Retrieves a function pointer from a nested offset within a structure pointed to by a global variable and executes it.
+- `call_library_vector_120`: Library stub: loads a library base from a global variable and calls the library function at offset minus 120 of that base, returning its result to the caller.
+- `execute_indirect_function_pointer_5`: Retrieves a function pointer from a nested offset within a structure pointed to by a global variable and executes it.
+- `execute_indirect_function_pointer_6`: Retrieves a function pointer from a nested offset within a structure pointed to by a global variable and executes it.
+- `execute_indirect_function_pointer_7`: Retrieves a function pointer from a nested table structure and executes it.
+- `call_library_vector_246`: Library stub: loads a library base from a global variable and calls the library function at offset minus 246 of that base, returning its result to the caller.
+- `call_library_vector_264`: Library stub: loads a library base from a global variable and calls the library function at offset minus 264 of that base, returning its result to the caller.
+
+### icon.library
+
+- `return_error_value`: Library code that returns a constant value of all bits set.
+- `increment_counter_clear_bit`: Library code that increments a 16-bit value at a specific offset from a base pointer and clears a single bit in a byte at another offset from the same pointer.
+- `decrement_library_refcount`: The library code decrements a reference counter in a global structure.
+- `manage_linked_list_2`: Library code that either inserts a node into a linked list or sets a specific bit in a status byte.
+- `set_status_bit`: Library code that sets a specific bit in a byte at an offset from a base pointer and returns zero.
+- `return_zero_9`: Library code that returns zero.
+- `execute_callback_and_store_results`: Library code that copies two 32-bit values from a table into memory, calls a function via a pointer, and either calls another routine if the result is zero or stores the result and a value into global variables.
+- `copy_two_pointers_from_table`: Library code that copies two 32-bit values from an address derived from a register into two global variables.
+- `call_library_handler`: This library routine simply calls another routine and then returns.
+- `call_icon_data_copy_2`: This library routine unconditionally calls a helper routine to copy icon data to the stack and then returns.
+- `call_icon_init_routine_2`: This library routine invokes a single initialization function to set up icon data structures and then returns.
+- `call_icon_data_copy`: This library routine unconditionally calls a helper routine to copy icon data to the stack and then returns.
+- `call_handler_routine`: This library routine calls another routine and then returns.
+- `call_and_increment_parameter`: This library routine calls another routine with the same first argument and then returns, while the second argument is increased by a constant during the process.
+- `execute_patch_logic`: This library routine calls a procedure to perform conditional execution of a series of routines involving patch table initialization and indirect handler calls.
+- `call_icon_init_routine`: This library routine invokes a single initialization function to set up icon data structures and then returns.
+- `frag_move_jsr_addq_rts`: Short code fragment that copies a0 to the stack, then copies a6 to the stack, then calls initialize_library_patch_table, then adds 8 to a7, then returns.
+- `execute_recursive_handler`: This library routine calls another routine with an incremented parameter and returns.
+- `call_other_routine`: The routine calls another routine and then returns.
+- `call_search_pattern_segments`: This routine calls another routine and then returns.
+- `call_numeric_parser`: This library routine calls a routine that parses a numeric value from a string and then returns.
+- `update_data_field`: Library code that calls another routine via a function pointer table using a passed parameter, then stores a second parameter into a memory location at an offset from the returned pointer.
+- `update_icon_structure`: This library routine calls another routine to obtain a pointer, copies a block of data into a structure, and updates several fields within that structure.
+- `copy_and_update_structure`: The library code copies a block of data from one location to another and then updates several fields in a destination structure, including a pointer to itself.
+- `return_zero_stub_library_code`: As part of a library, this routine sets d0 to zero, restores several registers from an offset of the stack pointer, unlocks a6, and returns.
+- `copy_icon_data_to_stack`: This library routine copies ten longwords from an offset within a structure pointed to by the third argument into a local array on the stack, then copies several additional fields from the same structure into other stack slots and finally calls another routine with the first two arguments and a pointer to a stack-resident header.
+- `reconstruct_icon_structure`: Rebuilds and synchronizes an icon structure by validating attribute flags and reassigning linked list pointers.
+- `update_icon_structure_chain`: Updates and synchronizes a linked list of icon structures by validating specific attribute flags and reassigning pointers.
+- `manage_icon_chain`: Library code that builds or updates a linked list of icon structures by calling specific functions and managing pointers.
+- `process_icon_chain`: Library code that iterates through a list of function pointers, executing them and updating a counter.
+- `call_and_return_zero`: The library code calls another routine and then returns zero.
+- `restore_registers_and_return_3`: Moves a longword from d4 to d0, restores several registers from a stack offset relative to a6, unlocks a6, and returns.
+- `recursively_traverse_icon_hierarchy`: Iterates through a hierarchical icon data structure by following nested pointers and linked lists.
+- `traverse_icon_structure_tree`: Iterates through a hierarchical icon data structure by following nested pointers and linked lists.
+- `process_status_chain`: This library routine traverses multiple structures and tables, invoking callbacks and updating counters based on the return values of nested calls.
+- `iterate_icon_table`: This library routine walks a null-terminated table of pointers, calling a routine for each entry and updating a counter.
+- `iterate_icon_table_entries`: Library code that walks a null-terminated table of pointers, calling a routine for each entry, updating a counter, and invoking a callback while potentially processing a secondary entry.
+- `traverse_list_nodes`: This library routine traverses a linked list structure by following pointers stored at an offset from the current node.
+- `iterate_linked_list_nodes`: The routine traverses a linked list structure by following pointers stored at an offset from the current node.
+- `increment_param_and_recurse`: Library code that calls another routine with the same first argument and the second argument increased by a constant, then returns.
+- `process_patch_logic`: Library code that performs conditional execution of a series of routines involving patch table initialization and indirect handler calls based on returned values.
+- `return_zero_and_store`: Library code that returns zero and stores two values into a table at a calculated offset using a decremented counter.
+- `return_zero_11`: The library code returns the constant zero.
+- `store_indexed_pair`: Decrements a counter and uses it to store two values into a table at a calculated offset.
+- `decrement_counter_and_store_pair`: The routine decrements a short counter through a pointer, then uses the counter value as an index into a table pointed to by a global variable.
+- `initialize_library_patch_table`: This library routine performs a series of conditional calls to initialize structures and manage patch logic through various subroutines.
+- `return_zero_immediately`: This library routine calls another routine and then returns zero.
+- `call_library_routine_and_return_zero`: Library code that calls another routine and then returns zero.
+- `incremental_recursive_call`: Library code that performs a recursive call with an incremented parameter until the callee stops the recursion.
+- `find_delimiter_in_list`: This library routine iterates through a linked list of integers to find a specific character delimiter within a data buffer.
+- `find_string_delimiter`: This library routine searches through a string for an equals sign character and returns a pointer to the position following it.
+- `traverse_linked_list_for_delimiter`: Iterates through a linked list of nodes to find a specific character within the data pointed to by each node.
+- `search_pattern_segments`: Iterates through a data stream to find matching segments based on a specified length.
+- `iterate_string_segments`: Iteratively searches through a string by comparing segments and checking for specific character matches.
+- `search_string_segments`: This library routine performs an iterative search by comparing string segments and checking for specific conditions.
+- `perform_iterative_search`: The library code executes a loop that calls other routines to perform arithmetic and comparisons until a specific condition is met.
+- `search_string_segments_2`: This library routine performs a nested loop to search for specific patterns or segment lengths within a data stream.
+- `parse_numeric_string_7`: Library code that parses a numeric value from a string and copies segments of data into a destination structure.
+- `parse_numeric_string_6`: Converts a sequence of characters into a numeric value by iterating through the string and performing arithmetic.
+- `parse_numeric_string_4`: This library routine converts a string of characters into a numeric value through iterative multiplication and addition.
+- `parse_numeric_string_3`: This library routine iterates through a string to calculate a numeric value and performs conditional checks against a global variable.
+- `validate_range_offset`: The library code checks if a value is within a specific range and returns an offset or a value with all bits set.
+- `return_all_ones_2`: This routine returns a value consisting of all bits set to one.
+- `execute_indirect_handler_2`: This library routine retrieves a pointer from a data structure and performs an indirect call.
+- `execute_indirect_handler_3`: This library routine executes a subroutine through a pointer retrieved from a memory offset.
+- `call_library_vector_228`: Library stub: loads a library base from a global variable and calls the library function at offset minus 228 of that base, returning its result to the caller.
+- `execute_indirect_handler_4`: This library routine performs an indirect jump to a function pointer stored in a table.
+- `execute_indirect_handler_5`: This library routine loads a function address from a pointer and transfers control to it.
+- `execute_indirect_handler`: This library routine fetches a function pointer from a location and executes it.
+- `call_library_vector_36`: Library stub: loads a library base from a global variable and calls the library function at offset minus 36 of that base, returning its result to the caller.
+- `call_library_vector_42`: Library stub: loads a library base from a global variable and calls the library function at offset minus 42 of that base, returning its result to the caller.
+- `call_library_vector_48`: Library stub: loads a library base from a global variable and calls the library function at offset minus 48 of that base, returning its result to the caller.
+- `propagate_icon_change`: The library routine forwards a set of four parameters to another routine, checks the returned value, and if non-zero calls the same routine again with a modified argument list.
+- `initialize_patch_table`: This library routine calls another routine and, if successful, updates a value in a structure and performs a recursive call with an incremented pointer.
+- `return_zero_10`: This library routine returns a value of zero to the caller.
+- `validate_parameter_match`: Library code that calls another routine and returns zero if the returned value does not match a passed parameter.
+- `tiny_move_rts_2`: Small routine of 2 instructions that copies d1 to d0, then returns.
+- `validate_parameter_match_2`: Library code that calls another routine and returns zero if the result does not match a provided parameter.
+- `return_void`: Library code that performs an empty return.
+- `rotate_and_divide_32bit`: The library code performs bitwise rotations and arithmetic operations on 32-bit values based on a divisor.
+- `rotate_32bit_value`: The library code rotates a 32-bit value left by one bit per iteration for sixteen iterations, using a carry flag to move bits between the high and low halves.
+- `multiply_32_bit_integers`: The library code computes the 32-bit product of two 32-bit registers using 16-bit partial products.
+- `forward_call_to_helper_3`: Library code that pushes d2 to the stack, shifts d1 and d0 into d2 and d1, calls a helper routine, restores d2, and returns.
+- `call_helper_return_register`: Library code that pushes d2 to the stack, shifts d1 and d0 into d2 and d1, calls a helper routine, moves the result from d1 to d0, restores d2, and returns.
+- `negate_result_on_flag_2`: As library code, it handles the signs of two values, calls rotate_and_divide_32bit, and negates the result when the flag the helper leaves in an address register is nonzero before returning.
+- `call_and_negate_on_flag_3`: As library code, it calls rotate_and_divide_32bit, then returns its first result, or the negation of that result when the second result left in an address register is nonzero.
+- `invoke_table_entry_2`: The library code invokes a function pointer retrieved from an offset within a global variable.
+- `store_byte_at_address`: The library code stores a byte from a register into a memory location pointed to by another register.
+- `compute_string_checksum`: The library code iterates through a null-terminated byte string, updating a 32-bit accumulator with a decrementing 1s-complement-style pattern for each character.
+- `find_character_in_string`: Library code that searches for a specific character within a null-terminated string and returns a pointer to its location.
+- `return_zero_25`: The library code is an empty routine that returns zero.
+- `copy_c_string_2`: The library code copies bytes from a source pointer to a destination pointer until a zero byte is encountered, advancing both pointers each iteration.
+- `append_string_to_end`: The library code finds the end of a string and then copies a second string to that location.
+- `compare_string_segments`: Library code that compares two strings up to a specified number of characters and returns one if they match or zero otherwise.
+- `return_constant_one_4`: Returns the integer value one to the caller.
+- `scan_string_bytes`: This library routine iterates through a string, checking for a null terminator while decrementing a counter.
+- `pass_through_call`: This routine is an empty wrapper that immediately calls another routine and returns.
+- `copy_and_terminate_string`: The library code copies a specified number of bytes from a source to a destination and then pads the remaining length with null bytes.
+- `empty_routine_short`: The library code is an empty routine that performs no work and returns.
+- `update_pointer_chain`: Stores the address of a pointer argument into the memory location pointed to by that argument, increments the stored value by four, clears the subsequent word, and stores the original pointer value into the following word.
+- `process_icon_request`: Library code that validates a parameter, calls another routine to check a return value, and if successful, performs further calls using a value from a pointer.
+- `validate_status_chain`: This library routine repeatedly calls another routine and checks its return value, traversing a structure through a pointer.
+- `loop_and_validate_status`: Library code that repeatedly calls a routine and checks its return value, incrementing a value through a pointer if certain conditions are met.
+- `return_zero_library_code`: As part of a library, this routine sets d0 to zero, restores several registers from the stack, and returns.
+- `calculate_icon_dimensions`: Library code that performs a sequence of calculations involving multiplication and parameter validation.
+- `return_error_code`: Library code that returns a value of all bits set.
+- `build_icon_chain`: Library code that constructs a linked sequence of icon structures by allocating and linking memory blocks.
+- `traverse_icon_list`: Library code that iterates through a list of icon structures and updates pointers within them.
+- `iterate_dispatch_sequence`: Library code that iterates through a sequence of values to find matches and executes function pointers from a table.
+- `return_negative_one`: The library code returns the constant negative one.
+
+### info.library
+
+- `empty_routine_2`: This library code routine is empty.
+- `store_library_state`: The routine stores the incoming register values into a global variable and a table, and writes a pointer through an offset in a structure, then stores that pointer into another global variable.
+- `propagate_icon_update_recursive`: Forwards four parameters to another routine and checks the return value.
+- `call_library_helper`: Library code that calls another routine to allocate memory and initialize a structure, then returns.
+- `call_nested_routine`: This library routine calls another routine and returns.
+- `return_immediately_6`: This routine is an empty function that performs no operations and returns to its caller immediately.
+- `reset_library_state_recursive`: This library code calls itself indefinitely, resulting in infinite recursion, before finally calling a routine that resets the library state.
+- `clear_flag_and_increment_counter`: The routine clears a specific bit in a byte field of a structure pointed to by its argument and increments a 16-bit counter field within the same structure.
+- `update_status_flags_4`: Checks a specific byte in a data structure and sets a bit if a condition is met.
+- `call_library_functions_with_offset_args`: This library routine retrieves a library base from a global variable and calls two library functions using offsets and calculated arguments.
+- `decrement_and_check_status`: This library routine decrements a short integer at a specific offset within a structure and, if the result is zero and a specific bit is set in a byte at another offset, calls another routine; otherwise, it returns zero.
+- `return_zero_12`: The library code routine returns zero.
+- `recursively_call_pointers`: The routine checks several global pointers and arguments, then calls itself recursively if a pointer is non-zero.
+- `initialize_info_library_structure`: Allocates a memory block and populates a complex internal table with various offsets and pointers derived from the base address.
+- `initialize_info_library_struct`: Initializes a structure or table by calculating and storing several offsets or pointers derived from a base address.
+- `execute_conditional_callbacks_2`: This library routine performs a series of conditional calls through pointers, storing results in global variables and executing a final routine with a status code.
+- `execute_conditional_callback_2`: Library code that calls a function through a pointer and executes another routine with a specific integer value if the result is zero.
+- `execute_conditional_function_call`: Library code that calls a function through a pointer and executes another routine if the result is zero.
+- `check_function_result`: This library routine calls a function through a pointer and executes another routine if the result is zero.
+- `return_one`: The library code routine returns one.
+- `retrieve_nested_value`: Library code that traverses a data structure to retrieve a longword value based on specific byte checks and pointer offsets.
+- `retrieve_nested_structure_value`: Library code that traverses a nested data structure to retrieve a longword value.
+- `traverse_data_structure`: This library routine traverses a nested data structure to retrieve a specific longword value.
+- `get_offset_value_2`: Library code that retrieves a longword from a memory location determined by an offset within a structure.
+- `get_offset_value`: This library routine retrieves a longword from a memory location determined by an offset within a structure.
+- `tiny_moveq_movea_rts_2`: Small routine of 3 instructions that loads 0 into d0, then copies (a7)+ to a2, then returns.
+- `retrieve_nested_info`: This library routine retrieves a value from a structure, updates a field in another structure, and performs conditional logic based on a flag to return a specific value.
+- `check_library_status_and_set_flag`: Library code that checks a boolean flag and a function return value to decide whether to update a global flag and retrieve a value from a nested pointer.
+- `update_info_structure_2`: Library code that updates a structure by retrieving values from other structures and managing internal counters and pointers.
+- `update_info_structure`: Updates a structure with values from a library call and modifies internal counters and pointers.
+- `validate_library_parameters`: As part of library code, this routine checks a global variable, calls a library function via a global base, and executes a parameter-validated routine.
+- `update_structure_counters`: Library code that updates a counter in a structure and conditionally copies data from a pointer into another structure member.
+- `update_icon_state`: Library code that iterates through a table, updates a counter in a structure, and conditionally copies data from one pointer to another.
+- `copy_library_strings_and_data`: This library routine copies a string using a library function and then copies certain dwords or even dwords from one structure to another.
+- `execute_library_callbacks`: Library code that executes a series of conditional callbacks through pointers and stores the results in global variables.
+- `dispatch_library_callback`: Library code that evaluates status conditions and executes a callback function through a pointer with various parameters.
+- `dispatch_info_callback`: Library code that evaluates a status and executes a callback function through a pointer with various parameters.
+- `execute_conditional_callback_5`: Library code that evaluates a status value and executes a sequence of nested function calls based on the result.
+- `execute_conditional_callback_chain`: Evaluates a status value and executes a sequence of nested function calls based on the result.
+- `execute_library_callback`: This library routine checks global variables and executes a function through a pointer using parameters derived from registers and memory.
+- `execute_conditional_callback_4`: Library code that retrieves values from routines and executes a function through a pointer using parameters derived from registers and memory.
+- `validate_and_execute_library_callback`: This routine checks a global variable and a register, then executes a function through a pointer using a calculated parameter.
+- `execute_indirect_function_3`: Fetches a function pointer from a location relative to a global variable and executes it.
+- `execute_indirect_function_4`: Fetches a function pointer from a memory location and executes it.
+- `execute_indirect_function_5`: Fetches a function pointer from a location offset from a global variable and executes it.
+- `execute_indirect_function_6`: Fetches a function pointer from a location offset from a global variable and executes it.
+- `call_library_vector_234`: Library stub: loads a library base from a global variable and calls the library function at offset minus 234 of that base, returning its result to the caller.
+- `execute_indirect_function_7`: Fetches a function pointer from a global memory location and executes it.
+- `call_library_vector_252`: Library stub: loads a library base from a global variable and calls the library function at offset minus 252 of that base, returning its result to the caller.
+- `call_indirect_pointer_2`: Library code that calls a function pointer stored at an offset from a global variable.
+- `call_indirect_pointer_3`: Library code that executes a subroutine located via a pointer in a global table.
+- `call_indirect_pointer_4`: Library code that performs an indirect call to an address retrieved from a global variable.
+- `call_indirect_pointer_5`: Library code that jumps to a function address found by offsetting a global pointer.
+- `call_indirect_pointer_6`: Library code that invokes a subroutine through a pointer stored in a global variable.
+- `call_indirect_pointer_7`: Library code that calls a routine by dereferencing a pointer within a global data structure.
+- `call_indirect_via_table_5`: This library routine calls another routine through an indirect pointer taken from a global variable table.
+- `execute_indirect_function_11`: Fetches a function pointer from a global variable and executes it.
+- `call_indirect_handler`: This library routine calls a function through a pointer retrieved from a global table at a specific offset.
+- `execute_indirect_function_12`: Fetches a function pointer from a global variable at a specific offset and executes it.
+- `call_library_vector_222`: Library stub: loads a library base from a global variable and calls the library function at offset minus 222 of that base, returning its result to the caller.
+- `execute_indirect_function_13`: Fetches a function pointer from a global table and executes it.
+- `call_library_vector_270`: Library stub: loads a library base from a global variable and calls the library function at offset minus 270 of that base, returning its result to the caller.
+- `call_library_vector_276`: Library stub: loads a library base from a global variable and calls the library function at offset minus 276 of that base, returning its result to the caller.
+- `execute_indirect_function_14`: Fetches a function pointer from a global table using an offset and executes it.
+- `execute_indirect_function_15`: Fetches a function pointer from a global variable and executes it.
+- `call_library_vector_396`: Library stub: loads a library base from a global variable and calls the library function at offset minus 396 of that base, returning its result to the caller.
 - `call_library_vector_408`: Library stub: loads a library base from a global variable and calls the library function at offset minus 408 of that base, returning its result to the caller.
 - `execute_indirect_function_16`: Fetches a function pointer from a location calculated by adding an offset to a global variable and then calls that function.
 - `call_indirect_pointer_8`: Library code that executes a function pointer retrieved from a different global variable.
@@ -21,7 +385,12 @@
 - `dispatch_command_table`: Library code that performs a switch-based dispatch on a value found within a structure to execute various subroutines or modify global memory.
 - `return_constant_one_3`: This library routine returns the integer value one to the caller.
 - `toggle_bitmask_state`: Selects a bitmask based on a value in a structure and performs a bitwise XOR operation on a global variable.
-- `store_register_to_global`: Library code that stores a register value into a global variable offset by a fixed amount and then calls another routine using a pointer from a structure.
+- `modify_library_bits`: As library code, it performs bitwise OR operations on bytes at various offsets of a pointer in a4 and at specific global word locations.
+- `update_xor_two`: As library code, it performs an XOR between a value in d1 and two, stores the result in a global variable at offset 112, and branches to another location.
+- `update_xor_one`: As library code, it performs an XOR between a value in d1 and one, stores the result in a global variable at offset 112, and branches to another location.
+- `update_xor_sixteen`: As library code, it performs an XOR between a value in d1 and sixteen, stores the result in a global variable at offset 112, and branches to another location.
+- `update_xor_thirty_two`: As library code, it performs an XOR between a value in d1 and thirty-two, stores the result in a global variable at offset 112, and branches to another location.
+- `update_global_xor_and_template`: As library code, it performs an XOR between two values, stores the result in a global variable at offset 112, and calls setup_string_template with a pointer from a structure in a1.
 - `validate_info_metadata_attributes`: Validates the attributes and metadata of an information object by checking specific byte flags and comparing string data.
 - `validate_string_attributes`: Library code that performs multiple string-based checks and calls other routines to validate data against a global variable or a pointer.
 - `process_string_and_attributes`: Library code that copies a string, calls a library function, and performs several conditional checks involving pointer offsets and string copies.
@@ -64,7 +433,16 @@
 - `call_library_vector_180`: Library stub: loads a library base from a global variable and calls the library function at offset minus 180 of that base, returning its result to the caller.
 - `call_library_vector_186`: Library stub: loads a library base from a global variable and calls the library function at offset minus 186 of that base, returning its result to the caller.
 - `dispatch_localized_string_sequences`: Selects and executes a sequence of string formatting operations based on a state index.
-- `return_immediately_7`: This routine is an empty function that performs no operations and returns immediately to the caller.
+- `register_library_info`: As library code, it performs multiple calls to a routine in a3 with various parameters, calls a routine in a4 to update several values in a structure, calls register_info_table_entries, and finally performs a comparison to set d0.
+- `load_constant_and_branch_2`: As library code, it loads the constant 96 into a0 and branches to another location.
+- `branch_to_address_2`: As library code, it loads the constant 106 into a0 and branches to a specific address.
+- `branch_to_address_alt`: As library code, it loads the constant 118 into a0 and branches to a specific address.
+- `call_address_with_stack_params`: As library code, it pushes two constants onto the stack, moves the value at offset 130 of a0 to a0, and branches to a routine at the address in a3.
+- `execute_multiple_library_calls_2`: As library code, it pushes several parameters onto the stack to call a routine at the address in a3 multiple times, calls execute_list_of_library_calls, calls register_info_table_entries, and then calls the routine at a3 once more before branching.
+- `initialize_library_tables`: As library code, it pushes parameters to call a routine at a3 several times, calls a routine at a4 twice using data from structures pointed to by a0, calls execute_list_of_library_calls, calls initialize_display_palette_entries, calls register_info_table_entries, and calls the routine at a3 one final time before branching.
+- `setup_info_and_palette`: As library code, it calls a routine at a3 multiple times, calls a routine at a4 twice, calls execute_list_of_library_calls, calls register_info_table_entries, calls set_info_table_entries, calls the routine at a3, and calls initialize_display_palette_entries before branching.
+- `execute_library_calls_5`: As library code, it calls a routine at an address in a3 three times with different parameters, calls a routine to execute a list of library calls, calls a routine to register info table entries, and finally calls the routine at a3 one more time before branching.
+- `call_address_in_a3`: As library code, it pushes a constant onto the stack, calls the routine at the address in a3, and restores registers from the stack before returning.
 - `initialize_configuration_parameters`: This routine performs a series of conditional calls to populate global variables with values derived from a configuration structure.
 - `execute_conditional_calls`: Library code that calls a function multiple times based on a value retrieved from a structure, provided several initial function calls return non-zero.
 - `execute_repeated_calls_2`: Library code that performs a variable number of calls to another routine based on a value stored in a global variable.
@@ -129,11 +507,18 @@
 - `execute_table_based_operation`: Retrieves an entry from a table and performs a secondary operation using the retrieved data, returning an error value if the initial retrieval fails.
 - `parse_command_string_4`: Parses a byte string to identify specific command patterns and characters, updating pointers and local variables.
 - `parse_command_string_3`: Routine that parses a byte string to identify specific command patterns and characters, updating pointers and local variables accordingly.
+- `parse_command_string_branch`: Sets a byte at offset 12 of a structure in a3 to itself, sets a byte at offset 2 of a structure in a5 to itself, and branches to another routine.
+- `parse_command_string_short_branch`: Sets register d6 to 1 and branches to another routine.
 - `parse_command_string_2`: Parses a byte string to identify specific command patterns and characters, updating pointers and local variables accordingly.
 - `parse_command_string`: Routine that parses a string to identify specific characters and command patterns, updating pointers and local variables accordingly.
+- `compare_and_reset_value`: Compares a long value at offset -28 of a structure in a5 with a long value at offset -10 of the same structure, and if the latter is smaller, sets a long value at offset -10 to zero before branching.
+- `process_structure_lists`: It decrements a long value at offset -10 of a structure in a5, and if a byte in d7 is zero, it enters a loop that decrements a long value at offset -28 of a5 and calls a routine at an address from a structure in a5 using a byte from offset -52 of a5; otherwise, it performs a similar loop using offset -28 and offset -52 but in a different order.
+- `loop_and_call_via_a0`: Decrements a value at offset -5 of a structure in a5, and if not less than zero, calls a routine at an address from a structure in a5 before branching back to the start of this routine.
+- `loop_and_call_via_pointer`: It decrements a 32-bit value at offset 28 of a structure in a5; if the value is not less than zero, it copies a byte from offset 27 of the structure to the stack, calls a routine at an address stored at offset 16 of the structure, adjusts the stack pointer, and loops back to the start.
+- `loop_and_call_with_byte_copy`: Decrements a value at offset -28 of a structure in a5, and if not less than zero, copies a byte from an address in a5 to the stack and calls a routine at an address from a structure in a5 before branching back to the start of this routine.
+- `function_epilogue_8`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
 - `parse_format_specifiers`: Parses a string for percent signs and calls a function to handle formatted data when a single percent sign is encountered.
 - `parse_command_line_arguments_3`: Parses a string into an array of pointers by splitting it based on whitespace and handling quoted substrings.
-- `tiny_move_ori_ori_ori`: Small routine of 4 instructions that copies d0 to d5, then merges 0 into d0, then merges 0 into d0, then merges 0 into d0.
 - `process_event_dispatch`: Calls a routine to manage resource allocation and windowing by validating buffers and handling icon changes or event lists.
 - `allocate_data_segment`: Checks flags in a structure and calls another routine to allocate a segment, updating several fields in the structure based on the result.
 - `manage_linked_list_nodes`: Manages a dynamic data structure by inserting, removing, or traversing nodes within a linked list.
@@ -142,6 +527,8 @@
 - `move_pointer_and_return`: Moves the value in a3 to d0 and restores several registers from the stack before returning.
 - `append_bounded_string_2`: Appends a specific number of characters from a source string to the end of a destination string and adds a terminating zero.
 - `copy_string_to_buffer`: Finds the end of a destination buffer and copies characters from a source string until a zero byte is encountered.
+- `reverse_engineer`: Repeatedly calls normalize_fixed_point_divide_2, stores a byte from a register through a pointer, and then reverses a buffer in place before terminating it with a null byte.
+- `convert_number_to_ascii`: The routine converts an integer into ASCII decimal digits using a temporary stack buffer and copies them in reverse order to a buffer.
 - `parse_signed_decimal`: Parses a signed decimal integer from a string, stores the result in an integer pointer, and returns the number of characters consumed.
 - `push_byte_to_stack`: Increments a counter and stores a byte into a buffer at a pointer location, then increments that pointer.
 - `format_string_data`: Initializes a buffer and a counter before parsing a string for format specifiers and storing bytes into a destination.
@@ -169,6 +556,7 @@
 - `allocate_and_initialize_structure`: The routine allocates memory for a structure, populates its fields with provided arguments and system values, and inserts it into a linked list.
 - `get_table_entry`: Checks if an index is within valid bounds and points to a non-zero entry in a table, then returns the calculated address of that entry or a specific error value.
 - `check_signal_status_2`: Retrieves a value from a function pointer in a global variable, masks it, and conditionally executes another routine based on the state of a global pointer.
+- `call_check_signal_status_2`: Call stub: calls check_signal_status_2, then returns to its own caller.
 - `execute_stored_callback`: Retrieves a function pointer from a structure located via a global pointer and executes it.
 - `iterate_callback_array`: Iterates through an array of values and executes a routine via a pointer if certain bitwise conditions are met.
 - `free_linked_list`: Traverses a linked list and calls a routine via a global variable table to free each element, then clears two pointers in a structure.
@@ -177,10 +565,10 @@
 - `set_message_type_and_target`: When a non-zero parameter is passed, the routine calls another routine via a function pointer stored in a global variable table and, if the call returns a non-zero pointer, writes a message type byte, a zero byte, the original parameter as an integer, and a 16-bit value into fields of the returned structure.
 - `calculate_bit_shift_value`: Performs complex bitwise operations and shifts on input registers to calculate a new value based on specific magnitude thresholds.
 - `compute_bit_logic_result`: Performs bitwise operations and table lookups to return a computed 64-bit or 32-bit result.
+- `save_and_test_d0`: Pushes the contents of d6 onto the stack, tests d0, and if d0 is zero, sets d6 to zero and branches to another routine; otherwise it branches to another routine.
 - `check_magnitude_threshold`: Checks if a value in a register is non-zero and calls another routine if the absolute value is below a specific threshold.
 - `apply_table_rotation`: Uses a table and complex bitwise rotations or shifts to calculate and return a new value.
 - `perform_iterative_bit_manipulation`: Executes a loop that performs bitwise rotations and XOR operations using values retrieved from a table and input registers.
-- `perform_complex_bit_manipulation`: Performs a series of bitwise shifts, rotations, and or-operations using values derived from input registers and a table, returning a calculated 32-bit value.
 - `calculate_normalized_value`: Adjusts a global accumulator and shifts an input value based on magnitude thresholds, then returns a final computed value involving carry flags and bitwise operations.
 - `execute_bit_rotation`: Calls a routine that performs complex bitwise rotations, shifts, and arithmetic operations on input values.
 - `calculate_complex_bit_rotation`: Performs a series of bitwise rotations, shifts, and arithmetic operations on input values.
@@ -228,8 +616,21 @@
 - `process_intuition_request`: Performs a series of operations involving message handling, text length calculation, and a loop that waits for a specific value in a message queue.
 - `call_end_request`: Library stub: loads its arguments and the intuition library base, calls EndRequest and returns its result to the caller.
 - `manage_ui_list_display`: Iterates through a linked list of nodes to perform conditional updates and coordinate with windowing and text rendering routines.
-- `dispatch_state_command`: Dispatches a command based on a value retrieved from a structure using a large switch-case mechanism.
+- `set_display_flag_and_branch`: Clears a byte at the address pointed to by a0, clears the carry flag, sets the first bit of a byte at offset 24576 of the structure pointed to by a4, and branches to another routine.
+- `perform_nop_and_branch`: Performs a logical OR operation on a data register with itself and then branches to another routine.
+- `set_bit_and_branch`: Sets bit 0 of a byte at the address in a0, sets bit 0 of d2, and branches to another routine.
+- `execute_multiple_subroutines`: Calls two subroutines, clears the stack, calls a third subroutine, adjusts the stack pointer, and branches to another routine.
 - `dispatch_state_handler`: Dispatches a command based on a value in a structure using a switch-case mechanism.
+- `jump_to_cleanup_ui_list`: Performs a relative branch to another routine.
+- `jump_to_cleanup_ui_list_offset`: Performs a relative branch to another routine.
+- `branch_to_path_sorting`: Performs a short relative branch to another routine.
+- `copy_string_to_buffer_4`: Calculates a memory offset based on a value in a register, checks a flag in a table, and if the flag is zero, calls a routine via a pointer in a6.
+- `call_intuition_gadget_functions`: Loads two pointers from a table in a4 into a0 and a1, sets d0 to negative one, calls a subroutine using a pointer from a6, pushes a2 to the stack, reloads a0 and a1 from the table, subtracts a2 from itself, calls another subroutine using a pointer from a6, restores a2 from the stack, and branches to another routine.
+- `format_and_sort_path_string`: Ensures a path separator is present in a string, then calls a routine to execute a callback and sort the resulting list.
+- `format_and_sort_path_list`: Truncates a path string from offset 24 of a structure, ensures a path separator is present, and then executes a callback to sort and update a list.
+- `load_constant_and_branch`: Loads the value 1 into register d5 and performs a short branch to another routine.
+- `format_and_sort_ui_string`: Calculates a fixed-point offset to locate a string pointer, copies a string from a source to a destination, concatenates a suffix to that destination, and calls a routine to sort the resulting list.
+- `cleanup_ui_list`: Stores a value from a structure into another location, calls two library functions using a pointer from a6, calls execute_callback_and_clear, calls free_list_nodes, calls close_window_and_cleanup with a value from a4, and returns the stored value.
 - `execute_callback_and_clear`: Checks if a pointer in a global structure is non-zero, executes the function at that address, and then clears the pointer.
 - `execute_callback_and_sort`: Checks a pointer in a global structure, executes the function at that address, and then inserts a new node into a sorted linked list.
 - `insert_into_sorted_list_3`: Inserts a new node into a linked list while maintaining a sorted order based on string comparisons.

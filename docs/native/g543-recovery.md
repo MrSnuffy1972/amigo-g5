@@ -7,42 +7,42 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (2703424 top-level bytes in 88 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 21 of 21 units identical (bytes and relocations), 10 raw-word lines |
-| Functions named and described | pass, 435 of 435 named (0 author symbols), 435 of 435 described (20 by rule, 413 by the local model) |
+| Byte-identical reassembly with vasm | pass, 21 of 21 units identical (bytes and relocations), 9 raw-word lines |
+| Functions named and described | pass, 595 of 595 named (0 author symbols), 595 of 595 described (31 by rule, 562 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 1040 of 1040 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 68064 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 9411 of 9425 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 12169 of 12169 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 1078843 |
-| code | 31748 |
-| data | 1541895 |
-| padding | 21754 |
+| code | 39054 |
+| data | 1534549 |
+| padding | 21794 |
 | unused | 29184 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:nx | 6 | 45 | 2 |
-| Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:Install | 10 | 45 | 2 |
-| Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:sp0 | 10 | 45 | 2 |
-| Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:more | 6 | 45 | 2 |
-| run | 2 | 117 | 2 |
-| resident | 2 | 117 | 2 |
-| sp | 35 | 962 | 54 |
-| Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:sim | 12 | 45 | 2 |
+| Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:nx | 6 | 250 | 17 |
+| Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:Install | 10 | 250 | 17 |
+| Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:sp0 | 10 | 250 | 17 |
+| Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:more | 6 | 250 | 17 |
+| run | 2 | 458 | 12 |
+| resident | 2 | 171 | 4 |
+| sp | 35 | 960 | 52 |
+| Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:sim | 12 | 250 | 17 |
 | SKID_ROW | 2 | 267 | 8 |
-| Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:title | 17 | 45 | 2 |
+| Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:title | 17 | 250 | 17 |
 | Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:Nova | 3 | 317 | 13 |
-| Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:gameover | 10 | 45 | 2 |
-| Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:ttl | 12 | 45 | 2 |
-| Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:intro | 21 | 2802 | 128 |
+| Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:gameover | 10 | 250 | 17 |
+| Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:ttl | 12 | 250 | 17 |
+| Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:intro | 21 | 3126 | 142 |
 | Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:amigasnd.drv | 3 | 1820 | 112 |
-| Nova 9 (1991)(Dynamix)(Disk 3 of 3).adf:story | 11 | 2652 | 98 |
+| Nova 9 (1991)(Dynamix)(Disk 3 of 3).adf:story | 11 | 3039 | 114 |
 | Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:bootblock | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
 | ACTORS5.TBC (raw code file, load address unknown) | 1 | 0 | 0 |
@@ -84,31 +84,103 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `initialize_aga_patch`: Executes a loop of function calls and checks a structure value against a specific bitmask to update a global variable.
 - `decrement_until_minus_one`: Decrements a local variable until it reaches negative one and then returns.
+- `clear_cache_and_loop`: Calls a routine twice, then enters a loop that calls another routine and increments d5, repeating until d5 equals 2, before calling a routine via a pointer at a specific offset.
+- `update_table_values`: Decrements a counter in d1 and loops to add the value from d3 to a table at a1 offset by d2, where d2 is calculated by adding d0 to zero.
+- `branch_to_subroutine`: If a condition is met, it sets a1 to the value in a3, calls another routine, and then branches to a later instruction.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs two instructions (lea.l, moveq) and then falls through into the code that follows, with no return of its own.
+- `copy_four_bytes_in_loop`: Compares a6 with a2 and, if they are not equal, copies four bytes from the source pointed to by a2 to the destination pointed to by a1 in a loop that decrements d0 by 2 each iteration until d0 is zero, then loads a longword from the destination into d0 and returns.
+- `decompress_bitstream_data_3`: Decodes a compressed bitstream by reading a control byte to determine repetition counts and bit lengths, then performs a series of bit-shifting and carry-propagating operations to expand the data into a destination buffer.
+- `process_bitstream_loop`: Sets d7 to 2, then enters a loop that doubles d1, fetches a byte from the address in a0 into d1 if d1 is zero, adds d1 and d0 with carry, decrements d7, increments d0 by 6, and branches to another routine.
+- `initialize_bitstream_parameters`: Sets d0 to 5, sets d7 to 3, and branches to another routine.
+- `initialize_bitstream_parameters_2`: Sets d0 to 4, sets d7 to 2, and branches to another routine.
+- `initialize_bitstream_parameters_3`: Sets d0 to 3, sets d7 to 1, and branches to another routine.
+- `expand_bitstream_variable_length`: Reads a variable number of bits from a bitstream in a0 by shifting and fetching bytes, then uses a value from a table to determine how many additional bits to extract into a destination register.
+- `shift_and_expand_bits`: Shifts the byte in d1 left by one bit and branches if the result is non-zero, otherwise it fetches a byte from the buffer pointed to by a0 into d1, adds it to d1 with carry, adds d2 to d2 with carry, and branches to another location.
+- `decode_bitstream_expansion`: Reads a bit-length from a table and performs a bit-stream expansion by shifting bits from a source buffer into a destination register.
+- `unpack_and_copy_compressed_data`: Reads a control byte from a source buffer to determine a bit-length and a repetition count, then performs a bit-stream expansion to decode values into a destination buffer.
+- `push_registers_to_stack`: Pushes a byte from d0, a byte from d1, and a word from d2 onto the stack using a6 as a pointer, restores several registers, and performs a relative branch.
 
 ### Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:Install
 
 - `initialize_game_state`: Executes a sequence of function calls and checks a global pointer to swap a memory value if a specific constant is found.
 - `decrement_register_until_negative_one`: Decrements a 16-bit register value by one in a loop until the value reaches negative one.
+- `clear_cache_and_loop_install`: Calls a routine twice, then enters a loop that calls another routine and increments d5, repeating until d5 equals 6, before calling a routine via a pointer at a specific offset.
+- `accumulate_array_elements`: Calls a subroutine to determine a count, then enters a loop that calls another routine to fetch a value and adds that value to an array located at the address in a3.
+- `branch_to_subroutine_alt`: Checks a condition, sets a1 to the value in a3, calls another routine, and then performs a branch.
+- `fall_through_entry_2`: Entry point part-way through straight-line code: runs two instructions (lea.l, moveq) and then falls through into the code that follows, with no return of its own.
+- `transfer_four_bytes_iteratively`: Checks if a6 equals a2; if not, it performs a loop that moves four bytes from the memory location at a2 to the memory location at a1, decrementing d0 by 2 each time, and finally moves a longword from the destination into d0 before returning.
+- `expand_variable_length_bitstream_4`: Expands a compressed bitstream by reading control bytes to determine bit lengths and performing bitwise shifts and additions on a value in d1.
+- `process_bitstream_loop_2`: Sets d7 to 2, then enters a loop that doubles d1, fetches a byte from the address in a0 into d1 if d1 is zero, adds d1 and d0 with carry, decrements d7, increments d0 by 6, and branches to another routine.
+- `initialize_bitstream_parameters_4`: Sets d0 to 5, sets d7 to 3, and branches to another routine.
+- `initialize_bitstream_parameters_5`: Sets d0 to 4, sets d7 to 2, and branches to another routine.
+- `initialize_bitstream_parameters_6`: Sets d0 to 3, sets d7 to 1, and branches to another routine.
+- `expand_variable_length_bitstream`: Performs bitwise expansion of a compressed stream by reading control bytes to determine bit lengths and doubling values in d1, potentially fetching additional bits from the source pointed to by a0.
+- `process_bit_expansion`: Doubles the byte in d1 and branches if non-zero, otherwise it loads a byte from the source pointed to by a0 into d1, adds it to d1 with carry, adds d2 to d2 with carry, and branches to another location.
+- `expand_bitstream_data`: Reads a control byte to determine bit lengths and performs bitwise expansion of a compressed stream into a destination buffer.
+- `decompress_bitstream_data_2`: Reads a control byte to determine bit lengths and performs bitwise expansion of a compressed stream into a destination buffer.
+- `push_registers_to_stack_2`: Pushes a byte from d0, a byte from d1, and a word from d2 onto the stack using a6 as a pointer, restores several registers, and performs a relative branch.
 
 ### Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:sp0
 
 - `verify_and_swap_memory_constant`: Executes a loop of function calls and checks a value at a calculated offset from a global pointer.
 - `decrement_d6_until_negative_one_2`: Decrements the value in register D6 until it reaches negative one and then returns.
+- `accumulate_array_elements_loop`: Executes a loop six times, calling a subroutine to fetch values and adding them to an array located at a pointer in a1.
+- `update_table_via_function_return`: Calls a subroutine and uses the returned value to calculate an offset, then adds the value from a register to a memory location at that offset within a table pointed to by a register.
+- `conditionally_call_subroutine_with`: If a zero flag is set, it branches to another location; otherwise, it moves a pointer from a3 to a1, calls another routine, and branches to another location.
+- `fall_through_entry_3`: Entry point part-way through straight-line code: runs two instructions (lea.l, moveq) and then falls through into the code that follows, with no return of its own.
+- `copy_four_bytes_from_source_2`: Compares two pointers and, if they are not equal, copies four bytes from a source pointed to by a register to a destination pointed to by another register using a loop that decrements a counter.
+- `expand_variable_length_bitstream_6`: Reads a control word and two bytes from a table to determine a bit-length and initial values, then enters a loop that performs bitwise left-shifts on a value while fetching new bits from a source buffer to expand a compressed stream into a destination buffer.
+- `expand_bitstream_loop`: Sets d7 to 2, doubles d1, and if d1 is not zero, enters a loop that fetches a byte from the address in a0 into d1, adds d1 and d0 with carry to themselves, decrements d7, and repeats; otherwise, it adds 6 to d0, sets d7 to 3, and branches to another location.
+- `initialize_bitstream_parameters_7`: Sets d0 to 5, d7 to 3, and branches to another location.
+- `initialize_bitstream_parameters_8`: Sets d0 to 4, d7 to 2, and branches to another location.
+- `initialize_bitstream_parameters_9`: Sets d0 to 3, d7 to 1, and branches to another location.
+- `expand_variable_length_bitstream_3`: Performs bitwise expansion of a compressed stream by reading bits from a source pointed to by a0 and using a lookup table to determine bit lengths and values.
+- `update_bitstream_values`: Multiplies a byte in d1 by two and branches if the result is non-zero, otherwise it loads a byte from a buffer pointed to by a0 into d1, adds it to d1 with carry, adds d2 to d2 with carry, and branches to another location.
+- `decompress_bitstream_data_2_3`: Reads a control byte from a table to determine bit lengths and performs bitwise expansion of a compressed stream into a destination buffer.
+- `expand_bitstream_and_copy_data`: Reads a variable-length bitstream from a source buffer to calculate a value, then uses that value as an offset to copy a block of bytes from a source table to a destination buffer.
+- `push_registers_and_branch_v3`: Writes d0, d1, and d2 to the stack at a4, restores multiple registers from the stack, and branches to a different location.
 
 ### Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:more
 
 - `patch_aga_hardware`: Checks a specific bitmask against a value in a memory structure and, if it matches, updates a global variable and clears a memory location.
 - `decrement_register_until_negative_one_3`: Decrements a 16-bit value stored in a register until it reaches negative one and then returns.
+- `update_table_and_call_exec`: Calls a subroutine twice, then enters a loop that executes a subroutine and updates a table by adding a value to an entry at an offset determined by a counter.
+- `add_values_to_table_more`: Doubles d0 and branches if positive; otherwise it calls another subroutine, then enters a loop that runs up to two times, calling another subroutine, calls a fourth subroutine, and adds the result to a table at offset d2 of a3.
+- `branch_and_call_loop`: If a condition is met, it moves the value from a3 to a1, calls another routine, and then branches to a location after the initial conditional branch.
+- `fall_through_entry_4`: Entry point part-way through straight-line code: runs two instructions (lea.l, moveq) and then falls through into the code that follows, with no return of its own.
+- `copy_four_bytes_with_loop`: Compares a pointer in a2 with a pointer in a6 and, if they are not equal, copies four bytes from the source at a2 to the destination at a1 before decrementing a counter in d0 and looping if the counter is not zero; otherwise, it loads a longword from the destination into d0 and returns.
+- `decompress_bitstream_data_5`: Decodes a compressed bitstream by reading control values from a table and performing bit-shifting and addition operations to expand data into a destination buffer.
+- `expand_bitstream_loop_2`: Sets d7 to 2, doubles d1, and if d1 is not zero, enters a loop that fetches a byte from the address in a0 into d1, adds d1 and d0 with carry to themselves, decrements d7, and repeats; otherwise, it adds 6 to d0, sets d7 to 3, and branches to another location.
+- `initialize_bitstream_parameters_10`: Sets d0 to 5, d7 to 3, and branches to another location.
+- `initialize_bitstream_parameters_11`: Sets d0 to 4, d7 to 2, and branches to another location.
+- `initialize_bitstream_parameters_12`: Sets d0 to 3, d7 to 1, and branches to another location.
+- `expand_bitstream_variable_length_2`: Shifts bits from a source buffer into a register, fetching additional bytes from the buffer in a0 as needed, and uses a table to determine the number of bits to process or expand.
+- `process_bitstream_byte`: Doubles the value in d1 and branches if non-zero, otherwise it decrements the pointer in a0 to fetch a byte into d1, performs two additions with carry on d1 and d2, and branches to another location.
+- `decode_bitstream_compressed_data`: Reads a bitstream from a source buffer to expand data using a combination of bit-shifting, variable-length bit-length decoding, and a dictionary-based repetition mechanism.
+- `expand_bitstream_data_2`: Reads a control byte from a source buffer to determine bit lengths and repetition counts, then performs bit-shifting and arithmetic to expand the bitstream into a destination buffer.
+- `push_registers_and_branch_v4`: Stores d0, d1, and d2 onto the stack at a4, restores registers from the stack, and then performs a branch.
 
 ### run
 
 - `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_memory_block_3`: Copies sixteen words from a source location to a destination location and then calls another routine.
+- `initialize_entity_structure_and_copy_data`: Initializes a structure by clearing various offsets, updates specific attributes using a table lookup, and performs a loop to copy a sequence of bytes from one memory location to another based on a calculated length.
+- `update_entity_attribute_and_copy_byte_2`: Fetches a byte from a table using an index stored at offset 0 of a structure, stores it at offset 20, increments a value at offset 24, and calls another routine.
+- `update_entity_attribute_and_copy_byte`: Calculates a new value for a field at offset 22 of a structure in a1 by adding 11 to a value at offset 18, then stores this in offset 22.
+- `update_entity_state_and_call_handler`: Updates several fields in an entity structure within a table, including setting a byte to 10 and copying longwords between offsets, then calls another routine.
+- `branch_with_offset`: Adds the value at offset 84 of the structure in a1 to one and then branches to another routine.
+- `test_status_longword`: Tests a longword at offset 48 of a structure in a1 and branches to another routine if the value is non-zero, otherwise it branches to another location.
+- `mask_and_branch_on_status_bits`: Checks if a longword at offset 48 of a structure has specific bits set; if the value is zero, it branches to another routine, otherwise it performs a bitwise OR to set the upper eight bits of that longword and branches to another routine based on a comparison with a constant.
+- `update_entity_state_and_table_2`: Copies a longword from offset 64 of a structure to offset 108 of the same structure, then calls another routine with parameters loaded from registers and a pointer derived from a table.
+- `update_entity_state_and_table`: Calculates an index into a table using values from a structure, updates a longword at that index, and clears several fields in a secondary table.
+- `process_data_structures`: Performs several calls to a function using values from a structure, modifies a longword in a table based on a calculation, and performs an indirect jump.
 
 ### resident
 
 - `initialize_resident_memory_structure`: Traverses a linked list to find the maximum value in a sequence and then populates a memory structure with a pattern of incrementing values.
 - `copy_memory_block_and_call`: Copies sixteen bytes from a memory location to a destination pointed to by the stack and then executes a function via a pointer.
+- `update_structure_and_call_handlers`: Calculates a value by shifting a register, stores it at offset 4 of a structure in a1, and performs several calls to a routine in a5 while updating various offsets in the structure in a1.
+- `jump_to_address`: Clears register d1 and performs an indirect jump using the address in a6.
 
 ### sp
 
@@ -127,8 +199,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_552`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
 - `call_library_vector_138`: Library stub: loads a library base from a global variable and calls the library function at offset minus 138 of that base, returning its result to the caller.
 - `call_library_vector_420`: Library stub: loads a library base from a global variable and calls the library function at offset minus 420 of that base, returning its result to the caller.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `call_indirect_via_table`: The routine calls another routine through a pointer stored in a global variable.
 - `allocate_and_patch_memory`: Checks fields of a global structure and, if conditions are met, obtains a memory block and a code pointer via library calls, copies a small code stub from another routine into the target, updates a pointer in the global structure, computes a checksum over a short array in the structure and stores its complement, then returns.
 - `sum_and_store_inverted`: Iterates through a table of words to calculate a sum, stores the bitwise NOT of that sum in a global variable, and then performs an indirect call.
 - `patch_resource_function`: Checks a global variable and calls a routine through a pointer.
@@ -138,7 +208,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_interrupt_handler`: Updates a global variable and writes a value to the INTENA register with the interrupt enable bit set, then performs an indirect call to a routine retrieved from a table via an offset.
 - `call_indirect_via_offset`: Calls a routine using a pointer retrieved from a global variable with a specific offset.
 - `initialize_patch_function_table`: Writes a computed offset to a global variable and fills a 16-entry table with successive addresses of a routine, incrementing the pointer each iteration.
-- `execute_empty_routine_3`: This routine is empty and performs no operations.
 - `return_input_value_2`: An empty routine that simply returns the value provided in a register.
 - `execute_recursive_calls`: Performs a sequence of repeated calls to another routine before returning a value.
 - `return_input_value`: The routine receives a value in D0 and returns it unchanged.
@@ -151,6 +220,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `find_node_by_string`: Iterates through a linked list and returns a pointer to a node if a string stored within the node matches a provided input string.
 - `call_supervisor`: Library stub: loads its arguments and the exec library base, calls Supervisor and returns its result to the caller.
 - `reset_global_variable`: Sets a global variable to zero and returns its previous value.
+- `call_indirect_via_table`: The routine calls another routine through a pointer stored in a global variable.
 - `execute_conditional_logic`: Calls a routine with a value from a pointer, and if the result is non-zero, performs two subsequent routine calls using that same value.
 - `tiny_clr_movea_rts`: Small routine of 3 instructions that clears d0, then copies (a7)+ to a2, then returns.
 - `scan_for_marker`: Iterates through an array of words starting from an input pointer.
@@ -171,6 +241,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `execute_initialization_sequence`: Performs a series of function calls and checks a value in memory against a constant to update a global variable.
 - `decrement_d6_to_minus_one`: Decrements the value in a 16-bit register until it reaches negative one.
+- `accumulate_array_elements_4`: Calls a subroutine three times, then enters a loop that runs up to eight times, calling another subroutine and adding a value to an array at offset an address of a pointer in a1.
+- `accumulate_array_elements_2`: Calls a subroutine to determine a count, then executes a loop that calls another routine to fetch a value and adds it to an array located at the address in a3, using an index derived from the count.
+- `branch_to_subroutine_v2`: If a condition is met, it sets a1 to a3, calls another routine, and then branches.
+- `fall_through_entry_5`: Entry point part-way through straight-line code: runs two instructions (lea.l, moveq) and then falls through into the code that follows, with no return of its own.
+- `copy_four_bytes_loop`: Compares a6 and a2, and if they are not equal, copies four bytes from the source at a2 to the destination at a1 in a loop that decrements d0, then loads a long value from a1 into d0 before returning.
+- `decompress_bitstream_data_6`: Reads a control word and a byte from a table to determine a bitstream length and initial value, then enters a loop that shifts the value left and fetches additional bytes from a source buffer in a0 to fill the bitstream.
+- `expand_bitstream_loop_3`: Sets a loop counter in d7 to 2, shifts d1 left by one bit, and if the result is non-zero, branches to a later instruction; otherwise, it fetches a byte from the buffer in a0 into d1, adds it to d1 and d0 with carry, decrements d7 in a loop, increments d0 by 6, sets d7 to 3, and branches to another routine.
+- `set_bitstream_parameters_5_3`: Sets d0 to 5, d7 to 3, and branches to another routine.
+- `set_bitstream_parameters_4_2`: Sets d0 to 4, d7 to 2, and branches to another routine.
+- `set_bitstream_parameters_3_1`: Sets d0 to 3, d7 to 1, and branches to another routine.
+- `expand_bitstream_data_element`: Performs a series of bit-shifting operations on a value in d1, fetching additional bytes from the buffer in a0 when a shift results in zero, and uses the resulting value to index into a table to load a byte into d6.
+- `expand_bit_data_2`: Performs a conditional branch based on doubling d1, then if zero, fetches a byte from the buffer in a0 into d1, adds it to d1 with carry, adds d2 to d2 with carry, and branches to another location.
+- `decode_bitstream_and_copy_data_2`: Reads a bitstream from a source buffer to determine a sequence of values, which are used as indices into a table to select data blocks that are then copied to a destination buffer.
+- `decompress_and_copy_data`: Reads a control byte to determine a bit-stream length and uses it to decode values from a source buffer into a destination buffer.
+- `push_registers_and_branch`: Pushes bytes from d0 and d1, a word from d2, and several registers and data registers onto the stack before performing a relative branch.
 
 ### SKID_ROW
 
@@ -187,6 +272,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `execute_title_initialization`: Executes a loop of function calls and performs a memory check against a constant to update a global variable.
 - `decrement_d6_to_negative_one`: Decrements the value in a 16-bit data register until it reaches negative one.
+- `accumulate_array_elements_variant`: Calls a subroutine three times, then enters a loop that runs up to thirteen times, calling another subroutine and adding a value to an array at offset an address of a pointer in a1.
+- `accumulate_array_elements_3`: Calculates a value using a function call, then enters a loop that adds the result of that function to elements in an array pointed to by a third register, decrementing a counter until it reaches zero.
+- `branch_to_subroutine_v3`: Checks a condition, sets a1 to a3, calls another routine, and then branches to a different instruction.
+- `fall_through_entry_6`: Entry point part-way through straight-line code: runs two instructions (lea.l, moveq) and then falls through into the code that follows, with no return of its own.
+- `copy_four_bytes_loop_alt`: Checks if a6 equals a2, otherwise it copies four bytes from the source at a2 to the destination at a1 using a loop controlled by d0, and finally loads a long value from a1 into d0.
+- `decompress_bitstream_data_block_2`: Reads a control word and two bytes from a table to determine a bit count and loop count, then performs bit-stream decompression by shifting a value in a register and fetching bytes from a source pointer to reconstruct the data into a destination buffer.
+- `extract_bitstream_loop`: Sets a loop counter in d7 to 2, shifts d1 left by one bit, and if the result is non-zero, branches to a later instruction; otherwise, it fetches a byte from the buffer in a0 into d1, adds it to d1 and d0 with carry, decrements d7 in a loop, increments d0 by 6, sets d7 to 3, and branches to another routine.
+- `set_extraction_parameters_5_3`: Sets d0 to 5, d7 to 3, and branches to another routine.
+- `set_extraction_parameters_4_2`: Sets d0 to 4, d7 to 2, and branches to another routine.
+- `set_extraction_parameters_3_1`: Sets d0 to 3, d7 to 1, and branches to another routine.
+- `extract_variable_length_bitstream_value`: Reads a variable number of bits from a bitstream in a0 to reconstruct a value in d2, using a control byte to determine the bit count and loop iterations.
+- `modify_bitstream_registers`: Checks if d1 doubled is non-zero to branch, otherwise it moves a byte from the buffer at a0 into d1, adds it to d1 with carry, adds d2 to d2 with carry, and branches to another location.
+- `decompress_bitstream_data_block`: Reads a bitstream from a source pointer to reconstruct values, using a control byte to determine bit counts and loop iterations.
+- `unpack_compressed_data_block`: Reads a control byte from a source pointer to determine a bit-count and a loop count, then performs a bit-stream decompression by shifting and adding bytes from a source buffer into a destination buffer.
+- `push_registers_and_branch_2`: Pushes bytes from d0 and d1, a word from d2, and several registers and data registers onto the stack before performing a relative branch.
 
 ### Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:Nova
 
@@ -208,11 +308,41 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `execute_sequence_and_swap_constant`: Executes a series of function calls and a loop containing function calls, then checks a value at an offset from a pointer derived from a global variable; if that value matches a specific constant, it swaps the value with a stored constant and clears the original source.
 - `decrement_d6_until_negative_one`: Decrements the value in a data register until it reaches negative one and then returns.
+- `iterate_and_accumulate_array`: Executes a subroutine six times within a loop, using the results to fetch values and add them to an array located at a specific offset from a pointer.
+- `add_values_to_table`: Doubles d0 and branches if positive; otherwise it calls another subroutine, then enters a loop that calls another subroutine, calls a fourth subroutine, and adds the result to a table at offset d2 of a3.
+- `branch_if_equal`: Branches if a byte is zero; otherwise it sets a1 to a3, calls another subroutine, and enters a loop that branches back to the start.
+- `fall_through_entry_7`: Entry point part-way through straight-line code: runs two instructions (lea.l, moveq) and then falls through into the code that follows, with no return of its own.
+- `move_bytes_with_counter`: If a6 is not equal to a2, it enters a loop to copy four bytes from the address in a2 to the address in a1, reducing d0 by 2 per iteration, and concludes by moving a longword from the destination into d0 and returning.
+- `expand_variable_length_bitstream_5`: Reads a control byte from a table to determine bit lengths and then enters a loop that performs bitwise expansion by shifting and adding bits from a source buffer into a destination buffer.
+- `accumulate_bitstream_values`: Iterates through a bitstream by reading bytes from a pointer in a0, adding the byte and a value from d0 to d1 using carry-aware addition.
+- `load_constants_and_branch`: Loads the values 5 and 3 into registers d0 and d7 respectively, then performs a short branch to another routine.
+- `load_initial_values`: Loads the values 4 and 2 into registers d0 and d7, then branches to another routine.
+- `load_initial_values_alt`: Loads the values 3 and 1 into registers d0 and d7, then branches to another routine.
+- `expand_variable_length_bitstream_2`: Performs bitwise expansion of a compressed stream by doubling the value in d1 and conditionally loading new bits from the source pointed to by a0 into d1 using the carry flag.
+- `update_bit_stream`: Performs a left shift on d1 and branches if non-zero, otherwise it moves a byte from the buffer at a0 into d1, adds it to d1 with carry, adds d2 to d2 with carry, and branches to another location.
+- `decompress_bitstream_data_2_2`: Reads a control byte to determine bit lengths and performs bitwise expansion of a compressed stream into a destination buffer.
+- `decompress_bitstream_to_buffer`: Reads a variable-length bitstream from a source buffer to extract bit values, then uses those values as an index to copy a block of bytes from a table into a destination buffer.
+- `push_registers_and_branch_3`: Stores bytes from d0 and d1 and a word from d2 onto the stack pointed to by a4, restores several registers from the stack, and branches to another location.
 
 ### Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:ttl
 
 - `check_memory_constant`: Performs a series of function calls and checks a memory location for a specific constant to swap a value.
 - `decrement_register_until_negative_one_2`: Decrements a 16-bit register value by one repeatedly until the value reaches negative one.
+- `clear_cache_and_loop_ttl`: Calls a routine twice, then enters a loop that calls another routine and increments d5, repeating until d5 equals 8, before calling a routine via a pointer at a specific offset.
+- `accumulate_array_elements_via_function`: Calls a subroutine to obtain a value, then enters a loop that executes a number of times determined by a register, calling another subroutine and adding the resulting value to an array at an offset calculated from a register.
+- `branch_if_equal_variant`: Branches if a byte is zero; otherwise it sets a1 to a3, calls another subroutine, and enters a loop that branches back to the start.
+- `fall_through_entry_8`: Entry point part-way through straight-line code: runs two instructions (lea.l, moveq) and then falls through into the code that follows, with no return of its own.
+- `copy_four_bytes_from_source`: Compares a pointer in a6 with a pointer in a2; if they are equal, it returns, otherwise it copies four bytes from the source pointed to by a2 to the destination pointed to by a1, decrements a counter in d0, and loops if the counter is not zero; if the counter reaches zero, it loads a new value into d0 from the destination and returns.
+- `decompress_bitstream_data_4`: Reads a control byte and a length from a table to determine how many bytes to copy from a source buffer to a destination buffer.
+- `process_bitstream_loop_3`: Sets d7 to 2, performs a signed addition on d1, and if the result is non-zero, branches to another location; otherwise, it fetches a byte from the buffer in a0 into d1, adds it to d1 and d0 with carry, decrements d7 in a loop, adds 6 to d0, sets d7 to 3, and branches to another routine.
+- `load_initial_values_v2`: Loads the values 5 and 3 into registers d0 and d7, then branches to another routine.
+- `load_initial_values_v3`: Loads the values 4 and 2 into registers d0 and d7, then branches to another routine.
+- `load_initial_values_v4`: Loads the values 3 and 1 into registers d0 and d7, then branches to another routine.
+- `expand_bitstream_data_sequence`: Performs a series of bit-shifting and conditional byte fetches from a buffer in a0 to expand a bitstream into a sequence of values.
+- `expand_bit_data`: Multiplies d1 by two and branches if non-zero, otherwise it pulls a byte from the pointer in a0 into d1, adds it to d1 with carry, adds d2 to d2 with carry, and branches to another location.
+- `decode_bitstream_and_copy_data`: Reads a bit-stream from a source buffer to decode a sequence of values, using a control byte to determine the number of bits to process.
+- `decode_bitstream_and_copy_data_3`: Reads a control byte from a table to determine a bitstream length and performs bit-shifting operations to reconstruct a value from a source buffer.
+- `push_registers_and_branch_alt`: Pushes d0, d1, and d2 onto the stack at a4, restores a set of registers from the stack, and then branches.
 
 ### Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:intro
 
@@ -267,8 +397,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `sync_object_data_table`: Checks a condition against a global variable before copying a sequence of longwords from a memory location into a global table and updating a global pointer.
 - `rotate_color_palette_data`: Copies a source table of color data to a destination buffer while applying a modular arithmetic rotation to each color component.
 - `apply_color_palette_rotation`: Copies a source table of color data to a destination buffer while applying a modular arithmetic rotation to each color component.
-- `update_scrolling_parameters`: Calculates new horizontal and vertical scrolling offsets based on a global variable and clamps them within defined minimum and maximum bounds.
-- `update_object_position_and_state`: Calculates new coordinate values for an object based on velocity and previous positions, applying clamping logic to keep values within defined bounds.
 - `update_mouse_cursor_position`: Calculates new cursor coordinates by computing the difference between current and previous input values, applies boundary clamping, and updates a data structure.
 - `update_object_state`: Updates a structure of values using arithmetic operations and conditional bounds checking, modifies several global variables, and executes a callback.
 - `update_object_state_and_execute_callback`: Updates a structure of values using arithmetic operations and conditional bounds checking, modifies several global variables, and executes a function pointer stored in a table.
@@ -277,24 +405,36 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_data_with_mask_check`: Iterates through a source buffer and copies bytes to a destination only if a bitwise comparison with a mask table succeeds, potentially calling another routine during the process.
 - `copy_and_search_data`: Copies a block of seventeen bytes from one location to another and then performs a conditional search through a table to find a matching byte.
 - `copy_data_with_mask`: Copies a sequence of bytes from a source buffer to a destination buffer, conditionally performing the copy based on a bitwise comparison between a mask table and a control byte array.
+- `dispatch_nested_data_block_type`: Reads a header containing two 16-bit values and two 16-bit pointers from a source, then reads a control byte to determine the next operation.
+- `unpack_nested_data_blocks`: Copies a block of 40 bytes from a source pointer to a destination pointer, then enters a nested loop structure that iterates through a 2D array of data defined by two counters.
+- `process_indexed_byte`: Calls another routine, decrements the pointer in a3 by 40, and then either moves a byte from a0 into d5 and branches or moves a byte from a0 into d3 and stores it at an offset in a3 determined by d5.
+- `mask_and_store_byte`: Masks the high bit of a byte in register d5, reads a byte from the address in a0, and stores that byte at an offset in a3 determined by the masked value.
+- `unpack_nested_data_blocks_2`: Performs a bit-rotation on a byte read from a source pointer and uses the result to control a nested loop that copies bytes to a destination pointer.
+- `branch_on_masked_nibble`: Masks the upper two bits of a byte from a register and branches to different locations based on whether the resulting value is four, eight, or any other value, otherwise it calls another routine and then branches to another location.
+- `call_and_branch`: Calls another routine and then branches to another location.
+- `branch_via_subroutine`: Calls another routine and then branches to another routine.
+- `copy_memory_block_4`: Calculates two source and destination addresses using another routine, then copies ten words of data from the source to the destination using a loop.
+- `calculate_scaled_offset_address`: Multiplies a 16-bit value from a register by a 16-bit value from another register, adds it to a 32-bit value, shifts the result left by three bits, performs several additions to scale the value, and adds it to a pointer in a register before returning.
+- `extract_nibble_and_branch`: Extracts a byte from a register, shifts it right by four bits, masks the lower three bits of the result, and then loads a byte from the address in a0 into d0 before branching to another routine.
 - `manage_library_and_interrupts`: Interacts with system libraries to manage resources and manipulates hardware interrupt registers.
 - `configure_bitplane_and_copper_data`: Calculates bitplane dimensions and color palette parameters based on a bitmask, then populates a table with interleaved copper instruction data.
 - `execute_callback_chain`: Executes a function pointer from a global structure, potentially calling another function if the result is non-zero, and updates a global pointer from a specific offset.
 - `execute_callback_pointers_and_reset`: Checks several global variables for non-zero values, executes functions located at an offset from a global pointer, and resets both the global variables and several other global variables to zero.
 - `initialize_display_parameters`: Calculates display dimensions, bitplane counts, and color palette settings based on a bitmask retrieved from a function call.
 - `swap_and_copy_pointers`: Swaps two global variables and copies several consecutive longwords from a memory location to a destination buffer.
-- `expand_and_copy_data_block`: Swaps two global variables and then performs a series of arithmetic operations on a value to generate a sequence of data.
-- `copy_data_block`: Swaps two values in a global memory location and then performs a series of word-sized transfers from a source table to a destination buffer on the stack.
 - `update_dma_buffer_pointers`: Calculates a series of memory addresses based on an offset and a loop counter, then stores these resulting values into a sequence of global memory locations.
 - `update_vertical_position`: Performs a loop to calculate a series of words based on an input value and stores them in a table, while interacting with a hardware register.
+- `update_bit_patterns`: Stores a bitwise mask in a global variable, calculates a value based on the sign of d0, and writes a modified version of d0 to another global variable.
+- `free_memory_via_callback`: Checks a global variable, and if non-zero, calls a function using a size from another global variable and then clears the global variable and another global variable.
+- `allocate_memory_via_callback`: If a global variable is zero, it calls a function to allocate memory and stores the resulting pointer in two global variables; otherwise it returns -1.
+- `verify_and_load_data_block`: Reads a data block from a file, allocates memory, and verifies that the loaded content begins with a specific four-byte signature before calling another routine and freeing the allocated memory.
+- `call_exec_functions`: Calls two different library functions using addresses from a table and then restores registers before returning.
 - `return_zero`: Returns a constant value of zero.
 - `validate_and_process_data_header`: Checks a memory block for a specific magic signature and non-zero length before performing a series of recursive calls and data assignments.
 - `unpack_compressed_data_stream_2`: Iterates through a table of offsets to locate data blocks and performs a custom decompression routine.
 - `traverse_and_decrement_linked_list`: Iterates through a linked list by decrementing values at pointer locations and following next-node offsets.
 - `initialize_interrupt_server`: Sets a global variable to a specific value and calls a function using a pointer from a global variable.
 - `remove_interrupt_server`: Clears a global variable and sets another to a specific value before calling a function via a global pointer.
-- `populate_coordinate_table`: Calculates a series of values based on input register data and populates a table in memory using a decrementing counter.
-- `clear_data_register_bits`: Performs a bitwise OR operation on a data register with zero to clear its bits.
 - `perform_blitter_transfer`: Calculates bitwise values and memory addresses to perform a series of hardware blitter operations using a loop.
 - `setup_blitter_registers`: Writes several values to hardware registers to prepare for a blitter operation.
 - `validate_structure_element`: Checks a byte within a data structure retrieved from another routine.
@@ -305,7 +445,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `search_linked_list`: Traverses a linked list of longwords, checking for a specific constant value, and returns a pointer to the element following the match.
 - `traverse_offset_list`: Iterates through a list of structures using an offset stored within each element to find a matching longword.
 - `copy_and_obfuscate_data_block`: Copies a sequence of longwords from a pointer into a series of global variables, performs a bitwise transformation on a data block using a loop, and then overwrites several global variables with the previously stored values.
-- `validate_status_byte`: Calls another routine to check a value at an offset and performs conditional loops and returns based on that byte's content.
 - `process_data_structure`: Traverses a data structure and performs conditional operations based on values found within the elements.
 - `expand_data_blocks`: Processes a multi-dimensional data structure by copying and expanding bytes based on sign-extended values and length counters.
 - `copy_data_blocks`: Performs a nested loop to copy blocks of data from a source to a destination based on predefined dimensions.
@@ -313,10 +452,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `calculate_divisor_limit`: Performs arithmetic comparisons on input values and executes a loop to find a specific divisor based on global constants.
 - `assign_global_pointers`: Copies values from two global variables into two other global variables.
 - `copy_graphics_buffer_blocks`: Allocates memory and performs a nested loop to copy large blocks of data from source tables to a destination buffer.
-- `generate_sequence_table`: Calculates a series of values using arithmetic operations and stores the resulting sequence into several global variables.
 - `calculate_sequence_values`: Computes a sequence of values through iterative addition and stores the results into a series of global memory locations.
 - `clip_and_update_blitter_parameters`: Clips a coordinate pair against a bounding box and updates Blitter control registers and memory pointers based on the resulting offsets.
 - `configure_blt_line_drawing`: Calculates and writes parameters to the Blitter registers to perform line drawing or shape filling.
+- `configure_blitter_sequence_2`: Compares several values from global variables and registers, and if certain conditions are met, performs calculations to set up blitter parameters.
+- `configure_blitter_sequence`: Calculates blitter parameters and source/destination addresses based on several global variables, then enters a loop that checks a bitmask in a global variable to conditionally update the blitter control, path, and size registers for a series of operations.
 - `configure_blitter_parameters`: Waits for a bit in a global variable to clear before writing several values to memory locations used for hardware configuration.
 - `apply_bitmask_to_memory_2`: Performs bitwise AND and OR operations on a memory buffer using a bitmask.
 - `apply_bitmask_to_memory`: Performs bitwise AND and OR operations on a memory buffer using a bitmask.
@@ -340,8 +480,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `close_resource_and_clear`: Calls two functions via a pointer retrieved from a global variable and then clears that global variable.
 - `fetch_byte_from_table`: Returns a word composed of a high byte and a byte fetched from a table using an index.
 - `pop_queue_element`: Removes a word from a table and shifts the remaining elements forward.
-- `setup_blitter_parameters`: Calculates bitwise values and writes to hardware registers to prepare a Blitter operation.
-- `clear_data_register_byte`: Performs a bitwise OR operation on a byte of a data register with zero.
+- `get_recursive_bit_shifted_value`: If a global variable is non-zero, it calls another routine and constructs a 16-bit value using a byte from a table lookup at an index derived from the returned value and a bit-shifted version of that value.
+- `get_recursive_concatenated_value`: If a global variable is non-zero, it calls another routine and constructs a 16-bit value by concatenating the returned byte with a byte from a table lookup at an index derived from the returned value and a bit-shifted version of that value.
+- `fetch_joystick_table_value`: Processes bits from the joystick data register to calculate an index and returns a byte from a table at a calculated offset.
+- `calculate_joystick_mask`: Reads the joystick status register, performs bitwise operations to derive an index, and constructs a bitmask by ORing several bytes from a table into a single byte.
+- `modify_d0_register`: Tests bit 0 of d0 and branches; otherwise it performs bitwise operations on d0 using a value from a memory location and returns.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
 - `execute_blitter_operation`: Sets multiple Blitter mode and control registers to perform a hardware graphics transfer.
 - `initialize_blitter_registers`: Writes specific values to Blitter registers to prepare for a transfer.
 
@@ -467,10 +611,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `poll_hardware_input`: Repeatedly calls another routine to check values from a hardware register and performs table operations based on the results.
 - `process_input_loop`: Iterates through a loop checking a hardware register and compares a value against a global variable until a specific condition is met.
 - `load_address_from_table`: calculates an offset from a local variable to index into a table and stores the resulting value into a global variable.
-- `execute_empty_routine_2`: The routine is empty and performs no operations before returning.
+- `modify_register_values`: Writes the byte in d0 to the stack twice and then performs several bitwise OR operations on d0.
 - `copy_table_data_2`: Copies a block of data from a source table to two different destination memory locations.
 - `copy_table_data`: Copies a block of data from a source table to two different destination memory locations.
-- `increment_global_byte`: Increments a global byte by one.
 - `increment_global_word`: Increments a 16-bit global variable by one.
 - `loop_until_null`: Repeatedly calls another routine until it returns a zero value.
 - `swap_boundary_values`: Assigns the value of one global variable to another, calls a routine, and then repeats the process using a different global variable.
@@ -491,8 +634,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_dma_parameters`: swaps two global variables and copies a series of calculated longwords into a sequence of global variables.
 - `validate_resource_type`: Checks various global values and function return codes to determine if a resource matches specific signature constants.
 - `perform_conditional_copy`: Copies bytes from a source to a destination while checking against a global table and potentially calling another routine if a bitwise match is found.
+- `fall_through_entry_9`: Entry point part-way through straight-line code: runs one instruction (lea.l) and then falls through into the code that follows, with no return of its own.
+- `write_long_to_table_2`: Waits for bit 8 of the VPOSR register to be set, then stores a 32-bit value into a table as two words at an offset calculated from a value in d0.
+- `update_pointer_value_via_bit_shifts`: Checks if a pointer is null, then performs a series of bitwise rotations and shifts on values in d0, d1, and d2 to construct a new 32-bit word, which is then stored at the address pointed to by a0.
+- `reset_hardware_registers_2`: Checks if a global variable is zero and if a value in a register is within a specific range, then clears four longwords at specific offsets in a structure and sets a value in a custom register.
 - `sync_display_parameters`: Synchronizes a series of longwords from a source pointer into a global variable while waiting for a specific bitmask condition.
-- `compare_and_copy_data`: Compares bytes from a source table against a bitmask stored in a global variable.
+- `rotate_palette_colors`: Calculates a bitwise rotation offset for color components and uses it to transform a sixteen-word color table into a destination buffer via a loop.
+- `transform_palette_colors_2`: Copies a sixteen-word table to a destination buffer, then iterates through a specified range of color entries to apply a signed offset to each color component while clamping the results within a four-bit range.
+- `transform_palette_colors`: Iterates through a source table to extract color components, applies a signed offset and clamps the results between two bounds, and writes the transformed 16-bit color values to a destination table.
+- `apply_clamped_palette_transform`: Iterates through a source table, extracts bytes, applies a signed offset and clamps the result between two bounds, performs a bitwise rotation, and writes the transformed 16-bit value to a destination pointed to by a1.
+- `write_clamped_palette_data`: Calculates a clamped value between two bounds, performs a bitwise rotation, and writes the result to a destination pointed to by a1 in a loop.
 - `process_conditional_copy`: Copies bytes from a source to a destination while performing bitwise comparisons against a global table and potentially calling another routine via a jump table.
 - `copy_and_process_data`: Copies three words from one memory location to another and then enters a loop that performs bitwise comparisons and conditional byte transfers.
 - `decompress_custom_data_stream`: Parses a structured data stream containing control codes to perform variable-length decoding.
@@ -505,10 +656,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_memory_pointers`: Checks several global pointers for non-zero values, calls a function to free the associated memory, and then clears those pointers and several other global variables.
 - `initialize_video_buffer_structures`: Calculates display dimensions and bitplane counts based on a bitmask, then populates a table with memory addresses for video buffers.
 - `swap_and_copy_pointers_2`: Swaps two values in a table and then copies a series of longwords from a code location into several global variables.
-- `swap_and_copy_data`: Swaps two values in a table and then copies a series of calculated longwords into a set of global variables.
-- `copy_indexed_data_block`: Swaps two values in a memory location and then performs a series of arithmetic operations to expand a data sequence.
 - `modify_dma_control`: Swaps two values in a table and then copies a series of calculated longwords into a set of global variables while touching the DMA control register.
 - `copy_calculated_longwords`: Calculates a series of longwords based on an input and stores them into a set of global variables while updating the video port register.
+- `modify_word_and_store`: Stores a bit-manipulated version of a word into a global variable and updates two other global variables based on the sign bit and a masked value.
+- `free_memory_via_callback_2`: Checks a global variable, and if non-zero, calls a function using a size from another global variable and then clears the global variable and another global variable.
+- `allocate_memory_via_callback_2`: Checks if a global variable is zero, and if so, calls a function to allocate memory and stores the resulting pointer in two global variables.
+- `load_and_decompress_file`: Opens a file, reads its contents, and performs several library calls to manage memory and file handles; if a specific four-byte signature is found in the data, it calls decompress_custom_data_stream and returns negative one, otherwise it returns zero.
+- `close_and_free_resources`: Calls two different functions using values from registers and then returns zero.
 - `update_mouse_input_state`: Reads mouse movement from a hardware port and updates clamped coordinate values within a data structure.
 - `update_clamped_parameters`: Clamps values against a table, performs arithmetic to derive new values, and stores the results into a series of memory locations.
 - `process_clamped_values`: Clamps input values against a table, performs arithmetic to derive new values, and executes a callback function via a pointer in a table.
@@ -516,9 +670,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_table_and_execute_callback`: Updates a table entry with a clamped value and performs arithmetic to store derived bytes into a memory location.
 - `initialize_interrupt_handler`: Sets several global variables to zero or decremented values and executes a function pointer from a global structure.
 - `remove_interrupt_handler`: Resets a global variable to zero and executes a function pointer from a global structure.
+- `store_sequential_pointers`: Stores a word from d0 into a global variable, then sequentially calls another routine four times to store the values from a0, the return value of the first call, a2, and a3 into a table at offsets 0, 4, 8, and 12.
+- `execute_sequential_calls`: If d0 is not zero and a global variable is zero, it stores d0 into that global variable, calls another routine, and then performs four sequential calls to another routine using values 0, 1, 2, and 3 in d0 with addresses loaded from a table.
+- `store_and_wait_vpos`: Stores d0 into a global variable, calls another subroutine three times with d0 set to 1, 2, and 3, and then enters a loop that waits for a specific bit pattern in the custom video port register.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
 - `clip_and_fill_rectangle`: Clips a rectangular area against defined boundaries and uses the blitter to perform a patterned area fill.
 - `update_blitter_parameters_2`: Calculates blitter and DMA control values based on global variables and updates hardware registers.
 - `update_blitter_parameters`: Calculates values based on several global variables and updates multiple hardware registers including the blitter and DMA control.
+- `configure_blitter_parameters_2`: Waits for bit 6 of a custom register to clear before writing several values to memory locations used for hardware configuration.
 - `apply_bitmask_to_buffer`: Performs bitwise operations on a memory buffer using a bitmask derived from a global variable.
 - `test_bit_pattern`: Checks a bitmask within a table at a calculated offset.
 - `return_all_ones`: The routine returns a value consisting of all bits set to one.
@@ -528,8 +687,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `close_resource_handler`: Checks if a resource pointer is valid and, if so, performs two operations using that pointer before clearing it.
 - `get_concatenated_byte`: Returns a 16-bit value formed by concatenating a bit-shifted version of a register with a byte from a table.
 - `pop_table_element`: Decrements a global counter and shifts elements within a table to remove the first entry, returning the removed value.
-- `update_graphics_parameters`: Calculates and stores multiple values into a series of memory locations based on input registers and global variables.
-- `apply_zero_mask`: Uses a bitwise OR instruction to ensure a data register contains zero.
+- `get_recursive_bit_shifted_value_2`: If a global variable is non-zero, it calls another routine and constructs a 16-bit value using a byte from a table lookup at an index derived from the returned value and a bit-shifted version of that value.
+- `get_concatenated_table_value`: If a global variable is non-zero, it calls another routine to retrieve a byte, then constructs a 16-bit value by concatenating that byte with a byte retrieved from a table using an index calculated from the retrieved byte and its own bit-shifted value; otherwise it returns zero.
+- `fetch_joystick_table_value_2`: Calculates an index by processing bits from the joystick 1 data register and returns a byte from a table at that calculated offset.
+- `calculate_joystick_mask_2`: Reads the joystick 1 data register, calculates an index via bitwise manipulation, and returns a byte formed by ORing a value from a table at that index with a bitmask constructed from multiple bytes in another table.
+- `process_joystick_bits`: Checks bit 0 of d0, and if not set, performs arithmetic and bitwise operations on d0 before returning.
+- `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
 - `configure_blitter_transfer`: Sets up Blitter hardware registers and memory locations using values derived from input registers and a loop.
 - `setup_blitter_state`: Writes specific values to memory locations and Blitter registers to prepare for a hardware transfer.
 - `validate_resource_header`: Checks a memory block for specific magic signatures and validates its structure using library function calls.
@@ -543,8 +706,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decrement_and_check_counter`: Decrements a value at an offset from a pointer and calls another routine if the value reaches zero.
 - `initialize_interrupt_server_2`: Sets a global variable to a specific value and calls another routine if a certain condition is met.
 - `remove_interrupt_server_2`: Resets a global variable and calls another routine if a certain condition is met.
-- `clear_data_register_byte_2`: Performs a bitwise OR operation on a byte of a data register using zero.
-- `null_operation_padding`: This routine consists of a single instruction that performs a bitwise OR operation on a data register with zero, effectively acting as a no-operation.
 - `configure_blitter_transfer_2`: Calculates several values and uses them to populate Blitter registers and memory locations through a loop.
 - `setup_blitter_state_2`: Writes specific values to Blitter registers and memory locations based on global variables.
 - `evaluate_conditional_chain`: Recursively calls another routine and checks a byte at a specific offset from the returned pointer to determine control flow.
@@ -555,7 +716,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `search_linked_list_3`: Iterates through a list of data blocks marked by a constant signature to locate a specific entry based on a provided value.
 - `traverse_data_chain`: Walks through a chain of data elements by using an offset stored within each element to find a matching value.
 - `update_data_structures`: Copies a series of longwords from a pointer to several global variables, modifies a sequence of values using bitwise operations, and waits for a bitmask condition in a global variable before updating a global pointer.
-- `validate_status_byte_2`: Calls another routine to retrieve a pointer, checks a byte at a specific offset, and performs conditional logic based on that byte and a global flag.
 - `evaluate_conditional_data_chain`: Recursively calls another routine and checks a byte at a specific offset from the returned pointer.
 - `process_nested_buffers`: Performs complex data manipulation on nested buffers, involving sign-based branching and byte copying across multiple loops.
 - `copy_multidimensional_data`: Copies blocks of data using nested loops to move bytes from a source to a destination based on calculated dimensions.

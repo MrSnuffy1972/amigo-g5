@@ -7,39 +7,39 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (1931442 top-level bytes in 16 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 13 of 13 units identical (bytes and relocations), 164 raw-word lines |
-| Functions named and described | pass, 179 of 179 named (0 author symbols), 179 of 179 described (5 by rule, 140 by the local model) |
+| Byte-identical reassembly with vasm | pass, 13 of 13 units identical (bytes and relocations), 162 raw-word lines |
+| Functions named and described | pass, 193 of 193 named (0 author symbols), 193 of 193 described (27 by rule, 133 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 4490 of 4498 (99.82%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 6972 of 6973 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 6995 of 6996 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 160959 |
-| code | 31792 |
-| data | 1737920 |
-| padding | 3 |
+| code | 31788 |
+| data | 1737926 |
+| padding | 1 |
 | unused | 768 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| game.slave | 1 | 276 | 20 |
+| game.slave | 1 | 275 | 20 |
 | logged disk load from disk.1 | 1 | 161 | 14 |
 | logged disk load from disk.1 | 1 | 0 | 0 |
 | logged disk load from disk.2 | 1 | 0 | 0 |
 | logged disk load from disk.2 | 1 | 0 | 0 |
 | logged disk load from disk.2 | 1 | 0 | 0 |
 | logged disk load from disk.2 | 1 | 0 | 0 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3871 | 77 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2177 | 50 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3850 | 68 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2191 | 51 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 177 | 4 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 173 | 5 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 158 | 4 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 135 | 6 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 3 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 49 | 26 |
 
 ## Cases handled
 
@@ -54,6 +54,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address (play-long-joy): 147 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 135 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 address+address
 - VenusTheFlytrap_v1.1_NoIntro/VenusTheFlytrap_v1.1_NoIntro_hdf/VenusTheFlytrapNoIntro/disk.1: 2 logged loads cover 80708 bytes of the image
 - VenusTheFlytrap_v1.1_NoIntro/VenusTheFlytrap_v1.1_NoIntro_hdf/VenusTheFlytrapNoIntro/disk.2: 4 logged loads cover 72976 bytes of the image
 - VenusTheFlytrap_v1.1_NoIntro/VenusTheFlytrap_v1.1_NoIntro_hdf/VenusTheFlytrapNoIntro/disk.2: chunks 1860-2196 (bytes 476160-562432) outside the filesystem hold data, not code (opcode density 0.001, entropy 4.22)
@@ -93,7 +94,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_object_method_passthrough`: Calls a routine through a function pointer at a fixed offset in an object held in a global, then returns the data register values it was given.
 - `call_object_method_passthrough_2`: Calls a routine through a function pointer at a fixed offset in an object held in a global, then returns the stack argument it was given.
 - `call_external_subroutine`: Calls a routine via a pointer stored in a table and returns the concatenated result.
-- `verify_keyboard_code_or_halt`: Compares the byte argument with a stored global value.
+- `update_interrupt_and_wait_vpos`: If a byte in a global variable does not match d0, it updates the global variable, sets bit 6 of a custom register, clears a byte at a specific address, and enters a loop that waits for the vertical position register to change twice before clearing bit 6 of the custom register and calling another routine; otherwise it calls another routine and returns.
 - `update_global_interrupt_mask`: Compares a register to a global variable and, if equal, writes a value to that global variable.
 
 ### logged disk load from disk.1
@@ -144,6 +145,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `increment_and_validate_pointer`: Increments a value at a memory location pointed to by a register and calls another routine before performing a conditional check against a value in a table.
 - `execute_control_flow`: Performs a sequence of function calls and updates a global variable before checking a bit in a global variable and potentially calling another routine.
 - `set_global_value`: Stores the value five into a global variable and returns a constant.
+- `decrement_and_branch`: Decrements a 16-bit word in a global variable and branches if the result is not zero, otherwise it sets d0 to one and returns.
 - `spin_forever`: Enters an endless loop that never returns.
 - `loop_spin_forever`: Repeatedly calls a routine a fixed number of times, where each iteration calls another routine multiple times.
 - `decrement_table_values`: Iterates through a table of words, decrementing certain bitfields or bytes within each word and storing the result back.
@@ -159,10 +161,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_audio_parameters`: Updates a global variable using a value fetched from a table and sets certain hardware-related or global values to constants.
 - `update_table_entry_from_register`: Updates a table entry or pointer using a value from a register and modifies a global variable via a table lookup.
 - `set_table_entry_from_register`: Sets a pointer or a table entry to a constant and updates a global variable using a value fetched from a table.
-- `modify_memory_and_decrement`: Sets specific bits in a memory location and decrements a global variable, resetting it to a constant if it reaches zero.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `decrement_global_counter`: Decrements a global variable and resets it to a constant if it reaches zero.
-- `update_dma_and_counter`: Modifies the DMA controller register and decrements a global variable, resetting it to a constant if it reaches zero.
+- `decrement_and_update_dma_control`: Decrements two consecutive global bytes; if the first byte reaches zero, it writes eight to the DMA control register, and if the second byte reaches zero, it writes four to the DMA control register, otherwise it returns.
 - `branch_on_global_state`: Evaluates a global variable through a series of conditional branches and potentially modifies it or calls another routine.
 - `update_global_value`: Checks a global variable and either increments or decrements its value and certain bytes within it based on specific conditional checks.
 - `initialize_table_structure`: Searches a table for a zeroed entry and populates its fields with constant values, pointers, and or other derived data.
@@ -173,13 +172,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `read_joystick_fire_state`: Clears four shared state bytes, reads the joystick port and fire-button status and records them in shared variables.
 - `decode_joystick_status_bits`: Decodes bits from a memory location into direction and button flags, storing each in a shared variable.
 - `update_mouse_position_counters`: Reads the mouse port movement register and subtracts the change from two stored position counters, clamping each to its range.
-- `clear_register_d0`: Clears the contents of a register.
-- `move_register_d0`: Moves a value into a register.
-- `move_byte_d0`: Moves a byte into a register.
-- `return_register_value`: the routine returns the current value held in a data register.
-- `mask_register_d0`: Performs a bitwise AND on a register with a mask and clears a register.
-- `mask_register_d0_alt`: Performs a bitwise AND on a register.
-- `tiny_ori_rts`: Small routine of 2 instructions that merges 0 into d0, then returns.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
 - `update_display_table`: Calculates an offset from a global variable and writes a series of bytes to a table or memory area, then updates a pointer or global variable.
 - `update_object_properties`: Iterates through a fixed-size list of object structures to reset or modify specific fields if a certain type or flag is detected.
 - `initialize_object_list`: Iterates through a list of pointers until a null-terminated entry is found, then initializes that entry with specific values and clears a separate table.
@@ -191,7 +184,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `wait_for_blitter`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
 - `compute_address_table`: Calculates several memory addresses based on a global variable and stores the lower and upper halves of these addresses into a series of global variables.
 - `get_mouse_button_state`: reads the state of a mouse button or a hardware register or a bitmask from a specific hardware address.
-- `clear_data_register`: Clears a data register by performing a series of logical operations to set it to zero, with a single intermediate state where it is set to one.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -241,6 +233,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `perform_swapped_data_copy_variant`: Performs a data copy or swap between a source and destination pointer, where the source or destination or certain offsets are selected based on a global variable.
 - `update_global_variable`: Performs a series of conditional checks and updates a global variable to a new or fixed value.
 - `copy_displaced_data_blocks`: Copies bytes from a source pointer to a destination pointer, including certain offsets, while incrementing a counter.
+- `copy_structured_data_loop`: Enters a loop that copies three bytes from a source at an offset calculated from a global variable and d0 to a destination at d1, using specific offsets of 13312 and 26624 for the subsequent bytes, and repeats this until d0 reaches eleven.
 - `increment_and_reset_counters`: Checks and increments or resets a series of adjacent bytes in memory if they have not reached a certain value.
 - `increment_global_bytes`: Checks if a global byte equals a certain value, then increments it or resets it to zero.
 - `increment_global_bytes_subset`: Checks if a subset of global bytes equals a certain value, then increments or resets them to zero.
@@ -259,7 +252,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_attribute_table_2`: Updates a global variable and a table or structure using a pointer, while also modifying hardware registers for audio, DMA, and interrupts.
 - `update_attribute_table`: Checks a bitmask in a structure and, if certain bits are set, updates a table or global variable with a new value and associated data or offsets.
 - `modify_global_mask`: Performs a bitwise AND and a right shift on a global variable.
-- `copy_memory_block`: copies a block of memory from a source address to a destination address using a loop that decrements a counter or checks a limit.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -273,5 +265,28 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_routine`: An empty routine that does nothing and returns.
+- `nop_padding_2`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_3`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_4`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_5`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_6`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_7`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_8`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_9`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_10`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_11`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_12`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_13`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `return_nothing`: the routine is empty and performs no operations before returning.
+- `nop_padding_14`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_15`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_16`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_17`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_18`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_19`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_20`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_21`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_22`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_23`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.

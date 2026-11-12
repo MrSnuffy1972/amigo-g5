@@ -7,27 +7,27 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (902240 top-level bytes in 92 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 24 raw-word lines |
-| Functions named and described | pass, 17 of 17 named (0 author symbols), 17 of 17 described (3 by rule, 3 by the local model) |
+| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 23 raw-word lines |
+| Functions named and described | pass, 16 of 16 named (0 author symbols), 16 of 16 described (2 by rule, 3 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 443 of 443 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 653 of 653 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 652 of 652 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 263234 |
-| code | 1962 |
-| data | 583203 |
-| padding | 23121 |
+| code | 1956 |
+| data | 583205 |
+| padding | 23125 |
 | unused | 30720 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Titus the Fox - To Marrakech and Back (1992)(Titus)[cr CP][t + 3 CP].adf:main | 8 | 232 | 7 |
+| Titus the Fox - To Marrakech and Back (1992)(Titus)[cr CP][t + 3 CP].adf:main | 8 | 231 | 6 |
 | Titus the Fox - To Marrakech and Back (1992)(Titus)[cr CP][t + 3 CP].adf:Train | 2 | 214 | 7 |
 | Titus the Fox - To Marrakech and Back (1992)(Titus)[cr CP][t + 3 CP].adf:bootblock | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
@@ -65,6 +65,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - titus the fox - to marrakech and back (1992)(titus)[cr cp][t + 3 cp]/Titus the Fox - To Marrakech and Back (1992)(Titus)[cr CP][t + 3 CP].adf:LEVEL12.TBL: high-entropy data file (7.96 bits/byte), classified as packed data
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-x25k): 8 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 jump target
 - titus the fox - to marrakech and back (1992)(titus)[cr cp][t + 3 cp]/Titus the Fox - To Marrakech and Back (1992)(Titus)[cr CP][t + 3 CP].adf:main: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 - titus the fox - to marrakech and back (1992)(titus)[cr cp][t + 3 cp]/Titus the Fox - To Marrakech and Back (1992)(Titus)[cr CP][t + 3 CP].adf:Train: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
@@ -86,8 +87,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decode_bits_in_four_passes`: Performs four passes, each calling a helper through a stored pointer and then running a loop that reads bit-coded values.
 - `decode_backward_bitstream_runs`: Decodes a bit-coded stream read backward from memory, reading length fields and copying runs of bytes to the destination.
 - `decode_backward_bitstream_blocks`: Larger variant of the backward bit-stream decoder that reads bit-coded counts and offsets and copies runs from earlier output.
-- `copy_backward_bitstream_run`: Copies a block of data from a source address to a destination address using a word-aligned loop.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
+- `modify_and_push_register_values`: Shifts the least significant bit of a register right, applies a bitwise OR with a constant, and pushes the modified register, a second register, and a 16-bit register onto the stack before restoring a set of registers and branching to another routine.
 
 ### Titus the Fox - To Marrakech and Back (1992)(Titus)[cr CP][t + 3 CP].adf:Train
 

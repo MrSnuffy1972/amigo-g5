@@ -8,18 +8,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (904016 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 25 of 25 units identical (bytes and relocations), 8 raw-word lines |
-| Functions named and described | pass, 55 of 55 named (0 author symbols), 55 of 55 described (3 by rule, 29 by the local model) |
+| Functions named and described | pass, 63 of 63 named (0 author symbols), 63 of 63 described (3 by rule, 37 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 223 of 223 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 96256 bytes, 15 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1886 of 2419 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1965 of 2498 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 584 |
-| code | 10582 |
-| data | 660913 |
+| code | 11728 |
+| data | 660351 |
 | padding | 1 |
 | unused | 231936 |
 
@@ -28,9 +27,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Midwinter (1990)(MicroProse)(De)[cr Supplex].adf:bootblock | 1 | 192 | 10 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 309 | 14 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 310 | 15 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 159 | 15 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 237 | 22 |
 | Midwinter (1990)(MicroProse)(De)[cr Supplex].adf bytes 11264-16384 (code never loaded by a reference run) | 1 | 1125 | 7 |
 | Midwinter (1990)(MicroProse)(De)[cr Supplex].adf bytes 247808-252928 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Midwinter (1990)(MicroProse)(De)[cr Supplex].adf bytes 259072-264192 (code never loaded by a reference run) | 1 | 0 | 0 |
@@ -224,6 +223,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `do_nothing`: the routine is empty and performs no operations before returning.
 - `process_complex_state`: Checks a bit in a global variable and, if set, clears it and executes a loop that doubles values from a pointer-based source into a memory range.
 - `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `branch_locally`: Performs a short branch to a local address.
 - `update_global_from_table`: If a certain condition is met, it writes a sequence of bytes from a table into a memory range, or otherwise fills a memory range with an incrementing sequence of bytes.
 - `modify_global_with_table_lookup`: Uses a bit-manipulated version of a global variable as an index into a table to update a global variable.
 - `update_pointer_with_calculated_value`: Calculates a new value based on a global pointer and writes it to the memory location pointed to by that global pointer.
@@ -245,18 +245,25 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `calculate_table_index`: Sets a global variable to a constant and returns a value calculated using a modulo and a lookup in a table based on the global variable.
 - `execute_conditional_pointers`: Checks if a global variable is zero, then sets it to a specific address and calls a routine at that address, followed by several other routine calls.
 - `set_dma_and_audio_registers`: Sets a global variable to a constant and then loads its address into itself while touching audio and DMA registers.
+- `setup_audio_channels_two_three`: Stores a routine address in a global variable, then copies channel, length, volume, and period data from a table into audio channels two and three and enables DMA channels two and three.
+- `update_audio_channels`: Copies two 16-bit values from a table into the period and volume registers of audio channels two and three.
+- `reset_audio_and_dma`: Sets the DMA controller to enable specific channels, clears the volume of audio channels two and three, and stores a routine address in a global variable.
+- `clear_audio_and_settings`: Sets the DMA controller, clears the volume of all four audio channels, stores several routine addresses in global variables, and clears six bytes in a global table.
 - `do_nothing_2`: this routine is empty and performs no operations before returning.
 - `return_without_action`: The routine consists of a single return instruction and performs no work, so it does nothing beyond returning to its caller.
 - `find_bit_and_load_table`: Checks a bit in a value constructed from a global variable, then loads a value from a table into a global variable based on the bit position.
 - `load_sequence_from_table`: Loads a sequence of values from a table into a global variable and other memory locations using an offset calculated from a constant.
+- `load_audio_channel_zero_data`: Calculates an offset based on a global variable, loads five values from a table at that offset into audio channel zero and other global variables, and enables DMA channel one.
+- `configure_audio_channel_zero`: Copies a channel, length, and volume from a table, sets the period of audio channel zero, and enables DMA channel one.
 - `modify_global_bit_pattern`: Performs bitwise operations and conditional checks on a global variable, potentially setting it to a constant or a routine address.
 - `set_bit_from_table`: Loads a sequence of values from a table into a global variable and then sets a bit in a global variable based on a bitmask.
 - `find_bit_and_load_table_alt`: Checks a bit in a value constructed from a global variable, then loads a value from a different table into a global variable based on the bit position.
 - `load_sequence_from_table_alt`: Loads a sequence of values from a different table into a global variable and other memory locations using an offset calculated from a constant.
+- `load_audio_channel_one_data`: Calculates an offset based on a global variable, loads five values from a table at that offset into audio channel one and other global variables, and enables DMA channel two.
+- `configure_audio_channel_one`: Copies a channel, length, volume, and period from a table into audio channel one and enables DMA channel two.
 - `modify_global_bit_state`: Tests a bit within a global variable and, if certain conditions are met, resets the global variable to a fixed value and clears it.
 - `set_bit_from_table_alt`: Loads a sequence of values from a different table into a global variable and then sets a bit in a global variable based on a bitmask.
 - `return_without_effect`: The routine is empty and performs no operations before returning.
-- `do_nothing_3`: the routine is empty and performs no operations.
 
 ### Midwinter (1990)(MicroProse)(De)[cr Supplex].adf bytes 11264-16384 (code never loaded by a reference run)
 

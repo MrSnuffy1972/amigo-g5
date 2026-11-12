@@ -36,6 +36,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address: 8 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 6 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 228 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 3 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 2 immediate, 1 immediate+address
 - laser squad (1989)(microillusions)/Laser Squad (1989)(MicroIllusions).adf: blocks 687-688 (bytes 351744-352768) outside the filesystem hold data, not code (opcode density 0.000, entropy 0.48)
 - laser squad (1989)(microillusions)/Laser Squad (1989)(MicroIllusions).adf: blocks 884-884 (bytes 452608-453120) outside the filesystem hold data, not code (opcode density 0.000, entropy 2.91)
 

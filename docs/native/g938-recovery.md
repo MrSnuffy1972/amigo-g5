@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (2717344 top-level bytes in 51 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 19 of 19 units identical (bytes and relocations), 11 raw-word lines |
-| Functions named and described | pass, 760 of 760 named (0 author symbols), 760 of 760 described (36 by rule, 721 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1094 of 1094 (100.00%) |
+| Bytes classified (2714306 top-level bytes in 55 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 29 of 29 units identical (bytes and relocations), 40 raw-word lines |
+| Functions named and described | pass, 800 of 800 named (0 author symbols), 800 of 800 described (42 by rule, 755 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1402 of 1421 (98.66%) |
 | Recovered without load address (counted in proof 1, flagged) | 144169 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 19597 of 19603 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 19957 of 19990 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 2025689 |
-| code | 62242 |
-| data | 438283 |
-| padding | 12442 |
+| code | 62966 |
+| data | 434523 |
+| padding | 12440 |
 | unused | 178688 |
 
 ## Code units
@@ -43,22 +43,41 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Black Crypt (1992)(Electronic Arts)(Disk 2 of 3).adf:bcdfu | 2 | 1595 | 97 |
 | Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf:bootblock | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 185 | 4 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1696 | 114 |
+| logged disk load from Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf | 1 | 37 | 3 |
+| logged disk load from Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf | 1 | 57 | 5 |
+| logged disk load from Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf | 1 | 30 | 2 |
+| logged disk load from Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf | 1 | 11 | 2 |
+| logged disk load from Black Crypt (1992)(Electronic Arts)(Disk 2 of 3).adf | 1 | 13 | 1 |
+| logged disk load from Black Crypt (1992)(Electronic Arts)(Disk 2 of 3).adf | 1 | 16 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 46 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 40 | 3 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 135 | 18 |
 | Black Crypt (1992)(Electronic Arts)(Disk 2 of 3).adf:bcdfx (raw code file, load address unknown) | 1 | 0 | 0 |
 
 ## Cases handled
 
-- 6 first-execution byte records contradict the logged opcode word (first an address): bad captures, the opcode word is used
-- 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- 60 first-execution byte records contradict the logged opcode word (first an address): bad captures, the opcode word is used
 - runtime segment an address: 31 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address (play-rs-m1500): 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 217 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- black crypt (1992)(electronic arts)(disk 1 of 3)/Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf: 29 executed PCs whose RAM was overwritten before any snapshot match its bytes 792416-792624: recovered as a unit run at an address
+- black crypt (1992)(electronic arts)(disk 1 of 3)/Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf: 49 executed PCs whose RAM was overwritten before any snapshot match its bytes 789056-789568: recovered as a unit run at an address
+- black crypt (1992)(electronic arts)(disk 1 of 3)/Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf: 28 executed PCs whose RAM was overwritten before any snapshot match its bytes 414112-414256: recovered as a unit run at an address
+- black crypt (1992)(electronic arts)(disk 1 of 3)/Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf: 9 executed PCs whose RAM was overwritten before any snapshot match its bytes 789520-789696: recovered as a unit run at an address
+- black crypt (1992)(electronic arts)(disk 2 of 3)/Black Crypt (1992)(Electronic Arts)(Disk 2 of 3).adf: 3 executed PCs whose RAM was overwritten before any snapshot match its bytes 840144-840256: recovered as a unit run at an address
+- black crypt (1992)(electronic arts)(disk 2 of 3)/Black Crypt (1992)(Electronic Arts)(Disk 2 of 3).adf: 8 executed PCs whose RAM was overwritten before any snapshot match its bytes 835504-835616: recovered as a unit run at an address
+- 112 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 4 first-run image unit(s) in 1 version group(s); 436 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
 - black crypt (1992)(electronic arts)(disk 2 of 3)/Black Crypt (1992)(Electronic Arts)(Disk 2 of 3).adf:bcdfx: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 jump target
+- black crypt (1992)(electronic arts)(disk 1 of 3)/Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf: 4 logged loads cover 0 bytes of the image
+- black crypt (1992)(electronic arts)(disk 2 of 3)/Black Crypt (1992)(Electronic Arts)(Disk 2 of 3).adf: 2 logged loads cover 0 bytes of the image
 - black crypt (1992)(electronic arts)(disk 2 of 3)/Black Crypt (1992)(Electronic Arts)(Disk 2 of 3).adf: boot area holds bytes but the checksum is invalid, so Kickstart never runs it
 - black crypt (1992)(electronic arts)(disk 3 of 3)/Black Crypt (1992)(Electronic Arts)(Disk 3 of 3).adf: boot area holds bytes but the checksum is invalid, so Kickstart never runs it
 - black crypt (1992)(electronic arts)(disk 1 of 3)/Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf:bcdft: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
+- 2 executed PCs start inside another executed instruction (overlapping-instruction idiom): decoded and counted as instruction starts
 - 1 never-loaded region(s), 144169 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
@@ -767,7 +786,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
-- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -885,3 +903,74 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispose_resource_structure`: Iterates through a list of indices to call a validation routine for each, then executes a series of conditional function pointers stored within a global structure.
 - `nop_padding_sequence`: An empty routine consisting of two instructions that perform no operation.
 - `close_file_handle`: The routine validates an index against a table, checks if a pointer is non-zero, and calls a function to close a resource before clearing a value in the table.
+
+### logged disk load from Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf
+
+- `lookup_or_divide_table_entry_3`: Checks if the input index is within bounds to read a 16-bit value from a global table; otherwise, it divides a global constant by the input.
+- `add_to_pointer_if_nonzero_3`: It reads the value pointed to by the pointer and, if that value is non-zero, adds the input value to it and stores the result back through the pointer.
+- `process_structure_elements`: Saves registers to the stack, then repeatedly calls another routine while incrementing a pointer by 4, and finally calls another routine after performing a subtraction on a byte retrieved from a structure.
+
+### logged disk load from Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf
+
+- `clear_and_copy_block_2`: Calls a function pointer from a global structure, then copies 8000 words from a source buffer to a destination buffer.
+- `call_table_entries_until_flag`: Iterates through a table of short values, calling a function pointer from a global structure for each non-zero entry.
+- `iterate_table_with_conditional_exit`: Iterates through a table of 16-bit values, calling a function pointer from a structure for each non-zero entry.
+- `call_routine_twice`: Saves d2 and a2 to the stack, calls a routine at an offset of minus 270 from a pointer in a5 twice, and then calls another routine after setting a0 and d0.
+- `return_immediately_7`: This routine does nothing and returns immediately.
+
+### logged disk load from Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf
+
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `increment_mismatched_nibbles_2`: Iterates through two lists of words for a specified count, comparing their nibbles; if a nibble in the first word differs from the corresponding nibble in the second word, the nibble in the first word is incremented by one, and the modified word is stored back in the first list.
+
+### logged disk load from Black Crypt (1992)(Electronic Arts)(Disk 1 of 3).adf
+
+- `execute_loop_and_set_flag`: Loads a pointer from a structure, calls a function pointer from a global structure, and then executes a loop based on the value in d2 before setting a byte at an offset in a structure.
+- `function_epilogue_2`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+
+### logged disk load from Black Crypt (1992)(Electronic Arts)(Disk 2 of 3).adf
+
+- `process_list_until_zero`: Enters a loop that calls another routine and, if a pointer retrieved from memory is non-zero and its offset 4 value is negative, iterates through a list starting at offset 274 to add the pointer value to each entry.
+
+### logged disk load from Black Crypt (1992)(Electronic Arts)(Disk 2 of 3).adf
+
+- `wait_for_byte`: Loops until the byte pointed to by a0 is equal to fifteen.
+- `open_file_resource_3`: Calls a routine using a pointer from a structure in a6 and a constant, then stores the result at offset 28 of that structure and returns a boolean value based on whether the result was zero.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_library_pointer`: Loads a library address from a global pointer, calls a routine, sets bit 5 of a byte at a location relative to a4, and loads a 32-bit value from a structure into d1.
+- `call_offset_routine`: Clears d0, loads a pointer into a1, calls a routine at an offset relative to the program counter, and increments the stack pointer by 8.
+- `execute_library_calls`: Performs a sequence of library calls using offsets from a6.
+- `process_data_block`: Performs a sequence of data manipulations and register updates.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `loop_resource_updates`: Enters a loop that checks two 16-bit values at offsets 34 and 36 of a structure in a5; if both are non-zero, it updates several fields in a structure in a3 using values from d0 and d3, calls two different routines via pointers in a4, and repeats the loop.
+- `append_string_to_buffer_4`: Advances a pointer to the end of a null-terminated string in a0, then copies characters from a second string in a1 to that location until the null terminator is reached.
+- `function_epilogue_3`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `call_subroutine_with_constant`: Loads a constant into d0 and calls a subroutine at a relative offset.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `decrement_and_increment`: Decrements the loop counter in d0 and increments d2 by 1.
+- `calculate_scaled_offset`: Checks if a 16-bit word at an offset of a1 is greater than zero; if not, it pushes a6 to the stack, loads a 16-bit word from a structure in a4, sign-extends it to 32 bits, and performs a series of shifts and additions to calculate a value in d0.
+- `function_epilogue_4`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+- `set_bit_at_pointer`: Sets bit 7 and bit 6 of the byte pointed to by a register.
+- `check_table_entry`: Checks a value at a location relative to a4; if non-zero, it loads a pointer from a structure in d0, checks if the value at offset 4 of that structure is zero, and if not, loads the value at offset 8 into d2.
+- `copy_and_loop_data`: Copies a byte from a source to a destination, increments the destination pointer, and performs a loop using a counter in d2, otherwise it branches to another location and eventually returns after restoring registers.
+- `branch_on_result`: Calls another routine and branches to a different location if the returned value in d0 is not zero.
+- `process_system_calls`: Calls two different routines, loads a pointer into a0, saves registers to the stack, checks bit 4 of a byte at an offset from a pointer in a6, and if the bit is not set, calls another routine using a pointer in a5 and pushes a0 to the stack.
+- `call_and_pop_registers`: Calls another routine and then loads two longwords from the stack into a0 and a5.
+- `call_library_function_3`: Calls a library function using a base address from a global variable and an offset of minus 414, returning the result.
+- `fall_through_entry_2`: Entry point part-way through straight-line code: runs one instruction (moveq) and then falls through into the code that follows, with no return of its own.
+- `call_library_vector_414_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `function_epilogue_5`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+- `update_table_entry`: Checks if a value at an offset in a structure is zero or if a pointer is within a certain range; if the condition is met, it writes a constant to a location in a structure, otherwise it performs a bitwise OR on a value at a pointer, calls another routine, and updates a pointer in a structure.
+- `call_and_restore_registers`: Calls another routine, sets d0 to 255, restores d6, d7, a0, a1, and a5 from the stack, then increments a6 and d2.
+- `execute_indirect_call_2`: Loads a pointer from a table into a6, calls a routine using a value from a2 as an argument, writes a constant to a memory location, and branches to another location.
+- `clear_and_call_library`: Clears a longword at a location relative to the program counter, sets d0 to 1, and calls a library function at an offset of minus 6 from a base in a6.
+- `modify_global_values`: If a condition is met, it performs a bitwise AND on a byte at a location relative to the program counter, stores d3 into a global variable, clears a word in another global variable, and returns after restoring registers.

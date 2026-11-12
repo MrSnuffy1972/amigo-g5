@@ -8,17 +8,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (901232 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 2 of 2 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 2 of 2 named (0 author symbols), 2 of 2 described (0 by rule, 0 by the local model) |
+| Functions named and described | pass, 3 of 3 named (0 author symbols), 3 of 3 described (0 by rule, 1 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 14 of 14 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 21 of 21 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 29 of 29 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| code | 78 |
-| data | 527392 |
+| code | 104 |
+| data | 527366 |
 | padding | 2 |
 | unused | 373760 |
 
@@ -27,7 +27,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Indiana Jones and the Last Crusade - The Action Game.adf:bootblock | 1 | 7 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 14 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 22 | 2 |
 
 ## Cases handled
 
@@ -131,3 +131,4 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `copy_interleaved_words_to_planes`: Deinterleaves four consecutive words per step from a source buffer into four destination planes spaced 8000 bytes apart, advancing 40 bytes per destination row and 160 bytes per source row.
+- `transform_memory_block`: Iterates through a block of 9000 words starting at a specific memory address, masking each word to its lowest byte and shifting the result left by seven bits before storing it back in the next word position.

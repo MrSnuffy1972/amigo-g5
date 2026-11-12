@@ -7,20 +7,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (911488 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 7 raw-word lines |
-| Functions named and described | pass, 142 of 142 named (0 author symbols), 142 of 142 described (10 by rule, 16 by the local model) |
+| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 0 raw-word lines |
+| Functions named and described | pass, 126 of 126 named (0 author symbols), 126 of 126 described (5 by rule, 12 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 62 of 62 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 101376 bytes, 1 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1996 of 1996 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2002 of 2002 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 19491 |
-| code | 11992 |
-| data | 784732 |
-| padding | 41 |
+| asset | 19537 |
+| code | 12110 |
+| data | 784567 |
+| padding | 42 |
 | unused | 95232 |
 
 ## Code units
@@ -29,7 +29,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Deuteros - The Next Millennium (1991)(Activision)(M3)(Disk 1 of 2)[cr SKR].adf:bootblock | 1 | 43 | 2 |
 | logged disk load from Deuteros - The Next Millennium (1991)(Activision)(M3)(Disk 1 of 2)[cr SKR].adf boot-block load | 1 | 0 | 0 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1800 | 139 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1806 | 123 |
 | Deuteros - The Next Millennium (1991)(Activision)(M3)(Disk 1 of 2)[cr SKR].adf bytes 13312-14336 (code never loaded by a reference run) | 1 | 153 | 1 |
 | Deuteros - The Next Millennium (1991)(Activision)(M3)(Disk 1 of 2)[cr SKR].adf bytes 28160-29184 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Deuteros - The Next Millennium (1991)(Activision)(M3)(Disk 1 of 2)[cr SKR].adf bytes 497664-526336 (code never loaded by a reference run) | 1 | 0 | 0 |
@@ -44,6 +44,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - deuteros - the next millennium (1991)(activision)(m3)(disk 1 of 2)[cr skr]/Deuteros - The Next Millennium (1991)(Activision)(M3)(Disk 1 of 2)[cr SKR].adf: bytes 28160-29184 look like code no run loaded: recovered position-independently (load address unknown)
 - deuteros - the next millennium (1991)(activision)(m3)(disk 1 of 2)[cr skr]/Deuteros - The Next Millennium (1991)(Activision)(M3)(Disk 1 of 2)[cr SKR].adf: bytes 497664-526336 look like code no run loaded: recovered position-independently (load address unknown)
 - deuteros - the next millennium (1991)(activision)(m3)(disk 1 of 2)[cr skr]/Deuteros - The Next Millennium (1991)(Activision)(M3)(Disk 1 of 2)[cr SKR].adf: bytes 566272-636928 look like code no run loaded: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 2 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate, 1 jump target
 - deuteros - the next millennium (1991)(activision)(m3)(disk 1 of 2)[cr skr]/Deuteros - The Next Millennium (1991)(Activision)(M3)(Disk 1 of 2)[cr SKR].adf: 5 logged loads cover 118272 bytes of the image
 - deuteros - the next millennium (1991)(activision)(m3)(disk 1 of 2)[cr skr]/Deuteros - The Next Millennium (1991)(Activision)(M3)(Disk 1 of 2)[cr SKR].adf: 9 track-loaded blocks found in recovered runtime segments and classified through them
 - deuteros - the next millennium (1991)(activision)(m3)(disk 1 of 2)[cr skr]/Deuteros - The Next Millennium (1991)(Activision)(M3)(Disk 1 of 2)[cr SKR].adf: blocks 2-24 (bytes 1024-12800) outside the filesystem hold data, not code (opcode density 0.037, entropy 4.93)
@@ -74,7 +75,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Copy protection found
 
-- none found
+- `call_do_i_o_2` (runtime segment an address): Library stub: loads its arguments and the exec library base, calls DoIO and returns its result to the caller. Kind: track/sector verification check. Pass path: The routine returns a value (likely a status code or checksum result) via the FPU register/float return. A successful check typically returns 0 or a specific success constant; the protection logic will branch based on whether the returned v.
+- `issue_io_request_command_nine` (runtime segment an address): Sets the command field of an I/O request to nine, clears its offset field and a flag byte, and issues the request through the exec DoIO call. Kind: track/sector validation check. Pass path: exec_DoIO returns 0 (success); execution continues to the next instruction following the call..
+- `call_do_i_o` (runtime segment an address): Library stub: loads its arguments and the exec library base, calls DoIO and returns its result to the caller. Kind: disk/track integrity check. Pass path: exec_DoIO returns 0 (success).
+- `issue_io_request_command_five` (runtime segment an address): Sets the command field of an I/O request to five and clears its flag byte, then issues the request through the exec DoIO call. Kind: disk/track integrity check. Pass path: the routine returns 0 (success) from exec_DoIO, allowing the caller to proceed to the next instruction (e.g., the mouse interrupt removal or the IO pair latching)..
 
 ## Functions
 
@@ -88,9 +92,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `call_and_return_register_value`: Calls one routine and then returns the value held in a data register, which the call leaves unchanged.
 - `cycle_table_entries_into_slots`: Advances a global index and, when it is nonzero, copies words selected from a table by that index into two destination slots.
-- `tiny_ori_ori`: Small routine of 2 instructions that merges 0 into d0, then merges 0 into d0.
 - `install_interrupt_server`: Stores two constant bytes and two routine addresses into fixed global locations, then calls the exec library through a vector to add an interrupt server.
 - `call_rem_int_server`: Library stub: loads its arguments and the exec library base, calls RemIntServer and returns its result to the caller.
+- `initialize_global_values`: Clears a 16-bit word at a global address, sets a 16-bit word at another global address to 63184, sets a 32-bit long at a third global address to 1, copies a 16-bit word from one global address to another, and returns.
+- `update_global_parameters`: Copies a 16-bit word from one global address to another, then sets a 16-bit word to 56, a 16-bit word to 60, and a 32-bit long to 100 before returning.
+- `open_device_and_setup_port`: Calls another routine, populates a structure at a global address with several values, calls another routine, updates a global pointer with the address of a structure, calls another routine, and if the return value is 0, calls another routine; otherwise it branches to another routine.
+- `reset_structure_fields`: Loads a pointer from a global variable into a1, sets a 32-bit long at offset 48 of the structure pointed to by a1 to all ones, sets a byte at offset 30 of that structure to 0, and returns.
+- `call_do_i_o_2`: Library stub: loads its arguments and the exec library base, calls DoIO and returns its result to the caller.
 - `issue_io_request_command_nine`: Sets the command field of an I/O request to nine, clears its offset field and a flag byte, and issues the request through the exec DoIO call.
 - `call_do_i_o`: Library stub: loads its arguments and the exec library base, calls DoIO and returns its result to the caller.
 - `issue_io_request_command_five`: Sets the command field of an I/O request to five and clears its flag byte, then issues the request through the exec DoIO call.
@@ -122,11 +130,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `blit_masked_planes_by_offsets`: Combines bitplanes row by row using a mask derived from four plane words, then writes each result back to the destination.
 - `fill_tile_rows_and_mark`: Stores the low byte of a working value and a record field, marks the record's first word as 65535, and fills rows of the screen buffer with a nested loop that steps forty bytes per row.
 - `fill_clipped_tile_rows`: Computes a row range from a record and a working value, clamping the end to row 199, and fills the matching forty-byte rows of the screen buffer.
-- `build_offset_table`: Copies a long word from a stack-relative location and clears a counter.
-- `tiny_ori`: Small routine of 1 instruction that merges 188 into d3.
-- `tiny_ori_2`: Small routine of 1 instruction that merges 0 into d0.
-- `tiny_ori_3`: Small routine of 1 instruction that merges 2 into d4.
-- `tiny_ori_4`: Small routine of 1 instruction that merges 130 into d4.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (chk.w) and then falls through into the code that follows, with no return of its own.
 - `rebase_offset_table_entries`: Clears a counter and, for each of six table entries, adds a fixed base offset to nonzero values, storing the results in a second table.
 - `update_timed_event_records`: Walks a table of twenty-four-byte event records and, for each record with an active pointer, dispatches on its type code.
 - `scan_event_records_for_refresh`: Decrements a countdown in the current record and steps through an array of twenty-four-byte records, calling a routine when the array is exhausted.
@@ -160,19 +164,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_record_status_word`: Clears one word in a record, the status field at offset six, and returns.
 - `increment_and_clear_buffer`: Increments a global counter and then clears 2000 groups of four long words starting at a global buffer pointer.
 - `wait_for_hardware_flag`: Calls a routine through a pointer offset from a global base, then busy-waits until a bit in a hardware status global is set.
-- `halt_in_infinite_loop`: The listing contains only an infinite loop and performs no other work.
+- `set_constant_color`: Sets the first custom color register to 3840 and enters an infinite loop.
 - `poll_right_middle_buttons`: Reads the right and middle mouse button state from the POTGOR hardware register, then calls seven routines that handle the result.
 - `poll_fire_and_disk_status`: Reads the CIA port A register, which holds the joystick and mouse fire buttons and the disk status, and calls four routines based on its value.
 - `dispatch_two_input_routines`: Calls two routines in turn and has little other work of its own.
 - `read_ciaa_peripheral_status`: Reads the status of the joystick fire buttons and disk drive from the CIAA peripheral address register.
 - `remove_interrupt_server_mouse`: Checks the right and middle mouse buttons in the POTGOR register and, depending on them, removes an interrupt server through the exec library stub.
-- `tiny_ori_5`: Small routine of 1 instruction that merges 4 into d0.
-- `dispatch_two_helpers`: Calls two routines in sequence with minimal work of its own.
+- `check_and_update_flag`: Negates the value of d4 if it is 0, compares a 16-bit word at a global address to 2, and if the value is less than 2, sets a 16-bit word at a global address to 1 and branches to another routine; otherwise it branches to another routine.
 - `call_pair_of_routines`: Calls a pair of routines with no further work of its own.
-- `poll_until_magic_value`: Loops until a checked value equals a fixed magic constant, calling a routine and polling a hardware flag on each pass.
+- `terminate_io_device_and_port`: Executes a loop that calls a routine to perform I/O operations and clears a block of memory until a specific return value is met, then closes a device and removes a port.
 - `close_device_and_remove_port`: Sets a state variable to one, closes a device and removes a message port through exec calls, and stores two global values.
 - `clear_block_of_longs`: Clears 2000 groups of four long words starting at a global buffer pointer.
-- `decrement_nibbles_each_tick`: Sets a timing global to 256 and, on each tick once a hardware status bit is set, decrements the low four bits of each of fifteen words when they are nonzero.
 - `run_nibble_decrement_tick_loop`: Runs the nibble-decrement tick loop after setting its timing global to 256 and clearing the tick counter.
 - `decrement_nibbles_each_tick_2`: Waits for the hardware status bit on each tick, then decrements the low four bits of each of fifteen words when they are nonzero.
 - `set_bit_and_reset_timer`: Sets bit one of a control global, stores 256 in a timing global, then calls a routine.
@@ -204,20 +206,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_value_by_index_flag`: Stores a value into a player global when the index is three, and otherwise into a second player global.
 - `store_value_into_global_slot`: Stores the data-register value into a fixed player global without any index test.
 - `update_audio_channel_registers`: Adds per-channel period and volume deltas to the player globals for all four audio channels, then writes the pointer, length, period and volume values to the audio hardware registers.
-- `add_table_byte_to_global`: Reads a byte from a table addressed by a player global and adds it to that global, returning the masked sum.
-- `clear_audio_register`: Clears a value through a pointer.
-- `update_audio_register`: Performs a multi-instruction operation involving a pointer and a global variable.
-- `add_audio_value`: Adds a value to a location via a pointer.
-- `increment_audio_value`: Increments a value at a memory location using a pointer.
-- `move_audio_value`: Moves a value to a memory location through a pointer.
-- `store_audio_value`: Stores a value into a memory location using a pointer.
-- `tiny_ori_6`: Small routine of 1 instruction that merges 0 into d5.
-- `adjust_audio_pointer`: Adjusts a pointer and modifies a value at that location.
-- `set_audio_parameter`: Sets a value at a memory location using a pointer and arithmetic operations.
-- `reset_audio_counter`: Clears or decrements a value at a memory location via a pointer.
-- `update_period_chain_pointer`: Calculates a new address by adding an offset from a global variable to a pointer and stores the result back to that pointer.
-- `add_table_byte_to_targets`: Reads a byte from a table indexed by the low 15 bits of a word, masks off one bit, and adds the result to a global variable and to that same word, returning the low byte of the sum.
-- `update_indexed_offset_pointer`: Calculates a new value by adding a global variable to an offset derived from a combination of a register and a memory value, then updates a global pointer with the result.
 - `add_indexed_byte_to_global`: Looks up a byte in a table indexed by the low 15 bits of a word, masks off one bit, adds it to a global variable and stores the sum back into the global.
 - `initialize_four_channel_records`: Fills four consecutive four-word records with values derived from a base offset and fixed addresses, then sets the low four bits of a status word to mark them as valid.
 - `copy_selected_channel_records`: Selects a 14-byte source entry by index, or a global default when the index is zero.

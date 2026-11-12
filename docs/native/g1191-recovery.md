@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (910192 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 6 raw-word lines |
-| Functions named and described | pass, 27 of 27 named (0 author symbols), 27 of 27 described (0 by rule, 4 by the local model) |
+| Functions named and described | pass, 55 of 55 named (0 author symbols), 55 of 55 described (1 by rule, 31 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 333 of 333 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 2048 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 748 of 748 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2268 of 2268 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 25722 |
-| code | 4644 |
-| data | 863951 |
+| asset | 22436 |
+| code | 11772 |
+| data | 860109 |
 | padding | 3 |
 | unused | 15872 |
 
@@ -31,8 +31,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | logged disk load from Gold of the Aztecs, The (1990)(U. S. Gold)[cr PDX](Disk 1 of 2)[t +1 PDX].adf boot-block load | 1 | 159 | 3 |
 | logged disk load from Gold of the Aztecs, The (1990)(U. S. Gold)[cr PDX](Disk 1 of 2)[t +1 PDX].adf boot-block load | 1 | 0 | 0 |
 | logged disk load from Gold of the Aztecs, The (1990)(U. S. Gold)[cr PDX](Disk 1 of 2)[t +1 PDX].adf boot-block load | 1 | 0 | 0 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 117 | 5 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 311 | 9 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1402 | 10 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 546 | 32 |
 | Gold of the Aztecs, The (1990)(U. S. Gold)[cr PDX](Disk 1 of 2)[t +1 PDX].adf bytes 1024-3072 (code never loaded by a reference run) | 1 | 0 | 0 |
 
 ## Cases handled
@@ -64,6 +64,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decode_raw_disk_sectors` (bootblock): Starts a raw disk read with the sync word, searches the buffer for a sector sync, and decodes ten sectors. Kind: sync/track-based protection/pattern detection. Pass path: bsr.w an address.
 - `update_audio_channel_sequence_step` (runtime segment an address): Per-channel audio update that reads the next sequence byte and combines it with a running offset to look up a period value. Kind: track/sync check (looping or conditional branch based on hardware-specific lookup or track/sector validity). Pass path: The loop continues or returns normally if the check (e.g., checking for zero/validity or non-zero status in pointer/memory checks) does not trigger a jump or an alternative branch; specifically, the loop continues if `*pbVar9` (the byte che.
 - `update_audio_sample_parameters_3` (runtime segment an address): Iterates through a list of audio channels to update sample pointers, volume levels, and frequency or period settings. Kind: checksum/data-integrity trap. Pass path: The loop continues or returns via the `uVar6 == 4` exit condition, bypassing the modification of `_DAT_00dff096` and the conditional logic that triggers `u5__start_sample_on_audio_channel` only if certain RAM flags are non-zero..
+- `play_audio_samples` (runtime segment an address): Counts a loop variable down from 512 to zero and returns, otherwise it checks four different memory locations and calls another routine to start a sample on a specific audio channel if the byte at the location is non-zero. Kind: loader/sabotage path. Pass path: sub_0D40.
 
 ## Functions
 
@@ -90,8 +91,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `dispatch_via_nibble_table_2`: Advances a pointer by sixteen and decrements a counter.
+- `setup_bitplane_data`: Configures several hardware registers for display and DMA, then enters a loop that writes four 32-bit values to a table by splitting them into two 16-bit words and incrementing the source value by 8000 each iteration.
 - `idle_in_endless_loop_stub`: Contains only an endless loop with no other work.
 - `configure_blit_and_wait_idle`: Writes blitter masks, modulo values, and a size value, and loads the two address inputs into the blitter pointer registers.
+- `update_color_register`: Shifts the value in a register left by one and uses it as an offset to write the contents of another register into a color register.
+- `transform_data_blocks`: Uses nested loops to copy bytes from one memory location to another, where the destination pointer is periodically adjusted based on a counter and a value read from the source.
+- `copy_and_transform_data`: Negates a byte in d3, and if it is not negative, it enters nested loops to move bytes from a0 to a1 and perform arithmetic on a1 and d0 before branching to another routine.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
 - `decode_joystick_movement_index`: Sets a state byte to all ones or zero from its top bit, then folds two low bit pairs into an index.
 - `advance_counter_and_call_handler`: Advances a counter by two and reads a value from a helper.
 
@@ -99,10 +105,33 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `stub_returns_stack_word`: Returns a value read from the stack with no other work.
 - `call_two_helpers_and_return`: Calls two helper routines and returns the two data register values it received.
+- `call_silence_routine`: Saves a3 to the stack, calls another routine, and restores a3 from the stack before returning.
+- `call_audio_config_routine`: Saves d1, d7, and a3 to the stack, calls another routine, and restores them from the stack before returning.
+- `call_audio_reset_and_restore_registers`: Saves the current contents of registers d0 through d3, d7, and a0 through a6 to the stack, calls reset_audio_and_play_sample, restores the saved registers, and returns.
+- `call_flag_set_routine`: Saves a3 to the stack, calls another routine, and restores a3 from the stack before returning.
+- `call_subroutine_and_restore`: Calls a routine at a fixed address and returns.
+- `silence_audio_channels_and_clear`: Clears the state of four audio channels and writes silent volume and control values to the sound hardware.
+- `onc`: Sets four state flag bytes in globals to one.
+- `configure_audio_hardware`: If a global byte is non-zero, it sets a hardware register to 255, performs a loop to set bits in a register, writes that register to another hardware register, and sets a global byte.
+- `set_status_bytes`: Loads a pointer into a3, stores the value 3 into offset 113 and offset 114 of the structure pointed to by a3, and returns.
 - `run_sound_channel_frame_update`: A per-frame sound driver that updates four audio channels.
 - `update_audio_channel_sequence_step`: Per-channel audio update that reads the next sequence byte and combines it with a running offset to look up a period value.
 - `update_audio_sample_parameters`: Updates audio channel registers with new sample or frequency data, and checks a counter to trigger sample playback or stop audio channels.
 - `update_audio_channel_sample`: Iterates through audio channel structures to update sample pointers, calculate next volume or pitch, and decrement remaining sample counts.
 - `update_audio_sample_parameters_2`: Updates audio channel registers with new sample or frequency data, calculating volume or pitch-shifting offsets based on a table or pointer-driven or loop-driven logic, and triggers sample playback if certain conditions are met.
 - `update_audio_sample_parameters_3`: Iterates through a list of audio channels to update sample pointers, volume levels, and frequency or period settings.
+- `modify_byte_and_branch`: Sets a byte at an offset from a pointer and then branches to another location.
+- `move_byte_to_offset`: Moves a byte from a pointer to an offset of 3 from another pointer and then branches to another location.
+- `move_two_bytes_to_offset`: Moves two consecutive bytes from a pointer to offsets 8 and 9 of another pointer, writes zero to an offset of a pointer, and then branches to another location.
+- `extend_and_store_byte`: Moves a byte from a pointer to a register, extends the register to a word, stores that word in a global variable at a specific offset, and then branches to another location.
+- `store_byte_from_pointer`: Moves a byte from a pointer to a global variable at offset 113, moves a constant byte to a global variable at offset 114, and then branches to another location.
+- `update_sound_parameter`: Moves a byte from a pointer in a1 into d0, sign-extends it to a word, stores the word at offset 100 of the structure in a3, and branches to another routine.
+- `process_data_table`: If a byte at offset 119 of a3 is zero, it loops 16 times to read a longword and a word from a table, calculates a value by dividing an address by the word, and stores the results in a global structure before updating two pointers in a3 and setting the byte at offset 119 to 255.
+- `process_scaled_table`: If a byte at offset 118 of a3 is zero, it calculates a value by multiplying a word from a table by 50 and dividing by another word, then loops once to read a longword and a word from a table, calculates a division result using an address, and stores these values into a global structure and a byte at offset 14 of a5 before setting the byte at offset 118 to 255.
+- `reset_audio_and_play_sample`: Resets the audio hardware, selects a specific audio channel based on a register value, and updates a structure with sample data including volume, period, and length from a table.
+- `copy_and_play_audio`: Sets audio hardware registers, enables a DMA channel, copies 12 words from one memory location to another in a loop, and then updates a structure with values from a table and calls another routine.
+- `calculate_table_offset`: Calls another routine, loads a byte from a constant offset, and then either branches to another routine or adds a constant to a pointer and branches to another routine.
+- `configure_audio_and_play`: Enables a DMA channel, sets audio hardware registers, calculates an offset into a table using a byte from a structure, and then updates several hardware registers and structure members before calling another routine.
+- `calculate_offset_values`: Adds a longword from a0 to d0, calculates a word by subtracting the half of d0 from a word at offset 8 of a0, stores the word at offset 164 of a6, and stores the new longword at offset 0 of a6.
+- `play_audio_samples`: Counts a loop variable down from 512 to zero and returns, otherwise it checks four different memory locations and calls another routine to start a sample on a specific audio channel if the byte at the location is non-zero.
 - `start_sample_on_audio_channel`: Starts a sample on one audio channel.

@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (901120 top-level bytes in 58 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 8 raw-word lines |
-| Functions named and described | pass, 63 of 63 named (23 author symbols), 63 of 63 described (13 by rule, 12 by the local model) |
+| Functions named and described | pass, 62 of 62 named (23 author symbols), 62 of 62 described (12 by rule, 13 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 720 of 720 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 106865 bytes, 2 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1606 of 1987 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1600 of 1981 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 287285 |
-| code | 7048 |
-| data | 473913 |
+| code | 7030 |
+| data | 473931 |
 | padding | 13578 |
 | unused | 119296 |
 
@@ -27,7 +27,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Zany Golf (1988)(Electronic Arts)[a3].adf:Zany | 15 | 1580 | 60 |
+| Zany Golf (1988)(Electronic Arts)[a3].adf:Zany | 15 | 1574 | 59 |
 | Zany Golf (1988)(Electronic Arts)[a3].adf:bootblock | 1 | 10 | 1 |
 | QUICKSCORE.UNV (raw code file, load address unknown) | 1 | 0 | 0 |
 | SPRITES8.SPR (raw code file, load address unknown) | 1 | 0 | 0 |
@@ -73,14 +73,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `open_dos_library_at_entry`: Program entry that opens the dos library by name through the exec library table, then calls a disk signature routine and two other routines.
 - `poll_port_a_and_interrupts`: Reads the port A status register and writes the interrupt enable register.
+- `verify_disk_and_enable_interrupts`: Displays a message requesting the original copy of the game, waits for a specific bit in the CIAA port A register to clear, and then calls a routine to handle disk signaling.
 - `chain_two_subroutine_calls`: Calls two other routines in sequence and returns.
 - `process_table_loop`: Performs a loop of 62 instructions that repeatedly loads a value from a table, processes it, and stores the result back through a pointer, using chained subroutine calls to helper routines and a data handler pointer.
 - `run_short_handler_entry`: A sixteen-instruction routine reached through a handler pointer in the data and from three unnamed callers, and executed in the reference run.
 - `call_two_library_functions`: Calls two functions through library offsets and is reached through a pointer in the first data hunk and from one unnamed routine.
 - `wait_interrupt_and_store_byte`: Waits for an interrupt by writing to the interrupt enable register, then reaches a handler through a handler pointer and runs a seventeen-instruction routine that reads from a table and stores a byte from a register through a pointer.
-- `run_pointer_addressed_handler`: A seventeen-instruction routine whose address is taken by absolute and pc-relative references and which is reached through a handler pointer in the data.
 - `load_handler_from_table_and_store_byte`: Reads a handler address from a table referenced by the text FILE1, then reaches that handler through a handler pointer and runs a seventeen-instruction routine that reads from a table and stores a byte from a register through a pointer.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 - `enable_interrupts_store_byte`: Enables interrupts, then performs a 34-instruction sequence that reads from a table and stores a byte from a register through a pointer, referencing the FILE1 text.
 - `execute_eight_instruction_routine`: An eight-instruction routine called from one unnamed routine, with no further calls, library use or hardware access recorded.
 - `dispatch_handler_to_two_routines`: A seven-instruction routine reached through a handler pointer in the data and from one unnamed routine.

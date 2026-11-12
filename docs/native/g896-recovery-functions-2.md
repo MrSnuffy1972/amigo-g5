@@ -5,6 +5,500 @@
 ### anim
 (continued)
 
+- `update_animation_frame_counter_4`: Checks bit 0 of a register and, if set, decrements d5 and calls another routine via a pointer in a1 if d5 is non-negative, otherwise it decrements a 16-bit value at offset 4 of the structure in a1 and calls another routine via a pointer in a1 if the result is non-negative.
+- `update_animation_frame_counter`: Decrements a 16-bit value at an offset of 4 from a pointer in a1 and calls another routine via a pointer in a1 if the result is non-negative.
+- `execute_conditional_animation_task_4`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a routine via a pointer in a1 if the counter remains non-negative.
+- `empty_stub_49`: Empty routine: returns to the caller immediately without doing anything.
+- `update_animation_frame_counter_5_2`: Compares d4 and d2, exchanges them if d4 is less than d2, checks if the word at a1 is 24826, and if not, decrements a 16-bit value at offset 4 of a pointer in a1 and calls another routine via a pointer in a1.
+- `load_address_and_branch_alt2`: Loads the constant value 44380 into a1 and performs a short branch to an instruction located ten bytes before the start of this routine.
+- `compare_and_load_pointer_2`: Compares two pointers and, if the first is higher than the second, branches to another routine; otherwise, it loads a new pointer into a1 and branches to another routine.
+- `update_animation_frame_counter_5`: Decrements a 16-bit value at an offset of 4 from a pointer in a1 and calls another routine via a pointer in a1 if the resulting value is non-zero, otherwise it returns.
+- `update_animation_frame_counter_2`: Decrements a 16-bit value at an offset of 4 from a pointer in a1 and calls another routine via a pointer in a1 if the resulting value is non-negative.
+- `execute_conditional_animation_task_5`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a routine via a pointer in a1 if the counter remains non-negative.
+- `empty_stub_50`: Empty routine: returns to the caller immediately without doing anything.
+- `compare_and_adjust_pointers_2`: Compares d4 and d2, exchanges d2 and d4 if d4 is less than d2, then checks if the word at the address in a1 is 24826; if it is not, it compares a1 and a2, and if a1 is higher, subtracts a1 from a2, loads the constant 17852 into a1, and adds it to a2.
+- `load_pointer_and_branch_7`: Loads a longword into a1 from a constant value and performs a short branch to an instruction located six bytes after the start of this routine.
+- `select_animation_table_pointer`: Compares a pointer in a1 with a pointer in a2; if a1 is greater than a2, it loads a new pointer into a1, otherwise it returns.
+- `execute_animation_logic_4`: Checks bit 0 of d2, and if set, adds 1344 to a4, decrements d5, and calls another routine via a pointer in a1 if d5 is non-negative.
+- `decrement_counter_and_call_function_2`: Checks bit 0 of a register and returns immediately if it is not set, otherwise it decrements a 16-bit counter in d5 and loads a value from a pointer.
+- `decrement_counter_and_call_function`: Checks bit 0 of a register and returns immediately if it is not set; otherwise, it decrements a 16-bit counter in d5, loads a value from an offset of 1344 in a4 into a4, and calls a function through a pointer in a1 if the counter is not negative.
+- `empty_stub_51`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_conditional_callback_37`: Tests bit 0 of d2; if set, it adds 1344 to a4, decrements d5, and calls a routine at a1 if d5 is not negative, otherwise it returns.
+- `execute_conditional_callback_540_2_2`: Tests bit 0 of d2 and, if set, adds 1344 to a4, decrements d5, and calls a routine at a1 if d5 is not negative.
+- `execute_conditional_callback_540_2`: Checks bit 0 of d2; if set, it updates a4 with an offset of 1344 from its current value, decrements d5, and calls a routine at a1 if d5 is non-negative, then clears d5 and jumps to a2.
+- `empty_stub_52`: Empty routine: returns to the caller immediately without doing anything.
+- `handle_pointer_offset`: Checks bit 0 of d4, and if set, adds 336 to a4, decrements d5, and calls another routine via a pointer in a1 if d5 is non-negative.
+- `execute_conditional_callback_32`: Checks bit 0 of d4; if set, it updates a4 with an offset of 336 from its current value, decrements d5, and calls a routine at a1 if d5 is not zero.
+- `execute_conditional_callback_336`: Checks bit 0 of d4; if set, it updates a4 with an offset of 336 from its current value, decrements d5, and calls a routine at a1 if d5 is non-negative, then clears d5 and jumps to a2.
+- `empty_stub_53`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_conditional_subroutine_19`: Checks bit 0 of a register; if set, it decrements d5 and calls a subroutine via a pointer in a1 if the counter remains non-negative, otherwise it returns.
+- `execute_conditional_subroutine_16`: Checks bit 0 of a register; if set, it decrements d5 and calls a subroutine via a pointer in a1 if the counter remains non-negative.
+- `execute_conditional_subroutine_3`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a subroutine via a pointer in a1 if the counter remains non-negative.
+- `empty_stub_54`: Empty routine: returns to the caller immediately without doing anything.
+- `decrement_and_update_counter_3`: Increments a 16-bit value in a register, subtracts it from a 16-bit word at offset 12 of a structure in a3, and branches if the result is non-zero.
+- `decrement_and_update_counter_2`: Increments a 16-bit value in a register, subtracts it from a 16-bit word at offset 12 of a structure in a3, and branches if the result is not zero.
+- `execute_conditional_callbacks_6`: Performs a sequence of 24 instructions including calls to other routines.
+- `increment_stack_pointer_2`: Adds 2 to a7 and returns.
+- `execute_conditional_callbacks_5`: Performs a sequence of 64 instructions involving pointer manipulation, bit testing, and conditional calls to subroutines via pointers in a1.
+- `load_pointer_and_branch_3`: Loads a long value into a1 and performs a short branch.
+- `compare_pointers_and_branch`: Compares a1 and a2, then branches if a1 is higher than a2, otherwise it loads a long value into a1 and performs a short branch.
+- `execute_conditional_function_2`: Checks bit 0 of d2; if set, it decrements d5 and calls a function via a pointer in a1 using a data structure at an offset of 1344, otherwise it returns.
+- `execute_conditional_function`: Checks bit 0 of d2; if set, it decrements d5 and calls a function via a pointer in a1 using a data structure at an offset of 1344.
+- `execute_conditional_function_call`: Checks bit 0 of a value in d2; if set, it decrements d5 and calls a function via a pointer in a1 using a data structure at an offset of 1344 from a4, otherwise it returns.
+- `empty_stub_55`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_conditional_callback_offset_2`: Checks bit 0 of d4; if set, it decrements a 16-bit value in d5 and calls a function pointer in a1 using a pointer offset by 336 from a6, otherwise it returns.
+- `execute_conditional_callback_offset`: Checks bit 0 of d4; if set, it decrements a 16-bit value in d5 and calls a function pointer in a1 using a pointer offset by 336 from a6.
+- `execute_conditional_callback_9`: Checks bit 0 of a byte in d4; if set, it decrements a 16-bit value in d5 and calls a function pointer in a1 using a pointer offset by 336 from a4, otherwise it returns.
+- `empty_stub_56`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_conditional_subroutine_word_2`: Checks bit 0 of d4; if set, it decrements a word in d5 and calls a subroutine via a pointer in a1 if the result is not negative, otherwise it returns.
+- `execute_conditional_subroutine_word`: Checks bit 0 of d4; if set, it decrements a word in d5 and calls a subroutine via a pointer in a1 if the result is not negative.
+- `execute_conditional_subroutine_4`: Checks bit 0 of a byte in d4; if set, it decrements a word in d5 and, if the result is not negative, calls a subroutine via a pointer in a1.
+- `empty_stub_57`: Empty routine: returns to the caller immediately without doing anything.
+- `update_pointer_with_offset_2`: Compares d4 and d2, and if d4 is less than d2, it copies the word at offset 6 of a3 to the location pointed to by a3, exchanges d2 and d4, then checks if the word at a1 is 24826; if it is not, it compares a1 and a2, and if a1 is higher, subtracts a1 from a2, loads the constant 17852 into a1, and adds it to a2.
+- `load_animation_pointer_and_branch`: Loads a long constant into register a1 and performs a short branch to an instruction located six bytes before the start of this routine.
+- `compare_and_update_pointer_4`: Compares two pointers and, if the first is higher than the second, branches to another routine; otherwise, it loads a new address into a1 and branches to another routine.
+- `execute_conditional_animation_task_22`: Checks a bit in a register and, if set, decrements a counter in a register and calls a routine via a pointer in a1 if the counter is non-negative; otherwise it returns.
+- `execute_conditional_animation_task_16`: Checks bit 0 of d2; if set, it decrements d5 and calls a routine via a pointer in a1 if the counter remains non-negative.
+- `execute_conditional_animation_task_6`: Checks bit 0 of a value in d2; if set, it decrements a counter in d5 and calls a routine via a pointer in a1 if the counter remains non-negative, otherwise it clears the counter and returns via a pointer in a2.
+- `empty_stub_58`: Empty routine: returns to the caller immediately without doing anything.
+- `decrement_animation_counter`: Checks bit 0 of d2; if set, it decrements a counter in d5 by 2 and calls a routine via a pointer in a1 if the counter remains non-negative, otherwise it returns.
+- `decrement_animation_counter_and_call_task`: Checks bit 0 of a value in d2; if set, it decrements a counter in d5 by 2 and calls a routine via a pointer in a1 if the counter remains non-zero.
+- `execute_conditional_animation_task_7`: Checks bit 0 of a value in d2; if set, it decrements a counter in d5 by 2 and calls a routine via a pointer in a1 if the counter remains non-negative, otherwise it clears the counter and returns via a pointer in a2.
+- `empty_stub_59`: Empty routine: returns to the caller immediately without doing anything.
+- `process_conditional_updates`: Updates a ball position, calls a routine via a pointer in a1 based on a bit in a register, and adjusts a pointer by an offset of 336 before calling another routine.
+- `execute_conditional_callback_pointer`: Checks bit 0 of a register; if set, it decrements d5 and calls a function pointer stored in a1 if the counter remains non-negative.
+- `execute_conditional_callback_10`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a function pointer stored in a1 if the counter remains non-negative.
+- `empty_stub_60`: Empty routine: returns to the caller immediately without doing anything.
+- `process_conditional_pointer_updates`: Checks bit 0 of a register and, if set, decrements a counter and adjusts a pointer by an offset of 336 before calling execute_conditional_pointer_adjust, execute_conditional_function_call_2, or empty_stub_61.
+- `execute_conditional_pointer_adjust`: Checks bit 0 of a register; if set, it decrements a counter and adjusts a pointer by an offset of 336, otherwise it returns immediately.
+- `execute_conditional_function_call_2`: Checks bit 0 of a register and returns immediately if it is clear; otherwise, it decrements a counter, adjusts a pointer by an offset of 336, and calls a function via a pointer in a1.
+- `empty_stub_61`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_conditional_callbacks_4`: Performs a sequence of 39 instructions involving pointer manipulation, bit testing, and conditional calls.
+- `load_pointer_and_branch_4`: Loads a long constant into address register 1 and performs a short branch to a location six bytes before the start of this routine.
+- `compare_and_load_pointer_3`: Compares two pointers and, if the first is not higher than the second, loads a specific address into a1 and branches to another routine; otherwise, it continues to the next instruction.
+- `execute_conditional_function_offset`: Checks bit 0 of a word in d2; if set, it decrements d5 and calls a function pointed to by a1 using a pointer offset by 540 from a4, otherwise it returns.
+- `execute_conditional_function_offset_a4`: Checks bit 0 of a word in d2; if set, it decrements d5 and calls a function pointed to by a1 using a pointer offset by 540 from a4.
+- `execute_conditional_function_pointer`: Checks bit 0 of a word in d2; if set, it decrements a counter in d5, calls a function pointed to by a1 with a pointer offset by 540 from a4, and then restores a4 from the stack before jumping to a location in a2.
+- `empty_stub_62`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_conditional_animation_task_20`: Checks bit 0 of d4; if set, it adds 336 to a pointer in a4, decrements a 16-bit counter in d5, and calls a routine through a pointer, otherwise it returns.
+- `execute_conditional_animation_task_17`: Checks bit 0 of a byte in d4; if set, it adds 336 to a pointer in a4, decrements a 16-bit counter in d5, and calls a routine through a pointer.
+- `execute_conditional_animation_task_8`: Checks bit 0 of a byte in d4; if set, it adjusts a pointer in a4 by adding 336, decrements a 16-bit counter in d5, and calls a routine through a pointer in a1 if the counter remains non-negative.
+- `empty_stub_63`: Empty routine: returns to the caller immediately without doing anything.
+- `modify_and_recalculate_address`: Copies the word at offset 8 of a3 to the location pointed to by a3, exchanges d2 and d4, then checks if the word at a1 is 24826; if it is not, it compares a1 and a2, and if a1 is higher, subtracts a1 from a2, loads the constant 17852 into a1, and adds it to a2.
+- `load_address_and_branch_13`: Loads a constant longword into a1 and performs a short branch.
+- `compare_and_branch_address`: Compares a1 with a2, and if a1 is higher, performs a short branch; otherwise, it loads a constant into a1 and branches.
+- `execute_callback_tasks`: Executes conditional callbacks by loading an address from offset 1344 of a structure in a4, decrementing d5 by 2, and calling a routine via a pointer.
+- `execute_conditional_callback_11_2`: Checks bit 0 of a word in d2; if set, it loads an address from offset 1344 of the structure in a4, decrements d5 by 2, and calls a routine via a pointer.
+- `execute_conditional_callback_11`: Checks bit 0 of a word in d2; if set, it loads an address from an offset of 1344 in a4, decrements d5 by 2, and calls a routine via a pointer in a1 if d5 is not negative, otherwise it clears d5 and returns via a pointer in a2.
+- `empty_stub_64`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_callback_via_pointer`: Checks bit 0 of a word in d2; if set, it decrements a 16-bit value in d5, adds 1344 to a pointer in a4, and calls a routine via a pointer; otherwise it returns.
+- `execute_conditional_callback_12_2`: Checks bit 0 of a word in d2; if set, it decrements a 16-bit value in d5, adds 1344 to a pointer in a4, and calls a routine via a pointer.
+- `execute_conditional_callback_12`: Checks bit 0 of a word in d2; if set, it decrements a 16-bit value in d5, updates a pointer in a4 by adding 1344, and calls a function pointer stored in a1 if the result in d5 is not negative, otherwise it clears d5 and returns via a pointer in a2.
+- `empty_stub_65`: Empty routine: returns to the caller immediately without doing anything.
+- `check_and_realign_pointer_2`: Compares d4 and d2, and if d4 is less than or equal to d2, it exchanges d2 and d4, then checks if the word at a1 is 24826; otherwise it calls a routine through a pointer in d5 if bit 0 of d4 is set.
+- `execute_conditional_callback_13_2`: Checks bit 0 of a byte in d4; if set, it decrements a 16-bit value in d5 and, if the result is non-negative, calls a routine through a pointer in a4.
+- `execute_conditional_callback_13`: Checks bit zero of a byte in d4; if set, it decrements a word in d5 and, if the result is non-negative, calls a routine through a pointer in a1 using a structure at offset 336 in a4.
+- `empty_stub_66`: Empty routine: returns to the caller immediately without doing anything.
+- `check_and_realign_pointer`: Compares d4 and d2, and if d4 is less than or equal to d2, it exchanges d2 and d4, then checks if the word at a1 is 24826; if it is not, it compares a1 and a2, and if a1 is higher, subtracts a1 from a2, loads the constant 17852 into a1, and adds it to a2.
+- `loads_pointer_and_branches`: Loads a long value into address register 1 and performs a short branch to another routine.
+- `select_animation_frame_pointer`: Compares two pointers and, if the first is not higher than the second, loads a constant address into a pointer and branches to another routine; otherwise, it returns.
+- `update_animation_callbacks`: Updates animation states by checking bits in d2, adding 1344 to a pointer in a4, decrementing a 16-bit value in d5, and calling a routine via a pointer.
+- `execute_conditional_callback_14_2`: Checks bit 0 of a word in d2; if set, it adds 1344 to a pointer in a4, decrements a 16-bit value in d5, and calls a routine via a pointer.
+- `execute_conditional_callback_14`: Checks bit 0 of a word in d2; if set, it adjusts a pointer in a4 by an offset of 1344, decrements a 16-bit value in d5, and calls a function through a pointer in a1 if the result is not negative, otherwise it clears d5 and jumps to a location in a2.
+- `empty_stub_67`: Empty routine: returns to the caller immediately without doing anything.
+- `update_animation_state_and_callback`: Checks bit 0 of a byte in d2; if set, it decrements a 16-bit value in d5, adds 1344 to a pointer in a4, and calls a routine via a pointer.
+- `execute_conditional_callback_15_2`: Checks bit 0 of a byte in d2; if set, it decrements a 16-bit value in d5, adds 1344 to a pointer in a4, and calls a routine via a pointer.
+- `execute_conditional_callback_15`: Checks bit 0 of a byte in register d2; if set, it decrements a 16-bit value in d5, updates a pointer in a4 by adding 1344, and calls a routine via a pointer in a1 if d5 is not negative, otherwise it clears d5 and calls a routine via a pointer in a2.
+- `empty_stub_68`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_pointer_callbacks`: Checks bit 0 of a byte in d4, decrements a 16-bit value in d5, and calls a routine via a pointer in a1 or an offset from a4.
+- `execute_conditional_callback_16_2`: Checks bit 0 of a byte in d4; if set, it decrements a 16-bit value in d5 and, if the result is non-negative, calls a routine via a pointer in a1.
+- `execute_conditional_callback_16`: Checks bit 0 of a byte in d4; if set, it decrements a 16-bit value in d5 and calls a routine via a pointer in a1 if the result is not negative, otherwise it returns.
+- `empty_stub_69`: Empty routine: returns to the caller immediately without doing anything.
+- `call_offset_pointer`: Checks bit 0 of a register; if set, it decrements a counter in d5 and calls a routine using a pointer located at an offset from a4.
+- `execute_conditional_callback_17_2`: Checks bit 0 of a register; if set, it decrements a counter in d5 and calls a routine using a pointer located at an offset from a4 via a pointer in a1.
+- `execute_conditional_callback_17`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a function pointer in a1 using a pointer from a4 plus an offset of 336, otherwise it returns.
+- `empty_stub_70`: Empty routine: returns to the caller immediately without doing anything.
+- `update_animation_frame_counter_21`: Subtracts a 16-bit value from a 16-bit word at offset 12 of a structure pointed to by a3 and calls another routine to decrement and update a counter.
+- `update_animation_frame_counter_18`: Subtracts a 16-bit value from a 16-bit word at offset 12 of a structure pointed to by a3 and calls decrement_and_update_counter.
+- `execute_animation_logic_8`: Calls add_and_loop, adjust_stack_pointer, and manage_animation_sequence_3.
+- `adjust_stack_pointer`: Increments the stack pointer by two and returns immediately.
+- `manage_animation_sequence_3`: Performs a sequence of 61 instructions involving pointer comparisons, register exchanges, and conditional calls to subroutines.
+- `load_pointer_and_branch_5`: Loads a long constant into a1 and performs a short branch to another routine.
+- `compare_and_load_pointer_4`: Compares the values in a1 and a2, and if a1 is higher, loads the constant 17320 into a1 and branches to another routine; otherwise it continues.
+- `process_offset_336_data`: Loads 255 into d0, then checks bit 0 of d4; if set, it updates a4 with a pointer from offset 336 of the structure in a4, decrements d5, and calls a routine if d5 is not negative.
+- `process_data_a4_offset_336_2`: Checks bit 0 of d4; if set, it updates a4 with a pointer from offset 336 of the structure in a4, decrements d5, and calls a routine if d5 is not negative.
+- `process_data_a4_offset_336`: Checks bit 0 of d4; if set, it updates a4 with a pointer at offset 336 of the structure in a4, decrements d5, and if d5 is not negative, calls the routine at a1, restores a4 from the stack, clears d5, and jumps to the address in a2.
+- `empty_stub_71`: Empty routine: returns to the caller immediately without doing anything.
+- `update_pointer_from_structure_offset`: Updates a pointer in a structure with a new address retrieved from an offset of 1344 within that same structure, then calls process_data_a4_offset_1344_2.
+- `process_data_a4_offset_1344_2`: Checks bit 0 of d2; if set, it updates a4 with a pointer from offset 1344 of the structure in a4, decrements d5, and calls a routine if d5 is not negative.
+- `process_data_a4_offset_1344`: Checks bit 0 of d2; if set, it updates a4 with a pointer at offset 1344 of the structure in a4, decrements d5, and if d5 is not negative, calls the routine at a1, restores a4 from the stack, clears d5, and jumps to the address in a2.
+- `empty_stub_72`: Empty routine: returns to the caller immediately without doing anything.
+- `manage_animation_sequence_2`: Performs a sequence of 32 instructions involving pointer comparisons, register exchanges, and conditional calls.
+- `load_pointer_and_branch_6`: Loads the constant 17339 into a1 and branches to another routine.
+- `compare_and_reload_pointer`: Compares two pointers and, if the first is higher than the second, branches to another routine; otherwise, it loads a new address into the first pointer and branches to another routine.
+- `update_pointer_offset_240`: Loads 255 into d0, then checks bit 0 of a register; if set, it updates a pointer with an offset of 240, decrements a counter by 2, and calls a subroutine through a pointer.
+- `update_pointer_and_call_2`: Checks bit 0 of a register and, if set, updates a pointer with an offset of 240, decrements a counter by 2, and calls a subroutine through a pointer in a6.
+- `execute_conditional_subroutine_5`: Checks bit 0 of a register and, if set, updates a pointer with an offset of 240, decrements a counter by 2, and calls a subroutine through a pointer in a1 if the counter remains non-negative; otherwise, it returns.
+- `empty_stub_73`: Empty routine: returns to the caller immediately without doing anything.
+- `process_conditional_animation_logic`: Copies a word from offset 8 of a3 to the location pointed to by a3, exchanges d2 and d4, compares the word at a1 to 24826, and if equal, loads 255 into d0, then checks bit 0 of d4 to conditionally decrement d5 and call a routine via a pointer in a1.
+- `load_address_and_branch_10`: Loads a long constant into address register 1 and performs a short branch to another routine.
+- `compare_and_load_pointer_5`: Compares two addresses and, if the first is higher than the second, branches to another routine; otherwise, it loads a constant address into a register and branches to another routine.
+- `decrement_and_call_via_structure_2`: Loads 255 into d0, then checks bit 0 of a byte in d4; if set, it decrements a 16-bit value in d5 and calls a function through a pointer in a1 using a structure offset.
+- `decrement_and_call_via_structure`: Checks bit 0 of a byte in d4; if set, it decrements a 16-bit value in d5 and calls a function through a pointer at an offset in a1.
+- `execute_conditional_function_call_3`: Checks bit 0 of a byte in d4; if set, it decrements a 16-bit value in d5, calls a function through a pointer in a1 using a structure offset in a4, and returns via a pointer in a2.
+- `empty_stub_74`: Empty routine: returns to the caller immediately without doing anything.
+- `decrement_counter_and_call_offset`: Checks bit 0 of a register; if set, it decrements a counter in d5 and calls a subroutine via a pointer in a1 after adjusting a4 with an offset.
+- `decrement_counter_and_call`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a subroutine via a pointer in a1 after adjusting a4 with an offset.
+- `execute_conditional_subroutine_6`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a subroutine via a pointer in a1 after adjusting a4 with an offset of 540.
+- `empty_stub_75`: Empty routine: returns to the caller immediately without doing anything.
+- `modify_memory_and_adjust_pointer`: Copies a word from an offset of 8 of a3 to the location pointed to by a3, exchanges d2 and d4, compares a word at a1 to 24826, and if equal, compares a1 with a2, potentially subtracting a1 from a2 and adding a constant to a2 before branching.
+- `load_address_and_branch_11`: Loads a constant value into a1 and performs a short branch to a location six bytes before the start of this routine.
+- `compare_and_load_pointer_6`: Compares two longwords in registers and, if the first is higher than the second, branches to another routine; otherwise, it loads a constant into a register and branches to another routine.
+- `update_pointer_offset_336`: Loads 255 into d0, then checks bit 0 of a byte in d4; if set, it decrements a 16-bit value in d5, updates a pointer in a4 by adding 336, and calls a subroutine.
+- `update_pointer_and_decrement`: Checks bit 0 of a byte in d4; if set, it decrements a 16-bit value in d5, updates a pointer in a4 by adding 336, and calls a subroutine via a pointer in a1.
+- `execute_conditional_subroutine_7`: Checks bit 0 of a byte in d4; if set, it decrements a 16-bit value in d5, updates a pointer in a4 by adding 336, and calls a subroutine via a pointer in a1, otherwise it returns.
+- `empty_stub_76`: Empty routine: returns to the caller immediately without doing anything.
+- `manage_animation_sequence`: Compares two bytes in registers and exchanges them if the first is larger, then checks bit 0 of d2 to potentially add 1344 to a4, decrement d5 by 2, and call another routine.
+- `load_address_and_branch_14`: Loads the constant seventeen thousand three hundred eighty-seven into register a1 and performs a short branch to another routine.
+- `compare_and_load_pointer_8`: Compares two longwords in registers and, if the first is not higher than the second, loads a specific constant address into a register and branches to another routine; otherwise, it continues to the next instruction.
+- `process_animation_sequence_4`: Performs a series of conditional checks and calls to other routines, including loading pointers from a structure and decrementing counters.
+- `load_pointer_and_call`: Checks bit 0 of a byte in d4; if set, it decrements a 16-bit value in d5, loads a pointer from an offset of 150 in a4, and calls a subroutine.
+- `execute_conditional_subroutine_call`: Checks bit 0 of a byte in d4; if set, it decrements a 16-bit value in d5, loads a pointer from an offset of 150 in a4, and calls a subroutine through a pointer in a1 if the result of the decrement is not negative, otherwise it clears d5 and calls a subroutine through a pointer in a2.
+- `empty_stub_77`: Empty routine: returns to the caller immediately without doing anything.
+- `decrement_and_conditional_call_a1`: Checks bit 0 of a register; if set, it decrements a counter in d5 and calls a routine via a pointer in a1 if the counter remains non-negative.
+- `decrement_and_conditional_call`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a routine via a pointer in a1 if the counter remains non-negative.
+- `execute_conditional_animation_task_9`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a routine via a pointer in a1 if the counter remains non-negative.
+- `empty_stub_78`: Empty routine: returns to the caller immediately without doing anything.
+- `update_animation_state_4`: Executes multiple conditional branches that call other routines, update pointers in a4, and decrement counters in d5.
+- `decrement_counter_and_update_pointer`: Checks bit 0 of a register and returns immediately if it is clear; otherwise, it decrements a 16-bit counter in d5 and updates a pointer in a4.
+- `execute_conditional_animation_task_10`: Checks bit 0 of a register and returns immediately if it is clear; otherwise, it decrements a 16-bit counter in d5, updates a pointer in a4 by adding 1344, and calls a routine through a pointer in a1 if the counter remains non-negative.
+- `empty_stub_79`: Empty routine: returns to the caller immediately without doing anything.
+- `update_pointer_and_call_4`: Checks bit 0 of d2; if set, it adds 1344 to a4, decrements d5 by 2, and calls a routine at the address in a1.
+- `offset_pointer_and_call`: Checks bit 0 of d2; if set, it updates a4 with an offset of 1344, decrements d5 by 2, and calls a routine at the address in a1.
+- `execute_conditional_callback_18`: Checks bit 0 of d2; if set, it updates a4 with an offset of 1344 from its current value, decrements d5 by 2, and calls a routine at the address in a1 if d5 is non-negative, then clears d5 and jumps to the address in a2.
+- `empty_stub_80`: Empty routine: returns to the caller immediately without doing anything.
+- `modify_pointer_and_execute_2`: Compares two bytes in registers and exchanges them if the first is larger, then checks bit 0 of d2 to potentially add 1344 to a4, decrement d5 by 2, and call a routine at a1 if d5 is at least 0.
+- `add_offset_and_call_if_positive`: Tests bit 0 of d2; if set, it adds 1344 to a4, subtracts 2 from d5, and calls the function pointed to by a1 if d5 is not negative.
+- `execute_conditional_callback_alt`: Tests bit 0 of d2; if set, it adds 1344 to a4, subtracts 2 from d5, and calls the function pointed to by a1 if d5 is not negative, before clearing d5 and jumping to the address in a2.
+- `empty_stub_81`: Empty routine: returns to the caller immediately without doing anything.
+- `modify_pointer_and_execute`: Checks bit 0 of d2; if set, it adds 1344 to a4, decrements d5 by 2, and calls a routine at a1 if d5 is at least 0.
+- `modify_pointer_and_execute_callback`: Verifies bit 0 of d2; if set, it modifies a4 by adding 1344, decrements d5 by 2, and executes the routine at a1 if d5 is at least 0.
+- `execute_conditional_callback_v3`: Verifies bit 0 of d2; if set, it modifies a4 by adding 1344, decrements d5 by 2, and executes the routine at a1 if d5 is at least 0, then clears d5 and jumps to the address in a2.
+- `empty_stub_82`: Empty routine: returns to the caller immediately without doing anything.
+- `compare_and_adjust_pointer`: Compares two bytes in registers and exchanges them if the first is larger than the second.
+- `loads_address_and_branches`: Loads a specific address into register a1 and performs a short branch to a location six bytes before the start of this routine.
+- `compare_and_load_pointer_9`: Compares two addresses and, if the first is not higher than the second, loads a specific address into a1 and branches to another routine; otherwise, it returns.
+- `execute_callback_chain`: Manages a sequence of conditional calls to other routines, updating a4 with offsets and decrementing d5.
+- `execute_offset_callback_2`: Checks bit 0 of d4; if set, it adds 336 to a4, decrements d5 by 2, and calls a routine at the address in a1.
+- `execute_offset_callback`: Checks bit 0 of d4; if set, it updates a4 with an offset of 336 from its current value, decrements d5 by 2, and calls a routine at the address in a1 if d5 is non-negative, then clears d5 and jumps to the address in a2.
+- `empty_stub_83`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_offset_callback_3`: Checks bit 0 of d4; if set, it adds 336 to a4, subtracts 2 from d5, and calls a routine at a1 if d5 is not negative.
+- `execute_offset_callback_alt_2`: Tests bit 0 of d4; if set, it adds 336 to a4, subtracts 2 from d5, and calls the routine at a1 if d5 is not negative.
+- `execute_offset_callback_alt`: Tests bit 0 of d4; if set, it adds 336 to a4, subtracts 2 from d5, and calls the function pointed to by a1 if d5 is not negative, before clearing d5 and jumping to the address in a2.
+- `empty_stub_84`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_conditional_callback_38`: Checks bit 0 of d2; if set, it adds 1344 to a4, decrements d5 by 2, and calls the routine at a1 if d5 is not negative, otherwise it clears d.
+- `execute_conditional_callback_v4_2`: Checks bit 0 of d2; if set, it adds 1344 to a4, decrements d5 by 2, and calls the routine at a1 if d5 is not negative, otherwise it clears d5 and jumps.
+- `execute_conditional_callback_v4`: Checks bit 0 of d2; if set, it adds 1344 to a4, decrements d5 by 2, and calls the routine at a1 if d5 is not negative, then clears d5 and jumps to the address in a2.
+- `empty_stub_85`: Empty routine: returns to the caller immediately without doing anything.
+- `decrement_counter_and_call_subroutine_2`: Decrements a counter in register d5 and calls a subroutine via a pointer in register a1 if the counter is not negative, provided bit 0 of a register is set; otherwise it returns.
+- `execute_conditional_subroutine_8_2`: Checks bit 0 of a register; if set, it decrements d5 and calls a subroutine via a pointer in a1 if d5 is not negative.
+- `execute_conditional_subroutine_8`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a subroutine via a pointer in a1 if the counter remains non-negative.
+- `empty_stub_86`: Empty routine: returns to the caller immediately without doing anything.
+- `adjust_stack_and_call_2`: Calls another routine and then performs a sequence of stack adjustments and calls.
+- `decrement_and_call`: Calls decrement_and_update_counter and another routine.
+- `adjust_stack_and_call`: Calls subtract_and_loop_both, adjust_stack_pointer_2, and adjust_stack_and_return_6.
+- `adjust_stack_pointer_2`: Adds two to the stack pointer and returns immediately.
+- `adjust_stack_and_return_6`: Adds two to the stack pointer and returns.
+- `call_table_addition`: Calls add_and_loop_table_data and another routine.
+- `update_animation_frame_counter_35`: Calls decrement_and_update_counter to reduce a 16-bit value at offset 12 of a structure pointed to by a3, then calls add_and_loop_table_data to process table data using registers d1, d2, d3, and d4.
+- `add_and_loop_table_data`: Adds bytes from d2 to d1 and d4 to d3, then loads a word from a table using a5 and d1 in a loop.
+- `increment_stack_pointer_alt`: Increments the stack pointer by 2 and returns.
+- `execute_conditional_animations`: Conditionally updates a pointer in a4 by adding 1344 or 540, decrements d5, and calls a routine through a pointer in a1 if a bit in d2 or d4 is set.
+- `execute_conditional_animation_call_4`: Checks bit 0 of d2; if set, it adds 1344 to a4, decrements d5, and calls a routine via a pointer in a1 if d5 is not negative.
+- `execute_conditional_animation_call`: Checks bit 0 of a value in d2; if set, it adjusts a pointer by adding 1344, decrements d5, and calls a routine via a pointer in a1 if d5 is not negative, otherwise it returns.
+- `empty_stub_87`: Empty routine: returns to the caller immediately without doing anything.
+- `update_a4_offset_and_call`: Checks bit 0 of d4; if set, it updates a4 to point to offset 150 of the structure in a4, decrements d5, and calls a routine at a1 if d5 is non-negative.
+- `execute_conditional_callback_a4_150_2`: Checks bit 0 of d4; if set, it updates a4 to point to offset 150 of the structure in a4, decrements d5, and calls a routine at a1 if d5 is not negative.
+- `execute_conditional_callback_a4_150`: Checks bit 0 of d4; if set, it updates a4 to point to offset 150 of the structure in a4, decrements d5, and calls a routine at a1 if d5 is not negative, then clears d5 and jumps to a2.
+- `empty_stub_88`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_animation_callbacks_2`: Checks bit 0 of d2 to conditionally update a4 by 540, decrement d5, and call a routine via a pointer in a1; it also checks bit 0 of d4 to conditionally increment a4 by 150, decrement d5, and call a routine via a pointer in a1.
+- `execute_conditional_callback_a4_150_alt_2`: Tests bit 0 of d4; if set, it increments a4 by 150, decrements d5, and calls a routine at a1 if d5 is at least 0, otherwise it clears d5 and jumps.
+- `execute_conditional_callback_a4_150_alt`: Tests bit 0 of d4; if set, it increments a4 by 150, decrements d5, and calls a routine at a1 if d5 is at least 0, then clears d5 and jumps to a2.
+- `empty_stub_89`: Empty routine: returns to the caller immediately without doing anything.
+- `update_a4_offset_540_and_call`: Checks bit 0 of d2; if set, it updates a4 to point to offset 540 of the structure in a4, decrements d5, and calls a routine at a1 if d5 is non-negative.
+- `execute_conditional_callback_a4_540_2`: Checks bit 0 of d2; if set, it updates a4 to point to offset 540 of the structure in a4, decrements d5, and calls a routine at a1 if d5 is not negative.
+- `execute_conditional_callback_a4_540`: Checks bit 0 of d2; if set, it updates a4 to point to offset 540 of the structure in a4, decrements d5, and calls a routine at a1 if d5 is not negative, then clears d5 and jumps to a2.
+- `empty_stub_90`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_conditional_animation_callbacks`: Tests bit 0 of a register and, if set, updates a pointer by adding 1344, decrements a counter, and calls a routine via a pointer if the counter is non-negative; otherwise, it clears the counter and calls an empty routine or another conditional callback routine.
+- `execute_conditional_callback_a4_540_alt_2`: Tests bit 0 of d2; if set, it increments a4 by 540, decrements d5, and calls a routine at a1 if d5 is at least 0, otherwise it clears d5 and jumps.
+- `execute_conditional_callback_a4_540_alt`: Tests bit 0 of d2; if set, it increments a4 by 540, decrements d5, and calls a routine at a1 if d5 is at least 0, then clears d5 and jumps to a2.
+- `empty_stub_91`: Empty routine: returns to the caller immediately without doing anything.
+- `update_animation_pointer_and_counter`: Checks bit 0 of a value in register d2; if set, it adds 1344 to a pointer in a4, decrements a counter in d5, and calls a routine via a pointer in a1; otherwise it returns.
+- `execute_conditional_animation_call_2_2`: Checks bit 0 of d2; if set, it adds 1344 to a4, decrements d5, and calls a routine via a pointer in a1.
+- `execute_conditional_animation_call_2`: Checks bit 0 of a value in register d2; if set, it adjusts a pointer in a4 by an offset of 1344, decrements a counter in d5, and calls a routine through a pointer in a1 if the counter is not negative, otherwise it clears the counter and returns via a pointer in a2.
+- `empty_stub_92`: Empty routine: returns to the caller immediately without doing anything.
+- `decrement_and_call_via_pointer_5`: Checks bit 0 of d4; if set, it decrements a 16-bit value in d5 and calls a subroutine through a pointer in a1 if the result is non-negative.
+- `execute_conditional_subroutine_17`: Checks bit 0 of a register and, if set, decrements a word in d5 and calls a subroutine via a pointer in a1 if the result is not negative.
+- `execute_conditional_subroutine_9`: Checks bit 0 of a register and, if set, decrements a word in d5 and calls a subroutine via a pointer in a1 if the result is not negative.
+- `empty_stub_93`: Empty routine: returns to the caller immediately without doing anything.
+- `decrement_and_call_via_pointer_2`: Checks bit 0 of a byte in d4; if set, it decrements a 16-bit value in d5 and calls a subroutine through a pointer in a1 if the result is non-negative, otherwise it returns.
+- `execute_conditional_byte_check`: Checks bit 0 of a byte in d4; if set, it decrements a word in d5 and calls a subroutine through a pointer in a1 if the result is not negative.
+- `execute_conditional_subroutine_10`: Checks bit 0 of a byte in d4; if set, it decrements a word in d5 and calls a subroutine through a pointer in a1 if the result is not negative, otherwise it returns.
+- `empty_stub_94`: Empty routine: returns to the caller immediately without doing anything.
+- `process_animation_callbacks`: Iterates through a list of function pointers and conditionally calls them if a bit in d2 is set and a counter in d5 is non-negative.
+- `execute_conditional_animation_call_5`: Checks bit 0 of a value in d2; if set, it decrements a counter in d5 and, if the counter remains non-negative, calls a routine through a pointer.
+- `execute_conditional_animation_call_3`: Checks bit 0 of a value in d2; if set, it decrements a counter in d5 and, if the counter remains non-negative, calls a routine through a pointer in a1.
+- `empty_stub_95`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_conditional_task_2`: Checks bit 0 of a register; if set, it decrements d5 and calls a function through a pointer in a1.
+- `execute_conditional_task`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a function through a pointer in a1.
+- `execute_conditional_animation_task_11`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a function through a pointer in a1.
+- `empty_stub_96`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_conditional_callbacks_3`: Checks bit 0 of a byte in d2; if set, it decrements a 16-bit value in d5 and calls a function pointer in a1 using a base address from a4 plus an offset, or updates a4 with a pointer from offset 1344 of the structure in a4 and decrements d5 by 2 before calling another routine.
+- `execute_conditional_callback_33`: Checks bit 0 of a byte in d2; if set, it decrements a 16-bit value in d5 and calls a function pointer in a1 using a base address from a4 plus an offset.
+- `execute_conditional_callback_19`: Checks bit 0 of a byte in d2; if set, it decrements a 16-bit value in d5 and calls a function pointer in a1 using a base address from a4 plus 1344, otherwise it returns.
+- `empty_stub_97`: Empty routine: returns to the caller immediately without doing anything.
+- `update_a4_from_offset_and_call`: Checks bit 0 of d2; if set, it updates a4 with a pointer from offset 1344 of the structure in a4, decrements d5 by 2, and calls a routine.
+- `execute_animation_task_update`: Tests bit 0 of d2, and if set, updates a4 with a pointer at offset 1344 of the structure in a4, decrements d5 by 2, and calls a routine.
+- `execute_animation_task_540`: Tests bit 0 of d2, and if set, updates a4 with a pointer at offset 1344 of the structure in a4, decrements d5 by 2, and calls a routine at the address in a1 if d5 is not negative before jumping to the address in a2.
+- `empty_stub_98`: Empty routine: returns to the caller immediately without doing anything.
+- `update_animation_task_pointer`: Loads a pointer from offset 336 of the structure in a4 into a4, decrements d5 by 2, and calls another routine if bit 0 of d4 is set.
+- `execute_animation_task_offset_update`: Tests bit 0 of d4, and if set, updates a4 with a pointer at offset 336 of the structure in a4, decrements d5 by 2, and calls a routine.
+- `execute_animation_task_336`: Tests bit 0 of d4, and if set, updates a4 with a pointer at offset 336 of the structure in a4, decrements d5 by 2, and calls a routine at the address in a1 if d5 is not negative before jumping to the address in a2.
+- `empty_stub_99`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_conditional_function_3`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a routine through a pointer in a1 if the counter is non-zero.
+- `execute_conditional_function_call_6`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a function through a pointer in a1 if the counter remains non-negative.
+- `execute_conditional_function_call_4`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a function through a pointer in a1 if the counter remains non-negative.
+- `empty_stub_100`: Empty routine: returns to the caller immediately without doing anything.
+- `process_animation_callback_list`: Iterates through a list of function pointers, checking a bit in a register to decide whether to decrement a counter in d5 and call a subroutine via a pointer in a1, or update a pointer with an offset of 1344 and decrement a word in a register before calling another routine.
+- `execute_conditional_subroutine_decrement`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a subroutine via a pointer in a1 if the counter remains non-negative.
+- `execute_conditional_subroutine_11`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a subroutine via a pointer in a1 if the counter remains non-negative.
+- `empty_stub_101`: Empty routine: returns to the caller immediately without doing anything.
+- `update_pointer_and_call_5`: Checks bit 0 of a register and, if set, updates a pointer with an offset of 1344, decrements a word in a register, and calls a routine through a pointer.
+- `execute_conditional_pointer_update`: Checks bit 0 of a register and, if set, updates a pointer with an offset of 1344, decrements a word in a register, and calls a function through a pointer.
+- `execute_conditional_function_pointer_2`: Checks bit 0 of a register and, if set, updates a pointer with an offset of 1344, decrements a word in a register, and calls a function through a pointer in a1 if the result is not negative; otherwise, it clears the word and jumps to a function through a pointer in a2.
+- `empty_stub_102`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_conditional_animation_callbacks_4`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a function via a pointer in a1 using a base address from a4 plus 1344.
+- `execute_conditional_callback_34`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a function pointer in a1 using a base address from a4 plus 1344.
+- `execute_conditional_callback_20`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a function pointer in a1 using a base address from a4 plus 1344.
+- `empty_stub_103`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_conditional_animation_task_21`: Checks bit 0 of d2 and, if set, decrements a counter in d5 and calls a routine through a pointer in a1 if the counter is non-zero.
+- `execute_conditional_animation_task_18`: Checks bit 0 of a value in d2 and, if set, decrements a counter in d5 and calls a routine through a pointer in a1 if the counter remains non-negative.
+- `execute_conditional_animation_task_12`: Checks bit 0 of a value in d2 and, if set, decrements a counter in d5 and calls a routine through a pointer in a1 if the counter remains non-negative.
+- `empty_stub_104`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_conditional_callback_41`: Checks bit 0 of a register and, if set, decrements a 16-bit value at a location pointed to by a register and calls a subroutine via a pointer.
+- `decrement_and_call_via_pointer`: Checks bit 0 of a register and, if set, decrements a 16-bit value at a location pointed to by a register and calls a subroutine via a pointer in a1 if the result is non-negative; otherwise it returns.
+- `execute_conditional_subroutine_12`: Checks bit 0 of a register and, if set, decrements a word in d5 and calls a subroutine via a pointer in a1 if the result is not negative.
+- `empty_stub_105`: Empty routine: returns to the caller immediately without doing anything.
+- `execute_conditional_callback_40`: Checks a bit in a register and, if set, decrements a counter in d5 and calls a function via a pointer in a1 if the counter is non-negative.
+- `execute_conditional_callback_alt_2`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a function via a pointer in a1 if the counter remains non-negative.
+- `execute_conditional_callback_21`: Checks bit 0 of a register and, if set, decrements a counter in d5 and calls a function via a pointer in a1 if the counter remains non-negative.
+- `empty_stub_106`: Empty routine: returns to the caller immediately without doing anything.
+- `check_animation_threshold`: If a 16-bit word in d5 is not zero, it loads a pointer from offset 1036 of a structure in a3 into a0, compares d6 with a 16-bit word at offset 1476 of that structure, and performs several conditional branches based on comparisons with d6 and d7.
+- `update_structure_counters`: Loads a constant into a2, negates the result of subtracting 65457 from d6, stores the result in a 16-bit word at offset 12 of the structure in a3, and stores the value 177 in a 16-bit word at offset 1444 of the structure in a3.
+- `fetch_and_execute_frame_2`: Copies a longword from a source to a destination, fetches a word from a table using an index, and calls another routine after performing additions in a loop.
+- `adjust_stack_pointer_3`: Increments the stack pointer by 2 and returns immediately.
+- `fetch_and_execute_frame`: Copies a longword from a source to a destination, fetches a word from a table using an index, and calls another routine.
+- `fetch_animation_frame`: Fetches a word from a table using an index stored in two registers and calls load_and_execute_animation_frame after copying a longword from a memory location.
+- `fetch_and_execute_animation_frame`: Fetches a word from a table using an index stored in two registers and calls load_and_execute_animation_frame after copying a longword from the stack into a4.
+- `calculate_and_store_index`: Calculates an index using d4 and d5, fetches a word from a table at a5 using that index, and if the value is non-negative, stores a bit-shifted version of it into a memory location at a3 before jumping to a new address in a4.
+- `load_and_execute_animation_frame`: Copies a longword from the stack into a4 and calls a routine at an offset of negative 8 from the address in a1.
+- `load_and_jump_via_a1`: Copies a longword from the stack into a4, clears d5, and jumps to an offset of negative 8 from the address in a1.
+- `check_animation_threshold_2`: If a 16-bit word in d3 is not zero, it loads a pointer from offset 1036 of a structure in a3 into a0, compares d6 with a 16-bit word at offset 1476 of that structure, and performs several conditional branches based on comparisons with d6 and d7.
+- `update_animation_frame_counters`: Calculates a negative value from a constant, stores it at offset 12 and offset 1476 of a structure pointed to by a3, and updates a value in d7 based on the new value at offset 12 before branching to another routine.
+- `increment_frame_counter_2_2`: Increments a 16-bit value at offset 4 of the address in a register and calls another routine after performing subtractions in a loop.
+- `adjust_stack_pointer_4`: Increments the stack pointer by 4 and returns immediately.
+- `increment_frame_counter_2`: Increments a 16-bit value at offset 4 of the address in a register and calls another routine.
+- `increment_animation_frame_counter_3`: Increments a 16-bit value at an offset of 4 from a pointer in a register and calls update_animation_frame_value.
+- `update_animation_frame_value`: Increments a 16-bit value at an offset of 4 from a pointer in a register and calls another routine.
+- `calculate_table_index_and_update_value`: Calculates an index into a table using a value from a register and an offset, retrieves a word from that table, and if the value is non-negative, divides it by four and stores the result in a memory location pointed to by a3.
+- `update_animation_frame_4`: Increments a 16-bit value at an offset of 4 from a pointer in a register and calls transfer_pointer_and_jump.
+- `transfer_pointer_and_jump`: Loads a longword from the stack into a4, clears d5, and performs a jump to an address calculated from a1 minus 8.
+- `tiny_exg`: Small routine of 1 instruction that exchanges d1 and d2.
+- `validate_animation_frame_range`: Checks if a 16-bit value in a register is zero, otherwise loads a pointer from offset 1036 of a structure into a6 and compares a value in d6 against a value at offset 1476 of the structure.
+- `update_animation_frame_counter_12`: Calculates a negative value from a constant, stores it at offset 12 and offset 1492 of a structure pointed to by a3, and updates a value in d7 by adding the word at offset 12 of that structure to 178 before branching to another routine.
+- `process_animation_data_3`: Adds a byte from d2 to d1, and if the carry flag is not set, subtracts a byte from d4 to d3, loads a word from a table using a5 and d1, and calls dispatch_animation_data_2.
+- `adjust_stack_and_return_7`: Adds 2 to the stack pointer and returns immediately.
+- `dispatch_animation_data_2`: Retrieves a word from a table using a negative offset from a pointer in a5 and calls another routine.
+- `dispatch_animation_data`: Calls calculate_animation_index_offset to retrieve a word from a table using a negative offset from a pointer in a5, then calls update_animation_frame.
+- `fetch_animation_data_and_dispatch`: Calls calculate_animation_index_offset to retrieve a word from a table using a negative offset from a pointer in a5, then calls update_animation_frame_pointer to execute a routine via a jump using an offset from a pointer in a1 after loading a 32-bit value from a global variable.
+- `calculate_animation_index_offset`: Calculates an index by shifting and adding values, then fetches a word from a table using a negative offset from a pointer in a5.
+- `update_animation_frame_pointer`: Loads a 32-bit value from a global variable into a register and calls a routine via a jump using an offset from a pointer in a1.
+- `set_a4_and_jump`: Moves a longword from the stack into a4, clears d5, and jumps to the address in a1 minus 8.
+- `update_animation_state_9`: Checks if a 16-bit value in a register is zero, otherwise loads a pointer from offset 1036 of a structure into a6 and compares a value in d6, then calls other routines.
+- `update_counter_and_table`: The routine calls decrement_and_update_counter and process_table_data_offsets.
+- `process_table_data_offsets`: Calls empty_stub_107 and process_table_offsets, then performs a loop that adds bytes from registers to a counter, fetches words from a table using a pointer in a5 and the counter, and repeats until a carry flag is set.
+- `empty_stub_107`: Empty routine: returns to the caller immediately without doing anything.
+- `process_table_offsets`: Calls empty_stub_107 and then calls process_table_offset twice, which calculates a negative offset using d4 and d5 to fetch a word from a table at a5.
+- `process_table_offset_2`: Shifts d4 left by 4, adds d5, doubles the result, negates it, fetches a word from a table at a5 with a negative offset of d4, and if bit 0 is set, calls another routine.
+- `process_table_offset`: Shifts d4 left by 4, adds d5, doubles the result, negates it, fetches a word from a table at a5 with a negative offset of d4, and if bit 0 of d4 is set, updates a4 with the address at offset 336 of the structure in a4, decrements d5, and calls another routine if d5 is not zero.
+- `process_table_offset_and_store`: Shifts d4 left by 4, adds d5, doubles the result, negates it, fetches a word from a table at a5 with a negative offset of d4, and if the result is non-negative, stores a bit-shifted version of the value in a3 and updates a4 with a pointer at offset 1008.
+- `execute_callback_with_offset_336`: Tests bit 0 of d4; if set, it loads a4 with the address at offset 336 of the structure in a4, decrements d5, and calls a routine if d5 is non-zero.
+- `execute_conditional_callback_with_offset`: Tests bit 0 of d4; if set, it loads a4 with the address at offset 336 of the structure in a4, decrements d5, and calls a routine if d5 is not negative.
+- `execute_conditional_callback_22`: Tests bit 0 of d4; if set, it loads a4 with the address at offset 336 of the structure in a4, decrements d5, and if d5 is not negative, calls a routine at the address in a1; finally, it clears d5, loads a4 from the stack, and jumps to the address in a2.
+- `empty_stub_108`: Empty routine: returns to the caller immediately without doing anything.
+- `process_animation_threshold`: Checks if a 16-bit word in d5 is non-zero, then calls routines to decrement a counter and update a scaled value table using a base address in a5 and an offset in d1.
+- `update_counter_and_scaled_table`: The routine calls decrement_and_update_counter and update_scaled_value_table.
+- `update_scaled_value_table`: Calls empty_stub_109 and subtract_and_loop_a0 to update values in a table using a base address in a5 and an offset in d1.
+- `empty_stub_109`: Empty routine: returns to the caller immediately without doing anything.
+- `calculate_scaled_values`: Calls empty_stub_109 and then calls calculate_and_store_scaled_value_2, which fetches a word from a table at a5 using a negative offset derived from d4 and d3.
+- `calculate_and_store_scaled_value_2`: Shifts d4 left by 4, adds d3, doubles the result, negates it, fetches a word from a table at a5 with a negative offset of d4, and if bit 0 is not set, clears d0, shifts it right by 2, stores it at the address in a3, updates a4, and branches to another routine.
+- `update_animation_frame_data_13`: Loads a 16-bit value from a table into a register and stores it at offset 1344 of the structure in a4, then calls update_animation_state_2; otherwise it returns.
+- `update_animation_frame_value_2`: Loads a 16-bit value from a table into a register and stores it at offset 1344 of the structure in a4, then calls update_animation_state_2.
+- `update_animation_state_2`: Loads a 16-bit value from a table into a register and stores it at offset 1344 of the structure in a4, then returns.
+- `process_callback_with_offset_540_2`: Checks bit 0 of d2; if set, it updates a4 to point to offset 1344 of the structure in a4, decrements d5, and calls a routine if d5 is non-negative.
+- `process_callback_with_offset_540`: Checks bit 0 of d2; if set, it updates a4 to point to offset 1344 of the structure in a4, decrements d5, and if d5 is non-negative, calls a routine at the address in a1; it then clears d5, restores a4 from the stack, and jumps to the address in a2.
+- `empty_stub_110`: Empty routine: returns to the caller immediately without doing anything.
+- `update_animation_frame_15`: Exchanges d1 and d2, then calls routines to decrement a counter and fetch a word from a table using a calculated index to store into a memory location pointed to by a global variable.
+- `update_counter_and_frame_data`: The routine calls decrement_and_update_counter and update_animation_frame_data_4.
+- `update_animation_frame_data_4`: Fetches a word from a table using a calculated index and stores it into a memory location pointed to by a global variable.
+- `empty_stub_111`: Empty routine: returns to the caller immediately without doing anything.
+- `update_animation_pointer_7`: Calls empty_stub_111, calls calculate_animation_frame_index_2 to fetch a word from a table using a calculated index, and calls load_animation_pointer to store a 32-bit value from a table into a structure at offset 1344 in a6.
+- `calculate_animation_frame_index_2`: Calculates an index by shifting and adding values, reads a word from a table using a negative offset, and if the result is non-negative, performs a bitwise shift and stores the resulting byte into the memory location pointed to by a6.
+- `load_animation_pointer`: Calls update_animation_frame_pointer_8 to load a 32-bit value from a table into a register and stores it at offset 1344 of the structure in a4.
+- `load_animation_frame_pointer`: Calls update_animation_frame_pointer_8 to load a 32-bit value from a table into a register and stores it at offset 1344 of the structure in a4, then returns.
+- `update_animation_frame_pointer_8`: Loads a 32-bit value from a table into a register and stores it at offset 1344 of the structure in a4, then returns.
+- `call_routine_with_offset_540_alt`: Tests bit 0 of d2; if set, it sets a4 to offset 1344 of the structure in a4, decrements d5, and calls a routine if d5 is not negative.
+- `call_routine_with_offset_540`: Tests bit 0 of d2; if set, it sets a4 to offset 1344 of the structure in a4, decrements d5, and if d5 is not negative, calls a routine at the address in a1; it then clears d5, restores a4 from the stack, and jumps to the address in a2.
+- `empty_stub_112`: Empty routine: returns to the caller immediately without doing anything.
+- `update_table_indices_2`: Checks if a 16-bit word in d3 is non-zero, then calls routines to decrement a counter, loop through a pointer in a0, and fetch table indices.
+- `update_counter_and_indices`: The routine calls decrement_and_update_counter, subtract_and_loop_a0, empty_stub_113, and fetch_table_indices.
+- `update_table_indices`: Calls subtract_and_loop_a0, empty_stub_113, and fetch_table_indices, then returns.
+- `empty_stub_113`: Empty routine: returns to the caller immediately without doing anything.
+- `fetch_table_indices`: Calls empty_stub_113 and then calls calculate_table_index and calculate_table_index_3, which both fetch a word from a table using an index derived from a register and a constant.
+- `calculate_table_index_3`: Calculates an index using a value in a register and a constant, fetches a word from a table using that index, and writes a processed version.
+- `calculate_table_index`: Calculates an index using a value in a register and a constant, fetches a word from a table using that index, and writes a processed version, or if bit 0 of d4 is set, sets a4 to offset 336 of the structure in a4, decrements d5, and calls another routine if d5 is not negative.
+- `calculate_table_index_and_update_byte`: Calculates an index using a value in a register and a constant, fetches a word from a table using that index, and writes a processed version of that word to a location pointed to by a register.
+- `execute_callback_with_offset_336_alt`: Tests bit 0 of d4; if set, it sets a4 to offset 336 of the structure in a4, decrements d5, and if d5 is not negative, calls a routine.
+- `execute_callback_with_offset_150_2`: Tests bit 0 of d4; if set, it sets a4 to offset 336 of the structure in a4, decrements d5, and if d5 is not negative, calls a routine at the offset.
+- `execute_callback_with_offset_150`: Tests bit 0 of d4; if set, it sets a4 to offset 336 of the structure in a4, decrements d5, and if d5 is not negative, calls a routine at the address in a1; it then clears d5, restores a4 from the stack, and jumps to the address in a2.
+- `empty_stub_114`: Empty routine: returns to the caller immediately without doing anything.
+- `tiny_move_3`: Small routine of 1 instruction that copies (a6) to d0.
+- `load_registers_from_stack`: Multiplies d0 by four, then loads six words from various offsets of a6 into d6, d1, d3, d2, d5, and d4 before branching.
+- `move_word_to_d0_2`: Copies a 16-bit word from the address in a6 into d0.
+- `load_registers_shifted`: Shifts d0 right by two, then loads six words from various offsets of a6 into d6, d1, d3, d2, d5, and d4 before branching.
+- `move_word_to_d0_3`: Moves a 16-bit word from the address pointed to by a6 into d0.
+- `prepare_table_index_and_compare`: Shifts the value in register d0 right by two bits, loads several 16-bit values from offsets 4, 6, 74c, 74e, 3ac, and 3ae of the structure in a6 into registers d1, d6, d2, d3, d4, and d5 respectively, and branches to another routine.
+- `prepare_animation_index_and_compare`: Shifts the value in d0 right by two bits and loads six different 16-bit values from offsets 4, 6, 74c, 74e, 754, and 756 of the structure in a6 into d1, d6, d2, d3, d4, and d5 before branching to another routine.
+- `move_word_to_d0_alt`: Copies a 16-bit value from the location in a6 into d0.
+- `update_animation_index_and_branch`: Multiplies a value in d0 by four, loads several values from the stack and a global structure into d1, d2, d3, d4, d5, and d6, and then branches to another routine.
+- `load_word_from_a6`: Loads a 16-bit word from the memory location at a6 into d0.
+- `prepare_table_index_and_compare_2`: Shifts the value in d0 right by two bits and loads six 16-bit values from offsets 394, 396, 398, 310, 312, and 314 relative to a6 into d6, d1, d5, d3, d2, and d4 before branching to another routine.
+- `compare_and_call_animation_update`: Compares a longword at offset 1412 of a structure in a3 with a longword at offset 1132 of the same structure, and calls a routine if they are not equal.
+- `load_table_pointer`: Loads an address from the stack into a1, stores it at offset 2 of a3, then loads a new address from a constant table into a6 and pushes two values from that table onto the stack.
+- `adjust_address_offset`: Decrements a word on the stack, branches if the value is negative, otherwise loads a word from the stack into d0, shifts d0 left by 3, and adds the result to a6.
+- `load_table_pointer_2`: Decrements a word on the stack, branches if not positive, increments the stack pointer, loads a pointer from the stack into a1, adds 4 to a1, loads a long from the address in a1 into d0, sets a6 to d0, and branches if d0 is not zero.
+- `branch_on_word_value`: Decrements the long value in a6 by 8, loads a word from the address in a6 into d0, and then branches to another routine based on whether d0 is negative, greater than zero, or otherwise.
+- `dispatch_animation_handler`: Compares d0 to 49152, and if it is not greater, masks a byte from a structure in a6 with 60, loads an address into a0, calls a subroutine using a0 and d0, loads a word from a structure in a6 into d0, pushes a longword onto the stack, and branches to another routine.
+- `execute_handler_logic_3`: Performs a series of operations including swapping two longwords at offsets 964 and 1836 of the structure in a6, pushing a longword onto the stack, loading a 16-bit word from the location pointed to by a6 into d0, and branching to another routine.
+- `swap_structure_longwords`: Calls another routine, swaps two longwords located at offsets 964 and 1836 from the structure in a6, and branches to another routine after loading a value from the stack into a register.
+- `branch_with_stack_push`: Calls a subroutine, pushes a longword onto the stack, loads a word from a structure in a6 into d0, and branches to another routine.
+- `manage_animation_sequence_8`: Calculates an index by shifting a value left twice and masking it with 60, loads a pointer from a table at offset 12, and calls another routine after performing multiple comparisons and register exchanges.
+- `decrement_animation_counter_2`: Checks if a 16-bit word in d5 is non-zero, then calls process_animation_threshold to decrement a counter and update a scaled value table using a base address in a1, otherwise it returns.
+- `update_animation_frame_data_9`: Calls invert_and_store_word, update_animation_state_9, and update_animation_frame_15 to process animation data.
+- `update_pointer_via_table`: Multiplies d0 by two twice, masks the result with 60, loads a new pointer into a2 from a table at offset 126 of a2 plus the masked d0, swaps d0, and branches to another location.
+- `update_animation_frame_data_8`: Calls invert_and_store_word, update_animation_state_9, and update_animation_frame_15.
+- `calculate_animation_indices_4`: Subtracts a 16-bit value from a word at offset 12 of a structure in a3, processes a threshold in d5, and jumps to an address held in a long pointer or the address in a1.
+- `jump_to_table_indices`: Jumps to the address held in a long pointer at 53432.
+- `jump_to_address_2`: Jumps to the long address stored in a1.
+- `update_animation_timing`: Manages animation timing by checking a 16-bit word in d5, decrementing counters, and updating a scaled value table using a pointer from offset 1036 of a structure.
+- `exchange_and_branch`: Multiplies d0 by two twice, masks the result with 60, loads a new pointer into a2 from a table at offset 126 of a2 plus the masked d0, swaps d0, exchanges d1 with d0, d6 with d7, d1 with d2, and d6 with d3, then branches to another location.
+- `process_animation_state`: Calls decrement_and_update_counter_3 and update_animation_state_19 to manage animation timing and state.
+- `update_animation_state_19`: Performs a series of operations including calls to decrement counters and update animation frames.
+- `process_animation_threshold_3`: Checks if a 16-bit word in d5 is non-zero, then calls routines to decrement a counter and update a scaled value table using a base address in a6.
+- `fetch_table_pointer_and_branch`: Multiplies d0 by four, masks it with 60, loads a pointer from a table at offset 126 of a2 plus the masked d0 into a2, swaps d0, and branches to another routine.
+- `calculate_animation_frame_indices`: Calls update_animation_frame_15, update_table_indices_2, process_animation_threshold_3, fetch_animation_frame_pointer, and update_animation_frame_pointer_26 to derive animation pointers from table indices.
+- `fetch_animation_frame_pointer`: Multiplies a value in d0 by four, masks it with sixty, and uses the result as an index into a table at offset one hundred twenty-six from a pointer in a2 to load a new address into a2, then swaps the high and low words of d0 before branching.
+- `update_animation_frame_pointer_26`: Calculates an index by multiplying a value in d0 by two and masking it with 60, then loads a longword pointer from a table using that index into d0 and calls update_animation_state_9.
+- `fetch_animation_frame_pointer_2`: Calculates an index by multiplying a value in d0 by two and masking it with 60, then loads a longword pointer from a table using that index and an offset of 126 from the address in a2.
+- `update_animation_indices_4`: Checks if a 16-bit value in a register is zero, otherwise loads a pointer from offset 1036 of a structure into a6 and compares a value in d6.
+- `exchange_and_branch_data`: Multiplies d0 by four, masks it with 60, loads a pointer from a table at offset 126 of a2 plus the masked d0 into a2, swaps d0, performs four long word exchanges between d1, d0, d6, d7, d2, and d3, and branches to another routine.
+- `update_animation_indices_2`: Performs a series of operations including calls to update frame counters and table indices.
+- `execute_animation_logic_12`: Inverts a word from a location determined by adding d3 to a3 and stores it in a0, performs register exchanges, and calls several routines to manage animation tasks and table indices.
+- `exchange_registers_and_branch`: Loads the constant 17290 into a2, exchanges d1 with d4, d6 with d5, d0 with d2, and d7 with d3, then branches to another location.
+- `load_pointer_and_exchange`: Loads the constant value 438a into a2, exchanges d1 with d0 and d6 with d7, and branches to another routine.
+- `exchange_and_branch_on_comparisons`: Loads a constant into a2, compares d5 and d7, and if d5 is less than or equal to d7, branches to another location; otherwise, it exchanges d1 with d4, exchanges d6 with d5, compares d3 and d7, and if d3 is greater than d7, branches to another location; otherwise, it exchanges d0 with d2, exchanges d7 with d3, and branches to another location.
+- `iterate_animation_tasks`: Calls routines using pointers from offset 336 or offset 1344 of a structure in a1 and updates a 16-bit value.
+- `exchange_registers_and_branch_2`: Exchanges the contents of d1 with d0 and d6 with d7, then branches to another location.
+- `execute_animation_logic_sequence_2`: Calls invert_and_store_word, process_animation_tasks, update_table_indices_2, iterate_animation_tasks, exchange_registers_and_branch_3, and execute_animation_logic_10 to process animation tasks.
+- `exchange_registers_and_branch_3`: Exchanges the contents of d0 with d2 and d7 with d3, then branches to another location.
+- `execute_animation_logic_10`: Loads the constant 17322 into a2, compares d5 with d3, and branches to an earlier instruction if d3 is less than d5, otherwise it calls another routine.
+- `branch_on_comparison`: Loads the constant value 17322 into a2, compares d5 with d3, and branches to an earlier instruction if d3 is less than d5; otherwise it performs a long jump to an address.
+- `jump_to_animation_state`: Jumps to the address held in a long pointer at 51872.
+- `update_animation_state_28`: Performs multiple comparisons and register exchanges, calls routines to update animation parameters, and retrieves a pointer from a table using a masked index and an offset of 126.
+- `handle_animation_updates_3`: Calls update_animation_state_9, update_animation_frame_15, fetch_table_pointer, and handle_animation_updates_2 to update animation parameters.
+- `fetch_table_pointer`: Multiplies d0 by two twice, masks the result with 60, loads a pointer from a table at offset 126 using a2 and the masked d0, swaps the high and low bytes of d0, and branches to another location.
+- `handle_animation_updates_2`: Subtracts a 16-bit value from a 16-bit word at offset 12 of a structure in a3, exchanges d1 and d2 to fetch a word from a table using a calculated index, and calls several other routines including invert_and_store_word and update_animation_state_9.
+- `handle_animation_updates`: Calls invert_and_store_word, update_animation_state_9, process_animation_threshold, and another routine.
+- `fetch_animation_frame_pointer_33`: Calculates an index by masking a value, retrieves a pointer from a table using that index and an offset of 126, and performs multiple register operations.
+- `fetch_animation_frame_pointer_31`: Calculates an index by masking a value, retrieves a pointer from a table using that index and an offset of 126, and performs multiple register exchanges before calling check_frame_range.
+- `compare_animation_bounds`: Compares d5 and d6, loads a constant into a2, compares d3 and d6, compares d5 and d7, and performs register exchanges and a branch based on these comparisons.
+- `process_animation_logic_9`: Calls invert_and_store_word, process_animation_logic_5, update_table_indices_2, and process_animation_logic_7 to execute animation logic.
+- `process_animation_logic_7`: Exchanges d1 and d2 to fetch a word from a table using a calculated index, calls update_table_indices_2 to loop through a pointer in a0 if a 16-bit word in d3 is non-zero, and calls process_animation_logic_6.
+- `process_animation_logic_6`: Calls process_animation_logic_5 and process_animation_threshold, then calls another routine.
+- `compare_and_branch_9`: Compares d5 and d7, and if d7 is not greater than d5, it exchanges d1 with d0 and d6 with d7 before branching to another location.
+- `manage_animation_sequence_5`: Calculates an index by shifting a value left twice and masking it with 60, loads a pointer from a table at offset 12, adds d0 to d2, and calls a routine to process an animation frame sequence.
+- `execute_threshold_logic`: Calls invert_and_store_word, update_animation_state_9, process_animation_threshold, and decrement_counter_and_process_threshold to handle animation thresholds.
+- `decrement_counter_and_process_threshold`: Increments a 16-bit register, subtracts it from a 16-bit word at offset 12 of a structure in a3, and calls process_animation_threshold if the result is non-zero.
+- `decrement_animation_counter_4`: Increments a 16-bit register, subtracts it from a 16-bit word at offset 12 of a structure in a3, and calls a routine to process a threshold.
+- `fetch_animation_pointer_6`: Multiplies d0 by two twice, masks the result with sixty, loads a pointer from a table at offset 126 of a2 using the masked value, swaps d0, and branches to another routine.
+- `load_animation_pointer_2`: Calculates an index by shifting a value left twice and masking it with 60, then loads a pointer from a table at an offset of 12 using that index and returns.
+- `fetch_animation_pointer`: Calculates an index by doubling a value twice and masking it with 60, then loads a pointer from a table using that index and an offset of 126 from the address in a2.
+- `manage_animation_frames`: Exchanges long registers, adds d0 to d2, inverts a word from a location determined by adding d3 to a3 and stores it in a0, and calls routines to manage animation indices and frames.
+- `swap_registers_and_branch`: Exchanges the contents of the long registers d0 and d1, then exchanges the contents of d6 and d7 before performing a short branch to another routine.
+- `process_animation_frame_5`: Exchanges d1 and d2, then calls another routine to decrement a counter and fetch a word from a table using a calculated index to store into a memory location.
+- `manage_animation_indices_and_frames`: Calls invert_and_store_word, process_animation_tasks, update_animation_frame_15, process_animation_frame_5, and manage_animation_indices to update animation state.
+- `manage_animation_indices`: Calls invert_and_store_word, update_animation_state_9, update_table_indices_2, and another routine.
+- `process_animation_frame_sequence_2`: Calls decrement_and_update_counter_3, update_animation_state_9, process_animation_frame_3, process_animation_frame_4, fetch_animation_frame_4, and execute_animation_sequence_4 to handle animation frame updates.
+- `process_animation_frame_3`: Inverts a word from a location determined by adding d3 to a3 and stores it in a0, subtracts a 16-bit value from a 16-bit word at offset 12 of a3 and calls another routine, checks if a 16-bit register is zero or loads a pointer from offset 1036 of a structure into a6 to compare with d6, exchanges d0 with d1 and d7 with d6, and calls another routine.
+- `exchange_registers_and_branch_final`: Exchanges the contents of d0 with d1 and d7 with d6, then branches to another location.
+- `process_animation_frame_4`: Inverts a word from a location determined by adding d3 to a3 and stores it in a0, then subtracts a 16-bit value from a 16-bit word at offset 12 of a structure.
+- `fetch_animation_frame_4`: Multiplies d0 by four, masks the result with 60, and uses it to load a pointer from a table at offset 126 using a2.
+- `fetch_table_pointer_2`: Multiplies a value in d0 by four, masks it with 60, loads a pointer from a table at offset 126 using a2 and the masked value, swaps the high and low words of d0, and branches to another routine.
+- `execute_animation_sequence_4`: Exchanges d1 and d2, calls a routine to decrement a counter and fetch a word from a table, and checks if a 16-bit word in d3 is non-zero before calling another routine.
+- `execute_animation_tasks_2`: Calls invert_and_store_word, process_animation_logic_5, update_animation_frame_15, and perform_routine_tasks, then calls another routine.
+- `exchange_registers_and_branch_4`: Swaps the contents of d0 with d1 and d7 with d6, then branches to another routine.
+- `process_animation_data_11`: Calls invert_and_store_word, update_table_indices_2 twice, and execute_animation_tasks_2.
+- `execute_animation_sequence`: Exchanges d1 and d2, calls a routine to decrement a counter and fetch a word from a table, checks if a 16-bit word in d3 is non-zero and calls routines to decrement a counter and fetch table indices, calls invert_and_store_word, calls update_table_indices_2 twice, and calls execute_animation_tasks_2.
+- `fetch_animation_frame_pointer_3`: Calculates an index by doubling a value twice and masking it with sixty, then loads a pointer from a table using that index and an offset of one hundred twenty-six from a pointer in a2, before swapping the high and low words of the index and branching to another routine.
+- `check_status_bits`: Tests bit 9 of d0 and branches if clear, then tests bit 8 of d0 and branches if clear; otherwise it pushes a longword onto the stack and branches to another routine.
+- `process_animation_frame_data_4`: Updates a sprite position by adding a value from a global variable to a 16-bit coordinate from a table, calls a subroutine via a pointer in a global variable after pushing a constant to the stack, and calls another subroutine via a pointer stored in a global variable.
+- `call_subroutine_and_branch`: Calls a subroutine via a pointer in a global variable, pushes a constant onto the stack, moves a word from the structure in a6 into d0, and branches to another routine.
+- `dispatch_conditional_jump`: Compares d0 to 16384, and if not greater, masks a byte from a structure in a6 with 60, loads an address into a0, and calls a routine using an offset from a3 and d0.
+- `update_animation_state_37`: Updates an animation frame by incrementing a 16-bit value in a global variable, loading a new pointer via the result, and calling update_animation_frame_pointer_2, load_registers_shifted, branch_to_offset_5, and rotate_structure_values.
+- `branch_to_offset_5`: Pushes a longword from an offset of the program counter onto the stack and branches to another location.
+- `update_animation_state_complex_5`: Performs a large sequence of operations including incrementing and subtracting values from a structure in a3, checking register values against thresholds, masking bytes from a structure in a6, inverting words at memory locations, and calling multiple routines to manage animation tasks and counters.
+- `update_animation_state_complex`: Inverts a word from a location determined by adding d3 to a3 and stores it in a0, subtracts a 16-bit value from a 16-bit word at offset 12 of a3 and calls another routine, checks if a 16-bit register is zero or loads a pointer from offset 1036 of a structure into a6 to compare with d6, swaps two 32-bit registers twice, and calls another routine.
+- `exchange_registers_and_branch_5`: Swaps the contents of two 32-bit registers, swaps the contents of two other 32-bit registers, and performs a short relative branch to another routine.
+- `invert_and_store_word_5`: Fetches a 16-bit word from a memory location calculated by adding a register to a pointer, inverts its bits, and stores the result at the address held in a register.
+- `invert_animation_data`: Fetches a 16-bit word from a memory location calculated by adding a register to a pointer, inverts its bits, and stores the result at the address in a0.
+- `fetch_animation_frame_pointer_4`: Multiplies a value in register d0 by two twice, masks it with 60, uses the result as an index into a table at offset 126 from the pointer in a2 to load a new address into a2, swaps the high and low bytes of d0, and branches to another routine.
+- `process_animation_tasks_3`: Iterates through tasks by calling routines using pointers from offset 336 or offset 1344 of a structure in a1 and updates a 16-bit value at a location.
+- `manage_animation_logic`: Inverts a word from a location determined by adding d3 to a3 and stores it in a0, calls process_animation_logic_5, exchanges d1 and d2 to call a routine that decrements a counter and fetches a word from a table, swaps d0 with d1 and d6 with d7, and calls another routine.
+- `swap_registers_and_branch_2`: Swaps the contents of long registers d0 and d1, swaps the contents of long registers d6 and d7, and then performs a short branch to another location.
+- `manage_animation_logic_3`: Inverts a word from a location determined by adding d3 to a3 and stores it in a0, then calls a routine to update table indices and exchanges d1 and d2.
+- `manage_animation_indices_3`: Inverts a word from a location determined by adding d3 to a3, stores it in a0, and calls a routine to update table indices.
+- `fetch_animation_frame_pointer_5`: Calculates an index by doubling a value twice and masking it with 60, then loads a pointer from a table using that index and an offset of 126 from the address in a2, before swapping the contents of the index register and branching to another routine.
+- `process_animation_logic_17`: Performs a series of operations including checking frame ranges, inverting words, exchanging registers, and updating animation counters and states through several calls to other routines.
+- `exchange_registers_and_branch_alt3`: Swaps the contents of d1 with d0 and d6 with d7, then branches to another routine.
+- `update_animation_frame_counter_22`: Calls decrement_and_update_counter_3 to manage a 16-bit value and then calls update_animation_state_9 to evaluate animation state based on a value loaded from a structure.
+- `run_animation_sequence`: Inverts a word from a location determined by adding d3 to a3 and stores it in a0, increments a 16-bit register and subtracts it from a 16-bit word at offset 12 of a3 while branching if the result is non-zero, checks if a 16-bit register is zero or loads a pointer from offset 1036 of a structure into a6 to compare with d6, and calls process_animation_sequence_7.
+- `process_animation_sequence_7`: Calls invert_and_store_word, process_animation_threshold, update_animation_frame_15, and another routine.
+- `update_animation_state_via_threshold`: Exchanges d1 and d2, and calls a routine to fetch a word from a table using a calculated index to store into a memory location, while also processing a threshold in d5.
+- `decrement_animation_counter_5`: Decrements a 16-bit word at offset 1344 of the structure in a1 and calls another routine if the resulting value is zero.
+- `process_animation_tasks_simple`: Calls routines using pointers from offset 336 or offset 1344 of a structure in a1 and calls a routine to update table indices.
+- `fetch_animation_frame_pointer_32_2`: Multiplies a value in d0 by two twice, masks it with 60, and uses the result as an index into a table to load a new pointer into a2.
+- `fetch_animation_frame_pointer_32`: Multiplies a value in d0 by two twice, masks it with 60, and uses the result as an index into a table to load a new pointer into a2, then swaps the high and low words of d0 before branching.
+- `update_animation_state_34`: Processes a threshold in d5, iterates through a pointer in a0 to fetch table indices if d3 is non-zero, and loads a new pointer into a2 by masking a value in d0.
+- `update_animation_state_14_2`: Multiplies a value in d0 by four, masks it with 60, loads a pointer from a table at offset 126 using the result as an index into a2, swaps the high and low words of d0, and branches to another routine.
+- `update_animation_frame_state_8`: Calls shift_animation_parameters, invert_and_store_word, update_animation_counters_2, update_animation_state_26, and manage_animation_sequence_4.
+- `update_animation_counters_6`: Subtracts a 16-bit value from a 16-bit word at offset 12 of a structure pointed to by a3 and calls a routine to decrement and update a counter.
+- `update_animation_counters_4`: Checks if a 16-bit register is zero or loads a pointer from offset 1036 of a structure into a6 to compare with d6, checks if a 16-bit word in d5 is non-zero and calls routines to decrement a counter and update a scaled value table, and subtracts a 16-bit value from a 16-bit word at offset 12 of a3 and calls another routine.
+- `update_animation_frame_counter_21_2`: Subtracts a 16-bit value from a 16-bit word at offset 12 of a structure pointed to by a3, calls another routine to decrement and update a, checks if a 16-bit word in d3 is non-zero to call routines for decrementing a counter and fetching table indices, and calls an unnamed routine.
+- `compare_and_exchange_registers`: Compares d3 and d7, branches if d7 is greater than d3, exchanges d1 with d0 and d6 with d7, and branches to another routine.
+- `execute_animation_logic_11`: Calls process_animation_logic_5, update_animation_frame_15, process_animation_parameters, update_animation_parameters_4, and compare_structure_fields_3.
+- `process_animation_parameters`: Checks if a 16-bit register is zero or loads a pointer from offset 1036 of a structure into a6 to compare with d6, exchanges d1 and d2 to call a routine that decrements a counter and fetches a word from a table, multiplies d0 by four and masks it with sixty to load a pointer from a table into a2 and swaps d0, and calls update_animation_parameters.
+- `fetch_animation_frame_pointer_6`: Multiplies a value in d0 by four, masks it to a range of sixty, uses the result as an index into a table to load a pointer into a2, swaps the high and low words of d0, and branches to another routine.
+- `update_animation_parameters_4`: Calls process_animation_logic_5, update_animation_state_9, and update_animation_parameters, then calls invert_and_store_word, update_animation_frame_15, and update_table_indices_2.
 - `update_animation_parameters`: Calls invert_and_store_word, update_animation_frame_15, update_table_indices_2, and another routine.
 - `compare_structure_fields_3`: Multiplies d0 by four, masks the result with 60, loads a pointer from a table at offset 126 using the result as an index into a2, and swaps d0.
 - `compare_structure_fields_2`: Multiplies d0 by four, masks it with 60, loads a pointer from a table at offset 126 using the result as an index into a2, swaps d0, exchanges d1 with d0, d6 with d7, d1 with d4, and d6 with d5, then branches to another routine.
@@ -1062,537 +1556,3 @@
 - `double_and_jump_routine_variant_3`: Multiplies d0 by four, loads words from offsets 932, 934, 908, 910, 2772, and 2774 of the structure in a6 into d1, d6, d2, d3, d4, and d5 respectively, then jumps to another routine.
 - `update_sprite_y_coordinate`: Subtracts a value from a 16-bit integer stored at an offset in a structure pointed to by a6 and stores the result back to the same location.
 - `update_structure_values_2`: Adds d6 to itself, stores the result at offset -36 of a3, then performs two subtractions using d5 to calculate and store a negated value at offset -34 of a3 before returning.
-- `tiny_neg_2`: Small routine of 1 instruction that negates d0.
-- `fetch_shifted_word`: Adds d0 to itself, compares the result to 32, and if it is not below 32, shifts d0 left by 7 bits, loads a word from a table at offset 126 plus d0 into d0, and branches to another routine.
-- `extract_high_byte`: Loads a 16-bit word from an offset in a structure pointed to by a5 plus d0, shifts it right by 7 bits, and returns.
-- `process_scaled_value`: Clears d0, sets a6 to 288, moves d2 to d6, shifts d2 right by 7, multiplies the new d2 by 120, adds 119, and branches based on the sign of the result or sets d2 to 273.
-- `process_data_block_3`: Loads a 16-bit word from offset 1040 into d6, compares it to 12800, and branches based on the result; it also loads 95 into d2 and branches, and calls another routine that manipulates a6 based on d0 and d2.
-- `set_d2_and_branch`: Loads the value 95 into register d2 and branches to another routine.
-- `calculate_a6_offset`: Clears d2, checks if d0 is positive, and if it is not, moves d0 to d5, sets d0 to d2, calculates d2 plus d0 plus 1, adds this to a6, and returns.
-- `update_animation_frame_index`: Increments a byte at an offset within a structure pointed to by a6 and calls another routine.
-- `copy_structure_fields_2`: Copies four 16-bit words from offsets 1146, 1148, 1148, and 1150 of a3 into offsets 1170, 1172, 1174, and 1176 of a3, using d0 as a source for two of these writes.
-- `update_animation_structure`: Calls several routines to update sprite coordinates, increment animation frame indices, and perform arithmetic on structure values.
-- `update_structure_values_11`: Calls a routine that performs arithmetic in a loop and stores a word from d7 into a location pointed to by a1.
-- `update_structure_values_10`: Calls a routine that stores a word from d7 into a location pointed to by a1 and performs arithmetic in a loop.
-- `update_structure_values_9`: Calls a routine that stores a word from d7 into a location pointed to by a1 and performs arithmetic in a loop, then restores registers from the stack and adjusts a1 and a2 by subtracting 960 and another value.
-- `update_value_with_loop_2`: Calls routines to store a word from d7 into a location pointed to by a1, perform arithmetic on d4 and d3 within a loop, and compare longwords at offsets 1412 and 1132 of two different structures.
-- `restore_and_increment_structure`: Restores registers from the stack, loads words into d0, d2, d4, and d7 from the stack, adjusts a2 by subtracting 960, adjusts a1 by subtracting 12, increments a word at offset negative 44 of a structure in a3, and branches to another routine.
-- `update_value_with_loop`: Stores a word from d7 into a location pointed to by a1, performs arithmetic on d4 and d3, and enters a loop that branches back to an earlier instruction if d3 is less than zero; otherwise, it performs further arithmetic and stores a value at the location in a1 before branching to another routine.
-- `manipulate_animation_structure`: Performs arithmetic and logic on animation data, compares a longword at offset 1412 of a structure in a3 with a longword at offset 1132 of the same structure, and calls another routine if they are equal.
-- `manipulate_animation_structure_values`: Calls manipulate_arithmetic_values, offset_address_and_branch, process_animation_logic_4, and decrement_and_test_structure_byte.
-- `manipulate_arithmetic_values`: Subtracts d7 from d4, negates d7, pushes the result onto the stack at the address in a1, moves d4 to d7, and branches to another routine.
-- `offset_address_and_branch`: Adds 14 to the address in a1, stores the result in a1, and then performs a short branch.
-- `update_animation_arithmetic_values`: Calls process_animation_logic_4, which performs arithmetic operations and data updates by calling update_structure_arithmetic_values, update_structure_arithmetic_values_2, and upd.
-- `process_animation_logic_4`: Performs arithmetic operations and data updates by calling update_structure_arithmetic_values, update_structure_arithmetic_values_2, and update_structure_values_5.
-- `process_animation_accumulator`: Loads a byte from a4 into d4; if d4 is not zero, it subtracts d4 and 1 from a 16-bit word at offset -52 of a3, and if the result is not less than or equal to zero, it checks a 16-bit word at offset 2 of a1 and branches based on whether it is greater than zero.
-- `update_animation_accumulator_2`: The routine's specific instructions are not provided in the text.
-- `restore_and_increment`: Restores multiple registers from the stack, adjusts two pointers in a1 and a2, increments a 16-bit value at an offset from a3, and branches.
-- `update_animation_accumulator`: Stores d7 at the address in a1, adds d4 to d3 after incrementing d4, and if d3 is not less than zero, subtracts d7 from d3; otherwise, it adds d3 to d7 and stores the result at the address in a1 before branching to another routine.
-- `update_structure_arithmetic_values`: Performs multiple arithmetic operations on registers d1 and d3 using values from a structure pointed to by a3 and calls update_structure_values_5.
-- `process_animation_logic`: A complex routine that calls another routine and a third routine to perform arithmetic operations and data updates.
-- `update_structure_arithmetic_values_2`: Performs multiple arithmetic operations on d1 and d3 using values from the structure in a3 and calls update_structure_values_5.
-- `update_structure_values_5`: Performs multiple arithmetic operations on d1 and d3 using values from the structure in a3 and branches based on the results.
-- `decrement_and_branch_a0`: Decrements a 16-bit value at offset 44 of the structure in a3, and if the result is not greater than 0, loads the address of another routine into a0 and returns.
-- `calculate_and_decrement_values`: Adds a 16-bit value from offset minus 48 of a structure in a3 to d3, subtracts a long value from offset 1238 of a3 from d1, adds a long value from offset 1234 of a3 to d6, adds 61285 to d5, and if d5 is negative branches to another routine; otherwise it decrements a6, a2, a 16-bit value at offset minus 52 of a3, d7, and d2, and writes a byte to offset 6 of a1 before branching to another routine.
-- `decrement_and_branch_a0_2`: Decrements a 16-bit value at offset 44 of the structure in a3, and if the result is not greater than 0, loads the address of another routine.
-- `decrement_and_test_structure_byte`: Subtracts one from a byte located at offset 52 of a structure pointed to by a3 and calls store_register_data_2 if the result is not negative.
-- `store_register_data_2`: Calls copy_structure_fields_2, store_register_values_and_data, store_register_values_to_memory, and modify_memory_and_branch.
-- `process_unreachable_instruction_gap`: This routine consists of data that is decoded as instructions and performs no functional logic as it is never reached during execution.
-- `subtract_and_clear_register`: Subtracts a byte from a 16-bit word loaded from offset -52 of a structure in a3, and if the result is not less, it clears d7 if d7 is not greater than zero.
-- `update_structure_register_and_branch`: Stores a 16-bit word from register d7 into a memory location at offset 14 of the structure pointed to by a1, negates the value in d7, increments d4 by 1, adds the new d4 to d3, and calls update_register_and_branch.
-- `store_register_to_offset_pointer`: Stores the contents of a0 into a memory location at an offset of 8 from the address held in a1, then calls update_pointer_and_registers_2.
-- `update_register_and_branch`: Stores a 16-bit word from d7 into a memory location at offset 14 of the structure in a1, negates d7, increments d4 by 1, adds d4 to d3, stores d3 into a memory location at the address in a3, and branches to another routine.
-- `calculate_and_branch_2`: Adds d1 to d6 and stores the result in d4, adds d1 to d4 twice, branches if d4 is greater than zero, adds a 16-bit word from offset 1126 of the structure in a3 to d4, branches if d4 is greater than zero, and branches to another routine.
-- `update_pointer_and_registers_2`: Increments the stack pointer by 2, stores the value of a0 into the address pointed to by a1 plus 8, decrements d7 by 1, and stores the new value of d7 at an offset in a structure.
-- `store_register_values_and_data`: Calls store_register_values and store_register_data, then calls another routine and one unnamed routine before returning.
-- `store_register_data`: Calls store_register_values and two other unnamed routines.
-- `store_register_values_to_memory`: Stores the contents of register d0 and register d6 into memory locations relative to the address held in register a0, then calls another routine.
-- `store_register_values`: The routine's instructions are not provided.
-- `update_pointer_and_registers`: Increments the stack pointer by 2, stores the value of a0 into the address pointed to by a1 plus 8, decrements d7 by 1, stores d7 at offset 4 of the address in a1, restores registers from the stack, and branches to another routine.
-- `modify_memory_and_branch`: Increments the stack pointer by 2, stores d6 at offset -6 of the address in a0, decrements a0 by 6, stores d0 at the address in a0, decrements a word at offset 2 of the structure in a3, performs arithmetic on a byte from offset 1 of a4 and a byte from a4, adds a byte from offset 1 of a3 to the result, branches if the result is negative, otherwise increments a1 by 6 and branches to another routine.
-- `calculate_and_decrement_values_alt_2`: Adds a 16-bit value from offset 48 of a structure in a3 to d3, subtracts a long value from offset 1238 of a3 from d1, adds a long value, and then calls decrement_and_conditionally_branch_2.
-- `decrement_and_conditionally_branch`: Decrements a 16-bit word at an offset of 44 from a pointer in a3 and branches to another routine if the result is greater than zero; otherwise, it loads a constant into a0 and returns.
-- `calculate_and_decrement_values_alt`: Adds a 16-bit value from offset minus 48 of a structure in a3 to d3, subtracts a long value from offset 1238 of a3 from d1, adds a long value from offset 1234 of a3 to d6, adds 61285 to d5, and if d5 is negative branches to another routine; otherwise it decrements a6, a2, and d7, and branches to another routine.
-- `decrement_and_conditionally_branch_2`: Decrements a 16-bit word at an offset of 44 from a pointer in a3 and branches to another routine if the result is greater than zero; otherwise it returns.
-- `compare_and_call_animation_update_2`: Compares a longword at offset 1412 of a structure in a3 with a longword at offset 1132 of the same structure, and calls a routine if they are equal.
-- `update_animation_frame`: Increments a byte in a global variable and compares it against a value stored at an offset in a structure pointed to by a6; if the value is exceeded, it resets the byte to zero and calls another routine.
-- `execute_logic_sequence_3`: Performs a series of operations and calls execute_logic_sequence_2.
-- `execute_logic_sequence_2`: Performs a series of operations and branches to a specific address.
-- `branch_to_address_2`: Performs a relative branch to a specific address.
-- `update_animation_frame_2`: Increments a byte at offset 12 of a structure pointed to by a register, compares it against a value at offset 16 of the same structure, and calls another routine if the value is exceeded.
-- `update_sprite_position_2`: Reads a 16-bit value from a table pointed to by a register, adds it to a 16-bit coordinate stored in a global variable, and writes the result back to that variable.
-- `update_animation_frame_pointer_23`: Loads a value from a table into a register and uses it to call execute_complex_routine_2, load_and_clear_data, or two empty_stub_139 routines.
-- `empty_stub_139`: Empty routine: returns to the caller immediately without doing anything.
-- `execute_complex_routine_2`: This routine contains 20 instructions but its specific logic is not provided in the instruction list.
-- `iterate_sprite_data`: Calls execute_complex_routine_2, iterate_sprite_data_elements, and update_sprite_animation_frame.
-- `iterate_sprite_data_elements`: Decrements a counter in register d7 in a loop, calling decrement_sprite_coordinate and other routines to process data based on comparisons of registers d0, d1, and d2.
-- `process_sprite_data`: Decrements d7 in a loop, calls decrement_sprite_coordinate twice, processes data based on comparisons of d0, d1, and d2, and calls execute_handler_logic_2_2.
-- `call_sprite_processing_and_jump`: Calls process_sprite_data_alt and then performs an unconditional branch to another location.
-- `process_sprite_data_alt`: Decrements d7 in a loop, calls decrement_sprite_coordinate, processes data based on comparisons of d0, d1, and d2, and calls test_and_load_pointer_alt.
-- `loop_and_branch`: Decrements d7 in a loop and branches to another routine.
-- `decrement_sprite_coordinate`: Subtracts a 16-bit value from a 16-bit coordinate stored in a global variable and calls updates_sprite_coordinate.
-- `updates_sprite_coordinate`: Subtracts a 16-bit value from a 16-bit coordinate stored in a global variable and calls another routine.
-- `process_byte_data`: The routine processes data based on comparisons and conditional logic involving d0, d1, and d2.
-- `update_byte_and_loop_2`: Compares d2 to 98, and if it is less than or equal, moves 98 into d0; then checks if d1 is less than -32768 or greater than or equal to 128, and if not, loads the address at a2 plus d1 into a0, compares the byte at offset 512 of a0 to d0, and if d0 is greater than that byte, moves d0 into the byte at offset 512 of a0.
-- `update_byte_and_loop`: Moves a byte from offset 512 of a0 to d0, compares d0 to a byte at offset 256 of a0, and if d0 is not greater than that byte, moves d0 to offset 256 of a0, increments d1, performs several arithmetic operations on d2 and d5, and loops using d3; otherwise it branches to another routine; finally it moves a word from the stack into d0 and returns.
-- `update_sprite_animation_frame`: Compares values in registers d0, d1, and d2 to trigger sprite coordinate decrements, loads a pointer from a global variable, and calls update_sprite_animation_state.
-- `update_sprite_animation_state`: Processes animation data by comparing values in d0, d1, and d2 to trigger sprite coordinate decrements, load a pointer from a global variable, or execute complex data manipulations via several subroutines.
-- `decrement_sprite_coordinates`: Calls decrement_sprite_coordinate twice, processes data based on comparisons of d0, d1, and d2, decrements a loop counter in d7 until it reaches zero, and then calls test_and_branch_d0.
-- `call_sub_2067c_and_branch`: Calls another routine and then performs an unconditional short branch to a different location.
-- `process_complex_data_6`: Performs a series of data manipulations and conditional branches involving d0, d1, and d2, and calls several other routines.
-- `decrement_loop_counter_and_branch`: Decrements a loop counter in register d7 until it reaches zero, then branches to another routine.
-- `load_pointer_conditionally`: Tests the sign of a 16-bit word in d0; if it is negative, it loads the address a fixed address into a0 and branches to another routine, otherwise it branches to a fixed address.
-- `test_sign_and_branch`: Tests the sign of a 16-bit word in d0 and branches to a fixed address if it is negative.
-- `test_and_load_pointer`: Tests the sign of a 16-bit word in d0 and, if positive, loads the address 67474 into a0 before branching to another routine; otherwise it branches to another routine.
-- `test_and_branch_d0`: Tests the sign of a 16-bit word in d0 and branches to another routine if it is negative, otherwise it returns.
-- `test_and_branch_sign`: Tests the sign of a 16-bit word in d0 and branches to another routine if it is negative.
-- `test_and_load_pointer_alt`: Tests the sign of a 16-bit word in d0 and, if negative, loads the address 67368 into a0 before branching to another routine; otherwise it branches to another routine.
-- `test_sign_and_branch_alt`: Tests the sign of a 16-bit word in d0 and branches to a fixed address if it is positive.
-- `execute_handler_logic_2_2`: Calls another routine, tests the sign of a 16-bit word in d0 and branches to another routine if it is negative, and calls a routine that copies values from the stack to d7 and d0 before returning.
-- `tiny_move_move_rts`: Small routine of 3 instructions that copies (a7)+ to d7, then copies (a7)+ to d0, then returns.
-- `initialize_and_mask_data`: Sets d7 to 1 and d6 to 7, adds 2 to a1, tests a byte at offset 1406 of the structure in a3, and performs bitwise operations and calls other routines.
-- `mask_specific_words_2_2`: Calls another routine and then moves the value in a6 to a2.
-- `initialize_routine_parameters`: Sets d7 to 1 and d6 to 7, adds 2 to a1, tests a byte at offset 1406 of a3 and branches to a fixed address if it is zero, compares a 16-bit word at offset 1476 of a3 to 68 and branches to a fixed address if it is greater, then sets d5 to 96 and branches to a fixed address.
-- `mask_multiple_word_data`: Decrements a 16-bit value in a register by one and performs a bitwise AND operation on three separate 16-bit words located at specific offsets within a global table, then calls mask_multiple_words and execute_routine_2.
-- `mask_multiple_words`: Decrements register d3 by 1 and performs a bitwise AND on four different 16-bit words located at offsets 7904, 15968, and 23968 relative to a5 using the value in d2, then updates a5.
-- `execute_routine_2`: Calls a routine at offset 2 of a2, rotates d0 left by one bit, and then performs a loop using d5 that branches back to an earlier instruction; otherwise it sets d5 to 176, loads the address at a1 minus 2 into a0, sets d0 to 255, and branches to another routine.
-- `execute_routine`: Performs a sequence of instructions and calls another routine.
-- `mask_specific_words_2`: Inverts d0 and performs a bitwise AND on two 16-bit words at offsets 15998 and 23998 relative to a0 using the inverted value, then updates a.
-- `mask_specific_words`: Inverts d0 and performs a bitwise AND on two 16-bit words at offsets 15998 and 23998 relative to a0 using the inverted value, then updates a0.
-- `mask_alternative_words`: Inverts d0 and performs a bitwise AND on two 16-bit words at offsets 7998 and 23998 relative to a0 using the inverted value, then updates a0.
-- `update_animation_state_39`: Clears a longword at a specific offset in a structure, performs a series of arithmetic operations, calls another routine, and branches based on a byte test.
-- `update_animation_state_38`: Calls update_animation_frame and another routine.
-- `process_animation_block_2`: Calls update_animation_frame, subtract_bytes_and_branch, compare_and_subtract_bytes_3, and process_animation_data_block.
-- `subtract_bytes_and_branch`: Loads three bytes from a structure in a6 into d1, d2, and d3, subtracts d3 from d1, subtracts d1 from d2, and branches to another routine.
-- `compare_and_subtract_bytes_3`: Adds d5 to d6, compares the result to 128, and if not greater than 128, subtracts a byte from a6 into d3 from bytes at offsets 1 and 4 of the structure in a6, then branches to another routine.
-- `process_animation_data_block`: Performs a series of operations including moving a 16-bit word from offset 1040 into d6, comparing it to 12800, and calling another routine that performs arithmetic and memory operations using d0 through d5 and the addresses in a0 and a1.
-- `process_animation_logic_20`: Performs a series of arithmetic and memory operations using d0 through d5 and the addresses in a0 and a1, then calls another routine.
-- `process_animation_logic_19`: Performs a series of arithmetic and memory operations using d0 through d5 and the addresses in a0 and a1, including calling execute_logic_sequence_2, execute_complex_routine_2, iterate_sprite_data_elements, update_sprite_animation_frame, update_sprite_position_6, and update_animation_frame_index_6.
-- `execute_animation_logic_5`: Loads bytes from offsets 4, 292, and 1 of a structure in a6, performs arithmetic, and calls other routines.
-- `subtract_structure_bytes`: Loads bytes from offsets 4, 292, and 1 of a structure in a6 into d1, d2, and d3, subtracts d1 from d2, subtracts d3 from d1, and then branches to a fixed address.
-- `compare_and_subtract_bytes_2`: Adds d4 and d5 into d6, compares d6 to 128 and branches to a fixed address if it is greater, otherwise it loads bytes from offsets 4, 289, and 1 of a structure in a6 into d1, d2, and d3, subtracts d3 from d1 and d2, and then branches to a fixed address.
-- `increment_animation_frame_index`: Increments a 16-bit value at a global variable location by 1 and calls update_animation_frame_pointer_11.
-- `update_animation_frame_pointer_11`: Increments a 16-bit value at a global variable location by 1 and calls execute_complex_routine_3_2.
-- `execute_complex_routine_3_2`: Performs a sequence of instructions, calls another routine, and then calls a third routine.
-- `execute_complex_routine_3`: This routine contains 32 instructions but its specific logic is not provided in the instruction list.
-- `process_animation_logic_21`: Calls mask_sequential_words, negate_and_jump, and execute_complex_routine_4.
-- `mask_sequential_words`: Performs bitwise AND operations on six 16-bit words at various offsets relative to a0 using values from d2 and d3, then updates a0.
-- `negate_and_jump`: Loads a byte from offset 2 of the structure in a6 into d0, multiplies d0 by four, negates d6, d3, and d5, and then jumps to another routine.
-- `process_animation_data_20`: Loads a byte from offset 2 of a structure in a6 into d0, multiplies d0 by four, negates d6, d3, and d5, and then jumps to another routine.
-- `shift_and_branch_2`: Loads a byte from offset 2 of the structure in a6 into d0, shifts d0 right by two bits, and then branches to another routine.
-- `negate_and_jump_routine`: Loads a byte from offset 2 of the structure in a6 into d0, multiplies d0 by four, negates d6, d3, and d5, then jumps to another routine.
-- `process_animation_data_19`: Performs a series of operations and branches to a long address.
-- `execute_complex_routine_4`: This routine contains 13 instructions but its specific logic is not provided in the instruction list.
-- `test_and_branch_byte`: Tests a byte at offset 1526 of a structure in a3 and branches if it is non-zero, otherwise it returns.
-- `update_status_and_branch`: Sets a byte value of 1 into a global variable at offset 1526 relative to a3 and calls modify_and_branch_2.
-- `modify_and_branch`: Subtracts d4 from d1, adds d3 to d2, and branches to another routine.
-- `set_status_byte`: Stores the byte value 1 into a global variable at offset 1526 relative to a3 and returns.
-- `modify_and_branch_2`: Subtracts d4 from d1, adds d3 to d2, and branches to another routine; then stores the byte value 1 into a global variable at offset 1526 relative to a3, and copies eight 32-bit words from the source pointed to by a2 to eight destination locations relative to a0.
-- `copy_long_words`: Copies eight 32-bit words from the source pointed to by a2 to eight destination locations relative to a0, incrementing both pointers during the process.
-- `copy_long_words_2`: Copies eight 32-bit words from the source pointed to by a2 to eight destination locations relative to a0, incrementing both pointers during the process, and calls another routine.
-- `update_animation_frame_5`: Increments a byte at an offset within a structure pointed to by a register and calls execute_complex_routine_5.
-- `execute_complex_routine_5`: This routine contains 36 instructions but its specific logic is not provided in the instruction list.
-- `calculate_animation_offsets`: Loads three bytes from offsets 1, 4, and 196 of a structure in a6 into d1, d3, and d2, performs subtractions between them, calls compare_and_subtract_bytes, and then calls perform_animation_logic.
-- `calculate_offsets_and_branch`: Loads three bytes from offsets 1, 4, and 196 of a structure in a6 into d1, d3, and d2, performs subtractions between them, and branches to another routine.
-- `compare_and_subtract_bytes`: Adds d5 to d4, compares the result to 128, and if not greater, subtracts a byte from offset 1 and a byte from offset 193 of a structure in a6 from a byte at offset 4 of the same structure, then branches to another routine.
-- `perform_animation_logic`: Performs a series of operations involving data manipulation and conditional branching.
-- `update_status_values`: Copies a 16-bit word from an offset of 1048 in a table to two consecutive locations at offset 1032 and 1034 of another table, then negates the values in d3 and d4 before returning.
-- `update_status_values_3`: Copies a 16-bit word from a table at offset 1048 to two consecutive locations at offset 1032 and 1034 of another table, then negates the value in register d1.
-- `update_status_values_2`: Copies a 16-bit word from an offset of 1048 in a table to two consecutive locations at offset 1032 and 1034 of another table, then negates t.
-- `initialize_table_pointers`: Loads two constant values into registers a3 and a5.
-- `calculate_frame_offsets_2`: Calls a routine to calculate offset differences, calls a routine to process frame logic by comparing d4 to 128, and calls another routine.
-- `write_control_bytes`: Writes the byte 3 to offset 1130 of a table, the byte 1 to offset 1134, the byte in d0 to offset 1058, and the word in d0 to offset 1146 of the same table before returning.
-- `process_animation_string`: Calls calculate_subtraction_offsets, compare_and_subtract_offsets, and process_animation_string_data.
-- `calculate_subtraction_offsets`: Subtracts a byte from offset 1 of a structure in a6 from a byte at offset 4 of the same structure, subtracts the result from a byte at offset 124 of the structure, and branches to another routine.
-- `compare_and_subtract_offsets`: Adds d5 to d6 and compares the result to 128; if not greater, it subtracts a byte from offset 1 of a structure in a6 from a byte at offset 4, subtracts a byte from offset 1 of the structure from a byte at offset 121, and branches to another routine.
-- `process_animation_string_data`: Reads a sequence of bytes from a memory location pointed to by a register and compares them against the constant 84.
-- `empty_stub_140`: Empty routine: returns to the caller immediately without doing anything.
-- `empty_stub_141`: Empty routine: returns to the caller immediately without doing anything.
-- `branch_after_nop_2`: Performs a no operation and then branches to another location.
-- `tiny_suba`: Small routine of 1 instruction that subtracts a6 from a6.
-- `update_status_and_move_pointers`: Pops two words from the stack into d5 and d4, compares a byte at offset 2 of a6 with 51, and if not equal branches to another location; otherwise it sets bit 7 of a byte at offset 598 of a3, and if bit 7 was not already set, moves two long words from offsets 424 and 42a of a3 to offsets 464 and 468 of a3 before branching to another location.
-- `update_status_and_branch_2`: Stores d0 at offset 598 of the structure in a3, compares a long value at offset 430 of a3 with d3, performs a double long operation, branches if the result is less than or equal to zero, otherwise stores a6 at offset 414 of a3, compares d0 with a6, and if they are equal, sets bit 5 of the address in a6 before returning.
-- `update_sprite_position_10`: Performs arithmetic on values from a structure in a6 and a, then calls update_sprite_position_9.
-- `subtract_and_adjust_registers`: Moves bytes from offsets 4, 292, and 1 of a structure in a6 into d1, d2, and d3, subtracts d1 from d2, subtracts d3 from d1, doubles d6, and branches to another routine.
-- `clear_registers_and_branch`: Clears 16-bit registers d1, d2, and d6, then branches to another routine.
-- `calculate_offset_and_subtract`: Adds d5 to d4, compares d4 to 128, and if d4 is greater than 128, performs a series of subtractions using bytes from a structure in a6 and a logical shift on d6 before branching.
-- `update_sprite_position_9`: Reads a 16-bit value from a table into a register, adds a constant to it, stores the result in a memory location, and calls another routine.
-- `update_sprite_position_8`: Reads a 16-bit value from a table into a register, adds a constant to it, and stores the result back into a memory location pointed to by a global variable.
-- `update_sprite_position_11`: Performs a sequence of operations and calls another routine.
-- `update_animation_indices_9`: Decrements a byte at offset 422 of a structure in a3, moves a word to offsets 41a and 41c of that structure, and calls a handler based on a pointer at offset 1396 of a structure in a1.
-- `update_structure_fields_6`: Decrements a byte at offset 422 of a structure in a3, moves a word from d0 to offset 41a of the structure in a3, moves the same word to offset 41c of the structure in a3, and branches to another routine.
-- `update_animation_indices_8`: Compares d5 against a constant and, if not less, shifts d5 left by 7 bits.
-- `increment_animation_index_3`: Increments a 16-bit value at a global memory location and calls another routine.
-- `update_animation_frame_index_14`: Increments a 16-bit value at a global memory location and calls another routine.
-- `calculate_scaled_values_2`: Compares d5 against a constant, branches if greater, shifts d5 left by 7, and if d5 is not zero, loads a word from a table using d5 as an offset, multiplies it into d1 and d3, and branches to another routine.
-- `increment_animation_pointer_6`: Increments a 16-bit pointer stored in a global variable by a value retrieved from a table and calls another routine.
-- `update_animation_frame_pointer_27`: Increments a 16-bit pointer stored in a global variable by a value retrieved from a table, then calls another routine.
-- `calculate_scaled_products`: Compares d5 against d6, and if d5 is not less than d6, pushes d6 onto the stack.
-- `update_animation_frame_21`: Increments a byte in a global variable and calls another routine if the value reaches 10.
-- `update_animation_state_40`: Calls update_animation_fields_2 and update_animation_status to modify the properties and status of an animation structure.
-- `update_animation_fields_2`: Updates the fields of an animation structure by calling update_structure_fields, calculate_difference_and_store_2, and update_animation_status.
-- `update_structure_fields`: Increments a7 by 2, stores a6 at offset 1054 of a table, writes d0 to offset 1058, writes 4 to offset 1130, writes 1 to offset 1134, writes d0 to offset 1146, sets bit 7 of a byte at offset 1432, and if the zero flag is not set, branches to another location; otherwise, it copies two longwords from offsets 1060 and 1066 to offsets 1156 and 1160 of the table and returns.
-- `update_animation_fields`: Calls update_structure_fields, calculate_difference_and_store_2, and update_animation_status.
-- `calculate_difference_and_store_2`: Subtracts d5 from d6, then if d6 is not greater than or equal to zero, it loads a word from a4 into d5, negates d6, and performs several additions and stores the result into a word at offset 1052 of a structure in a3 before adding d5 to itself twice and branching.
-- `update_animation_status`: Performs a series of operations involving calculating differences between bytes, adding values, and comparing them to 128, then calls another routine.
-- `calculate_frame_offsets`: Calls a routine to calculate offset differences, calls a routine to process frame logic by comparing d4 to 128, and calls a routine that updates a global variable using a value from another routine.
-- `calculate_offset_differences`: Subtracts a byte from offset 1 of a structure in a6 from a byte at offset 4, subtracts a byte from offset 1 of a structure in a6 from a byte at offset 124, doubles d6, and branches to another routine.
-- `clear_registers_and_branch_3`: Clears the 16-bit d1, d2, and d6 registers and performs a short branch into another routine.
-- `process_frame_logic`: Adds d5 to d4, compares d4 to 128, performs a conditional move, subtracts a byte from offset 1 of a structure in a6 from bytes at offsets 4 and 121, shifts d6 right by 3, and branches to another routine.
-- `process_animation_frames`: Loads a value from a global variable into a register, calls another routine, and stores the result back into the same global variable; it also performs similar operations involving another routine and a global variable.
-- `update_animation_frame_state_6`: Loads a value from a global variable into a register, calls process_animation_frame_2, and stores the result back into the same global variable.
-- `update_animation_frame_state_5`: Loads a value from a global variable into a register, calls process_animation_frame_2, and then stores the result back into the same global variable before returning.
-- `process_animation_frame_2`: A routine that performs data manipulations, multiplies table values, and scales values using shifts and table lookups.
-- `update_animation_frame_pointer_28`: Increments a pointer in a global variable by 2 and calls process_animation_frame_data_2.
-- `process_animation_frame_data_2`: Reads a byte from a table via a pointer in a register, performs data manipulations, and calls process_animation_data_4 and update_status_and_branch_2.
-- `multiply_table_values`: If d5 is not greater than 16, it shifts d5 left by 7, and if d5 is not zero, it loads a word from a table using d5 as an offset and multiplies d1 and d3 by that word.
-- `fetch_animation_frame_data`: Reads a word from a table using an offset in d5 and an address in a5, then calls process_animation_frame_data_3.
-- `process_animation_frame_data_3`: Reads a byte from a table via a pointer in a0, stores it into a global variable, and calls process_animation_data_4 and update_status_and_branch_2.
-- `multiply_scaled_values`: Compares d5 and d6, and if d5 is less than or equal to 16, it shifts d6 left by 7, loads a word from a table at offset 126 of a5 using d6 as an index, multiplies d1 and d2 by that word, and branches to another routine.
-- `process_animation_data_sequence_2`: Calls process_animation_data_4 to manipulate animation data and then calls update_status_and_branch_2.
-- `process_animation_data_4`: Performs a sequence of data manipulations and calls another routine and update_status_and_branch_2.
-- `process_animation_status`: Performs a series of operations including calculating differences between bytes, adding values and comparing them to 128, and processing a status loop that subtracts a byte at offset 235 from another at offset 187 if it is non-zero.
-- `calculate_differences`: Loads bytes from offsets 4, 196, and 1 of the structure in a6 into d1, d2, and d3, subtracts d1 from d2, subtracts d3 from d1, and then branches to another routine.
-- `calculate_and_branch_3`: Adds d5 to d4, compares the result with 128, and if the result is greater than 128, branches to another routine; otherwise it loads bytes from offsets 4, 193, and 1 of the structure in a6 into d1, d2, and d3, subtracts d3 from d1, subtracts d3 from d2, and then branches to another routine.
-- `process_status_loop`: Clears register a4, tests a byte at offset 187 of a structure in a0, and if non-zero, calculates a value by subtracting a byte at offset 235 of a structure in a2 from 4, extends it to a word, multiplies it by 20, stores the result in a4, tests a byte at offset 178 of a0, and either stores 32769 in a4 or branches to another routine.
-- `empty_stub_142`: Empty routine: returns to the caller immediately without doing anything.
-- `empty_stub_143`: Empty routine: returns to the caller immediately without doing anything.
-- `skip_animation_update`: Performs no operations and branches to another routine.
-- `subtract_pointer_address`: Subtracts the value of register a6 from itself.
-- `store_status_and_branch_2`: Loads two words from the stack, subtracts a longword at offset 430 of a3 from d3, and branches based on the result or performs a loop using d7.
-- `compare_and_branch_11`: Compares d6 to a constant, and if d6 is greater than that constant, branches to another routine; otherwise, it stores a byte at offset 1090 of the structure in a3 and branches to another routine.
-- `store_longword_and_branch`: Stores a longword from d3 into a memory location at offset 1070 of the structure in a3, decrements d7, and branches to another routine.
-- `negate_structure_values`: Negates two 16-bit values located at offsets 1166 and 1168 of a structure pointed to by a3 and stores the results back into the same offsets.
-- `transfer_and_negate_data`: Sets registers a3, a4, and a5 to specific constants, moves a 16-bit word from offset 1166 of the table in a3 to offset 1470 of the table in a3, negates the word from offset 1168 of the table in a3 into d1, stores the negated word at offset 1466 of the table in a3, and loads a longword from offset 1054 of the table in a3 into a6.
-- `scale_animation_parameters_2`: Calls scale_animation_values_3, which calls scale_animation_values_2, scale_and_branch_offsets, and clear_registers_and_branch_2.
-- `scale_and_branch_offsets`: Subtracts a byte from offset 1 of a structure in a6 from a byte at offset 4, subtracts a byte from offset 1 of the structure from a byte at offset 124, doubles the value in d6, and branches to another routine.
-- `clear_registers_and_branch_2`: Clears registers d1, d2, and d6, then branches to another routine.
-- `scale_and_subtract_offsets`: Adds d5 to d4, compares d4 to 128, and if not greater, subtracts a byte from offset 1 of a structure in a6 from a byte at offset 4, subtracts a byte from offset 1 of the structure from a byte at offset 121, shifts d6 right by 3, and branches to another routine.
-- `scale_animation_parameters`: Calls scale_animation_values_3, which in turn calls scale_animation_values_2 to perform data movements and scale values using a table based on the contents of registers d5 and d6.
-- `scale_animation_values_3`: Performs a sequence of data movements and calls scale_animation_values_2.
-- `scale_animation_values_2`: Performs a sequence of data movements and calls several other routines, including one that uses a table to scale values based on d5 and d6.
-- `process_animation_sequence_3`: Executes a sequence of instructions involving data movement and conditional logic, then calls process_animation_sequence_2 and process_animation_sequence.
-- `process_animation_sequence_2`: Executes a sequence of instructions involving data movement and conditional logic and calls process_animation_sequence.
-- `scale_value_from_table`: Compares d5 to 16, and if d5 is not greater than 16 and not zero, loads a word from a table using a5 and d5 as an index, then multiplies that word into d1 and d3 before branching.
-- `increment_animation_frame`: Increments a byte in a global variable and calls process_animation_sequence if the value is less than 10, otherwise it resets the byte to 0.
-- `update_animation_frame_index_3`: Increments a byte in a global variable and calls process_animation_sequence if the value is less than 10, otherwise it resets the byte to 0 and returns.
-- `scale_animation_values`: Compares d5 and d6, and if d6 is between 1 and 16, loads a word from a table using a5 and d6 as an index, multiplies d1 and d2 by that word, and branches.
-- `update_animation_frame_index_4`: Increments a byte in a global variable and calls process_animation_sequence if the value is less than 10, otherwise it resets the byte to zero.
-- `process_animation_sequence`: The routine executes a sequence of instructions involving data movement and conditional logic.
-- `clear_control_values`: Clears a 16-bit word at offset 1146 of the table in a3 and stores a byte from offset 1137 of the table in a3.
-- `modify_structure_values`: Adds 16 to a register, subtracts a longword from offset 1062 of a structure, and conditionally decrements a word at offset 1060.
-- `update_structure_and_branch_2`: Adds 16 to a register, subtracts a longword from an offset 1062 in a structure, and conditionally decrements a word at offset 1060.
-- `update_structure_and_branch`: Adds 32 to d6, subtracts d2 from an offset 1068 of a structure in a3, and if the carry flag is not set, subtracts 1 from offset 1066 of the structure in a3; otherwise, it compares d1 and d2, and if d2 is higher than or equal to d1, it loads two words from memory using d6 and branches to another routine.
-- `load_and_branch_3`: Loads two words from memory using an offset in d6 into d1 and d2, then branches to another routine.
-- `execute_unreached_code_2`: Performs a sequence of data manipulations and conditional branches and calls execute_unreached_code or returns immediately via an empty routine.
-- `execute_unreached_code`: Performs a sequence of data manipulations and conditional branches.
-- `calculate_signed_difference`: Compares a 16-bit word at offset 36 of a structure in a3 to d4, and if it is not less than or equal, subtracts a 16-bit word at offset 34 of the structure from d2, then jumps to a location calculated using d7 if d2 is not greater than or equal to zero, otherwise it negates d2 and jumps to another location.
-- `empty_stub_144`: Empty routine: returns to the caller immediately without doing anything.
-- `branch_after_nop`: Performs a no-operation and then branches to another location.
-- `empty_stub_145`: Empty routine: returns to the caller immediately without doing anything.
-- `transfer_byte_to_memory`: Loads a byte from a memory location pointed to by a register into another register and then calls empty_stub_144 before returning.
-- `update_sprite_position_3`: Reads a 16-bit value from a memory location pointed to by a register, adds it to a 16-bit value stored at an offset within a structure in a6, and writes the result back to that structure.
-- `update_sprite_position_offset`: Reads a 16-bit value from a table using an index in d0, adds it to a 16-bit coordinate stored in a global variable, and writes the result back to that variable.
-- `update_sprite_position_table`: Reads a 16-bit coordinate from a table using an index in a register, adds a signed 16-bit offset to it, and stores the result back into the table.
-- `compare_structure_word`: Compares a 16-bit word at offset 38 of the structure in a3 with d3 and d5, and calls another routine to handle the comparison results.
-- `adjust_conditional_value`: Negates d5, compares d4 to it, and if d4 is lower than the negated value, branches; otherwise it modifies d7 and d5 before branching.
-- `multiply_on_condition`: Compares d4 to d7, and if d4 is not lower than d7 and d4 is not 1 or higher, multiplies d7 by d5 and branches.
-- `compare_and_branch_structure_word`: Compares a 16-bit word at offset 38 of the structure in a3 against the values in d3 and d5 using compare_and_return, then branches based on the result.
-- `compare_and_return`: Compares a 16-bit word at offset 38 of a structure in a3 with d3 and d5, and returns if either comparison is less than or equal to zero.
-- `execute_complex_logic_10`: Performs a series of operations including calling another routine, calculating a signed difference between a word at offset 36 of a structure in a3 and d4, and swapping words at offset 40 of a structure in a3.
-- `update_animation_frame_offset_4`: Swaps the high and low words of a 16-bit value from offset 40 of a structure in a3, compares a 16-bit value at offset 42 of a3 with 768, and if it is not higher, compares a 16-bit value at offset 1422 of a structure in a3 with 516; if that is also not higher, stores d0 into offset 1434 of the structure in a3 and returns.
-- `update_animation_frame_offset_3`: Increments a 16-bit value at an offset within a structure pointed to by a register and calls another routine.
-- `branch_to_offset_6`: Performs a short branch to a specific address.
-- `calculate_and_store_sum`: Subtracts two longwords from a structure in a3, loads a pointer from a structure in a6, and if a byte at offset negative 120 of that structure is not negative, adds two masked 7-bit values from d2 and d3 and stores the result in a byte at offset 48 of the structure in a3.
-- `execute_unreached_logic_2`: Calls execute_unreached_code_2, update_sprite_position_table, and compare_structure_word.
-- `execute_unreached_logic`: Performs a sequence of data manipulations and conditional branches and calls execute_unreached_code_2, update_sprite_position_table, and compare_structure_word.
-- `update_sprite_animation_state_2`: Calls update_sprite_position_offset, update_sprite_position_table, compare_structure_word, and update_sprite_coordinate_offset in sequence.
-- `update_sprite_data`: Calls update_sprite_position_offset, update_sprite_position_table, compare_structure_word, and update_sprite_coordinate_offset.
-- `update_sprite_coordinate_offset`: Reads a 16-bit coordinate from a table using an index in a register, adds a signed 16-bit offset to it, and stores the result back into the table, then calls update_sprite_position_table.
-- `update_animation_frame_3`: Increments a byte at offset 10 of a structure pointed to by a register, compares it to a limit at offset 14, and calls another routine if the value exceeds that limit.
-- `transfer_hardware_state`: Sets a3 to a constant, moves a byte from offset 1059 to 1058 of that address, clears a byte at offset 1058, moves three 32-bit words from offsets 1084, 1090, and 1096 of a3 to offsets 1440, 1444, and 1448 of a global variable, moves a byte from offset 1128 to 1129 of a3, and loads two pointers into a0 and a1 from offsets 1178 and 1194 of a3.
-- `copy_data_blocks`: Copies two 32-bit double-word blocks from the memory pointed to by a0 and a1, using a1 as the destination for the first block and an offset of 32 from a1 for the second block.
-- `copy_animation_data`: Copies two 32-bit double-word blocks from the memory pointed to by a0 and a1, using a1 as the destination for the first block and an offset, then calls another routine.
-- `reset_hardware_status`: Sets a3 to a constant, moves a byte from offset 1059 to 1058 of that address, clears a 16-bit word at offset 1436, and returns.
-- `process_complex_animation`: Calls routines to calculate frame offsets and execute complex animation logic involving signed differences and rotation.
-- `execute_complex_animation_2`: Performs a sequence of operations including testing a byte at offset 1526 of a structure in a3, calculating signed differences, and rotating d1 left.
-- `execute_complex_animation`: Calls a routine to test a byte at offset 1526 of a structure in a3, calls a routine to calculate signed differences and rotate d1 left, and calls a routine to increment a byte in a structure and update an animation frame index.
-- `execute_complex_logic_11`: Calls routines to calculate a signed difference, perform bitwise AND and branching, rotate d1 left, update coordinates based on a byte at offset 1526 of a structure in a3, and increment a byte within a structure.
-- `mask_and_branch`: Performs a bitwise AND between d1 and d0, then branches to another location.
-- `rotate_and_swap_data`: Loads the address at offset 40 of a0 into a0, adds 4 to d7, and if d7 is zero branches to another location; otherwise it rotates d1 left by one bit, and if the carry flag is set branches to another location, otherwise it swaps d0 and moves d1 into d0 before branching to another location.
-- `update_sprite_coordinates`: Tests a byte at offset 1526 of the structure in a3 and calls other routines to update coordinates using values from a table.
-- `increment_global_pointers`: Adds the constant 40000 to three 32-bit words located at offsets an address, an address, and an address.
-- `increment_structure_byte`: Increments a byte at an offset within a structure pointed to by a register and calls update_animation_frame_index_5.
-- `update_animation_frame_index_5`: Increments a byte at an offset within a structure pointed to by a register and calls another routine.
-- `update_structure_pointers_3`: Performs bitwise operations and updates a structure by storing a0, d0, and a4 at specific offsets, then calls update_structure_and_pointers.
-- `update_structure_and_pointers`: Performs multiple bitwise operations, updates structure pointers, and stores a0, d0, and a4 into a structure at specific offsets.
-- `perform_bitwise_and`: Performs a bitwise AND between d1 and d0 and then branches to another location.
-- `update_structure_pointers_2`: Loads a new address into a0 from offset 40 of the current a0, increments d7 by 4, and if d7 is zero, performs a bitwise rotation on d1, a conditional branch, a swap of d0, and a move of d1 into d0 before branching to another location.
-- `update_structure_pointers`: Performs a bitwise AND on d0 and d1, swaps d0, sets d0 to 65535, and stores a0, d0, and a4 into a structure at offsets 1488, 16, and 1492 respectively.
-- `update_sprite_position_4`: Reads a 16-bit value from a table and adds it to a 16-bit coordinate stored in a global variable, then writes the result back to that variable.
-- `update_sprite_position_5`: Reads a 16-bit coordinate from a table using an index stored in a global variable, adds it to a base address in a6, and writes the result to a destination memory location.
-- `update_frame_and_position`: Calls update_sprite_position_6 and update_animation_frame_index_6, the latter of which increments a byte in a global variable and resets it to zero if it reaches a value stored at an offset of a structure in a6.
-- `update_sprite_position_6`: Reads a 16-bit coordinate from a table using an index in d0, adds a 16-bit offset from a global variable to it, and stores the result back into the table at the same index.
-- `update_animation_frame_index_6`: Increments a byte in a global variable and, if it reaches a value stored at an offset of a structure in a6, resets the byte to zero and calls another routine.
-- `apply_bitwise_mask_2`: Performs a bitwise AND of d0 with three consecutive 16-bit words at the location in a0, increments a0 by 38, and loops using d5 as a counter.
-- `transfer_table_data_2`: Increments a pointer in a4 by 20 and calls another routine after loading a 16-bit word from a table at offset 50 of a3 using d3 as an index.
-- `transfer_table_data`: Increments a pointer in a4 by 20, loads a 16-bit word from a table at offset 50 of a3 using d3 as an index, calls update_pointer_and_load_word, and then calls transfer_and_jump.
-- `update_pointer_and_load_word`: Increments a pointer in a4 by 20, loads a 16-bit word from a table at offset 50 of a3 using d3 as an index, and branches to another routine.
-- `transfer_and_jump`: Ors d0 with a word from a table at offset 50 of a3, then stores d5, d0, d7, a0, and a4 into a structure starting at offset 1484, decrements d5, and jumps to the address in a4.
-- `load_and_clear_data`: Performs a sequence of data movements and calls increment_pointer_2 and load_and_store_data.
-- `increment_pointer_2`: Adds 16 to the address in a3 and returns.
-- `apply_bitwise_or_loop`: Ors d0 into the memory at a0, increments a0 by 40, and loops using d5 as a counter until it returns.
-- `apply_bitwise_and_loop`: Performs a bitwise AND of d0 with three consecutive 16-bit words at the current a0 location, increments a0 by 38, and loops using d5 as a counter until it returns.
-- `store_bytes_and_branch`: Stores the bytes from d4 and d2 into the memory location pointed to by a3, increments a3 by 2, and branches.
-- `load_and_store_data`: Clears a word at the location pointed to by a3, loads four words from the location pointed to by a3 into d1, d5, d7, and the stack, clears d4, loads a byte from a1 into d4, loads a byte from a3 plus 2 into d4, increments a3 by 2, stores a constant into a3 plus 30, and loads a new address into a1 based on d4.
-- `increment_and_clear`: Clears d4, loads a byte from a memory location pointed to by a1 into d4, and if d5 is not zero, increments a7 by 4 before returning.
-- `modify_pointer_and_test`: Increments a pointer in a2 by 64, negates d2, adds d1 to d2, and if the carry flag is not set, tests a byte at the address in a3; otherwise it returns.
-- `modify_and_test_register`: Increments a pointer in a2 by 64, negates d2, adds d1 to d2, and if the carry flag is not set, tests a byte at the address in a3; otherwise it clears d2 and branches to another routine.
-- `prepare_jump_address`: Increments a2 by 64, decrements a0 by 2, masks d2 and d3 to even values, loads a 16-bit word from a table at offset -128 using d2, and jumps to the address in a2.
-- `modify_pointer_content`: Loads a 32-bit pointer from a structure at offset 1396 into a1, checks if it is between 288 and 79200, and if so, performs a bitwise AND on the byte at that address with 227 before clearing the pointer in the structure.
-- `calculate_and_store_animation_offset`: Calculates a value by multiplying a constant by a value at an offset from a pointer, stores the result in a 16-bit word at that pointer, and enters a loop that decrements a counter and checks a 16-bit word at an offset of 12 from the pointer to decide whether to continue or return.
-- `copy_animation_data_to_memory`: Copies a 16-bit word from a register to a memory location pointed to by a register and decrements a counter, then calls another routine to update an animation frame index.
-- `store_word_and_decrement_counter`: Increments a pointer in a4 by 2, stores a 16-bit word from d0 at that location, and decrements a counter in d7, otherwise it returns.
-- `update_animation_frame_index_2`: Increments a byte at an offset within a structure pointed to by a register and calls another routine if the value reaches a specific threshold.
-- `empty_stub_146`: Empty routine: returns to the caller immediately without doing anything.
-- `load_animation_routine_pointer`: Loads a long value from an offset relative to the program counter into a0 and performs a short branch.
-- `load_address_and_branch_16`: Loads the address of a constant into a register and performs a short branch to another routine.
-- `push_addresses_to_stack`: loads a pointer into a3, pushes three longwords onto the stack, and loads a value into a0.
-- `branch_to_animation_logic`: Performs a short branch to another location in the code.
-- `branch_to_animation_routine`: Performs a short branch to another routine.
-- `branch_to_animation_subroutine`: Performs a short relative branch to another routine.
-- `process_complex_stack_data`: Performs a sequence of operations involving moving longwords between the stack and various offsets of structures pointed to by a3 and a6, loading addresses from offsets 1368 and 1372 of a3 into a2, and calling multiple routines to update counters and perform conditional jumps.
-- `update_pointer_and_jump`: Executes a series of operations that move longwords between the stack and structure offsets, such as offset 20 of a3 or a6, loads addresses from offsets 1376 or 1364 of a3, stores addresses into offset 26 of a3, and calls several routines to manage pointer updates and branching.
-- `update_animation_data`: A routine that loads animation data from tables, updates global variables, and executes animation logic through multiple subroutines.
-- `update_animation_frame_data_3`: Reads a value from a table using an offset in a register, stores it into a global variable, and calls empty_stub_147 and process_animation_sequence_5.
-- `jump_if_greater`: compares a word in d4 to 16; if it is 16 or greater, it loads a pointer from a table at offset 1382 of the structure in a3 into a0 and jumps to it, otherwise it continues.
-- `empty_stub_147`: Empty routine: returns to the caller immediately without doing anything.
-- `process_animation_sequence_5`: Executes a sequence of operations including table lookups and calls to empty_stub_147 and process_animation_data_sequence.
-- `process_animation_data`: Performs a series of operations involving multiple registers and calls two other routines.
-- `jump_if_greater_than_seven`: Compares d4 to 7 and, if d4 is higher, loads an address from an offset of 1382 in a3 into a0 and jumps to it.
-- `process_animation_data_sequence`: Executes a series of operations including calls to other routines and conditional jumps based on register values and table lookups.
-- `jump_via_table`: loads a pointer from a table at offset 1384 of the structure in a3 into a0 and jumps to it.
-- `execute_animation_logic_6`: Calls process_animation_sequence_5, process_animation_data_sequence, and execute_subroutine_logic_5.
-- `execute_subroutine_logic_5`: Executes a sequence of instructions and calls another routine.
-- `dispatch_indirect_jumps_2_2`: Loads a 32-bit value from a global variable, adjusts the stack pointer, and performs indirect jumps using addresses stored in a2.
-- `dispatch_indirect_jumps_2`: Loads a 32-bit value from a global variable, adjusts the stack pointer, and performs indirect jumps using addresses in a2.
-- `return_via_stack_offset`: adjusts the stack pointer by adding 12 and returns.
-- `update_animation_frame_pointer_12`: Loads a 32-bit value from a global variable into a register, adds 12 to the stack pointer, and calls a routine to restore the stack and jump to an indirect address in a1 using a4.
-- `dispatch_indirect_jumps`: Performs two indirect jumps using addresses held in a register and calls another routine between them.
-- `restore_stack_pointer_3`: Loads the stack pointer with a value stored at an offset of 12 bytes from the current stack pointer and returns immediately.
-- `restore_stack_and_jump`: Calls a routine to restore the stack pointer, then calls another routine to jump via an indirect address in a1 using a4.
-- `jump_via_indirect_address`: pushes the value in a4 onto the stack, loads a pointer into a4, and jumps to the address at offset 2 of the address in a1.
-- `tiny_movea_rts`: Small routine of 2 instructions that copies (a7)+ to a4, then returns.
-- `move_stack_to_table`: moves a longword from the stack to offset 20 of the structure in a3 and pushes a longword from a table at offset 1364 of the structure in a3 onto the stack.
-- `load_animation_address_one`: Loads a constant address into a2, stores it at offset 26 of a structure in a3, loads a pointer from offset 1408 of a3 into a2, and branches to another routine.
-- `transfer_stack_pointer_and_push_value`: Moves a 32-bit value from the stack into a structure at offset 20 relative to a6 and pushes a 32-bit value from a table into the stack.
-- `update_animation_dispatch_pointer`: Loads a pointer from a relative address into a register, stores that pointer into an offset of 26 of the structure in a3, loads a new address from offset 1394 of that same structure into a2, and branches to another routine.
-- `transfer_stack_to_structure`: Moves a 32-bit value from the stack into a structure at offset 20 relative to a6, then pushes a 32-bit value from a global variable onto the stack.
-- `branch_to_animation_pointer`: Loads a pointer from offset 1368 of a structure in a3 into a2 and branches to another routine.
-- `transfer_stack_data`: Moves a longword from the stack to offset 20 of the structure in a3 and then pushes a longword from offset 1364 of the structure in a3 onto the stack.
-- `dispatch_animation_logic`: Calls check_and_dispatch, calculate_offset_and_branch, and jump_via_address_in_a2.
-- `check_and_dispatch`: Stores d0 at offset 14 of the structure in a3, pushes the program counter onto the stack, subtracts d6 from d7, and branches if d7 is less than or equal to zero; otherwise, it compares d0 with a constant, branches if d0 is greater than that constant, adds 4 to the stack pointer, and branches to another location.
-- `tiny_addq_rts_5`: Small routine of 2 instructions that adds 6 to a7, then returns.
-- `calculate_offset_and_branch`: Compares d0 with d6 and branches if d0 is less than or equal to d6; otherwise, it loads a word from offset 1476 of the structure in a3 into d5, decrements d5 by 1, subtracts d5 from d0, subtracts d6 from d5, and branches if the result is greater than zero; otherwise, it loads a longword into a2 from an offset relative to a2, adds d0 to d5, pushes the program counter onto the stack, and branches to another location.
-- `dispatch_indirect_jumps_3`: Performs a sequence of data manipulations and calls adjust_stack_pointer_13, adjust_stack_and_return_4, call_subroutine_via_offset, and dispatch_indirect_jump_targets.
-- `adjust_stack_pointer_13`: Returns immediately after adding 12 to the stack pointer.
-- `adjust_stack_and_return_4`: Performs several operations and calls a routine to add 12 to the stack pointer.
-- `call_subroutine_via_offset`: Loads a pointer from offset 666 of a2 into a2, decrements a 16-bit value from offset 14 of a3, and calls a routine at offset 658 of a1.
-- `jump_via_address_in_a2`: Loads a longword into a4 from a relative offset and jumps to the address stored in a2.
-- `dispatch_via_calculated_index`: Pops three 16-bit words from the stack into d6, d5, and d1, calculates a value by subtracting d6 from d5, divides that value by 8 and adds 1, then jumps to an address stored at offset 1356 of a3.
-- `update_animation_frame_counter_11`: Increments a 16-bit value at offset 12 of the structure pointed to by a6, calls increment_animation_frame_counter, and performs an indirect jump using the address in a2.
-- `increment_frame_counter`: Increments a 16-bit value at offset 12 of a structure in a6, calls increment_animation_frame_counter, and performs an indirect jump via a2.
-- `restore_stack_pointer_4`: Loads the stack pointer with the value stored at an offset of 12 from the current stack pointer and returns immediately.
-- `restore_stack_and_jump_2`: Restores the stack pointer using a value stored at an offset of 12 from the current stack pointer and then calls another routine via an indirect address.
-- `update_animation_frame_counter_7`: Increments a 16-bit value at offset 12 within a structure pointed to by a6 and calls increment_animation_frame_counter.
-- `restore_stack_pointer_5`: Loads the stack pointer with a value from an offset of 12 bytes relative to the current stack pointer and returns.
-- `restore_stack_and_jump_indirect`: Restores the stack pointer using a value stored at an offset of 12 bytes from the current stack pointer and then calls another routine via an indirect jump using an address located at an offset of 2 bytes from the value in a1.
-- `push_a4_and_jump_indirect`: Pushes the value in a4 onto the stack, loads a new address into a4 from a relative offset, and jumps to an address at offset 2 of a1.
-- `pop_address_to_a4`: Returns immediately after moving a longword from the stack into a4.
-- `update_animation_frame_complex`: Loads a value from the stack into offset 20 of a structure in a3, loads a pointer from offset 1396 of a3 into the stack, loads a constant address into a2, stores it at offset 26 of a structure in a3, loads a pointer from offset 1408 of a3 into a2, and branches to another routine.
-- `transfer_stack_to_structure_2`: Moves a 32-bit value from the stack into a structure at offset 20 relative to a6, then pushes a 32-bit value from a table into the stack.
-- `update_animation_pointer_9`: Loads a pointer from a table into a register, stores that pointer at offset 26 of a structure pointed to by a3, and then loads a new address from offset 1392 of that same structure into a2 before branching to it.
-- `pop_stack_and_store_pointer`: Pops a longword from the stack into an offset of 20 of a structure pointed to by a6, then pushes a longword from an offset of 1364 of that same structure onto the stack.
-- `branch_to_animation_offset`: Loads a pointer from offset 1404 of a structure in a3 into a2 and branches to another routine.
-- `update_animation_frame_14`: Calls update_frame_counter_and_branch, calculate_animation_frame_offset, and load_and_jump_address.
-- `update_frame_counter_and_branch`: Stores a 16-bit word from d0 into a structure at offset 14 of a3, pushes the address of another routine onto the stack, and performs a conditional branch based on a comparison between d7 and d6; otherwise, it compares d0 to 65457, branches if greater than that value, increments the stack pointer by 4, and performs a short branch.
-- `increment_stack_pointer_3`: Returns immediately after adding 6 to the stack pointer.
-- `calculate_animation_frame_offset`: Compares the value ninety-seven to a 16-bit value in d6; if the comparison is not less than or equal, it subtracts a value from a 16-bit word at offset 1508 from a3 and performs arithmetic on d0 and d5 before loading a new address into a2 and branching to another routine via a stack push.
-- `increment_animation_frame_3`: Increments a 16-bit value at offset 12 of the structure pointed to by a6, calls a routine to increment an animation frame counter, and performs an indirect jump.
-- `restore_stack_pointer_6`: Loads the stack pointer with an address relative to the current stack pointer and returns immediately.
-- `execute_complex_sequence`: Performs a sequence of instructions and calls a routine to restore the stack pointer.
-- `update_pointer_and_call`: Loads a new address into a2 from an offset of 666 in a2, decrements a word from offset 14 of a3 by 1, and calls a routine at an offset of 658 in a1.
-- `load_and_jump_address`: Loads a long word into a4 from a relative offset and performs an indirect jump using the address in a2.
-- `calculate_and_jump`: Pops three words from the stack into d6, d5, and d1, subtracts d6 from d5, shifts the result in d4 right by 3, adds 1 to d4, and jumps to an address stored at offset 1356 of a3.
-- `increment_global_index_and_jump`: Increments a 16-bit value in a global variable and performs an indirect jump to a 32-bit address loaded from a memory location.
-- `perform_indirect_jump_2`: Adjusts the stack pointer by adding 12, loads a 32-bit value from a memory location into a register, increments a 16-bit value in a global variable, and performs an indirect jump to an address held in a2.
-- `adjust_stack_pointer_c`: Adds 12 to the stack pointer and returns.
-- `transfer_data_to_stack_2`: Loads a 32-bit value from a memory location into a register, calls a routine to restore the stack pointer, and then calls another routine to transfer data.
-- `update_animation_state_5`: Increments a 16-bit value in a global variable, calls another routine via an indirect jump stub, and calls a routine to restore the stack pointer.
-- `restore_stack_pointer_7`: Loads the stack pointer with the value stored at an offset of 12 bytes from the current stack pointer and returns immediately.
-- `transfer_data_to_stack`: Loads a 32-bit value from a memory location into a register and calls restore_stack_pointer_7, then calls push_and_jump_indirect to transfer control.
-- `push_and_jump_indirect`: Pushes the value from a4 onto the stack, loads a new address into a4 from a relative offset, and performs an indirect jump using the address in a1 plus 2.
-- `pop_to_a4`: Pops a long word from the stack into a4 and returns.
-- `store_and_push`: Pops a long word from the stack into offset 20 of a3 and pushes a long word from offset 1364 of a3 onto the stack.
-- `update_animation_frame_pointers`: Loads a pointer from a relative address into a register, stores that pointer into an offset of 26 of a structure pointed to by a3, loads a new address from offset 1392 of that same structure into a2, and branches to another routine.
-- `update_animation_frame_pointers_2`: Pops a longword from the stack into an offset of a structure, pushes a longword from a structure onto the stack, stores the current program counter into an offset of that structure, and then branches to another routine after loading a value from a structure into a2.
-- `pop_stack_and_transfer_pointer`: Pops a 32-bit value from the stack into an offset of 20 of a structure pointed to by a3, then pushes a 32-bit value from a global variable onto the stack.
-- `update_animation_counters`: Calls three different routines to update animation frame counters and a jump target address.
-- `update_animation_frame_counter_13`: Stores a 16-bit value from d0 into a structure at offset 14 of a3, then performs a conditional branch based on a comparison between 177 and a value in d6.
-- `increment_stack_pointer_4`: Adds 6 to the stack pointer and returns.
-- `update_animation_frame_counter_14`: Compares a constant with a value in a register, then decrements a 16-bit word at offset 1476 of a structure in a3 and updates a pointer in a2 based on the result before calling load_jump_target_address.
-- `update_animation_sequence`: Loads a new address into a2 from an offset of 666 in a2, decrements a 16-bit value at offset 14 of the structure in a3 by one, and calls a routine at an offset of 65.
-- `adjust_stack_pointer_a`: Adds 10 to the stack pointer and returns.
-- `adjust_stack_and_return_5`: Adds 10 to the stack pointer and calls another routine before returning.
-- `update_animation_pointer`: Loads a new address into a2 from an offset of a2, decrements a 16-bit value from a structure in a3 by one, and calls a routine using a pointer from a1.
-- `load_jump_target_address`: Loads a 32-bit address from a location relative to the program counter into a register and jumps to it.
-- `calculate_jump_address`: Pops four 16-bit values from the stack, subtracts the first from the second, shifts the result right by two, adds one, and jumps to an address stored in a table at an offset from a3.
-- `indirect_jump_stub_26`: Jump stub: passes control to an address held in or computed from register a2, so the target is only known at run time.
-- `dispatch_indirect_jump_targets`: Performs two indirect jumps using addresses held in a register and calls execute_indirect_jumps between them.
-- `execute_indirect_jumps`: Performs two indirect jumps using addresses held in a2, calling another routine in between.
-- `update_animation_pointer_and_branch`: Increments a 16-bit value in a global variable by the value in register d0 and calls another routine via an indirect jump stub.
-- `update_animation_frame_pointer_4`: Increments a 16-bit pointer stored in a global variable by a value held in register d0 and calls another routine via an indirect jump stub.
-- `increment_animation_frame_counter`: Increments a 16-bit value at offset 12 within a structure pointed to by a6 and calls another routine via an indirect jump stub.
-- `update_animation_frame_6`: Increments a 16-bit value at an offset of 12 within a structure pointed to by a6 and calls another routine via an indirect jump stub.
-- `update_animation_frame_index_8`: Increments a 16-bit value at offset 10 of the structure pointed to by a2 and calls another routine via an indirect jump.
-- `update_animation_frame_pointer_5`: Increments a 16-bit value stored at an offset of 10 in a structure pointed to by a2, then calls another routine via an indirect jump.
-- `increment_animation_frame_counter_2`: Increments a 16-bit value stored in a global variable and calls update_animation_frame_pointer_6, then calls an indirect jump stub.
-- `update_animation_frame_pointer_6`: Increments a 16-bit value stored in a global variable by 1 and calls another routine via an indirect jump stub.
-- `increment_animation_frame_2`: Increments a 16-bit value at offset 10 of a structure pointed to by a2 and calls another routine via an indirect jump.
-- `update_animation_frame_index_7`: Increments a 16-bit value at an offset of 10 in a structure pointed to by a2 and calls another routine via an indirect jump.
-- `perform_indirect_jump`: Performs an indirect jump to an address held in a2.
-- `jump_indirect_stub`: Performs an indirect jump to an address held in or computed from register a2.
-- `execute_animation_logic_3`: Calls another routine to perform a sequence of operations on data within the animation module.
-- `execute_animation_logic_2`: Performs a sequence of operations on data within the animation module.
-- `load_animation_data`: Loads a 16-bit value from a table into a register, increments a pointer by 4, and calls another routine.
-- `update_animation_frame_data_2`: Loads a 16-bit value from a table into a register, increments a pointer by 4, and calls execute_animation_logic_2.
-
-### MicroProse Golf (1991)(MicroProse)[cr FLT](Disk 1 of 3)[a].adf:binddrivers
-
-- `initialize_fast_memory_and_parse_args_2`: The routine attempts to locate a fast memory block and then retrieves the command line arguments from the operating system.
-- `bind_expansion_drivers`: Opens expansion.library and icon.library to obtain a list of expansion devices, performs a lookup in a driver table for each device, temporarily disables the device, invokes the driver, and then restores the device before cleaning up the library handles.
-- `find_driver_entry`: Scans a table of short values starting from an offset derived from a parameter, decrementing a counter and advancing a pointer until it finds an entry whose first short equals a constant and whose second short points back to the entry itself, then returns the pointer to that entry; otherwise it returns null.
-- `iterate_driver_data`: Iterates through a buffer or list, performing arithmetic on a counter and updating a value via another routine.
-- `calculate_string_index`: Uses a series of calls to determine an index and a value, then performs conditional logic to return a result or zero.
-- `traverse_handler_chain`: Iterates through a linked list of handlers and updates a pointer in a structure if a certain bit is set in a memory location, then calls a library function.
-- `follow_parent_chain`: The routine receives two pointers and walks a linked list by repeatedly following a field located at a fixed offset from the current node.
-- `skip_non_slash_colon`: The routine checks a character string for a leading slash or colon.
-- `parse_decimal_integer`: The routine reads a null-terminated string through a pointer and accumulates a decimal integer from consecutive ASCII digit characters, stopping at the first non-digit or null byte.
-- `clamp_value_by_offset`: Calls another routine with the first two arguments and receives a result, then compares the sum of the first and third arguments with that result and returns zero if the sum is smaller, otherwise it returns the result unchanged.
-- `call_library_vector_102`: Library stub: loads a library base from a global variable and calls the library function at offset minus 102 of that base, returning its result to the caller.
-- `call_library_vector_198`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
-- `call_library_vector_210`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
-- `call_library_vector_414`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
-- `call_library_vector_552`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
-- `call_library_vector_72`: Library stub: loads a library base from a global variable and calls the library function at offset minus 72 of that base, returning its result to the caller.
-- `call_library_vector_120`: Library stub: loads a library base from a global variable and calls the library function at offset minus 120 of that base, returning its result to the caller.
-- `call_library_vector_126`: Library stub: loads a library base from a global variable and calls the library function at offset minus 126 of that base, returning its result to the caller.
-- `call_library_vector_132`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
-- `call_make_library`: Library stub: loads its arguments and the exec library base, calls MakeLibrary and returns its result to the caller.
-- `call_make_functions`: Library stub: loads its arguments and the exec library base, calls MakeFunctions and returns its result to the caller.
-- `call_init_resident`: Library stub: loads its arguments and the exec library base, calls InitResident and returns its result to the caller.
-- `call_alert`: Library stub: loads its arguments and the exec library base, calls Alert and returns its result to the caller.
-- `call_enable`: Library stub: loads its arguments and the exec library base, calls Enable and returns its result to the caller.
-- `call_super_state`: Library stub: loads its arguments and the exec library base, calls SuperState and returns its result to the caller.
-- `call_user_state`: Library stub: loads its arguments and the exec library base, calls UserState and returns its result to the caller.
-- `compare_two_strings`: The routine compares the byte strings pointed to by two registers byte by byte until a zero byte is found.
-- `load_pointer_from_stack`: Loads a 32-bit value from an offset of 4 in the stack into a0.
-- `compute_checksum`: Initializes a 32-bit accumulator to all ones and decrements it by one for each byte in a null-terminated string.
-- `compare_and_decrement_pointer`: Compares a byte from a pointer in a0 with a value in d0; if they are equal and the byte is not zero, it decrements the pointer by one and returns the new pointer in d0, otherwise it returns zero in d0.
-- `copy_c_string`: The library code copies bytes from a source pointer to a destination pointer until a zero byte is encountered, advancing both pointers each iteration.
-- `verify_string_checksum`: Compares two byte strings and then computes a checksum by decrementing a 32-bit accumulator for each byte in a null-terminated string.
-- `call_library_vector_78`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
-- `call_library_vector_90`: Library stub: loads a library base from a global variable and calls the library function at offset minus 90 of that base, returning its result to the caller.
-- `call_library_vector_96`: Library stub: loads a library base from a global variable and calls the library function at offset minus 96 of that base, returning its result to the caller.
-
-### MicroProse Golf (1991)(MicroProse)[cr FLT](Disk 1 of 3)[a].adf:type
-
-- `find_max_and_prepare_buffer_4`: Walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
-- `transfer_d1_to_d0`: Copies the contents of d1 into d0 and branches to another routine.
-
-### MicroProse Golf (1991)(MicroProse)[cr FLT](Disk 1 of 3)[a].adf:setpatch
-
-- `initialize_setpatch_environment`: Calls restore_patch_state to retrieve a pointer from a global structure and then calls install_setpatch_handler to install a SetPatch handler, patch exception vectors, and initialize libraries.
-- `restore_patch_state`: Retrieves a pointer from a global structure and saves a parameter into a slot within a structure pointed to by that pointer.
-- `self_calling_guard`: The routine calls another routine unconditionally, then checks a global variable and, if non-zero, calls another routine with the input parameter, passes the result to another routine, and finally calls another routine unconditionally.
-- `install_setpatch_handler`: Installs a SetPatch handler and performs a series of conditional patches and library initialisations, including patching Exec exception vectors, layers.library, and trackdisk.device, and updating global state flags.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `call_indirect_via_table`: Calls another routine through a pointer stored in a global variable and returns the value produced by that indirect call.
-- `call_library_vector_132_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
-- `call_library_vector_138`: Library stub: loads a library base from a global variable and calls the library function at offset minus 138 of that base, returning its result to the caller.
-- `call_library_vector_198_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
-- `call_library_vector_294`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
-- `call_library_vector_354`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
-- `call_library_vector_390`: Library stub: loads a library base from a global variable and calls the library function at offset minus 390 of that base, returning its result to the caller.
-- `call_library_vector_414_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
-- `call_library_vector_420`: Library stub: loads a library base from a global variable and calls the library function at offset minus 420 of that base, returning its result to the caller.
-- `call_library_vector_552_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
-- `allocate_and_patch_memory`: Checks fields of a global structure and, if conditions are met, obtains a memory block and a code pointer via library calls, copies a small code stub from another routine into the target, updates a pointer in the global structure, computes a checksum over a short array in the structure and stores its complement, then returns.
-- `process_table_and_jump`: Iterates through a table of 22 words, performs a bitwise NOT on the sum of these words, and stores the result at an offset of 82 in a structure in a6.
-- `disable_interrupts_and_patch`: The routine checks a global variable and calls another routine through a table.
-- `check_flag_and_copy_word`: Calls another routine and tests its return value.
-- `compare_and_jump`: Loads a value into d1, compares it with a value from a table, and if they are equal, jumps to an address held in a pointer from another table.
-- `compare_and_branch_3`: Compares the value in d1 with the value in d0, branches if they are equal, otherwise it returns.
-- `enable_interrupts_and_jump`: Sets bit 15 of the INTENA register and then jumps to an address obtained by adding 136 to a value loaded from a global location.
-- `jump_to_indirect_address`: Loads an address from a global location, adds 136 to it, and jumps to the resulting address.
-- `initialize_patch_function_table`: Writes a computed offset to a global variable and fills a 16-entry table with successive addresses of a routine, incrementing the pointer each iteration.
-- `perform_bitwise_or`: Performs a bitwise OR operation on d0 with zero.
-- `call_subroutine`: Calls a subroutine using a brief branch to a subroutine.
-- `execute_unnamed_routine_2`: Calls another routine and returns.
-- `return_input_value`: The routine receives a value in d0 and returns it unchanged.
-- `modify_exec_function`: Compares a word at offset 20 of a structure in a6 with 35, and if it is less than or equal to that value, calls a routine to modify a bit and set a function.
-- `modify_and_set_bit`: Decrements d2 and a3, loads a value from the address in a3, and calls another routine; it also loads a word from offset 14 of a structure in a6, shifts it, and calls another routine.
-- `modify_register_and_branch`: Decrements d2, and if it is not negative, decrements a3, loads a1 from the address in a3, loads d0 from the address at offset 4 of a3, calls another routine, and then branches to another routine.
-- `calculate_and_set_bit`: Loads a word from an offset of 14 from a6, shifts it left by three, adds 16, calls another routine, moves a long word from a2 to d0, sets bit 31 of d0, and branches to another location.
-- `call_library_vector_30_4`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
-- `restore_processor_state`: Copies a value from a register to a stack offset, masks the stack pointer, and restores the processor status.
-- `execute_sequence_with_clear`: Performs several operations including a call to another routine that clears d0 and copies the stack pointer to a2, before continuing with further data movement and register updates.
-- `tiny_clr_movea_rts`: Small routine of 3 instructions that clears d0, then copies (a7)+ to a2, then returns.
-- `scan_for_marker`: Iterates through an array of words starting from an input pointer.
-- `compute_offset_and_return`: Reads a 16-bit value from two bytes after an input pointer and calls another routine.
-- `compute_word_offset`: Reads a 16-bit value from two bytes after an input pointer.
-- `patch_global_pointers`: The routine sequentially calls a helper routine to compute offsets and stores the returned pointers into a series of global variables.
-- `call_reschedule`: Library stub: loads its arguments and the exec library base, calls Reschedule and returns its result to the caller.
-- `call_dispatch`: Library stub: loads its arguments and the exec library base, calls Dispatch and returns its result to the caller.
-- `recurse_with_stack_slot`: Calls another routine passing two parameters and a pointer to a specific location on the stack.
-- `call_global_and_checksum_buffer`: Invokes a function pointer stored in a global variable, then computes a rolling checksum over a stack buffer until a null terminator is found.
-- `tiny_move_rts_4`: Small routine of 2 instructions that copies d0 to (a3)+, then returns.
-
-### MicroProse Golf (1991)(MicroProse)[cr FLT](Disk 1 of 3)[a].adf:echo
-
-- `find_max_and_prepare_buffer_5`: Walks a linked list of entries to find the maximum value in a specific field, then optionally writes a header, fills a buffer with sequential words, and copies sixteen words from a temporary area to a global buffer.
-- `move_and_branch_2`: Moves a 32-bit word from register d1 to d0 and then branches to another location.
-
-### MicroProse Golf (1991)(MicroProse)[cr FLT](Disk 1 of 3)[a].adf:failat
-
-- `find_max_and_prepare_buffer_2`: Walks a linked list of entries to find the maximum value stored in a field and, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
-- `transfer_register_and_branch`: Moves the contents of register d1 into register d0 and then performs a relative branch to another routine.
-
-### MicroProse Golf (1991)(MicroProse)[cr FLT](Disk 1 of 3)[a].adf:cls
-
-- `open_dos_library`: Opens the dos.library using a library base found at an offset of minus 48.
-
-### MicroProse Golf (1991)(MicroProse)[cr FLT](Disk 1 of 3)[a].adf:FastMemFirst
-
-- `initialize_fast_memory_and_parse_args`: Attempts to locate a fast memory block and then retrieves the command line arguments from the operating system, parsing the raw command line string into a linked list of null-terminated argument strings.
-- `find_and_copy_fastmem_block`: The routine walks a linked list of memory blocks starting from a global variable, selects the first fast-memory block with a specific type tag and the first chip-memory block with another type tag, and if both are found and different it calls another routine on the fast block and then calls another routine with the list head, the fast block and the or chip block.
-- `call_library_vector_132_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
-- `call_library_vector_234`: Library stub: loads a library base from a global variable and calls the library function at offset minus 234 of that base, returning its result to the caller.
-- `call_library_vector_138_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 138 of that base, returning its result to the caller.
-- `call_library_vector_252`: Library stub: loads a library base from a global variable and calls the library function at offset minus 252 of that base, returning its result to the caller.
-
-### MicroProse Golf (1991)(MicroProse)[cr FLT](Disk 1 of 3)[a].adf:Install_to_SYS
-
-- `initialize_installation_environment`: Opens libraries, finds a task, forbids execution, manages messages, and executes a DOS command to set up the installation environment.
-
-### MicroProse Golf (1991)(MicroProse)[cr FLT](Disk 1 of 3)[a].adf:if
-
-- `find_max_and_prepare_buffer_3`: Walks a linked list of entries to find the maximum value in a specific field, then optionally writes a header, fills a buffer with sequential words, and installs a function pointer.
-- `transfer_register_and_branch_2`: Moves a 32-bit value from register d1 to register d0 and performs a relative branch to another routine.
-
-### MicroProse Golf (1991)(MicroProse)[cr FLT](Disk 1 of 3)[a].adf:Add21K
-
-- `initialize_libraries_and_cleanup`: The routine calls library functions via base pointers, writes a byte through a pointer chain, and then calls additional library functions before returning.
-
-### MicroProse Golf (1991)(MicroProse)[cr FLT](Disk 1 of 3)[a].adf:Install_to_DH0
-

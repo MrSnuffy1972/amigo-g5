@@ -9,10 +9,13 @@
 - `wait_for_blitter_and_init_copy`: The routine polls a global variable until a bit is clear, then writes several values to a set of global variables that correspond to Amiga blitter registers and a size field, and polls the same bit again until it is clear.
 - `copy_ride_data_block`: The routine copies sixteen 16-bit words from the pointer passed in a1 to consecutive locations starting at a global variable.
 - `draw_scaled_sprite`: The routine clips a rectangular source region against a destination rectangle and then sets up Amiga blitter registers to copy a scaled sprite from a source buffer to a destination buffer.
-- `wait_for_input_bit`: The routine reads a global variable and a value passed in a register, combines them, and spins until the least significant bit of the global variable is clear and then set again, returning a combined value built from parts of the input and the global variable.
+- `sub_0_4A27C`: undescribed.
+- `sub_0_4A352`: undescribed.
 - `wait_for_vertical_blank`: The routine reads the vertical position register VPOSR and a global variable, then spins until the low bit of the global variable changes from 1 to 0 and then back to 1, effectively waiting for a vertical blank transition.
 - `set_tile_mask_bits`: The routine computes a pointer into a table of 16-bit mask words using two short indices and a global offset, then iterates four times over consecutive table entries.
 - `apply_park_flags`: The routine repeatedly ANDs a word from a register with the word pointed to by a pointer, then advances the pointer through a table of word offsets and, while a bit mask test succeeds, ORs another word from a register into the pointed-to word.
+- `sub_0_4A43C`: undescribed.
+- `sub_0_4A4A8`: undescribed.
 - `install_interrupt_handler`: The routine stores a pointer to another routine in a global variable, stores a second pointer to another routine in the same global variable, and stores a constant in the same global variable.
 - `install_interrupt_handler_2`: The routine stores a value in a global variable, then overwrites a global variable with the address of another routine and saves the previous value in a global variable.
 - `handle_joystick_input`: Reads a byte from CIAA_PRA and updates a global variable and a byte flag.
@@ -22,9 +25,13 @@
 - `set_button_state_from_keyboard`: The routine reads a byte from the keyboard serial register, derives two bytes from the inverted value and uses them to set or clear bits in a global byte.
 - `handle_key_toggle`: The routine inspects two input bytes and conditionally sets bits in a global byte, then toggles a bit in that byte when a specific input value is present, updates a global variable with data from a table or another location, writes a byte derived from the input to an indexed location in memory, and clears a byte at a fixed offset.
 - `clear_coaster_queue`: The routine clears a global flag by masking a byte in a global variable and zeroing a byte in RAM, then writes a value from a global variable into a table entry indexed by a global variable and clears a byte in a table.
-- `check_park_capacity`: The routine compares its integer argument with a global variable and returns 1 if the argument is less than or equal to that variable, otherwise it returns 0.
-- `check_park_capacity_2`: The routine receives an integer parameter and compares it with a global variable.
-- `compare_param_to_global`: The routine compares its integer parameter with a global variable and returns 1 if the parameter is less than or equal to the variable, otherwise it returns 0.
+- `sub_0_4A772`: undescribed.
+- `sub_0_4A7B4`: undescribed.
+- `sub_0_4A7C6`: undescribed.
+- `sub_0_4A7D6`: undescribed.
+- `sub_0_4A808`: undescribed.
+- `sub_0_4A830`: undescribed.
+- `sub_0_4A928`: undescribed.
 - `empty_stub_routine_4`: The routine contains no instructions and returns immediately with a constant zero.
 - `reset_two_globals`: The routine clears two global variables by storing zero to each of them and then returns.
 - `read_joystick_state`: The routine calls another routine to set an interrupt vector and then copies bytes from a global variable into four locations in a table.
@@ -36,20 +43,11 @@
 - `update_mouse_position`: Reads the mouse delta from the joystick data register, applies signed 8-bit wrap-around to the stored deltas, accumulates them into clamped X and Y position globals, and handles button state with debounce timers and reset flags.
 - `reset_input_state`: The routine clears a game state byte and a global variable, then decrements a counter and reloads it when it reaches zero.
 - `decrement_counter_and_trigger`: The routine clears a global variable, tests a global counter against a constant, decrements the counter, and if the test was true it clears another global variable and resets the counter.
-- `smooth_price_display`: The routine smooths a price value toward a target value stored in a global variable, writing the smoothed result to two global locations and updating a stored previous value.
+- `sub_0_4ABF8`: undescribed.
 - `adjust_price_and_copy_queue`: The routine adjusts a global price variable toward a target price by half the difference and copies 16 entries from a queue pointer into two global tables, then clears the tables' terminators and updates a flag.
 - `update_ride_stats_5`: The routine updates a global variable from the difference of two short inputs, copies a global pointer to another global, calls a sprite tile writer, sets a global byte with a flag, and if a pointer differs from a stored pointer it copies sixteen 32-bit entries from the pointed-to table into two fixed tables and clears the last entries.
 - `skip_unused_routine`: The routine consists of nine 68000 instructions that perform no observable work on memory or registers and finish with a return.
 - `write_sprite_tile_data`: The routine writes four bytes through a pointer in A0 using values derived from D1, D2 and D3 and a global variable.
-- `reset_game_state_8`: The routine clears a series of global variables to zero and then sets one global variable to a constant value, returning the value that was in D0 on entry.
-- `reset_park_state_10`: The routine clears a series of global variables to zero, sets one global variable to a constant, and returns the value originally in D0.
-- `reset_game_state_9`: The routine clears a series of global variables to zero and then stores a constant value into one of them, returning the value that was in D0 on entry.
-- `clear_global_state`: The routine clears a series of global variables to zero and then sets one global variable to a constant value.
-- `reset_ride_state_29`: The routine clears a series of global variables to zero, sets one global variable to a constant, and returns the value originally in D0.
-- `reset_game_state_11`: The routine clears a series of global variables to zero and then sets one global variable to a constant value.
-- `reset_park_state_11`: The routine clears a series of global variables to zero, then writes a constant to one global variable and returns a value from the data register.
-- `clear_global_state_2`: The routine clears a series of global variables to zero and then sets one global variable to a constant value, returning the value originally in D0.
-- `reset_global_flags_2`: The routine clears a series of global variables to zero and then sets one global variable to a constant value.
 - `reset_audio_channels`: The routine writes zero to a series of global variables, then writes a value to a global variable.
 - `set_interrupt_mask_2`: The routine writes to a global variable and then writes the same 16-bit value twice to the INTENA register, which on Amiga controls interrupt masking, and then writes the same value to INTREQ, which acknowledges or triggers interrupts.
 - `set_interrupt_mask_3`: The routine writes a byte to a global variable and then stores a pointer to another routine in a global variable.
@@ -62,6 +60,9 @@
 - `add_ride_object_2`: The routine reads values from a global variable and a table indexed by param_1 and param_2, updates counters in a global variable, writes param_3, param_2 and a counter into a structure pointed to by reset_ride_state_29 plus an offset from a global variable, and if a shifted value from the table is non-zero it writes the shifted value, a table entry and a constant into the structure and calls another routine.
 - `enqueue_ride_event`: The routine conditionally reads values from a table using a short parameter as an index, checks a global variable and ride-related limits, then writes several fields into an entry pointed to by a global counter, increments counters and conditionally copies values from another table and a global array, finally calling another routine.
 - `check_global_and_set_flag`: The routine tests whether a global variable is non-zero and, if so, calls another routine.
+- `sub_0_4B064`: undescribed.
+- `sub_0_4B080`: undescribed.
+- `sub_0_4B102`: undescribed.
 - `set_ride_flag_3`: The routine checks a global variable and a table entry indexed by a word in D4.
 - `reset_ride_state_6`: Clears a ride-state table and, while a flag is set, shifts a lookup table, updates ride-object entries, and decrements several countdown counters until they reach zero.
 - `set_ride_object_data`: The routine writes a constant to a word in a structure pointed to by a0, copies a word from a short pointer in a1 into the structure, loads a pointer from a global variable table indexed by d3 into a4, then copies four words from a table pointed to by a2 using an index derived from a1 into the pointed-to structure and two words into the a0 structure using an index derived from d3.
@@ -101,19 +102,14 @@
 - `check_ride_entrance_flag`: The routine copies a word from a global variable and a byte from an object structure into registers.
 - `check_ride_condition_2`: The routine clears a global variable and loads a byte from an offset of the third argument into a global variable.
 - `apply_tile_mask_4`: Computes source and destination pointers from its inputs and a set of global variables, validates bounds against global limits and a global mode flag, and then copies masked tile data row by row using a mask table and a global mode flag.
-- `apply_tile_mask_3`: The routine validates its inputs against several global limits and computes source and destination pointers for a tile mask operation.
 - `copy_sprite_masked`: The routine copies sprite tile data from two source planes into a destination buffer using the Amiga blitter, applying a per-tile mask and handling vertical offsets and clipping.
-- `set_blitter_mask_parameters`: The routine configures Amiga blitter mask registers BLTAFWM and BLTALWM from a table of mask words selected by an input index, using a global flag to choose between two mask patterns and a loop that steps through a count stored in a global variable.
 - `set_blitter_line_params`: The routine computes line step values from the input deltas and stores a direction flag in a global variable, then programs the Amiga blitter registers BLTCON0, BLTCON1, BLTAPTH, BLTBPTH, BLTCPTH, BLTDPTH, BLTAFWM, BLTAMOD, BLTBMOD, BLTCMOD, BLTDMOD, BLTSIZE and DMACONR to perform a line copy, using the calculated parameters and a pointer derived from the inputs.
 - `draw_ride_overlay`: The routine clamps two short inputs to non-negative, stores halved versions of four parameters in globals, and clamps one global to another.
-- `draw_ride_path`: The routine reads bytes from a bit-packed source buffer pointed to by param_1 and writes bits into a destination bit-plane area using stride values from global variables.
-- `draw_ride_track`: The routine reads bytes from a source bitmap pointed to by param_1 and writes bits into a destination bitmap using parameters for stride and dimensions.
-- `draw_ride_track_2`: The routine processes a bit-packed source buffer referenced by param_1 and writes bits into a destination bitmap using stride values derived from param_2, param_3, param_4 and param_5.
 - `draw_ride_map_overlay`: The routine reads bytes from a bitfield pointed to by param_1 and writes bits to a destination bitmap using stride values derived from param_2, param_3, param_4 and param_5.
 - `apply_ride_mask`: The routine computes stride and scaling values into global variables and then iterates over a byte mask, copying or clearing bits between two memory regions using the stored strides.
 - `apply_ride_coverage_mask`: The routine iterates over a set of byte masks using a pointer table and a stride value, and for each mask it clears or sets individual bits in a destination byte array based on the corresponding source byte bits.
 - `clear_block_flags`: The routine iterates over a set of blocks using a pointer table and two base addresses.
-- `process_callback_chain`: The routine walks a linked list of function pointers stored in a global variable, advancing a global offset by a constant each iteration and invoking the current callback until a null pointer is reached.
+- `sub_0_4E098`: undescribed.
 - `poll_event_callback_chain`: The routine repeatedly calls a function pointer taken from a table stored in a structure pointed to by a register, advancing the pointer each iteration until a null entry is reached, and returns the result of the last call.
 - `call_indirect_handler_return_constant`: The routine calls an indirect handler through a pointer stored in a global variable, passing the address of a global variable, then returns a constant value.
 - `invoke_global_callback`: The routine calls a function pointer stored in a global table, passing the address of a global variable as argument.
@@ -123,6 +119,8 @@
 - `free_linked_list`: The routine walks a linked list by repeatedly loading the next pointer from a pointer in A5 and invoking a function from a global table until the pointer becomes null.
 - `swap_memory_bytes`: The routine swaps bytes between two memory areas byte by byte.
 - `copy_string_to_buffer`: The routine copies bytes from a source pointer in A1 to a destination pointer in A0 until a zero byte is encountered, writing each byte to the destination and advancing both pointers.
+- `sub_0_4E24C`: undescribed.
+- `sub_0_4E27C`: undescribed.
 - `format_signed_integer`: The routine writes a minus sign through a pointer when the input value in a data register is negative, then repeatedly calls another routine to obtain digits and stores ASCII characters through pointers, and finally reverses the digit bytes in a stack buffer before terminating the string with a null byte.
 - `parse_signed_integer`: The routine reads a signed decimal integer from a zero-terminated string pointed to by a0, handling an optional leading plus or minus sign, and accumulates the value into a signed integer pointed to by a1.
 - `initialize_game_state_4`: The routine writes several offsets within a structure pointed to by a4, initializes a few constants, and then calls through function pointers stored in the structure to obtain handles, storing the results back into the structure and copying a value from one handle into another.
@@ -131,6 +129,9 @@
 - `reset_ride_state_31`: The routine stores results from three function pointers taken from a table into fields of a structure pointed to by a4, conditionally overwrites one of those fields, increments a counter field, computes a flag based on a zero test of another field, and writes several constant and flag-derived values into fixed offsets of the same structure before returning.
 - `initialize_ride_instance_2`: The routine checks a flag byte in the instance structure and, if clear, allocates a memory block, stores the pointer in two fields, copies a value from a global variable into a field, clears bits in a flags field, and zeroes two fields.
 - `initialize_ride_instance_3`: The routine checks a flag in a structure pointed to by a0 and, if clear, allocates a memory block via another routine, stores the returned pointer in two fields of the structure, copies a value from a global variable into a field, clears specific bits in a flags field, and zeroes two other fields.
+- `sub_0_4E5E2`: undescribed.
+- `sub_0_4E5F0`: undescribed.
+- `sub_0_4E60A`: undescribed.
 - `process_ride_queue_133`: The routine sets a flag at an offset from a base pointer and iterates two linked lists referenced from the base pointer.
 - `process_linked_lists_and_dispatch`: The routine walks a linked list via a pointer in a register, and for each node it checks two fields and conditionally calls another routine.
 - `process_linked_list`: Iterates a linked list via a pointer in A5, reading a flag word from each node.
@@ -179,8 +180,21 @@
 - `process_text_input_buffer`: The routine processes a byte from a register using a structure pointed to by a0.
 - `process_ride_object_4`: The routine walks a linked list via a global pointer when the first argument is zero and recursively processes each node, returning a non-zero flag if any call returns non-zero.
 - `parse_format_specifier`: The routine parses a printf-style format specifier from a format string, extracting flags, width, precision and length modifiers and then consumes an argument from an argument pointer.
+- `sub_0_4F4C8`: undescribed.
+- `sub_0_4F4F2`: undescribed.
+- `sub_0_4F4FA`: undescribed.
+- `sub_0_4F502`: undescribed.
+- `sub_0_4F510`: undescribed.
 - `set_bit_flags_in_tables`: The routine sets a bit in several global byte variables using the low three bits of a value passed in a data register, OR-ing the bit into each byte.
-- `return_stack_value_2`: The routine loads an 8-byte value from the stack at an offset and returns the 4-byte field at offset 2-4 of that value.
+- `sub_0_4F670`: undescribed.
+- `sub_0_4F802`: undescribed.
+- `sub_0_4F816`: undescribed.
+- `sub_0_4F826`: undescribed.
+- `sub_0_4F834`: undescribed.
+- `sub_0_4F842`: undescribed.
+- `sub_0_4F872`: undescribed.
+- `sub_0_4F88E`: undescribed.
+- `sub_0_4F8A0`: undescribed.
 - `parse_format_string_2`: The routine walks a null-terminated string, skipping ordinary characters and literal ‘%%’. When it finds a single ‘%’ it calls another routine to parse a format specifier; if that call returns null it falls back to advancing the pointer and invoking a function pointer from a global variable.
 - `clear_park_flag`: The routine reads a byte from a table at an offset derived from the low byte of the argument plus a constant, masks it with two, and if the bit is set clears the corresponding bit in the argument.
 - `check_ride_flag`: The routine reads a byte from a table using an offset derived from the low byte of its argument and an unspecified base pointer, then returns whether the fourth bit of that byte is set.
@@ -196,6 +210,7 @@
 - `invoke_callback_from_table`: The routine calls a function pointer taken from a global variable table offset by a constant.
 - `call_indirect_via_table`: The routine calls another routine through a pointer obtained by indexing a global variable.
 - `allocate_ride_vehicle`: The routine checks a global flag and, if set, walks a table of structures via a pointer offset by param_3.
+- `sub_3_0862`: undescribed.
 
 ### Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:breloc
 
@@ -224,6 +239,9 @@
 - `lbC00034C`: The routine increments a short counter at an offset from a pointer in a register, then stores a pointer and a count taken from a pointer in a register into a global variable table and advances the table pointer.
 - `lbC00039A`: Jump stub: passes control straight on to lbC0003AC.
 - `empty_load_park_layout_stub`: The routine contains no instructions and returns immediately.
+- `sub_038C`: undescribed.
+- `sub_0390`: undescribed.
+- `sub_0392`: undescribed.
 - `lbC0003AC`: The routine contains an infinite loop with no operations.
 - `wait_for_vertical_blank_2`: The routine contains an infinite loop with no operations and never returns.
 - `lbC0003BE`: The routine obtains a seed value from another routine and, if a flag in a register is zero, replaces it with a 64-bit value returned by another routine, splitting it into high and low 32-bit parts.
@@ -244,10 +262,6 @@
 - `lbC000616`: The routine calls another routine and tests whether the result is zero.
 - `lbC000624`: The routine calls another routine and stores its result.
 - `lbC000630`: The routine adds 128 bytes from a pointer in A0, accumulating the sum in D0, then returns the negated sum in the upper half of the result with the original D1 value preserved in the lower half.
-- `lbW000648`: It calls another routine once and then returns.
-- `lbL00064C`: The routine calls another routine once and then returns.
-- `lbW000650`: The routine consists of a single call to another routine followed by a return, so it contains no observable data processing or state changes on its own.
-- `lbL000654`: The routine is empty except for an unconditional call to another routine, then it returns.
 - `lbC000674`: The routine invokes another routine and then returns.
 - `lbC000676`: The routine calls another routine and then returns.
 - `lbC000678`: The routine is empty except for a single call to another routine and an immediate return.
@@ -287,8 +301,8 @@
 - `lbC000BC8`: The routine checks a global variable and an input value and, if the conditions are met, writes three values to a global variable.
 - `lbC000BD6`: The routine writes three values to a global variable and then returns.
 - `lbC000BF8`: The routine writes to the INTENA register twice, first with bit 15 set and then without it, which enables and then disables interrupts on the Amiga hardware.
+- `sub_0BF6`: undescribed.
 - `lbC000C24`: The routine writes constant values to several RAM locations and sets a global variable to point to another routine, then returns.
-- `lbL000D36`: The routine moves bytes from a source buffer to a destination buffer using repeated byte copies controlled by two counters obtained from another routine.
 - `lbC000DB2`: The routine copies bytes from a source buffer to a destination buffer using a loop controlled by values returned by another routine.
 - `lbC000E02`: The routine repeatedly calls another routine to obtain a length and then copies a block of bytes from one memory area to another, shifting the source and destination pointers each iteration.
 - `lbC000E52`: The routine walks a table of word pairs using a mask in a register until a match is found, then reads a byte from a fixed offset in the located entry and uses it as a shift amount for a bit extraction from a masked word.
@@ -296,16 +310,12 @@
 - `lbC000E94`: Is empty; it contains no instructions that modify memory or registers and immediately returns.
 - `lbC000EAC`: The routine builds a 32-bit value by concatenating three bytes taken sequentially from a byte pointer in A0, using the incoming D0 as the initial high part.
 - `lbC000EB8`: The routine reads a count from another routine, fills a stack buffer with that many bytes from another routine, then builds a table of bit masks and rotates a 16-bit value for each entry where the buffer byte matches the loop index.
-- `cash1`: The routine copies a block of bytes from a source located at a global variable to a destination table pointed to by a global variable, byte by byte, until a counter reaches zero.
-- `cash2`: The routine copies a block of bytes from a source table to a destination table and then calls the routine pointed to by the destination table.
-- `cash3`: The routine copies a fixed number of bytes from a source located in memory to a destination table via pointer increments, then transfers control to the routine pointed to by the destination table.
 - `lbC000F40`: The routine copies a block of code from another routine into a writable table and then transfers control to the copied code via an indirect jump.
 - `lbC000F5A`: The routine returns the 32-bit value stored at a fixed offset within a global variable.
 - `lbC000F64`: The routine repeatedly calls a function pointer taken from a global variable and, while the result is non-zero, calls another function pointer derived from the same global variable.
 - `lbC000FCC`: The routine spins until a bit in a global variable is set, then sets that bit in the global variable and returns the value it received in a register.
 - `trainintro`: The routine clears the screen, copies a table into a global area, sets up copper lists and sprite data, then enters a loop that polls the keyboard serial register via CIA, decodes key codes into modifier and function-key flags, updates three global counters with a multiplier based on shift and alt flags, clamps the counters, converts them to ASCII and redraws the display until a quit flag is set.
 - `numtoascii`: The routine converts the integer in D0 into an 8-character ASCII representation using a table of powers of ten.
-- `calctable`: The routine writes a constant to a memory location pointed to by a0 and then clears a table of 16 bytes in memory by storing zero to each element.
 - `cls`: The routine clears a global variable by writing zero to each of its 2,048 bytes using a loop.
 - `dopretty`: The routine decrements four byte fields in each of thirty entries of a global table, then rotates the table’s word entries forward and writes a saved word at the end, and finally rotates the table’s word entries backward and writes another saved word at the start.
 - `print`: The routine renders a null-terminated byte stream from a pointer by walking the stream and drawing each character to a planar bitmap using blitter registers.
@@ -343,7 +353,13 @@
 - `decode_compressed_stream_5`: This library routine decodes a compressed byte stream using a bitstream from a source buffer into a destination buffer.
 - `decode_compressed_block_5`: This library routine decodes a compressed data block using bitstream input and a sliding window, writing bytes backwards into an output buffer.
 - `dispatch_game_event_2_2`: The routine loads a byte from a pointer, subtracts it from a constant, scales the result, adds it to a global variable to form a table address, and calls the routine found there.
-- `decode_compressed_chunk`: The routine decodes a compressed chunk using a bitstream read from a source buffer into a destination buffer via a sliding window and a Huffman-like table, updating output pointers and bit buffers.
+- `sub_0_03C6`: undescribed.
+- `sub_0_03FA`: undescribed.
+- `sub_0_0400`: undescribed.
+- `sub_0_0406`: undescribed.
+- `sub_0_040C`: undescribed.
+- `sub_0_0412`: undescribed.
+- `sub_0_0418`: undescribed.
 - `compute_string_checksum`: Computes a checksum over a null-terminated byte string by accumulating a rolling value for each byte until the terminator is reached.
 - `compute_checksum`: This routine computes a checksum over a zero-terminated byte stream pointed to by a0.
 - `xor_decrypt_block`: The routine XORs a block of memory in place using a 32-bit key supplied in a register.
@@ -368,7 +384,6 @@
 - `close_powerpacker_library`: The routine saves the incoming value from D0 on the stack, loads a constant into another stack slot, then calls another routine through a pointer obtained from a global variable.
 - `call_powerpacker_decompress`: The routine calls a function pointer taken from a global variable and then returns its argument unchanged.
 - `get_powerpacker_table_entry`: The routine takes the value in D0, inverts it, clamps the result to a maximum of 7, and returns the 32-bit word from a global table at that index.
-- `verify_pack_header`: The routine checks a header pointed to by a1 by comparing a 32-bit magic value stored eight bytes before a1 with a constant and by comparing a1 with a pointer stored four bytes before a1.
 - `check_powerpacker_header`: The routine is empty and performs no operations.
 - `open_data_file`: Copies a null-terminated filename from A0 into a stack buffer and repeatedly probes the file with DOS Open until it succeeds, returning an error code on failure.
 - `copy_ride_status_code`: The routine copies a null-terminated code block from another routine into a stack buffer, then invokes a library routine through a table indexed from A4 and checks its result.
@@ -491,6 +506,9 @@
 - `copy_block_and_check_marker`: The routine copies a variable-length block of words from a source pointer to a destination pointer using the first word as the count, then checks the word immediately following the block and calls another routine if it matches a specific marker value.
 - `update_buffer_and_hardware`: The routine increments a value at a specific offset, updates a global pointer and a table with new data, and then iterates through a block of memory to zero out elements that exceed a threshold.
 - `access_hardware_registers`: The routine is unreached but would access the first color register and the video hardware pointer.
+- `sub_031A`: undescribed.
+- `sub_031E`: undescribed.
+- `sub_0320`: undescribed.
 - `enter_infinite_loop`: The routine enters an infinite loop.
 - `seed_random_64bit`: It obtains a seed value from another routine and, if a register is zero, replaces it with a 64-bit value split into high and low 32-bit parts.
 - `consume_length_in_chunks`: Takes a total length from a structure and works through it in chunks no larger than a limit held in another field.
@@ -505,10 +523,6 @@
 - `check_routine_result`: Calls another routine and returns a specific constant if the result is zero, otherwise it calls another routine again.
 - `check_result_and_assign`: The routine calls another routine and, if the zero flag is not set, returns a specific constant value.
 - `sum_negate_array_words`: It adds 128 consecutive 16-bit words pointed to by a pointer in A0, accumulating the sum in a register.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `execute_empty_call`: This routine is empty and performs no operations before returning to its caller.
-- `execute_empty_call_2`: The routine is empty and performs no operations before returning.
-- `perform_recursive_call`: The routine calls itself and then returns.
 - `tiny_moveq`: Small routine of 1 instruction that loads 1 into d2.
 - `tiny_moveq_2`: Small routine of 1 instruction that loads 0 into d3.
 - `execute_recursive_call`: This routine performs a single recursive call to itself before returning.
@@ -538,7 +552,6 @@
 - `build_port_byte_from_table`: Builds a port byte from a frame field and a bit index, clearing one further bit when a looked-up table entry has its lowest bit set.
 - `write_timer_constants`: Checks if a bit in a global variable is clear and a register is not one, then writes three specific constant values to a global variable.
 - `set_ciab_timer_2`: It writes three constant values to a global variable in sequence.
-- `copy_memory_block_4`: It performs a complex nested loop to copy and manipulate bytes between memory locations based on values retrieved from other routines.
 - `copy_blocks_from_source`: Obtains a count from another routine and then repeatedly copies blocks of bytes from a source pointer to a destination pointer using counts returned by other routines.
 - `extract_flag_bit_from_table`: Scans a table of word pairs until a condition on a global mask is met, then reads a byte from a table entry and uses it as an index into a global mask to extract a bit, calling another routine if a borrow condition is detected.
 - `mask_and_conditional_call`: The routine masks a word from a register with a word from a register and, if a byte from a register is less than a byte from a register, it calls another routine and uses its returned word as the result; otherwise it returns the masked word.
@@ -551,6 +564,7 @@
 - `return_error_code_3`: The routine returns a constant 32-bit value with all bits set.
 - `initialize_game_state_5`: The routine sets up several global variables and tables, copies a block of data from a table into a working area using a loop, then enters a polling loop that waits for a specific value, calls another routine to process a park tick, advances a message queue periodically, runs the game loop, and waits for a flag.
 - `advance_message_queue`: The routine copies seven bytes from a global table starting at an offset derived from a byte stored in a global variable, writing them into seven locations spaced 80 bytes apart in a buffer addressed from a1.
+- `sub_044C`: undescribed.
 - `run_game_loop_6`: The routine calls a function pointer stored at an offset from a global variable and then returns.
 - `reset_ride_queue_3`: The routine clears a table of pointers and then repeatedly writes zero to a set of entries while linking them through a global variable.
 - `reset_audio_channels_2`: The routine writes zero to four global variables and then writes a value to a fifth global variable.
@@ -566,3 +580,23 @@
 - `set_park_flag_2`: The routine writes a byte derived from a global variable into another byte of a global variable, masking the source with a low nibble.
 - `update_waiting_queue_pointer`: The routine reads a nibble from a byte at an offset in an uninitialized structure, uses it as an index into a global table to add a signed offset to a byte field, and if the result has its high bit set it clears that field, flips the sign of a byte pointed to by a pointer field, and advances the pointer within a bounded buffer, clamping it to the buffer start if it would exceed the end.
 - `update_ride_statistics_39`: The routine is a stub that returns immediately without performing any observable work.
+
+### AFLtro#unpacked
+
+- `sub_0000`: undescribed.
+- `sub_01A0`: undescribed.
+- `sub_01EE`: undescribed.
+- `sub_023E`: undescribed.
+- `sub_1054`: undescribed.
+- `sub_10C8`: undescribed.
+- `sub_10EA`: undescribed.
+- `sub_1118`: undescribed.
+- `sub_11AE`: undescribed.
+- `sub_1430`: undescribed.
+- `sub_1498`: undescribed.
+- `sub_15A2`: undescribed.
+- `sub_1612`: undescribed.
+- `sub_16BC`: undescribed.
+- `sub_18C4`: undescribed.
+- `sub_19BC`: undescribed.
+- `sub_1B48`: undescribed.

@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (912592 top-level bytes in 74 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 13 of 13 units identical (bytes and relocations), 113 raw-word lines |
-| Functions named and described | pass, 1939 of 1939 named (109 author symbols), 1939 of 1939 described (16 by rule, 1922 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1560 of 1560 (100.00%) |
+| Bytes classified (912592 top-level bytes in 76 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 14 of 14 units identical (bytes and relocations), 173 raw-word lines |
+| Functions named and described | FAIL, 1884 of 2059 named (100 author symbols), 1884 of 2059 described (15 by rule, 1868 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1558 of 1560 (99.87%) |
 | Recovered without load address (counted in proof 1, flagged) | 19800 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 76893 of 76942 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 87811 of 88339 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 222239 |
-| code | 22618 |
-| data | 645522 |
-| padding | 14021 |
+| asset | 222856 |
+| code | 22338 |
+| data | 645186 |
+| padding | 14020 |
 | unused | 8192 |
 
 ## Code units
@@ -32,39 +32,46 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | AFLtro | 2 | 267 | 8 |
 | Assign | 2 | 267 | 8 |
 | Cls | 2 | 20 | 1 |
-| Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:main#unpacked | 9 | 69749 | 1515 |
-| Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:breloc | 1 | 1568 | 111 |
-| powerpacker.library | 2 | 1755 | 129 |
+| Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:main#unpacked | 9 | 80276 | 1619 |
+| Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:breloc | 1 | 1522 | 106 |
+| powerpacker.library | 2 | 1784 | 134 |
 | explode.library | 1 | 475 | 30 |
 | Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1087 | 63 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 929 | 18 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1048 | 61 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 930 | 19 |
+| AFLtro#unpacked | 1 | 925 | 17 |
 | balpr-0.tab (raw code file, load address unknown) | 1 | 0 | 0 |
 
 ## Cases handled
 
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:main: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (222773 -> 483976 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/LANG4-0.DAT: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (13660 -> 35141 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/AENDB-0.BM: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (13422 -> 32000 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/LANG2-0.DAT: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (12629 -> 30746 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/AAUCT-0.BM: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (7197 -> 32000 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/LANG1-0.DAT: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (14628 -> 36877 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/ares-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (11628 -> 32000 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/AINS-1.BM: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (10946 -> 32000 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/ains-2.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (13644 -> 32000 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/aglobe-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (12792 -> 32000 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/AEND-0.BM: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (14488 -> 32000 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/astate-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (3432 -> 32000 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/balpr-0.dat: high-entropy data file (7.64 bits/byte), classified as packed data
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/aawar1-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (13240 -> 32000 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/astock-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (5614 -> 32000 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/lang0-0.dat: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (13009 -> 30950 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/aawar0-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (11628 -> 32000 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/UNION.BM: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (12505 -> 32000 bytes)
-- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/amap-0.bm: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (8708 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:main: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (222773 -> 483976 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/LANG4-0.DAT: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (13660 -> 35141 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/AENDB-0.BM: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (13422 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/LANG2-0.DAT: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (12629 -> 30746 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/AAUCT-0.BM: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (7197 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/LANG1-0.DAT: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (14628 -> 36877 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/ares-0.bm: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (11628 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/AINS-1.BM: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (10946 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/ains-2.bm: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (13644 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/aglobe-0.bm: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (12792 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/AEND-0.BM: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (14488 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/astate-0.bm: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (3432 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/balpr-0.dat: PowerPacker Data (xfd)-packed, unpacked with ancient (103640 -> 227940 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/aawar1-0.bm: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (13240 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/astock-0.bm: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (5614 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/lang0-0.dat: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (13009 -> 30950 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/aawar0-0.bm: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (11628 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/UNION.BM: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (12505 -> 32000 bytes)
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/amap-0.bm: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (8708 -> 32000 bytes)
+- extended reference run ignored: it does not re-execute 24 of the 1072 PCs the canonical run logged (1048 PCs logged; the harness no longer reproduces the game), so its PCs and RAM are not used
+- 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - runtime segment an address (play-long-keys): 350 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 477 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:c/LOADPPDATA: Imploder Library (xfd) stream found by ancient scan (6020 -> 9972 bytes) but only 0 of 5 sampled windows are in reference RAM: not used
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:c/AFLtro: crunched executable decrunched by XFDMaster (PowerPacker 4.0 (xfd), 11104 -> 43144 bytes), 8 of 10 windows confirmed in reference RAM: recovered as a hunk executable
+- theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:c/Assign: PowerPacker 4.0 (xfd) stream found by ancient scan (3096 -> 3220 bytes) but only 0 of 1 sampled windows are in reference RAM: not used
 - theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:data/balpr-0.tab: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 2 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate, 1 jump target
 - theme park (1994)(electronic arts)(m4)[cr afl][t +3 trader's dream]/Theme Park (1994)(Electronic Arts)(M4)[cr AFL][t +3 Trader's Dream].adf:c/LOADPPDATA: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 - 1 never-loaded region(s), 19800 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
@@ -305,10 +312,22 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reset_game_state_4`: The routine calls wait_for_blitter_and_set_params twice with two different global variables.
 - `render_ride_preview`: The routine initializes globals, switches a ride index, waits for the blitter, then loops over a set of ride elements, computes offsets and a stack counter, and repeatedly decrements the counter while invoking a condition check routine with parameters derived from tables and the ride data.
 - `process_ride_elements`: Iterates a linked list of ride elements using the first parameter as a head index.
+- `sub_0_8748`: undescribed.
+- `sub_0_8796`: undescribed.
+- `sub_0_87AE`: undescribed.
+- `sub_0_87C6`: undescribed.
+- `sub_0_87DE`: undescribed.
+- `sub_0_87F6`: undescribed.
+- `sub_0_8948`: undescribed.
+- `sub_0_89DE`: undescribed.
 - `process_ride_event`: The routine checks a byte at offset 12 of the first argument and, for a set of values, calls a fixed-point multiply routine, then reads a byte at offset 9 of a pointer returned by that call, shifts it to form a sub-index, and calls a rendering routine with values derived from the pointer, the sub-index, and the second and third arguments.
 - `skip_ride_event`: The routine is empty.
 - `dispatch_entity_event`: The routine reads a byte from the entity structure, converts it to an index and looks up a pointer in a table.
 - `return_from_intermediate`: The routine contains three 68000 instructions and ends with a return.
+- `sub_0_977A`: undescribed.
+- `sub_0_9AFA`: undescribed.
+- `sub_0_A4B4`: undescribed.
+- `sub_0_A76C`: undescribed.
 - `draw_ride_vehicle`: The routine computes screen tile coordinates from parameters and a global variable, selects a mask value from a table based on a field in the object structure, and calls set_tile_mask_bits repeatedly to mark tiles for a vehicle shape and optional extra tiles read from tables indexed by object fields.
 - `draw_ride_object`: The routine reads a global variable and a structure pointed to by a register, then calls a tile-mask routine repeatedly with offsets derived from the structure and from a table indexed by the global variable.
 - `draw_ride_elements`: The routine reads a byte from a global variable and, if a flag byte in a structure is non-zero, uses it to drive two loops that call set_tile_mask_bits with offsets derived from the structure and from a table indexed by the global variable.
@@ -346,7 +365,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reset_ride_state_and_dispatch_queue`: The routine clears several fields in a global variable, increments a global counter, and then iterates over a block of memory in fixed-size steps.
 - `process_ride_queue_entry_5`: The routine iterates over a linked list of queue entries via a pointer in A3, reads a byte field to test for a specific value and, when matched, dispatches to another routine based on a second byte field, updates a few byte and short fields in the entry, and then follows a next pointer to the following entry.
 - `iterate_entity_state`: The routine walks an entity list in a loop, reads a state byte from each entity and dispatches to a different handler routine based on its value, updates a few counters in a global variable and decrements a byte field in the entity.
-- `process_entity_list`: Iterates over a linked list of entities stored in memory, decrementing a counter field and updating statistics based on a short field, then dispatches each entity to a handler chosen by type and subtype bytes.
+- `sub_0_C5E0`: undescribed.
+- `sub_0_C686`: undescribed.
+- `sub_0_C692`: undescribed.
+- `sub_0_C6AA`: undescribed.
+- `sub_0_C6B6`: undescribed.
+- `sub_0_C6C2`: undescribed.
+- `sub_0_C6CE`: undescribed.
+- `sub_0_C6DA`: undescribed.
+- `sub_0_C6E6`: undescribed.
+- `sub_0_C6F2`: undescribed.
+- `sub_0_C6FE`: undescribed.
+- `sub_0_C70A`: undescribed.
+- `sub_0_C804`: undescribed.
 - `process_ride_queue_entries`: This routine iterates a linked list of ride entities and dispatches sub-routines based on per-entity type and subtype bytes.
 - `iterate_queue_entries`: The routine increments a counter in a global variable and walks a table of queue entries.
 - `process_ride_queue_entries_2`: Iterates over a linked list of ride queue entries stored at fixed offsets, dispatches each entry to a handler selected by a type byte, and accumulates a counter from a global variable and entry fields.
@@ -359,6 +390,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `scan_ride_entity_chain`: The routine walks a linked chain of ride objects by advancing a pointer by a fixed stride, updates a global status each iteration, and returns the first object whose type byte matches a mask derived from a global variable.
 - `dispatch_ride_action`: Routine reads a byte from a structure pointed to by a register, subtracts two and uses the result as an index into a table of word offsets to obtain a function pointer.
 - `toggle_ride_flags`: The routine toggles a single bit in a series of bytes within a structure pointed to by a register, using a bit index derived from an input register, with a repeated write to one of the bytes.
+- `sub_0_C98A`: undescribed.
+- `sub_0_C996`: undescribed.
+- `sub_0_C9A2`: undescribed.
+- `sub_0_C9AE`: undescribed.
+- `sub_0_C9BA`: undescribed.
+- `sub_0_C9C6`: undescribed.
+- `sub_0_C9D2`: undescribed.
+- `sub_0_C9DE`: undescribed.
+- `sub_0_C9EA`: undescribed.
+- `sub_0_C9F6`: undescribed.
+- `sub_0_CA02`: undescribed.
 - `process_ride_object_2`: The routine reads a byte from an object structure, indexes a global table with the value minus eight and dispatches to one of several update routines by storing the object pointer and a return address on the stack.
 - `process_ride_queue_entries_3`: The routine walks a linked list of queue entries, updates a field from a table using an index stored in the entry, and if a timeout condition is met it calls another routine to adjust statistics and clears a counter.
 - `dispatch_ride_queue_entry`: Reads a state byte from a per-instance table and dispatches to the matching handler routine, saving the instance pointer and return address on the stack.
@@ -366,6 +408,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_ride_tile_animation`: Combines two fixed-point multiplications with two stored shorts to compute tile-animation coordinates, then decrements a counter stored at a fixed offset.
 - `update_ride_price_2`: The routine reads a byte from a global variable via a pointer, calls another routine to compute a modular remainder and stores the result into a global variable, then calls two fixed-point multiply routines, calls another routine to set state, and returns a constant.
 - `check_ride_operational`: The routine loops over a small index range using a global variable table to test a flag byte in a table, exiting early if the flag is set.
+- `sub_0_CE0A`: undescribed.
 - `update_ride_price_3`: The routine updates two price-related bytes in a structure under several conditions, using values produced by another routine.
 - `update_ride_queue_display`: Decrements a counter and, when it reaches zero, refreshes a ride's queue display by recomputing its price and position.
 - `update_queue_entry`: The routine reads a byte from the stack frame, stores a remainder result, and checks ride availability.
@@ -376,6 +419,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_ride_queue_entry_7`: The routine examines a byte-based record via a pointer, clears a flag bit in one byte, sets a temporary flag, checks ride availability, and if available selects a ride object from a table using a random value and writes selection fields before returning.
 - `process_ride_queue_entry_19`: Checks whether stored byte values fall within expected ranges and, when they do, writes a value and a table-derived word, recomputes fixed-point products, and updates tile animation before returning.
 - `set_ride_price_2`: The routine writes a byte from a register through a pointer, loads a 16-bit value from a table indexed by a byte from the pointed structure and a byte from a global variable, calls another routine, stores the result of a fixed-point multiply, adds a 16-bit field from the pointed structure, calls another routine and returns.
+- `sub_0_D6B8`: undescribed.
 - `process_ride_vehicle`: The routine processes a ride vehicle instance referenced by param_1.
 - `set_ride_price_3`: The routine reads a byte from memory via a pointer, calls another routine to compute a modular remainder and stores the result as a word at an offset from the pointer, copies a byte from a register to another offset from the pointer, and loads a word from a table indexed by a byte from the pointer and a global variable into another offset from the pointer.
 - `process_ride_vehicle_state_3`: Initializes a block of data by clearing several fields, then computes two offset values from a global table using a stored byte and a tile index.
@@ -400,6 +444,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `check_ride_flag_and_update_status`: The routine reads a global variable, masks it with seven, and if the result is zero it sets the variable to one and tests a short value from a table indexed by a word taken from the argument.
 - `process_ride_queue_36`: The routine updates a ride queue structure, decrements a counter and, when the counter reaches zero or underflows, marks the ride as finished and iterates over a global table to find an active entry.
 - `check_ride_queue_collision_2`: Reads a byte from a structure and stores a normalized fixed-point value alongside it.
+- `sub_0_F410`: undescribed.
+- `sub_0_F42A`: undescribed.
+- `sub_0_F430`: undescribed.
+- `sub_0_F436`: undescribed.
+- `sub_0_F43C`: undescribed.
 - `check_ride_collision`: The routine computes two differences using a remainder value and a word from a structure, clamps each to a minimum, and sets a flag byte in a structure if either difference is below a byte from another structure.
 - `validate_ride_operation`: Validates an operation record in a structure pointed to by a register.
 - `update_ride_state_2`: The routine reads a short from the ride structure, uses it as an index into a table pointed to by a global variable to fetch another short, writes it back, then if a flag byte derived from that short is set it writes a constant to a byte field and overwrites the short with a value taken from another table indexed by two bytes from the structure and a global variable.
@@ -439,6 +488,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_waiting_stats`: The routine clears a waiting counter by moving its value to a global accumulator and a global variable, then zeroes the counter.
 - `set_vehicle_type_from_table`: The routine reads a word from a global table using an index taken from memory pointed to by a register, stores the result into a word at an offset from another register, and writes a constant byte to an offset from a third register.
 - `reset_ride_state_7`: The routine writes a constant byte value to an offset in a structure pointed to by a register and clears a word at another offset in the same structure.
+- `sub_0_102A4`: undescribed.
 - `update_ride_vehicle_state`: The routine updates fields of a ride vehicle structure, including a timer, position and animation data, and selects a sprite index from tables using bytes from the structure and a global variable.
 - `update_ride_status_flags`: The routine updates ride status fields in a structure pointed to by A5 using offsets from the structure and values from a global variable.
 - `update_ride_price_5`: The routine computes the absolute value of an incoming word and compares it with a limit.
@@ -481,6 +531,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `handle_ride_maintenance`: Checks an unmodified short and, when it equals a specific value, adds a shifted value to a structure field and increments a global counter.
 - `apply_ride_maintenance`: The routine checks a condition using a short from d0, a byte at an offset from a1, and a short at an offset from a0.
 - `update_ride_state_4`: The routine updates a byte field in a structure by cycling a small state counter and, when a condition on several fields of the structure and a global variable is met, writes a short value to an offset in the structure, sets a timer byte and the state byte, and returns.
+- `sub_0_11936`: undescribed.
 - `resolve_ride_object`: The routine computes an index from a byte in a global table using a value derived from the input, then walks a linked chain of entries in the same table, masking and comparing bytes until a zero result is found.
 - `find_park_object_2`: The routine walks a linked list stored in a global table, using a byte mask to skip entries and a flag to avoid loops.
 - `get_ride_price_index`: The routine computes an index by looking up an object via another routine using a value derived from a global variable and two uninitialized registers, then adds a fixed offset from a global variable to a base derived from a field in the found object.
@@ -607,14 +658,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_ride_parameters`: This routine computes a small value based on a ride availability check and writes a set of fields into a structure pointed to by the address in a5.
 - `update_ride_object_flags`: The routine loads a byte from a global variable pointed to by a register, compares it with zero, and stores a two-byte value from another routine into a field of the pointed structure.
 - `update_park_object_state`: The routine reads a byte from a structure pointed to by a register, passes it to another routine and stores the returned word back into the structure, copies a byte from a register into the structure, and loads a word from a global table indexed by a byte from the structure and a byte from another field of the structure, storing the result in the structure.
+- `sub_0_19DCC`: undescribed.
 - `find_ride_object_match`: Computes an address from a table using a byte in the structure, then iterates over five entries while searching for a matching record.
 - `find_ride_entrance_2`: The routine scans a small table of ride objects using a global index and an input pointer.
 - `check_ride_queue`: The routine loops over a linked list of queue entries, using a global variable as a base for indexing and a stack value as an offset.
 - `find_ride_for_guest`: The routine loops over a guest structure and a ride table using indices stored in a global variable and a stack parameter.
 - `find_ride_object_6`: The routine walks a linked list of ride objects using a global table and a stack value, checking each object's type and flags.
+- `sub_0_1A26A`: undescribed.
 - `update_ride_state_11`: Reads a global variable and a table entry based on an input offset, then conditionally copies bytes from a table indexed by another field of the input structure into fixed offsets of the structure and clears or sets several fields.
+- `sub_0_1A520`: undescribed.
+- `sub_0_1A74E`: undescribed.
 - `update_ride_waiting_queue_2`: The routine updates a waiting entry using a global table and a flag.
 - `store_price_word_via_pointer`: The routine stores a 16-bit value from a data register into the memory location pointed to by a pointer, offset by a constant.
+- `sub_0_1AB4C`: undescribed.
 - `update_ride_status_17`: The routine calls another routine twice, stores the resulting byte values into two bytes of the structure pointed to by param_1, increments a short field, writes constant bytes to two byte fields, loads a word from a table indexed by a byte field and stores it, masks a byte field, and conditionally writes a computed word and constant values based on a global variable flag.
 - `update_structure_and_check_ride`: Increments a counter in the structure and adjusts a value based on a global flag, then calls a fixed-point multiply and a tile-priority routine.
 - `set_ride_type`: Sets a ride type for a structure pointed to by a register.
@@ -1006,6 +1062,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_ride_statistics_8`: The routine iterates over a table of entries and, for each non-empty entry, selects a global structure via an index byte and updates several short and int fields in that structure and in the entry.
 - `update_ride_waiting_times`: The routine iterates over a fixed-size table of ride records and updates per-ride waiting-time counters.
 - `process_ride_queue_19`: The routine processes a linked list of entries referenced through a global table and builds a fixed-size stack array of pointers to those entries.
+- `sub_0_2A0C4`: undescribed.
+- `sub_0_2A162`: undescribed.
+- `sub_0_2A174`: undescribed.
+- `sub_0_2A19E`: undescribed.
+- `sub_0_2A1BE`: undescribed.
+- `sub_0_2A1DE`: undescribed.
+- `sub_0_2A250`: undescribed.
+- `sub_0_2A260`: undescribed.
+- `sub_0_2A26E`: undescribed.
+- `sub_0_2A28E`: undescribed.
 - `iterate_queue_entries_2`: The routine walks a linked list of entries using a global pointer and a global limit, and for each entry it tests a flag byte and a size comparison before loading a field into a global variable and calling another routine with derived coordinates and an index.
 - `process_ride_queue_20`: Iterates over a queue of ride entries stored in a table, using a global pointer and several stack values to compute offsets and update a global variable.
 - `traverse_ride_records`: Walks through a linked list of ride records, following a next-pointer field in each entry.
@@ -1158,6 +1224,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_ride_wait_time_2`: The routine checks a byte in D0 and, if it equals 4, conditionally calls another routine and clamps a global short value to 4.
 - `clamp_wait_time_values`: The routine adjusts a global variable using a modular remainder and a fixed-point multiply, then clamps the result between two other global variables and copies two more globals.
 - `handle_park_event_2`: The routine calls another routine with the input parameter, then conditionally calls the same routine a second time if a bit in a global variable is set.
+- `sub_0_37A2A`: undescribed.
 - `create_ride_instance_4`: The routine scans a linked list of ride structures using a global pointer and a global limit, finds the first free entry, writes constant bytes and a price value into the entry, copies a byte from the parameter into the entry, loads a 16-bit value from a table indexed by the parameter and stores it, calls another routine to update the price, and increments a global counter.
 - `init_and_set_ride_price`: Walks a table of ride entries in fixed-size steps until it finds one whose flag byte is zero, then initializes that entry's fields from stack and table values and updates its ride price.
 - `set_ride_price_20`: The routine walks a linked list via a pointer in A5 until a null terminator is found or a limit is reached, then writes several bytes to the current node, copies a byte from the stack into the node, loads a 16-bit value from a table indexed by a stack byte and stores it, then calls another routine with a computed address and two words from the node, and increments a 16-bit counter in a global variable.
@@ -1205,9 +1272,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `draw_ride_vehicle_4`: The routine indexes a table with the parameter to obtain a short pointer, reads a short from a global table at a fixed offset, and calls another routine eight times with the pointer value and the read short adjusted by constants, passing a global variable each time.
 - `check_ride_state`: The routine reads a byte from an address computed from param_3 plus a constant offset, shifts it right by one, adds a constant, masks the result, and if the result is non-zero it calls another routine.
 - `dispatch_theme_park_event`: The routine loads two short values into registers, computes an index from them, reads a short offset from a global variable table using that index, adds the offset to the base of the global variable area to form a pointer, and calls the routine pointed to by that pointer.
-- `return_early_exit`: The routine is empty.
-- `gameplay_scene_end`: The routine contains three instructions and immediately returns without accessing memory, registers, or calling another routine.
-- `build_park_object_key`: The routine reads a 32-bit value from data register D0, ORs it with a constant, and returns the result shifted left by 32 bits as a 64-bit value.
+- `sub_0_3D20C`: undescribed.
 - `wait_for_blitter_and_clear_screen`: The routine polls a global variable until a blitter busy flag clears, then writes several values to custom chip registers including BLTCON0, BLTCON1, BLTAFWM, BLTAMOD, BLTDMOD, BLTAPTH, BLTDPTH, BLTSIZE and BLTADAT to set up a blitter operation, and finally waits again for the blitter busy flag to clear.
 - `spawn_park_elements`: The routine processes a table of elements using a modular remainder calculation to select entries and then invokes another routine to render overlay data for each qualifying entry, adding offsets from its parameters.
 - `handle_ui_event`: The routine receives a small index and looks up a value from a table of short entries.
@@ -1292,7 +1357,25 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_ride_stats_4`: Iterates over six ride entries, accumulates a short value and updates a counter, then sets a global variable to a large constant for entries where a condition holds.
 - `update_ride_statistics_21`: The routine iterates over a set of entries using an index from a register, updates accumulator fields in a table and a global variable, and for a specific case performs a nested search over a fixed table using a random value to find a minimum and then updates bytes and words in that table according to a selector.
 - `update_ride_statistics_23`: The routine iterates over a set of entries using an index in D4 and updates a global variable and a per-entry accumulator, then for index zero it scans a table of eight candidates, selects the best candidate by a computed value using a random value and modular remainder, updates a flag byte in the candidate and increments one of several per-candidate counters depending on a remainder value.
-- `update_ride_statistics_25`: The routine iterates over a small fixed set of entries, accumulating a short field into a running total and updating a per-entry counter and a global variable.
+- `sub_0_421CE`: undescribed.
+- `sub_0_42208`: undescribed.
+- `sub_0_42216`: undescribed.
+- `sub_0_42322`: undescribed.
+- `sub_0_42350`: undescribed.
+- `sub_0_4235E`: undescribed.
+- `sub_0_42474`: undescribed.
+- `sub_0_424A2`: undescribed.
+- `sub_0_424B2`: undescribed.
+- `sub_0_4268C`: undescribed.
+- `sub_0_426E0`: undescribed.
+- `sub_0_4270E`: undescribed.
+- `sub_0_42716`: undescribed.
+- `sub_0_42802`: undescribed.
+- `sub_0_42854`: undescribed.
+- `sub_0_4287A`: undescribed.
+- `sub_0_4295E`: undescribed.
+- `sub_0_4298C`: undescribed.
+- `sub_0_4299A`: undescribed.
 - `unreachable_stub`: The routine contains no instructions and performs no operations.
 - `draw_aglobe_background`: The routine resets UI state, waits for the blitter and queues a 400-byte copy, copies a ride data block, initializes game state, and then conditionally updates a set of global variables based on flag bits in a global variable and a zero test of another global variable.
 - `poll_and_draw_ride_list`: Continuously updates the ride list display and checks mouse position against ride entries; when a ride is selected it enqueues an event, resets state and renders the ride info panel, otherwise it redraws the list and handles UI exit conditions.
@@ -1300,6 +1383,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_immediately`: The routine contains three 68000 instructions and ends with a return.
 - `format_number_string`: The routine formats an integer supplied in param_2 into a character buffer pointed to by param_1 using a temporary buffer prepared by another routine.
 - `draw_ride_preview_57`: The routine initializes game state, finds the nearest tile, waits for the blitter, swaps a global variable, resets ride state, draws a scaled sprite, renders a ride vehicle, applies a tile transform, then loops over a table of UI entries.
+- `sub_0_43A94`: undescribed.
+- `sub_0_43B06`: undescribed.
+- `sub_0_43B28`: undescribed.
+- `sub_0_43B44`: undescribed.
+- `sub_0_43B66`: undescribed.
+- `sub_0_43B88`: undescribed.
+- `sub_0_43BA0`: undescribed.
+- `sub_0_43BB0`: undescribed.
+- `sub_0_43BC0`: undescribed.
+- `sub_0_43BDE`: undescribed.
 - `draw_ride_sprite`: The routine initializes game state and selects an index into a table based on a flag parameter, a modular remainder and a byte from a global variable, then loads a pointer from a table and computes X and Y offsets from fields of the first parameter.
 - `draw_park_tile`: The routine draws a scaled sprite using the first four parameters and a fifth byte, then draws four ride overlays using the first two parameters, the sum of the first and third parameters, the sum of the second and fourth parameters, and the sixth and seventh bytes.
 - `draw_ride_preview_58`: It clears and swaps buffers with a blitter wait, finds tiles, applies a tile transform, copies a string and iterates over a table from a global variable.
@@ -1349,7 +1442,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `disable_interrupt_mask`: The routine calls another routine twice, sets a global variable, then calls another routine twice and returns.
 - `process_ride_queue_32`: Disables interrupts, resets the display DMA and dispatches a game event, then returns a value built from registers.
 - `reset_display_and_dispatch_event_3`: The routine resets the display DMA, dispatches a game event, and disables the interrupt mask.
+- `sub_0_46FB6`: undescribed.
 - `process_ride_queue_123`: The routine iterates four times, reading a pointer from a global table, resetting the display DMA, dispatching a game event, and disabling the interrupt mask.
+- `sub_0_47062`: undescribed.
+- `sub_0_47396`: undescribed.
 - `dispatch_game_event_3`: The routine reads a date string and then dispatches based on a value in D0, calling one of several other routines and returning their results combined with a value from D1.
 - `find_free_script_slot`: The routine scans a small table of script slots by stepping through entries.
 - `clear_ride_flag_5`: The routine calls another routine to obtain a ride price index and then stores zero into a field at a fixed offset from an unspecified base pointer.
@@ -1384,11 +1480,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `get_park_object_id`: The routine calls another routine and stores its result.
 - `get_ride_price`: The routine calls another routine and stores the result in a local variable.
 - `sum_negate_score`: The routine receives a pointer in A0 and an initial value in D1.
-- `reset_park_state_8`: The routine stores zero into a field of a structure pointed to by a pointer, stores the negated value returned by a routine that returns a score into another field of a structure pointed to by a different pointer, then calls another routine that triggers a park event.
-- `reset_ride_state_22`: The routine writes zero to a field at a fixed offset from a pointer in A0 and then writes the result of a score negation routine to the same offset using another pointer in A0, and then calls another routine to trigger a park event.
-- `reset_ride_state_5`: The routine stores zero into a field of a structure pointed to by a pointer, then calls a routine that returns a value and stores that value into the same field of another structure pointed to by a second pointer, then calls another routine and returns.
-- `reset_ride_state_24`: The routine clears a field in a structure pointed to by a pointer, stores the negated result of a scoring function into a field in a structure pointed to by another pointer, then calls another routine and returns.
-- `reset_ride_state_25`: The routine clears a value in memory pointed to by a pointer, writes the negated score returned by another routine to a second memory location pointed to by a pointer, and then calls another routine.
 - `clear_price_and_apply_penalty`: The routine clears a 32-bit field at a fixed offset from two pointers passed in a0 and a0, then writes the result of a scoring routine to the same offset in the second pointer and triggers a park event.
 - `initialize_game_state_3`: The routine calls another routine named trigger_park_event_8 and then returns.
 - `trigger_park_event_6`: The routine calls another routine and then returns.
@@ -1428,20 +1519,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `wait_for_ciab_timer_and_flag`: The routine repeatedly starts a CIAB timer and then spins until a global variable's least-significant bit is cleared.
 - `reset_ciab_timer`: The routine checks a global variable and a register value and, if a condition holds, writes three values to a global variable.
 - `set_ciab_timer`: The routine writes three values to a global variable in sequence and then returns.
-- `wait_for_vblank_and_tick`: The routine spins until a global variable’s bit is clear, then increments a global counter, calls another routine, decrements the same counter, and returns the concatenation of the two input registers.
 - `wait_for_vblank`: The routine spins until a global variable’s bit is clear, then increments a global counter, calls another routine, decrements the counter, and returns the concatenation of two input registers.
 - `parse_ride_name_2`: The routine loads values from a structure pointed to by A5, uses them to compute an index into a table and initializes a set of global variables.
 - `update_park_object`: The routine contains nine 68000 instructions but performs no observable data operations and ends with a return.
 - `apply_tile_mask_2`: The routine processes a mask and a source byte table, iterating over a fixed number of entries.
-- `handle_input_event`: The routine calls another routine to initialise a ride object and checks its short result.
-- `init_ride_object_and_validate`: The routine calls a routine to initialize an object and checks its return.
-- `handle_ride_interaction_4`: The routine calls another routine to initialize a ride object and returns if it fails.
-- `check_ride_operation_3`: The routine calls another routine to obtain a short value and returns immediately if the value is non-zero.
-- `handle_park_event_4`: The routine initializes a ride object and, if successful, validates monthly maintenance for the first parameter.
-- `handle_park_event_5`: The routine calls a ride initialization routine and checks its result.
+- `sub_0_4861C`: undescribed.
 - `update_park_state_2`: The routine calls another routine, then calls another routine, then returns.
 - `reset_ride_state_via_trigger`: The routine calls another routine to reset ride state and then returns.
 - `run_theme_park_init`: The routine calls another routine, then calls another routine, then calls another routine, and returns.
+- `sub_0_4868C`: undescribed.
+- `sub_0_486BA`: undescribed.
+- `sub_0_48744`: undescribed.
+- `sub_0_48766`: undescribed.
 - `handle_park_event_6`: The routine checks a global variable and, if it is zero, calls another routine with the input parameter and then calls a routine to add time to ride times using three global values.
 - `validate_monthly_maintenance`: The routine checks a global string for 'MThd' and a flag, then copies a value from the global to a global structure and reads a ride month field.
 - `clear_ride_queue`: The routine calls another routine to clear a ride queue and then returns zero.
@@ -1457,6 +1546,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `skip_unreachable_code`: The routine contains three 68000 instructions and performs no observable work.
 - `parse_script_token`: Reads a byte from a script buffer via a pointer stored in the context and advances the pointer.
 - `set_ride_flags`: The routine ORs three bytes in a structure pointed to by an address register, adds a byte at an index derived from a word in D0 to another byte in the same structure, ORs a further byte in the structure, and then adds two to a word located ten bytes after a pointer in A5.
+- `sub_0_48AAE`: undescribed.
 - `parse_script_command`: The routine decodes a byte from a register into a high nibble command index and a low nibble parameter, looks up a table of handlers via a global variable, and dispatches to a small set of cases that read bytes from a pointer stored in a structure, update counters and flags, and call another routine to increment a ride counter.
 - `parse_config_token`: The routine reads a byte from a pointer stored in a global variable and advances the pointer, returning the byte value or zero for whitespace and control characters.
 - `increment_counter_field`: The routine adds 2 to a 32-bit integer located at an offset from an address in A5 and stores the result back at the same location.
@@ -1499,6 +1589,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_ride_flag_7`: The routine stores a zero byte into a byte located at an offset computed from a byte in D7, a pointer in A0 and a constant, then returns whether D5 is zero.
 - `parse_script_token_2`: The routine reads a script token byte from the input pointer and computes a token type value and the length of the token in bytes.
 - `clear_bitmask_bytes`: The routine clears a bit in four consecutive bytes of a byte array pointed to by a pointer, using a bit index taken from a data register, and writes a byte from a data register to a word pointed to by a pointer.
+- `sub_0_497C4`: undescribed.
 - `parse_script_token_3`: The routine reads a control byte from a register, extracts its high nibble and, for values greater than seven, advances a byte pointer by a fixed amount or by a variable-length loop depending on the nibble.
 - `parse_script_token_4`: The routine advances a script pointer according to the current token byte and a flag, using a variable-length value decoder for most tokens and special handling for a few control bytes, then stores a byte from a register into a table and returns the pointer delta from a base.
 - `write_ride_price_2`: The routine stores a byte from a register through a pointer to a word location and returns the difference between a pointer plus two and another value.
@@ -1519,6 +1610,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `wait_for_blitter_and_set_params`: The routine polls a global variable until a bit is clear, then writes several values to hardware registers and a global variable, and polls again until the same bit is clear.
 - `wait_for_vblank_and_init`: The routine spins until a flag in a global variable is clear, then writes a value from the stack to two locations, computes an offset from the stack value and a constant and stores it in a global variable, clears several global variables and writes constants to them, sets a flag in a global variable to one, and returns the value originally in D0.
 - `init_blitter_copy`: The routine writes a series of constants and a computed value into a global variable and sets another global variable to one, then returns the value it received on the stack.
-- `wait_for_blitter_and_init`: The routine spins until a global variable's bit is clear, then writes several values to a global variable and clears a global flag.
+- `sub_0_49C2A`: undescribed.
+- `sub_0_49C80`: undescribed.
+- `sub_0_49CEA`: undescribed.
+- `sub_0_49D26`: undescribed.
+- `sub_0_49D88`: undescribed.
+- `sub_0_49DBC`: undescribed.
 
 The function list continues in: g800-recovery-functions-2.md.

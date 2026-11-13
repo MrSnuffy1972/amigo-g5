@@ -54,6 +54,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - nova 9 (1991)(dynamix)(disk 2 of 3)/Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:nova9.sng: high-entropy data file (7.74 bits/byte), classified as packed data
 - 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- nova 9 (1991)(dynamix)(disk 1 of 3)/Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:nx: Imploder (xfd) stream found by ancient scan (2876 -> 3436 bytes) but only 0 of 2 sampled windows are in reference RAM: not used
+- nova 9 (1991)(dynamix)(disk 1 of 3)/Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:Install: Imploder (xfd) stream found by ancient scan (30232 -> 48476 bytes) but only 0 of 22 sampled windows are in reference RAM: not used
+- nova 9 (1991)(dynamix)(disk 1 of 3)/Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:sp0: Imploder (xfd) stream found by ancient scan (117584 -> 145196 bytes) but only 3 of 68 sampled windows are in reference RAM: not used
+- nova 9 (1991)(dynamix)(disk 1 of 3)/Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:more: Imploder (xfd) stream found by ancient scan (6876 -> 10548 bytes) but only 0 of 6 sampled windows are in reference RAM: not used
+- nova 9 (1991)(dynamix)(disk 1 of 3)/Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:sim: Imploder (xfd) stream found by ancient scan (192780 -> 287724 bytes) but only 2 of 127 sampled windows are in reference RAM: not used
+- nova 9 (1991)(dynamix)(disk 1 of 3)/Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:s/SKID_ROW: PowerPacker 4.0 (xfd) stream found by ancient scan (4736 -> 14188 bytes) but only 0 of 7 sampled windows are in reference RAM: not used
+- nova 9 (1991)(dynamix)(disk 1 of 3)/Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:title: Imploder (xfd) stream found by ancient scan (123148 -> 169496 bytes) but only 1 of 77 sampled windows are in reference RAM: not used
+- nova 9 (1991)(dynamix)(disk 2 of 3)/Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:gameover: Imploder (xfd) stream found by ancient scan (8752 -> 16156 bytes) but only 2 of 7 sampled windows are in reference RAM: not used
+- nova 9 (1991)(dynamix)(disk 2 of 3)/Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:ttl: Imploder (xfd) stream found by ancient scan (40112 -> 81372 bytes) but only 0 of 37 sampled windows are in reference RAM: not used
 - nova 9 (1991)(dynamix)(disk 1 of 3)/Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:tbc/ACTORS5.TBC: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - nova 9 (1991)(dynamix)(disk 1 of 3)/Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:tbc/std.TBC: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - nova 9 (1991)(dynamix)(disk 1 of 3)/Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:tbc/ACTORS6.TBC: raw code file no run loaded verbatim: recovered position-independently (load address unknown)

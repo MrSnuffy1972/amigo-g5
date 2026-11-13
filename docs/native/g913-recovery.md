@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (901212 top-level bytes in 44 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 272 of 272 named (0 author symbols), 272 of 272 described (88 by rule, 173 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 2233 of 2233 (100.00%) |
+| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 58 raw-word lines |
+| Functions named and described | pass, 275 of 275 named (0 author symbols), 275 of 275 described (91 by rule, 173 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 5299 of 5299 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 8368 of 8368 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 8429 of 8429 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 483202 |
-| code | 29774 |
-| data | 123943 |
+| code | 30020 |
+| data | 123697 |
 | padding | 10853 |
 | unused | 253440 |
 
@@ -30,14 +30,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | mem | 2 | 117 | 2 |
 | Tron 5000 (1988)(Softgang).adf:   | 3 | 6983 | 202 |
 | Tron 5000 (1988)(Softgang).adf:  | 3 | 421 | 9 |
-| 8 | 1 | 2 | 1 |
+| 8 | 1 | 62 | 2 |
 | diskfont.library | 13 | 830 | 53 |
 | Tron 5000 (1988)(Softgang).adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 6 |
 
 ## Cases handled
 
+- 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- tron 5000 (1988)(softgang)/Tron 5000 (1988)(Softgang).adf: : HQC Cruncher 2.0 (xfd) stream found by ancient scan (59604 -> 133348 bytes) but only 0 of 38 sampled windows are in reference RAM: not used
 - tron 5000 (1988)(softgang)/Tron 5000 (1988)(Softgang).adf: : a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
 ## Cracktros (kept, not protection)
@@ -276,6 +278,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### 8
 
 - `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `update_structure_field_via_callback`: Calls a function via a pointer in a structure at a negative offset from a register, and if the return value is non-zero, stores the contents of a register into a field at offset 34 of the returned pointer before calling another function via a pointer in the same structure.
 
 ### diskfont.library
 
@@ -339,7 +342,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `jump_to_address`: Sets bit 0 of d0 and performs a long jump to a specific address.
+- `jump_vector_entry_2`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_4`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.

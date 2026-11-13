@@ -6,20 +6,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (922128 top-level bytes in 15 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 1 raw-word lines |
-| Functions named and described | pass, 93 of 93 named (0 author symbols), 93 of 93 described (7 by rule, 84 by the local model) |
+| Bytes classified (922128 top-level bytes in 16 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 1 raw-word lines |
+| Functions named and described | pass, 89 of 89 named (0 author symbols), 89 of 89 described (5 by rule, 81 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 1851 of 1851 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 472862 bytes, 22 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 3952 of 3978 instructions identical in start and length, 0 mismatches |
+| Recovered without load address (counted in proof 1, flagged) | 618110 bytes, 26 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 4250 of 4290 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 165173 |
-| code | 15462 |
-| data | 568795 |
+| asset | 165171 |
+| code | 15308 |
+| data | 568951 |
 | padding | 2714 |
 | unused | 169984 |
 
@@ -31,9 +31,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Castle Master.adf:cm | 1 | 116 | 2 |
 | Castle Master.adf:bootblock | 1 | 7 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 342 | 4 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 492 | 19 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 485 | 18 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1665 | 41 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1635 | 34 |
+| Castle Master.adf:paraintro#unpacked | 1 | 349 | 4 |
 | Castle Master.adf:x (raw code file, load address unknown) | 1 | 2 | 1 |
 | Castle Master.adf:intro (raw code file, load address unknown) | 1 | 1253 | 21 |
 
@@ -43,14 +44,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address (play-rs-m1500): 415 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-m1500): 1081 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- Castle Master/Castle Master.adf:paraintro: crunched executable unpacked with ancient scan (TetraPack 2.2 (xfd), 49804 -> 145248 bytes), 32 of 32 windows confirmed in reference RAM, loaded at an address: recovered as u7
 - Castle Master/Castle Master.adf:x: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - Castle Master/Castle Master.adf:intro: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 3 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 call target, 1 immediate+address, 1 jump target
 - Castle Master/Castle Master.adf:paraintro: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
-- 2 never-loaded region(s), 472862 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+- 3 never-loaded region(s), 618110 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
 - Castle Master.adf:paraintro
+- Castle Master.adf:paraintro#unpacked
 - Castle Master.adf:intro (raw code file, load address unknown)
 
 ## Copy protection found
@@ -102,7 +106,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decrement_timer_counter`: Decrements a global variable and resets it to a fixed value when it reaches zero.
 - `populate_data_table`: Fills a table in memory with a series of structured short integer values using a loop.
 - `execute_library_sequence`: Calls a function pointer stored in a global variable and performs a sequence of indirect function calls through the returned pointer.
-- `load_registers_and_branch`: Loads two values into registers, moves a pointer from a table into a stack pointer, and performs several bitwise OR operations on a register.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -111,16 +114,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `branch_and_store_register`: Performs a short branch, stores a word from a register into a memory location, and then performs a long branch.
-- `tiny_moveq`: Small routine of 1 instruction that loads 0 into d4.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `clear_data_byte`: Performs a logical OR operation on a data register with zero.
-- `clear_data_register_byte`: Performs a bitwise OR operation on a byte within a data register using a zero immediate value.
-- `clear_data_byte_2`: Performs a logical OR operation on a data register with zero.
-- `tiny_ori_2`: Small routine of 1 instruction that merges 69 into d0.
-- `relocate_function_table`: Retrieves a function pointer from a library and updates a global table of function pointers.
 - `clear_memory_block_2`: Clears a block of memory by writing zero to a series of words.
-- `update_keyboard_state_table`: Calculates an index based on a global variable and checks it against specific bounds.
-- `store_byte_at_offset`: Stores a byte with the value zero-ff into a memory location calculated by adding a register value to a pointer.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (movea.w) and then falls through into the code that follows, with no return of its own.
 - `process_string_data`: Iterates through a source string and copies characters to a destination buffer while performing bitwise operations and checking for a specific character.
 - `clear_memory_range`: Fills a range of 111 words starting at a specific memory address with zeros.
 - `copy_byte_to_global`: Stores a byte from a memory location into a global variable.
@@ -130,6 +125,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_audio_parameter_state`: Modifies internal timing or volume counters based on command identifiers and updates a global state.
 - `parse_input_command_stream`: Reads a byte stream to extract command identifiers and parameters, updating internal state and global variables based on the decoded values.
 - `calculate_fixed_point_multiplication`: Performs a multiplication of a short integer by a global value and returns the result as a 32-bit value split across two registers.
+- `load_music_data_and_update_audio`: Loads music data from a memory location into several global pointers, opens a library, and updates audio parameters.
 - `fill_multiple_buffers`: Clears various offsets within a memory block by writing zero to them in a loop.
 - `write_shifted_values_to_buffers`: Reads values from a table, shifts them based on a global value, and writes them to multiple destination buffers.
 - `copy_shifted_longs_to_planes`: Reads four source longwords per step from a table, shifts them left by the low four bits of a position value, and writes each one to a different plane buffer.
@@ -151,6 +147,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_infinite_loop`: This routine is empty and consists only of an infinite loop.
 - `clear_memory_block_3`: Iterates through a memory block pointed to by a global variable and writes zero to various offsets and indices in a loop.
 - `copy_table_data`: Decrements a global variable, calls another routine, and then copies a sequence of words from a table to a destination pointed to by a global variable until a specific terminator value is encountered.
+
+### Castle Master.adf:paraintro#unpacked
+
+- `update_audio_channels`: Clears the four audio channel registers and sets the volume for all channels to a fixed value.
+- `process_object_command_and_audio`: Reads a control structure from a pointer, uses a nibble from the structure to index into a table to update object properties, and modifies audio hardware registers and DMA control.
+- `mask_and_compare_word_2`: The routine reads a word from a pointer, masks it to twelve bits, stores the masked value into an offset of the same structure and clears a byte at another offset.
+- `update_object_state`: Processes a control structure in a6 by reading a command byte and performing various arithmetic or bitwise operations on values at offsets 2, 3, 16, and 18.
 
 ### Castle Master.adf:x (raw code file, load address unknown)
 

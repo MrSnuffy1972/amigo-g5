@@ -8,29 +8,29 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (901808 top-level bytes in 10 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 214 raw-word lines |
-| Functions named and described | pass, 96 of 96 named (11 author symbols), 96 of 96 described (4 by rule, 20 by the local model) |
+| Functions named and described | pass, 101 of 101 named (11 author symbols), 101 of 101 described (3 by rule, 21 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 336 of 336 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 326122 bytes, 68 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 3115 of 3242 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 3451 of 3472 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 26237 |
-| code | 11286 |
-| data | 347441 |
-| padding | 1772 |
+| code | 12052 |
+| data | 346673 |
+| padding | 1774 |
 | unused | 515072 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Helter Skelter (1990)(Audiogenic)[cr SKR].adf:Type | 2 | 117 | 2 |
+| Helter Skelter (1990)(Audiogenic)[cr SKR].adf:Type | 2 | 363 | 12 |
 | Helter Skelter (1990)(Audiogenic)[cr SKR].adf:hs | 1 | 205 | 12 |
 | Helter Skelter (1990)(Audiogenic)[cr SKR].adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 159 | 12 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 143 | 7 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 1 |
 | Helter Skelter (1990)(Audiogenic)[cr SKR].adf:hs.img (raw code file, load address unknown) | 1 | 2747 | 68 |
 
@@ -56,6 +56,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_sixteen_longs_then_call`: If a destination pointer is non-null, copies sixteen longwords from a structure addressed through the caller's frame register into it, then calls a routine through a pointer.
+- `update_entity_state_and_process`: Increments an index in a structure, clears several fields, and performs a series of validation and attribute updates by calling a routine that checks entity states against various tables.
+- `branch_to_offset`: Performs a short branch to a relative offset.
+- `set_and_store_negative_one`: Loads negative one into register d1, stores it at offset 584 of the structure in a2, and branches to another routine.
+- `set_and_store_negative_one_offset`: Loads negative one into register d1, stores it at offset 52 of the structure in a1, and branches to another routine.
+- `calculate_offset_and_call`: Calculates an offset by adding a value from offset 220 of the structure in a1 to a shifted value from offset 224 of the structure in a1, fetches a byte from a0 at that offset, loads a pointer from offset 304 of the structure in a2 into a3, sets d1 to a shifted version of d1, sets d0 to 240, loads a pointer from offset 328 of the structure in a2 into a4, calls the routine at a5, and branches to another routine.
+- `dispatch_by_byte_value`: Calculates an offset using values from offset 220 and 224 of the structure in a1, fetches a byte from a0 at that offset, loads a pointer from offset 300 of the structure in a2 into a4, calls the routine at a5, and then branches to another routine, a routine that sets d1 to 78, or a routine that sets d1 to 72 based on the value in d1.
+- `validate_and_update_entity_state`: Increments a counter at offset 224 of a structure in a1 and checks a byte from a table to determine if an entity is valid.
+- `initialize_and_call_multiple`: Sets d1 to 1 and stores it at offset 616 of the structure in a2, then performs a series of calls using pointers from the structure in a2 and stores results in the structure in a1 before branching to another routine.
+- `branch_to_another_routine`: Performs a short branch to a location within another routine.
+- `call_and_jump_indirect`: Loads the constant negative forty into register d0, loads a pointer from offset 336 of the structure in a2 into a4, calls the address in a5, and jumps to the address in a6.
 
 ### Helter Skelter (1990)(Audiogenic)[cr SKR].adf:hs
 
@@ -79,17 +89,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `initialize_system_tables`: Initializes several memory tables with pointers and values, while configuring audio hardware, DMA, and interrupts.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `traverse_linked_list`: Traverses a structure of pointers and copies data to a destination, while interacting with audio and interrupt hardware registers.
-- `copy_linked_list_elements`: Reads a bitmask from a hardware register to determine how many elements to process.
-- `clear_data_register_zero`: Performs a logical OR operation on a data register with zero.
 - `update_audio_buffer_list`: Iterates through a bitmask-controlled sequence of pointers to copy data into audio hardware registers.
 - `setup_data_structures`: Populates two different tables with specific values and pointers, and modifies several global variables.
 - `update_table_entry`: Searches a table for a specific pointer and, if not found, updates a table entry with a value and its preceding word.
 - `initialize_function_pointer_table`: Populates a table with alternating entries of a routine address and a constant value.
 - `wait_for_pointer`: Enters a loop that waits until a specific pointer is found within a table.
 - `update_list_with_mask`: Iterates through a table and copies entries to a destination, performing bitwise shifts or arithmetic on data based on a threshold.
-- `compare_and_move_data`: The routine compares a value against a constant and moves data between a register and a memory location based on the result.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 

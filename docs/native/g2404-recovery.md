@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (1008464 top-level bytes in 124 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 11 raw-word lines |
-| Functions named and described | pass, 1859 of 1859 named (0 author symbols), 1859 of 1859 described (53 by rule, 1785 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 10282 of 10295 (99.87%) |
-| Recovered without load address (counted in proof 1, flagged) | 3736 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 23057 of 23456 instructions identical in start and length, 0 mismatches |
+| Bytes classified (1042196 top-level bytes in 200 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 23 of 23 units identical (bytes and relocations), 9 raw-word lines |
+| Functions named and described | FAIL, 1843 of 3548 named (0 author symbols), 1843 of 3548 described (52 by rule, 1770 by the local model) |
+| Executed addresses (reference run) in recovered, described code | FAIL, 9934 of 18728 (53.04%) |
+| Recovered without load address (counted in proof 1, flagged) | 211346 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 45540 of 45541 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 617423 |
-| code | 77852 |
-| data | 278077 |
-| padding | 32552 |
+| asset | 202253 |
+| code | 131318 |
+| data | 673499 |
+| padding | 32566 |
 | unused | 2560 |
 
 ## Code units
@@ -28,19 +28,105 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Base Jumpers (1994)(Rasputin)[a3].adf:BaseJump | 13 | 182 | 7 |
-| EndCLI | 2 | 117 | 2 |
-| lowlevel.library | 1 | 371 | 18 |
-| mathtrans.library | 17 | 830 | 97 |
+| EndCLI | 2 | 182 | 3 |
+| lowlevel.library | 1 | 1080 | 61 |
+| mathtrans.library | 17 | 848 | 106 |
 | Base Jumpers (1994)(Rasputin)[a3].adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4877 | 770 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4878 | 771 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 167 | 23 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 8695 | 542 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 8207 | 399 |
-| level0.aaf.sq1 (raw code file, load address unknown) | 1 | 0 | 0 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 10655 | 784 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11803 | 821 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 741 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7692 | 1 |
+| Base Jumpers (1994)(Rasputin)[a3].adf:BaseJump#unpacked | 11 | 7303 | 969 |
+| BJ50.map.sq#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| BJ43.map.sq#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| BJ10.map.sq#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| BJ23.map.sq#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| BJ42.map.sq#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| BJ22.map.sq#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| BJ41.map.sq#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| BJ21.map.sq#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| BJ40.map.sq#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Bjsprites.aaf#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| BJ20.map.sq#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
 
 ## Cases handled
 
 - base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level3.aaf.sq0: high-entropy data file (7.64 bits/byte), classified as packed data
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ40.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (648 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level3.aaf.sq1: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (3608 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ01.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (776 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level3.aaf.sq2: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (3188 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level3.aaf.sq3: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1900 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level3.aaf.sq4: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (2300 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ20.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (768 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ70.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1912 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level1.aaf.sq1: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (4064 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level1.aaf.sq2: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (2932 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level1.aaf.sq3: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (3444 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level1.aaf.sq4: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1752 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/Bj0tiles.aaf.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (19976 -> 40434 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/select.aaf: (Pac.Pic.) Data Cruncher (xfd)-packed, unpacked with ancient (19796 -> 57764 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/Bj1tiles.aaf.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (13996 -> 34344 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ00.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (552 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/Bj2tiles.aaf.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (23096 -> 37476 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ50.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1884 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/Bj3tiles.aaf.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (17684 -> 44436 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ30.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1312 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ43.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (2208 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/hopper.aaf: (Pac.Pic.) Data Cruncher (xfd)-packed, unpacked with ancient (2308 -> 6564 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/bj500font.aaf.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1244 -> 3154 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/Ron.aaf: (Pac.Pic.) Data Cruncher (xfd)-packed, unpacked with ancient (17764 -> 40164 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/track.aaf: (Pac.Pic.) Data Cruncher (xfd)-packed, unpacked with ancient (10494 -> 41124 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ10.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1664 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ23.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1760 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ70.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (676 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ42.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1904 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ03.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1916 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ50.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (572 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level4.aaf.sq1: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (4176 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level4.aaf.sq2: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (3524 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ22.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1656 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level4.aaf.sq3: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (3348 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level4.aaf.sq4: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (2960 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ30.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (860 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ43.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (800 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level2.aaf.sq1: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (4336 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ41.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (2264 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level2.aaf.sq2: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (3160 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ02.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1924 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level2.aaf.sq3: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (3012 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level2.aaf.sq4: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1780 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/Rlogo.aaf: (Pac.Pic.) Data Cruncher (xfd)-packed, unpacked with ancient (4048 -> 10404 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ10.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (648 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ23.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (820 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level0.aaf.sq1: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (3736 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ21.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (2196 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level0.aaf.sq2: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (4064 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level0.aaf.sq3: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (3680 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level0.aaf.sq4: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (3612 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ42.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (812 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ03.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (776 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ40.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1980 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ01.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (2028 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/Bj4tiles.aaf.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (24584 -> 41478 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/Bj5tiles.aaf.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (21216 -> 44610 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/Bjsprites.aaf: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (68080 -> 154306 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ22.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (800 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ20.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (2120 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/Bj7tiles.aaf.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (7472 -> 15030 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/select2.aaf: (Pac.Pic.) Data Cruncher (xfd)-packed, unpacked with ancient (21004 -> 57764 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ41.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1020 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ02.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (800 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/creds.aaf: (Pac.Pic.) Data Cruncher (xfd)-packed, unpacked with ancient (19938 -> 31364 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ00.map.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (2044 -> 5704 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJHSFont.aaf.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (4376 -> 12584 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level5.aaf.sq1: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (2804 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ21.qtv.sq: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (780 -> 5702 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level5.aaf.sq2: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (2248 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level5.aaf.sq3: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (2284 -> 10752 bytes)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level5.aaf.sq4: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (2212 -> 10752 bytes)
 - reference run failed (Karl 4 Nov 2026): run ext slid through memory (an address: 144 64 KB pages each with >= 29491 distinct PCs executed, 2359296 of its 2360761 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
 - reference run failed (Karl 4 Nov 2026): run play-long-joy slid through memory (an address: 144 64 KB pages each with >= 29491 distinct PCs executed, 2359296 of its 2360761 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
 - reference run failed (Karl 4 Nov 2026): run play-long-keys slid through memory (an address: 144 64 KB pages each with >= 29491 distinct PCs executed, 2359296 of its 2360761 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
@@ -49,9 +135,22 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address (play-rs-x25k): 165 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-x25k): 2814 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-x25k): 2545 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/level0.aaf.sq1: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- 8433 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 2 first-run image unit(s) in 1 version group(s); 0 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJump: crunched executable decrunched by XFDMaster (CrunchMania Normal (xfd), 130908 -> 350024 bytes), 167 of 168 windows confirmed in reference RAM: recovered as a hunk executable
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ50.map.sq#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ43.map.sq#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ10.map.sq#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ23.map.sq#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ42.map.sq#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ22.map.sq#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ41.map.sq#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ21.map.sq#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ40.map.sq#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/Bjsprites.aaf#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJumpers/BJ20.map.sq#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 call target
 - base jumpers (1994)(rasputin)[a3]/Base Jumpers (1994)(Rasputin)[a3].adf:BaseJump: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
-- 1 never-loaded region(s), 3736 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+- 11 never-loaded region(s), 211346 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
@@ -78,27 +177,71 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_and_execute`: The routine copies a block of data from one location to another and then calls a function via a pointer.
+- `sub_1_0002`: undescribed.
 
 ### lowlevel.library
 
 - `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d0, then returns.
+- `sub_0004`: undescribed.
 - `initialize_device_control_structure`: Initializes a control structure by setting multiple member values, including clearing several offsets and setting specific byte and word constants.
 - `increment_structure_word`: Library code that increments a word stored at an offset from a pointer.
+- `sub_02D4`: undescribed.
+- `sub_02DC`: undescribed.
+- `sub_033A`: undescribed.
+- `sub_03E2`: undescribed.
+- `sub_043C`: undescribed.
 - `tiny_addq_moveq_rts`: Small routine of 3 instructions that adds 1 to (a1), then loads 0 into d0, then returns.
+- `sub_04F0`: undescribed.
+- `sub_04FC`: undescribed.
+- `sub_0514`: undescribed.
+- `sub_0536`: undescribed.
+- `sub_0558`: undescribed.
 - `update_device_status`: Library code that calls several library functions to update a structure with a value and a status byte.
 - `call_library_vector_570`: Library stub: loads a library base from a global variable and calls the library function at offset minus 570 of that base, returning its result to the caller.
 - `return_tristate_check_result`: Library code that calls two library functions and returns zero, one or minus one, depending on whether the first and second checks succeed.
+- `sub_0C10`: undescribed.
+- `sub_0C32`: undescribed.
+- `sub_0CC8`: undescribed.
+- `sub_0CD2`: undescribed.
+- `sub_0D08`: undescribed.
+- `sub_0D34`: undescribed.
+- `sub_0D72`: undescribed.
+- `sub_0E10`: undescribed.
+- `sub_0E28`: undescribed.
+- `sub_0E3C`: undescribed.
+- `sub_0E5A`: undescribed.
+- `sub_0E72`: undescribed.
+- `sub_0EA6`: undescribed.
+- `sub_0EC6`: undescribed.
+- `sub_0ED4`: undescribed.
+- `sub_0EF0`: undescribed.
 - `call_conditional_function`: Library code that checks a bit in a byte and, if not set, calls a function via a pointer from a structure.
 - `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `sub_0F30`: undescribed.
+- `sub_0F94`: undescribed.
+- `sub_0FD0`: undescribed.
+- `sub_100C`: undescribed.
+- `sub_102E`: undescribed.
+- `sub_1058`: undescribed.
+- `sub_1680`: undescribed.
 - `update_keyboard_status`: Library code that processes data from a serial register to update a status structure and executes a linked list of handler routines.
 - `update_status_and_execute_handlers`: This library code updates a value in a structure based on bitwise conditions and then walks a linked list of handlers to execute them if a specific comparison is met.
 - `call_handler_list`: The library code checks a condition against a value in a structure and, if met, walks a linked list of handlers to execute them.
 - `call_each_handler_in_list`: Library code that walks a linked list of handler nodes from the given pointer, calling the function at offset 18 of each node until the list ends.
+- `sub_1734`: undescribed.
+- `sub_173C`: undescribed.
+- `sub_178E`: undescribed.
+- `sub_17A6`: undescribed.
+- `sub_17CC`: undescribed.
 - `update_state_and_notify`: Library code that manages a structure by decrementing a counter and updating a 32-bit state value.
 - `store_state_and_notify_changes`: Library code that stores a 32-bit state value at offset 46 of the structure, calling a routine first when the top nibble changes from a non-zero value.
 - `process_bitfield_data`: This library code iterates through a data structure, performing bitwise checks and copying values until a specific termination condition is met.
 - `process_input_loop`: The library code iterates through a data structure, performing bitwise checks and copying values until a specific termination condition is met.
 - `post_input_event_message`: Library code that builds an input event record from the code in register D0, setting flag bits when D0 matches a stored value or equals 120, and sends it through library calls.
+- `sub_1902`: undescribed.
+- `sub_1988`: undescribed.
+- `sub_19E2`: undescribed.
+- `sub_1A16`: undescribed.
 
 ### mathtrans.library
 
@@ -171,6 +314,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `invoke_callback_and_return`: The library code receives a pointer in A0 and a value in D0, calls the routine pointed to by A0, and returns the value originally in D0 unchanged.
 - `call_indirect_return_d0`: The library code receives a function pointer in A0 and a value in D0, calls the routine pointed to, and then returns the value that was in D0 on entry.
 - `return_passed_value`: Library code that calls a routine via a pointer in a register and returns the original value from another register.
+- `sub_1_0032`: undescribed.
+- `sub_1_003A`: undescribed.
+- `sub_1_0042`: undescribed.
+- `sub_1_004A`: undescribed.
+- `sub_1_0052`: undescribed.
+- `sub_1_005A`: undescribed.
+- `sub_1_0062`: undescribed.
+- `sub_1_006A`: undescribed.
+- `sub_1_0072`: undescribed.
 - `execute_callback_and_return_2`: This routine calls another routine via a pointer and returns the original value held in a data register.
 - `invoke_callback_and_return_simple`: Library code calls a routine via a pointer and returns the value originally held in D0.
 - `invoke_callback_and_return_d0`: Library code that calls a routine via a pointer in a register and returns the original value from a data register.
@@ -208,6 +360,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `initialize_system_subsystems`: Initializes various system libraries and data structures by calling multiple indirect routines through a global pointer.
 - `cleanup_subsystems_and_resources`: Clears a block of memory, resets several global pointers to a common base, and performs conditional cleanup of various data structures and libraries.
+- `sub_03DE`: undescribed.
 - `teardown_system_subsystems`: Clears specific global pointers and strings, then iterates through a table of subsystem pointers to call their respective cleanup routines.
 - `initialize_and_cleanup_subsystems`: Clears a block of memory, resets several global pointers to a common base, and performs conditional cleanup of various data structures and linked lists.
 - `initialize_and_clear_data_structures`: Clears a block of memory and updates several global integer values.
@@ -1018,7 +1171,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `allocate_and_execute_pointer`: Allocates system memory and then executes a routine via a function pointer retrieved from a global variable.
 - `initialize_complex_data_structures`: Allocates a memory block and populates it by updating multiple values and pointers via specific offsets.
 - `manage_memory_and_bitstreams`: Performs floating point math, allocates and initializes memory, and manages bitstreams and color registers.
-- `process_system_subsystems`: Updates floating point state, executes multiple routines, performs floating point math, and processes system data.
+- `sub_02A0`: undescribed.
 - `request_memory_block_2`: Requests a memory allocation and updates several pointers and counters using the returned address.
 - `execute_indirect_call`: Performs a single indirect function call.
 - `load_address_lea`: Loads a relative address into an address register.
@@ -1051,7 +1204,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `allocate_multiple_buffers`: Allocates several memory blocks and initializes them by updating various pointers and counters via offsets.
 - `allocate_buffers_and_update_sprites`: Allocates several memory blocks, initializes them via offsets, and updates sprite attributes through a hardware register.
 - `perform_math_and_iterate`: Performs floating point operations, allocates a memory block, and walks a table of function pointers.
-- `update_floating_point_state`: Performs a sequence of floating point calculations and updates system data through a series of nested subroutines.
+- `sub_08BA`: undescribed.
 - `configure_dma_and_compare`: Allocates memory, configures DMA channels, and compares two consecutive words from a global variable.
 - `allocate_and_configure_dma_2`: Allocates memory blocks and configures DMA channels by writing to hardware registers.
 - `execute_math_and_copy`: Executes floating point math, allocates a memory block, and copies two registers into memory locations pointed to by a register.
@@ -1065,11 +1218,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `configure_dma_memory`: Allocates memory blocks and configures DMA channels by writing to a hardware register.
 - `allocate_and_call`: Allocates a memory block and performs an indirect function call.
 - `perform_math_operations`: Executes floating point math and allocates a memory block.
-- `process_system_floating_point`: Performs floating point math and manages system data through multiple subroutines.
+- `sub_0CB8`: undescribed.
 - `initialize_memory_buffers_2`: Allocates a memory block and updates several indirect pointers and memory addresses.
 - `store_byte_via_pointer_19`: Copies a single byte from a register into a memory location pointed to by a value stored in another register.
 - `update_memory_and_registers`: Performs floating point operations, allocates memory, and updates various memory values and register values.
-- `process_system_data_2`: Performs floating point math and data manipulation while managing memory and system processing routines.
+- `sub_0E7A`: undescribed.
 - `update_complex_data`: Performs floating point math, allocates memory, and updates a global pointer based on a word comparison.
 - `execute_complex_tasks`: Performs floating point math, allocates memory, and configures DMA channels.
 - `process_complex_data_update`: Compares two consecutive words, performs floating point math, executes an indirect function call, and writes a byte to a global pointer before incrementing it.
@@ -1081,7 +1234,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `perform_logic_allocation`: Allocates memory and executes a routine that performs two subroutine calls as part of a larger sequence.
 - `setup_dma_block`: Allocates memory blocks, updates pointers via offsets, and enables DMA channels through a hardware register.
 - `process_complex_tasks`: Performs floating point math, allocates memory, and executes an indirect function call.
-- `execute_complex_math`: Performs floating point math, allocates memory, and executes several data manipulation and system processing routines.
+- `sub_1196`: undescribed.
 - `compare_and_load_byte`: Loads a constant into a register, fetches a byte from a pointer, and compares two consecutive words from a global variable.
 - `fetch_and_manage_memory`: Fetches a single byte from a memory location and performs complex memory management and pointer updates.
 - `increment_pointer_and_load_byte`: Increments a pointer stored in memory and then loads a byte from the resulting address into a register.
@@ -1128,7 +1281,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_hardware_logic`: Updates sprite attributes and manages system logic while interacting with hardware registers.
 - `update_pointer_via_indirect_register_3`: Loads a value from a memory location pointed to by an indirect register into another register.
 - `perform_math_and_hardware_update`: Performs floating point operations, compares words from a global variable, and updates hardware registers.
-- `execute_complex_operations`: Performs floating point math, allocates a memory block, and executes a sequence of data manipulation routines.
+- `sub_16C6`: undescribed.
 - `iterate_function_table_3`: Loads a byte from a pointer, updates several pointers, and iterates through a table of function pointers.
 - `allocate_and_update_pointers_5`: Allocates a memory block, updates several pointers using specific offsets, and increments a value at a memory location.
 - `negate_and_store_byte_2`: Negates the value in a register and stores the result into a memory location pointed to by another register.
@@ -1210,6 +1363,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `allocate_and_initialize_memory_block`: Allocates a new memory block and updates several pointers and counters via offsets.
 - `execute_subroutine_3`: The routine performs a short sequence of operations.
 - `compare_and_set_flag`: The routine reads two consecutive words pointed to by a global variable and compares them.
+- `sub_2D50`: undescribed.
+- `sub_2D5C`: undescribed.
 - `transfer_memory_block`: Copies a block of data from one memory location to another using a loop.
 - `decrement_and_conditionally_return`: Decrements a 16-bit word in register d1 and returns immediately if the result is zero; otherwise, it loads the value one into register d3 and returns.
 - `test_registers_and_branch`: It performs conditional branches based on the status register, tests the word in d1 and branches, and tests the word in d0 and branches.
@@ -1220,10 +1375,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `compare_geq_and_set_flag`: The routine reads two consecutive words pointed to by a global variable and tests if the second is less than or equal to the first.
 - `write_byte_and_increment_pointer`: Writes a single byte from a register to the memory location stored in a global variable and then increments that pointer.
 - `tiny_moveq_move_rts_2`: Small routine of 3 instructions that loads 255 into d0, then copies d0 to (a3), then returns.
+- `sub_2DEE`: undescribed.
+- `sub_2DFA`: undescribed.
+- `sub_2E00`: undescribed.
+- `sub_2E0A`: undescribed.
+- `sub_2E10`: undescribed.
+- `sub_2E1C`: undescribed.
+- `sub_2E22`: undescribed.
 - `write_byte_via_pointer_2`: Stores a single byte from a register into a memory address held in another register.
 - `transfer_byte_to_pointer`: Copies a single byte from a register into a memory location specified by a pointer in another register.
 - `transfer_byte_via_pointer`: Copies a single byte from a register into a memory location specified by a pointer stored in another register.
 - `store_byte_via_pointer_28`: Writes a single byte from a register into a memory location pointed to by another register.
+- `sub_2EC2`: undescribed.
 - `execute_unnamed_subroutine_4`: Executes a routine that performs two unnamed routine calls.
 - `manage_memory_data`: Allocates a memory block and executes a routine that performs two calls.
 - `store_register_to_memory_5`: Copies the contents of a data register into a memory location pointed to by another register.
@@ -1237,11 +1400,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `allocate_memory_blocks_2`: Allocates memory blocks and updates several indirect values and pointers using offsets.
 - `allocate_memory_blocks`: Allocates memory blocks by calling a management routine and updates several indirect values and pointers using specific offsets.
 - `allocate_memory_and_execute`: Allocates memory blocks and updates indirect values and pointers using offsets while executing two unnamed subroutines.
+- `sub_31A8`: undescribed.
 - `allocate_memory_blocks_3`: Calls a routine to allocate memory blocks and updates several indirect values and pointers using offsets.
 - `transfer_register_data`: Copies data between registers and updates pointers via stack-based helper routines.
 - `transfer_register_values`: Copies a value from one register to another and performs two small subroutines.
 - `tiny_move_movea_rts`: Small routine of 3 instructions that copies d4 to d3, then copies (a7)+ to a3, then returns.
 - `tiny_moveq_movea_rts`: Small routine of 3 instructions that loads 0 into d3, then copies (a7)+ to a3, then returns.
+- `sub_321C`: undescribed.
 - `execute_short_sequence_3`: A very brief routine consisting of five instructions.
 - `execute_nested_subroutines`: Performs a sequence of operations involving multiple subroutine calls.
 - `execute_nested_subroutines_3`: Triggers a sequence of multiple nested subroutine calls.
@@ -1282,16 +1447,40 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `perform_small_task`: Executes a small routine of six instructions.
 - `call_small_task`: Calls another routine to perform a small task.
 - `write_byte_to_memory`: Copies a single byte from a source address to a destination address.
+- `sub_420E`: undescribed.
+- `sub_4212`: undescribed.
+- `sub_4216`: undescribed.
+- `sub_421A`: undescribed.
+- `sub_421E`: undescribed.
+- `sub_4222`: undescribed.
+- `sub_4226`: undescribed.
+- `sub_422A`: undescribed.
+- `sub_422E`: undescribed.
+- `sub_4232`: undescribed.
+- `sub_4236`: undescribed.
 - `execute_small_task`: calls another routine that executes a small sequence of instructions.
 - `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
 - `copy_byte_to_memory_5`: Copies a single byte from a source address to a destination address.
+- `sub_4290`: undescribed.
+- `sub_42A6`: undescribed.
+- `sub_42E4`: undescribed.
+- `sub_431E`: undescribed.
+- `sub_434E`: undescribed.
+- `sub_435C`: undescribed.
+- `sub_43AC`: undescribed.
 - `execute_two_instructions`: Executes a routine consisting of two instructions.
 - `call_library_vector_348`: Library stub: loads a library base from a global variable and calls the library function at offset minus 348 of that base, returning its result to the caller.
 - `call_library_vector_342`: Library stub: loads a library base from a global variable and calls the library function at offset minus 342 of that base, returning its result to the caller.
 - `update_pointer_via_indirect_call`: Loads a value from a memory location into a register and uses it as an address to call another routine.
+- `sub_43FA`: undescribed.
+- `sub_440C`: undescribed.
+- `sub_4412`: undescribed.
 - `call_single_library`: Executes five instructions including a call to a library function.
 - `store_byte_via_pointer_23`: stores a byte from a register into a memory location pointed to by another register.
+- `sub_4438`: undescribed.
 - `copy_byte_to_memory_4`: Copies a single byte from a source address into a destination address.
+- `sub_4458`: undescribed.
+- `sub_44AE`: undescribed.
 - `execute_complex_subroutine`: Performs a sequence of operations that includes a routine performing two unnamed calls.
 - `execute_subroutine_sequence_3`: Executes a sequence of subroutines including a small routine that loads a constant into a register.
 - `tiny_moveq_rts_2`: Small routine of 2 instructions that loads 74 into d0, then returns.
@@ -1308,15 +1497,33 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_floating_point_and_library`: Calculates floating point values and accesses a library function while updating a pointer via an indirect register.
 - `clear_register_and_return_5`: Performs a sequence of operations involving two unnamed routine calls and clears a register to zero before returning.
 - `clear_register_and_return`: Clears a register to zero and returns from the subroutine.
+- `sub_4A8C`: undescribed.
+- `sub_4AA6`: undescribed.
+- `sub_4AB2`: undescribed.
+- `sub_4ABA`: undescribed.
+- `sub_4AC0`: undescribed.
+- `sub_4AD6`: undescribed.
+- `sub_4AE2`: undescribed.
+- `sub_4AEE`: undescribed.
+- `sub_4AFA`: undescribed.
+- `sub_4B06`: undescribed.
+- `sub_4B10`: undescribed.
+- `sub_4B40`: undescribed.
+- `sub_4B46`: undescribed.
 - `process_logic_tasks`: Executes a sequence of internal tasks to manage memory and pointers.
 - `execute_logic_tasks_2`: Processes a sequence of internal tasks and manages memory and pointers.
 - `update_pointer_offsets_2`: Increments a value stored at a memory location and updates several pointers by applying specific offsets.
+- `sub_4BA8`: undescribed.
+- `sub_4BB2`: undescribed.
+- `sub_4BD0`: undescribed.
 - `execute_logic_and_offsets`: Processes a sequence of internal tasks and updates several pointers by applying specific offsets.
 - `allocate_and_update_pointers_3`: Allocates a memory block, updates several pointers by applying specific offsets, and increments a value at a memory location.
 - `update_pointer_offsets_3`: Increments a value stored at a memory location and updates several pointers by applying specific offsets.
 - `modify_pointer_data`: Allocates a memory block and updates several pointers by applying specific offsets while incrementing a memory value.
+- `sub_4D04`: undescribed.
 - `modify_pointer_data_2`: Updates several pointers by applying specific offsets while incrementing a memory value.
 - `nop_padding_2`: This routine is empty and consists only of no-operation instructions used as padding within the executable segment.
+- `sub_4D34`: undescribed.
 - `execute_subroutine_5`: Performs a short sequence of instructions.
 - `increment_pointer_list`: Updates several pointers by applying specific offsets and increments a value at a memory location.
 - `store_byte_indirect`: Stores a single byte from a data register into a memory location pointed to by an address register.
@@ -1324,11 +1531,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_hardware_update_routine`: Calls a routine that updates sprite attributes and manages system logic via hardware registers.
 - `execute_logic_tasks_4`: Processes a sequence of internal tasks, manages memory and pointers, and updates several pointers by applying specific offsets.
 - `process_logic_and_offsets`: Executes a sequence of internal tasks and updates several pointers by applying specific offsets.
+- `sub_4DCE`: undescribed.
+- `sub_4DDE`: undescribed.
 - `allocate_icon_data`: Allocates a memory block and initializes it with data from a specific icon resource.
 - `allocate_and_offset_data`: Allocates a memory block and updates various pointers and values through specific offsets.
 - `allocate_and_offset_pointers`: Allocates a memory block, updates various pointers, and increments a value at a memory location through specific offsets.
 - `allocate_and_process_memory`: Allocates a memory block, updates various pointers, and increments values through several offsets.
 - `allocate_icon_data_2`: Allocates a memory block and initializes it with data from a specific icon resource.
+- `sub_4E5C`: undescribed.
+- `sub_4E64`: undescribed.
 - `execute_multiple_logic_tasks`: Executes a sequence of internal tasks and manages memory and pointers through several subroutines.
 - `execute_logic_tasks_3`: Executes a sequence of internal tasks and manages memory and pointers.
 - `execute_logic_and_add`: Executes a routine that performs two subroutines and adds a constant value to a register.
@@ -1339,6 +1550,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_memory_and_logic`: Allocates a memory block and executes a sequence of internal tasks involving memory management and multiple subroutines.
 - `execute_logic_sequence_3`: Performs a sequence of internal tasks involving memory management and multiple subroutine calls.
 - `execute_logic_tasks_minimal`: Processes a sequence of internal tasks.
+- `sub_4F56`: undescribed.
+- `sub_4F80`: undescribed.
+- `sub_4F86`: undescribed.
+- `sub_4FAC`: undescribed.
+- `sub_4FBE`: undescribed.
+- `sub_4FC4`: undescribed.
+- `sub_4FEC`: undescribed.
+- `sub_4FF2`: undescribed.
+- `sub_5034`: undescribed.
+- `sub_5054`: undescribed.
+- `sub_505A`: undescribed.
+- `sub_5070`: undescribed.
 - `process_data_with_library`: Performs a complex sequence of operations and utilizes an Amiga OS library.
 - `update_pointer_via_library`: Updates a pointer stored in a global variable by calling a routine that processes data using an Amiga OS library.
 - `process_library_data`: Executes a sequence of internal tasks and utilizes an Amiga OS library to process data.
@@ -1347,6 +1570,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_pointer_offsets_4`: Allocates a memory block and updates several pointers by applying specific offsets.
 - `allocate_and_update_offsets`: Allocates a memory block and updates several pointers by applying specific offsets.
 - `allocate_memory_only`: Allocates a memory block through a specific routine.
+- `sub_537C`: undescribed.
+- `sub_538E`: undescribed.
 - `call_indirect_via_table`: The routine reads a pointer from a global variable, adds a fixed offset to it, and calls the routine found there.
 - `iterate_function_tables`: Walks a table of function pointers, clears specific table entries when a marker is matched, and executes subroutines.
 - `iterate_table_and_execute`: Walks a table of function pointers and executes a routine that performs two subroutine calls.
@@ -1354,6 +1579,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `increment_global_pointer`: Increments a value stored at a global memory location by one.
 - `invoke_and_allocate_memory`: Invokes a function pointer from a global variable, executes subroutines, and allocates system memory while updating pointers via offsets.
 - `allocate_system_memory`: Allocates memory using a system call and updates pointers through various offsets.
+- `sub_54AC`: undescribed.
 - `allocate_and_initialize_memory`: Allocates a block of memory and populates it by updating multiple values and pointers via specific offsets.
 - `process_memory_and_subroutines`: Allocates a memory block and updates various pointers and values through several offsets.
 - `update_indirect_pointer_6`: Loads a value from a memory location pointed to by a register and stores it into another memory location.
@@ -1364,6 +1590,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_subroutine_8`: Calls an unnamed subroutine and returns.
 - `call_unnamed_routine_12`: Executes a single unnamed subroutine.
 - `calculate_offset_address`: Loads a value from a pointer and compares it to a register.
+- `sub_5638`: undescribed.
 - `modify_register_value`: The routine modifies a register value through a short sequence of instructions.
 - `allocate_and_initialize_buffer`: Requests a memory block and updates several pointers and counters using the returned address.
 - `allocate_initial_buffer`: Requests a memory block and updates several pointers and counters using the returned address.
@@ -1374,6 +1601,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `allocate_and_process_memory_2`: Allocates a memory block and updates several pointers and values through offsets.
 - `execute_unreached_code_2`: Contains a small sequence of instructions that are not reached during normal execution.
 - `execute_unreached_code`: The routine contains a small sequence of instructions that are not reached during normal execution.
+- `sub_5710`: undescribed.
+- `sub_5718`: undescribed.
+- `sub_5732`: undescribed.
+- `sub_5740`: undescribed.
+- `sub_574E`: undescribed.
+- `sub_5758`: undescribed.
+- `sub_5772`: undescribed.
+- `sub_5790`: undescribed.
+- `sub_57A0`: undescribed.
+- `sub_57B8`: undescribed.
+- `sub_57C8`: undescribed.
 - `manage_complex_tasks`: Performs memory management, executes multiple subroutines, and updates various pointers and offsets.
 - `process_linked_list_and_flags`: Walks a linked list of entries pointed to by a global variable, processes each entry, and conditionally clears two words of flags at a pointer location.
 - `process_table_entry`: The routine walks a linked list of entries pointed to by a global variable and processes each entry using another routine.
@@ -1409,6 +1647,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_conditional_logic`: Checks a field of a global variable and, if non-zero, calls a function pointer derived from another field of the global variable before performing floating-point arithmetic and updating pointers.
 - `allocate_indirect_pointers`: Allocates memory blocks by calling a management routine multiple times and updates several indirect values and pointers.
 - `modify_pointer_offsets_3`: Performs multiple memory allocations, updates pointers through various offsets, and executes several library calls and subroutines.
+- `sub_61E6`: undescribed.
 - `modify_pointer_offsets`: Allocates a memory block and updates pointers and values through various offsets.
 - `call_pointer_modifier`: Calls a routine that performs multiple memory allocations and updates pointers through various offsets.
 - `update_memory_pointers`: Allocates memory and performs indirect memory transfers by accessing a library function.
@@ -1419,9 +1658,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `find_current_task`: The routine calls a library function to locate the current task.
 - `locate_system_task`: The routine uses a library function to find a specific task.
 - `allocate_and_update_pointer`: Allocates a memory block, updates a pointer by writing a byte to a memory location, and performs an indirect memory transfer.
+- `sub_638A`: undescribed.
+- `sub_63B8`: undescribed.
 - `update_memory_with_shifted_value`: Loads two values from a pointer, shifts the first, and compares the second to a constant.
 - `maximize_second_word`: The routine compares two words pointed to by a register and, if the second is smaller than the first, copies the first into the second.
 - `minimize_second_word`: The routine compares two words pointed to by a register and, if the first is smaller than the second, copies the first into the second.
+- `sub_640C`: undescribed.
+- `sub_6414`: undescribed.
+- `sub_6422`: undescribed.
+- `sub_642A`: undescribed.
+- `sub_6434`: undescribed.
+- `sub_643E`: undescribed.
+- `sub_646E`: undescribed.
+- `sub_6486`: undescribed.
 - `copy_data_to_pointer`: The routine copies the contents of two registers into memory locations pointed to by a register.
 - `tiny_move_rts`: Small routine of 2 instructions that copies d2 to (a0), then returns.
 - `tiny_move_rts_2`: Small routine of 2 instructions that copies d1 to (a0), then returns.
@@ -1432,12 +1681,25 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_system_logic_and_sprites`: Calls a routine to update hardware and sprite attributes followed by two other subroutines.
 - `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
+- `sub_64F8`: undescribed.
+- `sub_6502`: undescribed.
+- `sub_6546`: undescribed.
+- `sub_6556`: undescribed.
+- `sub_6558`: undescribed.
+- `sub_6572`: undescribed.
+- `sub_657E`: undescribed.
+- `sub_65A0`: undescribed.
+- `sub_65B2`: undescribed.
 - `perform_floating_math`: Allocates memory blocks and performs floating point arithmetic while updating pointers and values through offsets.
 - `perform_floating_point_math_2`: performs a floating point operation using a math library and calls another routine to manage memory and pointers.
 - `execute_math_allocation`: Performs floating point operations using a math library and manages memory and pointers.
 - `allocate_memory_block_2`: allocates a memory block and performs multiple updates to indirect values and pointers via offsets.
 - `allocate_memory_block_3`: Requests a memory allocation from a management routine and stores the resulting pointer into a global variable.
 - `invoke_memory_management`: Calls a routine that allocates a memory block and updates various pointers and counters through multiple offsets.
+- `sub_6654`: undescribed.
+- `sub_6666`: undescribed.
+- `sub_6684`: undescribed.
+- `sub_668A`: undescribed.
 - `initialize_device_struct`: Writes constant bytes to a structure field, computes a pseudo-random sequence, and conditionally calls indirect routines from global structures.
 - `initialize_and_fill_tables`: Writes constant bytes to a series of bytes pointed to by a structure field, computes a pseudo-random sequence using a multiplier and shift, and stores the results into a short table while updating a structure field and setting a flag.
 - `shutdown_devices_and_audio`: The routine clears a base register field, conditionally calls indirect routines from global structures, then writes constants to global variables and clears custom hardware registers for audio channels, performing Amiga OS device and library cleanup calls.
@@ -1455,6 +1717,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `average_bytes_to_output`: The routine processes pairs of input bytes, averages each pair by adding them and shifting right by one, and writes the result to an output byte pointer.
 - `find_short_in_linked_list`: The routine walks a linked list obtained from a global variable, comparing an input short with a field in each node.
 - `allocate_memory_block_4`: allocates a memory block and updates several pointers and values through various offsets.
+- `sub_6FCA`: undescribed.
+- `sub_6FD2`: undescribed.
+- `sub_6FD8`: undescribed.
+- `sub_6FE6`: undescribed.
+- `sub_7002`: undescribed.
+- `sub_700A`: undescribed.
+- `sub_7012`: undescribed.
 - `configure_dma_and_memory`: Allocates multiple memory blocks, updates global pointers, and enables DMA channels by writing to a hardware register.
 - `configure_dma_channels`: Updates a global variable based on table flags and enables DMA channels by writing to a hardware register.
 - `update_flags_from_table`: Reads short values from a structure and updates a global variable using a bit mask.
@@ -1467,6 +1736,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_memory_pointer_2`: Updates a global pointer by calling a memory management routine.
 - `allocate_and_configure_dma`: Allocates a memory block, updates several pointers and values through offsets, and enables DMA channels by writing to a hardware register.
 - `store_pointer_from_register`: The routine copies a pointer from a register into a location derived from a global variable and then returns.
+- `sub_7214`: undescribed.
+- `sub_721E`: undescribed.
 - `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
 - `execute_complex_memory_logic`: Allocates a memory block and performs a sequence of operations involving memory management and pointer updates.
 - `execute_complex_logic_2`: performs a sequence of operations including calls to a routine that manages memory and pointers.
@@ -1499,14 +1770,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `manage_bitstream_and_memory`: Manages memory allocation and deallocation, bitstream buffers, and color registers.
 - `call_alloc_mem`: Library stub: loads its arguments and the exec library base, calls AllocMem and returns its result to the caller.
 - `free_memory_block`: Releases a previously allocated block of memory to the executive library.
-- `update_pointer_via_offset_63`: Adds a constant value to a value stored in a memory location and writes the result back to that same location.
-- `update_pointer_via_offset_64`: Loads a value from a memory location calculated by adding an offset to a global pointer and stores the result back into that same memory location.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `manage_bitstream_memory`: Releases memory blocks, manages a bitstream, and performs stack arithmetic and pointer increments.
 - `release_and_refill_buffer`: Releases a memory block, increments a value at a memory location by an offset, and refills a bit buffer.
 - `update_color_register`: Updates a memory location via a buffer management routine and modifies the color register.
 - `update_pointer_and_buffer`: Updates a memory location by adding an offset to a global pointer, clears a register, and manages a memory buffer.
-- `fetch_and_increment_pointer`: Performs several pointer manipulations including incrementing a pointer in memory and fetching values from updated addresses.
 - `modify_pointer_and_fetch`: Updates a memory location by adding a constant and increments a pointer to fetch a value.
 - `increment_pointer_and_fetch`: Increments a pointer stored in a memory location and then loads the value at that new address into a register.
 - `manage_memory_and_bitstream`: Releases a memory block, increments a value at a memory location by an offset, and refills a bit buffer for a depacker.
@@ -1514,21 +1780,106 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_data_with_memory_calls`: executes a series of instructions and calls a routine to manage memory and pointers.
 - `adjust_stack_pointer`: Adjusts the stack pointer by a constant value.
 - `modify_stack_pointer`: The routine adjusts the stack pointer by a constant value.
+- `sub_81D0`: undescribed.
 - `call_memory_manager_2`: Executes a routine that manages memory allocation and updates various pointers and counters through multiple offsets.
 - `initialize_buffer_pointers`: Allocates a memory block and updates several indirect pointers and constant offsets with the new address, then stores the resulting pointer into a global variable.
+- `sub_8200`: undescribed.
+- `sub_8256`: undescribed.
+- `sub_8270`: undescribed.
+- `sub_829E`: undescribed.
+- `sub_82BC`: undescribed.
+- `sub_8390`: undescribed.
+- `sub_8396`: undescribed.
+- `sub_839E`: undescribed.
+- `sub_83A6`: undescribed.
+- `sub_83AE`: undescribed.
+- `sub_83B6`: undescribed.
+- `sub_83BE`: undescribed.
+- `sub_83EA`: undescribed.
+- `sub_8402`: undescribed.
+- `sub_840C`: undescribed.
 - `initialize_memory_buffers`: Allocates a memory block, updates several indirect pointers, and modifies a set of memory addresses by adding offsets.
 - `modify_pointer_values`: Updates a set of memory addresses by adding offsets to them.
 - `update_buffer_pointer_offset`: Stores a byte from a register into a memory location pointed to by a value stored in another register.
 - `call_unnamed_routine_13`: This routine executes a single call to another routine and then returns.
+- `sub_84F0`: undescribed.
+- `sub_850A`: undescribed.
+- `sub_85DE`: undescribed.
+- `sub_85E6`: undescribed.
+- `sub_8616`: undescribed.
+- `sub_8634`: undescribed.
+- `sub_8694`: undescribed.
+- `sub_870A`: undescribed.
+- `sub_8748`: undescribed.
+- `sub_8764`: undescribed.
+- `sub_8788`: undescribed.
+- `sub_879C`: undescribed.
 - `set_handler_pointer`: The routine stores the address of a global variable and the address of another routine into fields of a structure pointed to by a register, then returns a constant.
 - `clear_and_initialize_fields`: The routine loads a base address from a global variable and writes several constant values to fixed offsets within that structure, clearing some fields and setting others.
+- `sub_8B80`: undescribed.
+- `sub_8B92`: undescribed.
+- `sub_8C44`: undescribed.
+- `sub_8C4A`: undescribed.
+- `sub_8C54`: undescribed.
+- `sub_8C5E`: undescribed.
+- `sub_8C68`: undescribed.
+- `sub_8C7C`: undescribed.
+- `sub_8C90`: undescribed.
+- `sub_8CA4`: undescribed.
+- `sub_8CBE`: undescribed.
+- `sub_8CC8`: undescribed.
+- `sub_8CF6`: undescribed.
+- `sub_8CFA`: undescribed.
+- `sub_8D1A`: undescribed.
+- `sub_8E1A`: undescribed.
+- `sub_8E24`: undescribed.
+- `sub_8E2E`: undescribed.
+- `sub_8E38`: undescribed.
+- `sub_8E42`: undescribed.
+- `sub_8E4C`: undescribed.
+- `sub_8E5E`: undescribed.
+- `sub_8E72`: undescribed.
+- `sub_8E86`: undescribed.
+- `sub_8E9A`: undescribed.
+- `sub_8EAE`: undescribed.
+- `sub_8F04`: undescribed.
+- `sub_8F22`: undescribed.
+- `sub_8F2A`: undescribed.
+- `sub_8F82`: undescribed.
+- `sub_8F98`: undescribed.
+- `sub_8FA8`: undescribed.
+- `sub_8FB4`: undescribed.
+- `sub_8FC0`: undescribed.
+- `sub_8FD0`: undescribed.
+- `sub_8FE6`: undescribed.
 - `release_memory_block`: Releases a block of memory using a system library call.
 - `free_memory_block_2`: The routine calls a library function to release a previously allocated memory block.
+- `sub_924E`: undescribed.
 - `perform_stack_operations`: The routine manipulates the stack by pushing and popping values.
 - `update_pointer_array`: Iterates through a list of pointers and applies specific offsets to each value using a register to track the current position within the array.
 - `calculate_pointer_addresses`: Clears a register and then adds offsets to a set of pointers to calculate new memory addresses.
 - `tiny_movea_rts`: Small routine of 2 instructions that copies 0 to a0, then returns.
 - `apply_pointer_offsets`: Adds offsets to a set of pointers to calculate new memory addresses.
+- `sub_931C`: undescribed.
+- `sub_933A`: undescribed.
+- `sub_9354`: undescribed.
+- `sub_9358`: undescribed.
+- `sub_936C`: undescribed.
+- `sub_9370`: undescribed.
+- `sub_93A8`: undescribed.
+- `sub_93AE`: undescribed.
+- `sub_940A`: undescribed.
+- `sub_9414`: undescribed.
+- `sub_942A`: undescribed.
+- `sub_947E`: undescribed.
+- `sub_9488`: undescribed.
+- `sub_9496`: undescribed.
+- `sub_94A0`: undescribed.
+- `sub_94BE`: undescribed.
+- `sub_94C6`: undescribed.
+- `sub_952E`: undescribed.
+- `sub_9542`: undescribed.
+- `sub_954E`: undescribed.
 - `negate_and_store_byte`: Negates the value in a register and stores the result into a memory location pointed to by another register.
 - `perform_relative_jumps`: Performs a long jump to a relative offset and increments a register pointer before calling another routine.
 - `jump_relative_address`: calculates a relative offset and performs a long jump to a destination address.
@@ -1538,14 +1889,58 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_memory_block_2`: fills a specific memory range with zeros using a loop.
 - `transfer_register_to_memory`: Copies the contents of a data register to a memory location pointed to by another register.
 - `nop_padding_3`: This routine is empty and consists of two no-operation instructions.
+- `sub_95E6`: undescribed.
+- `sub_95FE`: undescribed.
+- `sub_9616`: undescribed.
+- `sub_962C`: undescribed.
+- `sub_9646`: undescribed.
+- `sub_968A`: undescribed.
+- `sub_9690`: undescribed.
+- `sub_9696`: undescribed.
 - `compare_and_branch`: The routine compares two values and branches based on the result.
+- `sub_A624`: undescribed.
+- `sub_A660`: undescribed.
+- `sub_A686`: undescribed.
+- `sub_A698`: undescribed.
+- `sub_A6C2`: undescribed.
+- `sub_A6F0`: undescribed.
+- `sub_A72E`: undescribed.
+- `sub_A732`: undescribed.
+- `sub_A73E`: undescribed.
+- `sub_A7A4`: undescribed.
+- `sub_A812`: undescribed.
+- `sub_A888`: undescribed.
+- `sub_A8A0`: undescribed.
+- `sub_A946`: undescribed.
+- `sub_A956`: undescribed.
 - `store_register_to_memory`: The routine stores the contents of a register into a memory location.
 - `load_value_to_register`: The routine loads a constant value into a register.
 - `pad_with_nops`: Consists only of no-operation instructions, with no logic, memory writes, hardware access or calls beyond a single padding call.
 - `nop_padding_4`: This routine is empty and consists only of two no-operation instructions.
+- `sub_AA6E`: undescribed.
+- `sub_AAAA`: undescribed.
+- `sub_AAC4`: undescribed.
+- `sub_AAD8`: undescribed.
+- `sub_AAF4`: undescribed.
+- `sub_AAF8`: undescribed.
+- `sub_AB54`: undescribed.
+- `sub_ABCE`: undescribed.
+- `sub_AC0E`: undescribed.
+- `sub_AC24`: undescribed.
+- `sub_AC3A`: undescribed.
+- `sub_ACC2`: undescribed.
+- `sub_ACEC`: undescribed.
+- `sub_AD30`: undescribed.
+- `sub_AEA0`: undescribed.
+- `sub_AF3E`: undescribed.
+- `sub_AF4C`: undescribed.
+- `sub_AF6E`: undescribed.
+- `sub_AFB8`: undescribed.
+- `sub_B070`: undescribed.
 - `open_and_close_library`: Opens a library and then calls a routine to close it.
 - `perform_unknown_operation`: The routine performs a short sequence of instructions without a clear side effect on global state.
 - `call_close_library`: Library stub: loads its arguments and the exec library base, calls CloseLibrary and returns its result to the caller.
+- `sub_BD78`: undescribed.
 - `empty_stub_8`: Empty routine: returns to the caller immediately without doing anything.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -1555,6 +1950,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `manage_system_state`: Performs complex state management including closing input devices, updating structure pointers, handling DMA, and managing memory and global variables.
 - `initialize_input_device`: The routine clears a block of 40 words pointed to by a1, then calls a routine via a global variable to obtain a value which it stores at offset 32 in the a1 structure.
 - `close_input_device`: The routine calls two routines via a global variable and then calls another routine via the same global variable.
+- `sub_038E`: undescribed.
+- `sub_03AE`: undescribed.
+- `sub_0400`: undescribed.
 - `update_byte_via_pointer`: Updates a byte in memory by writing a value from a register through a pointer.
 - `write_byte_via_pointer_3`: Stores a single byte from a register into a memory location using a pointer and then calls another routine.
 - `update_indirect_byte`: Stores a byte from a register into a memory location using a pointer and then calls another routine.
@@ -1565,13 +1963,35 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `walk_byte_table`: Walks a byte table until a zero byte is found, updating pointers and memory via a linked list search and library calls.
 - `increment_pointer_3`: adds a constant value to a pointer stored in a register.
 - `update_pointer_table_2`: Updates Blitter hardware registers and modifies memory by iterating through a table of bytes to update associated pointers.
-- `update_blt_registers`: Updates various Blitter hardware registers and modifies memory via a byte table search.
+- `sub_0698`: undescribed.
+- `sub_078E`: undescribed.
+- `sub_07F4`: undescribed.
+- `sub_0812`: undescribed.
+- `sub_0816`: undescribed.
+- `sub_0846`: undescribed.
+- `sub_0896`: undescribed.
 - `check_flags_and_call_indirect`: Tests two words at fixed offsets from a global variable and calls another routine if either is non-zero, then calls a function obtained via a global variable.
 - `check_two_flags_and_return`: The routine tests two words located at fixed offsets from a global variable referenced via a5 and calls another routine if either is non-zero, then returns zero.
 - `return_zero_if_flag_set`: The routine calls another routine and returns its result, but forces the return value to zero when a zero flag condition is true.
+- `sub_0A72`: undescribed.
+- `sub_0AF4`: undescribed.
+- `sub_0B00`: undescribed.
+- `sub_0B3E`: undescribed.
+- `sub_0B72`: undescribed.
+- `sub_0B82`: undescribed.
+- `sub_0BA2`: undescribed.
+- `sub_0BF0`: undescribed.
+- `sub_0BF6`: undescribed.
+- `sub_0C56`: undescribed.
+- `sub_0C5A`: undescribed.
+- `sub_0C74`: undescribed.
+- `sub_0C84`: undescribed.
+- `sub_0CAA`: undescribed.
+- `sub_0D36`: undescribed.
 - `insert_into_linked_list`: Checks two short fields in a structure and calls another routine for each non-zero field, then calls it once more.
 - `link_list_insert`: The routine checks two short fields in a structure and calls another routine for each non-zero field, then calls it once more.
 - `search_linked_list`: The routine loads a pointer from a global variable via a5 and walks a linked list comparing the word in d1 with a word at offset 8 of each node.
+- `sub_0E02`: undescribed.
 - `process_entity_update_list`: The routine walks a linked list of structures referenced through a global variable and updates fields inside each node, swapping two short fields and copying several words from one node to another based on non-zero flags.
 - `compute_sprite_frame_and_bounds`: The routine reads several words from a structure pointed to by a global variable, computes an index, walks a linked list via an indirect call and then updates a destination structure in a4 with size, position, frame and flag words derived from the source structure in a0 and the values in d1/d2.
 - `patch_code_bytes`: Iterates over a small range of bytes starting at its own address and rewrites each byte by expanding a bit pattern.
@@ -1593,6 +2013,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `fill_struct_from_table`: Writes constant words to a structure pointed to by a register and then iterates over a bitmask, calling a library routine for each set bit and storing returned values into the structure.
 - `fill_struct_from_table_scaled`: Initializes several fields of a structure from another structure and then iterates over a bitmask, calling a library routine for each set bit and storing returned values and scaled indices into the structure.
 - `fill_struct_with_repeat`: Initializes fields of a structure from another structure and iterates over a bitmask, calling a library routine for each set bit and repeating the call a number of times derived from a register, updating structure fields each time.
+- `sub_1936`: undescribed.
+- `sub_1956`: undescribed.
+- `sub_195A`: undescribed.
+- `sub_19EE`: undescribed.
 - `expand_bitfields_to_pointers`: Reads bitfields from a structure and expands them into pointer values and short flags, writing results into arrays within the same structure using a loop controlled by a counter.
 - `initialize_state_and_call_indirect`: Clears several global variables, stores an input word and a derived index, then calls another routine and uses its 64-bit result to fill more global variables with sums and shifted values before returning a status flag.
 - `conditional_calls_and_return`: The routine calls another routine four times, then conditionally calls another routine based on a global pointer, and finally returns zero or the result of a further conditional call depending on a different global pointer.
@@ -1601,32 +2025,78 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `trigger_sprite_buffer_update`: Calls a routine to update sprite attributes and populate a buffer with constant word data.
 - `trigger_entity_synchronization`: Executes a single instruction to call a routine that manages entity data structures and buffer synchronization.
 - `clear_word_flags`: Checks two words pointed to by a pointer, conditionally calls another routine, then clears both words to zero.
+- `sub_1B08`: undescribed.
+- `sub_1B0C`: undescribed.
 - `update_entity_and_buffer_2`: Copies fields from an entity structure into a destination buffer, performs conditional copies between structures, and interacts with various other data.
 - `return_from_subroutine_20`: Performs a single instruction to return control to the calling function.
 - `fetch_scaled_dword_from_table`: Uses a signed word multiplied by four as an index to retrieve a double word from a table.
+- `sub_1B1C`: undescribed.
+- `sub_1B20`: undescribed.
 - `filter_entity_list`: Iterates through a collection of entities by repeatedly calling a filtering routine.
 - `copy_entity_fields_wrapper`: This routine acts as a wrapper that invokes a routine to copy specific fields from one entity structure to another destination buffer.
+- `sub_1B2C`: undescribed.
+- `sub_1B30`: undescribed.
+- `sub_1B34`: undescribed.
 - `update_entity_state`: Copies data from an entity structure into a temporary buffer and executes a function via a pointer stored within that entity.
 - `dispatch_entity_callback`: Copies data from an entity structure into a temporary buffer and executes a function via a pointer stored within that entity.
 - `clear_conditional_flag`: Clears a global word if a global word and two global integers are equal.
+- `sub_1B44`: undescribed.
 - `execute_empty_jump`: This routine performs a jump to another routine that contains no executable code.
 - `increment_and_call_indirect_2`: Calls a function via a pointer stored in a global variable and increments a value at a memory location by a fixed amount.
+- `sub_1B50`: undescribed.
+- `sub_1B54`: undescribed.
 - `clear_linked_list`: Repeatedly calls another routine to unlink nodes from a list until a global pointer becomes zero.
 - `clear_register_and_return_3`: Loads zero into a register and returns.
+- `sub_1B60`: undescribed.
+- `sub_1B64`: undescribed.
+- `sub_1B68`: undescribed.
+- `sub_1B6C`: undescribed.
+- `sub_1B70`: undescribed.
+- `sub_1B74`: undescribed.
+- `sub_1B78`: undescribed.
+- `sub_1B7C`: undescribed.
 - `update_entity_data_2`: Iterates through a linked list of data structures to modify specific fields.
 - `initialize_structure_data`: Copies a value from one memory location to another and clears multiple fields within two distinct data structures.
+- `sub_1B88`: undescribed.
 - `write_byte_via_pointer_7`: Writes a single byte from a register into a memory location pointed to by another register and then transfers control to another routine.
 - `clear_registers_2`: Clears the contents of two specific registers.
+- `sub_1B94`: undescribed.
+- `sub_1B98`: undescribed.
+- `sub_1B9C`: undescribed.
+- `sub_1BA0`: undescribed.
 - `process_linked_list_until_empty_2_2`: The routine loops while a different global pointer is non-zero, repeatedly calling another routine to conditionally unlink a list node.
 - `setup_sprite_parameters_2`: Reads words from a structure pointed to by a global variable, computes an index, and walks a linked list via an indirect call.
+- `sub_1BAC`: undescribed.
+- `sub_1BB0`: undescribed.
+- `sub_1BB4`: undescribed.
+- `sub_1BB8`: undescribed.
+- `sub_1BBC`: undescribed.
 - `validate_and_free_range_2`: Tests if a register value is between zero and three inclusive and calls a function retrieved from a global variable if successful.
 - `update_packed_data_structure`: Iteratively updates word fields within a structure by performing range checks and writing packed bytes to memory.
+- `sub_1BC8`: undescribed.
+- `sub_1BCC`: undescribed.
+- `sub_1BD0`: undescribed.
+- `sub_1BD4`: undescribed.
+- `sub_1BD8`: undescribed.
+- `sub_1BDC`: undescribed.
+- `sub_1BE0`: undescribed.
+- `sub_1BE4`: undescribed.
+- `sub_1BE8`: undescribed.
+- `sub_1BEC`: undescribed.
+- `sub_1BF0`: undescribed.
 - `calculate_structure_offset`: Returns a signed offset computed by adding a constant to a short field within a structure.
 - `return_offset_from_struct`: Returns a signed offset computed by adding a constant to a short field from a structure pointed to by a register.
 - `fetch_and_synchronize_data`: Synchronizes entity data and fetches a dword from a table using a scaled index.
 - `perform_entity_synchronization`: Manages the synchronization of entity fields and linked structures.
 - `return_synchronized_table_entry`: Synchronizes entity data, fetches a table entry, and returns a constant combined with a value from the stack.
 - `synchronize_entity_data`: Performs extensive data management including linking structures, copying entity fields to buffers, and synchronizing global structure fields.
+- `sub_1E02`: undescribed.
+- `sub_1E6E`: undescribed.
+- `sub_1E7C`: undescribed.
+- `sub_1F28`: undescribed.
+- `sub_217C`: undescribed.
+- `sub_2180`: undescribed.
+- `sub_2184`: undescribed.
 - `return_constant_with_stack`: Returns a constant combined with a value taken from the stack.
 - `link_struct_to_list`: If a flag in a structure is set, it clears a word in another structure, finds the end of a pointer list, and links the two structures into the list with a computed offset.
 - `copy_struct_fields_conditional`: If two pointers in a structure are non-zero and a flag is clear, it copies several bytes and words from one structure to another and then copies a small fixed-size byte block.
@@ -1646,9 +2116,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_entity_data`: Walks a linked list of structures to update fields, manipulates bitplane DMA via hardware registers, and performs conditional blitter copies based on structure values.
 - `update_entity_and_buffer`: Copies fields from an entity structure into a destination buffer, performs conditional copies between structures, and interacts with various library functions and blitter hardware registers.
 - `store_byte_to_memory`: Stores a single byte from a data register into a memory location pointed to by an address register.
+- `sub_2824`: undescribed.
+- `sub_2830`: undescribed.
+- `sub_286A`: undescribed.
 - `copy_entity_fields`: Copies fields from an entity structure into a destination buffer and performs conditional copies between structures.
+- `sub_2886`: undescribed.
+- `sub_28CC`: undescribed.
+- `sub_28DA`: undescribed.
+- `sub_28E6`: undescribed.
+- `sub_28F6`: undescribed.
 - `check_range`: The routine tests whether the input in d1 is between zero and three inclusive and returns zero if the test succeeds, otherwise returns one.
 - `validate_input_range`: Tests whether a value is between zero and three inclusive and returns a status result.
+- `sub_2968`: undescribed.
 - `process_packed_data`: Iteratively updates word fields in a structure, performs range checks, and writes packed bytes to memory.
 - `shift_and_decrement_loop`: The routine repeatedly copies and updates word fields in a structure pointed to by a register, decrements counters, writes a packed word to a pointer, and updates a global variable, looping indefinitely with inner loops that decrement and test word fields.
 - `shift_and_decrement_loop_2`: Repeatedly copies and updates word fields in a structure pointed to by a register while decrementing counters.
@@ -1660,6 +2139,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `fetch_table_entry`: The routine indexes a table located at a fixed offset from the frame pointer using the signed word in d1 scaled by four and returns the dword found at that entry.
 - `tiny_moveq_rts_4`: Small routine of 2 instructions that loads 0 into d0, then returns.
 - `clear_d0_and_return`: The routine loads zero into d0 and returns.
+- `sub_2BEE`: undescribed.
+- `sub_2C0C`: undescribed.
+- `sub_2C84`: undescribed.
 - `update_struct_fields`: The routine reads two pointers from the frame, writes several short fields in the structures they point to using input words and frame-derived words, and updates a nested structure through a pointer chain.
 - `dispatch_table_routines`: Fetches a function pointer from a global variable table and calls the pointed-to routine, then calls three other routines.
 - `call_table_function`: Fetches a function pointer from a global variable table and calls the pointed-to routine, then calls another routine.
@@ -1677,12 +2159,31 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_flags_and_return`: The routine checks a field in a structure pointed to by a global variable, clears several fields in that structure and in another structure pointed to by a global variable, calls another routine, and returns a combined value from two input registers.
 - `transfer_register_data_2`: Copies data between registers and updates pointers using stack-based helper routines.
 - `clear_memory_block`: The routine performs a short sequence of instructions that clears a small portion of memory.
+- `sub_31CC`: undescribed.
+- `sub_3224`: undescribed.
+- `sub_3228`: undescribed.
 - `clear_flag_and_call`: The routine checks a global variable for non-zero, calls another routine, clears two global words, and returns zero.
 - `clear_registers`: The routine clears the contents of two specific registers.
 - `clear_register_value`: Sets a specific register to zero.
 - `clear_register_value_2`: Clears the contents of a specific data register.
+- `sub_3292`: undescribed.
+- `sub_32C2`: undescribed.
+- `sub_32F0`: undescribed.
 - `copy_bytes_and_invoke`: The routine tests a global pointer and a flag, clears the flag, calls a library function, copies thirteen bytes from a global buffer to a structure pointed to by a global variable, calls another routine, and returns the two input registers combined.
 - `move_fields_and_update`: The routine calls another routine, sets a global word, moves fields from a structure pointed to by a global variable into global storage and clears them, calls another routine, invokes a library function with two words read from the structure, modifies a byte and a word in another structure, and returns a constant combined with an input register.
+- `sub_338A`: undescribed.
+- `sub_33A4`: undescribed.
+- `sub_33F0`: undescribed.
+- `sub_33F4`: undescribed.
+- `sub_3402`: undescribed.
+- `sub_3442`: undescribed.
+- `sub_345C`: undescribed.
+- `sub_347A`: undescribed.
+- `sub_3498`: undescribed.
+- `sub_34D8`: undescribed.
+- `sub_3504`: undescribed.
+- `sub_3518`: undescribed.
+- `sub_3550`: undescribed.
 - `clear_byte_buffer`: The routine clears a global word at a fixed offset and then zeroes a block of 1,024 bytes starting at another fixed offset, using a countdown loop.
 - `process_entity_and_pointers`: Copies entity fields to a buffer, executes an unspecified task, and updates a global variable by calling a routine via a loaded pointer.
 - `update_sprite_position_4`: Calculates new coordinates for a sprite by adding an offset to a value stored in memory.
@@ -1708,7 +2209,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_multiple_subroutines`: Initializes a word table, builds a message request table, and performs an infinite wait loop.
 - `copy_byte_via_pointer_4`: Copies a single byte from one memory location to another using a pointer.
 - `copy_byte_and_modify_cop`: Copies a single byte from one memory location to another and modifies a coprocessor register.
+- `sub_44F4`: undescribed.
 - `clear_register_value_3`: sets a register to zero.
+- `sub_455C`: undescribed.
+- `sub_4560`: undescribed.
+- `sub_4564`: undescribed.
+- `sub_4580`: undescribed.
+- `sub_458E`: undescribed.
+- `sub_4596`: undescribed.
 - `call_library_function_3`: Calls a function from a library.
 - `call_library_vector_228`: Library stub: loads a library base from a global variable and calls the library function at offset minus 228 of that base, returning its result to the caller.
 - `call_library_vector_462`: Library stub: loads a library base from a global variable and calls the library function at offset minus 462 of that base, returning its result to the caller.
@@ -1728,45 +2236,234 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_bytes_via_pointers`: Updates a pointer via an offset, stores a byte to a pointer, and stores another byte to a pointer while returning concatenated constants.
 - `execute_nop_padding`: The routine performs no actions.
 - `nop_padding_5`: This routine consists of two no-operation instructions and performs no actions.
-- `store_byte_and_return_2`: The routine copies a byte from a data register to a byte pointed to by a pointer and returns a value formed by concatenating a constant one with another value.
+- `sub_47B0`: undescribed.
+- `sub_487A`: undescribed.
+- `sub_4884`: undescribed.
+- `sub_48B8`: undescribed.
+- `sub_48C0`: undescribed.
+- `sub_48D0`: undescribed.
+- `sub_48F2`: undescribed.
+- `sub_492C`: undescribed.
+- `sub_4954`: undescribed.
+- `sub_498A`: undescribed.
+- `sub_49D6`: undescribed.
+- `sub_4A02`: undescribed.
+- `sub_4A38`: undescribed.
+- `sub_4A60`: undescribed.
+- `sub_4A92`: undescribed.
+- `sub_4AA0`: undescribed.
+- `sub_4AA8`: undescribed.
+- `sub_4AB6`: undescribed.
+- `sub_4ACA`: undescribed.
+- `sub_4B34`: undescribed.
+- `sub_4B8C`: undescribed.
+- `sub_4B94`: undescribed.
+- `sub_4B9C`: undescribed.
+- `sub_4C38`: undescribed.
+- `sub_4C56`: undescribed.
+- `sub_4C74`: undescribed.
+- `sub_4CB2`: undescribed.
+- `sub_4CC6`: undescribed.
+- `sub_4CD2`: undescribed.
+- `sub_4CD8`: undescribed.
+- `sub_4CDE`: undescribed.
+- `sub_4D0C`: undescribed.
+- `sub_4D10`: undescribed.
+- `sub_4D48`: undescribed.
+- `sub_4D62`: undescribed.
+- `sub_4D66`: undescribed.
+- `sub_4D6C`: undescribed.
+- `sub_4DD0`: undescribed.
+- `sub_4DD6`: undescribed.
+- `sub_4DF4`: undescribed.
+- `sub_4E10`: undescribed.
+- `sub_4E2C`: undescribed.
+- `sub_4E4E`: undescribed.
+- `sub_4E54`: undescribed.
+- `sub_4E6C`: undescribed.
+- `sub_4E8E`: undescribed.
+- `sub_4E94`: undescribed.
+- `sub_4EE2`: undescribed.
+- `sub_4EEE`: undescribed.
+- `sub_4EF6`: undescribed.
+- `sub_4EFE`: undescribed.
+- `sub_4F22`: undescribed.
+- `sub_4F68`: undescribed.
 - `initialize_filter_state`: The routine writes zero to several locations in a frame area and writes a constant word to another location, then calls another routine.
 - `conditionally_call_on_flag`: The routine checks a global word and conditionally calls another routine before returning.
+- `sub_4FB6`: undescribed.
+- `sub_4FDE`: undescribed.
+- `sub_4FEA`: undescribed.
+- `sub_5022`: undescribed.
+- `sub_5092`: undescribed.
+- `sub_50A0`: undescribed.
+- `sub_50D2`: undescribed.
+- `sub_50DE`: undescribed.
+- `sub_50FE`: undescribed.
+- `sub_5116`: undescribed.
+- `sub_511A`: undescribed.
+- `sub_511E`: undescribed.
+- `sub_5158`: undescribed.
+- `sub_5196`: undescribed.
+- `sub_519C`: undescribed.
+- `sub_51AE`: undescribed.
+- `sub_51B2`: undescribed.
+- `sub_51D4`: undescribed.
+- `sub_51DC`: undescribed.
+- `sub_51F2`: undescribed.
+- `sub_520A`: undescribed.
+- `sub_5224`: undescribed.
+- `sub_5228`: undescribed.
 - `link_and_call_pointers_3`: Updates two linked pointers within a structure and calls multiple routines.
 - `execute_unnamed_routine_2`: Calls another routine and returns.
 - `link_and_call_pointers_2`: Calls multiple routines and updates two linked pointers within a structure.
+- `sub_52AC`: undescribed.
+- `sub_52BA`: undescribed.
+- `sub_52DA`: undescribed.
+- `sub_52EA`: undescribed.
 - `link_and_call_pointers`: Updates two linked pointers within a structure and executes a subsequent routine.
 - `link_two_pointers_and_call`: The routine updates two linked pointers in a structure pointed to by an argument, linking them together if present, then calls another routine obtained through a global variable and returns a combined value from two input registers.
 - `call_linked_pointers`: Calls multiple routines by updating two linked pointers within a structure.
 - `swap_and_clear_global`: The routine checks a global variable and, if it is zero, copies another global variable into it and clears the source.
+- `sub_53D8`: undescribed.
 - `iterate_list_and_call`: The routine saves and restores a global variable and a global word, then walks a linked list from a global pointer, conditionally calling function pointers stored in each node.
-- `update_pointer_via_offset_65`: Increments a value stored at a memory location by a constant amount and then stores the result back into that same location.
-- `increment_pointer_via_offset`: Increments a value stored at a memory location by a constant amount and then stores the result back into that same location.
+- `sub_54B2`: undescribed.
+- `sub_5508`: undescribed.
+- `sub_5512`: undescribed.
+- `sub_55A2`: undescribed.
+- `sub_55E2`: undescribed.
+- `sub_55EC`: undescribed.
+- `sub_5600`: undescribed.
+- `sub_560A`: undescribed.
+- `sub_5636`: undescribed.
+- `sub_5640`: undescribed.
+- `sub_5654`: undescribed.
+- `sub_565E`: undescribed.
+- `sub_566A`: undescribed.
+- `sub_56C6`: undescribed.
+- `sub_56F0`: undescribed.
+- `sub_571E`: undescribed.
+- `sub_5732`: undescribed.
+- `sub_5738`: undescribed.
+- `sub_5754`: undescribed.
+- `sub_577C`: undescribed.
+- `sub_5788`: undescribed.
+- `sub_578E`: undescribed.
+- `sub_57B2`: undescribed.
+- `sub_57D6`: undescribed.
+- `sub_57F8`: undescribed.
+- `sub_5818`: undescribed.
+- `sub_5848`: undescribed.
+- `sub_584E`: undescribed.
+- `sub_585E`: undescribed.
+- `sub_5868`: undescribed.
+- `sub_586A`: undescribed.
+- `sub_5960`: undescribed.
+- `sub_5974`: undescribed.
+- `sub_5996`: undescribed.
+- `sub_59B4`: undescribed.
+- `sub_59DC`: undescribed.
+- `sub_59FE`: undescribed.
+- `sub_5A14`: undescribed.
+- `sub_5A1C`: undescribed.
+- `sub_5A46`: undescribed.
+- `sub_5A70`: undescribed.
+- `sub_5A74`: undescribed.
+- `sub_5A86`: undescribed.
+- `sub_5AA8`: undescribed.
+- `sub_5AC6`: undescribed.
+- `sub_5ACA`: undescribed.
+- `sub_5AD4`: undescribed.
+- `sub_5ADE`: undescribed.
+- `sub_5AE8`: undescribed.
+- `sub_5AF6`: undescribed.
+- `sub_5B00`: undescribed.
+- `sub_5B0C`: undescribed.
+- `sub_5B10`: undescribed.
 - `store_self_reference`: The routine calls another routine, stores the address of itself into a word located at an offset from a frame pointer, and returns zero.
 - `update_linked_pointers`: Updates two linked pointers within a data structure.
 - `fetch_next_table_entry_2`: The routine compares two words in a global variable and, if they differ, computes an index, bounds it, reads three bytes from a table using a pointer.
 - `copy_word_and_clear_byte_2`: The routine copies a word from one offset of a global variable to another offset and then stores zero into a byte of the same global variable.
+- `sub_5DBA`: undescribed.
+- `sub_5DBE`: undescribed.
+- `sub_5DC2`: undescribed.
+- `sub_5DC6`: undescribed.
+- `sub_5DCA`: undescribed.
 - `clear_table_data`: Clears a global variable, clears entries in a table, and writes words to a location derived from a register.
 - `reset_table_and_set_flag`: Clears a table of entries and writes two words to a memory location determined by a register before calling another routine twice.
 - `update_table_entry`: Clears a global variable and a table of entries before writing a byte to a memory location and updating a derived address with word-sized values.
+- `sub_5DDA`: undescribed.
+- `sub_5DDE`: undescribed.
+- `sub_5DE2`: undescribed.
+- `sub_5DE6`: undescribed.
+- `sub_5DEA`: undescribed.
+- `sub_5DEE`: undescribed.
+- `sub_5DF2`: undescribed.
 - `update_pointer_table_elements`: Iterates through a table of bytes and updates associated pointers based on the values found in that table.
 - `loop_table_entries_3`: Loops over a table to write a byte to a memory location via the stack.
+- `sub_5DFE`: undescribed.
+- `sub_5E02`: undescribed.
+- `sub_5E06`: undescribed.
+- `sub_5E0A`: undescribed.
+- `sub_5E0E`: undescribed.
+- `sub_5E12`: undescribed.
+- `sub_5E16`: undescribed.
+- `sub_5E1A`: undescribed.
+- `sub_5E1E`: undescribed.
 - `clear_and_build_table`: Clears a global variable and builds a table of offsets derived from a base pointer stored in a global variable.
 - `clear_and_process_table`: Checks a global variable and, if non-zero, clears it along with two associated global words.
 - `scale_and_store_byte_2`: Scales an input word and stores a single byte from a data register into a memory location.
+- `sub_5E2E`: undescribed.
 - `clear_and_loop_data`: The routine repeatedly writes zero to two words in a specific memory location and calls two separate routines.
 - `update_and_clear_table_entry`: Updates a table entry using register values and a pointed-to object, then clears a linked list entry.
 - `clear_table_and_execute_callback`: Clears entries within a table and writes word values to a destination address derived from a register.
 - `update_and_clear_list_entry`: Updates an entry in a table using values from registers and a pointed-to object, then clears a linked list entry based on an index.
+- `sub_5E42`: undescribed.
+- `sub_5E46`: undescribed.
+- `sub_5E4A`: undescribed.
+- `sub_5E4E`: undescribed.
+- `sub_5E52`: undescribed.
+- `sub_5E56`: undescribed.
+- `sub_5E5A`: undescribed.
+- `sub_5E5E`: undescribed.
+- `sub_5E62`: undescribed.
+- `sub_5E66`: undescribed.
 - `reset_filter_parameters`: Clears several values in a memory frame by writing zero to them and assigns a constant word to a specific location before calling another routine.
 - `initialize_global_buffer`: Checks if a global variable is zero and, if so, copies the contents of another global variable into it before clearing the source.
+- `sub_5E72`: undescribed.
+- `sub_5E76`: undescribed.
+- `sub_5E7A`: undescribed.
+- `sub_5E7E`: undescribed.
+- `sub_5E82`: undescribed.
+- `sub_5E86`: undescribed.
+- `sub_5E8A`: undescribed.
+- `sub_5E8E`: undescribed.
+- `sub_5E92`: undescribed.
+- `sub_5E96`: undescribed.
+- `sub_5E9A`: undescribed.
 - `call_blitter_update`: Calls a routine that updates Blitter hardware registers and modifies memory via a byte table search.
 - `accumulate_words_from_structure`: Reads several words from a structure pointed to by a global variable, computes an index, and walks a linked list via an indirect call.
 - `call_blitter_update_alt`: Executes a single instruction to trigger a routine that modifies memory and Blitter registers.
 - `search_byte_table`: Iterates through a byte table until a null byte is encountered.
+- `sub_5EAE`: undescribed.
+- `sub_5EB2`: undescribed.
 - `initialize_filter_state_2`: Writes zero to several locations in a frame area and writes a constant word to another location.
 - `conditionally_call_routine`: Checks a global word and conditionally calls another routine before returning.
+- `sub_5EBE`: undescribed.
+- `sub_5EC2`: undescribed.
+- `sub_5EC6`: undescribed.
+- `sub_5ECA`: undescribed.
+- `sub_5ECE`: undescribed.
+- `sub_5ED2`: undescribed.
+- `sub_5ED6`: undescribed.
+- `sub_5EDA`: undescribed.
+- `sub_5EDE`: undescribed.
+- `sub_5EE2`: undescribed.
+- `sub_5EE6`: undescribed.
 - `return_zero_on_flag`: Calls another routine and returns its result, but forces the return value to zero when a zero flag condition is true.
 - `clear_indirect_pointer`: Sets a register to zero using a routine that clears a register-indirect pointer.
+- `sub_5EFE`: undescribed.
+- `sub_5F02`: undescribed.
 - `execute_single_call`: The routine performs a single call to another routine.
 - `initialize_interrupt_state`: The routine copies a value from one global field to another and clears several global words.
 - `install_interrupt_server`: The routine writes constant bytes and a pointer to a global structure, stores its own address as a handler, and invokes a library routine to add an interrupt server.
@@ -1776,7 +2473,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `infinite_wait`: The routine loops forever by comparing a global variable to itself, then returns zero.
 - `clamp_and_store_values`: The routine clamps two word values against limits stored in global variables, stores the clamped results and their halves back to globals, and writes derived bytes to pointers obtained from globals.
 - `mask_input_with_flags`: The routine masks the high word of an input value and, if a global flag is non-zero, ORs in bits derived from a global word using three bit tests.
-- `clear_table_and_transfer`: Clears a global variable and table entries before transferring a byte to memory and writing words to a derived location.
+- `sub_6180`: undescribed.
+- `sub_61D8`: undescribed.
+- `sub_61E4`: undescribed.
 - `clear_table_and_flag`: Clears a global variable and table entries, transfers a byte to memory, and writes words to a location derived from a register.
 - `clear_table_and_set_flag`: Clears a global variable and table entries, transfers a byte to memory, and writes words to a location derived from a register before calling another routine twice.
 - `clear_table_entries_2`: Clears a global variable and clears entries in a table based on an index and a base pointer.
@@ -1790,11 +2489,32 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `increment_stack_and_load`: The routine adds four to a stack pointer and loads the value three into a register.
 - `tiny_addq_moveq_rts_2`: Small routine of 3 instructions that adds 4 to a7, then loads 3 into d0, then returns.
 - `write_byte_via_pointer`: Writes a single byte from a register into a memory location pointed to by another register.
+- `sub_6326`: undescribed.
+- `sub_6336`: undescribed.
+- `sub_636A`: undescribed.
 - `update_pointer_table`: The routine iterates through a table of bytes and updates associated pointers.
+- `sub_6394`: undescribed.
+- `sub_63B0`: undescribed.
+- `sub_63CA`: undescribed.
+- `sub_63D2`: undescribed.
+- `sub_642C`: undescribed.
+- `sub_6436`: undescribed.
+- `sub_6488`: undescribed.
+- `sub_64FA`: undescribed.
+- `sub_6532`: undescribed.
+- `sub_6546`: undescribed.
+- `sub_6584`: undescribed.
+- `sub_6588`: undescribed.
+- `sub_658C`: undescribed.
+- `sub_65B6`: undescribed.
+- `sub_65C8`: undescribed.
+- `sub_6602`: undescribed.
 - `loop_table_entries_2`: The routine loops over a table using a counter and a pointer, writes a byte to a memory location via the stack, and clears a register before returning.
+- `sub_661E`: undescribed.
 - `tiny_moveq_rts_5`: Small routine of 2 instructions that loads 0 into d1, then returns.
 - `loop_table_entries`: Loops over a table using a counter and a pointer, advancing the pointer each iteration and exiting early when the counter reaches zero.
 - `loop_compare_table_entries`: The routine loops over a table using a counter and a pointer, advancing the pointer each iteration and exiting early when the counter reaches a sentinel.
+- `sub_66BC`: undescribed.
 - `process_table_and_flags`: Clears entries in a table, writes words to a location derived from a register, calls a function via a global variable, and manages various global flags and state clearing.
 - `initialize_state_and_call_indirect_2`: Clears several global variables, stores an input word and a derived index, and calls another routine to populate more global variables with sums and shifted values using its 64-bit result.
 - `clear_state_if_nonzero`: The routine checks a global variable and, if non-zero, clears two global words and the variable itself before calling another routine.
@@ -1808,6 +2528,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `scale_and_store_byte`: The routine scales an input word and then stores a single byte from a data register into a memory location pointed to by another register.
 - `store_byte_via_pointer_25`: Stores a single byte from a data register into a memory location pointed to by another register.
 - `update_and_clear_entries`: The routine updates an entry in a table using values from registers and a pointed-to object, then clears a linked list entry based on an index and a global variable.
+- `sub_6966`: undescribed.
 - `update_object_entry`: The routine updates an entry in a table indexed by an input index, using values from registers and a pointed-to object.
 - `clear_linked_list_entry`: The routine indexes a table via a global variable and an input index, clears the entry if the index is below eight, otherwise it removes a linked list node by swapping its links and zeroing its fields.
 - `build_message_request_table`: The routine clears a global variable, calls a library function, and walks a table of offsets derived from a base pointer stored in a global variable to populate a global output table with pointers and zeroed fields.
@@ -1816,6 +2537,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_zero`: The routine contains no operations and returns zero.
 - `fetch_next_table_entry`: The routine compares two words in a global variable and, if they differ, computes an index, bounds it, reads three bytes from a table using that index and builds a 32-bit value from them.
 - `increment_pointer_value_2`: adds one to the value stored at the memory location pointed to by a register.
+- `sub_6F76`: undescribed.
+- `sub_6FC6`: undescribed.
+- `sub_6FE0`: undescribed.
+- `sub_6FEA`: undescribed.
 - `increment_global_pointers`: Increments a value stored at a global memory location by one and calls another routine, which also increments a value at a global memory location by one.
 - `increment_global_pointer_5`: The routine increments a value stored at a global memory location by one and calls another routine.
 - `increment_global_pointer_3`: Increments a value stored at a global memory location by one.
@@ -1823,6 +2548,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_stack_word`: The routine returns the 32-bit value passed on the stack without modification.
 - `execute_unnamed_subroutine`: The routine calls another routine and then returns.
 - `update_pointer_indirect_6`: Loads a value from a memory location pointed to by a register and stores it into another memory location pointed to by a different register.
+- `sub_70CC`: undescribed.
 - `update_global_data_2`: Checks an input byte against a threshold to clear a bit in a byte array and updates global pointers and variables while enabling a DMA channel.
 - `clear_bit_in_byte_array`: The routine checks an input byte and, if it is below a threshold, computes a byte pointer from a global variable and clears a single bit within that byte using a mask derived from the input.
 - `update_global_data`: Increments global pointers, performs arithmetic on register values to update global variables, and enables a DMA channel.
@@ -1834,19 +2560,28 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `tiny_moveq_rts_6`: Small routine of 2 instructions that loads 255 into d2, then returns.
 - `execute_indirect_calls`: The routine calls a function obtained via a global variable and increments a value stored in a memory location by a fixed amount.
 - `execute_indirect_and_increment`: Calls a function obtained via a global variable and increments a value stored in a memory location by a fixed amount.
+- `sub_73B6`: undescribed.
+- `sub_742E`: undescribed.
 - `increment_memory_value_2`: The routine increments a value stored in a memory location by a fixed amount.
 - `update_pointer_offset_17`: Increments a value stored in a memory location by a fixed amount.
 - `tiny_moveq_rts_7`: Small routine of 2 instructions that loads 21 into d0, then returns.
 - `increment_and_call_indirect`: Calls a function via a pointer stored in a global variable and increments a value at a memory location by a fixed amount.
+- `sub_7496`: undescribed.
 - `load_constant_and_return`: Loads the value twenty-one into a data register and returns to the caller.
 - `unlink_list_node`: The routine removes a node from a linked list by updating the global head pointer and the predecessor and successor links of the node.
 - `process_linked_list_until_empty`: Loops while a global pointer is non-zero, repeatedly calling another routine to unlink a list node, and returns zero.
 - `clear_register_and_return_4`: The routine clears a register to zero and returns to the caller.
 - `clear_register_and_return_2`: Clears a register to zero and returns to the caller.
+- `sub_7504`: undescribed.
+- `sub_75A4`: undescribed.
+- `sub_75A8`: undescribed.
+- `sub_75AC`: undescribed.
+- `sub_75B4`: undescribed.
 - `unlink_list_node_conditional`: The routine conditionally calls another routine based on two fields of the node, then removes the node from a linked list by updating the global head pointer and the predecessor and successor links.
 - `process_linked_list_until_empty_2`: The routine loops while a different global pointer is non-zero, repeatedly calling another routine to conditionally unlink a list node, and returns zero.
 - `setup_sprite_parameters`: The routine reads words from a structure pointed to by a global variable, computes an index, walks a linked list via an indirect call, and clears a register.
 - `setup_sprite_draw_params`: The routine reads several words from a structure pointed to by a global variable, computes an index, walks a linked list via an indirect call.
+- `sub_7700`: undescribed.
 - `zero_register`: The routine sets a specific register to zero.
 - `clear_register_value_4`: Sets a specific register to zero.
 - `process_pointer_and_byte`: Loads values from memory locations into registers, increments memory values via pointers, and transfers bytes between locations.
@@ -1867,6 +2602,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_masked_data`: Conditionally copies eight bytes from a table of pointers into a buffer based on a flag in a global byte.
 - `return_immediately_10`: This routine performs no operations and returns to its caller immediately.
 - `copy_conditional_pointer_data_2`: Checks a global flag and, if true, copies eight bytes from a table of pointers into a buffer while interacting with custom hardware registers.
+- `sub_79F6`: undescribed.
+- `sub_79FA`: undescribed.
+- `sub_79FE`: undescribed.
+- `sub_7A02`: undescribed.
+- `sub_7A06`: undescribed.
+- `sub_7A0A`: undescribed.
+- `sub_7A0E`: undescribed.
+- `sub_7A12`: undescribed.
+- `sub_7A16`: undescribed.
+- `sub_7A1A`: undescribed.
+- `sub_7A1E`: undescribed.
 - `return_immediately_stub_2`: The routine consists of a single instruction and contains no logic, so it performs no work beyond returning to its caller, manage_system_state.
 - `configure_flags_and_tables`: The routine masks and sets bits in a byte within a frame based on low and high bits of an input word, loads two-word table entries from offsets relative to its own address into several global variables, and then calls another routine before returning zero.
 - `increment_global_pointer_4`: Increments a value stored at a global memory location by one.
@@ -1881,10 +2627,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `conditional_byte_block_copy`: The routine checks a flag in a byte from a global variable and, if set, copies eight bytes from a table of pointers into a buffer using a stride value from another global variable.
 - `synchronize_and_update_state_structure`: Synchronizes various fields within a global structure by copying words and longs between offsets, validating parameters, and performing conditional updates based on bitmasks or comparisons.
 - `initialize_and_validate_parameters`: The routine stores several incoming values into fields of a global variable and performs size and range checks using values from another global variable.
+- `sub_7FD0`: undescribed.
 - `compare_and_copy_bytes`: The routine compares a global variable with another and conditionally copies eight bytes from a table of pointers into a buffer.
 - `copy_conditional_blocks`: Compares a global variable with another to conditionally copy eight bytes from a pointer table and validates parameters to copy a rectangular block of bytes.
 - `copy_conditional_tile_block`: Validates parameters, copies a rectangular block of bytes, and conditionally copies bytes from a table of pointers into a buffer based on a global flag.
 - `copy_conditional_fields`: Compares values and conditionally copies bytes from a table of pointers into a buffer while performing arithmetic on offsets and copying fields between offsets in a global variable.
+- `sub_810C`: undescribed.
+- `sub_8124`: undescribed.
+- `sub_81AC`: undescribed.
+- `sub_81E2`: undescribed.
+- `sub_8238`: undescribed.
+- `sub_8270`: undescribed.
+- `sub_827E`: undescribed.
+- `sub_8290`: undescribed.
+- `sub_82B4`: undescribed.
 - `process_global_parameters`: Validates parameters, performs conditional block copies from a table of pointers, and updates global bitmasks and data.
 - `wait_for_nonzero`: The routine repeatedly calls another routine until the returned value is non-zero, then returns a constant zero.
 - `copy_pointer_block`: Checks a flag in a global byte and, if set, copies eight bytes from a table of pointers into a buffer.
@@ -1897,55 +2653,827 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `expand_and_toggle_flags`: The routine expands bitfields from a structure into pointer values and short flags within arrays in that structure, then toggles a specific bit in a global byte based on an input short.
 - `expand_bitfields_to_pointers_2`: The routine reads bitfields from a structure and expands them into pointer values and short flags, writing the results into arrays within the same structure.
 - `conditional_word_fill_loop`: The routine clamps an input word to a limit from a global variable and then fills a series of byte blocks using a word from the global variable as a mask.
+- `sub_85F4`: undescribed.
 - `update_global_data_3`: Calls a routine to synchronize global fields and another to update a bitmask and associated data.
 - `update_bitmask_and_data`: The routine initializes fields in a global variable, loops over a bitmask to call another routine, and copies a short between offsets in a global variable before calling another routine.
 - `looped_bitmask_setup`: The routine initializes several fields in a global variable and then loops over a bitmask from a global variable, calling another routine and writing computed pointer and flag values into the global variable for each set bit.
 - `execute_nested_loops`: The routine initializes fields in a global variable and then executes nested loops driven by values from the global variable, calling another routine.
 - `nested_loop_pointer_setup`: The routine initializes fields in a global variable and then executes nested loops driven by values from the global variable, calling another routine and writing pointer and byte values into the global variable for each iteration.
+- `sub_8796`: undescribed.
+- `sub_87BE`: undescribed.
+- `sub_8832`: undescribed.
+- `sub_8880`: undescribed.
 - `setup_conditional_bitmasks`: The routine checks a condition from an input short and, if true, initializes a global variable and loops over a bitmask.
 - `process_bitmask_data`: The routine performs conditional pointer setup and updates a global variable by iterating through a bitmask.
 - `conditional_looped_pointer_setup`: The routine checks a condition from an input short and, if true, initializes fields in a global variable and loops over a bitmask, calling another routine and writing pointer sums into the global variable for each set bit.
 - `toggle_flag_byte`: The routine clears a bit in a byte from a global variable and sets the same bit if an input short is non-zero.
 - `compare_and_store_byte_2`: Compares a global variable with another value and, if they are equal, stores a byte from a register into a memory location via a pointer.
 - `clear_register_a`: Sets the contents of a specific data pointer register to zero.
+- `sub_89CE`: undescribed.
+- `sub_89E2`: undescribed.
+- `sub_89F6`: undescribed.
+- `sub_8A04`: undescribed.
 - `expand_bitfields_and_store`: Expands bitfields from a structure into pointer values and short flags within arrays, then compares a global variable with another and stores a byte.
+- `sub_8A44`: undescribed.
+- `sub_8A66`: undescribed.
 - `accumulate_offset_values_total`: Updates a global variable by iterating through a bitmask and computing sums involving signed short differences and products.
 - `accumulate_offset_values_partial`: Computes sums involving a global variable, signed short differences, and a product.
 - `accumulate_offset_values`: Updates a global variable by iterating through a bitmask and computes sums involving global variables, signed short differences, and products.
+- `sub_8AC0`: undescribed.
 - `accumulate_offset_and_mask`: Initializes a global variable using a bitmask and computes a sum from a global variable, a signed short difference, and a product.
 - `initialize_bitmask`: Checks a condition from an input short and, if true, initializes a global variable and loops over a bitmask.
+- `sub_8B26`: undescribed.
+- `sub_8B34`: undescribed.
+- `sub_8B44`: undescribed.
+- `sub_8B5C`: undescribed.
+- `sub_8B6E`: undescribed.
+- `sub_8B92`: undescribed.
+- `sub_8BC4`: undescribed.
+- `sub_8BE6`: undescribed.
+- `sub_8BF2`: undescribed.
+- `sub_8C0A`: undescribed.
+- `sub_8C12`: undescribed.
+- `sub_8C28`: undescribed.
+- `sub_8C30`: undescribed.
+- `sub_8C46`: undescribed.
+- `sub_8C5E`: undescribed.
+- `sub_8C70`: undescribed.
+- `sub_8C8A`: undescribed.
+- `sub_8CE4`: undescribed.
+- `sub_8D02`: undescribed.
 - `copy_and_clear_then_call`: The routine copies a short from one offset to another in a global variable, clears a byte in the global variable, calls another routine and returns zero.
 - `compute_short_difference`: The routine loads a pointer from a global variable, follows an indirection to obtain another pointer, and returns the difference between two short fields from that structure.
+- `sub_8E16`: undescribed.
+- `sub_8E30`: undescribed.
+- `sub_8E4A`: undescribed.
 - `compare_and_store_byte_5`: Compares a global variable with another, conditionally calls another routine, pushes a register to the stack, and stores a byte.
+- `sub_8E54`: undescribed.
+- `sub_8E60`: undescribed.
+- `sub_8E7E`: undescribed.
+- `sub_8E88`: undescribed.
 - `compare_and_store_byte_3`: Compares a global variable with another, conditionally calls another routine, pushes a register value to the stack, and stores a byte.
 - `copy_masked_byte_data`: Checks a flag in a global byte and conditionally copies eight bytes from a table of pointers into a buffer using a mask or an offset calculation.
 - `copy_conditional_byte_block`: Checks a flag in a byte from a global variable and, if set, copies eight bytes from a table of pointers into a buffer using a bitmask.
 - `load_and_process_byte`: Loads a byte from one memory location into a register and stores it at a different address, then performs arithmetic and bitmask operations.
 - `load_byte_to_memory_13`: loads a byte from a memory location into a register and stores it at a different address pointed to by another register.
 - `execute_conditional_logic_2`: Sets d0 to 0 and d1 to d5, calls a routine to copy a byte with a mask, then either returns or performs a series of checks involving the custom hardware address in a6 and a structure in a5 to call either a pointer copying routine or a structure copying routine.
+- `sub_8F8A`: undescribed.
+- `sub_8FB4`: undescribed.
+- `sub_8FC4`: undescribed.
 - `copy_conditional_pointers`: Checks a flag in a byte from a global variable and, if set, copies eight bytes from a table of pointers into a buffer.
 - `update_pointer_buffer`: Checks a flag in a global variable and, if set, copies eight bytes from a table of pointers into a buffer using a bitmask.
 - `copy_structures_and_call`: The routine tests a flag byte in a structure pointed to by a register.
 - `process_conditional_data`: Checks a global flag and, if set, copies eight bytes from a table of pointers into a buffer while interacting with custom hardware registers.
 - `call_unknown_routine`: Loads an address into a0, calls another routine, restores registers a4 through a6, and returns after testing d0.
+- `sub_90F6`: undescribed.
 - `accumulate_offset_value`: The routine computes a sum of an integer from a global variable, a signed short difference from two shorts in the global variable, and a product of two words from the global variable, then stores the result into a field of the global variable.
 - `copy_fields_between_offsets`: The routine copies two word fields and one long field from one set of offsets in a global variable to another set of offsets in the same global variable.
 - `copy_struct_fields`: The routine copies two 16-bit values from offsets 88 and 90 to offsets 80 and 82, and copies a 32-bit value from offset 16 to offset 12, using an address base in a register, then returns.
 - `count_string_length`: Walks a byte string in a register, incrementing a counter for each byte and skipping two bytes after an escape byte, then returns the final count.
 - `call_library_function_4`: Loads a library base from a global variable and calls the library function at a specific offset.
 - `process_complex_data`: Performs multiple operations including bitmask initialization, offset accumulation, and conditional byte comparisons and storage.
+- `sub_91A8`: undescribed.
+- `sub_91D2`: undescribed.
+- `sub_91DC`: undescribed.
+- `sub_9208`: undescribed.
 - `tiny_or`: Small routine of 1 instruction that merges d1 into d0.
 - `compare_and_store_byte_4`: Compares a global variable with another, conditionally calls another routine, pushes a register value to the stack, and stores a byte, then calls another routine.
 - `return_from_routine`: An empty routine consisting of a single instruction.
 - `compare_and_store_byte_6`: Compares a byte from a register with a global variable and, if they are equal, stores a byte into a memory location pointed to by a register.
 - `compare_and_store_byte`: The routine compares a global variable with another, conditionally calls another routine, pushes a register value to the stack, and stores a byte into a memory location via a pointer.
 - `conditionally_call_routine_2`: The routine compares a global variable with a value from another global variable and, if they differ and the first is non-zero, calls another routine.
+- `sub_93AC`: undescribed.
 - `compare_and_branch_on_inequality`: Compares two global variables and, if the first is non-zero and the values are not equal, calls another routine.
 - `conditional_call_and_return`: Compares a global variable with a value from another global variable and, if they differ and the first is non-zero, calls another routine before returning a constant combined with a stack value.
 - `store_byte_via_pointer_27`: Copies a single byte from a register into a memory location specified by a pointer held in another register.
 - `compare_and_update_byte`: Compares a global variable with a value and, if a condition is met, calls another routine and stores a byte from a register into a memory location.
+- `sub_9402`: undescribed.
+- `sub_9406`: undescribed.
+- `sub_940A`: undescribed.
+- `sub_940E`: undescribed.
+- `sub_9412`: undescribed.
+- `sub_9416`: undescribed.
+- `sub_941A`: undescribed.
+- `sub_941E`: undescribed.
+- `sub_9422`: undescribed.
+- `sub_9426`: undescribed.
+- `sub_942A`: undescribed.
 - `compare_and_update_byte_2`: Compares a byte from a register with a global variable and, if they match, calls another routine and stores a value into a memory location via a pointer.
 - `accumulate_partial_sums`: Calculates a sum by combining a global variable, the product of two signed short values, and their difference.
+- `sub_946E`: undescribed.
+- `sub_9472`: undescribed.
+- `sub_9476`: undescribed.
 - `push_register_value`: pushes the value of a register onto the stack.
 - `expand_bitfields`: Expands bitfields from a structure into pointer values and short flags within arrays.
 - `compare_and_store_single_byte`: Compares a global variable with another value and, if equal, stores a byte from a register into a memory location via a pointer.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `sub_0000`: undescribed.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `sub_0000`: undescribed.
+
+### Base Jumpers (1994)(Rasputin)[a3].adf:BaseJump#unpacked
+
+- `sub_0_0000`: undescribed.
+- `sub_0_03D2`: undescribed.
+- `sub_0_03D6`: undescribed.
+- `sub_0_04DA`: undescribed.
+- `sub_0_05C4`: undescribed.
+- `sub_0_060A`: undescribed.
+- `sub_0_0614`: undescribed.
+- `sub_0_0634`: undescribed.
+- `sub_0_0648`: undescribed.
+- `sub_0_065A`: undescribed.
+- `sub_0_066C`: undescribed.
+- `sub_0_068C`: undescribed.
+- `sub_0_06A2`: undescribed.
+- `sub_0_070A`: undescribed.
+- `sub_0_07DC`: undescribed.
+- `sub_0_07E0`: undescribed.
+- `sub_0_07E8`: undescribed.
+- `sub_0_0892`: undescribed.
+- `sub_0_08AA`: undescribed.
+- `sub_0_08CE`: undescribed.
+- `sub_0_08E2`: undescribed.
+- `sub_0_0978`: undescribed.
+- `sub_0_0984`: undescribed.
+- `sub_1_10FA`: undescribed.
+- `sub_1_10FE`: undescribed.
+- `sub_1_1128`: undescribed.
+- `sub_1_1136`: undescribed.
+- `sub_1_1144`: undescribed.
+- `sub_1_1162`: undescribed.
+- `sub_1_1172`: undescribed.
+- `sub_1_1180`: undescribed.
+- `sub_1_11A0`: undescribed.
+- `sub_1_11AE`: undescribed.
+- `sub_1_11CE`: undescribed.
+- `sub_1_11D8`: undescribed.
+- `sub_1_11FA`: undescribed.
+- `sub_1_1218`: undescribed.
+- `sub_1_1226`: undescribed.
+- `sub_1_1234`: undescribed.
+- `sub_1_1242`: undescribed.
+- `sub_1_1250`: undescribed.
+- `sub_1_125E`: undescribed.
+- `sub_1_1272`: undescribed.
+- `sub_1_128A`: undescribed.
+- `sub_1_1294`: undescribed.
+- `sub_1_12A2`: undescribed.
+- `sub_1_12C6`: undescribed.
+- `sub_1_12D8`: undescribed.
+- `sub_1_12EA`: undescribed.
+- `sub_1_12FC`: undescribed.
+- `sub_1_130E`: undescribed.
+- `sub_1_1320`: undescribed.
+- `sub_1_1332`: undescribed.
+- `sub_1_1344`: undescribed.
+- `sub_1_1356`: undescribed.
+- `sub_1_154E`: undescribed.
+- `sub_1_1552`: undescribed.
+- `sub_1_1564`: undescribed.
+- `sub_1_1576`: undescribed.
+- `sub_1_1588`: undescribed.
+- `sub_1_159A`: undescribed.
+- `sub_1_159E`: undescribed.
+- `sub_1_15B0`: undescribed.
+- `sub_1_15C2`: undescribed.
+- `sub_1_15D4`: undescribed.
+- `sub_1_15E6`: undescribed.
+- `sub_1_15F8`: undescribed.
+- `sub_1_160A`: undescribed.
+- `sub_1_161C`: undescribed.
+- `sub_1_162E`: undescribed.
+- `sub_1_1784`: undescribed.
+- `sub_1_1788`: undescribed.
+- `sub_1_179A`: undescribed.
+- `sub_1_17AC`: undescribed.
+- `sub_1_17BE`: undescribed.
+- `sub_1_17D0`: undescribed.
+- `sub_1_17E2`: undescribed.
+- `sub_1_17F4`: undescribed.
+- `sub_1_1806`: undescribed.
+- `sub_1_1818`: undescribed.
+- `sub_1_1902`: undescribed.
+- `sub_1_1906`: undescribed.
+- `sub_1_1918`: undescribed.
+- `sub_1_192A`: undescribed.
+- `sub_1_193C`: undescribed.
+- `sub_1_194E`: undescribed.
+- `sub_1_1960`: undescribed.
+- `sub_1_1972`: undescribed.
+- `sub_1_1984`: undescribed.
+- `sub_1_1996`: undescribed.
+- `sub_1_19DE`: undescribed.
+- `sub_1_19E2`: undescribed.
+- `sub_1_19F4`: undescribed.
+- `sub_1_1A06`: undescribed.
+- `sub_1_1A18`: undescribed.
+- `sub_1_1A2A`: undescribed.
+- `sub_1_1A3C`: undescribed.
+- `sub_1_1A4E`: undescribed.
+- `sub_1_1A60`: undescribed.
+- `sub_1_1A72`: undescribed.
+- `sub_1_1B26`: undescribed.
+- `sub_1_1B2A`: undescribed.
+- `sub_1_1B3C`: undescribed.
+- `sub_1_1B4E`: undescribed.
+- `sub_1_1B60`: undescribed.
+- `sub_1_1B72`: undescribed.
+- `sub_1_1B84`: undescribed.
+- `sub_1_1B96`: undescribed.
+- `sub_1_1B9A`: undescribed.
+- `sub_1_1BAC`: undescribed.
+- `sub_1_1BD4`: undescribed.
+- `sub_1_1BEC`: undescribed.
+- `sub_1_1C0C`: undescribed.
+- `sub_1_1C1E`: undescribed.
+- `sub_1_1C30`: undescribed.
+- `sub_1_1C42`: undescribed.
+- `sub_1_1C54`: undescribed.
+- `sub_1_1C66`: undescribed.
+- `sub_1_1C78`: undescribed.
+- `sub_1_1C8A`: undescribed.
+- `sub_1_1C9C`: undescribed.
+- `sub_1_1CD2`: undescribed.
+- `sub_1_1D0C`: undescribed.
+- `sub_1_1D24`: undescribed.
+- `sub_1_1D3C`: undescribed.
+- `sub_1_1D4E`: undescribed.
+- `sub_1_1D6C`: undescribed.
+- `sub_1_1D7E`: undescribed.
+- `sub_1_1D96`: undescribed.
+- `sub_1_1DC8`: undescribed.
+- `sub_1_1DE8`: undescribed.
+- `sub_1_1E04`: undescribed.
+- `sub_1_1E20`: undescribed.
+- `sub_1_1E3C`: undescribed.
+- `sub_1_1E58`: undescribed.
+- `sub_1_1E74`: undescribed.
+- `sub_1_1E90`: undescribed.
+- `sub_1_1EBC`: undescribed.
+- `sub_1_1ED4`: undescribed.
+- `sub_1_1EF8`: undescribed.
+- `sub_1_1F0A`: undescribed.
+- `sub_1_1F1C`: undescribed.
+- `sub_1_1F2E`: undescribed.
+- `sub_1_1F40`: undescribed.
+- `sub_1_1F52`: undescribed.
+- `sub_1_1F64`: undescribed.
+- `sub_1_1F76`: undescribed.
+- `sub_1_1FA2`: undescribed.
+- `sub_1_1FC0`: undescribed.
+- `sub_1_1FDE`: undescribed.
+- `sub_1_1FFC`: undescribed.
+- `sub_1_201A`: undescribed.
+- `sub_1_2038`: undescribed.
+- `sub_1_2056`: undescribed.
+- `sub_1_207A`: undescribed.
+- `sub_1_208C`: undescribed.
+- `sub_1_209E`: undescribed.
+- `sub_1_20B0`: undescribed.
+- `sub_1_20C2`: undescribed.
+- `sub_1_20D4`: undescribed.
+- `sub_1_20E6`: undescribed.
+- `sub_1_20EA`: undescribed.
+- `sub_1_20FC`: undescribed.
+- `sub_1_210E`: undescribed.
+- `sub_1_2120`: undescribed.
+- `sub_1_2132`: undescribed.
+- `sub_1_2144`: undescribed.
+- `sub_1_2156`: undescribed.
+- `sub_1_215A`: undescribed.
+- `sub_1_216C`: undescribed.
+- `sub_1_217E`: undescribed.
+- `sub_1_2190`: undescribed.
+- `sub_1_21A2`: undescribed.
+- `sub_1_21B4`: undescribed.
+- `sub_1_21C6`: undescribed.
+- `sub_1_21CA`: undescribed.
+- `sub_1_21DC`: undescribed.
+- `sub_1_21EE`: undescribed.
+- `sub_1_2200`: undescribed.
+- `sub_1_2212`: undescribed.
+- `sub_1_2224`: undescribed.
+- `sub_1_2236`: undescribed.
+- `sub_1_223A`: undescribed.
+- `sub_1_224C`: undescribed.
+- `sub_1_225E`: undescribed.
+- `sub_1_2270`: undescribed.
+- `sub_1_2282`: undescribed.
+- `sub_1_2294`: undescribed.
+- `sub_1_22A6`: undescribed.
+- `sub_1_22AA`: undescribed.
+- `sub_1_22BC`: undescribed.
+- `sub_1_22CE`: undescribed.
+- `sub_1_22E0`: undescribed.
+- `sub_1_22F2`: undescribed.
+- `sub_1_2304`: undescribed.
+- `sub_1_2316`: undescribed.
+- `sub_1_231A`: undescribed.
+- `sub_1_232C`: undescribed.
+- `sub_1_233E`: undescribed.
+- `sub_1_2350`: undescribed.
+- `sub_1_2362`: undescribed.
+- `sub_1_2374`: undescribed.
+- `sub_1_2386`: undescribed.
+- `sub_1_238A`: undescribed.
+- `sub_1_239C`: undescribed.
+- `sub_1_23AE`: undescribed.
+- `sub_1_23C0`: undescribed.
+- `sub_1_23D2`: undescribed.
+- `sub_1_23E4`: undescribed.
+- `sub_1_23F6`: undescribed.
+- `sub_1_23FA`: undescribed.
+- `sub_1_240C`: undescribed.
+- `sub_1_241E`: undescribed.
+- `sub_1_2430`: undescribed.
+- `sub_1_2442`: undescribed.
+- `sub_1_2454`: undescribed.
+- `sub_1_2466`: undescribed.
+- `sub_1_246A`: undescribed.
+- `sub_1_247C`: undescribed.
+- `sub_1_248E`: undescribed.
+- `sub_1_24A0`: undescribed.
+- `sub_1_24B2`: undescribed.
+- `sub_1_24C4`: undescribed.
+- `sub_1_24D6`: undescribed.
+- `sub_1_24DA`: undescribed.
+- `sub_1_24EC`: undescribed.
+- `sub_1_24FE`: undescribed.
+- `sub_1_2510`: undescribed.
+- `sub_1_2522`: undescribed.
+- `sub_1_2534`: undescribed.
+- `sub_1_2546`: undescribed.
+- `sub_1_254A`: undescribed.
+- `sub_1_255C`: undescribed.
+- `sub_1_256E`: undescribed.
+- `sub_1_2580`: undescribed.
+- `sub_1_2592`: undescribed.
+- `sub_1_25A4`: undescribed.
+- `sub_1_25B6`: undescribed.
+- `sub_1_25BA`: undescribed.
+- `sub_1_25CC`: undescribed.
+- `sub_1_25DE`: undescribed.
+- `sub_1_25F0`: undescribed.
+- `sub_1_2602`: undescribed.
+- `sub_1_2614`: undescribed.
+- `sub_1_2626`: undescribed.
+- `sub_1_262A`: undescribed.
+- `sub_1_263C`: undescribed.
+- `sub_1_264E`: undescribed.
+- `sub_1_2660`: undescribed.
+- `sub_1_2672`: undescribed.
+- `sub_1_2684`: undescribed.
+- `sub_1_2696`: undescribed.
+- `sub_1_269A`: undescribed.
+- `sub_1_26AC`: undescribed.
+- `sub_1_26BE`: undescribed.
+- `sub_1_26D0`: undescribed.
+- `sub_1_26E2`: undescribed.
+- `sub_1_26F4`: undescribed.
+- `sub_1_2706`: undescribed.
+- `sub_1_270A`: undescribed.
+- `sub_1_271C`: undescribed.
+- `sub_1_272E`: undescribed.
+- `sub_1_2740`: undescribed.
+- `sub_1_2752`: undescribed.
+- `sub_1_2764`: undescribed.
+- `sub_1_2776`: undescribed.
+- `sub_1_277A`: undescribed.
+- `sub_1_278C`: undescribed.
+- `sub_1_279E`: undescribed.
+- `sub_1_27B0`: undescribed.
+- `sub_1_27C2`: undescribed.
+- `sub_1_27D4`: undescribed.
+- `sub_1_27E6`: undescribed.
+- `sub_1_27EA`: undescribed.
+- `sub_1_27FC`: undescribed.
+- `sub_1_280E`: undescribed.
+- `sub_1_2820`: undescribed.
+- `sub_1_2832`: undescribed.
+- `sub_1_2844`: undescribed.
+- `sub_1_2856`: undescribed.
+- `sub_1_285A`: undescribed.
+- `sub_1_286C`: undescribed.
+- `sub_1_287E`: undescribed.
+- `sub_1_2890`: undescribed.
+- `sub_1_28A2`: undescribed.
+- `sub_1_28B4`: undescribed.
+- `sub_1_28C6`: undescribed.
+- `sub_1_28CA`: undescribed.
+- `sub_1_28DC`: undescribed.
+- `sub_1_28EE`: undescribed.
+- `sub_1_2900`: undescribed.
+- `sub_1_2912`: undescribed.
+- `sub_1_2924`: undescribed.
+- `sub_1_2936`: undescribed.
+- `sub_1_293A`: undescribed.
+- `sub_1_294C`: undescribed.
+- `sub_1_295E`: undescribed.
+- `sub_1_2970`: undescribed.
+- `sub_1_2982`: undescribed.
+- `sub_1_2994`: undescribed.
+- `sub_1_29A6`: undescribed.
+- `sub_1_29AA`: undescribed.
+- `sub_1_29BC`: undescribed.
+- `sub_1_29CE`: undescribed.
+- `sub_1_29E0`: undescribed.
+- `sub_1_29F2`: undescribed.
+- `sub_1_2A04`: undescribed.
+- `sub_1_2A16`: undescribed.
+- `sub_1_2A42`: undescribed.
+- `sub_1_2A5A`: undescribed.
+- `sub_1_2A72`: undescribed.
+- `sub_1_2A96`: undescribed.
+- `sub_1_2AA8`: undescribed.
+- `sub_1_2ABA`: undescribed.
+- `sub_1_2ABE`: undescribed.
+- `sub_1_2AD0`: undescribed.
+- `sub_1_2AE2`: undescribed.
+- `sub_1_2AE6`: undescribed.
+- `sub_1_2AF8`: undescribed.
+- `sub_1_2B0A`: undescribed.
+- `sub_1_2B0E`: undescribed.
+- `sub_1_2B20`: undescribed.
+- `sub_1_2B32`: undescribed.
+- `sub_1_2B36`: undescribed.
+- `sub_1_2B48`: undescribed.
+- `sub_1_2B5A`: undescribed.
+- `sub_1_2B5E`: undescribed.
+- `sub_1_2B70`: undescribed.
+- `sub_1_2B82`: undescribed.
+- `sub_1_2B86`: undescribed.
+- `sub_1_2B98`: undescribed.
+- `sub_1_2BAA`: undescribed.
+- `sub_1_2BAE`: undescribed.
+- `sub_1_2BC0`: undescribed.
+- `sub_1_2BD2`: undescribed.
+- `sub_1_2BD6`: undescribed.
+- `sub_1_2BE8`: undescribed.
+- `sub_1_2BFA`: undescribed.
+- `sub_1_2BFE`: undescribed.
+- `sub_1_2C10`: undescribed.
+- `sub_1_2C22`: undescribed.
+- `sub_1_2C4E`: undescribed.
+- `sub_1_2C66`: undescribed.
+- `sub_1_2C86`: undescribed.
+- `sub_1_2C98`: undescribed.
+- `sub_1_2CAA`: undescribed.
+- `sub_1_2CBC`: undescribed.
+- `sub_1_2CCE`: undescribed.
+- `sub_1_2CE0`: undescribed.
+- `sub_1_2D0C`: undescribed.
+- `sub_1_2D24`: undescribed.
+- `sub_1_2D48`: undescribed.
+- `sub_1_2D5A`: undescribed.
+- `sub_1_2D6C`: undescribed.
+- `sub_1_2D7E`: undescribed.
+- `sub_1_2D90`: undescribed.
+- `sub_1_2DA2`: undescribed.
+- `sub_1_2DB4`: undescribed.
+- `sub_1_2DC6`: undescribed.
+- `sub_1_2DD8`: undescribed.
+- `sub_1_2E20`: undescribed.
+- `sub_1_2E4C`: undescribed.
+- `sub_1_2E64`: undescribed.
+- `sub_1_2E7C`: undescribed.
+- `sub_1_2E94`: undescribed.
+- `sub_1_2EAC`: undescribed.
+- `sub_1_2EC4`: undescribed.
+- `sub_1_2EDC`: undescribed.
+- `sub_1_2F00`: undescribed.
+- `sub_1_2F12`: undescribed.
+- `sub_1_2F24`: undescribed.
+- `sub_1_2F36`: undescribed.
+- `sub_1_2F48`: undescribed.
+- `sub_1_2F5A`: undescribed.
+- `sub_1_2F6C`: undescribed.
+- `sub_1_2F70`: undescribed.
+- `sub_1_2F82`: undescribed.
+- `sub_1_2F94`: undescribed.
+- `sub_1_2FA6`: undescribed.
+- `sub_1_2FB8`: undescribed.
+- `sub_1_2FCA`: undescribed.
+- `sub_1_2FDC`: undescribed.
+- `sub_1_2FE0`: undescribed.
+- `sub_1_2FF2`: undescribed.
+- `sub_1_3004`: undescribed.
+- `sub_1_3016`: undescribed.
+- `sub_1_3028`: undescribed.
+- `sub_1_303A`: undescribed.
+- `sub_1_304C`: undescribed.
+- `sub_1_3050`: undescribed.
+- `sub_1_3062`: undescribed.
+- `sub_1_3074`: undescribed.
+- `sub_1_3086`: undescribed.
+- `sub_1_3098`: undescribed.
+- `sub_1_30AA`: undescribed.
+- `sub_1_30BC`: undescribed.
+- `sub_1_30C0`: undescribed.
+- `sub_1_30D2`: undescribed.
+- `sub_1_30E4`: undescribed.
+- `sub_1_30F6`: undescribed.
+- `sub_1_3108`: undescribed.
+- `sub_1_311A`: undescribed.
+- `sub_1_312C`: undescribed.
+- `sub_1_3130`: undescribed.
+- `sub_1_3142`: undescribed.
+- `sub_1_3154`: undescribed.
+- `sub_1_3166`: undescribed.
+- `sub_1_3178`: undescribed.
+- `sub_1_318A`: undescribed.
+- `sub_1_319C`: undescribed.
+- `sub_1_31A0`: undescribed.
+- `sub_1_31B2`: undescribed.
+- `sub_1_31C4`: undescribed.
+- `sub_1_31D6`: undescribed.
+- `sub_1_31E8`: undescribed.
+- `sub_1_31FA`: undescribed.
+- `sub_1_320C`: undescribed.
+- `sub_1_3210`: undescribed.
+- `sub_1_3222`: undescribed.
+- `sub_1_3234`: undescribed.
+- `sub_1_3246`: undescribed.
+- `sub_1_3258`: undescribed.
+- `sub_1_326A`: undescribed.
+- `sub_1_327C`: undescribed.
+- `sub_1_32A8`: undescribed.
+- `sub_1_32C0`: undescribed.
+- `sub_1_32E0`: undescribed.
+- `sub_1_32FC`: undescribed.
+- `sub_1_3318`: undescribed.
+- `sub_1_3334`: undescribed.
+- `sub_1_3354`: undescribed.
+- `sub_1_3366`: undescribed.
+- `sub_1_3378`: undescribed.
+- `sub_1_338A`: undescribed.
+- `sub_1_339C`: undescribed.
+- `sub_1_33AE`: undescribed.
+- `sub_1_33CA`: undescribed.
+- `sub_1_33E6`: undescribed.
+- `sub_1_3402`: undescribed.
+- `sub_1_341E`: undescribed.
+- `sub_1_3438`: undescribed.
+- `sub_1_344A`: undescribed.
+- `sub_1_3456`: undescribed.
+- `sub_1_3460`: undescribed.
+- `sub_1_3476`: undescribed.
+- `sub_1_348C`: undescribed.
+- `sub_1_349C`: undescribed.
+- `sub_1_34AA`: undescribed.
+- `sub_1_34C4`: undescribed.
+- `sub_1_34DE`: undescribed.
+- `sub_1_34F4`: undescribed.
+- `sub_1_3510`: undescribed.
+- `sub_1_353C`: undescribed.
+- `sub_1_3562`: undescribed.
+- `sub_1_3588`: undescribed.
+- `sub_1_35A8`: undescribed.
+- `sub_1_35B8`: undescribed.
+- `sub_1_35CE`: undescribed.
+- `sub_1_35DC`: undescribed.
+- `sub_1_35F8`: undescribed.
+- `sub_1_3646`: undescribed.
+- `sub_1_3650`: undescribed.
+- `sub_1_3678`: undescribed.
+- `sub_1_3688`: undescribed.
+- `sub_1_36B4`: undescribed.
+- `sub_1_36D4`: undescribed.
+- `sub_1_3706`: undescribed.
+- `sub_1_3742`: undescribed.
+- `sub_1_3780`: undescribed.
+- `sub_1_37C8`: undescribed.
+- `sub_1_3810`: undescribed.
+- `sub_1_3858`: undescribed.
+- `sub_1_3878`: undescribed.
+- `sub_1_3886`: undescribed.
+- `sub_1_38A2`: undescribed.
+- `sub_1_38C8`: undescribed.
+- `sub_1_38D2`: undescribed.
+- `sub_1_38FA`: undescribed.
+- `sub_1_390A`: undescribed.
+- `sub_1_3936`: undescribed.
+- `sub_1_3964`: undescribed.
+- `sub_1_3984`: undescribed.
+- `sub_1_39B0`: undescribed.
+- `sub_1_39C8`: undescribed.
+- `sub_1_39E0`: undescribed.
+- `sub_1_3A04`: undescribed.
+- `sub_1_3A16`: undescribed.
+- `sub_1_3A28`: undescribed.
+- `sub_1_3A3A`: undescribed.
+- `sub_1_3A4C`: undescribed.
+- `sub_1_3A50`: undescribed.
+- `sub_1_3A62`: undescribed.
+- `sub_1_3A74`: undescribed.
+- `sub_1_3A86`: undescribed.
+- `sub_1_3A98`: undescribed.
+- `sub_1_3A9C`: undescribed.
+- `sub_1_3AAE`: undescribed.
+- `sub_1_3AC0`: undescribed.
+- `sub_1_3AD2`: undescribed.
+- `sub_1_3AE4`: undescribed.
+- `sub_1_3AE8`: undescribed.
+- `sub_1_3AFA`: undescribed.
+- `sub_1_3B0C`: undescribed.
+- `sub_1_3B10`: undescribed.
+- `sub_1_3B22`: undescribed.
+- `sub_1_3B34`: undescribed.
+- `sub_1_3B60`: undescribed.
+- `sub_1_3B78`: undescribed.
+- `sub_1_3B90`: undescribed.
+- `sub_1_3BB4`: undescribed.
+- `sub_1_3BC6`: undescribed.
+- `sub_1_3BD8`: undescribed.
+- `sub_1_3BEA`: undescribed.
+- `sub_1_3BFC`: undescribed.
+- `sub_1_3C0E`: undescribed.
+- `sub_1_3CB0`: undescribed.
+- `sub_1_3CDC`: undescribed.
+- `sub_1_3CFA`: undescribed.
+- `sub_1_3D18`: undescribed.
+- `sub_1_3D3C`: undescribed.
+- `sub_1_3D4E`: undescribed.
+- `sub_1_3D60`: undescribed.
+- `sub_1_3D72`: undescribed.
+- `sub_1_3D84`: undescribed.
+- `sub_1_3D96`: undescribed.
+- `sub_1_3DCC`: undescribed.
+- `sub_1_3DF8`: undescribed.
+- `sub_1_3E10`: undescribed.
+- `sub_1_3E28`: undescribed.
+- `sub_1_3E4C`: undescribed.
+- `sub_1_3E5E`: undescribed.
+- `sub_1_3E70`: undescribed.
+- `sub_1_3E82`: undescribed.
+- `sub_1_3E94`: undescribed.
+- `sub_1_3EA6`: undescribed.
+- `sub_1_3F00`: undescribed.
+- `sub_1_3F28`: undescribed.
+- `sub_1_3F32`: undescribed.
+- `sub_1_3F42`: undescribed.
+- `sub_1_3F60`: undescribed.
+- `sub_1_3F78`: undescribed.
+- `sub_1_3F86`: undescribed.
+- `sub_1_3F94`: undescribed.
+- `sub_1_3FA8`: undescribed.
+- `sub_1_3FBC`: undescribed.
+- `sub_1_3FCC`: undescribed.
+- `sub_1_3FE0`: undescribed.
+- `sub_1_3FF4`: undescribed.
+- `sub_1_4004`: undescribed.
+- `sub_1_4022`: undescribed.
+- `sub_1_403E`: undescribed.
+- `sub_1_4058`: undescribed.
+- `sub_1_407A`: undescribed.
+- `sub_1_4090`: undescribed.
+- `sub_1_40C2`: undescribed.
+- `sub_1_40D8`: undescribed.
+- `sub_1_40EC`: undescribed.
+- `sub_1_4106`: undescribed.
+- `sub_1_4120`: undescribed.
+- `sub_1_4144`: undescribed.
+- `sub_1_418A`: undescribed.
+- `sub_1_41AC`: undescribed.
+- `sub_1_420C`: undescribed.
+- `sub_1_4226`: undescribed.
+- `sub_1_423C`: undescribed.
+- `sub_1_4270`: undescribed.
+- `sub_1_42A8`: undescribed.
+- `sub_1_42E0`: undescribed.
+- `sub_1_4330`: undescribed.
+- `sub_1_4342`: undescribed.
+- `sub_1_436E`: undescribed.
+- `sub_1_43AE`: undescribed.
+- `sub_1_43E6`: undescribed.
+- `sub_1_440C`: undescribed.
+- `sub_1_4428`: undescribed.
+- `sub_1_4432`: undescribed.
+- `sub_1_4452`: undescribed.
+- `sub_1_446C`: undescribed.
+- `sub_1_44AC`: undescribed.
+- `sub_1_44E4`: undescribed.
+- `sub_1_4534`: undescribed.
+- `sub_1_4546`: undescribed.
+- `sub_1_4572`: undescribed.
+- `sub_1_4590`: undescribed.
+- `sub_1_459A`: undescribed.
+- `sub_1_45DA`: undescribed.
+- `sub_1_4612`: undescribed.
+- `sub_1_4638`: undescribed.
+- `sub_1_4654`: undescribed.
+- `sub_1_465E`: undescribed.
+- `sub_1_4668`: undescribed.
+- `sub_1_4686`: undescribed.
+- `sub_1_4696`: undescribed.
+- `sub_1_46AC`: undescribed.
+- `sub_1_46DA`: undescribed.
+- `sub_1_46F8`: undescribed.
+- `sub_1_470E`: undescribed.
+- `sub_1_4718`: undescribed.
+- `sub_1_4726`: undescribed.
+- `sub_1_473A`: undescribed.
+- `sub_1_4748`: undescribed.
+- `sub_1_477C`: undescribed.
+- `sub_1_478C`: undescribed.
+- `sub_1_479C`: undescribed.
+- `sub_1_47C4`: undescribed.
+- `sub_1_47CE`: undescribed.
+- `sub_1_47DE`: undescribed.
+- `sub_1_47EE`: undescribed.
+- `sub_1_4816`: undescribed.
+- `sub_1_4820`: undescribed.
+- `sub_1_4842`: undescribed.
+- `sub_1_484C`: undescribed.
+- `sub_1_4862`: undescribed.
+- `sub_1_4878`: undescribed.
+- `sub_1_488E`: undescribed.
+- `sub_1_48A4`: undescribed.
+- `sub_1_48BA`: undescribed.
+- `sub_1_48DC`: undescribed.
+- `sub_1_48EC`: undescribed.
+- `sub_1_48F6`: undescribed.
+- `sub_1_4906`: undescribed.
+- `sub_1_492A`: undescribed.
+- `sub_1_4946`: undescribed.
+- `sub_1_4950`: undescribed.
+- `sub_1_495E`: undescribed.
+- `sub_1_4968`: undescribed.
+- `sub_1_4994`: undescribed.
+- `sub_1_49CA`: undescribed.
+- `sub_1_4A00`: undescribed.
+- `sub_1_4A20`: undescribed.
+- `sub_1_4A2E`: undescribed.
+- `sub_1_4A3C`: undescribed.
+- `sub_1_4A4C`: undescribed.
+- `sub_1_4A60`: undescribed.
+- `sub_1_4A8A`: undescribed.
+- `sub_1_4AB4`: undescribed.
+- `sub_1_4ADE`: undescribed.
+- `sub_1_4B08`: undescribed.
+- `sub_1_4B32`: undescribed.
+- `sub_1_4B5C`: undescribed.
+- `sub_1_4B86`: undescribed.
+- `sub_1_4BB0`: undescribed.
+- `sub_1_4BCE`: undescribed.
+- `sub_1_4BF8`: undescribed.
+- `sub_1_4C16`: undescribed.
+- `sub_1_4C34`: undescribed.
+- `sub_1_4C52`: undescribed.
+- `sub_1_4C7C`: undescribed.
+- `sub_1_4CA6`: undescribed.
+- `sub_1_4CD0`: undescribed.
+- `sub_1_4CEE`: undescribed.
+- `sub_1_4D0C`: undescribed.
+- `sub_1_4D2A`: undescribed.
+- `sub_1_4D48`: undescribed.
+- `sub_1_4D72`: undescribed.
+- `sub_1_4D9C`: undescribed.
+- `sub_1_4DC6`: undescribed.
+- `sub_1_4DE4`: undescribed.
+- `sub_1_4E0E`: undescribed.
+- `sub_1_4E2C`: undescribed.
+- `sub_1_4E56`: undescribed.
+- `sub_1_4E80`: undescribed.
+- `sub_1_4EAA`: undescribed.
+- `sub_1_4ED4`: undescribed.
+- `sub_1_4EFE`: undescribed.
+- `sub_1_4F1C`: undescribed.
+- `sub_1_4F46`: undescribed.
+- `sub_1_4F70`: undescribed.
+- `sub_1_4F9A`: undescribed.
+- `sub_1_4FC4`: undescribed.
+- `sub_1_4FEE`: undescribed.
+- `sub_1_5018`: undescribed.
+- `sub_1_5042`: undescribed.
+- `sub_1_506C`: undescribed.
+- `sub_1_508A`: undescribed.
+- `sub_1_50A8`: undescribed.
+- `sub_1_50C6`: undescribed.
+- `sub_1_50E4`: undescribed.
+- `sub_1_5102`: undescribed.
+- `sub_1_5120`: undescribed.
+- `sub_1_514A`: undescribed.
+- `sub_1_5174`: undescribed.
+- `sub_1_519E`: undescribed.
+- `sub_1_51C8`: undescribed.
+- `sub_1_51E6`: undescribed.
+- `sub_1_5210`: undescribed.
+- `sub_1_523A`: undescribed.
+- `sub_1_5264`: undescribed.
+- `sub_1_5282`: undescribed.
+- `sub_1_52AC`: undescribed.
+- `sub_1_52D6`: undescribed.
+- `sub_1_5300`: undescribed.
+- `sub_1_532A`: undescribed.
+- `sub_1_5348`: undescribed.
+- `sub_1_5372`: undescribed.
+- `sub_1_539C`: undescribed.
+- `sub_1_53C6`: undescribed.
+- `sub_1_53F0`: undescribed.
+
+The function list continues in: g2404-recovery-functions-2.md.

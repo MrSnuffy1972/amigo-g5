@@ -6,53 +6,68 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901840 top-level bytes in 61 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 15 of 15 units identical (bytes and relocations), 3 raw-word lines |
-| Functions named and described | pass, 255 of 255 named (0 author symbols), 255 of 255 described (35 by rule, 70 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 754 of 756 (99.74%) |
+| Bytes classified (946380 top-level bytes in 66 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 20 of 20 units identical (bytes and relocations), 4 raw-word lines |
+| Functions named and described | pass, 315 of 315 named (0 author symbols), 315 of 315 described (45 by rule, 118 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 12122 of 12124 (99.98%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 3519 of 3520 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 15844 of 15844 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 503259 |
-| code | 10736 |
-| data | 303957 |
-| padding | 12720 |
+| code | 58294 |
+| data | 300945 |
+| padding | 12714 |
 | unused | 71168 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:Run | 2 | 117 | 2 |
-| Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:INSTALL | 3 | 27 | 2 |
+| Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:Run | 2 | 458 | 12 |
+| Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:INSTALL | 3 | 205 | 10 |
 | Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:OCEAN | 4 | 205 | 7 |
 | Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:RunBack | 3 | 163 | 2 |
-| Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:TEAM17 | 4 | 27 | 2 |
-| Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:FLOPPYWORM | 3 | 234 | 23 |
-| mathtrans.library | 18 | 830 | 97 |
-| diskfont.library | 15 | 1040 | 76 |
+| Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:TEAM17 | 4 | 205 | 7 |
+| Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:FLOPPYWORM | 3 | 420 | 32 |
+| mathtrans.library | 18 | 848 | 106 |
+| diskfont.library | 15 | 1044 | 80 |
 | Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:HOOKTRO | 2 | 235 | 8 |
 | Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:WORMS | 2 | 267 | 8 |
-| Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:HDWORM | 3 | 217 | 23 |
+| Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:HDWORM | 3 | 403 | 32 |
 | Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:bootblock | 1 | 18 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 71 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 67 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 72 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11019 | 1 |
+| Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:OCEAN#unpacked | 2 | 67 | 1 |
+| Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:TEAM17#unpacked | 2 | 72 | 2 |
 
 ## Cases handled
 
-- worms (1995)(ocean)(m3)(disk 1 of 3)[cr ott][a]/Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:TWSTUFF/TW6: CrM2: Crunch-Mania LZH-mode-packed, unpacked with ancient (41486 -> 61440 bytes)
+- worms (1995)(ocean)(m3)(disk 1 of 3)[cr ott][a]/Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:TWSTUFF/TW6: CrunchMania Data (xfd)-packed, unpacked with ancient (41486 -> 61440 bytes)
 - reference run failed (Karl 4 Nov 2026): run play-rs-x25k slid through memory (an address: 103 64 KB pages each with >= 29491 distinct PCs executed, 1687552 of its 1700032 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
 - reference run failed (Karl 4 Nov 2026): run play-rs-x35k slid through memory (an address: 103 64 KB pages each with >= 29491 distinct PCs executed, 1687552 of its 1700032 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- 2 first-execution byte records contradict the logged opcode word (first an address): bad captures, the opcode word is used
 - reference crashes at an address (OSHLE RUNAWAY: PC reached an address after an address (op 4EAE) A7=an address (A7)=an address, slid to exec.library -an address): 586 executed addresses of the slide through empty memory after it (an address) are not game code and are excluded from proof 4
 - 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
-- runtime segment an address: 58 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 71 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-lgpwide): 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 54 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-lgpwide): 60 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- 11019 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 1 first-run image unit(s) in 1 version group(s); 0 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
+- worms (1995)(ocean)(m3)(disk 1 of 3)[cr ott][a]/Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:INSTALL: CrunchMania Normal (xfd) stream found by ancient scan (15240 -> 28456 bytes) but only 0 of 12 sampled windows are in reference RAM: not used
+- worms (1995)(ocean)(m3)(disk 1 of 3)[cr ott][a]/Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:OCEAN: crunched executable decrunched by XFDMaster (CrunchMania Normal (xfd), 8992 -> 26392 bytes), 10 of 11 windows confirmed in reference RAM: recovered as a hunk executable
+- worms (1995)(ocean)(m3)(disk 1 of 3)[cr ott][a]/Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:TEAM17: crunched executable decrunched by XFDMaster (CrunchMania Normal (xfd), 8180 -> 48836 bytes), 13 of 14 windows confirmed in reference RAM: recovered as a hunk executable
+- worms (1995)(ocean)(m3)(disk 1 of 3)[cr ott][a]/Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:HOOKTRO: ProPack (RNC) (xfd) stream found by ancient scan (2240 -> 25112 bytes) but only 1 of 2 sampled windows are in reference RAM: not used
+- worms (1995)(ocean)(m3)(disk 1 of 3)[cr ott][a]/Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:WORMS: PowerPacker 4.0 (xfd) stream found by ancient scan (143592 -> 353940 bytes) but only 0 of 171 sampled windows are in reference RAM: not used
+- self-modifying code at an address (32 bytes change between runtime segment an address and runtime segment an address (play-lgpwide)): both forms recovered; writer: not identified statically (indirect store)
 - worms (1995)(ocean)(m3)(disk 1 of 3)[cr ott][a]/Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:INSTALL: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 - worms (1995)(ocean)(m3)(disk 1 of 3)[cr ott][a]/Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:OCEAN: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 - worms (1995)(ocean)(m3)(disk 1 of 3)[cr ott][a]/Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:TEAM17: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
@@ -73,11 +88,29 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_sixteen_longs_then_call`: If a buffer pointer is supplied, copies sixteen 32-bit values from a fixed table in the data area into it.
+- `initialize_entity_properties`: Initializes a structure or object by clearing certain fields, setting a pointer or index, and copying a sequence of bytes from a source buffer into a destination buffer using a loop.
+- `update_entity_list_range_2`: Reads a byte from a table using an index stored in a structure, updates a pointer and a counter in that structure, and then calls a routine to copy a range of bytes from a source table into a destination, followed by a loop that copies bytes or otherwise returns.
+- `update_entity_list_range`: Calculates a new range or count for a structure, then loops through a range of indices to copy bytes from a source table into a destination table, or otherwise returns.
+- `update_entity_state_and_loop`: Updates a structure or table entry with a constant, copies data between structure offsets, and enters a loop that checks a counter, calls a routine, and potentially modifies further structure members or calls another routine if certain conditions or pointer-based checks pass; otherwise it returns.
+- `increment_and_branch_on_offset`: Loads a constant into a register, adds a longword from a structure offset pointed to by a1, and branches to another routine.
+- `test_and_branch`: Tests a value at an offset in a1 and branches to another routine or a different address if the test fails or succeeds.
+- `modify_structure_field`: Checks if a bit or value at an offset in a1 is set, and if so, modifies a value at that offset and branches to another routine.
+- `update_structure_element_and_update`: Updates a pointer in a structure using an offset calculated from a value in a1, then clears several fields in the target structure, updates a pointer, and calls another routine.
+- `reset_structure_element_and_update`: Updates a pointer in a structure using an offset calculated from a value in a1, then clears several fields in the target structure, updates a pointer-based index, and modifies a counter or pointer in a structure.
+- `update_structure_pointers`: Updates a pointer in a structure and conditionally clears a value at an offset or decrements a value at an offset based on a pointer or a comparison.
 
 ### Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:INSTALL
 
 - `initialize_program_entry`: Runs a series of setup calls, including a call through a stored function pointer and a second call through a global table pointer.
 - `decrement_to_minus_one_2`: The routine loads a short value from a register, repeatedly decrements it until it reaches -1, and then returns.
+- `decompress_and_expand_data_tables`: Initializes a table of sixteen zeroed words, then calls several routines to populate and manipulate data structures through bit-shifting and table lookups.
+- `shift_bit_stream_2`: Shifts bits from a register and updates a value using a bitmask or a value from a table.
+- `extract_bit_stream_value`: Performs bit-shifting and masking while checking a counter against a value in a table, returning a value from a table at a calculated offset.
+- `lookup_table_masked_value_2`: The routine reads a 16-bit value from a table using an index derived from the input word, and returns that value masked with an input mask.
+- `fill_two_tables_2`: The routine calls another routine to obtain a count, then fills a short table with that many values returned by the same routine, accumulating the values.
+- `initialize_table_values_2`: Iteratively calculates and stores new values into a table using a pointer.
+- `decompress_data_tables`: Iteratively copies data from a source to a destination and, if certain conditions are met, expands or modifies data using a secondary pointer and a loop.
+- `tiny_move_rts`: Small routine of 2 instructions that copies d3 to d6, then returns.
 
 ### Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:OCEAN
 
@@ -98,6 +131,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `execute_program_entry_2`: Executes a series of subroutine calls and clears a value at a memory location.
 - `decrement_to_minus_one`: Decrements a 16-bit register value by one repeatedly until it reaches minus one, then returns.
+- `initialize_lookup_tables`: Initializes a series of tables by clearing memory, then calls several routines to populate or modify tables with arithmetic sequences or bit-stream-derived values, and finally executes a loop that copies data from a source table to a destination table based on a count or a condition.
+- `extract_bit_stream_and_lookup`: Shifts bits from a register and updates a value using a bitmask or a value from a table, while incrementing a pointer and a counter, then returns a value from a table using a calculated index.
+- `fetch_masked_table_entry`: Calculates an offset from an input value, fetches a 16-bit value from a global table using that offset, and returns that value masked with a bitmask provided in a register.
+- `fill_two_tables_3`: Calls another routine to obtain a count, then fills a table with that many values returned by the same routine while accumulating those values into a register, and then fills a second table with values returned by the same routine while decrementing that register.
+- `populate_arithmetic_table`: Iteratively calculates a sequence of values based on an input source and stores them into a destination table, while simultaneously updating a secondary offset or table entry using a calculated value.
 
 ### Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:FLOPPYWORM
 
@@ -111,10 +149,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_close_library`: Wrapper that calls the exec library function CloseLibrary and returns its result to the caller.
 - `call_single_routine_and_return`: Forwards control to one other routine and returns, with no processing of its own.
 - `copy_byte_buffer`: Copies a block of bytes from a source to a destination, moving eight bytes at a time and then the remaining bytes one at a time, and writes a zero terminator after the last byte.
+- `return_constant_3`: Returns the constant an address in d0 to the caller without any other effect.
 - `clear_globals_and_call`: Clears one global longword, calls another routine, clears a second global longword, and returns the address of this routine.
 - `repeat_call_until_flag_set`: Repeatedly calls one routine until the zero flag condition left by that call is set.
 - `allocate_and_link_list_node`: Allocates a memory block through a stored function pointer and, if allocation succeeds, links it at the head of a list and returns the address past its link fields.
 - `remove_list_node_or_allocate`: Searches a list for a given node and, if found, unlinks it and passes it to a release routine.
+- `jump_to_save_restore_global_value`: Jump stub: passes control straight on to save_restore_global_value.
+- `jump_to_save_restore_global_d0`: Jump stub: passes control straight on to save_restore_global_d0.
 - `find_list_tail`: Follows the chain of linked pointers until it reaches a null link, then stores that last node address in a global variable.
 - `save_restore_global_value`: Saves the current value of a global longword, calls two other routines, and then restores the saved value.
 - `save_restore_global_d0`: The routine saves the value of a global variable to a local register, calls two other routines, and then restores the global variable to its original value.
@@ -124,6 +165,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `allocate_and_push_list_node`: Allocates a memory block through a stored function pointer and, if it succeeds, pushes it onto the head of a list.
 - `free_all_list_nodes`: Detaches the list head and releases it, then releases each following node in the chain through a release routine, using the exec FreeMem call.
 - `tiny_ori`: Small routine of 1 instruction that merges 5 into d0.
+- `initialize_lookup_table`: Calculates the maximum value in a list of pointers, then populates a memory block with incrementing values and copies a sequence of data from one memory location to another using a loop.
+- `expand_and_populate_table`: Calls a routine to calculate a size, then writes a sequence of incrementing values into a memory block, followed by a loop that calls another routine to check or update entries in a table, potentially copying a block of 16 words from a source or destination if certain conditions are met.
+- `copy_and_update_pointers`: Calls a routine, then if a value from the stack is non-zero, copies a block of 16 words from a source offset in a2 to a destination offset in a2, updates a pointer in a2, and then copies another block of 16 words from a source offset in a2 to a destination offset in a3, before calling another routine and returning.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `move_and_branch`: Copies a longword from a register to another register and then branches to another routine.
+- `update_structure_and_decrement_counter`: Sets a bitmask in a structure, updates a pointer-based value, calls a routine, and then performs several conditional updates to a structure and a counter in a global array before jumping to another routine.
 
 ### mathtrans.library
 
@@ -196,6 +243,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `invoke_callback_and_return`: Calls the routine whose address is held in an address register and returns the data register value it had on entry, unchanged.
 - `call_indirect_return_d0`: Calls the routine whose address is in an address register, then returns the data register value it had on entry.
 - `call_routine_and_keep_d0`: Calls one routine and then returns the data register value it had on entry.
+- `load_library_address_and_call`: As library code, loads a constant address into a register and calls an indirect routine.
+- `load_library_address_and_call_2`: As library code, loads a constant address into a register and calls a routine that returns a value in d0.
+- `load_library_address_and_call_3`: As library code, loads a constant address into a register and calls a routine that returns a value and a second parameter.
+- `load_library_address_and_call_4`: As library code, loads a constant address into a register and calls an indirect function.
+- `load_function_pointer_and_branch`: Loads the address of a global pointer into a0 and branches to the next instruction, which executes the indirect function call or callback.
+- `load_library_address_and_call_5`: As library code, loads a constant address into a register and calls a routine that returns a value in d0.
+- `load_address_and_branch`: Loads the address of a constant or a data structure into a0 and then branches to another routine.
+- `load_address_and_branch_2`: Loads the address of a constant or a data pointer into a0 and then branches to another routine.
+- `load_address_and_branch_3`: Loads the address of a constant or table into a0 and branches to a subsequent instruction.
 - `library_callback_wrapper`: This library code calls a routine via an address register and returns the original value of a data register.
 - `dispatch_library_status`: As library code, it calls a routine to check library status and returns the result.
 - `build_shifted_value`: As library code, it calls a routine to build a value using shifts and subtractions and returns the original data register value.
@@ -238,6 +294,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_flag_and_increment_counter`: Clears the top bit of a flag byte in a record and increments a short counter stored at another fixed offset.
 - `decrement_counter_and_release`: Decrements a 16-bit counter in a record.
 - `tiny_moveq_rts_2`: Small routine of 2 instructions that loads 0 into d0, then returns.
+- `tiny_ori_3`: Small routine of 1 instruction that merges 0 into d0.
+- `library_data_zero`: As library code, this routine performs an operation on d0.
+- `zeroes_data_byte`: Performs a logical OR operation on a byte in register d0 with zero.
+- `clear_data_register_d0`: Sets the least significant byte of data register d0 to zero.
 - `scan_font_directory_entries`: Copies names and attribute fields from a linked list of font entries into a caller buffer, and optionally scans a directory of font files to add more.
 - `append_font_entries_to_buffer`: Continues copying font list entries into a buffer, writing names and attribute fields and checking a directory when a flag bit is set.
 - `copy_font_metadata_to_buffer`: Iterates through a linked list of font records to copy their names and associated metadata into a destination buffer.
@@ -338,10 +398,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `close_library_via_vector`: Closes a system library through its function vector at a fixed offset from the global base, then returns.
 - `preserve_global_across_calls`: Saves a global variable, calls two other routines, and then restores the original value to the global variable.
 - `copy_bytes_with_zero_terminator`: Copies a byte sequence from a source pointer to a destination pointer, moving eight bytes at a time for the bulk and single bytes for the remainder.
+- `return_constant_4`: Returns the constant an address in d0 to the caller without any other effect.
 - `clear_two_globals_and_call`: Clears two global variables to zero, calls one other routine, and returns the address of this routine.
 - `repeat_call_until_zero_flag`: Calls one other routine repeatedly and keeps looping until the zero condition flag is set, then returns.
 - `allocate_sized_block_and_link`: Allocates a block of the requested size through the memory-allocation vector and, on success, records the size in the block header and links the block into a list, returning the address just past that header.
 - `free_listed_block_or_allocate`: Searches a linked list for the block at the given address; if it is found, the block is unlinked and returned through the memory-free vector.
+- `jump_to_preserve_global_across_two_cal`: Jump stub: passes control straight on to preserve_global_across_two_calls.
+- `jump_to_preserve_global_during_list_op`: Jump stub: passes control straight on to preserve_global_during_list_operations.
 - `find_list_tail_2`: Follows next-pointers through a linked list until it reaches an entry whose link is zero, then stores that last entry's address in a global slot.
 - `preserve_global_across_two_calls`: Saves a global variable, calls two other routines, then writes the saved value back so those calls leave the global unchanged.
 - `preserve_global_during_list_operations`: Saves a global variable to a register, calls two linked list management routines, and restores the original value to the global variable.
@@ -351,6 +414,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `allocate_block_at_list_head`: Allocates a block through the memory-allocation vector and links it at the head of a list, storing the previous head as its first longword and clearing the second.
 - `free_all_list_entries`: Releases the first list entry through the memory-free vector, then walks the chain of entries attached to it and releases each one.
 - `tiny_ori_2`: Small routine of 1 instruction that merges 16 into d0.
+- `find_max_and_populate_table`: Iterates through a linked list of pointers to find the maximum value in a list, then populates a memory block with incrementing values and copies a sequence of data from a source buffer to a destination buffer, calling another routine during the process.
+- `initialize_structure_and_copy_data`: Calls a routine, then if a value is non-zero, writes a value to a calculated address, fills a memory range with a constant, and enters a loop that calls another routine and copies a block of 16 words from a source offset in a2 to a destination offset in a2.
+- `update_function_pointer_and_copy_data`: Calls another routine to check a value, then if non-zero, copies a block of 16 longwords from a source address derived from that value to a destination offset in a structure, updates a function pointer in that structure to point to itself, and then copies a different block of 16 longwords back to a new source address before returning.
+- `function_epilogue_2`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `move_and_branch_2`: Moves a value from d1 to d0 and branches to another routine.
+- `modify_resource_state`: Modifies a bit in a structure, updates a pointer, and conditionally clears a value at an offset or decrements a value at an offset or calls another routine.
 
 ### Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:bootblock
 
@@ -358,8 +427,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `zero_memory_from_own_address`: Stores a routine address in a global variable, raises trap number zero, clears that variable, then zeroes memory in longword steps from this routine's own address up to a fixed upper bound.
-- `draw_text_and_setup_copper`: Draws zero-terminated text strings into bitplane memory by copying eight glyph rows per character from a font table, with a line stride of 80 bytes per row.
+- `set_global_and_zero_memory`: Sets a global variable to the current function address, calls a system trap, clears the color register, and then loops to fill a large block of memory with zeros starting from the function address.
+- `load_data_tables`: Iterates through a string to calculate offsets and copies multiple blocks of data from various source tables into a destination buffer.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -367,4 +436,25 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
+- `set_global_value`: Stores a constant value into a global variable and restores registers.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
 - `open_libraries_and_init_data`: Opens a sequence of system libraries through their function vectors, stopping early if any open returns nothing, then copies a block of data one longword at a time into a fixed buffer.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_resource_handles_and_copy_data`: Attempts to open three library resources, and if successful, copies a block of data of size 6144 bytes from one memory location to another.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `store_zero_value_or_instructions`: Stores a zero byte into a data register using an or-with-immediate instruction, acting as a data table containing only non-functional or-instructions.
+
+### Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:OCEAN#unpacked
+
+- `open_libraries_and_init_data_2`: Opens three system libraries and, if successful, initializes a bitmap, opens a screen, copies a block of data of 3216 bytes into a buffer, loads a color palette, moves and brings the screen to the front, delays for 250 milliseconds, and then closes the screen and the libraries.
+
+### Worms (1995)(Ocean)(M3)(Disk 1 of 3)[cr OTT][a].adf:TEAM17#unpacked
+
+- `initialize_graphics_and_wait_for`: Opens three libraries, initializes a bitmap, opens a screen, and copies a block of data to a new memory location.
+- `wait_for_disk_and_cleanup_libraries`: Loops while delaying and checking a bit in the CIAA peripheral register until a specific four-byte signature is found in a global variable, then closes a screen and three libraries before returning.

@@ -6,41 +6,45 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (914128 top-level bytes in 13 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 30 raw-word lines |
-| Functions named and described | pass, 439 of 439 named (0 author symbols), 439 of 439 described (22 by rule, 415 by the local model) |
+| Bytes classified (914128 top-level bytes in 14 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 30 raw-word lines |
+| Functions named and described | pass, 467 of 467 named (0 author symbols), 467 of 467 described (24 by rule, 441 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2210 of 2210 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 9371 of 9371 instructions identical in start and length, 0 mismatches |
+| Recovered without load address (counted in proof 1, flagged) | 36864 bytes, 22 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 10437 of 10437 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 22830 |
-| code | 35618 |
-| data | 834384 |
-| padding | 1840 |
+| code | 35712 |
+| data | 834252 |
+| padding | 1878 |
 | unused | 19456 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Dragon's Lair - Escape from Singe's Castle (1989)(ReadySoft)(Disk 1 of 5)[cr CLS][t +1 CLS].adf:escape | 36 | 7879 | 393 |
+| Dragon's Lair - Escape from Singe's Castle (1989)(ReadySoft)(Disk 1 of 5)[cr CLS][t +1 CLS].adf:escape | 36 | 7880 | 389 |
 | Dragon's Lair - Escape from Singe's Castle (1989)(ReadySoft)(Disk 1 of 5)[cr CLS][t +1 CLS].adf:lair2 | 1 | 89 | 3 |
 | Dragon's Lair - Escape from Singe's Castle (1989)(ReadySoft)(Disk 1 of 5)[cr CLS][t +1 CLS].adf:bootblock | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1009 | 34 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1037 | 44 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 381 | 6 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
+| Dragon's Lair - Escape from Singe's Castle (1989)(ReadySoft)(Disk 1 of 5)[cr CLS][t +1 CLS].adf:lair2#unpacked | 1 | 1037 | 22 |
 
 ## Cases handled
 
+- extended reference run ignored: it does not re-execute 48 of the 2186 PCs the canonical run logged (2138 PCs logged; the harness no longer reproduces the game), so its PCs and RAM are not used
 - runtime segment an address (f100): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (f100): 808 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 224 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (f100): 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- dragon's lair - escape from singe's castle (1989)(readysoft)(disk 1 of 5)[cr cls][t +1 cls]/Dragon's Lair - Escape from Singe's Castle (1989)(ReadySoft)(Disk 1 of 5)[cr CLS][t +1 CLS].adf:lair2: crunched executable unpacked with ancient scan (TetraPack 2.1 (xfd), 20816 -> 36864 bytes), 18 of 18 windows confirmed in reference RAM, loaded at an address: recovered as u7
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 4 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 3 immediate, 1 operand
 - dragon's lair - escape from singe's castle (1989)(readysoft)(disk 1 of 5)[cr cls][t +1 cls]/Dragon's Lair - Escape from Singe's Castle (1989)(ReadySoft)(Disk 1 of 5)[cr CLS][t +1 CLS].adf: blocks 2-508 (bytes 1024-260608) outside the filesystem hold data, not code (opcode density 0.004, entropy 6.41)
 - dragon's lair - escape from singe's castle (1989)(readysoft)(disk 1 of 5)[cr cls][t +1 cls]/Dragon's Lair - Escape from Singe's Castle (1989)(ReadySoft)(Disk 1 of 5)[cr CLS][t +1 CLS].adf: blocks 514-514 (bytes 263168-263680) outside the filesystem hold data, not code (opcode density 0.000, entropy 0.55)
 - dragon's lair - escape from singe's castle (1989)(readysoft)(disk 1 of 5)[cr cls][t +1 cls]/Dragon's Lair - Escape from Singe's Castle (1989)(ReadySoft)(Disk 1 of 5)[cr CLS][t +1 CLS].adf: blocks 517-664 (bytes 264704-340480) outside the filesystem hold data, not code (opcode density 0.003, entropy 6.94)
@@ -67,7 +71,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Dragon's Lair - Escape from Singe's Castle (1989)(ReadySoft)(Disk 1 of 5)[cr CLS][t +1 CLS].adf:escape
 
 - `jump_to_null_address`: Performs an unconditional jump to address zero.
-- `initialize_registers_with_constants`: Loads a series of specific byte values into registers d0 through d3 using multiple logical OR operations and then returns.
+- `initialize_data_registers`: Sets bit 4 of a byte at the address in a4 based on d4, then performs a series of logical OR operations to populate d0, d1, d2, and d3 with specific constant values.
 - `manage_state_and_update_graphics`: Updates a structure in a6 with various parameters based on the value of a global variable, and performs bitwise operations and table lookups to modify sprite attributes or memory values.
 - `process_random_data_table`: Performs complex bitwise operations and loops on data from two global pointers to generate or verify values, potentially updating a global pointer and a global byte.
 - `update_sprite_attribute_and_fetch_data`: Modifies a bitmask in a register based on the difference between two global bytes, then uses a global value to index into a table and stores the resulting word into a structure at offset 126 of a6 before calling another routine.
@@ -161,8 +165,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reset_status_bytes`: Writes specific byte values to several global locations and calls another routine, then checks a byte at a global variable and returns if it is zero or equals 30.
 - `setup_copy_parameters`: Loads the values 1028 and 340 into registers d2 and d3, then calls another routine.
 - `initialize_disk_buffer_and_hardware`: If a global byte is zero, it sets it to 255, copies data from one buffer to another in three distinct stages including a pattern fill, manipulates hardware registers via a pointer in a5, and performs a series of calls and loops that include hardware register configuration and a data integrity check via a comparison loop.
-- `contains_zero_data`: Contains four consecutive instructions that perform an OR operation on register d0 with zero.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 - `process_interleaved_data`: Clears a long at a specific location, calls another routine, writes a constant to a pointer in a1, performs several bitwise operations and loops to update a long value using a mask, and calls another routine multiple times.
 - `split_and_interleave_data`: Splits words from a source buffer into two destination buffers by masking bits, then performs a bitwise manipulation on a third destination buffer using a loop.
 - `copy_memory_block_2`: Copies bytes from a source address to a destination address using a loop counter in d3, provided a global pointer is not zero.
@@ -182,7 +184,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_message_and_reply`: Calls a routine via a pointer in a global variable, and if the result is not zero, copies three fields from the returned pointer to global variables before calling another routine via a pointer in a global variable.
 - `dispatch_segmented_data`: Updates a global byte, clears an offset in a structure, calls a routine, and then uses a table to select and call one of several different routines based on the value of the global byte.
 - `traverse_pointer_chain`: If a global variable is non-zero, it follows a chain of pointers starting from an offset of 62 in a structure, calling another routine if a specific bit is set in each element; otherwise, it performs an indirect jump using a pointer from a global variable.
-- `set_bits_in_d0`: Performs bitwise OR operations with various constants on d0.
 - `toggle_status_bit`: Performs an eor operation with 128 on a byte at offset 409, tests that byte, and if it is not zero, sets a byte at offset 3fd to 255.
 - `sync_status_bits`: Loads addresses from global variables into a0 and a1, calls another routine twice with different address pairs, calls a third routine, and calls a fourth routine twice with different address pairs.
 - `set_byte_four`: Stores the value 4 into a global variable at offset 140 and calls another routine.
@@ -242,6 +243,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `parse_byte_stream`: Iterates through a buffer in a2, checking for specific byte values, and calls a library routine and another routine if certain global bytes are non-zero.
 - `handle_interrupt`: Checks bit 0 of a value read from a hardware register, calls another routine if the bit is set, writes a word to a hardware register, and returns from interrupt.
 - `set_global_byte`: Writes the byte negative one to a global variable and returns with d0 set to zero.
+- `handle_keyboard_interrupt`: Checks a bit in the interrupt status register, and if set, modifies the CIAA control register, calls another routine, and then clears a bit in the control register before returning from interrupt.
+- `set_bit_in_table`: Manipulates bits in d0 and then sets a bit in a table at an offset derived from d0 and d1, then branches to another routine.
+- `modify_bit_and_loop`: If the high nibble of d0 is not all ones, it clears a bit in a table at an offset determined by d0 and d1, then enters a loop that decrements d0 from 1000 to zero.
 - `initialize_graphics_buffers`: Initializes several memory buffers by filling them with specific values through nested loops, clears a block of memory starting at a hardware register, and updates a global variable with bits from a hardware status register.
 - `process_input_state`: Calls another routine, enters a loop that checks the high bits of a CIAA Port A register against a global byte, and conditionally updates a global pointer or toggles a bit at an offset within a structure pointed to by a global variable.
 - `validate_boundary_ranges`: Traverses a pointer chain from a global variable and checks if a structure at each step satisfies several boundary conditions involving comparisons against values loaded from other global variables.
@@ -279,9 +283,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `allocate_and_initialize_structure`: Calls a routine to allocate memory, and if successful, stores the pointer in a global variable and initializes several fields at specific offsets within that memory block, otherwise it stores zero in the global variable and returns.
 - `allocate_and_setup_linked_list`: Allocates memory for a structure, sets a field at offset 15 to negative one, and if a subsequent call returns a valid pointer, clears several fields, sets offset 8 to 4, and builds a linked list structure starting at offset 20 of the allocated block.
 - `release_allocated_resources_2`: Checks a global variable and, if non-zero, clears it and calls a routine using a pointer from another global variable; then checks a second global variable and, if non-zero, clears it and calls a routine using a pointer from the first global variable.
-- `zero_word_data`: Contains a single instruction that performs a bitwise OR on register d0 with zero.
-- `clear_data_register_zero`: Sets the lowest byte of data register zero to zero.
-- `zero_word_data_2`: Contains six consecutive instructions that perform a bitwise OR on register d0 with zero.
 - `verify_media_and_display_error_2`: Sets a flag and modifies a bitfield in a global variable, then calls a routine to display a message.
 - `verify_media_and_display_error`: Attempts to verify disk information by calling a routine with a string and a length, then checks a library function for a specific result; if the result is non-zero, it calls a library routine to display an error message and branches to another location.
 - `copy_disk_info_and_verify_media`: Copies a string from a global location to a destination buffer and then performs a sequence of checks to verify disk information.
@@ -454,7 +455,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `xor_table_data`: Performs a loop 18 times where it calculates offsets into two tables based on a byte from a third table, then XORs a longword from the first table with a longword from a second table and stores the result in the second table.
 - `initialize_memory_and_dma`: Clears a block of memory using a loop, copies 127 longwords from one location to another, calls another routine, and writes values to several offsets in a structure.
 - `update_pseudo_random_seed`: Uses the vertical blank pointer and a global variable to perform a series of bitwise operations and shifts to update a seed value, then performs a 16-bit multiplication.
-- `update_attribute_flags`: Performs bitwise OR operations on bytes at various offsets within structures pointed to by a2, a4, and a6, then branches to other routines based on the value in d0.
 - `check_byte_match`: Masks d0, loads a pointer from a relative address, and if a byte at that pointer matches a value at a global address, it branches to another routine.
 - `check_and_clear_byte`: Loads a byte from offset 868 into d0; if the byte is not zero, it updates a2 using a pointer at offset 2 of the structure in a2 and a pointer at offset 872, subtracts 10 from a2, clears the byte at offset 868, and returns.
 - `add_offset_to_global_2`: Adds a long value from offset 2 of the structure in a2 to a long value at offset 7e6 and returns.
@@ -499,6 +499,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `branch_to_offset_2`: Performs a short branch to a specific offset in another routine.
 - `branch_to_offset_3`: Performs a short relative branch to a specific offset within the code segment.
 - `branch_to_offset`: Performs a relative branch to a specific offset.
+- `branch_to_offset_5`: Performs a short branch to a relative offset of 55784.
+- `branch_to_address_alt`: Performs a short branch to a different specific address.
 - `branch_to_event_trigger`: Performs a short branch to a location within another routine.
 - `update_memory_and_return`: Branches to an offset, otherwise it loads a pointer from a relative address, checks a byte in register d1, and either branches to another offset or clears a byte at an offset of a pointer in a3 and writes a word to a specific memory location before returning.
 - `decrement_structure_byte`: Loads a pointer from a table into a3, then if d1 is not zero, checks if the byte at offset 1 of the structure in a3 is non-zero; if it is, it decrements the byte at offset 0 of the structure in a3.
@@ -507,6 +509,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_global_constant`: Writes a constant to a global variable and clears a byte at an offset from a register.
 - `decrement_global_counter`: Decrements a global variable and, if it reaches zero, clears a byte at an offset from a register and resets the global variable to five.
 - `process_event_trigger`: Checks a byte in a register and, if it is zero, performs a series of pointer calculations and hardware register updates within a loop.
+- `prepare_state_update_a`: Loads an address into a3 and, if d1 is not zero, loads a value into d4 and branches to another routine; otherwise, it branches to another routine.
+- `clear_byte_and_set_word`: Clears a byte at offset 1 of the address in a3 and writes the value 15 to a global word.
+- `empty_stub_11`: Empty routine: returns to the caller immediately without doing anything.
+- `prepare_state_update_b`: Loads an address into a3 and, if d1 is not zero, loads a value into d4 and branches to another routine; otherwise, it branches to another routine.
+- `clear_byte_and_set_word_alt`: Clears a byte at offset 1 of the address in a3 and writes the value 15 to a global word.
+- `empty_stub_12`: Empty routine: returns to the caller immediately without doing anything.
+- `conditionally_load_constant_and_branch`: Loads a pointer into a register from a relative offset, then checks a byte in a register; if the byte is zero, it branches to another routine, otherwise it loads a 16-bit constant into a register and branches to another routine.
+- `update_state_and_structure_2`: Clears a byte at offset 1 of a3 and sets a global word to 15; if d1 is not zero, it increments a global word and returns; otherwise, it performs complex pointer arithmetic to update a structure at a0 using values from a1 and a2, then decrements a global word and returns if it is not zero.
 - `decrement_and_return`: Checks a byte at a specific memory location; if it is non-zero, it branches to another offset, otherwise it pushes a0 to the stack, retrieves a pointer from the stack, decrements a word at an offset of that pointer, and either branches to another offset or restores a0 from the stack and returns.
 - `configure_hardware_and_call`: Clears bit 1 of a hardware register, copies a block of bytes to offset 768, writes values to a hardware register, calls two other routines, and returns.
 - `update_hardware_registers`: Pushes a pointer to the stack, modifies bitplane control registers via the hardware custom chip base address, calls eight different routines and one indirect routine, modifies bitplane control registers again, and then compares a hardware register value to a global variable before returning from an interrupt.
@@ -523,3 +533,28 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `return_constant_4`: Returns the constant -1 in d0 to the caller without any other effect.
+
+### Dragon's Lair - Escape from Singe's Castle (1989)(ReadySoft)(Disk 1 of 5)[cr CLS][t +1 CLS].adf:lair2#unpacked
+
+- `branch_to_address_2`: Performs a short relative branch to another location.
+- `call_old_open_library_2`: Library stub: loads its arguments and the exec library base, calls OldOpenLibrary and returns its result to the caller.
+- `configure_blitter_parameters_2`: Stores a value in a global longword, waits for a bit in a custom register to clear, and then sequentially updates blitter registers and custom DMA registers while waiting for specific bits to clear between writes.
+- `enable_interrupt_and_store_registers`: Sets bit 1 of the CIAA PRA register, stores two words from custom register offsets into global longwords, and writes 30847 to the custom INTENA register.
+- `build_lookup_table`: Copies a block of data from a source to a destination, then populates a large table with a series of calculated 32-bit values and 16-bit constants.
+- `write_split_longwords`: Calculates several values based on a global longword and writes them as a series of 16-bit words into a table starting at an offset of 26 from a pointer.
+- `update_pointer_table_2`: Copies a longword from a global variable to a specific location and then updates that same location with a new constant value.
+- `configure_cop_registers`: Writes to several custom chip registers and calls multiple other routines in sequence.
+- `initialize_system_parameters`: Calls three library functions, updates a global pointer with a value from a table plus an offset, and performs several sequential calls to another routine with varying arguments.
+- `find_end_and_call`: Iterates through a buffer pointed to by a register until it finds a byte with the value negative one, then calls a function pointer located at an offset of negative 60 from a register.
+- `update_table_and_flag`: Performs arithmetic on a value from a global variable to update a table of 16-bit words, then toggles a bit in a global variable and updates a third table based on the result.
+- `process_coordinate_data`: Manipulates a table of values by adding or subtracting elements, performs a loop to adjust values by a constant, and updates several hardware registers and global variables.
+- `process_coordinate_list_2`: Loops through a list of 16-bit words until a specific marker is found, performing complex fixed-point multiplication and division using values from several tables to write new 16-bit coordinates to a destination table.
+- `calculate_bounding_box_and_update`: Reads two pairs of coordinates from a table, calculates their differences and absolute values, and performs arithmetic to determine a specific value and a flag.
+- `configure_blt_hardware`: Calculates a value by adding two constants, stores it in the BltDMA depth register, and then sets the BltDMA control, mode, and size registers with specific values before returning.
+- `update_structure_and_blt`: Increments a global word and, if it reaches eight, resets it and performs a series of pointer updates and data movements involving a table and a structure in a0.
+- `perform_blt_loop`: Updates a global pointer, checks a value in a structure in a0, and enters a loop that performs multiple BltDMA register writes and pointer increments based on values from a table and a structure.
+- `setup_blt_parameters`: Calculates an address using a global pointer and two constants, waits for a bit in a structure in a0 to clear, and then writes values to the structure in a0 before returning.
+- `update_index_and_table`: Calculates a new value based on a byte from a structure in a0 and a global variable, updates a global byte, and if a calculated index differs from a global word, updates a table and a structure field.
+- `dispatch_input_and_blt`: Checks the status of CIAA_PRA and a bit in a structure in a0, then performs an indirect jump to a routine at an offset determined by a global word.
+- `decrement_global_counter_2`: Checks a byte at a specific address and, if it is non-zero, decrements a word in a location pointed to by a value on the stack.
+- `update_hardware_and_dispatch`: Clears a bit in a global variable, performs several sequential calls to other routines, and updates hardware registers based on values read from the custom chip.

@@ -6,20 +6,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (5511344 top-level bytes in 13 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 26109 raw-word lines |
-| Functions named and described | pass, 11 of 11 named (0 author symbols), 11 of 11 described (6 by rule, 4 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 26151 of 26153 (99.99%) |
+| Bytes classified (5407188 top-level bytes in 16 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 13 of 13 units identical (bytes and relocations), 17 raw-word lines |
+| Functions named and described | pass, 16 of 16 named (0 author symbols), 16 of 16 described (6 by rule, 10 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 32 of 32 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 26439 of 26439 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 329 of 329 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 29567 |
-| code | 105368 |
-| data | 4693798 |
+| code | 1026 |
+| data | 4693984 |
 | padding | 627 |
 | unused | 681984 |
 
@@ -35,8 +35,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Universe (1994)(Core Design)(M4)[cr PSG](Disk 6 of 6).adf:bootblock | 1 | 18 | 1 |
 | logged disk load from Universe (1994)(Core Design)(M4)[cr PSG](Disk 1 of 6).adf boot-block load | 1 | 116 | 2 |
 | logged disk load from Universe (1994)(Core Design)(M4)[cr PSG](Disk 1 of 6).adf boot-block load | 1 | 0 | 0 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 26168 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 0 | 0 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 32 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 20 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
 
 ## Cases handled
 
@@ -46,11 +49,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - universe (1994)(core design)(m4)[cr psg](disk 4 of 6)/Universe (1994)(Core Design)(M4)[cr PSG](Disk 4 of 6).adf: custom-format (non-DOS) disk, 1739 non-empty blocks: matched against track-loaded segments
 - universe (1994)(core design)(m4)[cr psg](disk 5 of 6)/Universe (1994)(Core Design)(M4)[cr PSG](Disk 5 of 6).adf: custom-format (non-DOS) disk, 1575 non-empty blocks: matched against track-loaded segments
 - universe (1994)(core design)(m4)[cr psg](disk 6 of 6)/Universe (1994)(Core Design)(M4)[cr PSG](Disk 6 of 6).adf: custom-format (non-DOS) disk, 1601 non-empty blocks: matched against track-loaded segments
+- reference run failed (Karl 4 Nov 2026): run play-rs-m1500 slid through memory (an address: 1 64 KB pages each with >= 29491 distinct PCs executed, 15822 of its 29687 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-rs-m3000 slid through memory (an address: 1 64 KB pages each with >= 29491 distinct PCs executed, 15822 of its 29687 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-rs-menu slid through memory (an address: 1 64 KB pages each with >= 29491 distinct PCs executed, 15822 of its 29687 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-rs-mixed slid through memory (an address: 1 64 KB pages each with >= 29491 distinct PCs executed, 15822 of its 29687 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
 - universe (1994)(core design)(m4)[cr psg](disk 1 of 6)/Universe (1994)(Core Design)(M4)[cr PSG](Disk 1 of 6).adf: the boot block reads 4096 bytes from disk offset 1024 to an address (found statically); recovered as a unit
 - universe (1994)(core design)(m4)[cr psg](disk 1 of 6)/Universe (1994)(Core Design)(M4)[cr PSG](Disk 1 of 6).adf: the boot block reads 26112 bytes from disk offset 843264 to an address (found statically); recovered as a unit
-- runtime segment an address: 26152 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address (play-rs-m1500): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- self-modifying code at an address (12 bytes change between runtime segment an address and runtime segment an address (play-rs-m1500)): both forms recovered; writer: not identified statically (indirect store)
+- 32 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 5 first-run image unit(s) in 1 version group(s); 334 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
 - universe (1994)(core design)(m4)[cr psg](disk 1 of 6)/Universe (1994)(Core Design)(M4)[cr PSG](Disk 1 of 6).adf: 2 logged loads cover 30208 bytes of the image
 - universe (1994)(core design)(m4)[cr psg](disk 1 of 6)/Universe (1994)(Core Design)(M4)[cr PSG](Disk 1 of 6).adf: blocks 11-12 (bytes 5632-6656) outside the filesystem hold data, not code (opcode density 0.031, entropy 2.96)
 - universe (1994)(core design)(m4)[cr psg](disk 1 of 6)/Universe (1994)(Core Design)(M4)[cr PSG](Disk 1 of 6).adf: blocks 22-1646 (bytes 11264-843264) hold a RNC1: Rob Northen RNC1 Compressor stream (832000 -> 40064 bytes)
@@ -162,5 +167,22 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `fill_stack_frame_with_a0_value`: Stores the value in a0 repeatedly into successive longword slots below a3, filling a large stack frame area with that value before continuing.
+- `execute_infinite_loop`: Performs an infinite loop by branching to itself.
+- `fill_memory_on_interrupt`: Checks bit 3 of the interrupt request register and, if set, stores the value from a register into thirteen consecutive 4-byte locations starting at an offset from a pointer in a6.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `increment_and_store_constant`: Increments a 16-bit value at an offset of 8 from a global pointer, calls another routine, and stores the constant 16 into the interrupt request register before returning.
+- `check_vposr_and_store_interrupt`: Checks a byte from the video pointer register and, depending on its value, calls another routine before storing the constant 4 into the interrupt request register.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `branch_if_zero`: Tests a byte in a global variable and branches if it is zero.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `return_if_not_zero`: Tests a byte in a global variable and returns if it is not zero, otherwise it branches to another location.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.

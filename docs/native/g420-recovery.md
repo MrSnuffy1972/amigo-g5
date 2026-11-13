@@ -37,6 +37,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - sim city cd32 (1991)(infogrames)(disk 1 of 2)[hd]/Sim City CD32 (1991)(Infogrames)(Disk 1 of 2)[HD].adf:2.lha: high-entropy data file (8.00 bits/byte), classified as packed data
 - sim city cd32 (1991)(infogrames)(disk 2 of 2)[hd]/Sim City CD32 (1991)(Infogrames)(Disk 2 of 2)[HD].adf:3.lha: high-entropy data file (7.95 bits/byte), classified as packed data
 - sim city cd32 (1991)(infogrames)(disk 2 of 2)[hd]/Sim City CD32 (1991)(Infogrames)(Disk 2 of 2)[HD].adf:4.lha: high-entropy data file (7.99 bits/byte), classified as packed data
+- sim city cd32 (1991)(infogrames)(disk 1 of 2)[hd]/Sim City CD32 (1991)(Infogrames)(Disk 1 of 2)[HD].adf:LhA: PowerPacker 4.0 (xfd) stream found by ancient scan (36576 -> 53592 bytes) but only 0 of 26 sampled windows are in reference RAM: not used
 - sim city cd32 (1991)(infogrames)(disk 1 of 2)[hd]/Sim City CD32 (1991)(Infogrames)(Disk 1 of 2)[HD].adf:LhA: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
 ## Cracktros (kept, not protection)

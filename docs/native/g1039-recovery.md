@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (904096 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 1 raw-word lines |
-| Functions named and described | pass, 41 of 41 named (0 author symbols), 41 of 41 described (3 by rule, 8 by the local model) |
+| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 3 raw-word lines |
+| Functions named and described | pass, 41 of 41 named (0 author symbols), 41 of 41 described (2 by rule, 9 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 545 of 545 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 776 of 776 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 783 of 783 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 10808 |
-| code | 2554 |
-| data | 889710 |
+| code | 2586 |
+| data | 889678 |
 | unused | 1024 |
 
 ## Code units
@@ -28,8 +28,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Leander (1991)(Psygnosis)(Disk 1 of 3)(Disk 1 of 3)[cr SKR][t Icepic].adf:bootblock | 1 | 48 | 2 |
 | logged disk load from Leander (1991)(Psygnosis)(Disk 1 of 3)(Disk 1 of 3)[cr SKR][t Icepic].adf boot-block load | 1 | 93 | 3 |
-| logged disk load from Leander (1991)(Psygnosis)(Disk 1 of 3)(Disk 1 of 3)[cr SKR][t Icepic].adf boot-block load | 1 | 198 | 19 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 437 | 17 |
+| logged disk load from Leander (1991)(Psygnosis)(Disk 1 of 3)(Disk 1 of 3)[cr SKR][t Icepic].adf boot-block load | 1 | 207 | 20 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 435 | 16 |
 
 ## Cases handled
 
@@ -37,6 +37,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - leander (1991)(psygnosis)(disk 1 of 3)(disk 1 of 3)[cr skr][t icepic]/Leander (1991)(Psygnosis)(Disk 1 of 3)(Disk 1 of 3)[cr SKR][t Icepic].adf: the boot block reads 2048 bytes from disk offset 899072 to an address (found statically); recovered as a unit
 - leander (1991)(psygnosis)(disk 1 of 3)(disk 1 of 3)[cr skr][t icepic]/Leander (1991)(Psygnosis)(Disk 1 of 3)(Disk 1 of 3)[cr SKR][t Icepic].adf: the boot block reads 11264 bytes from disk offset 0 to an address (found statically); recovered as a unit
 - runtime segment an address: 351 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 4 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 3 immediate, 1 jump target
 - leander (1991)(psygnosis)(disk 1 of 3)(disk 1 of 3)[cr skr][t icepic]/Leander (1991)(Psygnosis)(Disk 1 of 3)(Disk 1 of 3)[cr SKR][t Icepic].adf: 2 logged loads cover 13312 bytes of the image
 - 1 packed track region(s), 886784 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)
 
@@ -64,6 +65,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### logged disk load from Leander (1991)(Psygnosis)(Disk 1 of 3)(Disk 1 of 3)[cr SKR][t Icepic].adf boot-block load
 
+- `modify_memory_and_disable_blitter`: Modifies two bytes in memory via a pointer in a4 by performing a bitwise OR with 124, calls a routine at an offset from a6, calls relocate_block_and_jump, and sets the bitplane enable bit in the BPLCON0 register to 0 before returning.
 - `relocate_block_and_jump`: Writes interrupt and DMA control values, copies 544 bytes of code to a fixed address, and jumps into the copy through a pointer.
 - `decrunch_backward_bitstream_block`: Moves a packed source block to the end of its buffer, then reads a bitstream from the end and writes literal bytes and repeated runs backwards into the output.
 - `call_unresolved_indirect_target`: Makes an indirect call through a pointer whose target the decompiler could not recover, then returns.
@@ -91,7 +93,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_vector_block_to_low_memory`: Copies 147 bytes from the start of this code block to a fixed low-memory address, one byte at a time, and returns once the copy completes.
 - `stub_undecompiled_routine`: The decompiled body timed out, so only the facts are available: 19 instructions, one caller and no listed calls or registers.
 - `trap_zero_after_flag_check`: If a flag word is not one, calls a helper first.
-- `tiny_ori_ori`: Small routine of 2 instructions that merges 0 into d0, then merges 0 into d0.
 - `advance_scrolltext_character`: Advances a per-frame text printer: every eighth frame it toggles a state flag, then for each character code it writes glyph pointers into output bitplane slots.
 - `tiny_ori`: Small routine of 1 instruction that merges 157 into d0.
 - `tiny_ori_2`: Small routine of 1 instruction that merges 1 into d0.

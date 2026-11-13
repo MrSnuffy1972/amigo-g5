@@ -6,20 +6,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901184 top-level bytes in 38 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 218 of 218 named (0 author symbols), 218 of 218 described (6 by rule, 28 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1075 of 1075 (100.00%) |
+| Bytes classified (901184 top-level bytes in 56 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 5 raw-word lines |
+| Functions named and described | pass, 303 of 303 named (0 author symbols), 303 of 303 described (13 by rule, 108 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1546 of 1546 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 8491 of 10374 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 8709 of 8710 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 287304 |
-| code | 37916 |
-| data | 115921 |
+| asset | 164590 |
+| code | 31138 |
+| data | 245413 |
 | padding | 8459 |
 | unused | 451584 |
 
@@ -27,14 +27,33 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Holiday Lemmings 1993 (1993)(DMA Design).adf:HolidayLemmings | 4 | 10120 | 208 |
+| Holiday Lemmings 1993 (1993)(DMA Design).adf:HolidayLemmings | 4 | 8456 | 293 |
 | Holiday Lemmings 1993 (1993)(DMA Design).adf:TRAINER! | 2 | 235 | 8 |
 | Holiday Lemmings 1993 (1993)(DMA Design).adf:bootblock | 1 | 18 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
 
 ## Cases handled
 
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:Level000: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1360 -> 8192 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:Level001: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1344 -> 8192 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:Level002: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1428 -> 8192 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:Level003: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1464 -> 8192 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:Level004: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1836 -> 8192 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:Level005: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1116 -> 8192 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:Level006: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1244 -> 8192 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:Level007: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (1636 -> 8192 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:ground1: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (4708 -> 15088 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:ground3: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (22720 -> 35560 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:leveldata: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (3932 -> 7792 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:kw: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (3596 -> 5439 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:objects1: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (13396 -> 52690 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:rudi: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (2940 -> 4827 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:Objects3: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (10508 -> 40650 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:panel1: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (3064 -> 12800 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:Icons: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (44208 -> 77466 bytes)
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:jb: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (2172 -> 9243 bytes)
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:TRAINER!: ProPack (RNC) (xfd) stream found by ancient scan (9168 -> 41400 bytes) but only 0 of 8 sampled windows are in reference RAM: not used
 - holiday lemmings 1993 (1993)(dma design)/Holiday Lemmings 1993 (1993)(DMA Design).adf:TRAINER!: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
 ## Cracktros (kept, not protection)
@@ -184,9 +203,31 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `draw_active_entries_with_blitter`: Loops over the active entries that fall within the visible range, computes each one's screen position and frame from its state flags, and writes each sprite to the bitmap through blitter passes, waiting for the blitter between passes.
 - `update_bit_planes_scan_entries`: Sets or clears one bit at a position across four bitplanes, then walks a list of entries.
 - `process_active_entries_blitter_2`: Clears and sets specific flag bits in a hardware register block, then walks a list of active entries, updating counters and validating their values before either invoking a per-entry routine or computing a table offset to dispatch based on a decoded index.
+- `manipulate_bit_planes_and_update`: Clears and sets a bit at a calculated offset within a structure pointed to by a3, then enters a loop that iterates through a table of structures to perform bitwise operations and calls blit_tile_rows_with_masks or update_bit_planes_scan_entries based on specific bit flags and coordinate checks.
+- `set_multiple_bits_and_branch`: Sets bit 0 of a byte at offset 8448 from a pointer in a3 three times at different offsets, clears the bit at a fourth offset, and then performs a loop based on the value in d0 before branching to another routine.
+- `modify_bit_planes_and_update_scanlines`: Clears a bit at a calculated offset in three separate memory locations relative to a pointer in a3, then enters a loop that iterates through a table to perform conditional updates to bit planes and scanline entries via a jump table.
+- `manipulate_bit_planes_and_update_tiles`: Sets and clears a bit at a calculated offset within a structure pointed to by a3, then enters a loop that iterates through a table to perform bitwise operations and calls a routine to update bit planes based on a jump table.
+- `toggle_bits_pattern_2`: Clears a bit at a calculated offset within a byte at offset 8448 from a pointer in a3, then sets it, then clears it, then sets it again, and performs a loop based on the value in d.
+- `set_double_clear_bit_2`: Sets bit 0 of a byte at offset 8448 from a pointer in a3 twice, then clears it, then sets it again, and performs a loop based on d0 before returning.
+- `modify_bitplane_data`: Clears a specific bit in three separate bytes at fixed offsets from a pointer in a3, sets the same bit in a fourth byte at a different offset, and then enters a loop that iterates based on the value in d0 before branching to another routine.
+- `manipulate_bit_planes_and_update_tiles_2`: Sets a bit in a byte at an offset from a pointer in a3, clears it twice at two other offsets from the same pointer, and then sets it again.
+- `toggle_bits_pattern_3`: Clears a bit at a calculated offset within a byte at offset 8448 from a pointer in a3, then sets and clears that same bit, then sets and clears it again, performing a loop based on a value in d.
+- `set_double_clear_bit_3`: Sets bit 0 of a byte at offset 8448 from a pointer in a3 twice, then clears it, then sets it again, and performs a loop based on d0 before returning.
+- `modify_bit_planes_and_update_tiles`: Clears a bit at a calculated offset in a byte at a specific offset from a pointer, then sets the same bit at two other offsets from that pointer.
 - `process_active_entries_blitter`: Clears and sets specific flag bits in a hardware register block, then walks a list of active entries, updating counters and validating their positions against a range.
+- `set_bits_alternating`: Sets bit 0 of a byte at offset 8448 from a pointer in a3, then sets the same bit, then clears it, then clears it again, and performs a loop based on d0 before branching to another routine.
 - `process_active_entries_flags`: Clears and sets specific flag bits in a large bit-plane buffer, then walks a list of active entries, updating counters and computing offsets that select a handler from a jump table based on computed position values.
 - `process_and_draw_entries`: Sets four flag bits in a large bitmap through pointer offsets, then walks a list of entry records, updating counters and computing offsets from their fields.
+- `clear_bits_alternating`: Clears bit 0 of a byte at offset 8448 from a pointer in a3, then sets it, then sets it again, then clears it, and performs a loop based on d0 before branching to another routine.
+- `set_multiple_bits`: Sets bit 0 of a byte at offset 8448 from a pointer in a3 three times, then clears it, and performs a loop based on d0 before branching to another routine.
+- `clear_multiple_bits`: Clears bit 0 of a byte at offset 8448 from a pointer in a3 three times, then sets it, and performs a loop based on d0 before branching to another routine.
+- `set_and_clear_bits`: Sets bit 0 of a byte at offset 8448 from a pointer in a3, then clears it twice, then sets it again, and performs a loop based on d0 before branching to another routine.
+- `toggle_bits_pattern`: Clears bit 0 of a byte at offset 8448 from a pointer in a3, then sets it, then clears it, then sets it again, and performs a loop based on d0 before branching to another routine.
+- `set_double_clear_bit`: Sets bit 0 of a byte at offset 8448 from a pointer in a3 twice, then clears it, then sets it again, and performs a loop based on d0 before branching to another routine.
+- `clear_double_set_bit`: Clears bit 0 of a byte at offset 8448 from a pointer in a3 twice, then sets it twice, and performs a loop based on d0 before branching to another routine.
+- `set_mixed_bits`: Sets bit 0 of a byte at offset 8448 from a pointer in a3, then clears it, then sets it twice, and performs a loop based on d0 before branching to another routine.
+- `set_triple_bits`: Clears bit 0 of a byte at offset 8448 from a pointer in a3, then sets it three times, and performs a loop based on d0 before branching to another routine.
+- `set_multiple_bits_2`: Sets bit 0 of a byte at the address in a3, increments a3 by 8496, sets bit 0 of the new address, increments a3 again, sets bit 0 of the new address, increments a3 a third time, sets bit 0 of the new address, and then loops based on d0 before branching to another routine.
 - `queue_blit_for_entry_tile`: Looks up a tile from an entry's position, computes an address in the bitmap, and writes four groups of row pointers into the blitter setup.
 - `queue_bitplane_blit_rows`: Rounds a stored offset to a 16-bit boundary to derive a shift, then writes four groups of row pointers into the blitter setup.
 - `store_blit_offsets`: Computes a byte offset from a value read from a global structure and stores the adjusted source pointer.
@@ -207,8 +248,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clip_rectangle_to_bounds`: Clips a rectangle against limits stored in a structure.
 - `call_six_routines`: Calls six other routines in sequence and returns, with no other work visible in the code.
 - `store_half_sizes_and_pointers`: Looks up a table entry by index after calling another routine, stores half of two size fields from an input record into it, and stores two pointers to that record's data at fixed positions.
+- `jump_to_walk_linked_list_calling_routi`: Jump stub: passes control straight on to walk_linked_list_calling_routine.
+- `jump_to_store_three_bytes_and_pointers`: Jump stub: passes control straight on to store_three_bytes_and_pointers.
+- `jump_to_process_pointer_list`: Jump stub: passes control straight on to process_pointer_list.
+- `jump_to_call_three_routines`: Jump stub: passes control straight on to call_three_routines.
+- `jump_to_call_two_routines_3`: Jump stub: passes control straight on to call_two_routines_3.
+- `jump_to_copy_slot_bytes_to_outputs`: Jump stub: passes control straight on to copy_slot_bytes_to_outputs.
+- `jump_to_call_five_routines_2`: Jump stub: passes control straight on to call_five_routines_2.
 - `setup_audio_channels_from_mask`: For each of four bits in the input mask, clears that audio channel's DMA bit, points the channel at a sample address with a length of one, and records the channel in a state byte.
 - `call_four_routines`: Calls four other routines in sequence and returns.
+- `branch_to_offset`: Performs a relative branch to a specific offset.
+- `branch_to_offset_2`: Performs a relative branch to a specific offset.
+- `update_table_bit_mask`: Decrements a value in register d0, masks it to eight bits, and stores a byte with only the highest bit set into a table at an offset determined by the new value in d0.
+- `write_zero_to_indexed_memory`: Decrements a value in a register, uses the result as an index into a table to calculate a destination address, and stores a zero byte at that location before returning.
+- `clear_four_longwords`: Clears four consecutive 32-bit words in a table starting from a memory address held in a4, then returns.
 - `call_routines_when_flag_clear`: Calls three other routines, then calls four more only when a stored flag is zero.
 - `disable_audio_dma_channels`: Calls another routine, sets a stored flag to one, then clears the DMA enable bits for the first four audio channels.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
@@ -235,6 +288,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `configure_audio_channels`: Clears the audio DMA enable bits, then for each set bit in the input it enables the matching channel, records the bit in a status byte, copies a shared value into that channel's pointer register, and sets its length to one.
 - `call_four_routines_3`: Invokes four other routines in sequence and then returns without modifying any data.
 - `initialise_entry_byte_fields`: When bit zero of the flags is set, writes one to one byte of a structure, copies the input byte into two adjacent bytes, and sets a fourth byte to all ones.
+- `get_and_clear_byte`: Calculates an offset using a value from a table, reads a byte from that location, sets the sign flag based on that byte, and then clears the byte at that same location.
+- `read_table_byte`: Decrements d0, masks it to 8 bits, and reads a byte from a table at an offset determined by the new d0 value.
+- `set_table_byte`: Decrements d0, masks it to 8 bits, and stores a byte containing only the high bit set into a table at an offset determined by the new d0 value.
+- `check_table_sign`: Decrements d0, masks it to 8 bits, and sets the sign flag based on the byte at the resulting offset in a table.
+- `clear_table_words`: Loops four times, clearing a 32-bit word at each increment of a pointer starting at the address in a4.
 - `invoke_routines_conditional`: Invokes a helper routine three times, and when a global flag is zero it additionally calls another target routine four times before returning both input values.
 - `decrement_counter_or_reload_five`: When the stored counter is zero it reloads it to five.
 - `invoke_routine_three_times`: It calls another routine three times in a row and then returns, performing no data manipulation itself.
@@ -252,12 +310,58 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispatch_via_jump_table_entry`: Reads a selector byte from a record, clears it, and uses a second byte as an index into a table of offsets to call the matching handler.
 - `empty_stub_routine`: Does nothing and returns immediately, so it is an empty stub with no body.
 - `set_global_flag_bit_one`: Sets the second-lowest bit of a shared global variable and returns.
+- `clear_fire_bit_2`: Clears bit 1 of the CIAA Port A Data Register and returns.
+- `decrement_and_sync_offset_values`: Checks if a byte at offset 31 of a structure in a1 is zero; if so, it subtracts 3 from a 16-bit value in d0 and stores the result into offsets 8 of both the structure in a1 and another structure in a3.
+- `update_status_flag_bitmask`: Compares a value in a1 against four specific offsets within a structure in a5 and writes a corresponding bitmask value to a 16-bit word at offset 240 of a structure in a6.
+- `modify_audio_config_byte`: Checks a byte at offset 13 of a structure pointed to by a2; if that byte is zero, it subtracts 86 from the value in d0 and stores the result at that same offset, otherwise it returns.
+- `update_status_bytes_offset_28`: Subtracts 166 from a byte in register d0, stores zero at offset 28 of the structure in a1, and then stores the modified byte into offsets 29 and 30 of that structure.
+- `update_status_bytes_2`: Stores 1 at offset 28 of the structure in a1, then stores the byte from d0 plus 80 into offsets 29 and 30 of that structure.
+- `set_table_byte_3`: Stores a byte of 255 at the address calculated by adding the byte from d0 plus 69 to offset 282 of the structure in a5.
+- `store_byte_at_offset_2`: Stores a byte of 255 at offset 27 of the address held in a1.
+- `clear_byte_at_offset_27`: Clears a byte at offset 27 of the memory location pointed to by a1, then branches to another routine.
+- `clear_structure_longwords`: Clears five longwords starting at offset 282 of the structure pointed to by a5 using a loop.
+- `process_conditional_update_2`: If the byte at offset 3 of the structure in a2 is 255, it copies a longword from the start of the structure to offset 4 and stores the byte from d0 plus 47 at offset 3.
+- `branch_to_next_routine`: Performs a branch to another routine.
+- `update_structure_offset_158`: Stores the word 32769 into a structure at offset 158 relative to a pointer in a6, then branches to another routine.
+- `update_structure_offset_158_2`: Stores the word 32770 into a structure at offset 158 relative to a6, then branches to another routine.
+- `update_structure_value`: Stores the word 32772 at offset 158 of the structure pointed to by a6, then branches to another routine.
+- `write_status_32784`: Writes the word 32784 to offset 158 of the structure in a6 and branches to another routine.
+- `write_status_32800`: Writes the word 32800 to offset 158 of the structure in a6 and branches to another routine.
+- `write_status_32832`: Writes the word 32832 to offset 158 of the structure in a6 and branches to another routine.
+- `clear_table_byte_2`: Sets a byte to zero at a calculated index within a table pointed to by a5, using a byte from d0 and an offset of 282, then branches to another routine.
+- `write_status_1_2`: Writes the word 1 to offset 158 of the structure in a6 and branches to another routine.
+- `write_status_2_2`: Writes the word 2 to offset 158 of the structure in a6 and branches to another routine.
+- `write_status_4_2`: Writes the word 4 to offset 158 of the structure in a6 and branches to another routine.
+- `write_status_16_2`: Writes the word 16 to offset 158 of the structure in a6 and branches to another routine.
+- `write_status_32_2`: Writes the word 32 to offset 158 of the structure in a6 and branches to another routine.
 - `set_global_flag_bit_one_2`: Sets the second-lowest bit of a shared global variable and returns.
-- `stub_bad_instruction_data`: The decompiler could only decode bad instruction data here, so the routine body is not recovered and no behaviour can be stated from this listing.
-- `stub_bad_instruction_data_2`: Decoding stopped at bad instruction data, so this block is not recovered in the listing.
-- `return_empty_routine_2`: The routine is empty; it contains no instructions that modify memory or registers and immediately returns.
-- `build_row_pointer_table_2`: Builds a table of row pointers by computing each row's address from a base pointer and a row width, then storing the resulting pointer into the table at the current index.
-- `empty_routine`: This routine is empty and performs no operations.
+- `clear_fire_bit`: Clears bit 1 of the CIAA_PRA register and returns.
+- `update_offset_values`: Checks a byte at offset 31 of a structure in a1; if it is zero, it subtracts 3 from d0 and stores the resulting word into offsets 8 of both the structure in a1 and another structure in a3.
+- `update_status_bytes`: Subtracts 166 from a byte in d0, stores 0 at offset 28 of the structure in a1, and then stores the modified d0 byte into offsets 29 and 30 of that structure.
+- `update_status_bytes_alt`: Subtracts 176 from a byte in d0, stores 1 at offset 28 of the structure in a1, and then stores the modified d0 byte into offsets 29 and 30 of that structure.
+- `set_table_byte_2`: Subtracts 187 from a byte in d0, masks the result to 16 bits, and stores a byte at the address calculated by adding the result to an offset of 282 in a5.
+- `store_byte_at_offset`: Stores a byte at offset 27 of the address held in a1.
+- `clear_byte_at_offset`: Sets the byte at offset 27 of the address held in a1 to zero.
+- `clear_memory_block`: Clears 5 longwords starting at offset 282 of the structure in a5 using a loop.
+- `process_conditional_update`: Compares a byte at offset 12 of the structure in a2 to 255; if it is not 255, it branches to another routine, otherwise it copies a longword from offset 0 to offset 4 of the structure and stores a modified d0 byte at offset 12.
+- `check_and_reset_byte`: Tests a byte at offset 12 of the structure in a2; if the byte is non-zero, it branches to another routine, otherwise it sets that byte to 255 and returns.
+- `decrement_and_copy_structure`: Decrements a byte at offset 12 of the structure in a2 and copies a longword from offset 4 to offset 0 of the structure.
+- `subtract_from_longword`: Subtracts 12 from a longword at offset 0 of the structure in a2 and returns.
+- `write_value_8001`: Stores the word 32769 at offset 158 of the structure in a6.
+- `write_value_8002`: Stores the word 32770 at offset 158 of the structure in a6.
+- `write_value_8004`: Stores the word 32772 at offset 158 of the structure in a6.
+- `write_status_8010`: Writes the word 32784 to offset 158 of the structure in a6 and returns.
+- `write_status_8020`: Writes the word 32800 to offset 158 of the structure in a6 and returns.
+- `write_status_8040`: Writes the word 32832 to offset 158 of the structure in a6 and returns.
+- `clear_table_byte`: Subtracts 229 from a byte in d0, masks the result to 8 bits, and sets the byte at that index within a table pointed to by a5 plus an offset of 282 to zero.
+- `write_status_1`: Writes the word 1 to offset 158 of the structure in a6 and returns.
+- `write_status_2`: Writes the word 2 to offset 158 of the structure in a6 and returns.
+- `write_status_4`: Writes the word 4 to offset 158 of the structure in a6 and returns.
+- `write_status_16`: Writes the word 16 to offset 158 of the structure in a6 and returns.
+- `write_status_32`: Writes the word 32 to offset 158 of the structure in a6 and returns.
+- `update_status_flag`: Compares a1 with four different offsets of a structure in a5 and writes a specific word value to offset 240 of a6 depending on which match is found.
+- `update_audio_configuration`: If a byte at offset 13 of a structure in a2 is zero, it subtracts 86 from d0 and stores the result at that offset; otherwise it calls another routine with d0 set to 15, writes 1 to a memory location, writes 15 to offset 240 of a pointer to hardware registers, and returns.
+- `set_hardware_bits`: Sets bit d1 in a byte at offset 48 of a table, sets bit d1 in a byte at an offset calculated by multiplying d0 by 2, sets bit d1 in a byte at an invalid address, performs an OR operation with 240 on a byte at an invalid address, performs an OR operation with 48 on a byte at an invalid address, and performs an OR operation with 240 on a byte at an offset calculated by multiplying d0 by 2.
 
 ### Holiday Lemmings 1993 (1993)(DMA Design).adf:TRAINER!
 

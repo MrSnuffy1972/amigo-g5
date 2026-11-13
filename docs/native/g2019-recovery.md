@@ -45,7 +45,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - reference crashes at an address (OSHLE RUNAWAY: PC reached an address after an address (op 4EB8) A7=an address (A7)=an address, slid to exec.library -an address): 494 executed addresses of the slide through empty memory after it (an address) are not game code and are excluded from proof 4
 - runtime segment an address: 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip](disk 1 of 2)[a]/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP](Disk 1 of 2)[a].adf:CREDITS.EXE: RNC1: Rob Northen RNC1 Compressor (old) stream found by ancient scan (11360 -> 26812 bytes) but only 0 of 10 sampled windows are in reference RAM: not used
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip](disk 1 of 2)[a]/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP](Disk 1 of 2)[a].adf:CREDITS.EXE: Old ProPack (RNC) (xfd) stream found by ancient scan (11888 -> 26856 bytes) but only 0 of 12 sampled windows are in reference RAM: not used
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip](disk 1 of 2)[a]/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP](Disk 1 of 2)[a].adf:patch: TetraPack 2.2 (xfd) stream found by ancient scan (392 -> 112 bytes) but only 0 of 1 sampled windows are in reference RAM: not used
 - populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip](disk 1 of 2)[a]/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP](Disk 1 of 2)[a].adf:CREDITS.EXE: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
 ## Cracktros (kept, not protection)

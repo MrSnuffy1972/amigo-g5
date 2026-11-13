@@ -6,20 +6,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (907184 top-level bytes in 48 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 308 of 308 named (0 author symbols), 308 of 308 described (68 by rule, 38 by the local model) |
+| Bytes classified (907184 top-level bytes in 49 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 58 raw-word lines |
+| Functions named and described | pass, 341 of 341 named (0 author symbols), 341 of 341 described (69 by rule, 68 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 722 of 722 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 9117 of 9117 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 9642 of 9642 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 487405 |
-| code | 33284 |
-| data | 133137 |
+| code | 33520 |
+| data | 132901 |
 | padding | 11694 |
 | unused | 241664 |
 
@@ -31,14 +31,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Tron 5000 (1988)(Softgang)[cr Trilogy][m BFBS].adf:hardware.default | 2 | 233 | 10 |
 | Tron 5000 (1988)(Softgang)[cr Trilogy][m BFBS].adf:   | 3 | 6983 | 202 |
 | Tron 5000 (1988)(Softgang)[cr Trilogy][m BFBS].adf:  | 3 | 421 | 9 |
-| 8 | 1 | 2 | 1 |
+| 8 | 1 | 62 | 2 |
 | diskfont.library | 13 | 830 | 67 |
 | Tron 5000 (1988)(Softgang)[cr Trilogy][m BFBS].adf:bootblock | 1 | 64 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 467 | 16 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 466 | 15 |
+| Tron 5000 (1988)(Softgang)[cr Trilogy][m BFBS].adf: #unpacked | 2 | 466 | 33 |
 
 ## Cases handled
 
-- runtime segment an address (play-long-joy): 388 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-lgpwide): 388 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- tron 5000 (1988)(softgang)[cr trilogy][m bfbs]/Tron 5000 (1988)(Softgang)[cr Trilogy][m BFBS].adf: : crunched executable decrunched by XFDMaster (HQC Cruncher 2.0 (xfd), 59604 -> 133348 bytes), 38 of 38 windows confirmed in reference RAM: recovered as a hunk executable
 - tron 5000 (1988)(softgang)[cr trilogy][m bfbs]/Tron 5000 (1988)(Softgang)[cr Trilogy][m BFBS].adf: : a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
 ## Cracktros (kept, not protection)
@@ -290,6 +292,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### 8
 
 - `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `update_structure_field_via_callback`: Calls a function via a pointer in a structure at a negative offset from a register, and if the return value is non-zero, stores the contents of a register into a field at offset 34 of the returned pointer before calling another function via a pointer in the same structure.
 
 ### diskfont.library
 
@@ -367,19 +370,54 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `initialize_system_state_2`: Initializes a global pointer, populates a memory block with a repeating pattern, and clears a large block of memory to zero.
-- `update_global_value`: Increments or decrements a global variable or resets it to zero based on its current value and a bitmask.
-- `update_joystick_counter`: Checks a bitmask against a global variable and increments or decrements that variable or resets it to zero.
-- `execute_indirect_calls`: Performs a series of calls to the same routine followed by an indirect call to a function pointer.
-- `execute_recursive_calls`: Performs a variable number of recursive calls to itself based on the value of a global variable.
-- `process_string_and_shift_bits`: Searches for a character in a string, copies a block of data from a source, and performs a bitwise left-shift and bit-insertion on a range of memory.
-- `initialize_table_with_pattern`: Fills a block of memory with a repeating pattern of specific short integer values.
-- `initialize_table_with_offset`: Fills a block of memory with a sequence of increasing short integer values while copying data from a source pointer.
-- `copy_memory_blocks`: copies a block of memory using a word-sized loop and then copies a second, larger block using a word-sized loop with a stride of four bytes.
-- `accumulate_values_to_tables`: Iterates through a block of memory and adds an offset to values stored in two different destination tables.
-- `set_global_pointers_and_clear_memory`: Assigns several specific memory addresses to a global variable and then clears a large block of memory to zero.
-- `reset_audio_volumes`: Writes zero to several global variables and then writes zero to the four audio channel volume registers, effectively silencing all audio channels.
-- `reset_audio_dma`: Clears a global variable, writes a value to another global variable, writes to the audio volume registers, and writes to the DMACON register to enable DMA channels.
-- `update_global_state`: Increments a global variable and, if it reaches a certain value, resets it and executes a sequence of recursive calls and conditional pointer updates.
-- `modify_pointer_via_offset_and_table`: Checks a bitmask or value in a byte, then either adds or subtracts an offset or a nibble-extracted value from a pointer, or searches a lookup table to update a pointer-based memory location.
-- `update_pointer_and_data_tables`: Reads a value from a pointer, calculates an offset, and updates several memory locations with data or calculated addresses from a lookup table.
+- `initialize_system_resources`: Calls two routines, then disables interrupts and opens a library to initialize several data tables by copying values from memory and filling them with repeating patterns.
+- `update_joystick_counter`: Increments a byte in a global variable until it reaches fifteen, then resets it to zero.
+- `execute_dispatch_sequence`: Calls four different routines and then performs an indirect jump using a pointer loaded from a global variable.
+- `dispatch_by_global_byte`: Compares a global byte to 0, 1, or 2 and calls another routine once, twice, or three times respectively based on the value.
+- `process_data_stream`: Decrements a byte in a global variable and, if it reaches zero, performs a complex sequence of table lookups and data copying.
+- `initialize_data_table`: Fills a table starting at a global address with repeating sequences of a specific word, the value negative two, a constant, and zero using a loop.
+- `populate_structured_table`: Fills a table with a repeating pattern of a starting word, negative two, a constant, and values copied from another table using a loop.
+- `copy_and_rearrange_data`: Copies a block of data from one location to another, then performs a second pass that copies data from the source to a destination while skipping every three words.
+- `apply_offset_to_tables`: Iterates through two different tables, adding a value derived from a source table to the contents of the destination tables at specific intervals.
+- `set_pointer_array`: Stores a series of longwords into a table of pointers, then iterates through that table to clear the memory pointed to by each entry before storing a single byte from a table into a final global variable.
+- `mute_audio_channels`: Sets a global word to all ones, clears four audio volume registers, and clears three global words.
+- `disable_dma_and_audio`: Clears a global word, sets four audio volume registers to zero, and writes a value to the DMA control register to enable specific channels.
+- `update_audio_parameters`: Increments a global word and resets it to zero if it reaches six, then conditionally calls another routine four times to update audio DMA parameters using values from a table and specific hardware registers.
+- `configure_audio_dma`: Updates audio and DMA parameters by reading from tables and structures, performing calculations, and calling another routine multiple times to update hardware registers.
+- `update_dma_parameters`: Reads a structure from a table, extracts an index from a byte, and uses it to fetch data from another table to update various fields in the structure.
+
+### Tron 5000 (1988)(Softgang)[cr Trilogy][m BFBS].adf: #unpacked
+
+- `initialize_system_resources_2`: Calls two routines, disables interrupts, and opens a library.
+- `increment_joystick_counter`: Increments a byte in a global variable, resets it to zero if it reaches fifteen, and then checks specific bits in the joystick data register.
+- `increment_global_byte`: If a global byte is not equal to two, it increments that byte by one and returns; otherwise it returns.
+- `decrement_global_byte`: Decrements a byte in a global variable if it is not zero, otherwise it returns immediately.
+- `execute_sequence_of_routines`: Saves registers, calls five different routines in sequence, loads a pointer from a table into a0, and jumps to the address contained in that pointer.
+- `dispatch_by_byte_value`: Compares a byte in a global variable against zero, one, and two, branching to different routines based on the result; otherwise it returns.
+- `call_bit_stream_handler`: Calls another routine and then returns.
+- `call_bit_stream_handler_twice`: Calls another routine twice and then returns.
+- `program`: Calls an initialization routine, a main routine, and an exit routine before returning.
+- `process_bit_streams_2`: Decrements a global byte and, if zero, performs a sequence of table lookups and copies data before executing a bit-shifting loop on a block of memory.
+- `process_bit_streams`: Calculates an index from a byte, copies a block of 48 words from a source table to a destination, and performs a bit-shifting loop that processes 16 words by shifting bits based on a carry and a status register bit.
+- `initialize_data_table_2`: Fills a table with repeating sequences of a 16-bit value, a negative two, a 16-bit constant, and zero using a loop.
+- `initialize_data_with_source`: Fills a table with repeating sequences of a 16-bit value, a negative two, a 16-bit constant, and a word copied from another table using a loop.
+- `copy_and_rearrange_data_2`: Copies 62 words from one location to another, stores the first word copied into a global variable, and then performs a second loop that copies 54 words from the source to a destination with an offset.
+- `apply_offset_to_bytes`: Performs two loops where it adds a constant value of either one or two to a byte read from a source and adds that result to a byte at a destination, incrementing the destination pointer by seven each iteration.
+- `setup_pointer_table`: Stores fifteen pointers into a table, clears the memory pointed to by the first pointer in that table through a loop, and then stores a byte from a source into a global variable.
+- `mute_audio_channels_2`: Sets a 16-bit value to all ones, clears four audio volume registers, and clears three global words.
+- `disable_dma_and_audio_2`: Clears a 16-bit value, clears four audio volume registers, and sets the DMA control register to enable specific channels.
+- `increment_global_counter`: Compares a word in a global variable to zero; if not zero, it increments a different global word, clears it if it reaches 7, and otherwise branches to another location.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+- `process_hardware_registers`: Iterates through four structures, checking if a byte at offset 3 is non-zero, and if so, calls another routine with a specific hardware register address in a5.
+- `branch_by_byte_value`: Extracts a byte from offset 2 of a structure in a6, masks the lower 4 bits, and branches to different locations if the value is 1 or 2; otherwise it returns.
+- `branch_by_mode_value`: Compares a word in a global variable against values one through five and branches to different routines based on the match; otherwise it returns.
+- `calculate_table_index_shift`: Clears d0, loads a byte from an offset of 3 from a6, shifts it right by four bits, and branches to another routine.
+- `calculate_table_index_mask`: Clears d0, loads a byte from an offset of 3 from a6, masks it with fifteen, and branches to another routine.
+- `branch_to_offset_six`: Branches to another routine after loading a word from offset 16 of a structure in a6 into d2.
+- `search_table_for_word`: Calculates an offset using d0, loads a word from a table into d1, and enters a loop to find a matching word in that table.
+- `store_word_at_offset`: Stores a 16-bit word from register d2 into a location at offset six of a pointer held in register a5 and returns.
+- `add_masked_byte`: Extracts a 4-bit value from offset 3 of a structure in a6, adds it to the word at a6 if the value is non-zero, and stores the result at offset 6 of a structure in a5.
+- `subtract_masked_byte`: Extracts a 4-bit value from offset 3 of a structure in a6, subtracts it from the word at a6 if it is non-zero, and stores the result at offset 6 of a structure in a5.
+- `process_audio_sequence`: Calculates a value based on a byte from a table and a global long, updates the DMA controller, calls another routine in a loop to update four audio channels, and manages counters in global variables.
+- `load_and_update_dma`: Loads a structure from a table, performs calculations based on a masked byte, and if a value is non-zero, calls another routine to update DMA and structure data.
+- `update_dma_and_structure`: Calculates a value from a structure in a6 and a register, stores it in a structure in a5, and if a value in a6 is non-zero, updates DMACON, a structure in a5, and a global variable.

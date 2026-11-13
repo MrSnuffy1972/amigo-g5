@@ -42,6 +42,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address: 415 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 15 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 operand
 - batman - the movie (1989)(ocean)[cr qtx](disk 1 of 2)/Batman - The Movie (1989)(Ocean)[cr QTX](Disk 1 of 2).adf: blocks 2-2 (bytes 1024-1536) outside the filesystem hold data, not code (opcode density 0.000, entropy 2.77)
 - batman - the movie (1989)(ocean)[cr qtx](disk 2 of 2)/Batman - The Movie (1989)(Ocean)[cr QTX](Disk 2 of 2).adf: blocks 2-2 (bytes 1024-1536) outside the filesystem hold data, not code (opcode density 0.000, entropy 1.61)
 - 5 packed track region(s), 1701888 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)

@@ -11,7 +11,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Functions named and described | pass, 6 of 6 named (0 author symbols), 6 of 6 described (0 by rule, 6 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 6 of 6 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 64 of 68 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 68 of 68 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
@@ -36,6 +36,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ## Cases handled
 
 - dungeon master (1988)(ftl)[hd]/Dungeon Master (1988)(FTL)[HD].adf:DM/Dungeon.dat: high-entropy data file (7.85 bits/byte), classified as packed data
+- dungeon master (1988)(ftl)[hd]/Dungeon Master (1988)(FTL)[HD].adf:DM/dm: Imploder Library (xfd) stream found by ancient scan (98196 -> 177324 bytes) but only 0 of 85 sampled windows are in reference RAM: not used
+- dungeon master (1988)(ftl)[hd]/Dungeon Master (1988)(FTL)[HD].adf:DM/exec: Imploder Library (xfd) stream found by ancient scan (3324 -> 6212 bytes) but only 0 of 3 sampled windows are in reference RAM: not used
+- dungeon master (1988)(ftl)[hd]/Dungeon Master (1988)(FTL)[HD].adf:DM/killptr: Imploder Library (xfd) stream found by ancient scan (208 -> 224 bytes) but only 0 of 0 sampled windows are in reference RAM: not used
+- dungeon master (1988)(ftl)[hd]/Dungeon Master (1988)(FTL)[HD].adf:DM/bye: Imploder Library (xfd) stream found by ancient scan (660 -> 692 bytes) but only 0 of 1 sampled windows are in reference RAM: not used
+- dungeon master (1988)(ftl)[hd]/Dungeon Master (1988)(FTL)[HD].adf:DM/lpatch: Imploder Library (xfd) stream found by ancient scan (8308 -> 13008 bytes) but only 0 of 7 sampled windows are in reference RAM: not used
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate+displacement
 - dungeon master (1988)(ftl)[hd]/Dungeon Master (1988)(FTL)[HD].adf: boot area holds bytes but the checksum is invalid, so Kickstart never runs it
 - dungeon master (1988)(ftl)[hd]/Dungeon Master (1988)(FTL)[HD].adf:DM/dm: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 - dungeon master (1988)(ftl)[hd]/Dungeon Master (1988)(FTL)[HD].adf:DM/lpatch: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data

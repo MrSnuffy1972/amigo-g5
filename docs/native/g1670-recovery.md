@@ -11,7 +11,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Functions named and described | pass, 32 of 32 named (0 author symbols), 32 of 32 described (2 by rule, 3 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 463 of 463 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 52224 bytes, 1 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 685 of 786 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 786 of 786 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 

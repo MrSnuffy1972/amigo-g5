@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (904864 top-level bytes in 8 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 1 raw-word lines |
-| Functions named and described | pass, 137 of 137 named (0 author symbols), 137 of 137 described (16 by rule, 100 by the local model) |
+| Functions named and described | pass, 132 of 132 named (0 author symbols), 132 of 132 described (15 by rule, 96 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 477 of 477 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 408000 bytes, 35 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 2453 of 2503 instructions identical in start and length, 0 mismatches |
+| Recovered without load address (counted in proof 1, flagged) | 408000 bytes, 34 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 2491 of 2491 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 32232 |
-| code | 9478 |
-| data | 441815 |
+| code | 9430 |
+| data | 441863 |
 | padding | 1499 |
 | unused | 419840 |
 
@@ -29,13 +29,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | 3D Galax.adf:3DGalax | 2 | 267 | 8 |
 | 3D Galax.adf:bootblock | 1 | 18 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1075 | 93 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1064 | 89 |
 | 3D Galax.adf:3DGalax.game (raw code file, load address unknown) | 1 | 575 | 6 |
-| 3D Galax.adf:3DGalax.boot (raw code file, load address unknown) | 1 | 568 | 29 |
+| 3D Galax.adf:3DGalax.boot (raw code file, load address unknown) | 1 | 567 | 28 |
 
 ## Cases handled
 
 - runtime segment an address: 270 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- 3D Galax/3D Galax.adf:3DGalax: PowerPacker 4.0 (xfd) stream found by ancient scan (5732 -> 23792 bytes) but only 2 of 3 sampled windows are in reference RAM: not used
 - 3D Galax/3D Galax.adf:3DGalax.game: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - 3D Galax/3D Galax.adf:3DGalax.boot: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - 1 never-loaded region(s), 402000 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
@@ -94,10 +95,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_value_or_default`: It calls a routine to obtain a value, then calls it again if that value is zero, substituting a fixed constant when the second call also returns zero, and finally returns the resulting value.
 - `sum_array_or_default`: It sums twelve consecutive 16-bit words pointed to by a register and returns the accumulated total.
 - `sum_negate_array_words`: It adds 128 consecutive 16-bit words pointed to by a pointer in A0, accumulating the sum in a register.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `call_and_return`: It calls another routine and then returns.
-- `empty_routine_2`: This routine is empty and performs no operations.
-- `store_register_global`: It loads the address of a global variable into a register and then stores the value of another register at that address.
 - `tiny_moveq`: Small routine of 1 instruction that loads 1 into d2.
 - `tiny_moveq_2`: Small routine of 1 instruction that loads 0 into d3.
 - `combine_divide_values`: It calls another routine that divides a register value, accumulating a product while looping, and combines the resulting quotient and remainder into a single value.
@@ -176,7 +173,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `init_and_boot_disk`: It initializes a set of custom and CIA registers, stores several constants into global variables, and invokes a sequence of disk-related routines.
 - `init_registers_and_call`: Initializes a set of custom and CIA registers, stores several constants into global variables, and invokes two other routines in sequence.
 - `init_disk_and_call`: Programs a set of custom and DMA registers, stores constants into global variables, and calls three disk-related routines in sequence.
-- `manage_table_scan`: Initializes a table of ten entries with the values 0, 5 and 10, then repeatedly scans that table while decrementing a counter, comparing each entry against a value returned by another routine and clearing or marking entries based on the result.
 - `scan_and_update_table`: Initializes a ten-entry table with the values 0, 5 and 10, then repeatedly scans that table while decrementing a counter and comparing each entry, and finally writes a masked result back through a pointer.
 - `configure_disk_registers`: It writes a series of constants into hardware registers and global variables, then calls a routine before returning.
 - `copy_memory_block_2`: Copies a block of memory from the address in a0 to the address in a1 one longword at a time, using a dbra loop counter, and returns.

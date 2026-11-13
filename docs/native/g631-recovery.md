@@ -7,8 +7,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (2011295 top-level bytes in 128 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 12 raw-word lines |
-| Functions named and described | pass, 870 of 870 named (0 author symbols), 870 of 870 described (65 by rule, 473 by the local model) |
+| Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 8 raw-word lines |
+| Functions named and described | pass, 1117 of 1117 named (0 author symbols), 1117 of 1117 described (222 by rule, 571 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2895 of 2895 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 19816 of 19816 instructions identical in start and length, 0 mismatches |
@@ -17,21 +17,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | class | bytes |
 |---|---|
-| asset | 654640 |
-| code | 75718 |
-| data | 1280888 |
-| padding | 49 |
+| asset | 655244 |
+| code | 81318 |
+| data | 1274680 |
+| padding | 53 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| game.slave | 1 | 865 | 66 |
-| IML | 3 | 18532 | 565 |
+| game.slave | 1 | 968 | 72 |
+| IML | 3 | 19499 | 633 |
 | Pro | 2 | 121 | 10 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 280 | 222 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 445 | 372 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 12 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 6 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 52 | 29 |
 
 ## Cases handled
 
@@ -40,6 +40,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address: 205 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 6 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 2 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 displacement+displacement, 1 jump target
 - NightShift_v1.0_1508/NightShift_v1.0_1508_hdf/NightShift/data/system-configuration: raw file found loaded verbatim in runtime segment an address at an address; classified through the recovered segment
 
 ## Cracktros (kept, not protection)
@@ -64,7 +65,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispatch_on_matching_tag`: Compares two stored tag words in a table indexed by a register value against two fixed tag constants, returns if neither matches, and otherwise calls a routine through a table entry.
 - `save_pointer_and_set_self`: Copies the current value of one global into a second global and stores its own address into the first, then returns.
 - `set_cia_bit_around_call`: Sets bit 6 of a global flag byte that mirrors the CIA A control register, calls one routine, clears that bit again and returns the register value it was given.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 - `spin_forever_idle_loop`: Contains only an empty loop with no exit, so execution parks here forever; it does no work and calls nothing in its decompiled body.
 - `store_pointer_fields_then_call`: Writes one computed address value into two fixed fields of a structure, calls a routine, then makes an indirect call through the structure's first table entry.
 - `execute_indirect_jump`: Performs an indirect jump to an address stored in a jump table.
@@ -92,17 +92,24 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_immediately_7`: This is an empty routine that performs no operations and immediately returns to the caller.
 - `perform_no_operation`: This routine is empty and immediately returns to the caller.
 - `clear_field_and_save_pointer`: Writes zero into the field at offset twelve of the structure passed in one address register, saves another register value into a global, then returns.
-- `compare_state_then_dispatch`: Compares a register value with a saved global; when they differ it makes an indirect call through a table entry, otherwise it calls a routine and then makes that same indirect call.
 - `dispatch_state_change`: Compares a register value with a global and either calls a specific routine or performs an indirect call through a table entry.
 - `store_own_address_in_global`: Stores the address of a routine into a global pointer and returns.
-- `stub_bad_instruction_data`: Contains only a bad-instruction marker, so the decompiler could not recover any logic; it is a stub with no behaviour.
 - `allocate_and_enqueue_library_node`: Allocates a node through exec and sets a flag and two constant fields, opens expansion.library, allocates a second structure linked back to the first, and adds it to a list with the exec enqueue call.
 - `allocate_and_init_struct`: Allocates a block through exec, stores a shifted form of its address in a structure field, then writes zero and two constants into its first words and zero into the fourth.
-- `call_through_resolved_vector`: Writes a word back to the address it was given, calls a routine through a structure table entry, then makes an indirect call through the entry that routine returned.
-- `call_dos_library_function`: Calls a table routine to obtain a library structure for dos.library, then makes an indirect call through a fixed offset in that structure.
-- `send_dos_request_message`: Finds the current task, opens dos.library by name, builds a request message on the stack, sends it to the task's port, then waits for the reply and dispatches to the handler whose key matches the reply.
+- `dispatch_pointer_from_list`: Loads a pointer from a table, calls a routine using a pointer from a library, and then jumps to an address stored at an offset of 22 from the returned pointer.
+- `process_library_message`: Calls a routine to handle a message, then performs several conditional branches and calls to other routines, including one that uses a jump table based on a value from a table.
 - `dispatch_reply_by_key_table`: Makes three library port calls to fetch a reply, then scans a table of key and offset pairs for the key stored in the message and calls the handler at the matching offset.
 - `set_status_and_dispatch`: Sets a status field to minus one, stores a second register value, sends and waits on the port, then dispatches the handler whose key matches the message.
+- `allocate_request_block`: Calls two subroutines, attempts to allocate a request block, and if the block's offset 28 contains a specific value, calls a routine via a pointer in a2 before calling another subroutine to report fields.
+- `branch_on_d0_status`: Calls two subroutines, loads a 32-bit value from an offset of 4 of a pointer in a0 into d1, and branches to another routine based on the value of d0.
+- `initialize_structure_data_3`: Calls two subroutines, then compares a string at offset 4 of a0 with another string.
+- `copy_and_rotate_strings`: Copies 56 words from a source to a destination using a loop, then calls a subroutine twice to rotate strings at specific offsets of a structure in d7.
+- `copy_and_rotate_strings_2`: Clears a7, moves a7 to a0, moves d7 to a1, calls a routine at offset 78 of a2, increments a7 by 4, loads a pointer from the program counter, moves d7 to a1 and adds 8 to it, and then enters a loop that copies bytes from the pointer to the address in a1 until a non-zero byte is encountered, finally branching to another routine.
+- `call_library_and_rotate`: Calls a subroutine, executes a routine via a pointer in a2 using a pointer in d7, and then calls another subroutine twice with different offsets of a structure in d7.
+- `call_and_branch`: Calls a routine at offset d8e and branches to another routine.
+- `initialize_data_structure`: Clears several longwords and writes several constant longwords and the value of a3 into a structure pointed to by d7.
+- `allocate_memory_block`: Calls a subroutine to return, then checks a byte at an offset from a pointer in a0.
+- `clear_registers_and_branch`: Sets d0 and d1 to zero and branches to another routine.
 - `copy_buffered_bytes_with_refill`: Copies a block of bytes from a source buffer into a destination, limited by the bytes remaining.
 - `write_buffered_bytes_with_growth`: Writes bytes into a buffer while tracking the logical position and the highest position reached, allocating a new block through exec when none is held, then dispatches the follow-up handler by key.
 - `copy_field_and_dispatch_reply`: Calls a table routine, copies a field into the result slot, stores a register value into a second slot, then sends and waits on the port and dispatches the handler matching the reply key.
@@ -123,7 +130,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_routines_with_fallback`: Calls one routine and, if it does not produce a result, calls a second one in a fallback sequence, returning zero when neither produces a value.
 - `compare_two_strings`: Compares two zero-terminated byte strings one byte at a time, returning as soon as they differ and returning normally once both reach the terminating zero.
 - `return_void`: This routine performs no operations and immediately returns to the caller.
-- `open_library_or_fallback`: Records two values in globals, calls a routine, and runs a table routine when a flag bit is set.
+- `check_bit_status`: Checks bit 0 of a custom hardware register and returns if the bit is not set, otherwise it returns if the bit is set.
 
 ### IML
 
@@ -173,8 +180,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_then_halt_forever`: Makes one call to another routine, then loops forever with no exit, so execution never returns from this point.
 - `stub_empty_placeholder`: The routine appears empty in the provided pseudo-code, contradicting the instruction count.
 - `copy_selected_source_words`: Chooses a source pointer from the flag bits of its register argument, then copies thirty-two words from it into the destination table, reading every second word of the source and filling the table from its end.
-- `return_input_byte_unchanged`: Returns the low byte of its argument unchanged, with no other effect.
-- `return_register_value`: The routine returns a value stored in a data register.
 - `call_routine_with_one`: Calls another routine with the constant one as its argument and returns.
 - `call_routine_with_zero`: Calls another routine with the constant zero as its argument and returns.
 - `write_derived_word_to_table`: Computes a table index from a global value minus three, then stores its word argument, multiplied by 256 and offset by a fixed constant, into the table entry at that index.
@@ -200,8 +205,27 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `run_item_selection_loop`: Builds a list of up to eight entries in a local array from a menu table, then runs a loop that polls for input events and moves through the entries.
 - `run_player_setup_menu`: Shows the player setup menu with its text strings, toggling the player count between one and two when the selection is 1, and returns one when the done option, numbered 4, is chosen or zero when the menu is cancelled.
 - `display_main_menu`: Draws the control menu with labels for load, save, reset, selecting player one or two, and done, then loops handling the selection and returns the result.
+- `execute_sequence_of_calls`: Calls three different subroutines, pushing two different 16-bit values onto the stack as arguments during the process, and then branches to another routine.
+- `execute_extended_sequence_of_calls`: Calls three different subroutines, including one at the start, pushing two different 16-bit values onto the stack as arguments, and then branches to another routine.
+- `modify_bit_at_offset`: Multiplies a 16-bit value from an offset of 8 of a structure in a5 by 10, uses the result to calculate an address, and clears bit 0 at that address before branching to another routine.
+- `call_handler_and_branch`: Calls a routine at a longword offset, pushes a pointer from an offset of minus 32 from a5 onto the stack, pushes a word from offset 8 of a5, calls a routine at a relative offset, increments the stack pointer by 6, and branches.
+- `execute_table_calls`: Calls three different routines with various arguments and then performs a jump based on a value retrieved from a table.
+- `execute_complex_sequence`: Calls several routines including one that moves a memory block, initializes a key flags table, updates a coordinate table, and advances a counter, then performs a memory move if a byte read from a global variable matches specific values.
+- `blit_and_loop_data`: Calls several subroutines to forward arguments and clip a rectangle, then enters a loop that compares a byte from a table with a value at offset -2 of a5, incrementing offset -4 of a5 until it reaches 77.
+- `update_table_entry`: Compares a byte from a table at offset 8 of a5 with a value at offset -2 of a5.
+- `process_key_and_blitter_data`: Checks a bit in a stack variable, then enters a loop to compare and set bytes in a table pointed to by a6, calls initialize_key_flags_table and update_coordinate_table, performs a second loop to check and set bytes in the same table, calls run_blitter_copy_passes and call_routine_with_zero if certain conditions are met, and finally calls forward_two_arguments and read_and_clear_global_byte before returning.
 - `initialize_key_flags_table`: Clears a 128-byte buffer, marks the seven key codes in a string as set, then passes each of seventy-seven table entries and its index to a routine before finishing with a sentinel.
 - `dispatch_table_entries`: Reads a table entry selected by an index, then makes a series of routine calls at offsets from that entry, adding extra calls when the case value is ten, and finally writes the entry's byte in shifted form.
+- `store_and_branch_twenty_one`: Stores the word value twenty-one into a stack offset and branches to another location.
+- `store_and_branch_twenty_eight`: Stores the word value twenty-eight into a stack offset and branches to another location.
+- `store_and_branch_sixteen`: Stores the word value sixteen into a stack offset and branches to another location.
+- `store_and_branch_twenty_eight_alt`: Stores the word value twenty-eight into a different stack offset and branches to another location.
+- `store_and_branch_twenty_four`: Stores the word value twenty-four into a stack offset and branches to another location.
+- `store_and_branch_thirty`: Stores the word value thirty into a stack offset and branches to another location.
+- `store_and_branch_forty_three`: Stores the word value forty-three into a stack offset and branches to another location.
+- `store_and_branch_one_hundred_forty_one`: Stores the word value one hundred forty-one into a stack offset and branches to another location.
+- `store_and_branch_forty`: Stores the word value forty into a stack offset and branches to another location.
+- `iterate_and_call_functions`: Performs multiple calls to two different routines using values extracted from a table and various arithmetic offsets, eventually calling a routine to iterate through string bytes.
 - `load_production_graphics`: Loads a long list of compressed graphics files for the production screen and sets display parameters.
 - `display_credits_screen`: Draws the credits screen, with the design, coding, graphics, music and copyright lines as referenced text, using display routines in sequence, and selects between two graphics based on a flag.
 - `draw_production_records_table`: Draws the production records header, then loops over rows of twenty-byte records, writing each row's number as a digit and each record's fields with routine calls.
@@ -292,6 +316,77 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_entity_state_timers`: Increments timer fields within an entity structure to trigger state transitions or reset values.
 - `generate_weighted_value`: Checks several global conditions to build a weight table, then calls another routine to get a random value which is processed using the weights.
 - `update_state_machine`: Executes a switch statement based on a global state variable to call specific sub-routines and modify related flags.
+- `call_update_state_parameters`: Pushes a 16-bit word from offset minus 2 of a structure in a5 onto the stack, calls another routine, increments the stack pointer by 2, and branches to another routine.
+- `push_stack_and_call_state_updater`: Pushes a 16-bit word from an offset of negative two relative to a6 onto the stack, calls update_state_parameters_2, adjusts the stack pointer, and branches to another routine.
+- `update_and_set_bit`: Clears a 16-bit value on the stack, calls another routine, increments the stack pointer by 2, pushes a 16-bit word from offset minus 2 of a structure in a5 onto the stack, calls another routine, increments the stack pointer by 2, sets bit 4 of a byte at offset minus 1 of a structure in a5, and branches to another routine.
+- `call_fetch_next_table_byte`: Clears a 16-bit value on the stack, calls another routine, increments the stack pointer by 2, calls another routine, and branches to another routine.
+- `push_parameter_and_call_update`: Pushes a 16-bit word from an offset of negative two relative to a6 onto the stack, calls update_state_parameters_2, adjusts the stack pointer, and branches to another routine.
+- `clear_stack_and_call`: Clears a 16-bit value on the stack, calls another routine, increments the stack pointer by 2, and branches to another routine.
+- `call_reset_table_counters`: Clears a 16-bit value on the stack, calls another routine, increments the stack pointer by 2, calls another routine, and branches to another routine.
+- `update_state_parameters_2`: Updates a value in a global structure by adding a 16-bit value from another offset, checks if this value falls within a specific range, and if so, calls initialize_global_state_block to reset several fields in the structure and sets a 16-bit value to 1 if a specific bit is not set in a value pointed to by a5.
+- `reset_state_parameters`: Checks a bit in a global variable and, if a specific condition is met, updates a state value to 2, sets a longword to 27, sets a word to 1, and clears a word and a 16-bit value in the global structure.
+- `test_bit_and_clear_offset`: Tests bit 1 of a longword at a global address and branches to another routine if the bit is not set, otherwise it clears a 16-bit value at offset -4 of a6 and branches to another routine.
+- `compare_and_branch_offset`: Compares a 16-bit value at a global address to 65524 and branches to another routine if it is less than or equal to that value, otherwise it loads 254 into d0 and branches to another routine.
+- `clear_and_reset_offset`: Sets a 16-bit value at offset -4 of a6 to zero, clears a longword at a global address, and if a 16-bit value at a global address is non-zero, branches to another routine; otherwise it sets that value to 1 and branches to another routine.
+- `update_offset_3fc0_from_table`: Clears offset 3fc6, increments and masks offset 3fc8 with 7, fetches a signed byte from a table at offset 1405 using the masked value, and stores it as a word at offset 3fc0 before branching to another routine.
+- `update_state_parameters`: Loads a 16-bit value from an offset in a6, masks it with 10, and branches to another routine if it is not equal to 8; otherwise it checks a longword at a global address, and if non-zero, branches to another routine, otherwise it sets several global values and clears values at offset -4 of a6 and offset 3fc8.
+- `test_bit_and_clear_offset_alt`: Tests bit 1 of a longword at a global address and branches to another routine if the bit is not set, otherwise it clears a 16-bit value at offset -4 of a6 and branches to another routine.
+- `compare_and_branch_limit`: Compares a 16-bit value at a global address to 300 and branches to another routine if it is greater than or equal to that value, otherwise it loads 2 into d0 and branches to another routine.
+- `initialize_offset_value`: Sets a 16-bit value at offset -4 of a6 to zero, sets a 16-bit value at a global address to 1, and if a 16-bit value at a global address is non-zero, branches to another routine; otherwise it sets that value to 1 and branches to another routine.
+- `update_offset_3fc0_with_offset`: Clears offset 3fc6, increments and masks offset 3fc8 with 7, fetches a signed byte from a table at offset 1405, adds 13 to it, stores the result as a word at offset 3fc0, and branches to another routine.
+- `test_and_branch_on_bit`: Tests bit 0 of a longword at a global address and branches to another routine if the bit is not set, otherwise it loads 13 into d0 and branches to another routine.
+- `update_offset_via_task`: Clears a 16-bit value at an offset in a structure, performs an arithmetic shift on a local value, and calls perform_unnamed_task with several parameters pushed onto the stack.
+- `add_to_offset_3fd8`: Loads a word from offset minus 4 of a5 into d0, adds it to a word at offset 3fd8, and branches to another routine.
+- `handle_collision_event`: Clears a word at offset 3fd8, loops if a word at offset 3fc4 is not minus 2, tests bit 4 of offset 9 of a5, and if bit 4 is set, pushes three words onto the stack, calls check_tile_collision, and stores the result in offset minus 2 of a5 before branching to another routine.
+- `evaluate_status_conditions`: Checks if a word at offset 3fc4 is 65535; if not, it checks if it is 30 or greater, then tests a word at offset minus 4 of a5 and a word at offset 3fc2 to determine whether to branch to another routine or set d0 to 13 and branch to another routine.
+- `clear_offset_3fc0`: Clears d0 and stores it as a word at offset 3fc0, then branches to another routine.
+- `fetch_table_byte`: Loads a word from offset 3fc4 into d0, fetches a signed byte from a table at offset 13de using d0, tests a word at offset 3fc2, and branches to check_tile_collision if the word is zero, otherwise it sets d0 to 13 and branches to another routine.
+- `process_tile_loop`: Sets a word at offset 3fc0 using d1, loads a byte from a table using d0 and d1, adds the signed byte to a word at offset 3fbe, pushes three words onto the stack and calls check_tile_collision; it then loops if a word at offset 3fc4 is not 26, otherwise it writes minus 8192 to offset 3fc4, clears offsets 3fc8 and 3fc6, and branches to another routine.
+- `check_proximity_condition`: Tests a word at offset minus 2 of a5; if it is greater than or equal to zero, it writes minus 8192 to offset 3fc4 and branches to another routine, otherwise it branches to another routine.
+- `call_proximity_check`: Clears a value at offset a5-2, and if offset 3fc4 is not negative 2, adds a value at offset a5-2 to a word at offset 3fbe, pushes the result to the stack, and calls a routine.
+- `load_table_byte`: Clears values at offsets a5-2 and a5-4, subtracts 30 from a word at offset 3fc4, fetches an extended byte from a table at offset 13f8 using that result, and branches based on the value at offset 3fc2.
+- `increment_counter_loop`: Sets d0 to 0, adds it to d1, stores d1 in offset 3fc0, and enters a loop that increments offset 3fc4 and compares it to 34 until it reaches 34, at which point it clears offset 3fc4.
+- `test_mask_and_branch`: Loads a word from offset a5+8, masks it, and if the result is 16 and a value at offset a5-4 is non-zero, sets offset 3fc4 to 30.
+- `check_tile_collision_and_update`: Clears a word at offset 3fc4, pushes three words from d2 offsets onto the stack, calls a routine, and if the result is 4 and the value at offset 3fc4 is less than 0 and not negative 2, sets offset 3fca to 8 and clears offsets 3fcc and a5-2.
+- `update_status_byte`: Sets a word at offset 3fca to 1, and if a word at offset 3fd8 is less than 8, clears a value at offset a5-4, extends a byte from offset 13fd to a word, and stores it in offsets 3fcc and a5-2.
+- `branch_on_status`: Tests a word at offset 3fc2 and branches to another routine if it is zero, otherwise it branches to another routine.
+- `transfer_register_values`: Moves a word from the stack to d1, stores d1 in a global variable, adds a value from a stack variable to another global variable, and branches to another routine.
+- `execute_task_and_update`: Pushes several words from a table onto the stack, calls perform_unnamed_task, and adds the result to a word at offset 3fbc.
+- `check_tile_collision_logic`: Compares a word at offset 3fbc to 284, calls check_tile_collision with three values from a table on the stack, and increments a value in a table if a comparison fails.
+- `update_table_counters_and_decrement`: Accumulates two 16-bit values from a stack offset into global variables, checks if a value reaches a threshold, and if specific status bits are set, calls decrement_table_entry_loop to reduce a table entry before updating a global 16-bit value and branching to another routine.
+- `branch_to_routine`: Performs a short branch to another routine.
+- `modify_global_counters_2`: Tests a word at offset 2de; if it is not zero, it adds 18 to a word at offset 3fbc and stores it in offset 3fde, subtracts 8 from a word at offset 3fbe and stores it in offset 3fe0, then branches.
+- `modify_global_counters`: Adds 23 to a word at offset 3fbc and stores it in offset 3fde, subtracts 13 from a word at offset 3fbe and stores it in offset 3fe0, then branches to another routine.
+- `push_and_call_routine`: Pushes the word 32 onto the stack, calls a routine at a relative offset, increments the stack pointer by 2, and branches to another location.
+- `push_memory_and_call_routine`: Pushes a word from an offset of minus 6 from a5 onto the stack, calls a routine at a relative offset, increments the stack pointer by 2, and branches to another location.
+- `perform_indirect_jump`: Subtracts 3 from d0, compares it to 4, and if it is less than 4, branches; otherwise it shifts d0 left by 1, loads a word from an offset relative to the program counter and d0, and jumps to a location determined by that word.
+- `test_status_bits`: Tests bits in a stack variable and a word in a global variable.
+- `write_constants_and_branch`: Clears d0, writes it as a word to a global variable at offset 3fd2, writes 1 to a global variable at offset 3fc2, and branches to another routine.
+- `branch_on_word_test`: Tests a word in a global variable at offset 3fc2; if it is zero, it branches to another routine, otherwise it clears d0 with 12 and branches to another routine.
+- `update_table_values`: Increments a 16-bit value in a table, clears another 16-bit value, and then loads a byte from a table into a third 16-bit location while setting two other 16-bit constants.
+- `update_conditional_state`: Performs arithmetic on a value from a table and checks it against several bounds, then conditionally clears a 16-bit value and sets two other 16-bit constants.
+- `reset_table_counters`: Clears a 16-bit value, sets another to 44, and decrements a third value in a loop until it reaches zero, then clears two more 16-bit values and sets a final 16-bit value.
+- `reset_offset_flag`: Sets up a stack frame, checks if offset 3fc6 is non-zero, and if it is zero, sets offset 3fc6 to 1.
+- `process_table_index`: Clears a word at offset 3fc6, and if it is not zero, increments a value at offset 3fd2, fetches a byte from a table at offset 1412 using that value, and stores the extended word at offset 3fc0 before calling other routines based on the resulting values.
+- `evaluate_difference_conditions`: Checks multiple conditions against values at offsets 3fbe, 342c, 3fc2, 3fbc, and 4098, and if they pass, sets a global variable to 1 and calculates the absolute difference between words at offsets 3fbe and 3fe8.
+- `evaluate_offset_difference`: Subtracts a word at offset 3fe8 from a word at offset 3fbe, and if the result is less than 8, performs a subtraction involving a word at offset 3fbc, 12, and 3fe6.
+- `reset_table_parameters`: Subtracts 12 and a word at offset 3fe6 from a word at offset 3fbc, writes several constants to a table if the result is less than 8, and calls reset_and_calculate_difference if a global variable is zero.
+- `calculate_difference_offset`: Subtracts a word at offset 400c from a word at offset 3fbe, adds 16, and if the result is less than 8, performs a second subtraction between words at offset 3fbc and 400a.
+- `reset_and_calculate_difference`: Subtracts a word at offset 400a from a word at offset 3fbc, and if the result is less than 8, writes 1 to offset 4018, clears offsets 4010, 4014, and 400e, sets offset 4012 to minus 2, and performs a subtraction and negation using values at offsets 3fbe and 402c.
+- `calculate_difference_and_branch`: Subtracts a word at offset 402c from a word at offset 3fbe, adds 16, and if the result is less than 8, performs a series of subtractions and negations using values from offsets 3fbc and 402a.
+- `clear_global_values`: Subtracts a word at offset 402a from a word at offset 3fbc, compares the result to 8, and if it is less than 8, writes several values to global offsets including 4038, 4030, 4034, 402e, and 4032 before branching.
+- `compare_table_values`: Compares several values at specific offsets in a structure pointed to by d2, and if certain conditions are met, sets a global variable to 1 and calculates the absolute difference between two words at offsets 3fbe and 3fe8.
+- `compare_table_entries`: Subtracts a word at offset 3fe8 from a word at offset 3fbe, and if the result is less than 8, performs a subtraction involving a word at offset 3fbc and 3fe6.
+- `update_table_values_3`: Subtracts a word at offset 3fe6 from the sum of a word at offset 3fbc and 10, writes several constants to a table if the result is less than 8, and calls update_table_and_negate if a global variable is zero.
+- `calculate_and_negate_difference`: Subtracts a word at offset 400c from a word at offset 3fbe, adds 16, and if the result is less than 8, subtracts a word at offset 400a from a word at offset 3fbc, adds 16, and negates the result.
+- `update_table_and_negate`: Subtracts a word at offset 400a from a word at offset 3fbc, adds 16, and if the result is less than 8, writes several constants to offsets 4010, 4018, 400e, 4014, and 4012, then performs a subtraction and negation based on values at offsets 3fbe and 402c.
+- `calculate_difference_and_negate`: Subtracts a word at offset 402c from a word at offset 3fbe, adds 16, and compares it to 8.
+- `update_table_values_2`: Calculates a value by adding 16 to a word from a global variable and subtracting a word from another global variable; if the result is less than 8, it writes several specific values to a table, otherwise it checks a global variable to decide whether to clear two words or load 13 into d0 and branch to another routine.
+- `clear_table_word`: Sets a 16-bit value in a table to zero and returns.
+- `fetch_next_table_byte`: Increments a pointer in a table, loads the byte from the previous address into a 16-bit location, and if the new pointer value is not 255, sets a 16-bit value and clears another.
+- `update_indexed_values`: Checks if a word at offset 3fc0 is less than zero.
+- `toggle_bits_and_flag`: Compares a word at offset 408e to 1; if not equal, it branches to another routine; otherwise, it checks if bits 2 and 3 of a word at offset 3fce match a value from a structure at offset 8 of a5, and if they do, it writes 1 to offset 4080 and toggles bits 2 and 3 of the word at offset 3fce before branching to another routine.
+- `update_counter_and_flag`: Increments a 16-bit value in a global variable, clamps it between 1 and 4008, and if certain bits are set in two different global locations, clears several 16-bit values and calls copy_byte_flag_if_changed.
 - `evaluate_tile_proximity_and_collision`: Calculates proximity and collision states by comparing coordinate parameters against tile map data and status flags.
 - `update_entity_animation_state`: Manages an entity's animation frame counter and state transitions based on proximity and collision flags.
 - `update_entity_movement_and_collision`: Calculates movement updates by evaluating proximity to tiles and checking for collisions.
@@ -300,6 +395,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `check_proximity_collision`: Calculates absolute distance between two sets of coordinates stored in global variables.
 - `initialize_global_state_block`: Sets specific initial values for a series of global variables, assigning non-zero constants to the first three entries and zeroing out the remaining entries in the block.
 - `load_level_graphics_table`: The routine builds a linked list of pointers to compressed graphic assets by calling a helper function to resolve each entry.
+- `fetch_and_call_table_entry`: Calculates an offset using a value from a global variable, loads a longword from a table into a global variable, and if a comparison with a global variable succeeds, calls a routine at an address retrieved from another table.
 - `initialize_display_list_entry`: The routine calculates offsets for a display list entry by adding constants to base values stored in global variables.
 - `set_game_difficulty_level`: Stores the value four into two specific byte offsets within a global game state structure.
 - `reset_data_bytes`: Stores zero and one into specific offsets of a global variable.
@@ -354,7 +450,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `check_tile_collision_2`: Iterates through a rectangular area in a tile map table to find the first entry where the lower nine bits are non-zero, returning the distance to that entry.
 - `search_tile_collision`: Iterates through a rectangular area in a tile map table to find the first entry where the lower nine bits are non-zero.
 - `calculate_collision_index`: Searches a tile map table for non-zero entries and returns a value derived from the position and an interpolated table entry.
-- `fetch_interpolated_table_entry`: Calculates an index using register differences and a stack value to retrieve a value from a global table, then combines it with other data to form a return value.
+- `calculate_offset_from_stack`: Performs several bitwise operations on d0, subtracts d3 from d2, retrieves a word from the stack, subtracts d1 from it, shifts the result left by 3, adds d2, fetches a byte from a table using the result as an index, and finally adds that byte to d2 and increments d0 before returning.
 - `find_interpolated_tile`: Scans a tile map table for non-zero entries and returns a value combining the search position with an interpolated table value.
 - `clear_table_entries`: Initializes a global variable to zero and then performs a loop seven times to write zero values to specific offsets within a table of structures.
 - `store_nush_entry`: Writes a routine address and three parameters into a new slot within a global table, then increments the table offset.
@@ -511,7 +607,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_four_word_arguments`: Copies the low and high words of two 32-bit arguments into four consecutive global variables.
 - `copy_table_block_to_buffer`: For an index argument other than minus one, selects a source table and destination buffer from a flag in the argument's high word, then copies seventeen 32-byte chunks from the table entry at that index.
 - `expand_indices_through_lookup_table`: Loops 68 times, and on each pass reads four index bytes from the source and uses each one to look up a byte in a global table.
-- `expand_indices_with_counted_loop`: Alternate entry into the index-expansion loop that takes its starting index from a register and a constant.
+- `copy_and_branch`: Saves the status register to d0, copies a longword from the address pointed to by a0 to itself, and branches to another routine.
 - `build_pointer_table_swap_buffers`: Fills six entries of a pointer table with addresses computed from a 4-bit index field and a base table, then swaps two buffer pointers and calls a routine.
 - `fill_sprite_control_entries`: When the index argument is minus one, writes four fixed header entries and clears their trailing fields.
 - `advance_cycle_and_dispatch_routines`: Calls a routine with a value derived from a global, then advances a global cycle index that wraps at twelve.
@@ -522,6 +618,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reset_list_pointers_zero_heads`: Copies one global pointer into a second and derives a third pointer by adding a stored offset.
 - `traverse_linked_list_until_null`: Starting from a global list head, repeatedly passes the current pointer to a routine and follows the pointer that routine returns, until the word at the current pointer is zero.
 - `interpret_script_record_list`: Walks a linked list of script records, executing each record's state.
+- `set_structure_values_3`: Clears d4, writes 3 to offset 3 of a structure in a3, writes 1 to offset -2 of a structure in a5, and branches to another routine.
+- `load_pointer_from_table`: Writes 2 to offset 3 of a structure in a3, loads a pointer from offset 22 of a3 into a0, increments the pointer at offset 22 by 2, writes the word at the address in a0 to offset 2 of a3, and branches to another routine.
+- `calculate_relative_offsets`: Updates two 16-bit values in a structure by adding previously calculated offsets to them, then loads a new word from a pointer in the structure into offset 4.
+- `clear_and_load_script_data`: Loads a pointer from offset 22 of a3 into a0, increments offset 22 by 2, writes the word at the address in a0 to offset -10 of a3, repeats this to write a word to offset -4 of a3, clears offsets 14 and 16 of a3, and branches to another routine.
+- `interpret_script_data`: Loads a word from a pointer in a structure, increments that pointer by 2, uses the word to index into a table to load a new pointer into the structure, and then either jumps to a location in a table or branches to various other locations based on the value of the word.
 - `collect_overlapping_boxes_into_list`: Walks a linked list of objects and clamps each one's bounding box against the bounds of a linked entry.
 - `forward_struct_fields_to_routine`: Reads a long from one field, a long from a second field and a word from a third field of the structure passed in, then forwards them to a routine.
 - `run_timed_sequence_with_flags`: Runs a sequence of routine calls, skipping some steps according to bits in its second argument, and repeats a polling step until a returned value is nonzero.
@@ -599,6 +700,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `negate_result_for_mixed_signs`: Calls a routine with its two arguments, then negates the result when exactly one of the arguments is negative.
 - `apply_sign_to_routine_result`: Calls a routine and negates its result when exactly one of its two inputs is negative, returning the result with the second input.
 - `negate_result_when_first_negative`: Calls a routine, then negates the returned value when the first argument is negative, and returns it with the second argument.
+- `preserve_and_divide`: Pushes d1 onto the stack, calls divide_32_bit_with_remainder, moves the original d1 value to d0, and restores d1 from the stack before returning.
 - `recursive_call`: The routine calls another routine and then returns.
 - `divide_32_bit_with_remainder`: Divides a 32-bit dividend by a 32-bit divisor and returns the quotient and remainder together.
 - `handle_io_errors`: This routine tests a specific bit in a result, and may call routines to report errors or perform write operations.
@@ -665,33 +767,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_72`: Library stub: loads a library base from a global variable and calls the library function at offset minus 72 of that base, returning its result to the caller.
 - `call_secondary_library_function`: Makes one indirect call through a library base held in a different global variable, to a function at a fixed offset that the decompiler could not resolve.
 - `call_library_vector_408`: Library stub: loads a library base from a global variable and calls the library function at offset minus 408 of that base, returning its result to the caller.
-- `execute_trap_instruction`: This routine stores its own address in a global variable and executes a processor trap.
-- `trigger_software_interrupt`: Stores the address of itself into a global variable and executes a software interrupt trap.
-- `update_audio_command_pointer`: Updates a global pointer with its own address and executes a software interrupt.
-- `trigger_software_interrupt_2`: Stores its own address into a global variable and executes a software interrupt trap.
-- `update_audio_command_handler`: Updates a global pointer with its own address and executes a software interrupt.
-- `trigger_software_interrupt_3`: Stores the address of itself into a global variable and then executes a software interrupt trap.
-- `store_self_address`: stores the address of a global variable into itself.
-- `store_self_address_and_trap`: stores the address of a global variable into itself and executes a trap instruction.
-- `trigger_system_trap`: Stores a pointer to itself into a global variable and executes a software interrupt trap.
-- `install_exception_handler`: Sets a global variable to its own address, stores the routine's address into a specific memory location, and executes a software interrupt trap.
-- `update_function_pointer_and_trap`: Stores the address of the current routine into a global variable and then executes a software interrupt.
-- `trigger_software_interrupt_4`: Stores a pointer to itself into a global variable and then executes a software interrupt trap.
-- `update_self_referential_pointer`: Stores the address of itself into a global variable and then performs a software interrupt.
-- `update_self_referencing_pointer`: Stores the address of a global variable into itself and then stores the address of the current routine into a specific memory location.
-- `trigger_software_interrupt_5`: Sets a global variable to its own address, stores its own address into a memory location, and executes a software interrupt trap.
-- `trigger_system_trap_2`: Sets a global variable to its own address and stores the current routine's address into a specific memory location before executing a software interrupt.
-- `store_address_to_global`: Stores the address of a global variable into itself.
-- `update_self_reference_pointer`: Stores the address of the routine into a global variable and then stores its own address into a specific memory location.
-- `trigger_system_trap_3`: Stores the routine's own address into a global variable and then executes a software interrupt trap.
-- `update_self_reference_pointer_2`: Stores the address of the routine into a global variable and then updates a specific memory location with its own address before triggering a software interrupt.
-- `update_self_reference_pointer_3`: Stores the address of the routine into a global variable and then into another memory location.
-- `trigger_system_trap_4`: Sets a global variable to its own address, stores the current routine's address into a memory location, and executes a software interrupt trap.
-- `trigger_system_trap_5`: Sets a global variable to its own address, assigns its own address to a memory location, and executes a software interrupt.
-- `update_self_reference_pointer_4`: Stores the address of a global variable into itself and then overwrites a specific memory location with its own starting address.
-- `trigger_system_trap_6`: Sets a global variable to its own address, stores the current routine's address into a memory location, and executes a software interrupt.
-- `register_trap_handler`: Stores the address of itself into a global variable and another location before triggering a software interrupt.
-- `update_handler_pointer`: Stores the address of a global variable into itself and then stores the address of another routine into a global variable before triggering a software interrupt.
 
 ### Pro
 
@@ -716,6 +791,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `empty_routine_2`: This routine contains no valid instructions and performs no operations.
 - `return_without_work`: The decompiled body is a bare return with no visible work.
 - `stub_bad_instruction_data_4`: Only undecodable bytes sit at this address, so decoding stops at once and no behaviour can be recovered.
+- `jump_vector_entry_2`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_3`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_4`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_5`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_6`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_7`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_8`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `empty_routine_3`: This routine is empty and contains no executable instructions.
 - `null_operation_gap`: This routine is empty and consists of a single byte of data that does not form a valid instruction.
 - `null_operation`: The routine is empty and contains no valid instructions.
@@ -740,6 +822,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `null_instruction_trap_4`: The routine contains no valid executable instructions and immediately triggers a control flow error.
 - `undefined_instruction_trap`: The routine contains no valid executable instructions.
 - `nop_padding_byte_2`: An empty routine consisting of a single non-functional instruction used for memory alignment or padding.
+- `jump_vector_entry_9`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_10`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_11`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `undefined_instruction_trap_2`: The routine contains no valid executable instructions and results in an immediate execution error.
 - `null_operation_3`: The routine is empty and contains no valid executable instructions.
 - `null_instruction_trap_5`: The routine contains no valid executable instructions.
@@ -765,20 +850,27 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `nop_padding_byte_3`: This routine consists of a single instruction that acts as a data gap within the executable segment.
 - `return_immediately_6`: This is an empty routine that performs no operations and returns control to its caller.
 - `nop_padding`: This routine is empty as it consists of a single instruction that does not perform any operation.
+- `jump_vector_entry_12`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_13`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_14`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `null_execution_point`: This routine contains no valid instructions and terminates immediately upon entry.
 - `null_instruction_sequence_4`: The routine contains no valid instructions and acts as an empty execution block.
 - `nop_padding_gap_3`: This routine is empty and consists of a single instruction that does not perform any operation, serving as a gap in the executable code.
+- `jump_vector_entry_15`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_16`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undefined_instruction_handler`: The routine contains no valid instructions and immediately terminates control flow.
 - `null_routine_3`: The routine contains no valid executable instructions and performs no operations.
 - `execute_invalid_instruction_18`: Contains data that the disassembler cannot interpret as a valid instruction.
 - `nop_padding_gap_4`: This routine is empty and consists of non-executable data used for alignment or padding within the segment.
+- `jump_vector_entry_17`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `nop_instruction_5`: This routine contains a single instruction that does not perform any operation.
 - `execute_invalid_instruction_19`: The routine contains a single byte of non-instruction data.
 - `nop_padding_2`: This routine is empty and consists of a single instruction that does not perform any operation.
 - `execute_invalid_instruction_20`: Contains an instruction that is not recognized by the processor.
 - `execute_invalid_instruction_21`: Consists of a single byte of data that is not a valid opcode.
 - `nop_padding_3`: This routine is empty and consists of a single instruction that acts as a gap in the executable code.
+- `jump_vector_entry_18`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `contain_invalid_data_2`: This routine contains data that cannot be parsed as a valid instruction.
 - `nop_instruction_6`: The routine contains a single instruction that does not perform any operation or change the state of the processor.
 - `execute_invalid_instruction_22`: Contains a single byte of data that cannot be decoded.
@@ -786,6 +878,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_invalid_instruction_23`: The routine contains data that is not a valid instruction.
 - `terminate_execution_4`: This routine contains no valid instructions and terminates the current execution flow.
 - `nop_padding_gap_5`: This routine is empty and consists of a single instruction that serves as padding within the executable segment.
+- `jump_vector_entry_19`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `abort_execution`: The routine contains no valid instructions and immediately terminates the control flow.
 - `execute_invalid_instruction`: Consists of a single byte of data that does not form a valid instruction.
 - `execute_invalid_instruction_2`: The routine contains data that the disassembler cannot interpret as code.
@@ -797,27 +890,61 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_invalid_instruction_6`: The routine contains a single byte of undecodable data.
 - `terminate_execution_7`: The routine contains no valid instructions and terminates the current execution flow.
 - `contain_invalid_instruction`: Contains data that is not recognized as a valid instruction.
+- `jump_vector_entry_20`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_21`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_22`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_23`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_24`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_25`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_26`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `skip_instruction`: This routine consists of one instruction that cannot be decoded.
 - `contain_invalid_instruction_2`: Consists of a single byte that cannot be decoded.
+- `jump_vector_entry_27`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_28`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_29`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_30`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_31`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_32`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_33`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_34`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_35`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_36`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_37`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `skip_instruction_2`: This routine contains a single undecodable instruction.
 - `skip_instruction_3`: The routine consists of one byte of invalid data.
 - `skip_instruction_4`: This routine contains a single instruction that fails to decode.
 - `skip_instruction_5`: The routine is empty because the instruction is invalid.
+- `jump_vector_entry_38`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_39`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `skip_instruction_6`: This routine contains one undecodable instruction.
 - `undefined_instruction_trap_3`: This routine contains no valid instructions and triggers an execution error.
 - `skip_instruction_7`: This routine contains one byte of bad instruction data.
+- `jump_vector_entry_40`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_41`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_42`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_43`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `execute_invalid_instruction_36`: The routine contains no valid instructions and triggers a processor exception upon entry.
 - `execute_invalid_instruction_7`: Consists of a single byte that does not form a valid instruction.
 - `execute_invalid_instruction_8`: Contains data that is not reachable through normal execution flow.
+- `jump_vector_entry_44`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_45`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_46`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_47`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `undefined_instruction_trap_7`: The routine contains no valid executable instructions and terminates immediately upon entry.
 - `execute_invalid_instruction_9`: Contains an unreached byte that decodes as invalid code.
 - `execute_invalid_instruction_10`: Performs an invalid operation due to bad instruction data.
 - `execute_invalid_instruction_11`: Contains an unreached instruction that cannot be decoded.
+- `jump_vector_entry_48`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_49`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_50`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_51`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `halt_execution_2`: This routine contains no valid instructions and terminates execution immediately.
 - `execute_invalid_instruction_12`: Contains an unreached byte that is not valid code.
+- `jump_vector_entry_52`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `nop_placeholder_4`: This routine consists of a single instruction that does not perform any operation or modify any state.
 - `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `nop_padding_gap_20`: This routine is empty and consists of a single instruction that does not perform any operations.
+- `jump_vector_entry_53`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `contain_invalid_data_3`: This routine contains a single byte of non-executable data.
 - `contain_invalid_data_4`: The routine consists of data that triggers a bad instruction error.
 - `null_operation_single_instruction`: This routine consists of a single instruction that performs no meaningful task before returning.
@@ -825,21 +952,31 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_invalid_instruction_24`: Contains a single byte of data that is not reachable through static analysis.
 - `null_operation_4`: The routine is empty and performs no operations.
 - `nop_padding_gap_7`: This routine is an empty instruction gap used for memory alignment or padding within the executable segment.
+- `jump_vector_entry_54`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `execute_invalid_instruction_25`: Contains an instruction that is not recognized by the disassembler.
 - `void_padding_gap`: This routine is empty and consists of non-executable data located within a code segment gap.
+- `jump_vector_entry_55`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_56`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_57`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `execute_invalid_instruction_26`: Consists of a single byte of data that results in a bad instruction error.
 - `execute_invalid_instruction_27`: Contains a single byte of data that cannot be decoded into a valid operation.
 - `terminate_execution_5`: The routine contains no valid instructions and causes the processor to stop.
 - `empty_routine_9`: This routine contains no valid instructions and performs no actions.
 - `nop_padding_gap_8`: This routine is empty and consists of a single instruction located within an unreached code gap.
+- `jump_vector_entry_58`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_59`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_60`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `undefined_instruction_trap_8`: This routine contains no valid instructions and triggers a processor exception upon execution.
 - `undecodable_bytes_4`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `halt_execution_3`: The routine contains no valid instructions and terminates execution upon entry.
 - `nop_padding_gap_9`: This routine is empty and consists of a single instruction that serves as a gap in the executable code.
 - `nop_padding_byte_6`: The routine consists of a single byte of data that does not correspond to a valid instruction.
 - `nop_padding_filler`: This routine is empty and consists of a single instruction that serves as a filler in the executable gap.
+- `jump_vector_entry_61`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `return_from_subroutine_8`: This routine consists of a single instruction that returns control to the calling routine.
 - `nop_padding_gap_10`: This routine is empty and consists of a single byte of padding used to align subsequent code.
+- `jump_vector_entry_62`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_63`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `execute_invalid_instruction_39`: The routine contains no valid instructions and immediately triggers an exception or undefined behavior.
 - `nop_instruction_10`: This routine contains a single instruction that performs no operation.
 - `undecodable_bytes_5`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
@@ -850,6 +987,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `nop_instruction_7`: The routine consists of a single instruction that does not perform any operation.
 - `halt_execution_4`: The routine contains no valid instructions and terminates execution immediately.
 - `nop_padding_byte_7`: The routine consists of a single byte of data that does not form a valid instruction.
+- `jump_vector_entry_64`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_65`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_66`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_67`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_68`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_69`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_70`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_71`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_72`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_73`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_74`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `undecodable_bytes_7`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `return_from_subroutine_9`: The routine consists of a single instruction that returns control to the caller.
 - `nop_padding_slot`: This routine is empty and consists of a single non-executable byte used as padding within the executable segment.
@@ -858,60 +1006,135 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `null_instruction_trap_8`: The routine contains no valid instructions and triggers a control flow error upon execution.
 - `return_empty`: This routine contains no instructions.
 - `nop_padding_gap_11`: This routine is an empty instruction gap in the executable.
+- `jump_vector_entry_75`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `null_instruction_trap_2`: This routine contains no valid instructions and triggers a control flow error upon execution.
 - `null_instruction_placeholder`: This routine contains no valid executable instructions.
 - `nop_padding_gap_12`: This routine is an empty gap consisting of a single non-functional instruction located between executable blocks.
+- `jump_vector_entry_76`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `empty_routine_10`: The routine contains no valid instructions.
 - `null_instruction_trap_3`: This routine contains no valid instructions and acts as a trap or an invalid execution point.
 - `execute_invalid_instruction_28`: Contains data that the disassembler cannot interpret as code.
 - `nop_padding_4`: This routine is empty and consists of a single non-operational instruction used for memory alignment or padding.
+- `jump_vector_entry_77`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_78`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `undecodable_bytes_8`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `execute_invalid_instruction_13`: Contains a single instruction that is not recognized as valid code.
 - `null_instruction_padding_2`: This routine consists of a single non-executable byte used as padding within the code segment.
+- `jump_vector_entry_79`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_80`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `undecodable_bytes_9`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `execute_invalid_instruction_38`: The routine contains a single instruction that is not valid 68000 machine code, causing the disassembly to fail.
 - `nop_padding_gap_13`: This routine is empty and consists of a single non-executable byte used as padding between functional code blocks.
+- `jump_vector_entry_81`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `execute_invalid_instruction_29`: Contains an instruction that cannot be decoded.
 - `execute_invalid_instruction_30`: Consists of a single byte of undecodable data.
+- `set_byte_and_jump`: Sets bit 7 and bit 6 of a byte at an offset from a4, clears d0, and jumps to a long address.
 - `halt_execution_5`: The routine contains no valid instructions and terminates immediately upon entry.
 - `nop_padding_gap_14`: This routine is empty and consists of a single instruction gap that does not execute functional code.
+- `jump_vector_entry_82`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_83`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `halt_execution_6`: This routine contains no valid instructions and terminates the execution flow immediately.
 - `contain_invalid_instruction_3`: Consists of one byte of data that does not form a valid instruction.
 - `null_instruction_gap`: This routine is an empty gap in the executable containing no valid instructions.
+- `jump_vector_entry_84`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `contain_invalid_instruction_4`: Contains a single byte that cannot be decoded as a valid instruction.
 - `nop_placeholder_3`: This routine contains no executable instructions and serves as an empty padding gap in the code segment.
+- `jump_vector_entry_85`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `execute_undefined_instruction`: This routine contains no valid instructions and serves as a trap for illegal opcode execution.
 - `nop_padding_gap_15`: This routine is empty and consists of a single non-operational instruction used as padding between code segments.
+- `jump_vector_entry_86`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `undefined_execution_point`: This routine consists of a single instruction that triggers a processor exception or invalid opcode error, resulting in no executable logic.
 - `nop_padding_gap_21`: An empty routine consisting of a single instruction that serves as a gap in the executable code.
+- `jump_vector_entry_87`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_88`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_89`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_90`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_91`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_92`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_93`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_94`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_95`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_96`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_97`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `terminate_execution_6`: The routine contains no valid instructions and terminates the current execution flow immediately.
 - `invalid_instruction_trap_3`: The routine contains no executable instructions and triggers an error due to encountering invalid data.
 - `nop_padding_gap_16`: This is an empty routine consisting of a single instruction that serves as padding between code segments.
+- `jump_vector_entry_98`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_99`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `skip_instruction_8`: This routine consists of one byte of invalid data.
 - `skip_instruction_9`: The routine is composed of a single bad instruction.
 - `skip_instruction_10`: This routine contains one instruction that cannot be decoded.
 - `nop_padding_gap_22`: This routine consists of a single instruction used to align code boundaries or fill a gap in the executable.
 - `execute_invalid_instruction_37`: The routine contains a single instruction that is not recognized as valid code, causing the disassembly to fail.
 - `nop_padding_gap_17`: This routine is empty and consists of a single instruction that serves as padding between other functional blocks of code.
+- `jump_vector_entry_100`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_101`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `skip_instruction_11`: This routine contains one instruction that is not valid code.
 - `terminate_execution_8`: The routine contains no valid instructions and terminates the program flow immediately upon entry.
 - `skip_instruction_12`: This routine consists of one byte of undecodable instruction data.
+- `jump_vector_entry_102`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_103`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `execute_invalid_instruction_31`: Consists of one instruction that cannot be decoded.
 - `null_instruction_trap_7`: The routine contains no valid instructions and acts as a trap or an invalid execution point.
 - `null_instruction_gap_2`: This routine is empty and contains no valid instructions, representing a padding gap in the executable segment.
+- `jump_vector_entry_104`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_105`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_106`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_107`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_108`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_109`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_110`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_111`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_112`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_113`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `execute_invalid_instruction_14`: Contains a single byte of data that is not a valid instruction.
 - `execute_invalid_instruction_15`: Consists of an unreached byte that cannot be decoded as code.
+- `jump_vector_entry_114`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_115`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_116`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_117`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_118`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_119`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_120`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_121`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_122`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_123`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_124`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `undecodable_bytes_10`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `nop_padding_byte_4`: This routine consists of a single instruction that serves as a data gap or padding within the executable segment.
+- `jump_vector_entry_125`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_126`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_127`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_128`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_129`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_130`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_131`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_132`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_133`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_134`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_135`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `execute_invalid_instruction_16`: Consists of a single byte of data that is not a valid instruction.
 - `execute_invalid_instruction_32`: Consists of a single instruction that fails to decode.
 - `execute_invalid_instruction_17`: Contains a single byte of data that does not form a valid instruction.
 - `nop_padding_gap_19`: This routine is empty and consists of a single instruction that serves as padding between code segments.
+- `jump_vector_entry_136`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_137`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `execute_invalid_instruction_33`: Contains a single instruction that is not valid code.
 - `call_decrement_routine`: Calls another routine and returns its result.
 - `decrement_global_word`: Calls a routine that decrements a sixteen-bit value stored at a fixed offset from a base pointer.
+- `load_and_branch`: Loads the constant value negative 238 into d0 and branches to another routine.
+- `load_and_branch_ef`: Loads the constant value negative 239 into d0 and branches to another routine.
+- `load_and_branch_f0`: Loads the constant value negative 16 into d0 and branches to another routine.
+- `load_value_and_branch`: Loads the value 241 into register d0 and branches to another routine.
+- `load_value_and_branch_2`: Loads the value 242 into register d0 and branches to another routine.
+- `load_value_and_branch_3`: Loads the value 243 into register d0 and branches to another routine.
+- `load_value_and_branch_4`: Loads the value 244 into register d0 and branches to another routine.
+- `load_value_and_branch_5`: Loads the value 113 into register d0 and branches to another routine.
+- `load_value_and_branch_6`: Loads the value 109 into register d0 and branches to another routine.
 - `decrement_global_word_2`: Calls a routine that decrements a 16-bit value stored at a fixed offset from a base pointer.
 - `execute_indirect_call`: Calls a routine through a pointer stored in memory and returns the result of that call.
+- `load_value_and_branch_7`: Loads the value 247 into register d0 and branches to another routine.
+- `load_value_and_branch_8`: Loads the value 248 into register d0 and branches to another routine.
 - `call_decrement_routine_2`: Calls another routine and returns its result.
 - `decrement_word_at_offset_2`: Decrements a 16-bit value located at a fixed positive offset from a base pointer register.
 - `call_decrement_routine_3`: Executes another routine and returns its result.
@@ -919,6 +1142,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decrement_global_word_4`: Decrements a 16-bit value stored at a fixed offset from a base pointer and returns a zero value.
 - `decrement_global_word_5`: Decrements a 16-bit value located at a fixed offset from a base pointer and returns a zero value.
 - `return_zero_value`: This routine performs no operations and returns a zero value to the caller.
+- `branch_after_nop`: Performs a no-operation and then branches to another routine.
+- `branch_after_nop_2`: Performs a no-operation and then branches to another routine.
 - `increment_word_at_offset`: The routine increments a 16-bit value located at a fixed positive offset from a base pointer register in place and then returns.
 - `decrement_word_at_offset`: The routine decrements a 16-bit value located at a fixed positive offset from a base pointer register and then returns a zero value.
 - `undefined_execution_point_2`: The routine contains no valid executable instructions and acts as a dead end in the control flow.
@@ -938,8 +1163,31 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `perform_no_operation_2`: This routine is empty and performs no actions before returning to the caller.
+- `nop_padding_5`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_6`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_7`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_8`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `perform_no_operation_4`: The routine is empty and performs no actions before returning.
+- `nop_padding_9`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_10`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_11`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_12`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_13`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `perform_no_operation_3`: This routine performs no actions and returns immediately to the caller.
+- `nop_padding_14`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_15`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_16`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_17`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_18`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `return_no_operation`: The routine consists of a single instruction that returns immediately, performing no work and touching no registers or hardware.
 - `return_empty_routine`: This routine performs no operations and returns immediately.
+- `nop_padding_19`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_20`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_21`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `return_void_2`: The routine is empty and performs no operations before returning to its caller.
+- `nop_padding_22`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_23`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_24`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_25`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_26`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `write_interrupt_request`: Writes a 16-bit value to the interrupt request register and returns immediately via an exception return.

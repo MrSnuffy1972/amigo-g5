@@ -7,34 +7,34 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (3793845 top-level bytes in 39 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 4 raw-word lines |
-| Functions named and described | pass, 835 of 835 named (0 author symbols), 835 of 835 described (85 by rule, 254 by the local model) |
+| Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 15 raw-word lines |
+| Functions named and described | pass, 1118 of 1118 named (0 author symbols), 1118 of 1118 described (234 by rule, 397 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 6302 of 6302 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 19159 of 19159 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 21881 of 21881 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 1574919 |
-| code | 64838 |
-| data | 2154022 |
-| padding | 66 |
+| code | 74274 |
+| data | 2144581 |
+| padding | 71 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| game.slave | 1 | 1010 | 69 |
+| game.slave | 1 | 1119 | 76 |
 | add21k | 3 | 480 | 33 |
-| delphine | 3 | 16318 | 442 |
+| delphine | 3 | 18759 | 573 |
 | endcli | 2 | 208 | 4 |
-| setpatch | 24 | 833 | 45 |
+| setpatch | 24 | 831 | 43 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 301 | 234 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 429 | 358 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 6 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 52 | 29 |
 
 ## Cases handled
 
@@ -44,6 +44,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address: 227 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 6 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 jump target
 - FutureWars_v4.0_1570/FutureWars_v4.0_1570_hdf/FutureWars/data/LVDT.DIR: raw file found loaded verbatim in runtime segment an address at an address; classified through the recovered segment
 
 ## Cracktros (kept, not protection)
@@ -52,7 +53,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Copy protection found
 
-- none found
+- `handle_disk_backup_and_menu` (delphine): Constructs a message by appending a diskette name to a backup prompt, displays it in a text panel, and waits for a flag. Kind: disk backup/manual verification routine. Pass path: The branch following the menu selection where the user provides a backup name and the routine proceeds to call library vector 138 (likely the actual data loading/verification logic) and then continues to the database loading/game start sequ.
 
 ## Functions
 
@@ -90,16 +91,23 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `frag_tst_bmi_move_rts`: Short code fragment that tests d2, then branches if the last result was negative, then copies an indexed entry from a0 to d3, then copies d3 to d1, then returns.
 - `return_nothing`: This is an empty routine that performs no operations and immediately returns to the caller.
 - `clear_field_and_save_register`: Stores a zero into a field of a structure and saves a register value into a global variable.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 - `compare_saved_value_then_dispatch`: Compares an input register with a saved global value and, when they differ, makes an indirect call through a table entry.
 - `allocate_length_prefixed_string_entry`: Copies a text string into newly allocated memory with a leading length byte when its first character is above the space code, then allocates a structure, sets its fields from a library lookup, and links it into a list.
 - `setup_whdload_device_request`: Opens the expansion library and, when it is present, allocates a request structure, sets its flags and fields, and adds it to a system queue with a status-register call around the insertion.
 - `call_library_then_dispatch_entry`: Calls a library function to obtain a structure, then makes an indirect call through an entry in that structure.
-- `send_dos_packet_and_wait`: Builds a DOS request packet, sends it to the DOS message port and waits for the reply on the task's message port, then dispatches the reply through a table entry.
+- `process_dos_message`: Finds a task, opens a library, waits for a port, and retrieves a message to perform a series of operations including a table lookup and a conditional jump based on a value from a structure.
+- `dispatch_message_callback`: Updates several bitfields in memory using bitwise OR operations with values shifted by the contents of a register, sends a message to a port, waits for a response, and executes a function pointer retrieved from a table after matching a value in the received message.
 - `finish_dos_request_and_dispatch`: Stores a result in the request structure and sends the reply, then searches a table of codes for the one matching the request and calls the handler at that index.
 - `fail_dos_request_and_dispatch`: Marks a request as failed with a minus-one result, sends the reply, then searches a table of codes for the matching entry and calls its handler.
 - `complete_dos_request_with_status`: Completes a DOS request with a status: the result depends on checks of a handle and a library function, is stored in the request, and the reply is sent before dispatching to the handler matched from the code table.
 - `dispatch_handler_from_table`: Sets three fields of a request record (a length of 216, a zero status and the supplied pointer), makes three calls through the library jump table, then scans a 16-bit key table and jumps to the handler paired with the matching key.
+- `process_dos_message_and_dispatch`: Retrieves a message from a port, copies data from a table into a new buffer, and performs a series of memory copies before executing a routine via an indirect jump based on a value found in the message.
+- `call_library_function`: Moves a pointer to a register, loads a value from that pointer, calls a routine at an offset from a register, and then branches to another location.
+- `allocate_and_message_result`: Calls a routine, calls another routine, calls a third routine, and if the return value of the third routine is zero, sets a byte to 34; otherwise it calls a fourth routine, sets a byte to 52, inverts the bits of that byte, and branches to another location.
+- `branch_with_inverted_mask`: Loads the value 34 into a register, inverts the bits of that register, and branches to another location.
+- `copy_data_and_dispatch`: Calls a routine, calls another routine, and if the return value is not zero, enters a loop to copy 56 bytes from a source to a destination; otherwise it calls two different routines to store lengths, and then branches to a location determined by a value in a global structure.
+- `copy_bytes_via_loop`: Clears the stack pointer, calls another routine, and then enters a loop that copies bytes from a source table to a destination buffer pointed to by a register, continuing until a zero byte is encountered.
+- `execute_multiple_subroutines`: Calls three different subroutines using a pointer in a register and specific offsets from a structure in a1.
 - `fill_dos_packet_and_dispatch`: Fills a nine-field record with fixed values, including a four-character tag that spells DOS, sets a status of minus one, makes three library calls, then scans a 16-bit key table and jumps to the matching handler.
 - `copy_parent_directory_and_lookup`: Copies the part of a path before its last slash into a length-prefixed local buffer and passes it to a lookup routine; the result pair is stored in the request record, zeros are stored when the path is empty, and control then dispatches through the key table.
 - `clear_status_and_dispatch`: Clears two result fields of a request record, stores the supplied pointer, makes two library calls, then scans the 16-bit key table and jumps to the handler paired with the matching key.
@@ -124,7 +132,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `filter_result_code_values`: Calls a routine through a stored pointer and returns its result, unless the result equals one of four specific codes, in which case it returns the original input value instead.
 - `install_jump_hooks_if_marked`: When a marker byte in the table entry is the letter d, it saves an existing word at a target slot, writes four absolute jump instructions that point at this module's routines, and then calls a routine; otherwise it returns without changes.
 - `call_routine_and_return`: Makes one call to another routine and returns, with no other effect; its address is taken in code, so it acts as a pass-through entry point.
-- `enable_interrupt_mask_intena`: Calls another routine first, then writes the interrupt enable hardware register with the enable bit and the external interrupt bit set, which switches those interrupts on.
+- `enable_interrupts_and_call`: Calls another routine and then sets the interrupt enable bit and bit 14 of the INTENA register.
 - `call_then_return_input_value`: Calls another routine and returns the register value it was given, unchanged.
 - `wait_for_beam`: Loops forever while reading the vertical beam position hardware register.
 - `wait_forever_on_beam_position`: Loops forever with no exit; the code reads the vertical beam position hardware register, so it is a wait loop that never returns, and the decompiled output keeps only the endless loop.
@@ -176,6 +184,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_state_to_seventy_nine`: Stores the constant 79 into a global state byte and returns.
 - `set_state_to_high_constant`: Stores a fixed 16-bit-range constant into a global state byte and returns.
 - `set_state_to_eight`: Stores the constant 8 into a global state byte and returns.
+- `set_interrupt_mask`: Sets the INTENA register to a specific value and returns.
 - `update_pseudo_random_state`: Advances a 32-bit state held in a global by doubling it and XOR-ing in a fixed feedback constant when the shift overflows.
 - `handle_keyboard_serial`: When a flag bit is set, returns the complemented, rotated keyboard code byte, runs a fixed delay loop, and clears bit 64 of the state byte; otherwise it returns zero.
 - `lookup_code_in_table`: Reads a key code through a routine; when the code is nonzero and has no high bit set it scans a 49-entry table for that code and returns the paired value from a second table, or zero if it is not found.
@@ -189,6 +198,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `empty_c_function`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
 - `return_from_subroutine_5`: Executes a return instruction to exit the current routine.
 - `invoke_three_setup_calls`: Calls one routine with an address computed from a frame value, calls another with two sentinel values of minus one, then calls a third routine and returns.
+- `perform_file_operations`: Opens a file, seeks to offset 4, reads 32 bytes, seeks to offset 92, reads 32000 bytes, and calls a handler to close the file.
+- `empty_c_function_5`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
+- `empty_c_function_6`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
 - `lock_path_read_info_block`: Locks a DOS name held in a global with read access, reads its information block into a global buffer, unlocks it, and returns the 32-bit word at offset four of that block; it returns zero when the lock fails.
 - `tiny_move_2`: Small routine of 1 instruction that copies d0 to d5.
 - `lock_dh0_volume_read_info`: Locks the DH0: volume through the DOS library with read access, reads its information block, unlocks it, and returns the low word of the field at offset four; it returns zero when the lock fails.
@@ -223,6 +235,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `remove_dead_second_list_nodes`: Walks the second list and unlinks each node whose index is minus one, passing each unlinked node and the size 214 to a routine.
 - `dispatch_slot_with_row_values`: Reads four 16-bit values from a 32-byte table row and a slot index; when the slot holds a pointer it calls a routine with that pointer and the row values, choosing an argument set from a flag word, then calls a routine with zero.
 - `dispatch_stack_slot_values`: Calls a routine with the pointer of a slot indexed by a stack value, together with two stack-held 16-bit values and a masked combination, then calls another routine with zero.
+- `blit_and_append_node`: Calculates offsets into a table using a value from a structure, performs a conditional blit of shifted rows if a table entry is non-zero, and then appends a node to a table.
 - `store_parameters_and_computed_offsets`: Copies four 16-bit parts of two arguments into separate global words, then computes two more: the first argument's low word times eight plus its high word times 160, and 160 minus the second argument's low word times eight.
 - `call_with_two_stored_pointers`: Calls another routine once with two pointers loaded from global slots and returns.
 - `branch_on_stored_coordinate_match`: Compares three stored 16-bit values with zero, 160 and 200; when all match it calls one routine twice with two stored pointers, otherwise it calls that routine twice with additional stored arguments.
@@ -230,13 +243,87 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `empty_c_function_3`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
 - `set_table_field_by_kind`: Writes a 16-bit argument into one of six fields of a 32-byte table entry, chosen by a kind value in the second argument: kind three also calls a routine and, when it returns zero, calls another; kind five substitutes a stored default for minus one.
 - `store_table_entry_field_one`: Writes a 16-bit value from a stack argument into the first field of a 32-byte table entry indexed by another stack argument.
+- `store_table_field_six`: Extends a 16-bit value from a structure, shifts it, and stores a 16-bit value from another location into a table at the calculated offset before branching to another routine.
+- `update_list_node`: Stores a 16-bit value into a table, attempts to remove a list node by key, and if the result is zero, inserts a new node into a sorted list.
+- `store_table_field_six_alt`: Extends a 16-bit value from a structure, shifts it, and stores a 16-bit value from a structure into a table at the calculated offset before branching to another routine.
+- `conditionally_store_table_field`: Checks if a value in a structure is not negative 65535; if so, it loads a new value from a table into that structure field, calculates a table offset, and stores a value into the table before branching.
 - `store_table_entry_field_six`: Writes a 16-bit value from a stack argument into the sixth field of a 32-byte table entry indexed by another stack argument.
+- `load_word_from_table`: Sets up a stack frame, clears a local variable, loads a 16-bit word from a table into a register using an offset, and branches to another routine.
+- `load_table_value_to_stack`: Calculates a table offset from a structure value, loads a 16-bit word from that table location into a location at offset -2 of the structure, and branches to another routine.
+- `fetch_table_value`: Fetches a 16-bit word from a table using an index scaled by 32, stores it at offset -2 of a structure in a5, and branches to another routine.
+- `fetch_table_value_offset_5150`: Fetches a 16-bit word from a table using an index scaled by 32, stores it at offset -2 of a structure in a5, and branches to another routine.
+- `fetch_table_entry_via_scaled_index`: Reads a 16-bit value from a structure, shifts it left by 5 bits, and uses the result to index into a table located at a fixed offset from a4 to fetch a new 16-bit value, which is then stored at a negative offset from a5 before branching.
+- `fetch_table_entry_via_offset`: Reads a 16-bit value from an offset of 8 in a structure, shifts it left by 5, uses the result to index into a table located at a fixed offset from a4, and stores the resulting 16-bit word into a location 2 bytes before the base of the structure in a5 before branching.
+- `fetch_table_entry_via_scaled_index_2`: Reads a 16-bit value from a structure, shifts it left by 5 bits, and uses the result to index into a table located at a fixed offset from a4 to fetch a 16-bit word which is then stored at offset -2 of the structure in a5 before branching to another routine.
+- `branch_on_comparison`: Compares d0 to 7, branches if less than, otherwise shifts d0 left by 1, loads a word from a table using d0 as an offset, and jumps to a location calculated from that word.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: puts the result in d0, removes the stack frame with unlk, then returns to the caller.
+- `add_to_table_value`: Sets up a stack frame, loads a 16-bit word from a table into a register, and branches to another routine.
+- `increment_table_entry`: Calculates an address in a table using an index scaled by 32, adds a 16-bit value from offset 12 of a structure in a5 to the word at that address, and branches to another routine.
+- `increment_table_entry_offset_5152`: Calculates an address in a table using an index scaled by 32, adds a 16-bit value from offset 12 of a structure in a5 to the word at that address, and branches to another routine.
+- `update_list_via_table`: Adds a 16-bit value from offset 12 of a structure in a5 to a table entry, calls remove_list_node_by_key, and if the result is zero, calls insert_sorted_list_node.
+- `update_table_entry_via_offset`: Calculates an address by scaling a 16-bit value from an offset of 8 in a structure, shifting it left by 5, and adding it to a base address minus 20814, then adds a 16-bit value from offset 12 of the structure to the destination word and branches to another routine.
+- `add_value_to_offset_514c`: Calculates an address by scaling a 16-bit value from offset 8 of a structure, adding it to a base in a4 minus 20812, and adds a 16-bit value from offset 12 of the structure to the destination word.
+- `add_value_to_offset_5136`: Calculates an address by scaling a 16-bit value from offset 8 of a structure, adding it to a base in a4 minus 20790, and adds a 16-bit value from offset 12 of the structure to the destination word.
+- `branch_on_comparison_2`: Compares a long value in d0 to 7, and if it is less than 7, shifts d0 left by 1, loads a 16-bit value from a table using the shifted d0 as an index, and jumps to a new address.
+- `function_epilogue_2`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
+- `subtract_from_table_value`: Sets up a stack frame, loads a 16-bit word from a table into a register, and branches to another routine.
+- `subtract_value_from_offset_5154`: Calculates an address by scaling a 16-bit value from offset 8 of a structure, adding it to a base in a4 minus 20820, and subtracts a 16-bit value from offset 12 of the structure from the destination word.
+- `subtract_value_from_offset_5152`: Calculates an address by scaling a 16-bit value from offset 8 of a structure, adding it to a base in a4 minus 20818, and subtracts a 16-bit value from offset 12 of the structure from the destination word.
+- `update_list_via_subtraction`: Subtracts a 16-bit value from offset 12 of a structure from a calculated word, calls a routine to remove a list node using a value from offset 8, and if the result is zero, calls another routine to insert a node using the same value from offset 8.
+- `subtract_value_from_offset_514e`: Calculates an address by scaling a 16-bit value from offset 8 of a structure, adding it to a base in a4 minus 20814, and subtracts a 16-bit value from offset 12 of the structure from the destination word.
+- `subtract_value_from_offset_514c`: Calculates an address by scaling a 16-bit value from offset 8 of a structure, adding it to a base in a4 minus 20812, and subtracts a 16-bit value from offset 12 of the structure from the destination word.
+- `subtract_value_from_offset_5136`: Calculates an address by scaling a 16-bit value from offset 8 of a structure, adding it to a base in a4 minus 20790, and subtracts a 16-bit value from offset 12 of the structure from the destination word.
+- `branch_on_comparison_alt`: Compares a long value in d0 to 7, and if it is less than 7, shifts d0 left by 1, loads a 16-bit value from a table using the shifted d0 as an index, and jumps to a new address.
+- `function_epilogue_3`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
+- `update_indexed_structure_values`: Loads a 16-bit index from a stack offset, extends it to a 32-bit value, and jumps to another routine.
+- `multiply_value_at_offset_5154`: Calculates an offset using a 16-bit value from a structure, multiplies the 16-bit word at that offset by another 16-bit value from the structure, and branches to another routine.
+- `multiply_value_at_offset_5152`: Calculates an offset using a 16-bit value from a structure, multiplies the 16-bit word at that offset by another 16-bit value from the structure, and branches to another routine.
+- `multiply_and_update_list`: Multiplies a 16-bit word at a calculated offset by a value from a structure, then calls a routine to remove a list node by key and, if the result is zero, calls a routine to insert a sorted list node before branching to another routine.
+- `multiply_and_store_table_value`: Calculates an offset by shifting a 16-bit value from a structure by 5 bits and adding it to a base address, then multiplies the 16-bit word at that calculated address by a second 16-bit value from the structure and stores the result back at that same address.
+- `multiply_table_entry`: Calculates an offset by shifting a 16-bit value from a structure by five bits and adding it to a base address, then multiplies the 16-bit word at that calculated location by a second 16-bit value from the structure and stores the result back at that same location.
+- `scale_table_value`: Calculates an offset by shifting a 16-bit value from a structure by five bits and adding it to a base address, then multiplies the 16-bit word at that calculated location by a multiplier from the same structure and stores the result back at that location.
+- `jump_via_table`: Compares a long value in d0 to seven, and if it is not less than seven, shifts d0 left by one and jumps to an address retrieved from a table using d0 as an index.
+- `function_epilogue_4`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
+- `update_structure_member_via_index`: Uses a value from a stack-allocated structure to select an offset within a table, divides the 16-bit value at that offset by a second parameter, and calls remove_list_node_by_key and insert_sorted_list_node if the index is 3.
+- `divide_value_at_offset_5154`: Calculates an offset using a 16-bit value from a structure, divides the 16-bit word at that offset by another 16-bit value from the structure, and branches to another routine.
+- `divide_value_at_offset_5152`: Calculates an offset using a 16-bit value from a structure, divides the 16-bit word at that offset by another 16-bit value from the structure, and branches to another routine.
+- `divide_and_update_list`: Divides a 16-bit word at a calculated offset by a value from a structure, then calls a routine to remove a list node by key and, if the result is zero, calls a routine to insert a sorted list node before branching to another routine.
+- `divide_table_value`: Calculates an offset using a value from a structure and a base address, retrieves a word from that offset, divides it by a value at offset 12 of the structure, and stores the result back at the same offset.
+- `divide_table_value_offset_4c`: Retrieves a word from a calculated offset based on a value at offset 8 of a structure, divides it by a word at offset 12 of the structure, and stores the result back at the calculated offset.
+- `divide_table_value_offset_36`: Uses a value from offset 8 of a structure to index into a table, divides the word found there by a value at offset 12 of the structure, and writes the result back to the table.
+- `branch_on_comparison_3`: Compares a long value in d0 to 7, and if it is not greater than or equal to 7, performs a shift and a jump to an address determined by a table.
+- `function_epilogue_5`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
 - `store_table_entry_four_fields`: Writes four 16-bit values into the first four fields of a 32-byte table entry indexed by the first argument, then calls a routine and calls another when it returns zero.
+- `compare_value_with_table_entry`: Compares a 16-bit value against a specific entry in a table based on an index, returning a 32-bit result containing the table offset and a status word indicating if the values are equal or if one is greater than the other.
+- `update_status_flags_offset_54`: Compares a word from a table at a calculated offset to a value at offset 12 of a structure, setting bit 0, 1, or 2 of a byte at offset -1 of the structure based on the comparison result, then branches to another routine.
+- `update_status_flags_offset_52`: Checks a word at a calculated offset against a value at offset 12 of a structure to set bit 0, 1, or 2 of a byte at offset -1 of the structure, then branches to another routine.
+- `update_status_flags_offset_50`: Compares a word from a table to a value at offset 12 of a structure and sets bit 0, 1, or 2 of a byte at offset -1 of the structure accordingly before branching to another routine.
+- `update_status_flags_offset_4e`: Retrieves a word from a table using an index from a structure, compares it to a value at offset 12 of the structure, and updates bits 0, 1, or 2 of a byte at offset -1 of the structure.
+- `initialize_and_update_flags`: If a value at offset 12 of a structure is negative 1, it loads a new value from a table into that offset, then updates bits 0, 1, or 2 of a byte at offset -1 of the structure based on a comparison with a table value.
+- `update_status_flags_offset_7a`: Compares a word from a table to a value at offset 12 of a structure and sets bit 0, 1, or 2 of a byte at offset -1 of the structure based on the comparison, then branches to another routine.
+- `select_jump_target`: Compares a long value in d0 to 7, and if it is 7 or greater, shifts d0 left by 1 and loads a 16-bit word from a table using d0 as an index before jumping to the resulting address; otherwise it loads a 16-bit word from a table using d0 as an index and jumps to the resulting address.
+- `function_epilogue_6`: Function exit sequence shared or jumped to by a routine: puts the result in d0, removes the stack frame with unlk, then returns to the caller.
+- `calculate_table_offsets`: Calculates two values by scaling a value from a structure, using it as an index into a table, adding a constant, and stores the results in a structure before clearing a register and branching.
+- `verify_bit_mask_match`: Calls a routine to read a bit mask using values from a structure and a global table, then compares a word from that table at an offset determined by the mask to a word at offset 16 of the structure, returning 1 if they match or 0 otherwise.
+- `compare_counter_value`: Increments d4 by 1, compares it to a 16-bit value at an offset in a structure, and branches if it is less than that value; otherwise it sets d0 to zero and branches to another location.
 - `read_four_word_bit_mask`: Computes an address from its arguments, reads four consecutive 16-bit words, tests one bit position in each (the position comes from the low nibble of the first argument), and returns a four-bit mask built from those tests.
 - `test_bit_in_table_word`: Computes an index from its arguments, reads a 16-bit table value at that index, and returns whether the bit selected by the low nibble of the first argument is set.
 - `run_main_loop_until_exit`: Initialises table and display state, runs a frame loop of input and redraw calls, and refers to the exit text Tout est Ok . Bye.
 - `process_button_input_and_dialog`: Reads input bits through a routine and accumulates button flags over up to 100 reads; it then branches on a state word and calls many routines that update display and entry state in the structure referenced by a global.
 - `process_selection_state_switch`: When a state word is zero, fills stack buffers through several routine calls, repeats a call while a counter is nonzero, then switches on the result of a table lookup; the cases make further lookups and update a stored selection index and a flag byte.
+- `display_selection_menu`: Calls a routine, then calls another routine to draw a menu with a selection using parameters from a structure, stores the result in a structure at offset -14, and calls a third routine if that result is zero.
+- `display_menu_selection`: Calls a routine, draws two different row menus with selection, and if a specific selection is made, it computes a string length, updates a global variable, appends several strings to a buffer, and draws a text panel.
+- `execute_sequence_of_calls_2`: Pushes a pointer onto the stack, calls a routine, adjusts the stack, calls another routine, and branches to another location.
+- `execute_sequence_of_calls`: Calls a routine with a pointer, calls another routine, and then calls a third routine before branching to another location.
+- `compare_and_branch`: Calls two routines, compares a 16-bit value at offset -6 of a structure to 100, and if it is less than or equal to 100, branches to another routine; otherwise it sets a 16-bit value at offset -8 of the structure to 1 and branches to another routine.
+- `manage_backup_disk_loading`: Prompts for a disk, loads a directory index or defaults, and presents a menu to select a backup state.
+- `execute_sequence_of_calls_3`: Clears the stack, calls a routine with a pointer, calls another routine, and then calls a third routine with a constant value before branching.
+- `prompt_and_call_sequence`: Clears the top of the stack, pushes a pointer onto the stack, calls a routine, adjusts the stack, calls another routine, pushes the value negative 65535 onto the stack, calls a third routine, adjusts the stack, and branches to another location.
+- `handle_disk_loading_sequence`: Calls a routine to draw a panel, waits for a flag via another routine, prompts for a disk, and if a global value is not negative one, computes a string length and calls a routine to open a database if the length is non-zero, finally calling a library routine.
+- `validate_disk_backup_status`: Compares a word from a global variable against a constant, and if they match, calls a library function to clear a pointer in a global variable and then updates a status flag in a structure based on a comparison of a value at an offset in a5 with one hundred.
+- `handle_disk_backup_and_menu`: Constructs a message by appending a diskette name to a backup prompt, displays it in a text panel, and waits for a flag.
+- `process_backup_interruption`: Calls a routine with a pointer, calls another routine, prompts for a disk, and if a value at an offset of a structure is zero, calls a third routine before branching.
+- `handle_disk_and_database`: Calls routines to draw a text panel, wait for a flag, and prompt for a disk insertion; if two 16-bit values at specific offsets in a structure in a4 are equal, it calls a routine to open a database using a pointer from a5, then calls a library vector and either jumps to a table-based address using a value in d0 or branches to another routine.
 - `find_entry_matching_fields`: Scans up to 255 twelve-byte entries of a table reached through a global for one whose occupied flag is set and whose 16-bit fields match the first argument and the second argument's first word, with a second word also compared when the kind is two; it returns the entry index or minus one.
 - `find_entry_at_position`: Walks a list of entries from a global head and returns the index of the first active entry whose stored region contains the point given in the argument, using a size from a shape table; for two kinds of entry it calls a test routine.
 - `draw_entry_list_frame`: Clears a region, then walks the entry list from a global head: entries of kind zero are passed to a drawing routine with coordinate and shape-table arguments, while kind-two entries are handled by separate routine calls.
@@ -247,8 +334,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `interpret_script_opcodes`: Steps through an opcode stream stored in a structure, dispatching each opcode to a routine or to a routine that writes a returned value into a table, and advances the stream position until a stop flag is set.
 - `dispatch_script_opcodes_entry_a`: Reads script opcodes from a stream and dispatches them; one path reads three bytes and passes a 16-bit value to a routine, opcode two writes a routine result into a table, and opcodes three and four call further routines.
 - `dispatch_script_opcodes_entry_b`: Reads script opcodes from a stream and dispatches them: the entry path reads two bytes and passes a 16-bit value to a routine, opcode two writes a routine result into a table, and opcode three calls a further routine.
+- `extract_and_rotate_word_table_segment`: Reads three consecutive bytes from a buffer in a2 into a local stack structure and calls rotate_word_table_segment using the second byte as an index, then branches to another routine.
+- `parse_script_operand_data_6`: Reads three consecutive bytes from a source buffer into a local structure, pushes two of these values onto the stack, calls another routine, and then stores the returned value into a structure field at offset 104 using an index derived from the third byte.
+- `parse_script_operand_data_7`: Reads three consecutive bytes from a buffer in a2 to populate three 16-bit values on the stack, where the third value is constructed by combining two bytes, and then calls another routine with these values pushed onto the stack.
+- `parse_script_operand_data_8`: Reads three consecutive bytes from a buffer in a2, combines the second and third bytes into a 16-bit word, and stores these three values into a local structure on the stack before calling subtract_from_table_value.
+- `parse_script_operand_data_9`: Reads three consecutive bytes from a buffer in a2 to populate three 16-bit values on the stack, where the third value is formed by combining two bytes into a single word, then calls another routine with these values pushed onto the stack.
+- `parse_script_operand_data_10`: Reads three consecutive bytes from a buffer in a2 to populate a local structure, where the third byte is combined with the second byte shifted left by eight bits to form a 16-bit value, then pushes these three values onto the stack and calls another routine.
+- `parse_script_operand_data_11`: Reads four bytes from a buffer in a2 to construct three 16-bit values, stores them on the stack, calls another routine, and writes the result to an offset of 204 in a structure pointed to by a5.
 - `dispatch_script_opcodes_entry_c`: Reads script opcodes from a stream: the entry path reads eight bytes and passes two 16-bit values to a routine, and the dispatch switch then handles further opcodes through routine calls, including a table write.
 - `dispatch_script_opcodes_entry_d`: Script opcode that reads a 16-bit pair of operands and passes them to a routine, then consumes nine bytes of stream; it dispatches further opcodes through a switch, with table writes and routine calls among the cases.
+- `parse_script_operand_data_12`: Reads a sequence of five 16-bit values from a buffer by combining pairs of bytes, pushes these values onto the stack, calls another routine, and stores the result in a structure at offset 204.
+- `initialize_and_populate_table`: Initializes a counter to zero and runs a loop that writes the counter value into a table at an offset calculated from a base address in a4, incrementing the counter until it reaches sixteen, then branches to another routine.
+- `parse_script_operand_data_2`: Reads a byte and a 16-bit little-endian value from a source buffer to populate a local structure, then uses the 16-bit value to index into a table and store the result at a calculated offset.
+- `update_script_object_property`: Reads two bytes from a source buffer to populate two 16-bit values in a local structure, then uses these values to index into a table to write a 16-bit word to a specific offset within an object structure.
 - `apply_script_table_assignment`: Script opcode that writes a value into a slot of the main 16-bit table: mode zero stores a literal, mode one copies another slot, mode two copies from a secondary array, and mode five stores the absolute value of a routine's result.
 - `add_to_script_table_slot`: Script opcode that adds to a slot of the main 16-bit table: mode zero adds a literal, and other modes add the value of another slot.
 - `subtract_from_script_table_slot`: Script opcode that subtracts from a slot of the main 16-bit table: mode zero subtracts a literal, and other modes subtract the value of another slot.
@@ -262,14 +360,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_routine_with_five_op`: Script opcode that reads one byte into a temporary slot and calls a routine with five, then continues dispatching the stream.
 - `store_byte_in_control_field`: Script opcode that stores one operand byte into a 16-bit control field of the state structure.
 - `dispatch_script_opcodes`: Iterates through a data stream, reading an opcode and associated operands to execute specific subroutines.
+- `process_byte_with_five`: Fetches a byte from a buffer at an offset determined by a register, stores it at offset 90 of a structure in a5, pushes the value 5 and the stored byte onto the stack, calls another routine, increments the stack pointer by 4, and branches to another location.
 - `run_three_routine_calls_op`: Script opcode that reads one byte and makes three routine calls, the first of them through a library vector, then continues dispatching the stream.
 - `call_routine_with_one_op`: Script opcode that reads one byte into a temporary slot and calls a routine with one, then continues dispatching the stream.
+- `process_byte_with_one`: Fetches a byte from a buffer at an offset determined by a register, stores it at offset 90 of a structure in a5, pushes the value 1 and the stored byte onto the stack, calls another routine, increments the stack pointer by 4, and branches to another location.
+- `process_byte_with_four_call_112a`: Fetches a byte from a buffer at an offset determined by a register, stores it at offset 90 of a structure in a5, pushes the value 4 and the stored byte onto the stack, calls another routine, increments the stack pointer by 4, and branches to another location.
+- `process_byte_with_four_call_11ec`: Fetches a byte from a buffer at an offset determined by a register, stores it at offset 90 of a structure in a5, pushes the value 4 and the stored byte onto the stack, calls another routine, increments the stack pointer by 4, and branches to another location.
+- `process_byte_and_push_value`: Fetches a byte from a buffer at an offset determined by a register, stores it at offset 90 of a structure in a5, pushes the stored byte onto the stack, calls another routine, increments the stack pointer by 2, and branches to another location.
+- `process_byte_and_push_value_call_18ec`: Fetches a byte from a buffer at an offset determined by a register, stores it at offset 90 of a structure in a5, pushes the stored byte onto the stack, calls another routine, increments the stack pointer by 2, and branches to another location.
 - `record_script_label_position`: Script opcode that stores the current stream position plus one in a label table, at the index given by the operand byte.
 - `clear_script_label_slot`: Script opcode that sets one entry of the script label table to minus one, at the index given by the operand byte.
 - `jump_to_script_label`: Script opcode that moves the stream position to the label stored at the index given by the operand byte.
 - `branch_on_flag_bits_two`: Script opcode that jumps to a label-table entry when state flag bit value 2 is set and bit value 1 is clear; otherwise it moves past the operand byte.
 - `branch_on_flag_bits_either`: Script opcode that jumps to a label-table entry when state flag bit value 2 or bit value 1 is set; otherwise it moves past the operand byte.
 - `branch_on_flag_bit_four`: Script opcode that jumps to a label-table entry when state flag bit value 4 is set and bit value 1 is clear; otherwise it moves past the operand byte.
+- `fetch_script_operand_index`: Reads a byte from a source buffer at an offset determined by a 16-bit value, stores it in a local structure, and then uses that byte to index into a table to fetch a 16-bit value into a register.
 - `jump_if_bit_one_set`: Script opcode that jumps to a label-table entry when state flag bit value 1 is set; otherwise it moves past the operand byte.
 - `jump_if_bit_one_clear`: Script opcode that jumps to a label-table entry when state flag bit value 1 is clear; otherwise it moves past the operand byte.
 - `decrement_and_loop_script_counter`: Script opcode that decrements a counter slot and jumps to a label-table entry while the counter is still non-negative; otherwise it moves past the operand bytes.
@@ -282,15 +387,32 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `load_background_from_string`: Script opcode that copies a zero-terminated name from the stream and passes it to a background loader; on failure it sets a status flag and reports the error text 'ECHEC LoadBg' with the name.
 - `load_named_resource_from_string`: Script opcode that copies a zero-terminated name from the stream and passes it to a loader; on failure it sets a status flag and calls a reporting routine with the name, then continues dispatching.
 - `load_ct_resource_or_report`: Script opcode that copies a zero-terminated name from the stream and passes it to a loader; on failure it sets a status flag and reports the error text 'ECHEC LoadCt' with the name, then continues dispatching.
+- `parse_script_operand_data_3`: Reads four 16-bit values from a source buffer by combining two consecutive bytes for each value and stores them on the stack before calling store_parameters_and_computed_offsets.
 - `run_three_setup_routines`: Script opcode that makes three routine calls, the first through a library vector, and then continues dispatching script opcodes.
 - `call_routine_then_dispatch`: Script opcode that calls a routine once and then continues dispatching script opcodes.
+- `iterate_and_store_table_byte`: Increments a 16-bit value in a register, fetches a byte from a table using that value as an index, and stores the byte into a global variable at a fixed negative offset from a base pointer.
+- `branch_to_script_operand_parser`: Performs a short branch to another routine.
 - `set_script_flag_one`: Script opcode that sets a 16-bit state word to one and then continues dispatching script opcodes.
 - `pause_script_at_position`: Script opcode that saves the current stream position in the script state and sets the stop flag, which ends the dispatch loop.
 - `set_mode_flag_one`: Script opcode that sets a mode word to one and then continues dispatching script opcodes.
 - `set_mode_flag_zero`: Script opcode that sets a mode word to zero and then continues dispatching script opcodes.
 - `run_branch_then_stop`: Calls one of two routines depending on a state field, then sets the stop flag so the script dispatch loop ends.
 - `set_pending_word_one`: Sets a 16-bit state word to one and then continues dispatching script opcodes.
+- `call_and_branch`: Calls another routine and then branches to another routine.
 - `call_routine_with_five_operands`: Script opcode that reads five operands from the stream, one byte and four 16-bit values, passes them to a routine, and then continues dispatching script opcodes.
+- `call_and_branch_alternative`: Calls another routine and then branches to another routine.
+- `call_script_parser_and_branch`: Calls parse_script_operand_data and then performs a relative branch to another routine.
+- `update_local_byte`: Moves a 16-bit value from d4 to d0, increments d4 by 1, reads a byte from a table at offset d0 using a2, stores that byte at offset -90 of the structure in a5, and branches to another routine.
+- `update_local_and_global_byte`: Moves a 16-bit value from d4 to d0, increments d4 by 1, reads a byte from a table at offset d0 using a2, stores that byte at offset -90 of the structure in a5, stores that same byte at offset -32230 of the structure in a4, and branches to another routine.
+- `parse_script_operand_stream`: Reads a byte from a source buffer and stores it in a local structure, then enters a loop that copies subsequent bytes from the source to the structure until a null terminator is reached.
+- `initialize_script_operand_buffer`: Clears a byte in a local structure, copies two strings into that structure, clears a 16-bit value in a global variable, and then calls a library routine and another routine via a tail call.
+- `call_cia_resource`: Calls a routine at a fixed address, sets a 16-bit value of 1 at offset 32700 from a6, and branches to another routine.
+- `push_and_call_string_copy`: Calls a routine at a fixed address, pushes two pointers onto the stack, calls another routine, adjusts the stack pointer by 8, clears a 16-bit value at offset 32700 from a6, and branches to another routine.
+- `call_multiple_routines`: Calls two routines at fixed addresses, pushes two pointers onto the stack, calls a third routine, adjusts the stack pointer by 8, clears a 16-bit value at offset 32700 from a6, and branches to another routine.
+- `parse_script_16bit_operand`: Reads three bytes from a source buffer to construct a 16-bit value and a single byte, then stores the byte at a specific offset and the 16-bit value at another offset within a local structure before branching to another routine.
+- `parse_script_operand_data_4`: Reads four bytes from a source buffer to populate a local structure with three 16-bit values, where two values are constructed by combining two bytes (one high byte and one low byte) and the third is a single byte, then branches to another routine.
+- `parse_script_operand_data_5`: Reads three 16-bit values from a source buffer by combining two consecutive bytes for each value, where one value is formed by shifting a byte left by eight bits and adding another, and stores these three values into a local structure at offsets -90, -92, and -94 relative to a5 before branching to another routine.
+- `parse_script_operand_data`: Reads a sequence of bytes from a source buffer to populate a local structure with several 16-bit values, then uses these values to index into tables and call two routines with parameters derived from the parsed data.
 - `measure_script_opcode_stream`: Clears a 50-entry table to minus one, then steps through an opcode stream, advancing by the operand length of each opcode from a switch on the opcode value, until the end of the stream is reached.
 - `dispatch_script_opcodes_entry_f`: Entry to the script opcode dispatcher that reads one byte and a 16-bit operand from the stream, passes the operand to a routine, and then continues dispatching the remaining opcodes.
 - `dispatch_script_opcodes_entry_g`: Entry to the script opcode dispatcher that reads three operand bytes from the stream, then continues dispatching the remaining opcodes.
@@ -308,13 +430,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `end_script_dispatch`: Sets the stop flag in the script state, which ends the dispatch loop.
 - `dispatch_script_opcodes_4`: Iterates through a data stream, reading an opcode and extracting a variable number of operands to store them into a structured buffer.
 - `dispatch_script_opcodes_entry_o`: Entry to the script opcode dispatcher that reads eight operand bytes, arranged as four 16-bit values, and then continues dispatching the remaining opcodes.
+- `parse_script_operands_batch_2`: Reads four consecutive 16-bit big-endian values from a script buffer in a2 and stores them into a local structure in a5, then branches to another routine.
+- `parse_script_operands_batch_3`: Reads a sequence of bytes from a script buffer in a2 and stores them as 16-bit values into a local structure in a5, using various byte combinations.
+- `parse_script_operands_batch_4`: Reads a sequence of bytes from a script buffer in a2 and stores them as 16-bit values into a local structure in a5, using various byte combinations to form the words.
+- `parse_script_operands_batch`: Reads a sequence of bytes from a script buffer in a2 and stores them as 16-bit values into a local structure in a5, using various byte combinations and offsets to reconstruct the words.
 - `compare_word_halves_flags`: Compares the low and high 16-bit halves of its 32-bit argument and returns a flag byte: bit value 1 when they are equal, bit value 2 when the high half is less than the low half, and bit value 4 when the low half is less than the high half.
+- `execute_table_lookup`: Pushes a pointer from a global variable onto the stack, calls another routine, adjusts the stack, calls a second routine, and then tests the low word of d0, branching based on the result.
+- `execute_and_test_result`: Calls another routine and tests the low word of the return value; if the result is zero, it branches to a subsequent instruction, otherwise it loops back to the start of this routine.
+- `function_epilogue_7`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
 - `blit_shifted_rows_clipped`: Draws a graphic row by row into a buffer, using the low nibble of the horizontal position as a bit shift and the remaining bits as a word offset, and clipping the horizontal position against a range of 160; it uses three routine calls for setup and output.
-- `return_parameter_unchanged`: Returns the single 64-bit parameter it receives without change and makes no calls.
 - `blit_shifted_rows_variant`: Draws a graphic row by row with the same bit-shift and word-offset arithmetic as its neighbours, clipping the horizontal position against 160, and makes three routine calls to set up and output the rows.
-- `frag_ori_addq_movem_unlk_rts`: Short code fragment that merges 0 into d0, then adds 4 to a7, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
 - `blit_shifted_rows_simple`: Draws a graphic row by row with the same bit-shift and word-offset arithmetic as its neighbours, clipping the horizontal position against 160 and making three routine calls to set up and output the rows.
-- `frag_ori_addq_movem_unlk_rts_2`: Short code fragment that merges 0 into d0, then adds 4 to a7, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
 - `call_blit_setup_fixed_size`: Calls a blit setup routine once with the argument, a mask of 65535 and a fixed size of 800, and returns.
 - `configure_four_plane_blits`: Calls a blit setup routine four times with the same fixed arguments, advancing the base address by 8000 each time and using a height of 200.
 - `empty_c_function_4`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
@@ -370,17 +496,28 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reload_record_slot_table`: Frees the buffers in a table of 255 twelve-byte slots, then looks up a record and reads its slot descriptors, four words each.
 - `reload_six_byte_slot_table`: Clears the slot count and frees the buffers in a 255-entry table of six-byte slots, then looks up a record and reads its slot count and descriptors.
 - `draw_nonempty_string_slots`: Checks four twenty-byte string slots and, for each one that is not empty, calls a set of routines that draw the slot's text at a position tied to its slot number.
-- `reset_all_loaded_state_tables`: Releases any buffers still held by the slot and record tables, then zeroes those tables, the 255 string entries, the word arrays and several counters.
+- `cleanup_and_reset_game_state`: Shuts down audio, releases allocated memory, closes files, and prompts for a disk volume.
+- `handle_disk_error_and_display_messages`: Constructs an error message in a local buffer by copying a string from a calculated offset and appending additional text, then checks the disk drive status.
+- `handle_disk_error_and_save_data`: Checks a status bit in a structure, and if not set, attempts to open a file; if the file opening fails, it displays an error message, prompts for a disk, and returns a failure value.
+- `write_file_data_sequence`: Opens a file and performs a long sequence of writes to various offsets within a data structure, using values derived from a local variable and a linked list traversal that increments a counter in a local variable for each node.
+- `update_linked_list_attributes`: Iterates through multiple linked lists by traversing pointers from global variables, writing specific constant values and offsets to the structure elements pointed to by the list nodes, and counting the number of nodes in each list.
+- `traverse_and_update_linked_list`: Clears a 16-bit value at offset negative 6 of a structure and writes a longword from a global variable to offset negative 12 of a structure.
+- `initialize_and_write_linked_list_data`: Clears a 16-bit value at offset negative 6 of a structure and writes specific values to offsets of a linked list structure.
+- `traverse_linked_list`: Moves a 32-bit value from a global variable to offset -16 of a structure, clears a 16-bit value at offset -6 of the structure, and if the value at offset -16 is non-zero, enters a loop that increments the 16-bit value and updates the pointer at offset -16 with the value pointed to by the current pointer.
+- `iterate_linked_list_2`: Calls a wrapper routine, then loads a pointer from a global variable into a structure, sets a 16-bit value to 20, and if the pointer is non-zero, calls the wrapper routine again while traversing the linked list.
+- `iterate_linked_list`: Moves a value from a global variable to a structure, clears a 16-bit value in that structure, and if the value is non-zero, it increments the 16-bit value, updates the pointer to the next element in a linked list, and branches to an earlier instruction.
+- `process_data_list`: Calls a routine with a pointer and a value from a structure, then if a value from a structure is non-zero, it calls the same routine again using a linked list of values and updates the pointer to the next element in the list.
+- `update_status_and_call`: Pushes a value from a global variable onto the stack, calls a routine, adjusts the stack, clears a 16-bit value at an offset in a structure, calls another routine, increments that value, compares it to 250, and branches if it is less than 250; otherwise it clears the top of the stack, calls a third routine, adjusts the stack, and branches to another location.
 - `load_directory_index_or_defaults`: Builds the path of a fixed index file and opens it.
 - `read_directory_index_block`: Reads a 200-byte block from the open index file into the table, releases the file handle, and returns 1.
+- `open_file_and_draw_panel`: Copies strings into a buffer, calls a routine to update sprite offsets, appends strings to the buffer, calls a routine to open a file, and if the file handle is zero, updates sprite offsets and draws a text panel; otherwise, it calls a routine to write data, calls a close handler, and updates sprite offsets.
+- `perform_sequence_of_calls`: Pushes two pointers onto the stack, pushes a value from a global variable onto the stack, calls a routine, adjusts the stack, pushes a value from a global variable onto the stack, calls another routine, adjusts the stack, clears the top of the stack, calls a third routine, adjusts the stack, and branches to another location.
 - `load_state_from_backup`: Opens the named backup file and clears the loaded game state tables.
 - `restore_state_from_open_file`: Clears the same game state tables as the backup loader, then reads the saved fields and counters from the open file in sequence.
 - `read_save_entries_restore_slots`: Reads a counted run of fixed-size save entries from the open file, then for each named slot that is set it reloads that slot's data.
 - `read_save_entries_restore_named`: Reads a counted run of save entries from the open file, then for each named slot that is set it reloads that slot's data.
 - `read_save_entries_restore_stream`: Reads a counted run of save entries from the open file with a two-word length prefix, then reloads each set named slot.
 - `read_save_restore_named_slots`: Reads a single counted list of save entries from the open file, then reloads each named slot that is set.
-- `append_record_node_to_list`: Walks the linked list of loaded records to its tail and allocates a new 214-byte node, linking it in.
-- `append_record_node_from_stream`: Allocates a 214-byte node at the tail of the record list and reads its two 100-byte fields and three word fields from the input.
 - `append_record_node_from_source`: Allocates a 214-byte node at the tail of the record list, reads its two 100-byte fields and three word fields from the input, and stores the buffer pointer of the slot named by its index.
 - `read_and_link_record_node`: Allocates a 214-byte node and links it into the chain headed by the caller's pointer.
 - `refresh_record_slot_pointers`: Walks the linked record list and, for each node, stores the buffer pointer of the slot named by the node's index field.
@@ -422,7 +559,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_display_structure`: Copies two position values into the stored offsets, writes two constant header words into the display structure, and fills sixteen pairs of words from the table.
 - `install_interrupt_handler_state`: Saves the frame pointer and the previous global value, stores a new handler address, and writes the interrupt enable register with the master enable bit set.
 - `restore_interrupts_and_disable_dma`: Restores a saved global value and writes the interrupt enable register with the master enable bit set.
-- `stub_bad_instruction_data`: The decompiled bytes are not a valid routine.
 - `stub_bad_instruction_on_check`: Checks a bit in the global status word and calls a routine when it is set, then hits bad instruction data.
 - `update_mouse_position`: Reads the mouse counter register and converts the change since the last read into signed deltas, which it adds to the stored pointer position.
 - `setup_blitter_line_between_points`: Sets up the blitter in line mode between two points by computing the octant from their coordinate differences and writing the line's addresses, modulo and error terms.
@@ -438,6 +574,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `wait_for_drive_status_retry`: Checks the drive status bits repeatedly and waits again while they are set, then finishes the three-stage wait and returns the last value read.
 - `finish_drive_status_wait`: Completes a drive status wait by reading the status until its bits are clear, then returns the last value read.
 - `read_drive_status_bits`: Reads drive status words in a loop and returns the high half of the word once no status bits are set.
+- `execute_resource_initialization`: Calls a routine to copy a string to a buffer, calls a routine to manage DOS library resources, calls a routine to initialize a CIA resource, and then returns.
 - `manage_dos_library_resources`: Tidies up earlier DOS and audio state, waits for a lock flag to clear, then looks up and opens the DOS library through the system library.
 - `examine_and_lock_file`: Locks a named file, examines it into a freshly allocated info block, and reads one field from that block.
 - `set_global_flag_to_one`: Sets a global flag word to one and returns.
@@ -476,6 +613,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `slide_audio_channel_volume_up`: Adds a step to an audio channel's volume, clamps the result to sixty-four, and writes it into the channel record.
 - `retrigger_audio_channel_sample`: When the channel has a pending command, it clears the channel's data pointer, waits briefly, then latches the new sample pointer and length from the record and sets the channel's DMA bit.
 - `store_channel_sample_fields`: Copies the sample pointer, length word and status word from a channel record into the channel's output structure, then ORs the record's DMA bit into the global DMA status word.
+- `update_hardware_registers`: Calculates a value based on a word from a structure, writes it to a memory location, performs a series of writes to a structure using offsets, and enters a loop that repeats until a counter reaches 368.
 - `call_two_routines_undecoded`: The decompiler timed out on this routine, so its body is not recovered.
 - `reset_channel_buffer_and_mask`: Clears the first word of a channel buffer and the word at its end, then calls a routine twice, first with a mask of sixty-three and then with one and zero.
 - `decrement_and_reset_channel_level`: Subtracts ten from a stored word, clears the first word of a channel buffer and the word at its end, clamps a level word to sixty-three, and calls a routine with the channel's values.
@@ -521,6 +659,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_and_return_concatenated_undecoded`: The decompiler timed out on this routine, so its body is not recovered.
 - `format_output_with_conversions`: Parses a printf-style format string with flags, width, precision and length modifiers.
 - `perform_signed_division`: Divides the first signed input by the second using an unsigned routine, negating the quotient when the operand signs differ.
+- `process_signed_values`: Clears a register, checks the sign of two 32-bit values, negates them if they are negative, and calls another routine before branching to another location.
 - `pack_call_result_with_input`: Calls one routine and returns a 64-bit value built from the original data register and the value the call left in the next register.
 - `call_one_routine_and_return`: Calls one routine and returns, with no other work.
 - `perform_32bit_division`: Divides a 32-bit dividend by a 32-bit divisor, using a shift-and-subtract loop when the divisor is larger than 16 bits and native division otherwise.
@@ -623,8 +762,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `restore_patch_state`: Stores the parameter into a slot of the current state structure, then calls the cleanup routines held in that structure's table for each field that is set.
 - `run_guarded_patch_chain`: Calls one routine, then when a global flag is set calls another with its argument and passes the result to a third routine; it ends with a further unconditional call.
 - `install_setpatch_handler`: Records whether any command-line argument was given and checks the first argument for a usage request.
-- `call_patch_vector_46`: Calls the function stored at a fixed offset of a table pointed to by a global variable and returns the value it produces.
-- `call_indirect_via_table`: Calls a code pointer found at a fixed offset of a table held in a global variable and returns the value the call produces.
 - `execute_patch_handler`: Performs an indirect call to a function pointer located at a specific offset from a global table base.
 - `tail_call_library_vector_138`: Calls the library routine at vector offset minus 138 from the library base kept in a global variable, and returns nothing.
 - `execute_indirect_handler`: Fetches a function pointer from a location relative to a global variable and executes it.
@@ -643,7 +780,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `write_tag_and_dispatch_handler`: Writes to the interrupt-enable register and, when a four-byte tag in low memory differs from its expected value, writes the tag and an attribute value there.
 - `tail_call_pointer_136`: Calls the function pointer stored at a fixed offset of 136 bytes from a global base and returns.
 - `initialize_patch_function_table`: Stores a computed offset into a global variable and then fills sixteen consecutive table entries with successive code addresses.
-- `call_stub_chain_return_last`: Calls a long run of stub routines in sequence and returns the value produced by the final call.
 - `pass_input_register`: Returns the value currently held in the data register without modification.
 - `return_register_value`: Returns the value currently held in a data register without modification.
 - `return_input_value`: Returns the value passed in the data register unchanged, with no other operation.
@@ -653,6 +789,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `release_entry_return_flag`: Calls a library release routine once, then returns the value at the address register with its high bit set.
 - `tail_call_library_vector_30`: Calls the library routine at vector offset minus 30 from the library base in an address register, and returns nothing.
 - `frag_movea_move_andi_rte`: Short code fragment that copies a0 to a5, then copies d1 to the memory at an offset from a7, then masks the top of the stack with 57343, then returns from the exception.
+- `call_indirect_via_table`: Calls a code pointer found at a fixed offset of a table held in a global variable and returns the value the call produces.
 - `call_pointers_if_first_succeeds`: Calls a function pointer with a value from the parameter structure; when that call succeeds it calls two further pointers, the second with the same value, and returns whether the first call succeeded.
 - `tiny_clr_movea_rts`: Small routine of 3 instructions that clears d0, then copies (a7)+ to a2, then returns.
 - `scan_for_marker`: Advances through a list of 16-bit words until it reaches one whose high byte equals 97, and returns the position of that word.
@@ -679,6 +816,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `empty_routine_4`: This routine contains no executable instructions and performs no operations.
 - `return_immediately_4`: The routine performs no operations and returns to the caller immediately.
 - `null_routine_3`: This routine is empty and contains no executable instructions.
+- `undecodable_bytes_13`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_14`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_15`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_16`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_17`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_18`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_19`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `null_instruction_stub`: This routine contains no valid instructions and terminates immediately upon entry.
 - `nop_padding_sequence_4`: This routine consists of a single instruction that acts as a data gap between executable code segments.
 - `undefined_instruction_trap`: This routine contains no executable instructions and triggers a processor exception.
@@ -703,6 +847,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `nop_instruction`: The routine contains a single instruction that does not perform any operation or change the state of the processor.
 - `halt_execution`: The routine contains no valid instructions and immediately terminates the execution flow.
 - `null_instruction_gap`: This routine is empty and consists of a single byte of data that does not form a valid instruction.
+- `undecodable_bytes_20`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_21`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_22`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `skip_routine_3`: The routine contains no executable code.
 - `null_instruction_sequence`: The routine contains no valid executable instructions.
 - `contain_invalid_instruction_7`: This routine consists of a single byte that does not decode as a valid instruction.
@@ -728,20 +875,27 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `contain_invalid_instruction_9`: The routine contains an instruction that is not recognized by the processor.
 - `return_immediately_7`: The routine performs an immediate return.
 - `nop_padding_byte_3`: The routine consists of a single byte of data that does not form a valid instruction.
+- `undecodable_bytes_23`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_24`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_25`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `nop_instruction_3`: The routine contains a single instruction that does not perform any operation or modification to the system state.
 - `nop_instruction_4`: This routine consists of a single instruction that does not perform any operation.
 - `null_routine_gap_2`: This routine is empty and consists of a single byte of non-executable data that prevents further disassembly.
+- `undecodable_bytes_26`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_27`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `contain_invalid_instruction_10`: This routine is identified as containing bad instruction data.
 - `empty_routine_8`: The routine contains no valid instructions and performs no actions.
 - `nop_instruction_5`: This routine consists of a single instruction that does not affect the processor state.
 - `contain_invalid_instruction_11`: The routine consists of a single byte that fails to decode.
 - `null_routine_4`: This routine is empty and contains no valid executable instructions.
+- `undecodable_bytes_28`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `nop_placeholder`: This routine contains no valid instructions and serves as an empty execution point.
 - `nop_instruction_6`: The routine contains a single instruction that does not perform a meaningful operation or is not recognized as valid code by the decompiler.
 - `nop_padding_instruction_2`: This routine consists of a single byte of data that does not correspond to a valid instruction, serving as padding within the executable segment.
 - `contain_invalid_instruction_12`: This routine contains data that is not a valid instruction.
 - `empty_routine_9`: This routine contains no valid instructions.
 - `skip_instruction_gap`: This routine consists of a single byte of data that does not correspond to a valid instruction.
+- `undecodable_bytes_29`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `nop_instruction_7`: The routine contains a single instruction that does not perform any operation.
 - `empty_routine_10`: The routine contains no valid instructions.
 - `invalidate_instruction_flow`: This routine contains no valid instructions and acts as a sink for an interrupted or corrupted control flow.
@@ -749,6 +903,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `contain_invalid_instruction_13`: This routine is composed of a single byte of non-instruction data.
 - `halt_execution_5`: The routine contains no valid instructions and terminates the execution flow immediately upon entry.
 - `nop_padding_gap_2`: This routine is empty and consists of a single unreachable byte used as padding between functional code segments.
+- `undecodable_bytes_30`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_31`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `void_instruction_trap`: The routine contains no valid executable instructions and triggers a control flow error upon entry.
 - `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `empty_routine_11`: The routine contains no executable instructions and performs no operations.
@@ -759,31 +915,64 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `nop_instruction_placeholder`: The routine contains a single instruction that terminates the control flow immediately.
 - `execute_invalid_instruction_2`: Contains a single byte of data that does not form a valid instruction.
 - `nop_padding_instruction_3`: This routine consists of a single instruction that serves as a gap in the executable segment.
+- `undecodable_bytes_32`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_33`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_34`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_35`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_36`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_37`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_38`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `execute_invalid_instruction_3`: Consists of a single byte of data that cannot be decoded as code.
 - `execute_unreachable_data`: Contains a single byte of data that is not reached during execution.
+- `undecodable_bytes_39`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_40`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_41`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_42`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_43`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_44`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_45`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_46`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_47`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_48`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_49`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `execute_invalid_instruction_4`: Contains a single byte of data that is invalid for the processor.
 - `execute_invalid_instruction_5`: Consists of one byte of data that fails to decode as a valid instruction.
 - `execute_invalid_instruction_6`: Contains a single byte of data that is not a valid instruction.
 - `nop_padding_sequence_2`: This routine is empty and consists of a single non-instruction byte used as padding between functional code blocks.
+- `undecodable_bytes_50`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_51`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `terminate_execution_2`: The routine contains no valid instructions and terminates the current execution flow immediately.
 - `execute_invalid_instruction_7`: Consists of a single byte of data that is invalid.
 - `nop_padding_gap_3`: This routine is empty and consists of a single byte of non-executable data serving as a gap in the code segment.
+- `undecodable_bytes_52`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `execute_invalid_instruction_8`: Contains a single byte of data that cannot be executed.
 - `nop_padding_gap_4`: This routine is empty and consists of a single byte of padding used to align subsequent code.
+- `undecodable_bytes_53`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_54`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_55`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_56`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `execute_invalid_instruction_9`: Consists of one byte of data that is not a valid instruction.
 - `execute_invalid_instruction_10`: The routine contains no valid instructions and triggers a control flow error upon entry.
 - `null_routine_gap_3`: This routine is empty and consists of non-executable data located within a code segment.
+- `undecodable_bytes_57`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_58`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_59`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `nop_instruction_8`: This routine contains a single instruction that does not perform any operation.
 - `nop_instruction_9`: The routine contains a single instruction that performs no operation.
 - `nop_padding_byte_4`: This routine consists of a single unreachable instruction used for data alignment or padding within the executable segment.
 - `stub_bad_instruction_data_2`: Contains only a bad-instruction marker, so the decompiler could not recover any logic; it is a stub with no behaviour.
 - `undefined_execution_point`: The routine contains no valid instructions and terminates immediately upon entry.
 - `null_instruction_gap_2`: This routine is empty and contains no valid instructions, representing a gap in the executable code.
+- `undecodable_bytes_60`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_61`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_62`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `halt_execution_7`: The routine contains no valid instructions and terminates the instruction stream immediately upon entry.
 - `nop_padding_sequence_5`: This routine is empty and consists of non-executable data or padding within the executable segment.
+- `undecodable_bytes_63`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `nop_instruction_padding`: This routine contains a single non-operational instruction used for alignment or padding within the code segment.
 - `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `null_routine_gap_4`: The routine is empty and consists of non-executable data located within a code gap.
+- `undecodable_bytes_64`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undefined_instruction_trap_3`: This routine contains no valid instructions and terminates execution upon entry.
 - `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `execute_single_instruction`: Executes one instruction before encountering invalid data.
@@ -791,21 +980,31 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `null_routine_gap_7`: This routine is empty and consists of non-executable data within a code segment.
 - `execute_single_instruction_2`: Performs a single instruction during execution.
 - `nop_padding_gap_9`: This routine is empty and consists of a single instruction gap within the executable segment.
+- `undecodable_bytes_65`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `skip_instruction_9`: This routine consists of one instruction that cannot be decoded.
 - `nop_padding_segment_2`: The routine is empty and consists of non-executable data or padding within the runtime segment.
+- `undecodable_bytes_66`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_67`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_68`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `skip_instruction_10`: This routine contains a single byte of undecodable data.
 - `execute_single_instruction_3`: Contains a single instruction that is executed during runtime.
 - `skip_instruction_11`: This routine consists of one instruction that is not valid.
 - `skip_instruction_12`: The routine contains a single instruction that fails to decode.
 - `skip_instruction_13`: This routine is empty because the data is invalid.
+- `undecodable_bytes_69`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_70`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_71`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `skip_instruction_14`: The routine contains one instruction that cannot be parsed.
 - `skip_instruction_15`: This routine consists of a single undecodable instruction.
 - `execute_single_instruction_4`: Performs a single instruction when called from outside the static flow.
 - `null_padding_sequence`: This routine is an empty sequence of bytes located in an unreached gap within the executable segment.
 - `execute_single_instruction_5`: Executes one instruction during a reference run.
 - `nop_padding_block`: This segment consists of a single unreachable instruction serving as alignment padding between functional code blocks.
+- `undecodable_bytes_72`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `null_routine_5`: The routine contains no valid executable instructions and performs no operations.
 - `null_routine_gap_5`: This routine is empty because it consists of non-executable data within an unreached code gap.
+- `undecodable_bytes_73`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_74`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undefined_instruction_trap_2`: The routine contains no valid executable instructions and triggers a processor exception upon entry.
 - `execute_invalid_instruction_11`: Contains a single byte that does not form a valid instruction.
 - `halt_execution_8`: The routine contains no valid instructions and terminates control flow immediately upon entry.
@@ -816,6 +1015,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `undecodable_bytes_5`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `nop_instruction_placeholder_4`: The routine consists of a single instruction that does not perform any operation or modify the processor state.
 - `nop_padding_gap_10`: This routine is empty because it consists of an unreachable gap in the executable code.
+- `undecodable_bytes_75`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_76`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_77`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_78`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_79`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_80`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_81`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_82`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_83`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_84`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_85`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `nop_instruction_10`: The routine consists of a single instruction that performs no operation.
 - `null_instruction_trap`: The routine contains no valid instructions and serves as a trap for invalid control flow execution.
 - `invalid_instruction_trap`: The routine contains no valid executable instructions and terminates immediately upon entry.
@@ -824,58 +1034,106 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `nop_instruction_placeholder_2`: This routine consists of a single instruction that does not perform any meaningful operation or state change.
 - `nop_instruction_13`: This routine contains a single instruction that performs no operation.
 - `null_routine_gap_6`: This routine is empty and consists of a single byte of non-executable data located within an unreached code gap.
+- `undecodable_bytes_86`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undefined_instruction_trap_6`: This routine contains no valid instructions and triggers an execution error upon entry.
 - `execute_invalid_instruction_15`: The routine contains no valid instructions and triggers a processor exception or trap upon execution.
 - `nop_padding_byte_8`: Contains a single byte of non-executable data used as padding between code segments.
+- `undecodable_bytes_87`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_88`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `null_instruction_trap_4`: This routine contains no valid executable instructions and terminates immediately upon entry.
 - `execute_invalid_instruction_12`: The routine consists of a single instruction that triggers a processor exception or invalid state.
 - `nop_padding`: This routine is empty and consists of a single byte of non-executable data used for alignment or padding within the segment.
+- `undecodable_bytes_89`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_90`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undefined_instruction_trap_7`: The routine contains invalid machine code that causes the processor to encounter an undefined instruction error.
 - `contain_invalid_instruction_14`: This routine consists of a single byte that does not form a valid instruction.
 - `nop_padding_gap_8`: This routine is empty and consists of a single instruction that acts as a gap in the executable code.
+- `undecodable_bytes_91`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_92`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `terminate_execution_5`: The routine contains no valid instructions and causes the processor to stop.
 - `undecodable_bytes_7`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `contain_invalid_instruction`: This routine contains data that does not decode as a valid instruction.
 - `contain_invalid_instruction_2`: The routine is unreached and contains a single byte of invalid data.
+- `undecodable_bytes_93`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `contain_invalid_instruction_3`: This routine contains a single instruction that is invalid.
 - `contain_invalid_instruction_4`: The routine consists of a single byte of non-instruction data.
+- `modify_registers_and_jump`: Performs an OR operation on a word in a register, performs an AND operation on a word at a memory location pointed to by a register, and jumps to another routine.
 - `contain_invalid_instruction_15`: The routine is composed of data that is not a valid instruction.
 - `nop_padding_2`: This routine is empty and consists of a single instruction that serves as padding within the executable segment.
+- `undecodable_bytes_94`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_95`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `contain_invalid_instruction_5`: The routine is composed of a single byte of bad instruction data.
 - `undefined_instruction_trap_5`: The routine contains no valid instructions and triggers a processor exception upon execution.
 - `nop_padding_byte_5`: This routine is an empty instruction acting as a single-byte alignment gap.
+- `undecodable_bytes_96`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `halt_execution_6`: The routine contains no valid instructions and serves only to terminate the current process flow.
 - `nop_padding_byte_6`: This routine is a single-byte gap in the executable code used for alignment or padding.
+- `undecodable_bytes_97`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `nop_instruction_11`: This routine consists of a single instruction that does not perform a visible operation or modify any state.
 - `contain_invalid_instruction_6`: Contains a single instruction that is not reachable through static analysis.
 - `undecodable_bytes_8`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `perform_single_operation`: Performs a single instruction during runtime.
 - `nop_padding_byte_7`: This routine consists of a single byte of data that does not form a valid instruction, acting as a gap in the executable code.
+- `undecodable_bytes_98`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_99`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_100`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `process_unidentified_byte`: Processes a single instruction that is executed during a reference run.
 - `run_single_instruction`: Runs one instruction before the control flow is truncated.
 - `execute_runtime_instruction`: Executes a single instruction that is reached during execution.
 - `hold_invalid_data`: Contains a single instruction located within an unreached gap.
+- `undecodable_bytes_101`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_102`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_103`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_104`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_105`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `nop_placeholder_2`: This routine contains a single instruction that prevents further disassembly of the code block.
 - `execute_instruction_fragment`: Executes a single instruction that is entered from outside the static flow.
 - `store_unreached_instruction`: Contains a single instruction that is not reached during execution.
+- `undecodable_bytes_106`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_107`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `process_single_instruction`: Processes one instruction that is identified during a reference run.
 - `undecodable_bytes_9`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_10`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `nop_padding_byte_9`: This routine consists of a single instruction that acts as a gap between valid code segments.
 - `nop_instruction_12`: The routine contains a single instruction that results in no operation or invalid data.
 - `nop_padding_3`: This routine is empty and consists of a single non-instruction byte that acts as padding within the executable segment.
+- `undecodable_bytes_108`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_11`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `skip_instruction_16`: The routine is composed of a single undecodable instruction.
 - `terminate_execution_6`: This routine contains no valid instructions and causes the processor to stop.
 - `skip_instruction_17`: The routine contains a single instruction that is not valid code.
+- `undecodable_bytes_109`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_110`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `skip_instruction_18`: This routine consists of one instruction that is invalid.
 - `contain_invalid_instruction_16`: The routine contains an instruction that cannot be decoded.
 - `skip_instruction_19`: This routine is an undecodable single instruction.
+- `undecodable_bytes_111`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_112`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_113`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_114`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_115`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_116`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_117`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_118`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_119`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_120`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_121`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undefined_execution_point_2`: This routine contains no valid instructions and cannot be disassembled.
 - `nop_padding_gap_5`: This is an empty routine consisting of a single instruction that serves as padding within the executable segment.
+- `undecodable_bytes_122`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_123`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_124`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_125`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_126`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_127`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_128`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_129`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_130`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `invalid_instruction_trap_2`: This routine contains no valid executable instructions and triggers a processor exception upon entry.
 - `undecodable_bytes_12`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `nop_padding_4`: This routine is empty and consists of a single byte of non-executable data used for alignment or padding.
+- `undecodable_bytes_131`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_132`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `contain_invalid_instruction_17`: The routine contains data that results in a bad instruction error.
 - `forward_indirect_call_result`: Calls a routine through a function pointer and returns the value left in data register D1.
 - `increment_word`: Increments a 16-bit value located at an offset from a pointer in a register.
@@ -883,10 +1141,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_external_function`: Executes a function located at a memory address stored in a pointer.
 - `call_external_routine_2`: Executes a routine via a pointer stored in memory and returns the result.
 - `call_external_function_2`: Executes a function via a pointer stored in memory and returns the result.
+- `load_register_and_branch`: Loads the value negative 244 into a register and branches to another routine.
 - `call_external_routine_3`: Executes a routine located at a pointer stored in memory.
 - `increment_offset_word`: Increments a 16-bit value located at an offset of 32 bytes from the pointer in register A6.
 - `increment_offset_word_2`: Adds one to a 16-bit field stored 32 bytes past the base pointer in register A6.
 - `increment_offset_word_3`: Increments the 16-bit integer found at a 32-byte offset from the address in register A6.
+- `jump_vector_entry_2`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `increment_offset_word_4`: Performs a 16-bit increment on the data located 32 bytes from the A6 base pointer.
 - `increment_offset_word_5`: Increments a word at a fixed 32-byte offset relative to the pointer in register A6.
 - `increment_offset_word_6`: Adds one to the 16-bit value situated 32 bytes after the address held in register A6.
@@ -895,6 +1155,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `increment_offset_word_9`: Adds one to a 16-bit integer at a 32-byte offset from the A6 register pointer.
 - `increment_offset_word_10`: Increments the 16-bit word found 32 bytes past the base pointer in register A6.
 - `stub_return_zero_3`: Returns zero without any other work, so it is an empty stub.
+- `nop_and_branch`: Performs a no-operation and branches to another routine.
 - `decrement_word_at_offset`: Subtracts one from a 16-bit field located 32 bytes past the base pointer in register A6, then returns zero.
 - `increment_word_at_offset`: Adds one to the 16-bit field located 32 bytes past the base pointer in register A6, then returns.
 - `execute_invalid_instruction_14`: The routine contains no valid instructions and triggers a control flow error upon execution.
@@ -914,7 +1175,30 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `return_immediately_9`: This routine performs no operations and returns immediately to the caller.
 - `perform_no_operation`: The routine is empty and performs no actions before returning.
+- `nop_padding_5`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_6`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_7`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `return_immediately_10`: An empty routine that returns to its caller.
+- `nop_padding_8`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_9`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_10`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_11`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_12`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `return_immediately_11`: The routine performs no actions and returns immediately.
+- `nop_padding_13`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_14`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_15`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_16`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_17`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `return_immediately_13`: This is an empty routine that returns to its caller without modification of state.
+- `nop_padding_18`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_19`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_20`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_21`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `perform_no_operation_2`: This routine is empty and performs no actions before returning.
+- `nop_padding_22`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_23`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_24`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_25`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_26`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `clear_interrupt_requests`: Writes the value 32767 to the interrupt request register and returns from an interrupt.

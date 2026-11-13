@@ -8,30 +8,30 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (4383141 top-level bytes in 506 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 6 raw-word lines |
-| Functions named and described | pass, 294 of 294 named (0 author symbols), 294 of 294 described (208 by rule, 86 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1015 of 1015 (100.00%) |
+| Functions named and described | FAIL, 290 of 496 named (0 author symbols), 290 of 496 described (206 by rule, 84 by the local model) |
+| Executed addresses (reference run) in recovered, described code | FAIL, 951 of 1015 (93.69%) |
 | Recovered without load address (counted in proof 1, flagged) | 16596 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1824 of 1824 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2685 of 2685 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 1298769 |
-| code | 6092 |
-| data | 3078272 |
-| padding | 8 |
+| code | 9188 |
+| data | 3075162 |
+| padding | 22 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| game.slave | 1 | 932 | 66 |
+| game.slave | 1 | 1105 | 77 |
 | circus | 2 | 227 | 8 |
 | disk-validator | 1 | 386 | 1 |
-| ram-handler | 2 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 259 | 208 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 10 | 10 |
+| ram-handler | 2 | 493 | 33 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 424 | 347 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 50 | 30 |
 | BRF02.BIN (raw code file, load address unknown) | 1 | 0 | 0 |
 | BRF03.BIN (raw code file, load address unknown) | 1 | 0 | 0 |
 
@@ -82,6 +82,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `read_hardware_register`: Compares a bit-inverted and rotated byte in d0 against two constants, and if neither matches, reads the value from the VHPOSR hardware register into a memory location.
 - `push_and_branch`: Pushes the 16-bit value negative 1 onto the stack and branches to another routine.
 - `process_interrupt_stack_data`: If d0 is non-zero, it clears a word at offset 4 of a structure pointed to by a7 and calls another routine; otherwise, it performs multiple stack manipulations, writes a word to the INTENA register, and calls another routine.
+- `sub_030E`: undescribed.
 - `calculate_table_offset`: Reads values from a global table and performs arithmetic operations including multiplication, subtraction, and division.
 - `update_status_byte_via_table`: Reads a byte from offset 67 of a structure in a3, clears a byte at offset 31 of a structure in a1, and if bit 1 of offset 64 in a3 is set, sets offset 31 of a1 to 29 and calls another routine; otherwise, it sets offset 31 of a1 to 29 and returns the byte at offset 31 of a1.
 - `negate_short_toggle_bit`: Negates a short value at offset 29547 of a structure and toggles the high bit of a byte at offset 65 of another structure.
@@ -93,15 +94,27 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `fetch_byte_from_table`: Tests a longword in register d2 and, if not negative, loads a byte from a table pointed to by a0 at the offset specified by d2 into register d3, then moves that byte into register d1 before returning.
 - `load_d1_constant_two`: Loads the constant 280 into d1 and branches to another routine.
 - `clear_offset_and_save_register`: Clears a longword at an offset of 12 from a pointer in a1, stores the value of a4 into a global variable, and returns.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 - `execute_indirect_jump_2`: Compares a4 to a constant; if they are not equal, it performs an indirect jump using an address stored at offset -12 of the structure in a5, otherwise it calls another routine and then performs an indirect jump using the same address.
 - `store_self_reference`: The routine writes its own entry address into a global variable and then returns.
 - `copy_string_to_buffer`: The routine copies a null-terminated string from an input pointer to a newly allocated buffer, prefixing it with its length byte, and then sets up a structure with fields derived from a global table and a library base, storing the buffer address in the structure.
 - `initialize_expansion_structures`: Uses memory allocation and queueing functions to build descriptor structures, sets flags, and stores global pointers into RAM.
 - `execute_indirect_jump`: Calls a function via a pointer from a library, then performs an indirect jump to an address found at offset 22 of the returned pointer.
-- `open_dos_library_and_dispatch`: Opens a DOS library, performs several library calls to manipulate a structure at an offset from a pointer in a1, and eventually executes a jump from a table based on a comparison of values.
+- `sub_0658`: undescribed.
 - `process_shifted_values`: Calls three different routines using values in d7, d0, and d1, and then branches to another routine if the logical shift right of d0 by two bits results in a non-zero value.
 - `execute_sequence_of_calls`: Calls two different routines, moves the value from d7 into d0, and then calls a third routine before setting d0 to 255 and branching to another location.
+- `sub_07A6`: undescribed.
+- `sub_07E8`: undescribed.
+- `sub_07F8`: undescribed.
+- `sub_0848`: undescribed.
+- `sub_0858`: undescribed.
+- `sub_087C`: undescribed.
+- `sub_0884`: undescribed.
+- `sub_08B8`: undescribed.
+- `sub_08D2`: undescribed.
+- `sub_08F2`: undescribed.
+- `sub_08FC`: undescribed.
+- `sub_092A`: undescribed.
+- `sub_0984`: undescribed.
 - `manage_circular_buffer_data`: Calculates available space in a buffer structure and copies data from the buffer to a destination pointer.
 - `update_buffer_and_copy_data`: Increments a value at offset 20 of a structure and updates a high-water mark at offset 148.
 - `transfer_registers_and_call`: Moves d6 to d0 and d7 to d1, loads a pointer from an offset of a0 into a0, loads d5 into a1, calls another routine, loads a value from an offset of a4 into d0, and branches.
@@ -121,11 +134,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `concatenate_path_strings`: Calculates the length of a source string and a target string, then calls a library function to allocate a new buffer.
 - `verify_string_pairs`: Loads a pointer into d0, calls another routine with d1 set to twelve, and branches if the result is zero; otherwise it loads a second pointer into d0, calls another routine with d1 set to forty-four, and branches if the result is zero; otherwise it returns zero.
 - `compare_two_strings`: The routine compares the bytes pointed to by two pointers until a zero byte is found, returning early if the bytes differ, otherwise it falls through after the terminating zero.
-- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `skip_stack_frame`: The routine clears a value from the stack and adjusts the stack pointer by 32 bytes before returning.
 - `process_library_data`: Allocates memory, performs several library calls to manipulate a structure, checks a returned value against two constants, and if matched, calls another routine multiple times and eventually calls a routine using a pointer from a table.
 - `push_stack_and_return`: Pushes a constant value onto the stack, performs a relative branch, pushes a small constant onto the stack, loads a longword from a memory location into the stack pointer, increments the stack pointer by four, and returns.
-- `perform_logical_or`: The routine performs a bitwise logical OR on register d0 with zero.
 
 ### circus
 
@@ -145,6 +156,38 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### ram-handler
 
 - `call_indirect_via_table`: Sets d0 to 12, loads a pointer from a global variable into a6, calls a routine at an offset of -656 from that pointer, and then performs an indirect jump using the value in a6.
+- `sub_1_0002`: undescribed.
+- `sub_1_0040`: undescribed.
+- `sub_1_0096`: undescribed.
+- `sub_1_0104`: undescribed.
+- `sub_1_012E`: undescribed.
+- `sub_1_0158`: undescribed.
+- `sub_1_0172`: undescribed.
+- `sub_1_01A8`: undescribed.
+- `sub_1_01DE`: undescribed.
+- `sub_1_0220`: undescribed.
+- `sub_1_0270`: undescribed.
+- `sub_1_028A`: undescribed.
+- `sub_1_02B4`: undescribed.
+- `sub_1_02F0`: undescribed.
+- `sub_1_032C`: undescribed.
+- `sub_1_036A`: undescribed.
+- `sub_1_03A8`: undescribed.
+- `sub_1_03E4`: undescribed.
+- `sub_1_0412`: undescribed.
+- `sub_1_043E`: undescribed.
+- `sub_1_046A`: undescribed.
+- `sub_1_049A`: undescribed.
+- `sub_1_04DE`: undescribed.
+- `sub_1_0508`: undescribed.
+- `sub_1_0540`: undescribed.
+- `sub_1_0554`: undescribed.
+- `sub_1_056C`: undescribed.
+- `sub_1_0588`: undescribed.
+- `sub_1_05D0`: undescribed.
+- `sub_1_0606`: undescribed.
+- `sub_1_0646`: undescribed.
+- `sub_1_0686`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -156,6 +199,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `undecodable_bytes_7`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `jump_to_fixed_address`: Performs an indirect jump to the address stored at a fixed location.
 - `undecodable_bytes_8`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_003A`: undescribed.
+- `sub_0040`: undescribed.
+- `sub_0046`: undescribed.
+- `sub_004C`: undescribed.
+- `sub_0052`: undescribed.
+- `sub_0058`: undescribed.
+- `sub_005E`: undescribed.
 - `undecodable_bytes_9`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_10`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_11`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
@@ -180,6 +230,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `undecodable_bytes_25`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_26`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_27`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_00F4`: undescribed.
+- `sub_00FA`: undescribed.
+- `sub_0100`: undescribed.
 - `undecodable_bytes_28`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_29`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_30`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
@@ -205,20 +258,27 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `undecodable_bytes_50`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `jump_to_long_address_2`: Performs a long jump to a specific memory address.
 - `undecodable_bytes_51`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_019C`: undescribed.
+- `sub_01A2`: undescribed.
+- `sub_01A8`: undescribed.
 - `undecodable_bytes_52`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_53`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_54`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_01C0`: undescribed.
+- `sub_01C6`: undescribed.
 - `undecodable_bytes_55`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_56`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_57`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_58`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_59`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_01EA`: undescribed.
 - `undecodable_bytes_60`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_61`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_62`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_63`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_64`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_65`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_0214`: undescribed.
 - `undecodable_bytes_66`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_67`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_68`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
@@ -226,6 +286,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `undecodable_bytes_70`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_71`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_72`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_0244`: undescribed.
+- `sub_024A`: undescribed.
 - `undecodable_bytes_73`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_74`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_75`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
@@ -236,27 +298,61 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `undecodable_bytes_80`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_81`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_82`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1872`: undescribed.
+- `sub_1878`: undescribed.
+- `sub_187E`: undescribed.
+- `sub_1884`: undescribed.
+- `sub_188A`: undescribed.
+- `sub_1890`: undescribed.
+- `sub_1896`: undescribed.
 - `undecodable_bytes_83`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_84`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_18A8`: undescribed.
+- `sub_18AE`: undescribed.
+- `sub_18B4`: undescribed.
+- `sub_18BA`: undescribed.
+- `sub_18C0`: undescribed.
+- `sub_18C6`: undescribed.
+- `sub_18CC`: undescribed.
+- `sub_18D2`: undescribed.
+- `sub_18D8`: undescribed.
+- `sub_18DE`: undescribed.
+- `sub_18E4`: undescribed.
 - `undecodable_bytes_85`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_86`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_87`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_88`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1ACC`: undescribed.
+- `sub_1AD2`: undescribed.
 - `undecodable_bytes_89`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_90`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_91`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1BAC`: undescribed.
+- `sub_1BB2`: undescribed.
+- `sub_1BB8`: undescribed.
+- `sub_1BBE`: undescribed.
 - `undecodable_bytes_92`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_93`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_94`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1BD6`: undescribed.
+- `sub_1BDC`: undescribed.
+- `sub_1BE2`: undescribed.
+- `sub_1BE8`: undescribed.
 - `undecodable_bytes_95`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_96`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_97`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_98`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1C06`: undescribed.
+- `sub_1C0C`: undescribed.
+- `sub_1C12`: undescribed.
+- `sub_1C18`: undescribed.
 - `undecodable_bytes_99`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_100`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1C2A`: undescribed.
 - `undecodable_bytes_101`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_102`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_103`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1C42`: undescribed.
 - `undecodable_bytes_104`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_105`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_106`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
@@ -264,21 +360,31 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `undecodable_bytes_108`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_109`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_110`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1C72`: undescribed.
 - `undecodable_bytes_111`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_112`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1C84`: undescribed.
+- `sub_1C8A`: undescribed.
+- `sub_1C90`: undescribed.
 - `undecodable_bytes_113`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_114`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_115`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_116`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_117`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1CB4`: undescribed.
+- `sub_1CBA`: undescribed.
+- `sub_1CC0`: undescribed.
 - `undecodable_bytes_118`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_119`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_120`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_121`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_122`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_123`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1CEA`: undescribed.
 - `undecodable_bytes_124`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_125`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1CFC`: undescribed.
+- `sub_1D02`: undescribed.
 - `undecodable_bytes_126`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_127`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_128`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
@@ -289,6 +395,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `undecodable_bytes_133`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_134`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_135`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1D44`: undescribed.
+- `sub_1D4A`: undescribed.
+- `sub_1D50`: undescribed.
+- `sub_1D56`: undescribed.
+- `sub_1D5C`: undescribed.
+- `sub_1D62`: undescribed.
+- `sub_1D68`: undescribed.
+- `sub_1D6E`: undescribed.
+- `sub_1D74`: undescribed.
+- `sub_1D7A`: undescribed.
+- `sub_1D80`: undescribed.
 - `undecodable_bytes_136`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_137`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_138`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
@@ -297,54 +414,118 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `undecodable_bytes_141`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_142`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_143`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1DD4`: undescribed.
 - `undecodable_bytes_144`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_145`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_146`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1DEC`: undescribed.
+- `sub_1DF2`: undescribed.
 - `undecodable_bytes_147`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_148`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_149`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_1FFA`: undescribed.
+- `sub_2000`: undescribed.
 - `undecodable_bytes_150`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_151`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_152`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_2132`: undescribed.
+- `sub_2138`: undescribed.
 - `undecodable_bytes_153`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_154`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_155`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_22BC`: undescribed.
 - `undecodable_bytes_156`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_157`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_239E`: undescribed.
 - `undecodable_bytes_158`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_159`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_265A`: undescribed.
+- `sub_2660`: undescribed.
 - `undecodable_bytes_160`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_161`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_162`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_38AC`: undescribed.
 - `undecodable_bytes_163`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_164`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_38BE`: undescribed.
 - `undecodable_bytes_165`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_166`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_38D0`: undescribed.
 - `undecodable_bytes_167`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_168`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_38E2`: undescribed.
+- `sub_38E8`: undescribed.
+- `sub_38EE`: undescribed.
+- `sub_38F4`: undescribed.
+- `sub_38FA`: undescribed.
+- `sub_3900`: undescribed.
+- `sub_3906`: undescribed.
+- `sub_390C`: undescribed.
+- `sub_3912`: undescribed.
+- `sub_3918`: undescribed.
+- `sub_391E`: undescribed.
 - `undecodable_bytes_169`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_170`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_171`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_393C`: undescribed.
+- `sub_3942`: undescribed.
 - `undecodable_bytes_172`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_173`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_174`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_175`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_176`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_177`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_3996`: undescribed.
+- `sub_399C`: undescribed.
 - `undecodable_bytes_178`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_179`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_180`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_3A72`: undescribed.
+- `sub_3A78`: undescribed.
 - `undecodable_bytes_181`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_182`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_183`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_3C44`: undescribed.
+- `sub_3C4A`: undescribed.
+- `sub_3C50`: undescribed.
+- `sub_3C56`: undescribed.
+- `sub_3C5C`: undescribed.
+- `sub_3C62`: undescribed.
+- `sub_3C68`: undescribed.
+- `sub_3C6E`: undescribed.
+- `sub_3C74`: undescribed.
+- `sub_3C7A`: undescribed.
+- `sub_3C80`: undescribed.
 - `undecodable_bytes_184`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_185`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_186`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `sub_468C`: undescribed.
+- `sub_4692`: undescribed.
 - `undecodable_bytes_187`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `set_d0_and_branch`: Sets d0 to negative thirty-five and branches.
 - `set_d0_and_branch_2`: Sets d0 to two and branches.
+- `sub_4C16`: undescribed.
+- `sub_4C1C`: undescribed.
+- `sub_4C22`: undescribed.
+- `sub_4C28`: undescribed.
+- `sub_4C2E`: undescribed.
+- `sub_4C34`: undescribed.
+- `sub_4C3A`: undescribed.
+- `sub_4C40`: undescribed.
+- `sub_4C46`: undescribed.
 - `load_and_branch`: Loads the value negative 247 into register d0 and branches to another routine.
 - `load_and_branch_alternative`: Loads the value negative 246 into register d0 and branches to another routine.
+- `sub_4C58`: undescribed.
+- `sub_4C5E`: undescribed.
+- `sub_4C64`: undescribed.
+- `sub_4C6A`: undescribed.
+- `sub_4C70`: undescribed.
+- `sub_4C76`: undescribed.
+- `sub_4C7C`: undescribed.
+- `sub_4C82`: undescribed.
+- `sub_4C88`: undescribed.
+- `sub_4C8E`: undescribed.
+- `sub_4C94`: undescribed.
 - `increment_word_at_offset`: The routine increments a 16-bit value located at a fixed positive offset from a base pointer register in place and then returns.
 - `decrement_word_at_offset`: The routine decrements a 16-bit value located at a fixed positive offset from a base pointer register and then returns a zero value.
 - `undecodable_bytes_188`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
@@ -355,6 +536,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `adjust_stack_and_branch`: Decrements the stack pointer by 8, pushes the 32-bit value at a specific memory location onto the stack, and branches to another routine.
 - `restore_stack_and_return`: Adjusts the stack pointer, pushes a value onto the stack, branches to another routine, and then restores the stack pointer and registers before returning.
 - `tiny_movea_rts`: Small routine of 2 instructions that copies (a7)+ to a5, then returns.
+- `sub_5524`: undescribed.
 - `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -362,10 +544,30 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `sub_0016`: undescribed.
+- `sub_001A`: undescribed.
 - `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
+- `sub_0026`: undescribed.
+- `sub_002A`: undescribed.
+- `sub_002E`: undescribed.
+- `sub_0032`: undescribed.
+- `sub_0036`: undescribed.
 - `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
+- `sub_003E`: undescribed.
+- `sub_0042`: undescribed.
+- `sub_0046`: undescribed.
+- `sub_004A`: undescribed.
 - `empty_stub_8`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_9`: Empty routine: returns to the caller immediately without doing anything.
+- `sub_0056`: undescribed.
+- `sub_005A`: undescribed.
+- `sub_005E`: undescribed.
 - `empty_stub_10`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_11`: Empty routine: returns to the caller immediately without doing anything.
+- `sub_006A`: undescribed.
+- `sub_006E`: undescribed.
+- `sub_0072`: undescribed.
+- `sub_0076`: undescribed.
+- `sub_007A`: undescribed.
+- `sub_0090`: undescribed.

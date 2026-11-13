@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901728 top-level bytes in 8 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 23 raw-word lines |
-| Functions named and described | pass, 381 of 381 named (374 author symbols), 381 of 381 described (16 by rule, 5 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 533 of 538 (99.07%) |
+| Bytes classified (905680 top-level bytes in 12 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 10 raw-word lines |
+| Functions named and described | pass, 309 of 309 named (276 author symbols), 309 of 309 described (22 by rule, 27 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 3151 of 3156 (99.84%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 8356 of 8365 instructions identical in start and length, 2 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 8366 of 8374 instructions identical in start and length, 2 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 265189 |
-| code | 42608 |
-| data | 135724 |
-| padding | 1503 |
+| asset | 262608 |
+| code | 42792 |
+| data | 142080 |
+| padding | 1496 |
 | unused | 456704 |
 
 ## Code units
@@ -28,15 +28,24 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | ProSoccer 2190.adf:SKR_VAR | 1 | 154 | 1 |
-| ProSoccer 2190.adf:prosoccer | 6 | 8082 | 375 |
+| ProSoccer 2190.adf:prosoccer | 6 | 7887 | 279 |
 | ProSoccer 2190.adf:echo | 2 | 117 | 2 |
 | ProSoccer 2190.adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 58 | 11 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 138 | 13 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 9 | 1 |
 
 ## Cases handled
 
-- 8 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- ProSoccer 2190/ProSoccer 2190.adf:LOGO_VVP.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (4216 -> 13080 bytes)
+- 30 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- runtime segment an address: 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500): 9 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- ProSoccer 2190/ProSoccer 2190.adf:SKR_VAR: TryIt Cruncher 1.01 (xfd) stream found by ancient scan (14596 -> 23508 bytes) but only 0 of 8 sampled windows are in reference RAM: not used
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 2 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate, 1 jump target
 - ProSoccer 2190/ProSoccer 2190.adf:SKR_VAR: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
 ## Cracktros (kept, not protection)
@@ -63,16 +72,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reset_os`: If the vertical blank flag is set, removes the level 5 interrupt server and clears the flag, then calls the input and screen reset routines and closes the intuition and graphics libraries.
 - `vertb`: Saves all registers, calls set_current_screen and joy_vbl with a0 pointing at the custom chip base, conditionally calls ami_clock unless time_held equals one, calls check_debug, increments vblflag and vblcount, restores registers and returns zero in d0.
 - `vsync`: Clears d0 and the word at address 126, then tests that word and spins with dbra until it is nonzero, returning once the vertical blank flag has been set.
-- `jiffy`: A single zero word that decodes as ori.b #0,d0; it is zero-filled data referenced by ami_clock, not executable code.
 - `ami_clock`: Increments the jiffy byte, rolls it to zero at fifty and increments the seconds word, rolling it at sixty and incrementing the minutes word, then returns.
-- `ed_tog`: Five zero words decode as ori.b instructions; this range is zero-filled data referenced by address, not executable code.
-- `time_held`: Clears the big memory flag, allocates 32128 bytes of chip memory via exec.AllocMem, stores the pointer in the music address slot and sets the flag to one if allocation succeeded.
+- `ed_ints`: Empty routine: returns to the caller immediately without doing anything.
+- `init_mem`: Sets a global word to zero, calls a library routine to allocate 32704 bytes of memory, stores the resulting pointer in a global long, and sets a global word to one if the allocation succeeded.
 - `reset_mem`: Checks the longword flag at address 606; if nonzero, calls exec FreeMem through a6 with a1 pointing at the pointer at 602 and size 32128, then restores a6 and returns.
 - `getascii`: Masks d0 to seven bits, maps key codes 68, 65 and 70 to control values 13, 8 and 127, otherwise indexes chartab and returns the byte in d1, turning 63 into zero.
-- `old_clist`: Single zero word that decodes as ori.b #0,d0; it is a zero-filled data area referenced by address, not executable code.
 - `init_screen`: Calls intuition CloseWorkBench through a6, copies GfxBase field at offset 50 into global old_clist, then calls set_screen with a0 zeroed and returns.
 - `reset_screen`: Calls intuition OpenWorkBench then RemakeDisplay through a6 using IntuitionBase, refreshing the display and returning to reset_os.
-- `scr_number`: Single zero word that decodes as ori.b with immediate zero on d0; this is zero-filled data referenced by address, not executable code.
 - `swap_screen`: Swaps the current and display screen pointers, toggles the screen number byte, sets the pending-swap word to one and clears the vbl flag word.
 - `set_current_screen`: Tests the pending-swap word; if nonzero it clears it and loads the display screen pointer into a0, otherwise it returns immediately.
 - `set_screen`: Writes four pairs of high and low words from a0 into the copper list, advancing a0 by 8000 each time, then stores the list pointer into GfxBase offsets 50 and 54.
@@ -82,14 +88,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `fill_bitmap`: Empty routine: returns to the caller immediately without doing anything.
 - `fh0`: Empty routine: returns to the caller immediately without doing anything.
 - `fh1`: Empty routine: returns to the caller immediately without doing anything.
-- `input_port`: This single zero word decodes as an ori.b instruction but is really a zero-filled data slot referenced by address from the input setup code, not executable code.
-- `input_io`: This single zero word decodes as an ori.b instruction but is really a zero-filled data slot whose address is taken by the input init and reset code, not executable code.
 - `init_input`: Creates the input message port and standard IO request, opens input.device, stores the interrupt handler pointer and length in the IO block, and starts the input request.
 - `reset_input`: If an input IO request exists, restores the interrupt handler, sends the abort command, closes input.device, deletes the standard IO request and the input message port.
 - `input_handler`: Reads the event type byte at offset four from a0; type two branches to raw_mj, type one with a non-negative key word stores that key and branches to soak_event, otherwise returns via ret_event.
-- `soak_event`: Returns the constant an address in d0 to the caller without any other effect.
-- `raw_mj`: Jump stub: passes control straight on to soak_event.
-- `ret_event`: Copies the pointer in a0 into d0 as the return value and returns immediately to the caller.
 - `check_debug`: Reads the debug key word, dispatches on key codes to bring a screen to front or rebuild the copper list from bitmap or screen parameters, then returns.
 - `CreatePort`: Allocates a signal and message port memory, fills port fields from d0 and a0, links the port list, and returns the port pointer in d0.
 - `DeletePort`: If a0 is non-null, frees its signal bit, marks the port bytes at offsets 8 and 20 as invalid, then frees the port memory via exec.RemPort and returns.
@@ -101,20 +102,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `blitsub`: Empty routine: returns to the caller immediately without doing anything.
 - `waitblit`: Reads the blitter status byte at offset two from a1 and loops while bit six is set, returning once the blitter is idle.
 - `joy_vbl`: Clears click and both what words, tests CIA fire bits and player/kickmeter/possession state to set click flags, then reads JOY0DAT and JOY1DAT to set direction bits in what and what+2.
-- `what`: This single zero word decodes as an ori.b immediate instruction but is a zero-filled data area referenced by address from many callers, not executable code.
-- `click`: Returns d0 with the low byte ORed with the constant 117, used as a click flag value by callers.
+- `init_mouse`: Empty routine: returns to the caller immediately without doing anything.
+- `x_done`: Empty routine: returns to the caller immediately without doing anything.
 - `exit_routine`: Empty routine: returns to the caller immediately without doing anything.
-- `mouse_x`: Two zero words that decode as ori.b #0,d0; this range is zero-filled data referenced by address, not executable code.
 - `seed`: Copies the caller's return address from the top of the stack into the longword at absolute address 2350, then falls through to following code.
 - `random`: Saves all registers, seeds the random_w longword from memory if zero, multiplies its low word by a fixed address, adds one, masks to nine bits, stores it back, restores registers and returns the value in d0.
-- `random_w`: Contains a single zero word that decodes as ori.b #0,d0; it is zero-filled data referenced by the random routines, not executable code.
-- `handle`: Contains a single zero word that decodes as ori.b #0,d0; it is zero-filled data pointed to by load_file and save_file, not executable code.
-- `filename_add`: Contains a single zero word that decodes as ori.b #0,d0; it is zero-filled data referenced by the file load and save routines, not executable code.
-- `final_add`: A single zero word that decodes as ori.b with immediate zero to d0; it is zero-filled data referenced by address, not executable code.
-- `destination_add`: A single zero word decoding as ori.b immediate zero to d0; this is a zero-filled data slot whose address is taken by file load and save code.
-- `file_length`: A single zero word that decodes as ori.b immediate zero to d0; it is a zero-filled data location referenced by address from file handling code.
 - `load_file`: Saves all registers, clears the load error word, opens the filename with mode 1005, reads file_length bytes into destination_add, closes the handle, and jumps to error_handler on failure.
-- `error_code1`: This single zero word decodes as ori.b #0,d0 and is a zero-filled data byte, not executable code.
 - `save_file`: Saves all registers, clears the load error word, opens the named file with mode 1006, writes the file length bytes from the destination buffer, closes the handle and restores registers; on failure it branches to the error handler.
 - `palette_st_to_amiga`: Reads sixteen colour words from a0, masks and shifts each into Amiga 12-bit format, stores them in the palette buffer, then copies the palette to the hardware colour registers.
 - `set_fx_interrupt`: Stores the address of snd_vector into the level 4 interrupt autovector at memory location 112, then returns to the caller.
@@ -124,15 +117,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `sv_s2`: Checks the channel 2 sound counter; if not positive, enables the level 4 interrupt in INTENA, clears the counter and acknowledges INTREQ, then branches back to the sound vector.
 - `sv_s3`: Compares the longword sound counter at memory location 822 with zero; if greater, branches to the sound vector, otherwise clears bit 3 of DMACON, enables the interrupt at INTENA bit 10, clears the counter and acknowledges INTREQ bit 10.
 - `palette_fadein`: Stores the target palette pointer, clears the temporary palette, then repeatedly masks the target colours with 444, 555 and 666 and finally copies them, calling palette, slowfade and holdfade between steps.
-- `target_palette`: A single zero word that decodes as ori.b #0,d0; it is a zero-filled data location used by the palette fade routines as a pointer slot, not executable code.
-- `temp_palette`: Sixteen zero words decoded as ori.b instructions; this is a data table referenced by palette routines, not executable code, and it changes no registers.
 - `slowfade`: Loads d7 with 1000, d6 with 22 and d5 with 7, divides d5 by d6, then counts d7 down to zero before returning.
 - `holdfade`: Loads d7 with 10000, d6 with 22 and d5 with 7, divides d5 by d6, then counts d7 down to zero before returning.
 - `palette_fadeout`: Copies the target palette into temp_palette, then repeatedly masks each of sixteen colours with decreasing bit patterns, calling palette and slowfade between steps, and finally zeroes the palette and calls holdfade.
 - `palette`: Saves all registers, loads the temp_palette address into a0, calls set_palette to install it, restores registers and returns.
 - `de_crunch`: Saves all registers, loads source, destination and length from fixed memory into a1, a0 and d0, calls decompress, restores registers and returns.
 - `new_pal`: Saves all data and address registers on the stack, moves a6 into a0, calls set_palette, restores the registers and returns.
-- `rikl_clip2`: Runs the game boot sequence: clears keyboard and screen, loads the music file into sounds, sets the palette, starts music, shows the opening, then loops through seasons calling play_season and incrementing the season counter.
+- `initialize_game_state`: Performs several bitwise operations on global variables, clears the keyboard, clears the screen, calls multiple routines including a file loader and music starter, and enters a loop that plays seasons while incrementing a global counter.
 - `pro_start`: Clears keyboard and screen, toggles display, loads the music file into sounds, sets palette, starts music, shows opening, then loops calling play_season and incrementing the season counter.
 - `play_season`: Repeatedly plays weeks and prints the league until week reaches 22, clears the results area, sets up the final and European league matches, then plays or auto-resolves the final and runs end-of-year updates and trades.
 - `play_week`: Clears results unless continuing, starts music, shows the fixture screen until a click or timer expires, then loops through matches calling setup, play or auto-result, league update and storage transfer.
@@ -145,10 +136,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `vance_the_vulture`: Sets image number, x and y globals, selects image one when the vulture time is between 120 and 130, then draws the image and returns.
 - `video_text`: Sets image number and x, adds two to the vulture counter when time is between 40 and 88, sets y from 128 minus the counter, draws the image and returns.
 - `vulture_text`: Sets image number 2 at x 6, adds 2 to vult_cnt when the vulture timer is between 40 and 88, sets image y to vult_cnt plus 32, then calls show_an_image.
-- `vult_cnt`: A single zero word that decodes as ori.b #0,d0; it is zero-filled data referenced by address, not executable code.
 - `prod_text`: Writes image x 9, y 155 and image number 4 to the display globals, then calls show_an_image only when the vulture timer exceeds 89.
 - `show_an_image`: Computes a screen offset from image x and y, reads the image pointer and size from the image tables, then masks and ORs four bitplanes of the image into the current screen buffer.
-- `load_addr`: This single zero word decodes as an empty instruction that does nothing; the bytes are zero-filled data, not executable code.
 - `decompress`: Reads a compressed stream backward from a0 plus d0, refilling bits via l16 and decoding literals and back-references via l17, writing bytes downward toward a1 and returning a status in d0.
 - `l16`: Pops a longword from the stack pointed to by a0, XORs it into d5, then rotates d0 right through extend with the extend flag set, returning the shifted value.
 - `l17`: Repeats d1 times: shifts d0 right, refills it from the stack via a0 and XORs into d5 when empty, and rotates the carry into d2, then returns.
@@ -160,19 +149,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `calc_player_cost`: Loops 32 times over player records at a0, copying byte at offset 44 to offset 46 and subtracting the sum of a1 offset 30 word and a2 offset 44 byte, advancing a0 by 64 each time.
 - `is_trader`: Resets offer, copies trade pointers to display pointers, shows trader, exits if selection exceeds fifteen, otherwise runs team_coach, updates display pointers for the chosen team, recalculates cost and redisplays until selection exceeds fifteen.
 - `display_trader`: Redraws the trade panel with card names, stats and prices, then reads the selection and click flags to move the cursor, switch firsts/seconds, or set up a buy or sell offer.
-- `sell_sd`: This single zero word decodes as ori.b with immediate zero on d0; it is a zero-filled data slot whose address is stored by the trade code, not executable code.
-- `buy_sd`: This single zero word decodes as ori.b with immediate zero on d0; it is a zero-filled data slot referenced by address from the trade display, not executable code.
-- `sell_l`: This single zero word decodes as an ori.b immediate instruction, so it is a zero-filled data slot referenced by address rather than executable code.
-- `tr_selected`: Sets bit 4 of the byte at the address in a0, marking the trader entry as selected, then returns to the caller.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `end_of_year`: Loops over 512 player records, increments age, resets and randomly adjusts skill bytes, clamps them between limits, and stores a computed overall rating.
 - `opening`: Initialises the open timer to 200 and ball flag to zero, then repeatedly clears the screen, draws the logo, sets sprite and card variables in the mid-timer window, calls bigman and toggle, decrements the timer, and returns when the timer hits zero or click is set.
 - `display_logo`: Sets sprite and card variables to draw seven logo blocks via prt_mlogo, advances the spinball and spin pointers with wrap checks, draws the spinball sprite via prt_proman, draws two more logo blocks, and clears d1 through d4 before returning.
-- `logo_x`: This single instruction is data decoded as code: it ORs an immediate word into memory at a0, but the bytes are actually the logo_x coordinate table, not executable code.
 - `prt_mlogo`: Calls prt_logo repeatedly, adding 16 to the sprite x position and 1 to the sprite variable while decrementing the card loop counter until it reaches zero, then returns.
-- `proman_x`: Single instruction ORs the immediate byte 144 into the byte at the address in a0; it is a data byte used as a handler pointer, not executable code.
 - `prt_mman`: Draws four body sprites then four leg sprites by calling prt_proman, advancing the sprite x position by 16 each time and reading sprite indices from the body and legs tables.
 - `bigman`: Advances the big-man animation pointer, wraps it to bm_work on a terminator, then calls the matching animation routine and finally prt_mman to draw the player.
-- `bm_work`: The bytes are animation frame data, not executable code; the ori.b immediates encode frame indices for body and legs stored in the animation buffer.
 - `m_norm`: Loads the animation buffer address into a0 and writes the normal pose frame indices zero through three and eight through eleven into consecutive words.
 - `m_blink`: Loads the address 9776 into a0, then writes the values 4 and 5 to offsets 2 and 4 from that base, and returns.
 - `m_smile`: Loads the address 9776 into a0, then writes the values 6 and 7 to offsets 2 and 4 from that base, and returns.
@@ -192,7 +175,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `allocate_shots_forward`: Loops d7+1 times, calls random4, adds 6 to the result, scales by 64 and increments the byte at offset 50 of the a0-based record, then returns.
 - `allocate_tackles`: Loops d7+1 times, calls random16 until the result is at most 10, scales it by 64 and increments the byte at offset 49 of the a0-based record, then returns.
 - `allocate_tackles_back`: Loops d7+1 times, calls random8, scales the result by 64 and increments the byte at offset 49 of the a0-based record, then returns.
-- `home_strength`: A single zero word that decodes as ori.b with zero immediate; this is zero-filled data referenced by address, not executable code.
 - `calc_team_strength`: Loops eleven times adding three word fields at offsets 12, 18 and 34 from a0, advancing a0 by 64 each time, then divides the total by 33 and masks to a byte in d0.
 - `which_type_of_match`: Clears the player count and watch flag, then checks the home and away team control bytes to set the watch flag for computer teams or count human-controlled sides.
 - `clear_season`: Loops over sixteen team records clearing bytes and words at offsets 15 to 22, then numbers eight team and eight euro league entries, then resets 512 long-term records copying byte 4 into word 28 and zeroing fields.
@@ -211,7 +193,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `prt_best`: Displays four successive top-ten tables (defence, offence, goalscorers, MVPs) by drawing the background, printing headers and calling fill_hall, waiting for a toggle between each page.
 - `fill_hall`: Clears a workspace buffer, then iterates through a long-term storage table to perform an insertion sort on entries based on a byte-fix condition.
 - `insert_sort`: Reads a score from a0 into a1 offset 36, stores 511 minus d7 at offset 38, then bubble-sorts nine groups of eight 4-byte entries in work_hall by comparing words and swapping pairs.
-- `work_hall`: Ten zero words that decode as ori.b #0,d0; this is a zero-filled data area referenced by address from fill_hall and insert_sort, not executable code.
 - `prt_best_back`: Sets sprite variable to 3, calls draw_topcard and draw_restcard, loads the white font pointer into the font color global, points a0 at the hall of fame text with coordinates 20 and 22, calls text_printer, then returns.
 - `prt_final`: Draws the final result card: clears sprite variable, draws cards, prints final and the text in white and blue, loops over the current week's fixtures printing team names and scores in black and red, optionally prints the winner message, prints the two finalist names, draws two player sprites and calls toggle.
 - `waitxxff`: Checks the click byte at memory location 8cc; if it equals one, calls the release_button routine, otherwise returns immediately without touching anything else.
@@ -225,7 +206,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_sddata`: Loops sixteen 64-byte player records from a0, adding bytes at offsets 10, 8 and 6 into words at 34, 36 and 38, and incrementing byte 12 when the long at 30 is nonzero.
 - `tr_man_to_sd`: Copies words and bytes from the manager record at a0 into the sd slot at a1, then clears the three bytes at offsets 48, 50 and 49 of the source record.
 - `fullscreen_`: Draws the full-screen team card, prints names and stats, toggles selection highlighting, handles up/down/click input, and swaps player records when demoting or promoting.
-- `card_data_fs`: This single zero word decodes as ori.b #0,d0 and is a zero-filled data area referenced by display and fullscreen code, not executable code.
 - `video_capture`: Resets the film write pointer when past its end, then copies three words from each of twenty-two player records and three ball words into the film buffer and advances the pointer.
 - `video_show`: Resets the film read pointer when past its end, then copies three words from the film buffer into each of twenty-two player records and three ball words, advancing the pointer.
 - `video_`: Loops twenty times calling video_show, pitch, player and TV drawing routines, flashing the REPLAY text every second frame, toggling the screen and delaying before returning.
@@ -234,28 +214,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `timeout_message`: Checks player count and possession, decrements the home or away timeout counter, then draws the small card and prints the timeout messages, team name and remaining count before toggling, delaying, displaying and dropping in.
 - `player_mode_change`: Sets sprite variable to 3, draws the small card, prints the one or two player mode text in blue and black, then toggles and delays before returning.
 - `show_quarter`: Draws the small card, prints the end-of-quarter or end-of-game message chosen by mvp_score, computes the MVP, prints the MVP label, name and team in blue, black and red, then toggles and delays twice.
-- `mvp_score`: ORs the immediate value 1 into the low byte of d0, setting bit 0 of the score value in place.
 - `calc_mvp`: Scans 22 player records, scoring each from three stat bytes, keeps the highest scorer's data, name and team pointers, and flags the winner when the top score is 5.
 - `goal_message`: Draws the small card, prints the scoring player's name and team name in blue and black, picks a goal message from score, position and player bytes, prints it in red, then toggles and delays.
 - `delay`: Loads 120 into d7, then repeatedly calls vsync and hold_time, decrementing d7 until it reaches minus one, then returns.
 - `delay_short`: Loads 16 into d7, then repeatedly calls vsync and hold_time, decrementing d7 until it reaches minus one, then returns.
 - `text_printer_c`: Scans the string at a0 for a null or double space, counts characters, halves and multiplies by six, then calls text_printer with d1 set to 160 minus that width.
 - `display_timeout`: Draws the timeout player card, fills card data pointers from possession, prints names and stats, then loops on joystick input to move the selection and show the choices card.
-- `pl_pname`: A single zero word that decodes as ori.b #0,d0; it is a zero-filled data slot addressed by sub_pname and tr_man_to_sub, not executable code.
-- `pl_mandata`: A single zero word that decodes as ori.b #0,d0; it is a zero-filled data slot referenced by rebase, sub_pname and tr_man_to_sub, not executable code.
-- `pl_sddata`: A single zero word that decodes as ori.b #0,d0; it is a zero-filled data slot referenced by address, not executable code.
-- `sub_sddata`: This single zero word decodes as ori.b #0,d0 and is a zero-filled data area referenced by address from pname and tr_man_to_sub code, not executable code.
-- `sub_pname`: Computes player and substitute card pointers from the selected index, then branches on the choice value to rebase, edit card fields, show positions or display the timeout screen.
 - `release_button`: Reads the click byte at memory location 2252 and branches back to itself until it becomes zero, then returns to the caller.
 - `rebase`: Draws the grid and REBASE text, loops over eleven cards computing sprite coordinates from card data and calling prt_spr, then moves the selected player by the direction table, clamps x and y, stores them into player data, and repeats until click equals one.
 - `show_positions`: Draws the grid and POSITIONS text, loops over eleven cards computing sprite coordinates from card data and calling prt_spr, draws the selected player sprite, toggles, and returns once click equals one.
 - `draw_grid`: Clears the sprite index, then draws two rows of eight doors by repeatedly calling prt_doors while stepping the sprite index and x position, advancing the row y position between rows.
 - `display_cover`: Draws the slim card and opponent name list, highlights the current cover choice, handles up/down input to move the selection, and on click stores the chosen opponent data pointer into the current player record.
-- `current_p`: This single zero word decodes as an ori.b immediate instruction but is a zero-filled data area referenced by address, not executable code.
-- `cover_choice`: ORs the low byte of d0 with 79, adds 3 to d5 and increments the low byte of d0, then falls through to the following code.
 - `tr_man_to_sub`: Copies player data into substitute structures, swaps 64 bytes of player and substitute data, then swaps 10 bytes of player and substitute names.
 - `calculate_time`: For eleven card entries and four reserve card entries, divides each stored time by the game timer, multiplies by 100 and writes the percentage into the show_time array, using 100 when times match.
-- `show_time`: These eighteen zero words decode as ori.b #0,d0 and form a data table of percentage slots that calculate_time fills and display_timeout reads, not executable code.
 - `prt_col`: Stores a0 as the print pointer, then loops eleven times copying a word from the pointer into small_prt, calling text_printer, advancing the pointer by 64 and d2 by 8.
 - `prt_col_res`: Stores a0 as the print pointer, then loops five times copying a byte from the pointer into small_prt, calling text_printer, advancing the pointer by 64 and d2 by 8.
 - `prt_col_num_byte`: Loops eleven times, reading a byte from the pointer in a0, converting it to text via conv_num_text and text_printer, advancing the pointer by 64 and d2 by 8 each pass.
@@ -265,11 +236,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `prt_col_num_word11`: Writes the value 16 to the sprite variable at memory location 824e, then branches unconditionally to the column number printing code.
 - `prt_col_num_word`: Loops eleven times reading a word through prt_data, converts it with conv_num_text while preserving d1, prints the number text, then advances prt_data by 64 and d2 by 8.
 - `prt_col_speed_word`: Loops eleven times over speed and print data tables, converts each value to text, sets font red when the speed byte differs from the printed word, calls the text printer, advances both pointers and d2, then restores black font.
-- `speed_data`: A zero-filled data area referenced by address from the speed printing routines; the single zero word decodes as ori.b #0,d0 and is data, not executable code.
 - `prt_col_speed_word_res`: Loops five times over speed and print data tables, converts each value to text, sets font red when the speed byte differs from the printed word, calls the text printer, advances both pointers and d2, then restores black font.
 - `prt_col_time`: Loops eleven times then five times, converting each word pointed to by the prt_data pointer into text via conv_num_text and text_printer, advancing the pointer by two and d2 by eight each pass.
-- `prt_data`: A single zero word that decodes as ori.b #0,d0; it is a zero-filled data area referenced by address, not executable code.
-- `saved1_2`: A single zero word that decodes as ori.b #0,d0; it is a zero-filled data slot used by callers to save and restore d1, not executable code.
 - `small_prt`: Copies d0 into itself and falls through to the next routine, so it performs no useful work and returns nothing.
 - `copy_phy_to_log`: Loads the physical screen pointer and logical screen pointer from absolute memory, then copies 8000 longwords from physical to logical memory before returning.
 - `draw_topcard`: Sets sprite x and y variables, calls prt_spr, then loops 17 times advancing sprite x by 16 and calling prt_spr, finishing with one extra sprite draw.
@@ -299,15 +267,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `out_bounds_right`: Sets the outbounds flag to 1 when the object's x position at offset 2 is at or beyond the computed right boundary from offset 4, otherwise leaves it unchanged.
 - `move_player_joystick`: Checks player count and kickmeter state, updates kickmeter height and swerve from the joystick direction, then sets ball velocity and calls the kick effect.
 - `no_shot_10`: Clears the kickmeter, sets ball height and direction from the player's facing and swerve values, zeroes player state and calls the kick sound effect.
-- `kickmeter`: A single zero word that decodes as ori.b #0,d0; this byte is zero-filled data referenced by address, not executable code.
-- `km_height`: This single zero word decodes as an ori.b immediate instruction, but it is a zero-filled data area referenced by address, not executable code.
 - `move_player_joystick_away`: For two-player mode, updates the away player's control fields, adjusts kickmeter and km_height values from the joystick direction, and branches to kick or find-new-man code.
 - `find_new_man`: Scans eleven player records, computes each one's Manhattan distance from the ball, and stores the closest record pointer and its distance in globals.
 - `find_new_man_away`: Scans eleven away player records for the smallest Manhattan distance to the ball, stores the closest pointer, then applies joystick movement, pitch bounds and groan effects.
 - `set_pitch_x`: Calculates a value based on a word at offset 2 of a structure pointed to by a global variable, subtracts 160, and stores the result in a global variable.
 - `draw_players`: Advances head animation, walks the 22 player records updating poses and visibility, appends visible players and the ball to the print zone, sorts them by depth and calls prt_men.
 - `prt_men`: Loops through a table of data based on a count in a global variable, loading three words per entry into global variables from an offset in a table.
-- `no_to_prt`: A single zero word that decodes as ori.b #0,d0; it is a zero-filled data location referenced by address from draw_players and prt_men, not executable code.
 - `draw_pitch_backdrop`: Sets line_length and line_spr_x, clamps pitch_x to a sixteen-pixel boundary, draws left or right end sprites, then calls the wall, pitch, yard-line and number drawing routines to render the field.
 - `prt_left_end`: Copies 192 rows of eight-pixel column pairs from the left-end sprite data into the current screen buffer at four interleaved plane offsets, advancing source and destination each row.
 - `prt_right_end`: Copies 192 rows of eight-pixel column pairs from the right-end sprite data into the current screen buffer offset by line_right, writing four interleaved plane words per row.
@@ -329,16 +294,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `draw_top_wall`: Sets line length to 31, computes a source address from pitch_x alignment into the pitch data, stores it with zero y, then calls prt_line_spr to draw the top wall.
 - `draw_play_pitch`: Sets line length to 31, then for five sprite pointers and y offsets (1280, 2560, 3840, 5120, 6400) stores them in globals and calls prt_line_spr to draw each pitch line.
 - `prt_line_spr`: Reads four pixel words per row from the line sprite data and writes them into the current screen buffer at offsets 0, 8000, 16000 and 24000, advancing rows until both counters expire.
-- `line_right`: A single zero word that decodes as ori.b #0,d0; it is zero-filled data referenced by address from draw_pitch_backdrop and prt_right_end, not executable code.
-- `line_spr_add`: A single zero word decoding as ori.b #0,d0; this is zero-filled data pointed to by draw_play_pitch, draw_top_wall and prt_line_spr, not a real routine.
-- `line_spr_x`: A single zero word that decodes as ori.b #0,d0; the bytes are zero-filled data addressed by draw_pitch_backdrop, prt_left_end and prt_line_spr, not code.
-- `line_spr_y`: A single zero word referenced by draw_play_pitch, draw_top_wall and prt_line_spr as the line sprite y value; it is data, not executable code.
-- `line_length`: This single zero word decodes as an ori.b immediate instruction but is a zero-filled data area referenced by address from the pitch drawing and line sprite code.
 - `read_time`: Empty routine: returns to the caller immediately without doing anything.
 - `zero_time`: Writes zero to four consecutive time-related words in memory, clearing the GEM time and minutes counters, then returns to the caller.
 - `hold_time`: Empty routine: returns to the caller immediately without doing anything.
-- `GEMtime`: This single zero word decodes as an ori.b immediate instruction but is a zero-filled data area whose address is taken as the GEM time variable.
-- `minutes`: This single zero word decodes as an ori.b instruction but is a zero-filled data area referenced by clock and match routines, not executable code.
 - `get_kb`: Calls clear_kb, then repeatedly calls read_kb until it returns nonzero, calls getascii, and returns the resulting word from d1 in d0.
 - `random2`: Saves a0 to memory, calls random, loads the random word, masks it with one to return a single bit, restores a0 and returns.
 - `random4`: Saves a0 to a global, calls the random generator, loads the result, masks it with 3 to return a value from 0 to 3, restores a0 and returns.
@@ -346,14 +304,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `random16`: Saves a0 to a global, calls the random generator, loads the result, masks it with 15 to return a value from 0 to 15, restores a0 and returns.
 - `random100`: Saves a0 to a global, calls the random routine, masks the returned word with 127 and repeats until the value is at most 100, then restores a0 and returns.
 - `text_printer`: Saves a0, a4, d1 and d2, then loops over the string at a0, writing each character plus its x and y position into the sprite variable buffer, advancing x by 6, calling prt_text, and restoring registers at the end.
-- `text_a`: A single zero word used by text_printer as the text_a pointer target; the bytes are zero-filled data rather than instructions.
-- `text_x`: A single zero word that decodes as ori.b #0,d0; it is zero-filled data referenced by address from text_printer, not executable code.
-- `savea0`: A single zero word decoding as ori.b #0,d0; this is zero-filled data pointed to by fill_hall, prt_final, random routines and text_printer, not code.
-- `savea4`: A single zero word decoding as ori.b #0,d0; it is zero-filled data referenced by address from text_printer, not executable code.
-- `saved1`: A single zero word that text_printer stores by address as saved1; it holds no code and is a zero-filled data slot.
-- `saved2`: A single zero word that decodes as ori.b #0,d0; it is zero-filled data pointed to by text_printer, not a real routine.
 - `cls`: Loads the screen pointer from absolute address 860, then writes zero to 8000 longwords starting there, clearing the display bitmap, and returns.
-- `spr_var_x`: This single zero word decodes as an ori.b immediate instruction, but it is a zero-filled data area referenced by address from sprite drawing code, not executable code.
 - `prt_text`: Loads a zero into d0, reads three words from a pc-relative table into d0-d2, sets a4 from low memory, d7 to 8, computes a3 from the table base plus d0 times 80, then branches to prt_spr.
 - `prt_spr_tv`: Loads a zero into d0, reads three words from a pc-relative table into d0-d2, sets a4 from low memory, d7 to 32, indexes a word table by doubled d0 to fetch an offset, adds it to a sprite base in a3, then branches to prt_spr.
 - `prt_man`: Clears d0, loads three words from the sprite variable table into d0-d2, reads the screen pointer into a4, sets d7 to 32, indexes the sprite offset table by d0 doubled, fetches a word offset, adds it to the man sprite data base in a3 and branches to the sprite blitter.
@@ -361,12 +312,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `prt_logo`: Zeroes d0-d3, loads three words from the sprite variable table into d0-d2, reads the current screen pointer into a4, sets d7 to 32, indexes the sprite offset table by d0 doubled, fetches a word offset, adds it to the logo sprite data base in a3 and branches to the sprite blitter.
 - `prt_proman`: Loads sprite variables, indexes the sprite offset table and proman data, sets screen pointer and width, then branches to the shared sprite blitter.
 - `prt_spr`: Reads sprite variables, computes source and screen addresses, clips horizontally and vertically, then masks and merges five words per row into four bitplanes.
-- `rikl_clip`: Single zero word that decodes as ori.b #0,d0; it is a zero-filled data area referenced by address from prt_spr, not executable code.
 - `conv_num_text`: Calls step1 to convert d0 into numtemp, then copies numtemp into number, replacing leading digit positions with spaces so the four-character result is right-aligned.
 - `step1`: Loads the numtemp buffer address into a0, zero-extends d0 into d1 and jumps to the decimal digit conversion routine.
 - `deci_4`: Divides d1 by one thousand, one hundred and ten in turn, calling the digit routine after each division to store each decimal digit.
 - `digit`: Adds 48 to the low byte of d1 to form an ASCII digit, stores that byte at (a0) and increments a0, then clears d1 and swaps its halves before returning.
-- `numtemp`: Four zero words that decode as ori.b #0,d0; this is a zero-filled data area referenced by address, not executable code.
 - `number`: Predecrements a0 twice, loading two longwords from the stack area into d0, then executes a zero word that decodes as ori.b #0,d0, indicating data rather than code.
 - `save_it`: Checks the chosen slot number and, for slot zero, one or two, points the filename, destination and length globals at the matching fixture file and calls save_ to write it.
 - `load_it`: Checks the chosen slot number and, for slot zero, one or two, points the filename, destination and length globals at the matching fixture file and calls load_ to read it.
@@ -380,42 +329,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `MU_stopmusic`: Stores a global value, clears the four audio voice volume registers to zero, then writes 15 to DMACON to disable the audio DMA channels and returns.
 - `MU_interrupt`: Saves all registers, tests bit 5 of the custom interrupt request register, calls the song player if set, restores registers and jumps to the old interrupt vector.
 - `MU_playsong`: Calls the per-vertical update, increments the song counter at a fixed memory location, loads the song limit, compares it with the counter and returns if the limit is greater.
-- `MU_okplay`: Clears MU_vol3, increments MU_songstep, and when it reaches 65 advances MU_pospointer, wraps it against the data limit, reloads MU_tablepos and MU_songpointer, then branches to MU_playit.
-- `MU_setstart`: Clears the song position counter, copies the table base pointer into the position pointer and adds 242 to it, then branches to MU_okplay.
-- `MU_playit`: Loads four voice entries from MU_songpointer, advances it by 16, calls MU_setinstr and MU_seteffect for each voice, then writes d3 to DMACON and returns.
 - `MU_setinstr`: Saves d0 into d5, masks d0 with the high nibble bits, and if any remain branches to the channel setup code, otherwise returns immediately.
-- `MU_setit`: Extracts a sample offset from d0, indexes the music data table, and when d2 equals one loads AUD0 pointer, length, period and volume registers and clears the stop flag.
-- `MU_conti1`: When d2 equals two, clears AUD1 volume, stores the sample pointer and length into AUD1 registers, sets the period from d1, and marks channel one active in d3.
-- `MU_conti2`: If d2 equals 3, clears AUD2LCH, stores a6 as the channel 2 sample pointer, writes the sample pointer, length and period from a6 and d1 to the channel 2 hardware and shadow registers, clears the channel 2 volume shadow, sets bit 2 of d3 and returns.
-- `MU_conti3`: Clears AUD3LCH, stores a6 as the channel 3 sample pointer, writes the sample pointer, length and period from a6 and d1 to the channel 3 hardware and shadow registers, clears the channel 3 volume shadow, sets bit 3 of d3 and returns.
 - `MU_seteffect`: Splits d5 into low byte and effect nibble, then branches to the matching effect routine for slide, volume, position jump, song step or break flag, or returns when the nibble is zero.
-- `MU_nobreak`: Compares d6 with 2048; if equal, writes d5 to the longword at address 1848, then returns.
-- `MU_effjump0`: Compares d6 with 1536; if equal, clears bit 1 of CIAA port A at an address, then returns.
-- `MU_effjump1`: Compares d6 with 1792; if equal, sets bit 1 of CIAA port A at an address, then returns.
-- `MU_posjump`: Clears d4, copies d5 into its low word, decrements it and stores it at memory location 1860, then increments it, doubles it as a word, subtracts two, and adds that offset to the pointer at 1872 plus 244, storing the result at 1856 before branching away.
-- `MU_slideup`: Negates the word in d5, and if d2 equals one stores the negated value at memory location 1806, then returns to the caller.
-- `MU_j1`: Compares d2 with two and, when equal, stores the word in d5 at memory location 1808, then returns to the caller.
-- `MU_j2`: Compares d2 with 3; if equal, writes the low word of d5 to memory at address 712, then returns.
-- `MU_j3`: Writes the low word of d5 to memory at address 714 and returns to the caller.
-- `MU_setvolume`: Compares d2 with 1; if equal, writes the low word of d5 to memory at address 72e, then returns.
-- `MU_j00`: Compares d2 with the immediate value 2; if not equal it branches away, otherwise it writes the low word of d5 to memory location 730 and returns.
-- `MU_j22`: Compares d2 with the immediate value 3; if not equal it branches away, otherwise it writes the low word of d5 to memory location 732 and returns.
-- `MU_j33`: Writes the low word of d5 into the volume slot at memory location 734 and then returns to the caller.
 - `MU_everyvert`: Adds slide values to the four audio period registers, reloads sample pointers and lengths for stopped channels, sets the DMA channel mask, and applies a fading volume to all four channels before returning.
-- `normal_vol`: Copies the four stored normal volume words into the AUD0VOL through AUD3VOL hardware registers and returns to the caller.
-- `MU_stop`: This single zero word decodes as ori.b #0,d0 and is a zero-filled data byte referenced by address, not executable code.
-- `MU_slide1`: A single zero word that decodes as ori.b #0,d0; it is zero-filled data referenced by MU_conti1, MU_everyvert, MU_j1 and MU_startmusic, not executable code.
-- `MU_slide3`: Five consecutive zero words decoding as ori.b #0,d0; this is a zero-filled data block referenced by address, not executable code.
-- `MU_note1`: A single zero word that decodes as ori.b #0,d0; it is zero-filled data pointed to by address, not executable code.
-- `MU_note3`: A single zero word that decodes as ori.b #0,d0; it is a zero-filled data slot referenced by music code, not executable code.
-- `MU_vol1`: A single zero word that decodes as ori.b #0,d0; it is a zero-filled data slot used as a volume pointer by music code, not executable code.
-- `MU_vol3`: A single zero word decoding as ori.b #0,d0; this is zero-filled data pointed to by MU_conti3, MU_j33 and normal_vol rather than a real instruction.
-- `MU_songstep`: A single zero word that decodes as an OR of zero into the low byte of d5; it is data referenced by the music player, not executable code.
-- `MU_songpointer`: A single zero word that decodes as an OR of zero into the low byte of d0; it is a zero-filled data slot addressed by the music routines, not code.
-- `MU_tablepos`: A single zero word that decodes as an OR of zero into the low byte of d0; it is a zero-filled data area referenced by the music table code, not executable.
-- `MU_pospointer`: A single zero word that decodes as ori.b #0,d0; it is a zero-filled data location whose address is taken by music and position routines, not executable code.
-- `MU_empty`: Two zero words decoding as ori.b #2,d0 then ori.b #0,d0; a zero-filled data area referenced by MU_calcins, not executable code.
-- `MU_data`: A single zero word decoding as ori.b #0,d0; a zero-filled data location whose address is loaded by music, position and setup routines, not executable code.
 - `fx_stop`: Saves a5, points a5 at the custom chip base, writes value 15 to the DMACON register to disable DMA channels, restores a5 and returns.
 - `fx_buzzer`: Loads sound effect number 0 into d0, calls the set_sound routine to start it, then returns to the caller.
 - `fx_kick`: Loads sound effect number 1 into d0, calls the set_sound routine to start it, then returns to the caller.
@@ -426,11 +342,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `fx_bounce_floor`: Loads sound effect number 6 into d0 and calls the set_sound routine, then returns to the caller.
 - `fx_crowd_left`: Saves a5, points it at the custom chip base, sets audio channel 2 period, length, volume and modulation, enables DMA audio, restores a5 and returns.
 - `fx_crowd_right`: Saves a5, points a5 at the custom chip base, then programs audio channel 0 with the crowd sample pointer, length, period and volume and enables DMA before restoring a5 and returning.
-- `sndcnt1`: One zero word that decodes as ori.b #0,d0; it is a zero-filled data slot addressed by set_sound and sv_s1, not runnable code.
-- `sndcnt3`: Three zero words that decode as ori.b #0,d0; this is a zero-filled data area referenced by address, not executable code, and it returns nothing.
 - `set_sound`: Masks d0 to a sound index, indexes the sound table, and if the selected channel is idle programs its pointer, length, volume and period into the Paula audio registers and marks the channel busy.
 - `replay`: Checks each of the four channel-active flags, and for every active channel disables its audio interrupt and DMA via INTENA and DMACON, then clears all four channel flags and returns.
-- `screen`: This single zero word decodes as ori.b #0,d0 and is a zero-filled data area referenced by address, not executable code.
 
 ### ProSoccer 2190.adf:echo
 
@@ -443,5 +356,38 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `store_address_to_global`: Stores a 32-bit constant into a global variable and returns immediately.
+- `process_interrupt_requests`: Writes 1920 to the interrupt request register, then tests bits 7 through 10 of the value read from the interrupt request register to call one of four different routines based on which bit is set.
+- `update_interrupt_mask`: Compares a global variable to zero; if it is not greater than zero, it writes 80 to the interrupt enable register and 0 to a global variable, then writes 80 to the interrupt request register and branches.
+- `update_dma_and_interrupts`: Compares a global variable to zero; if it is not greater than zero, it writes 2 to the DMA control register, 100 to the interrupt enable register, 0 to a global variable, and 100 to the interrupt request register before branching.
+- `update_interrupt_enable`: Compares a global variable to zero; if it is not greater than zero, it writes 200 to the interrupt enable register, 0 to a global variable, and 200 to the interrupt request register before branching.
+- `update_dma_and_interrupts_alt`: Compares a global variable to zero; if it is not greater than zero, it writes 8 to the DMA control register, 400 to the interrupt enable register, 0 to a global variable, and 400 to the interrupt request register before branching.
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `decrement_counter_loop`: Initializes a register with 1000 and enters a loop that decrements the value until it reaches negative one.
+- `decrement_large_counter_loop`: Initializes a register with 10000 and enters a loop that decrements the value until it reaches negative one.
+- `call_stub`: Call stub: calls a routine at a fixed address outside this code unit, then returns to its own caller.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
+- `update_memory_blocks`: Calculates an offset based on a global variable and a value from a hardware register, fetches five words from a table, and enters a loop that performs bitwise AND and OR operations on four specific memory locations using those words.
+- `calculate_destination_address`: Calculates a destination address based on a value from a hardware register and several constants, stores it in a global variable, and calls another routine.
+- `copy_multiple_data_blocks`: Sets a value in a global variable and then calls another routine five times, each time with a different destination address and length stored in global variables.
+- `copy_data_to_memory`: Calculates a destination address using a global variable and several values from a table, then enters a nested loop to copy sets of four words from a source table to the destination memory.
+- `execute_conditional_routine`: Calls two routines and enters a loop that repeatedly calls the second routine as long as it returns zero, then calls a third routine and returns.
+- `check_first_bit`: Stores a pointer in a global variable, calls another routine, and returns the result of a bitwise AND between a global variable and one.
+- `check_two_bits`: Stores a pointer in a global variable, calls another routine, and returns the result of a bitwise AND between a global variable and three.
+- `check_three_bits`: Stores a pointer in a global variable, calls another routine, and returns the result of a bitwise AND between a global variable and seven.
+- `call_and_mask_global`: Stores the value of a0 into a global variable, calls another routine, masks the lower 4 bits of a global variable in d0, and returns.
+- `call_until_threshold`: Stores the value of a0 into a global variable, calls another routine in a loop until the lower 7 bits of a global variable are greater than 100, and then returns.
+- `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
+- `clear_memory_block`: Fills a block of memory starting at a pointer from a global variable with zeros using a loop that runs 8000 times.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `call_function_via_pointer`: Loads a pointer from an offset of a structure in a1, loads another pointer from an offset of a table at a0, and calls the second pointer.

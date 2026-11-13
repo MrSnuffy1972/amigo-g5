@@ -6,31 +6,32 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901184 top-level bytes in 45 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 41 raw-word lines |
-| Functions named and described | pass, 675 of 675 named (0 author symbols), 675 of 675 described (18 by rule, 641 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 4750 of 4750 (100.00%) |
+| Bytes classified (901248 top-level bytes in 69 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 7 raw-word lines |
+| Functions named and described | pass, 540 of 540 named (0 author symbols), 540 of 540 described (15 by rule, 516 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 6207 of 6207 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 8264 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 10670 of 11404 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 10549 of 10549 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 322086 |
-| code | 52384 |
-| data | 157468 |
-| padding | 11358 |
+| asset | 69478 |
+| code | 48846 |
+| data | 413687 |
+| padding | 11349 |
 | unused | 357888 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| International Championship Athletics.adf:Type | 2 | 117 | 2 |
-| International Championship Athletics.adf:athletic | 1 | 11121 | 668 |
+| International Championship Athletics.adf:Type | 2 | 363 | 12 |
+| International Championship Athletics.adf:athletic | 1 | 10019 | 522 |
 | International Championship Athletics.adf:Foxy! | 1 | 155 | 3 |
 | International Championship Athletics.adf:bootblock | 1 | 10 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
 | International Championship Athletics.adf:ATH_TEXT.GER (raw code file, load address unknown) | 1 | 0 | 0 |
 | International Championship Athletics.adf:ATH_TEXT.ITA (raw code file, load address unknown) | 1 | 0 | 0 |
@@ -39,9 +40,33 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Cases handled
 
-- International Championship Athletics/International Championship Athletics.adf:QSPRINT1.CPX: high-entropy data file (7.60 bits/byte), classified as packed data
-- 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- International Championship Athletics/International Championship Athletics.adf:QRUNNER2.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (5580 -> 7680 bytes)
+- International Championship Athletics/International Championship Athletics.adf:BK_LIMBO.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (1784 -> 32066 bytes)
+- International Championship Athletics/International Championship Athletics.adf:QNETS3.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (3944 -> 7680 bytes)
+- International Championship Athletics/International Championship Athletics.adf:LOGO.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (10044 -> 32066 bytes)
+- International Championship Athletics/International Championship Athletics.adf:TIT_OVER.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (10092 -> 32066 bytes)
+- International Championship Athletics/International Championship Athletics.adf:CROWD3.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (22224 -> 32066 bytes)
+- International Championship Athletics/International Championship Athletics.adf:QSPRINT1.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (4564 -> 7680 bytes)
+- International Championship Athletics/International Championship Athletics.adf:CROWD1.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (21616 -> 32066 bytes)
+- International Championship Athletics/International Championship Athletics.adf:BK_CLOSE.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (3448 -> 32066 bytes)
+- International Championship Athletics/International Championship Athletics.adf:BK_JUMPS.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (14032 -> 32066 bytes)
+- International Championship Athletics/International Championship Athletics.adf:SPRITES1.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (19784 -> 57824 bytes)
+- International Championship Athletics/International Championship Athletics.adf:UK_SPRI.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (17084 -> 40848 bytes)
+- International Championship Athletics/International Championship Athletics.adf:PIC_STOR.ATH: Exploder Style Data File (xfd)-packed, unpacked with ancient (21208 -> 32066 bytes)
+- International Championship Athletics/International Championship Athletics.adf:SPRITESO.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (13460 -> 34080 bytes)
+- International Championship Athletics/International Championship Athletics.adf:BK_NETS.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (13132 -> 32066 bytes)
+- International Championship Athletics/International Championship Athletics.adf:BLOCKS4.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (7616 -> 20480 bytes)
+- International Championship Athletics/International Championship Athletics.adf:BK_COMM.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (12912 -> 32066 bytes)
+- International Championship Athletics/International Championship Athletics.adf:SPRITES4.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (5096 -> 12992 bytes)
+- International Championship Athletics/International Championship Athletics.adf:CROWD2.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (21700 -> 32066 bytes)
+- International Championship Athletics/International Championship Athletics.adf:QJUMPS4.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (3744 -> 7680 bytes)
+- International Championship Athletics/International Championship Athletics.adf:IMAGES_C.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (8808 -> 21552 bytes)
+- International Championship Athletics/International Championship Athletics.adf:SPRITES2.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (4296 -> 8544 bytes)
+- International Championship Athletics/International Championship Athletics.adf:BK_OPEN.CPX: Exploder Style Data File (xfd)-packed, unpacked with ancient (11004 -> 32066 bytes)
+- 2 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- International Championship Athletics/International Championship Athletics.adf:Foxy!: DefJam Cruncher 3.2 (xfd) stream found by ancient scan (31092 -> 73728 bytes) but only 0 of 21 sampled windows are in reference RAM: not used
 - International Championship Athletics/International Championship Athletics.adf:ATH_TEXT.GER: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - International Championship Athletics/International Championship Athletics.adf:ATH_TEXT.ITA: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - International Championship Athletics/International Championship Athletics.adf:ATH_TEXT.SPA: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
@@ -64,11 +89,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_sixteen_longwords`: Copies sixteen longwords from a source pointer to a destination pointer.
+- `process_athlete_event_data`: Increments a counter in a structure and iterates through a series of event-related data tables to update status values, timers, and flags in a secondary structure via multiple calls to another routine.
+- `branch_to_offset`: Performs a short relative branch to a target address located at a fixed offset.
+- `fill_memory_and_branch`: Fills a 4-byte location at offset 644 of the structure in a2 with all ones and branches to another routine.
+- `fill_memory_and_branch_alt`: Fills a 4-byte location at offset 532 of the structure in a1 with all ones and branches to another routine.
+- `calculate_offset_and_call_routine`: Calculates an offset using values from a1, reads a byte from a0 at that offset, and calls another routine using a pointer from a2 and a value in d0.
+- `process_indexed_byte`: Calculates an index by adding a value from offset 224 of a structure in a1 to a value from offset 220 of the same structure left-shifted by 2, reads a byte from a0 at that index, calls a routine at a5, and compares the byte to 72 or 78.
+- `update_and_call_routines`: Increments a value at offset 224 of a structure in a1, reads a byte from a0 using an index from offset 220 of a1, and performs multiple calls to routines using pointers from offsets 292 and 336 of a2.
+- `execute_multiple_calls_2`: Stores 1 in a location at offset 616 of a structure in a2, calls a routine at a5 using a pointer from offset 216 of a2, and performs several subsequent calls to routines using pointers from offsets 220, 148, 248, and 292 of a2.
+- `branch_to_another_routine`: Performs a short branch to another routine.
+- `call_indirect_pointers`: Loads the value 232 into d0, moves a pointer from an offset of 338 in a2 into a4, calls the routine at a5, and then jumps to the routine at a6.
 
 ### International Championship Athletics.adf:athletic
 
 - `execute_dispatch_sequence`: Populates a global pointer with a series of addresses and executes them sequentially.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 - `execute_nested_calls`: Performs a series of repeated subroutine calls and then executes an indirect call using a pointer from a global variable.
 - `execute_indirect_call_3`: Calls a routine multiple times and then performs an indirect call using a pointer derived from a global variable and a bitwise calculation.
 - `execute_conditional_indirect_call`: Executes a loop until a condition is met and then performs an indirect call based on a pointer and a bitwise-shifted index.
@@ -77,11 +111,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_multiple_subroutines`: Calls another routine twice and then performs a series of sixteen consecutive calls to another routine.
 - `execute_empty_sequence`: Repeatedly calls another routine multiple times before returning.
 - `check_conditional_branch`: Checks a global variable and a value at a calculated offset to decide whether to call another routine twice.
-- `set_register_bits`: Performs a series of bitwise OR operations to set specific bits in registers d0, d1, and d3.
 - `execute_repeatedly`: Executes another routine seven times while incrementing a global counter.
 - `apply_bitmask_to_buffer`: Performs bitwise AND and OR operations using values from a table to update a destination buffer at specific intervals.
 - `update_bitmask_table`: Calculates a destination address based on a global variable and performs bitwise operations to update several memory locations using values from a table.
-- `execute_indexed_function_pointer`: Calculates an offset from a global variable using a bitwise masked value and executes the resulting function pointer.
 - `execute_loop_sequence`: Executes a subroutine multiple times within two separate loops and then performs an indirect call using a pointer from a global variable.
 - `initialize_state_and_dispatch`: Resets several global variables, executes a loop until a condition is met, and performs conditional subroutine calls based on a global value before an indirect jump.
 - `toggle_memory_and_dispatch`: Iterates through a loop to toggle bits in a memory location based on a global variable.
@@ -98,7 +130,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_repeated_subroutine`: Calls another routine five consecutive times in succession.
 - `update_table_attributes`: Iterates through a table to write specific constant values and calculated offsets into memory locations pointed to by the table entries, then calls the routines found in the table.
 - `configure_table_data`: Iterates through a table to populate memory offsets with values derived from a global variable and a secondary table, then performs several subroutine calls.
-- `append_string_suffix`: Converts a value to a string and appends a two-byte sequence to the end of the buffer.
+- `convert_and_store_integers`: Calls a routine twice to convert values from a table into strings at an offset of 8 in a1, then stores the constant 8307 at offset 14 of the structure in a1.
 - `format_numeric_string`: This routine retrieves a numeric value from a data structure and converts it into an ASCII decimal string within a destination buffer.
 - `write_string_to_buffer`: Converts a numeric value into an ASCII string and writes it to a memory location.
 - `write_string_to_buffer_2`: Converts a numeric value to an ASCII string and writes it to a memory location.
@@ -111,17 +143,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `format_offset_string`: Calculates an offset and stores a character based on a register value, then fetches a value from a table using an index.
 - `sort_data_table`: Iteratively finds the largest value in a table of structures and stores the index and value into a new list.
 - `sort_table_by_value`: Performs a selection sort on a table of data structures.
-- `copy_memory_block`: Copies a block of data from a source address to a destination address using a register as a counter.
-- `tiny_ori_ori`: Small routine of 2 instructions that merges 0 into d0, then merges 0 into d0.
-- `return_from_subroutine`: The routine is empty and performs no operations before returning.
-- `execute_empty_routine`: This routine is empty and performs no operations before returning.
 - `clear_memory_block_5`: Clears a block of memory by calling a routine that zeros out eight thousand consecutive longwords.
 - `clear_eight_thousand_longwords`: Sets eight thousand consecutive longwords to zero starting from a pointer.
 - `clear_memory_block`: Sets a series of longwords to zero in a loop based on a fixed count.
+- `copy_data_source_a0`: Loads a source address into a0, a destination address into a1, and calls another routine to perform a copy.
+- `copy_data_source_a1`: Loads a source address into a1, a destination address into a0, and calls another routine to perform a copy.
 - `copy_eight_thousand_longwords`: Copies eight thousand longwords from a source pointer to a destination pointer, one at a time.
 - `merge_bit_tables`: Performs a bitwise logical merge of two tables of 16-bit words using nested loops.
-- `clear_byte_variable`: Sets a specific byte in memory to zero.
-- `perform_conditional_loop`: Executes a sequence of operations involving a loop that checks a global variable's value.
+- `load_byte_from_table`: Clears d1, loads a pointer from a constant address into a0, and moves a byte from the address in a0 plus the value in d0 into d1.
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
 - `loop_until_flag_change`: Sets a global variable to zero and executes two separate loops that continue until a specific global variable reaches a certain state.
 - `open_dos_library`: Calls a function via a pointer to open a library, specifically referencing a DOS library.
 - `process_dos_loop`: Executes a loop that performs file operations and updates several global variables with values from a memory structure.
@@ -135,12 +165,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_close`: Wrapper that calls the dos library function Close and returns its result to the caller.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `execute_recursive_dos_calls`: Performs a series of recursive calls to another routine if a specific library function returns a non-zero value, then sets a global variable.
-- `clear_register_d0`: Clears the lower bits of register d0 using a bitwise OR with zero.
-- `negate_and_load_word`: Negates the value in register d6 and loads a word from a nearby memory location into d0.
-- `clear_register_d0_2`: Clears the lower bits of register d0 using a bitto OR with zero.
-- `clear_d0_register_2`: clears the least significant byte of a data register to zero.
-- `clear_d0_register_byte`: clears the lower byte of the d0 register using a logical or instruction with zero.
-- `clear_data_register_byte`: clears the lower byte of a data register to zero.
 - `ensure_library_opened`: Checks a global variable and, if it is zero, sets it to one and calls a routine to open a DOS library.
 - `copy_word_table`: Copies a block of 4000 words from a source pointer to a destination pointer using a stride of 1 word for the destination and 4 words for the source, writing the source words at offsets 0, 4000, 8000 and 12000 in the destination for each iteration.
 - `configure_hardware_registers`: Modifies a global variable, performs a library call to access a task, and writes various values to hardware registers including DMA and interrupt control.
@@ -149,18 +173,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
 - `initialize_event_state_table_3`: Reads a state value from a table and, depending on the value, populates several global variables and pointers with data from a structured memory area.
 - `update_clamped_values`: Copies values between several global variables and applies clamping logic to ensure they stay within specific bounds.
-- `clear_register`: Clears a register by setting it to zero.
-- `clear_d0_register`: Clears the contents of a data register and returns the previous value of that register.
-- `clear_register_value`: Clears the contents of a register and returns the previous value stored in that register.
-- `clear_return_register`: Clears a data register and returns the previous value of that register.
-- `clear_global_byte`: Sets a global byte to zero.
 - `clear_global_word`: Sets a global word to zero.
 - `subtract_and_clear_globals`: Subtracts a word from a global variable and sets another global byte to zero.
+- `add_to_global_word`: Adds the value in d0 to a 16-bit word at a global address and branches to another routine.
+- `subtract_negated_byte`: Negates the value in d1, subtracts it from a 16-bit word at a global address, and branches to another routine.
+- `add_to_global_word_alt`: Adds the value in d1 to a 16-bit word at a global address and branches to another routine.
 - `check_joystick_bits`: Checks specific bits in a global variable and a hardware register to update several global variables.
 - `execute_repeated_calls_2`: Executes a specific routine five times in succession.
 - `check_interrupt_flag`: Checks a bit in a hardware register and a global variable to conditionally execute other routines.
+- `handle_custom_interrupt`: Checks if bit 5 is set in the intersection of two hardware registers, and if so, writes 32 to a hardware register and calls another routine before returning from interrupt.
 - `update_event_data`: Updates several memory locations using values from registers and increments global counters based on conditional checks.
-- `wait_for_flag_and_branch`: The routine polls a global byte until it is non-zero, then performs a conditional branch based on the value of another global variable before calling itself recursively.
 - `wait_for_nonzero_and_call`: Waits in a loop until a global value is non-zero, then calls one of two routines depending on whether a pointer matches a fixed address, followed by a third routine.
 - `poll_flags_and_loop`: The routine polls two global variables via a conditional branching mechanism and then enters an infinite loop.
 - `poll_and_trap`: The routine polls two global variables via a conditional branching function and then enters an infinite loop.
@@ -181,37 +203,32 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_repeated_calls`: Executes another routine eight times within a loop.
 - `decrement_counter_loop`: Repeatedly calls another routine in a loop until that routine returns zero.
 - `decrement_counter`: decrements a local variable from a starting value until it reaches negative one.
-- `check_status_flags`: checks a global variable, masks bits, and updates another global variable based on specific bit conditions.
 - `check_status_conditions`: Checks a global variable and performs bitwise masking on another global variable before conditionally updating a third global variable.
 - `lookup_table_value`: calculates an index using a global variable and retrieves a value from a table.
 - `check_cia_bits`: Masks a byte and checks if two specific bits are set in another byte, then stores a boolean result in a global variable.
-- `shift_global_flag`: reads a global variable, masks certain bits, and conditionally sets a high bit based on the parity of certain bits, then shifts the value right and stores it back to the global variable.
-- `shift_signed_global_word`: Performs an arithmetic right shift by one bit on a global word.
+- `poll_cia_bits_loop`: Calls another routine in a loop until a global word is 0, then repeats the process until the same global word is 1, and finally repeats until the global word is 0 again.
 - `update_parity_shifted_flag`: Reads a global variable, masks certain bits, and conditionally sets a high bit based on the parity of certain bits, then shifts the value right and stores it back to the global variable.
 - `find_first_high_bit`: Iteratively masks a value and checks it against a threshold to find a specific value, which is then stored in a global variable.
-- `tiny_ori_2`: Small routine of 1 instruction that merges 49 into -(a1).
 - `increment_wrap_globals`: Increments six different global variables and wraps them to zero once they exceed specific predefined limits.
-- `convert_number_to_string`: converts a numeric value into a sequence of ASCII characters and stores them in a buffer.
-- `clear_data_register_byte_2`: Clears the lower byte of a data register using a zero-word instruction.
-- `convert_integer_to_string`: Converts a numeric value into a decimal string and stores the characters in a buffer, handling leading zeros or spaces.
 - `format_integer_to_padded_string`: Decomposes a numeric value into individual decimal digits and writes them into a memory buffer.
 - `convert_integer_to_string_fixed`: Converts a numeric value into a decimal string of fixed length, ensuring zero padding is applied.
 - `convert_integer_to_ascii_2`: Converts a numeric value into ASCII characters by repeatedly dividing by ten and storing the resulting digits into a destination buffer.
 - `convert_integer_to_ascii`: Converts a numeric value into ASCII characters and stores them in a destination buffer using a loop.
 - `format_negative_string`: Formats a numeric value into a string buffer, prepending a minus sign character and setting specific values at the start of the buffer.
-- `convert_integer_to_string_3`: Converts a multi-digit integer into a sequence of ASCII characters and stores them in a destination buffer.
+- `convert_numbers_to_ascii`: Performs integer division by 10 on values in d7 to extract digits, stores these digits as ASCII characters into a buffer at a1 with offsets 8 and 11, and calls another routine to process a pointer table.
+- `set_d0_and_branch`: Sets d0 to 32 and branches to another routine.
+- `set_d0_conditionally_and_branch`: Sets d0 to 32, and if d5 is 0, otherwise sets d0 to 48, then branches to another routine.
 - `select_index_and_store_byte`: Compares a value against four thresholds in a global table to select an index and stores a byte at an offset from a pointer.
 - `write_byte_via_indexed_pointer`: A routine selects an index 0-4 by comparing a value in a register against four thresholds stored in a global variable and stores a byte from a register through an indexed pointer.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (bset.b) and then falls through into the code that follows, with no return of its own.
 - `process_pointer_table`: Loads several values from a table into global variables and conditionally executes a sequence of routines pointed to by the table data.
-- `calculate_pointer_offset`: Calculates a value based on bit manipulation of a local variable and stores the result in a global variable.
-- `update_global_pointer`: Calculates a new address using bitwise operations and stores it in a global variable.
-- `tiny_ori_ori_ori`: Small routine of 3 instructions that merges 0 into d0, then merges 0 into d0, then merges 0 into d0.
 - `calculate_scaled_offset`: Computes a new value by multiplying a global variable by a constant and adding a bit-manipulated value, then stores a bit-shifted result in a global variable.
 - `process_conditional_pointer`: Checks a value at an offset from a global pointer and, if non-zero, performs a series of operations including a bitwise merge.
 - `perform_bitwise_merge`: Iterates through two buffers to perform bitwise operations, merging bits from a source buffer into a destination buffer based on a loop counter.
 - `initialize_device_structure`: Opens an input device and uses function pointers from a global structure to initialize and configure a new object.
 - `modify_attribute_data`: Inspects a byte at an offset from a pointer, clears a specific bit in a different offset, and increments a global counter based on two global flags.
-- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `update_global_word`: Checks if a byte in register d1 is negative, then if a bit is set in a byte at offset 8 of the structure in a0, it clears bit 2 of a byte at offset 9 of the structure in a0, otherwise it stores a 16-bit word from d1 into a global variable.
+- `store_word_to_global_variable`: Stores a 16-bit word from register d1 into a global variable and returns.
 - `modify_attribute_byte`: Clears the second least significant bit of a byte at a specific offset and increments a global counter if certain conditions are met.
 - `tiny_move_rts`: Small routine of 2 instructions that copies a0 to d0, then returns.
 - `initialize_object_structure`: Calls several function pointers to allocate or initialize a structure and populates its fields with data from registers.
@@ -224,7 +241,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `scatter_data_to_buffer`: Copies specific words from a source table to various non-contiguous offsets within a destination buffer in a loop.
 - `fill_memory_with_constant`: Fills a block of memory starting at a fixed address with the value two.
 - `clear_memory_block_2`: Fills a specific range of memory with zeros using a loop.
-- `blit_bitmask_to_planar_buffer`: Applies a bitmask to a destination buffer by performing bitwise AND and OR operations using bit-shifted source data.
+- `apply_bitmask_to_planar_buffer_2`: Calculates a bitmask offset and updates global difference flags, then performs bitwise AND/OR operations on planar video buffers using a bitmask source.
 - `blit_bitmask_with_plane_offset`: Performs a bitwise blit of bit-packed pixel data into a destination buffer using a bit-shift offset.
 - `blit_bitmask_data`: Transfers bit-packed pixel data from a source buffer to a destination buffer using bitwise operations and shifts.
 - `apply_bitmask_to_planar_buffer`: Performs bitwise AND and OR operations to apply a bitmask to a destination buffer using bit-shifted source data.
@@ -236,16 +253,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_global_difference_2`: Updates a global variable by calculating the difference between other global variables based on specific comparison conditions.
 - `update_global_difference`: Checks if a sum of two variables exceeds a third, then updates a global variable with the difference between two other globals under certain conditions.
 - `store_difference_to_global`: Subtracts one global variable from another and stores the result in a third global variable if the first is smaller than the second.
-- `clear_data_register_byte_3`: sets the lowest byte of a data register to zero.
-- `copy_rows_to_planar_buffer`: Copies a rectangular block of 16-bit words from one buffer to another in fixed-width row steps, with source and destination pointers and dimensions taken from the caller's global parameters.
-- `clear_data_register_byte_4`: sets the least significant byte of a data register to zero.
 - `copy_memory_block_2`: Copies data from a source table to a destination address using nested loops and word-sized transfers.
 - `perform_bitmask_blitting`: Performs a complex bitwise operation to combine data from a source table into a destination buffer using nested loops and bitwise AND/OR logic.
 - `merge_memory_blocks`: Performs a bitwise logical merge of two memory blocks by combining their values using bitwise operations.
 - `load_parameter_table`: Loads several values from a table into global variables based on an offset.
 - `manage_state_and_dispatch`: Decrements a global counter and conditionally executes a routine from a table using an index.
 - `synchronize_state_variables`: Updates a global variable and another memory location based on the values of two other global variables.
-- `set_handler_pointer`: Updates a global variable with a specific value and assigns a new address to another global variable.
 - `reset_global_counters`: Checks if a global variable is within a specific range and performs arithmetic on another global before resetting two other globals to zero.
 - `process_conditional_callback`: Increments a global variable and conditionally calls another routine if a specific value is reached.
 - `adjust_counter_value`: Modifies a global variable by adding or subtracting a value based on a comparison with a table entry.
@@ -271,15 +284,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_indirect_calls`: Clears a register and performs two consecutive indirect calls to routines.
 - `execute_indirect_call_2`: Calculates an offset into a table of pointers and executes the resulting routine.
 - `update_state_flag`: Compares a global variable to zero and updates another global variable with its previous value.
-- `decrement_and_flag`: Decrements a global variable and sets a flag if the variable is greater than zero.
-- `tiny_ori_3`: Small routine of 1 instruction that merges 6 into d0.
-- `decrement_counter_and_set_flag`: Decrements a global variable if it is greater than zero and sets a flag if another global variable is non-zero.
 - `decrement_global_counter`: Decrements a global variable if it is greater than zero and sets a flag.
 - `decrement_global_counter_2`: Decrements a global variable if it is greater than zero and sets a flag while updating another global variable.
 - `reset_flag`: Sets a specific global variable to zero.
 - `increment_global_counter`: Increments a global variable if it is less than one and sets a flag.
 - `increment_global_counter_2`: Increments a global variable if it is less than one and sets a flag while updating another global variable.
-- `return_no_op_3`: The routine consists of a single return instruction and performs no work, so it does nothing when called.
 - `update_accumulator_value`: Calculates a value from a register, ensures it meets a minimum threshold, and adds it to a global variable.
 - `set_conditional_constant`: Sets a global variable to a constant value if two specific global variables meet certain threshold conditions.
 - `update_accumulator_value_variant`: Performs a calculation using a register and a constant, then adds the result to a global variable if certain conditions are met.
@@ -287,8 +296,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_accumulator_value_offset`: Calculates a value using a register and a different constant, then adds it to a global variable if conditions are met.
 - `check_threshold_conditions`: Compares two global variables against specific thresholds and sets a third global variable to a constant value if both conditions are met.
 - `update_state_counters`: Updates several global variables and counters based on conditional checks and range limits.
-- `clear_state_registers`: Sets a register and a global variable to zero.
-- `reset_state_variables`: Clears a global variable and a word at an offset from a pointer, then calls another routine twice.
 - `verify_limit_bounds`: Checks if two global variables exceed certain values and assigns a constant to a third global variable if they do.
 - `manage_state_limits`: Modifies global variables and counters through conditional logic and range-based updates.
 - `clear_memory_offsets`: Sets a global variable to zero and writes zero to a specific offset relative to a pointer before calling another routine.
@@ -302,33 +309,22 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reset_global_word`: Sets a global word variable to zero.
 - `decrement_counter_with_floor`: Sets a global variable to one and decrements a counter, ensuring the counter does not fall below a specific minimum value.
 - `increment_global_on_flags`: Checks a global variable and two memory bytes, then increments a global variable if the variable is below seven and the bytes are zero.
-- `return_no_op_4`: The routine consists of a single return instruction and performs no work.
 - `clamp_and_update_value`: Checks global flags to potentially update a variable, performs a calculation involving a global variable, and clamps the result between zero and a maximum value.
-- `calculate_clamped_value`: Calculates a value based on a global variable, applies clamping between zero and a maximum threshold, and calls several subroutines.
 - `manage_conditional_state`: Checks a global variable and, if it meets certain criteria, executes a sequence of routines to update multiple global status flags and counters.
-- `manage_global_state`: Saves several global variables, conditionally executes a routine multiple times based on a global value, and then restores the original values.
-- `set_function_pointers`: Sets three global variables and then executes a routine through a pointer.
 - `increment_global_on_condition`: Increments a global variable if another global variable equals one.
 - `initialize_audio_and_counters`: Configures audio parameters, performs scaled calculations, and initializes several data tables and function pointer arrays.
 - `calculate_scaled_value_2`: Fetches a value from a table using an offset, performs a multiplication with a bit-shifted version of a pointer, and updates several globals.
-- `toggle_state_with_counter`: Manages a state machine by decrementing a counter and toggling a global variable between zero and one based on specific conditions.
 - `toggle_counter_state`: Decrements a global counter and toggles a status flag when specific thresholds are reached.
-- `decrement_and_clamp_counter`: Decrements a global variable and sets a flag to one if the variable becomes negative.
 - `calculate_clamped_index_2`: Updates a global flag, performs a calculation based on a global variable, and clamps the resulting value between zero and a maximum threshold.
 - `calculate_clamped_value_alt`: Computes a value using a global variable, ensures it stays within a specific range, and executes a series of subroutine calls.
 - `update_conditional_counters`: Checks a global variable against a threshold and performs conditional increments and function calls.
 - `setup_function_tables`: Calculates complex offsets and populates multiple function pointer tables with specific addresses.
 - `calculate_complex_offset`: Performs table lookups and arithmetic involving a subtraction and multiplication to update multiple global variables.
-- `update_state_and_call_subroutines`: Updates a global variable within a specific range and conditionally executes several other routines.
 - `update_state_logic`: Modifies global variables and performs conditional subroutine calls based on the state of a global flag.
-- `update_scaled_counter_2`: Sets a global variable to zero and conditionally increments another global variable before executing a sequence of subroutines.
 - `assign_constant_on_range`: Assigns the value eight to a variable if it is less than one and another global variable is greater than a specific threshold.
 - `update_scaled_counter`: Calculates a scaled value from a global variable and updates several other global variables through a sequence of subroutine calls.
-- `set_constant_and_call`: Assigns a constant value to a global variable and calls two other routines.
-- `update_global_state`: Saves several global variables, executes a routine multiple times, modifies a global variable and another, and then restores the original values.
 - `configure_system_state`: Sets audio parameters, updates handler pointers, loads word values from a table, and initializes function pointer tables.
 - `load_table_word`: Loads a word from a table into a variable using an offset and updates several global variables.
-- `process_complex_state_logic`: Performs complex arithmetic on multiple global variables, updates a counter, and executes several subroutines based on state conditions.
 - `process_clamped_values`: Modifies a global variable based on its current value and clamps it within a specific range.
 - `update_clamped_counters`: Increments two global counters using a calculated offset and clamps their values within specific ranges.
 - `update_global_with_clamping`: Adds a value to a global variable, clamps the result between zero and a maximum threshold, and calls several subroutines.
@@ -338,8 +334,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `increment_state_logic`: Increments a global variable and performs conditional resets of state variables and tables based on threshold checks.
 - `increment_and_reset_state`: Increments a global variable and performs a conditional reset of several state variables and tables.
 - `calculate_bitshifted_product`: Retrieves a value from a pointer, performs a multiplication using a bit-shifted value, and updates several globals.
-- `update_accumulated_value`: Calculates a new value for a global variable using an offset and a bit-shifted value, then clamps the result to a specific range.
-- `clamp_value`: Clamps a value between zero and a maximum limit of one hundred and twenty-seven.
 - `calculate_clamped_index`: Increments a global variable and calculates a new value by subtracting a bit-shifted version of a global variable, clamping the result between zero and one hundred twenty-seven.
 - `initialize_complex_subsystems`: Performs extensive initialization of audio, event parameters, and multiple function pointer tables through conditional loops and memory copies.
 - `process_state_transitions_2`: Checks a global variable against multiple thresholds and conditionally executes various routines and updates global variables based on the value.
@@ -365,54 +359,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `increment_global_value`: Checks if a global variable is at least one and then adds a value derived from that variable to another global variable.
 - `update_clamped_offset`: Loads a value from a table using a scaled index, clamps it to a maximum of thirty-two thousand, and adds it to a global variable.
 - `update_bitmapped_graphics`: Performs bitwise logical operations to update specific bits within a large memory buffer using values extracted from a source table.
-- `clear_data_register`: clears the low byte of a data register.
-- `clear_data_register_twice`: clears the low byte of a data register twice.
-- `clear_register_byte`: Clears the lowest byte of a data register to zero.
-- `clear_data_register_byte_5`: Sets the lowest byte of a data register to zero.
-- `clear_data_register_low_byte`: clears the lower byte of a data register twice using logical or instructions.
-- `clear_data_register_byte_6`: clears the lower byte of a data register to zero.
-- `scan_slot_table_recursive`: Clears two counters, then walks a table of 25 fixed-size records, stepping through it 64 bytes at a time.
-- `process_table_entries`: Iterates through a table of entries and calls another routine if a specific condition is met at a fixed offset.
-- `scan_entries_for_active_flag`: Walks a fixed-size table of 25 records, 64 bytes apart, starting at a base address; for each record whose 16-bit field at offset 6 equals 1 it recurses on that record and increments a counter.
-- `clear_d0_register_3`: sets the d0 register to zero.
 - `iterate_table_entries`: Iterates through a table of entries, calling another routine if a specific condition is met at a fixed offset, and inserts values into a sorted linked list.
 - `insert_into_sorted_list`: Inserts a value and associated pointers into a linked list structure maintained within a table.
-- `copy_and_initialize_table`: Copies a block of data from one memory location to another and then populates a destination table with several specific values and pointers.
-- `initialize_function_pointer_table`: Checks a global flag and, if not set, performs a block memory copy to populate a table.
-- `initialize_function_pointer_table_2`: Copies a block of data from one memory location to another and then populates the destination with a series of specific function addresses and constants.
-- `initialize_function_pointer_table_3`: Copies a block of data from one memory location to another and then populates the destination with a series of specific function pointers and constants.
-- `initialize_function_pointer_table_4`: Checks a global flag to determine if a memory block needs initialization.
-- `initialize_function_pointer_table_5`: Copies a block of data from one memory location to another and then populates the subsequent memory space with a series of function pointers and constants.
-- `initialize_function_pointer_table_6`: Copies a block of data from one memory location to another and then populates the destination with a series of specific function pointers and constants.
-- `initialize_function_pointer_table_7`: Copies a block of data from one memory location to another and then populates the destination with a series of specific function pointers and constants.
-- `copy_data_block`: Checks a global variable and, if it does not equal six, copies a block of data from one memory location to another before appending several specific values to the destination.
-- `initialize_function_pointer_table_8`: Checks a global flag and, if not set, performs a block memory copy to populate a table.
-- `initialize_function_pointer_table_9`: Checks a global flag to determine if a block of memory needs initialization.
-- `initialize_function_pointer_table_10`: Checks a global flag and, if not set, performs a block memory copy from one location to another.
-- `initialize_function_pointer_table_11`: Copies a block of data from one memory location to another and then populates the subsequent memory area with a series of specific function pointers and constants.
-- `initialize_function_pointer_table_12`: Checks a global flag and, if not set, performs a block memory copy to populate a table.
-- `initialize_function_table`: Checks a flag to determine if a memory block needs initialization.
-- `initialize_function_pointer_table_13`: Copies a block of data from one memory location to another and then populates the destination with a series of specific function pointers and constants.
-- `initialize_function_pointer_table_14`: Checks a global flag and, if not set, performs a block memory copy followed by populating a table with a series of function pointers and constants.
-- `initialize_function_pointer_table_15`: Checks a global flag to determine if a memory block needs initialization.
-- `copy_data_block_2`: Checks a global variable and, if it does not equal six, copies a block of data from one memory location to another before populating a table with various pointers and values.
-- `copy_data_block_3`: Performs a memory block copy from a source to a destination if a specific global condition is met, followed by writing several values into a table.
-- `copy_data_block_4`: Copies a sequence of data from one address to another and initializes a table with specific constants and pointers, provided a global value is not six.
-- `copy_data_block_5`: Transfers a block of data between memory locations and updates a table with a series of addresses and short integers if a global check passes.
-- `copy_data_block_6`: If a global variable is not six, it copies a large chunk of data and then writes a list of pointers and two short values into a destination table.
-- `copy_data_block_7`: Copies data from a source to a destination and populates a table with various pointers and values, contingent on a global variable check.
-- `copy_data_block_8`: Moves a block of memory and then fills a table with a sequence of pointers and two short integers, unless a global variable equals six.
-- `copy_data_block_9`: Copies a data block and initializes a table with several pointers and short values if a global variable is not equal to six.
-- `copy_data_block_10`: Checks a global variable and copies a block of data to a new location, followed by the insertion of multiple pointers into a table.
-- `copy_data_block_11`: Copies a block of memory and populates a table with a series of pointers and two short values if a global variable is not six.
-- `copy_data_block_12`: If a global variable does not equal six, it copies a block of data from one memory location to another and then writes several specific values and pointers into the destination.
-- `initialize_function_pointer_table_16`: Copies a block of data from one memory location to another and then populates the beginning and end of the destination range with specific function pointers and values.
-- `initialize_function_pointer_table_17`: Copies a block of data from one memory location to another and then populates the destination with a series of specific function addresses and constants.
-- `initialize_function_pointer_table_18`: Copies a block of data from one memory location to another and then populates the destination with a series of specific function pointers and constants.
-- `initialize_dispatch_table`: Copies a block of data from one memory location to another and then populates the destination with a series of function pointers and constants.
-- `initialize_function_pointer_table_19`: Copies a block of data from one memory location to another and then populates the subsequent memory addresses with a series of specific routine pointers and constants.
-- `initialize_function_pointer_table_20`: Copies a block of data from one memory location to another and then populates the destination with a series of specific routine addresses and constants.
-- `initialize_function_pointer_table_21`: Copies a block of data from one memory location to another and then populates the destination with a series of specific function addresses and constants.
 - `copy_and_populate_table`: Copies a block of memory to a new location and then populates the destination with a series of specific function pointers and short values.
 - `transfer_table_data`: Copies a block of data from one memory location to another and assigns several specific values from the source to global variables.
 - `reset_global_data_structures`: Clears multiple global memory areas and tables by zeroing out their entries.
@@ -424,24 +372,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `fill_memory_zero`: Fills a block of memory starting at a specific address with zeros using a loop.
 - `clear_zero_table`: The routine clears a block of sixteen 32-bit entries in a global table by writing zero to each entry in a loop.
 - `clear_double_word_table`: Clears a block of memory by writing zero to sixteen consecutive 32-bit words using a loop.
-- `return_register_value`: Returns the value currently held in a data register.
-- `return_register_value_2`: The routine returns the value currently held in a data register to the caller.
-- `return_register_value_3`: The routine returns the value currently held in a data register.
 - `return_immediately`: This routine is empty and performs no operations before returning to its caller.
 - `move_data_to_pointers`: moves two words from a source address to a destination address.
 - `execute_handler_loop`: Iteratively executes a routine while updating two global variables, then executes a routine multiple times and sets a global variable to zero.
 - `load_table_value`: Loads a 16-bit value from a table into a global variable using an index provided by another global variable.
-- `subtract_from_memory`: Subtracts a constant value from a short integer located at an offset from a pointer.
 - `load_from_table`: Loads a word from a table into a global byte variable using an index.
 - `toggle_table_bit`: Reads a 16-bit value from a table using an index, performs a bitwise XOR operation with one, and stores the result in a global variable.
 - `initialize_global_state`: Sets a large number of global variables and table entries to zero or specific constant values.
 - `load_indexed_word`: Loads a word from a table into a global variable using an index derived from a global variable.
 - `load_indexed_pointer`: Loads a word from a memory location into a pointer using an offset derived from a global variable.
-- `process_conditional_logic`: Performs conditional checks on global variables and table values before returning a modified register value.
 - `check_and_reset_flag`: Checks a global flag and a value within a memory structure.
 - `execute_indexed_handlers`: Iteratively calls routines located at offsets within a table based on values from a global variable.
-- `call_indexed_handler`: Calls a routine located at an offset within a table determined by a value in a global variable.
-- `call_indexed_handler_short`: Executes a function pointer retrieved from a table using an index derived from a global variable.
 - `execute_table_function`: Performs a call to a subroutine address stored in a data table.
 - `initialize_structure_data`: Sets several local and global values, calculates an offset into a table, and calls two other routines.
 - `initialize_structure_a`: Sets a global variable to six, clears a register, and stores a value derived from a global variable and an offset into a structure.
@@ -469,13 +410,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_range_bounds`: Iterates through a list to find and update specific boundary values in a table based on comparison logic.
 - `increment_table_counters_2`: Iterates through a list to clear specific entries and then increments various fields within a table based on a loop index.
 - `increment_table_counters`: Iterates through a list and increments various values in a table based on a specific index.
-- `copy_function_pointer_table`: Copies five 32-bit words from a source table to a destination memory location.
 - `copy_block_of_words`: Copies a series of words from one memory location to another in a loop.
 - `sort_table_entries`: Performs a nested loop to swap 4-byte values within a table based on comparison of adjacent elements.
 - `populate_data_structure_a`: Searches a table for an available entry and populates it with values and pointers from a source list.
 - `populate_structure_a`: Calculates an offset into a table to copy several words and a pointer into a structure.
 - `populate_data_structure_b`: Searches a table for an available entry and populates it with a different arrangement of values and pointers from a source list.
-- `populate_structure_b`: Copies various values from a table into a structure based on an index derived from a pointer.
 - `process_event_queue`: Iterates through a list of values, calling a routine for each entry and updating a destination buffer with the results.
 - `update_status_table`: Searches a table for an entry with a specific flag and populates it with data from a global table.
 - `iterate_and_update_table`: Iterates through a table of values using a pointer and an index, calling another routine for each entry and performing a subtraction to update a structure field.
@@ -483,7 +422,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_callback_loop`: Iterates through a table and executes function pointers stored at calculated offsets.
 - `manage_state_and_lists`: Updates a pointer based on a comparison, decrements a counter, and appends data to a linked list.
 - `modify_status_flags`: Updates several global variables and decrements a value based on specific range checks and existing flag states.
-- `modify_structure_fields`: Writes a constant value to a structure offset and decrements a word at another offset.
 - `call_state_transition_handler`: Executes a routine via a pointer retrieved from data.
 - `invoke_event_handler`: Calls a function pointer retrieved from a data structure.
 - `update_event_counters`: Updates internal counters within a data structure and conditionally appends a block of data to a linked list.
@@ -491,7 +429,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_event_callbacks`: Invokes two consecutive function pointers stored in memory.
 - `decrement_counter_and_check`: Decrements a value in a structure and conditionally updates other fields based on comparisons.
 - `update_structure_counters`: Decrements a value within a structure and conditionally writes a constant to a different offset.
-- `decrement_and_check_counter`: Decrements a value at a specific offset in a structure and conditionally writes a constant to another offset if the value falls below one.
 - `call_stub`: Call stub: calls one other routine as a subroutine and returns to its own caller when that routine returns.
 - `assign_conditional_value`: Writes a value to a memory location, potentially changing it based on a global variable range.
 - `update_table_value`: Calls a routine to subtract a calculated value from a 16-bit word in a table or clear it to zero based on a comparison.
@@ -502,16 +439,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_state_table_entry`: Updates a specific entry in a data structure by writing a constant value and conditionally modifying it based on a global flag and a running counter.
 - `calculate_structure_value`: Updates a structure field based on a global flag and performs arithmetic on a specific byte field within the structure, clamping the final result to a maximum value.
 - `modify_structure_data`: Updates a structure with several derived values and modifies global variables using arithmetic and bitwise operations.
-- `update_structure_values`: Modifies several global variables and writes derived values into a structure, including a clamped value.
-- `update_pointer_and_structure`: Updates several global variables and calculates a new pointer value, then writes derived values into a structure.
 - `update_structure_with_logic`: Modifies a structure based on global variable comparisons and performs arithmetic on several memory locations.
 - `increment_structure_value`: Updates global variables and writes derived values into a structure, adding a value to a specific memory location.
 - `update_pointer_and_structure_2`: Updates several global variables and calculates a new pointer value by adding the current routine address, then writes derived values into a structure.
 - `clamp_structure_value`: Calculates a value based on a bit-shift and writes it to a structure, ensuring it does not exceed a maximum threshold.
 - `calculate_clamped_values`: Performs arithmetic on several global variables and writes the results into a structure.
-- `update_clamped_values_2`: Updates a structure with derived values and modifies global variables based on range checks.
-- `update_table_and_decrement`: Updates a structure with derived values and conditionally decrements a global byte based on a range check.
-- `decrement_global_variable`: Decrements a single byte in a global variable by one.
 - `update_complex_structure_3`: Updates a structure with various calculated values, including conditional arithmetic on a byte and loading data from a table based on a global variable.
 - `update_dynamic_parameters`: Modifies global variables through arithmetic and stores the results in a structure.
 - `update_complex_structure_2`: Performs arithmetic on global variables and writes derived values to a structure, including conditional updates based on range checks.
@@ -520,7 +452,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_flag_conditionally`: Sets a global variable to one and conditionally calls another routine if a global value exceeds a threshold.
 - `decrement_value_conditionally_3`: Subtracts a value from a word at a specific offset or clears a byte if a condition is met.
 - `load_structure_from_table`: Loads two short values from a table into a structure and sets a field in that structure based on global flags.
-- `modify_memory_via_pointers`: Performs bitwise OR operations on several memory locations using values derived from multiple pointers.
+- `call_subtract_and_set_byte`: Calls another routine and then stores the value 1 at offset 46 of the structure pointed to by a2.
 - `return_no_op_handler`: The routine consists of a single instruction that returns immediately, performing no work.
 - `clamp_value_to_range`: Sets a byte at an offset to one and then calculates a new value for a short based on a clamped result.
 - `populate_function_table`: Initializes a table with specific values and function pointers by copying data from a global table based on a calculated index.
@@ -528,21 +460,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `increment_indirect_word`: Adds a value to a 16-bit word located at the address stored in a register.
 - `update_pointer_value_2`: Stores a 16-bit word into a location pointed to by a register, conditionally updating it based on a comparison with a value in a table.
 - `manage_data_structures`: Updates a structure, manages a linked list, and modifies table values based on various conditions.
-- `manage_linked_list_node`: Updates a value within a structure, conditionally appends data to a linked list, or decrements a status field.
-- `update_table_values`: Modifies several values within a table, including incrementing a specific entry and updating a global variable.
 - `manage_structure_state`: Updates various fields within a structure, manages a linked list, and performs conditional increments or decrements of values based on global flags.
 - `do_nothing`: This routine is empty and performs no actions.
-- `modify_table_entries`: Updates entries in a table by adding values to them and copying a value from one table index to another.
 - `set_table_parameters`: Sets specific short values and function pointers within a table structure.
 - `set_structure_constants`: Writes specific constant values to several offsets within a structure.
 - `conditionally_update_structure`: Clears a global variable and conditionally writes several values to a structure if specific memory conditions are met.
 - `update_counters_by_flags`: Increments or decrements various 16-bit values in a table based on comparisons with global variables and the state of several flags.
-- `decrement_table_entry`: Decrements a 16-bit value in a table if a specific index is above a threshold and several boolean flags in a referenced memory location are zero.
-- `increment_counter_conditionally`: Increments a value in a table if a comparison between a global variable and a table entry is met and another table value is within a specific range.
-- `increment_counter_conditionally_2`: Increments a 16-bit value in a table if two global variables match a value in the table and a third table entry is within a specific range.
-- `adjust_counter_range`: Increments a 16-bit value in a table if two global variables match a table entry, or decrements it if a different table entry is less than the target value.
-- `increment_index_on_flags`: Increments a value in a table if a specific index is below a threshold and several boolean flags in a referenced memory location are zero.
-- `decrement_index_on_flags`: Decrements a value in a table if a specific index is above a threshold and several boolean flags in a referenced memory location are zero.
 - `process_data_entries`: Iterates through a table to update entries based on comparisons with values in a secondary memory block.
 - `constrain_short_value`: Clamps a short value at a specific offset within a structure between two defined limits.
 - `calculate_offset_values`: Calculates a value based on several table entries and updates a table index and a global offset value.
@@ -552,10 +475,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_event_data_variant_c`: Updates a structure's internal counters and conditionally appends a block of data to the end of a linked list.
 - `process_state_transitions`: Updates a structure's values and conditionally appends data to a linked list or table based on various comparisons.
 - `update_state_and_copy_data`: Decrements a 16-bit value in a structure if it is positive, then copies several 16-bit words from a source into a destination table and increments a global counter.
-- `update_linked_list_node`: Checks a value at an offset from a pointer, updates it based on a calculation, and appends several 16-bit words to the end of a linked list.
-- `return_no_op_2`: The routine consists of a single instruction that immediately returns to its caller, performing no work.
-- `copy_data_to_table_2`: Calculates a value based on a pointer, updates a structure member, and copies several 16-bit words into a table at the end of a linked list.
-- `copy_data_to_structure`: Copies several 16-bit words from a source structure into a destination structure and increments a global counter.
 - `adjust_table_parameters`: Adjusts multiple values in a table using complex conditional logic based on global variables and bitwise shifts.
 - `add_offset_to_pointer`: Adds a value to a 16-bit word stored at a location pointed to by a register.
 - `subtract_or_clear_value`: Subtracts a calculated value from a 16-bit word in a table or clears a 16-bit word to zero depending on a comparison.
@@ -563,8 +482,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decrement_value_conditionally`: Subtracts a value from a word at a specific offset if a condition is met, or clears a byte if another condition is met.
 - `update_state_from_table`: Reads a value from a table based on an index and updates a pointer with one of several calculated offsets or values depending on multiple global flags.
 - `calculate_scaled_index`: Calculates a value based on a tripled offset and updates a pointer with either a bit-shifted version of a byte or a simple incremented value.
-- `increment_and_store`: Stores the result of incrementing a register value into a memory location pointed to by a register.
-- `search_table_with_loop`: Iterates through a table to increment a counter and then performs a secondary loop to find a zero value in a linked structure.
 - `traverse_linked_list`: Iterates through a table to count entries matching a condition and then traverses a linked structure to find a zero value.
 - `insert_into_linked_list`: Searches through a structure to insert a new entry into a linked list, updating various pointers and global tracking variables.
 - `clear_memory_block_3`: Sets sixteen consecutive longwords in a memory block to zero.
@@ -578,7 +495,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `subtract_value_from_memory`: Subtracts a 16-bit integer from a 16-bit value stored at a specific offset within a memory block.
 - `subtract_from_two_offsets`: Subtracts a short value from two different word offsets within a structure.
 - `initialize_data_buffer`: Sets several 16-bit values in a memory range and executes a routine multiple times based on a value in a table.
-- `run_nested_loops`: Executes a nested loop structure that calls another routine multiple times while incrementing a global variable.
 - `execute_nested_loops_2`: Runs a nested loop structure that calls another routine multiple times while incrementing a counter.
 - `shift_and_store_data`: Performs bitwise shifts on values from a source table and stores the resulting words into a destination buffer using a loop.
 - `fill_memory_with_patterns`: Checks a global flag and, if conditions are met, fills a memory range with a repeating 32-bit pattern and executes a series of subroutines.
@@ -586,19 +502,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `bitwise_or_buffers`: Iterates through memory blocks to perform bitwise OR operations on 32-bit and 16-bit values based on a global flag.
 - `merge_memory_segments`: Merges data from a source table into a destination buffer using bitwise OR operations, with different stride lengths depending on a global flag.
 - `return_from_subroutine_2`: This routine performs no operations and immediately returns to the calling code.
-- `dispatch_indirect_function_pointer`: Checks a global count and uses it to index into a table of pointers.
 - `validate_pointer_range`: Checks if a value at an offset from a pointer falls within a specific range and, if so, executes a routine using a calculated address.
 - `apply_bitmask_to_table`: Calculates a bitmask based on a register value and applies it to a destination table using bitwise AND and OR operations in a loop.
-- `modify_memory_bits`: Performs bitwise OR operations on a specific memory location and a value pointed to by a register.
-- `apply_bitmask_to_buffer_2`: Performs bitwise OR operations on a 32-bit value and a 16-bit value, then calls another routine eight times.
 - `copy_data_to_buffer`: Copies data from a source table to a destination buffer using nested loops and specific stride offsets.
 - `copy_data_with_offset`: Copies data from a source table to a destination buffer starting at a calculated offset using nested loops.
 - `copy_interleaved_data`: Copies data from a source buffer to a destination buffer using an interleaved pattern across multiple memory offsets.
 - `copy_interleaved_data_offset`: Copies data from a source buffer to a destination buffer using an interleaved pattern, where the source address is calculated from a global table.
-- `update_bitmask_graphics`: Calculates bitmask values based on a register and applies them to specific offsets within two memory buffers.
 - `apply_bitmask_to_graphics_buffers`: Calculates a bitmask based on a global value and applies it to specific word offsets within two large memory buffers.
 - `set_memory_constants`: Stores two specific constant values into two memory locations.
-- `dispatch_table_index`: Uses a value to index into a table and conditionally executes different routines based on the value found at that index.
 - `convert_integer_to_string_4`: Converts a numeric value into a decimal string by repeatedly performing division and modulo operations to extract digits.
 - `execute_conditional_subroutines`: Calls another routine twice if a global variable falls within a specific range.
 - `apply_bitmask_to_buffers`: Conditionally applies bitwise masks to specific offsets within two large memory buffers based on a global value.
@@ -608,11 +519,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `check_table_condition`: Checks a value in a table and conditionally executes a sequence of routines.
 - `update_display_buffers`: Converts a numeric value into a string and copies a block of data to a destination if a global variable condition is met.
 - `convert_value_to_string`: Converts a numeric value into a sequence of ASCII characters and stores the result in a destination buffer.
-- `initialize_memory_blocks`: Sets specific offsets within a series of memory blocks to all ones or all zeros in a repeating pattern.
-- `draw_bitplane_bar_segments`: Sets the 40 flag bits in the word at offset 2 of the structure in A0, then walks 32 rows of a bitplane-like buffer (stepping 20 words per row), writing all-ones or all-zeros across four plane offsets per row depending on a comparison of the high and low bytes of a stored word against the row counter.
 - `fill_memory_blocks_2`: Iterates through a series of memory locations, writing specific word values to multiple offsets within a repeating sequence of blocks.
 - `initialize_interleaved_memory_pattern`: Populates a memory block with a repeating pattern of sixteen-bit values.
-- `modify_and_dereference_pointer`: Sets specific bits in two different memory locations via pointers and then updates a global variable by dereferencing it as an offset into a table.
+- `convert_two_integers_to_ascii`: Calls another routine twice, using two different source values in d7 and two different destination pointers in a1.
+- `convert_single_integer_to_ascii`: Calls another routine using a value from a global variable in d7 and a destination pointer in a1.
 - `load_pointer_from_table`: Checks if a value is non-zero and less than five before calling another routine.
 - `load_data_from_table`: Iterates through a loop to load several 32-bit words from a table into specific memory locations based on calculated offsets.
 - `process_formatted_data`: Iterates through a table to load data, calls a routine to convert values to strings, and writes specific character patterns to memory.
@@ -642,7 +552,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_recursive_calls_2`: Calls itself four times in succession before returning.
 - `execute_table_callbacks`: Invokes two different routines by following pointers retrieved from a data table.
 - `reset_global_counters_2`: Sets a global byte to zero and another global byte to a specific value.
-- `increment_and_decrement_counters`: Increments a global byte and decrements another global byte, ensuring the latter does not fall below zero.
 - `update_counters_and_blitting`: Increments a global byte, decrements another global byte without falling below zero, and configures various blitting parameters based on global thresholds.
 - `setup_blitting_parameters`: Checks a global value and, if it exceeds a threshold, populates several global variables and a pointer derived from a table.
 - `setup_blitting_parameters_2`: Sets several global values and a pointer derived from a table if a global byte exceeds a threshold.
@@ -672,7 +581,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `write_string_bytes`: Stores two consecutive bytes into memory locations at specific offsets from a pointer.
 - `tiny_move`: Small routine of 1 instruction that copies 32 to d4.
 - `convert_integer_to_string_2`: Converts a numeric value into its decimal ASCII representation and stores the characters in a buffer.
-- `fill_memory_pattern`: Performs a loop to write a specific value and several constant patterns into various offsets of a memory block.
 - `fill_memory_block`: Writes a longword and several specific constant values to multiple offsets within a memory block using a loop.
 - `copy_memory_block_3`: Writes a single longword value to multiple specific offsets within a memory block.
 - `self_recursive_calls`: Calls another routine seven times in a row and then returns.
@@ -682,7 +590,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_multiple_calls`: Calls another routine ten times and then sets a global variable to zero before calling another routine four times.
 - `store_values_via_pointer`: Loads a pointer from a table and uses it to store three consecutive values from global variables.
 - `set_global_pointers`: Sets a global variable to zero, calls another routine, and then assigns two specific addresses to global variables.
-- `clear_data_structure_block`: Clears a series of specific memory offsets within a data structure by writing zeros to them.
 - `clear_memory_block_6`: Clears a series of specific offsets within a memory block by writing zeros through a loop.
 - `update_byte_array`: Iterates through a short sequence of bytes and sets one byte to a value derived from a global variable and a constant.
 - `copy_conditional_data`: Iterates through a loop to write values to a destination memory block, conditionally copying values from a source table based on a comparison with a global variable.
@@ -700,24 +607,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_attribute_table`: Checks global status flags and, if certain conditions are met, writes a 32-bit value and a 16-bit value into a memory range pointed to by a global variable.
 - `clear_memory_range`: Fills a specific range of memory with zeros and sets a global variable to zero.
 - `extract_bitfields`: Extracts a byte, a four-bit nibble, and a high bit from a memory location and stores them into global variables.
-- `initialize_attribute_data_structures`: Uses a value from a register to index into a table and checks a status flag.
-- `initialize_event_parameter_tables`: Reads a value from a table to select a specific configuration mode, then populates several global variables and pointers with data from a structured data block.
-- `initialize_event_state_table`: Reads a state value from a table and, depending on the value, populates several global variables and pointers with data from a structured memory block.
-- `initialize_event_state_table_2`: Reads a value from a table to determine a state, then populates several global variables and function pointers with data from a structured memory block.
 - `configure_audio_playback_parameters`: Reads a state value from a table to select a specific configuration set, then populates multiple global variables and pointers with audio properties including period, volume, and length.
 - `update_status_flags`: Checks several global variables and writes specific word values to a global variable if conditions are met.
-- `set_byte_one`: stores a byte with the value one into a global variable.
-- `set_byte_one_2`: writes a single byte containing one to a global variable.
-- `set_byte_one_3`: updates a global byte to one.
-- `set_byte_one_4`: assigns the value one to a global byte.
-- `set_byte_one_5`: performs a single byte write of one to a global variable.
-- `set_byte_one_6`: sets a global byte variable to one.
-- `set_byte_one_7`: stores the value one into a specific byte location in memory.
-- `set_byte_one_8`: writes one to a global byte.
-- `compare_and_set_byte`: compares a value and stores a byte with the value one into a global variable.
-- `compare_and_set_byte_2`: checks a value and writes a byte containing one to a global variable.
-- `set_global_flag`: Sets a global byte to one and another global variable to one.
 - `set_global_flags`: Calls another routine, sets a global variable to one, and then sets another global variable to one before calling another routine.
+- `check_flag_and_call_routine`: Compares a word at a global variable to 1, and if it is not equal, stores 1 in a global variable, loads a pointer into a0, and calls another routine.
 - `reset_hardware_state`: Sets a global variable to zero and calls another routine to reset hardware control and volume registers.
 - `mt_init`: The routine walks a byte table and builds a pointer table for music samples, zeroing entries and linking them to a sample start table.
 - `reset_hardware_registers`: Writes a sequence of values to several global variables that correspond to hardware control and volume registers.
@@ -726,14 +619,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `mask_and_compare_word`: The routine reads a word from a pointer, masks it to twelve bits, stores the masked value into an offset of the same structure and clears a byte at another offset.
 - `update_attribute_state`: Updates a value within a data structure based on a four-way mode selector.
 - `execute_nested_operations`: Performs a sequence of subroutine calls, clears a large block of memory, and executes a loop that calls another routine while incrementing a global variable.
-- `execute_subroutine_pointer`: Loads a subroutine address from a table and performs a jump to it.
-- `update_pointer_value`: Subtracts a value from a global variable and stores the result back into a memory location via a pointer.
-- `execute_empty_function`: The routine performs no operations and immediately returns to its caller.
 - `execute_recursive_calls`: Performs three consecutive calls to another routine before returning.
 - `copy_data_block_13`: Decrements global counters and performs a nested loop to copy blocks of data from a source table to a destination memory location.
 - `clear_global_variables`: Sets two global variables to zero and calls another routine.
 - `transfer_memory_blocks`: Copies data from a source table to a destination address using nested loops and specific stride increments.
-- `return_from_subroutine_3`: The routine is empty and performs no operations before returning to its caller.
 - `decompress_bitstream_wrapper`: This routine acts as a wrapper that invokes a bitstream decompression procedure.
 
 ### International Championship Athletics.adf:Foxy!
@@ -749,3 +638,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `nop_operation`: This routine is empty and performs no operations.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.

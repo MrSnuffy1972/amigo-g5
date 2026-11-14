@@ -8,19 +8,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (911002 top-level bytes in 8 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 11 of 11 units identical (bytes and relocations), 21 raw-word lines |
-| Functions named and described | pass, 58 of 58 named (0 author symbols), 58 of 58 described (2 by rule, 53 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1693 of 1696 (99.82%) |
+| Functions named and described | pass, 81 of 81 named (0 author symbols), 81 of 81 described (4 by rule, 66 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1696 of 1696 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 2624 of 2628 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2834 of 2835 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 42755 |
-| code | 9752 |
-| data | 597879 |
-| padding | 8 |
+| asset | 42206 |
+| code | 10464 |
+| data | 597714 |
+| padding | 10 |
 | unused | 260608 |
 
 ## Code units
@@ -29,13 +29,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Vroom.adf:bootblock | 1 | 23 | 1 |
 | logged disk load from Vroom.adf boot-block load | 1 | 214 | 5 |
-| logged disk load from Vroom.adf boot-block load | 1 | 35 | 0 |
+| logged disk load from Vroom.adf boot-block load | 1 | 232 | 21 |
 | logged disk load from Vroom.adf boot-block load | 1 | 163 | 3 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 8 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1293 | 26 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 17 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 3 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 505 | 11 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 364 | 7 |
 
@@ -61,7 +61,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Copy protection found
 
-- none found
+- `set_port_control_bits` (Vroom.adf boot-block load +an address to an address (7680 bytes)): Sets the high bits of the port control byte to a fixed mask while keeping a middle group of bits, then returns. Kind: disk hardware check. Pass path: CIAB_PRB is read and modified in sequence to check hardware state, likely verifying specific bit patterns that indicate genuine Amiga hardware or disk drive configuration.
+- `initialize_disk_dma` (Vroom.adf boot-block load +an address to an address (7680 bytes)): Initializes disk DMA settings by writing specific values to hardware control registers, then enters a loop that processes data through a table-driven mechanism. Kind: disk track check. Pass path: The routine loads data from disk using DMA and performs checks on the loaded data. If the check passes (i.e., the data matches expected values), it continues execution normally. The check involves reading a track, decoding it, and comparing.
+- `update_port_bits` (Vroom.adf boot-block load +an address to an address (7680 bytes)): Saves registers, copies a register value to another register, loads addresses from memory locations, clears and sets specific bits in hardware port registers, and then branches unconditionally. Kind: disk hardware check. Pass path: The routine accesses CIAB_PRB and CIAA_PRA to perform a hardware-based check, likely involving a specific bit pattern or timing. If the check passes (i.e., the expected bit in CIAA_PRA is set), the code continues normally; otherwise, it may.
 
 ## Functions
 
@@ -77,6 +79,30 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reverse_and_copy_data_block`: Calculates a length from a data stream, reverses a block of memory of that length into a temporary buffer, and then performs bitwise shifts on a decoded value.
 - `decode_variable_length_integers`: Reads a sequence of variable-length integers from a data stream in a2 and uses the decoded values to perform bitwise shifts and additions to reconstruct a larger integer, which is then used to determine how many bytes to read and write to a destination buffer in a0.
 - `parse_variable_length_data_stream`: Reads a sequence of variable-length integers from a data stream in a2, where each value determines the length of the subsequent segment, and uses these values to perform a memory copy from one location to another.
+
+### logged disk load from Vroom.adf boot-block load
+
+- `poll_timer_flag_with_timeout`: Sets a countdown to nine and polls a status bit until it becomes set or the count runs out, then leaves the status variable at a fixed value.
+- `configure_joystick_interface`: Configures hardware registers related to joystick input by clearing and setting specific bits, then calls another routine twice with conditional branching based on input states.
+- `wait_for_joystick_button`: Enters a loop that checks bit 5 of the CIAA control register and returns when it is cleared, setting d0 to zero.
+- `set_port_control_bits`: Sets the high bits of the port control byte to a fixed mask while keeping a middle group of bits, then returns.
+- `set_dma_status_flag`: Sets a byte flag at a specific memory address and performs conditional arithmetic operations based on comparison results, then branches to another routine.
+- `initialize_disk_dma`: Initializes disk DMA settings by writing specific values to hardware control registers, then enters a loop that processes data through a table-driven mechanism.
+- `process_memory_data`: Processes data from memory locations through a loop that handles byte comparisons and copies, updating counters and pointers while checking for termination conditions.
+- `store_byte_and_branch`: Stores the value of a byte from a global memory location to another global memory location and then branches unconditionally to an offset.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+- `initialize_and_compare`: Initializes registers with fixed values, loads addresses from memory locations, compares a word value at an address with a constant, and branches based on the comparison result.
+- `process_data_and_store`: Processes data through a series of bitwise operations and stores results in a table, then continues processing until a condition is met.
+- `merge_odd_even_bits`: Combines two longwords by masking one with a fixed bit pattern and shifting the other left by one bit.
+- `function_epilogue_2`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+- `update_port_bits`: Saves registers, copies a register value to another register, loads addresses from memory locations, clears and sets specific bits in hardware port registers, and then branches unconditionally.
+- `clear_dma_flag`: Sets a global variable to zero and performs conditional arithmetic on a value based on comparison with a constant, then branches to another routine.
+- `set_clear_and_branch`: Sets and clears specific bits in bytes at addresses pointed to by a1 and a2, tests a global byte value, and branches based on the test result.
+- `clear_and_test_bits`: Clears a byte at a global memory location, tests bits of another register against a value from memory, and branches based on the test result.
+- `call_and_decrement`: Calls another routine and decrements a byte at a global memory location before branching unconditionally to an offset.
+- `set_and_mask_byte`: Sets bit 2 in a byte at a pointer and may clear bit 2 in that same byte based on a bit test of d6, then restores registers and returns.
+- `set_bit_and_branch`: Sets bit 1 of a byte at the address in a1 and then branches unconditionally to an offset.
+- `set_bits_and_loop`: Clears bits 1 and 0 of a byte at the address in a1, sets bit 0 of that same byte, and executes a loop that decrements d0 from 3584 to zero.
 
 ### logged disk load from Vroom.adf boot-block load
 
@@ -129,6 +155,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `update_fire_button_bit`: Extracts the lowest bit of a register, shifts it left by one, and performs a bitwise OR to update bit 1 of the CIAA Port A Data Register.
+- `mask_and_merge_byte`: Masks the low nibble of a byte at offset 31 from a pointer in a6 and then merges the low nibble of a byte at offset 3 from the same pointer into it.
+- `clear_low_nibbles_of_byte`: Clears the low nibble of a byte at offset 30 from an address in a6 and then ORs in the low nibble of another byte from the same base.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 

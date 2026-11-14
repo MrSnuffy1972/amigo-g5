@@ -8,18 +8,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (903824 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 21 of 21 named (0 author symbols), 21 of 21 described (1 by rule, 20 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 449 of 449 (100.00%) |
+| Functions named and described | pass, 22 of 22 named (0 author symbols), 22 of 22 described (1 by rule, 21 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 460 of 460 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 60416 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 598 of 598 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 606 of 606 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 298 |
-| code | 2586 |
-| data | 445771 |
+| code | 2642 |
+| data | 446013 |
 | padding | 1 |
 | unused | 455168 |
 
@@ -29,7 +28,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Battleships.adf:bootblock | 1 | 67 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 334 | 16 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 197 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 205 | 5 |
 | Battleships.adf bytes 11264-12288 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Battleships.adf bytes 12800-44544 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Battleships.adf bytes 53248-80896 (code never loaded by a reference run) | 1 | 0 | 0 |
@@ -38,11 +37,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - Battleships/Battleships.adf: custom-format (non-DOS) disk, 869 non-empty blocks: matched against track-loaded segments
 - reference crashes at an address (OSHLE RUNAWAY: PC reached an address after an address (op 0009) A7=an address (A7)=an address, slid to exec.library -an address): 557 executed addresses of the slide through empty memory after it (an address) are not game code and are excluded from proof 4
-- runtime segment an address: 295 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 118 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 299 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 125 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - Battleships/Battleships.adf: bytes 11264-12288 look like code no run loaded: recovered position-independently (load address unknown)
 - Battleships/Battleships.adf: bytes 12800-44544 look like code no run loaded: recovered position-independently (load address unknown)
 - Battleships/Battleships.adf: bytes 53248-80896 look like code no run loaded: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 3 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 2 immediate, 1 jump target
 - Battleships/Battleships.adf: 3 logged loads cover 60416 bytes of the image
 - Battleships/Battleships.adf: blocks 2-12 (bytes 1024-6656) outside the filesystem hold data, not code (opcode density 0.049, entropy 4.74)
 - Battleships/Battleships.adf: blocks 90-91 (bytes 46080-47104) outside the filesystem hold data, not code (opcode density 0.000, entropy 0.13)
@@ -130,6 +130,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `enable_interrupts_and_clear_globals`: Enables interrupts via the interrupt enable register, stores 65535 in a global variable, zeroes four audio volume registers and three global variables, then returns.
+- `reset_audio_dma`: Clears audio volume registers for all four channels, initializes DMA control with a specific value, enables interrupts, and returns.
 - `iterate_structures_on_counter`: Increments a global counter and resets it to zero when it reaches six, then calls another routine for each of four structures whose byte at offset 3 is nonzero, otherwise calls that routine while a flag byte is nonzero.
 - `dispatch_byte_nibbles`: Examines nibbles of a byte at offset 3 of the structure in a6 and dispatches to branches that adjust a 16-bit value at offset 16, look up a value in a table, or call another routine, returning otherwise.
 - `store_indexed_table_values`: Reads a 32-bit entry from a table indexed by the high nibble of a byte at offset 2 of the structure in a6, then stores the fetched pointer and two adjacent words into the structure and adds a value from the entry to a running counter before writing results through pointers in a5.

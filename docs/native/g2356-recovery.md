@@ -7,40 +7,42 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (901120 top-level bytes in 45 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 11 of 11 units identical (bytes and relocations), 323 raw-word lines |
-| Functions named and described | pass, 739 of 739 named (629 author symbols), 739 of 739 described (43 by rule, 144 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 5922 of 5922 (100.00%) |
+| Byte-identical reassembly with vasm | pass, 11 of 11 units identical (bytes and relocations), 114 raw-word lines |
+| Functions named and described | pass, 650 of 650 named (524 author symbols), 650 of 650 described (44 by rule, 119 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 6056 of 6056 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 23645 of 23933 instructions identical in start and length, 1 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 23343 of 23375 instructions identical in start and length, 2 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 475341 |
-| code | 102150 |
-| data | 232631 |
-| padding | 10102 |
+| asset | 477296 |
+| code | 99686 |
+| data | 233146 |
+| padding | 10096 |
 | unused | 80896 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Spy vs Spy (1989)(First Star Software)[cr Yakoul].adf:ArcticAntics | 2 | 9335 | 269 |
+| Spy vs Spy (1989)(First Star Software)[cr Yakoul].adf:ArcticAntics | 2 | 8981 | 231 |
 | setmap | 13 | 627 | 33 |
-| type | 2 | 117 | 2 |
-| cd | 2 | 117 | 2 |
+| type | 2 | 363 | 12 |
+| cd | 2 | 294 | 5 |
 | spy1prg | 2 | 209 | 8 |
 | Spy vs Spy (1989)(First Star Software)[cr Yakoul].adf:TheIslandCaper | 4 | 1267 | 71 |
 | disk-validator | 1 | 386 | 1 |
-| Spy vs Spy (1989)(First Star Software)[cr Yakoul].adf:spy3titles | 2 | 2222 | 123 |
-| USA0 | 1 | 4 | 1 |
-| Spy vs Spy (1989)(First Star Software)[cr Yakoul].adf:spy2 | 3 | 9563 | 227 |
+| Spy vs Spy (1989)(First Star Software)[cr Yakoul].adf:spy3titles | 2 | 1899 | 107 |
+| USA0 | 1 | 3 | 1 |
+| Spy vs Spy (1989)(First Star Software)[cr Yakoul].adf:spy2 | 3 | 9260 | 179 |
 | Spy vs Spy (1989)(First Star Software)[cr Yakoul].adf:bootblock | 1 | 86 | 2 |
 
 ## Cases handled
 
+- spy vs spy (1989)(first star software)[cr yakoul]/Spy vs Spy (1989)(First Star Software)[cr Yakoul].adf:d/spy1prg: PowerPacker 2.3 (xfd) stream found by ancient scan (61896 -> 128880 bytes) but only 0 of 60 sampled windows are in reference RAM: not used
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 jump target
 - spy vs spy (1989)(first star software)[cr yakoul]/Spy vs Spy (1989)(First Star Software)[cr Yakoul].adf:d/spy1prg: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
 ## Cracktros (kept, not protection)
@@ -57,7 +59,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Spy vs Spy (1989)(First Star Software)[cr Yakoul].adf:ArcticAntics
 
 - `START_CODE`: Jump stub: passes control straight on to START.
-- `DUMMY_SPRITE`: Busy-waits until the raster position read from the vertical position register is greater than the argument and no more than 2816 beyond it.
+- `WAIT_FOR_RASTER`: Waits for the vertical retrace by polling the raster position register until it reaches a specific value, then checks that it hasn't exceeded another value before returning.
 - `ATARI_COPY`: Copies 16000 source words into four planes 4000 words apart, taking consecutive words from the source in groups of four and placing one word of each group in each plane.
 - `COLOUR_COPY`: Copies sixteen source words into the global block, each shifted left by one bit.
 - `LOAD_FILE`: Opens dos.library through the exec library and stores its base and the value returned by the library's minus 30 vector.
@@ -73,28 +75,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `INIT_KEY`: Sets four longwords of the key matrix to all ones.
 - `INKEY`: Tests the key matrix bit for the key number in the argument.
 - `SCAN_JOY`: Decodes the joystick port data of both ports into left and up values, using the fire button bits for the fire values.
-- `FIRE1`: Updates the mouse movement state twice, then sets each of two last-mouse button words to all ones when its button bit is clear and to zero otherwise.
+- `HANDLE_MOUSE`: Reads mouse movement data from two input ports and processes them through another routine, then sets global flags based on button states from a potentiometer register.
 - `DO_MOUSE`: Updates a mouse record by decrementing its counter bytes toward zero.
 - `DOM_RIGHT`: Marks one field with 20 when the first movement byte exceeds one.
 - `DOM_DOWN`: Sets the byte at offset five to 20 when the movement value exceeds one, then stores the new reading word.
-- `LAST_MOUSE0`: Small routine of 2 instructions that merges 0 into d0, then merges 0 into d0.
-- `LAST_MOUSE1`: Allocates a block, clears its first 32000 bytes and stores it as the first screen.
-- `KLEFT1`: Small routine of 1 instruction that merges 0 into d0.
 - `ALLOCATE_MEMORY`: Locates available memory blocks and stores the returned bases into three global variables for the onscreen, twoscreen, and background buffers.
 - `CLEARD0`: Zeroes 32000 bytes starting at the address in the argument register, one longword per step.
 - `FIND32K`: Allocates memory through exec.AllocMem and returns the result when it is non-zero.
 - `DECO_PIC`: Loads a file, then copies sixteen words from the back buffer into a table at the start of the target.
-- `DOS_BASE`: Calls the library routine at offset minus 132, starts the sound system, then runs sixteen cycles that start a sound, set a flag byte to one and wait for a flag bit to change.
-- `DOS_HANDLE`: Invokes a routine referenced from a global variable, then runs a fixed fifteen-iteration sound loop that repeatedly requests a new sound, sets a flag, and waits for that flag to clear and to set again before decrementing the counter.
-- `ONESCREEN`: Initializes the sound subsystem by starting audio playback and generating a sequence of sound entries while repeatedly waiting for a hardware flag to toggle.
-- `TWOSCREEN`: Waits for a flag bit to toggle, then loads a sound routine and initializes a set of sound channels before starting the audio system.
-- `SCREEN2`: It invokes a startup routine, then repeatedly waits for a flag bit to toggle while issuing sound commands.
-- `SCREEN1`: Waits for a flag bit to be set and then to be cleared, repeating this cycle several times, then updates a global variable and invokes another routine.
-- `COPPER1`: Waits for a flag bit to toggle twice in sequence, then invokes two routines by address stored in a global variable.
-- `COPPER2`: Waits for a vertical retrace, then runs a short loop that repeatedly toggles a flag while polling a status byte, and finally invokes another routine.
-- `COPPER_LIST2`: Invokes a routine pointer from a global, then runs a sound routine in a loop sixteen times while polling a flag bit.
-- `E_KISS`: It invokes a referenced routine, then plays a short sound sequence by repeatedly requesting new sounds while polling a status flag.
-- `E_RUMBLE`: It invokes a global routine pointer, then plays a short sequence of sound effects with brief pauses between them.
+- `jump_to_test`: Jump stub: passes control straight on to TEST.
 - `TEST`: Disables task switching through the exec library, runs a seventeen-iteration wait for a status bit to clear and to set again, then re-enables task switching through the exec library.
 - `START_SOUNDS`: Sets the sound master flag, fills 8192 bytes with values from a shift-and-add pseudo-random generator, and initialises three channel records with envelope and dummy pointers and their audio channel registers.
 - `GO_SOUND`: Fills a sound channel record with a sample pointer, two word parameters, a cleared status word, a flag set to one and a second pointer.
@@ -121,7 +110,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `HANDLE_REQUEST`: Looks for a pending request in four slots and returns minus one when none is pending.
 - `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d0, then returns.
 - `NEW_SOUND`: Queues a sound request identified by the low ten bits of its argument.
-- `ENVS`: Advances the envelope state of each active channel record, calls the request handler, then writes 8192 to the interrupt request register.
+- `MYINT6`: Checks a hardware interrupt flag, calls a mouse handler routine, and manages sound processing by updating music timing and handling audio envelope changes.
+- `process_music`: Updates music timing and handles sound envelope changes for multiple audio channels, calling various sound routines before clearing an interrupt request flag and returning.
 - `CHANGE_ENVELOPE`: Advances one envelope channel.
 - `END_OF_ENVY`: Loads the next envelope segment from the stream, following loop markers, then applies its increments to the channel's volume and period.
 - `continue_envelope_segment_load`: Entry point into the envelope segment loader.
@@ -142,17 +132,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `PLAY2`: Reads the next note entry, following an indirect pointer when its first word is negative.
 - `set_flag_and_store_three`: Sets the flag word to all ones and calls the byte-store routine three times.
 - `clear_flag_and_store_bytes`: When the first argument is zero it calls the byte-store routine and clears the stored counter.
-- `MUSICON`: Initialises memory, key state, sound and screen, reads data and waits through a fixed count, then installs two interrupt handlers.
-- `DELAYB`: Small routine of 3 instructions that merges 0 into d0, then merges 0 into d0, then merges 0 into d0.
-- `FLAGB`: Initializes the system, sets up the screen, and runs the main game loop until aborted.
-- `SAVE_INT2`: Allocates memory, initializes keys and sounds, sets up the screen, reads all data, and then repeatedly configures the display mode and game state until the user aborts.
-- `TEMP_MUSIC`: Initializes the game systems and starts the sound engine, then repeatedly runs the main game loop until the player aborts.
-- `start_game_loop`: Initializes the game systems, installs interrupt handlers, and runs the main game loop until aborted.
-- `MUSINF_1`: Initializes audio and input systems, configures the screen modes, and then runs an outer loop that repeatedly starts a game session until an abort flag is set.
-- `init_game_system`: Initializes the game system by allocating memory, setting up keys and sounds, and configuring the screen modes.
-- `MUSINF_3`: Initializes a music engine by allocating memory, setting up a key and starting sounds, then switching the screen into a two-screen mode.
-- `MUSIC_DELAY`: Initializes the sound subsystem, installs interrupt handlers, and then repeatedly runs the game loop until an abort flag is set.
-- `MASTER_ENABLE`: Allocates a block of memory and initializes a key handler, then starts sound playback.
 - `START`: Initializes memory, keys, and sound, sets up the screens, then loops forever calling the game routine while checking an abort flag.
 - `READALL`: Runs a fixed sequence of picture reads, grab and buffer-save calls that load the picture files named in the program text into memory, then clears a block.
 - `MYINT3`: Increments a counter, clears the interrupt request variable and writes 112 to the interrupt request register, then returns.
@@ -166,13 +145,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `PLAYINIT`: Resets the play state variables, copies the level's map and terrain tables into working memory using the level number, and clears the trap and snow lists.
 - `PLAYINIT0`: Clears the menu, nudge and automatic flags, copies the level's map and terrain tables, and resets the rocket, trap, snow and timer variables.
 - `GETA4`: Small routine of 3 instructions that clears d1, then copies (a4)+ to d1, then returns.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs three instructions (eori.b, cmpi.b, btst.l) and then falls through into the code that follows, with no return of its own.
 - `WHICH3`: Sets several flag bits in three separate byte locations pointed to by registers, ORing the values 5, 9 and 5 into each.
 - `WHICH4`: It sets bits 0 and 2 of the byte pointed to by the A6 register, leaving the other bits unchanged, then returns to its caller via the handler pointer.
 - `WHICH5`: Sets bits zero and two in one byte and bits zero and three in another, then calls the buffer save routine for each nonzero entry of a 76-entry height table.
 - `WHICH6`: Sets bits zero and three in one byte, then calls the buffer save routine for each nonzero entry of a 76-entry height table.
 - `WHICH7`: Sets a bit in a byte at a fixed offset, then loops over a table of short values, calling another routine whenever an entry is nonzero, until a counter reaches its limit.
 - `READ_G`: Walks the item height table one word at a time for a fixed count of entries and calls the buffer save routine for each nonzero height.
-- `INT_REQ`: Clears two blocks, draws up to eight line segments when the mode flag equals one, draws sprites (two for a two-player game), and finishes by swapping screen buffers.
 - `DRAW_NEW_SEL`: Performs the same clear, line, sprite and screen-swap sequence as the frame interrupt redraw, and is called from the parameter setup routine to repaint the selection screen.
 - `PARMS`: Resets sound, demo and auto-play flags, copies the second screen buffer over the first, then polls triggers and joystick movement.
 - `DO_GAME`: Initialises timers and counters, then repeatedly spawns a new hatch object into a free slot chosen with random values, checks the abort flag, toggles an animation value, and updates both players' busy state, map positions and window before moving and redrawing the scene.
@@ -197,12 +176,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_register_value`: Returns the value currently held in a register without modifying it.
 - `ILLEG`: Jump stub: passes control straight on to GOERROR.
 - `SETUPZ`: Stores the illegal-instruction handler into three vector slots so that faults during start-up are routed to that handler.
-- `PALETTEZ`: The routine contains no executable instructions, only data that does not form valid 68000 code.
-- `AREGISTERS`: Tests whether a spy lies in the current window cell, computes its screen plot position, and draws its body and hand sprites through the sprite routines.
-- `draw_spy_sprite_entry`: Tests whether a spy lies in the current window cell, computes its plot position, and draws its body and hand sprites.
-- `DREGISTERS`: Tests whether a spy lies in the current window cell, computes its plot position, and draws its body and hand sprites.
-- `FROMSTACK`: Tests whether a spy lies in the current window cell, computes its plot position, and draws its body and hand sprites.
-- `VUSP`: Tests whether a spy lies in the current window cell, computes its plot position, and draws its body and hand sprites.
 - `DRAWSPY`: Tests whether spy 1 or spy 2 lies in the current window cell, computes the screen plot position, and draws the body and hand sprites, which are drawn through the hand routine.
 - `DRAWHANDS`: Selects the hand state and screen offset for spy 1 or spy 2 and adjusts the position for the spy's current cell.
 - `DRAWBUTTONS`: Draws seven button icons by calling the single button drawer seven times.
@@ -226,21 +199,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `SPRITER`: Thin wrapper that calls the masked sprite routine with the current register values and returns.
 - `SPRITER_AM`: Thin wrapper that calls the blitter sprite routine with the current register values and returns.
 - `BACKER`: Thin wrapper that calls the background compositing routine with the current register values and returns.
-- `X`: Sets a marker bit, advances the snow timing counter, selects the sleet or snow slab from the minute values, and then draws snow into each spy window that is not inside an igloo.
-- `WIDTH`: Runs the same snow timing, slab selection and per-spy snow drawing as the other snow entry points.
-- `BUFFER`: Advances the snow timing and draws snow into each spy window that is not inside an igloo, using the same logic as the other snow entry points.
-- `SCREEN`: Advances the snow timing and draws snow into each spy window outside an igloo, sharing the common snow logic.
 - `MINTERMS`: Advances the snow timing and slab selection and then calls the snow drawing routine for each spy window that is not inside an igloo.
 - `RSNOWING`: Advances the snow timing and slab selection, then draws snow into each spy window outside an igloo.
 - `DOSNOW`: Draws one column of snow rows across the four bitplanes, choosing the snow pattern from the snow counter and combining each row with AND or OR masks.
-- `SNOWCOUNT`: Calls the font character routine once.
+- `PUTCHAR`: Calculates character position in a display buffer using shift operations on register values, then calls another routine to process the next character.
 - `NEXTCHAR`: Looks up the character cell in the font table from the low nibble of the input and copies eight rows into four bitplanes at the target.
 - `CALCAD`: Consists of fifteen instructions but performs no functional operations or data manipulations before returning.
 - `PLOTPOINT`: Clears the pixel bit in each of the four bitplanes at the target and then sets the bits given by the four colour words.
 - `LEFT_RIGHT`: Tests the leftward direction flag and the low bit of the step value, but returns without any effect in either case.
 - `UP_DOWN`: Tests the direction flag and returns without any effect.
 - `DRAW_LINE`: Computes the horizontal and vertical distances and their directions, then plots points along the line, stepping with an error accumulator that moves vertically or horizontally at each step.
-- `GO_LEFT`: Finds a starting point and walks the span across the four bitplanes, setting or clearing bits to match each colour and stopping at the boundary.
 - `HORLINE`: Finds the starting point and fills a horizontal span of the four bitplanes, setting or clearing bits to match each colour, with a boundary path for partial words.
 - `clear_span_bitplane_rows`: Clears the first bitplane at the start of a span, then sets or clears the four planes across the remaining columns and moves to the next block when a block fills.
 - `fill_span_second_plane`: Continues the span fill starting from the second bitplane, writing plane bits for each column and moving to the next block after sixteen columns.
@@ -264,7 +232,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_spy_direction_three`: Sets the spy direction to three and stores the value one through the pointer it is given.
 - `run_spy_action_sequence`: Sets the spy direction and a state value, then runs a long sequence of routines covering busy handling, meeting checks, trap deletion, footstep counting, sound, random choices and state setting.
 - `CHECKMEET`: Aligns both windows to the same row band, then, when the spies share a band and neither is inside an igloo, checks their horizontal distance to decide whether they meet or separate the windows.
-- `CHECKMEET1`: Moves the shared window left or right in steps of two while the spies are close, counting the steps, and clears the buffer markers when the spies are close enough.
+- `update_spy_window_2`: Calculates window coordinates for spy characters based on map positions, updates global variables, and adjusts window positioning when spies are close together or separated.
+- `update_spy_window`: Adjusts window coordinates for spy characters based on map positions and window size, updating global variables while checking boundary conditions and calling additional routines for window adjustments.
 - `adjust_window_for_spy_two`: Continues the window adjustment toward spy two, counting the steps, and separates the windows when spy two's window is no longer valid.
 - `separate_windows_toward_spy_two`: Adjusts the shared window toward spy two in steps of two, clearing the buffer markers and separating the windows when they no longer overlap.
 - `reset_spy_one_window`: Clears the buffer markers, sets the window to spy one's position with a left margin and a minimum edge, updates the temporary positions, and returns through the meeting exit routine.
@@ -277,7 +246,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `SETWINDOW`: Copies the window position for the active spy into the shared window position variables.
 - `GETWINDOW`: Copies the active spy window position into the window two variables or the window one variables, depending on the active spy and the input.
 - `LITTLE_DELAY`: Counts a fixed value down to zero as a short pause and returns its input word unchanged.
-- `FEET_COUNT`: Redraws the landscape and objects for each window, draws the buttons and clock, sets a cooldown counter for a spy whose energy has run out, and then updates the meters, snowball, snow and line effects.
 - `DRAWMOVE`: Performs the same redraw sequence as the status update: flash, landscape and objects for each window, buttons, clock, energy cooldown, meters, snowball, snow and lines.
 - `RLINES`: When the clock minutes are zero, advances the snow line counter and draws the snow line columns into the second screen for each spy that is outside an igloo.
 - `MOVE_SNOWBALL`: Advances each active snowball entry in the snowball list by its stored step, checking the map tile for blocking flags and the spy positions, and updates the entry in place.
@@ -287,18 +255,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `FIRE_IN_HERE`: The decompiled body is empty apart from a return, so this routine has no visible behaviour and acts as an empty stub.
 - `DRAWOBJ`: Sets the object window origin for the active window, then loops over the object grid, drawing object cells through the spy object drawer and the sprite routine.
 - `DRAWSPYOBJ`: Sets the origin for spy window one or two, loops over a grid of eleven columns and four rows drawing object cells, and draws each spy through the spy drawing routine.
-- `WHICHBACK`: Checks the auto flag, igloo and dead status for the chosen spy, reads the joystick trigger and the frame timer, and when the conditions allow, calls the joystick move routine and sets the spy's frame and direction from the joystick value.
-- `SNOW_LIST`: Shows the same busy-state handler body for the chosen spy as the joystick handler: it checks auto, igloo and dead flags, reads the trigger and frame timer, and calls the joystick move routine when allowed.
 - `BUSY`: Shows the same busy-state handler body for the chosen spy, checking auto, igloo and dead flags and calling the joystick move routine when the trigger and timer allow.
-- `DELAY_TABLE`: A large state routine that adds and deletes traps, reads the joystick, plays sounds, sets states and reads the busy time, handing off to the setup and position handlers.
 - `BUSY4_A`: Selects spy one or spy two, copies its map position into the shared spy position, and clears its hand state.
 - `DELETE_TRAP`: Searches the trap list for the given address, restoring the saved value and clearing the entry when it is found, or clearing the target word when it is not.
 - `ADD_TRAP`: Checks the spy's auto flag and the target word, scanning forward or backward for a suitable location, then records the trap address in the first free slot of the trap list.
 - `DOSETXY`: Calls the coordinate split routine only when the direction code is one of eight recognised values, and returns without action for any other code.
-- `COUNTER1`: When no spy window is active, reads the joystick and, for the chosen menu index, sets a map sprite width of ten, twenty or thirty and shows the map with a state code.
 - `BUSY5_0`: Shares the map width selection body with the counter routine: it reads the joystick, then sets the map sprite width for the chosen index and shows the map.
 - `draw_trail_segment_line`: Computes the horizontal and vertical deltas between two stored trail points, positions the spy through the position routine, draws a horizontal line segment, and then sets the state.
 - `reset_spy_flash_state`: Clears both spies' flash words, then clears the chosen spy's state counter and flash word and returns.
+- `initialize_spy_state`: Initializes spy state by setting up a global variable to a specific value, then branches to another routine after storing the value in a memory location.
+- `update_spy_state`: Updates spy state based on input and game conditions, handling menu navigation and item usage.
 - `BUSY6_4`: Clears the state counter and the flash word of the chosen spy, one for spy one and one for spy two, and returns.
 - `SETSAFE`: Sets the safe flag of spy one or spy two to four, as selected by the input.
 - `KILLDOUBLE`: Stores the frame counter minus twenty as the last trigger time for the chosen spy, which the delay table reads to reject repeat triggers.
@@ -316,8 +282,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `DRAWITEMS`: For each menu item, computes the line endpoints from the item index and calls the line routine four times to draw the item's box.
 - `SELECTITEM`: Empty routine: returns to the caller immediately without doing anything.
 - `DRAWLINE`: Thin wrapper that calls the line drawing routine and returns, so menu code can draw a segment between the current point registers.
-- `PY1`: Fills a rectangle of the first bitplane with set bits and clears the other three bitplanes over the same area, stepping one row at a time.
-- `PY2`: Repeats the rectangle pattern fill of the first entry: it sets the first bitplane and clears the others across the block, stepping by row.
 - `RCLEARBLOCK`: Writes a block of the screen with the first bitplane set and the other three cleared, row by row.
 - `BRAINMOVE`: Chooses the computer spy's next move: it searches for a mound, fires when the fire routine applies, and picks a direction from random values, setting the state for the chosen action.
 - `GETD0D1`: Sets the spy direction to three, four, one or two from the first of four direction bits that is set in the input, or to zero if none is set.
@@ -366,18 +330,31 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_sixteen_words_then_call`: Copies sixteen long words from a table at a fixed offset into a buffer when the buffer pointer is non-null, then calls through a stored code pointer.
+- `initialize_structure`: Initializes several fields in a data structure pointed to by a1, clears specific memory locations, and sets up a counter in a global variable.
+- `jump_to_dispatch`: Unconditionally branches to another routine using a relative word offset and does nothing else.
+- `set_global_value`: Sets a global variable to negative one and stores that value at an offset from another global variable's address before branching to a different routine.
+- `set_another_value`: Sets a global variable to negative one and stores that value at an offset from a global variable's address before branching to a different routine.
+- `process_data_with_jump`: Loads data from a table using an index, processes the loaded value, and stores the result in a global structure before jumping to another routine based on the processed value.
+- `dispatch_by_value`: Loads a byte from memory, compares it against specific constants, and branches to different routines based on the comparison results.
+- `update_and_execute`: Increments a counter in a structure, performs several conditional checks and assignments based on values in memory, and executes a series of function calls through pointers in registers before branching to another routine.
+- `initialize_and_execute`: Initializes a global variable at offset 616 of the structure in a2 with the value 1, then performs a series of function calls through a5 using different offsets from a2, updating values at various offsets and checking conditions before branching to another routine.
+- `jump_to_handler`: Immediately jumps to another location in the code without performing any other operations.
+- `execute_indirect_call`: Performs two indirect function calls using pointers stored in registers, then jumps to another location through a pointer in a6.
 
 ### cd
 
 - `find_largest_list_entry`: Walks a linked list of entries, keeping the largest value found, after a library call sets up the list.
 - `copy_words_then_call`: Copies a fixed number of words from one memory location to another while the destination pointer is not null, then invokes a routine through a stored pointer.
+- `xor_and_shift_bytes`: XORs a byte value with a bit mask derived from a register, then shifts and stores the result in a global structure.
+- `load_and_process_2`: Loads data from a table using an index, processes the loaded value, and stores the result in a global structure before branching to another routine.
+- `load_and_process`: Loads data from a table using an index from a global structure, processes the loaded value, and stores the result in another global structure.
 
 ### spy1prg
 
 - `load_hunk_executable_segments`: Loader routine that allocates and frees memory through the exec library, compares hunk type codes while processing records, and relocates the loaded segments.
 - `empty_return_program_stub`: The decompiled body is empty apart from a return, so this routine has no visible behaviour and is an empty stub in the program.
 - `count_down_delay_loop`: Decrements a count in the register until it reaches zero, a busy-wait delay.
-- `tiny_ori`: Small routine of 1 instruction that merges 140 into d0.
+- `fall_through_entry_2`: Entry point part-way through straight-line code: runs one instruction (lsl.l) and then falls through into the code that follows, with no return of its own.
 - `copy_byte_runs_from_codes`: Repeatedly calls a helper for codes and copies byte runs between a source and a destination buffer, adjusting the pointers and counts from the returned values until the terminator is reached.
 - `tiny_moveq`: Small routine of 1 instruction that loads 1 into d0.
 - `decrement_character_loop`: Loops a count of times decrementing a byte and wrapping it to the space character when it reaches zero.
@@ -464,7 +441,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Spy vs Spy (1989)(First Star Software)[cr Yakoul].adf:spy3titles
 
 - `START_CODE`: Allocates memory, starts the sound system, sets up the screen and loads the data, then waits in a counted delay loop.
-- `DUMMY_SPRITE`: Polls the beam counter, read from a global value that is updated from the VPOSR register, until it lies in a window starting at the input value and about 2816 counts wide.
+- `WAIT_FOR_RASTER`: Synchronizes execution to a specific raster line by comparing a target value with the current vertical position register, looping until the condition is met.
 - `ATARI_COPY`: Loops over 4000 words, taking four consecutive source words and writing each one to a different bitplane, the planes being spaced 4000 words apart.
 - `COLOUR_COPY`: Copies sixteen source words into a table, shifting each one left by one bit.
 - `LOAD_FILE`: Opens the DOS library through the system exec base, stores the returned library base in a global, then makes two further library calls on that base.
@@ -478,16 +455,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `FIND32K`: Calls the system allocation function for a 32K block and returns when it succeeds.
 - `WHOS_REMOVED_THE_RAM_CHIPS`: Contains only an endless loop with no other work.
 - `DECO_PIC`: Copies sixteen 16-bit values into a destination table, then decodes three 8000-byte bitplanes from a stream of literal bytes and marker-introduced runs, writing each byte with interleaved spacing.
-- `DOS_BASE`: Calls a library routine, starts the sound system, then sixteen times starts a new sound, sets the music switch and waits for a status bit to clear and then set.
-- `DOS_HANDLE`: Invokes a routine stored in a global vector table, then runs a fixed loop that repeatedly calls a sound routine while polling a hardware register bit.
-- `ONESCREEN`: Waits for a flag bit to toggle by polling a global variable, then clears and re-enables a set of interrupt enable bits.
-- `TWOSCREEN`: Waits for a short delay, then repeatedly plays a sound while a music flag is toggled.
-- `SCREEN2`: Waits for a short delay by repeatedly checking a status flag, then restores a previously saved interrupt vector and disables interrupts.
-- `SCREEN1`: Restores a previously saved interrupt handler and re-enables interrupts, then invokes another routine.
-- `COPPER1`: Chains into a previously saved routine, plays an initial sound, then repeatedly triggers new sounds while waiting for a flag bit to toggle, decrementing a counter until it reaches zero.
-- `COPPER2`: Calls a routine to set up a screen, starts the sound system, and then runs a sixteen-iteration loop that repeatedly triggers a sound and waits for a status bit to change before restoring an interrupt vector and clearing a flag.
-- `COPPER_LIST2`: Waits for a short delay, repeatedly triggering sound events while a music switch stays active, then restores a saved value and clears a flag before returning.
-- `E_RUMBLE`: It invokes a previously registered routine, then plays a sequence of sound effects while repeatedly waiting for a flag bit to be set and then cleared.
+- `jump_to_test_2`: Jump stub: passes control straight on to TEST.
 - `TEST`: Waits for a status bit to clear and then set in a short loop, then disables task switching, writes to a hardware register, and re-enables task switching.
 - `START_SOUNDS`: Fills an 8192-byte table with values from a pseudo-random generator, then resets the music switch and the voice records.
 - `GO_SOUND`: Stores the input pointer and the input values into a sound record, sets a global to 255 and marks the record as active with a count of one.
@@ -539,7 +507,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `START`: Allocates memory, starts the sound system, sets up the screen buffers and reads the picture data, then waits in a counted delay loop.
 - `READALL`: Calls READPIX three times and RSTUFF_BUFF between those calls, which together read the background and object picture files.
 - `MYINT3`: Calls TINTERRUPT, clears the interrupt request flag and writes the interrupt acknowledge mask to the global value.
-- `INT_REQ`: Decodes a picture with DECO_PIC, then copies its planes with ATARI_COPY and its colours with COLOUR_COPY.
 - `READPIX`: Invokes three routines in sequence: a decode routine, a copy routine, and a colour copy routine.
 - `RNDER`: Updates three random-generator state words using additions, a rotate and an exclusive-or with a fixed constant.
 - `RNDER2`: Calls RNDER to advance the random generator and returns the new state value.
@@ -557,12 +524,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_unchanged_value`: Returns without doing any work.
 - `ILLEG`: Handles an illegal instruction exception: it stores the register values to a stack area, copies the palette, clears the first screen buffer, then branches into GOERROR to show the register dump.
 - `SETUPZ`: Stores the address of ILLEG into three global vector slots, which installs the illegal-instruction handler.
-- `PALETTEZ`: The routine contains no executable instructions, only data that the disassembler could not decode.
-- `AREGISTERS`: Draws glyph rows into four bitplanes.
-- `apply_column_bitmask_to_planes`: It applies a bit-masked AND/OR operation to four stacked 320x200 bitmap planes, shifting the mask pattern by a per-column bit offset.
-- `DREGISTERS`: It clears a block of 16-bit screen memory by masking out selected bits, then copies a pattern from a source table into those positions, shifting the bits by a variable amount.
-- `FROMSTACK`: This routine clears a rectangular block of bits in a bitmap, using a shift amount and a mask width taken from the entry registers.
-- `VUSP`: It composites a source glyph into four interleaved bitplanes, ORing the unshifted bits when the column offset is a multiple of sixteen and otherwise shifting the bits by the low nibble of the input.
+- `RSPRITER`: Processes glyph data to render a sprite by combining bit planes with rotation and masking operations, then calls another routine to continue processing.
 - `or_glyph_rows_into_planes`: ORs source words into four bitplanes row by row, advancing the source by four words per pass.
 - `RSAVE_BUFF`: Copies screen words from four bitplanes into a buffer, storing four words per entry, over a block of rows.
 - `RDRAW_BUFF`: Writes buffer words back into four bitplanes, splitting four words per entry, over the same row block and 20-word row spacing as the matching save routine.
@@ -570,7 +532,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `RSTUFF_BUFF_ST`: Writes a size, column and row header into the buffer, then copies a rectangle of words from the four screen planes using a wider row stride than the matching store routine.
 - `RSTUFF_BUFF_SHORT`: Writes a size, column and row header into the buffer, then copies a rectangle of words from one screen plane without the four-plane interleaving used by the longer variants.
 - `RSPRITER_AM`: Sets the blitter pointers, modulo, masks and control registers from the sprite's position and size, then waits for the blit to finish.
-- `X`: Sets a single screen bit, applies a palette, clears both frame buffers, swaps the visible screen, fades it in, and then enters an infinite loop that never returns.
 - `MINTERMS`: Sets a bit in a mask byte and builds the palette, then clears both screen buffers and swaps them.
 - `TITLES`: Builds the palette, clears both screen buffers and swaps them.
 - `TINTERRUPT`: Increments a tick counter, and once every five ticks calls ALTER_PALETTE to step the palette fade.
@@ -594,7 +555,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Spy vs Spy (1989)(First Star Software)[cr Yakoul].adf:spy2
 
 - `START_CODE`: Allocates memory, initialises the key matrix, starts the sound system and saves the current interrupt pointer.
-- `DUMMY_SPRITE`: Polls the beam counter, read from a global value that is updated from the VPOSR register, until it lies in a window starting at the input value and about 2816 counts wide.
+- `WAIT_FOR_RASTER`: Waits for the vertical retrace by polling the raster position register until it reaches a specific value, then checks if it exceeds another value before returning.
 - `ATARI_COPY`: Loops over 4000 words, taking four consecutive source words and writing each one to a different bitplane, the planes being spaced 4000 words apart.
 - `COLOUR_COPY`: Copies sixteen 16-bit values from a source pointer into a global table, doubling each value on the way.
 - `LOAD_FILE`: Loads the DOS library via the system base and stores the returned library base in a global, then invokes two further library calls on that base.
@@ -612,24 +573,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `SCAN_JOY`: Reads the fire button and direction bits from the joystick and mouse port registers into state words for ports 0 and 1.
 - `HANDLE_MOUSE`: Calls DO_MOUSE twice to update the mouse movement, then sets two last-mouse state words to minus one when their button bits read clear.
 - `DO_MOUSE`: Reads a four-byte counter from a state record and steps it toward zero one byte at a time, rotating the byte order between steps.
-- `LAST_MOUSE0`: Allocates three 32K blocks.
-- `LAST_MOUSE1`: Finds a 32K buffer, clears a screen through it, repeats for a second screen, stores a third buffer, and returns.
-- `KLEFT1`: Initializes three screen buffers by clearing the first screen and the second screen to zero and then allocating a third back buffer, using a shared allocation routine for each.
 - `ALLOCATE_MEMORY`: Finds three available 32K memory blocks and stores each one into separate global variables that hold the single-screen, double-screen, and background buffers.
 - `CLEARD0`: Zeroes 8000 longwords starting at the input pointer, which clears one 32000-byte screen block.
 - `FIND32K`: Calls the system allocation function for a 32K block and returns when it succeeds.
 - `DECO_PIC`: It copies sixteen 16-bit values into a destination table, then decodes three 8000-byte bitplanes from a stream of literal bytes and marker-introduced runs, writing each byte with interleaved spacing.
-- `DOS_BASE`: Calls a library routine, starts the sound system, then sixteen times starts a new sound, sets the music switch and waits for a status bit to clear and then set.
-- `DOS_HANDLE`: Invokes a routine stored at a fixed offset in a global variable, then runs a sound routine and loops a fixed number of times waiting on a bit in a global variable, before restoring a register and calling another routine.
-- `ONESCREEN`: Initializes the sound subsystem by starting the sound handler and resetting the music switch, then repeatedly waits for a hardware flag to toggle until a fixed number of iterations completes, and finally stores a register value and invokes another routine.
-- `TWOSCREEN`: Waits for a flag bit to be set and then to be cleared, repeating this cycle several times, then stores a register value and a fixed constant into global variables before invoking another routine.
-- `SCREEN2`: Waits for a sound routine to finish, then plays a short sequence of musical notes while pausing between them.
-- `SCREEN1`: Waits for a fixed number of vertical blank intervals, pausing inside each one until the video interrupt flag is set and then until it clears.
-- `COPPER1`: Invokes a previously stored routine and initializes the audio subsystem, then repeatedly waits for a status bit to toggle while issuing sound commands.
-- `COPPER2`: Chains into a previously saved routine, then repeatedly triggers sound events while waiting for a status flag to toggle, and finally invokes another stored routine before returning.
-- `COPPER_LIST2`: Calls a routine stored in a global slot, then runs a loop of eight iterations that triggers new sounds and waits on a music-switch flag before invoking another stored routine.
-- `E_KISS`: Invokes a routine via a pointer in a global table, then plays a sound effect.
-- `E_RUMBLE`: Triggers a set of sound effects, then repeatedly waits for a hardware flag to be set and then cleared while cycling through the sounds.
+- `jump_to_test_3`: Jump stub: passes control straight on to TEST.
 - `TEST`: It triggers a sound effect, then repeatedly plays music notes while waiting for a status flag to flip on and off.
 - `START_SOUNDS`: Fills an 8192-byte buffer with values from a shift-and-add generator, sets the length registers of four audio channels to 32 words, and writes per-channel records with pointers to that buffer, then clears interrupt and DMA state and initializes the music.
 - `GO_SOUND`: It stores a 32-bit pointer and two 16-bit values into a two-part record, then zeroes the counters and sets a flag to one.
@@ -669,15 +617,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `SNDOUT`: Sends three register bytes through PSGW in a row, with no arguments visible in the decompile.
 - `NOTEMODS`: Adjusts a note byte by a small signed offset taken from a second input, carrying into the high nibble when the low nibble wraps.
 - `RESET`: Calls the register write routine PSGW three times in a row.
-- `SAVE_INT2`: The recorded length is 1 instruction, but the decompiled body is a long startup sequence (memory allocation, key and sound setup, screen setup, backdrop copy, screen swap).
-- `TEMP_MUSIC`: The recorded length is 4 instructions, but the decompiled body is the same long startup sequence (memory allocation, key and sound setup, screen setup, backdrop copy, screen swap).
-- `REG7`: The recorded length is 5 instructions, but the decompiled body is the same long startup sequence (memory allocation, key and sound setup, screen setup, backdrop copy, screen swap).
-- `stub_bad_instruction_data`: The recorded length is 3 instructions, but the decompiled body is the same long startup sequence (memory allocation, key and sound setup, screen setup, backdrop copy, screen swap).
-- `MUSINF_1`: The recorded length is 10 instructions, but the decompiled body is the long startup sequence (memory allocation, key and sound setup, screen setup, backdrop copy, screen swap).
-- `stub_bad_instruction_data_2`: The recorded length is 3 instructions, but the decompiled body is the long startup sequence (memory allocation, key and sound setup, screen setup, backdrop copy, screen swap).
-- `MUSINF_3`: The recorded length is 7 instructions, but the decompiled body is the long startup sequence (memory allocation, key and sound setup, screen setup, backdrop copy, screen swap).
-- `MUSIC_DELAY`: The recorded length is 1 instruction, but the decompiled body is the long startup sequence (memory allocation, key and sound setup, screen setup, backdrop copy, screen swap).
-- `MASTER_ENABLE`: Initializes the sound system, sets up the screen, copies a large block of memory twice, and then runs the main game loop until aborted.
 - `START`: Top-level start routine that allocates memory, sets up keys, sounds and screens, then calls READALL and PLAYINIT before entering DO_GAME. It swaps screens and installs the interrupt handlers MYINT2, MYINT3 and SAVE_INT2 along the way.
 - `READALL`: Clears the first screen buffer, then makes calls to READPIX and long runs of GRAB and RSAVE_BUFF that copy picture data.
 - `MYINT3`: Increments a global counter, clears a busy flag, and resets another global variable before returning from the interrupt.
@@ -690,9 +629,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `PLAYINIT0`: Sets the automatic-control flags for the two players from the player count, then places both players' starting positions from the map table for the current level.
 - `GETA4`: Loads the address of a global variable into register A4 and returns without performing any further action.
 - `XGET_STICK`: Uses the current level to index two position tables, copying the X and Y entries into the XSTICK1 and YSTICK1 variables.
-- `MY_VERY_OWN_STACK`: Per-frame player update: it reads the trigger flags for both players, moves them from joystick or demo input, and updates their dead and automatic-control flags.
-- `XSTICK1`: Per-frame player update with the same body as its neighbours: it reads trigger flags, moves players from joystick or demo input, and calls NEW_SOUND and DRAWSEL. It reaches XSTICK1 as if it were a call, but XSTICK1 is a one-instruction data entry, so that is a decompiler artefact.
-- `YSTICK1`: Per-frame player update with the same body as its neighbours: it reads trigger flags, moves players from joystick or demo input, and calls NEW_SOUND and DRAWSEL. It reaches YSTICK1 as if it were a call, but YSTICK1 is a one-instruction data entry, so that is a decompiler artefact.
 - `PARMS`: Menu and setup loop that reads trigger and joystick input and draws the selection.
 - `DO_GAME`: Main game-frame routine: it clears the outcome timers, updates the busy flags and window positions, and moves and draws the spy.
 - `READPIX`: Runs a picture decode and copy routine, then sets two global variables to zero and a large value before returning.
@@ -700,23 +636,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `STUFFSPY`: Picks a random position for each spy and converts map positions to window coordinates.
 - `SETUP_VOLCANO`: Stores three fixed values, 1971, 1424 and 1397, into COL1A, COL2A and COL3A and mirrors them into their second copies.
 - `COPY_COLOURS`: Copies four colour values into global variables, choosing between two sets depending on whether the incoming D0 register value is even or odd.
-- `COL1A`: Its body is a single call to GET_RANDOM followed by a return.
-- `COL2A`: Generates a random value before returning.
-- `COL3A`: Generates a random value and stores it into a global variable.
 - `RNDER`: Calls GET_RANDOM once and returns.
 - `RNDER2`: Calls GET_RANDOM and returns its result as a 64-bit value combined with the D0 half.
 - `GETRAND`: Repeatedly picks random slab coordinates from RNDER calls until the chosen cell reads as zero, then returns a pointer to that cell.
 - `SETXY`: Adds a fixed offset to its input, then divides by 96 to store the quotient as X and keeps the remainder as Y. It is called from BUSY, BUSY4_A, PLAYINIT0 and STUFFSPY.
 - `CLEAROUTCRAP`: Sets six variables for the time and fuel readouts to minus one.
-- `L_TENMINS`: Draws the ten-minutes readout as a sprite for each player whose map cell matches the current window, using that player's depth, swamp and altitude values.
-- `L_ONEMINS`: Draws the one-minute readout as a sprite for each player whose map cell matches the current window, using that player's depth, swamp and altitude values.
-- `L_TENSECS`: Draws the ten-seconds readout as a sprite for each player whose map cell matches the current window, using that player's depth, swamp and altitude values.
-- `L_ONESECS`: Draws the one-second readout as a sprite for each player whose map cell matches the current window, using that player's depth, swamp and altitude values.
-- `L_S1FUEL`: Draws the player one fuel readout as a sprite at the player's map position, using the fuel address and fuel index to pick the frame.
-- `L_S2FUEL`: Draws the player two fuel readout sprite when a matching map cell is found, with the same body as the player one fuel readout.
-- `SLABX`: The recorded length is 1 instruction, and the decompiled body is a readout drawing routine.
-- `OLD_BUSY`: The recorded length is 1 instruction, and the decompiled body is a readout drawing routine.
-- `SAVE_INT3`: The recorded length is 1 instruction, and the decompiled body is a readout drawing routine.
 - `DRAWSPY`: Draws the spy sprite for each player at its window position when that player's map cell matches the current window, then calls DRAWHANDS for the hands.
 - `DRAWHANDS`: Draws a hand sprite for a player when that player's counter, depth and swamp values are within limits.
 - `DRAWBUTTONS`: Calls ONEBUTTON six times in a row, one for each button position.
@@ -740,10 +664,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `SPRITER`: Calls RSPRITER to draw a sprite and returns.
 - `SPRITER_AM`: Calls RSPRITER_AM to blit a sprite and returns.
 - `BACKER`: Calls RBACKER to draw the background rows and returns.
-- `X`: The recorded length is 1 instruction, and the body sets one bit in a byte and then calls NEXTCHAR. X is used as a plain data variable by its callers, so the body is not this entry's own code.
-- `WIDTH`: The recorded length is 1 instruction, and the body sets one bit in a byte and then calls NEXTCHAR. WIDTH is used as a plain data variable by its callers, so the body is not this entry's own code.
-- `BUFFER`: The recorded length is 1 instruction, and the body sets one bit in a byte and then calls NEXTCHAR. BUFFER is used as a plain data variable by its callers, so the body is not this entry's own code.
-- `SCREEN`: The recorded length is 1 instruction, and the body sets one bit in a byte and then calls NEXTCHAR. SCREEN is used as a plain data variable by its callers, so the body is not this entry's own code.
 - `MINTERMS`: The recorded length is 1 instruction, and the body sets one bit in a byte and then calls NEXTCHAR. MINTERMS is used as a plain data variable by its callers, so the body is not this entry's own code.
 - `PUTCHAR`: Calls NEXTCHAR to draw one character and returns.
 - `NEXTCHAR`: Draws one eight-row character from the font table, chosen by the low four bits of the input.
@@ -752,7 +672,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `LEFT_RIGHT`: Tests the go-left flag and the low bit of an input, but both branches return with no change shown.
 - `UP_DOWN`: Reads the go-left flag, but both branches return with no change shown.
 - `DRAW_LINE`: Works out the horizontal and vertical distances between two points and sets the direction flag.
-- `GO_LEFT`: The recorded length is 1 instruction, and the body loops over a line segment calling POINT. GO_LEFT is used as a plain flag variable by DRAW_LINE and LEFT_RIGHT, so the body is not this entry's own code.
 - `HORLINE`: Draws a horizontal run of points between two x positions, calling POINT for each group of pixels along the way.
 - `POINT`: Joins the high word of its first input with the low word of its second input, then masks the result to keep the high word and the low four bits.
 - `GET_RANDOM`: Updates three random-state words with adds, subtracts and a bit rotation, then returns the new value through its registers.
@@ -770,7 +689,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `SETWINDOW`: Copies the player two window position into the spy window variables when SPYWIN is 2 or the input is nonzero (and SPYWIN is not 1).
 - `GETWINDOW`: Copies the spy window position back into the player two or player one window variables, using the same choice rule as set_spy_window_position.
 - `LITTLE_DELAY`: Loops counting a 16-bit variable down through a long wrap-around count, then returns its input unchanged.
-- `FEET_FLAG`: The recorded length is 1 instruction, and the body is a frame drawing routine that is the same as DRAWMOVE. FEET_FLAG is used as a counter variable by TEST_OPTIONS and DO_GAME, so the body is not this entry's own code.
 - `DRAWMOVE`: Draws one movement frame: the fuel readout, the flashing piece, the selection, the land and the objects.
 - `DRAWLAND`: Reads the buffer edge positions for the two players and selects the matching back buffer.
 - `DRAWLAND2_0`: Starts a blit using the mode word 33856, waits for it, and draws the land slabs.
@@ -783,12 +701,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `DRAWROPES`: Calls DRAW_LINE for each player whose rope-line flag is set, and clears that flag after drawing.
 - `DRAWFUEL`: Compares the chosen player's fuel value with its last value through COMPARETWICE. It returns early when the fuel value is zero, and otherwise draws the gauge with HORLINE. It is called from DRAWMOVE.
 - `CLEAR_WINDOW`: Programs the blitter to clear a window region of the second screen, then clears a second region 8000 bytes further on.
-- `SEL_FLAG`: The recorded length is 1 instruction, and the decompiled body is a long, unrelated routine.
 - `BUSY`: Large per-frame routine for the two players.
 - `BUSY4_A`: Chooses a player's map position and spy position, then sets the state and calls SETXY and STUFFIT to place the objects.
 - `DELETE_TRAP`: Scans a list of 100 trap entries for the given pointer.
 - `ADD_TRAP`: Adds a trap entry when its input byte is nonzero, choosing the player's automatic flag by the input.
-- `COUNTER1`: Per-frame counter routine that updates the position and count values for the players.
 - `clear_player_delay_state`: Clears both flash counters, moves the pending DELAY1 value into DELAY0 or DELAY1 according to the input, and clears the matching player's counter.
 - `BUSY6_4`: Moves the pending DELAY1 value into DELAY0 or DELAY1 according to the input, and clears the matching player's counter.
 - `SETSAFE`: Sets the safe value for player one or player two to 4, chosen by whether the input is zero.
@@ -801,7 +717,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `ABSD2`: Contains no instructions and simply returns to the caller without modifying any data.
 - `DRAWROPE`: Chooses the plot position of player one or player two according to its input, then draws the rope segment from that point.
 - `CLEANTRAIL`: Sets each of the six entries in the two trail arrays to 65535.
-- `DELAY1`: Draws one delay frame: it copies the back buffer, draws the clouds, the spy sprites and a horizontal line, polls INKEY, plays the sound update and swaps screens.
 - `SUBCLOUDS`: Draws a cloud sprite at a position taken from its inputs, doubling the x offset when the second input is above six.
 - `COPYBACK`: Copies the first screen buffer into the second, several words per pass, over about 2000 passes.
 - `PARADROP`: Computes a count from the demo value, and when it exceeds one draws the sprite twice with RSPRITER. It then runs a short delay loop.
@@ -812,8 +727,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `RSPRITERBOTH`: Calls RSPRITER to draw a sprite, then branches into RSPRITER again with the second screen's values.
 - `RDRAW_BOTH`: Calls RDRAW_BUFF to draw the buffer, then branches into RDRAW_BUFF again for the second screen.
 - `RCLEARBLOCK`: Clears a block of bytes in the screen buffer, starting at an offset from the input registers and running for a count taken from the input.
-- `PX1`: The recorded length is 1 instruction, and the decompiled body is a long, unrelated routine.
-- `PX2`: The recorded length is 1 instruction, and the decompiled body is a long, unrelated routine.
 - `BRAINMOVE`: Chooses the next move for the computer-controlled spy from random values, the stick positions in XSTICK1 and YSTICK1, and a mound search.
 - `GETD0D1`: Sets the spy direction from the first set bit of its input, checking bits 0 to 3 in turn for directions 3, 4, 1 and 2.
 - `BRAINBUSY1`: When the word at the pointer is zero, clears the frame index of player one or player two according to the input, then sets the word to 16389.

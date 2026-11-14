@@ -6,68 +6,95 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901280 top-level bytes in 48 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 6 raw-word lines |
-| Functions named and described | pass, 339 of 339 named (0 author symbols), 339 of 339 described (41 by rule, 0 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1607 of 1615 (99.50%) |
-| Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 6835 of 7746 instructions identical in start and length, 0 mismatches |
+| Bytes classified (901184 top-level bytes in 81 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 15 of 15 units identical (bytes and relocations), 5 raw-word lines |
+| Functions named and described | pass, 299 of 299 named (0 author symbols), 299 of 299 described (23 by rule, 1 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1607 of 1607 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 917912 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 6686 of 6686 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 38686 |
-| code | 31446 |
-| data | 768454 |
-| padding | 9958 |
+| asset | 36278 |
+| code | 27200 |
+| data | 770605 |
+| padding | 14365 |
 | unused | 52736 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Storm Master (1991)(Silmarils)(De).adf:t.x | 4 | 7724 | 337 |
+| Storm Master (1991)(Silmarils)(De).adf:t.x | 4 | 6664 | 297 |
 | Storm Master (1991)(Silmarils)(De).adf:bootblock | 1 | 20 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 0 | 0 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
+| Storm Master (1991)(Silmarils)(De).adf:FINISH.CO#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Storm Master (1991)(Silmarils)(De).adf:VOL.CO#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Storm Master (1991)(Silmarils)(De).adf:ACCUEIL.CO#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Storm Master (1991)(Silmarils)(De).adf:MASTER.CO#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Storm Master (1991)(Silmarils)(De).adf:SANCHO.CO#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Storm Master (1991)(Silmarils)(De).adf:COMMER.CO#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Storm Master (1991)(Silmarils)(De).adf:OFFICIER.CO#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Storm Master (1991)(Silmarils)(De).adf:MESSE.CO#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Storm Master (1991)(Silmarils)(De).adf:LEO.CO#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Storm Master (1991)(Silmarils)(De).adf:PRES3.CO#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Storm Master (1991)(Silmarils)(De).adf:CARTE.CO#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Storm Master (1991)(Silmarils)(De).adf:ASHIP.CO#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
 
 ## Cases handled
 
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:FINISH.CO: high-entropy data file (7.64 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:CONSEIL.CO: high-entropy data file (7.75 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:EVEQUE.CO: high-entropy data file (7.83 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:TLEO.CO: high-entropy data file (7.71 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:MAIN.CO: high-entropy data file (7.77 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:AVENT.CO: high-entropy data file (7.81 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:VOL.CO: high-entropy data file (7.80 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:ACCUEIL.CO: high-entropy data file (7.71 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:MASTER.CO: high-entropy data file (7.87 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:SANCHO.CO: high-entropy data file (7.90 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:APROJEC.CO: high-entropy data file (7.89 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:COMMER.CO: high-entropy data file (7.82 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:POLIT.CO: high-entropy data file (7.86 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:PARCH.CO: high-entropy data file (7.78 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:BVENT.CO: high-entropy data file (7.86 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:OFFICIER.CO: high-entropy data file (7.86 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:BOSTROM.CO: high-entropy data file (7.80 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:MC2.CO: high-entropy data file (7.79 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:ANUAGE.CO: high-entropy data file (7.78 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:TEXTE.CO: high-entropy data file (7.81 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:MESSE.CO: high-entropy data file (7.86 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:LEO.CO: high-entropy data file (7.79 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:LOGO.CO: high-entropy data file (7.81 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:TEXTE2.CO: high-entropy data file (7.79 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:FINISHG.CO: high-entropy data file (7.84 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:PRES3.CO: high-entropy data file (7.78 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:EXPLOSE.CO: high-entropy data file (7.90 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:CARTE.CO: high-entropy data file (7.87 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:ASHIP.CO: high-entropy data file (7.84 bits/byte), classified as packed data
-- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:PANNEAU.CO: high-entropy data file (7.78 bits/byte), classified as packed data
-- reference crashes at an address (HLE illegal instruction an address at an address: through vector 0, as before (vector 4 is 0 again)): 114654 executed addresses of the slide through empty memory after it (an address) are not game code and are excluded from proof 4
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:FINISH.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (12746 -> 32144 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:CONSEIL.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (2130 -> 4480 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:EVEQUE.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (6576 -> 15880 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:TLEO.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (2248 -> 5672 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:MAIN.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (3742 -> 9200 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:AVENT.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (25038 -> 26128 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:VOL.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (23710 -> 62696 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:SHARKAAN.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (660 -> 1432 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:ACCUEIL.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (13564 -> 44064 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:MASTER.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (29170 -> 61248 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:SANCHO.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (27188 -> 50016 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:APROJEC.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (8676 -> 17672 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:COMMER.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (52298 -> 108360 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:POLIT.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (22956 -> 44600 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:PARCH.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (6574 -> 19168 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:BVENT.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (13986 -> 17936 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:OFFICIER.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (10984 -> 24184 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:BOSTROM.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (65600 -> 112616 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:MC2.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (17962 -> 38448 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:ACIEL.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (296 -> 1976 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:ANUAGE.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (4166 -> 11240 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:TEXTE.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (8126 -> 16696 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:MESSE.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (78616 -> 124640 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:LEO.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (58000 -> 138384 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:ASOURIS.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (396 -> 544 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:LOGO.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (8000 -> 21040 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:TEXTE2.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (7566 -> 17864 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:FINISHG.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (20436 -> 32144 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:SOURIS.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (1056 -> 1672 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:PRES3.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (40118 -> 116040 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:EXPLOSE.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (15854 -> 25248 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:CARTE.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (51470 -> 100240 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:ASHIP.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (19512 -> 55896 bytes)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:PANNEAU.CO: Silmarils Data Cruncher (xfd)-packed, unpacked with ancient (4234 -> 11024 bytes)
+- reference run ref ends at a 68000 address error (odd PC an address after an address): the harness halted there, nothing after it ran (68000 HALTED: address error at odd PC an address after an address, vector 3 an address is not a handler in RAM (the 68000 double-faults and halts); run ended at frame 43)
 - 2 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
-- runtime segment an address: 8 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:FINISH.CO#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:VOL.CO#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:ACCUEIL.CO#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:MASTER.CO#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:SANCHO.CO#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:COMMER.CO#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:OFFICIER.CO#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:MESSE.CO#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:LEO.CO#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:PRES3.CO#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:CARTE.CO#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- storm master (1991)(silmarils)(de)/Storm Master (1991)(Silmarils)(De).adf:ASHIP.CO#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- 12 never-loaded region(s), 917912 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 - 1 packed track region(s), 11264 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)
 
 ## Cracktros (kept, not protection)
@@ -97,7 +124,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
 - `init_screen_buffers_and_window`: Reads a screen pointer from the structure, derives several buffer pointers with fixed offsets, allocates memory for buffers and a bitmap, opens a window, sets the pointer, and initializes view and clipping globals before returning.
 - `copy_overlay_and_start_copper`: Copies the overlay block to the destination pointer, sets up the copper list pointers, calls the setup routine, then Forbids, writes COP1LCH and DMACON to start the copper, Permits and returns.
-- `zero_filled_data_area`: Two zero words that decode as ori.b #0,d0; this range is a zero-filled data area referenced by address, not executable code.
 - `find_word_index_in_table`: Scans a table of words for the value in d0, returning its index in d0, or minus one in d0 and d1 when not found, and minus two in d1 when the table end is reached.
 - `skip_negative_or_zero_index`: Tests the word in d0 and returns immediately if it is negative or zero, otherwise also returns without touching any other register or memory.
 - `copy_four_scaled_words_to_sprite`: Saves all registers, looks up a table entry indexed by d0, multiplies a global scale into four words read from a0 and writes high and low halves into sprite memory, then restores registers.
@@ -169,28 +195,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_zero_constant_2`: Clears d0 to zero and returns, providing a constant zero result to the caller.
 - `compute_remaining_time_percent`: Calls a helper with d0, then if a global is not minus one, computes elapsed ticks times a word, divides by 1000, subtracts 2 and clamps negative results to zero in d0.
 - `lock_and_scan_dos_device`: Selects a DF0, DF1 or DH0 name string from d0, calls dos.Lock, stores the lock, calls dos.Info with a callback and dos.UnLock, returning minus one on failure.
-- `zero_filled_data_area_2`: Two zero words that decode as ori.b #0,d0; this range is zero-filled data referenced by address, not executable code.
-- `zero_filled_data_word_at_1ce0`: A single zero word that decodes as ori.b with immediate zero to d0; it is data, not executable code, referenced by an address pointer.
-- `zero_filled_data_word_at_1ce4`: One zero word stored at the next data slot, decoding as ori.b immediate zero to d0; a data byte pair, not a real instruction.
-- `zero_filled_data_pair_at_1ce8`: Two consecutive zero words that decode as ori.b immediate zero to d0 twice; this is zero-filled data referenced by an address, not code.
-- `zero_filled_data_words_at_handler_slot`: Two zero words that decode as ori.b #0,d0; this is zero-filled data referenced by an address, not executable code.
-- `zero_filled_data_words_second_slot`: Another two zero words decoding as ori.b #0,d0; a zero-filled data area reached through a handler pointer, not code.
 - `save_all_registers_check_timer_and_vblank`: Pushes d0-d7 and a0-a6 onto the stack, reads the low memory timer into d0, tests a flag word and compares d0 with the vertical blank counter before branching.
 - `swap_screen_buffers_with_blank_palette`: Compares d0 with the stored value; if different, saves five display words, sets blank copper values, calls the display routine, swaps the two screen buffer pointers, then calls the update routines and restores registers.
 - `animate_rotating_playfield_columns`: Saves registers, swaps the two playfield buffer pointers, copies five longwords between them, adjusts column offsets and scroll values, then repeatedly calls the blit and scroll routines to rotate the field.
 - `apply_vertical_scroll_shift_to_buffer`: Saves registers, computes a shift from the scroll direction word, adds it to five longwords of the buffer at the current buffer pointer, then calls the scroll routine with the stored value.
-- `zero_filled_data_area_3`: Five zero words that decode as ori.b instructions but are actually a zero-filled data area referenced by pointers, not executable code.
-- `single_zero_word_data_slot`: One zero word that decodes as an ori.b instruction but is a zero-filled data slot whose address is taken by other code.
 - `init_display_params_and_call`: Saves all registers, clears two words at fixed memory, stores three display parameters, calls a routine at low memory, then restores registers and returns.
 - `allocate_bitmap_and_clear_flag`: Saves all registers, computes a bitmap size from the a2 structure width and the global row range, calls the allocator, and clears a global byte flag if allocation fails.
 - `store_bitmap_geometry_and_planes`: Computes row stride and plane sizes from the a2 width and global bounds, stores the bitmap pointer and plane addresses in globals, and writes header fields into the bitmap.
-- `zero_filled_data_area_4`: Contains only a zero word that decodes as ori.b #0,d0; this is a zero-filled data area referenced by address, not executable code.
-- `zero_word_data_at_221e`: A single zero word that decodes as ori.b with immediate zero on d0; it is zero-filled data referenced by address, not executable code.
-- `zero_word_data_at_2222`: One zero word in a zero-filled data area, decoding as ori.b immediate zero to d0; other code takes its address but it is data.
-- `zero_word_data_at_2226`: A lone zero word treated as a handler pointer target; the bytes are zero-filled data, not a real instruction sequence.
-- `zero_filled_data_word`: A single zero word that decodes as ori.b #0,d0; it is zero-filled data referenced by address, not executable code.
 - `allocate_aligned_block_from_pool`: Saves d1 and a0, rounds the requested size up to a multiple of four plus header, subtracts it from the pool pointer, and returns the aligned block address or zero if the pool limit is passed.
 - `return_zero_restore_d1_a0`: Clears d0 to zero as the return value, pops d1 and a0 from the stack and returns to the caller.
+- `advance_allocation_pointer`: If a global variable equals the value in d0 minus 8, it adds the longword stored at the address in the global variable to that address and updates the global variable with the result; otherwise it returns.
 - `check_d0_in_audio_range`: Calls the audio setup routine, then returns zero in d0 if the returned word lies between the two immediate bounds, otherwise returns that word unchanged.
 - `return_constant_4`: Returns the constant -1 in d0 to the caller without any other effect.
 - `init_audio_and_disk_hardware`: Stores a0 in a global, sets a5 to the custom chip base, calls six setup routines for audio and disk, then returns the word in d6 as a long in d0.
@@ -335,18 +349,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_state_block_fields`: Using a3 as a base, zeroes bytes at offsets zero, one and two and words at offsets six and ten, then returns.
 - `update_timed_effect_counters`: Checks three global flags and counters, adjusts a global value by step amounts with clamping, decrements counters, and calls three subroutines to apply byte values or clear a flag.
 - `error_dialog_and_mode_switch`: Clears a flag byte, calls text and number formatting helpers, swaps two pointers, indexes a jump table by the doubled result, and if the selection equals one sets display registers and jumps to the main loop.
-- `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_4`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_5`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_6`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_7`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_8`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_9`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_10`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_11`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_12`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_13`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `empty_stub_14`: Empty routine: returns to the caller immediately without doing anything.
 - `save_registers_call_check_and_restore`: Pushes all data and address registers, loads a pointer from absolute memory into a0, calls a subroutine, tests d0 and branches away if nonzero, otherwise pops all registers and returns.
 - `advance_pointer_and_counter_restore`: Adds an address to a longword at absolute memory, adds two to another longword, then pops all data and address registers from the stack and returns.
@@ -354,14 +356,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `blit_full_screen_region`: Loads a3 from absolute address 12, sets d4 and d5 to zero and d6/d7 to the screen bounds, calls the blitter routine, then returns.
 - `blit_clipped_sprite_region`: Clips a sprite rectangle against globals, computes source and destination offsets, shifts four bitplanes by d5, masks and ORs them into the destination planes, and repeats per row via dbra.
 - `blit_sprite_rows_to_five_bitplanes`: Reads sprite row words from a table, computes plane offsets from the row height and width, then copies each row into five bitplane pointers with modulo stepping for fifteen rows.
-- `data_byte_ori_immediate_table`: A single ori.b immediate instruction whose bytes are data decoded as code, not an executable routine; it returns nothing.
+- `empty_stub_16`: Empty routine: returns to the caller immediately without doing anything.
 - `blit_four_bitplane_columns_with_dma_wait`: Sets blitter window, modulo and control registers, computes source and destination offsets, then blits four bitplane columns while polling DMACONR busy bit and restores DMA.
 - `blit_planar_columns_to_bitplanes`: Saves all registers, computes source and destination offsets from the global rectangle, programs blitter modulo, control and pointers, then blits each of five bitplanes in turn waiting on the blitter busy bit.
 - `copy_planar_columns_to_chunky_buffer`: Checks the rectangle width and either calls the blitter routine or copies five bitplane words per column into a chunky buffer using offsets from the plane base pointers, advancing by the row stride.
 - `masked_planar_sprite_blit_with_clipping`: Computes clipped source and destination offsets, sets blitter first and last word masks and modulo, then blits masked planar sprite data into the five bitplanes while waiting on the blitter busy bit.
 - `setup_blitter_for_vertical_strip`: Configures blitter pointers, modulo, control and size registers from a0, d2, d4 and d7 to blit a vertical strip, then enables blitter DMA and returns.
 - `render_mirrored_texture_columns`: Computes clipped column extents from a4 and a6, then loops copying bytes through a lookup table at a6 to write mirrored texture columns into memory and returns.
-- `zero_filled_data_area_5`: This single zero word decodes as an ori.b immediate instruction, but the bytes are data, not executable code.
 - `clip_sprite_bounds_and_dispatch`: Reads sprite data pointer from a0, clips its rectangle against the four global screen bounds, stores the clipped edges in globals, then branches on the sprite type byte to one of several handlers.
 - `select_slot_by_a3_handler`: Saves all registers, checks the busy flag, then compares a3 against four known handler addresses to set d3 to a slot index and jumps to the shared dispatch.
 - `copy_state_and_call_draw`: Copies a byte into the a3 structure, loads a1, d0, d1 and d4 from globals, clamps d2 between one and twenty, calls the draw routine, then restores registers and returns.
@@ -386,13 +387,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `test_d1_bit7_then_jump_vector`: Tests bit 7 of d1; if clear it branches ahead, otherwise loads a1 and a5 from a pc-relative table, pushes a pc-relative address and jumps through a5.
 - `test_d1_bit9_then_jump_vector`: Tests bit 9 of d1; if clear it branches ahead, otherwise loads a1 and a5 from a pc-relative table, pushes a pc-relative address and jumps through a5.
 - `interrupt_mask_check_and_rte`: Builds a mask of 1920, ANDs it with words at offsets 28 and 30 of a0, branches if nonzero, else restores d0-d2, a0-a1, a5-a6 and returns from interrupt.
-- `zero_filled_data_word_handler_slot`: A single zero word that decodes as ori.b with immediate zero on d0; it is zero-filled data referenced by a handler pointer, not executable code.
-- `zero_filled_data_word_pcrel_target`: A single zero word that decodes as ori.b with immediate zero on d0; it is zero-filled data whose address is taken by a pc-relative load, not executable code.
-- `zero_filled_data_word_handler_entry`: A single zero word that decodes as ori.b with immediate zero on d0; it is zero-filled data reached through a handler pointer in the data hunk, not executable code.
-- `zero_filled_data_area_6`: A single zero word that decodes as ori.b #0,d0; this is zero-filled data referenced by address, not executable code.
-- `zero_fill_handler_pointer_target`: One zero word stored where a handler pointer in hunk 2 data points; the bytes are zero-filled data, not executable code.
-- `zero_fill_data_pair_at_1ad2`: Two consecutive zero words that decode as ori.b with immediate zero on d0; this is zero-filled data referenced by address, not code.
-- `zero_filled_data_word_2`: Contains a single zero word that decodes as an ori.b immediate instruction; this is zero-filled data, not executable code.
 - `install_audio_irq_vectors`: Writes audio and interrupt control values to custom chip registers, copies two longword vectors into offsets of a0, then stores a handler address at offset 68 of the structure pointed to by the longword at address 4.
 - `reset_audio_interrupt_control`: Writes zero to the audio interrupt control register, writes 2 to the interrupt request register, and sets bits in the interrupt enable register.
 - `decrement_timer_and_chain_next`: Pushes d0, reads a word from program counter relative memory, subtracts it from a long counter, and if no borrow or zero result restores d0, advances a frame counter, loads a5 from memory and stores a return address before returning.
@@ -417,13 +411,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `init_three_state_words_2`: Writes 4 to word at offset 150 of a0 and 512 to words at offsets 154 and 156 of a0, then returns.
 - `decrement_counter_and_set_state_words`: If bit 3 of byte at offset 3 of a0 is set, decrements the long counter at absolute address 8182 and, when it goes negative, writes 8 and 1024 to words at offsets 150 and 154; always writes 1024 to word at offset 156.
 - `empty_stub_15`: Empty routine: returns to the caller immediately without doing anything.
-- `undecodable_bytes_14`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_15`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_16`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_17`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_18`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_19`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_20`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 
 ### Storm Master (1991)(Silmarils)(De).adf:bootblock
 

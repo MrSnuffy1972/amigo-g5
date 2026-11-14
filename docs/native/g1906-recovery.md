@@ -11,7 +11,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Functions named and described | pass, 5 of 5 named (0 author symbols), 5 of 5 described (1 by rule, 1 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 42 of 42 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 362496 bytes, 1 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 106 of 430 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 430 of 430 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
@@ -36,6 +36,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - 5 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 1 first-run image unit(s) in 1 version group(s); 0 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
 - international karate + (1988)(system 3)[a]/International Karate + (1988)(System 3)[a].adf:ik+: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 jump target
 - 1 never-loaded region(s), 362496 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)

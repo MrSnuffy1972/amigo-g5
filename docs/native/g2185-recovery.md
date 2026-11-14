@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (903820 top-level bytes in 19 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 3 raw-word lines |
-| Functions named and described | pass, 269 of 269 named (0 author symbols), 269 of 269 described (32 by rule, 53 by the local model) |
+| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 0 raw-word lines |
+| Functions named and described | pass, 287 of 287 named (0 author symbols), 287 of 287 described (38 by rule, 59 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2811 of 2811 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 6675 of 6675 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 6784 of 6784 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 419742 |
-| code | 25756 |
-| data | 137272 |
+| code | 26076 |
+| data | 136952 |
 | padding | 4122 |
 | unused | 316928 |
 
@@ -31,14 +31,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | 8 | 1 | 2 | 1 |
 | iff.library | 3 | 673 | 49 |
 | diskfont.library | 13 | 830 | 53 |
-| MegaBall (1991)(E. Mackey)(SW)[m ALE].adf:SHOW | 2 | 207 | 8 |
-| MegaBall (1991)(E. Mackey)(SW)[m ALE].adf:MEGABALL | 3 | 3636 | 85 |
+| MegaBall (1991)(E. Mackey)(SW)[m ALE].adf:SHOW | 2 | 206 | 7 |
+| MegaBall (1991)(E. Mackey)(SW)[m ALE].adf:MEGABALL | 3 | 3622 | 83 |
 | MegaBall (1991)(E. Mackey)(SW)[m ALE].adf:bootblock | 1 | 107 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 547 | 31 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 671 | 52 |
 
 ## Cases handled
 
 - runtime segment an address: 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- megaball (1991)(e. mackey)(sw)[m ale]/MegaBall (1991)(E. Mackey)(SW)[m ALE].adf:SHOW: PowerPacker 2.3 (xfd) stream found by ancient scan (5076 -> 6112 bytes) but only 0 of 3 sampled windows are in reference RAM: not used
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 jump target
 - megaball (1991)(e. mackey)(sw)[m ale]/MegaBall (1991)(E. Mackey)(SW)[m ALE].adf:SHOW: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
 ## Cracktros (kept, not protection)
@@ -212,7 +214,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `load_executable_hunk_table`: Program entry code for the loader that allocates memory for each executable hunk, records the block addresses in a table, and checks each hunk against AmigaDOS hunk type codes.
 - `return_without_work`: Empty stub that returns to the caller without doing any work.
 - `busy_wait_loop`: Counts a register down to zero in a loop, using time without any other effect, and returns.
-- `tiny_ori`: Small routine of 1 instruction that merges 152 into d0.
 - `decode_back_reference_stream`: Decodes a compressed data stream into a buffer, where a control value selects between repeating a byte and copying earlier output.
 - `tiny_moveq`: Small routine of 1 instruction that loads 1 into d0.
 - `decrement_loop_with_space_wrap`: Decrements a byte held in a data register once for each step of a count, and replaces it with a space character when it wraps to zero.
@@ -224,8 +225,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_wait_t_o_f`: Wrapper that calls the graphics library function WaitTOF and returns its result to the caller.
 - `wait_for_frames`: Waits for the given number of display frames, calling the graphics library's vertical-blank wait once per frame.
 - `run_main_program_setup`: Main program routine that opens the diskfont, graphics and device resources, sets up the display and an interrupt server, shows a prompt telling the user to press 2 for two or SHIFT-Q to exit, and then runs its main loop.
-- `poll_messages_and_shutdown`: Repeatedly takes messages from the port and replies to them.
-- `reply_messages_and_run_shutdown`: Replies to port messages as they arrive and runs the same polling loop, going on to a shutdown sequence of library calls when its countdown reaches minus one.
 - `advance_sprite_history_and_blit`: Clears three counters, shifts a set of stored values one slot back in a history buffer, copies memory, blits the bitmap, moves sprites and clears the raster.
 - `run_speed_adjusted_frame_loop`: Clears a state value, lowers a speed counter by four with a floor of five, then runs the shared frame loop that calls the library for each frame.
 - `advance_timers_and_redraw_frame`: Computes a timer value from a stored count, updates two sequence counters and swaps stored state values when a condition holds, then redraws the frame through library calls.
@@ -313,13 +312,24 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `loop_forever_stub`: Loops endlessly without doing any work; the bytes are a gap that decodes as code and the routine is never reached in normal flow.
+- `jump_vector_entry_2`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `null_routine`: This routine is empty and contains no executable instructions.
+- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `setup_task_node_and_loop`: The decompiled body is only an endless loop, but the library calls it makes show that the entry finds the current task, allocates memory and adds a node to a list before looping.
+- `initialize_node_structure`: Sets up a node structure with initial values and calls a library function to allocate memory, storing the result at offset 40 of the structure.
 - `decrement_and_release_resources`: Decrements a countdown field in a record and, when the field reaches zero with a pending bit set, runs the release routine again.
 - `release_node_or_mark_pending`: Releases the node through the exec library and returns its stored result when the countdown field is zero.
 - `free_node_and_return_result`: Removes a node from its list, closes its associated library, frees its memory through the exec library, and returns the result stored in the record.
+- `parse_iff_header`: Reads and validates an IFF file header, allocates memory for the file structure, and sets up the file record with specific identifiers when the format is correct.
+- `open_file_and_check_format`: Attempts to open a file using a DOS library call and checks if the operation succeeded, setting a flag to indicate success or failure.
+- `read_iff_form_chunk_header`: Library code that reads a chunk header from the open IFF file through the DOS library.
+- `allocate_iff_chunk_record_3`: Library code that allocates a record for a chunk, stores the supplied tag and sizes in it, and returns a numbered error code if the allocation fails.
+- `write_chunk_tag_and_params`: Part of the IFF library: stores a tag value at the start of a buffer and writes it out through the file write call.
+- `store_fields_and_close_file_2`: Stores three values into a record at the address held in an address register, then closes the open file through a DOS call.
+- `forward_to_helper_and_return_2`: Calls a subroutine to reset a field and then returns without performing any additional operations.
+- `free_iff_record_if_present_2`: Frees memory allocated for an IFF record through the exec library when a pointer is provided, then calls a subroutine to reset a field.
 - `find_chunk_by_tag`: Walks a list of length-prefixed chunks that follow a header, comparing each chunk's tag with the requested value.
 - `return_call_result_plus_eight`: Calls a subroutine and returns its result with eight added to it.
 - `copy_block_bytes_by_count`: Copies bytes one at a time from the source to the destination until the count held in the data register expires.
@@ -339,8 +349,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `find_node_by_task_id`: Fetches the current task identifier through the exec library and walks a linked list of records, returning the first record whose stored identifier matches, or null if none does.
 - `reset_field_and_return_one`: Clears a field in the target record when the test flag is not set, then returns one.
 - `store_nonzero_field_value`: Stores the incoming value in a field of the target record when that value is nonzero, then returns zero.
+- `get_and_clear_field`: This library code calls another routine to find a record, then either returns a longword from that record and clears it, or returns a failure value.
+- `set_failure_flag_and_branch`: Sets a return value to negative one and branches unconditionally to another routine at a fixed offset.
+- `read_flags_field_from_helper`: Part of the IFF library: calls one routine and returns the longword at offset eight of the structure it gives back.
+- `compute_size_flag_word_2`: Returns a flag word derived from a subroutine's result, adding a bit when a size byte exceeds a limit and skipping that test when the zero flag is set.
 - `compute_size_flag_bits`: Builds a flag word from a picture record: one bit is set when the first field is small and the second value is large, and a second bit is set when another value exceeds a limit.
 - `load_ilbm_bitmap_header`: Checks the form tag for an ILBM picture and, when the bitmap header matches the expected depth, copies the header fields into a local record and passes them to the decoder.
 - `unpack_triplet_bytes_to_words`: Converts consecutive three-byte groups into 16-bit words, placing the first byte in the high bits and the upper nibble of the third byte in the low bits.
 - `return_call_result_plus_eight_2`: Calls a subroutine and returns its result with eight added to it.
+- `jump_to_find_chunk_by_tag`: Jump stub: passes control straight on to find_chunk_by_tag.
+- `jump_to_unknown_location`: Jumps to a fixed memory address without any other operations, likely acting as a placeholder or redirect.
+- `jump_to_alternate_parse_routine`: Jumps to another fixed memory address, likely serving as an alternate code path for parsing IFF headers.
+- `jump_to_free_node_and_return_result`: Jump stub: passes control straight on to free_node_and_return_result.
+- `jump_to_release_node_or_mark_pending`: Jump stub: passes control straight on to release_node_or_mark_pending.
+- `jump_to_decrement_and_release_resource`: Jump stub: passes control straight on to decrement_and_release_resources.
 - `allocate_task_record_node`: When the lock flag is set and memory is allocated, it stores the current task identifier in the new node, clears its counter and links it into a list.

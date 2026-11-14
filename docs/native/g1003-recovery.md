@@ -6,58 +6,63 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (904880 top-level bytes in 43 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 21 of 21 units identical (bytes and relocations), 16 raw-word lines |
-| Functions named and described | pass, 537 of 537 named (0 author symbols), 537 of 537 described (107 by rule, 19 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1076 of 1076 (100.00%) |
+| Bytes classified (904784 top-level bytes in 45 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 22 of 22 units identical (bytes and relocations), 8 raw-word lines |
+| Functions named and described | pass, 613 of 613 named (0 author symbols), 613 of 613 described (106 by rule, 90 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1064 of 1064 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 8646 of 8657 instructions identical in start and length, 3 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 10730 of 10730 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 509843 |
-| code | 28434 |
-| data | 309680 |
-| padding | 12891 |
+| asset | 488031 |
+| code | 32604 |
+| data | 327212 |
+| padding | 12905 |
 | unused | 44032 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Ultimate Quiz, The (1993)(AGAS)[HD].adf:ami1demo.dat | 2 | 207 | 8 |
-| Ask | 2 | 117 | 2 |
-| type | 2 | 117 | 2 |
+| Ultimate Quiz, The (1993)(AGAS)[HD].adf:ami1demo.dat | 2 | 206 | 7 |
+| Ask | 2 | 183 | 5 |
+| type | 2 | 363 | 12 |
 | endcli | 2 | 117 | 2 |
-| echo | 2 | 117 | 2 |
+| echo | 2 | 241 | 10 |
 | EndIf | 1 | 2 | 1 |
-| If | 2 | 117 | 2 |
-| LoadWB | 12 | 536 | 30 |
+| If | 2 | 413 | 15 |
+| LoadWB | 12 | 535 | 30 |
 | Ultimate Quiz, The (1993)(AGAS)[HD].adf:Quiz.exe | 21 | 182 | 7 |
 | Disk-Validator | 1 | 386 | 1 |
-| d | 1 | 13 | 1 |
-| mathtrans.library | 17 | 830 | 97 |
-| icon.library | 10 | 1375 | 109 |
-| info.library | 25 | 2597 | 167 |
+| d | 1 | 3 | 1 |
+| mathtrans.library | 17 | 848 | 106 |
+| icon.library | 10 | 1421 | 110 |
+| info.library | 25 | 3000 | 181 |
 | version.library | 2 | 41 | 7 |
 | diskfont.library | 15 | 1040 | 76 |
 | Ultimate Quiz, The (1993)(AGAS)[HD].adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 522 | 13 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 521 | 12 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 12 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 304 | 6 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 340 | 8 |
+| Ultimate Quiz, The (1993)(AGAS)[HD].adf:ami1demo.dat#unpacked | 2 | 864 | 19 |
 
 ## Cases handled
 
+- ultimate quiz, the (1993)(agas)[hd]/Ultimate Quiz, The (1993)(AGAS)[HD].adf:Quiz0.Data: (Pac.Pic.) Data Cruncher (xfd)-packed, unpacked with ancient (21812 -> 51364 bytes)
 - 3 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
-- runtime segment an address (play-rs-m1500): 14 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500): 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-m1500): 471 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-m1500): 245 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- ultimate quiz, the (1993)(agas)[hd]/Ultimate Quiz, The (1993)(AGAS)[HD].adf:ami1demo.dat: crunched executable decrunched by XFDMaster (PowerPacker 2.3 (xfd), 28444 -> 54068 bytes), 23 of 23 windows confirmed in reference RAM: recovered as a hunk executable
+- ultimate quiz, the (1993)(agas)[hd]/Ultimate Quiz, The (1993)(AGAS)[HD].adf:Quiz.exe: CrunchMania Normal (xfd) stream found by ancient scan (166140 -> 283712 bytes) but only 30 of 124 sampled windows are in reference RAM: not used
 - self-modifying code at an address (47 bytes change between runtime segment an address (play-rs-m1500) and runtime segment an address): both forms recovered; writer: not identified statically (indirect store)
 - self-modifying code at an address (37 bytes change between runtime segment an address and runtime segment an address (play-rs-m1500)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 2 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 jump target, 1 immediate+address
 - ultimate quiz, the (1993)(agas)[hd]/Ultimate Quiz, The (1993)(AGAS)[HD].adf:ami1demo.dat: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 - ultimate quiz, the (1993)(agas)[hd]/Ultimate Quiz, The (1993)(AGAS)[HD].adf:Quiz.exe: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
@@ -77,7 +82,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `hunk_relocator_and_loader`: Walks the AmigaDOS hunk table, allocates memory with exec.AllocMem, copies hunk data, applies relocations for hunk types 1001-1004, frees the task with exec.FreeMem and jumps to the loaded code.
 - `count_first_relocation_entry`: Tests d5; if zero, increments d6 and sets d5 to one, otherwise returns unchanged, tracking the first relocation entry during hunk loading.
 - `resolve_hunk_relocation_chain`: Follows the relocation chain from the pointer at a5, walking linked entries in a1 and decrementing d1 until the chain ends, then returns the resolved address.
-- `or_d0_with_e0_byte`: Performs a bitwise OR of the low byte of d0 with the immediate value 224, leaving the result in d0.
 - `decompress_rle_bitmap_to_a1`: Reads packed control words from memory at a0, expands run-length and literal data backwards into the buffer ending at a1, and writes the resulting pointer to the COLOR00 hardware register.
 - `load_one_into_d0`: Loads the immediate value 1 into data register d0 and falls through into the following routine.
 - `shift_bits_into_d1_with_space_fill`: Clears d1, then for each of d0 bits shifts d5 left through the extend bit into d1, reloading d5 from -(a0) and resetting d7 to 32 whenever d7 counts down to zero.
@@ -87,11 +91,24 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `ask_allocate_and_install_question_buffer`: Calls library vectors through a5 to find the largest node value, allocate a buffer, fill it with incrementing words, copy 16 longs into a2 offset 536, set a2 offset 8 to a local routine, and return zero or minus one.
 - `copy_d1_to_d0_and_branch_back`: Moves d1 into d0 as the return value and branches back into the preceding routine's code rather than returning directly.
+- `initialize_and_store_pointers`: Calculates memory addresses using shift and add operations, stores calculated values at specific offsets in a structure, and performs conditional jumps based on comparison results.
+- `process_and_call_routines`: Loads a longword from a1 into d1, shifts it left by two bits, tests a longword at an offset in a0 plus the shifted value, and branches if zero.
+- `check_and_set_flag`: Tests a longword pointer and sets a global variable to five if the test passes, then calls a library routine twice with specific parameters.
 
 ### type
 
 - `type_command_allocate_and_run`: Looks up the type command in the resident list, allocates a buffer, fills it with command words, copies sixteen longs from the argument block, installs a return address and calls the command dispatcher, returning zero or minus one.
 - `type_command_return_d1_in_d0`: Moves d1 into d0 as the return value and branches to the shared exit path that restores the stack and returns to the caller.
+- `initialize_quiz_structure`: Initializes quiz-related data in a structure starting at address in a1, clears several fields, sets up counters and status flags, and prepares for quiz question processing.
+- `update_counters_loop`: Contains a loop that reads a byte from memory, compares it with fixed values, and updates counters in a table.
+- `set_global_variable_to_negative_one`: Sets d1 to a fixed address, stores that value at offset 612 of a structure in a2, and then branches to offset 552.
+- `set_another_global_variable_to_negative`: Sets d1 to a fixed address, stores that value at offset 212 of a structure in a1, and then branches to offset 552.
+- `update_score`: Updates a score counter in a table based on byte comparisons and sets flags in global variables.
+- `compare_and_update_counters`: Reads a byte from memory, compares it with fixed values, updates counters in a table, and sets flags in global variables based on the comparison outcomes.
+- `update_counters_loop_2`: Increments a counter at offset 560 of a structure, reads a byte from memory using an index, compares it with the counter value, and branches if the byte is greater than or equal to the counter.
+- `set_global_variables_and_branch`: Sets specific global variables to predefined values, makes multiple library calls with fixed parameters, and branches to different offsets based on test conditions.
+- `branch_to_offset`: Branches unconditionally to offset 696.
+- `unknown_function_caller`: Loads a value from memory location 336(a2) into a4, makes a function call through a5, then jumps to an address in a6.
 
 ### endcli
 
@@ -102,6 +119,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `echo_command_allocate_and_run`: Reads the echo command line, finds the largest argument size, allocates a buffer, fills it with argument pointers, copies the argument block, and invokes the command with the parsed arguments.
 - `copy_d1_to_d0_and_branch_2`: Moves the longword in d1 into d0 and then branches to another routine, so d0 carries d1 as the value passed onward.
+- `initialize_quiz_data_2`: Reads values from a table using an index from a structure, performs arithmetic operations on them, and stores results back to the same structure.
+- `initialize_quiz_data`: Reads values from a table using an index from a structure, performs arithmetic operations on them, stores results to the same structure, and updates global variables based on comparisons.
+- `copy_global_value`: Reads a long integer from a global variable at offset 150 of the structure in a1, then stores it to another global variable at offset 148 of the same structure.
+- `calculate_and_compare`: Sets a global variable to one, reads values from structure offsets, performs arithmetic operations on them, compares the result with another value, and updates the global variable based on the comparison outcome.
+- `copy_and_store`: Copies a longword value from a memory location at offset 336 of the structure in a1 to another location at offset 332 of the same structure, then branches to an address.
+- `copy_and_compare`: Copies longword values between structure offsets, compares a value with another longword at an offset, and branches if the first is greater.
+- `load_and_test_value`: Loads a longword from a memory location, shifts it left by two bits, tests a longword at an offset plus the shifted value, and branches if not zero.
+- `initialize_and_call`: Tests a longword value at offset 584 of a structure in a2 and branches to label if zero.
 
 ### EndIf
 
@@ -111,6 +136,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `evaluate_if_condition_and_branch`: Looks up the If command's condition, allocates and fills a jump table, runs the test through library calls, and returns zero or minus one.
 - `copy_d1_to_d0_and_jump`: Moves d1 into d0 as the result and branches forward into the If routine's continuation code.
+- `initialize_quiz_state`: Initializes multiple global variables related to quiz state and sets up pointers based on input parameters.
+- `check_input_flag`: Loads a value from memory at an offset, compares it with another fixed constant, and branches to an error handler if the comparison fails or if the loaded value is zero.
+- `validate_input_entry`: Reads a value from a table using an index, performs a comparison with a fixed constant, and branches to an error handler if the result is not zero or if another condition fails.
+- `process_input_sequence`: Reads input values from a structure, validates them against table entries, updates global state based on comparisons, and performs conditional operations including string checks and function calls.
+- `validate_input_sequence`: Checks input values against table entries and updates global state based on comparisons.
+- `jump_to_unknown_routine`: Performs an unconditional branch to another routine referenced through a jump table, without modifying any data or registers.
+- `check_table_entry`: Reads a value from a table using an index from a global structure, updates another global variable with that value, and based on the value either branches or continues execution.
+- `jump_to_table_entry`: Reads a value from a table using an index from a global structure, updates another global variable with that value, and based on the value executes further operations.
+- `check_global_flag`: Loads an immediate value into a register, compares it with a global variable, and branches based on the comparison result.
+- `process_input_flags_2_2`: Reads a value from a table using an index from a global structure, updates another global variable with that value, and based on the value either sets or clears bits in a third global variable.
+- `process_input_flags_2`: Initializes a global variable to zero, reads a value from memory using an index, and based on that value either sets or clears bits in the global variable, then performs several library calls with fixed parameters.
+- `process_input_and_update_flags`: Processes input values through multiple library calls, updates flags in global variables based on comparisons, and handles conditional branching based on test results.
+- `process_input_flags`: Processes input values through library calls, updates a global variable with the result, compares it with fixed constants, and handles conditional branches based on those comparisons.
 
 ### LoadWB
 
@@ -131,10 +169,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_420`: Library stub: loads a library base from a global variable and calls the library function at offset minus 420 of that base, returning its result to the caller.
 - `call_library_vector_552`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
 - `call_library_vector_624`: Library stub: loads a library base from a global variable and calls the library function at offset minus 624 of that base, returning its result to the caller.
-- `check_workbench_version_string`: Compares the version string at offset twenty of the structure in a2 against the Workbench release text, copying a suffix when it matches.
-- `write_dot_and_spaces_to_a2_offsets`: Writes a period byte then four space bytes into the five bytes at offsets 17 through 21 from a2, then branches forward to another routine.
-- `compare_a2_string_with_pc_table`: Copies a2 into a0, points a1 at a nearby byte table, and compares bytes until a zero terminator or mismatch, branching to different targets on match, mismatch or empty table.
-- `restore_a0_a1_and_jump_via_pc_vector`: Loads a2 with a nearby address, pops a0 and a1 from the stack, pushes the longword at the program counter and returns through it.
 - `call_reschedule`: Library stub: loads its arguments and the exec library base, calls Reschedule and returns its result to the caller.
 - `call_dispatch`: Library stub: loads its arguments and the exec library base, calls Dispatch and returns its result to the caller.
 - `call_find_resident`: Library stub: loads its arguments and the exec library base, calls FindResident and returns its result to the caller.
@@ -144,6 +178,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_three_arg_function_pointer`: Saves d2-d3, loads two arguments and a pointer to a third from the stack, pushes them and calls the function pointer, then cleans the stack and restores d2-d3.
 - `format_string_via_rawdofmt_then_dispatch`: Calls exec RawDoFmt into a 140-byte stack buffer, measures the resulting string length, and if non-empty passes the buffer and length to another routine.
 - `store_d0_byte_to_a3_postincrement_2`: Writes the low byte of d0 to the memory pointed to by a3, then advances a3 by one byte and returns to the caller.
+- `compare_string_with_table`: Compares the value in a2 with a fixed address and branches if equal.
+- `write_dot_and_spaces_to_a2_offsets`: Writes a period byte then four space bytes into the five bytes at offsets 17 through 21 from a2, then branches forward to another routine.
+- `compare_a2_string_with_pc_table`: Copies a2 into a0, points a1 at a nearby byte table, and compares bytes until a zero terminator or mismatch, branching to different targets on match, mismatch or empty table.
+- `restore_a0_a1_and_jump_via_pc_vector`: Loads a2 with a nearby address, pops a0 and a1 from the stack, pushes the longword at the program counter and returns through it.
 
 ### Ultimate Quiz, The (1993)(AGAS)[HD].adf:Quiz.exe
 
@@ -234,6 +272,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_a0_preserve_d3_d7_return_d0`: Saves d3 through d7, moves d0 into d7, clears d1, calls the routine pointed to by a0, then restores d0 and d3 through d7 from the stack and returns.
 - `call_a0_with_d1_in_d6_return_d0`: Saves d3 through d7, copies d1 into d6 and d0 into d7, clears d1, calls the routine at a0, then restores d0 and d3 through d7 and returns.
 - `load_vector_table_pointer_and_branch`: Loads the address of a vector table into a0 and branches to the start of the library code, passing control onward without returning here.
+- `load_offset_address`: Loads a memory address with a fixed offset into register a0 and branches to another routine.
+- `load_negative_offset`: Loads a memory address with another fixed negative offset into register a0 and branches to another routine.
+- `load_math_offset_48`: Loads a memory address with a specific offset of minus 48 into register a0 and branches to another routine.
+- `load_math_offset_54`: Loads a memory address with a specific offset of minus 54 into register a0 and branches to another routine.
+- `load_math_offset_60`: Loads a memory address with a specific offset of minus 60 into register a0 and branches to another routine.
+- `load_math_offset_66`: Loads a memory address with a specific offset of minus 66 into register a0 and branches to another routine.
+- `load_math_offset_72`: Loads a memory address with a specific offset of minus 72 into register a0 and branches to another routine.
+- `load_negative_offset_16`: Loads a memory address with a fixed negative offset into register a0 and branches to another routine.
+- `call_library_function`: Loads a memory address with a specific offset into register a0 and calls a library function using d6 and d7 as arguments.
 - `load_math_trans_base_648`: Loads the address 648 into a0 and branches to the shared library dispatcher, passing that pointer as an argument.
 - `load_math_trans_base_652`: Loads the address 652 into a0 and branches to the shared library dispatcher, passing that pointer as an argument.
 - `load_math_trans_base_zero`: Loads the address zero into a0 and branches to the shared library dispatcher, passing that pointer as an argument.
@@ -273,8 +320,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
 - `open_dos_library_and_store_base`: Saves a2, stores a0 and a6 into the new structure at offsets 42 and 34, opens dos.library via exec, stores the base at offset 38, and alerts on failure.
 - `copy_icon_fields_to_globals`: Copies the two longwords at offsets 34 and 38 of the a2 structure into the global slots at 402 and 406, returns a2 in d0 and pops a2.
-- `zero_filled_data_area`: A single zero word that decodes as ori.b #0,d0; this is zero-filled data referenced by address, not executable code.
-- `zero_filled_data_area_2`: Contains a single zero word that decodes as an ori.b immediate instruction; this range is zero-filled data referenced by address, not executable code.
 - `save_a0_a6_call_vector`: Pushes a0 and a6 onto the stack, calls the routine whose address is stored at memory location zero, then discards both saved registers and returns.
 - `save_a0_a1_a6_call_vector`: Pushes a0, a1 and a6 onto the stack, calls the routine whose address is stored at location a8, then removes the three saved registers and returns.
 - `icon_lib_save_a0_a2_call_helper`: Pushes registers a0 through a2 and a6 onto the stack, calls a library helper routine, then discards the saved registers and returns.
@@ -289,7 +334,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `icon_library_call_864_with_saved_regs`: Saves a0 and a1 on the stack, calls the library routine at offset 864, then discards the saved registers and returns to the caller.
 - `icon_library_call_8d6_with_saved_regs`: Pushes a0 and a1 onto the stack, invokes the library routine at offset 8d6, cleans the stack by adding eight and returns.
 - `icon_library_store_value_at_offset_94`: Saves a6, loads the library base from the stack argument, calls the base's offset minus 294 routine, stores the second argument at offset 148 of the result, restores a6 and returns.
-- `zero_filled_data_area_3`: Contains only a zero word that decodes as an ori.b immediate; this range is zero-filled data referenced by address, not executable code.
 - `allocate_and_init_icon_object`: Calls allocation and initialization helpers with the two arguments, then copies ten longs and several fields into the new icon object and links it to its parent.
 - `copy_stack_fields_into_icon_object`: Copies ten longs from the stack frame into the icon object at a2, then stores individual fields and links the object to its parent if present.
 - `return_zero_and_restore_d2_d4_a2`: Library routine that sets d0 to zero as its return value, restores d2 through d4 and a2 from the stack frame, releases the a6 frame and returns.
@@ -350,6 +394,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `unsigned_32bit_divide_d1_by_d2`: Divides the longword in d1 by d2, using word divisions when d2 fits in sixteen bits and a shift-subtract loop otherwise, returning quotient in d0 and remainder in d1.
 - `restoring_division_loop_d1_by_d2`: Performs a sixteen-step shift-subtract division of the longword in d1 by d2, leaving the quotient in d1 and remainder in d0, then returns.
 - `mul32x32_high_low_unsigned`: Multiplies the 32-bit values in d0 and d1 as unsigned, combining partial 16-bit products, and returns the 32-bit result in d0 while preserving d2.
+- `forward_call_to_helper`: Saves d2 on the stack, moves d1 into d2 and d0 into d1, calls the 32-bit divide routine, restores d2 from the stack and returns.
+- `call_helper_return_register`: Saves d2 on the stack, moves d1 into d2 and d0 into d1, calls the 32-bit divide routine, copies the value in d1 into d0, restores d2 and returns.
+- `negate_result_on_flag`: Calls the 32-bit divide routine, then negates the returned value in d0 when the address register a0 holds a nonzero word.
+- `call_and_negate_on_flag`: Calls the 32-bit divide routine, copies the value from d1 into a working register, and negates it when the address register a0 is nonzero before returning that value.
 - `format_string_via_rawdofmt`: Saves a2-a4/a6, loads the format string and argument pointer from the stack, calls exec RawDoFmt through a6, then restores registers and returns.
 - `store_d0_byte_to_a3_postincrement_3`: Writes the low byte of d0 to the memory pointed to by a3 and advances a3 by one byte, then returns to the caller.
 - `strlen_count_until_null`: Reads bytes from the string pointed to by the first stack argument, counting until a null byte or 255 bytes, then returns the complemented count in d0.
@@ -459,7 +507,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `info_library_dispatch_by_node_type`: Loads a node pointer and value from the stack, reads a word from the node, bounds-checks it against 17, and jumps through a nearby word table.
 - `library_return_one_with_a2_a3_restore`: Library code sets d0 to 1 as return value, pops a2 and a3 from the stack, then returns to the caller.
 - `library_toggle_flag_by_message_code`: Library code reads a word from the second argument, maps codes 6 to 9 and 17 to 19 to bit masks, XORs the mask into a global flag, then calls a routine with the first argument's field.
-- `library_store_d1_and_call_field`: Library code writes d1 into the global structure's offset 112, pushes the field at offset 44 of a1, calls an absolute routine, discards the argument, restores a2 and returns.
+- `set_flag_bits_and_store_xor_value`: Sets bits in the byte at a4 and in a global variable and in an indexed byte of the structure at a4, stores d1 XOR 4 into a longword at offset 112 of the structure pointed to by a global variable, then pushes a longword from offset 44 of a1 and calls another routine.
+- `xor_store_and_call_helper_2`: Exclusive-ORs the value in d0 with the value in d1, stores the result at offset 112 of a structure pointed to by a global variable, then calls another routine.
+- `xor_store_and_call_helper_3`: Exclusive-ORs the value 1 with the value in d1, stores the result at offset 112 of a structure pointed to by a global variable, then calls another routine.
+- `xor_store_and_call_helper_4`: Exclusive-ORs the value 16 with the value in d1, stores the result at offset 112 of a structure pointed to by a global variable, then calls another routine.
+- `xor_store_and_call_helper_5`: Exclusive-ORs the value 32 with the value in d1, stores the result at offset 112 of a structure pointed to by a global variable, then calls another routine.
+- `xor_store_and_call_helper`: Exclusive-ORs d0 with d1, stores the result at offset 112 of the structure pointed to by a global variable, then pushes the longword at offset 44 of the structure in a1 and calls another routine with it.
 - `info_library_open_and_validate`: Library code that opens the info device, copies fields into the global info structure, opens and checks the named info file, and returns a boolean success flag in d0.
 - `check_info_state_and_push_disk_string`: Loads the global info structure pointer into a0, compares the byte at offset 61 with 1, and if not equal pushes the address of the Disk string before branching onward.
 - `info_library_validate_and_close`: Library code that copies the info name into a stack buffer, compares it with the global info structure, checks the file against stored values, and returns a success flag in d0.
@@ -502,7 +555,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_180`: Library stub: loads a library base from a global variable and calls the library function at offset minus 180 of that base, returning its result to the caller.
 - `call_library_vector_186`: Library stub: loads a library base from a global variable and calls the library function at offset minus 186 of that base, returning its result to the caller.
 - `dispatch_info_layout_by_mode_byte`: Saves registers, loads the info structure and mode byte, bounds-checks it between one and six, then jumps through a table to the matching layout drawing code.
-- `pop_d2_a2_a5_and_return`: Pops saved registers d2 and a2 through a5 from the stack and returns immediately to the caller; it is an empty library stub that only restores registers.
+- `draw_nine_rectangles_with_fill`: Calls the drawing routines through a3 and a4 in sequence, interleaving calls to a draw-nine-segments helper and a self-referencing call, and ends by making two more calls through a3.
+- `load_read_only_string`: Loads the address 96 into a0 and then branches to offset 448 in the same routine.
+- `load_validating_string`: Loads the address 106 into a0 and then branches to offset 448 in the same routine.
+- `load_read_write_string`: Loads the address 118 into a0 and then branches to offset 448 in the same routine.
+- `call_address_in_a3_2`: Pushes the constant 1 and a longword from a2 onto the stack, calls the routine whose address is in a3, then drops the pushed arguments and returns.
+- `draw_rect_groups_via_a3`: Calls the routine whose address is in a3 three times, calls two other routines, calls the routine in a3 once more, then returns.
+- `draw_multiple_rect_sets`: Calls the routine in a3 seven times and the routine in a4 twice, calls three other routines, calls the routine in a3 once more, then returns.
+- `draw_rects_and_show_messages`: Calls the routine in a3 eight times and the routine in a4 twice, calls three other routines, calls the routine in a3 again, calls one further routine, then returns.
+- `draw_rectangle_segment_groups`: Calls the routine at a3 three times, calls two other routines, then calls the routine at a3 once more and returns; the decompiler shows no stack pushes of coordinates in this body.
+- `call_address_in_a3`: Pushes the constant 1 and the longword in a2 onto the stack, calls the routine whose address is in a3, then drops the pushed arguments and restores registers d2, a2 through a5 from the stack before returning.
 - `info_library_allocate_four_buffers`: Saves registers, calls an allocation routine four times with sizes and flags, stores results in globals, and returns zero if any allocation failed.
 - `allocate_second_raster_set_and_check`: Calls the allocator four more times for additional bitmaps, stores results in globals and a4, then tests all four and branches to setup or failure.
 - `dispatch_info_library_version_index`: Loads the library base from absolute address 88, reads byte at offset 61 into d0, and if it is between 1 and 5 jumps through the word table indexed by twice that value.
@@ -640,13 +702,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `initialize_system_state`: Calls two library routines using a pointer in a6, writes a value from a global variable to a memory location, and then jumps to a location stored in a table.
 - `return_constant_7`: Returns the constant -1 in d0 to the caller without any other effect.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `initialize_graphics_and_hardware_state_2`: Clears a global variable, calls a routine to initialize hardware, and if a specific field at offset 172 of the returned structure is non-zero, calls two additional routines and stores the resulting pointer in the global variable.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 - `initialize_graphics_and_hardware_state`: Opens a library, allocates memory, and clears a block of memory using a loop.
 - `initialize_structure_members`: Clears four 32-bit words at a location pointed to by a5, then stores several calculated pointers into offsets of the structure in a5.
 - `initialize_graphics_buffer_and_hardware`: Copies a list of words from a table into a destination buffer, then populates several memory blocks with specific patterns and values, including interleaved word pairs and data from a source table.
@@ -666,8 +726,32 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `update_status_byte`: Copies a byte from a memory location to a global variable, sets bit 15 of a 16-bit value at offset 154 of a structure in a6 using a value from a global variable, and clears a byte at offset 234 of a global variable.
-- `process_audio_parameters`: Iterates through a data table to calculate values, stores results into a table via a pointer, clears several 32-bit global variables, clears four 16-bit audio volume registers, and copies a byte from one location to another.
+- `initialize_hardware_registers`: Checks a global variable and if it's zero, initializes several hardware registers including CIAA_ICR, DMACONR, INTENA, and others with specific values before setting the global variable to -1.
+- `configure_dma_and_interrupts`: If a global variable is non-zero, configures DMA channels and interrupt registers, waits for a bit to clear, then restores several register values before clearing the global variable.
+- `clear_audio_volumes_and_initialize`: Processes data from memory locations, updates arrays of pointers, clears audio volume registers, and resets several global variables related to sound output.
 - `mt_end`: Stops the ProTracker music replay by silencing all four audio channels and switching audio DMA off.
 - `update_audio_channels`: Increments a global counter and, if it reaches six, resets it to zero; otherwise, it checks four specific flags and, if a flag is set, calls a routine to update the hardware audio registers using a pointer to a specific audio channel structure.
 - `update_audio_hardware`: Processes a structure in a6 by performing various arithmetic operations on its fields based on a mode byte, updates a destination structure via a5, calls another routine four times to configure hardware registers, and manages a DMA-related pointer and counter.
 - `update_sprite_attribute_table`: Reads a value from a structure to index into a table, then updates several fields in a destination structure including a pointer, two 16-bit values, and a 32-bit value based on a conditional check.
+
+### Ultimate Quiz, The (1993)(AGAS)[HD].adf:ami1demo.dat#unpacked
+
+- `initialize_system_2`: Initializes system memory structures and display parameters by allocating memory blocks, setting up hardware registers including DMA control, and handles message processing through Amiga OS library calls.
+- `initialize_system`: Initializes system memory structures and display parameters by allocating memory blocks, setting up hardware registers including DMA control and blitter configurations, and managing audio channel states.
+- `initialize_memory_structure`: Initializes a memory structure by clearing several longword slots, setting pointers to various offsets from an initial address, and updating multiple fields in a data structure.
+- `initialize_display_data`: Initializes multiple memory regions with sequential word values, clears memory areas, and sets up display-related parameters.
+- `copy_word_pairs`: Copies word pairs from one memory location to another while decrementing a counter, advancing both pointers by two bytes each iteration.
+- `swap_and_accumulate`: Swaps the high and low words of a value, stores them alternately at memory locations, accumulates values in a register, and repeats based on a counter.
+- `initialize_globals`: Initializes several global variables with specific values including a status flag, counters, and memory addresses, performing conditional jumps based on bit tests.
+- `setup_parameters`: Sets up various parameters in global memory locations, including flags, counters, and address pointers, with conditional logic based on hardware status bits.
+- `clear_words_by_four`: Clears memory words by four-byte units, shifting a counter right by two bits and writing zero values to memory locations until the counter reaches zero.
+- `initialize_display`: Initializes display parameters including screen addresses and timing values, then updates a counter and processes input data from a buffer.
+- `initialize_hardware`: Initializes hardware registers and global variables when a condition is met, setting interrupt and DMA control values while updating several memory locations with specific data.
+- `restore_hardware_state`: Restores hardware state by configuring interrupt and DMA settings, waiting for specific DMA status conditions, and updating various registers and memory locations based on global variable values.
+- `initialize_hardware_copy`: Copies hardware register values to global variables and configures interrupt and DMA control registers, similar to the first routine but with different register settings and a different conditional branch.
+- `restore_hardware_state_copy`: Restores hardware state by configuring interrupt and DMA settings, waiting for specific DMA status conditions, and updating various registers and memory locations based on global variable values, with different DMA control values than the second routine.
+- `clear_audio_registers`: Clears audio volume registers and related memory locations, processes data from a table to update memory pointers, and initializes several audio-related global variables based on input data.
+- `mt_end_2`: Stops the ProTracker music replay by silencing all four audio channels and switching audio DMA off.
+- `update_audio_channels_2`: Updates audio channel registers based on input data and manages audio playback state, including handling volume and period changes for multiple audio channels.
+- `update_input_axes`: Updates joystick or gamepad axis values based on input data, clamps them within defined ranges, and stores the results in a global structure.
+- `decode_input_packet`: Reads input data from a buffer, decodes axis values and applies deltas to running totals, then copies decoded fields to a destination structure.

@@ -8,17 +8,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (921056 top-level bytes in 7 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 195 of 195 named (0 author symbols), 195 of 195 described (18 by rule, 176 by the local model) |
+| Functions named and described | FAIL, 194 of 264 named (0 author symbols), 194 of 264 described (18 by rule, 175 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2444 of 2444 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 5632 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 4093 of 4093 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 5589 of 5589 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| code | 20898 |
-| data | 888851 |
+| code | 28642 |
+| data | 881107 |
 | padding | 43 |
 | unused | 11264 |
 
@@ -28,11 +28,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | North & South (1989)(Infogrames)(M5).adf:bootblock | 1 | 189 | 13 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 31 | 31 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1000 | 20 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 19 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 141 | 6 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 33 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2680 | 123 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1002 | 21 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 38 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 171 | 11 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 38 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4120 | 182 |
 | North & South (1989)(Infogrames)(M5).adf bytes 91136-96768 (code never loaded by a reference run) | 1 | 0 | 0 |
 
 ## Cases handled
@@ -131,6 +131,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `tiny_moveq_moveq`: Small routine of 2 instructions that loads 97 into d2, then loads 0 into d2.
 - `execute_media_sequence`: Processes a sequence of data by calling several routines to manage values and performing a loop that updates a parameter based on a shifted value.
 - `execute_scripted_media_sequence`: Loads and processes data from various media files to manage brightness levels, display parameters, and scripted events.
+- `sub_0BC4`: undescribed.
 - `search_byte_in_list`: Compares a provided byte against a list of twenty-seven bytes and returns one if a match is found.
 - `advance_byte_stream_pointer`: Calls a helper with a fixed argument, then advances a byte-stream pointer by one and wraps it back to a fixed start when the next byte is a negative terminator.
 - `search_word_in_list`: Compares a provided word against a list of seventeen words and returns one if a match is found.
@@ -140,6 +141,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `generate_random_quotient_remainder`: Advances a 32-bit seed using a timing value from a helper and a constant, then returns the seed's quotient and remainder by a divisor taken from the argument, packed into the two halves of the result.
+- `sub_003A`: undescribed.
+- `sub_0050`: undescribed.
+- `sub_006A`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -147,12 +151,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_indirect_function_4`: Calls a function through a pointer retrieved from a memory location.
 - `poll_mouse_and_update_pointer`: Reads the joystick and mouse port counters and button registers, updates a stored pointer position from the movement deltas with clamping to the 320 by 200 screen, and writes the new position into a display-list word.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `sub_0182`: undescribed.
+- `sub_0190`: undescribed.
+- `sub_01A4`: undescribed.
 - `write_constant_one`: Stores the value one into a memory location pointed to by a register.
 - `update_structure_data`: Stores a calculated value into a memory location, updates a function pointer in a structure, and calls another routine through a pointer.
+- `sub_0214`: undescribed.
+- `sub_023C`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `compare_array_elements`: Iterates through a list of values to check if they fall within a specific range defined by two global variables.
+- `sub_0074`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -181,12 +191,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `unpack_bitstream_data`: Reads a bitstream from a source buffer and performs bitwise transformations to extract and reconstruct word-sized values.
 - `register_interrupt_handler`: Sets values in memory and calls a function pointer retrieved from a global variable.
 - `call_rem_int_server`: Library stub: loads its arguments and the exec library base, calls RemIntServer and returns its result to the caller.
+- `sub_0986`: undescribed.
 - `find_record_by_key`: Searches a zero-terminated list of three-word records for the key passed in a data register and leaves its address register pointing at the matching record.
 - `store_two_bytes`: Stores a single byte into two consecutive memory locations.
+- `sub_0AD0`: undescribed.
+- `sub_0ADA`: undescribed.
 - `process_data_sequence`: A routine consisting of 49 instructions that performs a series of operations involving multiple registers and memory accesses.
 - `configure_audio_hardware`: Processes a bitfield to set various hardware registers and control bits, including volume and channel settings.
 - `update_sprite_hardware`: Iterates through a table to update DMA controller registers and sprite position or attribute data based on values fetched from memory.
-- `configure_dma_channels`: Iterates through a set of DMA channel configurations to update hardware registers.
+- `sub_0D44`: undescribed.
 - `update_hardware_registers_via_table`: This routine iterates through a table to fetch data and writes values to hardware registers.
 - `update_state_and_offset`: Clears a specific bit in a status byte and conditionally increments a pointer offset and a counter based on comparisons between memory values.
 - `set_bit_in_byte`: Sets the third bit of a byte at a specific offset from a pointer.
@@ -202,11 +215,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `compute_channel_volume_output`: Subtracts an attenuation taken from the channel's field from a helper's level, floored at zero, and writes the result with a second helper value into the channel's two output words.
 - `clear_dma_control_register`: The routine writes zero to the DMACON hardware register and sets a global variable to a bit mask derived from an input value.
 - `parse_sprite_attribute_stream`: Iterates through a data stream to extract sprite properties, animation frame indices, and attribute flags.
+- `sub_10B4`: undescribed.
+- `sub_10FE`: undescribed.
+- `sub_114A`: undescribed.
 - `copy_data_to_hardware`: Copies sixteen bytes from a source pointer to both a hardware register address and another memory location.
 - `convert_number_to_string_2`: Converts a numeric value into a decimal string and stores the resulting characters into a destination buffer.
 - `convert_number_to_string`: Decomposes a numeric value into decimal digits and stores them as character bytes in a destination buffer.
 - `copy_table_data`: Iterates through a table to copy bytes from one memory location to another based on an offset.
 - `clear_byte_at_offset`: Sets a byte to zero at a memory location calculated from a base address and an offset retrieved from a table.
+- `sub_1224`: undescribed.
+- `sub_124E`: undescribed.
+- `sub_12B4`: undescribed.
+- `sub_12E0`: undescribed.
 - `traverse_pointer_chain`: Follows a linked list of pointers until a null pointer is encountered, executing a routine at each step.
 - `do_nothing`: This routine is empty and performs no operations before returning.
 - `insert_into_linked_list_2`: Calls a function via a pointer found in a structure and inserts a new node into a linked list.
@@ -220,14 +240,55 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_system_subsystems`: Allocates memory, opens libraries, and initializes several data records and hardware registers including DMA and display parameters.
 - `release_system_resources`: Calls functions via pointers stored in global variables and releases memory and interrupt server resources.
 - `clear_and_open_library`: Fills a memory range with zeros, opens a library, and executes a function from the returned library base if it is not null.
+- `sub_15DE`: undescribed.
+- `sub_1626`: undescribed.
+- `sub_16B0`: undescribed.
+- `sub_1798`: undescribed.
+- `sub_17A4`: undescribed.
+- `sub_17BE`: undescribed.
+- `sub_17D6`: undescribed.
+- `sub_17FE`: undescribed.
+- `sub_1860`: undescribed.
+- `sub_187A`: undescribed.
 - `wait_for_bit_clear`: Enters a loop that polls a specific bit in a byte until that bit is cleared.
 - `store_word_to_offset`: Stores a 16-bit word into a memory location calculated by adding an offset to a pointer.
 - `store_word_to_offset_2`: Writes a 16-bit value to a specific offset from a base pointer.
 - `perform_blitter_area_transform`: Calculates dimensions and source/destination offsets to perform a series of blitter operations.
 - `swap_and_translate_byte_pairs`: Swaps bytes between two positions of a buffer, mapping each through a translation table as it goes, over a block whose dimensions come from the caller's registers.
+- `sub_1CBC`: undescribed.
+- `sub_1CC6`: undescribed.
+- `sub_1CD0`: undescribed.
+- `sub_1D3C`: undescribed.
+- `sub_1D3E`: undescribed.
+- `sub_2014`: undescribed.
+- `sub_20C0`: undescribed.
+- `sub_213A`: undescribed.
+- `sub_2170`: undescribed.
+- `sub_21F0`: undescribed.
+- `sub_220A`: undescribed.
+- `sub_2258`: undescribed.
+- `sub_2272`: undescribed.
+- `sub_22E4`: undescribed.
+- `sub_230C`: undescribed.
+- `sub_237E`: undescribed.
+- `sub_23A6`: undescribed.
+- `sub_23E6`: undescribed.
+- `sub_2400`: undescribed.
+- `sub_24C6`: undescribed.
+- `sub_2510`: undescribed.
+- `sub_2572`: undescribed.
+- `sub_2658`: undescribed.
+- `sub_26DC`: undescribed.
+- `sub_271C`: undescribed.
+- `sub_2730`: undescribed.
+- `sub_27A6`: undescribed.
+- `sub_27C0`: undescribed.
+- `sub_27DA`: undescribed.
+- `sub_27FE`: undescribed.
 - `clip_bitplane_rectangle`: Calculates the intersection of a rectangular area with a bounding box and applies a bitwise AND mask to the corresponding bitplane data.
 - `and_mask_column_four_planes`: ANDs a 16-bit mask into a column of words across four bitplanes, stepping down the rows with a 40-byte pitch to clear the masked bits.
 - `store_word_to_offset_3`: Stores two consecutive 16-bit words into memory at a fixed offset from a pointer.
+- `sub_2B14`: undescribed.
 - `wait_blitter_idle_keep_value`: Spins while the blitter busy flag is set, then returns its data register unchanged.
 - `compare_strings_with_limit`: Compares two null-terminated strings up to a specified maximum length and returns the difference between the first non-matching characters.
 - `compare_strings_case_insensitive`: Compares two strings case-insensitively by normalizing characters within a specific range and returns the difference of the first mismatch.
@@ -242,6 +303,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_memory_block_2`: Copies a specified number of bytes from a source to a destination.
 - `process_segmented_data`: Iterates through a table of data structures to perform calculations and updates based on specific bitwise and arithmetic conditions.
 - `nop_padding_gap`: This routine is empty and contains no executable instructions.
+- `sub_2F6E`: undescribed.
+- `sub_2F88`: undescribed.
+- `sub_2FBA`: undescribed.
+- `sub_301A`: undescribed.
+- `sub_3048`: undescribed.
+- `sub_307A`: undescribed.
 - `process_string_request`: Searches for a string and, if not found, iterates through a list of structures to update a specific field and store a result in a buffer.
 - `process_object_state_transition`: Checks a specific field in an object structure for a constant value and, if matched, updates a field in a separate data structure via a calculated offset before calling another routine.
 - `update_object_state_two`: Writes four values to a structure and calls a function pointer via a pointer in a global table.
@@ -254,6 +321,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `safe_memory_copy`: Copies a specified number of bytes from a source to a destination, handling overlapping memory regions by copying backwards if the destination address is higher than the source.
 - `multiply_32bit_fixed_point`: The routine takes two 32-bit fixed-point values from registers and returns a 32-bit fixed-point product.
 - `perform_signed_division`: Determines the sign of the result based on input registers, calls a routine to perform unsigned 32-bit division, and negates the quotient if the sign flag indicates a negative result.
+- `sub_34B8`: undescribed.
+- `sub_34D4`: undescribed.
 - `calculate_integer_division`: Performs division and modulo operations on two integers using a loop-based arithmetic approach.
 - `perform_bitwise_arithmetic_loop`: Executes a nested loop structure that performs bit shifts, sign-extension checks, and decrements on integer values.
 - `execute_nested_loops`: Performs a series of arithmetic operations within nested loops involving bit shifts and decrements.

@@ -7,20 +7,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (2045424 top-level bytes in 81 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 80 of 80 units identical (bytes and relocations), 55 raw-word lines |
-| Functions named and described | pass, 183 of 183 named (0 author symbols), 183 of 183 described (10 by rule, 118 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 2358 of 2362 (99.83%) |
+| Byte-identical reassembly with vasm | pass, 80 of 80 units identical (bytes and relocations), 60 raw-word lines |
+| Functions named and described | FAIL, 171 of 271 named (0 author symbols), 171 of 271 described (6 by rule, 112 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 2325 of 2362 (98.43%) |
 | Recovered without load address (counted in proof 1, flagged) | 1024 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 3624 of 3692 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 4876 of 4879 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 102713 |
-| code | 14404 |
-| data | 1904746 |
-| padding | 9 |
+| asset | 101240 |
+| code | 16748 |
+| data | 1903858 |
+| padding | 26 |
 | unused | 23552 |
 
 ## Code units
@@ -29,12 +29,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | game.slave | 1 | 243 | 21 |
 | Disk.1:bootblock | 1 | 7 | 1 |
-| logged disk load from Disk.1 boot-block load | 1 | 0 | 0 |
-| logged disk load from Disk.1 | 1 | 0 | 0 |
+| logged disk load from Disk.1 boot-block load | 1 | 691 | 43 |
+| logged disk load from Disk.1 | 1 | 553 | 39 |
 | logged disk load from Disk.1 | 1 | 107 | 3 |
 | logged disk load from Disk.1 | 1 | 107 | 3 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1257 | 33 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 406 | 21 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1179 | 29 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 405 | 20 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 20 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 99 | 3 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 12 | 1 |
@@ -80,7 +80,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 31 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 10 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 9 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 1 |
@@ -91,9 +91,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 18 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 39 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 37 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 12 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 19 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 17 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 12 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 14 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11 | 1 |
@@ -102,9 +102,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 12 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 8 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 9 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 313 | 19 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 309 | 17 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 440 | 4 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 32 | 18 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 8 | 1 |
 | Disk.1 bytes 140800-141824 (code never loaded by a reference run) | 1 | 0 | 0 |
 
@@ -528,6 +528,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - self-modifying code at an address (27 bytes change between runtime segment an address and runtime segment an address (play-long-joy)): both forms recovered; writer: runtime segment an address +2A, runtime segment an address +2A, runtime segment an address +1A, runtime segment an address +1A
 - self-modifying code at an address (54 bytes change between runtime segment an address (play-long-joy) and runtime segment an address): both forms recovered; writer: runtime segment an address +2A, runtime segment an address +2A, runtime segment an address +1A, runtime segment an address +1A
 - self-modifying code at an address (49 bytes change between runtime segment an address and runtime segment an address (play-long-joy)): both forms recovered; writer: runtime segment an address +2A, runtime segment an address +2A, runtime segment an address +1A, runtime segment an address +1A
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate
 - Gainforce_v1.0/Gainforce_v1.0_hdf/Gainforce/Disk.1: 5 logged loads cover 92920 bytes of the image
 - Gainforce_v1.0/Gainforce_v1.0_hdf/Gainforce/Disk.1: 1 track-loaded blocks found in recovered runtime segments and classified through them
 - Gainforce_v1.0/Gainforce_v1.0_hdf/Gainforce/Disk.1: blocks 278-282 (bytes 142336-144896) outside the filesystem hold data, not code (opcode density 0.013, entropy 4.49)
@@ -576,6 +577,94 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `issue_device_io_request`: Fills in a device request block with a length, a start address and a data pointer, calls the system I/O routine, and returns its result.
 
+### logged disk load from Disk.1 boot-block load
+
+- `sub_002E`: undescribed.
+- `sub_003A`: undescribed.
+- `sub_0056`: undescribed.
+- `sub_0070`: undescribed.
+- `sub_02CE`: undescribed.
+- `sub_0DB8`: undescribed.
+- `sub_0E1A`: undescribed.
+- `sub_0E1E`: undescribed.
+- `sub_0E64`: undescribed.
+- `sub_0EA6`: undescribed.
+- `sub_0EBA`: undescribed.
+- `sub_0ED8`: undescribed.
+- `sub_0F12`: undescribed.
+- `sub_0F40`: undescribed.
+- `sub_0F84`: undescribed.
+- `sub_0F92`: undescribed.
+- `sub_0FA8`: undescribed.
+- `sub_1008`: undescribed.
+- `sub_1044`: undescribed.
+- `sub_10A0`: undescribed.
+- `sub_110C`: undescribed.
+- `sub_1132`: undescribed.
+- `sub_113E`: undescribed.
+- `sub_118A`: undescribed.
+- `sub_11DC`: undescribed.
+- `sub_1256`: undescribed.
+- `sub_128E`: undescribed.
+- `sub_135A`: undescribed.
+- `sub_1366`: undescribed.
+- `sub_1376`: undescribed.
+- `sub_1394`: undescribed.
+- `sub_13AA`: undescribed.
+- `sub_13C2`: undescribed.
+- `sub_13D2`: undescribed.
+- `sub_145A`: undescribed.
+- `sub_1616`: undescribed.
+- `sub_1644`: undescribed.
+- `sub_168A`: undescribed.
+- `sub_1690`: undescribed.
+- `sub_169E`: undescribed.
+- `sub_16B6`: undescribed.
+- `sub_16C8`: undescribed.
+- `sub_16EE`: undescribed.
+
+### logged disk load from Disk.1
+
+- `sub_002E`: undescribed.
+- `sub_0DB8`: undescribed.
+- `sub_0E1A`: undescribed.
+- `sub_0E1E`: undescribed.
+- `sub_0E64`: undescribed.
+- `sub_0EA6`: undescribed.
+- `sub_0EBA`: undescribed.
+- `sub_0ED8`: undescribed.
+- `sub_0F12`: undescribed.
+- `sub_0F40`: undescribed.
+- `sub_0F84`: undescribed.
+- `sub_0F92`: undescribed.
+- `sub_0FA8`: undescribed.
+- `sub_1008`: undescribed.
+- `sub_1044`: undescribed.
+- `sub_10A0`: undescribed.
+- `sub_110C`: undescribed.
+- `sub_1132`: undescribed.
+- `sub_113E`: undescribed.
+- `sub_118A`: undescribed.
+- `sub_11DC`: undescribed.
+- `sub_1256`: undescribed.
+- `sub_128E`: undescribed.
+- `sub_135A`: undescribed.
+- `sub_1366`: undescribed.
+- `sub_1376`: undescribed.
+- `sub_1394`: undescribed.
+- `sub_13AA`: undescribed.
+- `sub_13C2`: undescribed.
+- `sub_13D2`: undescribed.
+- `sub_145A`: undescribed.
+- `sub_1616`: undescribed.
+- `sub_1644`: undescribed.
+- `sub_168A`: undescribed.
+- `sub_1690`: undescribed.
+- `sub_169E`: undescribed.
+- `sub_16B6`: undescribed.
+- `sub_16C8`: undescribed.
+- `sub_16EE`: undescribed.
+
 ### logged disk load from Disk.1
 
 - `copy_relocated_block_to_limit`: Copies bytes from the loaded block into a destination area, advancing both pointers up to a fixed limit, then calls four unnamed routines.
@@ -593,10 +682,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `shift_right_set_top_bit`: Shifts the data register right by one, sets the top bit of the result, and returns it.
 - `initialise_display_and_audio`: Saves the shared variable, clears about fifteen thousand longwords at a fixed address, writes the copper location and the DMA and interrupt enable values, fills table entries with addresses, and calls three unnamed routines.
 - `acknowledge_interrupt_and_reset`: Calls an unnamed routine, then when the shared variable is non-zero calls four more routines.
-- `scan_name_token_with_wildcard`: Scans a text buffer from a stored position for the end of a name token, treating an asterisk as a wildcard and stopping at separators such as space, dot, colon, slash and equals, then records the next position and a length in shared words.
 - `scan_name_token_and_store`: Scans a text buffer for the end of a name token like its neighbour does for names, but stores the resulting position and a length through an unnamed routine and returns nothing.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `append_table_entry_record`: Finds the first empty fourteen-byte entry in a table, stores a pointer and two adjusted coordinates in it, then sets a count of four and clears two fields.
 - `add_table_record_without_return`: Finds the first empty fourteen-byte entry in a table, stores a pointer and two adjusted coordinates in it, then sets a count of four and clears two fields.
 - `advance_table_records_each_frame`: Walks nineteen fourteen-byte table entries, adds per-step offsets from lookup tables to each entry's two coordinates, steps its index, and decrements a counter that is reset to four when it runs out.
 - `call_two_routines_in_order`: Calls two unnamed routines in sequence and returns.
@@ -608,7 +694,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_until_zero`: Repeatedly calls another routine in a loop until that routine returns zero.
 - `clear_bit_column_across_rows`: For each of twelve table entries, clears one bit selected by a column value in three bitplane rows spaced forty bytes apart when the entry is zero; other entries take a separate branch that writes the same rows.
 - `clear_bit_down_column_rows`: Clears one bit, chosen by a column value, in each of thirty-six bytes spaced forty bytes apart, starting at a pointer computed from the column.
-- `check_and_reset_global_flag`: Tests if a global variable is non-zero and then immediately checks if it is zero.
 - `return_after_dead_guard`: Its guard requires the shared variable to be both non-zero and zero, which cannot hold, so the inner call never runs and the routine returns without doing anything.
 - `queue_blit_rectangle_at_position`: Computes a byte address from x and y coordinates using a 120-byte row stride and a fixed base, waits until the blitter is idle, then programs the blitter control, mask and size registers for a rectangle.
 - `queue_blit_clear_rectangle`: Waits until the blitter is idle, then sets a blitter control value and fill mode for a rectangle, computing the destination address from coordinates with a 120-byte row stride and storing the modulo and size values.
@@ -628,9 +713,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `initialize_audio_and_structure_tables`: Clears several audio volume registers, initializes a large memory block with zeros, and populates a structure with various values and pointers through a loop.
 - `acknowledge_interrupt_request`: Calls an unnamed routine, then writes fixed values of 1 and 32 to globals.
-- `test_bit_in_d0`: Tests bit 0 of register d0.
 - `execute_indirect_jump`: Loads a word from a table using an offset in d0 and a base address in a0, then jumps to the address stored at that location in a1.
-- `modify_d6_bits`: Performs bitwise OR operations on register d6 with three different immediate values.
+- `sub_023E`: undescribed.
 - `call_and_advance_table_pointer`: Calls a routine through a stored function pointer, then advances a stored pointer by four bytes to the next table entry.
 - `set_global_byte`: Stores the value one in a global variable and returns immediately.
 - `compare_and_accumulate_nibbles`: If a global variable is non-zero, it loops through a table of words, comparing specific nibbles of a value at a pointer against a target value and adding the table entries to that value if they do not match.
@@ -834,6 +918,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
+- `sub_0000`: undescribed.
 - `set_global_values_minimal`: Calls two routines, sets a global variable to 1 and a memory location to 4, and returns from an interrupt.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -879,7 +964,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `process_nibble_differences`: Loops through a table, compares nibbles of values at offsets 2 and 6 between two pointers, adds values from a source table to a destination table if nibbles differ, and clears a byte in a global variable if no differences are found.
-- `tiny_ori_ori`: Small routine of 2 instructions that merges 0 into d0, then merges 0 into d0.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -888,7 +972,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `accumulate_nibble_offsets`: Loops through data, adding values from a source to a destination at specific offsets if the lower nibbles do not match, and updates a global variable if a counter reaches zero.
-- `tiny_ori_ori_2`: Small routine of 2 instructions that merges 0 into d0, then merges 0 into d0.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -928,7 +1011,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_pointer_and_byte`: Stores the value one in a global variable and stores a pointer in another global variable before returning.
 - `process_table_data`: Decrements a global counter and, when it reaches zero, loads values from a table and performs recursive calls.
 - `accumulate_nibble_mismatches`: If a global variable is non-zero, it loops through a table of words, comparing specific nibbles of a value at a pointer against a target value and adding the table entries to that value if they do not match; if no changes are made during the loop, the global variable is cleared.
-- `test_bit_in_register`: Tests bit 0 of register d0.
 - `perform_infinite_recursion`: This routine calls itself twice before returning, resulting in an infinite loop of recursive calls.
 - `call_routine_with_optional_repeats_2`: Calls another routine, then calls it again after subtracting the input value twice from 48, and finally calls it a third time if the original input value was nonzero.
 - `clear_memory_array_2`: Decrements a value in register d0 by 1 and then loops to clear words at the address pointed to by a5, incrementing the pointer after each write until d0 reaches -1.
@@ -939,10 +1021,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_bit_array_from_source`: Iterates through a table of 48 entries, reading a value from a global variable to determine whether to set or clear specific bits at offsets 0, 6, and 12 of a destination structure calculated from a pointer in a6.
 - `clear_bits_in_memory`: Clears specific bits within a memory block at regular intervals using a bitmask calculation.
 - `initialize_structure_and_call_function`: Stores three long values into a structure at offsets 68, 100, and 64 relative to a6, then calls another routine.
-- `tiny_move`: Small routine of 1 instruction that copies (a4)+ to -(a1).
-- `calculate_and_store_sum_triplet`: Performs a loop 190 times where it sums three values retrieved from memory locations, stores the results back into those locations, and then writes the three sums to a destination table.
+- `sub_04BE`: undescribed.
 - `calculate_and_set_bits`: Calculates values using a table and global variables, then sets specific bits in a memory buffer based on the results.
-- `accumulate_values_from_table`: Reads three 16-bit values from a table using an index, adds them to three separate global variables, increments a counter, and clears the globals and counter if the counter reaches a specific limit or if the first value is 1024.
+- `sub_05D8`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -956,7 +1037,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `return_immediately`: This routine is empty and performs no operations before returning to the caller.
 - `stub_bare_return_entry`: Body is a bare return with no work, so the routine does nothing when called.
+- `sub_000A`: undescribed.
+- `sub_000E`: undescribed.
 - `return_from_subroutine`: This routine is empty and performs no operations before returning.
+- `sub_0016`: undescribed.
+- `sub_001A`: undescribed.
+- `sub_001E`: undescribed.
+- `sub_0022`: undescribed.
+- `sub_0026`: undescribed.
+- `sub_002A`: undescribed.
+- `sub_002E`: undescribed.
+- `sub_0032`: undescribed.
+- `sub_0036`: undescribed.
+- `sub_003A`: undescribed.
+- `sub_003E`: undescribed.
+- `sub_0042`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 

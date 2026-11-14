@@ -7,20 +7,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (1809849 top-level bytes in 51 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 17 of 17 units identical (bytes and relocations), 15 raw-word lines |
-| Functions named and described | pass, 168 of 168 named (0 author symbols), 168 of 168 described (9 by rule, 19 by the local model) |
+| Byte-identical reassembly with vasm | pass, 17 of 17 units identical (bytes and relocations), 13 raw-word lines |
+| Functions named and described | pass, 235 of 235 named (0 author symbols), 235 of 235 described (36 by rule, 70 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2027 of 2027 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 18432 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 3531 of 3546 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 4233 of 4233 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 436010 |
-| code | 12286 |
-| data | 1348490 |
-| padding | 7 |
+| asset | 436000 |
+| code | 14628 |
+| data | 1346156 |
+| padding | 9 |
 | unused | 13056 |
 
 ## Code units
@@ -33,13 +33,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | logged disk load from Disk.1 | 1 | 0 | 0 |
 | logged disk load from Disk.1 | 1 | 0 | 0 |
 | logged disk load from Disk.1 | 1 | 0 | 0 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2121 | 87 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 415 | 24 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 400 | 16 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2498 | 95 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 573 | 44 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 479 | 22 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 266 | 19 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 5 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 289 | 27 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 55 | 30 |
 | Disk.1 bytes 0-512 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Disk.1 bytes 86528-86784 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Disk.2 bytes 0-1280 (code never loaded by a reference run) | 1 | 0 | 0 |
@@ -148,8 +148,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_audio_tick_if_flag_set_alt`: Tests the longword at offset 2016 from a5; if nonzero, calls a different external routine at the given absolute address, then returns.
 - `call_22dee_if_7e0_nonzero`: Tests the longword at offset 2016 from a5 and, when it is nonzero, calls the routine at absolute address 22dee before returning.
 - `reset_display_and_restore_7e0`: Saves the status register and the longword at offset 2016 from a5, clears that slot, swaps display buffers, calls several library routines, sets byte 4524 from a5 to all ones, then restores the saved longword and returns.
+- `transfer_and_process_data`: Transfers data between memory locations, performs several operations including sound commands, and updates global state variables.
+- `conditional_transfer_and_process`: Conditionally swaps data between memory locations, transfers data, performs sound operations, and updates global state variables.
+- `sound_setup_and_transfer`: Sets up sound parameters, conditionally swaps data, performs sound operations, and updates global state variables.
 - `swap_5920_longwords_between_a0_a1`: Exchanges 5921 longwords in blocks of four between the buffers pointed to by a0 and a1, advancing both pointers, then returns.
+- `loop_until_audio_tick`: Calls a routine repeatedly until it returns zero, then returns the accumulated values.
+- `wait_for_zero`: Reads a value from a global variable, loops while it is non-zero, and returns the final value.
 - `repeat_sound_command_37_times`: Saves d0-d1, calls a setup routine, then loops 38 times issuing sound commands with d0=3 and d1=37, calling two subroutines per iteration, and restores d0-d1.
+- `call_audio_tick_once`: Calls an audio tick routine once and then returns.
 - `send_sound_command_255_zero`: Saves d0-d1, sets d0 to 255 and d1 to zero, calls the sound command routine, then restores d0-d1 and returns.
 - `advance_stream_pointer_and_send_word`: Loads a pointer from a5 offset, reads a word, and depending on its sign either sends a default command or sets a flag bit, sends commands, then stores the advanced pointer back.
 - `advance_script_pointer_and_dispatch`: Loads the script pointer from a5 offset 4020, reads a word, and if negative checks a flag then sends command 64 or sets bit 7 of a status byte and dispatches commands 3 through the pc-relative jump table before storing the advanced pointer back.
@@ -159,8 +165,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `resolve_secondary_weapon_frame`: For objects flagged with bit 5, indexes the pointer table at offset 1924, reads a frame count, calls the frame selector, then advances a0 past the chosen entry and loads two words into d1 and d2.
 - `read_object_subtype_and_call`: Clears d2, copies the object's third byte into d2, tests bit 7 of the first byte and, if clear, calls the routine at offset 198 before branching onward.
 - `restore_sr_and_registers_after_call`: Calls two nearby subroutines, moves d2 into d1, restores the status register from the stack, then pops d0-d4 and a0-a3 before returning.
+- `check_audio_condition`: Loads a byte from a calculated offset in a table and compares it with two values from a global structure, calling an audio routine when either comparison matches.
 - `advance_pseudo_random_seed_and_scale`: Updates the 16-bit seed at offset 3914 in a5 with a multiply-add step, then divides a fixed value by the scaled d1-d2 range and returns the result in d0.
 - `reset_sprite_pointer_state`: Loads the fixed address 4c44 into both pointer fields at offsets fb0 and fb4 of a5, clears the long at offset 5c and the byte at f4e, then returns.
+- `initialize_sprite_display`: Initializes sprite display parameters by setting up pointers, calling hardware functions, and updating various state variables including joystick status and memory addresses.
 - `init_chaos_engine_audio_state`: Clears a5-relative state at offset 2360, computes several aligned pointers and stores them at offsets 1964, 1848, 1962, 2642, 2646, 2634, 2638, 2640, 2638, 2642, then calls two routines and initialises channel fields at offsets 2694 to 2707.
 - `reset_audio_channel_parameters`: Stores 48 at a5+2712, clears words at a5+2720 and a5+2716, sets a5+2722 to 336, shifts the word at a5+2802 left by four into a5+2718, and writes 8496 and 8000 to a5+2006 and a5+2010.
 - `stop_audio_and_install_vblank_handler`: Clears a5-relative bytes and words, sets a5+2708 to 2, loads the custom chip base into a3, installs a level 3 interrupt vector, enables DMA and interrupts, sets supervisor mode, stores 16 at a5+2014 and calls a routine.
@@ -169,6 +177,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `setup_8000_byte_buffer_and_vblank`: Installs a vertical blank handler, reads the pointer at 2650(a5) into d0, stores it in two buffer pointers, adds 8000 to d0 and stores it in a third, sets a flag byte, and calls a system function with d0=2.
 - `swap_primary_and_secondary_pointer_slots`: Saves a0, swaps the two longword pointers at offsets 2666 and 2670 from a5, stores the new pointer at offset 2694 and sets the byte at offset 2711 to all ones before restoring a0.
 - `swap_alternate_pointer_pair_and_flag`: Saves a0, swaps the two longword pointers at offsets 2680 and 2684 from a5, writes the swapped pointer to offset 2694 and sets the byte at offset 2711 to all ones, then restores a0.
+- `write_tile_coordinates`: Writes word values to memory locations in a loop, incrementing the source value and pointer with each iteration while maintaining a fixed pattern of offsets.
+- `update_game_state`: Updates game state counters and performs conditional logic based on their values, including incrementing and resetting various byte values.
+- `update_game_counters`: Updates multiple game state counters and performs conditional logic based on their values, including incrementing and resetting various byte counters in global memory.
 - `setup_copper_list_and_enable_dma`: Saves all registers, checks the vertical blank bit, copies a pointer into the copper list, writes two 40000-step entries, sets COP1LCH and enables DMA with bit 15 set, then branches to a shared tail.
 - `setup_copper_list_and_dma_for_8_entries`: Saves all registers, checks the vertical blank bit, copies display pointers, fills eight copper list entries with successive 8000-unit offsets, calls the copper setup routine and enables DMA.
 - `vblank_coplist_and_audio_tick`: Interrupt handler saves all registers, copies copper list words from a5 offsets into the copper buffer, fills five blitter pointer entries, sets COP1LCH and DMACON, then calls audio and toggles a flag before returning.
@@ -188,7 +199,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_blitter_shift_and_clear_flag`: Writes the immediate value 18 to the word at offset a3e of the a5 frame and clears the word at offset a42, then returns.
 - `blit_five_planes_with_blitter_wait`: Saves registers, programs blitter control, modulo and data pointers for five successive blits of 32000 bytes each, polling DMACONR bit 6 before each, then restores registers and returns.
 - `blit_five_planes_then_call_sub_1120`: Programs the blitter for five successive plane blits with DMACONR waits, then copies a1 to a0, calls the routine at 1120, waits again and restores registers.
-- `zero_filled_data_area`: This single zero word decodes as ori.b #0,d0; the bytes are zero-filled data referenced by address, not executable code.
 - `init_audio_channels_and_voice_tables`: Scans 128 bytes at offset 952 from a0 for the highest value, then clears 31 voice structures, stores their pointers, silences the four audio volume registers, sets CIAA port bits and clears sound state bytes.
 - `silence_audio_and_enable_dma`: Writes zero to the four audio volume registers and writes 15 to DMACON, enabling the audio DMA channels, then returns.
 - `advance_audio_sequence_and_fade_voices`: Steps the current audio sequence pointer, programs four voice structures into the audio hardware registers, and applies a fade to each voice volume while DMA is enabled.
@@ -197,13 +207,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `apply_velocity_toward_target`: Reads the target distance at offset 22 of a4; if nonzero, adds or subtracts the speed byte at offset 21 to the position at offset 16 depending on the direction flag at offset 20, clamps to the target, clears the target and stores the position into 6(a5).
 - `compute_sine_scaled_vertical_offset`: Uses the angle byte at 25(a4) to index a sine table, multiplies by the low nibble of 24(a4), shifts right by seven, negates if the angle sign bit is set, adds the result to the position at 16(a4) and stores it into 6(a5), then advances the angle.
 - `dispatch_entity_command_nibble`: Reads the command word at 2(a4), switches on its low nibble to move the position at 16(a4) with clamping, call the velocity or sine routines, adjust the angle at 19(a4), toggle the CIAA fire bit, or set the global speed and direction bytes.
-- `add_zero_immediate_to_d0_byte`: Adds the immediate value zero to the low byte of d0, leaving d0 unchanged, then falls through into the following code.
-- `zero_word_data_area_entry`: A single zero word that decodes as ori.b #0,d0; it is zero-filled data referenced by address, not executable code.
-- `zero_filled_data_table_31_words`: Thirty-one zero words that decode as ori.b #0,d0; this is a zero-filled data table referenced by address, not working code.
-- `bitmask_data_table_bit0`: Seven data words whose bytes are not executable code; the final immediate sets bit 0, marking this as a bitmask table entry.
-- `bitmask_data_table_bit1`: Seven data words of non-code bytes; the last immediate sets bit 1, identifying this table entry as the second bitmask value.
-- `bitmask_data_table_bit2`: Seven data words of non-code bytes; the final immediate sets bit 2, identifying this table entry as the third bitmask value.
-- `palette_black_fill_stub`: Writes eight zero bytes to d0 in sequence, ending with a small immediate, forming a data-like fill rather than executable logic.
 - `blit_planar_tiles_to_bitplanes`: Saves registers, checks a dirty flag via a helper, then converts packed 4-bitplane tile data through a lookup table into two interleaved bitplane buffers at a1 and a2.
 - `rebuild_palette_lookup_table`: If the palette index at offset 2096 differs from the cached one, stores it and fills 128 bytes at offset 2104 with interpolated values derived from the index.
 - `decrement_timer_and_clear_on_expiry`: Subtracts sixteen from the word timer at offset 2096 in a5, and if it reaches zero or underflows, zeroes that timer plus the words at offsets 2620 and 2622.
@@ -225,31 +228,56 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `step_three_palette_components_down`: Loops nine times over the palette block at 857a6, subtracting 273 from each nonzero word at offsets 2, 6 and 10, calling the palette update routine after each group, then calls the palette reset routine.
 - `reset_palette_pointers_and_colors`: Copies the base palette pointer at 2650(a5) into two work pointers, calls the palette setup routine three times with different pointers, then writes fixed color words into the palette block at 857a6.
 - `draw_signed_offset_tile_column`: Saves all registers, computes a vertical tile offset from d0 sign and d2, then repeatedly advances a5+2694 by 40 bytes while polling the a5+2711 flag, calling one of two helpers based on d0 sign.
+- `render_text_glyph`: Processes character data from a buffer to render glyphs on screen by manipulating pixel data at calculated addresses, handling special control characters and updating rendering state.
+- `handle_special_character`: Compares a byte value with a constant, branches if not equal, loads a 32-bit value into a register, adds an address register to the value, adds another constant to the result, stores the final value in a global memory location, and then branches to another location.
+- `render_character_2`: Loads an address into a register, compares a byte value with a constant, branches if not equal, stores a byte to a global memory location, sets a register to a constant value, and then branches to another location.
+- `render_character`: Processes a character code to render a glyph by manipulating bit masks across multiple memory locations, updating a global variable to control rendering behavior.
+- `tiny_addq_rts`: Small routine of 2 instructions that adds 2 to a7, then returns.
 - `render_text_string_to_bitmap_columns_2`: Reads a length-prefixed string from a0, maps characters through a glyph table at a5+3460, and copies eight bytes per glyph into two bitmap planes at a5+2670 and 40000 bytes beyond, advancing 40 bytes per row.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `rebuild_level_tileset_and_palette`: When the a5+2711 flag is set, clears it, resets tile pointers and counters, waits for a5+2694 to match a5+2666, swaps the a5+2670 tile base, and rebuilds palette entries from a5+df8.
 - `draw_text_string_with_line_spacing`: Walks a null-terminated string of character codes, skipping bytes equal to minus one, and for each other byte calls the glyph routine at the address in a6 with x in d6 and y in d7, advancing d6 by the word at offset 3464 of a5.
+- `set_display_flag`: Sets a 16-bit value of 24 to a global variable at offset 3480 in the structure pointed to by register A5, then branches to address 2558.
+- `process_text_characters`: Processes character data from a buffer, calling a function with specific parameters while handling special end-of-string conditions and updating state variables.
 - `draw_glyph_without_advance`: Saves all registers, loads the glyph base pointer from offset 2662 of a5, copies d0 to d2 and d6/d7 to d0/d1, passes a2 as a1 and calls the glyph blitter routine, then restores registers and returns.
+- `save_registers_and_call`: Saves all general-purpose and address registers on the stack, loads a pointer from a global variable at offset 2670 in the structure pointed to by A5 into A0, then calls another routine with parameters from D0, D6, D7, A2, and restores the registers before returning.
+- `compute_tile_offset_2`: Saves all general-purpose and address registers to the stack, loads an address from a global variable, adds a constant offset to another address register, copies word values from registers to other registers, loads an address into a register, calls another routine, and then restores all saved registers.
+- `render_tile_with_offset_2`: Calculates a tile position using input coordinates and a global offset, then invokes a rendering routine with the computed address and original coordinates.
+- `save_registers_and_call_2`: Saves all general-purpose and address registers on the stack, loads a pointer from a global variable at offset 2670 in the structure pointed to by A5 into A0, increments D2 by one, then calls another routine with parameters from D0, D6, D7, A2, and restores the registers before returning.
+- `process_large_tile_2`: Saves all general-purpose and address registers to the stack, loads an address from a global variable, copies word values from registers to other registers, adds one to a register, loads an address into a register, calls another routine, and then restores all saved registers.
 - `draw_glyph_advance_one`: Saves all registers, loads the glyph base pointer from offset 2662 of a5, copies d0 to d2 and increments d2 by one, moves d6/d7 to d0/d1, passes a2 as a1 and calls the glyph blitter routine before restoring registers.
 - `copy_sprite_frame_to_screen_buffer`: Saves all registers, loads a pointer from offset 2670 of a5, increments d2 by one, moves d6 and d7 into d0 and d1, sets a1 to a2 and calls the blit routine, then restores registers and returns.
+- `process_tile_with_offset`: Decrements D2 by one, checks if the result is negative and branches to a label if so, multiplies D2 by 1200, adds the result to A1, sets D7 to 24, calls a tilemap pointer computation routine, then calls two display update functions with specific parameters.
 - `draw_tile_row_and_set_palette`: Sets d7 to 96, multiplies d2 by 4800 and adds it to a1, calls the tile routine, calls a library function, writes 40 to a global, sets d6 to 5, calls another library function with a4 and a6 saved, then returns.
+- `render_tile_with_offset`: Calculates a tilemap pointer using multiplication and addition, calls a rendering function, and updates global display parameters before returning.
+- `compute_tile_offset`: Multiplies D2 by 320, adds the result to A1, sets D7 to 8, and branches to address 2978.
+- `render_small_tile`: Calculates a tilemap pointer with a different offset multiplier, calls a rendering function, and updates global display parameters before returning.
+- `process_large_tile`: Decrements D2 by one, sets D7 to 16, multiplies D2 by 480, and branches to address 3100.
+- `process_small_tile`: Decrements D2 by one, sets D7 to 8, multiplies D2 by 240, and branches to address 3100.
+- `render_tiny_tile`: Calculates a tilemap pointer using a small multiplication factor, calls a rendering function, and updates global display parameters before returning.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (moveq) and then falls through into the code that follows, with no return of its own.
+- `render_large_tile`: Processes a tile index with boundary checking, calculates a tilemap pointer using a large multiplication factor, calls a rendering function, and updates global display parameters before returning.
+- `render_large_tile_with_offset`: Decrements D2 by one, checks if the result is negative and branches to a label if so, multiplies D2 by 640, adds the result to A1, sets D7 to 32, calls a tilemap pointer computation routine, then calls two display update functions with specific parameters.
+- `compute_tile_pointer`: Multiplies D2 by 190, adds the result to A1, sets D7 to 19, calls a tilemap pointer computation routine, and then branches to address 3290.
 - `decrement_index_and_blit_tile`: Decrements d2 and branches out if negative, otherwise multiplies d2 by 80 and adds it to a1, sets d7 to 8, calls the blit routine and branches back to the caller's loop.
+- `process_tile_with_condition`: Decrements D2 by one, checks if the result is negative and branches to a label if so, tests a word value at offset 10 of A2, branches to another label if zero, adds 14 to D2, multiplies D2 by 180, adds the result to A1, sets D7 to 18, calls two tilemap pointer computation routines, and updates a pointer in A2.
 - `advance_sprite_frame_and_trigger_sound`: Decrements d2, and if non-negative scales it by 160 to offset a1, sets d7 to 16, calls a helper, then calls two library routines and stores 8 in a global word before returning.
+- `trigger_display_update`: Calls a display update function, sets a global parameter to eight, and then calls another function to complete the display operation.
 - `compute_tilemap_cell_pointer`: Multiplies d1 by 40 and adds twice the high nibble of d0 to a base pointer from a5, clears d3 to minus one and zeroes a global word, returning the computed offset.
+- `call_render_tile`: Loads an address from a global memory location into a register, sets a register to a constant value, calls another routine with the register as parameter, and then returns.
 - `copy_1249_longwords_to_buffer`: Copies 1249 longwords from an offset of a5 into the buffer pointer stored at 2670(a5), advancing both pointers, then returns.
 - `copy_35c_longwords_to_40000_offset`: Copies 860 longwords from the a5-relative source table to the destination pointer at offset 2662(a5) plus 40000, then clears byte 120(a5), sets bit 0 at 4527(a5) and calls a routine if the bit was clear, waiting while word 2620(a5) is nonzero.
-- `xor_d0_with_d19c_constant`: Exclusive-ORs the low longword of d0 with the immediate constant d19c and falls through to the following code without returning.
-- `or_e6_and_9c_into_d0_bytes`: ORs the immediate byte e6 into the low byte of d0, then ORs the immediate byte 9c into the low byte of d0, and falls through to the next routine.
+- `fall_through_entry_2`: Entry point part-way through straight-line code: runs two instructions (adda.l, ori.b) and then falls through into the code that follows, with no return of its own.
 - `or_constant_bits_into_d0`: ORs the immediate bytes 126 and 156 into the low byte of d0, setting those bits in the register.
 - `install_cia_interrupt_vectors_and_enable`: Sets the level 2 autovector, configures CIA-A port and timer registers, patches two vector slots with new addresses, and enables the vertical-blank interrupt in INTENA.
-- `or_d0_into_d1_low_byte`: ORs the low byte of d0 into the low byte of d1, leaving the upper bytes of both registers unchanged.
 - `cia_interrupt_dispatch_rte`: Reads CIAA interrupt control register into d0, acknowledges INTREQ bit 3, merges the pending bits into a stored mask and jumps through one of five handler vectors before returning with rte.
 - `increment_frame_counter_call_vblank`: Saves all registers, loads the custom chip base into a3 and the game state base into a5, increments the frame counter at offset 2062 and calls the vertical blank routine.
-- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `call_stub`: Call stub: calls one other routine as a subroutine and returns to its own caller when that routine returns.
 - `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `setup_interrupts`: Saves the current interrupt status, enables specific interrupt bits in a hardware register, calls another routine, then restores the original interrupt status with additional bits set.
+- `initialize_cia_ports`: Sets CIAA_PRA to zero, writes 136 to CIAA_ICR, and stores the address of a table at offset 34 into a global variable.
 - `read_keyboard_events_update_joystick_bits`: Acknowledges INTREQ bit 3, reads a key code via the keyboard routine, sets or clears joystick direction bits in the state at offset 118 and stores the translated key code.
 - `read_joystick_ports_update_direction_bits`: Reads CIAA fire buttons and both joystick direction words, calls the decode routine for each port, then sets direction and activity bits in the state block at a5.
 - `decode_joystick_word_to_direction_bits`: Takes a joystick word in d0 and sets direction bits in d1 for up, down, left and right by testing bit patterns and an xor of shifted copies.
@@ -261,17 +289,23 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `save_regs_call_1d978`: Pushes d0-d2, d7 and a1-a2 onto the stack, calls the subroutine at address an address, restores those registers and returns.
 - `wait_for_byte_change_d0_times`: Saves d1, reads the byte at offset 2057 from a5 into d1, compares it with itself, and loops decrementing d0 until d0 expires, then restores d1 and returns.
 - `wait_for_byte_change_at_a5_809`: Saves d1 on the stack, reads the byte at offset 809 from a5 into d1, compares it with itself and loops until it differs, then restores d1 and returns.
+- `compare_and_loop`: Compares a value in a global structure with itself in an infinite loop, then returns without modifying any data.
+- `compare_loop_with_counter`: Performs a comparison between a value in a global structure and itself, decrements a counter, and continues looping until the counter reaches zero.
+- `process_color_data_2`: Processes input data through arithmetic operations and bit shifts, stores results in a local stack area, reads from a global memory location, extracts byte values using bit manipulation, and sets up a function pointer in the local stack.
+- `process_color_data`: Reads color data from a memory location, processes it through bit manipulation, stores the result in a global variable, and updates a structure based on a condition.
 - `dispatch_command_word_to_handlers`: Saves d0, d2 and a1, stores the command word at offset 4562 from a5, masks the high bits and branches to per-command handlers that copy data, patch strings or load files, then returns.
 - `queue_and_copy_request_block`: Repeatedly reads the request word and pointer from a5 offsets, searches a table of pending entries, copies the block into a free slot and calls the low-level transfer routine until it succeeds.
 - `save_all_registers_call_17ce_restore`: Pushes all data and address registers onto the stack, calls the routine at 17ce, then pops all registers back and returns to the caller.
 - `copy_title_mod_name_and_load_module`: Copies a null-terminated string into a buffer, then up to four times enables DMA, calls the module loader with the buffer, and on failure flashes COLOR00 red, green and yellow before branching away.
+- `update_display_buffer`: Checks if a value at offset 3174 equals three, and if so, copies several words from global variables to a buffer and sets the final byte to 255.
 - `match_chaos1_name_against_table`: Stores a byte from the input, calls a comparison routine, then scans a table for a matching entry and compares bytes, returning zero on a match or minus one otherwise.
 - `cycle_player_slot_until_match`: Reads the current player slot byte, saves it, then repeatedly calls the slot setup routine and compares the slot table entry against the reference table, advancing the slot with a mask until a match or wrap, returning -1 on failure.
 - `load_slot_graphics_via_dma`: Saves registers, builds a source pointer from the slot byte, sets up dimensions and destination, enables DMA with a control word, calls the graphics loader, then restores DMA and registers.
 - `select_and_load_slot_asset`: Saves registers, validates the current slot, looks up a table entry, checks a per-slot bit, computes a size, calls the asset loader and returns a status with the size in d1.
-- `ori_b_zero_d3_padding_word`: Performs a bitwise OR of zero with the low byte of d3, leaving d3 unchanged; this single instruction is padding or data misdecoded as code.
+- `fall_through_entry_3`: Entry point part-way through straight-line code: runs one instruction (add.b) and then falls through into the code that follows, with no return of its own.
 - `retry_jsr_62e2_five_times_until_zero`: Saves d0-d2 and a0-a2 on the stack, calls the routine at address 62e2 up to five times, restoring registers each pass, and returns when the call reports zero or the counter expires.
-- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `initialize_global_byte`: Clears a specific global memory location, loads a 32-bit value into a register, sets another register to a constant, saves multiple registers to the stack, and then branches to another routine.
+- `store_byte_to_global`: Stores a byte from a register into a global memory location and then restores multiple registers from the stack before returning.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -284,12 +318,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
+- `set_flag_and_store`: Sets a byte at offset 3416 of a structure to 255 and returns.
 - `iterate_structure_elements`: Calculates a value by masking a byte from a global variable with 3, updates a global byte with the result minus 1, and toggles a bit in another global byte if the mask result is zero.
 - `execute_conditional_script_recursion`: Checks if a pointer at offset 166 of a structure is non-zero and a byte at offset 39 of another structure is non-zero; if both are true, it calls six routines in sequence, including a recursive call to itself.
 - `process_flag_and_pointer`: Clears bit 0 of a byte at offset 57 of a structure, and if that bit was set, updates a pointer at offset 0 with a value calculated from offsets 4 and 22, then copies a word from offset 24 of the structure to offset 4 of the new pointer location.
 - `check_flag_and_set_status`: Clears bit 0 of a byte at offset 56 of a structure, and if that bit was set, sets a byte at offset 57 to 255 and updates a word at offset 150 of another structure by ORing a word from offset 46 with 33280.
 - `process_script_operand_stream`: Reads a pointer from a structure and iterates through a script data stream, decrementing byte counters at offsets 87 and 89 of the structure until they reach zero.
 - `branch_to_update_pointer_routine`: Performs a short branch to the routine that loads a pointer from offset 4e of a structure into a2, sets a byte at offset 58 of the structure to 1, and loads a byte from the address in a2 into int.
+- `jump_to_offset_44a`: Unconditionally branches to offset 1098 in the current routine without modifying any data.
+- `jump_to_offset_450`: Unconditionally branches to offset 1104 in the current routine without modifying any data.
+- `jump_to_offset_456`: Unconditionally branches to offset 1110 in the current routine without modifying any data.
+- `call_and_branch`: Calls another routine and then branches unconditionally to a specific location.
+- `copy_byte_to_offset`: Copies a byte from a source pointer to an offset in a structure and then branches back.
+- `copy_byte_to_offset_plus_two`: Copies a byte from a source pointer to an offset plus two in a structure and then branches back.
 - `update_pointer_from_table`: Loads a pointer from offset 4e of a structure into a2, sets a byte at offset 58 of a structure to 1, loads a byte from the address in a2 into d0, and if d0 is not zero, updates the pointer at offset 4e with the incremented address in a2, calculates an offset using d0, and branches to another routine.
 - `decrement_and_branch_pointer`: Loads a byte from the address in a2 into d0, and if d0 is not zero and not negative, subtracts d0 from a2 before branching to another routine; otherwise it branches to another routine.
 - `fetch_table_entry`: Reads a byte from offset 1 of a structure, uses it to index into a table via a pointer in a5, adds a value from offset 24 of a5 to the resulting pointer, and branches to another routine.
@@ -301,13 +342,39 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `branch_and_clear_d0`: Branches to another routine, clears d0, and then branches to another routine.
 - `set_constant_word`: Writes the word 64 to offset 50 of a structure, otherwise it returns.
 - `copy_attributes_from_pointer`: Copies a byte from offset 3 of a structure pointed to by a pointer in a0 to offset 62 of a0, derives two other bytes from that same source and stores them at offsets 59 and 61, and sets offset 60 to the second derived byte and offset 58 to 2.
+- `setup_color_attributes`: Initializes several byte fields in a structure, setting some to zero or 255, and copying a value from a table indexed by a pointer in the structure.
 - `update_index_and_value`: If a pointer in a structure is not null, it calculates a new value using a byte from a table and a word from the structure, stores it, and increments an index, potentially resetting it; if a byte at offset 64 is non-zero, it decrements it and updates a pointer-based field with a sum, finally storing a sum of two values into a structure pointed to by the original pointer.
 - `initialize_object_state`: Populates a structure with values from a referenced table, including pointers and byte attributes, and sets up linked list pointers within the structure.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_2`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_3`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_4`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_5`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_6`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_7`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_8`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_9`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_10`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_11`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_12`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_13`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_14`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_15`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_16`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_17`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_18`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_19`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_20`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_21`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_22`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_23`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_24`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_25`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.

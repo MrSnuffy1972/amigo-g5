@@ -6,20 +6,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901200 top-level bytes in 7 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 23 of 23 named (0 author symbols), 23 of 23 described (1 by rule, 22 by the local model) |
+| Bytes classified (901200 top-level bytes in 11 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 25 raw-word lines |
+| Functions named and described | pass, 37 of 37 named (0 author symbols), 37 of 37 described (2 by rule, 23 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 13 of 13 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 197 of 197 instructions identical in start and length, 0 mismatches |
+| Recovered without load address (counted in proof 1, flagged) | 366698 bytes, 14 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 825 of 825 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 597596 |
 | code | 546 |
-| data | 286272 |
+| data | 883868 |
 | padding | 914 |
 | unused | 15872 |
 
@@ -30,16 +29,24 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Killing Game Show, The (1990)(Psygnosis)(Disk 1 of 2)[intro only].adf:kgs_intro | 1 | 181 | 21 |
 | Killing Game Show, The (1990)(Psygnosis)(Disk 1 of 2)[intro only].adf:bootblock | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 1 |
+| Killing Game Show, The (1990)(Psygnosis)(Disk 1 of 2)[intro only].adf:kgs_intro#unpacked | 1 | 627 | 13 |
+| Killing Game Show, The (1990)(Psygnosis)(Disk 1 of 2)[intro only].adf:intr#unpacked (raw code file, load address unknown) | 1 | 1 | 1 |
 
 ## Cases handled
 
-- killing game show, the (1990)(psygnosis)(disk 1 of 2)[intro only]/Killing Game Show, The (1990)(Psygnosis)(Disk 1 of 2)[intro only].adf:prt2: high-entropy data file (7.62 bits/byte), classified as packed data
+- killing game show, the (1990)(psygnosis)(disk 1 of 2)[intro only]/Killing Game Show, The (1990)(Psygnosis)(Disk 1 of 2)[intro only].adf:prt1: (CRND) Data Cruncher (xfd)-packed, unpacked with ancient (331824 -> 413428 bytes)
+- killing game show, the (1990)(psygnosis)(disk 1 of 2)[intro only]/Killing Game Show, The (1990)(Psygnosis)(Disk 1 of 2)[intro only].adf:prt2: (CRND) Data Cruncher (xfd)-packed, unpacked with ancient (216180 -> 252912 bytes)
+- killing game show, the (1990)(psygnosis)(disk 1 of 2)[intro only]/Killing Game Show, The (1990)(Psygnosis)(Disk 1 of 2)[intro only].adf:intr: (CRND) Data Cruncher (xfd)-packed, unpacked with ancient (265772 -> 347640 bytes)
 - runtime segment an address: 6 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- killing game show, the (1990)(psygnosis)(disk 1 of 2)[intro only]/Killing Game Show, The (1990)(Psygnosis)(Disk 1 of 2)[intro only].adf:kgs_intro: crunched executable unpacked with ancient scan (Unknown Cruncher 1 (xfd), 13436 -> 19058 bytes), 9 of 9 windows confirmed in reference RAM, loaded at an address: recovered as u3
+- killing game show, the (1990)(psygnosis)(disk 1 of 2)[intro only]/Killing Game Show, The (1990)(Psygnosis)(Disk 1 of 2)[intro only].adf:intr#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - killing game show, the (1990)(psygnosis)(disk 1 of 2)[intro only]/Killing Game Show, The (1990)(Psygnosis)(Disk 1 of 2)[intro only].adf:kgs_intro: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
+- 1 never-loaded region(s), 347640 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
 - Killing Game Show, The (1990)(Psygnosis)(Disk 1 of 2)[intro only].adf:kgs_intro
+- Killing Game Show, The (1990)(Psygnosis)(Disk 1 of 2)[intro only].adf:kgs_intro#unpacked
 
 ## Copy protection found
 
@@ -79,3 +86,23 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `copy_words_repeat_loop`: Copies 16-bit words from the source table at offset 16 to the destination table at offset 432 in a loop, then jumps back to the start of the table copy to repeat it forever.
+
+### Killing Game Show, The (1990)(Psygnosis)(Disk 1 of 2)[intro only].adf:kgs_intro#unpacked
+
+- `initialize_system_state`: Copies a block of data from one memory location to another using a loop, then performs several writes to hardware registers and global variables before jumping to a new address.
+- `execute_data_stream`: Iterates through a list of function pointers stored in a structure, calling each one and performing conditional logic based on the return value until a specific condition is met.
+- `update_hardware_configuration`: Updates several global variables and hardware registers, including the COP1LCH register, and performs conditional branches based on the contents of a structure.
+- `process_buffer_data`: Manipulates a destination buffer by copying data from a source, performing arithmetic on word values, and updating several global variables and the COP2LCH register.
+- `write_data_structure`: Stores a pointer to a memory location in a global variable, then loops to write a series of words and bytes to a destination buffer based on values read from a source table.
+- `decompress_data_stream`: Iterates through a source buffer to copy or expand data into a destination buffer using length and offset values provided within the stream.
+- `update_data_structure`: Rotates and modifies a word from a global variable, stores it in another global, calculates a long value by multiplying a third global by 36, stores several bit-manipulated words into a table, and clears two other global words.
+- `toggle_address_table`: Toggles a bit in a global variable and updates a table of four long values with arithmetic variations of a base address.
+- `perform_blt_operations`: Sets up Blitter registers, copies a block of data, and performs bitwise logical operations on multiple memory blocks using DMA.
+- `clear_memory_block`: Fills a block of memory with zeros using a loop controlled by a constant count.
+- `apply_color_transformations`: Loops through a count from a global variable to call a transformation routine on two different sets of data buffers.
+- `process_packed_colors`: Reads a magic identifier, extracts bit-packed nibbles from a source, scales them by a multiplier, and writes the results to a destination table.
+- `setup_hardware_and_clear_buffers`: Processes a data stream to copy bytes, modifies hardware registers including CIA and interrupts, and calls a routine to clear two memory areas.
+
+### Killing Game Show, The (1990)(Psygnosis)(Disk 1 of 2)[intro only].adf:intr#unpacked (raw code file, load address unknown)
+
+- `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.

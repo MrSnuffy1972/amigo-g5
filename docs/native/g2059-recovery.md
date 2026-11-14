@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (917072 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 6 raw-word lines |
-| Functions named and described | pass, 122 of 122 named (0 author symbols), 122 of 122 described (5 by rule, 113 by the local model) |
+| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 5 raw-word lines |
+| Functions named and described | FAIL, 117 of 145 named (0 author symbols), 117 of 145 described (3 by rule, 110 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 1231 of 1231 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 1024 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 2399 of 2399 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2760 of 2760 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 5491 |
-| code | 10498 |
-| data | 899955 |
+| asset | 4909 |
+| code | 12020 |
+| data | 899015 |
 | padding | 616 |
 | unused | 512 |
 
@@ -28,8 +28,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Speedball 2 - Brutal Deluxe (1990)(ImageWorks)[cr CSL][t +3 Skillion].adf:bootblock | 1 | 77 | 3 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 467 | 19 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1494 | 85 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 468 | 20 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1854 | 107 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 361 | 15 |
 | Speedball 2 - Brutal Deluxe (1990)(ImageWorks)[cr CSL][t +3 Skillion].adf bytes 1024-2048 (code never loaded by a reference run) | 1 | 0 | 0 |
 
@@ -40,6 +40,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address: 768 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 332 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - speedball 2 - brutal deluxe (1990)(imageworks)[cr csl][t +3 skillion]/Speedball 2 - Brutal Deluxe (1990)(ImageWorks)[cr CSL][t +3 Skillion].adf: bytes 1024-2048 look like code no run loaded: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate+address
 - speedball 2 - brutal deluxe (1990)(imageworks)[cr csl][t +3 skillion]/Speedball 2 - Brutal Deluxe (1990)(ImageWorks)[cr CSL][t +3 Skillion].adf: 1 logged loads cover 1024 bytes of the image
 - speedball 2 - brutal deluxe (1990)(imageworks)[cr csl][t +3 skillion]/Speedball 2 - Brutal Deluxe (1990)(ImageWorks)[cr CSL][t +3 Skillion].adf: 3 track-loaded blocks found in recovered runtime segments and classified through them
 - speedball 2 - brutal deluxe (1990)(imageworks)[cr csl][t +3 skillion]/Speedball 2 - Brutal Deluxe (1990)(ImageWorks)[cr CSL][t +3 Skillion].adf: blocks 22-1759 (bytes 11264-901120) outside the filesystem hold data, not code (opcode density 0.005, entropy 6.46)
@@ -81,6 +82,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_unreachable_instructions`: Executes three instructions located within a code gap.
 - `copy_data_to_offset_block`: It copies a large block of data to a fixed destination and then copies a second block of data to a destination offset by a global variable.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `sub_0460`: undescribed.
 - `assign_register_to_global_recursively`: Repeatedly assigns a value from a register to a global variable by calling itself until a specific condition is met.
 - `assign_constant_sequence`: Stores a sequence of large constant values into a global variable and then calls another routine.
 - `initialize_data_tables`: Fills a byte table with divided values, a short table with multiplied values, and copies data from one table to another.
@@ -105,41 +107,63 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decrement_and_recurse_counter_2`: Checks a byte value at a specific offset within a structure and decrements it if it is non-zero.
 - `decrement_and_recurse_counter`: Checks a byte value at a specific offset within a structure and decrements it if it is non-zero.
 - `process_state_transitions`: Manages complex state changes within a structure by updating various word and byte fields based on comparisons with a table of values.
+- `sub_05EA`: undescribed.
 - `initialize_data_structure`: Clears a block of memory, updates several fields within a structure using pointers and offsets, and modifies DMA and interrupt enable registers.
 - `update_game_state_and_hardware`: Updates hardware registers for interrupts and DMA while managing state counters and structure fields.
 - `parse_and_update_entity_state`: Parses a data stream using a switch-based command loop to update structure fields and timers.
 - `process_interpolated_animation_frames`: Iterates through a data structure to decrement frame counters and update position or state offsets based on table lookups.
+- `sub_0AF8`: undescribed.
 - `process_event_table_and_timers`: Iterates through a data table using a switch statement to update various structure fields and manages multiple decrementing countdown timers.
 - `process_event_table_and_timers_2`: Parses a data table using a switch-case structure to update various state fields and pointers.
 - `parse_and_execute_script_data`: Iterates through a data block to calculate a sum and then processes a sequence of commands via a switch-based dispatcher.
 - `parse_and_execute_bytecode`: Reads a sequence of bytes from a buffer and executes a custom instruction set via a switch-based dispatcher.
 - `process_interpolated_animation_frames_2`: Iterates through a data structure to decrement frame counters and update position or state values based on table lookups.
+- `sub_0B8A`: undescribed.
+- `sub_0B90`: undescribed.
 - `process_entity_timers_and_state`: Iterates through a list of data structures to decrement internal counters and update position or state values based on timer expirations.
 - `parse_command_script_data`: Iterates through a data table to parse command opcodes and execute corresponding logic.
 - `process_event_stream`: Iterates through a data stream to parse command bytes and update internal state structures.
 - `parse_event_data_stream`: Iterates through a data stream to extract command identifiers and parameters, updating internal state structures and managing counters.
 - `process_event_data_stream`: Parses a data stream containing command identifiers and associated parameters to update internal state structures.
+- `sub_0C12`: undescribed.
+- `sub_0C1E`: undescribed.
+- `sub_0C2A`: undescribed.
+- `sub_0C32`: undescribed.
+- `sub_0C4C`: undescribed.
+- `sub_0C52`: undescribed.
+- `sub_0C64`: undescribed.
 - `load_entity_attribute_data`: Calculates an offset into a table to load entity properties into a structure.
 - `assign_global_pointer`: Assigns the address of a global variable to a pointer located at an offset within a structure.
 - `process_event_data_stream_2`: Parses a data stream from a table to update various state structures and counters.
 - `copy_word_field_triples`: Copies two word fields to two other offsets in a structure, advancing the base pointer two bytes per pass, and repeats for three passes.
 - `copy_word_field_pairs`: Copies two word fields to two other offsets in a structure, advancing the base pointer two bytes per pass, and repeats for two passes.
-- `calculate_coordinate_offsets`: Performs arithmetic on multiple global variables to update a set of related 32-bit values.
+- `sub_15C8`: undescribed.
 - `store_constant_words`: Stores two specific constant words into two consecutive memory locations.
-- `write_memory_values`: Stores a word into a memory location and performs several writes of a constant value to various memory addresses.
-- `tiny_subq_sub`: Small routine of 2 instructions that subtracts 1 from (a0)+, then subtracts d3 from (a3).
-- `initialize_hardware_registers`: Writes a series of constant values to specific hardware register addresses, including DMA and interrupt control registers.
+- `sub_1620`: undescribed.
+- `sub_165A`: undescribed.
+- `sub_167A`: undescribed.
+- `sub_16D8`: undescribed.
 - `execute_infinite_loop`: Enters an infinite loop that performs no other actions.
 - `update_global_word`: Increments a global word and performs a bitwise XOR on another global value.
-- `tiny_ori`: Small routine of 1 instruction that merges 170 into d5.
 - `update_joystick_status`: Reads input from joystick and mouse hardware registers and updates a global variable with a masked version of the input.
 - `return_empty_routine`: This routine is empty and performs no operations before returning.
 - `mask_and_distribute_words`: Copies a sequence of words to a destination while simultaneously masking each word and storing the result into three separate memory locations via incrementing pointers.
 - `copy_and_mask_words`: Copies words from a source to a destination while simultaneously storing a masked version of each word into three different memory locations.
+- `sub_22C0`: undescribed.
+- `sub_2338`: undescribed.
+- `sub_2394`: undescribed.
+- `sub_23BA`: undescribed.
+- `sub_2454`: undescribed.
+- `sub_24E6`: undescribed.
+- `sub_250C`: undescribed.
+- `sub_252A`: undescribed.
+- `sub_255A`: undescribed.
 - `write_multiple_word_values`: If a value is non-negative, it writes that value to a specific offset in a structure and then performs multiple consecutive writes of the same value to another offset in a global structure.
 - `swap_global_values`: Swaps the contents of a global variable with a temporary value based on conditional checks of the variable's sign.
 - `wait_for_signature`: Polls a global variable in a loop until it matches a specific 32-bit pattern and another variable matches a specific 16-bit pattern.
 - `reset_global_variable`: Sets a global variable to zero and then calls another routine.
+- `sub_26B8`: undescribed.
+- `sub_26E8`: undescribed.
 - `perform_scaled_division_and_store`: Calls a routine to perform a scaled division and stores the resulting value into a memory location.
 - `calculate_scaled_division`: Performs a division-like calculation using a loop and arithmetic operations to determine a value based on input parameters.
 - `process_dma_validation_loop`: Runs a fixed loop of four iterations, clearing a small block of fields and calling helper routines to validate and repack a 32-bit result.

@@ -5,6 +5,97 @@
 ### Monkey Island 2 - Le Chuck's Revenge (1992)(LucasArts)(Sp)[cr Crucial](Disk 01 of 11).adf:monkey2
 (continued)
 
+- `decode_byte_dispatch_2`: It dispatches on a byte value, storing a pointer offset derived from the byte or accumulating a decoded integer from another routine, then writing the result back through the argument pointer.
+- `decode_byte_dispatch`: Dispatches on a byte value, storing a pointer offset derived from the byte or accumulating a decoded integer from another routine, then writes the result through a pointer.
+- `decode_variable_length_integer_2`: Reads a byte from a stream when a register holds negative one, advancing the pointer and either zeroing a stored integer or adding a decoded value to it.
+- `read_add_store_stream`: When a register byte is negative one, it reads a byte from a stream, advances the pointer, and either zeroes the stored integer or adds a decoded value to it, then writes the result through another pointer.
+- `read_add_and_store_integer`: Reads a variable-length integer from a byte stream, adds it to the value already stored at that address, and writes the sum back through a separate pointer.
+- `clear_and_copy_zero`: It stores zero into a word at an address derived from a register, then copies that zero through a pointer to another location.
+- `empty_routine_6`: It is empty and simply returns.
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_c_function_3`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
+- `return_constant_value`: It is empty and returns a constant value.
+- `clear_table_entries_5`: It iterates twenty-four times, zeroing four consecutive long words and storing the result of another routine into the fifth long word of each entry, then calls that routine once more.
+- `iterate_table_and_call_routine`: It iterates over a fixed-size table starting at a global variable, stepping by a constant stride, and calls another routine for each entry.
+- `empty_return_routine_15`: It executes two instructions and returns without performing any operation or modifying any data.
+- `initialize_record_from_source`: Finds a record and populates its fields from a source sequence, copying bytes, masking a flag bit, and computing a shifted value from a counter.
+- `initialize_structure_fields`: Sets several byte and word fields in a structure to specific values or copies them from another location.
+- `recursive_flag_check`: It returns a byte flag.
+- `traverse_linked_list_recursively_2`: It receives a pointer in a register.
+- `link_list_node`: It initializes a two-word node by storing a parameter into the first word and zeroing the second word, then reads a pointer from an offset in the first parameter, stores the node address into that location, and if the read pointer is non-zero, updates the next pointer in the referenced structure to point to the node.
+- `clear_linked_list_node`: It clears a linked list node pointed to by the argument.
+- `find_record_with_smallest_byte_3`: Scans a sequence of ten-byte records and returns the pointer to the one with the smallest non-zero byte at a fixed offset, or a null pointer when none qualify.
+- `find_record_with_smallest_byte`: Scans a sequence of ten-byte records, tracking the record with the smallest non-zero sixth byte, and returns that record pointer after calling another routine with it when found.
+- `find_record_with_smallest_byte_2`: It scans a sequence of ten-byte records, tracking the record with the smallest non-zero sixth byte, and returns that record pointer after calling another routine on it.
+- `traverse_list_by_flag`: Walks a singly linked list by following next pointers, and for each node whose flag byte matches a value and whose adjacent byte is non-zero, it calls another routine with the node and a passed value.
+- `traverse_list_and_call`: Walks a singly linked list and calls another routine with a node address and a byte when a flag byte matches a value and a terminator byte is non-zero.
+- `walk_list_and_call_matching`: Walks a linked list using the pointer stored in each node and invokes another routine for each node whose flag byte matches a passed value and whose terminator byte is non-zero.
+- `walk_list_set_flag`: Walks a linked list using the pointer stored in each node, and for each node whose byte at a fixed offset matches a passed byte and whose neighbor is non-zero, it invokes a routine through the node's child pointer.
+- `clear_flag_and_walk_list`: Walks a linked list using the pointer stored in each node and, for each node whose byte at a fixed offset matches a passed byte and whose following byte is zero, clears a byte at another fixed offset and calls another routine with a value from the node.
+- `walk_list_call_each_node`: Walks a singly linked list by repeatedly calling another routine with the current node pointer and then following the next pointer stored at a fixed offset until the pointer is zero.
+- `traverse_linked_list_2`: It walks a singly linked list by repeatedly calling another routine with the current node pointer and then following the next pointer stored eight bytes from the node until the next pointer is zero.
+- `clear_flag_and_traverse_list_2`: Walks a linked list using the pointer stored in each node and clears a flag byte for each node whose flag is set before following the next pointer.
+- `clear_flag_and_traverse_list`: Walks a singly linked list using a pointer kept in a global variable and, for each node whose byte at a fixed offset is non-zero, clears that byte and calls another routine with a value from a fixed offset in the node.
+- `process_list_set_bit_2`: Walks a nested linked list and, when a masked table bit combined with a fetched word is zero, sets that bit in a structure while incrementing a counter.
+- `process_linked_list_nodes`: Walks a linked list of nodes, inspecting their child entries and flipping a bit in a shared table when a condition is unmet, incrementing a counter along the way.
+- `process_list_set_bit`: Walks a linked list while descending into child nodes, and when a masked table bit combined with a fetched word is zero, it sets that bit and increments a value stored through another pointer.
+- `propagate_byte_match`: Walks a linked list using the pointer stored in each node, and for each node whose byte at a fixed offset matches a passed byte it stores a value at a later offset before recursing into the node's next pointer.
+- `propagate_byte_through_linked_list`: It walks a linked list using the pointer stored in each node, and for every node whose byte at a fixed offset matches a byte in a register it stores another register's byte at a fixed offset and then calls another routine passing the node pointer and a value loaded from the node.
+- `iterate_list_call_match`: Walks a singly linked list using the pointer stored in each node, and for each node whose byte at a fixed offset matches a passed byte it invokes a routine with that node's address.
+- `iterate_linked_list_and_call`: It walks a singly linked list whose head pointer is in a register, and for each node whose byte at a fixed offset matches a byte in a register it calls another routine passing the node pointer.
+- `iterate_list_call_match_offset`: Walks a linked list using the pointer stored in each node, and for each node whose byte at a fixed offset matches a passed byte it invokes a routine with that node's address.
+- `iterate_linked_list_and_call_2`: It walks a linked list using the pointer stored in each node, and for each node whose byte at a fixed offset matches a byte in a register it calls another routine passing the node pointer.
+- `store_matching_node_bytes`: Walks a singly linked list of structures and, for nodes whose byte at a fixed offset matches a register value, writes a byte and a byte from the register into two fields of the node.
+- `process_matching_nodes`: Walks a singly linked list of structures, and for each node whose byte at a fixed offset matches a register value it stores a byte and a word into that node.
+- `process_matching_nodes_2`: Walks a singly linked list of structures, storing a byte and a word into nodes whose offset byte matches a register value.
+- `update_list_node_fields_3`: It walks a singly linked list and, for nodes matching a register value, writes a byte into one field, computes a shifted product of a byte and another value into a neighboring field, then recurses into a node pointer.
+- `copy_global_value_4`: It loads a value from a global variable and stores it back through a pointer.
+- `update_nodes_by_value`: Checks a passed value against a small range, then walks a linked list skipping nodes with a specific flag.
+- `adjust_short_and_update_nodes`: Repeatedly adjusts a short by a constant while it stays below a second value, then subtracts that same constant until it drops below, and walks a linked list updating node fields based on byte comparisons.
+- `process_linked_list_nodes_2`: Walks a linked list of structures, and for each node whose byte at a fixed offset matches a register value it stores a byte and a word into the node, then advances to the next node until the list ends.
+- `update_nodes_and_walk_list`: Writes a byte to a node field, then walks a linked list calling another routine for each node, skipping nodes with a specific flag value and stopping when a terminator byte is absent.
+- `accumulate_node_values`: Walks a linked list and, for nodes matching a passed value, stores a clamped result into a byte field, adds it to a short field, and follows the next pointer.
+- `clamp_short_and_update_list`: Clamps a short against a minimum value, then walks a linked list and, for matching nodes, stores a byte, adds a value to a short field, and calls another routine with a value from the node.
+- `update_node_and_walk_list`: Writes a byte and a computed value to a node field, adds that value to a short field, and follows the next pointer, stopping when a terminator byte is absent.
+- `walk_list_call_on_match`: Walks a linked list using a pointer in a register and, for each node whose byte at a fixed offset matches a register value and whose following byte is zero, calls another routine with the node pointer.
+- `walk_linked_list_and_call_on_match`: It follows a linked list using a pointer in a register, and for each node compares a byte at a fixed offset to a register value while storing another register byte at a different offset, then calls another routine if the stored byte is zero and the comparison matches.
+- `propagate_to_matching_nodes`: Walks a singly linked list and, for each node whose byte at a fixed offset matches a register value, stores a byte and recurses into the node's linked child.
+- `propagate_byte_to_linked_list`: It walks a singly linked list via a pointer in a register, and for each node whose byte at a fixed offset matches a byte in a register it stores a byte from another register at a fixed offset in the node and calls another routine with a pointer loaded from the node.
+- `update_list_nodes_on_match`: Walks a singly linked list using a node pointer and, for each node whose byte at a fixed offset matches a register value, stores that same byte at another fixed offset and then calls another routine using the pointer stored in the node.
+- `walk_list_and_call_on_match`: Walks a singly linked list via a pointer in a global variable and, for each node whose byte at a fixed offset matches a register value and whose byte at another offset is zero, calls another routine with a value from the node.
+- `shift_and_store_list_results`: Walks a linked list and, for each node whose byte at a fixed offset matches a register value, calls another routine, stores the shifted result as a short at a fixed offset, and writes the sum of a node byte and that shifted value at the next offset.
+- `iterate_list_update_shorts`: Walks a linked list and, if a byte field matches a register value, calls another routine, stores a shifted result as a short, and calculates a second short into the node.
+- `load_node_byte_by_offset_2`: Walks a linked list until a node's byte at a fixed offset matches a register value, then returns a byte from that node selected by the register value, or a fixed value when no node matches.
+- `find_and_load_node_byte`: Walks a singly linked list until a node's byte at a fixed offset matches a register value, then returns a byte from that node selected by a register value.
+- `load_byte_from_offset`: It loads a single byte from a fixed offset of the structure pointed to by a register and returns it.
+- `load_byte_from_offset_2`: Reads a single byte from a location offset from a value held in a register and returns that byte.
+- `load_byte_from_struct`: Reads a single byte from a fixed offset within a data structure pointed to by a register and returns it.
+- `load_byte_from_offset_3`: Reads a single byte located at a fixed offset from a base address held in a register and returns it.
+- `return_negative_one_9`: It returns the constant value negative one without touching any data or register.
+- `load_node_byte_by_offset`: Walks a linked list until a node's byte at a fixed offset matches a register value, then returns a byte from that node selected by a register that chooses among several offsets, or a sentinel when no node matches.
+- `return_zero_value_3`: It returns the constant value zero.
+- `return_empty_value`: This routine performs no operations and returns immediately without touching any data or registers.
+- `return_empty_2`: It contains no instructions and simply returns to its caller without modifying any data.
+- `store_byte_from_table`: Loads a byte from a table using an index and stores the result into a global variable.
+- `return_immediately_4`: This routine contains no instructions and simply returns to its caller without modifying any data or registers.
+- `empty_routine_7`: This routine contains no instructions and performs no operations.
+- `return_immediately_5`: The routine contains no instructions and simply returns without performing any operation.
+- `copy_byte_via_pointers`: Loads a byte from a global variable through a pointer and stores it back through another pointer.
+- `increment_byte_value`: The routine loads a byte from a global variable into a register, adds one to it, and stores the result back through a pointer.
+- `initialize_global_table_2`: Iterates four times over a table entry, zeroing its first twelve bytes and its last four bytes, storing the loop index at a fixed offset, and setting two pointer fields to offsets within the entry before advancing to the next entry.
+- `call_two_routines_2`: It calls two other routines in sequence and returns a fixed value.
+- `set_linked_object`: Obtains a pointer from another routine and, if non-zero, stores the input pointer and a field from it into the structure, links the structure back to the input, updates a back-link if present, and then calls another routine with the input, the structure and a byte parameter, returning its result.
+- `iterate_linked_list_calling_routine_2`: It walks a singly linked list via a pointer stored in a global variable, testing a byte at a fixed offset against a register value and calling another routine when the test matches.
+- `iterate_linked_list_calling_routine`: It walks a singly linked list via a pointer stored in a global variable, testing a byte at a fixed offset against a register value and calling another routine with the node pointer when they match.
+- `traverse_linked_list_recursively`: It reads a field at a fixed offset from a pointer argument and, while that field is non-zero, follows each value as a pointer to call another routine with it.
+- `set_flag_on_matching_byte_2`: It walks a linked list through the pointer stored in each node, and for every node whose byte at a fixed offset matches a passed byte it writes the value one to a fixed offset of that node.
+- `set_flag_on_matching_byte`: It walks a linked list through the pointer stored in each node, and for every node writes a byte value to a fixed offset when a byte at another fixed offset matches a register value, then returns zero.
+- `traverse_linked_list_3`: It walks a singly linked list using a pointer kept in a global variable, calling another routine for each node whose byte at a fixed offset is non-zero.
+- `traverse_linked_list`: It walks a singly linked list using a pointer kept in a global variable.
+- `do_nothing_return_3`: It performs no operations and returns immediately without touching any data or registers.
+- `store_byte_and_clear_flag`: It stores a byte from a parameter into an offset of a structure pointed to by a second parameter and clears a byte at another offset of the same structure.
+- `empty_code_gap`: It contains no instructions, only a gap that disassembles as code.
+- `invoke_for_each_node`: Walks a singly linked list and calls another routine once for each node using a register value.
 - `traverse_linked_list_and_call_2`: It walks a singly linked list whose head pointer is in a register, and for each node calls another routine with a value formed by adding a register byte to a byte at a fixed offset of the node.
 - `traverse_linked_list_and_call`: It walks a singly linked list whose head pointer is in a register.
 - `empty_routine_8`: This routine contains no instructions and simply returns without performing any work.
@@ -19,6 +110,10 @@
 - `store_division_result`: Computes the signed quotient and remainder of two short values, storing them along with a sign flag and a cleared word into a structure.
 - `write_flag_and_modulo`: It writes zero at an offset in a structure pointed to by a register, stores the value one at the next offset, writes the remainder of a division of two short values at another offset, and clears a following two-byte field.
 - `set_flag_and_modulo`: It stores the value one at an offset in a structure pointed to by a register, writes the remainder of a division of two short values from registers into another offset, and clears a word at a further offset in the same structure.
+- `decrement_counter_and_clear_flag`: Saves registers, loads a structure pointer from the stack, returns the change flag immediately when the word at offset 4 is zero, otherwise subtracts 17 from that word and clears the byte at its start when the result is not positive, then branches into another routine.
+- `update_timer_and_position_state`: Adds two fields of a structure in a3 to compute a new position, wraps an offset field against a limit, updates a stored position and index, calls an index lookup when the position has changed, and decrements a countdown field that, when it reaches zero, advances a state byte and returns a change flag.
+- `clear_byte_and_return_d6`: Writes a zero byte to the address held in a3, moves the value in d6 into d0, and branches to a point inside another routine.
+- `saves_calls_helper_and_returns_d6`: Pushes a3 onto the stack, calls a helper routine, removes the pushed value from the stack, and moves d6 into d0.
 - `index_table_by_signed_word`: It maps a signed word argument to a value from a global table, using the byte and word to compute the offset.
 - `check_bounds_call_routine`: Compares a byte and a signed word against fixed bounds and, when the byte differs from a constant and the word lies outside a range, calls another routine before returning.
 - `index_signed_table_byte`: Indexes a global table using two signed values as an offset and returns the resulting byte with a sign determined by their signs, or a shifted value when the offset is out of range.
@@ -116,14 +211,12 @@
 - `copy_null_terminated_string_2`: It copies bytes from a source string to a destination pointer until it encounters the terminating zero byte, which it also copies.
 - `copy_string_to_buffer`: It locates the terminating zero byte of a destination buffer and then copies bytes from a source string into that location, continuing until the terminator is copied.
 - `skip_characters_by_table`: It advances a pointer through a byte sequence as long as a specific bit is set in a global lookup table indexed by the current byte value.
-- `store_reversed_decimal_string_2`: Repeatedly divides a value by ten, storing each decimal digit as an ASCII character into a stack buffer, then reverses that buffer in place and null-terminates it.
+- `loads_stack_word_and_branches`: Clears d0 with a value of 97, then reads a 16-bit word from the stack parameter area into the low half of d0 and branches to a shared routine.
 - `store_reversed_decimal_string`: Repeatedly divides a value by ten, storing each decimal digit as an ASCII character into a stack buffer, then reverses that buffer in place and terminates it with a null byte, returning the number of characters written.
-- `convert_to_octal_string`: Converts a value into base eight ASCII digits into a temporary stack buffer, then copies those digits in reverse order into a caller buffer, terminating the result with a null byte and returning the digit count.
+- `loads_stack_word_as_long`: Clears all of d0 and reads a 16-bit word from the stack parameter area into its low half, then branches to a shared routine.
 - `convert_number_to_ascii`: It converts an integer into ASCII decimal digits using a temporary stack buffer, appending one digit per iteration.
-- `parse_or_expand_packed_integer`: Expands a packed value nibble by nibble using a global lookup table and reverses the result when appropriate, otherwise parses a signed ASCII integer by accumulating digits and applies a sign.
 - `reverse_nibbles_from_table`: It expands a packed value nibble by nibble using a global lookup table, writing each expanded result into a temporary location.
 - `parse_signed_integer_string_2`: Skips an optional leading plus or minus sign, accumulates the remaining ASCII digits by multiplying by ten, applies the sign, stores the result, and returns the number of characters consumed.
-- `parse_signed_integer_string`: Walks a null-terminated ASCII string multiplying an accumulator by ten and adding each digit, stops at a newline or non-digit character, negates the result if a minus sign was seen, stores the value through a pointer, and returns the number of characters consumed.
 - `increment_and_store_pointer`: Increments a 16-bit value stored at a fixed offset in a global structure and stores a byte from a parameter into the location pointed to by a pointer held at an adjacent offset, then advances that pointer.
 - `init_and_format_store`: Initializes two adjacent fields in a global structure and then invokes another routine to parse a format string, storing a value into the location pointed to by a parameter while updating the global structure.
 - `store_registers_to_pointer`: Copies the caller's integer registers and stack value into successive 32-bit slots of a pointer passed as an argument, then returns.
@@ -145,6 +238,7 @@
 - `normalize_fixed_point_divide`: Divides a 32-bit dividend by a 32-bit divisor using a normalized fixed-point method and returns a 64-bit result with the quotient in the high 32 bits and the remainder in the low 32 bits.
 - `validate_index_and_fetch_pointer`: Verifies that a provided index is not negative and does not exceed a stored maximum, then checks whether the matching entry in a table is non-zero.
 - `process_resource_list`: Invokes a function pointer stored in a global structure and, when a signal bitmask is set and a flag field is nonzero, clears that pointer and recurses into itself.
+- `call_process_resource_list`: Call stub: calls process_resource_list, then returns to its own caller.
 - `handle_recursive_undefined`: Returns a zero word when its integer parameter is zero, otherwise calls another routine with the parameter, passes the result to a second routine along with a stack slot, and returns the word stored in that slot.
 - `call_indirect_from_table`: Fetches a pointer stored in a table at a fixed offset from a global structure and calls the routine pointed to by that value.
 - `call_indirect_from_table_offset`: Fetches a different pointer stored in a table at another fixed offset from a global structure and calls the routine pointed to by that value.

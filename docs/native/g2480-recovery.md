@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (904144 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 32 of 32 named (0 author symbols), 32 of 32 described (0 by rule, 14 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 279 of 279 (100.00%) |
+| Functions named and described | pass, 39 of 39 named (0 author symbols), 39 of 39 described (1 by rule, 18 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 296 of 296 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 585 of 585 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 732 of 732 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 890 |
-| code | 1452 |
-| data | 7620 |
+| asset | 320 |
+| code | 2078 |
+| data | 7564 |
 | padding | 742 |
 | unused | 893440 |
 
@@ -30,14 +30,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Resolution 101 (1990)(Millenium)[cr CLS][a].adf:bootblock | 1 | 20 | 2 |
 | logged disk load from Resolution 101 (1990)(Millenium)[cr CLS][a].adf boot-block load | 1 | 89 | 2 |
 | logged disk load from Resolution 101 (1990)(Millenium)[cr CLS][a].adf boot-block load | 1 | 89 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 49 | 3 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 338 | 23 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 191 | 8 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 343 | 25 |
 
 ## Cases handled
 
 - resolution 101 (1990)(millenium)[cr cls][a]/Resolution 101 (1990)(Millenium)[cr CLS][a].adf: the boot block reads 29184 bytes from disk offset 346112 to an address (found statically); recovered as a unit
 - resolution 101 (1990)(millenium)[cr cls][a]/Resolution 101 (1990)(Millenium)[cr CLS][a].adf: the boot block reads 66048 bytes from disk offset 375296 to an address (found statically); recovered as a unit
-- runtime segment an address: 34 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 51 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 245 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - resolution 101 (1990)(millenium)[cr cls][a]/Resolution 101 (1990)(Millenium)[cr CLS][a].adf: 2 logged loads cover 0 bytes of the image
 - resolution 101 (1990)(millenium)[cr cls][a]/Resolution 101 (1990)(Millenium)[cr CLS][a].adf: blocks 11-21 (bytes 5632-11264) outside the filesystem hold data, not code (opcode density 0.003, entropy 6.77)
@@ -72,6 +72,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `conditionally_increment_global`: Compares two unsigned short values and, if the first is smaller than the second, adds a constant to a global variable.
 - `read_mouse_button_state`: Reads the fire-button line from the CIA-A port register and the right and middle button lines from the potentiometer registers, updates a stored button state word, and returns the masked button bits.
+- `test_pot_and_write_register`: Tests bits in d0 and d1, and if certain conditions are met, stores a pointer to a global variable and writes a value to the custom POTGO register before branching to another routine.
+- `set_status_flag`: Sets the carry flag based on the value of a byte at a specific memory location and then returns.
+- `check_input_and_set_pot`: Checks bits in the CIAA port and the custom POTGOR register, then conditionally sets bit 1 of d1 or writes a value to the custom POTGO register.
+- `process_interrupt_and_input`: Handles an interrupt by checking the CIAA status, performing bitwise operations on a byte from the CIAA SDR, and then uses a table to update a global variable or a pointer based on a value retrieved from another memory location.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `service_bitplane_pointers_on_vblank`: On the vertical-blank interrupt bit, increments a frame counter and sets five bitplane pointers spaced 8000 bytes apart from a base address.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -82,6 +87,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reset_channel_state_and_dma`: Zeroes five per-channel state bytes and writes control values to the audio control and DMA control registers, turning off the four DMA channels.
 - `interpret_sequence_stream_bytes`: Reads the next value from a byte sequence.
 - `interpret_sequence_stream_from_start`: Copies the first byte of its source into a channel field, then runs the same byte-sequence interpreter as its sibling routine.
+- `set_bits_and_branch`: Sets bits 0 and 5 of a byte at the address in a0 and then performs a tail branch to another routine.
+- `set_bit_and_branch`: Sets bit 5 of a byte at the address in a0 and then performs a tail branch to another routine.
 - `write_byte_to_offset`: stores a byte from a pointer into a global structure at a fixed offset.
 - `initialize_structure_bytes`: writes several bytes to a global structure and sets a bit in a flag.
 - `set_structure_bytes`: stores two bytes into a global structure and sets a bit in a flag.

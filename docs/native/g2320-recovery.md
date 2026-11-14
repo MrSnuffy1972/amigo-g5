@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (916048 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 26 raw-word lines |
-| Functions named and described | pass, 101 of 101 named (0 author symbols), 101 of 101 described (3 by rule, 93 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1318 of 1319 (99.92%) |
-| Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1986 of 1986 instructions identical in start and length, 0 mismatches |
+| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 16 raw-word lines |
+| Functions named and described | pass, 106 of 106 named (0 author symbols), 106 of 106 described (3 by rule, 98 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1328 of 1328 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 272 bytes, 1 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 2102 of 2102 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 40566 |
-| code | 7430 |
-| data | 835284 |
+| asset | 40560 |
+| code | 7772 |
+| data | 834948 |
 | unused | 32768 |
 
 ## Code units
@@ -29,20 +29,28 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Smash TV (1991)(Ocean)[cr SKR].adf:bootblock | 1 | 16 | 1 |
 | logged disk load from Smash TV (1991)(Ocean)[cr SKR].adf boot-block load | 1 | 94 | 4 |
 | logged disk load from Smash TV (1991)(Ocean)[cr SKR].adf boot-block load | 1 | 94 | 3 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1096 | 43 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 686 | 50 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1124 | 45 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 687 | 50 |
+| logged disk load from Smash TV (1991)(Ocean)[cr SKR].adf | 1 | 69 | 2 |
+| Smash TV (1991)(Ocean)[cr SKR].adf bytes 50176-50256 beside a logged load (code never loaded by a reference run, load address unknown) | 1 | 0 | 0 |
+| Smash TV (1991)(Ocean)[cr SKR].adf bytes 50496-50688 beside a logged load (code never loaded by a reference run, load address unknown) | 1 | 18 | 1 |
 
 ## Cases handled
 
 - smash tv (1991)(ocean)[cr skr]/Smash TV (1991)(Ocean)[cr SKR].adf: custom-format (non-DOS) disk, 1687 non-empty blocks: matched against track-loaded segments
-- reference crashes at an address (OSHLE RUNAWAY: PC reached an address after an address (op 4E73) A7=an address (A7)=an address, slid to exec.library -an address): 556 executed addresses of the slide through empty memory after it (an address) are not game code and are excluded from proof 4
 - smash tv (1991)(ocean)[cr skr]/Smash TV (1991)(Ocean)[cr SKR].adf: the boot block reads 22528 bytes from disk offset 878592 to an address (found statically); recovered as a unit
 - smash tv (1991)(ocean)[cr skr]/Smash TV (1991)(Ocean)[cr SKR].adf: the boot block reads 11264 bytes from disk offset 1024 to an address (found statically); recovered as a unit
 - runtime segment an address: 901 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-m1500): 315 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- smash tv (1991)(ocean)[cr skr]/Smash TV (1991)(Ocean)[cr SKR].adf: 2 logged loads cover 33792 bytes of the image
+- smash tv (1991)(ocean)[cr skr]/Smash TV (1991)(Ocean)[cr SKR].adf: 10 executed PCs whose RAM was overwritten before any snapshot match its bytes 50256-50496: recovered as a unit run at an address
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate+displacement
+- Smash TV (1991)(Ocean)[cr SKR].adf bytes 50176-50256 beside a logged load (code never loaded by a reference run, load address unknown): never-loaded code-like bytes recovered position-independently (load address unknown, 0 of 80 bytes decode)
+- Smash TV (1991)(Ocean)[cr SKR].adf bytes 50496-50688 beside a logged load (code never loaded by a reference run, load address unknown): never-loaded code-like bytes recovered position-independently (load address unknown, 52 of 192 bytes decode)
+- smash tv (1991)(ocean)[cr skr]/Smash TV (1991)(Ocean)[cr SKR].adf: 5 logged loads cover 34032 bytes of the image
+- smash tv (1991)(ocean)[cr skr]/Smash TV (1991)(Ocean)[cr SKR].adf: blocks 24-97 (bytes 12288-50176) outside the filesystem hold data, not code (opcode density 0.053, entropy 7.15)
 - smash tv (1991)(ocean)[cr skr]/Smash TV (1991)(Ocean)[cr SKR].adf: blocks 1661-1662 (bytes 850432-851456) hold ASCII text
-- 1 packed track region(s), 832512 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)
+- 1 never-loaded region(s), 80 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+- 1 packed track region(s), 794112 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)
 
 ## Cracktros (kept, not protection)
 
@@ -99,10 +107,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_loop_data`: Waits for a bit to clear, writes constant values to a structure, and then iterates through a table to perform bitwise operations and call another routine.
 - `initialize_structure_data`: Checks a bit in a byte pointed to by a register and, if not set, writes several constant values and multiple register values into a structure at an offset from that pointer.
 - `increment_table_values`: Iterates through two tables and increments the values in the first table to match the corresponding byte components of the second table.
+- `decrement_bits`: Processes a word value through a series of bit tests and decrements, advancing pointers and looping based on a counter.
 - `configure_hardware_interrupts`: Manipulates several hardware registers including DMA and interrupt control registers, performing a loop to check a value before setting specific register bits.
 - `load_object_properties_2`: Performs complex initialization involving multiple loops to populate structures, manipulate memory, and interact with hardware registers.
 - `clear_audio_volumes`: Sets four consecutive memory locations, which correspond to audio volume registers, to zero.
-- `apply_bit_masks`: Performs a series of bitwise OR operations on a data register using several immediate byte values.
 - `manage_state_counters`: Increments and resets two global counters and performs a series of calls to other routines based on their values.
 - `process_object_attributes`: Iterates through a list of pointers to update structure members, including bitwise inversions and coordinate adjustments based on internal flags.
 - `load_object_properties`: Uses a byte from a source to index into tables and stores the resulting pointer and two bytes into a structure.
@@ -114,7 +122,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_entity_state_attributes`: Processes an entity state based on a command index extracted from a word.
 - `update_value_with_clamping`: Updates a value by adding a signed offset and clamps the result between a minimum and maximum range.
 - `fetch_table_value`: Extracts bits from a word to index into a table and uses the result to calculate and store a new value into a structure.
-- `negate_short_value`: Stores the negation of a short value from a table into another short variable.
+- `negate_value_in_structure`: Reads a 16-bit word from an offset of 52 in a structure, negates it, and stores the result back at an offset of 58 in the same structure.
+- `copy_value_in_structure`: Copies a 16-bit word from an offset of 52 in a structure to another offset of 58 in the same structure.
+- `update_position_and_flag`: Checks several conditions and updates a value at offset 12 in a structure, setting it to 255 if a calculated sum exceeds 255.
 - `copy_byte_to_two_locations`: Copies a single byte from a table into two consecutive byte locations in another structure.
 - `store_byte_to_offset`: Stores a byte from a table into a specific offset of another structure.
 - `scale_and_store_value`: Stores a short value into a table and then stores its quadruple value, clamped to a maximum, into another location.
@@ -137,9 +147,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_and_wait_flag_alt`: Stores a different value into a global variable and then calls another routine.
 - `wait_for_interrupt_flag`: Polls a global variable until a specific bit is set, then clears that bit.
 - `wait_for_blitter`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
+- `set_interrupt_flag`: Sets bit 13 of the status word on the stack and returns, effectively enabling an interrupt flag.
 - `initialize_hardware_and_decompress_data`: Configures display registers, DMA control, and CIA interrupts before performing a bitstream-based decompression routine to populate memory.
-- `tiny_rte`: Small routine of 1 instruction that returns from the exception.
-- `return_from_subroutine`: This routine is empty and performs no operations before returning.
+- `tiny_move_rte`: Small routine of 2 instructions that copies d0 to d0, then returns from the exception.
 - `update_status_flags`: Checks and modifies bits in a global variable and clears an interrupt request bit.
 - `wait_and_set_interrupt_flag`: Polls a global variable until a specific bit is set, then sets that same bit.
 - `write_pot_values`: Stores two specific values into a global variable.
@@ -177,3 +187,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `toggle_ciab_bits_1`: Calls a wait routine, toggles bits 1 and 7 of a global variable related to CIA port B, and calls another routine.
 - `update_global_variable`: Compares a register to a global variable and performs a series of sequential writes to that global variable.
 - `execute_unnamed_routine`: An unnamed routine consisting of fourteen instructions.
+
+### logged disk load from Smash TV (1991)(Ocean)[cr SKR].adf
+
+- `wait_for_condition_and_call`: Waits for a global variable to become zero, then waits for another condition before calling a function and returning its result.
+- `bcd_add_with_conditions`: Performs conditional operations based on global flags, doubles a value, and adds it to memory locations using BCD arithmetic.
+
+### Smash TV (1991)(Ocean)[cr SKR].adf bytes 50496-50688 beside a logged load (code never loaded by a reference run, load address unknown)
+
+- `bcd_add_with_pointer_copy`: Copies a byte from one location to another, performs conditional operations based on global flags, doubles a value, and adds it to memory locations using BCD arithmetic.

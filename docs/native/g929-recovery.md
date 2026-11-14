@@ -7,20 +7,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (903216 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 14 raw-word lines |
-| Functions named and described | pass, 29 of 29 named (0 author symbols), 29 of 29 described (2 by rule, 0 by the local model) |
+| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 12 raw-word lines |
+| Functions named and described | pass, 29 of 29 named (0 author symbols), 29 of 29 described (1 by rule, 4 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 25 of 25 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 976 of 976 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 969 of 969 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 3149 |
-| code | 2360 |
-| data | 890537 |
-| padding | 2 |
+| code | 2350 |
+| data | 890499 |
+| padding | 50 |
 | unused | 7168 |
 
 ## Code units
@@ -31,7 +31,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | logged disk load from After the War (1989)(Dinamic)[cr QTX][h ACU].adf boot-block load | 1 | 163 | 2 |
 | logged disk load from After the War (1989)(Dinamic)[cr QTX][h ACU].adf boot-block load | 1 | 163 | 2 |
 | logged disk load from After the War (1989)(Dinamic)[cr QTX][h ACU].adf boot-block load | 1 | 163 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 448 | 21 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 441 | 21 |
 
 ## Cases handled
 
@@ -87,6 +87,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `stub_infinite_wait_loop`: Contains only an endless empty loop that never returns.
 - `select_drive_and_wait_ready`: Updates the low drive-control bits of the disk control register, waits a fixed count, then waits until a status bit clears.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `check_enable_and_ack_interrupt`: Tests bit 1 of the interrupt enable register and returns immediately if it is clear, otherwise it enables DMA, acknowledges an interrupt, sets a global byte, and returns.
+- `set_interrupt_request_bit`: Sets bit 5 of the interrupt request register and then returns.
 - `wait_disk_status_then_return`: Waits while one control bit is set, calling a routine on each pass, then waits until a second status bit clears.
 - `set_drive_bits_and_wait`: Sets the low two drive-control bits, waits a fixed count, then waits until a status bit clears.
 - `wait_count_then_status_clear`: Counts down a fixed count, then waits until a status bit clears.
@@ -95,9 +97,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decode_mfm_sector_after_sync`: Clears a 32-longword buffer, checks two words for the MFM sync pattern, and writes a padding pattern before decoding the sector data.
 - `find_matching_table_entry_byte`: Scans 8-byte table entries from a pointer until the byte at offset 2 matches the input byte, leaving the pointer on the matched entry.
 - `unpack_bitstream_block`: Unpacks a block using a 32-bit bit buffer read from the input, with carry bits selecting literal runs or back-references.
-- `service_interrupt_request_counters`: Interrupt-style handler that checks request bits in the interrupt request and enable registers.
-- `tiny_ori`: Small routine of 1 instruction that merges 250 into d0.
-- `fill_plane_pointer_table`: Writes a series of 32-bit addresses into 8-byte table entries, starting from a base value and advancing by 8000 for each entry.
+- `handle_vblank_serial_bit`: Checks whether the VBLANK interrupt is enabled and pending, then increments two global counters and stores the next serial bit in a bitmap when it is, otherwise it sets a flag if a counter already exceeds two, and finally acknowledges the interrupt before returning.
+- `write_incrementing_values`: Writes a 32-bit value split into two little-endian words into a table at offsets 2 and 6, then advances the pointer and repeats the process until a counter in a register reaches zero.
 - `load_palette_from_table`: Copies 32 words from a source table into the colour registers, starting at the first colour register.
 - `store_serial_bit_in_bitmap`: Handles one step of a serial input word: when its high bit is set it toggles a parity flag, and on one phase it writes a single bit into a 128-bit bitmap at an index taken from the input and a lookup table.
-- `undecoded_bit_change_routine`: Twelve instructions including a bit-change operation at an address-taken entry.

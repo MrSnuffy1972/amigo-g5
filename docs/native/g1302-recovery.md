@@ -7,20 +7,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (904970 top-level bytes in 15 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 18 of 18 units identical (bytes and relocations), 33 raw-word lines |
-| Functions named and described | pass, 345 of 345 named (0 author symbols), 345 of 345 described (8 by rule, 0 by the local model) |
+| Byte-identical reassembly with vasm | pass, 18 of 18 units identical (bytes and relocations), 7 raw-word lines |
+| Functions named and described | pass, 318 of 318 named (0 author symbols), 318 of 318 described (10 by rule, 4 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 4250 of 4250 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 512 bytes, 2 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 9543 of 9677 instructions identical in start and length, 1 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 9438 of 9439 instructions identical in start and length, 1 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 19654 |
-| code | 38248 |
-| data | 843784 |
-| padding | 212 |
+| asset | 20540 |
+| code | 37290 |
+| data | 843858 |
+| padding | 210 |
 | unused | 3072 |
 
 ## Code units
@@ -32,7 +32,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 18 | 3 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 365 | 21 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 599 | 36 |
-| logged disk load from Rick Dangerous II (1990)(Micro Style)[cr Angels - Genesis].adf | 1 | 8458 | 266 |
+| logged disk load from Rick Dangerous II (1990)(Micro Style)[cr Angels - Genesis].adf | 1 | 8220 | 239 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
@@ -181,6 +181,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `branch_to_shared_code_block`: Unconditionally branches to another code block, transferring execution without touching registers or memory.
 - `main_game_loop_dispatch`: Copies a longword from a5 to a1, patches a return opcode into memory, then repeatedly calls dozens of game subroutines and branches on flags at fixed globals to drive the main loop.
 - `patch_pointer_table_entry`: Reads a longword from a fixed address, subtracts a constant and one, then writes a constant longword into memory at an offset derived from that value.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs three instructions (movep.l, bclr.b, bset.b) and then falls through into the code that follows, with no return of its own.
 - `read_two_words_and_call_blit`: Saves all registers, reads two words from a0 into d1 and d2, sets a0 from d0, loads d3 with a bit mask and a1 with a fixed address, then calls a subroutine.
 - `read_two_words_and_call_disk_helper`: Saves all registers, reads two words from the address in a0 into d1 and d2, moves d0 into a0, clears d0, sets d3 to 32769 and a1 to a fixed buffer, then calls the disk helper at 7580.
 - `compute_track_sector_and_read_disk_block`: Saves registers, derives a track and sector from d0-d3 and a0/a1, loops calling disk read helpers to load a block, and returns the computed block offset in d1 with status in d0.
@@ -218,16 +219,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `poll_ciab_disk_ready_with_retry`: Calls the disk status helper, tests bit 0 of CIAA control register, loops while busy, decrements d0 and retries until d0 reaches zero, then returns.
 - `wait_cia_timer_then_decrement_d0`: Tests bit 0 of the CIA-A control register at a fixed address, branches away if set, otherwise decrements d0 and branches away if it becomes zero.
 - `set_cia_control_and_timer_latches`: Writes 8 to the CIA-A control register, then writes 204 and 2 to the CIA-A timer high and low bytes, and returns.
-- `set_d0_low_byte_to_ff`: ORs the low byte of d0 with 255, setting all eight low bits of d0 to one, then falls through into the following routine.
 - `copy_d0_word_to_125a6_and_call`: Copies the word at address 125a6 into address 125a6 plus two, then calls the routine at 78fe and returns.
 - `compare_125a6_with_125a8_and_branch`: Loads the word at 125a6 into d0, compares it with the word at 125a8, and if equal calls the routine at 4674 before returning; otherwise falls through to set d0 to three and call 998c.
 - `spawn_effect_from_slot_table`: Calls a setup routine, reads a slot counter, clamps it to four, indexes a pointer table, copies two graphics blocks to screen memory, then writes a value into a computed address.
 - `write_rts_word_and_return`: Branches away to another routine, then writes the word value for an rts instruction to the address in a0 and returns.
-- `zero_filled_data_area_word`: A single zero word that decodes as ori.b with zero immediate; it is zero-filled data referenced by address, not executable code.
-- `zero_filled_data_area_word_alt`: Another single zero word decoding as ori.b with zero immediate; zero-filled data pointed to by address, not executable code.
-- `zero_fill_data_word_at_309a`: A single zero word that decodes as ori.b #0,d0; it is zero-filled data referenced by address, not executable code.
-- `zero_fill_data_word_at_309e`: One zero word decoding as ori.b #0,d0, part of a zero-filled data area whose address is taken by three callers.
-- `zero_fill_data_word_at_30a2`: A lone zero word read as ori.b #0,d0, marking more zero-filled data addressed by addi and move references.
 - `reset_game_state_variables`: Clears many word variables in memory to zero, sets a few flags to one and one to 256, then zeroes four entries spaced 88 bytes apart in a table pointed to by a6.
 - `copy_state_words_to_buffer`: Copies eight word values from game state variables into consecutive words starting at the buffer at 2FD0, then returns.
 - `call_refresh_and_load_state_registers`: Calls a subroutine, then loads eight words from the 2FD0 buffer into d0 through d7 and returns.
@@ -238,7 +233,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_player_movement_and_collision`: Reads joystick input, updates the player's velocity, position and animation, calls the collision routine, and handles death or level transitions.
 - `read_next_scripted_byte`: Returns the next byte from a scripted byte stream, refilling from the pointer and count, or returns a fixed byte when the stream is disabled.
 - `clear_sound_state_if_active`: Tests the word at a fixed address; if zero returns immediately, otherwise clears that word and resets the sound state words and pointer at a fixed address-a fixed address before returning.
-- `sound_channel_table_entry`: Data table of sound channel parameter blocks addressed via absolute lea; the bytes are data, not executable code, and are read by the sound setup routine.
 - `start_sound_from_channel_table`: Clears the sound flag, checks the active word, calls the sound setup and stop routines, then loads channel parameters from the table into d0-d7 and runs the sound start and clear routines.
 - `call_sub_31fe`: Branches to the subroutine at the fixed target address, pushing the return address onto the stack first.
 - `save_registers_and_run_frame_setup`: Loads a base pointer into a6, calls several setup routines, stores d2 through d7 into fixed memory words, runs more routines, sets a flag word to all ones, calls another routine, clears the flag and returns.
@@ -273,25 +267,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `check_entity_type_and_flag_bits`: Saves d5, reads the word at offset 2 of a6, masks its low nibble, and if it equals 4 calls a routine then tests the low two bits of a global byte, returning carry set when they are zero and clear otherwise.
 - `scan_four_slots_for_free_entry`: Saves d7 and a2, walks four 88-byte slots starting at a global table, and for each active slot with two zero words calls a test routine, setting word 76 to minus one when the test fails.
 - `check_state_one_and_probe_region`: Returns immediately unless the global word at the state address equals one, then saves d4-d7, loads coordinates and sizes into d4-d7, calls a region test, and sets a global word to minus one if it fails.
-- `zero_filled_data_word_at_594a`: Contains a single zero word that decodes as ori.b #0,d0; this is zero-filled data referenced by address, not executable code.
-- `zero_filled_data_area_9`: This single zero word decodes as an ori.b immediate instruction, so the bytes are zero-filled data referenced by address, not executable code.
 - `clear_word_at_1594a_and_return`: Writes the word value zero to the long absolute address 1594a, then returns to the caller.
 - `start_timer_and_play_sound_17`: Tests the timer active flag; if zero, sets it to -1, stores 8192 and 25 as timer values, then calls the sound routine with d0=17 and d1=0.
 - `stop_timer_and_clear_sound_bit`: If the timer active flag is set, clears it, passes the stored timer value to a conversion routine, calls the sound routine with d0=1, then sets bit 7 at (a0).
 - `tick_timer_and_bcd_countdown`: If timer active, decrements the countdown word; when it reaches zero reloads 25, subtracts BCD bytes from the counter via sbcd, and clears the active flag if the timer value is zero.
-- `zero_filled_data_area`: A single zero word that decodes as ori.b #0,d0; this address is a zero-filled data area referenced by other code, not executable code.
 - `init_five_sprite_slots`: Saves d7/a0/a6, writes 20 to a global, then fills five 88-byte sprite slots from a source table, calling a setup routine per slot, and clears several state words before returning.
 - `update_player_and_check_collisions`: Tests two state words, moves five sprite slots by deltas, then runs bounding-box collision checks against obstacles and triggers death or respawn handling before returning.
 - `init_shot_velocity_from_player_and_target`: Decrements a cooldown word and returns if nonzero; otherwise calls a sound routine, sets timer and sprite fields, computes velocity deltas from player and target positions, halves them until within four pixels, and stores the result.
 - `move_shot_and_check_collision`: Decrements a timer, adds velocity to the shot position, writes the position to a sprite, checks tile collision and a flag bit, and on hit sets a hit marker and clears the active flag.
 - `reset_five_sprite_objects_and_report`: Saves d7 and d0-d1, calls the sound routine, then loops five times setting the active word of each 88-byte sprite object to one, decrements the shared counter and returns carry set if it reached zero.
-- `zero_filled_data_word_at_60ac`: A single zero word that decodes as ori.b with immediate zero to d0; it is zero-filled data referenced by address, not executable code.
-- `zero_filled_data_word_at_60b0`: This single zero word decodes as ori.b #0,d0; it is zero-filled data referenced by address from seven callers, not executable code.
-- `zero_filled_data_word_at_60b4`: Another lone zero word decoding as ori.b #0,d0, a zero-filled data slot whose address is taken by five callers rather than run as code.
-- `zero_filled_data_area_2`: A single zero word that decodes as ori.b #0,d0; this address is a zero-filled data area referenced by other code, not an executable routine.
 - `scan_tilemap_rows_for_collision_flags`: Saves registers, sets scroll and collision globals, reads tile indices from a1 through the tile table at a0, ORs their attribute bits and stores a collision flag word.
 - `scan_tilemap_and_update_collision_state`: Saves registers, sets scroll globals, ORs tile attribute bytes from a1 via the table at a0, stores the combined flags, then walks the object list testing bounding boxes and updating collision fields.
-- `zero_filled_data_area_3`: Contains only zero words that decode as ori.b #0,d0; this is a zero-filled data area referenced by address, not executable code.
 - `rectangles_overlap_test`: Saves all data registers, adds d4 to d6 and d5 to d7, compares d0 and d1 against those sums and d2/d3 against d4/d5, then restores registers and returns carry set if the two rectangles overlap, clear otherwise.
 - `scan_objects_for_collision_flag`: Saves registers, builds a lookup table via a call, reads a byte from a1 as an index, tests the mapped byte's bit 1, then walks 44-byte object records checking type bits and calling a collision test, setting bit 1 of a flag word when a hit occurs.
 - `scan_terrain_tiles_for_player_collision`: Saves registers, builds a collision bitmask from tile bytes at the level map, then walks the object list checking flagged entries against the player position and sets contact flags and stored coordinates.
@@ -301,7 +287,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `scroll_background_tile_columns`: Saves registers, copies thirty-nine rows of eight longs from one screen buffer backwards to the next, decrements a column counter modulo four and shifts the source pointer when it wraps.
 - `blit_tile_column_from_tileset`: Saves registers, selects a tileset plane from the index in d0, then copies eight tile rows of four bytes each from the tileset into the destination buffer, advancing the destination by 32 bytes per row.
 - `copy_eight_sprite_blocks_from_table`: For eight entries, reads a byte from (a0), scales it by sixteen, and copies four longwords from the table at a fixed address into (a1), 28(a1), 60(a1) and 92(a1), advancing a1 by one longword each time.
-- `zero_filled_data_area_4`: This single zero word decodes as ori.b #0,d0 and is a zero-filled data area referenced by address, not executable code.
 - `reset_counter_and_call_two_routines`: Clears the word at a fixed address, copies the word at a fixed address masked with seven into a fixed address, then calls the routines at a fixed address and a fixed address before returning.
 - `check_player_x_bounds_and_step`: Tests the pause flag; if clear, reads the player x position, masks it to 8 pixels, compares against a limit and calls the left or right movement routine.
 - `move_player_right_clamped`: Adds the horizontal velocity to the player x position, clamps it to the right limit, stores the new position and calls the scroll and animation routines when the pixel column changes.
@@ -319,18 +304,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `advance_script_stream_pointer`: Steps the script pointer at offset 30 of a6 through command words, handling jump, delay and call opcodes, updating the current command word at offset 14 and returning carry set when a command was consumed.
 - `read_next_script_pair`: Reads the next byte pair from the script pointer at offset 22 of a6, decrementing the repeat counter at offset 26, and returns the two sign-extended bytes in d0 and d1 with carry set when data was read.
 - `advance_script_stream_pointer_2`: Reads the script pointer at offset 22 of a6, skips zero and marker words, optionally calls a routine for marker entries, loads a count and two signed bytes, advances the pointer and returns with carry set or clear.
-- `clear_script_slot_table`: Zeroes the first byte of each fourteen-byte record in the table starting at the script slot base until a negative byte is found, and resets the table head pointer.
 - `reset_script_slot_table`: Saves a6, clears the slot count word, stores the table base pointer, then walks fourteen-byte records clearing each first byte until a negative byte ends the loop, restoring a6 and returning.
 - `spawn_effect_entry_with_position`: Checks the effect count against forty, then stores a type byte, a random variant, and the a0, a3 and a4 pointers into the next free fourteen-byte effect slot and increments the count.
 - `advance_effect_positions_forward`: Walks the fourteen-byte effect slots, adding thirty-two to each active slot's position field and freeing slots whose position passes the limit, decrementing the effect count.
 - `retreat_effect_positions_backward`: Walks the fourteen-byte effect slots, subtracting thirty-two from each active slot's position field and freeing slots whose position falls below the limit, decrementing the effect count.
-- `data_table_after_78ae`: The bytes decode as three ori.b immediate instructions with no branch or return, so this is data, not executable code.
 - `reset_sound_channel_state_block`: Writes zero to three bytes and a longword, zero to two words, then sets two words to minus one and one word to six in the sound state block, and returns.
 - `reset_two_sound_channel_pairs`: Writes six and minus one to two pairs of words in the sound state block, setting two channel periods and volumes, then returns.
 - `increment_score_display_counter`: Pushes d0, loads the word at a fixed address, increments it, clamps it to at most 6, stores it back, sets the word at a fixed address to all ones, then restores d0 and returns.
 - `clear_three_score_entry_slots`: Saves registers, optionally clears a four-byte buffer, then for three slots blanks the six-byte text field, copies a digit byte into it, calls the text routine, zeroes the slot and advances by fourteen bytes.
 - `bcd_add_score_and_split_digits`: If the flag word is zero, saves registers, stores d0, adds three bytes of d0 into a buffer with decimal adjust, splits three bytes into nibble digits in memory, restores registers and sets the flag word to all ones.
-- `zero_filled_data_area_5`: A single zero word that decodes as ori.b #0,d0; this address is zero-filled data referenced by other code, not an executable routine.
 - `run_three_delay_loops_by_counter`: Loads three separate word counters from fixed memory, and for each counter repeatedly calls the delay routine with different immediate values until the counter expires, then returns.
 - `toggle_flag_and_run_four_step_sequence`: Clears a word flag, sets it to all ones if a status bit is set, then conditionally runs a four-step call sequence with carry checks and finally stores all ones to a global word.
 - `draw_sprite_via_7afa`: Saves a0-a1, calls the setup routine, loads a1 from a global pointer and a0 from a fixed table, then calls the sprite blitter and the wait routine before restoring a0-a1 and returning.
@@ -343,28 +325,26 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `poll_input_until_key_or_timeout`: Saves d0, d1 and d7, loops up to 175 times calling the input routine and checking the input flag, clearing a word variable, and returns carry set on keypress or clear on timeout.
 - `toggle_screen_buffer_on_key_64`: If the byte at the input location equals 64, calls the setup routine and switches the display pointer between two screen buffers before calling the restore routine.
 - `flash_screen_rows_decrement_increment`: Saves d0-d1/a0-a1, calls four subroutines, decrements each byte of eight rows of ten bytes at the screen buffer, calls two more subroutines, then increments the same bytes back and restores registers.
-- `zero_word_data_at_80b4`: This single zero word decodes as ori.b with immediate zero to d0; it is zero-filled data referenced by address, not executable code.
-- `zero_filled_data_word_second`: Another single zero word decoding as ori.b #0,d0; zero-filled data area addressed by other code, not a real routine.
-- `zero_filled_data_area_6`: A single zero word that decodes as ori.b #0,d0; this is zero-filled data referenced by address, not executable code.
 - `high_score_table_entry_and_name_entry`: Compares score against eight high-score slots, shifts entries down, stores the new score, draws the table and lets the player type a name with joystick, then writes the name into the table.
 - `redraw_cursor_and_name_buffer`: Converts the grid cursor position d2/d3 and the name-entry index d7 into screen coordinates and calls the draw routine three times to redraw the cursor, the name buffer and the current character.
-- `zero_word_data_at_8320`: A lone zero word that decodes as ori.b immediate zero on d0; the bytes are data pointed to by absolute move and test operands.
 - `run_level_script_dispatch_loop`: Checks a global flag and returns early if set, otherwise clears state words, initialises several globals, then repeatedly reads script indices and calls the selected routine until a stop flag is set.
-- `initialise_script_entry_record`: Calls a setup routine, then writes a type word of one and copies two words from the pointed record into the a2 structure, zeroing its remaining fields.
+- `initialize_record_fields`: Reads two words from a structure pointed to by a0, calls another routine with the data, then writes a series of values including a fixed word value of 1 and several zero values to a structure pointed to by a2, before updating the pointer in a0.
 - `set_sprite_zero_and_advance_source`: Reads a word from offset two of a0 into d2, calls the shared setup routine, writes zero to the word at a2, advances a0 past four bytes and returns.
 - `init_object_velocity_and_advance_source`: Reads a word from offset two of a0 into d2, calls the shared setup routine, clears the long at offset twenty-two of a2, copies two words from a0 into a2 offsets ten and twelve, then advances a0 by eight.
 - `set_object_pointer_from_offset_table`: Reads a word from offset two of a0 into d2, calls the shared setup routine, adds the word at offset four of a0 to the base at 55400, stores the result at offset thirty of a2, clears the word at offset thirty-four and advances a0 by six.
 - `advance_a0_by_script_entry_size`: Tests the word at offset 2 of a0; if zero it calls the routine at a fixed address then advances a0 by 4, otherwise it indexes the table at a fixed address by that word and jumps to the routine at 36982 before advancing a0 by 16.
 - `scan_ff_terminated_bytes_align_a0`: Saves d0-d1/a0, calls a routine with the words at offsets 2 and 4 of a0 and a0+6, then scans bytes from a0+6 until a byte equal to 255, aligns the resulting pointer to even and returns it in a0.
 - `skip_four_bytes_in_a0`: Adds 4 to the a0 pointer and returns immediately to the caller, leaving all other registers unchanged.
+- `call_bitmask_update`: Saves d0 and d1, loads a word from offset 2 of the structure in a0 into d0, calls another routine, restores d0 and d1, sets a0 to offset 4 of the structure in a0, and returns.
 - `update_entity_positions_and_effects`: Loops over entity records from a0, advances each active record's x and y by velocity or a called routine, then runs effect and sound updates based on the game mode word.
 - `set_sprite_pointer_from_offset`: Reads a word from a0, calls a routine, then stores a3 pointing into the sprite base plus the offset from a0 into a2 fields and clears two words.
 - `advance_a0_by_sixteen_and_return`: Adds sixteen to address register a0 and returns immediately to the caller without touching any other register or memory.
+- `update_global_pointer`: Adds 4 to a global variable, reads a word from the address in a0, and returns a new address in a0 calculated by adding that word to a constant.
+- `load_pointer_from_memory`: Loads a long value from a specific memory location into address register a0 and returns immediately without modifying any other state.
+- `advance_pointer_by_four`: Increments the pointer in address register a0 by four bytes and returns immediately without performing any other operations.
 - `index_58_byte_record_table`: Multiplies d2 by 88, loads the base address of a record table into a2, adds the product to a2 and returns with a2 pointing at the selected record.
 - `seed_two_word_prng_state`: Builds two initial pseudo-random words from immediate constants, shifts and mixes them, then stores the results into the two-word state at the fixed global addresses.
 - `advance_two_word_prng_state`: Loads the two-word pseudo-random state, swaps the words, rotates and mixes them with a subtract and exclusive-or, stores the new state and restores d6 and d7.
-- `zero_word_data_at_8700`: One zero word read as ori.b immediate zero to d0; this is a zero-filled data byte pair whose address is taken by absolute move.
-- `zero_word_data_at_8704`: Another single zero word decoding as ori.b #0,d0; part of the same zero-filled data area pointed to by other code.
 - `copy_three_buffers_twenty_six_times`: Saves d0-d2 and a0-a4, then calls a copy routine on three buffer pairs once, then repeats it twenty-six times using d2 as the counter before restoring registers and returning.
 - `blit_tile_column_pair_to_bitplanes`: Reads two tile indices from the byte stream at a0, looks each up in the tile table at a5, and copies 40 bytes per tile into four interleaved bitplanes at a1 and the mask plane at a2, advancing pointers and repeating for sixteen rows.
 - `scroll_playfield_rows_by_offset`: Reads the vertical scroll offset, computes wrapped source and destination pointers into the playfield buffer at a1, and calls the blitter copy routine to shift rows of the screen buffer.
@@ -380,7 +360,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `blit_four_narrow_blocks_8192`: Sets both blit modulo registers to 38, then four times waits for blitter idle and starts a 12289-sized blit advancing source and destination by 8192 bytes each.
 - `blit_four_8k_planes_to_screen`: Saves a0/a2, sets blitter control and modulo registers, then four times waits for blitter idle and copies 8192 bytes from chip memory to the screen bitmap, advancing both pointers.
 - `draw_tile_block_from_tilemap`: Saves all registers, computes destination bitmap and source tilemap addresses from the descriptor in a0, then for each tile row and column copies 32 bytes of tile graphics into four bitplanes.
-- `zero_filled_data_area_7`: This single zero word decodes as ori.b #0,d0; it is a zero-filled data area referenced by address, not executable code.
 - `blit_sprite_tiles_to_bitplanes`: For eight sprite entries, advances the animation frame, reads a 40-byte tile from chip memory and copies it into four interleaved bitplanes plus a mask plane at the pointers stored in each entry.
 - `save_level3_and_level2_vectors`: Copies the level 3 and level 2 autovector interrupt vectors from low memory into two longwords in the game's data area, then returns.
 - `disable_dma_interrupts_and_clear_buffer`: Writes all bits to DMACON and INTENA to disable DMA and interrupts, then zeroes a large block of memory starting at the buffer address before returning.
@@ -395,7 +374,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_16_colors_shifted_to_color_registers`: Saves d0-d1/a1, stores a0 to a global pointer, then copies 16 words from (a0) into COLOR00 registers, each value shifted left by one, and restores registers.
 - `fade_palette_up_by_bit_planes`: Copies 16 colors to a buffer, then over 8 passes raises each color's red, green and blue components when above thresholds and writes doubled values to COLOR00.
 - `fade_palette_down_by_bit_planes`: Copies 16 colors to a buffer, then over 8 passes lowers each color's red, green and blue components when nonzero and writes doubled values to COLOR00.
-- `zero_filled_data_area_8`: Eight zero words that decode as ori.b #0,d0; this range is zero-filled data referenced by address, not executable code.
 - `reset_counter_if_at_end`: Saves d0-d1, loads two counters from absolute memory, and clears the first counter when the second minus one is not greater and the values match.
 - `call_reset_when_counter_at_end`: Saves d0, loads the second counter minus one, compares it with the first counter, calls the reset routine when not greater, then restores d0 and returns.
 - `toggle_six_playfield_bytes`: Flips bit 7 of six longword-addressed bytes in memory, toggling each byte's high bit, then returns to the caller.
@@ -407,21 +385,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `blit_tile_column_to_two_bitplanes`: Copies a 24-row by 16-word tile from the tile data at offset d0 times 1536 into two destination buffers, writing each word to both the first and second bitplane areas 8192 bytes apart.
 - `draw_masked_tile_to_four_bitplanes`: Clips the tile at d0,d1 against the screen, then ORs or masked-ORs tile words from a0 into four bitplanes at a1 spaced 8192 bytes apart, advancing 40 bytes per row.
 - `draw_masked_tile_with_terrain_mask`: Like the masked tile blitter but also ANDs each tile word with a mask fetched from the terrain buffer at a5, advancing that buffer 40 bytes per row and wrapping after 256 rows.
-- `zero_word_data_target_of_bit_ops`: One zero word decoding as ori.b with zero immediate; the bytes are a zero-filled data area whose address is taken by bit set and clear operations.
 - `set_cia_interrupt_and_vector`: Stores the long immediate value at absolute address 104, then writes 127 and 137 to the CIA interrupt control register to acknowledge and enable interrupts, and returns.
 - `cia_keyboard_interrupt_handler`: Saves d0, reads the CIA interrupt control register, and on keyboard serial interrupt reads the serial data register, inverts and rotates the byte, stores it as a keymap entry, and acknowledges the interrupt before returning from exception.
 - `read_joystick_ports_to_flags`: Reads CIA fire buttons and both joystick ports, sets direction and fire bits in a two-word flag area, and restores d0-d1.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
-- `zero_word_data_at_a882`: A single zero word that decodes as ori.b #0,d0; this is zero-filled data pointed to by four callers, not executable code.
-- `zero_filled_data_block_nine_words`: Nine zero words decoding as ori.b #0,d0; this is a zero-filled data block referenced by address, not executable code.
 - `check_pending_flag_and_return`: Tests the word at memory location 4bd34 and returns immediately if it is zero, otherwise falls through to the next routine.
 - `select_and_register_sound_slot`: Saves all registers, indexes a table at 1c2f0 by d0, and either starts a pending sound via d1 or picks the least-used of four sound slots and records d0 there before calling the sound start routine.
 - `update_sound_state_and_dispatch`: Saves registers, calls the sound tick routine, then depending on the pending-sound and active-sound flags either starts a queued sound with d0 and d1 or calls the sound cleanup routine.
 - `reset_sound_channels_and_counters`: Saves all registers, clears four channel bytes at offsets 22, 90, 158 and 226 from a base table, calls a sound reset routine, then zeroes several word counters and restores registers.
+- `jump_to_setup_sound_channel_from_table`: Jump stub: passes control straight on to setup_sound_channel_from_tables.
+- `silence_audio_channels`: Clears a word value at a memory location, then sets multiple audio hardware registers to silence all audio channels and reset related variables before branching to another routine.
 - `setup_sound_channel_from_tables`: Installs a sound interrupt vector, sets channel period and volume, indexes two tables by d0 and d1 to fetch channel parameters, and jumps to the sound playback routine.
-- `initialize_sound_channel_state_tables`: Sets up four sound channel structures from indexed tables, clears and fills per-channel state bytes, and initializes volume and period words before returning.
-- `zero_filled_data_table`: Seventeen zero words decoded as ori.b instructions; this range is zero-filled data referenced by address, not executable code.
-- `zero_filled_data_block`: Eight zero words decoded as ori.b instructions; this range is a zero-filled data area that other code refers to by address, not executable code.
 - `init_four_player_sprite_slots`: Saves d0, calls a setup routine, writes CIAA and custom chip registers, then fills four sprite slot structures with frame pointers, flags and zeroed fields before returning.
 - `tick_sound_timer_and_dispatch_channels`: Calls the sound tick, decrements a countdown byte and reloads it with six, then checks four channel activity bytes and dispatches each active channel to the channel update routine.
 - `run_sound_channel_sequence`: Steps the channel's script pointer through command bytes, handling delays, jumps, volume and note commands, and updates the channel state block at a4 before returning.
@@ -441,7 +415,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_actor_state_and_sound_registers`: Tests word at offset 6 of a3; if negative and offset 14 equals one, sets it to 32768, then masks a3 word with a6 offset 2 and either branches, clears offset 12, or decrements offset 6 and writes sound registers at a6 offsets 150, 154 and 156.
 - `advance_sprite_frame_and_flip_direction`: Uses counters at a3 offsets 16, 18, 20, 22 and 24 to advance a frame offset, reloading the period from a2 offset 20 and negating the step when the counter expires.
 - `acknowledge_and_disable_interrupts`: Saves d0, reads INTENAR and INTREQR, masks bits 7 to 10, writes them to INTENA and INTREQ to clear them, shifts right by 7 and writes to DMACON, restores d0 and returns from exception.
-- `set_bit0_of_d1`: Sets bit 0 of data register d1 using an OR immediate, leaving all other bits unchanged, then falls through to the next routine.
 - `decrement_timers_and_clear_flag`: Reads a word counter, and if nonzero decrements two word counters at fixed memory, resetting the first when it expires and clearing a byte flag before branching away.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)

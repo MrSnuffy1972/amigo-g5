@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (902560 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 49 raw-word lines |
-| Functions named and described | pass, 81 of 81 named (0 author symbols), 81 of 81 described (5 by rule, 76 by the local model) |
+| Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 20 raw-word lines |
+| Functions named and described | pass, 77 of 77 named (0 author symbols), 77 of 77 described (4 by rule, 73 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 198 of 198 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 6656 bytes, 54 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1491 of 1585 instructions identical in start and length, 0 mismatches |
+| Recovered without load address (counted in proof 1, flagged) | 6656 bytes, 51 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 1492 of 1494 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| code | 6354 |
-| data | 833440 |
-| padding | 814 |
+| code | 5952 |
+| data | 833841 |
+| padding | 815 |
 | unused | 61952 |
 
 ## Code units
@@ -27,8 +27,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Gauntlet II (1989)(U. S. Gold)[cr QTX][t +4 Subway - Dream Team].adf:bootblock | 1 | 39 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 333 | 25 |
-| Gauntlet II (1989)(U. S. Gold)[cr QTX][t +4 Subway - Dream Team].adf bytes 856064-862720 (code never loaded by a reference run) | 1 | 1213 | 54 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 329 | 24 |
+| Gauntlet II (1989)(U. S. Gold)[cr QTX][t +4 Subway - Dream Team].adf bytes 856064-862720 (code never loaded by a reference run) | 1 | 1126 | 51 |
 
 ## Cases handled
 
@@ -64,7 +64,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `initialize_system_and_display`: Initializes the system by opening a library, clearing a memory region, starting the graphics and font systems, computing sizes from stored addresses, and then configuring display and DMA registers before returning.
 - `fill_routine_table`: Stores the addresses of thirteen routines into consecutive longword slots in a table, then returns.
-- `set_bits_in_d7`: Sets bits 2, 48, 76, 104, 132 and 140 of the byte register d7 in sequence, then returns.
+- `set_flag_bits`: Sets specific bits in three global variables using bitwise OR operations with immediate values.
 - `set_more_bits_in_d7`: Sets bits 142, 192, 222, 252, 26 and 34 of the byte register d7 in sequence, then returns.
 - `decrement_and_format_counter`: Reads a 16-bit counter at offset 374 of the structure in a5 and, when it is nonzero, decrements that counter and stores the previous value divided and modulo by ten as two ASCII digits at offsets -2 and -1 of a table, then returns.
 - `clear_and_store_bytes_r4`: Clears the 16-bit value at offset 376 of the structure in a5 and stores the three bytes 32, 78 and 79 at offsets -3, -2 and -1 of a table, then returns.
@@ -81,7 +81,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispatch_on_button`: Decrements a 16-bit counter at offset 894 of the structure in a5 and returns when it is nonzero, otherwise checks a fire button in the joystick port and dispatches to a routine selected from a jumptable by a scaled difference of two counters.
 - `adjust_button_state`: Reads the vertical blank counter and the current button state, then adjusts the stored button state by the change since the last frame while keeping it non-negative and clamped to the previous value, and finally adds the button delta divided by 40 to the value at offset 1730.
 - `update_table_entries`: Clears a flag at offset 384, then loops over ten entries of a table writing the value 4095 to two fields of each and copying the stored value into those fields when the entry index matches a counter, adds an increment to a running value and negates it when it reaches 3584 or 3806.
-- `tiny_ori_ori_ori`: Small routine of 3 instructions that merges 22 into d6, then merges 54 into -(a6), then merges 86 into d6.
 - `wait_for_raster_line`: Busy-waits by reading the beam position registers (VPOSR/VHPOSR) until the display beam reaches a given raster line, then returns.
 - `wait_for_blitter`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
 - `store_scaled_block_bytes`: Reads a byte from a pointer in a1 and advances that pointer by that value, then loops a number of times equal to 40 minus the byte.
@@ -106,9 +105,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_three_routines_only_2`: Calls three other routines in sequence and returns, with no other code.
 - `load_table_and_call_routines`: Loads a jump-table address into a register and calls a routine, then returns.
 - `call_three_routines_only`: Calls another routine, then a second routine, then a third routine in sequence, and returns.
-- `zero_filled_data_area`: Consists entirely of eight zero words that decode to no-op OR instructions, indicating a zero-filled data area referenced by address rather than executable code.
 - `step_palette_toward_target`: Copies sixteen words from a source area into a destination area, then calls a helper three times while stepping each four-bit component of sixteen colour words one unit toward a target value, adjusting each word up or down as needed.
-- `noop_zero_fill_bytes`: It is an empty routine consisting only of eight byte-wise logical-OR-with-zero instructions that leave the data unchanged, with no branch or call.
 - `decompress_byte_stream`: Decompresses data by looping over regions, copying bytes when a value is positive and filling repeated bytes when it is negative, advancing pointers accordingly, and returns.
 - `advance_pointers_in_loops`: Decrements a counter and returns early if it stays non-negative, otherwise advances one pointer forward and another backward while two nested loops run, then returns.
 - `configure_blitter_and_audio`: Stores an address into a global word, calls two routines, then loops nine times calling eight routines, and finally calls one more routine before returning.
@@ -143,4 +140,3 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `wait_for_table_marker`: Loops over words in a table until it finds one equal to 17545, then calls two routines, stores their results into a global word, and returns.
 - `scan_table_for_marker`: Calls two routines, then scans words from a table at offset 34452 until it finds one equal to 62506, incrementing a counter as it goes, and returns.
 - `setup_disk_transfer`: Sets up a disk transfer by loading a source address and a modified value into the disk and audio registers, then calls two routines before returning.
-- `install_jumptable`: Clears several global words, stores the infinite-loop instruction into several global code locations, copies 32 longwords from a source table to a destination table in a loop, copies 31 bytes from another source table, and finally jumps to a fixed address.

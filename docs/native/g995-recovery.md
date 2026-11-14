@@ -38,8 +38,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - war zone (1991)(core design)[cr flt]/War Zone (1991)(Core Design)[cr FLT].adf: custom-format (non-DOS) disk, 1284 non-empty blocks: matched against track-loaded segments
 - reference run failed (Karl 4 Nov 2026): run ext slid through memory (an address: 6 64 KB pages each with >= 29491 distinct PCs executed, 98304 of its 121382 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
 - war zone (1991)(core design)[cr flt]/War Zone (1991)(Core Design)[cr FLT].adf: the boot block reads 45056 bytes from disk offset 675840 to an address (found statically); recovered as a unit
-- prefix run f100 ignored: it logged 121380 PCs the canonical run never executed (not a prefix of it)
-- prefix run f50 ignored: it logged 121380 PCs the canonical run never executed (not a prefix of it)
 - runtime segment an address (play-rs-m1500): 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - war zone (1991)(core design)[cr flt]/War Zone (1991)(Core Design)[cr FLT].adf: bytes 95744-100864 look like code no run loaded: recovered position-independently (load address unknown)
 - war zone (1991)(core design)[cr flt]/War Zone (1991)(Core Design)[cr FLT].adf: bytes 105984-108032 look like code no run loaded: recovered position-independently (load address unknown)

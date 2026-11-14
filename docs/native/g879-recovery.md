@@ -6,35 +6,37 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (908256 top-level bytes in 6 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 16 raw-word lines |
-| Functions named and described | pass, 53 of 53 named (0 author symbols), 53 of 53 described (8 by rule, 44 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 777 of 777 (100.00%) |
+| Bytes classified (908272 top-level bytes in 7 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 12 raw-word lines |
+| Functions named and described | pass, 48 of 48 named (0 author symbols), 48 of 48 described (3 by rule, 24 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1015 of 1015 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 949 of 952 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1048 of 1048 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 3024 |
-| code | 3414 |
-| data | 221414 |
-| padding | 980 |
+| code | 3640 |
+| data | 221200 |
+| padding | 984 |
 | unused | 679424 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Hong Kong Phooey (1990)(HiTEC Software)[cr Angels - Defjam - Genesis].adf:load | 7 | 281 | 10 |
+| Hong Kong Phooey (1990)(HiTEC Software)[cr Angels - Defjam - Genesis].adf:load | 7 | 414 | 13 |
 | Hong Kong Phooey (1990)(HiTEC Software)[cr Angels - Defjam - Genesis].adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 392 | 22 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 269 | 20 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 357 | 17 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 13 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 254 | 16 |
 
 ## Cases handled
 
-- runtime segment an address: 294 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 342 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500): 13 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 254 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - hong kong phooey (1990)(hitec software)[cr angels - defjam - genesis]/Hong Kong Phooey (1990)(HiTEC Software)[cr Angels - Defjam - Genesis].adf:load: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
@@ -52,15 +54,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Hong Kong Phooey (1990)(HiTEC Software)[cr Angels - Defjam - Genesis].adf:load
 
 - `initialize_and_copy_memory`: Saves registers to the stack, calls another routine, restores registers, and then jumps to a fixed address.
-- `execute_callback_loop`: Calls a routine to set a value in d6, executes a function at the address in a1, and then enters a loop that runs two passes, calling a routine and invoking a function pointer from a global variable at offset negative 210 on each pass.
-- `decrement_until_minus_one`: Decrements a local variable until it reaches negative one and then returns.
 - `process_decompression_data`: Calls a routine via a pointer in a4 multiple times and uses the results to perform additions and memory writes within a loop.
 - `load_address_and_constant`: Loads a 32-bit address into a1 using a PC-relative offset and moves the constant 2 into d0.
 - `decompress_bitstream_data`: Decompresses a bitstream from a source buffer into a destination buffer using a variable-length coding scheme involving bit-shifting and conditional additions.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
+- `or_then_store_registers`: Ors d0 with itself and with a constant, stores the low byte of d0 and the byte of d1 through the predecrementing pointer in a4, stores the word of d2 there as well, then reloads several registers from the stack and branches to another routine.
 - `disable_interrupts_and_dma`: Sets a0 to a PC-relative address, writes 32767 to four consecutive word locations at offset 150 of a structure in a6, writes 135 to a specific memory location, and moves a pointer into a global variable.
 - `copy_and_jump_to_stream`: Copies 645 bytes from a source to a destination, updates two values on the stack, and performs an indirect jump to an address in a3.
 - `copy_data_stream`: Reads bytes from a source pointer, repeating a byte a specified number of times into a destination starting at 8192, and updates a global variable with the last byte processed until a pointer reaches a fixed address.
+- `decode_compressed_bitstream_to_buffer`: Copies an initial block of bytes from one buffer to another, then repeatedly reads bits from a 32-bit bit reader and expands them into a decoded byte stream written backwards from a pointer, looping until that pointer reaches a bound.
+- `extract_bits_from_long_backwards`: Reads a longword backwards from the address in a0, stores its low byte in the word at the address in a5, sets the extend flag from the value 16 in the condition code register and rotates d0 right through the extend bit.
+- `shift_register_bits_loop`: Repeatedly shifts the data register right by one bit, decrementing a loop counter initialised from the 16-bit value in the d1 register until it reaches -1.
+- `execute_callback_loop`: Calls a routine to set a value in d6, executes a function at the address in a1, and then enters a loop that runs two passes, calling a routine and invoking a function pointer from a global variable at offset negative 210 on each pass.
+- `decrement_until_minus_one`: Decrements a local variable until it reaches negative one and then returns.
 
 ### Hong Kong Phooey (1990)(HiTEC Software)[cr Angels - Defjam - Genesis].adf:bootblock
 
@@ -68,28 +73,27 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `call_and_jump_routine`: Saves registers to the stack, calls a routine at a long address, restores the registers, and performs an indirect jump to a long address.
-- `tiny_ori_2`: Small routine of 1 instruction that merges 31 into d0.
-- `free_memory_blocks_in_loop`: Calls a routine before entering a loop that runs three passes, invoking a routine and dereferencing a pointer stored in a global variable at offset negative 210 on each pass.
-- `decrement_until_minus_one_2`: A busy-wait loop that decrements a 16-bit register until it reaches minus one, then returns.
-- `store_pointer_and_trap`: Stores the address of this routine in a global variable, then executes trap instruction zero and returns the register argument unchanged.
-- `configure_hardware_and_update_tables`: Sets several hardware registers including DMA and interrupt control, calls several routines to process tables and keyboard input, and performs a loop that clears 16 bytes of memory starting at a specific address.
-- `process_table_data`: Decrements a 16-bit value in a global variable if it is non-zero, otherwise it performs a loop that reads from a table to perform bitwise operations and writes results to a destination buffer.
-- `test_and_call_routine`: Tests bit 2 of a byte at offset 22 of a structure in a5, and if it is set, calls another routine.
-- `update_pointer_and_branch`: Stores the value an address in a global variable, loads a pointer into a4, loads two addresses into a3 and a6, and branches to another routine.
-- `shift_data_block`: Performs a loop eight times that shifts every byte in a memory range between a fixed address and a fixed address right by one bit.
-- `process_data_loop_2`: Polls bit 6 of a hardware register until it is set, calls another routine, stores a value in a global variable, and then enters a loop that calls another routine 39 times while updating a pointer and a global variable.
-- `calculate_and_store_address`: Subtracts 32 from a value in d0, and if the result is not zero, shifts d0 left by 3, adds it to an address at offset 4464, calls another routine, and stores the returned address in a global variable at offset 18272.
-- `tiny_ori_3`: Small routine of 1 instruction that merges 117 into d1.
-- `increment_and_call_buffer`: Copies the address in a0 to a2, calls another routine, increments a0, and returns.
-- `bitwise_or_buffer`: Performs a loop seven times that reads a byte from a source and bitwise ORs it into a destination byte, advancing the destination pointer by 48 bytes each iteration.
-- `toggle_global_state`: Compares a value at a global pointer to a constant and, depending on the result, writes a set of different 16-bit and 32-bit values to various global locations.
-- `tiny_ori_4`: Small routine of 1 instruction that merges 98 into d1.
-- `tiny_ori_5`: Small routine of 1 instruction that merges 226 into d0.
-- `handle_keyboard_input`: Checks bit 3 of a 16-bit value at an offset of 30 from a pointer; if set, it performs a busy-wait loop and then clears bit 5 of a global byte.
-- `populate_attribute_tables`: Calls another routine and then writes a series of 16-bit values into several memory locations at various offsets, using the swap instruction to write both halves of the values.
-- `increment_table_values`: Executes three separate loops that increment bytes at specific offsets within three different memory tables by 3, 2, and 1 respectively.
-- `populate_graphics_attribute_tables`: Executes three sequential loops that write series of constant values into three distinct tables in memory.
+- `trap_zero_with_saved_registers`: Saves registers d0-d7 and a0-a6 on the stack, stores its own entry address into the interrupt vector at offset 128 (vector 32, trap #0), issues trap #0 to invoke the handler for that vector, then restores all saved registers and returns with d0 cleared to zero.
+- `shutdown_and_restore_system`: Saves the current DMA and interrupt enable words into global variables, disables all DMA and interrupts, resets the display window, data fetch and bitplane modulo registers, clears the sprite pointer registers and the copper jump register, then re-enables the saved DMA and interrupt bits and returns.
+- `fill_table_with_words`: Decrements a global counter and returns while it is nonzero; otherwise it reads words from a source pointer, resets the pointer when a marker value is seen, and writes 32-bit values and masked words into a table, looping 177 times before returning.
+- `conditionally_shift_bytes_right`: Tests bit 2 of the byte at offset 22 from the a5 register and, if it is clear, branches to the return.
+- `stores_constant_and_loads_pointers`: Writes the 32-bit constant an address to a global variable, loads a4 from a table entry, and loads the addresses of two tables into a3 and a6 using pc-relative offsets.
+- `shift_bytes_right_seven_passes`: Runs eight passes over a memory range of bytes in a global block, logically shifting each byte right by one bit and writing it back, then returns.
+- `wait_then_clear_memory_block`: Polls the CIAA_PRA hardware register until bit 6 is set, then calls another routine, stores a 32-bit constant in a global variable, and walks a memory range one byte at a time, clearing each byte through a pointer and reloading the constant plus 480 after every 40 bytes until the pointer reaches a fixed end address.
+- `store_sprite_pointer_by_index`: Subtracts 32 from the value in d0, and if the result is non-zero scales it by eight and computes a pointer into a table, adding the offset to a base address.
+- `copy_pointer_and_or_column`: Copies the destination pointer in a0 to a2 and calls another routine that ORs a column of bytes into the table, then advances a0 by one byte and returns.
+- `or_column_bytes_into_table`: Saves a1 on the stack, then eight times ORs the byte at the source pointer into the byte at the destination pointer, advancing the destination by 48 bytes and the source by one byte, and restores a1 before returning.
+- `swap_two_global_word_sets`: Compares a global word against a fixed constant and, depending on the result, writes one set of constants into several global words and long words, or a second set of constants with different values, then returns.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (movea.l) and then falls through into the code that follows, with no return of its own.
+- `fall_through_entry_2`: Entry point part-way through straight-line code: runs one instruction (ori.b) and then falls through into the code that follows, with no return of its own.
+- `pulse_keyboard_serial_handshake`: If bit 3 of the word at offset 30 of the structure in a5 is set, reads the keyboard serial register, sets bit 6 of the keyboard control register, busy-waits for a 16-bit countdown, then clears bit 6 of the keyboard control register.
+- `initialise_sprite_table_entries`: Calls another routine to fill the sprite tables, then writes a fixed set of 16-bit words and zero words to successive global variable locations, pairing each constant with a zero word.
+- `add_offsets_to_byte_columns`: Adds 3 to one byte in each of 11 entries spaced 64 bytes apart starting at a fixed address, then adds 2 to one byte in each of 18 entries from a second start address, then adds 1 to one byte in each of 18 entries from a third start address, returning afterward.
+- `fill_three_sprite_tables`: Writes three successive tables of 16-bit words in memory, each made of 18 blocks of 16 longwords (the first with 11 blocks), where every block stores a fixed set of pattern longwords and a running value that is advanced by adding a fixed address and combining bytes read from the video position register.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `handle_keyboard_interrupt_byte`: Checks the CIA-A interrupt flag for a serial data event, and if set, reads the keyboard serial register, toggles its handshake bit in the CIA control register around a write of 255 to the serial register, stores the inverted and rotated byte in a global variable, then clears the handshake bit.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -109,7 +113,3 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `configure_transfer_addresses`: Calls another routine, adds 10116 to a1 and 676 to a2, and calls another routine before returning.
 - `configure_blt_hardware`: Calculates source and destination addresses using a table and bit shifts, calls another routine, and then writes several parameters to the Blitter chipset registers via the hardware base address.
 - `wait_for_bit_clear`: Enters a loop that repeatedly tests bit 14 of a byte at offset 2 of a structure in a5 until it is clear.
-- `clear_bit_and_set_flag`: Clears bit 0 of a byte at the address pointed to by a0 and then sets bit 21 of a byte at offset 318 of a4.
-- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `tiny_ori_ori`: Small routine of 2 instructions that merges 1 into d2, then merges 40 into d1.
-- `fill_zero_data`: Executes eight consecutive instructions that perform a bitwise OR of register d0 with zero.

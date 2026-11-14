@@ -6,20 +6,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (904416 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
+| Bytes classified (905440 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 41 of 41 named (0 author symbols), 41 of 41 described (5 by rule, 2 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 81 of 81 (100.00%) |
+| Functions named and described | pass, 45 of 45 named (0 author symbols), 45 of 45 described (5 by rule, 8 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 100 of 100 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 403 of 403 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 433 of 433 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 2410 |
-| code | 1274 |
-| data | 896124 |
+| asset | 2888 |
+| code | 1390 |
+| data | 896554 |
 | unused | 4608 |
 
 ## Code units
@@ -27,14 +27,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Golden Axe (1990)(Virgin)[cr Angels - Genesis - Defjam][t +2 Angels].adf:bootblock | 1 | 6 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 390 | 39 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 393 | 40 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 34 | 4 |
 
 ## Cases handled
 
 - golden axe (1990)(virgin)[cr angels - genesis - defjam][t +2 angels]/Golden Axe (1990)(Virgin)[cr Angels - Genesis - Defjam][t +2 Angels].adf: custom-format (non-DOS) disk, 1749 non-empty blocks: matched against track-loaded segments
 - runtime segment an address: 74 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 7 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 26 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - golden axe (1990)(virgin)[cr angels - genesis - defjam][t +2 angels]/Golden Axe (1990)(Virgin)[cr Angels - Genesis - Defjam][t +2 Angels].adf: 1 track-loaded blocks found in recovered runtime segments and classified through them
 - golden axe (1990)(virgin)[cr angels - genesis - defjam][t +2 angels]/Golden Axe (1990)(Virgin)[cr Angels - Genesis - Defjam][t +2 Angels].adf: blocks 2-10 (bytes 1024-5632) hold ASCII text
 - golden axe (1990)(virgin)[cr angels - genesis - defjam][t +2 angels]/Golden Axe (1990)(Virgin)[cr Angels - Genesis - Defjam][t +2 Angels].adf: blocks 13-25 (bytes 6656-13312) outside the filesystem hold data, not code (opcode density 0.009, entropy 4.23)
@@ -68,6 +68,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `build_bit_reversed_byte_table`: Fills a 256-entry table in reverse order with the bit-reversed form of each byte value, shifting one bit at a time for eight steps per entry.
+- `load_immediate_and_branch`: Loads a 32-bit immediate value into register d0 and performs a short branch.
 - `run_init_steps_entry_zero`: Runs four subroutines in sequence, then calls another subroutine only when a flag byte in table entry zero is nonzero.
 - `run_init_steps_for_index`: Runs four subroutines in sequence, then calls another subroutine when a flag byte in a table, indexed by an input register, is nonzero.
 - `write_constant_then_return_zero`: Stores a fixed constant into a control byte, calls a subroutine and returns zero.
@@ -97,7 +98,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_from_subroutine`: This routine is empty and performs no operations before returning.
 - `copy_decoded_sector_bytes`: Copies decoded bytes into a destination range, XOR-combining longwords into a checksum for each block of 128 longwords and comparing it with an expected value.
 - `copy_decoded_sector_bytes_2`: Runs the same block checksum loop with a different copy stride, comparing each 128-longword block against the expected value.
-- `return_failure_status`: Returns a fixed failure value of minus one with no other work.
+- `shift_and_branch`: Shifts register d0 right by one bit, moves the value in a4 to a0, and performs a short branch.
 - `return_error_status`: returns a value representing a failure status to the caller.
 - `scan_for_disk_sync_marker`: Reads 16-bit words from the input pointer until it finds the standard MFM sync word, then calls two subroutines and returns zero.
 - `call_two_subroutines_return_zero`: Calls two subroutines in sequence and returns zero, with no other work of its own.
@@ -109,4 +110,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `decrement_counter_clear_flag`: Decrements a 16-bit counter in memory and clears the top bit of a global flag word, then returns the register value it was given.
+- `handle_cia_interrupt`: Checks bit 0 of a value read from a hardware register; if bit 0 is clear and bit 3 is set, it performs bitwise operations on a value from a hardware register, stores the result in a global variable, and modifies two other hardware registers before returning from an interrupt; otherwise, it clears bit 6 of a hardware register, stores a value in a global variable, and returns from an interrupt.
+- `set_intreq_and_return`: Writes the value 7168 to a hardware register and returns from an interrupt.
+- `set_intreq_and_return_2`: Writes the value 8192 to a hardware register and returns from an interrupt.
+- `clear_intreq_and_return`: Decrements a 16-bit value in a global variable, masks bit 15 of a hardware register, writes the result to another hardware register, and returns from an interrupt.

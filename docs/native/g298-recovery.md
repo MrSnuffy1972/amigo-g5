@@ -7,39 +7,40 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (923856 top-level bytes in 27 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 4 raw-word lines |
-| Functions named and described | pass, 152 of 152 named (0 author symbols), 152 of 152 described (29 by rule, 6 by the local model) |
+| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 0 raw-word lines |
+| Functions named and described | pass, 156 of 156 named (0 author symbols), 156 of 156 described (32 by rule, 10 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2939 of 2939 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 32000 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 5729 of 5753 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 5790 of 5790 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 411328 |
-| code | 21240 |
-| data | 92227 |
-| padding | 6357 |
+| asset | 411740 |
+| code | 21322 |
+| data | 91723 |
+| padding | 6367 |
 | unused | 392704 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Bubble Ghost (1988)(Accolade).adf:BG | 19 | 233 | 7 |
+| Bubble Ghost (1988)(Accolade).adf:BG | 19 | 230 | 5 |
 | Bubble Ghost (1988)(Accolade).adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3287 | 49 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2223 | 95 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3275 | 48 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2275 | 102 |
 | Bubble Ghost (1988)(Accolade).adf:ghost.pre (raw code file, load address unknown) | 1 | 0 | 0 |
 
 ## Cases handled
 
 - runtime segment an address: 1683 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1027 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- bubble ghost (1988)(accolade)/Bubble Ghost (1988)(Accolade).adf:BG: Imploder (xfd) stream found by ancient scan (18628 -> 49500 bytes) but only 3 of 15 sampled windows are in reference RAM: not used
 - bubble ghost (1988)(accolade)/Bubble Ghost (1988)(Accolade).adf:ghost.pre: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - bubble ghost (1988)(accolade)/Bubble Ghost (1988)(Accolade).adf:BG: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
-- 1 never-loaded region(s), 32000 bytes, recorded as UNVERIFIED DATA (under 1% of bytes decode as instruction flows; Karl 4 Nov 2026)
+- 1 never-loaded region(s), 32000 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
@@ -59,8 +60,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decode_bitstream_into_longword_table`: Runs fifteen passes over a bit-stream decoder.
 - `decode_backward_bitstream_copy`: Reads length and distance codes from a bit stream that is consumed from the end of the input, and copies back-references and literal bytes into the output.
 - `decode_bitstream_quad_copy`: Decodes a backward bit-stream block, writing four bytes per step when copying and tracking the remaining block size.
-- `copy_bitstream_back_references`: Continues the backward bit-stream decoder by copying back-reference bytes four at a time into the output and decoding length and distance values from a bit buffer.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 
 ### Bubble Ghost (1988)(Accolade).adf:bootblock
 
@@ -90,7 +89,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_helpers_on_nonzero_result_3`: Calls a helper with a fixed argument pair and, if the result is nonzero, makes two more helper calls with a fixed size before returning the last result.
 - `update_clamped_state_from_byte`: Clamps two position values to fixed ranges and branches on a byte read from a pointer, adjusting a state table and a cursor index.
 - `check_distance_and_update_slots`: Switches on a small value from one to eight and sets fixed state fields in range-checked cases.
-- `check_distance_and_update_slots_2`: Sets fixed state values and, when a table entry is not minus one, compares a computed distance against a band.
 - `scan_seven_entries_and_flag`: Advances a cycle counter modulo six when it is nonzero, then tests seven table-derived positions.
 - `call_seven_helpers_in_sequence`: Makes seven helper calls in sequence and returns the result of the last one.
 - `delay_fixed_count_loop`: Counts up to 4000 in an empty loop to waste time, then returns the input value.
@@ -162,6 +160,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `allocate_linked_memory_block`: Requests a block 12 bytes larger than the caller's size, stores that total size in the block header, and links the block onto a global list.
 - `map_zero_to_minus_one`: Forwards its argument to another routine and passes a nonzero result straight back.
 - `return_constant_minus_one`: Returns the value minus one with no other work, serving as a fixed return value for its caller.
+- `reset_and_allocate`: Clears several global variables, performs arithmetic operations on values from global variables, allocates memory using a calculated size, and calls another routine with the allocated block and size when allocation succeeds.
+- `save_and_call`: Saves two registers to the stack, calls another routine while passing the value from a register as the first and second arguments, and then restores the saved registers before returning.
 - `process_and_clear_node_list`: Walks a global linked list node by node, passing each node and its third longword to another routine.
 - `append_node_to_list`: Appends a node to the tail of a doubly linked list whose header holds the head and tail pointers, setting the node's forward link to empty and its back link to the old tail.
 - `call_library_vector_210`: Loads a library base from a global variable and calls the library function at offset minus 210 from that base, discarding any result.
@@ -177,12 +177,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `read_masked_input_bits`: Calls another routine with a mask of 12288 and returns the masked bits when any are set.
 - `forward_call_without_arguments`: Calls another routine with no arguments and returns nothing.
 - `call_library_vector_306`: Loads a library base from a global variable and calls the library function at offset minus 306 from that base, discarding any result.
-- `call_library_from_struct_base`: Reads a library base pointer from the field 20 bytes into the structure passed in, then calls the library function at offset minus 30 from that base.
+- `call_library_vector_30_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
 - `setup_pointer_chain`: Initialises a small list header in the block it is given: the first longword points 4 bytes past the block start, the second longword is cleared, and the third longword points back to the block.
 - `allocate_and_register_record`: Obtains an identifier, then allocates a record and fills its fields from the two arguments and the identifier.
 - `teardown_registered_record`: Tears down a record created earlier: if its pointer field is set it first calls a routine on the record, then marks its status byte as 255 and sets a longword to minus one.
 - `call_with_fixed_code_48`: Passes its argument to another routine together with the fixed value 48 and returns nothing.
+- `forward_parameter`: Pushes a register value onto the stack, retrieves a value from the stack at a specific offset, pushes that value onto the stack again, calls another routine with the second value, and then restores the register from the stack before returning.
 - `allocate_typed_record`: When the first argument is nonzero, allocates a record of the size given by the second argument, then stores a type byte of 5, the second argument as a short, and the first argument in it.
+- `initialize_structure`: Initializes fields of a structure pointed to by a parameter, sets specific byte and longword values, and calls a library function with data from the structure.
 - `call_library_vector_222_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 222 of that base, returning its result to the caller.
 - `call_library_vector_198_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
 - `call_library_vector_210_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
@@ -208,7 +210,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_222`: Loads a library base from a global variable and calls the library function at offset minus 222 from that base, discarding the result.
 - `call_library_vector_234`: Library stub: loads a library base from a global variable and calls the library function at offset minus 234 of that base, returning its result to the caller.
 - `call_library_vector_240`: Library stub: loads a library base from a global variable and calls the library function at offset minus 240 of that base, returning its result to the caller.
+- `call_library_vector_246`: Library stub: loads a library base from a global variable and calls the library function at offset minus 246 of that base, returning its result to the caller.
 - `call_library_vector_270`: Library stub: loads a library base from a global variable and calls the library function at offset minus 270 of that base, returning its result to the caller.
+- `call_library_vector_318`: Library stub: loads a library base from a global variable and calls the library function at offset minus 318 of that base, returning its result to the caller.
+- `call_library_vector_324`: Library stub: loads a library base from a global variable and calls the library function at offset minus 324 of that base, returning its result to the caller.
 - `call_library_vector_342`: Library stub: loads a library base from a global variable and calls the library function at offset minus 342 of that base, returning its result to the caller.
 - `call_library_vector_360`: Loads a library base from a global variable and calls the library function at offset minus 360 from that base, discarding the result.
 - `call_library_vector_390`: Library stub: loads a library base from a global variable and calls the library function at offset minus 390 of that base, returning its result to the caller.

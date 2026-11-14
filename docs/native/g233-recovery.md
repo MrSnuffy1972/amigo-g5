@@ -7,38 +7,38 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (2604995 top-level bytes in 34 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 24 of 24 units identical (bytes and relocations), 77 raw-word lines |
-| Functions named and described | pass, 287 of 287 named (0 author symbols), 287 of 287 described (63 by rule, 198 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 3130 of 3289 (95.17%) |
+| Byte-identical reassembly with vasm | pass, 24 of 24 units identical (bytes and relocations), 78 raw-word lines |
+| Functions named and described | pass, 368 of 368 named (0 author symbols), 368 of 368 described (91 by rule, 250 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 3273 of 3289 (99.51%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 5637 of 5893 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 6343 of 6448 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 23108 |
-| code | 21670 |
-| data | 2542297 |
-| padding | 256 |
+| asset | 21097 |
+| code | 23882 |
+| data | 2542094 |
+| padding | 258 |
 | unused | 17664 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Agony.Slave | 1 | 665 | 27 |
+| Agony.Slave | 1 | 672 | 28 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1934 | 5 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 264 | 9 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 267 | 11 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 13 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 61 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 13 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 207 | 5 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 232 | 3 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 337 | 20 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 66 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1046 | 20 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1440 | 58 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 38 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 5 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 51 | 28 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 377 | 79 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 8 | 1 |
@@ -95,7 +95,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `write_jump_stub_at_pointer`: Makes a call and, if the result is nonzero, saves it in a global and makes a second call.
 - `store_word_field_then_return`: Stores the value 32 into a 16-bit field at offset 156 from A6 and returns the value passed on the stack.
 - `search_byte_sequence_in_buffer`: Slides a window across the first buffer up to the address in A1 and compares each position with the second buffer, counting consecutive matching bytes.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 - `poll_pot_port_button_latch`: Checks bit 6 of a global flag.
 - `replace_patterns_with_trap_instructions`: Scans a memory range forward in steps of two bytes.
 - `pass_through_d0`: Returns the value already in D0 without changing it and does no other work.
@@ -112,10 +111,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `forward_call_to_routine`: Calls one unnamed routine and returns, with no other work.
 - `store_index_then_call_pointer`: Stores the character one plus a passed byte into a global, then calls through a function pointer at offset 76 from a stored base record.
 - `xor_longs_with_key`: XORs each 32-bit longword of the buffer at A0 with the value in D7, stepping four bytes at a time for the count in D1.
+- `stub_return_only_2`: Consists solely of a return instruction, performing no data manipulation or hardware access.
 - `decompress_lz_stream_into_buffer`: Decodes a compressed stream into an output buffer.
 - `relay_single_call_unconfirmed`: The decompiler timed out, so the logic is unconfirmed.
 - `load_scores_block_from_file`: Sets the stored signature word to a fixed value, then calls through a pointer at offset 36 with a count of 48 and the global data area as the buffer.
 - `save_scores_block_to_file`: Calls through a pointer at offset 56 with a count of 48 and the global data area as the buffer, then returns the negated result.
+- `sync_color_to_vposr_on_disk_busy`: Copies the vertical position register to the first color register in a loop that continues as long as bit 6 of the CIAA port A register is set, otherwise it returns.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -130,9 +131,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_structure_list`: Walks a linked list of structures starting at the global table at address 42400, and for each non-empty entry copies its data into a second table at address 42376 while recording its size and offset.
 - `call_decoder_triple`: Saves the working and address registers, then calls the decoding routine three times with the values 1, 2 and 3 loaded into d7.
 - `jump_to_silence_audio`: Jumps to the routine at offset 186, which zeroes the audio register at offset 170 in a loop that repeats four times before returning.
+- `jump_to_initialize_structure_table`: Jump stub: passes control straight on to initialize_structure_table.
+- `jump_to_decode_length_prefixed_buffer_`: Jump stub: passes control straight on to decode_length_prefixed_buffer_2.
+- `jump_to_initialize_structure_table_2`: Jump stub: passes control straight on to initialize_structure_table.
 - `silence_audio_channel`: Writes zero to the audio register at offset 170 in a loop that repeats four times with a 16-bit counter before returning.
 - `initialize_structure_table`: Builds and initializes a structure at a table offset computed from d7, copying a 32-bit value, setting several word and byte fields, and clearing additional fields before returning.
-- `store_scaled_word`: Multiplies d7 by 64 to compute an offset, indexes a table with it, stores the 16-bit value from d6 at offset 16, and returns.
 - `decode_length_prefixed_buffer_2`: Multiplies the word in d7 by 64 and uses the result to index a custom chip structure, then stores the sum of two words at fixed offsets into a DMA register pair and the difference of two words into another register pair.
 - `decode_length_prefixed_buffer`: Decodes a length-prefixed byte sequence from a buffer pointer stored at offset 4 of the structure in a0, writing the decoded values into fields at offsets 18, 31, 32, 37, 38, and 56, then calls another routine to continue decoding.
 - `compute_index_from_d2`: Loads a word from offset 26 of the structure in a0 into d0, then loads two table base addresses and computes an index from d2.
@@ -162,6 +165,23 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `fill_structure_slots`: Initializes a 12-slot structure in a global array with a pointer, a code, and a marker byte, then repeatedly reads a value from a source and stores it into the next empty slot while calling a system trap to notify the change.
 - `process_timer_counter`: Clears the bit selected by a value in d0 in a byte pointed to by a6, then clears the byte at offset 436 in the memory at a0.
+- `increment_and_check_counter`: Increments a 16-bit value at offset 12 of a structure, then checks if it exceeds 1125 to set a 32-bit value to all ones and update specific fields in a global structure.
+- `update_position_and_timer`: Copies word values from a2 and a4, clears a 32-bit value at offset 8 of structure a4, adds immediate values to words from a5, stores results to offsets 8 and 10 of structure a3, compares words and branches based on comparison results, updates timer values in structures a3 and a4, and increments a counter.
+- `set_timer_values`: Sets a 16-bit value at offset 4 of a structure to 1330 and another 16-bit value at offset 6 of a different structure to 3.
+- `check_and_update_timer_values`: Compares a word at offset 6 of structure a3 with immediate value 4, branches to another location if equal, otherwise writes values 1250 and 1 to offsets 4 and 6 of structures a4 and a3 respectively.
+- `set_timer_values_2`: Sets a 16-bit value at offset 4 of a structure to 1370 and another 16-bit value at offset 6 of a different structure to 1.
+- `compare_and_update_timer`: Compares a word at offset 0 of structure a4 with d1 and branches to 1430 if not equal.
+- `set_timer_values_3`: Sets a 16-bit value at offset 4 of a structure to 1370 and another 16-bit value at offset 6 of a different structure to 4.
+- `check_and_update_timer_values_2`: Compares a word at offset 6 of structure a3 with immediate value 1, branches to another location if equal, otherwise writes values 1250 and 2 to offsets 4 and 6 of structures a4 and a3 respectively.
+- `set_timer_values_4`: Sets a 16-bit value at offset 4 of a structure to 1250 and another 16-bit value at offset 6 of a different structure to 2.
+- `update_position_and_timer_2`: Loads word values from a5, adds immediate values to them, stores results to offsets 8 and 10 of structure a3, compares words and branches based on comparison results, updates timer values in structures a3 and a4, and increments a counter.
+- `set_timer_values_5`: Sets a 16-bit value at offset 4 of a structure to 1250 and another 16-bit value at offset 6 of a different structure to 2.
+- `check_and_update_timer_values_3`: Compares a word at offset 6 of structure a3 with immediate value 1, branches to another location if equal, otherwise writes values 1370 and 4 to offsets 4 and 6 of structures a4 and a3 respectively.
+- `set_timer_values_6`: Sets a 16-bit value at offset 4 of a structure to 1370 and another 16-bit value at offset 6 of a different structure to 4.
+- `compare_and_update_timer_2`: Compares a word at offset 2 of structure a4 with d2 and branches to 1688 if not greater.
+- `set_timer_values_7`: Sets a 16-bit value at offset 4 of a structure to 1370 and another 16-bit value at offset 6 of a different structure to 1.
+- `check_and_update_timer_values_4`: Compares a word at offset 6 of structure a3 with immediate value 4, branches to another location if equal, otherwise writes values 1330 and 3 to offsets 4 and 6 of structures a4 and a3 respectively.
+- `set_timer_values_8`: Sets a 16-bit value at offset 4 of a structure to 1330 and another 16-bit value at offset 6 of a different structure to 3.
 - `init_struct_with_counters`: Initializes a structure pointed to by a2 with a base value and several fields copied from a structure pointed to by a1, increments a counter at offset 12 of the structure pointed to by a0, and clears a flag there.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -179,6 +199,44 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `fill_table_with_value`: Fills five consecutive 32-bit slots in a table with the two halves of a 32-bit value from d0, advancing the table by 8 bytes per slot and adding a stride to the value each iteration.
 - `init_audio_dma_channels`: It saves registers, increments a global counter and returns immediately when that counter wraps to zero.
 - `store_and_jump_2`: Stores the 16-bit value in d6 into a global variable and then jumps to another routine, returning control from there.
+- `initialize_and_process`: Calculates a value using XOR operation, stores it in memory, sets up registers with values from another routine, calls a routine with register values, processes table entries, and clears a long value at an address.
+- `process_table_entries`: Loads a byte value 8 into d2, calls two routines at fixed addresses, tests the result in d0 and branches if zero, decrements d2 and branches back if not zero, stores d0 to color register COLOR00, increments d0, then branches unconditionally.
+- `call_and_compare_values`: Calls a routine at address a fixed address, compares a5 with a0, branches if a5 is less than or equal to a0, calls another routine at a fixed address, stores byte value 255 to memory address a fixed address, then branches unconditionally to address 718.
+- `call_and_return`: Calls a routine at address a fixed address and then returns without modifying the return value.
+- `loop_with_conditions`: Loads a value into d5 and calls another routine three times with different values, checking the result each time and branching to a label if zero, then tests a bit in memory and branches if set.
+- `check_and_update_vposr`: Loads a 32-bit value from a global pointer, checks if it's zero or points to a zero word, clears that word, waits for a specific bit in a hardware register, and updates global variables based on comparison results.
+- `store_data_to_globals`: Stores a 32-bit value from register d0 to a global variable, then stores the same value as a 32-bit word at offset 142 of a structure pointed to by a4, and finally stores the same value as a 16-bit word at offset 150 of that structure.
+- `set_and_clear_bit`: Sets bit 7 of a byte at offset -12033 of structure in a3, calls a routine, clears bit 5 of the same byte, calls another routine, sets d1 to 16384, tests bit 5 of a byte at offset -8192 of structure in a3, and branches if clear.
+- `process_and_wait_loop`: Calls a routine, clears bit 1 of a byte at offset -12033 of structure a3, compares d6 with 2 and branches if equal, sets bit 2 of the same byte, increments a value at a2, calls another routine, loads value 10 into d2, calls another routine, tests result in d0 and branches if not zero, calls another routine, tests result in d0 and branches if zero, decrements d2 and branches if not zero.
+- `call_and_check_result`: Calls a routine at address a fixed address, tests the result in d0 and branches if not zero, then returns.
+- `call_and_set_negative_one`: Calls a routine at address a fixed address, sets register d0 to -1, and returns.
+- `call_wait_ciab_bit_four_times`: Calls another routine four times sequentially and then returns.
+- `wait_ciab_bit`: Writes values to the timer and control registers of a CIAB chip, then waits in a loop reading its input register until bit 0 is set, otherwise it returns.
+- `wait_for_raster_line`: Busy-waits by reading the beam position registers (VPOSR/VHPOSR) until the display beam reaches a given raster line, then returns.
+- `check_and_set_bit`: Tests bit 4 of a byte at offset -8192 in the structure in a3 and branches to address 1234 if the bit is clear.
+- `tiny_clr_rts`: Small routine of 2 instructions that clears (a2), then returns.
+- `increment_and_clear_bit`: Copies a long value from address pointed to by a2 into d0, increments the value in d0, stores it back to the same address, tests bit 0 of d0 and branches to 1280 if set.
+- `clear_bit_in_structure`: Clears bit 2 of a byte at offset -11969 of a structure pointed to by a3 and then returns.
+- `toggle_ciab_and_wait_raster`: Clears bit 0 of a CIAB register, calls a raster wait routine, sets bit 0 again, calls the raster wait routine a second time, then waits in a loop reading another CIAB register until bit 5 is set before returning.
+- `set_ciab_bit_and_wait`: Writes the byte 253 to a byte at offset -12033 in the structure in a3, calls a routine that waits for a CIAB bit four times, clears the bit selected by d5 in that same byte, and then calls a routine that busy-waits for a raster line.
+- `wait_raster_loop`: Waits in a loop by reading the vertical beam position register until bit 4 is set, calling the raster wait routine while a counter is not yet zero, then restores registers and returns.
+- `initialize_display_registers_2`: Loads the long values 20770 and 39040 into registers d0 and d1 respectively, calls a routine at address a fixed address, restores multiple registers, and returns.
+- `initialize_display_registers`: Loads the long values 20770 and 39040 into registers d0 and d1 respectively, calls a routine at address a fixed address, restores multiple registers from the stack, and returns.
+- `initialize_display_parameters`: Writes multiple values to offset 46, 140, 164, and 172 of a structure pointed to by a4, calls another routine, updates word at offset 50 twice, sets word at offset 170 to 2, then waits in a loop calling another routine while decrementing a counter until it reaches zero.
+- `set_word_with_mask`: Sets a 16-bit word at offset 50 of a structure pointed to by a4 to the value 16384 and then returns.
+- `validate_and_process_table_entries`: Loads data from a table into registers, compares values, and processes entries through multiple iterations while performing bit operations and comparisons before returning a result.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `prepare_return_value`: Sets register d0 to -1, then branches to an earlier address in the same routine without returning.
+- `process_table_and_compare`: Saves registers d1-d2 and a1 to stack, loads address a fixed address into a1, adds 18 to a1, calls a routine at fixed address, compares d6 with zero and branches if not equal, compares d0 with a fixed address and branches if not equal, then branches unconditionally.
+- `validate_and_compare_values_2`: Compares register d6 with the value 1 and branches to 1884 if not equal, compares a 32-bit value in d0 with a fixed address and branches to 1884 if not equal, then branches unconditionally to address 1876.
+- `validate_and_compare_values`: Compares register d6 with the value 3 and branches to 1884 if not equal, compares a 32-bit value in d0 with a fixed address and branches to 1884 if not equal, then branches unconditionally to address 1876.
+- `compare_and_return_zero`: Compares register d6 with the value 3 and branches to 1884 if not equal.
+- `set_return_value_and_branch`: Sets register d0 to -1 and then branches unconditionally to an earlier address in the same routine without returning.
+- `scan_table_and_xor_interleaved`: Scans a table skipping matching entries, then for each remaining block calls a helper routine to interleave bits, XORs the result into a destination buffer, and returns after processing twelve blocks.
+- `interleave_bits`: Reads two consecutive 32-bit words from the table pointed to by a1, interleaves their even and odd bits, and returns the combined value.
+- `wait_raster_and_setup_block`: Waits in a loop reading the beam position register until it equals 4096, sets up a block of chip registers with multiple values, copies a table of words into a destination, waits again for the beam position to equal 4096, and then sets another register before returning.
+- `bitwise_operations`: Performs a series of bitwise operations on registers d0 and d1, including ANDing d0 with itself, ORing it with zero, ORing it with 128, ANDing d0 with d1, and finally ORing d0 with itself.
+- `clear_and_test_register`: Performs bitwise OR and AND operations on register d0 with immediate values, then branches unconditionally to an earlier address in the same routine without returning.
 - `reset_audio_dma_state`: Locates a byte in a table, computes an offset from its position, clears a block of memory, stores pointers into a second table, and clears several audio volume and DMACON registers before returning.
 - `handle_sound_command_byte`: It saves registers on the stack, increments a byte counter at offset 99 of a global structure, compares a byte from a table with a neighboring byte, and returns early when they match.
 - `process_four_channel_volume`: For each of four audio channels it resets a shared counter, calls a sound routine to load a new value, then scales that value by subtracting 64 and adding a shared amount, clamps the result to zero when negative, and stores the 16-bit result at offset 8 of the custom audio register block.
@@ -200,10 +258,33 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `stub_return_only`: Contains only a return instruction and is entered from outside the static flow in the reference run.
+- `nop_padding`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_2`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_3`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_4`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_5`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_6`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_7`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_8`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_9`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_10`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_11`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_12`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_13`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_14`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_15`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_16`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_17`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_18`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_19`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_20`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_21`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_22`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_23`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 

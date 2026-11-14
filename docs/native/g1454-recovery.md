@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (903920 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 38 raw-word lines |
-| Functions named and described | pass, 195 of 195 named (0 author symbols), 195 of 195 described (10 by rule, 152 by the local model) |
+| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 37 raw-word lines |
+| Functions named and described | pass, 255 of 255 named (0 author symbols), 255 of 255 described (16 by rule, 206 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 4612 of 4612 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 9525 of 9525 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 9887 of 9887 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 36453 |
-| code | 36416 |
-| data | 830344 |
+| asset | 35726 |
+| code | 37806 |
+| data | 829681 |
 | padding | 579 |
 | unused | 128 |
 
@@ -28,11 +28,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Battle Squadron - The Destruction of the Barrax Empire! (1989)(Innerprise Software)[cr TIC][t Freestyle][a3].adf:bootblock | 1 | 50 | 5 |
-| logged disk load from Battle Squadron - The Destruction of the Barrax Empire! (1989)(Innerprise Software)[cr TIC][t Freestyle][a3].adf boot-block load | 1 | 7988 | 126 |
-| logged disk load from Battle Squadron - The Destruction of the Barrax Empire! (1989)(Innerprise Software)[cr TIC][t Freestyle][a3].adf boot-block load | 1 | 432 | 28 |
+| logged disk load from Battle Squadron - The Destruction of the Barrax Empire! (1989)(Innerprise Software)[cr TIC][t Freestyle][a3].adf boot-block load | 1 | 8086 | 143 |
+| logged disk load from Battle Squadron - The Destruction of the Barrax Empire! (1989)(Innerprise Software)[cr TIC][t Freestyle][a3].adf boot-block load | 1 | 645 | 57 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 600 | 23 |
-| logged disk load from Battle Squadron - The Destruction of the Barrax Empire! (1989)(Innerprise Software)[cr TIC][t Freestyle][a3].adf | 1 | 408 | 8 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 618 | 31 |
+| logged disk load from Battle Squadron - The Destruction of the Barrax Empire! (1989)(Innerprise Software)[cr TIC][t Freestyle][a3].adf | 1 | 441 | 14 |
 | logged disk load from Battle Squadron - The Destruction of the Barrax Empire! (1989)(Innerprise Software)[cr TIC][t Freestyle][a3].adf | 1 | 46 | 4 |
 
 ## Cases handled
@@ -45,6 +45,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address (play-rs-m1500): 538 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - battle squadron - the destruction of the barrax empire! (1989)(innerprise software)[cr tic][t freestyle][a3]/Battle Squadron - The Destruction of the Barrax Empire! (1989)(Innerprise Software)[cr TIC][t Freestyle][a3].adf: 329 executed PCs whose RAM was overwritten before any snapshot match its bytes 641088-642832: recovered as a unit run at an address
 - battle squadron - the destruction of the barrax empire! (1989)(innerprise software)[cr tic][t freestyle][a3]/Battle Squadron - The Destruction of the Barrax Empire! (1989)(Innerprise Software)[cr TIC][t Freestyle][a3].adf: 27 executed PCs whose RAM was overwritten before any snapshot match its bytes 0-448: recovered as a unit run at an address
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 4 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 2 immediate, 1 displacement, 1 jump target
 - battle squadron - the destruction of the barrax empire! (1989)(innerprise software)[cr tic][t freestyle][a3]/Battle Squadron - The Destruction of the Barrax Empire! (1989)(Innerprise Software)[cr TIC][t Freestyle][a3].adf: 4 logged loads cover 77968 bytes of the image
 - 2 packed track region(s), 822272 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)
 
@@ -77,6 +78,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `replace_low_memory_vectors`: Saves the current values at several low-memory vector addresses, replaces them with new constants, sets a stack-based pointer and records the condition flags, after one unnamed call.
 - `copy_global_to_low_memory`: Copies a global word into a fixed low-memory slot and returns.
+- `save_stack_pointer`: Saves a global variable from memory location 300 and stores the current stack pointer to another global location, then returns.
+- `set_interrupt_mask`: Sets bit 13 of the word at address 8 and adds 16 to the value at offset 2 of the stack, then returns via rte.
+- `clear_interrupt_request_7`: Writes the value 7 to the interrupt request register and returns via rte.
+- `clear_interrupt_request_70`: Writes the value 112 to the interrupt request register and returns via rte.
+- `clear_interrupt_request_780`: Writes the value 1920 to the interrupt request register and returns via rte.
+- `clear_interrupt_request_1800`: Writes the value 6144 to the interrupt request register and returns via rte.
+- `clear_interrupt_request_8000`: Writes the value 32768 to the interrupt request register and returns via rte.
+- `delay_and_clear_interrupt`: Saves a register on stack, sets a bit in a hardware register, performs a delay loop of 80 iterations, reads another hardware register, sets interrupt request to 8, clears the same bit in the first register, restores the saved value and returns via rte.
+- `read_and_clear_interrupt`: Saves a register on stack, reads a hardware register, sets interrupt request to 8192, restores the saved register and returns via rte.
+- `copy_memory_block_2`: Copies data from one memory location to another for a specified number of iterations, updating both pointers after each copy operation.
 - `initialize_loop_counter`: Loads the value 1599 into register d0 and decrements it until it reaches negative one, then returns.
 - `write_looping_table_entries`: Selects a base value depending on a flag bit in a global variable, then loops three times writing a constant word and the evolving value into a table at offset 44148, advancing the pointer and incrementing the value each iteration.
 - `transfer_memory_bytes`: Moves several bytes between various offsets of a structure pointed to by a6, including two byte-wise moves from positive offsets to negative offsets, one byte-wise move of the value 255 to a negative offset, one byte-wise move from a positive offset to a negative offset, one word-wise move from a positive offset to a negative offset, and clears two bytes at negative offsets.
@@ -193,6 +204,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `mask_interrupt_request`: Saves registers, checks the interrupt status register, and if bit 6 is set, masks bit 6 of the interrupt mask register before restoring registers and returning from interrupt.
 - `call_if_flag_set`: Reads a byte from a custom chip register into a register, stores it in a global variable, and calls a routine from a pointer in a global variable if bit 0 of that byte is set.
 - `write_interrupt_register`: Writes a word to the interrupt mask register and returns.
+- `update_table_entry_and_interrupts`: Decrements a 16-bit value at an offset of 334 of a structure by 4, masks the result with 127, and stores it back at the same offset.
+- `enqueue_longword_ring_no_return`: Stores the longword from the address register into the 128-byte ring buffer at the current write index with wrap-around.
+- `check_and_clear_interrupt_2`: Tests a word value at a memory location, branches if not equal to zero, loads an address from memory into a register, then jumps to that address.
+- `check_and_clear_interrupt`: Compares two values in memory, branches if they are not equal, clears an interrupt flag, and enables interrupts.
+- `fetch_and_execute_table_entry`: Loads a word from a table at an offset of 204 of a structure using a 16-bit value at another offset as index, increments the value by 4, masks it with 127, and stores the result back.
+- `copy_data_with_loop`: Initializes a counter, calls another routine, and performs a loop to copy data between memory locations.
 - `load_and_poll_structure`: Clears bits 3 and 7 of a CIA register, calls another routine, and then loads a longword and two bytes from a structure into global variables.
 - `clear_and_increment_flag`: Clears bit 1 of a CIA register, increments a global word, calls another routine, and then branches based on the carry flag.
 - `loop_cia_bit_clear`: Calls another routine, clears and then sets bit 0 of a CIA register, and then enters a loop that repeats a number of times specified by a value in a global word.
@@ -201,12 +218,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_shifted_value`: Compares a shifted version of a global variable with a shifted version of a value in d7, sets a bit in a CIA register, and calls another routine if the comparison fails.
 - `read_shifted_with_flag`: Sets a flag in a custom chip register, reads a value from a global variable, clears the flag, and returns the value shifted right by one.
 - `read_track_and_scan_sync`: Waits for a status bit to clear, configures disk-related custom chip registers, then scans a buffer for sync words in a loop, deinterleaves each found sector, and copies the data into a destination buffer until the count reaches zero.
+- `initialize_and_process_data`: Initializes several global variables and performs data processing loops that involve bitwise operations and memory transfers between specific buffers.
 
 ### logged disk load from Battle Squadron - The Destruction of the Barrax Empire! (1989)(Innerprise Software)[cr TIC][t Freestyle][a3].adf boot-block load
 
 - `execute_graphics_pipeline`: Calls several subroutines to process graphics data, including clearing blocks, projecting points, and performing blits, then checks a bit in a CIA register to decide whether to store a value or return.
+- `add_and_branch`: Performs an extended addition operation, calls another routine, and returns zero.
 - `clear_block_and_init_sprite`: Writes a register group including the copper pointer, DMA control, interrupt enable and sprite control, zeroes a block of longwords between two addresses in a loop, and stores several table offsets and counts.
 - `tiny_ori_ori_rts`: Small routine of 3 instructions that merges 208 into d3, then merges 108 into d0, then returns.
+- `close_and_permit`: Closes a library and permits system operations, then sets up DMA control registers to enable specific channels.
 - `call_helper_then_bad_data`: Calls one unnamed routine and then runs into undecodable bad instruction data, so only that call is recovered.
 - `fill_three_words_per_pass`: Repeatedly calls a helper three times per pass, writing the first two results with zeroed companions and storing the third masked to its low nine bits, until a count register reaches zero.
 - `clear_bit_in_two_planes`: Computes a byte address from two inputs using a row stride of 48 bytes, then clears one selected bit in each of two bitplanes.
@@ -220,7 +240,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `start_fixed_blit_after_wait`: Waits until the blitter is idle, then writes its control, pointer, modulo and size registers for one fixed blit.
 - `advance_wrapping_string_pointer`: Moves a pointer forward one byte through a zero-terminated table, wrapping to the base at the terminator, then calls a helper.
 - `ramp_value_through_three_states`: Advances two wrapping counters, then runs a three-state controller that ramps a value up by one thousand until it passes a threshold, holds it for seventy steps, then ramps it down and resets at zero.
-- `tiny_ori_2`: Small routine of 1 instruction that merges 0 into d2.
 - `wait_raster_then_start_blit`: Waits for a particular raster position, then waits for the blitter to become idle and programs its control, destination pointer, modulo and size registers for one blit.
 - `call_helper_when_pairs_differ`: Walks a list of index pairs up to the terminator value of 99, and for each pair compares two derived table values, calling a helper when they differ.
 - `compact_pair_list_to_terminator`: Copies a list of three-word records into a packed list of six-byte entries, keeping two of the three words per record, then writes the terminator value of 99 after the last entry.
@@ -229,9 +248,37 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `scale_three_component_vector`: Scales three stored 16-bit components by a common fixed-point factor derived from a helper-supplied value and a multiplier, writing the results back in place.
 - `call_three_helpers_in_order`: Calls three unnamed routines in sequence and returns; the listing shows no other work.
 - `rotate_coordinate_pair`: Reads two coefficients from a table at an offset chosen by its input and applies a rotation-style update to two stored 16-bit values, doubling each product in fixed point.
-- `set_pixel_and_line_deltas`: Sets one bit in a bitplane, computes a byte address from the position using a row stride of 48, works out the absolute distances along each axis to select a line octant, then writes the blitter pointer.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs two instructions (btst.l, bset.b) and then falls through into the code that follows, with no return of its own.
 - `setup_line_blit_octant`: Computes a blitter pointer from a position with a row stride of 48, derives absolute axis distances and an octant code, then waits for the blitter and writes the line distance and octant.
 - `draw_blitter_line_segment`: Computes a destination pointer, the absolute distances along each axis and an octant code, then waits until the blitter is idle and programs its data, masks, modulos, control and size registers to draw one line segment.
+- `call_loader_routine`: Pushes a register value onto the stack, calls another routine with a relative offset, adjusts the stack pointer, loads a value from the result into an address register, clears a register, and returns.
+- `allocate_and_load`: Sets up a stack frame, saves registers, calls helper routines to allocate memory and read values, stores data in memory locations, performs bit operations on a register, and branches based on the result.
+- `load_hunk_headers`: Reads hunk type codes from a data stream and processes them based on their values, storing results in memory locations pointed to by a3.
+- `load_hunk_headers_2`: Reads hunk type codes from a data stream and processes them based on their values, updating memory allocation pointers and handling different hunk types including executable and relocation hunks.
+- `load_hunk_headers_3`: Loads and processes AmigaDOS hunk headers from a data stream, storing allocated memory pointers and handling different hunk types based on comparison values.
+- `check_hunk_type_2`: Subtracts a constant from a register, tests the result, and branches to different locations based on whether the result equals zero.
+- `advance_and_branch`: Advances pointers in address registers, compares a word value with a constant, and branches to different locations based on the comparison result.
+- `process_hunk_data`: Calls a helper routine to read a value, stores that value on the stack, calls another routine, adjusts the stack pointer, and branches to a specific location.
+- `load_and_process`: Calls a helper routine to read a value, stores that value in a register, pushes values onto the stack, calls another routine, adjusts the stack pointer, and branches to a specific location.
+- `call_and_loop`: Calls another routine and then branches to a specific location, potentially forming a loop through the calling routine's control flow.
+- `load_hunk_header`: Calls a helper routine to read a value, stores that value in a register, tests the value, and branches to another location if the value is zero.
+- `accumulate_and_loop`: Calls another routine, adds values from memory locations, decrements a counter, and continues looping while the counter is greater than zero.
+- `process_hunk_relocation`: Loops through a series of operations based on switch cases involving hunk type codes, updates memory locations and returns a value from a structure.
+- `process_hunk_relocation_3`: Loads a value from a global variable, checks if it's zero, and if not, calls another routine with a pointer derived from that value before looping back to itself.
+- `process_hunk_relocation_2`: Loops through a series of operations based on switch cases involving hunk type codes, updates memory locations and returns a value from a structure.
+- `increment_and_advance`: Increments a word value in a data register and advances a pointer in an address register, then branches to another routine.
+- `compute_and_jump`: Subtracts a constant from a data register, compares it with another constant, and uses the result to compute an index for a jump table.
+- `check_hunk_type`: Compares a word value with the number three and branches to an address if the value is less than three, otherwise continues execution.
+- `validate_and_return`: Checks a word value at a specific offset in a structure, branches if the value is less than or equal to zero, and returns from the routine.
+- `setup_io_request`: Initializes fields of a structure pointed to by a register with specific values, then calls an I/O handling routine and updates a memory location.
+- `read_next_buffered_long`: Calls a helper routine, decrements a remaining count field, and returns the next 32-bit value from a buffer while advancing the buffer pointer.
+- `setup_and_loop`: Sets up a stack frame, saves registers, loads a value from memory, and branches to another location.
+- `loop_and_return`: Calls another routine, decrements a counter, compares it with zero, and continues looping while the counter is greater than zero before returning.
+- `load_and_store`: Sets up a stack frame, saves registers, loads a value from memory, and branches to another location.
+- `store_and_loop`: Advances a pointer in a structure, calls another routine to get a value, stores that value at the pointer location, decrements a counter, and continues looping while the counter is greater than zero.
+- `call_free_mem`: Wrapper that calls the exec library function FreeMem and returns its result to the caller.
+- `call_do_i_o`: Wrapper that calls the exec library function DoIO and returns its result to the caller.
+- `call_alloc_mem`: Wrapper that calls the exec library function AllocMem and returns its result to the caller.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -241,6 +288,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `jump_to_command_dispatcher`: Performs a long jump to another routine.
 - `jump_to_disable_dma`: Calls another routine via a long jump.
+- `set_flag_and_counter`: Sets a global variable to the value of another global variable and then sets a third global variable to one.
 - `disable_dma_and_set_flag`: Disables DMA by writing to two custom chip registers, stores the value 1 into a global variable, and jumps to another routine.
 - `toggle_global_bit_zero`: Toggles bit 0 of a byte in a global variable and returns via a jump.
 - `toggle_and_update_buffer_2`: Checks a global flag, then uses the low two bits of a register to index into a table of pointers.
@@ -252,13 +300,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_state_five`: Clears a 16-bit variable, copies a byte from one location to another if it is non-zero, and if two specific conditions are met, sets a 16-bit variable to 5, sets a byte to 1, and sets a flag to 1 before returning 5.
 - `update_state_six`: Clears a 16-bit variable, copies a byte from one location to another if it is non-zero, and if two specific conditions are met, sets a 16-bit variable to 6, sets a byte to 1, and sets a flag to 1 before returning 6.
 - `jump_and_set_d0`: Jumps to another routine, sets register d0 to 1, and then branches to another routine.
+- `set_buffer_index_8_2`: Clears a flag, updates buffer indices and state flags when certain conditions are met, then returns the value eight.
+- `set_buffer_index_9_2`: Clears a flag, updates buffer indices and state flags when certain conditions are met, then returns the value nine.
+- `set_buffer_index_a_2`: Jumps to another routine, loads the value one into a register, then branches to a different location.
 - `branch_with_d0_setup`: Sets d0 to either 2 or 3 and branches to another routine.
 - `load_and_branch_d0_values`: Loads the value 4, 5, or 6 into register d0 and branches to another routine.
 - `load_and_branch_d0_value`: Loads the value 7 into register d0 and branches to another routine.
+- `set_buffer_index_8`: Loads the value 8 into a register and branches to a buffer update routine.
+- `set_buffer_index_9`: Loads the value 9 into a register and branches to a buffer update routine.
+- `set_buffer_index_a`: Loads the value 10 into a register and branches to a buffer update routine.
 - `initialize_four_data_structures`: Saves registers a0 through a3 on the stack, then makes four consecutive calls to another routine, each time loading the address of a different source table into register a0 before the call, and finally restores the saved registers and returns.
 - `initialize_data_structure`: Clears numerous byte and word fields in a structure via a pointer, stores a constant into a field, then copies data from a source table into a destination buffer and returns.
 - `parse_command_stream`: Parses a byte command stream, dispatching on opcodes in decimal 128 through 132 to update sprite attribute tables, reposition data-table pointers, and set control flags in the structure, otherwise it returns.
 - `disable_dma_and_clear`: Writes control words to two custom chip registers, stores a value into a global variable, and returns.
+- `update_flag_and_counter`: Updates a flag in memory and sets a counter to one when a condition is met, then returns.
 - `toggle_flag_bit`: Toggles bit 0 of a byte in a global variable and returns.
 - `toggle_and_update_buffer`: Uses the low two bits of a register to index into a table, toggles a byte in the pointed-to structure, and conditionally copies data from one location to another based on that byte before returning the original register value.
 - `update_sprite_attribute_tables`: Toggles a flag through the DMA control register and clears four byte fields when a counter is nonzero.
@@ -268,10 +323,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_and_jump`: Calls a routine and then jumps to another routine.
 - `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_4`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `store_input_and_flag_2`: Loads the value one into a register and jumps to another routine that stores the register value and sets a flag byte to one.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
 - `initialize_four_data_structures_2`: Saves registers a0 through a3 on the stack, then makes four consecutive calls to a routine that initializes a data structure, each time loading the address of a different source table into register a0 before the call, and finally restores the saved registers and returns.
 - `clear_and_copy_structure`: Writes zeros to a series of byte and word offsets within the structure pointed to by a0, then copies a pointer value from that structure and uses it to fill several adjacent fields with data from the pointed-to location.
 - `process_command_stream`: Initializes a command-processing structure by copying a pointer pair from a linked structure and setting a flag, then iterates through a byte stream, executing commands identified by markers 128 through 129, loading longwords from tables, updating pointers and counters, and returning when it encounters markers 131 or 133.
 - `update_conditional_byte`: If a global byte is zero, it copies the value from another global byte into it, then sets a global word to one.
+- `copy_data_and_update_dma`: Copies data from a table to a structure, updates DMA control registers, and performs several memory transfers based on indexed values.
+- `store_input_and_flag`: Stores a 16-bit value from a register into memory and sets a flag byte to one.
 - `manage_dma_and_state`: Reads several global bytes and toggles a state flag, resetting a group of four longword globals to zero when a condition is met.
 
 ### logged disk load from Battle Squadron - The Destruction of the Barrax Empire! (1989)(Innerprise Software)[cr TIC][t Freestyle][a3].adf

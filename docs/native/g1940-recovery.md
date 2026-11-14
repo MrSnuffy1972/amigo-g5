@@ -8,17 +8,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (901616 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 6 of 6 named (0 author symbols), 6 of 6 described (0 by rule, 2 by the local model) |
+| Functions named and described | pass, 7 of 7 named (0 author symbols), 7 of 7 described (0 by rule, 3 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 79 of 79 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 136 of 136 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 142 of 142 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| code | 602 |
-| data | 855958 |
+| code | 622 |
+| data | 855938 |
 | unused | 45056 |
 
 ## Code units
@@ -26,7 +26,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Kick Off 2 - Return to Europe v2.1e (1991)(Anco)[cr QTX][a].adf:bootblock | 1 | 52 | 4 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 9 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 81 | 1 |
 
 ## Cases handled
@@ -59,6 +59,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `wait_for_word`: Tests a 16-bit word at an offset of minus 6296 from a pointer in a6 and loops until the value is zero, otherwise it returns.
+- `loop_until_zero`: Repeatedly calls a routine through a pointer in a4 until it returns zero, then returns the last value from that routine.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 

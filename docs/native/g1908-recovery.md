@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (901140 top-level bytes in 8 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 81 of 81 named (0 author symbols), 81 of 81 described (30 by rule, 1 by the local model) |
+| Functions named and described | pass, 84 of 84 named (0 author symbols), 84 of 84 described (30 by rule, 4 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 46 of 46 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 362496 bytes, 1 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 2404 of 2728 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2759 of 2759 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 1410 |
-| code | 9368 |
-| data | 394576 |
+| code | 9444 |
+| data | 394500 |
 | padding | 1706 |
 | unused | 494080 |
 
@@ -28,7 +28,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | International Karate + (1988)(System 3)[h].adf:ikload | 1 | 43 | 2 |
-| International Karate + (1988)(System 3)[h].adf:more | 19 | 2290 | 76 |
+| International Karate + (1988)(System 3)[h].adf:more | 19 | 2321 | 79 |
 | International Karate + (1988)(System 3)[h].adf:bootblock | 1 | 18 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 1 |
 | International Karate + (1988)(System 3)[h].adf:ik+ (raw code file, load address unknown) | 1 | 372 | 1 |
@@ -37,6 +37,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - 5 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 1 first-run image unit(s) in 1 version group(s); 0 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
 - international karate + (1988)(system 3)[h]/International Karate + (1988)(System 3)[h].adf:ik+: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 jump target
 - 1 never-loaded region(s), 362496 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
@@ -63,6 +64,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispatch_four_table_values`: Loops four times, passing one field from a structure and each of four table values to a routine.
 - `detect_control_bytes_in_block`: Calls a routine twice to fill and check a buffer, then scans up to 80 bytes for control characters outside the normal text ranges.
 - `wait_for_signal_with_timeout`: Waits in a loop on a signal with a an address timeout and gives up when an abort flag is seen.
+- `process_flagged_entry`: Tests a longword value at offset 60 of a structure, branches if the value is not positive, and calls two routines with the structure pointer as argument when the value is positive.
 - `show_help_and_reopen_messages`: A 175-instruction routine reached from a gap in the file.
 - `init_struct_loop_until_done`: Sets two fields of a structure, makes a call with values from it and stores the result, then calls further routines.
 - `store_result_and_bump_counter`: Calls two routines with values derived from the structure, stores the second result in a field, and if a flag field is zero increments a counter reached through a pointer.
@@ -125,6 +127,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `divide_longword_by_word`: Divides a 32-bit value by a second value using repeated shift and subtract steps, with a separate path for divisors that fit in 16 bits.
 - `multiply_longwords_partial_products`: Multiplies two 32-bit values by combining 16-bit partial products.
 - `forward_single_call_gap`: Calls one other routine and returns.
+- `shift_and_divide`: Pushes a data register onto the stack, shifts two data registers for a helper, calls a division routine, moves the helper's result into a data register, restores the saved register, and returns.
+- `normalize_and_divide`: Normalizes the signs of two input values, calls a division routine, and negates the returned value if the result in the address register is non-zero before returning.
 - `negate_result_on_flag`: Calls a routine and returns its first result value, negated when a second result value is non-zero.
 - `call_formatted_output_vector`: Calls a formatted-output library function through an offset from a global base.
 - `store_byte_at_pointer`: Writes the low byte of a register to the address held in a second register, then returns.

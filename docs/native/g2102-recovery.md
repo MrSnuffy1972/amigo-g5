@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (1802336 top-level bytes in 52 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 16 of 16 units identical (bytes and relocations), 3 raw-word lines |
-| Functions named and described | pass, 178 of 178 named (59 author symbols), 178 of 178 described (12 by rule, 45 by the local model) |
+| Functions named and described | pass, 198 of 198 named (59 author symbols), 198 of 198 described (23 by rule, 54 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 17 of 17 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 4096 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1978 of 1978 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2007 of 2007 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 143750 |
-| code | 5978 |
-| data | 1523565 |
+| code | 6094 |
+| data | 1523449 |
 | padding | 15379 |
 | unused | 113664 |
 
@@ -35,8 +35,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | 8 | 1 | 2 | 1 |
 | 8 | 1 | 2 | 1 |
 | 14 | 1 | 2 | 1 |
-| mathtrans.library | 17 | 830 | 97 |
-| mathieeedoubbas.library | 3 | 632 | 60 |
+| mathtrans.library | 17 | 848 | 106 |
+| mathieeedoubbas.library | 3 | 643 | 71 |
 | version.library | 2 | 41 | 7 |
 | Disk-Validator | 1 | 10 | 2 |
 | TV Sports Football (1988)(Cinemaware)[cr QTX][v Saddam-Saddam II](Disk 1 of 2).adf:bootblock | 1 | 10 | 1 |
@@ -244,6 +244,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `run_leaf_routine_many_callers`: Seven-instruction library routine with no outgoing calls, referenced through a data pointer and called from fifteen other routines.
 - `run_leaf_routine_pointer_ref`: Eight-instruction library routine with no outgoing calls, referenced through a data pointer from one other routine.
 - `invoke_two_routines_from_gap`: Two-instruction block in an unreached gap that calls two other library routines; nothing in the listed facts reaches it.
+- `load_pointer_and_branch`: Loads a memory address from offset 310 into register a0 and then branches unconditionally to offset 0.
+- `load_address_and_jump`: Loads a memory address from offset 318 into register a0 and then jumps unconditionally to offset 20.
+- `fetch_and_branch`: Loads a memory address from offset 326 into register a0 and then branches unconditionally to offset 0.
+- `read_address_and_continue`: Loads a memory address from offset 334 into register a0 and then continues execution at the next instruction.
+- `invoke_and_return`: Loads a memory address from offset 342 into register a0 and then invokes another routine before returning.
+- `forward_call_and_branch`: Loads a memory address from offset 350 into register a0 and then branches unconditionally to offset 20.
+- `call_forwarded_routine`: Loads a memory address from offset 358 into register a0 and then branches unconditionally to offset 20.
+- `execute_and_continue`: Loads a memory address from offset 366 into register a0 and then continues execution at the next instruction.
+- `call_and_branch_to_offset`: Loads a memory address from offset 374 into register a0 and then branches unconditionally to offset 20.
 - `dispatch_two_library_routines_7`: Two-instruction library routine referenced only from a pointer in the data hunk, which calls two other library routines.
 - `dispatch_two_library_routines_8`: Two-instruction library routine referenced from a data pointer, which calls two other library routines.
 - `call_leaf_routine`: A library routine consisting of two instructions that calls another library routine.
@@ -312,6 +321,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `fptrap`: Seven-instruction floating-point trap entry referenced from the data hunk; it tail-branches to fpoptab.
 - `fpoptab`: Jump stub: passes control straight on to badtrap.
 - `forward_to_bad_trap`: Single instruction in an unreached gap that tail-branches to badtrap.
+- `jump_to_badtrap`: Jump stub: passes control straight on to badtrap.
+- `jump_to_badtrap_2`: Jump stub: passes control straight on to badtrap.
+- `jump_to_badtrap_3`: Jump stub: passes control straight on to badtrap.
+- `jump_to_badtrap_4`: Jump stub: passes control straight on to badtrap.
+- `jump_to_badtrap_5`: Jump stub: passes control straight on to badtrap.
+- `jump_to_badtrap_6`: Jump stub: passes control straight on to badtrap.
+- `jump_to_dfadd`: Jump stub: passes control straight on to dfadd.
+- `jump_to_dfsub`: Jump stub: passes control straight on to dfsub.
+- `jump_to_dfmul`: Jump stub: passes control straight on to dfmul.
+- `jump_to_dfdiv`: Jump stub: passes control straight on to dfdiv.
+- `jump_to_dfneg`: Jump stub: passes control straight on to dfneg.
 - `dfsub`: Six-instruction routine named dfsub that tail-branches to dfadd.
 - `dfadd`: Fifteen-instruction routine called from dfsub that tail-branches to dfa11 and dfa7.
 - `dfa11`: This routine consists of 42 instructions and performs a sequence of three tail branches to other routines.

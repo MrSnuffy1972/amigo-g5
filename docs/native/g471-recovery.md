@@ -7,37 +7,37 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (1810352 top-level bytes in 28 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 14 of 14 units identical (bytes and relocations), 15 raw-word lines |
-| Functions named and described | pass, 700 of 700 named (0 author symbols), 700 of 700 described (123 by rule, 536 by the local model) |
+| Byte-identical reassembly with vasm | pass, 14 of 14 units identical (bytes and relocations), 5 raw-word lines |
+| Functions named and described | FAIL, 690 of 904 named (0 author symbols), 690 of 904 described (122 by rule, 527 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2145 of 2145 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 750495 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 17981 of 17995 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 21336 of 21336 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 482974 |
-| code | 54798 |
-| data | 1119182 |
-| padding | 9014 |
+| code | 64834 |
+| data | 1109108 |
+| padding | 9052 |
 | unused | 144384 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| run | 2 | 117 | 2 |
-| EndCLI | 2 | 117 | 2 |
-| key | 1 | 13 | 1 |
-| 5 | 1 | 46 | 3 |
+| run | 2 | 458 | 12 |
+| EndCLI | 2 | 182 | 3 |
+| key | 1 | 3 | 1 |
+| 5 | 1 | 2 | 1 |
 | 9 | 1 | 2 | 1 |
 | powerpacker.library | 2 | 788 | 51 |
-| icon.library | 10 | 1375 | 109 |
+| icon.library | 10 | 1421 | 110 |
 | diskfont.library | 15 | 1040 | 61 |
-| Centurion - Defender of Rome (1991)(Electronic Arts)(Disk 1 of 2).adf:centurion | 6 | 12498 | 354 |
+| Centurion - Defender of Rome (1991)(Electronic Arts)(Disk 1 of 2).adf:centurion | 6 | 14904 | 521 |
 | Centurion - Defender of Rome (1991)(Electronic Arts)(Disk 1 of 2).adf:bootblock | 1 | 172 | 3 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1827 | 113 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2364 | 140 |
 | Centurion - Defender of Rome (1991)(Electronic Arts)(Disk 1 of 2).adf:nego.cat (raw code file, load address unknown) | 1 | 0 | 0 |
 | Centurion - Defender of Rome (1991)(Electronic Arts)(Disk 2 of 2).adf:batl.cat (raw code file, load address unknown) | 1 | 0 | 0 |
 | Centurion - Defender of Rome (1991)(Electronic Arts)(Disk 2 of 2).adf:glad.cat (raw code file, load address unknown) | 1 | 0 | 0 |
@@ -72,11 +72,22 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `move_and_branch`: Moves a 32-bit long from register d1 to d0 and then branches to another location.
+- `sub_1_0002`: undescribed.
+- `sub_1_00E8`: undescribed.
+- `sub_1_0126`: undescribed.
+- `sub_1_016E`: undescribed.
+- `sub_1_024C`: undescribed.
+- `sub_1_0254`: undescribed.
+- `sub_1_0260`: undescribed.
+- `sub_1_0286`: undescribed.
+- `sub_1_02B8`: undescribed.
+- `sub_1_0388`: undescribed.
 
 ### EndCLI
 
 - `find_max_and_prepare_buffer_2`: Walks a linked list of entries to find the maximum value in a specific field, then writes a header and fills a buffer with sequential words.
 - `move_and_branch_2`: Copies the contents of register d1 into register d0 and performs a relative branch.
+- `sub_1_0002`: undescribed.
 
 ### key
 
@@ -85,8 +96,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### 5
 
 - `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d0, then returns.
-- `return_negative_one`: Returns a value of negative one.
-- `return_maximum_value`: Returns a 32-bit value consisting of all bits set to one.
 
 ### 9
 
@@ -110,7 +119,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `load_and_rotate_long`: As part of the PowerPacker shared library, it moves a long value from the pointer in a0 to d5, rotates d5 left by one bit, and branches to another routine.
 - `process_memory_blocks`: As part of a library, it performs several conditional loops involving bit rotation, value accumulation, and byte-wise memory copying from a source pointer to a destination pointer.
 - `shift_and_store_bytes`: Calls another routine, moves a 16-bit value from d1 to d3, increments d2 by 1, and then enters a loop that moves bytes from a memory location at a0 plus the offset in d3 to a new location by decrementing a1, repeating this loop based on the value in d2.
-- `hash_string_with_rotation`: As part of the PowerPacker shared library, folds a zero-terminated byte string into a 16-bit value by rotating the running value by an amount taken from the previous byte and adding that byte.
+- `sub_0_0270`: undescribed.
 - `compute_checksum`: As part of the PowerPacker shared library, computes a checksum over a zero-terminated byte stream pointed to by a0.
 - `xor_decrypt_block`: As part of the PowerPacker shared library, XORs a block of memory in place using a 32-bit key supplied in a register.
 - `initialize_library_routine`: As library code, it saves registers to the stack, masks d1, clears a byte at the address in a1, calls another routine, and then branches to another location.
@@ -156,8 +165,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
 - `process_pointer_data`: Stores two pointers from the stack into a structure in d0, calls a routine via a pointer at offset -248 from a6, and either calls another routine if the result is zero or stores the result and the second pointer into two global variables if the result is non-zero.
 - `copy_two_pointers_from_table`: Library code that copies two 32-bit values from an address derived from a register into two global variables.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `clear_d0_byte`: Performs a logical OR on register d0 with zero.
 - `manage_icon_chain`: This library routine calls another routine to manage an icon chain.
 - `call_icon_data_copy`: This library routine unconditionally calls a helper routine to copy icon data to the stack and then returns.
 - `invoke_icon_structure_update`: This library routine calls a function to update various fields within an icon structure or its associated linked lists.
@@ -172,7 +179,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_checksum_routine_3`: Saves two address registers to the stack, calls call_checksum_routine_2, and then returns.
 - `call_process_string_data`: Calls process_string_data and then returns.
 - `update_data_field`: Library code that calls another routine via a function pointer table using a passed parameter, then stores a second parameter into a memory location at an offset from the returned pointer.
-- `clears_data_register_zero`: Performs a logical OR operation on data register zero with zero.
 - `update_icon_structure_data`: This library code calls another routine, and if the result is non-zero, calls a second routine.
 - `copy_data_and_update_structure`: Copies 11 words from a source to a destination using a loop, then copies several bytes and words from a source structure to a destination structure, and finally updates a pointer in a global structure if a specific field is non-zero.
 - `return_zero_stub`: Clears the d0 register to zero and restores the previously saved registers from the stack before returning.
@@ -233,6 +239,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `rotate_32bit_value_2`: As library code, this routine performs a 32-bit left rotation by one bit for sixteen iterations using a carry flag, or calculates a modulo-based result using two 16-bit halves if a specific condition is met.
 - `rotate_32bit_value`: The library code rotates a 32-bit value left by one bit per iteration for sixteen iterations, using a carry flag to move bits between the high and low halves.
 - `multiply_32_bit_integers`: The library code computes the 32-bit product of two 32-bit registers using 16-bit partial products.
+- `sub_6_0060`: undescribed.
+- `sub_6_006C`: undescribed.
+- `sub_6_007A`: undescribed.
+- `sub_6_009E`: undescribed.
 - `invoke_table_entry`: The library code invokes a function pointer retrieved from an offset within a global variable.
 - `tiny_move_rts_2`: Small routine of 2 instructions that copies d0 to (a3)+, then returns.
 - `compute_string_checksum`: The library code iterates through a null-terminated byte string, updating a 32-bit accumulator with a decrementing 1s-complement-style pattern for each character.
@@ -341,6 +351,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `jump_to_subtraction_routine`: Performs a jump to another routine that executes a clamped subtraction and stores the 16-bit result into a 16-bit location at an offset of 2324 from a global pointer.
 - `traverse_callback_list_2`: Iterates through a list of bytes starting at a pointer derived from a structure in a4, accumulating a sum of bytes until a threshold in d0 is reached.
 - `calculate_scaled_index_2`: Calculates a value by summing two bytes from a table at an offset determined by an input, subtracts a third byte from that sum, divides the result by 25, and returns a value clamped between 0 and 3.
+- `sub_1_0CF8`: undescribed.
 - `jump_to_callback_chain`: Performs a long jump to a routine that manages a structure callback chain.
 - `dispatch_event_forty_eight_2`: Performs a long jump to a routine that dispatches an event with the value 48 in d0.
 - `multiply_fixed_point_values`: Calculates the product of two 32-bit fixed-point values provided in registers and returns the result as a 32-bit fixed-point value by calling compute_fixed_point_product.
@@ -368,14 +379,35 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_sprite_data`: Sets several global variables to maximum or zero values and then enters a loop that runs a number of times determined by a byte at an offset in a buffer, calling a routine during each iteration.
 - `execute_sprite_updates`: Calls two routines via a pointer in a structure, sets several hardware registers, and executes a loop five times to call another routine while updating registers with values from a table.
 - `execute_two_routines`: Calls two different routines located via a pointer in a global structure and then returns.
+- `sub_1_16B4`: undescribed.
 - `call_library_function`: Sets up registers with specific constant values and calls a routine located via a pointer in a global structure.
 - `call_library_vector_60`: Library stub: loads a library base from a global variable and calls the library function at offset minus 60 of that base, returning its result to the caller.
+- `sub_1_1710`: undescribed.
+- `sub_1_1730`: undescribed.
+- `sub_1_174C`: undescribed.
+- `sub_1_1768`: undescribed.
+- `sub_1_1782`: undescribed.
+- `sub_1_1798`: undescribed.
+- `sub_1_17A4`: undescribed.
+- `sub_1_180E`: undescribed.
+- `sub_1_181C`: undescribed.
+- `sub_1_1822`: undescribed.
+- `sub_1_184E`: undescribed.
+- `sub_1_185A`: undescribed.
+- `sub_1_185E`: undescribed.
+- `sub_1_1888`: undescribed.
+- `sub_1_1894`: undescribed.
+- `sub_1_1898`: undescribed.
+- `sub_1_18C0`: undescribed.
+- `sub_1_18CA`: undescribed.
+- `sub_1_18D6`: undescribed.
 - `loop_with_pointer_rotation`: Saves a byte and a 32-bit value from a structure, then enters a loop that rotates 32-bit values from a table and calls two routines, using bits from a 16-bit register to determine a parameter.
 - `loop_library_call`: Executes a loop a number of times determined by a byte at an offset in a buffer, calling a routine during each iteration.
 - `execute_loop_with_callbacks`: Calls a routine at an address derived from a structure, then enters a loop that calls three different routines at offsets from a structure in a0, incrementing a value in a0 until it reaches zero.
 - `execute_callback_loop`: Calls a routine at an address stored in a structure, then enters a loop that calls three different routines at offsets from that same structure before returning.
 - `call_indirect_routine`: Calls a routine at an address derived from a structure and then returns, otherwise it calls a routine to write a negative sign to a destination in a0 if d0 is negative.
 - `execute_callback_loop_2`: Calls a routine at an address stored in a structure and then calls another routine.
+- `sub_1_1B4A`: undescribed.
 - `execute_loop_with_callbacks_variant`: Calls a routine at an address derived from a structure, then enters a loop that calls two routines at offsets from a structure in a0 and one routine at an offset from a structure in a1, incrementing a value in a0 until it reaches zero.
 - `call_indirect_via_structure`: Calls a routine at an address derived from a structure, then returns.
 - `execute_indirect_calls_2`: Copies a pointer from a0 to a3, calls a routine at the address in a0, then calls another routine using a pointer from a structure in a4 at offset -32 of a pointer found at offset -128 of a6.
@@ -405,6 +437,30 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `jump_to_address_4`: Performs a jump to the address stored in a pointer at a specific memory location.
 - `process_event_table_and_update_string`: Checks status flags in a global structure and iterates through a table to find an active entry, then performs specific actions based on the entry index, such as copying strings to a buffer, updating values in a table by a percentage, or executing a callback chain.
 - `update_score_and_string_buffer`: Increments two values in a structure by 5, capping them at 100, and performs logic to select an index from a table based on non-zero entries.
+- `sub_1_2D00`: undescribed.
+- `sub_1_2D44`: undescribed.
+- `sub_1_2D7C`: undescribed.
+- `sub_1_2D80`: undescribed.
+- `sub_1_2DA6`: undescribed.
+- `sub_1_2DBC`: undescribed.
+- `sub_1_2DD8`: undescribed.
+- `sub_1_2DEE`: undescribed.
+- `sub_1_2E0A`: undescribed.
+- `sub_1_2E32`: undescribed.
+- `sub_1_2E76`: undescribed.
+- `sub_1_2EF4`: undescribed.
+- `sub_1_2F0E`: undescribed.
+- `sub_1_2F34`: undescribed.
+- `sub_1_2F80`: undescribed.
+- `sub_1_2FAC`: undescribed.
+- `sub_1_2FEC`: undescribed.
+- `sub_1_3022`: undescribed.
+- `sub_1_302A`: undescribed.
+- `sub_1_31FC`: undescribed.
+- `sub_1_3228`: undescribed.
+- `sub_1_32B0`: undescribed.
+- `sub_1_332A`: undescribed.
+- `sub_1_3350`: undescribed.
 - `get_byte_from_table`: Checks if a byte at an offset in a table is within a specific range and not negative, then returns that byte as a 32-bit value with the upper 16 bits set to all ones; otherwise it returns all ones.
 - `loop_and_clear_structure_member`: Executes a loop three times, calling another routine and checking its return value; if the return value is non-zero, it stores zero at a one-byte offset from that value, then calls another routine twice.
 - `clear_global_word`: Calls four different routines, stores zero in a 16-bit word at offset 10206 of a structure in a4, and then returns.
@@ -421,6 +477,22 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_multiple_pointers`: If a second parameter is not negative one, it calls another routine and a routine via a pointer at an offset of negative 306 from a base address, then performs a sequence of calls to routines at offsets negative 240 and negative 246 from a pointer stored in a global variable.
 - `execute_repetitive_function_pointers`: Checks if a value at an offset of a structure is not negative, then performs a series of repeated calls to two function pointers located at specific offsets within a structure pointed to by a value retrieved from a global variable.
 - `call_offset_routines`: Calls another routine and then performs two sets of calls to routines at offsets negative 240 and negative 246 from a pointer stored in a global variable.
+- `sub_1_3FA8`: undescribed.
+- `sub_1_3FCC`: undescribed.
+- `sub_1_402A`: undescribed.
+- `sub_1_4082`: undescribed.
+- `sub_1_40F2`: undescribed.
+- `sub_1_40F8`: undescribed.
+- `sub_1_4130`: undescribed.
+- `sub_1_4146`: undescribed.
+- `sub_1_415A`: undescribed.
+- `sub_1_4164`: undescribed.
+- `sub_1_417C`: undescribed.
+- `sub_1_41A8`: undescribed.
+- `sub_1_41B2`: undescribed.
+- `sub_1_41C6`: undescribed.
+- `sub_1_41E4`: undescribed.
+- `sub_1_41EA`: undescribed.
 - `copy_string_and_call_callbacks`: Sets a 16-bit value at offset 10206 of a global variable to zero, copies a null-terminated string from a source in a1 to a destination in a0, and calls three different routines via a structure and a callback chain.
 - `process_input_buffer`: Enters a loop that waits for messages, processes characters from a buffer based on specific control characters, and returns a status value.
 - `wait_for_message`: Enters a loop that waits for messages, checking for specific bit patterns or values in the message data to set a status byte and return a specific integer code.
@@ -448,7 +520,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `loop_until_non_zero`: Calls a routine and, if the returned word is non-zero, continues the loop; otherwise it returns.
 - `update_structure_values`: Iterates through a list of structures via a global variable, calling a function pointer within each and checking if an integer value is 8; if so, it copies two words from the structure to offsets 10160 and 10162 of a structure in a4.
 - `copy_short_values`: If a 16-bit register is zero, copies two 16-bit words from a structure pointed to by a value at a negative offset of a6 into a structure at an offset of a4.
+- `sub_1_474A`: undescribed.
+- `sub_1_4752`: undescribed.
 - `read_joystick_state`: Reads the status of a global variable and uses bitwise logic to determine a return value representing joystick direction and button states.
+- `sub_1_47B4`: undescribed.
+- `sub_1_47D4`: undescribed.
 - `resolve_entity_interaction_state`: Iterates through a list of eight elements to match a character value against a table of three entries, then updates a structure with new state indices and flags based on whether the match is new or existing.
 - `process_fixed_point_accumulation`: Calls another routine up to three times to accumulate a value, clamps it to 10000, and performs arithmetic operations involving two words from a table at an offset from a4 to update those table entries and return a 32-bit value.
 - `accumulate_and_store_results`: Calls a routine to accumulate values, stores two 16-bit words at offsets derived from a value in d1 into a structure in a4, and performs a division to store a result in a structure.
@@ -458,6 +534,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_offset_with_calculated_value`: Calculates a value from a structure member, stores it at an offset in a4, and calls two different routines.
 - `clear_flag_and_call`: If a word at offset -7616 of a structure in a4 is non-zero, it pushes two words from offsets -7722 and -7724 of a4 onto the stack, calls a routine, cleans the stack, and clears the word at offset -7616.
 - `count_matching_entries`: Iterates through twelve entries in a table, increments two counters if a byte matches a value in d0 and is not negative, and stores the index of the matching entry in a table.
+- `sub_1_510E`: undescribed.
+- `sub_1_515A`: undescribed.
+- `sub_1_5170`: undescribed.
+- `sub_1_51BA`: undescribed.
+- `sub_1_51C4`: undescribed.
+- `sub_1_51D8`: undescribed.
+- `sub_1_5222`: undescribed.
+- `sub_1_5238`: undescribed.
+- `sub_1_541A`: undescribed.
+- `sub_1_542A`: undescribed.
 - `iterate_table_entries`: Loops twelve times, checking a byte at an offset from a4 for each entry in a table and calling another routine if the byte is not negative one.
 - `copy_string_and_loop_callbacks`: Calculates a value, copies a null-terminated string from a structure to a destination, and iterates through a table to call a routine if entries are not negative one.
 - `allocate_entity_event_slot`: Checks a value in a table against a threshold and, if valid, searches for an available slot in an event structure to store an index, two 16-bit values, and a string.
@@ -468,6 +554,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reset_and_call_with_constant_2`: This routine calls three routines and returns a 16-bit word from an offset in a structure.
 - `reset_and_call_with_constant`: Stores zero in a 16-bit word at offset 10142 of a structure in a4 and calls another routine with a constant value.
 - `reset_and_call_with_alternative_constant`: Stores zero in a 16-bit word at offset 10142 of a structure in a4 and calls another routine with a different constant value.
+- `sub_1_57E8`: undescribed.
+- `sub_1_587E`: undescribed.
+- `sub_1_58E4`: undescribed.
+- `sub_1_5B1E`: undescribed.
 - `process_callback_and_copy_string`: Checks a byte in a structure, iterates through a table to find specific indices, calls a complex callback chain, and copies a null-terminated string from a table to a buffer.
 - `reset_table_entries`: Sets a byte to 255 at a calculated offset in a table, checks a condition, and if met, sets another byte and a value in a different table to 255.
 - `update_state_and_strings`: Checks a 16-bit value in a structure, and if zero, performs several conditional calls, updates a 32-bit value in a structure by adding a value from a pointer, and calls a library function via a pointer in a global structure.
@@ -525,8 +615,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispatch_callback_via_offset`: Checks if a global variable is non-zero and, if so, calls a function pointer located at an offset of four from that variable's value.
 - `validate_event_condition_flags_3`: Loads a longword from a pointer in a4, then enters a loop that checks if adding d0 to that value exceeds a specific constant, calling another routine if it does, and returns otherwise.
 - `dispatch_indirect_routine`: Checks if a global variable is non-zero, then calls a routine located at an offset of 12 bytes from the address stored in that global variable.
+- `sub_1_8122`: undescribed.
+- `sub_1_8128`: undescribed.
 - `copy_string_to_buffer`: Calculates an index based on a 16-bit value, copies a null-terminated string from a table to a buffer, and calls another routine twice, or alternatively copies a 32-bit value and a byte to the buffer if the input value is 1000 or greater.
-- `compare_and_call_routine`: Sets bit 0 of register d0, compares it to a value at an offset from a4, and if they are not equal, calls another routine.
+- `sub_1_81C8`: undescribed.
 - `call_stub`: Call stub: calls one other routine as a subroutine and returns to its own caller when that routine returns.
 - `copy_data_blocks`: Copies a 32-bit word from offset 4292 to 4292 of the structure in a4 and another 32-bit word from offset 32732 to 32728 of the structure in a4.
 - `copy_data_blocks_offset`: Copies a 32-bit word from offset 4296 to 4292 of the structure in a4 and another 32-bit word from offset 32728 to 32724 of the structure in a4.
@@ -536,12 +628,23 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_data_structure_and_copy_buffer`: Initializes several fields within a structure using values from a base pointer and a global variable, then performs a loop to copy ten words from a local buffer to a destination in a table.
 - `execute_callback_chain`: Checks if a value at an offset in a structure is non-zero, then calls four function pointers from a table pointed to by a value in that structure, returning the result of the last call.
 - `update_indexed_value`: Stores a 16-bit value and a 32-bit value into a structure, then calls a function pointer, updates the 32-bit value using an XORed index from a table, and calls the same function pointer again.
+- `sub_1_84F8`: undescribed.
 - `process_callback_loop`: Counts non-zero bytes in a table using a loop, performs arithmetic to calculate a value, and then executes a series of calls including a loop that calls another routine based on a table of indices.
 - `execute_multiple_calls`: Calls another routine six times in succession.
 - `calculate_scaled_index`: Calculates a value by summing two bytes from a table at an offset determined by an input, divides the result by 25, and returns a value of 0, 1, or 3 based on the quotient.
 - `traverse_callback_list`: Iterates through a list of bytes starting at a pointer derived from a structure in a4, accumulating a sum of bytes until a threshold in d0 is reached, and returns a value from the list or calls another routine if the value is negative two.
 - `execute_callback_loop_3`: Performs several calls, sets a 16-bit value to zero at offset 10206 of a global variable, and enters a loop that calls another routine and updates a byte at offset 51 of a structure in a pointer derived from a register.
 - `modify_bitfields_and_dispatch`: Performs bitwise operations on bytes in a structure and calls another routine via an indirect jump based on a value in a register.
+- `sub_1_8A80`: undescribed.
+- `sub_1_8B1A`: undescribed.
+- `sub_1_8B9E`: undescribed.
+- `sub_1_8C16`: undescribed.
+- `sub_1_8C1C`: undescribed.
+- `sub_1_8C3A`: undescribed.
+- `sub_1_8C4A`: undescribed.
+- `sub_1_8C5A`: undescribed.
+- `sub_1_8C6A`: undescribed.
+- `sub_1_8C7E`: undescribed.
 - `copy_multiple_strings`: Performs several string copy operations from various source locations in a structure to a destination pointer in a1, including a loop that copies strings based on a table index and a loop that copies a fallback string if certain table values do not match.
 - `match_and_copy_strings`: Searches a table for a match against d0, copies a string to a destination in a1 if a match is found, and otherwise searches a second table to copy a different string if d0 exceeds a specific value.
 - `execute_conditional_sequence`: Calls another routine and, if the returned value is non-zero, executes a sequence of four additional calls before returning.
@@ -553,17 +656,29 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `jump_to_address_5`: Performs a jump to the address stored in the longword at offset 11142.
 - `write_negative_sign`: Checks if d0 is negative, and if so, writes a hyphen to the address in a0 and then calls another routine.
 - `jump_to_store_offset_values`: Performs a long jump to a routine that stores two 32-bit values at specific offsets relative to a pointer in a6.
+- `sub_1_91BC`: undescribed.
+- `sub_1_91C2`: undescribed.
+- `sub_1_91C8`: undescribed.
 - `calculate_sprite_tile_offsets_2`: Calculates sprite dimensions and tile coordinates by performing bounds checking against a table of values, then updates several global variables.
 - `find_first_zero_entry`: Loops up to eight times to compare a value from a table against a threshold, updates a global byte if the threshold is exceeded, and either returns a calculated index or searches a table for the first zero byte.
 - `update_global_word`: Calls a routine that performs a clamped subtraction and stores the 16-bit result into a 16-bit location at an offset of 2324 from a global pointer.
 - `clamp_subtraction_result`: Subtracts a 16-bit value in d1 from a 16-bit value in d0 and returns the smaller of the resulting difference or the value in d2.
 - `execute_conditional_callbacks_2`: Calls another routine in a loop while the returned value is less than negative one, then performs an indirect call using a pointer from a table indexed by the returned value plus one.
 - `apply_bitmask_and_call`: Performs bitwise OR operations on registers and memory locations, then calls another routine and returns.
+- `sub_1_92E8`: undescribed.
+- `sub_1_92F0`: undescribed.
+- `sub_1_92FE`: undescribed.
+- `sub_1_9306`: undescribed.
+- `sub_1_930C`: undescribed.
+- `sub_1_9312`: undescribed.
 - `perform_sequence_of_calls`: Calls several routines, performs an indirect call via a pointer in a structure, and sets a 16-bit value to zero at offset 10206 of a global variable before returning.
 - `copy_string_sequences`: Sets a 16-bit value in a structure, and if a subsequent routine returns non-zero, copies a null-terminated string from one location to another and then copies a second string from a table into the same destination using a loop.
 - `execute_callback_sequence_2`: Writes 27 to an offset of 10222 in a4, calls a routine at an address derived from a4, calls another routine, writes 16 to the same offset in a4, and calls a routine at an address derived from a4.
 - `copy_variable_length_memory_block`: Calculates a length by subtracting two 16-bit values located at specific offsets within a structure, then copies that number of bytes from a source address derived from the first value to a destination address in a0 using a loop.
 - `update_status_byte_2`: Calls another routine and, if the returned value is less than 5, stores that value as a byte at offset 3586 of a structure pointed to by a pointer in a4.
+- `sub_1_9578`: undescribed.
+- `sub_1_95CC`: undescribed.
+- `sub_1_962E`: undescribed.
 - `execute_callback_from_structure`: Calls another routine three times, then if a longword at an offset in a4 is non-zero, it calls a routine via a pointer found in a table and updates a longword at an offset in a4 with the result.
 - `process_callback_chains`: Performs multiple conditional calls using pointers from a structure and a global table, iterates through a nested list of pointers to call a routine and clear values, and executes several final function calls via pointers found in a structure and a global variable.
 - `clear_interrupt_server`: Checks if a 16-bit value at a specific offset in a structure is non-zero, calls a function pointer from a global table if it is, and then clears that 16-bit value.
@@ -574,6 +689,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_conditional_callback_chain`: Checks three conditions in a structure; if met, it updates values in a secondary structure, calls two function pointers from a global variable, and potentially calls itself recursively.
 - `manage_structure_callback_chain`: Executes a function pointer from a global variable and, if the result is non-zero, recursively calls itself to update a linked structure.
 - `check_range_bounds`: Compares two input values against stored bounds in a structure and returns 1 if the values fall within the specified range, otherwise returns 0.
+- `sub_1_996C`: undescribed.
+- `sub_1_99E4`: undescribed.
+- `sub_1_9A22`: undescribed.
+- `sub_1_9A56`: undescribed.
+- `sub_1_9A7E`: undescribed.
+- `sub_1_9AE6`: undescribed.
 - `branch_to_offset_4`: Performs a short branch to offset a2e0.
 - `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
@@ -587,13 +708,35 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_and_increment_pointer`: Clears d1, moves a byte from d0 to d1, stores d1 at the address in a2, increments a2 by 1, and performs a short branch to another routine.
 - `restore_registers_and_return_2`: Moves the value in a3 to d0, restores a2 and a3 from the stack, and returns.
 - `process_string_segments`: Swaps the contents of registers a0 and a1, calls another routine, and then enters a loop that writes a null terminator at a specific index and calls another routine to update a global pointer.
+- `sub_1_9D7C`: undescribed.
+- `sub_1_9E00`: undescribed.
+- `sub_1_9E18`: undescribed.
+- `sub_1_9E3C`: undescribed.
+- `sub_1_9E56`: undescribed.
+- `sub_1_9E82`: undescribed.
+- `sub_1_9EBC`: undescribed.
 - `fill_memory_with_byte`: Loops through a buffer pointed to by a0, overwriting each byte with the value in d0 until a null terminator is reached.
 - `copy_string_with_padding`: Copies a null-terminated string to a destination buffer and pads the remainder with null bytes.
+- `sub_1_9F0C`: undescribed.
+- `sub_1_9F36`: undescribed.
+- `sub_1_9F3A`: undescribed.
+- `sub_1_9F46`: undescribed.
+- `sub_1_9F4E`: undescribed.
+- `sub_1_9F58`: undescribed.
+- `sub_1_9F7E`: undescribed.
+- `sub_1_9F88`: undescribed.
 - `copy_null_terminated_strings`: Calculates the length of a null-terminated string pointed to by a1 and the length of a null-terminated string pointed to by a0, calls another routine, and then copies bytes from the string in a1 to the string in a0 using a loop that decrements the length of the first string.
 - `compare_strings_case_insensitive`: The routine compares two byte strings pointed to by two registers character by character.
 - `copy_c_string_2`: Advances to the terminating zero of the string at a0, then copies the bytes from a1 onto its end, including the zero.
 - `find_byte_in_string`: Searches for a specific byte in a string pointed to by a0, returning the pointer to the match or zero if the end of the string is reached without a match.
 - `search_byte_in_string`: Saves registers, copies a0 to a3, copies d0 to d7, moves d7 to d0, moves a3 to a0, calls another routine, and restores registers before returning.
+- `sub_1_A062`: undescribed.
+- `sub_1_A07E`: undescribed.
+- `sub_1_A088`: undescribed.
+- `sub_1_A0B8`: undescribed.
+- `sub_1_A0CA`: undescribed.
+- `sub_1_A0D4`: undescribed.
+- `sub_1_A0DC`: undescribed.
 - `tiny_swap_clr_swap`: Small routine of 3 instructions that swaps the halves of d0, then clears d0, then swaps the halves of d0.
 - `format_integer_string`: If a pointer in a0 is negative, it sets the byte at that pointer to 45; it enters a loop that calls another routine and writes characters to a buffer, then enters a second loop that copies bytes backward to shift the string, and finally null-terminates the string and returns the difference between the end pointer and the start pointer.
 - `count_substring_occurrences`: Counts how many times the first character of a string pointed to by a1 appears in a string pointed to by a0, provided the full sequence from a1 is found.
@@ -621,14 +764,31 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dereference_and_branch`: Copies a3 to a2, updates a3 with the value pointed to by a3, and branches to another routine.
 - `get_fixed_point_value`: Loads a 16-bit value from a structure, calls two routines, and if the first returned value is non-zero, calls a second routine and returns its result.
 - `return_zero_constant`: This library routine returns a zero value to the caller.
-- `execute_with_stack_save`: Clears register d0, saves d7 to the stack, moves d7 to d0, calls another routine, restores d7 from the stack, and returns.
+- `sub_1_A4E8`: undescribed.
 - `manipulate_file_path_strings`: Copies a null-terminated string from one location to another and modifies a string by replacing characters with a colon or searching for delimiters.
 - `decrement_and_store_pointer`: If a register contains a non-zero value, it calls another routine and then stores the result of subtracting two from that value into a global variable at an offset from a structure in a4.
+- `sub_1_A604`: undescribed.
 - `iterate_structure_list`: Iterates through a linked list of 32-bit pointers starting from an offset in a structure, calling another routine for each element that meets specific bitwise and value comparison criteria.
 - `execute_file_io_call`: Checks a global variable, clears a 16-bit field in a structure, calls a routine via a pointer at an offset from a structure, and if the result is negative, calls another routine and stores its result at an offset in the structure.
 - `execute_conditional_io_call`: Checks a global variable, clears a 16-bit field in a structure, calls a routine via a pointer at an offset from a structure, and if the result is negative, calls another routine and stores its result at an offset in the structure; it also calls the same routine again if a parameter matches specific values.
 - `execute_callback_and_handle_error`: Calls a routine via a pointer stored in a structure and, if the result is negative one, calls a second routine via a different pointer to update a 16-bit value in a global variable and sets a 16-bit value at offset 12028 to 5.
 - `execute_open_io_call`: Checks a global variable, clears a 16-bit field in a structure, calls a routine via a pointer at an offset from a structure, and if the result is zero, calls another routine and stores its result at an offset in the structure.
+- `sub_1_A7E4`: undescribed.
+- `sub_1_A8A0`: undescribed.
+- `sub_1_A8F0`: undescribed.
+- `sub_1_A94A`: undescribed.
+- `sub_1_A97A`: undescribed.
+- `sub_1_A9AA`: undescribed.
+- `sub_1_A9C0`: undescribed.
+- `sub_1_A9EA`: undescribed.
+- `sub_1_AA30`: undescribed.
+- `sub_1_AA58`: undescribed.
+- `sub_1_AA86`: undescribed.
+- `sub_1_AA9A`: undescribed.
+- `sub_1_AABA`: undescribed.
+- `sub_1_AAC2`: undescribed.
+- `sub_1_AAF8`: undescribed.
+- `sub_1_AB24`: undescribed.
 - `cleanup_message_port`: Frees memory associated with a message port, clears signal bits, removes the port from the system, and resets related global state variables.
 - `set_dummy_values`: Writes a certain byte and several longwords with maximum values to a structure before calling a function pointer from a global variable.
 - `execute_complex_io_sequence`: Checks a global variable, clears a 16-bit field in a structure, calls a routine via a pointer, and if the result is non-zero, calls two other routines; it then calls a third routine via a pointer and if that result is zero, calls another routine and stores its result at an offset in the structure.
@@ -641,6 +801,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_structure_data`: Calls a function pointer stored at a negative offset from a global variable, then if the result is non-zero, writes five to offset 8, zero to offset 9, the value of a register to offset 14, and a 16-bit value to offset 18 of the returned pointer.
 - `calculate_table_index`: Sets a 16-bit value at offset 1940 of a structure to zero, then checks if a 16-bit input is negative, exceeds a value at offset 3924 of a structure, or if a 16-bit value at a calculated offset in a table is zero; if any condition is met, it writes nine to offset 2efc and returns zero, otherwise it returns the calculated table index.
 - `execute_conditional_callback`: Calls a routine via a pointer stored in a global variable, then checks if specific bits are set in the result and if a value at offset 6488 of a structure in a4 is non-zero, and if so, calls another routine via a pointer at that same offset and clears the value at that offset before calling another routine.
+- `sub_1_AE9E`: undescribed.
+- `sub_1_AEA4`: undescribed.
+- `sub_1_AEE2`: undescribed.
+- `sub_1_AF06`: undescribed.
+- `sub_1_AF1A`: undescribed.
+- `sub_1_AF40`: undescribed.
+- `sub_1_AF6E`: undescribed.
+- `sub_1_AF94`: undescribed.
+- `sub_1_AFB8`: undescribed.
+- `sub_1_AFC0`: undescribed.
+- `sub_1_AFCE`: undescribed.
+- `sub_1_B000`: undescribed.
 - `dispatch_event_zero`: Sets d0 to zero and jumps to another routine.
 - `dispatch_event_sixteen`: Sets d0 to 16 and jumps to another routine.
 - `dispatch_event_forty_eight`: Sets d0 to 48 and jumps to another routine.
@@ -656,6 +828,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_global_to_table`: Calculates an offset by masking a 16-bit register, shifting it left by two, and adding it to a base address, then stores a 32-bit global variable at that location.
 - `copy_global_to_table`: Stores a 32-bit global variable into a 32-bit word at an offset from a structure in a4.
 - `fill_table_with_global`: Enters a loop that writes a 32-bit global variable to sixteen consecutive 32-bit words starting at an offset from a structure in a4.
+- `sub_3_00B6`: undescribed.
 - `validate_event_condition_flags_2`: Loads a longword from a4, then enters a loop that checks if adding d0 to that value exceeds a specific constant, calling another routine in each iteration until the condition is met or the loop terminates.
 - `calculate_clamped_difference`: Subtracts a 32-bit value from a table at a calculated offset from a 32-bit global variable, then clamps the result to a maximum of 65535.
 - `clear_d0_and_call_subroutine`: Clears register d0, calls another routine, and then returns.
@@ -669,6 +842,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clamp_sum_value`: Adds a 16-bit value in d1 to d0, compares the result to d2, and returns the smaller of the sum or d2 as a 32-bit value.
 - `clamp_difference_value`: Subtracts a 16-bit value in d1 from d0, compares the result to d2, and returns the smaller of the difference or d2 as a 32-bit value.
 - `check_bit_difference`: Performs an exclusive OR between two 16-bit values, inverts the result, and returns the state of the most significant bit as a 32-bit value.
+- `sub_3_0228`: undescribed.
+- `sub_3_024E`: undescribed.
+- `sub_3_0276`: undescribed.
 - `write_byte_conditionally`: If register d0 is negative, stores the byte 45 at the address in a0 and negates d0, then calls another routine and returns.
 - `convert_integer_to_string_2`: Checks if d0 is negative, and if so, writes a hyphen to the address in a0 and negates d0, then calls another routine.
 - `count_string_chars`: Counts the number of bytes in a string starting at a pointer in a0, excluding null bytes and newline characters, and returns the count in d0.
@@ -677,6 +853,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_pseudo_random`: Updates two 16-bit values in a structure using specific multipliers and offsets, then calculates a 32-bit value based on the product of a 16-bit input and the XOR of the two updated values, returning a bit-swapped version of that product.
 - `find_maximum_elements`: Compares four pairs of 16-bit values from two different sources and stores the maximum of each pair into a destination buffer, returning a specific constant if certain conditions are met.
 - `compare_and_decrement_d0`: Loads a word from an offset of 4 from a2 into d0, compares it with the word at the address in a2, and if d0 is not less than that value, clears d0, subtracts 1 from d0, unlinks a5, and returns.
+- `sub_3_0364`: undescribed.
 - `check_coordinate_bounds`: Compares a 16-bit value in d0 against a range defined by two 16-bit values at offsets 0 and 2 of a pointer in a0, and compares a 16-bit value in d1 against a range defined by two 16-bit values at offsets 4 and 6 of the same pointer in a0.
 
 ### Centurion - Defender of Rome (1991)(Electronic Arts)(Disk 1 of 2).adf:bootblock
@@ -761,10 +938,29 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `jump_vector_entry_54`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_55`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_56`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
-- `return_without_action`: The body contains only a return, with no calls, memory access or arguments used.
+- `sub_107A`: undescribed.
+- `sub_10D0`: undescribed.
+- `sub_1100`: undescribed.
+- `sub_1164`: undescribed.
+- `sub_1202`: undescribed.
+- `sub_125A`: undescribed.
+- `sub_12C2`: undescribed.
 - `decrement_and_branch_on_bit`: Decrements a word at an offset of 38 in a6, and if the result is not zero, checks bit 7 of a byte at offset 14 in a6 and jumps to a routine via a pointer in a6 if the bit is set.
 - `return_zero_and_call_subroutine`: Clears register d0 and calls a subroutine via a pointer in a register before returning.
+- `sub_12F2`: undescribed.
+- `sub_1316`: undescribed.
 - `invoke_font_request_wrapper`: Pushes the contents of a6 onto the stack, calls dispatch_font_request_2, cleans up the stack, and returns.
+- `sub_1350`: undescribed.
+- `sub_138E`: undescribed.
+- `sub_1396`: undescribed.
+- `sub_13B8`: undescribed.
+- `sub_1456`: undescribed.
+- `sub_14B4`: undescribed.
+- `sub_14D2`: undescribed.
+- `sub_1508`: undescribed.
+- `sub_15AC`: undescribed.
+- `sub_15D8`: undescribed.
+- `sub_1692`: undescribed.
 - `dispatch_font_request_2`: As part of library code, this routine reads a pointer and an argument from the stack and passes them to another routine.
 - `compute_scaled_offset`: Library code that computes an integer from two structures using subtraction, scaling, and a loop that subtracts values from a global table based on byte comparisons, then returns the result.
 - `load_and_install_disk_font`: Opens a disk font file, reads its header, allocates memory for the font data, loads the segment, and installs the font into the graphics system by adding it to the font list.
@@ -776,6 +972,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `test_and_branch_byte`: Tests a byte at the pointer in a0 and increments the pointer; if the byte is not zero, it branches to an earlier instruction, otherwise it sets d0 to zero and continues.
 - `compare_and_branch_bytes`: Loads a byte from the pointer in a0 into d0, compares it with a byte from the pointer in a1, and branches to an earlier instruction if they are equal; otherwise, it loads a byte from the address at a1 decremented by one into d0, compares it with the byte at a0, and branches if the value is greater than or equal to zero, or sets d0 to 255 and branches if neither condition is met.
 - `return_constant_5`: Returns the constant an address in d0 to the caller without any other effect.
+- `sub_1CE2`: undescribed.
+- `sub_1CEC`: undescribed.
+- `sub_1CF4`: undescribed.
 - `find_last_occurrence_in_string`: The routine receives a pointer to a zero-terminated string and a byte value, determines the string length via a library call, then walks backwards from the end to find the last occurrence of the byte and returns its pointer.
 - `find_delimiter_and_advance_pointer`: Calls another routine to search for a forward slash or a colon, and if either is found, increments the pointer by one and returns it.
 - `call_library_vector_30_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
@@ -783,6 +982,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_42_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 42 of that base, returning its result to the caller.
 - `call_library_vector_84`: Library stub: loads a library base from a global variable and calls the library function at offset minus 84 of that base, returning its result to the caller.
 - `call_library_vector_90`: Library stub: loads a library base from a global variable and calls the library function at offset minus 90 of that base, returning its result to the caller.
+- `sub_1DFC`: undescribed.
+- `sub_1E18`: undescribed.
 - `call_library_vector_126`: Library stub: loads a library base from a global variable and calls the library function at offset minus 126 of that base, returning its result to the caller.
 - `call_library_vector_132`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
 - `call_library_vector_150`: Library stub: loads a library base from a global variable and calls the library function at offset minus 150 of that base, returning its result to the caller.
@@ -796,7 +997,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_72`: Library stub: loads a library base from a global variable and calls the library function at offset minus 72 of that base, returning its result to the caller.
 - `call_library_vector_78`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
 - `call_library_vector_480`: Library stub: loads a library base from a global variable and calls the library function at offset minus 480 of that base, returning its result to the caller.
-- `jump_to_font_wrapper`: Clears d0 and jumps to a fixed address.
+- `sub_1F50`: undescribed.
+- `sub_1F56`: undescribed.
 - `jump_to_subroutine`: Jumps to a routine at a longword address.
 - `jump_to_return_routine`: Jumps to a fixed address.
+- `sub_1F6E`: undescribed.
+- `sub_1F74`: undescribed.
 - `modify_structure_fields`: Clears bit 7 of a byte at offset 14 of a structure in a6 and increments a 16-bit word at offset 38 of the same structure.

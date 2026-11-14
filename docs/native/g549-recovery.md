@@ -6,33 +6,34 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (1802384 top-level bytes in 67 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 3 raw-word lines |
-| Functions named and described | pass, 338 of 338 named (0 author symbols), 338 of 338 described (9 by rule, 0 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1325 of 1325 (100.00%) |
+| Bytes classified (1802412 top-level bytes in 68 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 2 raw-word lines |
+| Functions named and described | FAIL, 330 of 404 named (0 author symbols), 330 of 404 described (9 by rule, 0 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1339 of 1346 (99.48%) |
 | Recovered without load address (counted in proof 1, flagged) | 327390 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 13686 of 13701 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 15956 of 15956 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 990634 |
-| code | 42992 |
-| data | 510820 |
-| padding | 18834 |
+| code | 49652 |
+| data | 504184 |
+| padding | 18838 |
 | unused | 239104 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Panza Kick Boxing (1990)(Futura)(Disk 1 of 2).adf:kick | 26 | 13555 | 330 |
+| Panza Kick Boxing (1990)(Futura)(Disk 1 of 2).adf:kick | 26 | 15803 | 395 |
 | Panza Kick Boxing (1990)(Futura)(Disk 1 of 2).adf:paradox | 2 | 83 | 3 |
 | Panza Kick Boxing (1990)(Futura)(Disk 1 of 2).adf:bootblock | 1 | 10 | 1 |
 | Panza Kick Boxing (1990)(Futura)(Disk 2 of 2).adf:bootblock | 1 | 37 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 1 |
 | tout.bin (raw code file, load address unknown) | 1 | 0 | 0 |
 
 ## Cases handled
@@ -40,6 +41,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - 2 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - runtime segment an address: 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- 7 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 1 first-run image unit(s) in 1 version group(s); 0 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
+- panza kick boxing (1990)(futura)(disk 1 of 2)/Panza Kick Boxing (1990)(Futura)(Disk 1 of 2).adf:paradox: ByteKiller 1.3 (xfd) stream found by ancient scan (16936 -> 57344 bytes) but only 0 of 13 sampled windows are in reference RAM: not used
 - panza kick boxing (1990)(futura)(disk 1 of 2)/Panza Kick Boxing (1990)(Futura)(Disk 1 of 2).adf:GRAPH/tout.bin: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - panza kick boxing (1990)(futura)(disk 1 of 2)/Panza Kick Boxing (1990)(Futura)(Disk 1 of 2).adf: blocks 1737-1738 (bytes 889344-890368) outside the filesystem hold data, not code (opcode density 0.021, entropy 4.28)
 - panza kick boxing (1990)(futura)(disk 1 of 2)/Panza Kick Boxing (1990)(Futura)(Disk 1 of 2).adf: blocks 1749-1749 (bytes 895488-896000) outside the filesystem hold data, not code (opcode density 0.043, entropy 2.88)
@@ -86,21 +89,35 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `setup_ports_and_call_three_arg_helper`: Stores a pointer to a5-relative buffer at a4 offset 144, pushes several arguments and the stored handle, calls the helper at 0774, then returns 0 on success or -1 otherwise.
 - `return_zero_restore_registers`: Sets d0 to zero as the return value, restores d2-d3, d6-d7 and a6 from the stack, releases the a5 frame and returns to the caller.
 - `poll_signal_and_clear_callback`: Saves d7, calls exec SetSignal with mask 12288, and if those signals are set and the callback pointer at offset 240 of a4 is non-null, calls it; on zero result clears that pointer and calls the cleanup routine with 20.
+- `sub_0_097E`: undescribed.
 - `return_1980_and_clear_306`: Executes nops, loads 6528 into d0 as the return value, clears the longword at absolute address 306 and returns to the caller.
-- `zero_filled_data_area`: A single zero word that decodes as ori.b #0,d0; this range is zero-filled data referenced by pointers, not executable code.
-- `zero_filled_data_word_at_02fc`: A single zero word that decodes as ori.b with immediate zero on d0; it is zero-filled data referenced by a pointer, not executable code.
-- `zero_filled_data_word_at_0300`: One zero word in the same zero-filled data area, decoding as ori.b immediate zero to d0; a data pointer target rather than real code.
-- `zero_filled_data_word_at_0304`: Another single zero word of the zero-filled region, decoding as ori.b with zero immediate on d0; referenced by a data pointer, not executable.
-- `zero_filled_data_area_2`: Contains only a zero word that decodes as ori.b #0,d0; this is a zero-filled data area referenced by address, not executable code.
+- `sub_21_001C`: undescribed.
+- `sub_21_0028`: undescribed.
+- `sub_21_0062`: undescribed.
+- `sub_21_0088`: undescribed.
+- `sub_21_00EE`: undescribed.
+- `sub_21_0106`: undescribed.
+- `sub_21_0110`: undescribed.
+- `sub_21_011C`: undescribed.
+- `sub_21_0146`: undescribed.
+- `sub_21_014E`: undescribed.
+- `sub_21_015E`: undescribed.
+- `sub_21_018E`: undescribed.
+- `sub_21_0198`: undescribed.
+- `sub_21_01E8`: undescribed.
+- `sub_21_01FA`: undescribed.
+- `sub_21_020A`: undescribed.
+- `sub_21_0256`: undescribed.
+- `sub_21_028E`: undescribed.
+- `sub_21_02B0`: undescribed.
+- `sub_21_02D8`: undescribed.
 - `install_two_interrupt_servers`: Saves all registers, opens exec.library, builds two interrupt server structures from the base pointer, sets their handlers and priorities, calls AddIntServer for levels 3 and 5, sets a flag, then calls a routine with zero.
 - `reset_round_counters_and_return_zero`: Calls two subroutines, clears the word at a fixed long address, increments two long counters, sets d0 to zero and returns.
 - `decrement_four_timers_and_reset_slots`: For each of four countdown words, if nonzero decrements it and when it reaches zero clears its flag word and writes a pointer and value ten into the pointed structure.
 - `track_joystick_direction_changes`: Reads both joystick direction ports, masks the direction bits, folds in the fire button from CIAA, and increments a change counter whenever the combined value differs from the stored previous value.
-- `zero_filled_data_area_3`: This single zero word decodes as an ori.b immediate instruction but is a zero-filled data area referenced by address, not executable code.
 - `reset_counter_if_below_threshold`: Loads the longword at offset 4 of the stack into d0, compares it with the global counter at address 3008, and clears that counter to zero if d0 is not greater.
 - `increment_counter_and_scan_keyboard`: Increments the longword at 3120, reads the complemented and rotated CIAA serial register into d0, and sets a byte in the table at 1312 indexed by d0, returning zero.
 - `clear_keyboard_table_entry`: Masks d0 with 127, clears the byte in the table pointed to by a0 at that index, sets d0 to zero and returns.
-- `kick_data_table_not_code`: Thirty-two ori.b zero words that change no register; the bytes are a data table referenced by address, not executable code.
 - `test_byte_in_table_at_offset_d0`: Loads the address of a table into a0, sign-extends the low word of d0, tests the byte at that offset and returns the flags.
 - `dispatch_sound_command_with_retry`: Reads a command byte from the stack, stores it in globals, calls the sound setup, then loops calling the test and play routines until the byte is accepted.
 - `read_joystick_buttons_and_directions`: Reads CIA-A port A and joystick port data, builds a button and direction bitmask in d1, optionally merges it with the low byte of d0, and returns the result in d0.
@@ -203,7 +220,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispatch_dos_file_command`: Reads a command code from the stack frame and branches to dos.Open, dos.Read, dos.Close, exec.Forbid or exec.Permit handlers, restoring saved registers and returning when no code matches.
 - `wait_fire_button_then_open_files`: Writes a color value to COLOR00, polls the CIAA fire button bit until released, then calls dos.Open twice and dos.Write using the caller's argument block.
 - `seed_random_from_vposr_and_advance`: If the stored seed is zero, builds it from two reads of the VPOSR hardware register, then mixes the seed with a constant via a called routine, increments it, stores it back and returns bits 8 to 31 in d0.
-- `seed_storage_data_byte`: A single ori.b immediate byte that is data, not executable code; it is the seed storage location referenced by the random routine and is never meant to run.
+- `sub_21_5CB0`: undescribed.
 - `signed_32bit_multiply_via_16bit_parts`: Multiplies two signed long arguments from the stack by taking absolute values, combining 16-bit partial products with mulu, and negating the result in d0 when the signs differed.
 - `install_vertical_blank_interrupt_server`: Loads exec base from address 4, fills the interrupt server node at the stored pointer with data pointer, priority 32, type 3 and code pointer, then calls AddIntServer with interrupt number 4.
 - `poll_two_joystick_ports_for_changes`: Reads JOY0DAT and JOY1DAT masked to bits 0-1 and 8-9, folds in fire button bits from CIAA_PRA, and increments change counters when either port value differs from its stored previous value.
@@ -248,6 +265,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_40_then_f0_with_three_args`: Saves d6, d7 and a3, loads three stack arguments, calls the shared routine with 64 and all three, then calls it again with 240 and the first argument, cleans up and restores registers.
 - `disk_prompt_and_palette_setup`: Builds a 16-entry table, fills a large palette buffer with masked random values, shows the insert-disk prompt, shifts the table entries and waits for input before restoring the saved values.
 - `call_5206_with_two_globals_and_32000`: Pushes the longword at address 8D8, the longword at address 10786 and the immediate 32000 onto the stack, calls the routine at 5206, then discards the three arguments and returns.
+- `sub_24_0000`: undescribed.
 - `dispatch_four_entries_by_two_bits`: Saves all registers, then four times builds an index from the low bits of d1 and d0, loads a code pointer from a table near the program counter and calls it, advancing a0 by one each time.
 - `zero_sixty_four_sound_structs`: Clears d7 to zero and loops sixty-four times, writing zero to four byte fields at offsets 0, 4, 8 and 12 of each sixteen-byte record starting at a1, then returns.
 - `set_d7_ff_and_branch_forward`: Loads minus one into d7 and branches forward to another routine without touching memory or calling anything.
@@ -316,13 +334,63 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `tick_sound_channel_slots`: Walks eight twelve-byte channel slots, decrements active counters, and for expired slots clears the busy flag and calls the sound routine with stored parameters.
 - `clear_eight_slot_flags`: Loops over eight records spaced twelve bytes apart and clears the byte at offset one in each, then returns.
 - `reset_state_and_run_main_loop`: Clears a byte in global memory, calls several setup routines, pushes arguments for two more calls, then branches forever into the main loop after clearing the stack.
+- `sub_3_0000`: undescribed.
 - `build_and_dispatch_sprite_descriptor`: Looks up a 36-byte record by index, finds the highest set bit of its byte, computes a table offset, calls two lookup routines, and passes the result plus constants to a dispatcher.
 - `draw_fighter_health_bar_segments`: Reads a fighter index byte, looks up its record, and draws either a low or high health bar using two graphics calls with different coordinates and tile bases.
 - `draw_fighter_stamina_bar`: Reads a fighter index byte, computes a value from the fighter record, and draws a five-pixel bar segment at offset five in the record.
 - `wait_for_input_then_clear_screen`: Saves d7, calls a setup routine, waits in a loop for a nonzero result from a system call, then calls another routine and restores d7.
 - `draw_fighter_stats_panel`: Draws a fighter's force, reflex and resist values as formatted text at screen positions, using the fighter index and row offset to index the fighter table and calling text and blit routines.
+- `sub_3_061E`: undescribed.
+- `sub_3_0756`: undescribed.
 - `apply_fighter_style_and_moves`: Copies a fighter's style bytes and move list into its table entry, then sets the current move and merges bit flags into the fighter's state while calling update routines.
 - `fighter_select_menu_loop`: Runs the fighter selection screen: loads the menu picture, draws two fighter portraits, polls input to move the cursor and confirm, and dispatches the chosen fighter.
+- `sub_3_0D78`: undescribed.
+- `sub_3_0D82`: undescribed.
+- `sub_3_0D9A`: undescribed.
+- `sub_3_0DB4`: undescribed.
+- `sub_3_0E8C`: undescribed.
+- `sub_3_0F2A`: undescribed.
+- `sub_3_0F80`: undescribed.
+- `sub_3_0F8C`: undescribed.
+- `sub_3_106C`: undescribed.
+- `sub_3_1100`: undescribed.
+- `sub_3_117E`: undescribed.
+- `sub_3_11C2`: undescribed.
+- `sub_3_1366`: undescribed.
+- `sub_3_13E6`: undescribed.
+- `sub_3_14AA`: undescribed.
+- `sub_3_14EE`: undescribed.
+- `sub_3_1548`: undescribed.
+- `sub_3_1566`: undescribed.
+- `sub_3_1582`: undescribed.
+- `sub_3_15A0`: undescribed.
+- `sub_3_16D6`: undescribed.
+- `sub_3_1820`: undescribed.
+- `sub_3_18C0`: undescribed.
+- `sub_3_18E0`: undescribed.
+- `sub_3_1912`: undescribed.
+- `sub_3_19AA`: undescribed.
+- `sub_3_19BE`: undescribed.
+- `sub_3_1A74`: undescribed.
+- `sub_3_1AA4`: undescribed.
+- `sub_3_1B22`: undescribed.
+- `sub_3_1B32`: undescribed.
+- `sub_3_1B70`: undescribed.
+- `sub_3_1B9C`: undescribed.
+- `sub_3_1BC4`: undescribed.
+- `sub_3_1BCE`: undescribed.
+- `sub_3_1C84`: undescribed.
+- `sub_3_1D86`: undescribed.
+- `sub_3_1E90`: undescribed.
+- `sub_3_1EA6`: undescribed.
+- `sub_3_20E2`: undescribed.
+- `sub_3_20EC`: undescribed.
+- `sub_3_210E`: undescribed.
+- `sub_3_213E`: undescribed.
+- `sub_3_21C0`: undescribed.
+- `sub_3_275C`: undescribed.
+- `sub_3_2770`: undescribed.
+- `sub_3_2810`: undescribed.
 - `init_two_player_input_and_rounds`: Calls setup routines, checks two global flags, then loops twice over two player slots filling empty entries via a helper and adjusting per-player bytes before returning.
 - `poll_input_until_break_or_escape`: Increments d6, calls a delay routine, checks two player flags, polls the input port and breaks when bit seven is set, then bumps a per-player byte by three.
 - `reset_input_state_and_fill_slots`: Calls two setup routines, invokes a library function, then loops over two player slots calling a helper to fill each empty entry and storing the result.
@@ -412,3 +480,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `sub_0000`: undescribed.

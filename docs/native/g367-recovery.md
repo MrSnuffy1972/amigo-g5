@@ -8,36 +8,36 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (4062333 top-level bytes in 13 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 12 of 12 units identical (bytes and relocations), 12 raw-word lines |
-| Functions named and described | pass, 121 of 121 named (0 author symbols), 121 of 121 described (9 by rule, 54 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1165 of 1165 (100.00%) |
+| Functions named and described | pass, 184 of 184 named (0 author symbols), 184 of 184 described (49 by rule, 77 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1229 of 1229 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1751 of 1751 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1895 of 1895 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 294325 |
-| code | 5910 |
-| data | 3762097 |
-| padding | 1 |
+| code | 6398 |
+| data | 3761603 |
+| padding | 7 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| game.slave | 1 | 369 | 24 |
+| game.slave | 1 | 360 | 23 |
 | Disk.1:bootblock | 1 | 6 | 1 |
 | logged disk load from Disk.1 boot-block load | 1 | 80 | 3 |
 | logged disk load from Disk.1 | 1 | 80 | 4 |
 | logged disk load from Disk.1 | 1 | 0 | 0 |
 | logged disk load from Disk.1 | 1 | 0 | 0 |
 | logged disk load from Disk.1 | 1 | 0 | 0 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 157 | 10 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 34 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1008 | 73 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 16 | 3 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 160 | 11 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 45 | 3 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1116 | 121 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 23 | 5 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 25 | 13 |
 
 ## Cases handled
 
@@ -46,9 +46,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - JimPower_v1.1_0068/JimPower_v1.1_0068.hdf: hard-disk image (AmigaDOS OFS, 4352 blocks): its filesystem parses and all 6 files in it are byte-identical to the extracted tree JimPower_v1.1_0068_hdf, which is recovered file by file; no block outside the filesystem holds data
 - JimPower_v1.1_0068/JimPower_v1.1_0068_hdf/JimPower/Disk.1: the boot block reads 17408 bytes from disk offset 868352 to an address (found statically); recovered as a unit
 - 5 logged WHDLoad disk loads recovered as units built from the disk image bytes
-- runtime segment an address: 53 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 80 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (f150): 34 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 738 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 775 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - JimPower_v1.1_0068/JimPower_v1.1_0068_hdf/JimPower/Disk.1: 5 logged loads cover 274944 bytes of the image
@@ -92,9 +92,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decompress_atom_data_stream`: Validates a data header for a specific signature and performs a bitstream decompression routine.
 - `tiny_moveq`: Small routine of 1 instruction that loads 2 into d6.
 - `process_bit_stream`: Iterates through a data buffer to perform bitwise operations and shifts based on the contents of the memory.
-- `return_uninitialized_register`: This routine is empty and returns the current value of a data register to the caller.
+- `return_from_subroutine_2`: Does nothing but return immediately to the caller.
 - `return_from_subroutine`: This routine is empty and performs no operations before returning to the caller.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 
 ### Disk.1:bootblock
 
@@ -125,25 +124,41 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_and_assign_globals`: Sets two global variables to zero, calls another routine four times, and then assigns a series of constant values to a global variable.
 - `update_state_comparison`: Compares a value from a register against a global variable and updates a status byte based on the comparison result.
 - `update_data_structure`: Uses an index and a byte from a table to look up a pointer in a global table and updates several fields in the referenced structure.
+- `move_and_modify`: Moves a 16-bit value from one memory location to another and sets specific bits in a byte register.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `save_registers_and_trigger_trap`: Saves all data and address registers to the stack and writes the address of the next instruction into a specific memory location before triggering a software interrupt.
 - `copy_longs_with_dma_setup`: Copies a block of longwords from a fixed source address into low memory with a count-down loop, after storing several shared words and saving the stack pointer.
+- `read_and_process_dma`: Reads a status byte from a hardware register, processes it, and prepares for interrupt handling by loading registers and setting up memory pointers.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `stub_bad_instruction_data`: Decodes as a few stores of zero and constants with repeated calls to an unnamed routine, which looks like data misread as code.
+- `set_and_clear_bits`: Sets and clears specific bits in memory locations and writes zero values to several audio hardware registers.
 - `flush_pending_bit_flags`: Writes a constant to a shared word for each set bit of a pending flag byte, then clears that flag.
 - `jump_to_stub_bad_instruction_data_3`: Jump stub: passes control straight on to stub_bad_instruction_data_3.
 - `store_byte_then_call_routine`: Stores the low byte of the data register into a state byte, then calls an unnamed routine and returns.
 - `decode_channel_command_byte`: Dispatches on the range of an input command byte: special values update the fields of a per-channel record and return, while ordinary values store the note index, reset several record fields and copy a value from a 16-entry lookup table into the record.
 - `init_channel_tables_and_pointers`: Stores the caller's pointer parameters and a base value, then fills a 32-entry word table with a constant and clears a companion table.
 - `jump_to_stub_bad_instruction_data_3_2`: Jump stub: passes control straight on to stub_bad_instruction_data_3.
+- `jump_to_stub_bad_instruction_data_3_3`: Jump stub: passes control straight on to stub_bad_instruction_data_3.
+- `jump_to_decode_channel_note_command`: Jump stub: passes control straight on to decode_channel_note_command.
+- `jump_to_stub_bad_instruction_data_3_4`: Jump stub: passes control straight on to stub_bad_instruction_data_3.
 - `compare_byte_sets_direction_flag`: Saves the input's low byte and the byte above it, then sets a flag to one, minus one or zero depending on how the new byte compares with the previously saved byte.
 - `stub_bad_instruction_data_2`: Decodes as a few stores of zero and constants with repeated calls to an unnamed routine, which looks like data misread as code.
+- `jump_to_stub_bad_instruction_data_3_5`: Jump stub: passes control straight on to stub_bad_instruction_data_3.
+- `jump_to_stub_bad_instruction_data_3_6`: Jump stub: passes control straight on to stub_bad_instruction_data_3.
+- `jump_to_stub_bad_instruction_data_3_7`: Jump stub: passes control straight on to stub_bad_instruction_data_3.
 - `sync_channel_parameters`: Extracts data from a memory buffer to update specific fields within a structure pointed to by a global table.
 - `set_dma_control`: Stores a word with a specific bit set into a global variable and calls another routine.
+- `jump_to_stub_bad_instruction_data_3_8`: Jump stub: passes control straight on to stub_bad_instruction_data_3.
+- `jump_to_stub_bad_instruction_data_3_9`: Jump stub: passes control straight on to stub_bad_instruction_data_3.
+- `jump_to_stub_bad_instruction_data_3_10`: Jump stub: passes control straight on to stub_bad_instruction_data_3.
+- `jump_to_stub_bad_instruction_data_3_11`: Jump stub: passes control straight on to stub_bad_instruction_data_3.
+- `jump_to_stub_bad_instruction_data_3_12`: Jump stub: passes control straight on to stub_bad_instruction_data_3.
+- `jump_to_stub_bad_instruction_data_3_13`: Jump stub: passes control straight on to stub_bad_instruction_data_3.
+- `jump_to_stub_bad_instruction_data_3_14`: Jump stub: passes control straight on to stub_bad_instruction_data_3.
+- `configure_audio_channels`: Configures multiple audio channels by setting period values, clearing counters, and managing modulation tick advancement.
 - `reload_countdown_and_poll_flag`: Decrements a countdown field in a record and, when it goes below zero, reloads it from a shared word.
 - `tiny_addq`: Small routine of 1 instruction that adds 4 to a0.
 - `interpret_sequence_command_byte`: Reads a command byte from a sequence stream and dispatches on its low four bits.
@@ -154,14 +169,27 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_state_byte_to_idle`: Sets one status byte in the record to the all-ones value and returns.
 - `run_sequence_command_loop`: Loops over command bytes from a sequence stream, advancing the record's position for each one and dispatching on the low four bits.
 - `dispatch_sequence_commands_until_end`: Reads command bytes from a sequence stream and dispatches on their low four bits, advancing the record's position after each one.
+- `jump_to_dispatch_sequence_table_comman`: Jump stub: passes control straight on to dispatch_sequence_table_command.
+- `jump_to_dispatch_sequence_commands_wit`: Jump stub: passes control straight on to dispatch_sequence_commands_with_table.
+- `jump_to_sequence_command`: Jumps to a sequence command handler based on a value read from a table, updating structure offsets and pointers before continuing execution.
+- `jump_to_sequence_update`: Contains a single unconditional branch instruction that jumps to a specific memory address, likely part of a control flow mechanism.
+- `jump_to_sequence_update_2`: Contains a single unconditional branch instruction that jumps to a specific memory address, likely part of a control flow mechanism.
+- `jump_to_dispatch_sequence_table_comman_2`: Jump stub: passes control straight on to dispatch_sequence_table_command.
+- `jump_to_sequence_update_3`: Branches unconditionally to another routine that updates a sequence counter and handles conditional logic for advancing or resetting sequence states.
+- `update_sequence_counter`: Updates a sequence counter in memory and handles conditional logic for advancing or resetting sequence states.
 - `dispatch_sequence_table_command`: Sequence command reader that first uses the command byte as an index into a pointer table to set the record's stream pointer and state byte, then runs the usual low-nibble dispatch.
 - `dispatch_sequence_commands_with_table`: Sequence command reader in which one command type loads a pointer from a table and jumps into the shared fetch path.
+- `copy_and_update_sequence_data`: Copies data from one memory location to another and updates sequence-related values in a structure before jumping to a specific address.
 - `load_eight_words_from_table`: Reads eight 16-bit words from a record pointed to by the caller's frame.
 - `jump_to_clear_frame_byte_flag`: Jump stub: passes control straight on to clear_frame_byte_flag.
 - `update_entity_attribute_list`: Updates a sequence of entity attributes by reading values from a data table based on an index.
 - `resolve_entity_attribute_pointers`: Reads a sequence of sixteen-bit indices from a table and resolves them into absolute addresses using a secondary lookup table.
+- `copy_and_process_values`: Copies byte values between structures, increments a counter, and performs conditional comparisons to set a status flag.
+- `load_eight_words_from_table_2`: Loads eight word values from a table using shifted index values from registers, calculates addresses by adding a base value, and stores the results in a structure.
 - `clear_frame_byte_flag`: Clears one byte in the caller's frame and returns.
 - `populate_entity_attribute_list`: Reads a sequence of sixteen-bit values from a table and uses them as indices to resolve absolute addresses from a secondary lookup table.
+- `process_and_compare_values`: Increments a counter, copies byte values between structures, performs conditional comparisons, and branches based on comparison results.
+- `copy_and_clear_byte`: Copies a byte value from one memory location to another and sets a different memory location to zero.
 - `advance_channel_modulation_tick`: Advances per-channel modulation once per tick: it counts down timers, adds a step to a running value and reverses that step when a count reaches zero, then writes a scaled level to an output word.
 - `update_channel_slide_and_output`: Per-channel tick that counts a delay down and calls a table-selected routine when it expires.
 - `update_channel_slide_or_dispatch`: Per-channel tick that sets a flag bit in a frame word and clears a record flag.
@@ -175,6 +203,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_channel_pitch_from_table`: Looks up a word in a 64-entry table indexed by a record byte plus a frame byte, scales it by a frame value and stores it as the channel's target.
 - `lookup_channel_value_from_table`: Looks up a word in a 64-entry table indexed by a frame byte, scales it by a record value and stores it as the channel's target.
 - `clear_state_and_dispatch`: Clears several bytes in a structure, increments a counter, and calls a routine from a table using a value loaded from a table.
+- `jump_to_set_channel_target_and_dispatc`: Jump stub: passes control straight on to set_channel_target_and_dispatch.
 - `set_envelope_params_and_dispatch`: Stores a frame byte and a shifted copy of it into the record, sets an enable byte, and resets two record fields when the period field is zero.
 - `compute_scaled_offset_and_dispatch`: Stores a byte equal to a frame value plus three times a record value, advances a counter and calls a table-selected routine.
 - `store_byte_and_dispatch_next`: Stores a frame byte into a record byte, advances a counter and calls a table-selected routine.
@@ -182,6 +211,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_repeat_counter_and_dispatch`: Updates a repeat counter in the record: it is set to idle, decremented, or reloaded from a frame value depending on its state.
 - `update_tick_and_dispatch`: Copies bytes to a structure, increments a counter, updates a value by adding a constant, and calls a routine from a table.
 - `update_slide_and_dispatch_2`: Adds two shortwords, updates a value in a structure, increments a counter, and executes a routine selected from a table using a byte retrieved from a pointer.
+- `jump_to_advance_channel_tick_dma_flags`: Jump stub: passes control straight on to advance_channel_tick_dma_flags.
 - `advance_channel_slide_with_repeat`: Per-channel tick that handles a repeat counter, a delay countdown and the timed step and slide logic, then writes the scaled value to an output word.
 - `select_record_table_and_dispatch`: Saves the current position and counter fields, selects a pointer by indexing a table with a frame byte, sets the record counter from a frame word and calls a table-selected routine.
 - `reset_channel_and_dispatch`: Copies a longword and a word from one location to another, increments a counter, and calls a routine from a table.
@@ -189,14 +219,33 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `accumulate_offset_and_dispatch`: Adds a frame longword into a position accumulator, writes it to an output pointer, reduces a level word by a shifted frame value, advances a counter and calls a table-selected routine.
 - `reset_position_and_dispatch`: Clears a flag byte, sets the position accumulator from a frame longword, writes it to an output pointer, sets two output words to one, advances a counter and calls a table-selected routine.
 - `run_channel_tick_slide_gate`: Per-channel tick that uses a gate byte and counter reload like its neighbours, runs the timed step and slide logic, then writes the scaled value to an output word.
+- `jump_to_dispatch_handler`: Contains a single unconditional branch instruction that jumps to a specific memory address, likely part of a dispatch mechanism.
+- `jump_to_dispatch_or_jump_on_compare`: Jump stub: passes control straight on to dispatch_or_jump_on_compare.
+- `jump_to_dispatch_handler_2`: Contains a single unconditional branch instruction that jumps to a specific memory address, likely part of a dispatch mechanism.
+- `jump_to_dispatch_handler_3`: Contains a single unconditional branch instruction that jumps to a specific memory address, likely part of a dispatch mechanism.
 - `update_entity_state_and_dispatch`: Calculates new coordinate or property values using fixed-point arithmetic and updates an entity structure.
 - `increment_and_dispatch`: Increments a counter in a structure and calls a routine from a table using a value loaded from a table.
+- `jump_to_process_command_and_dispatch`: Jump stub: passes control straight on to process_command_and_dispatch.
+- `jump_to_advance_channel_tick_dma_flags_2`: Jump stub: passes control straight on to advance_channel_tick_dma_flags.
+- `jump_to_advance_channel_tick_dma_flags_3`: Jump stub: passes control straight on to advance_channel_tick_dma_flags.
+- `jump_to_advance_channel_tick_dma_flags_4`: Jump stub: passes control straight on to advance_channel_tick_dma_flags.
+- `jump_to_advance_channel_tick_dma_flags_5`: Jump stub: passes control straight on to advance_channel_tick_dma_flags.
+- `jump_to_advance_channel_tick_dma_flags_6`: Jump stub: passes control straight on to advance_channel_tick_dma_flags.
+- `jump_to_advance_channel_tick_dma_flags_7`: Jump stub: passes control straight on to advance_channel_tick_dma_flags.
+- `jump_to_advance_channel_tick_dma_flags_8`: Jump stub: passes control straight on to advance_channel_tick_dma_flags.
+- `jump_to_advance_channel_tick_dma_flags_9`: Jump stub: passes control straight on to advance_channel_tick_dma_flags.
+- `jump_to_advance_channel_tick_dma_flags_10`: Jump stub: passes control straight on to advance_channel_tick_dma_flags.
+- `update_channel`: Compares a byte value from a structure with data at a calculated memory address and updates a global variable if they differ, then increments a counter.
 - `advance_channel_tick_dma_flags`: Per-channel tick that counts timers, steps and slides a value, and writes the scaled result to an output word, using the same logic as its neighbours.
 - `update_slide_and_dispatch`: Adds two shortwords together, stores the result in two locations, increments a counter, and calls a routine from a table.
 - `compare_table_byte_and_dispatch`: Compares a frame byte with a byte read from memory at an address given by a frame word, advances the command counter by two on a match or by one otherwise, and calls a table-selected routine.
+- `store_word_at_offset`: Calculates an address based on register values and stores a word value at that memory location.
+- `store_byte_at_calculated_address`: Calculates a memory address using shift and add operations, then stores a byte value at that location.
+- `check_and_update_channel`: Compares a byte value from a structure with data at a calculated memory address and updates a global variable if they differ, then increments a counter in another structure.
 - `run_channel_tick_interrupt_gate`: Per-channel tick that tests a gate byte in the record and calls a table-selected routine when it is clear, otherwise it runs the timed step and slide logic and writes the output word.
 - `select_voice_record_and_countdown`: Picks one of three fixed voice records by testing bit flags in a shared word, copies a field from that record into a shared word, and decrements the record's countdown.
 - `dispatch_or_jump_on_compare`: Compares a frame byte with a record byte: if the frame byte is smaller it sets the command counter from a frame word, otherwise it increments the counter, then calls a table-selected routine.
+- `manage_sequence_counter`: Checks if a byte value is less than another byte value and updates a counter accordingly, then calls a dispatch routine based on the updated counter value.
 - `step_repeat_counter_and_dispatch`: Steps a repeat counter in the record, reloading it from a frame value when it expires, sets the command position from a frame word and calls a table-selected routine.
 - `process_command_and_dispatch`: Stores a byte and combines a byte with a shifted value into a word, calls another routine, and then performs a table-based dispatch.
 - `set_channel_target_and_dispatch`: Stores a frame word as the channel's target value, advances a counter and calls a table-selected routine.
@@ -209,10 +258,24 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
+- `copy_and_increment`: Copies a 16-bit value from one register to another and increments a counter in a third register.
 - `stub_decompiler_timed_out`: No pseudo-code could be produced for this nine-instruction routine.
 - `return_all_ones_status`: Returns the all-ones value in the full 32-bit width and does nothing else.
+- `shift_packed_longword_right_2`: Returns the longword four bytes before the address register shifted right by one bit, with the top bit set from a flag bit in a data register, which is a single step of a bit reader.
 - `stub_bad_instruction_data_4`: Decoded as bad instruction data that the decompiler truncated at once, so no behaviour can be recovered from this block.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_2`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_3`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_4`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_5`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_6`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_7`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_8`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_9`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_10`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_11`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_12`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.

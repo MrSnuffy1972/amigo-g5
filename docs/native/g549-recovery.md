@@ -8,8 +8,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (1802412 top-level bytes in 68 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 2 raw-word lines |
-| Functions named and described | FAIL, 330 of 404 named (0 author symbols), 330 of 404 described (9 by rule, 0 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1339 of 1346 (99.48%) |
+| Functions named and described | pass, 404 of 404 named (0 author symbols), 404 of 404 described (12 by rule, 68 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1346 of 1346 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 327390 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 15956 of 15956 instructions identical in start and length, 0 mismatches |
 
@@ -89,28 +89,28 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `setup_ports_and_call_three_arg_helper`: Stores a pointer to a5-relative buffer at a4 offset 144, pushes several arguments and the stored handle, calls the helper at 0774, then returns 0 on success or -1 otherwise.
 - `return_zero_restore_registers`: Sets d0 to zero as the return value, restores d2-d3, d6-d7 and a6 from the stack, releases the a5 frame and returns to the caller.
 - `poll_signal_and_clear_callback`: Saves d7, calls exec SetSignal with mask 12288, and if those signals are set and the callback pointer at offset 240 of a4 is non-null, calls it; on zero result clears that pointer and calls the cleanup routine with 20.
-- `sub_0_097E`: undescribed.
+- `call_poll_signal_and_clear_callback`: Call stub: calls poll_signal_and_clear_callback, then returns to its own caller.
 - `return_1980_and_clear_306`: Executes nops, loads 6528 into d0 as the return value, clears the longword at absolute address 306 and returns to the caller.
-- `sub_21_001C`: undescribed.
-- `sub_21_0028`: undescribed.
-- `sub_21_0062`: undescribed.
-- `sub_21_0088`: undescribed.
-- `sub_21_00EE`: undescribed.
-- `sub_21_0106`: undescribed.
-- `sub_21_0110`: undescribed.
-- `sub_21_011C`: undescribed.
-- `sub_21_0146`: undescribed.
-- `sub_21_014E`: undescribed.
-- `sub_21_015E`: undescribed.
-- `sub_21_018E`: undescribed.
-- `sub_21_0198`: undescribed.
-- `sub_21_01E8`: undescribed.
-- `sub_21_01FA`: undescribed.
-- `sub_21_020A`: undescribed.
-- `sub_21_0256`: undescribed.
-- `sub_21_028E`: undescribed.
-- `sub_21_02B0`: undescribed.
-- `sub_21_02D8`: undescribed.
+- `set_frame_delay`: Sets a word value to 1 in a global variable and then branches to another routine without returning.
+- `fill_buffer_and_read_position`: Writes a sequence of bytes with the value 255 to memory, saves registers, calls another routine to read a beam position, and stores the result in a global variable.
+- `increment_and_store_counter`: Increments a global word variable at offset 776 and stores a pointer from a0 into another global variable at offset 760, then calls five other routines in sequence.
+- `init_copper_and_sound_registers`: Sets a6 to the custom chip base, copies display and audio register values into globals, programs four audio registers, writes bytes to a1 offset 4352 and increments a counter word.
+- `clear_audio_bits_and_delay_loop`: Clears bit 7 of the byte at offset 4352 of register a1, loads 100 into d0, clears bit 3 of the same byte in a loop that decrements d0, then calls two subroutines and returns.
+- `delay_for_3000_cycles`: Counts down a short value from 3000 to zero using a loop, effectively creating a delay of approximately 3000 cycles.
+- `wait_for_bit5_set`: Repeatedly checks if bit 5 is set in a byte at offset 8192 of register a1, and returns when the condition is met.
+- `check_and_set_audio_bits`: Tests bit 4 of the word at offset 8193 of register a1, branches to offset 230 if clear, sets bit 1 and clears bit 0 of the byte at offset 4352 of register a1, then calls a routine and branches back to offset 188.
+- `increment_frame_counter`: Increments a word value stored at a global memory location by one and returns immediately.
+- `test_and_branch_audio_bits`: Tests bit 4 of a byte at offset 8193 of register a1, branches to offset 230 if clear, then calls another routine to set and clear audio bits.
+- `loop_clear_and_set_audio_bits`: Initializes d2 with 79, compares it to zero, branches to offset 238 if equal, clears bits 1 and 0 of the byte at offset 4352 of register a1, sets bit 0 of that byte, calls a routine, decrements d2, and branches back to offset 162.
+- `delay_for_15000_cycles`: Counts down a short value from 15000 to zero using a loop, effectively creating a delay of approximately 15000 cycles.
+- `reset_audio_and_poll_status_bit`: Clears bit 2 of a byte at offset 4352 from register a1, programs audio registers at offsets 150, 32, 36 and 156 from register a6, then polls bit 1 of the word at offset 30 from a6 up to an address times, setting offset 156 to 2 on detection.
+- `clear_audio_period_set_volume_ten`: Clears the word at offset 36 from a6, sets the word at offset 150 from a6 to 16, increments the longword at the fixed global address d47e, and returns.
+- `wait_for_ay_port_bit4_clear`: Repeatedly reads a byte at offset 7424 of register a1 until bit 4 is set, then returns to the caller.
+- `set_ay_register_high_bits_and_ports`: Sets and clears bits in the byte at offset 4352 of a1, then writes four table words with bit 15 set into a6 offsets 154, 156, 150 and 158.
+- `check_collision_pattern`: Scans a pattern table for a specific word value, increments a global counter if found, and stores a byte value in another global variable before returning.
+- `increment_and_compare`: Increments a global variable at offset 776 and returns immediately if a byte at offset 772 is non-zero, otherwise continues execution.
+- `process_and_compare_data`: Processes data from a buffer by shifting and comparing values, updates a pointer when a match is found, and stores results in global variables.
+- `compare_and_update_pointer`: Compares the long word at offset 50 of register a5 with a4, branches to offset 720 if equal, stores d5 as a word at the address in a4 and increments a4, writes byte 1 to offset 772, and increments the word at offset 776.
 - `install_two_interrupt_servers`: Saves all registers, opens exec.library, builds two interrupt server structures from the base pointer, sets their handlers and priorities, calls AddIntServer for levels 3 and 5, sets a flag, then calls a routine with zero.
 - `reset_round_counters_and_return_zero`: Calls two subroutines, clears the word at a fixed long address, increments two long counters, sets d0 to zero and returns.
 - `decrement_four_timers_and_reset_slots`: For each of four countdown words, if nonzero decrements it and when it reaches zero clears its flag word and writes a pointer and value ten into the pointed structure.
@@ -220,7 +220,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispatch_dos_file_command`: Reads a command code from the stack frame and branches to dos.Open, dos.Read, dos.Close, exec.Forbid or exec.Permit handlers, restoring saved registers and returning when no code matches.
 - `wait_fire_button_then_open_files`: Writes a color value to COLOR00, polls the CIAA fire button bit until released, then calls dos.Open twice and dos.Write using the caller's argument block.
 - `seed_random_from_vposr_and_advance`: If the stored seed is zero, builds it from two reads of the VPOSR hardware register, then mixes the seed with a constant via a called routine, increments it, stores it back and returns bits 8 to 31 in d0.
-- `sub_21_5CB0`: undescribed.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (moveq) and then falls through into the code that follows, with no return of its own.
 - `signed_32bit_multiply_via_16bit_parts`: Multiplies two signed long arguments from the stack by taking absolute values, combining 16-bit partial products with mulu, and negating the result in d0 when the signs differed.
 - `install_vertical_blank_interrupt_server`: Loads exec base from address 4, fills the interrupt server node at the stored pointer with data pointer, priority 32, type 3 and code pointer, then calls AddIntServer with interrupt number 4.
 - `poll_two_joystick_ports_for_changes`: Reads JOY0DAT and JOY1DAT masked to bits 0-1 and 8-9, folds in fire button bits from CIAA_PRA, and increments change counters when either port value differs from its stored previous value.
@@ -265,7 +265,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_40_then_f0_with_three_args`: Saves d6, d7 and a3, loads three stack arguments, calls the shared routine with 64 and all three, then calls it again with 240 and the first argument, cleans up and restores registers.
 - `disk_prompt_and_palette_setup`: Builds a 16-entry table, fills a large palette buffer with masked random values, shows the insert-disk prompt, shifts the table entries and waits for input before restoring the saved values.
 - `call_5206_with_two_globals_and_32000`: Pushes the longword at address 8D8, the longword at address 10786 and the immediate 32000 onto the stack, calls the routine at 5206, then discards the three arguments and returns.
-- `sub_24_0000`: undescribed.
+- `clear_global_variable`: Writes a zero value to a global variable located at memory address 2096 and then returns immediately.
 - `dispatch_four_entries_by_two_bits`: Saves all registers, then four times builds an index from the low bits of d1 and d0, loads a code pointer from a table near the program counter and calls it, advancing a0 by one each time.
 - `zero_sixty_four_sound_structs`: Clears d7 to zero and loops sixty-four times, writing zero to four byte fields at offsets 0, 4, 8 and 12 of each sixteen-byte record starting at a1, then returns.
 - `set_d7_ff_and_branch_forward`: Loads minus one into d7 and branches forward to another routine without touching memory or calling anything.
@@ -334,63 +334,63 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `tick_sound_channel_slots`: Walks eight twelve-byte channel slots, decrements active counters, and for expired slots clears the busy flag and calls the sound routine with stored parameters.
 - `clear_eight_slot_flags`: Loops over eight records spaced twelve bytes apart and clears the byte at offset one in each, then returns.
 - `reset_state_and_run_main_loop`: Clears a byte in global memory, calls several setup routines, pushes arguments for two more calls, then branches forever into the main loop after clearing the stack.
-- `sub_3_0000`: undescribed.
+- `update_boxer_state`: Updates the boxer's animation state in a global table and applies associated face palette, stamina bar, and sprite descriptor.
 - `build_and_dispatch_sprite_descriptor`: Looks up a 36-byte record by index, finds the highest set bit of its byte, computes a table offset, calls two lookup routines, and passes the result plus constants to a dispatcher.
 - `draw_fighter_health_bar_segments`: Reads a fighter index byte, looks up its record, and draws either a low or high health bar using two graphics calls with different coordinates and tile bases.
 - `draw_fighter_stamina_bar`: Reads a fighter index byte, computes a value from the fighter record, and draws a five-pixel bar segment at offset five in the record.
 - `wait_for_input_then_clear_screen`: Saves d7, calls a setup routine, waits in a loop for a nonzero result from a system call, then calls another routine and restores d7.
 - `draw_fighter_stats_panel`: Draws a fighter's force, reflex and resist values as formatted text at screen positions, using the fighter index and row offset to index the fighter table and calling text and blit routines.
-- `sub_3_061E`: undescribed.
-- `sub_3_0756`: undescribed.
+- `update_boxer_animation`: Updates the animation state of a boxer by incrementing a counter in a global table, performing bitwise operations on it, and calling several graphics and sound functions based on the updated values.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
 - `apply_fighter_style_and_moves`: Copies a fighter's style bytes and move list into its table entry, then sets the current move and merges bit flags into the fighter's state while calling update routines.
 - `fighter_select_menu_loop`: Runs the fighter selection screen: loads the menu picture, draws two fighter portraits, polls input to move the cursor and confirm, and dispatches the chosen fighter.
-- `sub_3_0D78`: undescribed.
-- `sub_3_0D82`: undescribed.
-- `sub_3_0D9A`: undescribed.
-- `sub_3_0DB4`: undescribed.
-- `sub_3_0E8C`: undescribed.
-- `sub_3_0F2A`: undescribed.
-- `sub_3_0F80`: undescribed.
-- `sub_3_0F8C`: undescribed.
-- `sub_3_106C`: undescribed.
-- `sub_3_1100`: undescribed.
-- `sub_3_117E`: undescribed.
-- `sub_3_11C2`: undescribed.
-- `sub_3_1366`: undescribed.
-- `sub_3_13E6`: undescribed.
-- `sub_3_14AA`: undescribed.
-- `sub_3_14EE`: undescribed.
-- `sub_3_1548`: undescribed.
-- `sub_3_1566`: undescribed.
-- `sub_3_1582`: undescribed.
-- `sub_3_15A0`: undescribed.
-- `sub_3_16D6`: undescribed.
-- `sub_3_1820`: undescribed.
-- `sub_3_18C0`: undescribed.
-- `sub_3_18E0`: undescribed.
-- `sub_3_1912`: undescribed.
-- `sub_3_19AA`: undescribed.
-- `sub_3_19BE`: undescribed.
-- `sub_3_1A74`: undescribed.
-- `sub_3_1AA4`: undescribed.
-- `sub_3_1B22`: undescribed.
-- `sub_3_1B32`: undescribed.
-- `sub_3_1B70`: undescribed.
-- `sub_3_1B9C`: undescribed.
-- `sub_3_1BC4`: undescribed.
-- `sub_3_1BCE`: undescribed.
-- `sub_3_1C84`: undescribed.
-- `sub_3_1D86`: undescribed.
-- `sub_3_1E90`: undescribed.
-- `sub_3_1EA6`: undescribed.
-- `sub_3_20E2`: undescribed.
-- `sub_3_20EC`: undescribed.
-- `sub_3_210E`: undescribed.
-- `sub_3_213E`: undescribed.
-- `sub_3_21C0`: undescribed.
-- `sub_3_275C`: undescribed.
-- `sub_3_2770`: undescribed.
-- `sub_3_2810`: undescribed.
+- `set_byte_to_minus_six`: Loads an immediate byte value of 1 into a register and stores it at an address calculated by subtracting six from another register's value, then branches to a different location in the code.
+- `setup_and_dispatch_effect`: Calls a routine with a word offset, clears a long integer on the stack, makes a far jump to an address, adjusts the stack pointer by four, stores the value one into a byte at offset negative six of register a5, and then branches unconditionally to another location.
+- `calculate_and_store_difference`: Subtracts two values from global memory locations, stores the result in multiple registers, and performs conditional branching based on whether the result is greater than or equal to zero.
+- `initialize_fighter_selection`: Initializes fighter selection graphics and palette, then draws a letter at a grid position before polling for input.
+- `process_score_data`: Processes score data by checking bits in a table, copying structured data based on bit checks, and performing bubble sort on two tables.
+- `process_and_sort_scores`: Processes score data by checking bits in a table, copying structured data based on bit checks, and performing bubble sort on two tables.
+- `shift_and_increment`: Shifts a value in a register one bit to the right, stores the result back into the same register, increments another register's value, and then branches to a different location in the code.
+- `sort_and_display_score`: Sorts data in two tables using bubble sort algorithm, then formats and displays score information on screen by copying bytes and performing multiplication operations.
+- `update_score_display`: Updates the score display by processing letter positions and formatting numbers into a buffer, then draws the formatted score at specific grid locations.
+- `process_input_and_draw_letters`: Polls for input, loads graphics and palette data, writes audio port values, calculates positions, and draws letters at grid positions while incrementing a counter through a loop of eight iterations.
+- `process_input_sequence`: Reads a byte from a global variable, copies it to the stack, and calls a function with specific parameters twice while incrementing a counter.
+- `handle_sound_and_display`: Processes sound commands and display operations in a loop, updating a counter based on bit checks and calling functions to mask playfield rectangles.
+- `initialize_title_screen`: Initializes title screen graphics and palette, sets up input handling for selection, and configures sprite clipping bounds.
+- `process_input_selection`: Processes keyboard input to select an option, updating a counter and handling sound commands based on input state and bit conditions.
+- `update_combo_timer`: Updates a combo timer value stored at offset -6 relative to a5, increments or decrements it based on bit conditions of a register, and writes a byte value to multiple memory locations including offset -4 relative to a5.
+- `decrement_timer_and_update_flags`: Decrements a signed 16-bit timer value stored at offset -6 relative to a5, and if the result is zero or negative, resets the timer and updates multiple global flags.
+- `update_combo_value`: Tests a specific bit in a register and branches to another routine if the bit is clear, otherwise reads a byte from a global memory location, compares it with a constant value, and branches if the value is greater than or equal to that constant.
+- `decrement_combo`: Decrements a global variable if it's greater than zero, then branches to another routine.
+- `check_combo_bit`: Tests a specific bit in a register and branches to another routine if the bit is clear, otherwise reads a byte from a global memory location, compares it with zero, and branches if the value is less than or equal to zero.
+- `update_combo_counter`: Increments a global counter when a specific bit is set and the counter is less than 2, then processes input state and updates visual effects based on the counter value.
+- `process_input_sequence_2`: Processes input from a global variable, updates visual effects based on input state, and manages a counter that controls effect parameters.
+- `process_input_and_effects`: Processes input from a global variable, updates visual effects based on input state, and manages a counter that controls effect parameters.
+- `execute_visual_effects_2`: Prepares parameters for visual effects by pushing immediate values onto the stack, calls functions to dispatch effects, repeat calls with constant values, and play voice sounds, then branches to a different location in the code.
+- `execute_visual_effects`: Calls three different functions with specific parameters to execute visual effects, draw letters, and repeat a call with a constant value.
+- `initialize_grid_data`: Initializes grid-related data by setting up pointers into tables based on a counter, clears certain memory locations, and prepares for further processing of grid elements.
+- `load_and_store_division_result`: Loads a byte from memory at offset 187 of register a0, uses it as an index to access another memory location, and stores the resulting value into register d4.
+- `store_division_result`: Computes a signed 32-bit division result with sign fixup, negates it, and stores the lower 16 bits into memory.
+- `compute_and_store_division_result`: Computes a signed 32-bit division result with sign fixup, negates it, and stores the lower 16 bits into memory.
+- `process_grid_data`: Processes grid position data by reading values from tables, formatting numbers into a buffer, and updating display elements based on conditional checks.
+- `decrement_and_branch`: Reads a byte from a global variable, decrements it by two, and branches to another routine if the result is not zero.
+- `update_grid_position`: Updates a grid position by reading values from two tables based on a counter, passes them as parameters to a drawing function, and increments the counter until it reaches eight.
+- `load_and_process_data`: Loads a long value from a global address, pushes two long values onto the stack, calls two routines with different offsets, then adjusts the stack pointer and returns.
+- `conditionally_call_with_parameters`: Loads parameters from the stack, tests a global byte value, and either calls another routine with no parameters or with two parameters based on the test result.
+- `call_and_return`: Calls another routine using a relative offset and then restores registers from the stack before returning.
+- `update_boxing_data_2`: Updates boxing-related coordinates and sprite clipping bounds using indexed table lookups and arithmetic operations, then modifies global data.
+- `update_boxing_coordinates`: Updates boxing-related coordinates and sprite clipping bounds using indexed table lookups and arithmetic operations, then modifies global data based on conditional checks.
+- `update_boxing_data`: Updates boxing-related data including coordinates and sprite clipping bounds based on indexed table lookups and arithmetic operations, then increments a counter and branches back to continue processing.
+- `increment_global_counter`: Increments a byte value stored at a global memory location by one and returns immediately.
+- `update_fighter_selection_3`: Updates a fighter selection counter based on input states and manages display columns, incrementing the counter and handling input processing.
+- `check_input_bit_and_decrement`: Tests a specific bit in a register and branches to another routine if the bit is clear, otherwise decrements a value in another register before branching to a different location.
+- `update_selection_index`: Adjusts a global index based on input bits and performs bit manipulation on the index value before branching to different code paths.
+- `update_fighter_selection_2`: Updates a global counter based on input state and manages display columns, incrementing the counter and handling input processing.
+- `update_fighter_selection`: Updates fighter selection based on input state and manages display columns, incrementing a global counter and handling input processing.
+- `update_input_state`: Increments a counter in a global variable and processes input states based on the counter's value, updating display columns and handling input commands.
+- `clear_stack_and_call`: Clears a global variable, prepares two bytes for audio output, and calls a routine to process sound commands and update display columns.
+- `process_fighter_selection`: Processes fighter selection by reading a byte from a global offset, applying fighter style and moves, drawing stats panels, and updating display based on the selected fighter index.
+- `update_sound_and_display`: Processes sound commands and updates display columns based on a global index, handling input states and adjusting the index accordingly before returning.
 - `init_two_player_input_and_rounds`: Calls setup routines, checks two global flags, then loops twice over two player slots filling empty entries via a helper and adjusting per-player bytes before returning.
 - `poll_input_until_break_or_escape`: Increments d6, calls a delay routine, checks two player flags, polls the input port and breaks when bit seven is set, then bumps a per-player byte by three.
 - `reset_input_state_and_fill_slots`: Calls two setup routines, invokes a library function, then loops over two player slots calling a helper to fill each empty entry and storing the result.
@@ -483,4 +483,4 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `sub_0000`: undescribed.
+- `check_interrupt_status`: Reads values from two hardware registers, performs a bitwise AND operation on them, checks if bit 4 is set, and if so, jumps to a routine located at address a fixed address.

@@ -8,7 +8,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (917760 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 28 raw-word lines |
-| Functions named and described | FAIL, 129 of 134 named (0 author symbols), 129 of 134 described (3 by rule, 123 by the local model) |
+| Functions named and described | pass, 134 of 134 named (0 author symbols), 134 of 134 described (3 by rule, 128 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2349 of 2351 (99.91%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 3951 of 3956 instructions identical in start and length, 4 mismatches |
@@ -84,7 +84,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### logged disk load from 5th Gear.adf boot-block load
 
-- `sub_00E0`: undescribed.
+- `update_global_with_scaled_offset_2`: Updates a global variable with a scaled value based on an offset and performs multiple conditional writes to memory locations depending on bits set in the global variable.
 - `build_copper_list_from_table`: Opens the graphics library, walks a table of entries writing copper list register/value pairs into a buffer ended by an end marker, and stores that buffer's address as the system copper list; the listed facts also name the DMA control register as touched.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -133,7 +133,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_hardware_and_memory`: If a bit in a global variable is set, it initializes a range of custom hardware registers with a specific value and fills a memory range with certain values.
 - `modify_global_bits`: Performs bitwise operations and conditional bit-setting on a global variable based on its own bit-pattern.
 - `populate_memory_from_table`: Iteratively writes a sequence of incrementing or table-based values into a memory area, ending with a pointer assignment.
-- `sub_1A4C`: undescribed.
+- `initialize_display_registers`: Initializes display-related hardware registers including coprocessor pointers, bitplane configurations, and timer values when a specific interrupt flag is set, then returns with updated register values.
 - `iterate_string_and_set_flag`: Checks a register value to set a global variable to a specific byte, then iterates through a null-terminated string, calling another routine for every character encountered.
 - `expand_string_to_buffer`: Reads a character and, depending on its value, copies a sequence of bytes from a calculated source address into a destination buffer using a fixed-size stride.
 - `traverse_and_recurse_string`: Iterates through a null-terminated string, recursively calling itself for every non-zero byte, and updates a global variable based on a specific register value and the current state of that global variable.
@@ -156,7 +156,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `configure_blt_line_parameters`: Calculates and writes a series or a range of block transfer (Blitter) parameters, including source/destination addresses and line-based or block-based drawing parameters, to a set of registers and a memory-mapped table.
 - `update_blt_parameters`: Calculates and writes a series of values, including a width-related or offset-related value, to a block of memory using a loop.
 - `update_blt_clipping_rect`: Calculates a new clipping or drawing area and updates the bitplane, block, and size registers for the bitboard or blitter engine.
-- `sub_24E6`: undescribed.
+- `populate_table_with_increments_2`: Populates a table with incrementing values starting from a base address and writes a specific negative value to the end of the table before returning.
 - `populate_table_with_increments`: Writes a sequence of incrementing values into a table or array.
 - `set_pointer_to_invalid`: Writes a specific constant value to the memory location pointed to by a register.
 - `clear_memory_block`: Clears a large block of memory by setting its contents to zero using nested loops.
@@ -166,7 +166,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_blta_registers`: Sets certain hardware registers for the blt chip and recursively executes itself a fixed number of times.
 - `fill_blt_parameter_table`: Calculates and writes a sequence of values, including a width-related or offset-related value, to a block of memory using a loop.
 - `manipulate_global_bits`: Performs bitwise operations and shifts on a global variable and then sets it to a constant.
-- `sub_292C`: undescribed.
+- `compute_grid_position_and_loop_2`: Sets a global variable to 255, calls another routine that computes grid positions in a loop, then clears the global variable before returning.
 - `compute_grid_position_and_loop`: Divides a 16-bit value by eleven, storing the quotient and remainder in local fields, then loops subtracting a clamped count from a frame word while calling unnamed routines.
 - `validate_and_clear_memory`: Checks a structure for certain bit flags and pointer-based values, then clears a block of memory or writes a specific pattern to a memory location if certain conditions are met.
 - `wait_for_flag_and_set_registers`: Busy-waits for a routine to return while checking a bit in a global variable, and updates several hardware registers and a global variable.
@@ -202,7 +202,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `wait_until_routine_signals_one`: Calls a routine repeatedly, and between calls busy-waits while the low bit of a global flag remains set, returning zero once the called routine returns one.
 - `overwrite_global_variable_2`: Checks a global flag and, if certain conditions are met, overwrites a global variable with a sequence of constant values.
 - `overwrite_global_variable`: It overwrites a global variable with a sequence of constant values.
-- `sub_317A`: undescribed.
+- `rotate_and_xor_bits`: Performs bitwise left rotation and XOR operations on a global variable across four iterations, updating both the variable and a return value based on carry flags.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 

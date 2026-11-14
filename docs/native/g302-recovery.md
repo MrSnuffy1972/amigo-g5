@@ -6,12 +6,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (907776 top-level bytes in 23 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 14 of 14 units identical (bytes and relocations), 32 raw-word lines |
-| Functions named and described | pass, 272 of 272 named (0 author symbols), 272 of 272 described (55 by rule, 211 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 421 of 422 (99.76%) |
-| Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 4822 of 4822 instructions identical in start and length, 0 mismatches |
+| Bytes classified (907776 top-level bytes in 24 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 15 of 15 units identical (bytes and relocations), 32 raw-word lines |
+| Functions named and described | pass, 273 of 273 named (0 author symbols), 273 of 273 described (55 by rule, 211 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 426 of 427 (99.77%) |
+| Recovered without load address (counted in proof 1, flagged) | 32768 bytes, 1 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 5355 of 5355 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
@@ -41,17 +41,23 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 217 | 6 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
+| Zzzep.adf:1#unpacked | 1 | 533 | 1 |
 
 ## Cases handled
 
 - runtime segment an address: 11 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-m1500-unpk03): 29 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 154 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 159 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- Zzzep/Zzzep.adf:c/shades: PowerPacker 2.3 (xfd) stream found by ancient scan (3576 -> 4844 bytes) but only 0 of 3 sampled windows are in reference RAM: not used
+- Zzzep/Zzzep.adf:c/border: TNM Cruncher 1.1 (xfd) stream found by ancient scan (5576 -> 6752 bytes) but only 0 of 3 sampled windows are in reference RAM: not used
+- Zzzep/Zzzep.adf:mad: ByteKiller 2.0 (xfd) stream found by ancient scan (1612 -> 2496 bytes) but only 1 of 1 sampled windows are in reference RAM: not used
+- Zzzep/Zzzep.adf:1: crunched executable unpacked with ancient scan (DefJam Cruncher 3.2 (xfd), 11420 -> 32768 bytes), 10 of 10 windows confirmed in reference RAM, loaded at an address: recovered as u14
 - self-modifying code at an address (6 bytes change between runtime segment an address (play-rs-m1500-unpk03) and runtime segment an address): both forms recovered; writer: runtime segment an address (play-rs-m1500-unpk03) +286, runtime segment an address (play-rs-m1500-unpk03) +298, runtime segment an address (play-rs-m1500-unpk03) +2AA, runtime segment an address (play-rs-m1500-unpk03) +2BC
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 3 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 2 jump target, 1 displacement
 - Zzzep/Zzzep.adf:1: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
+- 1 never-loaded region(s), 32768 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
@@ -377,3 +383,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `return_constant`: Returns the constant -1 in d0 to the caller without any other effect.
+
+### Zzzep.adf:1#unpacked
+
+- `fills_with_zeros`: Fills memory with zero bytes by repeatedly executing a no-operation instruction on each data register.

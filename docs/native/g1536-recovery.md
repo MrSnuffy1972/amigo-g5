@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (911648 top-level bytes in 94 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 48 of 48 units identical (bytes and relocations), 73 raw-word lines |
-| Functions named and described | pass, 104 of 104 named (0 author symbols), 104 of 104 described (10 by rule, 72 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1252 of 1259 (99.44%) |
+| Bytes classified (911648 top-level bytes in 96 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 50 of 50 units identical (bytes and relocations), 70 raw-word lines |
+| Functions named and described | pass, 131 of 131 named (0 author symbols), 131 of 131 described (9 by rule, 73 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1264 of 1264 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 81775 bytes, 4 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 2443 of 2491 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 3575 of 3575 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 129740 |
-| code | 9512 |
-| data | 739278 |
-| padding | 12638 |
+| code | 9480 |
+| data | 739312 |
+| padding | 12636 |
 | unused | 20480 |
 
 ## Code units
@@ -28,8 +28,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | SENSEI | 2 | 24 | 4 |
-| Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:boot | 3 | 228 | 7 |
-| Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:intro | 2 | 207 | 8 |
+| Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:boot | 3 | 223 | 6 |
+| Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:intro | 2 | 206 | 7 |
 | Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:nydos | 1 | 129 | 12 |
 | Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:bootblock | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 2 |
@@ -70,10 +70,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 16 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 14 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 117 | 5 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 180 | 5 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 179 | 5 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 622 | 9 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 307 | 9 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 306 | 8 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
+| Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:boot#unpacked | 1 | 306 | 8 |
+| Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:intro#unpacked | 3 | 786 | 22 |
 | Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:ghouls.prg (raw code file, load address unknown) | 1 | 265 | 4 |
 
 ## Cases handled
@@ -93,7 +95,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - ghouls 'n ghosts (1989)(u. s. gold)[cr defjam - ccs][t +6 topswap]/Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:LEVEL4.T1: high-entropy data file (7.74 bits/byte), classified as packed data
 - ghouls 'n ghosts (1989)(u. s. gold)[cr defjam - ccs][t +6 topswap]/Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:LEVEL5.T1: high-entropy data file (7.82 bits/byte), classified as packed data
 - ghouls 'n ghosts (1989)(u. s. gold)[cr defjam - ccs][t +6 topswap]/Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:LEVEL102.IFF: high-entropy data file (7.72 bits/byte), classified as packed data
-- 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - runtime segment an address: 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-x25k): 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
@@ -132,10 +133,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-x25k): 106 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 94 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 99 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-x25k): 442 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-x25k): 123 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- ghouls 'n ghosts (1989)(u. s. gold)[cr defjam - ccs][t +6 topswap]/Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:boot: crunched executable decrunched by XFDMaster (TNM Cruncher 1.1 (xfd), 20236 -> 37460 bytes), 18 of 18 windows confirmed in reference RAM: recovered as a hunk executable
+- ghouls 'n ghosts (1989)(u. s. gold)[cr defjam - ccs][t +6 topswap]/Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:intro: crunched executable decrunched by XFDMaster (PowerPacker 2.3 (xfd), 67208 -> 114892 bytes), 38 of 38 windows confirmed in reference RAM: recovered as a hunk executable
 - ghouls 'n ghosts (1989)(u. s. gold)[cr defjam - ccs][t +6 topswap]/Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:ghouls.prg: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - self-modifying code at an address (58 bytes change between runtime segment an address and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
 - self-modifying code at an address (58 bytes change between runtime segment an address and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
@@ -395,12 +398,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - self-modifying code at an address (44 bytes change between runtime segment an address and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
 - self-modifying code at an address (59 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address): both forms recovered; writer: not identified statically (indirect store)
 - self-modifying code at an address (60 bytes change between runtime segment an address and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 5 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 3 immediate, 2 jump target
 - ghouls 'n ghosts (1989)(u. s. gold)[cr defjam - ccs][t +6 topswap]/Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:intro: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 - 1 never-loaded region(s), 81775 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
 - Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:intro
+- Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:intro#unpacked
 
 ## Copy protection found
 
@@ -421,7 +426,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `pass_control_to_routine`: A two-instruction routine that only passes control on to one other routine.
 - `load_executable_hunks`: Walks the executable hunk records by comparing their type codes, allocating memory for each hunk and copying its data across, then applies relocation offsets to the copied targets.
 - `stub_return_only`: Its decompiled body only returns.
-- `unpack_backward_bitstream_block`: Unpacks a block backwards into memory by reading bits from a stream, copying byte runs at a distance and literal bytes until the destination reaches its start.
 - `unpack_backward_bitstream_block_2`: Unpacks a block backwards into memory by reading bits from a stream and copying byte runs and literal bytes until the destination reaches its start.
 - `shift_pointer_value`: The routine reads a 32-bit value from four bytes before the address in A0, shifts it right by one bit and sets the most significant bit, then returns the result.
 - `shift_and_mask_loop`: Shifts a bit register right in a loop, reloading it from the previous longword with its high bit set when it runs out, and stores the current pointer in a global variable on each pass.
@@ -431,7 +435,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `load_executable_hunks_2`: Program entry that walks executable hunk records, allocating memory for each hunk and copying its data, and then applies relocations.
 - `empty_stub`: Performs no observable work: its decompiled body only returns.
 - `count_down_delay_loop`: Counts down the D1 register in a loop until it wraps past zero, producing a timed delay.
-- `tiny_ori`: Small routine of 1 instruction that merges 76 into d1.
 - `decode_backward_run_copies`: Decodes a stream of run-length codes and copies bytes backward into a buffer, selecting run lengths from a small set of control values and stopping when the write pointer reaches the start of the buffer.
 - `tiny_moveq`: Small routine of 1 instruction that loads 1 into d0.
 - `decrement_loop`: Decrements a byte in a register once per count of a 16-bit input and, when it underflows to zero, resets it to a space character.
@@ -616,7 +619,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `read_ciaa_status`: Reads the status of the CIAA Port A register to check for input or disk status.
+- `update_input_state`: Updates input state based on joystick/mouse fire button status and manages game control variables, then performs system trap execution with conditional data copying.
 - `execute_system_trap`: Copies the stack pointer to a register, executes a software interrupt, and performs a bitwise NOT operation on a word in a data register.
 - `copy_data_via_offsets`: Executes a triple-nested loop that reads from a source table and writes to a destination table using offsets derived from a byte value.
 - `update_state_and_parameters`: Decrements a global variable and, upon reaching zero, updates several fields in a structure and performs a lookup to set a value.
@@ -638,7 +641,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `initialize_system_state`: Clears a memory range, configures hardware and interrupts, and copies a block of code from a routine to a memory location.
 - `configure_hardware_and_interrupts`: This routine manipulates DMA and interrupt enable registers and performs library operations.
-- `tiny_ori_2`: Small routine of 1 instruction that merges 0 into d1.
 - `update_input_and_copy_data`: Reads a byte from a memory location and performs conditional arithmetic and bitwise operations on a global variable.
 - `trigger_software_interrupt`: Moves the stack pointer to a register, invokes a trap, and inverts the bits of a word in a data register.
 - `tiny_ori_3`: Small routine of 1 instruction that merges 0 into d0.
@@ -649,6 +651,42 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+
+### Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:boot#unpacked
+
+- `initialize_system_and_copy_code`: Clears a memory range, manages system state through various routines, and copies a block of code to a new location.
+- `open_library_and_set_state`: Calls library functions to open a library and manage system state while interacting with DMA and interrupt registers.
+- `update_input_state_2`: Reads joystick input from a hardware register and updates global variables based on button states, then performs conditional operations on a table of data using indexed offsets.
+- `copy_stack_pointer_then_trap`: Copies the stack pointer a7 into address register a0, then raises trap 15 (the Amiga system call trap), and finally inverts all 16 bits of data register d6.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (ori.b) and then falls through into the code that follows, with no return of its own.
+- `copy_nested_table_to_memory`: Walks a nested loop over the bytes of a global variable buffer, indexing a table of 32-byte entries with each byte minus 32 and writing two words per entry into a memory block at 200-byte strides.
+- `advance_blitter_and_read_pointer`: Decrements a global counter and returns while it is nonzero; when it reaches zero it reloads blitter registers with fixed addresses and size, then reads the next character from a string pointer, returning if it is zero.
+- `expand_run_length_stream`: Reads a control byte from the input stream: a value of 128 is skipped, a positive value copies that many following bytes to the output pointer, and a negative value repeats the next byte the corresponding number of times.
+
+### Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:intro#unpacked
+
+- `set_trap_vector_and_trap`: Stores the address of a routine into a global variable, executes trap #0, and then clears d0 and returns it as zero.
+- `initialize_system_and_update_state`: Sets the status register, writes a longword and a byte to a global variable, calls three different routines, updates three offsets in a structure pointed to by a register, and finally updates a longword in that structure by dereferencing a pointer found within a table before returning from an interrupt.
+- `initialize_data_tables`: Populates several memory locations with specific values and copies data from a source table into a destination table using three separate loops.
+- `run_write_block_five_times`: Loads three buffer pointers and two constants, calls another routine once, then advances the first pointer by 640 bytes and the second by 20 bytes, repeating five times via a counter in d5.
+- `repeat_write_block_five_times`: Sets a counter to five and calls another routine in a loop that decrements the counter until it reaches minus one, then returns.
+- `write_structured_data`: Iterates through a buffer to write multiple multi-byte values into a structured memory block at fixed offsets.
+- `wait_and_reset_data`: Loops until a specific byte in a structure is no longer negative, calls another routine twice, writes 32 to an offset and 0 to another offset in a structure, and then loops while bit 6 of the CIAA_PRA register is set; once the loop exits, it writes 15 to the first offset and returns.
+- `increment_and_mask_counter`: Adds 1 to a 16-bit global variable, then keeps only its lowest bit by ANDing it with 1.
+- `process_table_and_decrement`: If a 16-bit value at a specific location is 512, it sets it to 12800, then uses a value from a table to calculate an offset into another table to check a byte; if that byte is negative, it calls a routine to decrement a 16-bit global variable, otherwise it calls another routine.
+- `increment_table_values_2`: Iterates through a buffer, increments bytes in a table at specific offsets if they do not equal a constant, and calls another routine after incrementing a global counter.
+- `decrement_global_word_if_positive`: Tests a global word and, when it is nonzero, subtracts one from it before returning.
+- `reset_table_index`: Calls a subroutine, clears a global variable, increments another global variable, and if the value at a calculated offset in a table is negative, resets that variable to zero; it then calls another subroutine and writes two constants to global variables.
+- `set_hardware_parameters`: Checks a bit in a memory location and, if not set, writes several constant values to a structured memory block at fixed offsets.
+- `branch_to_middle_routine`: Branches unconditionally to a point inside another routine, without saving any registers or returning on its own.
+- `call_routine_and_return_registers`: Saves registers d0-d7 and a0-a6 on the stack, calls another routine, restores the saved registers and returns.
+- `update_audio_parameter`: Updates specific global variables using values retrieved from a calculated offset in a table.
+- `initialize_memory_pointers`: If a global variable is zero, it sets it to one, enables a bit in the CIAA Port A Data Register, and calculates and stores several memory addresses into a table using various arithmetic operations and multiplications.
+- `update_audio_channel_registers`: If a global flag is nonzero, it turns off the four audio channel volumes and returns 0.
+- `frag_move_cmp_beq_rts`: Short code fragment that copies the memory at an offset from a6 to d6, then compares d6 with the memory at an offset from a6, then branches if the last result was zero, then returns.
+- `advance_channel_event_pointer`: Checks whether the channel's current event step has run out; when it has, it fetches the next event entry through a pointer, stores its flag, volume and table-derived parameters in the channel structure, and resets the step count to 12 bytes past the previous entry.
+- `process_music_command_stream`: Loops over a command byte stream held in the channel structure at a0 until its end flag is set, and for each command it updates the channel's sample pointer, length and volume fields and the DMA control word, or copies a byte into a per-channel field.
+- `initialize_four_audio_channels`: Writes DMA and interrupt control values to the custom chip, then loops over four channel structures in a global variable area, clearing their counters and flags and storing period and volume values read from a table.
 
 ### Ghouls 'N Ghosts (1989)(U. S. Gold)[cr Defjam - CCS][t +6 Topswap].adf:ghouls.prg (raw code file, load address unknown)
 

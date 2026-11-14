@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (3609584 top-level bytes in 174 containers) | pass, 100.000%, 0 unknown |
+| Bytes classified (3609584 top-level bytes in 245 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 12 of 12 units identical (bytes and relocations), 14 raw-word lines |
-| Functions named and described | pass, 100 of 100 named (0 author symbols), 100 of 100 described (9 by rule, 15 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1444 of 1445 (99.93%) |
-| Recovered without load address (counted in proof 1, flagged) | 42104 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 2517 of 2528 instructions identical in start and length, 0 mismatches |
+| Functions named and described | pass, 139 of 139 named (0 author symbols), 139 of 139 described (13 by rule, 23 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1445 of 1445 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 47040 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 3916 of 3918 instructions identical in start and length, 1 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 2864997 |
-| code | 8278 |
-| data | 543795 |
-| padding | 45058 |
+| asset | 1997489 |
+| code | 8856 |
+| data | 1410723 |
+| padding | 45060 |
 | unused | 147456 |
 
 ## Code units
@@ -31,24 +31,95 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:INTERPOL | 2 | 267 | 8 |
 | Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:flashback | 7 | 63 | 1 |
 | explode.library | 1 | 475 | 30 |
-| Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:Failat | 2 | 117 | 2 |
+| Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:Failat | 2 | 297 | 11 |
 | Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:endrun | 1 | 117 | 4 |
 | Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:bootblock | 1 | 10 | 1 |
 | Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1200 | 25 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1205 | 26 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 12 | 2 |
-| memo.cmp (raw code file, load address unknown) | 1 | 0 | 0 |
-| memo.cmp (raw code file, load address unknown) | 1 | 0 | 0 |
+| Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:INTERPOL#unpacked | 1 | 1205 | 29 |
+| level3_2.obc#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
 
 ## Cases handled
 
 - flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf: file data/level2.spc (header 13319 bytes, blocks hold 8784): its blocks are judged as raw blocks outside the filesystem
 - flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf: file music/level4 (header 33696 bytes, blocks hold 2762): its blocks are judged as raw blocks outside the filesystem
 - flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf: file music/journal (header 47482 bytes, blocks hold 32208): its blocks are judged as raw blocks outside the filesystem
+- flashback (1992)(u. s. gold)[cr interpol](disk 1 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:data/level1.ct: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (564 -> 7424 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 1 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:data/level1.sgd: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (45024 -> 74679 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 1 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:data/present.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (26652 -> 44806 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 1 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:data/perso.spm: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (103888 -> 178647 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 1 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:cine/logos.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (2976 -> 4035 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 1 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:cine/intro.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (42116 -> 48961 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:data/replicant.spm: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (36320 -> 55636 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:data/garde.spm: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (29004 -> 61045 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:data/level2.CT: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (876 -> 7424 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:data/level1.obc: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (13352 -> 34050 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:data/junky.spm: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (25140 -> 37142 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:data/level2.obc: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (27212 -> 66644 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/chute.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (18452 -> 19431 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/desinteg.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (1692 -> 1523 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/pont.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (4212 -> 4200 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/debut.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (12120 -> 13644 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/genexp.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (1936 -> 2000 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/carte.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (2296 -> 2539 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/memo.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (21052 -> 17712 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/objet.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (16668 -> 18141 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/over.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (736 -> 697 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/map.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (4264 -> 5428 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/missions.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (5000 -> 4030 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/gen.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (8704 -> 7853 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/holoseq.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (7064 -> 7280 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/metro.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (2940 -> 3464 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/alimpont.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (2148 -> 2094 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/asc.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (2472 -> 2166 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/serrure.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (3512 -> 3873 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:data/replicant.spm: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (36320 -> 55636 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:data/garde.spm: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (29004 -> 61045 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:data/level3_1.obc: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (17148 -> 42748 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:data/dt.obc: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (12848 -> 33374 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:data/junky.spm: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (25140 -> 37142 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:data/dt.CT: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (728 -> 7424 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:data/glue.spm: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (24224 -> 36958 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:data/level3_2.obc: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (18856 -> 47040 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:data/level3_1.ct: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (812 -> 7424 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:cine/chute.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (18452 -> 19431 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:cine/desinteg.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (1692 -> 1523 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:cine/voyage.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (14556 -> 14703 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:cine/carte.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (2296 -> 2539 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:cine/espions.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (7148 -> 6917 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:cine/objet.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (16668 -> 18141 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:cine/over.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (736 -> 697 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:cine/gen.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (8704 -> 7853 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:cine/taxi.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (3916 -> 2659 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:cine/asc.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (2472 -> 2166 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:data/level4_2.obc: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (16264 -> 39106 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:data/level4_1.CT: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (812 -> 7424 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:data/glue.spm: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (24224 -> 36958 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:data/level4_1.obc: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (14892 -> 36868 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/chute.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (18452 -> 19431 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/desinteg.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (1692 -> 1523 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/pont.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (4212 -> 4200 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/lift.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (2736 -> 2698 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/debut.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (12120 -> 13644 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/genexp.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (1936 -> 2000 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/voyage.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (14556 -> 14703 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/carte.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (2296 -> 2539 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/memo.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (21052 -> 17712 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/espions.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (7148 -> 6917 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/log.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (2012 -> 1813 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/teleport.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (4528 -> 5088 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/objet.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (16668 -> 18141 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/over.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (736 -> 697 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/gen.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (8704 -> 7853 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/taxi.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (3916 -> 2659 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/asc.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (2472 -> 2166 bytes)
+- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/fin.cmp: GuidePacker Phaze 2 Data (xfd)-packed, unpacked with ancient (18072 -> 11829 bytes)
 - runtime segment an address: 890 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-m1500): 11 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf:cine/memo.cmp: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
-- flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf:cine/memo.cmp: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- flashback (1992)(u. s. gold)[cr interpol](disk 1 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:INTERPOL: crunched executable decrunched by XFDMaster (PowerPacker 4.0 (xfd), 14180 -> 33324 bytes), 9 of 10 windows confirmed in reference RAM: recovered as a hunk executable
+- flashback (1992)(u. s. gold)[cr interpol](disk 1 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:flashback: Imploder Library (xfd) stream found by ancient scan (83312 -> 190628 bytes) but only 1 of 90 sampled windows are in reference RAM: not used
+- flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf:data/level3_2.obc#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - flashback (1992)(u. s. gold)[cr interpol](disk 2 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 2 of 4)[a].adf: blocks 565-594 (bytes 289280-304640) outside the filesystem hold data, not code (opcode density 0.000, entropy 5.46)
 - flashback (1992)(u. s. gold)[cr interpol](disk 3 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 3 of 4)[a].adf: boot area holds bytes but the checksum is invalid, so Kickstart never runs it
 - flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf: blocks 2-48 (bytes 1024-25088) outside the filesystem hold data, not code (opcode density 0.001, entropy 7.17)
@@ -57,7 +128,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf: blocks 1749-1759 (bytes 895488-901120) outside the filesystem hold data, not code (opcode density 0.001, entropy 7.02)
 - flashback (1992)(u. s. gold)[cr interpol](disk 4 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 4 of 4)[a].adf: boot area holds bytes but the checksum is invalid, so Kickstart never runs it
 - flashback (1992)(u. s. gold)[cr interpol](disk 1 of 4)[a]/Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:flashback: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
-- 2 never-loaded region(s), 42104 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+- 1 never-loaded region(s), 47040 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 - 1 packed track region(s), 13312 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)
 
 ## Cracktros (kept, not protection)
@@ -152,6 +223,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_sixteen_words_then_call`: Copies sixteen words from a structure field into a destination buffer when the buffer pointer taken from the stack is non-null, then calls a function pointer.
+- `initialize_structure_and_call`: Stores a byte from a table into a structure at offset 12, clears offsets 4 and 16, sets offset 8 to 1, and calls a routine using a pointer from offset 40 of a structure in a2.
+- `parse_structure_data`: Increments a value at an offset in a structure and enters a loop that compares bytes from a table at calculated offsets against specific constants.
+- `process_structure_data_loop`: Calls a routine using a pointer from a table in a5, then enters a loop that reads bytes from a table in a0 using offsets derived from a structure in a1, updates a value at offset 4 of that structure, and increments a value at offset 8 of that structure until a condition is met.
+- `process_structure_data_2`: Sets d2 to 20, d1 to 255, and d0 to 32, then calls a routine using a pointer from a table in a2, checks a long value at offset 16 of a structure in a1, and if it is not zero, negates a long value from offset 4 of a1 and stores it in d1.
+- `jump_table_dispatch`: Loads a long word from address a1 plus 4 into d1 and then jumps to the address in a6 using an indirect jump, likely dispatching to a function table.
+- `update_structure_index_and_call`: Calculates an index by shifting the address in a1 by two and storing it at offset 4 of the structure in a1, then performs a sequence of three calls to a routine via a pointer in a5 using various offsets from structures in a2.
+- `test_and_call_routine`: Tests a long value at an offset in a0 calculated from a structure in a1, and if it is zero, loads a value from a structure in a2, sets up registers, and calls a routine using a pointer from a5.
+- `update_structure_field_via_table`: Fetches a value from a table using an index in a structure, calls a routine to process it, and stores the result back into the structure.
+- `copy_and_call_routine`: Copies a long value from offset 212 of a structure in a1 to offset 556 of a structure in a2, then calls another routine and jumps to the address in a6.
 
 ### Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:endrun
 
@@ -178,6 +258,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_dma_and_coprocessor`: Opens the graphics library and allocates memory.
 - `wait_for_blitter`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
 - `wait_until_port_bit_clear`: Spins while a status bit from the fire-button port register remains set, then returns.
+- `wait_keyboard_input`: Waits for specific keyboard input sequence by polling the CIAA_SDR register, first waiting for byte value 57 then for byte value 55, similar to routine R2 but at a different address.
 - `wait_until_raster_value_zero`: Spins while a hardware value held in a global reads non-zero, then returns.
 - `build_scanline_index_table`: Walks a table of byte values and fills a 30-entry longword table at a fixed address with values derived from a base address and a row stride.
 - `disable_dma_channels`: The routine writes to a global variable five times, the last write storing a value that sets bit 15.
@@ -200,3 +281,35 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `execute_ten_instructions`: A ten-instruction routine that calls a library function and is associated with the text endrun flashback.
 - `return_constant_2`: Returns the constant -1 in d0 to the caller without any other effect.
+
+### Flashback (1992)(U. S. Gold)[cr Interpol](Disk 1 of 4)[a].adf:INTERPOL#unpacked
+
+- `initialize_graphics_subsystem`: Initializes Amiga graphics hardware by configuring blitter registers and setting up DMA transfer parameters.
+- `increment_timer_counter`: The routine reads a 16-bit counter from a global variable and, if the counter is zero, it resets the counter to four and increments two 32-bit values built from word pairs in the same global structure, returning the high word of the second value.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `decrement_two_word_counters`: The routine checks a global variable and, when it equals four, clears it and decrements two 32-bit counters stored as paired 16-bit words in a global structure, updating both halves.
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (movea.l) and then falls through into the code that follows, with no return of its own.
+- `decode_text_to_tile_data`: Iterates through a text buffer, skipping newline characters by advancing a destination pointer by a fixed offset.
+- `build_copper_list_and_start_dma_2`: Constructs a copper list in chip memory by writing word pairs that form copper move and wait instructions, using three pointers obtained from another routine and offsets added to two of them.
+- `initialize_dma_and_coprocessor_2`: Opens the graphics library and allocates memory.
+- `wait_for_blitter_2`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
+- `wait_joystick_fire`: Waits for the joystick or mouse fire button to be released by continuously reading the CIAA_PRA register and looping while bit 6 is set.
+- `wait_keyboard_sequence`: Waits for specific keyboard input sequence by polling the CIAA_SDR register, first waiting for byte value 57 then for byte value 55.
+- `wait_vertical_blank`: Waits for vertical blank by continuously reading and testing the VHPOSR register until it becomes zero, effectively polling for the start of a new frame.
+- `reset_input_state`: The routine walks a table of bytes starting at a fixed address, comparing each byte with a running maximum and using a counter to decide when to stop.
+- `disable_dma_channels_2`: The routine writes to a global variable five times, the last write storing a value that sets bit 15.
+- `reset_animation_frame_counter`: The routine increments a global counter and, when the counter wraps, it resets several globals and calls another routine four times.
+- `update_display_window_stop`: The routine updates a hardware display window stop register and related control words using values from a global variable and several RAM locations.
+- `update_sprite_animation_state`: The routine updates animation state for an entity using a table lookup and writes values into a structure.
+- `initialize_interrupt_table_2`: This routine writes a value from a register to a global variable, stores a constant to a global variable, and stores a pointer to itself in a global variable.
+- `reset_audio_dma_pointers_2`: The routine copies eight words from a table in memory to a block of global variables and then writes four values to a global variable.
+- `process_timer_flags`: The routine reads flag bytes from a structure pointed to by an argument register and updates a timer word in the same structure using a global variable and a small table.
+- `copy_word_to_a5_offset`: The routine copies a 16-bit word from an address derived from a register plus a constant offset to an address derived from another register plus a constant offset.
+- `set_collision_flag`: The routine looks up a value from a global table using an index derived from a mask of a pointer, then writes that value into a field of a structure pointed to by a register and clears a byte in the same structure.
+- `update_timer_and_lookup_value`: The routine updates a short timer field in a structure pointed to by a register using a byte delta, clamps it against a limit field and clears the limit when reached, then builds an index from the limit and a byte field, masks it, and looks up a value in a global table using the timer as a threshold.
+- `update_animation_counter`: The routine reads a byte from a structure, indexes a global table or computes a signed offset, scales it by a nibble, adds a base offset, writes the result to another structure, and updates a counter byte in the structure.
+- `decode_input_byte`: The routine decodes a byte from a table using a value derived from another routine and the CIAA_PRA register, updates several fields in a structure pointed to by a register, and returns a pointer or value derived from the decoded byte.
+- `mask_byte_to_offset`: The routine masks a byte from a global variable with a constant and stores the result into another byte of the same global variable.
+- `negate_and_advance_string_2`: The routine updates a signed byte field using a nibble from a byte at offset 1F and a table of values, then clears the field if its high bit is set.
+- `poll_vertical_position`: Polls the vertical position register multiple times with a countdown loop, checking if the value changes between reads to synchronize with video timing.

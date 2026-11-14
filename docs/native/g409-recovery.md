@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (1802320 top-level bytes in 8 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 13 of 13 named (0 author symbols), 13 of 13 described (1 by rule, 12 by the local model) |
+| Functions named and described | pass, 15 of 15 named (0 author symbols), 15 of 15 described (1 by rule, 14 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2 of 2 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 238 of 238 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 250 of 250 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 4871 |
-| code | 662 |
-| data | 1796061 |
+| code | 700 |
+| data | 1796023 |
 | padding | 214 |
 | unused | 512 |
 
@@ -28,8 +28,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Ruff 'N' Tumble (1994)(Renegade)[cr PDX](Disk 1 of 2).adf:bootblock | 1 | 31 | 2 |
-| logged disk load from Ruff 'N' Tumble (1994)(Renegade)[cr PDX](Disk 1 of 2).adf boot-block load | 1 | 205 | 10 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
+| logged disk load from Ruff 'N' Tumble (1994)(Renegade)[cr PDX](Disk 1 of 2).adf boot-block load | 1 | 215 | 12 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 1 |
 
 ## Cases handled
 
@@ -72,7 +72,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `read_four_bytes_into_d0`: Loads four bytes from the address in a0 into the low bytes of d0, advancing a0 by four, then returns.
 - `build_huffman_decode_tables`: Reads a code-length table via a helper, then fills a0 with per-symbol masks, bit patterns, lengths and offsets for decoding, returning after all lengths are processed.
 - `build_jump_table_on_stack`: Calculates a difference between a pointer and a global variable, then loops to copy values from a source pointer to a stack-based destination before performing an indirect jump.
+- `restore_registers_from_stack`: Moves the value in d1 to a location on the stack, restores d0-d7 and a0-a7 from the stack, and returns.
+- `clear_bytes_dbra_restore_regs_return`: Clears d0 plus one bytes starting at a6, stores a5 above the return address, restores all registers from the stack, releases the frame and returns.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `set_color_register`: Writes a value to the certain hardware register and then enters an infinite loop.
+- `set_color_register`: Sets the color register COLOR00 to the value 3855 and then branches backward by 2 bytes.

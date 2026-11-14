@@ -6,41 +6,46 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901248 top-level bytes in 39 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 2 raw-word lines |
-| Functions named and described | pass, 259 of 259 named (0 author symbols), 259 of 259 described (50 by rule, 38 by the local model) |
+| Bytes classified (901312 top-level bytes in 40 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 1 raw-word lines |
+| Functions named and described | pass, 259 of 259 named (0 author symbols), 259 of 259 described (47 by rule, 44 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 1339 of 1339 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 5668 of 6435 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 5754 of 5754 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 622176 |
-| code | 22064 |
-| data | 243770 |
-| padding | 10678 |
+| asset | 625444 |
+| code | 19238 |
+| data | 243384 |
+| padding | 10686 |
 | unused | 2560 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Populous (1989)(Electronic Arts)[cr Unicorn].adf:more | 2 | 207 | 8 |
+| Populous (1989)(Electronic Arts)[cr Unicorn].adf:more | 2 | 206 | 7 |
 | Disk-Validator | 1 | 386 | 1 |
-| Populous (1989)(Electronic Arts)[cr Unicorn].adf:Populous | 3 | 4352 | 133 |
+| Populous (1989)(Electronic Arts)[cr Unicorn].adf:Populous | 3 | 3625 | 132 |
 | UNICORN | 2 | 24 | 4 |
 | Populous (1989)(Electronic Arts)[cr Unicorn].adf:populous.prg | 7 | 78 | 1 |
-| icon.library | 10 | 1375 | 109 |
+| icon.library | 10 | 1421 | 110 |
 | Populous (1989)(Electronic Arts)[cr Unicorn].adf:bootblock | 1 | 10 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
 
 ## Cases handled
 
+- 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- populous (1989)(electronic arts)[cr unicorn]/Populous (1989)(Electronic Arts)[cr Unicorn].adf:more: PowerPacker 2.3 (xfd) stream found by ancient scan (5096 -> 8640 bytes) but only 0 of 5 sampled windows are in reference RAM: not used
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 jump target
 - populous (1989)(electronic arts)[cr unicorn]/Populous (1989)(Electronic Arts)[cr Unicorn].adf:more: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
 ## Cracktros (kept, not protection)
@@ -59,7 +64,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `load_executable_hunks`: Loads an AmigaDOS executable's hunks into allocated memory, copying code and data hunks and reserving space for BSS hunks.
 - `stub_empty_routine`: Contains no instructions beyond returning, so it is an empty stub.
 - `delay_by_counting_down`: Spins in a countdown loop over a register value for the requested count, with no other effects.
-- `tiny_ori`: Small routine of 1 instruction that merges 172 into d0.
 - `unpack_backward_compressed_stream`: Expands a packed byte stream from the end of its destination towards the start, writing literal bytes and back-references whose lengths are sums of read codes.
 - `tiny_moveq`: Small routine of 1 instruction that loads 1 into d0.
 - `decrement_byte_with_space_wrap`: Decrements a byte register once for each unit of a counter, replacing a zero result with a space character.
@@ -108,12 +112,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `concatenate_registers`: The routine calls another routine and returns a 32-bit value formed by concatenating the contents of two data registers.
 - `set_text_pointer_to_global`: Stores the address of a global buffer in a pointer variable.
 - `render_text_into_five_planes`: First fills 80 longwords with minus one and 320 longwords with zero, then renders the string held in a pointer variable by copying each character's eight-row glyph from a font table into five bitplane buffers.
-- `tiny_ori_2`: Small routine of 1 instruction that merges 0 into d0.
-- `open_library_via_vector_table`: Looks up a library through a vector table and, when it is found, calls its setup vectors and stores several global values before returning.
-- `initialize_system_state`: The routine performs a series of library calls to initialize various pointers and constants, sets several global variables to a specific value, and returns a concatenated 32-bit value.
 - `initialize_system_library_interface`: Attempts to open a library via a vector table and, upon success, initializes several global pointers and sets multiple global variables to a specific constant value.
-- `initialize_library_function_pointers`: Retrieves function pointers from a table via an offset and stores them into global variables.
-- `initialize_library_function_pointers_2`: Retrieves a function pointer from a table and checks for its existence.
 - `open_library_via_vector_table_2`: Looks up a library through a vector table and, when it is found, calls its setup vectors and stores several global values before returning.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `clear_status_byte_and_return`: Clears one status byte at a fixed offset in a structure and returns the value it was given.
@@ -126,7 +125,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_status_byte`: The routine clears a byte at a fixed offset in a structure and returns the value it was given.
 - `poll_interrupt_flag_bit`: Checks one flag bit in a global word and, when it is set, writes a status byte, updates the word and calls another routine.
 - `tiny_rte`: Small routine of 1 instruction that returns from the exception.
-- `init_sound_channel_periods`: Reads eight channel records from a data block, storing for each a pointer to its sample data, a half-length value and a period computed by dividing a fixed clock constant by the record's rate.
+- `init_interrupts`: Initializes interrupt handling by clearing a control register, setting an interrupt control byte, writing a routine address to a global location, enabling specific interrupts, and setting a byte in memory to ff.
+- `handle_input_and_interrupts`: Reads interrupt status from hardware registers, clears specific interrupt bits, reads input data from memory, checks for certain bit conditions, and branches to other routines based on those conditions before returning.
+- `update_flags_and_shift`: Stores a byte from a memory location, sets a flag bit, updates multiple memory locations with specific values, performs a bitwise rotation on the stored byte, and writes the result to another memory location.
 - `build_dispatch_tables`: The routine builds dispatch tables by reading values from a global variable area and writing computed pointers and constants into memory, then initializes additional tables and global variables.
 - `disable_audio_channels_dma`: Clears a global status byte and writes masks to the audio control and DMA control registers, which clears the audio DMA enable bits.
 - `update_audio_channel_registers`: Returns early when a global flag byte is clear.
@@ -134,17 +135,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `merge_pattern_row_into_planes`: Merges a row of 160 source words with a pattern from a table into four bitplanes, cycling through three pattern words.
 - `store_stack_word_and_call`: Stores a word passed on the stack into a global variable and then calls another routine.
 - `call_other_routine`: The routine calls another routine and then returns.
+- `update_global_pseudorandom`: Updates a global variable with a linear congruential calculation and masks the result.
 - `update_position_from_input_bytes`: Updates a horizontal position from the change in the low byte of an input word, wrapping the difference and clamping the result to zero through 639 before halving it.
 - `save_input_bytes_and_call`: Saves the low byte and high byte of a global input word into two saved globals, then calls another routine.
 - `save_interrupt_state_and_enable`: Saves the current interrupt enable word in two saved globals, then writes a set-bits mask to the interrupt enable register.
 - `restore_saved_interrupt_enable`: If a saved interrupt enable value is non-zero, it clears all enable bits, writes back the saved value with its top two bits set, clears the saved value and returns it.
-- `tiny_ori_ori_ori`: Small routine of 3 instructions that merges 0 into d0, then merges 0 into d0, then merges 0 into d0.
 - `build_copper_palette_list`: Builds a copper list in memory by writing display window, data fetch and bitplane control values, choosing one of two window positions from a global.
 - `start_copper_list`: Points the copper at a new copper list by writing its address to COP1LC and strobing COPJMP1 so it starts at once, then returns.
 - `write_request_bit_and_wait`: Writes its argument and then a value four higher to a global register, then loops until the request bit is set.
 - `wait_for_request_bit_set`: Writes the request bit value to a global register and polls the same register until that bit reads back as set, then returns that bit.
 - `append_values_to_copper_list`: Finds the first colour register entry in a copper list and writes the values from a source array into the following entries, two words apart.
 - `unknown_routine_no_pseudocode`: Only its call relationship is known: one unnamed routine calls it and it runs 21 instructions.
+- `process_table_entry`: Loads data from a table using an index, processes it through several arithmetic operations, and stores results into two different structures based on a conditional check.
+- `initialize_struct_from_args`: Clears two words in a structure pointed to by a1, then copies the high word of an argument and the low word of the same argument into four locations of a structure pointed to by a0.
 - `write_sprite_control_block`: Looks up a control block from a table indexed by an argument and writes its start positions and flag bits into the block and its duplicate fields.
 - `decode_raw_keyboard_code`: Reads a raw keyboard code from the keyboard serial register, ignores key releases and converts the code to a character through a key table.
 - `copy_32000_byte_block`: Copies 8000 longwords, which is 32000 bytes, from one buffer to another.
@@ -226,8 +229,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
 - `store_library_result_in_record`: Library code, part of icon.library: stores its arguments in a structure, calls a library vector and records the result.
 - `copy_record_fields_to_globals`: Library code, part of icon.library: copies two stored fields from a structure into two global variables.
-- `library_jump_instruction`: This library routine consists of a single instruction.
-- `return_from_subroutine`: This routine performs a single return instruction to exit the current execution flow.
 - `call_library_handler`: This library routine simply calls another routine and then returns.
 - `forward_library_call_stub`: Library code, part of icon.library: calls one routine with no arguments and returns, doing nothing else.
 - `call_icon_init_routine`: This library routine invokes a single initialization function to set up icon data structures and then returns.
@@ -242,7 +243,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_match_segment`: This library routine calls another routine and then returns.
 - `call_parse_copy_count_text`: This routine calls another routine and then returns.
 - `call_vector_and_store_field`: Calls a library vector with its first argument and stores its second argument at a fixed offset in the structure that the vector returns.
-- `obtain_entry_or_release`: Library code, part of icon.library: calls a routine to obtain an entry and a second routine to link it.
 - `obtain_record_and_copy_frame`: Obtains a record from a routine and, when a second call succeeds, copies ten saved longwords and several saved values into the record's fields.
 - `copy_frame_into_record_links`: Copies ten saved longwords and several saved values from the frame into a record's fields, then links the record back to its owner when its link field is non-zero.
 - `return_zero_stub`: The routine is an empty stub that immediately returns the constant zero.
@@ -303,6 +303,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `divide_32_bit_unsigned`: Divides a 32-bit dividend by a divisor and returns the quotient and remainder as a pair.
 - `shift_subtract_divide_loop`: Runs a sixteen-step shift-and-subtract loop that divides the value in the low register by a divisor, leaving the quotient and remainder in registers.
 - `multiply_32_bit_values`: Multiplies two 32-bit register values using 16-bit partial products and returns the combined 32-bit result.
+- `forward_call_to_helper`: Calls one helper and returns, with no other work.
+- `shift_and_divide`: Moves data between registers, calls a 32-bit unsigned division routine, and returns the result in a data register.
+- `negate_if_nonzero`: Checks if the result from a division operation is non-zero and negates it before returning.
+- `call_and_negate_on_flag`: Calls a helper, then returns its first result, or the negation of that result when the second result left in an address register is nonzero.
 - `call_raw_format_function`: Calls the exec text formatting function, RawDoFmt, through the library base held in a global variable, using arguments the caller has already placed in registers.
 - `tiny_move_rts_2`: Small routine of 2 instructions that copies d0 to (a3)+, then returns.
 - `measure_string_length`: Counts the characters of a null-terminated string using a 16-bit counter, stopping at the terminator or when the counter runs out.
@@ -331,6 +335,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Populous (1989)(Electronic Arts)[cr Unicorn].adf:bootblock
 
 - `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `return_from_exception`: Returns from an exception handler by executing an rte instruction.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 

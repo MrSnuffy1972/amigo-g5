@@ -33,7 +33,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - chaos engine, the (1993)(renegade)[b](disk 1 of 2)/Chaos Engine, The (1993)(Renegade)[b](Disk 1 of 2).adf: custom-format (non-DOS) disk, 1658 non-empty blocks: matched against track-loaded segments
 - extended reference run ignored: it does not re-execute 1 of the 1 PCs the canonical run logged (121382 PCs logged; the harness no longer reproduces the game), so its PCs and RAM are not used
-- runtime segment an address (play-rs-m1500): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- reference run failed (Karl 4 Nov 2026): run ext slid through memory (an address: 6 64 KB pages each with >= 29491 distinct PCs executed, 98304 of its 121382 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- runtime segment an address (play-lgpwide): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - chaos engine, the (1993)(renegade)[b](disk 1 of 2)/Chaos Engine, The (1993)(Renegade)[b](Disk 1 of 2).adf: blocks 2-7 (bytes 1024-4096) outside the filesystem hold data, not code (opcode density 0.027, entropy 2.86)
 - chaos engine, the (1993)(renegade)[b](disk 1 of 2)/Chaos Engine, The (1993)(Renegade)[b](Disk 1 of 2).adf: blocks 22-22 (bytes 11264-11776) outside the filesystem hold data, not code (opcode density 0.035, entropy 2.71)
 - chaos engine, the (1993)(renegade)[b](disk 1 of 2)/Chaos Engine, The (1993)(Renegade)[b](Disk 1 of 2).adf:blocks 26-867 (bytes 13312-444416)+140288#unpacked: high-entropy data file (7.87 bits/byte), classified as packed data
@@ -65,4 +66,4 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `branch_forward`: Performs a relative branch to an instruction located eight bytes ahead.
+- `branch_to_offset_eight`: Performs a short relative branch to an instruction eight bytes ahead.

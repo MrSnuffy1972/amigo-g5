@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (902800 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 17 raw-word lines |
-| Functions named and described | pass, 18 of 18 named (0 author symbols), 18 of 18 described (2 by rule, 1 by the local model) |
+| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 4 raw-word lines |
+| Functions named and described | pass, 17 of 17 named (0 author symbols), 17 of 17 described (0 by rule, 2 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 291 of 291 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 17408 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 363 of 363 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 365 of 365 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 32331 |
-| code | 2148 |
-| data | 807905 |
+| asset | 32313 |
+| code | 2150 |
+| data | 807921 |
 | unused | 60416 |
 
 ## Code units
@@ -27,9 +27,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | World Soccer.adf:bootblock | 1 | 22 | 1 |
-| logged disk load from World Soccer.adf boot-block load | 1 | 11 | 0 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 133 | 7 |
+| logged disk load from World Soccer.adf boot-block load | 1 | 16 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 18 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 119 | 4 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 190 | 9 |
 | World Soccer.adf bytes 436224-449024 (code never loaded by a reference run) | 1 | 0 | 0 |
 | World Soccer.adf bytes 451072-455680 (code never loaded by a reference run) | 1 | 0 | 0 |
@@ -77,19 +77,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `allocate_and_run_boot_io`: Allocates a memory block through the exec library and, if that succeeds, fills in an I/O request and issues it with DoIO until the request's status byte clears, then calls the routine stored at the allocated address.
 
+### logged disk load from World Soccer.adf boot-block load
+
+- `clear_color_registers`: Loops 15 times to clear 32 consecutive bytes starting at the first color register by writing zero to each word.
+
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `increment_counter_low_byte`: Increments a 16-bit counter stored in the working block and keeps only its low byte.
+- `update_indexed_value`: Loads a byte from a table using an index stored at offset 332 of a structure, stores that byte at offset 312 of the structure, masks the index to 8 bits, and calls another routine.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `poll_fire_button_edges`: Alternates between waiting for bit six of a stored input value to go high and waiting for it to go low, calling an unnamed routine during each wait.
 - `wait_for_position_field`: Busy-waits until a nine-bit field, taken from bits eight and up of a longword in the working block, equals 250, then returns.
 - `read_mouse_axis_movement`: Reads the mouse port movement counter, turns the change since the previous reading into a signed step, and smooths that step into a stored position.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 - `find_matching_table_index`: Sets a stored index to 255, then scans three word tables backwards in steps of two from a fixed starting point until an entry passes the comparison test.
-- `evaluate_flag_state`: Combines two flag bytes with AND and shifts the result to place a specific flag in its sign position.
-- `tiny_ori_ori`: Small routine of 2 instructions that merges 230 into d5, then merges 40 into d5.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 

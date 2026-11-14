@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901184 top-level bytes in 16 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 4 raw-word lines |
-| Functions named and described | pass, 198 of 198 named (0 author symbols), 198 of 198 described (69 by rule, 119 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 143 of 144 (99.31%) |
-| Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 3869 of 3869 instructions identical in start and length, 0 mismatches |
+| Bytes classified (912400 top-level bytes in 17 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 1 raw-word lines |
+| Functions named and described | pass, 202 of 202 named (0 author symbols), 202 of 202 described (69 by rule, 121 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 2950 of 2950 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 32768 bytes, 1 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 7270 of 7270 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 555400 |
-| code | 11938 |
-| data | 71635 |
-| padding | 3651 |
+| code | 23338 |
+| data | 71449 |
+| padding | 3653 |
 | unused | 258560 |
 
 ## Code units
@@ -28,20 +28,26 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | type | 2 | 117 | 2 |
-| starsmittel | 2 | 133 | 4 |
-| shades | 2 | 209 | 8 |
+| starsmittel | 2 | 177 | 7 |
+| shades | 2 | 208 | 7 |
 | add21K | 3 | 480 | 33 |
-| border | 3 | 228 | 7 |
-| Zzzep (1990)(H. Jumpshoe)[b].adf:cls | 3 | 2537 | 140 |
+| border | 3 | 223 | 6 |
+| Zzzep (1990)(H. Jumpshoe)[b].adf:cls | 3 | 2549 | 141 |
 | Zzzep (1990)(H. Jumpshoe)[b].adf:1 | 1 | 155 | 3 |
 | Zzzep (1990)(H. Jumpshoe)[b].adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 0 | 0 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2818 | 1 |
+| Zzzep (1990)(H. Jumpshoe)[b].adf:1#unpacked | 1 | 533 | 1 |
 
 ## Cases handled
 
 - reference crashes at an address (OSHLE RUNAWAY: PC reached an address after an address (op CAFE) A7=an address (A7)=an address, slid to exec.library -an address): 557 executed addresses of the slide through empty memory after it (an address) are not game code and are excluded from proof 4
-- runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500): 2807 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- zzzep (1990)(h. jumpshoe)[b]/Zzzep (1990)(H. Jumpshoe)[b].adf:c/shades: PowerPacker 2.3 (xfd) stream found by ancient scan (3576 -> 4844 bytes) but only 0 of 3 sampled windows are in reference RAM: not used
+- zzzep (1990)(h. jumpshoe)[b]/Zzzep (1990)(H. Jumpshoe)[b].adf:c/border: TNM Cruncher 1.1 (xfd) stream found by ancient scan (5576 -> 6752 bytes) but only 0 of 3 sampled windows are in reference RAM: not used
+- zzzep (1990)(h. jumpshoe)[b]/Zzzep (1990)(H. Jumpshoe)[b].adf:1: crunched executable unpacked with ancient scan (DefJam Cruncher 3.2 (xfd), 11420 -> 32768 bytes), 10 of 10 windows confirmed in reference RAM, loaded at an address: recovered as u9
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 3 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 2 jump target, 1 displacement
 - zzzep (1990)(h. jumpshoe)[b]/Zzzep (1990)(H. Jumpshoe)[b].adf:1: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
+- 1 never-loaded region(s), 32768 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
@@ -65,13 +71,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_two_functions`: Copies a byte from a pointer in a0 to d3, then calls two different functions located at offsets from a provided pointer.
 - `call_two_library_functions`: Calls two library functions using offsets from a provided pointer and returns a concatenated result.
 - `call_two_library_functions_alt`: Calls two library functions using different offsets from a provided pointer and returns a concatenated result.
+- `process_data_table`: Iterates through a table of data, performing calculations to determine a bit position and a memory address, then sets a bit at that address and stores the address in the table.
+- `set_bit_and_advance`: Sets a bit in a global variable and advances a pointer by four bytes, then branches to another location.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
 
 ### shades
 
 - `parse_amiga_hunk_data`: Allocates memory and parses a structure containing AmigaDOS hunk type codes, performing relocations and data copying based on the hunk type.
 - `increment_counter_if_nonzero`: Tests the value in d5 and returns immediately if it is zero, otherwise increments a counter in d6, sets d5 to one, and returns.
 - `process_linked_list_data`: Traverses a structure via a pointer in a1, performs recursive calls to itself, and uses a loop to update values in a destination buffer based on data from a source.
-- `tiny_ori`: Small routine of 1 instruction that merges 188 into d0.
 - `decompress_back_reference_stream`: Decodes a packed byte stream by reading control values that either copy literal bytes or repeat earlier output with a length and offset from the stream.
 - `tiny_moveq`: Small routine of 1 instruction that loads 1 into d0.
 - `decrement_byte_cycle_counter`: Decrements a byte counter in d7 for each iteration of a loop controlled by d0, resetting it to a space character whenever it reaches zero, and returns.
@@ -118,7 +126,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_relocation_handler`: Calls a routine at a fixed address and then jumps to address zero.
 - `process_amiga_hunk_relocations`: Parses a list of AmigaDOS hunk types to perform memory allocation and relocation.
 - `update_list_pointers`: Reads values from a source list and uses them to update a destination list by performing pointer arithmetic and copying values in a loop.
-- `set_d0_bits`: Performs a series of bitwise OR operations on register d0 with various constants.
 - `unpack_stream_with_pointer_shift`: Decompresses a packed stream by reading bits through a shift routine that takes a 32-bit value from the four bytes before the source pointer, shifts it right and sets its top bit, and writes the resulting bytes to a destination buffer.
 - `shift_pointer_value`: The routine reads a 32-bit value from four bytes before the address in A0, shifts it right by one bit and sets the most significant bit, then returns the result.
 - `shift_bitmask_and_store_pointer`: Shifts a bit mask right one bit per iteration, reloading it from a memory location when it becomes zero, and stores the low word of a pointer into a global variable on each step.
@@ -167,6 +174,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_recursive_call`: Performs a recursive call and returns a 64-bit value formed by concatenating the original contents of register d1 with the value left in d1 by another routine.
 - `parse_format_string`: Parses a format string to extract values for a printing or formatting routine, supporting integer conversion, width specifications, and various type specifiers.
 - `perform_signed_division`: Reads two signed 32-bit integers, determines the sign of the result, calls another routine to perform division, and returns a 64-bit value combining the result and the second input.
+- `prepare_signed_operands`: Clears a register, checks the sign of two different registers, negates them if they are negative, increments a counter if the first register was negative, and calls another routine before branching.
 - `call_and_return_concatenated`: Calls another routine and returns a 64-bit value formed by concatenating the original contents of register d1 with the value left in d1 by the call.
 - `recursive_call`: Calls itself and then returns.
 - `perform_32bit_division`: The routine calculates the quotient and remainder of a 32-bit integer division using inputs in registers D0 and D1.
@@ -275,3 +283,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Zzzep (1990)(H. Jumpshoe)[b].adf:bootblock
 
 - `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_data_table`: Populates a data table with zero values by performing a series of bitwise OR operations with immediate zero operands on data registers, effectively initializing the table entries to zero.
+
+### Zzzep (1990)(H. Jumpshoe)[b].adf:1#unpacked
+
+- `fills_with_zeros`: Fills memory with zero bytes by repeatedly executing a no-operation instruction on each data register.

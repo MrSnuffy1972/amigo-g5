@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (901120 top-level bytes in 1 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 3 raw-word lines |
-| Functions named and described | pass, 21 of 21 named (0 author symbols), 21 of 21 described (0 by rule, 1 by the local model) |
+| Functions named and described | pass, 23 of 23 named (0 author symbols), 23 of 23 described (1 by rule, 2 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 0 of 0 (0.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 1024 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 657 of 657 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 662 of 662 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 1475 |
-| code | 2242 |
-| data | 891259 |
+| code | 2266 |
+| data | 891235 |
 | unused | 6144 |
 
 ## Code units
@@ -27,7 +27,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf:bootblock | 1 | 46 | 2 |
-| logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf boot-block load | 1 | 464 | 14 |
+| logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf boot-block load | 1 | 469 | 16 |
 | logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf boot-block load | 1 | 147 | 5 |
 | Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf bytes 1024-2048 (code never loaded by a reference run) | 1 | 0 | 0 |
 
@@ -67,6 +67,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf boot-block load
 
+- `initialize_boot_sequence`: Verifies the boot name, searches for specific signature strings in memory to locate entry points, and performs a block memory copy.
 - `verify_boot_name_bytes`: Calls two other routines and stores a fixed byte in a global cell, then walks eight bytes of that cell, returning a negative error code on any mismatch.
 - `search_table_and_emit_entry`: Searches a table of byte-keyed entries for the key in the data register, returning an error code when no entry matches.
 - `set_disk_read_configuration`: Stores a sequence of disk-controller values, including a zero, a length value, a sync pattern and control words, into consecutive global cells.
@@ -81,6 +82,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_code_when_status_set`: When one bit of a status cell is set, it writes a second fixed state code, calls a other routine and returns zero.
 - `write_port_status_byte`: Stores a constant byte into a global variable and then calls another routine.
 - `wait_for_interrupt_flag`: Polls a status cell until one bit is set, then writes that bit back to clear it.
+- `wait_for_blitter`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
 
 ### logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf boot-block load
 

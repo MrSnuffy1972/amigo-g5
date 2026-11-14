@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (902000 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 6 raw-word lines |
-| Functions named and described | pass, 11 of 11 named (0 author symbols), 11 of 11 described (0 by rule, 8 by the local model) |
+| Functions named and described | pass, 14 of 14 named (0 author symbols), 14 of 14 described (0 by rule, 11 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 131 of 131 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 148992 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 328 of 328 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 359 of 359 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 4575 |
-| code | 1064 |
-| data | 869222 |
+| code | 1180 |
+| data | 869106 |
 | padding | 3 |
 | unused | 27136 |
 
@@ -29,7 +29,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Cadaver (1991)(ImageWorks)(M3)[cr Angels - Genesis](Disk 1 of 2)[t +4 Full - Evil].adf:bootblock | 1 | 5 | 1 |
 | logged disk load from Cadaver (1991)(ImageWorks)(M3)[cr Angels - Genesis](Disk 1 of 2)[t +4 Full - Evil].adf boot-block load | 1 | 107 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 216 | 8 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 247 | 11 |
 | Cadaver (1991)(ImageWorks)(M3)[cr Angels - Genesis](Disk 1 of 2)[t +4 Full - Evil].adf bytes 431104-505856 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Cadaver (1991)(ImageWorks)(M3)[cr Angels - Genesis](Disk 1 of 2)[t +4 Full - Evil].adf bytes 664576-738816 (code never loaded by a reference run) | 1 | 0 | 0 |
 
@@ -75,8 +75,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_main_loop`: Repeatedly calls three subroutines within a loop until a condition is met, then performs several assignments to registers and memory before calling a function via a pointer.
 - `wait_for_word_match`: The routine loops until the low word of a global variable, masked to nine bits, equals a word value in D0.
 - `clear_memory_block`: Sets every longword in a specified memory range to zero.
+- `process_table_character`: Calculates an offset into a table using a value from a structure in a5, fetches a byte from a0, and if the byte is not negative, subtracts 32 and calls another routine to load table values before looping.
 - `load_table_values`: Casts an index value to a signed byte and stores a byte from a global table into the first byte of a destination buffer.
 - `calculate_string_length`: Increments a counter while traversing a null-terminated string and stores a calculated value into a global variable.
 - `update_index_and_pointer`: Checks a byte value and performs conditional loops to find a null terminator in a buffer, then updates a short value and a global variable with a calculated result.
 - `decrement_and_wrap_counter`: Decrements a byte in a structure and, if it reaches zero, performs logic to increment or decrement a separate counter and update a status byte.
+- `convert_string_to_digits`: Sets several values in a structure in a5, then loops through a sequence of bytes starting at an offset in a5, subtracting 48 from each byte and storing the result in another location in a5 until a zero byte is encountered, at which point it calls another routine.
+- `update_display_counters`: Checks if a byte in d0 is 2, copies a byte from a0 to a4 and calls another routine, then enters a loop that updates several bytes at specific offsets in a structure in a5 using values derived from a 16-bit word at offset 32 of that structure, and finally calls another routine.
 - `update_timer_display_string`: Decrements a counter and, upon reaching zero, resets specific status flags and updates a three-digit decimal string representation of a value.

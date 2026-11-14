@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (914352 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 16 raw-word lines |
-| Functions named and described | pass, 59 of 59 named (0 author symbols), 59 of 59 described (3 by rule, 40 by the local model) |
+| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 15 raw-word lines |
+| Functions named and described | pass, 55 of 55 named (0 author symbols), 55 of 55 described (1 by rule, 38 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 1556 of 1556 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1844 of 1844 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1839 of 1839 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 4396 |
-| code | 7734 |
-| data | 753872 |
+| code | 7722 |
+| data | 753884 |
 | padding | 894 |
 | unused | 147456 |
 
@@ -28,8 +28,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Universal Warrior (1993)(Zeppelin)[cr QTX].adf:bootblock | 1 | 31 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 511 | 18 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 967 | 35 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 521 | 19 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 952 | 30 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 335 | 4 |
 
 ## Cases handled
@@ -99,6 +99,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_three_routines_in_order`: Calls three unnamed routines in sequence and returns.
 - `call_setup_three_times`: Invokes another routine three times in succession and then returns.
 - `call_setup_three_times_again`: Invokes another routine three times in succession and then returns.
+- `call_three_routines`: Calls a routine three times in sequence with different string and buffer addresses, then returns.
 - `draw_text_string_glyphs`: Walks a string of characters, looks up each glyph's source offset from a table, and calls an unnamed routine to blit it at a computed screen position, stopping at a carriage return or the end marker.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -109,7 +110,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `manage_nibble_fade_sequences`: Iterates through nested loops to decrement nibble-based values in a table and performs sequences of fading and stepping values toward targets.
 - `execute_script_step`: Sets a global variable to a specific value, calls another routine, and then writes a value to a structure offset.
 - `write_structure_constants`: Writes several 16-bit and 32-bit constants, a function pointer, and a zero value into a structure at specific offsets.
-- `update_structure_parameters`: Writes multiple values to a structure, including calculated offsets and incrementing values, based on several input parameters.
 - `configure_complex_parameters`: Updates a structure with various values and uses a loop to write a sequence of 32-bit and 16-bit values into a table based on an incrementing counter.
 - `set_structure_parameters`: Writes several values to a structure, including calculated offsets and incrementing values, based on several input parameters.
 - `calculate_input_state`: Reads a 16-bit value from a structure and performs bitwise logic to return a processed status byte.
@@ -117,8 +117,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `calculate_encoded_value`: Performs arithmetic operations on a value and combines it with bits from a global variable to return a concatenated result.
 - `return_from_subroutine`: This routine is empty and performs no operations before returning.
 - `store_word_split`: Splits a 16-bit value into two bytes and stores them at specific offsets within a structure.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `update_bitmask_via_pointer`: Retrieves a value from another routine and stores it at a memory location pointed to by a register, applying a bitwise OR with a specific bit set.
+- `process_encoded_values`: Processes encoded values by calculating them twice, setting a high bit, storing the result at an address offset by register d7, and splitting words twice before returning.
 - `process_data_stream`: Iterates through a data structure, performing calculations and updating multiple fields in a structure based on values retrieved from a table and a pointer.
 - `wait_while_flag_bit_set`: Checks a specific bit in a byte at a fixed offset from a pointer in an address register.
 - `execute_infinite_loop`: The routine is empty and consists only of an infinite loop.
@@ -130,11 +129,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_table_and_counter`: Iterates through a table of 16-bit values to add a constant to each, clamping the result to zero if it exceeds a specific threshold, and increments a global byte variable with a wrap-around check.
 - `update_structure_offsets`: Calculates a base value from a global variable and a pointer, then stores several derived 16-bit values into a structure at specific offsets.
 - `transform_string_data`: Iterates through a sequence of bytes, modifies each byte based on specific character matches, and writes the results to a new memory location.
-- `update_loop_counters`: Decrements a global variable and a loop counter repeatedly, resetting the loop counter to a specific value if it becomes negative.
 - `store_calculated_pointers`: Calculates a memory address based on a value from a pointer and stores the resulting address and its high word into several global variables.
-- `tiny_ori_2`: Small routine of 1 instruction that merges 23 into d4.
-- `perform_recursive_nullification`: Checks a global variable and, if zero, clears a memory location before calling itself recursively.
-- `tiny_ori_sub`: Small routine of 2 instructions that merges 3 into d0, then subtracts d0 from d0.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (sub.b) and then falls through into the code that follows, with no return of its own.
 - `check_global_flag`: Checks if a global variable is zero and, if so, clears a memory location before calling another routine twice.
 - `copy_memory_block`: Copies a block of data from a source location to a destination location using a loop that processes 20 bytes per iteration.
 - `modify_hardware_registers`: Sets a global variable and modifies a bit in a hardware register, specifically affecting interrupt and DMA control bits.

@@ -6,37 +6,37 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (1802304 top-level bytes in 47 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 14 of 14 units identical (bytes and relocations), 15 raw-word lines |
-| Functions named and described | pass, 754 of 754 named (0 author symbols), 754 of 754 described (47 by rule, 108 by the local model) |
+| Bytes classified (1802304 top-level bytes in 62 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 14 of 14 units identical (bytes and relocations), 12 raw-word lines |
+| Functions named and described | pass, 762 of 762 named (0 author symbols), 762 of 762 described (42 by rule, 116 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 3 of 3 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 16195 of 16509 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 21350 of 21357 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 459859 |
-| code | 60412 |
-| data | 497676 |
-| padding | 12773 |
+| asset | 172931 |
+| code | 78980 |
+| data | 766022 |
+| padding | 12787 |
 | unused | 771584 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 1 of 2).adf:run | 2 | 117 | 2 |
-| run | 2 | 117 | 2 |
-| EndCLI | 2 | 117 | 2 |
-| LoadWB | 12 | 536 | 30 |
+| Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 1 of 2).adf:run | 2 | 458 | 12 |
+| run | 2 | 458 | 12 |
+| EndCLI | 2 | 182 | 3 |
+| LoadWB | 12 | 535 | 30 |
 | Disk-Validator | 1 | 386 | 1 |
 | Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 1 of 2).adf:IP.txt | 2 | 24 | 4 |
 | Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 1 of 2).adf:CREDITS.EXE | 2 | 167 | 7 |
 | Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 1 of 2).adf:patch | 1 | 99 | 3 |
-| icon.library | 10 | 1375 | 109 |
-| Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 1 of 2).adf:POPULOUS.II | 6 | 13404 | 584 |
+| icon.library | 10 | 1421 | 110 |
+| Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 1 of 2).adf:POPULOUS.II | 6 | 17460 | 570 |
 | Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 1 of 2).adf:ip_intro | 1 | 132 | 7 |
 | Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 1 of 2).adf:bootblock | 1 | 10 | 1 |
 | Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:bootblock | 1 | 10 | 1 |
@@ -44,12 +44,26 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Cases handled
 
-- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:awards.pak: high-entropy data file (7.70 bits/byte), classified as packed data
-- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:hands.pak: high-entropy data file (7.68 bits/byte), classified as packed data
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:s32-3.pif: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (13888 -> 18800 bytes)
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:s32-1.pif: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (18780 -> 26350 bytes)
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:block3.pak: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (27588 -> 47960 bytes)
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:block1.pak: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (26248 -> 48360 bytes)
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:faces.pak: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (6644 -> 10280 bytes)
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:s32-0.pak: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (47044 -> 71080 bytes)
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:conquest.pak: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (11324 -> 50000 bytes)
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:qaz.pak: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (16988 -> 32000 bytes)
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:awards.pak: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (5696 -> 6912 bytes)
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:s32-2.pif: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (8364 -> 11460 bytes)
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:hands.pak: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (6116 -> 10240 bytes)
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:block2.pak: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (27120 -> 48280 bytes)
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:block0.pak: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (27372 -> 48920 bytes)
 - populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:end.pak: high-entropy data file (7.66 bits/byte), classified as packed data
-- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:judge.pak: high-entropy data file (7.68 bits/byte), classified as packed data
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:s16-0.pak: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (55568 -> 83040 bytes)
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 2 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 2 of 2).adf:judge.pak: ByteKiller EOF Data (xfd)-packed, unpacked with ancient (36412 -> 41495 bytes)
 - reference crashes at an address (OSHLE RUNAWAY: PC reached an address after an address (op 4EB8) A7=an address (A7)=an address, slid to exec.library -an address): 494 executed addresses of the slide through empty memory after it (an address) are not game code and are excluded from proof 4
 - runtime segment an address: 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 1 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 1 of 2).adf:CREDITS.EXE: Old ProPack (RNC) (xfd) stream found by ancient scan (11888 -> 26856 bytes) but only 0 of 12 sampled windows are in reference RAM: not used
+- populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 1 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 1 of 2).adf:patch: TetraPack 2.2 (xfd) stream found by ancient scan (392 -> 112 bytes) but only 0 of 1 sampled windows are in reference RAM: not used
 - populous ii - trials of the olympian gods (1991)(electronic arts)[cr vf][f ip][a](disk 1 of 2)/Populous II - Trials of the Olympian Gods (1991)(Electronic Arts)[cr VF][f IP][a](Disk 1 of 2).adf:CREDITS.EXE: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
 ## Cracktros (kept, not protection)
@@ -67,16 +81,37 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_data_block`: If a pointer is non-zero, this routine copies sixteen words from a source offset in a structure to a destination buffer and then calls another routine.
+- `initialize_entity_state_structure_2`: Initializes a structure by zeroing several fields, updating a state byte at offset 32 from a table, and setting a pointer at offset 48 to a value from a table.
+- `update_entity_state_and_call_handler_2_2`: Reads a byte from a table at an offset determined by a value in a structure, stores it in the structure at offset 20, and updates the structure at offset 24 with the original value incremented by one.
+- `update_entity_state_and_call_handler_2`: Calculates a new index and value based on offsets in a structure, writes a byte to a table at a calculated offset in a0, and then updates several longwords in the structure in a1.
+- `update_entity_state_and_call_handler`: Updates a structure in a0 by setting a byte at a calculated index to 10, initializing several longwords at offsets 4, 8, 12, and 16, and conditionally increments a value at offset 4.
+- `calculate_and_branch`: Loads the value at offset 84 of a structure into a register, adds one to it, and branches to another routine.
+- `test_and_branch`: Tests a longword at offset 40 of a structure and branches to another routine if the value is non-zero, otherwise it branches to a third routine.
+- `modify_structure_bitmask_and_branch`: Tests a bitmask at offset 48 of a structure against a constant; if the bit is not set, it sets the upper 24 bits of the value at that offset and branches to another routine, otherwise it compares the value at that offset to 133 and branches to another routine or a third routine.
+- `update_entity_attribute_and_conditional`: Copies a value from offset 64 of a structure to offset 108 of the same structure, then calls another routine using parameters derived from the structure and a pointer to a table.
+- `update_entity_state_and_clear_attributes`: Updates a specific entry in a table using values from a structure, calls two subroutines, and then clears several fields in a different table at an offset calculated from a structure member.
+- `update_structure_and_call_subroutines`: Stores a value from a register into a structure at offset 128 of a1, performs several calls to a routine via a5 using various parameters from a1 and a2, and finally performs an indirect jump using a6.
 
 ### run
 
 - `process_linked_list_and_expand_buffer`: Iterates through a linked list to find the maximum value in a specific field, then expands a data buffer by writing a header and copying data blocks.
 - `copy_memory_block`: Copies a fixed number of words from a source address to a destination address.
+- `initialize_entity_state_structure`: Initializes a structure by writing several values to specific offsets, including a zero value at offset 28, a byte read from a table at offset 30, and a value derived from a bit-shifted register at offset 40.
+- `update_entity_state_from_table`: Fetches a byte from a table using an index stored in a structure, stores this byte at offset 20 of the structure, and calculates a new index by incrementing the original value and adding 10, which is then stored at offset 12 of the structure.
+- `update_entity_state_and_call_handler_3`: Calculates a target index and a source index based on values within a structure in a1, then copies a byte from a table in a0 to a destination offset in a0 using the calculated indices.
+- `update_entity_state_and_call_handler_2_3`: Updates an entity's state by modifying values in a structure pointed to by a0, including setting a byte to 10, copying longwords between offsets, and clearing a longword at offset 12.
+- `calculate_and_branch_2`: Loads the constant one into register d1, adds a longword from an offset of 84 in a1 to d1, and branches to another routine.
+- `test_and_branch_2`: Tests a longword at offset 40 of a structure in a1 and branches to another routine if the value is non-zero, otherwise it branches to a third routine.
+- `modify_structure_bitmask_and_branch_2`: Tests a bitmask at offset 48 of a structure against a constant; if the bit is not set, it sets the upper 24 bits of the value at that offset and branches to another routine, otherwise it compares the value at that offset to 133 and branches to another routine or a third routine.
+- `update_structure_field_and_call_handler`: Copies a longword from offset 64 of a structure to offset 108 of the same structure, prepares several parameters in registers, and calls a routine via a function pointer in a5.
+- `reset_entity_state_and_update_attributes`: Calculates an index into a table using values from a structure, updates a specific entry in that table, and then clears several fields within a secondary structure.
+- `process_entity_data_and_dispatch`: Calls several routines using a pointer in a5, updates a long value at offset 128 of a structure, modifies a value at an offset calculated from a structure member, and performs an indirect jump using a6.
 
 ### EndCLI
 
 - `process_linked_list_and_populate_buffer`: Traverses a linked list to determine the maximum value within a specific field and then populates a destination buffer with a header and a sequence of incrementing values.
 - `copy_memory_block_2`: Copies sixteen bytes from a memory location offset from a pointer to a destination address.
+- `update_structure_and_decrement_counter`: Performs several calls to a routine via a pointer in a5, modifies a value in a structure at a1, and decrements a 32-bit value at an offset in a structure at a0 based on a calculated index.
 
 ### LoadWB
 
@@ -97,10 +132,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_420`: Library stub: loads a library base from a global variable and calls the library function at offset minus 420 of that base, returning its result to the caller.
 - `call_library_vector_552`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
 - `call_library_vector_624`: Library stub: loads a library base from a global variable and calls the library function at offset minus 624 of that base, returning its result to the caller.
-- `match_global_prefix_and_pad`: Compares a text buffer against a global string byte by byte.
-- `write_dot_and_four_spaces`: Stores a period followed by four space characters into five consecutive bytes of the buffer passed in through the address register, starting at offset 17.
-- `skip_matching_global_prefix`: Advances the buffer pointer past every leading character that matches a global string.
-- `return_without_action`: Its body is only a return, so it does no work.
 - `call_reschedule`: Library stub: loads its arguments and the exec library base, calls Reschedule and returns its result to the caller.
 - `call_dispatch`: Library stub: loads its arguments and the exec library base, calls Dispatch and returns its result to the caller.
 - `call_find_resident`: Library stub: loads its arguments and the exec library base, calls FindResident and returns its result to the caller.
@@ -110,6 +141,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `forward_args_with_stack_pointer`: Passes its two arguments on to another routine together with the address of a stack location twelve bytes into the caller's argument area, then returns.
 - `format_message_and_forward`: Formats text into a 140-byte stack buffer through the exec library's formatting function, then measures the string length.
 - `tiny_move_rts`: Small routine of 2 instructions that copies d0 to (a3)+, then returns.
+- `compare_memory_buffers`: Compares a byte at an offset of a structure in a2 with a constant, and if it matches, enters a loop that compares bytes from two memory locations until a mismatch is found.
+- `write_dot_and_four_spaces`: Stores a period followed by four space characters into five consecutive bytes of the buffer passed in through the address register, starting at offset 17.
+- `skip_matching_global_prefix`: Advances the buffer pointer past every leading character that matches a global string.
+- `return_without_action`: Its body is only a return, so it does no work.
 
 ### Disk-Validator
 
@@ -148,8 +183,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
 - `open_dos_library_or_alert`: Library code that saves a name pointer and a library base in the structure, opens the dos library through the exec vector and stores the returned handle.
 - `copy_two_longwords_to_globals`: Library code that copies the two longwords at offsets 34 and 38 of the structure into two global cells, the same cells the open routine fills.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `pass_control_to_routine`: Library code that calls one other routine and then returns.
 - `call_library_handler`: This library routine simply calls another routine and then returns.
 - `call_icon_data_copy`: This library routine unconditionally calls a helper routine to copy icon data to the stack and then returns.
 - `forward_call_and_return`: Calls one other routine and then returns, with no other work.
@@ -164,7 +197,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_and_return`: This routine calls another routine and then returns.
 - `call_and_return_3`: This library routine calls another routine and then immediately returns to its caller.
 - `store_value_in_returned_object`: Library code that calls a library function through a vector in the structure, then stores the second argument into the longword at offset 148 of the pointer it returns.
-- `create_block_with_cleanup`: Library code that obtains a block from one routine and passes it to a second routine to fill.
 - `load_and_fill_structure`: Library code that obtains a structure from one routine and asks a second routine to fill the area at offset 140 of it.
 - `copy_stack_buffer_into_structure`: Library code that copies ten longwords and eight further fields from a stack buffer into fixed offsets of the structure.
 - `return_zero_stub`: The routine is an empty stub that immediately returns the constant zero.
@@ -225,6 +257,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `divide_longword_with_remainder`: Divides a 32-bit dividend by a 32-bit divisor and returns the quotient and remainder as a pair.
 - `run_sixteen_step_division`: Runs sixteen shift-and-subtract steps that divide the 32-bit value in the data registers by the divisor, leaving the quotient and remainder in those registers.
 - `multiply_low32_from_halves`: Multiplies two 32-bit operands from the data registers using 16-bit partial products and keeps the low 32 bits of the product.
+- `forward_call_to_helper`: Pushes a data register onto the stack, shifts two data registers for a helper, calls the helper, restores the saved register, and returns.
+- `call_helper_return_register`: Pushes a data register onto the stack, shifts two data registers for a helper, calls the helper, moves the helper's result into a data register, restores the saved register, and returns.
+- `negate_result_on_flag`: Normalizes the signs of two input values, calls a helper, and negates the returned value if the result in the address register is non-zero before returning.
+- `call_and_negate_on_flag`: Calls a helper, then returns its first result, or the negation of that result when the second result left in an address register is nonzero.
 - `call_raw_format_routine`: Calls the exec library's formatting function through a vector stored in a global, using the arguments the caller has set up.
 - `write_byte_at_pointer`: Writes the low byte of a data register to the memory location held in an address register, then returns.
 - `measure_string_length`: Counts the bytes of a null-terminated string using an inverted 32-bit counter and returns the length.
@@ -259,12 +295,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `save_vectors_and_mark_task`: Clears a flag and retries a lookup of the current task through the exec library until it succeeds, then sets a field of that task to minus one.
 - `restore_vectors_and_enable_interrupts`: Copies saved interrupt vector values from a table back into low memory, then writes the DMA control and interrupt enable registers with the set bit, which enables the bits it names.
 - `return_immediately_3`: This routine is empty and performs no operations before returning to its caller.
-- `store_field_and_mask_constant`: Copies the longword at offset 38 of a structure into one global cell, then writes the constant 33776 into another global cell.
-- `store_constant_to_global`: Stores a constant value into a global variable after loading a value from a memory offset.
 - `start_copper_list`: Points the copper at a new copper list by writing its address to COP1LC and strobing COPJMP1 so it starts at once, then returns.
 - `swap_two_global_pairs`: Exchanges the shared global cell with two other global cells, one after the other, using temporary cells to hold the originals.
 - `install_handler_and_enable_vblank`: Saves one global cell, stores the handler address into two global cells, then writes the interrupt enable register with the set bit and the vertical-blank bit.
-- `handle_vblank_interrupt`: When the vertical-blank request bit is set, it sets a flag to one and increments three counters.
+- `handle_interrupt_request_2`: Saves d0 to the stack, reads the interrupt request register, and if bit five is set, it saves registers to the stack, calls another routine, increments four different values in a table, restores registers, and either returns or calls another routine based on a test of a value from the stack.
 - `acknowledge_vblank_request`: Writes the vertical-blank bit to the interrupt request register, which clears that pending request.
 - `tiny_rte`: Small routine of 1 instruction that returns from the exception.
 - `setup_two_buffer_pointers`: Calls two setup routines and stores the address returned by each, offset by eight bytes, into a pair of global cells.
@@ -275,12 +309,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_table_entry_count_down`: Sets one byte of a table, indexed by the argument, to zero and decrements a counter when it is positive.
 - `open_graphics_and_intuition_libraries`: Opens two libraries by name through the exec library, records one flag bit from the first library's base, and stores the address of a routine into a vector slot of the second library's base.
 - `tiny_moveq_rts_2`: Small routine of 2 instructions that loads 0 into d0, then returns.
-- `flip_double_buffer_pointers`: Swaps two buffer pointers and toggles a selector between two entries.
-- `swap_screen_buffers`: The routine swaps the values of two global variables, toggles a flag, reads a word from a global table at a computed offset into a global variable and sets another global variable to zero, then returns the incoming D0 value.
-- `swap_and_dereference_data`: Swaps two consecutive values in a data structure and updates a global variable by dereferencing it with an offset derived from a XORed value.
 - `swap_buffers_and_update_state`: Swaps the values of two global variables, toggles a flag via an XOR operation, reads a word from a global table at a computed offset into a global variable, and clears a register.
-- `wait_until_flag_set`: Loops until a flag cell becomes nonzero, then returns.
-- `tiny_ori_ori`: Small routine of 2 instructions that merges 0 into d0, then merges 0 into d0.
 - `wait_for_flag`: The routine enters a loop that continues as long as a specific global variable remains zero.
 - `update_mouse_position_from_counters`: Reads the mouse counter bytes from the joystick data register, works out the change since the last reading with wraparound, and adds it to the X and Y position values.
 - `poll_mouse_button_and_latch`: Writes the pot port output register, then checks the left mouse button bit in the input register.
@@ -288,9 +317,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `read_mouse_counter_bytes`: Reads the mouse counter word from the joystick data register and stores its low byte and high byte in two global cells.
 - `update_sprite_header_position`: Writes the high and low halves of two addresses into fields of a block that a global refers to.
 - `set_global_var_pointers`: The routine checks a global variable against an input word and, if different, stores the address of a global variable plus the input word into two separate structures.
-- `install_serial_receive_handler`: Sets up the serial receive interrupt: it writes a set of constants into global cells, stores a handler routine's address, calls one routine, and then writes the constant 34816 into the interrupt enable register with the set bit and the receive-buffer bit.
-- `update_global_state`: The routine writes several constant values to global variables and then calls another routine.
-- `tiny_ori_2`: Small routine of 1 instruction that merges 143 into d0.
 - `reset_interrupt_state`: The routine writes constants to a global variable and to several other global locations, then overwrites the global variable with a pointer to another routine, calls that routine, masks the global variable with a bitmask, and finally writes a constant to the global variable.
 - `swap_saved_value_enable_serial`: Swaps one global cell with a saved cell, then writes the constant 34816 into the interrupt enable register with the set bit and the receive-buffer bit.
 - `compute_serial_period_value`: Chooses one of two clock constants according to whether a flag is nonzero, divides it by a global value, and stores the quotient minus one in a global cell.
@@ -299,25 +325,26 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_received_byte_in_ring`: When the receive-buffer request bit is set, it stores the received byte at the write index of a ring buffer and advances that index, wrapping it at the end.
 - `return_argument_unchanged`: Returns the value passed on the stack without changing it.
 - `nop_padding`: This routine is empty and contains no executable instructions.
+- `return_from_exception`: Returns from an interrupt or exception by restoring the processor status register and program counter from the stack.
+- `check_interrupt_and_clear`: Pushes d0 to the stack, checks if a specific bit is set in the intersection of two interrupt registers, and if it is not set, clears a 16-bit word at a specific location and returns from an interrupt.
+- `pop_stack_and_load_address`: pops a word from the stack into d0 and then pushes the contents of a specific memory address onto the stack before returning.
 - `read_bytes_from_ring_buffer`: Copies bytes from a ring buffer into the caller's buffer, advancing the read index and wrapping it at the end.
 - `copy_ring_bytes_until_limit`: Copies bytes out of a ring buffer into the destination, advancing the read index with wrap.
 - `copy_ring_bytes_counted`: Copies a counted number of bytes from the ring buffer to the destination, advancing the read index with wrap.
 - `return_stack_value_3`: This routine is empty and simply returns the value currently residing at the top of the stack.
 - `send_bytes_over_serial`: Writes a counted run of bytes to the serial data register whenever bit 13 of the serial status register is set.
 - `send_counted_serial_bytes`: Writes bytes to the serial data register while the transmit-ready bit is set in the status register, counting down the count and setting a flag in the structure as it goes.
-- `call_second_library_function`: Calls one function through the library vector at offset minus 78 of the second library base stored earlier, passing no arguments of its own, then returns.
-- `call_indirect_routine`: The routine calls a routine through a pointer stored in a global table and returns the combined results of the D0 and D1 registers.
 - `call_close_work_bench`: Library stub: loads its arguments and the intuition library base, calls CloseWorkBench and returns its result to the caller.
 - `open_fixed_size_screen`: Clears a flag and fills a block of global cells with constant screen values, including a width of 320.
 - `call_close_screen`: Library stub: loads its arguments and the intuition library base, calls CloseScreen and returns its result to the caller.
 - `close_library_twice`: Calls the exec library's close-library function twice in succession through the vector stored in a global cell.
 - `return_from_subroutine`: This routine is empty and performs no operations before returning to the caller.
+- `reset_task_priority_and_blitter`: If a global variable is non-zero, it sets the task priority to zero and disowns the blitter, then clears that global variable before returning.
 - `return_from_subroutine_2`: This routine is empty and performs no operations before returning.
 - `claim_blitter_and_wait`: Repeatedly calls one routine until it returns zero, clearing a global flag each time.
 - `forbid_and_claim_blitter`: Calls the exec library's forbid function, then the graphics library's own-blitter function, and returns.
 - `permit_and_release_blitter`: Calls the exec library's permit function, then the graphics library's disown-blitter function, and returns.
 - `run_polling_event_loop`: Repeatedly checks several global flags and calls many routines, branching on a state value and updating memory bytes along the way.
-- `dispatch_state_handler`: Calls one routine when two flags are both set, then calls a handler chosen from a table by a state index.
 - `dispatch_indirect_call`: Checks two global variables and performs an indirect call using an offset stored in a global variable.
 - `run_four_step_table_dispatch`: Runs four steps, each picking a routine from a global table entry chosen by index cells, calling it with the step number, and then calling one more routine.
 - `check_point_in_bounds`: Returns early through a routine when one flag is set; otherwise, while another flag is set, it tests whether a point lies inside a rectangle given by four global bounds and calls a routine if so.
@@ -345,17 +372,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `write_masked_bitplane_column`: Processes five rows of a table byte: each byte is rotated by a shift taken from a global, then merged into four bitplanes 8000 bytes apart, with rows 40 bytes apart.
 - `return_without_action_3`: The routine contains only a return instruction, so it does nothing when called.
 - `sample_beam_position_and_dispatch`: Reads the video beam position register, stores and clears one global, and updates two bytes from a 64-entry word table indexed by a value computed from the call.
-- `advance_digit_and_dispatch`: Increments the character at offset 3 of a buffer, wrapping from the digit 9 back to 0, then makes two calls and dispatches through a handler table indexed by a value from another routine.
+- `process_glyph_and_interpolate`: Increments a byte at an offset from a pointer and clamps it between 48 and 57, calculates a value based on a global variable and the byte, then calls three different routines to interpolate tables, copy word blocks, and call library vectors.
 - `call_other_routine_2`: The routine performs a single call to another routine and then returns.
 - `dispatch_indexed_handler`: Calls five setup routines, runs one more only when a flag is zero, then makes an indirect call through a handler table indexed by a value returned from another routine.
 - `run_setup_then_dispatch`: Calls three setup routines, then makes an indirect call through a handler table selected by the value returned from a final routine.
 - `patch_marker_byte_then_dispatch`: Calls five routines, sets a flag word and a byte, then scans a byte string for the marker value and replaces the first matching count-limited occurrence with the next character value.
 - `skip_to_string_terminator`: Advances a pointer through a byte string until it reaches the zero terminator, then returns.
 - `empty_routine_3`: The routine contains four instructions and performs no observable work.
-- `clamp_stat_pair_and_report`: Recalculates two stored values, each limited to the range 1 to 99 after an adjustment chosen by a flag, then copies a constant string into a buffer.
-- `update_clamped_resource_values`: Calculates new values for two resource counters by performing division and modular arithmetic on existing data, then clamps the results between one and ninety-nine.
-- `update_clamped_resource_values_2`: Calculates new values for two resource counters by performing division and modular arithmetic on existing data, then clamps the results between 1 and 99.
-- `update_clamped_resource_values_3`: Calculates new values for two resource entries by performing division and modular arithmetic on existing data, then clamps the results between 1 and 99.
 - `clamp_stat_pair_for_labels`: Recalculates two stored values, each limited to the range 1 to 99 after an adjustment chosen by a flag, then copies a constant string into a buffer and computes a third value for another routine.
 - `reset_display_state_and_dispatch`: Calls three routines, sets a stored word to 40, clears one byte and a global, then calls a routine and makes an indirect call through a handler table selected by a return value.
 - `rewrite_flag_glyphs_in_text`: Walks a text buffer and rewrites each occurrence of the characters y and z according to the low bit of a 16-bit mask, shifting the mask on every character.
@@ -364,16 +387,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_handlers_from_table`: Walks a grid of flag bytes, six per row, alongside a table of pointers.
 - `build_menu_string_table`: Clears a block of twelve longword slots, then fills them with pointers to consecutive null-terminated strings from a text area, stopping early when a count runs out.
 - `rewrite_mode_glyphs`: Selects one of two global blocks by a flag, then scans a text buffer for the characters c and y and rewrites them according to a mode value and two counters.
-- `tiny_ori_ori_ori`: Small routine of 3 instructions that merges 0 into d0, then merges 0 into d0, then merges 0 into d0.
 - `render_flags_and_dispatch`: Rewrites the characters y and z in a text buffer using the low bits of a 16-bit mask that is shifted for each character, and places a g at a position clamped to 15 wherever h appears.
 - `mark_h_and_flag_glyphs`: Walks a text buffer, rewriting y and z from a shifted 16-bit mask and replacing each h with g at a clamped offset.
 - `run_routine_until_threshold`: Repeatedly calls a routine and reads its returned value, continuing while a mode value is 2 and the returned value stays between 3 and 26.
-- `append_char_on_match`: Searches a table with 8-byte entries for one whose stored value equals a global key.
 - `append_formatted_char`: Clamps a character to a printable range and appends it to a string by shifting existing characters.
 - `append_uppercase_char`: Clamps a character to the printable range from space to y, converts lowercase to uppercase, and appends it to a text string, shifting the string left first when it exceeds 33 characters.
-- `find_v_w_delimiter`: Steps backwards through a byte string until it finds the letter v, then forwards until it finds the letter w, and calls one other routine.
-- `search_string_markers`: Iterates through a string to find specific character markers.
-- `search_string_markers_2`: Scans a string for specific character sequences.
 - `find_v_w_delimiter_2`: The routine receives a pointer in a0, steps back from the byte after the pointer until it finds the character 'v', then steps forward from that position until it finds the character 'w', and then calls another routine.
 - `edit_text_input_line`: Accepts keyboard characters into a text buffer with a maximum length.
 - `edit_text_input_loop`: Runs the same kind of text entry loop as its sibling routines: a character is read, carriage return ends entry, backspace shifts the buffer left, and other characters are inserted at the cursor up to the length limit.
@@ -392,18 +410,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_two_routines_in_sequence`: Calls two other routines one after the other and returns, with no other operations.
 - `draw_text_glyphs_to_planes`: Draws a text string into a bitplane buffer one character at a time, using a 32-byte glyph entry per character and writing across eight plane positions at fixed offsets.
 - `process_flagged_tile_entry`: If a flag word at the given index is non-zero and a byte from a second table is positive, it records the index, calls several routines, invokes an indirect handler chosen from a table, then runs a second indirect handler.
-- `build_five_text_pointers`: Skips a number of text strings computed from a global index, then records pointers to five consecutive strings in a table.
-- `update_pointer_table`: Calculates several offsets based on a global variable and populates a table with pointers to strings.
-- `update_pointer_table_2`: Calculates multiple memory offsets and fills a table with pointers to various string locations.
+- `increment_and_branch_3`: Increments a 16-bit value in a global variable, uses the lower two bits of the new value to load a byte from a table, and then branches to one of several locations.
+- `perform_blitter_sequence`: Increments a global counter, calculates several destination addresses, and enters a loop that performs three blitter transfers using values from a table until a terminator is reached.
+- `branch_to_offset`: returns immediately and then performs a relative branch to a later instruction.
+- `modify_and_branch_2`: Performs bitwise operations on a global variable, uses the result to calculate a new value, and then branches to one of two locations.
+- `update_counter_and_dispatch`: If a global word is not negative one, it sets it to 3388, otherwise it increments the global word by 4 and potentially updates it using a value from a table, then calls another routine.
 - `build_five_text_pointers_2`: Skips a number of text strings computed from a global index, then records pointers to five consecutive strings in a table.
 - `process_buffer_until_done`: Clears several global variables and a pointer, then processes the character buffer pointed to by a global, toggling a flag and advancing an index on alternating passes, until a completion flag is set.
-- `render_packed_text_run`: While a counter is below 1000, it advances through a text buffer of 16-bit packed entries, splitting each into two 6-bit fields that form screen coordinates.
 - `render_packed_text_run_2`: Runs the same packed-entry text drawing loop as its sibling routines: each 16-bit entry is split into two 6-bit fields that become coordinates, drawn through a routine call, with a 96-unit character limit and a timer that starts a fallback pattern.
 - `render_packed_text_run_3`: Draws a packed text buffer with the same entry decoding as its sibling routines, splitting each 16-bit entry into 6-bit coordinate fields and drawing it through a routine call.
 - `render_packed_text_loop`: Runs the packed text drawing loop as a jump-based variant: it draws each 16-bit entry from a buffer by splitting it into 6-bit coordinate fields, updates a timer, and ends with a stored return when the buffer is exhausted.
 - `copy_planar_tile_rows`: Copies 96 rows of a 12-byte source block into a four-plane bitmap, writing three bytes into each plane per row.
 - `load_display_state_and_dispatch`: Derives a display value from a state record, clamping one field to 8 and offsetting a table pointer from it.
-- `copy_planar_block_and_dispatch`: Copies 64 rows of three-word blocks from a global buffer into four bitplanes, writing six bytes per plane per row with planes 8000 bytes apart and rows 40 bytes apart.
 - `copy_and_dispatch_data`: Copies blocks of data to a destination and then executes a series of function pointers retrieved from a table.
 - `iterate_table_dispatch`: Runs three times, each time combining a value from a short table with a byte from a buffer to pick a handler from a table.
 - `nested_double_call_loop`: Runs a nested loop of two outer iterations and three inner iterations, calling two routines in each inner pass.
@@ -412,6 +430,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_blitter_tile_grid`: Programs the blitter registers and waits for it to finish, then walks an 8-by-8 grid of table entries.
 - `blit_tile_pair_entries`: Checks two adjacent table entries and, for each non-zero entry, programs the blitter with a computed source address and size and waits for it to finish.
 - `setup_blitter_parameters`: Looks up blitter source values from a table for an index, clips the horizontal and vertical positions to a 64-by-64 area, and stores the adjusted pointer, modulo and size values.
+- `configure_blitter_and_traverse_list`: Configures the blitter control and mask registers with specific constants and then traverses a linked list of structures via a pointer in a4, calling another routine for each element.
+- `adjust_pointers_and_call`: Increments two registers by 2, calls another routine, decrements those same two registers by 2, and returns.
+- `execute_blitter_transfers_conditional`: The routine calculates a size and offset, then performs up to four blitter transfers to different memory areas by writing to hardware registers and waiting for the DMA controller to finish, provided the offset is within a specific range.
+- `perform_multi_block_blitter_transfers`: Checks if a value derived from a pointer in a6 is within a specific range, then reads a sequence of offsets from a table in a3 to perform a series of blitter transfers.
 - `write_blitter_words_from_table`: Waits for the blitter to become idle, programs its control registers, then writes eight words from a table to the blitter data register, advancing a row offset on each word.
 - `program_blitter_control_block`: Waits for the blitter to become idle, writes a fixed block of control words, then writes pointer and size values taken from two global parameters followed by a final control word.
 - `clear_table_and_iterate`: Clears 4096 longwords starting at a global buffer, then walks a short table until the sentinel value -99 is reached, calling three routines for each entry.
@@ -474,13 +496,25 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `plot_pixel_with_bounds`: Sets or clears one pixel in a four-plane 320-by-200 bitmap, writing one bit into each plane according to the low four bits of a mode value.
 - `plot_pixel_without_bounds`: Sets or clears one pixel in a four-plane bitmap, writing one bit into each plane according to the low four bits of a mode value.
 - `clear_bit_in_four_planes`: Clears one bit, selected by the low three bits of a register value, in the byte at a pointer and in the three bytes at the same offset in the other three planes, 8000 bytes apart.
+- `set_bit_and_clear_others`: sets a bit in a byte at a pointer using d0, then clears the same bit in three other bytes at offsets 8000, 16000, and 24000.
+- `clear_bit_and_set_one`: clears a bit in a byte at a pointer using d0, then sets the same bit in a byte at an offset of 8000 from that pointer, and clears it at offsets 16000 and 24000.
+- `set_two_bits_and_clear_others`: sets a bit in a byte at a pointer and a bit in a byte at an offset of 8000 from that pointer, then clears the same bit in two other bytes at offsets 16000 and 24000.
+- `clear_bits_and_set_one`: clears a bit in a byte at a pointer and in a byte at an offset of 8000, then sets the same bit in a byte at an offset of 16000 from that pointer and clears it at offset 24000.
+- `set_two_bits_and_clear_others_alt`: sets a bit in a byte at a pointer and a bit in a byte at an offset of 16000 from that pointer, then clears the same bit in two other bytes at offsets 8000 and 24000.
+- `clear_and_set_bits`: clears a bit in a byte at a pointer, sets bits at offsets 8000 and 16000, and clears a bit at offset 24000 using the index in d0.
+- `set_and_clear_bits`: Sets bits at offset 0, 8000, and 16000 of the structure in a1 using the index in d0, then clears a bit at offset 24000.
+- `clear_and_set_bits_alt`: Clears bits at offset 0, 8000, and 16000 of the structure in a1 using the index in d0, and sets a bit at offset 24000.
+- `set_and_clear_bits_alt`: Sets bits at offset 0 and 24000 of the structure in a1 using the index in d0, and clears bits at offsets 8000 and 16000.
+- `toggle_bits_mixed`: Clears a bit at offset 0, sets bits at offsets 8000 and 24000, and clears a bit at offset 16000 using the index in d0.
+- `set_bits_mixed`: Sets bits at offsets 0, 8000, and 24000 of the structure in a1 using the index in d0, and clears a bit at offset 16000.
 - `write_blitter_setup_when_flagged`: When a flag table entry for the current structure is non-zero, it calls one routine and, if a word that routine points to is zero, writes a fixed sequence of eight blitter setup words into the global table.
 - `compare_record_bytes_and_call`: Compares two byte fields of a record using a comparison selected by a flag table entry, then calls one routine.
-- `empty_routine_4`: This routine contains only one instruction.
 - `empty_routine_5`: This routine contains four instructions.
 - `run_linked_entry_handlers`: Walks a linked chain of table entries, calling the handler stored in each one.
 - `walk_entry_chain_with_handlers`: Walks a chain of table entries from a given start, calling a routine for each entry and handling marker-valued entries through a flag byte on the record.
-- `recursive_call_other_routine`: The routine contains no instructions and therefore performs no operations.
+- `dispatch_object_handlers`: Calls a routine to process a linked list of entities, then calls another routine to resolve data from a table using a value stored at an offset from a pointer in a3.
+- `validate_and_dispatch_event_with_bounds`: Checks if a set of coordinates falls within a boundary defined by a global structure, then updates a global pointer and flag if the constraints are met.
+- `validate_and_dispatch_event`: Validates a set of coordinate and boundary constraints against a global structure, updates a pointer and a flag if conditions are met, and then conditionally calls a function pointer or specific subroutines based on bit flags at offset 13 of a structure in a3.
 - `dispatch_linked_handlers_skip_known`: When a word argument is below 1330 and a multiple of four, it increments a counter in a global table and walks a linked list of table entries.
 - `call_indirect_by_flag`: Selects one of two global blocks according to a flag value in a record, calls the routine stored eight bytes after the chosen block, and returns its two register inputs combined.
 - `call_indirect_if_flag_set`: If a global counter is non-negative, calls a routine through a function pointer stored in memory.
@@ -530,13 +564,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `blend_palette_tables`: Interpolates between two sets of 16 source words over 17 steps, writing the blended 16-bit values into two output buffers obtained from a routine.
 - `compare_counted_byte_strings`: Compares a zero-terminated byte string with a second byte sequence, counting down the length as it goes.
 - `test_first_byte_nonzero`: Tests whether the byte at a pointer is non-zero, returning 1 in the low half of a 64-bit value when it is and zero otherwise.
-- `expand_seed_into_byte_pairs`: Advances a 16-bit seed with a linear congruential step, then writes a pair of bytes from a global table into a buffer for each six-bit group of the seed.
 - `fill_pattern_from_table`: Expands a 16-bit seed into a sequence of byte pairs from a global table and writes them into a buffer until the seed is exhausted.
 - `xor_key_words_and_loop`: Calls one routine, XORs two consecutive 32-bit words at a pointer with fixed key values, then calls another routine repeatedly until a count from a register reaches zero.
 - `encode_value_as_four_letters`: Encodes a 32-bit value into four capital letters by dividing by fixed constants and adding the letter A to each quotient and remainder, writing the result through a pointer.
 - `swap_structure_byte_pairs`: Swaps six pairs of bytes inside a structure: offsets 1 and 4, 2 and 8, 3 and 12, 6 and 9, 7 and 13, and 11 and 14.
 - `rotate_bits_in_place`: Rotates a block of eight bytes one bit at a time through a carry, repeating across the block.
-- `check_triplets_divisible_by_three`: Calls one routine, then reads three values through another routine, each of which must divide evenly by three; the quotients are stored and -1 is returned if one does not.
 - `decode_and_xor_structure`: Iteratively divides values by three, performs a bitwise XOR on a structure using two different constants, and calls other routines.
 - `return_minus_one_2`: Returns -1 without doing any other work.
 - `decode_four_byte_value`: Reads four bytes through a pointer, adds a fixed offset to each, and combines them into one integer by base-26 weighting.
@@ -574,17 +606,25 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_modular_offset_result`: Calls two sub-routines, then stores into a global the register value taken modulo five, multiplied by 727, plus a second register value.
 - `or_accumulate_words_into_tables`: Optionally selects a base pointer from a global, then for a counter derived from a global value divided by five ORs eight 32-bit words from a source table into two destination tables.
 - `reset_counters_and_sync_state`: Polls two global values for up to nine passes, clears a counter, and conditionally calls a sub-routine when a timer is at or below a threshold.
-- `clamp_two_globals_to_range`: Clamps two global values into the range zero to 56, setting values below zero to zero and values above 55 to 56.
 - `clamp_two_globals`: Clamps two global variables to a range between zero and fifty-six inclusive.
 - `swap_two_entries`: Swaps eight bytes and two 16-bit fields between two records selected by an input index and the current global index.
 - `invoke_two_subroutines_only`: The decompiled body is unavailable, so only its relationships are known: it calls two other routines and is called by two.
+- `update_entity_attributes_via_table`: Reads values from a structure in a0 to index into a table at a global address, then performs conditional updates to the table entries or calls other routines to modify specific bytes and words based on the retrieved data.
 - `invoke_three_subroutines_only`: The decompiled body is unavailable, so only its relationships are known: it calls three other routines and is entered from a data pointer and another routine.
 - `decrement_counter_and_clear_flags`: Decrements a per-slot counter in a global table by two, applies a further adjustment and a sub-routine call when a flag bit is set, and clears several status bytes in the record depending on a sub-routine's result.
 - `move_link_into_table_slot`: Moves a link value from one record into a table slot, updates the neighbouring link with the offset difference between records, increments a table byte, and returns one.
 - `relink_entry_when_key_changes`: Writes two new values into a record and, if they differ from the old key, unlinks the record from its old list and links it at the head of the list for the new key, returning one.
 - `insert_entry_at_list_head`: Clears a link field in a record and pushes the record onto the head of a list selected by a key computed from two record bytes.
 - `unlink_node_from_list`: Removes a record from the singly linked list whose head is selected by a key from the record.
-- `merge_source_record_into_target`: Copies selected fields from a source record into a target when flags allow, merges the source flag byte into the target, and keeps the larger of two level bytes.
+- `calculate_ratio_and_update_structure_2`: Subtracts a word in d6 from d0 and a word in d7 from d1, then performs 16-bit divisions and swaps values in d0 and d2 based on a byte from a structure in a0.
+- `perform_division_swap`: Performs two 16-bit divisions and swaps the values in d1 and d2 using a series of swap and move instructions before branching to another location.
+- `perform_division_negate_2`: Negates d1, extends d0 and d1 to 32-bit values, fetches a byte from offset 18 of a0 into d2, and if d0 is less than the negated d1, performs two 16-bit divisions and swaps values between d0 and d2 before branching to another routine.
+- `perform_division_negate`: Performs two 16-bit divisions, swaps the values in d1 and d2, negates d1, and then branches to another location.
+- `calculate_division_results_2`: Subtracts a 16-bit value in d7 from d1 and, if the result is not negative, negates d0, extends d0 and d1 to longwords, and performs two 16-bit divisions using a byte from offset 18 of the structure in a0, then performs a series of swaps and moves on d0 and d2 before returning.
+- `perform_division_negate_d0`: Performs two 16-bit divisions, swaps the values in d1 and d2, negates d0, and then branches to another location.
+- `calculate_division_results`: Negates d0 and d1, extends them to longwords, compares them, and if d0 is not greater than d1, performs two divisions using a byte from offset 18 of a structure in a0 and then performs a sequence of swaps and moves.
+- `update_division_results`: Performs division operations using d0, d1, and d2, then updates two 16-bit values at offsets 14 and 16 of a structure in a0 if the results differ from existing values.
+- `merge_entity_data`: Merges data from a structure in a0 into a structure in a1, clears links and flags, and calls a routine to remove a record from a key list.
 - `accumulate_entry_and_set_state`: Adds a computed amount to a per-slot total in a global table and increments a counter, then subtracts that amount from another total, clamping at zero.
 - `reset_entity_state`: Calls a sub-routine, calls another when a mode field equals two, then clears a 16-bit field and sets a state byte to a fixed value.
 - `set_state_fields_and_call`: Unless either of two records has type four, which triggers two sub-routine calls instead, it writes a pair of state bytes and a 16-bit field chosen by an index byte, then calls a sub-routine.
@@ -595,20 +635,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `cross_link_two_records`: Stores each record's offset into a pointer field of the other, and sets state bytes on both.
 - `initialize_spawn_entry`: Initialises a record's type and state bytes and a word copied from a global, then calls a sub-routine and, when its result is not positive, calls another.
 - `invoke_four_subroutines_only`: The decompiled body is unavailable, so only its relationships are known: it calls four other routines and is called by one.
-- `dispatch_record_state_flags`: Tests a mask of input flags in priority order, and for each recognised flag writes a value into the record, sometimes taken from a global table by index, then calls sub-routines.
-- `set_record_timing_and_state`: Writes a fixed 16-bit value and a state byte into the record pointed to by the input register and returns.
-- `dispatch_partial_state_flags`: Tests a subset of the input flag bits and writes a timing value and state bytes for each match, with some values taken from a global table, then calls sub-routines.
-- `initialize_struct_fields`: Writes a fixed 16-bit value and four state bytes into the record pointed to by the input register, with no calls.
-- `dispatch_flags_with_subcalls`: Checks a mask of input flags and, for each recognised bit, writes a timing word and state bytes into the record.
-- `dispatch_remaining_state_flags`: Checks a subset of input flags and writes a timing word and state bytes for each recognised bit, calling sub-routines, with some values taken from a global table.
-- `write_timing_state_then_call`: Writes a fixed 16-bit value into the record, calls a sub-routine, writes four state bytes through a pointer returned by that call, and calls another sub-routine.
-- `set_object_header_fields`: Writes a 16-bit field of the record with a value chosen by an index byte, calls a sub-routine, then writes four state bytes through the pointer it returns.
-- `dispatch_flags_with_timing_writes`: Checks a mask of input flags and, for each recognised bit, writes a timing word and state bytes into the record, calling sub-routines and taking some values from a global table.
-- `set_tile_flags_then_write`: Writes a fixed 16-bit value to the record, sets a global table entry when a flag bit is present, then calls sub-routines and writes four state bytes through a returned pointer.
-- `dispatch_masked_timing_writes`: Tests two input flag bits and, depending on the record's state byte and index byte, writes a timing word and state bytes into the record.
-- `set_terrain_flags`: Writes a constant word to a structure, calls another routine, and then writes several bytes to specific offsets within a returned pointer.
-- `conditionally_set_timing_then_call`: Returns early unless an input flag bit is set and the record's state byte is not the excluded value.
-- `set_timing_word_then_call`: Writes a 16-bit constant into the record, calls a sub-routine, then writes an 8-bit state value into the record and returns.
 - `find_matching_entry_and_flag`: Walks a linked list for an entry whose type byte is four and whose key byte matches the input, sets a flag bit on it, and returns one.
 - `search_list_for_flagged_entry`: Walks a linked list for an entry of type four with a matching key byte and sets a flag bit on it, returning one.
 - `tiny_moveq_movea_rts`: Small routine of 3 instructions that loads 0 into d0, then copies (a7)+ to a0, then returns.
@@ -622,7 +648,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `normalize_two_byte_fields`: Reads two signed bytes from the record, compares each with a high byte from the input words, and writes two 16-bit results back.
 - `initialize_slot_and_dispatch`: Finds the first empty 52-byte record, initialises its state and input fields, then calls a routine chosen through a jump table indexed by a value.
 - `initialize_record_and_dispatch`: Initialises the fields of the record pointed to by the input register, then calls a routine chosen through a jump table indexed by a value.
-- `return_from_call`: The routine is empty and performs no operations before returning.
 - `validate_and_update_byte`: Compares an input byte with a record field and a global lookup.
 - `return_result_of_subroutine`: Most of its body is unreachable and was removed by the decompiler, leaving a call to a sub-routine whose result it returns.
 - `copy_bytes_into_masked_table`: Walks a table of word entries until a sentinel value of minus 99, and for each entry whose masked bits are clear, writes a byte from a second table into a global table at an index computed from the entry.
@@ -681,12 +706,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_routine_when_table_positive`: If a global flag is zero and a byte-indexed global word is non-negative, calls a sub-routine.
 - `return_stack_arguments`: Returns two values taken from its stack arguments without other work.
 - `invoke_two_subroutines_brief`: The decompiled body is unavailable, so only its relationships are known: it calls two other routines and is called by two.
+- `process_entity_updates`: Performs complex updates to entity structures by calculating indices into tables, updating linked list nodes, and executing various conditional logic branches including bitwise operations and jumps to subroutines.
 - `clear_slot_byte_if_outside`: Returns its input registers unchanged when the record lies in a first fixed range.
 - `clear_slot_byte_or_return`: If the record lies in a fixed range, it calls a sub-routine and returns its inputs unchanged.
 - `clear_slot_byte_then_call`: Clears a byte at the record's index offset and calls a sub-routine.
 - `invoke_one_subroutine_unclear`: The decompiled body is unavailable, so only its relationships are known: it calls one other routine and no caller is recorded.
 - `relay_three_subroutine_calls`: The decompiled body is unavailable, so only its relationships are known: it calls three other routines and is called by three.
-- `claim_free_slot_by_index`: Sets high bits in a record's first word, derives an index from a sub-routine result, and claims the first unused 52-byte slot in a global table, filling its fields and calling a sub-routine.
+- `calculate_and_update_index`: Calls another routine, performs a division, and uses the result to index into a table to add a value to d1, then checks bits in d0 before branching.
 - `write_record_fields_and_call`: Writes a record's index, coordinates and a 16-bit timing value, then calls a sub-routine.
 - `return_zero_value_3`: The routine returns a constant zero value to the caller.
 - `initialize_empty_entry_slot`: Finds the first empty 32-byte entry in a global table and fills it with the input values, a constant size, a flag and an identifier, plus a value from a table.
@@ -717,7 +743,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reset_linked_entry_kinds`: Sets a timing word and kind byte on the input entry, then walks a list of pointers, resetting the kinds and timing values of linked entries and setting a timing value from a table.
 - `adjust_pointer_list_kinds`: Walks a list of pointers and adjusts the kind and timing of each linked entry according to its current kind, then sets a timing value from a table for the input entry and returns.
 - `return_stack_arguments_2`: Returns its stack argument unchanged and performs no other work.
-- `search_and_initialize_table`: iterates through a global table to find an entry and, if found, populates several fields of that entry with specific values.
 - `divide_and_fill_free_entry`: Divides a value returned by a sub-routine, fills the first free 16-byte entry with a remainder-based timing and a kind, and repeats for each result a sub-routine provides.
 - `fill_object_entry`: Repeatedly fills the first free 16-byte entry with a kind and timing derived from a sub-routine result, until that result is zero.
 - `invoke_three_subroutines_short`: The decompiled body is unavailable, so only its relationships are known: it calls three other routines and is called by one.
@@ -761,7 +786,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `claim_cell_and_fill_record`: Checks a byte cell in a global table and, if it is clear, marks it and claims the first free record in a fixed table of 32-byte records.
 - `fill_record_with_timer`: Writes a marker byte into a cell reached through a second address register, then fills the record at the address register with the given values and a timer taken as a call result modulo a global plus four.
 - `return_null_value`: This routine returns a zero value to the caller.
-- `tiny_ori_3`: Small routine of 1 instruction that merges 100 into (a2).
 - `initialize_first_free_record`: Searches the fixed table of 32-byte records for an unused one and, if found, clears its status field and sets its state byte to a fixed code.
 - `initialize_record_state_fields`: Initializes the record at the address register by clearing its status field and setting its state byte to a fixed code.
 - `return_zero_status`: Returns zero with no other work.
@@ -772,6 +796,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_record_flag_byte`: Clears the byte at offset twelve of the record it is given, with no other effect and no calls.
 - `iterate_handler_table`: Walks a table of handler pointers in a global area and calls each handler through its entry, clearing two bytes in the structure at the current pointer after each call.
 - `leave_timed_out_routine`: The decompiler timed out, so no pseudo-code exists for this routine.
+- `branch_to_address`: Performs a relative branch to another location.
+- `execute_event_callback_table`: Iterates through a table of instructions where each entry consists of a branch to a specific handler, performing tasks such as bitwise negation of a word, copying data between pointers, updating a global counter, and executing conditional logic involving table lookups and arithmetic operations on values derived from an input buffer.
 - `check_and_update_table_entry`: Reads a 16-bit value from a table at a global index and, when it is nonzero and within a limit, advances the index by six.
 - `run_timed_sequence_loop`: Clears several global state variables, then runs nested loops that repeatedly call unnamed routines and wait on their results, including two long countdown delays.
 - `poll_results_and_set_mode`: Calls an unnamed routine until its result is at least one, returning early if a check fails.
@@ -781,11 +807,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `check_record_type_merge_flags`: Reads a record's type byte and, when it is six or eight, runs a polling loop over unnamed routine calls and then ORs two saved global words with their current values.
 - `tiny_moveq_rts_3`: Small routine of 2 instructions that loads 1 into d0, then returns.
 - `normalize_three_entry_flags`: Calls an unnamed routine, then walks three ten-byte entries in a global table.
-- `clear_flags_and_process_table`: Walks a global table of five-word entries, zeroing each nonzero first word and calling unnamed routines for it.
-- `process_sequence_list`: iterates through a memory range to clear non-zero short words and then processes a second list by performing conditional indirect calls and negating values.
 - `clear_flags_and_process_table_2`: Iterates over a block of short flags starting at a global variable, clearing each non-zero flag and invoking another routine, with an extra call when a related entry is set.
 - `toggle_entry_and_recurse`: Looks up a word in a table indexed by a byte from the argument.
-- `call_bit_masks_with_flag`: Calls an unnamed routine four times with a single-bit value from one to eight, each combined with a high flag bit.
 - `execute_self_calling_loop`: Calls another routine repeatedly with a flag that doubles each iteration while a short value stays below a threshold, then conditionally calls the same routine once more if a global variable is non-zero.
 - `call_twice_by_flag_state`: Checks a global flag.
 - `update_entry_and_linked_neighbor`: Indexes a global table with its argument, calls an unnamed routine twice with values built from the entry's fields, and repeats both calls for a second entry if the entry's link field is nonzero.
@@ -797,7 +820,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `leave_timed_out_routine_2`: The decompiler timed out, so no pseudo-code exists for this routine.
 - `skip_flagged_entity_updates`: Calls another routine for a 64-bit value, then skips its loop over four records because a flag tested in the listing is set to false just before the test.
 - `update_dma_channel_registers`: When a pending flag is set, it clears the flag and decrements a counter, then processes four channel records.
-- `write_four_channel_registers`: Loops over four channel records, resetting each record's pending bytes and calling unnamed routines, then writes each record's pointer, length and period into a fixed hardware register block.
+- `configure_dma_channel`: Tests d3 and, if it equals 1, calculates a value by shifting d7, performs a bitwise OR with 32768, and writes the result to the DMA controller register at offset 96.
 - `chain_channel_register_updates`: Walks four channel records, writing each record's pointer and length into its hardware register block and marking it pending.
 - `finish_channel_record_updates`: Completes a four-record channel update: for each record it resets pending bytes, calls an unnamed routine, and writes the record's pointer and length into its hardware register block.
 - `advance_sequence_step_counter`: Advances the step counter and index of a sequence record and adds a stored increment to a field when a flag is set.
@@ -820,7 +843,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_uppercase_text_on_match`: Calls three unnamed routines through library pointers and, for each candidate string, checks whether it ends with a fixed suffix from a global.
 - `copy_uppercase_until_done`: Copies a source string into a buffer, converting lowercase letters to uppercase, until a zero byte is reached.
 - `call_indirect_and_store`: Calls an indirect library routine through a pointer in the base register, then restores one global from a saved copy and stores the counter value in another global.
-- `run_library_request_sequence`: Saves a global, sets another global to a fixed value, and makes a sequence of indirect library calls through a stored library base.
 - `run_library_request_checked`: Performs the same indirect library call sequence as its neighbouring routine, saving and restoring a global around it.
 - `run_library_status_check`: Queries an indirect library routine and, when the result is positive, runs a second library call and compares its status code with a fixed value.
 - `check_library_call_status`: Calls two indirect library routines and returns a success flag, one when the first call's status equals a fixed code and zero otherwise.

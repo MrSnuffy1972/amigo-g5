@@ -8,7 +8,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (901212 top-level bytes in 44 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 58 raw-word lines |
-| Functions named and described | FAIL, 271 of 275 named (0 author symbols), 271 of 275 described (88 by rule, 172 by the local model) |
+| Functions named and described | pass, 275 of 275 named (0 author symbols), 275 of 275 described (91 by rule, 172 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2233 of 2233 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 8429 of 8429 instructions identical in start and length, 0 mismatches |
@@ -277,7 +277,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### 8
 
 - `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
-- `sub_03A2`: undescribed.
+- `update_structure_field_via_callback`: Calls a function via a pointer in a structure at a negative offset from a register, and if the return value is non-zero, stores the contents of a register into a field at offset 34 of the returned pointer before calling another function via a pointer in the same structure.
 
 ### diskfont.library
 
@@ -341,9 +341,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `sub_0004`: undescribed.
+- `jump_vector_entry_2`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `sub_0016`: undescribed.
-- `sub_001C`: undescribed.
+- `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_4`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.

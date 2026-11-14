@@ -7,20 +7,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (2195858 top-level bytes in 130 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 126 of 126 units identical (bytes and relocations), 304 raw-word lines |
-| Functions named and described | pass, 406 of 406 named (0 author symbols), 406 of 406 described (25 by rule, 369 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 5033 of 5040 (99.86%) |
+| Byte-identical reassembly with vasm | pass, 126 of 126 units identical (bytes and relocations), 300 raw-word lines |
+| Functions named and described | FAIL, 397 of 457 named (0 author symbols), 397 of 457 described (23 by rule, 362 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 4970 of 5040 (98.61%) |
 | Recovered without load address (counted in proof 1, flagged) | 16256 bytes, 1 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 6665 of 6694 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 7054 of 7054 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 22448 |
-| code | 36340 |
-| data | 2029787 |
-| padding | 19 |
+| asset | 21406 |
+| code | 38086 |
+| data | 2029075 |
+| padding | 27 |
 | unused | 107264 |
 
 ## Code units
@@ -28,7 +28,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | game.slave | 1 | 168 | 13 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4790 | 222 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5032 | 239 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 5 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 181 | 5 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 1 |
@@ -73,9 +73,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 9 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 13 | 3 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 12 | 3 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 13 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11 | 1 |
@@ -87,7 +87,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 13 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 12 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 9 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 12 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11 | 1 |
@@ -104,7 +104,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 18 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 18 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 20 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 16 | 3 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 14 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 17 | 3 |
@@ -112,21 +112,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 18 | 3 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 17 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 14 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 16 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 158 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 172 | 5 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 18 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 14 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 9 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 12 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 17 | 3 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 16 | 3 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 28 | 4 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 13 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 10 | 1 |
@@ -148,7 +148,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 14 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 3 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 43 | 23 |
 | Disk.0 bytes 8960-16128 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Disk.0 bytes 30464-30720 (code never loaded by a reference run) | 1 | 9 | 1 |
 | Disk.0 bytes 40448-40704 (code never loaded by a reference run) | 1 | 0 | 0 |
@@ -981,6 +981,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_byte_via_pointer`: Calls two routines in sequence, then stores the byte in d5 through the pointer in a4, and returns.
 - `load_word_and_store_byte`: Loads a word from a5 into d5, then branches to a routine that stores that byte through the pointer in a4.
 - `clear_global_byte`: Clears a byte in a global variable to zero and returns.
+- `sub_0A2A`: undescribed.
 - `load_byte_and_dispatch`: Calls a routine, loads a byte pointer into a2 and pushes the current pointer in a4 on the stack, calls the routine again, loads a byte from a4 into d6, restores the pointer, then branches to a dispatcher that applies the selected arithmetic operation.
 - `increment_and_dispatch`: Adds two to the value in a5, calls two routines, then branches on whether a global variable is zero to store zero and call one routine or call another routine, and finally calls a routine with the incremented value and returns.
 - `clear_and_store_byte`: Calls a routine, clears d5, then branches to a routine that stores that byte through the pointer in a4.
@@ -998,32 +999,37 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `apply_arithmetic_twice`: Fetches a byte from the stack into a2 and calls a routine, then loads a pointer, advances it by four, applies an arithmetic operation to the pointed byte, advances by one, and applies the operation again before returning.
 - `check_flag_then_call`: Checks a global byte and returns early when it matches a value, then reads a word from a pointer and calls a routine with it before returning.
 - `compare_global_word`: Compares a global word at offset 6262 with the value 65535 and branches away when they differ, otherwise it branches to another routine.
+- `sub_0CBC`: undescribed.
+- `sub_0CC6`: undescribed.
 - `apply_arithmetic_to_byte_2`: Fetches two words and a pointer from the stack, loads a byte from a table indexed by a value, then applies equality, addition, subtraction, multiplication, division or modulo to the pointed byte with clamping, and returns.
 - `call_store_byte_offset`: Calls a routine, copies a byte into d1, loads a zero into d0, copies another byte into d0, sets up a pointer from it, loads a global variable pointer, calls two more routines, and stores a byte into the structure at offset 470 before returning.
 - `pack_comparison_flags`: Calls a helper routine, then compares two pairs of 16-bit values at offsets 270 and 350 and packs a 3-bit flag derived from the sign and magnitude comparison into a byte at offset 470 of the global structure.
 - `set_flag_call_return`: Returns immediately when two global words are unequal, otherwise sets a global byte to one, calls a routine, clears that byte, and returns the value from the routine.
+- `sub_0E7A`: undescribed.
 - `copy_scaled_table_byte`: Loads a word from memory through a5, scales the global pointer by 32, reads a byte at offset 5790 of the resulting address, stores it at offset 950 of the global structure, and writes 16 to offset 8470.
 - `set_flag_after_helper`: Calls a helper routine, then sets bit value 1 at offset 1070 of the address given by the returned value and returns.
 - `store_word_low_byte`: Loads a word from memory through a5, stores its low byte at offset 2 of the global structure and returns.
 - `clear_byte_offset2`: Clears the byte at offset 2 of the global structure and returns.
 - `accumulate_and_store_bytes`: Calls a helper routine, adds a loaded word to two 16-bit values at offsets 270 and 350 while clearing their low bits, then stores two bytes from consecutive words at offsets 430 and 470 of the derived address and returns.
 - `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `sub_0F0C`: undescribed.
 - `store_word_low_byte_high`: Loads a word from memory through a5, stores its low byte at offset 470 of the global structure and returns.
 - `store_pair_then_call_helper`: Reads a word and a byte from memory through a5, stores them at offsets 7150 and 7170 of the pointed address, calls a helper routine with the following word, restores the pointer, and returns.
+- `sub_0F4A`: undescribed.
 - `store_word_low_byte_low`: Loads a word from memory through a5, stores its low byte at offset 430 of the global structure and returns.
-- `find_and_update_byte_pair`: Searches a table of byte pairs for one whose first byte matches a value in d1, adding the second byte to a pointer from a2 with a carry clamp to 255, then stores the results back and returns.
+- `sub_1028`: undescribed.
 - `find_or_add_byte_pair`: Computes a value from a stack byte using a comparison character, multiplies it by another masked value, then searches a table of byte pairs for a matching first byte and stores the pair, otherwise appends it and increments a counter.
 - `find_max_byte_pair`: Searches a table of byte pairs for the largest second byte, stores the matching first byte into a global structure at its start with a byte at offset 1070 set to one, and returns.
 - `init_struct_from_d5`: Sets the byte at offset 1070 of the structure in a2 to one, copies the byte from d1 into the start of the structure in a4, and clears the next three bytes.
 - `store_byte_call_routines`: Stores the byte at the address in a5 into a global byte at offset 10, then calls three routines in sequence before restoring the registers and returning.
 - `store_popped_byte_offset3`: Pops a word off the stack into d5, loads a pointer to a global variable, and stores that byte at offset 3 of the structure.
 - `store_popped_byte_offset7110`: Pops a word off the stack into d5, loads a pointer to a global variable, and stores that byte at offset 7110 of the structure.
+- `sub_1262`: undescribed.
 - `return_coded_string_result`: Calls a routine, reads a word from a register, and returns that word when a global byte equals one, otherwise it calls another routine and returns its result.
 - `set_flag_and_init_tables`: Sets a global byte at offset 34 to one, then calls a routine, reads a word from a table via a5, sets a global word at offset 30 to -1, and calls two more routines before returning.
+- `sub_13BE`: undescribed.
 - `process_string_flag_loop`: Copies a byte from a register into two global variables, calls a routine, and clears two global variables.
 - `clear_globals_then_call`: Clears three global bytes at fixed addresses, then calls four routines in sequence before returning.
-- `zero_fill_data_area`: Contains eleven consecutive zero words that decode as ori.b #0, d0 and serve as a zero-filled data area referenced by address rather than executed code.
-- `nop_sequence_d0`: Executes a sequence of no-op byte OR operations on register d0, which performs no data movement and has no visible effect.
 - `compare_store_loop_call`: Compares a byte from a global variable with another and returns if they differ, otherwise stores the byte, loads a pointer, calls a routine four times with two different addresses, increments that pointer by two in a loop until it reaches sixteen, clamps it to zero if it exceeds sixteen, stores the result, restores the stack, and returns.
 - `check_flag_and_queue`: Returns immediately unless a byte at a pointer equals one, in which case it loads two words from the structure, copies a pointer, calls a routine, and returns.
 - `fill_data_area_from_stack`: Multiplies a masked stack value by 22 to index a data area, sets a byte there to one, stores two words, then copies seven more words from the stack into consecutive locations before returning.
@@ -1044,6 +1050,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_four_and_branch`: Loads the value four into d5 and branches into another routine without returning.
 - `store_structure_bytes`: Loads the byte at offset 26363 of the structure in a4 into d2 and the byte at offset 26403 into d5, then stores both bytes into a global variable at consecutive offsets.
 - `increment_byte_offset_270`: Reads a byte at offset 270 of the structure in a5, adds one to it, and stores the result back to the same location, then returns.
+- `sub_17AA`: undescribed.
+- `sub_17B0`: undescribed.
+- `sub_17B6`: undescribed.
+- `sub_17BC`: undescribed.
 - `store_masked_byte_and_call`: Masks a byte by three, stores it at offset 214 of a structure, calls a routine, clears a register, and returns.
 - `set_flags_and_load_one`: Stores the value sixteen into the byte at offset 8470 of the structure in a4, stores the value one into the byte at offset 1070 of the same structure, loads one into d5, and returns.
 - `adjust_value_and_store_pair`: When d5 is nonzero it masks d5, shifts it left by four bits, combines the result with d5, subtracts sixteen, and writes the original byte from d2 and the adjusted value into the words at offsets 7184 and 7185 of the structure in a5; otherwise it subtracts the low nibble of d2 from the byte at offset 8470 of the structure in a4.
@@ -1076,6 +1086,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `compare_register_d5`: Compares register d5 with the value 65535 and branches away when they differ, otherwise it returns.
 - `store_byte_then_index`: Stores a register into a global byte, indexes a pointer by a doubled value, and returns when the pointed byte matches a marker.
 - `skip_sections_then_scan`: Advances a pointer through a string, skipping each bracketed section up to a limit, then calls the string scanner when the terminator is not reached.
+- `sub_2644`: undescribed.
+- `sub_2668`: undescribed.
 - `process_coded_string_loop`: Clears a global word and sets three consecutive global bytes to 32, then loops over a coded string calling the conversion routine for each character.
 - `process_and_shift_table_records`: Walks a table of 16-bit records from the last entry toward the first, combining each record's two values with a stored sign byte and shifting the results right by three.
 - `bubble_sort_entries`: Repeatedly compares adjacent entries of a table using several field offsets, swapping pairs when they are out of order, until a pass makes no swaps or the outer counter reaches zero.
@@ -1084,7 +1096,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `index_and_pack_table`: Reads a byte from a table indexed by a global variable and passes it to another routine, then repeats this for 64 consecutive entries stored as 32-bit words.
 - `walk_table_records`: Clears a global word, then walks a table of records in nested loops.
 - `load_entry_fields`: Compares a passed byte against a global value, then either reads two fields from a table entry selected by that byte or stores the constant 255 into two consecutive global bytes.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 - `load_entry_fields_2`: Compares two incoming bytes against global values and returns without effect if they do not match, otherwise it clears a flag and loads two fields from a table entry selected by a structure byte.
 - `build_and_queue_buffer_struct`: Computes a table index from a2 and d7, then writes a 16-bit value and a modified copy into a structure in a6 at offsets 66 and 64 along with three 32-bit values at offsets 68, 96 and 100.
 - `restore_registers_and_return`: Restores registers d0 to d7 and a0 to a5 from the stack and returns the original values of d0 and d1 to the caller.
@@ -1101,7 +1112,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `compare_strings_case_insensitive`: Compares two null-terminated strings one character at a time, converting any uppercase letters to lowercase, and returns -1 when the strings match or 0 when they differ or a string ends.
 - `load_table_call_routines`: Loads a table address into a0, then calls six routines in sequence before restoring the registers and returning.
 - `toggle_flag_bits_in_struct`: Sets or clears bit 0 of a byte at offset 0 of a structure in a5 depending on bit 0 of d5, then repeats the operation for the bytes at offsets 32, 64, 96 and 160 using the same bit position from d0.
-- `adjust_flag_byte`: Returns the incoming value unchanged when the pointer is invalid or the scaled byte does not match the global byte, otherwise it adjusts the global byte and calls the toggle routine.
+- `sub_4066`: undescribed.
+- `sub_4098`: undescribed.
+- `sub_40B2`: undescribed.
+- `sub_4120`: undescribed.
+- `sub_4192`: undescribed.
+- `sub_41EC`: undescribed.
+- `sub_4230`: undescribed.
+- `sub_42A8`: undescribed.
 - `toggle_flags_repeatedly`: Multiplies the incoming word by four, subtracts one, and returns immediately if that result is negative.
 - `copy_and_shift_coded_bytes`: Loads a source table pointer from a global variable indexed by d5, then copies 40 bytes from that table into a destination block, masking and shifting each byte according to bit 0 of d0, and advances the destination by 40 bytes each time.
 - `clear_and_set_flag_words`: Clears a 16-bit field in a global variable and sets the corresponding bits in five 16-bit fields of a structure at offsets 0, 32, 64, 96 and 128, then zeroes the remaining fields of that structure in a loop before returning.
@@ -1116,7 +1134,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decode_table_coded_rows`: When a block counter at offset 8 of a structure in a0 underflows, copies a pointer from offset 6 to that counter and unpacks rows of 16 words from a byte stream, each value being a byte plus or minus a lookup-table entry, written at a fixed row stride, then marks the stream finished once the row count runs out.
 - `store_diff_nibbles_loop`: Initializes a 22-byte structure at a0 with fixed header fields, then loops d0 times copying two input arrays and writing the low nibble differences, high nibble differences, and byte differences as pairs of bytes, advancing each pointer by its stride, and finally sets the first byte to 255.
 - `dispatch_by_index`: Returns immediately when a global flag bit is set, otherwise it clears several registers, adjusts a value in d2, and dispatches to a routine selected by that value.
-- `set_status_bits`: Sets bits 3, 5, 6, 7, 8, 9, 10, and 15 of the byte in d0 and returns the modified value.
+- `sub_557E`: undescribed.
 - `load_indexed_table_byte`: Compares register d7 with the value 65535 and branches away when they are equal, then loads a byte from a table indexed by register d5 into register d0 and branches away when that byte is zero, otherwise it branches to another routine.
 - `test_flag_then_call`: Tests a global byte, and when it is not zero it calls a routine before returning.
 - `toggle_global_bit_zero`: Toggles bit 0 of a global byte at offset 9c58 and, when the previous value of that bit was zero, calls a routine before returning.
@@ -1140,7 +1158,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `count_zero_globals`: Loops four times counting zero bytes in a global array, then compares that count against a global byte and returns -1 when the count exceeds it, otherwise returning zero.
 - `mark_matching_table_bytes`: Stores a negative marker word in a global structure, scans four bytes of a table for values matching a byte selected by a global index, and counts how many table bytes are non-zero.
 - `restore_regs_set_flag`: Restores registers d1 through d4 from the stack, sets d0 to 255, and returns.
-- `is_empty_data_word`: It is a single zero word that decodes as ori.b #0, d0, so it is an empty data area that other code refers to by address and does nothing.
 - `match_and_mark_table`: Iterates four bytes of a table, and for each byte that is positive and matches a word in a global variable, it marks the table byte, overwrites the matching global word, and writes four fixed values into consecutive global bytes.
 - `fill_struct_from_tables`: Reads a byte from a table indexed by a5 and a byte from a second table indexed by that value, then in a four-iteration loop copies a byte from a source table into a structure at offset 12, sets flags at offsets 0, 4 and 8, stores the two bytes at offsets 16, 24 and the index word at offset 28, returning early if the flag at offset 12 is set or the source byte is zero.
 - `fill_struct_from_tables_2`: Reads a byte from a table indexed by a4 and a byte from a second table indexed by that value, then in a four-iteration loop copies a byte from a source table into a structure at offset 12, sets flags at offsets 0, 4, 20 and 8, stores the two bytes at offsets 16, 24 and the d7 word at offset 28, returning early if the flag at offset 12 is set or the source byte is zero.
@@ -1148,9 +1165,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_bytes_conditional`: If a byte in a global variable is not zero, it copies four bytes from that global variable into another location, advancing the destination by 148 bytes each iteration, then returns.
 - `scan_table_store_ptr`: Stores a pointer at offset 128 of a structure, then scans a table looking for a byte in a specific range.
 - `split_byte_ascii`: Multiplies a register by 2, then splits a byte into two nibbles and converts each into an ASCII digit by adding 48.
-- `tiny_ori_2`: Small routine of 1 instruction that merges 54 into d2.
+- `sub_6116`: undescribed.
 - `copy_rle_record_from_buffer`: Loads a pointer from a global variable and reads a byte from a buffer, branching away when the byte is zero.
-- `process_rle_buffer`: Computes a pointer from two bytes in the buffer at a3, adds it to the data block at an address, then walks that buffer copying three-byte records into the block while skipping ASCII letters and handling the end marker and special codes.
+- `sub_61A0`: undescribed.
 - `fill_words_zero_loop`: Fills 192 consecutive words in a global array starting at offset 150 with zero, using d1 as a loop counter, then branches into another routine.
 - `load_ptr_then_branch`: Loads the address of a global array into a5 and immediately branches into another routine without modifying any data.
 
@@ -1352,6 +1369,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `copy_word_and_return`: Copies the word at offset 6 of the structure in a1 to offsets 154 and 156 of the structure in a0, then restores d0 and a0 from the stack and returns.
+- `sub_000C`: undescribed.
+- `sub_0020`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -1360,6 +1379,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `copy_word_and_return_2`: Copies the word at offset 6 of the structure in a1 to offset 156 of the structure in a0, then restores d0 and a0 from the stack and returns.
+- `sub_000C`: undescribed.
+- `sub_0020`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -1408,6 +1429,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
+- `sub_0000`: undescribed.
 - `conditionally_init_custom`: If the zero flag is set it calls a routine located at offset 444, restoring the caller's registers afterwards.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -1482,6 +1504,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
+- `sub_0000`: undescribed.
 - `clear_nibble_and_flag`: Clears the low nibble of the byte at offset 2 of the structure in a6, then sets bit 2 of the 32-bit value stored through the pointer in a2 and calls another routine three times.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -1522,6 +1545,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `extract_nibble_and_init_struct`: Extracts a single nibble from the incoming byte in d0, shifting it left by one bit, and returns the result.
+- `sub_003E`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -1536,6 +1560,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
 - `initialize_audio_parameters`: Clears a flag in a global variable and disables audio, then copies a block of data from one global table to another.
+- `sub_01FE`: undescribed.
 - `configure_audio_channel`: Clears a block of memory in a channel structure selected by the incoming index, then copies setup values from a table into that structure.
 - `init_and_dispatch_buffered_structure`: Initializes a data structure by storing the value a fixed address and the value 1 at its first offsets, then branches to a shared exit.
 
@@ -1550,6 +1575,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `decrement_and_clamp_byte`: Subtracts the low nibble of the byte at offset 3 of the structure in a6 from the byte at offset 19, clears that byte to zero when the result is negative, and stores the resulting byte as a word at offset 8 of the structure in a5.
+- `sub_002A`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -1558,6 +1584,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `subtract_clamp_byte_d0`: Subtracts the byte in d0 from the byte at offset 19 of the structure in a6, clears that byte to zero when the result is negative, and stores the resulting byte as a word at offset 8 of the structure in a5.
+- `sub_001A`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -1566,6 +1593,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `clear_byte_if_negative`: Clears the byte at offset 19 of the structure in a6 when the negative flag is set, then stores that byte as a word at offset 8 of the structure in a5.
+- `sub_001A`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -1574,6 +1602,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `store_byte_as_word_2`: Stores the byte at offset 19 of the structure in a6 as a word at offset 8 of the structure in a5.
+- `sub_000A`: undescribed.
+- `sub_0024`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -1584,6 +1614,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_word_from_d0`: Stores the 16-bit value from d0 into the word at offset 8 of the structure in a5, then returns.
 - `decrement_and_store_byte`: Reads a byte from offset 3 of the structure in a6, subtracts one from it, and stores the result in a global byte, then returns.
 - `clamp_byte_and_store`: Reads a byte from offset 3 of the structure in a6, clamps it to a maximum of sixty-four, stores the clamped value as a byte at offset 19 of that structure, and stores it as a word at offset 8 of a structure in a5, then returns.
+- `sub_003C`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -1681,8 +1712,28 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `sub_000A`: undescribed.
+- `sub_000E`: undescribed.
+- `sub_0012`: undescribed.
+- `sub_0016`: undescribed.
+- `sub_001A`: undescribed.
+- `sub_001E`: undescribed.
+- `sub_0022`: undescribed.
 - `empty_stub_8`: Empty routine: returns to the caller immediately without doing anything.
+- `sub_002A`: undescribed.
 - `stub_return_immediately`: Does nothing and returns; it is an empty routine with no calls or registers.
+- `sub_0032`: undescribed.
+- `sub_0036`: undescribed.
+- `sub_003A`: undescribed.
+- `sub_003E`: undescribed.
+- `sub_0042`: undescribed.
+- `sub_0046`: undescribed.
+- `sub_004A`: undescribed.
+- `sub_004E`: undescribed.
+- `sub_0052`: undescribed.
+- `sub_0056`: undescribed.
+- `sub_005A`: undescribed.
+- `sub_005E`: undescribed.
 
 ### Disk.0 bytes 30464-30720 (code never loaded by a reference run)
 

@@ -7,19 +7,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (917760 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 32 raw-word lines |
-| Functions named and described | pass, 135 of 135 named (0 author symbols), 135 of 135 described (5 by rule, 127 by the local model) |
+| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 28 raw-word lines |
+| Functions named and described | FAIL, 129 of 134 named (0 author symbols), 129 of 134 described (3 by rule, 123 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2349 of 2351 (99.91%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 3903 of 3909 instructions identical in start and length, 4 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 3951 of 3956 instructions identical in start and length, 4 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 2259 |
-| code | 28252 |
-| data | 827345 |
+| code | 28608 |
+| data | 826985 |
+| padding | 4 |
 | unused | 59904 |
 
 ## Code units
@@ -27,10 +28,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | 5th Gear.adf:bootblock | 1 | 16 | 1 |
-| logged disk load from 5th Gear.adf boot-block load | 1 | 157 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2642 | 111 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 548 | 10 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 546 | 12 |
+| logged disk load from 5th Gear.adf boot-block load | 1 | 174 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2693 | 114 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 538 | 8 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 535 | 9 |
 
 ## Cases handled
 
@@ -39,6 +40,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address: 1502 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 427 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 422 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate+address
 - 5th Gear/5th Gear.adf: 1 logged loads cover 2048 bytes of the image
 - 5th Gear/5th Gear.adf: 31 track-loaded blocks found in recovered runtime segments and classified through them
 - 5th Gear/5th Gear.adf: blocks 6-22 (bytes 3072-11776) outside the filesystem hold data, not code (opcode density 0.011, entropy 7.11)
@@ -82,6 +84,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### logged disk load from 5th Gear.adf boot-block load
 
+- `sub_00E0`: undescribed.
 - `build_copper_list_from_table`: Opens the graphics library, walks a table of entries writing copper list register/value pairs into a buffer ended by an end marker, and stores that buffer's address as the system copper list; the listed facts also name the DMA control register as touched.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -130,6 +133,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_hardware_and_memory`: If a bit in a global variable is set, it initializes a range of custom hardware registers with a specific value and fills a memory range with certain values.
 - `modify_global_bits`: Performs bitwise operations and conditional bit-setting on a global variable based on its own bit-pattern.
 - `populate_memory_from_table`: Iteratively writes a sequence of incrementing or table-based values into a memory area, ending with a pointer assignment.
+- `sub_1A4C`: undescribed.
 - `iterate_string_and_set_flag`: Checks a register value to set a global variable to a specific byte, then iterates through a null-terminated string, calling another routine for every character encountered.
 - `expand_string_to_buffer`: Reads a character and, depending on its value, copies a sequence of bytes from a calculated source address into a destination buffer using a fixed-size stride.
 - `traverse_and_recurse_string`: Iterates through a null-terminated string, recursively calling itself for every non-zero byte, and updates a global variable based on a specific register value and the current state of that global variable.
@@ -152,7 +156,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `configure_blt_line_parameters`: Calculates and writes a series or a range of block transfer (Blitter) parameters, including source/destination addresses and line-based or block-based drawing parameters, to a set of registers and a memory-mapped table.
 - `update_blt_parameters`: Calculates and writes a series of values, including a width-related or offset-related value, to a block of memory using a loop.
 - `update_blt_clipping_rect`: Calculates a new clipping or drawing area and updates the bitplane, block, and size registers for the bitboard or blitter engine.
-- `set_global_to_max_value`: Writes a large constant value to a memory location pointed to by a register after calling another routine.
+- `sub_24E6`: undescribed.
 - `populate_table_with_increments`: Writes a sequence of incrementing values into a table or array.
 - `set_pointer_to_invalid`: Writes a specific constant value to the memory location pointed to by a register.
 - `clear_memory_block`: Clears a large block of memory by setting its contents to zero using nested loops.
@@ -162,6 +166,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_blta_registers`: Sets certain hardware registers for the blt chip and recursively executes itself a fixed number of times.
 - `fill_blt_parameter_table`: Calculates and writes a sequence of values, including a width-related or offset-related value, to a block of memory using a loop.
 - `manipulate_global_bits`: Performs bitwise operations and shifts on a global variable and then sets it to a constant.
+- `sub_292C`: undescribed.
 - `compute_grid_position_and_loop`: Divides a 16-bit value by eleven, storing the quotient and remainder in local fields, then loops subtracting a clamped count from a frame word while calling unnamed routines.
 - `validate_and_clear_memory`: Checks a structure for certain bit flags and pointer-based values, then clears a block of memory or writes a specific pattern to a memory location if certain conditions are met.
 - `wait_for_flag_and_set_registers`: Busy-waits for a routine to return while checking a bit in a global variable, and updates several hardware registers and a global variable.
@@ -197,6 +202,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `wait_until_routine_signals_one`: Calls a routine repeatedly, and between calls busy-waits while the low bit of a global flag remains set, returning zero once the called routine returns one.
 - `overwrite_global_variable_2`: Checks a global flag and, if certain conditions are met, overwrites a global variable with a sequence of constant values.
 - `overwrite_global_variable`: It overwrites a global variable with a sequence of constant values.
+- `sub_317A`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -208,8 +214,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_bitmapped_sprite_attributes`: Updates a pointer-based data structure or table, calculating new offsets and copying byte-sequences from a source buffer to a destination buffer.
 - `parse_graphics_command_stream`: Parses a custom bytecode stream to update graphics or DMA-related parameters, such as pointer offsets, or setting bitmasks in a global variable.
 - `configure_dma_and_interrupts`: Configures the DMA controller and interrupt enable or disable settings via the custom chip registers.
-- `empty_routine`: The routine contains no valid instructions and performs no operations.
-- `empty_routine_2`: The routine contains no executable instructions and performs no operations.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -222,6 +226,3 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_audio_and_dma`: Initializes memory buffers, converts bytes to strings, and configures DMA channels and audio registers while checking certain global flags.
 - `parse_display_command_stream`: Parses a custom bytecode stream to update display or DMA-related parameters, such as pointer addresses and DMA controller enable bits.
 - `update_dma_config`: Updates a global variable by or-ing it with a value derived from a pointer, and writes a value to the DMA controller register.
-- `initialize_memory_buffers`: Clears a range of memory and fills another range with a constant value, then executes a routine to build a copper list.
-- `tiny_ori_ori_ori_ori`: Small routine of 4 instructions that merges 0 into d0, then merges 0 into d0, then merges 4 into d0, then merges 0 into d4.
-- `tiny_ori_ori_ori`: Small routine of 3 instructions that merges 0 into d0, then merges 0 into d0, then merges 0 into d0.

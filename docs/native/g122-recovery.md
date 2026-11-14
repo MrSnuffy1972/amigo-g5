@@ -7,20 +7,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (2757215 top-level bytes in 15 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 15 of 15 units identical (bytes and relocations), 45 raw-word lines |
-| Functions named and described | pass, 335 of 335 named (0 author symbols), 335 of 335 described (19 by rule, 195 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1645 of 1647 (99.88%) |
+| Byte-identical reassembly with vasm | pass, 15 of 15 units identical (bytes and relocations), 66 raw-word lines |
+| Functions named and described | FAIL, 308 of 567 named (0 author symbols), 308 of 567 described (9 by rule, 182 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1594 of 1647 (96.78%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 4816 of 4983 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 7507 of 7507 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 36605 |
-| code | 9450 |
-| data | 813166 |
-| padding | 10 |
+| asset | 33518 |
+| code | 14532 |
+| data | 811163 |
+| padding | 18 |
 | unused | 1897984 |
 
 ## Code units
@@ -29,19 +29,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Shadoworlds.Slave | 1 | 130 | 11 |
 | Disk.1:bootblock | 1 | 8 | 2 |
-| logged disk load from Disk.1 | 1 | 1448 | 101 |
+| logged disk load from Disk.1 | 1 | 2406 | 193 |
 | logged disk load from Disk.1 | 1 | 0 | 0 |
 | logged disk load from Disk.1 | 1 | 0 | 0 |
 | logged disk load from Disk.1 | 1 | 0 | 0 |
 | logged disk load from Disk.1 | 1 | 0 | 0 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 405 | 25 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 86 | 3 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 233 | 8 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 451 | 17 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 948 | 64 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 404 | 25 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 112 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1198 | 74 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 457 | 13 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1471 | 117 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 42 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 3 |
-| logged disk load from Disk.1 | 1 | 1229 | 100 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 41 | 22 |
+| logged disk load from Disk.1 | 1 | 1238 | 105 |
 
 ## Cases handled
 
@@ -121,15 +121,82 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_block_after_trap_call_2`: Writes a function address into a global cell, calls a system trap, and copies a block of 10652 bytes from one address to another.
 - `copy_block_then_release_wait`: Copies a block of 10652 bytes from one address to another, writes a stack-saved value, then waits for a global word to clear.
 - `patch_constants_then_wait_flag`: Writes fixed constants into two code cells, calls a routine and keeps its result, clears three global cells, then writes two more constants.
+- `sub_025A`: undescribed.
+- `sub_025C`: undescribed.
+- `sub_0266`: undescribed.
+- `sub_02A4`: undescribed.
+- `sub_030A`: undescribed.
+- `sub_030E`: undescribed.
+- `sub_0312`: undescribed.
+- `sub_0316`: undescribed.
+- `sub_031A`: undescribed.
+- `sub_031E`: undescribed.
+- `sub_0324`: undescribed.
+- `sub_0428`: undescribed.
+- `sub_0452`: undescribed.
+- `sub_045A`: undescribed.
+- `sub_0484`: undescribed.
+- `sub_0492`: undescribed.
+- `sub_0518`: undescribed.
+- `sub_0546`: undescribed.
+- `sub_0614`: undescribed.
+- `sub_0678`: undescribed.
+- `sub_06A4`: undescribed.
+- `sub_06DC`: undescribed.
+- `sub_06FA`: undescribed.
+- `sub_0700`: undescribed.
+- `sub_0728`: undescribed.
+- `sub_0738`: undescribed.
+- `sub_0742`: undescribed.
+- `sub_074A`: undescribed.
+- `sub_075E`: undescribed.
+- `sub_0780`: undescribed.
+- `sub_0798`: undescribed.
+- `sub_0802`: undescribed.
+- `sub_081A`: undescribed.
+- `sub_0860`: undescribed.
+- `sub_08A0`: undescribed.
+- `sub_08AC`: undescribed.
+- `sub_08B2`: undescribed.
+- `sub_08EC`: undescribed.
+- `sub_0912`: undescribed.
+- `sub_091E`: undescribed.
+- `sub_0924`: undescribed.
+- `sub_093C`: undescribed.
+- `sub_097A`: undescribed.
+- `sub_0998`: undescribed.
+- `sub_09E0`: undescribed.
+- `sub_0A04`: undescribed.
+- `sub_0A1E`: undescribed.
+- `sub_0A4C`: undescribed.
+- `sub_0AF2`: undescribed.
+- `sub_0AFC`: undescribed.
+- `sub_0BE4`: undescribed.
+- `sub_0BF6`: undescribed.
+- `sub_0C06`: undescribed.
+- `sub_0CA8`: undescribed.
+- `sub_0CB2`: undescribed.
+- `sub_0D52`: undescribed.
+- `sub_0D94`: undescribed.
+- `sub_0DF8`: undescribed.
+- `sub_0E24`: undescribed.
+- `sub_0E5A`: undescribed.
+- `sub_0E78`: undescribed.
+- `sub_0E7E`: undescribed.
+- `sub_0EA6`: undescribed.
+- `sub_0EB6`: undescribed.
+- `sub_0EC0`: undescribed.
+- `sub_0EC8`: undescribed.
+- `sub_0EDC`: undescribed.
+- `sub_0EFA`: undescribed.
+- `sub_0F1A`: undescribed.
+- `sub_0F6A`: undescribed.
 - `forward_call_to_unnamed_routine`: Two-instruction routine that calls one unnamed routine and returns, with one caller.
 - `configure_cia_a_port`: Sets a state byte, and when its low bit is set configures the CIA-A control and port registers.
 - `reset_cia_state_bytes`: Clears a global state byte and a lookup entry, sets an enable bit in one hardware byte register and writes fixed values into three more at offsets from a base pointer.
 - `service_cia_b_interrupt_flags`: Sets a global to the constant 8192, clears its low bit, and calls one unnamed routine when that bit was set.
-- `clear_pending_flag_bits`: Sets a global to 255 when bit one is set, then clears two bits in the same global.
 - `mask_button_state_and_call`: Masks a global state byte to its low three bits, calls one unnamed routine, then stores zero into the byte.
 - `store_sixteen_into_global`: Sets a global cell to the constant 16 and returns.
-- `save_register_frame_after_wait`: Waits for a global byte to clear, then copies a block of bytes backwards with its size taken from a global value.
-- `trap_then_set_global_value`: Calls a system trap, then sets a global cell to 255.
 - `execute_conditional_callback`: Checks if a global variable is zero, executes a subroutine if true, and then updates the global variable by setting its high byte to 255 before clearing it.
 - `call_unnamed_when_global_zero`: When a global byte is zero, calls one unnamed routine, writes a word whose high byte is 255 into the global, and then clears it.
 - `clear_global_when_nonzero`: Returns at once when a global byte is zero.
@@ -137,11 +204,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_global_after_stack_store`: Stores a stack address into a global cell and then sets the cell to zero.
 - `write_cia_b_word_registers`: Keeps the top two bits of one CIA-B control byte while setting bit three, sets a global to 129, and writes the low and high bytes of a data register into two adjacent byte registers.
 - `call_unnamed_when_global_set`: Calls one unnamed routine when a global byte is nonzero and otherwise returns.
+- `sub_15E4`: undescribed.
+- `sub_15F4`: undescribed.
 - `wait_for_non_zero`: Loops until a global variable is no longer zero.
+- `sub_162E`: undescribed.
 - `check_flag_and_branch`: Checks a global variable and a byte at an offset from a pointer to determine whether to execute a sequence of subsequent routine calls.
 - `call_routine_sequence_with_flag`: Calls unnamed routines in order, passing a data register value to the second.
 - `call_status_update_handler`: Calls a routine that stores a value in a global cell and subsequently updates a table slot using an index derived from a register.
 - `store_slot_when_status_ok`: Stores a value in a global cell and calls two unnamed routines, then stores a fixed value into a table slot whose index is derived from a register and returns zero.
+- `sub_16B8`: undescribed.
 - `store_argument_and_call_three`: Stores its data register argument in a global cell, then calls three unnamed routines in sequence and returns.
 - `run_bounded_counter_with_status`: Stores a register value in a global and calls unnamed routines to check a frame byte, returning status codes of minus four or minus three when checks fail.
 - `run_bounded_counter_tail`: Shares the status and counter loop of its neighbour without the initial global store and frame checks.
@@ -184,6 +255,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_slot_set_control_bit`: Clears a slot byte indexed by a data register, rewrites a control byte with bits set and one bit cleared and set from a mask chosen by that register, then calls an unnamed routine.
 - `compare_bytes_stop_at_marker`: Compares up to four bytes of two data register values from the most significant byte down.
 - `tiny_moveq_rts_5`: Small routine of 2 instructions that loads 0 into d0, then returns.
+- `sub_1CAA`: undescribed.
 - `call_routine_four_times`: Calls one unnamed routine four times in a counted loop and returns.
 - `toggle_field_bit_around_call`: Saves a frame field, calls an unnamed routine for a value, stores that value with bit one toggled into the field, then calls another unnamed routine and restores the saved field.
 - `set_control_bit_by_status`: Rewrites a control byte with a fixed set of bits and one bit cleared by a register index.
@@ -215,10 +287,30 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_global_cell`: Sets a global cell to zero and returns.
 - `stub_infinite_loop_only`: Contains only an endless loop with no exit and no calls in the facts.
 - `set_global_sequence_then_call`: Sets a global cell to one, increments it, calls one unnamed routine, then sets the cell to 255.
+- `sub_2396`: undescribed.
+- `sub_23BA`: undescribed.
 - `initialise_custom_chip_registers`: Stores unnamed routine addresses into a low-memory vector area, then writes display, colour, bitplane, DMA and CIA control registers with fixed values.
 - `set_copper_list_pointer`: Writes its long argument to the first copper list pointer register and returns.
 - `initialise_custom_chip_registers_2`: Stores unnamed routine addresses into a low-memory vector area, then writes display, colour, bitplane, DMA and CIA control registers with fixed values.
 - `nop_placeholder`: This routine is empty and performs no operations.
+- `sub_259E`: undescribed.
+- `sub_25D0`: undescribed.
+- `sub_2602`: undescribed.
+- `sub_2672`: undescribed.
+- `sub_268A`: undescribed.
+- `sub_274E`: undescribed.
+- `sub_279E`: undescribed.
+- `sub_27BC`: undescribed.
+- `sub_27E2`: undescribed.
+- `sub_280C`: undescribed.
+- `sub_286C`: undescribed.
+- `sub_2892`: undescribed.
+- `sub_28BE`: undescribed.
+- `sub_28CE`: undescribed.
+- `sub_28EA`: undescribed.
+- `sub_290C`: undescribed.
+- `sub_2922`: undescribed.
+- `sub_2932`: undescribed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -234,7 +326,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `run_until_zero_result`: Initialises three global cells, then repeatedly calls two unnamed routines and a third routine that returns a value, looping until that value is zero.
 - `run_until_zero_result_variant`: Initialises three global cells with a different starting value for one of them, then repeatedly calls two unnamed routines and a third routine that returns a value, looping until that value is zero.
 - `scale_packed_nibble_table`: Rescales sixteen packed 12-bit words, each holding three 4-bit fields, by a factor taken from a global cell, writing the results into a global table.
-- `run_nested_call_loops`: Saves two global cells and a state word, calls unnamed routines, then runs nested counted loops that call routines five times per step.
+- `sub_051A`: undescribed.
 - `poll_values_until_zero_loop`: Calls several unnamed routines, reads a field from a record, and fetches another value when its low bit is clear.
 - `xor_into_longword_at_pointer`: XORs a data register value into the longword at a pointer and returns.
 - `copy_block_or_strided_words`: When a flag bit is clear, copies 2000 blocks of four longwords between two buffers.
@@ -251,38 +343,101 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `clear_memory_and_port`: Clears four consecutive memory locations and modifies a hardware port register.
+- `sub_004A`: undescribed.
 - `reset_audio_and_dma_2`: Resets audio volumes and DMA control registers, finds a maximum value in a table, and clears a series of memory locations.
 - `reset_audio_and_dma`: Sets four audio volume registers and a DMA control register to zero.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `dispatch_function_pointer`: Checks a global variable against several constant values and uses it as an index into a table of function pointers to call another routine.
-- `modify_status_flags`: Updates specific bits within two different memory locations based on a conditional check of a byte at an offset.
+- `sub_00C0`: undescribed.
+- `sub_00F6`: undescribed.
+- `sub_0108`: undescribed.
+- `sub_07AC`: undescribed.
+- `sub_0812`: undescribed.
+- `sub_0858`: undescribed.
+- `sub_0872`: undescribed.
+- `sub_0890`: undescribed.
+- `sub_08FA`: undescribed.
+- `sub_0930`: undescribed.
+- `sub_0976`: undescribed.
+- `sub_0990`: undescribed.
+- `sub_09AE`: undescribed.
+- `sub_0A04`: undescribed.
+- `sub_0A4A`: undescribed.
+- `sub_0A64`: undescribed.
+- `sub_0C44`: undescribed.
+- `sub_0C7A`: undescribed.
+- `sub_0CB8`: undescribed.
+- `sub_0D3C`: undescribed.
+- `sub_0D4E`: undescribed.
+- `sub_0DE0`: undescribed.
+- `sub_0DF4`: undescribed.
+- `sub_0DFA`: undescribed.
+- `sub_0E08`: undescribed.
+- `sub_0E96`: undescribed.
+- `sub_0EBC`: undescribed.
+- `sub_0EE4`: undescribed.
+- `sub_0EEE`: undescribed.
+- `sub_0F0C`: undescribed.
+- `sub_0F2E`: undescribed.
+- `sub_0F48`: undescribed.
+- `sub_0F7C`: undescribed.
+- `sub_0F8C`: undescribed.
+- `sub_0FB4`: undescribed.
+- `sub_0FBE`: undescribed.
+- `sub_0FC8`: undescribed.
+- `sub_0FD2`: undescribed.
+- `sub_0FF2`: undescribed.
+- `sub_1012`: undescribed.
+- `sub_1032`: undescribed.
+- `sub_1D2C`: undescribed.
+- `sub_1D4A`: undescribed.
+- `sub_1D64`: undescribed.
+- `sub_1D98`: undescribed.
 - `copy_and_dispatch_function`: Copies a block of data from a global variable to a table, updates several memory locations with constant values, and calls a function from a table using a calculated index.
+- `sub_208E`: undescribed.
+- `sub_20CC`: undescribed.
+- `sub_2112`: undescribed.
+- `sub_213E`: undescribed.
+- `sub_216A`: undescribed.
+- `sub_2196`: undescribed.
+- `sub_21C2`: undescribed.
+- `sub_222A`: undescribed.
+- `sub_2282`: undescribed.
+- `sub_22DA`: undescribed.
+- `sub_2310`: undescribed.
+- `sub_23BA`: undescribed.
+- `sub_2410`: undescribed.
+- `sub_2690`: undescribed.
+- `sub_2712`: undescribed.
+- `sub_2720`: undescribed.
+- `sub_273A`: undescribed.
+- `sub_2754`: undescribed.
+- `sub_276E`: undescribed.
+- `sub_278A`: undescribed.
+- `sub_27BA`: undescribed.
+- `sub_27D6`: undescribed.
+- `sub_27F2`: undescribed.
 - `clear_memory_table`: If a global variable is non-zero, it clears a series of memory locations in a loop.
 - `set_global_flag_2`: Sets a global variable to a specific value if it is currently zero.
 - `update_joystick_coordinates`: Reads hardware registers for joystick and mouse movement, calculates new coordinate values with clamping, and updates a global variable with a bitmask.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 - `copy_memory_block`: Copies a sequence of data from a source pointer to two different destination memory locations using a loop.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
+- `sub_0000`: undescribed.
 - `search_table_for_bounds`: Iterates through a table of four-word entries to find a record where two specific coordinate values fall within a defined range.
+- `sub_0038`: undescribed.
+- `sub_0058`: undescribed.
+- `sub_005E`: undescribed.
 - `parse_nested_data_structures`: Parses a string containing nested bracketed or braced data structures to calculate offsets and lengths.
-- `tiny_ori_2`: Small routine of 1 instruction that merges 11 into (a5).
-- `tiny_ori_3`: Small routine of 1 instruction that merges 9 into d5.
-- `tiny_ori_4`: Small routine of 1 instruction that merges 19 into d3.
 - `initialize_data_structure`: Calculates an offset into a table and performs nested loops to fill memory with specific values and function pointers.
 - `initialize_data_structure_variant`: Fills a memory block with constant values and populates a table with specific bytes and function pointers using nested loops.
-- `tiny_move`: Small routine of 1 instruction that copies (a2) to -(a0).
-- `tiny_move_2`: Small routine of 1 instruction that copies (a4) to -(a1).
-- `tiny_move_3`: Small routine of 1 instruction that copies (a6) to -(a2).
 - `parse_data_string`: Iterates through a memory buffer looking for specific delimiter bytes and performs bitwise operations on a destination buffer using a source table.
-- `tiny_subq`: Small routine of 1 instruction that subtracts 6 from d0.
 - `blit_masked_bitplane_rows`: Walks eight 40-byte rows of a 4-bitplane screen buffer, using a 32-byte source record per row that supplies one byte per plane plus a mask derived as the complement of the OR of those bytes.
 - `apply_bitwise_mask_to_pointer`: Iterates through a loop to apply bitwise operations to a destination buffer using data from a source table.
 - `process_nested_data`: Stores several values into global variables, parses data structures, and performs conditional function calls based on bitwise results.
-- `return_concatenated_registers`: Stores a parameter into a global variable and returns a value formed by concatenating the contents of two registers.
 - `update_status_byte`: Checks a global variable and specific bits in a memory structure to perform a bitwise XOR on a byte and update a global flag.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -294,8 +449,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `check_hardware_status`: Checks specific bits in a hardware register and conditionally calls another routine or modifies a value.
 - `save_masked_state_and_advance`: Keeps only bits zero and two of a shared word, calls another routine, copies the masked value into a second shared word, increments a pointer-sized shared value and clears a further shared word.
 - `set_interrupt_request`: Stores a constant value into a global variable that affects the interrupt request register.
-- `save_register_context`: Waits for a global variable to reach zero, then copies a block of data and a series of registers into a memory structure.
-- `save_context_from_second_entry`: Waits until a shared flag is zero, then copies a byte block between shared buffers backwards and writes register values and a return address into the top of the destination.
+- `sub_03D6`: undescribed.
 - `trigger_system_trap`: Executes a software interrupt trap and sets a global variable to a constant value.
 - `set_global_flag`: Stores a constant value into a global variable.
 - `copy_stack_to_memory`: Copies a block of data from the stack to a global variable and then searches for a specific code pattern in memory.
@@ -309,14 +463,71 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_pending_timer_request`: Records the current stack address in a shared word and clears the pending word.
 - `update_hardware_and_memory`: Modifies a bitmask in a hardware register and stores a word from a register into two consecutive memory locations.
 - `run_if_flag_set`: Calls another routine only when a global variable is nonzero.
+- `sub_0568`: undescribed.
+- `sub_057A`: undescribed.
+- `sub_057C`: undescribed.
+- `sub_0592`: undescribed.
+- `sub_05AE`: undescribed.
 - `clear_memory_and_flag`: Clears a byte at a specific offset in a structure and resets a global integer to zero.
+- `sub_05D0`: undescribed.
+- `sub_05FC`: undescribed.
+- `sub_0608`: undescribed.
 - `return_from_subroutine_2`: The routine is empty and performs no operations before returning.
 - `write_data_to_table`: Writes four values to a table using a pointer.
+- `sub_083E`: undescribed.
+- `sub_088A`: undescribed.
+- `sub_08B6`: undescribed.
+- `sub_08C2`: undescribed.
+- `sub_090C`: undescribed.
+- `sub_093A`: undescribed.
+- `sub_094A`: undescribed.
+- `sub_0974`: undescribed.
+- `sub_09B8`: undescribed.
+- `sub_09BE`: undescribed.
+- `sub_0A02`: undescribed.
+- `sub_0A0E`: undescribed.
+- `sub_0A42`: undescribed.
+- `sub_0A50`: undescribed.
+- `sub_0A5E`: undescribed.
+- `sub_0A7C`: undescribed.
+- `sub_0A80`: undescribed.
+- `sub_0A8E`: undescribed.
+- `sub_0AB0`: undescribed.
+- `sub_0ACA`: undescribed.
+- `sub_0AE0`: undescribed.
+- `sub_0AEA`: undescribed.
+- `sub_0B02`: undescribed.
+- `sub_0B06`: undescribed.
+- `sub_0B20`: undescribed.
+- `sub_0B42`: undescribed.
+- `sub_0B62`: undescribed.
+- `sub_0B76`: undescribed.
+- `sub_0B8A`: undescribed.
+- `sub_0BD0`: undescribed.
+- `sub_0C08`: undescribed.
+- `sub_0C32`: undescribed.
+- `sub_0C68`: undescribed.
+- `sub_0C80`: undescribed.
+- `sub_0C84`: undescribed.
+- `sub_0C8C`: undescribed.
+- `sub_0CAA`: undescribed.
+- `sub_0CC4`: undescribed.
+- `sub_0D02`: undescribed.
+- `sub_0D28`: undescribed.
+- `sub_0D66`: undescribed.
+- `sub_0D6E`: undescribed.
+- `sub_0D7A`: undescribed.
+- `sub_0D86`: undescribed.
+- `sub_0D96`: undescribed.
+- `sub_0DA6`: undescribed.
+- `sub_0DB2`: undescribed.
+- `sub_0DD8`: undescribed.
+- `sub_0E14`: undescribed.
 - `return_immediately`: This routine is empty and performs no operations before returning to its caller.
+- `sub_1124`: undescribed.
+- `sub_1138`: undescribed.
 - `wait_then_set_marker_word`: Waits until a shared word is zero, then sets it to a value whose high byte is 255 and whose low byte is zero.
 - `reset_global_integer`: Sets a global integer variable to zero.
-- `tiny_ori_5`: Small routine of 1 instruction that merges 7 into d1.
-- `initialize_data_structure_pointers`: Sets a global variable and a local value to a constant, clears a memory location, and populates a series of memory offsets with sequential pointer values from a source block.
 - `initialize_pointer_table_2`: Sets several global variables to a constant value and populates a series of memory locations with values from a table.
 - `initialize_pointer_table`: Sets a global variable and a local variable to a constant and populates a series of memory locations with sequential pointers.
 - `initialize_data_structures`: Populates a series of memory locations with various constants, pointers, and zeroed values using a loop and direct assignments.
@@ -324,13 +535,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_without_action`: The routine consists of only two instructions, a return with no body, so it performs no work and simply returns to its caller.
 - `initialize_game_state_and_buffers`: Copies data from one memory block to another and clears several large memory regions.
 - `execute_pause_sequence`: Performs a series of conditional checks and bitwise operations on a global variable before executing a long sequence of other routines.
-- `tiny_or`: Small routine of 1 instruction that merges d0 into d0.
 - `execute_callback_sequence`: Executes a sequence of several different routines and performs multiple writes to a global variable.
 - `process_data_structure`: Performs conditional checks on a global variable and, if a specific value is found via a pointer, executes a sequence of other routines and updates a global variable.
 - `decrement_global_and_call`: Decrements a global variable if it is non-zero and then calls two other routines.
 - `reset_global_and_call`: If a global variable is non-zero, it sets it to a specific value, calls two routines, and then resets the global variable to zero before calling a final routine.
 - `initialize_and_clear_buffers`: Performs arithmetic on a global variable, clears several large memory blocks using a loop, and modifies several global bytes before executing other routines.
-- `execute_routine_sequence`: Sets a global variable to a constant and executes a long sequence of various other routines.
+- `sub_1D4A`: undescribed.
 - `loop_until_flag_clears`: Executes a sequence of routines and enters a loop that repeatedly calls other routines until a global variable reaches zero.
 - `execute_chained_callbacks_2`: Sets a global variable to zero and executes a loop that calls another routine a fixed number of times while incrementing a counter.
 - `execute_chained_callbacks`: Decrements a global variable and calls three different routines if the variable is non-zero.
@@ -342,12 +552,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_and_wait_data_inverse`: Writes a constant value and a global variable to a memory block and then waits for a specific bit in a global variable to change.
 - `copy_and_wait_for_bit`: Copies a block of data to a new location, writes several values to memory, and then enters multiple loops that wait for a specific bit in a global variable to clear.
 - `calculate_offset_values`: Calculates two values based on a global variable and a table, then stores them in two global variables.
-- `clear_memory_blocks`: Clears two large contiguous blocks of memory by writing zeros to them in sixteen-byte increments.
-- `clear_d0_register`: Clears the contents of a data register by performing a logical OR operation with zero.
 - `clear_memory_blocks_2`: Clears two separate blocks of memory by iterating through them and setting multiple longwords to zero.
 - `return_immediately_2`: This routine performs no operations and returns immediately to its caller.
 - `scale_data_values`: Iterates through a source list of shorts and stores the value multiplied by two into two different locations in a global variable.
-- `increment_and_spin_global`: Increments a value through a pointer and then sets a global word's high byte to one and busy-waits until the word becomes zero.
+- `sub_20AA`: undescribed.
 - `set_global_and_spin`: Sets a global word to a value with its high byte filled with ones, then busy-waits until that word becomes zero.
 - `rearrange_memory_table`: Iterates through a table of longwords, performing a series of shifts and stores to reorganize the data.
 - `initialize_and_spin_wait`: Increments a global variable, performs arithmetic on it, sets four memory locations based on the result, and then enters a busy-wait loop.
@@ -359,8 +567,27 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `nop_instruction`: The routine is empty and performs no operations.
+- `sub_0002`: undescribed.
+- `sub_0006`: undescribed.
+- `sub_000A`: undescribed.
+- `sub_000E`: undescribed.
+- `sub_0012`: undescribed.
 - `return_immediately_stub`: The routine consists of a single return instruction and performs no work, so it does nothing when entered.
+- `sub_001A`: undescribed.
+- `sub_001E`: undescribed.
 - `return_from_subroutine_3`: This routine is empty and performs no operations before returning to the caller.
+- `sub_0026`: undescribed.
+- `sub_002A`: undescribed.
+- `sub_002E`: undescribed.
+- `sub_0032`: undescribed.
+- `sub_0036`: undescribed.
+- `sub_003A`: undescribed.
+- `sub_003E`: undescribed.
+- `sub_0042`: undescribed.
+- `sub_0046`: undescribed.
+- `sub_004A`: undescribed.
+- `sub_004E`: undescribed.
+- `sub_0052`: undescribed.
 
 ### logged disk load from Disk.1
 
@@ -376,8 +603,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_cia_port_bits`: Checks bit one of a CIA port byte, sets the byte to all ones if that bit is set, then clears bits one and two of it.
 - `mask_and_increment_state`: Masks a global variable with a constant, calls another routine, increments the global variable, and clears a different global variable.
 - `set_interrupt_request_2`: Sets a global variable to sixteen.
-- `copy_stack_frame`: Copies a block of data from a source to a destination and updates a global variable with the new stack pointer.
-- `save_context_from_second_entry_2`: Waits until a shared flag is zero, then copies a block of data between shared buffers backwards and writes the current register values and return address into the top of the destination.
+- `sub_0650`: undescribed.
 - `set_global_byte`: Sets a global variable to a specific byte value.
 - `set_global_to_ff`: Stores the value two hundred and fifty-five into a global variable.
 - `copy_and_search_code`: Copies a block of memory starting from a register to a global variable and then increments a pointer until it finds a specific code address.
@@ -390,9 +616,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reset_pending_timer_request`: Stores the current stack pointer into a global variable and then clears that same variable to zero.
 - `update_port_and_global`: Modifies a bit in a hardware port register, sets a global variable to a specific value, and stores a word into two consecutive memory locations.
 - `run_if_flag_set_2`: Calls another routine only when a specific global variable is non-zero.
+- `sub_07E2`: undescribed.
+- `sub_07F4`: undescribed.
+- `sub_07F6`: undescribed.
+- `sub_080C`: undescribed.
+- `sub_0828`: undescribed.
+- `sub_0832`: undescribed.
 - `copy_block_or_return_error`: Returns an error code of minus eight when a shared word is zero.
 - `call_another_routine`: Calls another routine and returns.
 - `store_result_into_indexed_slot`: Saves its fifth data register into a shared word, calls a helper for a 64-bit result and a second helper with its low half, then stores the saved word into a table slot chosen from the seventh register word, reduced by three and scaled by four.
+- `sub_08EA`: undescribed.
 - `store_word_run_three_calls`: Stores its data-register argument into a shared word and then makes three helper calls.
 - `verify_byte_and_loop`: Checks a byte at a pointer for a specific value and, if valid, enters a loop that increments a byte at a pointer based on bitwise status checks.
 - `validate_and_increment_byte`: Checks a byte at a pointer and a sign bit, then enters a loop to increment a byte at a pointer while performing bitwise comparisons.
@@ -432,6 +665,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `toggle_device_bit`: Clears a byte at a specific offset, sets its highest bit, performs bitwise masking, and then toggles a specific bit determined by a value.
 - `compare_rotated_words`: Compares two 32-bit values by checking their high bytes and performing byte rotations.
 - `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `sub_0EE4`: undescribed.
 - `invoke_helper_indices_three_six`: Calls another routine for each index from three through six.
 - `toggle_table_word`: Fetches a word from a table using a register offset, performs a bitwise XOR with the value, and stores the result back into the same table location.
 - `update_device_register`: Calculates a new value by combining a register and a byte, updates a device register, and modifies several memory locations based on a bit test.
@@ -461,6 +695,4 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_byte_bits`: Sets specific bits in a byte located at an offset from a pointer.
 - `wait_and_set_marker_word`: Polls a global variable until it reaches zero, then updates it to a specific marker value.
 - `frag_sf_rts`: Short code fragment that clears a fixed memory address, then returns.
-- `call_subroutine_with_flag`: Sets a global variable to one and then calls another routine.
-- `set_flag_and_return`: Sets a global variable to one.
 - `set_global_flag_3`: Sets a global variable to one and returns a value concatenated from two registers.

@@ -42,6 +42,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address: 182 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 128 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - venus the flytrap (1990)(gremlin)[cr qtx][t +6 inner-city]/Venus the Flytrap (1990)(Gremlin)[cr QTX][t +6 Inner-City].adf: bytes 1024-3584 look like code no run loaded: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 address+address
 - venus the flytrap (1990)(gremlin)[cr qtx][t +6 inner-city]/Venus the Flytrap (1990)(Gremlin)[cr QTX][t +6 Inner-City].adf: 1 logged loads cover 2560 bytes of the image
 - venus the flytrap (1990)(gremlin)[cr qtx][t +6 inner-city]/Venus the Flytrap (1990)(Gremlin)[cr QTX][t +6 Inner-City].adf: blocks 8-26 (bytes 4096-13824) outside the filesystem hold data, not code (opcode density 0.027, entropy 6.40)
 - venus the flytrap (1990)(gremlin)[cr qtx][t +6 inner-city]/Venus the Flytrap (1990)(Gremlin)[cr QTX][t +6 Inner-City].adf: blocks 28-28 (bytes 14336-14848) outside the filesystem hold data, not code (opcode density 0.016, entropy 1.53)

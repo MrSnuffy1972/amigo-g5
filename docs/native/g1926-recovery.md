@@ -8,19 +8,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (905360 top-level bytes in 49 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 158 of 158 named (0 author symbols), 158 of 158 described (33 by rule, 32 by the local model) |
+| Functions named and described | pass, 160 of 160 named (0 author symbols), 160 of 160 described (32 by rule, 38 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 337 of 337 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 2042 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 2485 of 2485 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2595 of 2595 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 682495 |
-| code | 7950 |
-| data | 193389 |
-| padding | 10774 |
+| code | 8232 |
+| data | 193099 |
+| padding | 10782 |
 | unused | 10752 |
 
 ## Code units
@@ -29,10 +29,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:joker | 2 | 106 | 4 |
 | Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:indy | 2 | 70 | 5 |
-| Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:EndCLI | 2 | 117 | 2 |
+| Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:EndCLI | 2 | 182 | 3 |
 | Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:paranoimia | 3 | 11 | 1 |
-| icon.library | 10 | 1375 | 109 |
-| Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:LoadWB | 12 | 538 | 30 |
+| icon.library | 10 | 1421 | 110 |
+| Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:LoadWB | 12 | 537 | 30 |
 | Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:bootblock | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 258 | 6 |
 | 98.LFL (raw code file, load address unknown) | 1 | 0 | 0 |
@@ -40,12 +40,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ## Cases handled
 
 - indiana jones and the last crusade (1989)(lucasfilm games)(disk 1 of 3)[cr pna][a]/Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:IndyCodes1.zoo: high-entropy data file (7.91 bits/byte), classified as packed data
-- reference run failed (Karl 4 Nov 2026): run play-long-keys slid through memory (an address: 131 64 KB pages each with >= 29491 distinct PCs executed, 2146304 of its 2160997 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
-- reference run failed (Karl 4 Nov 2026): run play-long-mixed slid through memory (an address: 131 64 KB pages each with >= 29491 distinct PCs executed, 2146304 of its 2160997 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
-- reference run failed (Karl 4 Nov 2026): run play-rs-m1500 slid through memory (an address: 131 64 KB pages each with >= 29491 distinct PCs executed, 2146304 of its 2160987 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
-- reference run failed (Karl 4 Nov 2026): run play-rs-m3000 slid through memory (an address: 131 64 KB pages each with >= 29491 distinct PCs executed, 2146304 of its 2160987 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
-- reference run failed (Karl 4 Nov 2026): run play-rs-menu slid through memory (an address: 131 64 KB pages each with >= 29491 distinct PCs executed, 2146304 of its 2160987 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
-- reference run failed (Karl 4 Nov 2026): run play-rs-mixed slid through memory (an address: 131 64 KB pages each with >= 29491 distinct PCs executed, 2146304 of its 2160987 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-long-keys slid through memory (an address: 132 64 KB pages each with >= 29491 distinct PCs executed, 2160417 of its 2160997 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-long-mixed slid through memory (an address: 132 64 KB pages each with >= 29491 distinct PCs executed, 2160417 of its 2160997 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
 - runtime segment an address: 237 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - indiana jones and the last crusade (1989)(lucasfilm games)(disk 1 of 3)[cr pna][a]/Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:Rooms/98.LFL: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - indiana jones and the last crusade (1989)(lucasfilm games)(disk 1 of 3)[cr pna][a]/Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:paranoimia: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
@@ -81,6 +77,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_state_block_and_call`: When the destination pointer is set, copies a 16-longword block from a fixed offset in a state structure to that destination, then calls a supplied routine.
+- `modify_structure_and_branch`: Modifies a structure via a2, performs several calls to a5, and updates a pointer-based value in a0 or a1 before an indirect jump.
 
 ### Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:paranoimia
 
@@ -96,8 +93,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
 - `store_library_probe_result`: Library code that saves two argument values into a structure, calls a library function through a base pointer and stores its result in the structure.
 - `copy_two_fields_to_globals`: Library code that copies two 32-bit fields from a structure at fixed offsets into two global cells.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `forward_to_library_routine`: Library code that calls one other routine and then returns.
 - `call_library_handler`: This library routine simply calls another routine and then returns.
 - `call_icon_data_copy`: This library routine unconditionally calls a helper routine to copy icon data to the stack and then returns.
 - `call_icon_init_routine`: This library routine invokes a single initialization function to set up icon data structures and then returns.
@@ -112,7 +107,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_another_routine`: This routine calls another routine and then returns.
 - `call_other_routine_2`: The library routine calls another routine and then returns.
 - `store_arg_in_looked_up_record`: Library code that calls a function through a pointer taken from the first argument's structure, then stores the second argument into the returned structure at a fixed offset.
-- `acquire_handle_with_fallback_release`: Library code that calls a helper to obtain a handle and, if it is non-zero, calls a second helper with it.
 - `fill_record_from_buffer_and_link`: Obtains a record through a helper and, on success, copies a buffer of ten longwords and several single fields into it.
 - `copy_fields_into_record_link`: Copies ten longwords and several single fields from a source block into a record at fixed offsets, then sets the back-link in the record referenced by one of its fields when that link is present.
 - `return_zero_stub`: Empty library stub that immediately returns zero and does no other work.
@@ -173,6 +167,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `divide_unsigned_32bit`: Divides a 32-bit unsigned value by another, using a bit-by-bit restoring loop for large divisors and direct 16-bit division otherwise.
 - `divide_unsigned_bit_loop`: Runs the sixteen-step restoring division loop on a 32-bit dividend, subtracting the divisor whenever the partial remainder is at least the divisor.
 - `multiply_32_bit_integers`: Computes the low 32-bit product of two values from 16-bit partial products, and also returns a half-word swapped copy of the second operand.
+- `forward_call_to_helper`: As library code, it calls one helper and returns, with no other work.
+- `call_helper_return_register`: As library code, it pushes a data register onto the stack, shifts two data registers for a helper, calls that helper, moves the helper's result into a data register, restores the saved register, and returns.
+- `negate_result_on_flag`: As library code, it handles the signs of two values, calls a helper, and negates the result when the flag the helper leaves in an address register is nonzero before returning.
+- `call_and_negate_on_flag`: As library code, it calls a helper, then returns its first result, or the negation of that result when the second result left in an address register is nonzero.
 - `invoke_table_entry`: Calls the routine whose address is stored at a fixed offset in the library's global data structure, then returns.
 - `tiny_move_rts_2`: Small routine of 2 instructions that copies d0 to (a3)+, then returns.
 - `measure_c_string_length`: Counts the characters of a null-terminated string and returns the count.
@@ -217,10 +215,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_366`: Library stub: loads a library base from a global variable and calls the library function at offset minus 366 of that base, returning its result to the caller.
 - `call_library_vector_420`: Library stub: loads a library base from a global variable and calls the library function at offset minus 420 of that base, returning its result to the caller.
 - `call_library_vector_384`: Library stub: loads a library base from a global variable and calls the library function at offset minus 384 of that base, returning its result to the caller.
-- `check_text_prefix_and_pad`: Compares a global text with the start of a buffer.
-- `write_dot_padding_bytes`: Writes a dot followed by four spaces into five fixed positions of a buffer.
-- `compare_global_text_prefix`: Compares a global text with the start of a buffer, advancing through the text until it ends or a mismatch occurs.
-- `stub_return_only`: Contains only a return instruction, with no calls, memory access or hardware use, so it does no work.
 - `call_permit`: Library stub: loads its arguments and the exec library base, calls Permit and returns its result to the caller.
 - `call_alloc_mem`: Library stub: loads its arguments and the exec library base, calls AllocMem and returns its result to the caller.
 - `call_find_resident`: Library stub: loads its arguments and the exec library base, calls FindResident and returns its result to the caller.
@@ -230,6 +224,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_with_stack_slot`: Calls another routine with the two incoming arguments and a pointer to a local stack slot, then returns.
 - `measure_stack_text_and_send`: Calls a library routine first, then measures a 140-byte local text buffer.
 - `store_byte_at_pointer`: Stores one byte value through a pointer argument.
+- `compare_and_loop_bytes`: Compares a register against a constant, saves registers, and enters a loop that compares bytes from two memory locations until a mismatch is found.
+- `write_dot_padding_bytes`: Writes a dot followed by four spaces into five fixed positions of a buffer.
+- `compare_global_text_prefix`: Compares a global text with the start of a buffer, advancing through the text until it ends or a mismatch occurs.
+- `stub_return_only`: Contains only a return instruction, with no calls, memory access or hardware use, so it does no work.
 
 ### Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:bootblock
 

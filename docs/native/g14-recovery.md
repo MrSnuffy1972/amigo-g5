@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (935688 top-level bytes in 9 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 8 raw-word lines |
-| Functions named and described | pass, 133 of 133 named (0 author symbols), 133 of 133 described (8 by rule, 26 by the local model) |
+| Functions named and described | pass, 209 of 209 named (0 author symbols), 209 of 209 described (61 by rule, 42 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2199 of 2199 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 256 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 4716 of 4716 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 5271 of 5271 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 362577 |
-| code | 22232 |
-| data | 549760 |
+| asset | 360943 |
+| code | 24532 |
+| data | 549094 |
 | padding | 93 |
 | unused | 1026 |
 
@@ -29,9 +29,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | game.slave | 1 | 163 | 11 |
 | logged disk load from Disk.1 | 1 | 0 | 0 |
-| logged disk load from Disk.1 | 1 | 4512 | 115 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 36 | 3 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 4 |
+| logged disk load from Disk.1 | 1 | 4554 | 117 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 513 | 59 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 41 | 22 |
 | Disk.1 bytes 0-256 (code never loaded by a reference run) | 1 | 0 | 0 |
 
 ## Cases handled
@@ -43,6 +43,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address: 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - ArkanoidRevengeOfDoh_v1.0_0765/ArkanoidRevengeOfDoh_v1.0_0765_hdf/ArkanoidRevengeOfDoh/Disk.1: bytes 0-256 look like code no run loaded: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 2 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 2 jump target
 - ArkanoidRevengeOfDoh_v1.0_0765/ArkanoidRevengeOfDoh_v1.0_0765_hdf/ArkanoidRevengeOfDoh/Disk.1: 3 logged loads cover 392958 bytes of the image
 - ArkanoidRevengeOfDoh_v1.0_0765/ArkanoidRevengeOfDoh_v1.0_0765_hdf/ArkanoidRevengeOfDoh/Disk.1: chunks 18-43 (bytes 4608-11264) outside the filesystem hold data, not code (opcode density 0.000, entropy 3.97)
 - 1 never-loaded region(s), 256 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
@@ -186,6 +187,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_longword_block_to_buffer`: Copies a pointer global to a second pointer global, then copies 8001 longwords from one buffer to the other.
 - `copy_longword_block_to_buffer_2`: Copies 8001 longwords from one buffer pointer to another.
 - `clear_four_plane_word_rows`: Clears one word in each of four plane regions spaced 8000 bytes apart, across 104 rows of 14 words starting from a fixed address.
+- `copy_and_transform_data`: Copies 8192 words from one memory area to another, then processes 8 blocks of 17 words each by transforming pixel data using bitwise operations and shifts, followed by copying bytes from a large buffer to specific offsets in another buffer.
+- `frag_movea_move_subi_addq_dbra_rts`: Short code fragment that copies an address to a0, then copies an address to a1, then copies 3811 to d0, then copies the memory at a0 (advancing a0) to d1, then subtracts 128 from d1, then copies d1 to the memory at a1 (advancing a1), then adds 1 to a0, then loops back while counting down d0, then returns.
 - `unpack_lz_backreference_stream`: Decodes a packed stream by reading flag bits through the bit-buffer refill routine, then either copies a literal byte or copies a run backwards from output already written.
 - `bk_refill_bit_buffer`: Depacker bit reader refill: fetches the previous longword of the packed stream, folds it into the checksum and shifts out its lowest bit with a marker bit entering at the top.
 - `shift_bit_buffer_by_count`: Shifts a longword bit buffer right repeatedly by a word-sized count, pulling in the next lower longword from memory whenever the buffer empties and feeding its low bit into the top.
@@ -194,12 +197,86 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `iterate_until_zero_or_negative`: Repeatedly calls another routine and resets a global variable to zero as long as the returned value is greater than or equal to one.
+- `setup_dma_parameters`: Initializes DMA transfer parameters for graphics rendering by calculating and setting up register values based on input data, then configures multiple hardware registers including BLTCON0, BLTCON1, and various BLT* registers before initiating a loop of DMA operations.
+- `frag_move_movem_rts`: Short code fragment that copies an address to the memory at a4, then restores saved registers from the stack, then returns.
 - `call_external_function`: Executes another routine and returns.
+- `wait_for_blitter_2`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
+- `return_register_d0_2`: Returns the current value held in register d0.
+- `frag_move_bra`: Short code fragment that copies an address to a fixed memory address, then copies an address to a fixed memory address, then jumps to another point in the code.
+- `frag_movem_moveq_move_beq_bsr_bra`: Short code fragment that saves registers on the stack, then loads 0 into d0, then copies the memory at a4 (advancing a4) to d0, then branches if the last result was zero, then calls another routine, then jumps to another point in the code.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+- `process_input_character`: Processes input characters by comparing against specific values, performing arithmetic operations to calculate offsets, storing calculated memory addresses in global variables, and calling another routine to handle further processing.
+- `frag_cmpi_bpl_beq_bne_addi_clr_rts`: Short code fragment that compares d0 with 48, then branches if the last result was not negative, then compares d0 with 32, then branches if the last result was zero, then compares d0 with 13, then branches if the last result was not zero, then adds 18 to a fixed memory address, then clears a fixed memory address, then returns.
+- `frag_addi_bra`: Short code fragment that adds 43 to d0, then jumps to another point in the code.
+- `initialize_game_flags`: Sets up game state flags and variables by writing specific values to memory locations, including clearing several byte flags, setting others to predefined constants, and storing pointer values in global variables.
+- `update_game_state_3`: Updates a game state variable by incrementing a counter, copying data from a table based on input, and managing control flow through conditional branches.
+- `frag_movea_subq_beq_move_bra`: Short code fragment that copies a fixed memory address to a0, then subtracts 1 from the memory at an offset from a0, then branches if the last result was zero, then copies the memory at a0 to a fixed memory address, then jumps to another point in the code.
+- `frag_subq_bra`: Short code fragment that subtracts 4 from a fixed memory address, then jumps to another point in the code.
+- `frag_addq_clr_move_movea_bra`: Short code fragment that adds 4 to a fixed memory address, then clears d0, then copies the memory at a0 to d0, then copies a fixed memory address to a0, then copies d0 to the memory at an offset from a0, then copies a fixed memory address to the memory at a0, then jumps to another point in the code.
+- `update_game_state`: Updates a game state variable by incrementing a counter, copying data from a table based on input, and managing control flow through conditional branches and subroutine calls.
+- `frag_clr_subq_beq_tst_cmpi_bcs_bra`: Short code fragment that clears a fixed memory address, then subtracts 1 from a fixed memory address, then branches if the last result was zero, then tests a fixed memory address, then branches if the last result was zero, then compares a fixed memory address with 2, then branches if the last result was zero, then branches if the carry flag is set, then jumps to another point in the code.
+- `update_game_state_5`: Reads a byte from a memory location, performs conditional operations based on its value including comparisons against specific constants, updates a global variable, and branches to different code paths depending on the byte's value.
+- `frag_movea_subq_beq_move_bra_2`: Short code fragment that copies a fixed memory address to a0, then subtracts 1 from the memory at an offset from a0, then branches if the last result was zero, then copies the memory at a0 to a fixed memory address, then jumps to another point in the code.
+- `frag_subq_bra_2`: Short code fragment that subtracts 4 from a fixed memory address, then jumps to another point in the code.
+- `frag_addq_clr_move_movea_bra_2`: Short code fragment that adds 4 to a fixed memory address, then clears d0, then copies the memory at a0 to d0, then copies a fixed memory address to a0, then copies d0 to the memory at an offset from a0, then copies a fixed memory address to the memory at a0, then jumps to another point in the code.
+- `frag_bra`: Short code fragment that jumps to another point in the code.
+- `update_game_state_4`: Updates a global variable based on input data from a pointer, performs conditional operations including table lookups and counter decrements, and handles state transitions through branching logic.
+- `frag_move_clr_bra`: Short code fragment that copies 16 to a fixed memory address, then clears a fixed memory address, then jumps to another point in the code.
+- `frag_move_clr_bra_2`: Short code fragment that copies 15 to a fixed memory address, then clears a fixed memory address, then jumps to another point in the code.
+- `update_state_flags`: Clears a byte at a fixed memory address, decrements a counter at another fixed address, and branches based on the counter's value or comparison results.
+- `process_game_data`: Reads a byte from a memory location, performs conditional operations based on the byte value, updates pointers and counters, and calls another routine before returning.
+- `frag_movea_subq_beq_move_bra_3`: Short code fragment that copies a fixed memory address to a0, then subtracts 1 from the memory at an offset from a0, then branches if the last result was zero, then copies the memory at a0 to a fixed memory address, then jumps to another point in the code.
+- `frag_subq_bra_3`: Short code fragment that subtracts 4 from a fixed memory address, then jumps to another point in the code.
+- `frag_addq_clr_move_movea_bra_3`: Short code fragment that adds 4 to a fixed memory address, then clears d0, then copies the memory at a0 to d0, then copies a fixed memory address to a0, then copies d0 to the memory at an offset from a0, then copies a fixed memory address to the memory at a0, then jumps to another point in the code.
+- `frag_move_bpl_eori_bra`: Short code fragment that copies the memory at a0 to d7, then branches if the last result was not negative, then copies a fixed memory address to d7, then exclusive-ors 12 into d7, then copies d7 to a fixed memory address, then jumps to another point in the code.
+- `update_game_state_2`: Updates a global variable with data from a register, performs arithmetic operations on the variable using values from memory, and stores a word value at a calculated address.
+- `frag_move_clr_bra_3`: Short code fragment that copies 15 to a fixed memory address, then clears a fixed memory address, then jumps to another point in the code.
+- `frag_clr_movem_rts`: Short code fragment that clears a fixed memory address, then restores saved registers from the stack, then returns.
+- `enable_interrupts_and_reset_flags_2`: Sets two flag globals to one, clears two counters, then writes a value with the top bits set to the interrupt-enable register.
+- `configure_audio_dma`: Configures audio DMA channels by calculating register addresses based on input data, writing waveform parameters to audio registers, enabling interrupts and DMA, then updating a global interrupt flag with the calculated value.
+- `frag_move_rts`: Short code fragment that copies 1 to a fixed memory address, then returns.
+- `advance_multiplicative_seed_2`: multiplies the low 16 bits of a global variable by 58925 and stores the result back into that variable.
 - `update_blt_parameters`: Updates the source and destination or length-related parameters for the bitblt (Blitter) hardware.
+- `lookup_and_branch`: Performs a lookup operation using a byte value as an index into a table, loads a word from that location, and branches to a specific address based on the result of bitwise operations performed on the loaded value.
+- `frag_clr_bra`: Short code fragment that clears d0, then jumps to another point in the code.
+- `extract_low_nibble_2`: returns the low four bits of a 16-bit register value.
+- `configure_video_registers`: Writes fixed 16-bit values to multiple hardware register addresses related to display and bitplane configuration, clears several registers, and calls three other routines while setting a specific bit in a DMA control register.
+- `frag_movea_move_rts`: Short code fragment that copies a fixed memory address to a0, then copies a fixed memory address to a fixed memory address, then copies a0 to a fixed memory address, then returns.
+- `update_audio_parameters`: Updates audio channel parameters by loading values from global memory locations, writing them to an audio register table with specific offsets, and incrementing a pointer through a loop of three iterations.
+- `frag_bsr_dbra_rts`: Short code fragment that calls another routine, then loops back while counting down d0, then returns.
+- `halt_in_infinite_loop_2`: enters an unconditional infinite loop so that execution never returns.
+- `wait_and_reset_flag_2`: waits until a global variable reaches two or more, then clears it to zero and returns.
+- `start_copper_list_2`: Points the copper at a new copper list by writing its address to COP1LC and strobing COPJMP1 so it starts at once, then returns.
+- `frag_move_rts_2`: Short code fragment that copies 128 to a fixed memory address, then returns.
+- `configure_interrupt_dma_2`: when a global variable is non-zero, it performs bitwise operations to calculate a mask and writes it to hardware registers before clearing the global variable.
+- `handle_interrupt_request`: Processes interrupt requests by reading the current interrupt status, masking specific bits, setting up DMA and interrupt registers based on the masked value, and updating a global flag with an XOR operation of the masked bits.
+- `frag_move_dbra_rts`: Short code fragment that copies 0 to the memory at a0 (advancing a0), then loops back while counting down d0, then returns.
+- `frag_lea_move_movea_dbra_rts`: Short code fragment that loads the address of a fixed memory address into a0, then copies 799 to d1, then copies a0 to a1, then copies 6 to d0, then copies 0 to the memory at a1 (advancing a1), then loops back while counting down d0, then loads the address of the memory at an offset from a0 into a0, then loops back while counting down d1, then returns.
+- `frag_move_bsr_dbra_rts`: Short code fragment that copies d0 to the stack, then calls another routine, then copies the top of the stack to d0, then loops back while counting down d0, then returns.
+- `frag_move_add_cmpi_bcs_subi_subq_bra`: Short code fragment that copies 1 to d0, then adds the memory at a0 to d0, then copies d0 to the memory at a0, then compares d0 with 104, then branches if the carry flag is set, then subtracts 10 from d0, then copies d0 to the memory at a0, then subtracts 1 from a0, then jumps to another point in the code.
+- `frag_move_rts_jsr_lea_dbra`: Short code fragment that copies 2 to a fixed memory address, then returns, then copies a2 to a fixed memory address, then copies a1 to a fixed memory address, then calls another routine, then loads the address of the memory at an offset from a2 into a2, then loads the address of the memory at an offset from a1 into a1, then loops back while counting down d0, then returns.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `perform_empty_operation`: This routine is empty and performs no actions before returning.
+- `nop_padding`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_2`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `nop_operation_2`: The routine is empty and performs no operations.
+- `nop_padding_3`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_4`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_5`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_6`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `perform_no_operation`: This routine contains a single instruction that performs no action and returns immediately.
 - `return_no_op`: The routine consists of two instructions that perform no work and immediately return to the caller.
+- `nop_padding_7`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_8`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_9`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_10`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_11`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_12`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_13`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_14`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_15`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_16`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_17`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `frag_nop_rts_bra`: Short code fragment that pauses for one no-operation step, then returns, then jumps to another point in the code.

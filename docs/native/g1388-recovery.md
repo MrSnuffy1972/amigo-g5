@@ -6,44 +6,58 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (910160 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 4 raw-word lines |
-| Functions named and described | pass, 128 of 128 named (0 author symbols), 128 of 128 described (4 by rule, 119 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1002 of 1003 (99.90%) |
+| Bytes classified (917328 top-level bytes in 10 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 12 of 12 units identical (bytes and relocations), 61 raw-word lines |
+| Functions named and described | pass, 210 of 210 named (0 author symbols), 210 of 210 described (36 by rule, 132 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1608 of 1608 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1930 of 1930 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 3597 of 3597 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 7328 |
-| code | 5642 |
-| data | 897128 |
-| padding | 62 |
+| asset | 6711 |
+| code | 11766 |
+| data | 898782 |
+| padding | 69 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Bill's Tomato Game (1992)(Psygnosis)[cr CSL][t +2 CSL].adf:bootblock | 1 | 63 | 5 |
-| logged disk load from Bill's Tomato Game (1992)(Psygnosis)[cr CSL][t +2 CSL].adf boot-block load | 1 | 1482 | 103 |
+| logged disk load from Bill's Tomato Game (1992)(Psygnosis)[cr CSL][t +2 CSL].adf boot-block load | 1 | 1480 | 102 |
 | logged disk load from Bill's Tomato Game (1992)(Psygnosis)[cr CSL][t +2 CSL].adf boot-block load | 1 | 0 | 0 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 88 | 5 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 281 | 14 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 464 | 25 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 29 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 283 | 15 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 124 | 7 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 13 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 829 | 35 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 16 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 280 | 13 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 16 | 1 |
 
 ## Cases handled
 
 - bill's tomato game (1992)(psygnosis)[cr csl][t +2 csl]/Bill's Tomato Game (1992)(Psygnosis)[cr CSL][t +2 CSL].adf: custom-format (non-DOS) disk, 1758 non-empty blocks: matched against track-loaded segments
-- extended reference run ignored: it does not re-execute 6 of the 773 PCs the canonical run logged (3702 PCs logged; the harness no longer reproduces the game), so its PCs and RAM are not used
+- extended reference run ignored: it does not re-execute 430 of the 557 PCs the canonical run logged (3702 PCs logged; the harness no longer reproduces the game), so its PCs and RAM are not used
+- 203 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
 - bill's tomato game (1992)(psygnosis)[cr csl][t +2 csl]/Bill's Tomato Game (1992)(Psygnosis)[cr CSL][t +2 CSL].adf: the boot block reads 5120 bytes from disk offset 512 to an address (found statically); recovered as a unit
 - bill's tomato game (1992)(psygnosis)[cr csl][t +2 csl]/Bill's Tomato Game (1992)(Psygnosis)[cr CSL][t +2 CSL].adf: the boot block reads 1024 bytes from disk offset 900096 to an address (found statically); recovered as a unit
-- prefix run f1000 ignored: it logged 2935 PCs the canonical run never executed (not a prefix of it)
-- prefix run f2000 ignored: it logged 2935 PCs the canonical run never executed (not a prefix of it)
-- runtime segment an address (play-rs-m1500): 47 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- prefix run f1000 ignored: it logged 3575 PCs the canonical run never executed (not a prefix of it)
+- prefix run f2000 ignored: it logged 3575 PCs the canonical run never executed (not a prefix of it)
+- runtime segment an address: 203 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 55 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 37 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 357 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-m1500-unpk01): 190 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address (play-rs-m1500): 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- self-modifying code at an address (3 bytes change between runtime segment an address (play-rs-m1500) and runtime segment an address): both forms recovered; writer: not identified statically (indirect store)
 - bill's tomato game (1992)(psygnosis)[cr csl][t +2 csl]/Bill's Tomato Game (1992)(Psygnosis)[cr CSL][t +2 CSL].adf: 2 logged loads cover 6144 bytes of the image
 - 1 packed track region(s), 894464 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)
 
@@ -165,7 +179,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `shift_and_call_subroutine`: Stores a register value in another register, performs a logical shift right on the original value, and calls another routine twice.
 - `set_clock_bit_in_byte`: Sets or clears a single bit in a byte depending on bit zero of the byte before it, returning early when bit six is already set in the no-flag case.
 - `apply_bit_manipulation_to_pointer`: Performs bitwise operations and shifts on a value before storing it through a pointer.
-- `check_memory_signature`: Compares the contents of a memory location against a specific constant and calls another routine if they match.
 - `initialize_and_fill_tables`: Clears a series of memory entries and then executes a complex loop that performs bitwise operations, table lookups, and data copying to populate multiple tables.
 - `shift_bit_stream`: Shifts bits from a register and updates a value using a bitmask or a value from a table.
 - `lookup_table_masked_value`: The routine reads a 16-bit value from a table using an index derived from the input word, and returns that value masked with an input mask.
@@ -178,11 +191,113 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `write_encoded_data`: Calculates several values based on input registers and stores them as a sequence of bytes through a pointer.
-- `bulk_transfer_indexed`: Iteratively transfers data from a source table to various destinations using high and low byte combinations from a source buffer.
-- `copy_table_data`: Copies data from a source table to multiple destination locations using indexed lookups.
-- `generate_bit_pattern_table`: Calculates a series of bit-shifted values and stores them sequentially into a memory location.
-- `update_global_flag`: Stores the bitwise NOT of a byte into a global variable, potentially setting it to a specific value if the result is a certain constant.
+- `jump_to_next_routine`: Loads an address into a register, stores it to a memory location, and triggers a trap instruction to continue execution.
+- `initialize_stack_and_jump`: Sets up the stack pointer, copies data between memory locations, and jumps to a specific address in memory.
+- `frag_lea_move_cmpa_bne_jmp`: Short code fragment that loads the address of a fixed memory address into a1, then copies 20215 to d0, then compares a1 with a0, then branches if the last result was not zero, then jumps to another point in the code.
+- `frag_blt_adda_move_dbra_jmp`: Short code fragment that branches if the comparison was less, then adds an address to a0, then adds an address to a1, then copies the memory just below a0 (moving a0 down) to the memory just below a1 (moving a1 down) (2 times in a row), then loops back while counting down d0, then jumps to another point in the code.
+- `frag_move_dbra_jmp`: Short code fragment that copies the memory at a0 (advancing a0) to the memory at a1 (advancing a1) (2 times in a row), then loops back while counting down d0, then jumps to another point in the code.
+- `set_video_mode`: Sets the video mode by writing a value to the BPLCON0 register and then returns.
+- `frag_move_add_rts`: Short code fragment that copies a fixed memory address to d0, then copies a fixed memory address to d1, then copies d1 to a fixed memory address, then adds d1 to d0, then copies a fixed memory address to d1, then copies d0 to a fixed memory address, then adds d1 to d0, then copies d0 to a fixed memory address, then adds a fixed memory address to d0, then returns.
+- `calculate_sum_average`: Computes a sum of three 16-bit values stored at specific memory locations, calculates an average, and returns the result in a register.
+- `frag_move_add_rts_2`: Short code fragment that copies a fixed memory address to d0, then copies a fixed memory address to d1, then copies d1 to a fixed memory address, then adds d1 to d0, then copies a fixed memory address to d1, then copies d0 to a fixed memory address, then adds d1 to d0, then copies d0 to a fixed memory address, then returns.
+- `perform_bit_shifts`: Performs a series of bit shifts and arithmetic operations on data in registers, including swapping word halves and adding values with carry propagation.
+- `frag_swap_add_addq_addx_dbra_rts`: Short code fragment that swaps the halves of d2, then adds d2 to d2, then adds 1 to d2, then adds d0 to d0, then adds d1 and the extend flag to d1, then adds d0 to d0, then adds d1 and the extend flag to d1, then loops back while counting down d3, then returns.
+- `process_unknown_data`: Processes data through a series of operations involving memory access and conditional branching without clear functional context.
+- `setup_audio_dma`: Initializes audio DMA channels by configuring registers, copying data from memory to audio registers, and enabling DMA transfer.
+- `frag_beq_move_addq_lea_adda_clr_rts`: Short code fragment that branches if the last result was zero, then copies a1 to the memory at a0, then adds 8 to the memory at a0, then loads the address of the memory at an offset from a1 into a0, then adds d0 to a1, then clears the memory at a1, then returns.
+- `initialize_game_state_2`: Initializes game state variables and video registers, then performs conditional bit setting based on input and hardware status before return.
+- `initialize_game_state`: Initializes game state variables and video registers, then performs conditional bit setting based on input and hardware status before returning.
+- `handle_keyboard_input`: Processes keyboard input by reading from CIA registers, calling a handler routine, and updating keyboard status flags in memory.
+- `frag_lea_move_cmpi_sne_andi_addq_dbra_r`: Short code fragment that loads the address of a fixed memory address into a0, then copies 127 to d1, then compares the memory at a0 with 1, then sets the memory at a0 if the last result was not zero, then masks the memory at a0 with 2, then adds 2 to a0, then loops back while counting down d1, then returns.
+- `frag_moveq_tst_beq_move_bmi_sf_rts`: Short code fragment that loads 0 into d0, then loads 0 into d1, then tests a fixed memory address, then branches if the last result was zero, then copies a fixed memory address to d1, then branches if the last result was negative, then copies a location in the code to d0, then clears a fixed memory address, then returns.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `clear_audio_volumes`: Clears the volume registers for four audio channels and sets up interrupt handling before returning.
+- `handle_joystick_input`: Reads joystick input values, performs arithmetic calculations on them, updates coordinate registers, and calls another routine to process the results.
+- `update_coordinates`: Updates coordinate values in a structure by performing arithmetic operations on data from memory locations and calling another routine to process the results.
+- `initialize_video_registers`: Writes multiple values to video control registers including bitplane and display settings, then enables DMA and interrupts.
+- `wait_for_raster_line`: Busy-waits by reading the beam position registers (VPOSR/VHPOSR) until the display beam reaches a given raster line, then returns.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_bra`: Short code fragment that jumps to another point in the code.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `run_pending_handler_list`: When a pending flag is set, clears it and walks a list of records until a negative terminator.
+- `test_point_inside_rectangle`: Returns an all-ones value when a point lies inside the rectangle given by two pairs of bounds, and zero otherwise.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `run_step_and_cycle_counter`: Calls one unnamed routine, then two more, then decrements a shared counter.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `audio_volume_control_and_copy`: Waits for specific vertical position values, copies data blocks, updates a counter, and controls audio volume levels based on the counter value.
+- `frag_move_bpl_addi_bra`: Short code fragment that copies a fixed memory address to d1, then copies a fixed memory address to d0, then branches if the last result was not negative, then adds 320 to d1, then jumps to another point in the code.
+- `populate_pointer_table`: Takes a 32-bit value and splits it into high and low words, storing them at various offsets within a table starting at a global address.
+- `copy_data_blocks`: Copies 17 blocks of 16 words from a source table to a destination table, where each block is offset by 24 bytes.
+- `wait_and_copy_blocks`: Polls the VHPOSR register until the high byte matches a specific value, then copies 176 blocks of 16 words from a source table to a destination table.
+- `copy_word_blocks`: Copies 83 blocks of 14 words from a source table to a destination table, with each block offset by 26 bytes.
+- `copy_block_backward_into_buffer`: Copies sixteen thousand longwords from a fixed source into a destination offset from a shared base, moving backward one longword at a time.
+- `wait_for_vblank`: Waits for vertical blank by polling video position registers until a specific condition is met, then sets a global flag to indicate completion.
+- `frag_move_clr_bra`: Short code fragment that copies 3840 to a fixed memory address, then clears the stack, then jumps to another point in the code.
+- `initialize_data_structure`: Initializes a data structure with default values, calls several helper functions, and handles conditional logic based on a global flag to set specific text values.
+- `find_or_insert_record`: Searches a linked list of keyed records for a matching key, and when no record matches, writes a new record with that key and clears its size field.
+- `decode_flag_bit_steps`: Runs a series of steps that test a flag bit in a shared word and set its low bits.
+- `frag_st_rts`: Short code fragment that sets a fixed memory address to all ones, then returns.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `encode_sprite_control_bytes`: Writes four sprite control bytes from horizontal and vertical start, stop and size values, using a fixed display-window offset.
+- `copy_word_pairs_2`: Copies word pairs from a source buffer to multiple destination buffers based on a counter, advancing pointers through each buffer by two words per iteration.
+- `copy_word_quadruples_2`: Copies word quadruples from a source buffer to four different destination buffers using a counter to control iterations, with conditional branches based on comparison results.
+- `copy_word_quadruples`: Copies word quadruples from a source buffer to four different destination buffers, using a counter to control the number of iterations and advancing pointers accordingly.
+- `copy_byte_indexed`: Processes byte values from a source buffer through an indexed lookup table, copying results to multiple destination buffers with specific offset patterns based on a counter.
+- `frag_move_bra`: Short code fragment that copies the status register to d0, then copies the memory just below a0 (moving a0 down) to the memory at a0, then jumps to another point in the code.
+- `build_bit_lookup`: Constructs a lookup table of bit patterns by processing sequential byte values through bitwise operations and storing the results in memory.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_tst_beq_move_jmp`: Short code fragment that tests a fixed memory address, then branches if the last result was zero, then copies 74 to a fixed memory address, then tests a fixed memory address, then branches if the last result was zero, then copies 74 to a fixed memory address, then jumps to another point in the code.
+- `frag_not_move_cmp_bne_st_rts`: Short code fragment that inverts d0, then copies d0 to a fixed memory address, then compares d0 with 95, then branches if the last result was not zero, then sets a fixed memory address to all ones, then returns.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_beq_move_tst_jmp`: Short code fragment that branches if the last result was zero, then copies 74 to a fixed memory address, then tests a fixed memory address, then branches if the last result was zero, then copies 74 to a fixed memory address, then jumps to another point in the code.
+- `frag_not_move_cmp_bne_st_rts_2`: Short code fragment that inverts d0, then copies d0 to a fixed memory address, then compares d0 with 95, then branches if the last result was not zero, then sets a fixed memory address to all ones, then returns.
+- `initialize_audio_system`: Initializes audio system registers by clearing multiple volume and control registers, setting up channel configurations, and enabling DMA for audio output.
+- `advance_counter_until_limit`: Advances a shared counter and, when it reaches the step length, calls helpers and reloads the counter from two bytes.
+- `service_audio_channel_locations`: Writes the location registers of the four audio channels and calls four unnamed routines.
+- `decode_sound_event_record`: Reads the next sound event for one channel and uses its high nibble to pick a sample address and length from a table.
+- `program_audio_channels_and_delay`: Waits briefly, sets a DMA control word, then writes the location and length registers of all four audio channels from shared table values, with short delay loops between the writes.
+- `frag_bsr_move_andi_beq_lsl_movea_jmp`: Short code fragment that calls another routine, then copies the memory at an offset from a6 to d0, then masks d0 with 4095, then branches if the last result was zero, then copies the memory at an offset from a6 to d0, then masks d0 with 15, then shifts d0 left by 2, then copies a location in the code to a0, then jumps to the address in a0.
+- `frag_move_rts`: Short code fragment that copies the memory at an offset from a6 to the memory at an offset from a5, then returns.
+- `search_table_for_value_2`: Determines a nibble from a byte at offset 3 of a structure in a6, uses it to index into a table starting at a global address, and iterates through that table to find a word less than or equal to a 16-bit value from offset 16 of the structure, storing the result at offset 6 of a structure in a5.
+- `frag_moveq_move_andi_bra`: Short code fragment that loads 0 into d0, then copies the memory at an offset from a6 to d0, then masks d0 with 15, then jumps to another point in the code.
+- `frag_move_bra_2`: Short code fragment that copies the memory at an offset from a6 to d2, then jumps to another point in the code.
+- `search_table_for_value`: Iterates through a table to find an entry where the value is less than or equal to a 16-bit value in a6, then calls another routine to copy a value from that entry to an offset in a5.
+- `update_value_range`: Updates a value in memory based on conditions, performing arithmetic operations and range checks to ensure the value stays within specified limits.
+- `find_level_table_step`: Scans a per-channel table of sixteen-bit levels for the first entry not above the current value.
+- `frag_move_beq_clr`: Short code fragment that copies the memory at an offset from a6 to d0, then branches if the last result was zero, then copies d0 to the memory at an offset from a6, then clears the memory at an offset from a6.
+- `update_counter_and_lookup`: Updates a 16-bit counter in a structure based on a byte value, then performs a loop to find a value in a table and stores the result in a destination at offset 6 of a6.
+- `compute_modulated_level`: Computes a modulated level from a base value, a phase byte and a waveform selector.
+- `calculate_scaled_offset_2`: Calculates a value by masking and shifting bits from a6, potentially performing a table lookup or bitwise scaling, and adds the result to a 16-bit value in a6 before storing it in a5.
+- `frag_tst_bpl_move_sub_bra`: Short code fragment that tests the memory at an offset from a6, then branches if the last result was not negative, then copies 255 to d2, then subtracts d0 from d2, then jumps to another point in the code.
+- `frag_move_bra_3`: Short code fragment that copies d0 to d2, then jumps to another point in the code.
+- `frag_move_andi_mulu_lsr_tst_bmi_add_bra`: Short code fragment that copies an indexed entry from a4 to d2, then copies the memory at an offset from a6 to d0, then masks d0 with 15, then multiplies d2 by d0 (unsigned), then shifts d2 right by 7, then copies the memory at an offset from a6 to d0, then tests the memory at an offset from a6, then branches if the last result was negative, then adds d2 to d0, then jumps to another point in the code.
+- `subtract_and_advance_phase`: Subtracts d2 from d0 and stores the result in offset 6 of a structure in a5, then advances a phase byte in the structure by an amount taken from the high nibble of a neighbouring byte.
+- `frag_bsr_bra`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `frag_bsr_bra_2`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `update_scaled_value`: Copies a 16-bit word from a structure in a6 to a structure in a5, modifies a byte at offset 28 of the structure in a6 using bits from a byte at offset 3, and then calculates a value based on a byte at offset 29, a byte at offset 30, and a global table before storing the result at offset 8 of the structure in a5.
+- `frag_tst_bpl_move_sub_bra_2`: Short code fragment that tests the memory at an offset from a6, then branches if the last result was not negative, then copies 255 to d2, then subtracts d0 from d2, then jumps to another point in the code.
+- `frag_move_bra_4`: Short code fragment that copies d0 to d2, then jumps to another point in the code.
+- `calculate_scaled_byte`: Loads a byte from a source, multiplies it by a value derived from a byte at offset 1c of a structure, and then either adds this to a byte at offset 13 of the structure or branches.
+- `clamp_and_update_value`: Clamps a value derived from d2 and a global variable between 0 and 64, stores it at offset 8 of a5, and updates a byte at offset 29 of a6.
+- `step_level_up_or_down`: Copies the stored level to the output, then raises or lowers the channel level by a nibble from a control byte.
+- `execute_music_command_record`: Interprets one command from a channel record by its low nibble.
+- `store_low_nibble_field`: Stores the low nibble of a control byte in a byte field of the record.
+- `advance_accumulator_and_flip_sign`: Adds a table-derived step to a per-channel accumulator when a nibble is set.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs two instructions (bchg.b, btst.l) and then falls through into the code that follows, with no return of its own.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `run_queued_command_bytes`: Decrements a shared counter and returns early while it is still above zero.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -193,7 +308,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_memory_values`: Calls two routines, then stores three maximum signed word values from a table into consecutive locations relative to a structure, copies two longwords into global variables, and clears a word at a fixed offset.
 - `set_flag_and_store`: Sets bit 15 of a byte register and stores the result through a pointer, then returns.
 - `wait_until_flag_clears`: Tests a byte at offset 6 of a structure and loops until that byte becomes zero, otherwise it returns.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 - `call_index_updates_then_write_space`: Calls a routine that processes index-table updates, then writes the value 32 to the byte at offset 156 of the structure in a6, restores the saved registers, and returns.
 - `check_hardware_and_set_value`: Checks certain bits in a hardware register and, if a condition is met, writes a value to a memory location relative to a pointer.
 - `modify_byte_and_loop`: Performs bitwise operations on a byte in memory, updates a global variable based on another memory value, and executes a fixed-count loop.
@@ -203,4 +317,4 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `copy_and_encode_data`: Copies a block of data from one location to another, potentially performing a memory shift, and then writes encoded byte values through a pointer.
+- `copy_memory_block_2`: Copies a block of memory from one location to another using a loop that processes longwords, with different code paths based on address comparison.

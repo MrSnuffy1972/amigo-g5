@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901120 top-level bytes in 62 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 26 of 26 units identical (bytes and relocations), 64 raw-word lines |
-| Functions named and described | pass, 372 of 372 named (0 author symbols), 372 of 372 described (101 by rule, 0 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 29 of 29 (100.00%) |
+| Bytes classified (913332 top-level bytes in 79 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 43 of 43 units identical (bytes and relocations), 201 raw-word lines |
+| Functions named and described | pass, 498 of 498 named (0 author symbols), 498 of 498 described (140 by rule, 48 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 2225 of 2250 (98.89%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 6238 of 6274 instructions identical in start and length, 1 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 10178 of 10297 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 336676 |
-| code | 20798 |
-| data | 232993 |
-| padding | 16253 |
+| code | 34636 |
+| data | 231233 |
+| padding | 16387 |
 | unused | 294400 |
 
 ## Code units
@@ -35,27 +35,55 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | LoadWb | 11 | 362 | 22 |
 | Port-Handler | 1 | 306 | 1 |
 | Disk-Validator | 1 | 386 | 1 |
-| Ram-Handler | 2 | 10 | 1 |
-| F-18 Interceptor | 189 | 45 | 2 |
-| dk | 1 | 4 | 1 |
-| is | 1 | 4 | 1 |
-| d | 1 | 13 | 1 |
-| e | 1 | 12 | 1 |
-| f | 1 | 4 | 1 |
-| cdn | 1 | 12 | 1 |
-| usa0 | 1 | 13 | 1 |
-| i | 1 | 4 | 1 |
+| Ram-Handler | 2 | 475 | 31 |
+| F-18 Interceptor | 189 | 252 | 6 |
+| dk | 1 | 3 | 1 |
+| is | 1 | 3 | 1 |
+| d | 1 | 3 | 1 |
+| e | 1 | 3 | 1 |
+| f | 1 | 3 | 1 |
+| cdn | 1 | 3 | 1 |
+| usa0 | 1 | 3 | 1 |
+| i | 1 | 3 | 1 |
 | usa2 | 1 | 3 | 1 |
-| n | 1 | 12 | 1 |
-| s | 1 | 12 | 1 |
-| gb | 1 | 4 | 1 |
-| icon.library | 15 | 1414 | 108 |
-| info.library | 25 | 2476 | 170 |
+| n | 1 | 3 | 1 |
+| s | 1 | 3 | 1 |
+| gb | 1 | 3 | 1 |
+| icon.library | 15 | 1460 | 109 |
+| info.library | 25 | 2845 | 181 |
 | version.library | 2 | 41 | 7 |
 | FA-18 Interceptor (1988)(Electronic Arts)[h J. Fabre][HD].adf:bootblock | 1 | 10 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 0 | 0 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 283 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 367 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 295 | 9 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 482 | 13 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 99 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 58 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 60 | 8 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 334 | 5 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 189 | 3 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 198 | 5 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 24 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 82 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 252 | 9 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 65 | 3 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 197 | 14 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 12 | 3 |
 
 ## Cases handled
 
+- reference run failed (Karl 4 Nov 2026): run play-rs-m1500 slid through memory (an address: 58 64 KB pages each with >= 29491 distinct PCs executed, 981783 of its 1002621 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-rs-m3000 slid through memory (an address: 58 64 KB pages each with >= 29491 distinct PCs executed, 981783 of its 1002621 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-rs-menu slid through memory (an address: 58 64 KB pages each with >= 29491 distinct PCs executed, 981783 of its 1002621 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-rs-mixed slid through memory (an address: 58 64 KB pages each with >= 29491 distinct PCs executed, 981783 of its 1002621 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- 135 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
+- runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-lgpwide): 134 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- 1850 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 14 first-run image unit(s) in 1 version group(s); 3528 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
+- fa-18 interceptor (1988)(electronic arts)[h j. fabre][hd]/FA-18 Interceptor (1988)(Electronic Arts)[h J. Fabre][HD].adf:F18/F-18 Interceptor: Imploder (xfd) stream found by ancient scan (149064 -> 328660 bytes) but only 0 of 135 sampled windows are in reference RAM: not used
+- self-modifying code at an address (45 bytes change between runtime segment an address and runtime segment an address (play-lgpwide)): both forms recovered; writer: not identified statically (indirect store)
 - fa-18 interceptor (1988)(electronic arts)[h j. fabre][hd]/FA-18 Interceptor (1988)(Electronic Arts)[h J. Fabre][HD].adf:F18/F-18 Interceptor: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
 ## Cracktros (kept, not protection)
@@ -167,11 +195,45 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Ram-Handler
 
 - `ram_handler_copy_mem_thunk`: Saves a1 and a6, moves d1 and d2 into a0 and a1, calls exec CopyMem through the library vector, restores registers and jumps to a6.
+- `loads_long_pairs_and_branches`: Reads two longwords from offsets 196 and 200 of the structure in a1 into d2 and d1, loads constants into d3 and d0, and branches into a shared code path.
+- `loads_long_words_and_branches_2`: Reads two long words from offsets 196 and 200 of the structure in a1 into d2 and d1, sets d3 and d0 to constants, and branches into a shared section of code.
+- `loads_long_words_and_branches`: Loads two long words from offsets 196 and 200 of the structure in a1 into d2 and d1, sets d3 and d0 to constants, and branches into shared code elsewhere.
+- `calls_handler_twice_then_branches`: Loads a long from offset 200 of a1 into d1 and sets d0 to 232, then calls through a5 with a4 offset by 1832.
+- `calls_handler_with_offset_pointer`: Loads a long from offset 200 of a1 into d1 and sets d0 to 232, then calls through a5 with a4 offset by 1892.
+- `passes_zero_and_long_args`: Clears d3 and loads longs from offsets 196 and 200 of a1 into d2 and d1.
+- `branches_to_shared_tail_for_a1`: Executes fifteen instructions and then branches forward to a later point in another routine.
+- `branches_to_shared_tail_from_a1`: Executes fifteen instructions and then branches forward to a later point in another routine, sharing a tail with a neighboring routine.
+- `dispatches_to_shared_tail`: Contains no body of its own beyond a single unconditional word branch that transfers execution to a shared tail routine elsewhere in the code.
+- `runs_long_sequence_then_branches`: Executes a sequence of 29 instructions of mixed move, shift, and register-based load operations, then transfers execution to a shared tail routine through an unconditional branch.
+- `calls_indirect_twice_then_branches`: Loads a long from offset 200 of the structure in a1 into d1 and an offset-dependent value into d0, calls the routine pointed to by a5 twice with different values, stores a long from offset 620 of the structure in a2 into d3, and then branches to the shared tail.
+- `copies_long_pair_via_indirect_call`: Loads a long from offset 200 of the structure in a1 into d1, copies it into d2, loads a second long from offset 220 into d1, and calls through a5 with a parameter from offset 196 of the structure in a2 before branching to the shared tail.
+- `moves_longs_with_indirect_calls`: Moves a pair of longs from structure a1 into d1 with immediate constants in d0, passes a pointer from offset 140 of a2 into a4, calls through a5, and ends with an unconditional branch to the shared tail.
+- `loads_table_entry_and_calls`: Loads a long from offset 200 of a1 into d1, sets d0 to a constant, loads a pointer into a4 from a table indexed by the long at offset 196 of a2, and calls through a5, then branches to the shared tail.
+- `indexes_table_and_calls_through`: Scales a long from offset 200 of a1 by four, reads a table entry from a0 at that index, passes it with a constant in d0 to a call through a5, then branches to the shared tail.
+- `copies_long_then_branches_out`: Copies a long from offset 200 of the structure in a1 into d1 and an immediate value into d0, calls through a5 with a pointer loaded from offset 196 of a2, and branches to the shared tail.
+- `reads_indexed_table_then_calls`: Loads a long from offset 200 of a1, shifts it left by two, reads a longword from a0 at that index plus offset 20 into d1, adds a fixed offset to a4, sets d2 to minus one, calls through a5, and branches to the shared tail.
+- `loads_record_field_then_calls_out`: Reads a longword at offset 200 of a1, shifts it left by two, and fetches a longword from a0 at that index plus offset 20 into d1, then stores d1 at offset 204 of a1 and copies the value at offset 200 into offset 220.
+- `sets_register_then_calls_through`: Sets d2 to minus two, loads a long from offset 204 of a1 into d1, adds a fixed offset to a4, calls through a5, copies a long from offset 620 of a2 into d3, copies d1 into d2, and branches to the shared tail after a second indirect call.
+- `branches_to_shared_tail_4`: Contains a single unconditional word branch that transfers execution to a shared location elsewhere in the code, with no data movement of its own.
+- `branches_to_shared_tail_variant`: Performs a sequence of data movement and then transfers execution to a shared location elsewhere in the code through an unconditional branch.
+- `loads_parameters_and_calls_twice`: Loads a longword from the structure in a2 and copies a longword from the structure in a1 into d1 and then into d2, sets d0 to 232 and 216 in two passes, and calls through the register a5 twice, once with a4 set from a fixed offset and once with a4 taken from the structure in a2.
+- `frag_move_lea_jsr_bra`: Short code fragment that copies the memory at an offset from a1 to d1, then copies 216 to d0, then loads the address of the memory at an offset from a4 into a4, then calls the routine whose address is in a5, then jumps to another point in the code.
+- `sets_filler_and_calls_indirect`: Sets d2 to all ones, copies a longword from the structure in a1 into d1, sets d0 to 216, loads a4 from the structure in a2 at offset 196, and calls through the register a5.
+- `sets_constants_and_calls_indirect`: Sets d3 to 209, clears d2, copies a longword from the structure in a1 into d1, sets d0 to 216, loads a4 from the structure in a2 at offset 196, and calls through the register a5.
+- `dispatches_indirect_routines_with`: Loads long words from offsets 196 and 200 of a1 into d2 and d1, sets d3 and d0 to constants, and branches into shared code elsewhere.
+- `dispatches_through_shared_tail`: Loads a longword from offset 200 of the structure in a1 into d1 and sets d0 to 232, then calls through a5 with a4 offset by 1832.
+- `calls_indirect_routine_twice`: Loads a longword from offset 200 of the structure in a1 into d1 and an offset-dependent value into d0, then calls the routine pointed to by a5 twice.
+- `dispatches_record_fields_through_pointer`: Loads longwords from the structures in a1 and a2 at fixed offsets, copies them into d1 and d2, sets d0 to constants 232 and 216, and calls through a5 with pointers taken from the structure in a2, with the call pattern repeated for several field pairs.
+- `frag_bra`: Short code fragment that jumps to another point in the code.
 
 ### F-18 Interceptor
 
 - `relocate_rom_tag_and_free_memory`: Saves all registers, calls a helper to locate a ROM tag, frees memory via exec.FreeMem, then swaps a matching resident structure pointer with the tag and clears the original.
 - `scan_rom_tag_chain_for_entry`: Uses d6 as a countdown to walk the ROM tag list via a1, doubling each pointer, then returns a1 advanced past the found entry.
+- `decode_bitstream_data`: Decodes a bitstream from a buffer pointed to by a0, writing decoded bytes to a destination buffer pointed to by a3.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs two instructions (lea.l, moveq) and then falls through into the code that follows, with no return of its own.
+- `decode_bitstream`: Decodes a bitstream from a buffer pointed to by a0, writing decoded bytes to a destination buffer pointed to by a3.
+- `frag_or_ori_move_movem_bra`: Short code fragment that merges d0 into d0, then merges 109 into d0, then copies d0 to the memory just below a4 (moving a4 down), then copies d1 to the memory just below a4 (moving a4 down), then copies d2 to the memory just below a4 (moving a4 down), then restores saved registers from the stack, then jumps to another point in the code.
 
 ### dk
 
@@ -231,8 +293,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
 - `icon_open_allocate_and_store_base`: Saves a0 and a6 into the new icon base in a2, calls the library open vector with a name, stores the result, and alerts on failure.
 - `icon_open_copy_base_and_result`: Copies the saved library base and open result from offsets 34 and 38 of a2 into globals, returns a2 in d0 and pops a2.
-- `zero_word_data_slot_a`: This single zero word decodes as an ori.b immediate instruction but is a zero-filled data slot referenced by address, not executable code.
-- `icon_library_zero_fill_data`: A single zero word that decodes as an ori.b instruction; this library range is zero-filled data referenced by address, not executable code.
 - `push_a0_a6_call_library_vector`: Pushes a0 then a6 onto the stack, calls the routine at address zero, discards the two saved registers by adding eight to a7, and returns.
 - `icon_lib_call_aa_save_a0_a1_a6`: Saves a0, a1 and a6 on the stack, calls the library routine at offset aa, then discards the saved registers and returns.
 - `icon_lib_call_124_save_a0_a2_a6`: Saves a0, a1, a2 and a6 on the stack, calls the library routine at offset 124, then discards the saved registers and returns.
@@ -247,7 +307,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `icon_library_call_88a_with_a0_a1`: Pushes a0 and a1 onto the stack, invokes the library routine at offset 88a, cleans the stack by adding eight and returns.
 - `icon_library_call_8fe_with_a0_a1`: Stores a0 and a1 on the stack, jumps to the library routine at offset 8fe, restores the stack pointer and returns to its caller.
 - `set_icon_library_field_at_94`: Calls the library's open routine through a6, stores the second argument into offset 148 of the returned structure, and returns.
-- `zero_filled_data_area`: A single zero word that decodes as ori.b #0,d0; this is zero-filled data, not executable code.
 - `load_icon_from_file_into_structure`: Opens a file, reads icon data into a stack buffer, copies 44 bytes and several fields into the icon structure, and links it via offset 424.
 - `copy_icon_params_to_new_node`: Copies 44 bytes from the library base offset into a new icon node, then stores several longword fields and links the node into its parent at offset 424.
 - `return_zero_restore_regs`: Sets d0 to zero as the return value, restores d2 through d4 and a2 from the stack, releases the a5 frame and returns.
@@ -307,6 +366,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `unsigned_32bit_divide_d1_by_d2`: Divides the longword in d1 by d2, using a shift-and-subtract loop when d2 exceeds 65535 and word divisions otherwise, returning quotient in d0 and remainder in d1.
 - `shift_subtract_divide_d1_by_d2`: Divides the longword in d1 by d2 with a sixteen-step shift-and-subtract loop, leaving the quotient in d1 and remainder in d0.
 - `mul32x32_high_low_to_64bit`: Multiplies the 32-bit values in d0 and d1 using 16-bit partial products, combines them into a 64-bit result in d0, and restores d2 from the stack.
+- `shifts_and_forwards_three_arguments`: Saves d2, moves d1 into d2, d0 into d1, calls the math operations routine, then restores d2 and returns, which is library code in the icon library.
+- `forwards_arguments_and_returns_d1`: Saves d2, shifts d0 and d1 into d1 and d2, calls the math operations routine, copies d1 into d0, restores d2 and returns, as library code in the icon library.
+- `dispatches_math_operations_in_library`: Calls the math operations routine as part of the icon library's internal arithmetic handling, using the register arguments it is given.
+- `performs_library_math_via_call`: Calls the math operations routine from within the icon library, passing through the register arguments and processing the returned values in the library code.
 - `format_string_via_rawdofmt_2`: Saves a2-a4 and a6, loads the format string and argument pointer from the stack, calls exec RawDoFmt through the library base at absolute address 4, then restores registers and returns.
 - `store_byte_to_a3_and_advance`: Writes the low byte of d0 to the memory pointed to by a3 and increments a3 by one, then returns to the caller.
 - `strlen_bounded_255`: Loads the string pointer from the stack, scans up to 256 bytes for a zero terminator, and returns the complemented count in d0 as the string length.
@@ -461,7 +524,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_180`: Library stub: loads a library base from a global variable and calls the library function at offset minus 180 of that base, returning its result to the caller.
 - `call_library_vector_186`: Library stub: loads a library base from a global variable and calls the library function at offset minus 186 of that base, returning its result to the caller.
 - `dispatch_info_display_by_mode`: Reads a mode byte from library global data, bounds-checks it between one and six, then jumps through a table to draw the matching info screen layout.
-- `restore_d2_a2_a5_and_return`: Pops saved registers d2 and a2 through a5 from the stack and returns to the caller, restoring the caller's register state.
+- `setup_info_parameters`: Prepares multiple parameter values on the stack for various function calls, performs several arithmetic operations, and then branches to different locations based on comparisons within the same library.
+- `frag_moveq_cmp_bne_bra`: Short code fragment that loads 81 into d0, then compares d0 with d1, then branches if the last result was not zero, then jumps to another point in the code.
+- `frag_moveq_cmp_bne_bra_2`: Short code fragment that loads 82 into d0, then compares d0 with d1, then branches if the last result was not zero, then jumps to another point in the code.
+- `frag_movea_bra`: Short code fragment that copies 96 to a0, then jumps to another point in the code.
+- `frag_movea_bra_2`: Short code fragment that copies 106 to a0, then jumps to another point in the code.
+- `frag_movea_bra_3`: Short code fragment that copies 118 to a0, then jumps to another point in the code.
+- `frag_movea_move_pea_bra`: Short code fragment that copies 130 to a0, then copies a0 to the stack, then pushes the address of a fixed memory address onto the stack (2 times in a row), then jumps to another point in the code.
+- `register_info_entries`: Prepares multiple parameter values on the stack, calls several routines including one that registers information table entries, and then branches to another routine in the same library.
+- `initialize_info_entries`: Initializes various information table entries by calling multiple routines with different parameters, then cleans up the stack and branches to a final location.
+- `setup_info_tables`: Configures information tables and palette entries by calling several initialization routines with varying parameters, then performs stack cleanup and branches to a final location.
+- `prepare_and_call`: Pushes two word values onto the stack, moves a register value onto the stack, calls a routine through a register, adjusts the stack pointer, and then branches to a specific location.
+- `call_address_in_a3`: Pushes a word value onto the stack, saves registers d2 through a5, calls a routine whose address is in a3, restores saved registers, then returns.
 - `allocate_four_rasters_and_dispatch`: Calls the allocator four times to obtain bitmaps for two 44-byte and two 36-byte rasters, stores the results in library globals, and returns zero if any allocation failed.
 - `allocate_second_raster_set`: Calls the allocator four more times for 44-byte and 116-byte rasters, stores results in globals and a4, and returns zero if any allocation failed.
 - `dispatch_info_library_state_index`: Loads the library base from absolute address 88, reads byte at offset 61 into d0, and jumps through a word table indexed by that value when it is between 1 and 5.
@@ -518,3 +592,131 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### FA-18 Interceptor (1988)(Electronic Arts)[h J. Fabre][HD].adf:bootblock
 
 - `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `undecodable_bytes_9`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `undecodable_bytes_10`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `fill_with_zeros`: Sets the data register to zero thirteen times consecutively, effectively filling a memory region with zero bytes.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `setup_task_context`: Saves processor registers and memory pointers to a global task context structure, then calls a routine through a function pointer located at offset 4 of another structure.
+- `process_graphics_data_4`: Reads a global variable, calls another routine with it as argument, and if a condition is met, calls additional routines using offsets from the returned value.
+- `fall_through_entry_2`: Entry point part-way through straight-line code: runs one instruction (ori.w) and then falls through into the code that follows, with no return of its own.
+- `frag_jsr`: Short code fragment that calls another routine.
+- `frag_lea_moveq_jsr_ori`: Short code fragment that loads the address of a fixed memory address into a1, then loads 0 into d0, then calls another routine, then merges 0 into d0.
+- `frag_beq_rts`: Short code fragment that branches if the last result was zero, then returns.
+- `process_graphics_data`: Processes graphics-related data by iterating through a loop that modifies values based on calculations, then performs a final graphics operation using accumulated results.
+- `process_graphics_data_2`: Processes graphics data by reading dimensions from a structure, performing calculations on them, and storing results in memory locations.
+- `process_graphics_data_3`: Processes graphics-related data by iterating through a loop that modifies values based on calculations, then performs a final graphics operation.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `update_collision_check`: Updates collision detection parameters by comparing values from a structure with input parameters and performing bitwise operations on byte values.
+- `process_object_collision`: Calculates object movement deltas and performs collision checks using a loop that updates position variables based on input parameters, then returns zero when the loop counter reaches zero.
+- `handle_object_movement`: Manages object movement by calculating position differences, performing collision checks, and updating object state variables in a loop until completion.
+- `handle_positive_input`: Handles positive input values by making two function calls with specific parameters.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
+- `initialize_structure_data`: Initializes a data structure with zero values at specific offsets, performs calculations on input parameters, and stores results in memory locations.
+- `check_pointer_validity`: Checks if a pointer in memory is valid by testing the value at the address pointed to.
+- `initialize_and_check_loop`: Initializes a local variable to zero and checks if a value at a specific offset is less than or equal to zero.
+- `manage_loop_iterations`: Manages loop iterations by checking conditions, updating counters, and performing conditional jumps based on comparison results between memory values.
+- `update_collision_data`: Increments a value at offset 12 of a structure and decrements another value at offset -12, then performs a collision check with specific parameters and returns a calculated result.
+- `calculate_collision_offset`: Calculates a collision offset by adding a constant to a pointer value, performs a collision check with specific parameters, and returns a calculated result.
+- `perform_collision_check`: Performs a collision check by comparing values from a structure with input parameters.
+- `validate_parameter`: Calls another routine with a parameter, compares the returned value to a specific constant, and exits immediately if they do not match, otherwise continues execution.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_system_resources`: Initializes system resources by calling two functions with specific parameters.
+- `initialize_sequence`: Sets up a series of sequential operations by calling a routine with pairs of parameters, starting with a value of 13 and incrementing by one for each call, while using string pointers from a table.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `un_pack_row`: It copies bytes from a source buffer to a destination buffer while interpreting two run-length encodings.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `read_global_table_entries`: The routine reads two 16-bit values from a global variable table indexed by the parameter.
+- `read_global_table_entry`: The routine reads a 16-bit value from a global variable table using an index derived from its parameter and stores the result back into a global variable.
+- `update_interrupt_handler`: Reads a value from a table using a short integer index, calls a routine through a pointer in the table, and modifies a byte pointed to by a global variable.
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `frag_movem_move_lea_movea_adda_jsr_ori`: Short code fragment that saves registers on the stack, then copies 5 to d0, then loads the address of a fixed memory address into a1, then copies a fixed memory address to a6, then copies a6 to a0, then adds an address to a0, then calls the routine whose address is in a0, then merges 0 into d0, then returns.
+- `frag_moveq_move_jsr_subq_bge_rts`: Short code fragment that loads 3 into d0, then copies d0 to the stack, then calls another routine, then copies the top of the stack to d0, then subtracts 1 from d0, then branches if the comparison was greater or equal, then returns.
+- `execute_routine_four_times`: Executes another routine four times using a decrementing loop counter.
+- `frag_jsr_moveq_move_subq_bge_rts`: Short code fragment that calls another routine, then loads 3 into d0, then copies d0 to the stack, then calls another routine, then copies the top of the stack to d0, then subtracts 1 from d0, then branches if the comparison was greater or equal, then calls another routine, then returns.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_game_components`: Initializes game components by checking flags and calling functions to allocate memory, set up structures, and perform other initialization tasks.
+- `allocate_and_examine_memory`: It allocates a block of memory, locks a range, reads a value at an offset, unlocks, frees the memory, and returns that value.
+- `frag_link_tst_bne_ori`: Short code fragment that creates a stack frame in a6, then tests a fixed memory address, then branches if the last result was not zero, then merges 0 into d0, then merges 46 into d0.
+- `allocate_and_initialize_memory`: Allocates memory blocks, locks ranges, reads values from offsets, unlocks and frees memory, then initializes various structure fields with specific constants.
+- `copy_transform_matrix`: Copies transformation matrix data from one location to another, setting a specific bit in the process, and returns a success indicator.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `validate_input_character`: Validates input character values by checking a global variable, performing conditional comparisons, and calling another routine with specific parameters.
+- `process_input_data`: Checks input character values and calls a function with a global variable, then stores the result in a structure at offset 17 and sets multiple fields to zero.
+- `update_object_state`: Tests a bit flag in a structure, conditionally calls another routine with data from the structure, then clears several fields in the structure and calls a function with a byte value.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `fill_buffer_from_source`: Iterates through a 2D grid of data, copying bytes from a source to a destination buffer while decrementing counters and calling a function for each element.
+- `frag_link_tst_beq_ori`: Short code fragment that creates a stack frame in a6, then tests a fixed memory address, then branches if the last result was zero, then merges 0 into d0, then merges 174 into d0.
+- `validate_and_fetch_data`: Compares a value with a global variable, calls a function if the condition is met, then fetches a byte from a memory location and returns it as a pointer.
+- `set_flag_and_update_value`: Sets a specific bit in a memory location, updates a value in a structure based on parameter conditions, and calls another function with fixed parameters.
+- `process_and_modify_data`: Calls another routine with parameters, checks the result, and if it's not zero, calls a function with data from a structure and modifies a byte in that structure.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `clear_and_process`: Calls a function with a parameter, processes the returned value, clears a byte in the result, and returns zero.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `update_and_return_value`: Checks several bit conditions in a structure, calls a function with parameters from the structure, updates fields based on the result, and returns a processed byte value.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_and_modify_structure`: Calls a function with a global variable, stores the result in a structure, sets a field to another global variable, clears specific bits in a byte, and initializes several fields to zero.
+- `calculate_and_store_value`: Adds a constant to a value from the stack, pushes the result onto the stack, calls a function with that value, stores the result in memory, and returns immediately.
+- `update_list_node`: Calculates a new value by adding twelve to a value at an offset of eight from a pointer, stores this in a structure, and calls another routine with a global variable and a pointer.
+- `initialize_structure`: Initializes a data structure by copying a pointer from one location to another and setting both the copied pointer and a zero value at specific offsets within the structure.
+- `frag_link_move_bsr_addq_unlk_rts`: Short code fragment that creates a stack frame in a6, then copies the memory at an offset from a6 to d0, then copies d0 to the stack, then copies d0 to the memory at an offset from a6, then calls another routine, then adds 4 to a7, then removes the stack frame held in a6, then returns.
+- `frag_link_tst_bgt_ori`: Short code fragment that creates a stack frame in a6, then tests the memory at an offset from a6, then branches if the comparison was greater, then merges 0 into d0, then merges 46 into d0.
+- `manage_memory_operations`: Manages memory operations by performing calculations on values from the stack, calling functions with calculated parameters, and storing results in memory locations.
+- `frag_link_move_bsr_addq_unlk_rts_2`: Short code fragment that creates a stack frame in a6, then copies the memory at an offset from a6 to d0, then copies d0 to the stack, then copies the memory at an offset from a6 to the stack, then copies d0 to the memory at an offset from a6, then calls another routine, then adds 8 to a7, then removes the stack frame held in a6, then returns.
+- `update_linked_list`: Updates a linked list node by calculating a new value based on parameters, updating global variables, and either modifying existing nodes or creating new ones in the list.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `copy_bytes`: Copies a specified number of bytes from one memory location to another using a loop that decrements a counter until zero.
+- `process_bitfield`: Processes a bitfield value through a series of bitwise operations and shifts, updating internal state variables based on comparison results.
+- `multiply_signed`: Performs multiplication of two signed integers with special handling for negative values and overflow conditions, returning the result in a specific register.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_movem_movea_jsr_ori_rts`: Short code fragment that saves registers on the stack, then copies several registers to or from memory, then copies a fixed memory address to a6, then calls another routine, then merges 0 into d0, then returns.
+- `frag_move_movea_jsr`: Short code fragment that copies a6 to the stack, then copies the memory at an offset from a7 to d1, then copies a fixed memory address to a6, then calls another routine.
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `frag_movem_movea_jsr_ori_rts_2`: Short code fragment that saves registers on the stack, then copies several registers to or from memory, then copies a fixed memory address to a6, then calls another routine, then merges 0 into d0, then returns.
+- `frag_movem_movea_jsr_ori_rts_3`: Short code fragment that saves registers on the stack, then copies several registers to or from memory, then copies a fixed memory address to a6, then calls another routine, then merges 0 into d0, then returns.
+- `frag_movem_movea_jsr_ori_rts_4`: Short code fragment that saves registers on the stack, then copies several registers to or from memory, then copies a fixed memory address to a6, then calls another routine, then merges 0 into d0, then returns.
+- `frag_move_movea_jsr_2`: Short code fragment that copies a6 to the stack, then copies the memory at an offset from a7 to d1, then copies a fixed memory address to a6, then calls another routine.
+- `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
+- `frag_movem_movea_jsr_ori_rts_5`: Short code fragment that saves registers on the stack, then copies several registers to or from memory, then copies a fixed memory address to a6, then calls another routine, then merges 0 into d0, then returns.
+- `setup_graphics_context`: Initializes various graphics system components by calling multiple library functions, sets up stack variables, and prepares data structures for rendering operations.
+- `setup_display_buffer`: Configures display buffer parameters by calling several library functions, setting up stack variables with specific values, and preparing data structures for screen rendering.
+- `frag_move_movea_jsr_ori`: Short code fragment that copies a6 to the stack, then copies a fixed memory address to a6, then copies the memory at an offset from a7 to d0, then calls another routine, then merges 117 into d0, then merges 0 into d0 (5 times in a row).
+- `initialize_graphics_system`: Initializes various graphics system components by calling multiple library functions, sets up stack variables, and prepares data structures.
+- `setup_graphics_parameters`: Initializes several byte values in a structure at fixed offsets, calls a library function to configure display buffer parameters, stores the result, and conditionally calls another routine based on a register value.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_movem_movea_jsr_ori_rts_6`: Short code fragment that saves registers on the stack, then copies the memory at an offset from a7 to a0, then copies several registers to or from memory, then copies a fixed memory address to a6, then calls another routine, then merges 0 into d0, then returns.
+- `frag_move_movea_jsr_3`: Short code fragment that copies a6 to the stack, then copies the memory at an offset from a7 to d0, then copies a fixed memory address to a6, then calls another routine.
+- `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.

@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901808 top-level bytes in 10 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 214 raw-word lines |
-| Functions named and described | pass, 101 of 101 named (11 author symbols), 101 of 101 described (3 by rule, 86 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 336 of 336 (100.00%) |
+| Bytes classified (916080 top-level bytes in 11 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 241 raw-word lines |
+| Functions named and described | pass, 166 of 166 named (11 author symbols), 166 of 166 described (3 by rule, 150 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 3135 of 3135 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 326122 bytes, 68 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 3451 of 3472 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 6554 of 6575 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 26237 |
-| code | 12052 |
-| data | 346673 |
-| padding | 1774 |
+| asset | 28817 |
+| code | 22754 |
+| data | 347657 |
+| padding | 1780 |
 | unused | 515072 |
 
 ## Code units
@@ -30,15 +30,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Helter Skelter (1990)(Audiogenic)[cr SKR][a].adf:Type | 2 | 363 | 12 |
 | Helter Skelter (1990)(Audiogenic)[cr SKR][a].adf:hs | 1 | 205 | 12 |
 | Helter Skelter (1990)(Audiogenic)[cr SKR][a].adf:bootblock | 1 | 10 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3103 | 65 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 143 | 7 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 1 |
 | Helter Skelter (1990)(Audiogenic)[cr SKR][a].adf:hs.img (raw code file, load address unknown) | 1 | 2747 | 68 |
 
 ## Cases handled
 
+- 2799 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
+- runtime segment an address: 2799 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 133 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - helter skelter (1990)(audiogenic)[cr skr][a]/Helter Skelter (1990)(Audiogenic)[cr SKR][a].adf:hs.img: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 2 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 2 address
 - 1 never-loaded region(s), 326122 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
@@ -47,6 +51,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Copy protection found
 
+- `increment_and_store_loop` (runtime segment an address): Continuously increments a short integer value starting at offset 384 of a global structure and stores the result back to the same location, creating an infinite loop that never exits. Kind: disk hardware check. Pass path: branch taken when ADKCON and CIAB_PRB values match expected hardware state.
+- `process_input_data` (runtime segment an address): Processes input data by calling multiple routines based on a global variable's state, and returns a value from one of those calls when the variable is non-zero. Kind: checksum trap. Pass path: The function returns the result of `u3__sub_121C()` when `DAT_0000089b` is non-zero, indicating a successful checksum validation..
 - `configure_display_and_copy_buffers` (hs.img (raw code file, load address unknown)): Configures display registers and copies or initializes memory buffers or tables. Kind: disk/track/hardware check (ADKCON/CIAB_PRB). Pass path: an address.w == d0.
 
 ## Functions
@@ -85,6 +91,74 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Helter Skelter (1990)(Audiogenic)[cr SKR][a].adf:bootblock
 
 - `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `branch_to_offset`: Contains a single instruction that unconditionally branches to a fixed address offset, effectively jumping to another routine in the program.
+- `process_keyboard_input`: Reads a byte from the keyboard serial register, processes it through bit manipulation, and updates various global variables based on specific byte values.
+- `compare_with_threshold`: Compares a global variable with data from a table and performs conditional operations based on the comparison results, using flags and loop controls to determine execution flow.
+- `update_joystick_positions`: Reads joystick and mouse input data, calculates position differences, updates global variables with movement values, and sets flags based on button states and input conditions.
+- `clear_global_words`: Clears multiple word-sized global variables by setting them to zero using explicit store instructions.
+- `clear_global_bytes`: Clears multiple byte-sized global variables by setting them to zero using explicit store instructions.
+- `update_calculated_values`: Performs arithmetic operations on values from a table, processes the results through addition and bit manipulation, and stores the updated values back into global variables.
+- `transfer_sprite_data`: Copies sprite data between memory locations, applies bitwise operations to transform color and shape information, and updates pointers for subsequent processing.
+- `transform_sprite_data`: Processes sprite definition data by applying bitwise operations to manipulate color and shape information during transfer, using shift and mask techniques for scaling or sub-pixel positioning.
+- `fill_memory_block`: Copies a 32-bit value from a register to an array of 8000 elements, incrementing the destination pointer after each write operation.
+- `process_word_array`: Processes an array of 16 words by applying a bitwise AND operation with the value 1911 and then doubling the result, storing back to the same array locations.
+- `copy_word_arrays`: Copies 16-bit words from a source array to multiple destination arrays in sequence, then transfers 32-bit longwords from one location to another using a loop with a counter.
+- `copy_memory_segments`: Copies data between three memory regions, writing 1999 elements from each of three source addresses to corresponding destinations in two other memory areas.
+- `find_zero_word`: Traverses a sequence of words starting at a fixed address until it finds a zero word, advancing the pointer through the sequence with each iteration.
+- `update_counter_and_process`: Decrements a counter and if it reaches zero, processes data from a buffer by reading values and updating pointers in a structure.
+- `apply_xor_mask_to_memory`: Performs bitwise XOR operations between values from global tables and source data, then writes the results to multiple memory locations with different offsets.
+- `process_and_store_data`: Processes data using bitwise AND and XOR operations with values from a global table, then stores the results to multiple memory locations with various offsets.
+- `process_bcd_arithmetic`: Performs BCD arithmetic on a value by adding bytes with carry, updating memory locations, and calling routines to process byte data based on comparison results.
+- `process_byte_data`: Processes a byte value through a series of operations including bitwise AND, division, and stack manipulation before calling another routine multiple times in a loop.
+- `update_table_entries`: Processes a global variable through bitwise operations and conditional checks, updates table entries, and performs bit manipulation on memory locations before returning.
+- `apply_bitwise_operations`: Performs bitwise AND and XOR operations on data using values from a global table, then stores the results to multiple memory locations with specific offsets.
+- `process_and_store_data_2`: Processes data using bitwise AND and XOR operations with values from a global table, then stores the results to multiple memory locations with specific offsets.
+- `compute_and_process`: Computes a value through arithmetic operations and division, then applies bitwise operations using a global table before storing results to memory locations.
+- `process_byte_sequence`: Processes a sequence of bytes from a buffer, skipping zero values, and calls another routine for each non-zero byte while managing register state.
+- `compare_and_set_flags`: Compares several word values against thresholds and sets processor flags based on comparison results, returning one of the input values depending on which condition is met.
+- `process_relocation_list`: Iterates through a list of pointers ending with a negative value, calling another routine for each entry in the list.
+- `update_tile_flags`: Processes tile data based on input parameters to modify bit flags in memory locations, with conditional logic determining which bits are set or cleared.
+- `process_data_block`: Reads bytes from a source buffer and writes them to a destination, with conditional copying and subtraction operations based on the sign of read values.
+- `clear_memory_region`: Clears a 16-bit word value in a memory region by writing zero to each location, iterating through a table with a fixed stride.
+- `initialize_data_structure`: Writes a series of constant values and pointers into a memory location, including a word, two longwords, and another word.
+- `calculate_and_store_values`: Processes a series of values from memory, applies bit operations and arithmetic transformations, then stores the results in two separate locations.
+- `transform_and_store_data`: Reads data from memory locations, performs bitwise operations and arithmetic calculations on values, then stores transformed results to two destinations.
+- `copy_and_transform_data`: Copies data between memory regions using calculated offsets, transforms values through bitwise operations, and stores results to multiple locations while initializing several global variables.
+- `jump_to_address`: Loads specific addresses into registers and performs a jump to another location without any additional processing or return.
+- `load_pointer_offset`: Loads a memory address from a fixed location into register a0, then adjusts that address by adding a constant offset, and finally branches to another routine without modifying any data.
+- `setup_and_branch`: Initializes a memory address from a fixed location into register a0, then adjusts that address by adding another constant offset, loads a word value from a specific memory location into register a3, and finally branches to another routine without modifying any data.
+- `fetch_and_jump`: Loads a memory address from a fixed location into register a0, then adjusts that address by adding a constant offset, copies a word value from a specific memory location into register d0, and finally branches to another routine without modifying any data.
+- `decrement_and_clear`: Decrements a counter in a global structure and clears multiple memory locations with zero or specific values when the counter reaches zero.
+- `update_animation_data`: Decrements a global counter and processes animation data from a buffer when the counter reaches zero, updating values in a structure.
+- `update_position_and_collision`: Processes position coordinates and performs collision detection with boundaries, updating position and velocity values based on comparison results.
+- `load_and_adjust_pointer`: Loads a value from memory, adjusts an address based on offset values, and copies data from a calculated location to another memory area.
+- `load_and_adjust_pointer_2`: Loads a pointer from memory, adjusts it by adding a fixed offset, then branches to another routine at a specific location.
+- `compare_coordinate_ranges`: Compares coordinate values against ranges defined in memory, returning different status codes based on whether the comparisons fall within specified bounds.
+- `scale_and_update_value`: Scales a value by dividing and multiplying with constants, updates a memory location with the result, and sets a flag to indicate completion.
+- `update_position_and_velocity`: Updates position and velocity components based on input conditions and global state, then adjusts related counters and flags accordingly.
+- `process_collision_data`: Processes collision-related data by loading word values from memory locations, performing arithmetic operations on them, and applying lookup table transformations based on the results.
+- `update_pointer_and_check`: Updates a pointer by loading a value from a global variable, increments it by 36, and compares the result with the address an address.
+- `invert_position_components_2`: Inverts the sign of three signed values located at specific offsets in a data structure, then increments a counter until it reaches twelve.
+- `invert_position_components`: Inverts the sign of three signed values located at specific offsets in a data structure, then increments a counter until it reaches twelve, performing this sequence multiple times before clearing a global variable and returning.
+- `update_position_values`: Updates position-related values in memory by performing arithmetic operations on data from global variables and lookup tables.
+- `increment_global_counter`: Increments a counter in a global variable while traversing a sequence of integers until it encounters a negative value, then returns the incremented counter value.
+- `update_position_vector`: Processes a bit sequence to determine a range, calculates vector components using multiplication and accumulation, and updates position data based on table lookups.
+- `initialize_structures`: Initializes two different data structures based on a global variable's value, populating them with specific constant values and offsets, and clears certain flags in hardware registers.
+- `build_lookup_table`: Iterates through a sequence of values to populate a table with calculated offsets and data derived from the list entries, including processing word values and adjusting memory pointers based on input data.
+- `reset_counter_if_match`: Checks if a specific value in a structure matches a constant, and if so, clears a counter field in that same structure before returning.
+- `load_string_data`: Loads string processing parameters into registers and calls a routine to process characters from a global table, then updates the table pointer and repeats the process.
+- `process_string_characters`: Iterates through a null-terminated string, calling another routine for each character while incrementing a counter, and returns immediately after processing all characters.
+- `update_collision_flags`: Updates collision detection flags based on object positions and thresholds, then processes table entries and adjusts BCD values in a memory region.
+- `update_data_structure`: Updates a data structure by copying values from another structure, performing arithmetic operations on memory locations, and setting specific flags based on comparison results before returning.
+- `initialize_game_state`: Initializes game state variables and clears specific memory locations before proceeding with further setup.
+- `increment_and_store_loop`: Continuously increments a short integer value starting at offset 384 of a global structure and stores the result back to the same location, creating an infinite loop that never exits.
+- `wait_for_memory_match`: Enters a loop that continues until the sum of a global variable and a register value equals the global variable itself.
+- `process_input_data`: Processes input data by calling multiple routines based on a global variable's state, and returns a value from one of those calls when the variable is non-zero.
+- `search_string_for_byte`: Iterates through a memory buffer looking for a specific byte and returns a value from an offset if found.
+- `initialize_rendering`: Sets up rendering parameters by calling another routine with varying offset values, then processes a byte sequence until a zero terminator is encountered.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 

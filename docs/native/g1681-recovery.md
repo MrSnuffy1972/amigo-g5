@@ -6,20 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901120 top-level bytes in 1 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 3 raw-word lines |
-| Functions named and described | pass, 23 of 23 named (0 author symbols), 23 of 23 described (1 by rule, 2 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 0 of 0 (0.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 1024 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 662 of 662 instructions identical in start and length, 0 mismatches |
+| Bytes classified (905664 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 5 raw-word lines |
+| Functions named and described | pass, 38 of 38 named (0 author symbols), 38 of 38 described (9 by rule, 8 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 76 of 76 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 2048 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 872 of 872 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 1475 |
-| code | 2266 |
-| data | 891235 |
+| asset | 2679 |
+| code | 3746 |
+| data | 893088 |
+| padding | 7 |
 | unused | 6144 |
 
 ## Code units
@@ -29,21 +30,29 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf:bootblock | 1 | 46 | 2 |
 | logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf boot-block load | 1 | 469 | 16 |
 | logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf boot-block load | 1 | 147 | 5 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 210 | 15 |
 | Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf bytes 1024-2048 (code never loaded by a reference run) | 1 | 0 | 0 |
+| Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf bytes 283136-284160 (code never loaded by a reference run) | 1 | 0 | 0 |
 
 ## Cases handled
 
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: custom-format (non-DOS) disk, 1746 non-empty blocks: matched against track-loaded segments
+- 76 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: the boot block reads 2048 bytes from disk offset 11264 to an address (found statically); recovered as a unit
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: the boot block reads 3584 bytes from disk offset 2048 to an address (found statically); recovered as a unit
+- runtime segment an address: 76 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: bytes 1024-2048 look like code no run loaded: recovered position-independently (load address unknown)
-- super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: 3 logged loads cover 6656 bytes of the image
+- super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: bytes 283136-284160 look like code no run loaded: recovered position-independently (load address unknown)
+- super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: 4 logged loads cover 7680 bytes of the image
+- super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: 6 track-loaded blocks found in recovered runtime segments and classified through them
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: blocks 11-21 (bytes 5632-11264) hold ASCII text
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: blocks 33-341 (bytes 16896-175104) outside the filesystem hold data, not code (opcode density 0.004, entropy 5.54)
-- super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: blocks 343-569 (bytes 175616-291840) outside the filesystem hold data, not code (opcode density 0.010, entropy 5.27)
+- super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: blocks 343-536 (bytes 175616-274944) outside the filesystem hold data, not code (opcode density 0.002, entropy 5.25)
+- super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: blocks 539-549 (bytes 275968-281600) outside the filesystem hold data, not code (opcode density 0.000, entropy 3.41)
+- super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: blocks 556-569 (bytes 284672-291840) outside the filesystem hold data, not code (opcode density 0.044, entropy 5.42)
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: blocks 571-640 (bytes 292352-328192) outside the filesystem hold data, not code (opcode density 0.048, entropy 6.31)
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: blocks 644-1759 (bytes 329728-901120) outside the filesystem hold data, not code (opcode density 0.002, entropy 4.74)
-- 1 never-loaded region(s), 1024 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+- 2 never-loaded region(s), 2048 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
@@ -91,3 +100,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `scan_string_then_call_library`: Calls the library routine at offset 240, then scans a string from a fixed offset to its terminating zero and calls the library routine at offset 60.
 - `derive_state_from_counter`: Takes the top two bits of a counter cell as a state value, scales it, and writes the result into four cells at fixed offsets.
 - `copy_four_bytes_from_table`: Copies four bytes from a table at an index-scaled offset into the destination buffer that the address register points to.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_tst_bne_rts`: Short code fragment that tests a fixed memory address, then branches if the last result was not zero, then returns.
+- `frag_btst_bne_rte`: Short code fragment that tests bit 4 of a fixed memory address, then branches if the last result was not zero, then tests bit 5 of a fixed memory address, then branches if the last result was not zero, then tests bit 6 of a fixed memory address, then branches if the last result was not zero, then returns from the exception.
+- `wait_for_interrupt_flag_2`: Polls the interrupt request register until one bit is set, then writes the same bit back to acknowledge it.
+- `frag_clr_move_rts`: Short code fragment that clears a fixed memory address (2 times in a row), then copies 4178 to a fixed memory address, then copies 252 to a fixed memory address, then copies 13 to a fixed memory address, then copies 1 to a fixed memory address, then copies 130 to a fixed memory address, then copies 32776 to a fixed memory address, then returns.
+- `frag_clr_move_rts_2`: Short code fragment that clears a fixed memory address, then copies 50332 to d0, then copies d0 to a fixed memory address (2 times in a row), then copies 10249 to a fixed memory address, then copies 9 to a fixed memory address, then copies 2 to a fixed memory address, then clears a fixed memory address (2 times in a row), then returns.
+- `read_joystick_input`: Processes joystick and mouse input from hardware registers and stores the resulting control state in a global variable.
+- `initialize_graphics_registers`: Initializes various graphics hardware registers including bitplane control, display window settings, copper list pointers, and sprite configurations.
+- `setup_copper_list`: Configures a copper list pointer by loading an address from program memory into a global variable, then writes a specific value to a hardware register to point the copper interpreter at that list.
+- `start_copper_list`: Points the copper at a new copper list by writing its address to COP1LC, then returns.
+- `copy_graphics_data`: Copies a block of graphics data from program memory to a specific memory location in the custom chipset area.
+- `frag_st_tst_bne_clr_move_rts`: Short code fragment that sets a fixed memory address to all ones, then tests a fixed memory address, then branches if the last result was not zero, then clears a fixed memory address, then copies 416 to a fixed memory address, then returns.
+- `frag_st_move_rts`: Short code fragment that sets a fixed memory address to all ones, then copies d0 to a fixed memory address, then returns.
+- `frag_tst_bne_rts_2`: Short code fragment that tests a fixed memory address, then branches if the last result was not zero, then returns.
+- `enter_debug_mode`: Checks a global variable and enters debug mode if the variable is zero, otherwise it returns immediately.
+- `empty_routine`: Contains only a return instruction and does nothing else.

@@ -6,19 +6,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (925648 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 12 raw-word lines |
-| Functions named and described | pass, 72 of 72 named (0 author symbols), 72 of 72 described (4 by rule, 68 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 889 of 889 (100.00%) |
+| Bytes classified (926048 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 12 raw-word lines |
+| Functions named and described | pass, 74 of 74 named (0 author symbols), 74 of 74 described (5 by rule, 69 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 996 of 996 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 576 bytes, 1 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 2147 of 2151 instructions identical in start and length, 2 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2258 of 2262 instructions identical in start and length, 2 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| code | 7780 |
-| data | 903012 |
+| code | 8124 |
+| data | 903068 |
 | padding | 8 |
 | unused | 14848 |
 
@@ -27,6 +27,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Midwinter (1990)(MicroProse)(De)[cr TT][o].adf:bootblock | 1 | 152 | 9 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 111 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 101 | 3 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 289 | 16 |
 | logged disk load from Midwinter (1990)(MicroProse)(De)[cr TT][o].adf | 1 | 1428 | 34 |
@@ -38,11 +39,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - midwinter (1990)(microprose)(de)[cr tt][o]/Midwinter (1990)(MicroProse)(De)[cr TT][o].adf: custom-format (non-DOS) disk, 1773 non-empty blocks: matched against track-loaded segments
 - extended reference run ignored: it does not re-execute 492 of the 1001 PCs the canonical run logged (509 PCs logged; the harness no longer reproduces the game), so its PCs and RAM are not used
+- 107 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
+- runtime segment an address (play-lgpwide): 107 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-lgpwide): 98 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-lgpwide): 270 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - midwinter (1990)(microprose)(de)[cr tt][o]/Midwinter (1990)(MicroProse)(De)[cr TT][o].adf: 288 executed PCs whose RAM was overwritten before any snapshot match its bytes 11296-16432: recovered as a unit run at an address
 - midwinter (1990)(microprose)(de)[cr tt][o]/Midwinter (1990)(MicroProse)(De)[cr TT][o].adf: 113 executed PCs whose RAM was overwritten before any snapshot match its bytes 22592-23248: recovered as a unit run at an address
 - midwinter (1990)(microprose)(de)[cr tt][o]/Midwinter (1990)(MicroProse)(De)[cr TT][o].adf: bytes 11264-11776 look like code no run loaded: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 address
 - Midwinter (1990)(MicroProse)(De)[cr TT][o].adf bytes 22528-22592 beside a logged load (code never loaded by a reference run, load address unknown): never-loaded code-like bytes recovered position-independently (load address unknown, 62 of 64 bytes decode)
 - midwinter (1990)(microprose)(de)[cr tt][o]/Midwinter (1990)(MicroProse)(De)[cr TT][o].adf: 4 logged loads cover 5824 bytes of the image
 - midwinter (1990)(microprose)(de)[cr tt][o]/Midwinter (1990)(MicroProse)(De)[cr TT][o].adf: blocks 2-20 (bytes 1024-10752) outside the filesystem hold data, not code (opcode density 0.040, entropy 6.97)
@@ -81,6 +85,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `pulse_control_port_count`: For each count in its input, writes a pair of control-port values one bit apart so that each pair produces a single pulse, then waits a fixed delay loop before the next pair.
 - `decrement_and_loop_structure_counter`: Stores two words into a structure at offsets 16 and 18, calls initialize_boot_environment_2, and then enters a loop that decrements a word at offset 24 of the structure.
 - `initialize_boot_environment`: Disables interrupts and DMA, then copies 512 bytes from a source table to a destination buffer.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_rendering`: Initializes rendering parameters and sets up graphics registers for display.
+- `frag_and_add_or_rts`: Short code fragment that masks d1 with d5, then masks d2 with d5, then adds d1 to d1, then merges d1 into d2, then returns.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 

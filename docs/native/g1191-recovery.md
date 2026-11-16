@@ -64,7 +64,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decode_raw_disk_sectors` (bootblock): Starts a raw disk read with the sync word, searches the buffer for a sector sync, and decodes ten sectors. Kind: sync/track-based protection/pattern detection. Pass path: bsr.w an address.
 - `update_audio_channel_sequence_step` (runtime segment an address): Per-channel audio update that reads the next sequence byte and combines it with a running offset to look up a period value. Kind: track/sync check (looping or conditional branch based on hardware-specific lookup or track/sector validity). Pass path: The loop continues or returns normally if the check (e.g., checking for zero/validity or non-zero status in pointer/memory checks) does not trigger a jump or an alternative branch; specifically, the loop continues if `*pbVar9` (the byte che.
 - `update_audio_sample_parameters_3` (runtime segment an address): Iterates through a list of audio channels to update sample pointers, volume levels, and frequency or period settings. Kind: checksum/data-integrity trap. Pass path: The loop continues or returns via the `uVar6 == 4` exit condition, bypassing the modification of `_DAT_00dff096` and the conditional logic that triggers `u5__start_sample_on_audio_channel` only if certain RAM flags are non-zero..
-- `play_audio_samples` (runtime segment an address): Counts a loop variable down from 512 to zero and returns, otherwise it checks four different memory locations and calls another routine to start a sample on a specific audio channel if the byte at the location is non-zero. Kind: loader/sabotage path. Pass path: sub_0D40.
+- `spin_short_delay_loop` (runtime segment an address): Counts a loop variable down from five hundred and twelve to zero and returns, giving a short busy-wait delay. Kind: loader/sabotage path. Pass path: sub_0D40.
 
 ## Functions
 
@@ -91,14 +91,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `dispatch_via_nibble_table_2`: Advances a pointer by sixteen and decrements a counter.
-- `setup_bitplane_data`: Configures several hardware registers for display and DMA, then enters a loop that writes four 32-bit values to a table by splitting them into two 16-bit words and incrementing the source value by 8000 each iteration.
+- `setup_blitter_and_cop`: Sets up hardware registers for the bitplane and display controller, then enters a loop that writes four 16-bit values to a table starting at a location derived from a pointer in a global variable.
 - `idle_in_endless_loop_stub`: Contains only an endless loop with no other work.
-- `configure_blit_and_wait_idle`: Writes blitter masks, modulo values, and a size value, and loads the two address inputs into the blitter pointer registers.
+- `configure_blt_transfer`: Sets up the bitplane transfer registers with specific dimensions and colors, then waits for a DMA status bit to clear before setting the DMA control register.
 - `update_color_register`: Shifts the value in a register left by one and uses it as an offset to write the contents of another register into a color register.
 - `transform_data_blocks`: Uses nested loops to copy bytes from one memory location to another, where the destination pointer is periodically adjusted based on a counter and a value read from the source.
 - `copy_and_transform_data`: Negates a byte in d3, and if it is not negative, it enters nested loops to move bytes from a0 to a1 and perform arithmetic on a1 and d0 before branching to another routine.
 - `function_epilogue`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
-- `decode_joystick_movement_index`: Sets a state byte to all ones or zero from its top bit, then folds two low bit pairs into an index.
+- `read_joystick_and_button`: Reads the joystick position and a button state from hardware registers, uses the position to index into a table, and returns a combined value.
 - `advance_counter_and_call_handler`: Advances a counter by two and reads a value from a helper.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -133,5 +133,5 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `calculate_table_offset`: Calls another routine, loads a byte from a constant offset, and then either branches to another routine or adds a constant to a pointer and branches to another routine.
 - `configure_audio_and_play`: Enables a DMA channel, sets audio hardware registers, calculates an offset into a table using a byte from a structure, and then updates several hardware registers and structure members before calling another routine.
 - `calculate_offset_values`: Adds a longword from a0 to d0, calculates a word by subtracting the half of d0 from a word at offset 8 of a0, stores the word at offset 164 of a6, and stores the new longword at offset 0 of a6.
-- `play_audio_samples`: Counts a loop variable down from 512 to zero and returns, otherwise it checks four different memory locations and calls another routine to start a sample on a specific audio channel if the byte at the location is non-zero.
+- `spin_short_delay_loop`: Counts a loop variable down from five hundred and twelve to zero and returns, giving a short busy-wait delay.
 - `start_sample_on_audio_channel`: Starts a sample on one audio channel.

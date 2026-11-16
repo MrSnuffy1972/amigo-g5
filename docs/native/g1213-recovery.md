@@ -81,7 +81,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `calculate_xor_checksum_masked`: It XOR-accumulates a run of longwords whose count comes from a passed value, advancing a pointer each iteration, then returns the running value masked with the alternating-bit pattern.
 - `shift_bits_across_long_pair`: It shifts the first longword left and the following word right by the same count, then merges the two shifted halves into a single 32-bit result.
 - `call_self_three_times`: Performs three sequential calls to the same routine and returns without altering any data itself.
-- `store_masked_bitplane_word`: It builds a value from the complemented alternating-bit pattern of the input combined with a shifted neighbour, clears the top bit when bit 0 of the preceding byte is set, and stores the result through the pointer.
+- `store_masked_bit_pattern`: Builds a masked bit pattern from the input value by inverting the alternating-bit mask and combining it with the input's high bits, then stores it in a longword.
 - `search_patterned_table`: It scans a table of paired short values, matching a run of -23462 and then comparing successive longwords against a table until a match is found, returning the associated index or -1 on exhaustion.
 - `conditional_blitter_setup`: Branches on a register value, loading and storing a word through a pointer on one path, and on the other path programs the blitter control, size and pointer registers for a decode pass before calling a routine.
 - `start_blitter_decode_pass`: Programs the blitter control, size and pointer registers for a decode pass, using a shifted parameter and a computed size, then calls a routine.
@@ -93,7 +93,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `deselect_drive_bit`: Reads a byte from register D1 and clears a single bit in the CIAB port B register, with the bit position selected by a stored drive index.
 - `wait_drive_ready_status`: Sets up a status register and waits for a disk status bit to clear within a fixed count, returning zero on success and an error code on timeout.
 - `seek_drive_to_track`: Reads the stored track position from a global variable and compares it with a target track passed in a register.
-- `wait_disk_status_clear`: Waits for a status bit in a global variable to clear, polling a CIAB port and decrementing a counter each iteration, and returns a fixed value if the counter runs out.
+- `poll_disk_flag_clear_timeout`: Polls a disk status bit in the port register for a bounded count, calling a routine on each pass.
 - `read_ciab_port_set_bit`: Reads a byte from a CIAB port and, when a flag indicates a positive value, clears one of its bits.
 - `read_ciab_port_delay`: Stores a value read from a CIAB port into a global variable, then spins in a loop that counts down from fifteen thousand before returning.
 - `decrement_to_zero`: Decrements a counter in a register until it reaches zero, acting as a short busy-wait delay loop.

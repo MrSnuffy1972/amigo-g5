@@ -82,10 +82,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - red baron (1990)(dynamix)[cr nemesis](disk 3 of 3)/Red Baron (1990)(Dynamix)[cr Nemesis](Disk 3 of 3).adf:volume.003: high-entropy data file (7.79 bits/byte), classified as packed data
 - extended reference run ignored: it does not re-execute 2022 of the 2717 PCs the canonical run logged (165208 PCs logged; the harness no longer reproduces the game), so its PCs and RAM are not used
-- reference run failed (Karl 4 Nov 2026): run play-rs-m1500 slid through memory (an address: 159 64 KB pages each with >= 29491 distinct PCs executed, 2605019 of its 2775484 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
-- reference run failed (Karl 4 Nov 2026): run play-rs-m3000 slid through memory (an address: 159 64 KB pages each with >= 29491 distinct PCs executed, 2605019 of its 2775484 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
-- reference run failed (Karl 4 Nov 2026): run play-rs-menu slid through memory (an address: 159 64 KB pages each with >= 29491 distinct PCs executed, 2605019 of its 2775484 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
-- reference run failed (Karl 4 Nov 2026): run play-rs-mixed slid through memory (an address: 159 64 KB pages each with >= 29491 distinct PCs executed, 2605019 of its 2775484 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run ext slid through memory (an address: 8 64 KB pages each with >= 29491 distinct PCs executed, 164651 of its 165208 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-rs-m1500 slid through memory (an address: 166 64 KB pages each with >= 29491 distinct PCs executed, 2754437 of its 2775484 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-rs-m3000 slid through memory (an address: 166 64 KB pages each with >= 29491 distinct PCs executed, 2754437 of its 2775484 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-rs-menu slid through memory (an address: 166 64 KB pages each with >= 29491 distinct PCs executed, 2754437 of its 2775484 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-rs-mixed slid through memory (an address: 166 64 KB pages each with >= 29491 distinct PCs executed, 2754437 of its 2775484 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
 - runtime segment an address (f100): 141 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 775 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
@@ -375,7 +376,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_linked_list_data`: Iterates through a linked list, copying a longword from a table into a field at offset 4 of the current list element, then calls a routine via a pointer from a global table and updates a global pointer.
 - `jump_to_address_3`: Performs a long jump to a specific address.
 - `jump_to_address_4`: Performs a long jump to a specific address.
-- `call_indirect_function`: Loads a function pointer from an offset relative to a value stored on the stack and executes it.
+- `execute_indirect_stack_pointer_offset`: Loads a function pointer from a fixed offset relative to a value currently on the stack and executes it.
 - `setup_pointer_chain`: Stores the address of its pointer argument into the memory location pointed to by the argument, adds four to that stored value, clears the next word in the pointed-to block, and stores the original pointer value into the following word.
 - `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
@@ -387,13 +388,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `manage_record_data`: Performs multiple operations involving seeking, reading, validating, and allocating handles for records within a table by manipulating structure flags, updating pointers, and calling various subroutines to manage memory and data integrity.
 - `fall_through_entry_4`: Entry point part-way through straight-line code: runs one instruction (movep.w) and then falls through into the code that follows, with no return of its own.
 - `decode_variable_length_byte`: Parses a variable-length encoded stream by reading bytes from a buffer pointer, handling escape sequences and length prefixes.
-- `iterate_table_with_function`: Iterates through a table of four values, passing a pointer from a structure and each value from the table to another routine.
+- `iterate_table_with_conditional_call`: Iterates through a table of values based on a count at offset 0 of the structure in a4, checking if a byte at offset 496 plus an index is non-zero and has bit 4 cleared before calling another routine with a pointer from the table; otherwise, it calls another routine with the original count extended to a longword.
 - `copy_string_with_limit`: Copies a null-terminated string from a source pointer to a destination pointer, truncating the copy if it exceeds a specified maximum length and ensuring null-termination.
 - `copy_string_to_buffer`: The routine finds the terminating zero byte of the destination buffer and copies bytes from the source pointer into that location until a zero byte is copied.
 - `insert_into_ordered_list`: Inserts a block of memory into a linked list at a position determined by a size value, potentially splitting an existing node.
 - `execute_io_with_pointer`: Saves registers, calls a routine, and if the result is non-zero, calls another routine using a pointer from the first result, then checks a 16-bit value at offset 436 of a structure in a4 to determine the final return value.
 - `free_linked_list`: Iterates through a linked list and calls a function for each node before clearing the list pointers in a structure.
-- `insert_memory_block`: Calls another routine to free or manipulate a block at a pointer from a global variable, then calls another routine to allocate a new block of a specified size, and if successful, writes the size into the new block and returns a pointer to it.
+- `reallocate_memory_block`: Calls a routine to free a memory block pointed to by a global variable, then calls a routine to allocate a new block of a size incremented by 2 from the original size, and if successful, writes the new size into the block and returns a pointer to the memory following the size field.
 - `validate_nested_pointer_and_check_flag`: Calls a routine to retrieve a pointer, then calls a second routine using a value from that pointer; if the first call fails or if a specific 16-bit value at offset 436 of a structure is zero, it returns negative four, otherwise it returns the result of the second routine.
 - `allocate_and_link_node`: Allocates a block of memory of a specified size and inserts it into a linked list structure.
 - `manage_ordered_list`: Manages an ordered list by searching for a position based on a size, potentially splitting nodes, allocating new memory, and calling routines for fixed-point math and list insertion.
@@ -417,7 +418,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `function_epilogue`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
 - `create_message_node`: It obtains a global variable and calls another routine through a table.
 - `get_table_entry`: Sets a value at offset 436 of a structure to zero, then checks if a value from the stack is within a specific range and points to a non-zero entry in a table to return a pointer, otherwise it sets an offset in the structure to 9 and returns zero.
-- `check_and_set_signal`: Calls a library routine to check a status, and if a specific bit is set and a pointer in a global variable is non-zero, calls the routine pointed to by that global variable and clears it.
+- `check_and_execute_signal_handler`: Checks if a specific bit is set in a status value returned by a library call, and if a pointer at offset 460 of the structure in a4 is non-zero, calls that pointer and clears the pointer if the called routine returns a non-zero value.
 - `call_subroutine`: Calls another routine and then returns.
 - `fall_through_entry_5`: Entry point part-way through straight-line code: runs one instruction (ori.l) and then falls through into the code that follows, with no return of its own.
 - `process_task_message_2`: Performs bitwise operations on d0 and branches to another routine.
@@ -622,29 +623,29 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `manage_record_data_2`: Processes a record structure by validating flags, adjusting a count at offset 16, and managing a linked list of data buffers.
 - `fall_through_entry_6`: Entry point part-way through straight-line code: runs one instruction (movep.w) and then falls through into the code that follows, with no return of its own.
 - `decode_variable_length_byte_2`: Parses a variable-length encoded stream by reading bytes from a buffer pointer and updating a structure's offset and flags.
-- `iterate_and_call_handler`: Iterates through a list based on a value from a structure, checks a bit in a table entry, and calls another routine if the bit is not set.
+- `iterate_table_with_conditional_call_2`: Iterates through a table of values based on a count at offset 0 of the structure in a4, checking if a byte at offset 496 plus an index is non-zero and has bit 4 cleared before calling another routine with a pointer from the table; otherwise, it calls another routine with the original count extended to a longword.
 - `copy_string_with_limit_3`: Calculates the length of a source string and a destination string, then copies bytes from the source to the destination up to a specified maximum length, ensuring the destination string is null-terminated.
 - `append_string_to_buffer`: Locates the null terminator of a destination buffer and copies bytes from a source pointer to that location until a null byte is encountered, returning the original destination pointer.
 - `insert_into_ordered_list_2`: Aligns a requested size to a 4-byte boundary and inserts a new memory block into a linked list of free memory nodes.
 - `fetch_table_entry_address`: Calls a routine to check a signal, then if successful, calls another routine to retrieve an address from a table using a pointer at offset 2 of the retrieved address, and returns the result or negative one if a signal check or a global variable check fails.
 - `free_memory_list`: Iterates through a linked list of memory blocks and calls a library routine to free each one, then clears a global pointer and sets a global variable to zero.
-- `insert_memory_node`: Retrieves a pointer from a global variable, calls another routine to find a block, and then either updates a global pointer with the result or calls another routine to allocate a new block and updates the list.
+- `reallocate_memory_block_2`: Calls a routine to free a memory block pointed to by a global variable, then calls a routine to allocate a new block of a size incremented by 2 from the original size, and if successful, writes the new size into the block and returns a pointer to the memory following the size field.
 - `resolve_table_entry_pointer`: Calls a routine to find a base address, then calls another routine using a pointer from that address to retrieve a specific entry.
 - `allocate_and_link_node_2`: Allocates a memory block of a specified size plus twelve bytes, then initializes it and inserts it into a linked list.
-- `manage_free_memory_list`: Aligns a requested size to a 4-byte boundary and searches a linked list of free memory nodes for a suitable block.
+- `manage_ordered_list_2`: Manages an ordered list by searching for a position based on a size, potentially splitting nodes, allocating new memory, and calling routines for fixed-point math and list insertion.
 - `update_pointer_list`: Checks if a register is non-zero, calls another routine, and then updates a global variable by subtracting two from the register's value.
-- `traverse_and_process_string_list`: Checks if a pointer at offset 12 of a structure is null; if not, it pushes the address of the next element and the values at offsets 4 and 8 of each element onto the stack and calls another routine.
+- `increment_table_value`: This routine loads a value from a table using an index, increments that value by one, and stores the updated result back through a pointer.
 - `create_message_port_from_path`: Locks a file path, calculates the total length of a list of strings, allocates a memory block and an entry, and then populates the memory block with the string data separated by spaces and a terminator.
 - `duplicate_locked_file_path`: Locks a file path provided in a register, parses the string to identify a directory component, and then attempts to duplicate the lock on a directory structure by traversing task-related memory.
 - `process_linked_records_2`: Checks bits 1 and 2 of a byte at offset 25 of a structure pointed to by a value derived from a register, calculates a size by subtracting a value at offset 12 from a value at offset 4, and if the size is non-zero, calls another routine with the size and two other values from the structure before calling a third routine with a value from the stack.
 - `write_to_file`: Calls another routine to check a signal, then calls a routine to write data, and if an error occurs, calls another routine to retrieve the error and updates a global variable.
 - `seek_in_file`: Calls another routine to check a signal, then calls a routine to seek within a file, and based on the result, performs additional seeks or updates a global variable with an error code.
 - `read_from_file`: Calls another routine to check a signal, then calls a routine to read data, and if an error occurs, calls another routine to retrieve the error and updates a global variable.
-- `dispose_msg_port_structure`: Checks if a field in the provided structure is non-zero to call a removal routine, then writes specific reset values to offsets 8 and 20 of the structure.
+- `cleanup_display_context_3`: It conditionally invokes a callback when a structure field is nonzero, then writes reset values at two fixed offsets.
 - `call_conditional_handler_2`: Checks if a longword at offset 524 of a structure pointed to by a4 is non-zero, then calls a routine via a pointer at offset 1016 of that same structure.
-- `multiply_fixed_point_values`: Multiplies two 32-bit fixed-point values provided in registers and returns the 32-bit product in the first register.
+- `compute_fixed_point_product_3`: The routine takes two 32-bit fixed-point values from registers and returns their product as a 32-bit fixed-point value.
 - `calculate_absolute_division`: Calculates the absolute value of a division between two 32-bit integers by normalizing the divisor and calling another routine.
-- `divide_32bit_fixed_point`: Performs a 32-bit division of a dividend in d0 by a divisor in d1 using a normalization process to align the divisor.
+- `normalize_fixed_point_divide_4`: The routine divides a 32-bit dividend in d0 by a 32-bit divisor in d1 using a normalized fixed-point method.
 - `prepare_log_data`: Loads a value from a table at an offset from a pointer, compares it to a constant, and branches based on the result.
 - `write_log_and_open_library`: Copies a block of bytes, then attempts to find a task to write a message to its file descriptor, otherwise it attempts to open a library and store the result in a global variable.
 - `open_library_and_store_result_2`: Calls a routine via a pointer from a global variable, stores the result in a global variable at an offset from a pointer in a6, and then branches to another routine.
@@ -652,7 +653,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `function_epilogue_4`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
 - `create_message_node_2`: Allocates a memory block and a signal, then initializes it as a message port using parameters from a table.
 - `get_table_entry_address`: Checks if a value is within a specific range and if a corresponding entry in a table is non-zero, then calculates and returns an address based on that value multiplied by six.
-- `check_signal_and_handler`: Calls a routine to set a signal, checks if a specific bit is set in the return value, and if so, calls a routine stored at an offset in a global structure.
+- `check_and_execute_signal_handler_2`: Checks if a specific bit is set in a status value returned by a library call, and if a pointer at offset 460 of the structure in a4 is non-zero, calls that pointer and clears the pointer if the called routine returns a non-zero value.
 - `call_handler_wrapper`: Calls another routine and then returns.
 - `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
 - `initialize_input_device`: Checks if a global word is zero, then finds a task, adds a port, opens a device, and performs I/O operations using library calls.

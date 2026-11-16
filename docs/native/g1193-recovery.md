@@ -1,0 +1,1123 @@
+# Game 1193 (gunboat (1991)(accolade)[cr csl][a2]): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/01193). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (1802344 top-level bytes in 14 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 12 raw-word lines |
+| Functions named and described | pass, 1046 of 1046 named (0 author symbols), 1046 of 1046 described (453 by rule, 105 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 5111 of 5181 (98.65%) |
+| Recovered without load address (counted in proof 1, flagged) | 828746 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 27520 of 27520 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 1295 |
+| code | 109426 |
+| data | 1016127 |
+| padding | 4264 |
+| unused | 671232 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| Gunboat (1991)(Accolade)[cr CSL][a2](Disk 1 of 2).adf:gb | 43 | 31215 | 1038 |
+| Gunboat (1991)(Accolade)[cr CSL][a2](Disk 1 of 2).adf:echo | 2 | 117 | 2 |
+| Gunboat (1991)(Accolade)[cr CSL][a2](Disk 1 of 2).adf:Crystal | 2 | 85 | 3 |
+| Gunboat (1991)(Accolade)[cr CSL][a2](Disk 1 of 2).adf:bootblock | 1 | 10 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
+| Gunboat (1991)(Accolade)[cr CSL][a2](Disk 1 of 2).adf:DATAA.DAT (raw code file, load address unknown) | 1 | 0 | 0 |
+| Gunboat (1991)(Accolade)[cr CSL][a2](Disk 2 of 2).adf:DATAB.DAT (raw code file, load address unknown) | 1 | 0 | 0 |
+
+## Cases handled
+
+- gunboat (1991)(accolade)[cr csl][a2](disk 1 of 2)/Gunboat (1991)(Accolade)[cr CSL][a2](Disk 1 of 2).adf:DATAA.DAT: high-entropy data file (7.92 bits/byte), classified as packed data
+- gunboat (1991)(accolade)[cr csl][a2](disk 2 of 2)/Gunboat (1991)(Accolade)[cr CSL][a2](Disk 2 of 2).adf:DATAB.DAT: high-entropy data file (7.94 bits/byte), classified as packed data
+- runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- gunboat (1991)(accolade)[cr csl][a2](disk 1 of 2)/Gunboat (1991)(Accolade)[cr CSL][a2](Disk 1 of 2).adf:Crystal: ByteKiller 1.3 (xfd) stream found by ancient scan (8244 -> 16307 bytes) but only 0 of 6 sampled windows are in reference RAM: not used
+- gunboat (1991)(accolade)[cr csl][a2](disk 1 of 2)/Gunboat (1991)(Accolade)[cr CSL][a2](Disk 1 of 2).adf:DATAA.DAT: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- gunboat (1991)(accolade)[cr csl][a2](disk 2 of 2)/Gunboat (1991)(Accolade)[cr CSL][a2](Disk 2 of 2).adf:DATAB.DAT: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- 2 never-loaded region(s), 828746 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- none found
+
+## Functions
+
+
+### Gunboat (1991)(Accolade)[cr CSL][a2](Disk 1 of 2).adf:gb
+
+- `frag_jmp`: Short code fragment that jumps to another point in the code.
+- `initialize_system_resources_2`: Opens the graphics, intuition, and audio libraries, allocates several memory blocks of varying sizes, and initializes a window and screen.
+- `call_wrapper_routine`: Pushes a value from the stack onto the stack, calls another routine, and then returns.
+- `initialize_system_resources`: Calls routines to set a signal, allocate a trap, and add a port using arguments passed through the stack.
+- `setup_port_operations`: Initializes port-related data by clearing a global variable, reading from a structure at offset 26, extending it to long, and calling a library routine with the extended value.
+- `process_input_event_dispatch`: Retrieves a pointer from a structure, checks if a specific field equals 1024, and uses a byte from the structure to select a value from a switch table or a jump table.
+- `frag_bra`: Short code fragment that jumps to another point in the code.
+- `frag_bra_3`: Short code fragment that jumps to another point in the code.
+- `frag_bra_4`: Short code fragment that jumps to another point in the code.
+- `frag_bra_5`: Short code fragment that jumps to another point in the code.
+- `frag_bra_6`: Short code fragment that jumps to another point in the code.
+- `frag_bra_7`: Short code fragment that jumps to another point in the code.
+- `frag_bra_8`: Short code fragment that jumps to another point in the code.
+- `frag_bra_9`: Short code fragment that jumps to another point in the code.
+- `frag_bra_10`: Short code fragment that jumps to another point in the code.
+- `frag_bra_11`: Short code fragment that jumps to another point in the code.
+- `frag_bra_12`: Short code fragment that jumps to another point in the code.
+- `frag_bra_13`: Short code fragment that jumps to another point in the code.
+- `frag_bra_14`: Short code fragment that jumps to another point in the code.
+- `frag_bra_15`: Short code fragment that jumps to another point in the code.
+- `frag_bra_16`: Short code fragment that jumps to another point in the code.
+- `frag_bra_17`: Short code fragment that jumps to another point in the code.
+- `frag_bra_18`: Short code fragment that jumps to another point in the code.
+- `frag_bra_19`: Short code fragment that jumps to another point in the code.
+- `frag_bra_20`: Short code fragment that jumps to another point in the code.
+- `frag_bra_21`: Short code fragment that jumps to another point in the code.
+- `frag_bra_move`: Short code fragment that jumps to another point in the code, then copies 27 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_bra_3`: Short code fragment that copies 129 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_bra_4`: Short code fragment that copies 130 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_bra_5`: Short code fragment that copies 131 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_bra_6`: Short code fragment that copies 132 to a fixed memory address, then jumps to another point in the code.
+- `set_status_byte_85`: Writes the value 133 to a global variable at offset 37c, then branches to address 2534.
+- `validate_input_byte`: Sets a global variable to 138, then branches to address 2534.
+- `frag_bra_22`: Short code fragment that jumps to another point in the code.
+- `frag_bra_23`: Short code fragment that jumps to another point in the code.
+- `frag_ori_bclr_bra`: Short code fragment that merges 0 into the memory at a6 (advancing a6), then clears bit d0 of the memory at an offset from a0, then merges an address into the memory at a5 (advancing a5), then merges 29 into d0, then jumps to another point in the code.
+- `frag_bra_24`: Short code fragment that jumps to another point in the code.
+- `frag_bra_25`: Short code fragment that jumps to another point in the code.
+- `frag_ori_bra`: Short code fragment that merges 0 into the memory at an offset from a7, then merges 173 into d0, then jumps to another point in the code.
+- `frag_bra_26`: Short code fragment that jumps to another point in the code.
+- `frag_bra_27`: Short code fragment that jumps to another point in the code.
+- `frag_ori_bra_2`: Short code fragment that merges 0 into the memory at an offset from a5, then merges 191 into d0, then jumps to another point in the code.
+- `frag_bra_28`: Short code fragment that jumps to another point in the code.
+- `frag_bra_29`: Short code fragment that jumps to another point in the code.
+- `frag_bra_30`: Short code fragment that jumps to another point in the code.
+- `frag_bra_move_subq_beq_clr`: Short code fragment that jumps to another point in the code, then copies a fixed memory address to d0, then subtracts 3 from d0, then branches if the last result was zero, then copies 13 to a fixed memory address, then copies 1 to a fixed memory address, then jumps to another point in the code, then clears a fixed memory address, then jumps to another point in the code.
+- `frag_move_moveq_bra`: Short code fragment that copies 55 to a fixed memory address, then loads 1 into d0, then copies d0 to a fixed memory address (2 times in a row), then jumps to another point in the code.
+- `frag_moveq_move_bra_clr`: Short code fragment that loads 0 into d0, then copies d0 to a fixed memory address (2 times in a row), then jumps to another point in the code, then copies 1 to a fixed memory address, then jumps to another point in the code, then clears a fixed memory address, then jumps to another point in the code.
+- `frag_move_moveq_bra_2`: Short code fragment that copies 57 to a fixed memory address, then loads 1 into d0, then copies d0 to a fixed memory address (2 times in a row), then jumps to another point in the code.
+- `manage_status_flags`: Clears global variables at offsets 37f, 37d, and sets offset 37e to zero.
+- `frag_move_moveq_bra_3`: Short code fragment that copies 49 to a fixed memory address, then loads 1 into d0, then copies d0 to a fixed memory address (2 times in a row), then jumps to another point in the code.
+- `frag_moveq_move_bra_clr_2`: Short code fragment that loads 0 into d0, then copies d0 to a fixed memory address (2 times in a row), then jumps to another point in the code, then copies 1 to a fixed memory address, then jumps to another point in the code, then clears a fixed memory address, then jumps to another point in the code.
+- `frag_move_moveq_bra_4`: Short code fragment that copies 51 to a fixed memory address, then loads 1 into d0, then copies d0 to a fixed memory address (2 times in a row), then jumps to another point in the code.
+- `frag_moveq_move_bra`: Short code fragment that loads 0 into d0, then copies d0 to a fixed memory address (2 times in a row), then jumps to another point in the code.
+- `frag_move_subq_bne_bra`: Short code fragment that copies a fixed memory address to d0, then subtracts 3 from d0, then branches if the last result was not zero, then copies 1 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_bra_7`: Short code fragment that copies 8 to a fixed memory address, then jumps to another point in the code.
+- `process_input_status_2`: Processes input status by calling another routine to read hardware registers, then stores a processed bitmask and two related values into a structure pointed to by a register.
+- `process_linked_list`: Repeatedly calls a routine using a pointer retrieved from an offset of a global variable, continuing as long as the result is non-zero, then clears a global variable multiple times.
+- `calls_routine_with_bit_shifted_parameter`: Calls another routine using a function pointer from a global variable, passing a value from the first word of a structure shifted left by three bits, the second word of that structure, and several constant values.
+- `execute_callback_chain_4`: Performs a series of conditional checks on global variables and structure fields to call various routines, including managing memory, processing port lists, traversing callback lists, and calling library functions via specific offsets.
+- `calculate_array_products`: Iterates through a table to perform calculations using a 32-bit multiplication routine and stores the results back into the table.
+- `populate_array_from_structure`: Calls a routine with parameters from a structure, stores a 16-bit value at offset 6 of that structure, calls another routine, and then enters a loop that copies a 32-bit value from a structure into an array based on a byte value at offset 5.
+- `iterate_and_update_table`: Loops up to 19 times, calling a routine with a value from a table and updating the table entry with the returned value if it is non-zero, otherwise calling another routine.
+- `load_resource_by_type`: Sets a global variable to zero and, depending on the input parameter, calls a routine to retrieve a value and then calls another routine with that value and several constants.
+- `initialize_object_structure_a`: Calculates a value from a global variable using a bitmask, increments that global variable, and calls another routine with specific parameters.
+- `initialize_object_structure_b`: Calculates a value from a global variable using a bitmask, increments that global variable, and calls another routine with different parameters.
+- `update_global_counter`: Reads a global variable, increments it, calculates the result modulo 8, and calls another routine with specific parameters including the calculated value and fixed constants.
+- `update_global_and_call`: Reads a global variable, applies a bitmask operation to extract lower 3 bits, increments the global variable, then calls another routine with the masked value and several constant parameters.
+- `update_global_counter_2`: Reads a global variable, applies a bitmask operation to its value, increments the variable, and calls another routine with the processed value and several constants.
+- `update_global_and_call_2`: Reads a global variable, applies a bitmask operation to extract lower 3 bits, increments the global variable, then calls another routine with the processed value and several fixed parameters.
+- `update_object_state`: Increments a global variable, calculates its value modulo 8, and calls another routine with parameters from a table and fixed values.
+- `update_global_counter_3`: Reads a global variable, applies a bitmask operation to its value, increments the variable, and calls another routine with the processed value and several fixed parameters.
+- `update_object_state_and_type`: Updates object properties based on a global variable and several flags, calling routines to initialize, reset, or set object types depending on the state.
+- `initialize_object_with_flag`: Checks bit 2 of a global variable, then extracts a 3-bit value from another global variable, increments that variable, and calls a routine with two different sets of pointers depending on the bit check.
+- `initialize_object_with_offset_3b4`: Extracts a 3-bit value from a global variable, increments that variable, and calls another routine with two pointers, the 3-bit value, 1, 386, and 64.
+- `increment_and_call_2`: Reads a global variable, increments it, applies a bitmask to the result, and calls another routine with several parameters including the masked value and specific constants.
+- `increment_and_call_b`: Reads a global variable, increments it, applies a bitmask to the result, and calls another routine with several parameters including the masked value and specific constants, using different memory addresses for the parameters.
+- `initialize_object_alternative`: Checks bit 2 of a global variable, then extracts a 3-bit value from a global variable, increments that variable, and calls a routine with two different sets of pointers and a constant of 299.
+- `initialize_object_with_offset_3b4_alt3`: Extracts a 3-bit value from a global variable, increments that variable, and calls another routine with two pointers, the 3-bit value, 1, 299, and 64.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `frag_moveq_move_jsr_rts`: Short code fragment that loads 0 into d0, then copies d0 to a fixed memory address (2 times in a row), then calls another routine, then returns.
+- `initialize_multiple_objects`: Calls another routine six times with varying parameters including constants 8, 9, 10, 11, 12, and 13 and specific pointers and values.
+- `setup_hardware_and_call`: Sets a global variable, modifies three hardware registers, and calls another routine twice with a pointer to a global variable and specific values.
+- `setup_hardware_registers`: Writes 1 to two specific hardware registers, clears a third, and then calls another routine with a value of 8 and a pointer to a global variable.
+- `initialize_game_data`: Sets up game data by writing values to global variables at offsets 24, 26, 2c, 30, 70, 72, 74, and 76.
+- `function_epilogue_14`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
+- `frag_link_move_unlk_rts`: Short code fragment that creates a stack frame in a5, then copies the memory at an offset from a5 to a fixed memory address, then removes the stack frame held in a5, then returns.
+- `update_table_entry`: Stores a 16-bit value from the stack into a global variable, then calculates an address by shifting that value and adding a constant to it to fetch a 32-bit value from a table into another global variable.
+- `frag_link_move_unlk_rts_2`: Short code fragment that creates a stack frame in a5, then copies the memory at an offset from a5 to a fixed memory address, then removes the stack frame held in a5, then returns.
+- `setup_bytecode_parameters`: Stores three parameters into global variables, performs calculations involving a global variable and a value from a table, and then calls another routine.
+- `setup_bytecode_parameters_2_3`: Stores three parameters into global variables, performs calculations involving a global variable and a value from a table, and then calls another routine with computed values.
+- `setup_bytecode_parameters_2`: Clears a 16-bit word in a global variable, stores a 16-bit word from a structure in a5 into another global variable, and calls another routine with three parameters pushed onto the stack.
+- `setup_bytecode_parameters_2_2`: Clears a 16-bit word in a global variable, stores a 16-bit word from a structure in a5 into another global variable, and calls another routine with three parameters pushed onto the stack.
+- `manage_list_elements`: Calls routines to add a head, add a tail, allocate a trap, and add a port using values from a global variable and two provided parameters.
+- `store_two_words_to_globals`: Stores two 16-bit values from the stack into global variables at offsets 6970 and 6972.
+- `configure_port_signals`: Calls routines to set a signal, allocate a trap, and add a port using a value from a global variable and four provided parameters.
+- `store_two_words_to_globals_2`: Stores two 16-bit values from the stack into global variables at offsets 6970 and 6972.
+- `update_dual_coordinates`: Reads two 16-bit values from a structure in a5, shifts both left by 3 bits, and stores them in global variables at offsets 3d4 and 3d2.
+- `update_single_coordinate`: Stores a 16-bit value from a structure in a5 into a global variable at offset 3d4, and stores a second 16-bit value from a5 shifted left by 3 bits into a global variable at offset 3d2.
+- `process_coordinate_list_recursively`: If a pointer does not point to a null byte, it performs several calls to another routine using various global values and a calculated sum, then updates a global variable; otherwise, it loops to call another routine for each byte in a range.
+- `process_coordinate_list`: Checks if a character at a pointer is a backslash or null, then performs a series of recursive calls to another routine using various combinations of global variables and offsets, finally incrementing a global variable by 8.
+- `perform_scaled_division`: Loads a 16-bit value from the stack, multiplies it by 50, calls a routine to perform division, pushes the result to the stack, calls another routine, and returns.
+- `call_indirect_with_first_pointer`: Calls a function pointer from a table using four parameters, including two calculated widths and a specific global value at an offset.
+- `call_indirect_via_global_2`: Calculates four values including widths and uses them as parameters to call a function pointer taken from a global variable with specific fixed parameters.
+- `call_function_pointer`: Calls a function pointer retrieved from a table using an index provided in a parameter.
+- `signal_coordinates`: Calls another routine with a global variable and a value from a global variable, then calls another routine with the two provided parameters.
+- `process_buffer_data_2`: If a pointer is not null, it calls a function with a shifted parameter, then calls a function pointer from a structure, then calls a function with a zeroed parameter, and finally calls another function with a different constant.
+- `process_input_coordinates`: Processes input coordinates by reading from global variables, calculating differences, and calling a library routine twice with different parameters.
+- `frag_link_movem_tst_beq_move_unlk_rts`: Short code fragment that creates a stack frame in a5, then saves registers on the stack, then tests the memory at an offset from a5, then branches if the last result was zero, then copies the memory at an offset from a5 to d0, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
+- `allocate_and_populate_array`: Allocates memory using a library routine, stores the result in a structure at offset 8, then calculates array parameters based on structure values.
+- `function_epilogue_15`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `execute_table_operations`: Retrieves a pointer from a table using an index, calls a function pointer with a value derived from that pointer, and then calls another function pointer with the retrieved pointer and a constant.
+- `populate_sprite_data`: Calculates an offset into a global structure based on a parameter, performs several conditional routine calls to manipulate memory buffers, and writes specific values to a global memory area.
+- `compare_stack_value`: Compares a 16-bit value at an offset of the stack frame to 3 and returns if it is less than or equal to 3, otherwise it restores registers and returns.
+- `update_structure_fields`: Calculates an offset from a value in a structure, copies two 16-bit values from a table to that offset, calls a function pointer if a condition is met, and then calls two different function pointers using the calculated offset and table values.
+- `handle_small_index`: If a parameter is 3 or less, it calls a function pointer, then calls two different function pointers using values from a structure and a table.
+- `call_library_and_update_value`: Pushes a pointer to a global variable onto the stack, calls a library function, calls another routine that updates a 32-bit global variable by adding 12345 to a value, and then returns.
+- `update_status_byte_3`: Tests a byte at offset 19 of a structure in a5; if it is non-zero, it branches to another routine, otherwise it writes 1 to offset 18 and 32 to offset 19 of the structure before branching to another routine.
+- `prepare_signed_value`: Clears a 16-bit word at offset 30 of a structure in a5, tests a longword at offset 8, and if the value is negative, sets a 16-bit word at offset 32 to 1 and negates the longword at offset 8 before branching to another location; otherwise, it continues to the next instruction.
+- `format_fixed_point_to_string`: Converts a fixed-point value into a decimal string by performing division and storing individual digits into a local buffer.
+- `format_integer_to_string`: Converts a numeric value into a decimal string by repeatedly performing division and storing the resulting digits into a buffer.
+- `increment_and_write_byte`: If a 16-bit word at a negative offset from a5 is not zero, it loads a 16-bit word from another negative offset into d0, increments a byte at a negative offset from a5, and writes the character 48 to a memory location calculated using d0 and a negative offset from a5.
+- `perform_fixed_point_division`: Loads a 16-bit word from an offset of a structure in a5, extends it to a 32-bit long, moves a byte from an offset of a5 into a memory location, loads a 32-bit value into d0, calls a routine to perform a division, stores the result back into a structure, and branches to another routine.
+- `modify_and_copy_string`: Checks if a byte at a specific offset from a pointer in a5 is a space, and if so, writes the character 48 to that location.
+- `copy_string_to_buffer`: Loads a pointer into a0, pushes two pointers onto the stack, calls a routine, and then branches to another routine.
+- `copy_and_modify_string`: Calls a routine to copy a string to a destination, then if a condition is met, writes a hyphen character to the first byte of the source string.
+- `manage_exec_task_ports`: Allocates a trap, adds a port to a task, dispatches the task, and then frees the trap and removes the port.
+- `frag_move_rts`: Short code fragment that copies 256 to a fixed memory address, then copies 1 to a fixed memory address, then returns.
+- `disable_dma_and_call_library`: Calls a library function using a pointer from a global variable, sets the DMA control register to 33024, and clears a byte in a global variable at offset 52e.
+- `deallocate_based_on_byte`: Calls a library function with a global variable and a constant, then calls another routine, and finally calls a library function to deallocate a global variable with a size determined by a byte at an offset of a global variable.
+- `decrement_and_remove_library`: Decrements a value in a structure in a5, and if the original value was not zero, enters a loop that calls another routine and a library function for each iteration until the value reaches zero.
+- `call_library_with_table_entry`: Calls a library function using a pointer retrieved from a table at an offset determined by a parameter.
+- `call_library_with_indexed_entry`: Calls a library function using a provided parameter and a pointer retrieved from a table using an index provided by a second parameter.
+- `fetch_table_entry`: Calculates an offset by multiplying a 16-bit value from a parameter by 4, adds 550 to the result, and returns the 32-bit value stored at that location.
+- `fetch_nested_table_entry`: Calculates an offset by multiplying a 16-bit value from a parameter by 4, adds 550 to the result, fetches a pointer from that location, and returns the 32-bit value stored at offset 8 of that pointer.
+- `fill_memory_buffer`: Decrements a 16-bit counter in a parameter while copying a byte from a second parameter into a buffer pointed to by a third parameter, incrementing the buffer pointer each iteration until the counter reaches zero.
+- `call_library_function`: Pushes a pointer from a parameter onto the stack and calls a library function at a specific offset.
+- `set_multiple_task_priorities`: Loops five times, fetching a pointer from a table using a parameter, and calls a library function to set the priority of the task at that pointer to 8000.
+- `initialize_data_table`: Stores a series of 16-bit values into a table starting at a global variable offset.
+- `shuffle_table_elements`: Performs 32 iterations of a swap operation on a table of 32-bit values, using a byte from a parameter to determine the index for swapping elements.
+- `update_three_status_bytes`: Writes a byte from a parameter to offset 5 of three different structures located at fixed memory addresses.
+- `frag_lea_move_rts`: Short code fragment that loads the address of a fixed memory address into a0, then copies a0 to d0, then returns.
+- `frag_bsr_rts`: Short code fragment that calls another routine, then returns.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `frag_bsr_rts_2`: Short code fragment that calls another routine, then returns.
+- `frag_bsr_rts_3`: Short code fragment that calls another routine, then returns.
+- `execute_sequence_of_routines`: Calls a routine, clears the stack, pushes the value 1 into d0 onto the stack, calls another routine, and then calls a third routine before returning.
+- `frag_bsr_rts_4`: Short code fragment that calls another routine, then returns.
+- `frag_bsr_rts_5`: Short code fragment that calls another routine, then returns.
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `frag_clr_moveq_rts`: Short code fragment that clears a fixed memory address, then loads 0 into d0, then returns.
+- `call_library_vector_66`: Library stub: loads a library base from a global variable and calls the library function at offset minus 66 of that base, returning its result to the caller.
+- `call_library_vector_72`: Library stub: loads a library base from a global variable and calls the library function at offset minus 72 of that base, returning its result to the caller.
+- `call_library_vector_84`: Library stub: loads a library base from a global variable and calls the library function at offset minus 84 of that base, returning its result to the caller.
+- `call_library_vector_198`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_204`: Library stub: loads a library base from a global variable and calls the library function at offset minus 204 of that base, returning its result to the caller.
+- `call_library_vector_252`: Library stub: loads a library base from a global variable and calls the library function at offset minus 252 of that base, returning its result to the caller.
+- `call_library_vector_270`: Library stub: loads a library base from a global variable and calls the library function at offset minus 270 of that base, returning its result to the caller.
+- `call_library_vector_294`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
+- `call_global_library_function`: Calls one library function through a library base read from a global variable at a fixed offset, passing no arguments, and returns.
+- `call_library_vector_396`: Library stub: loads a library base from a global variable and calls the library function at offset minus 396 of that base, returning its result to the caller.
+- `call_library_vector_408`: Library stub: loads a library base from a global variable and calls the library function at offset minus 408 of that base, returning its result to the caller.
+- `call_indirect_via_global`: Calls a function pointer taken from a global variable without performing other operations.
+- `call_dispatch`: Library stub: loads its arguments and the exec library base, calls Dispatch and returns its result to the caller.
+- `call_deallocate`: Library stub: loads its arguments and the exec library base, calls Deallocate and returns its result to the caller.
+- `call_alloc_mem`: Library stub: loads its arguments and the exec library base, calls AllocMem and returns its result to the caller.
+- `call_free_mem`: Library stub: loads its arguments and the exec library base, calls FreeMem and returns its result to the caller.
+- `call_avail_mem`: Library stub: loads its arguments and the exec library base, calls AvailMem and returns its result to the caller.
+- `call_alloc_entry`: Library stub: loads its arguments and the exec library base, calls AllocEntry and returns its result to the caller.
+- `call_add_head`: Library stub: loads its arguments and the exec library base, calls AddHead and returns its result to the caller.
+- `call_add_tail`: Library stub: loads its arguments and the exec library base, calls AddTail and returns its result to the caller.
+- `call_set_task_pri`: Library stub: loads its arguments and the exec library base, calls SetTaskPri and returns its result to the caller.
+- `call_set_signal`: Library stub: loads its arguments and the exec library base, calls SetSignal and returns its result to the caller.
+- `call_wait`: Library stub: loads its arguments and the exec library base, calls Wait and returns its result to the caller.
+- `call_signal`: Library stub: loads its arguments and the exec library base, calls Signal and returns its result to the caller.
+- `call_alloc_trap`: Library stub: loads its arguments and the exec library base, calls AllocTrap and returns its result to the caller.
+- `call_free_trap`: Library stub: loads its arguments and the exec library base, calls FreeTrap and returns its result to the caller.
+- `call_add_port`: Library stub: loads its arguments and the exec library base, calls AddPort and returns its result to the caller.
+- `call_put_msg`: Library stub: loads its arguments and the exec library base, calls PutMsg and returns its result to the caller.
+- `call_get_msg`: Library stub: loads its arguments and the exec library base, calls GetMsg and returns its result to the caller.
+- `call_reply_msg`: Library stub: loads its arguments and the exec library base, calls ReplyMsg and returns its result to the caller.
+- `call_find_port`: Library stub: loads its arguments and the exec library base, calls FindPort and returns its result to the caller.
+- `call_rem_library`: Library stub: loads its arguments and the exec library base, calls RemLibrary and returns its result to the caller.
+- `call_find_semaphore`: Library stub: loads its arguments and the exec library base, calls FindSemaphore and returns its result to the caller.
+- `blt_bit_map_rast_port`: Calls a function pointer stored at a fixed offset from a global variable to perform a bitmap bitplane transfer to a raster port.
+- `call_library_vector_120`: Library stub: loads a library base from a global variable and calls the library function at offset minus 120 of that base, returning its result to the caller.
+- `call_library_vector_126`: Library stub: loads a library base from a global variable and calls the library function at offset minus 126 of that base, returning its result to the caller.
+- `call_library_vector_168`: Library stub: loads a library base from a global variable and calls the library function at offset minus 168 of that base, returning its result to the caller.
+- `call_library_vector_174`: Library stub: loads a library base from a global variable and calls the library function at offset minus 174 of that base, returning its result to the caller.
+- `call_library_vector_198_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_210`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `call_library_vector_252_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 252 of that base, returning its result to the caller.
+- `call_library_vector_294_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
+- `call_library_vector_306`: Library stub: loads a library base from a global variable and calls the library function at offset minus 306 of that base, returning its result to the caller.
+- `call_library_vector_330`: Library stub: loads a library base from a global variable and calls the library function at offset minus 330 of that base, returning its result to the caller.
+- `call_library_vector_336`: Library stub: loads a library base from a global variable and calls the library function at offset minus 336 of that base, returning its result to the caller.
+- `call_library_vector_354`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
+- `call_library_vector_360`: Library stub: loads a library base from a global variable and calls the library function at offset minus 360 of that base, returning its result to the caller.
+- `call_library_vector_372`: Library stub: loads a library base from a global variable and calls the library function at offset minus 372 of that base, returning its result to the caller.
+- `call_library_vector_378`: Library stub: loads a library base from a global variable and calls the library function at offset minus 378 of that base, returning its result to the caller.
+- `call_library_vector_414`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `call_library_vector_444`: Library stub: loads a library base from a global variable and calls the library function at offset minus 444 of that base, returning its result to the caller.
+- `call_library_vector_450`: Library stub: loads a library base from a global variable and calls the library function at offset minus 450 of that base, returning its result to the caller.
+- `call_library_vector_456`: Library stub: loads a library base from a global variable and calls the library function at offset minus 456 of that base, returning its result to the caller.
+- `call_library_vector_468`: Library stub: loads a library base from a global variable and calls the library function at offset minus 468 of that base, returning its result to the caller.
+- `call_library_vector_474`: Library stub: loads a library base from a global variable and calls the library function at offset minus 474 of that base, returning its result to the caller.
+- `call_library_vector_552`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `call_library_vector_624`: Library stub: loads a library base from a global variable and calls the library function at offset minus 624 of that base, returning its result to the caller.
+- `manage_audio_message_buffers`: Allocates a message buffer via the audio device, then enters a loop that iterates through a table of four pointers to copy 67 bytes of data into multiple destination locations.
+- `process_port_list`: Iterates through a list of pointers starting from a global variable, calling a routine to remove ports if a field is non-zero, and updates status fields at offsets 28 and 30 of the structures before calling a routine to delete them.
+- `search_and_copy_buffer`: Compares strings, reads from a file, and if a match is found, copies a segment of data from a global buffer to a destination pointer while updating the buffer offset.
+- `initialize_object_structure`: Checks several conditions including a global flag and a non-zero parameter, then if a flag in a table is non-zero, calls another routine before setting multiple fields in a structure pointed to by a table entry and calling a final routine.
+- `reset_object_structure`: Retrieves a pointer from a table, and if a flag in that table is non-zero, calls another routine twice before clearing the flag and updating specific fields in the structure with provided parameters.
+- `set_object_type_b`: Retrieves a pointer from a table and, if not zero, sets a 16-bit value at offset 28 to 11 and a byte at offset 30 to 0 before calling another routine.
+- `set_object_type_8`: Retrieves a pointer from a table and, if not zero, sets a 16-bit value at offset 28 to 8 and a byte at offset 30 to 0 before calling another routine.
+- `clear_multiple_objects`: Loops to call another routine until it returns zero, then sets specific fields in four different global pointers to a 16-bit value of 8 and a byte of 0, and finally clears 16 entries in a table.
+- `call_specific_function`: Calls another routine with a long value of 65538 and a short value of 68 as arguments.
+- `update_structure_and_call_library`: Stores a byte, a word, a pointer, a long, and a byte into a structure at offsets 9, 28, 34, 38, and 30 respectively, calls three library functions using offsets minus 30, minus 372, and minus 474 from a base pointer, and returns either 0 or a byte from offset 24 of the structure.
+- `resolve_filesystem_path`: Determines a directory or file path by checking a global pointer, then either retrieves a structure containing file information or manually constructs a path string by copying bytes from a buffer and appending a space.
+- `execute_callback_chain`: Calls a function from a global pointer, then executes several function pointers stored at specific offsets within a structure pointed to by a global variable, and finally calls two more functions from a different global variable and another structure.
+- `frag_lea_jsr_rts`: Short code fragment that loads the address of the memory at an offset from a4 into a0, then calls another routine, then loads the address of the memory at an offset from a4 into a0, then calls another routine, then returns.
+- `call_library_function_5`: Loads an address into a1, clears d0, calls a routine via a pointer relative to a6, stores the result in a global variable, and returns if d0 is not zero.
+- `initialize_game_state_and_tables`: Calls five initialization routines, performs table substitution, fills a table with increments of 40, and updates various structure fields and global variables through multiple loops and conditional logic.
+- `perform_table_substitution`: Uses a byte from a source at a0 as an index into a table to replace the byte at the source address with a value from that table, repeating this for each byte until a pointer in d7 is reached.
+- `fill_table_with_increments`: Runs a loop 200 times to store an incrementing value into a table at offset 8052 of a structure, where the value increases by 40 each iteration and the offset increases by 2.
+- `frag_jmp_2`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_3`: Short code fragment that jumps to another point in the code.
+- `save_and_restore_processor_state`: Saves the current values of all data and address registers, as well as the status register, into a series of global variables, then calls another routine and performs a series of conditional loops and calls to manipulate values in a table and global variables before restoring the saved register states.
+- `frag_jmp_4`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_5`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_6`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_7`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_8`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_9`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_10`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_11`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_12`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_13`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_14`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_15`: Short code fragment that jumps to another point in the code.
+- `update_grid_collision_state`: Calculates a grid index from two coordinate values and checks it against a stored index in a structure.
+- `update_coordinate_data_4`: Updates various bytes and words in a structure based on values from a table, including a loop that writes to several offsets in the structure using a calculated index.
+- `update_coordinate_data_2`: Performs complex calculations involving structure offsets, bitwise operations on bytes, and a loop that updates a global table with combined bit values and 16-bit words.
+- `update_coordinate_data`: Checks a byte at offset 6 of a structure to determine how to combine two 16-bit values from registers d0 and d1, then calculates two 32-bit values using those results as indices into two tables at offsets 9454 and 9452 and returns them.
+- `update_coordinate_data_3`: Calculates a value based on a division and modulo of a 16-bit register, stores it in several offsets of a structure in a5, and calls another routine if a comparison between a register and a value from a table succeeds.
+- `update_entity_state_and_position`: Updates a structure in a5 by calculating a new state based on a 16-bit value, modifying several offsets including a 16-bit coordinate and a status byte, and occasionally performs a loop that calls another routine until a specific byte match is found in the structure.
+- `synchronize_entity_state_and_update_flags`: Compares several fields within a structure to detect changes, and if they differ, resets specific bytes and words to zero or maximum values.
+- `copy_multiple_values`: Copies two words, one word formed by two bytes, and one byte from various offsets of a structure into new locations within the same structure.
+- `initialize_sequence_table`: Runs a loop 511 times to store incrementing words starting from zero into a table at a fixed address.
+- `update_buffer_values`: Calculates a value based on bytes at offsets 6744 and 83 of a structure in a5, stores it at offsets 8788 and 8871, and decrements a byte at offset 8952 if it is non-zero.
+- `update_entity_physics_and_collision`: Iterates through a list of active entities in a loop, calculating their new positions and velocities using a lookup table and mathematical transformations.
+- `update_projectile_trajectories`: Iterates through a list of active entities in a loop, calculating their new positions and velocities using trigonometric look-up tables and distance-based scaling.
+- `process_table_indices`: Clamps a value from a global variable to a maximum of 510, adds 512, and loops downwards to check if bits 0 through 5 of values in a table are non-zero; if so, it masks the value and stores it in a structure at offset 8894 of a6 before calling another routine.
+- `sort_and_update_triplet_indices`: Checks a global variable to determine if it should exit, otherwise it selects three 16-bit values from a table based on an index, sorts them in ascending order, and writes the sorted values to a structure in a5 at offsets 10434, 10436, and 10438.
+- `calculate_coordinate_differences`: Updates bytes at offsets 6 and 8765 of a structure in a5, manages two 16-bit values at offsets 8858 and 8856 based on a comparison, and calculates two 16-bit division results stored at offsets 8860 and 8862.
+- `sort_and_update_indices`: Sorts three 16-bit values from a table in ascending order and writes the sorted values to a structure at offsets 10434 and 10436, then updates a status byte at offset 8870 based on whether the values are identical or unique before calling itself recursively.
+- `clamp_coordinates`: Clears a byte value at offset 8870 of the structure in a5, performs multiple arithmetic operations on word values from memory locations, and updates a status byte based on comparison results.
+- `frag_move_bra_8`: Short code fragment that copies an indexed entry from a3 to d3, then jumps to another point in the code.
+- `frag_add_sub_bpl_move_bmi_bra`: Short code fragment that adds d3 to d1, then subtracts d0 from d1, then branches if the last result was not negative, then copies d0 to d1, then subtracts d3 from d1, then branches if the last result was negative, then copies an indexed entry from a3 to d3, then jumps to another point in the code.
+- `clamp_coordinate_values_2`: Reads coordinate values from memory locations, performs comparison operations with other values, and updates a status byte based on the comparison results before calling itself recursively.
+- `calculate_scaled_difference`: Calculates the difference between a 16-bit value and a constant, then divides that difference by a value derived from the subtraction of two bytes, storing the result in a 16-bit field at offset 8876 of the structure in a5.
+- `process_input_data`: Checks if a 16-bit register is not equal to 65535, then performs arithmetic using values from a structure and a global table to store a byte at offset 9766 of the structure in a5, and calls another routine multiple times based on various conditions.
+- `validate_input_character`: Reads a byte from a global structure and combines it with a value from a 16-bit register to perform range checks.
+- `check_entity_status_and_call_update`: Clears a byte at a specific offset in a structure and performs multiple conditional checks on various bitmasks and flags within that structure; if specific bit patterns are met, it calls another routine.
+- `update_sprite_attribute_table_2`: Calculates a clamped value based on several offsets in a structure and uses it to iterate through a loop that modifies a bitmask in a memory buffer.
+- `validate_collision_bounds`: Checks a coordinate against a series of bounding boxes stored in a table by iterating through a list of objects.
+- `frag_jmp_16`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_17`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_18`: Short code fragment that jumps to another point in the code.
+- `clamp_coordinate_values`: Reads three 16-bit values from a structure and performs a series of conditional checks to ensure each value stays within the range of 49152 to 49151.
+- `calculate_blitter_parameters`: Calculates absolute differences between two coordinate pairs, determines a bounding box size, and stores several values including a calculated offset and bitmask into a global structure and various memory locations.
+- `update_blitter_registers`: Waits for a bit in a global variable to clear, then copies a 16-bit word from a table into two memory locations and writes several constants and register values to a global structure.
+- `process_sprite_attribute_list`: Iterates through a nested list of data structures, checking values against a table to perform bitwise operations on words or decrementing a counter based on specific threshold values.
+- `update_entity_table`: Iterates through a table of pointers, checks a value at a global array index, and either performs a bitwise OR on a table entry or decrements a counter based on a comparison.
+- `increment_and_update_entity_counter`: Calls another routine to obtain a value, then increments that value and stores it at an offset of 10432 from a5.
+- `calculate_blit_parameters`: Calculates several values based on input registers and a table lookup, then stores them in a structure at offset 9894 and 9918.
+- `setup_blit_sequence`: Performs a loop three times to set up hardware registers and local variables using values from a structure and a table lookup.
+- `update_coordinate_and_bounds`: Updates a coordinate structure by adding or subtracting values from a global variable, performs bitwise shifts to pack data into a 32-bit integer, and updates several minimum and maximum boundary values in a structure based on the resulting coordinates.
+- `execute_indirect_jump`: Calculates an offset using two values from a table, adds it to a pointer in a2, and performs an indirect jump to the resulting address.
+- `tiny_and_or_rts`: Small routine of 3 instructions that masks d7 with d5, then merges d7 into (a2), then returns.
+- `tiny_or_or_rts_11`: Small routine of 3 instructions that merges d5 into (a2)+, then merges d7 into (a2), then returns.
+- `frag_or_move_rts`: Short code fragment that merges d5 into the memory at a2 (advancing a2), then copies 65535 to the memory at a2 (advancing a2), then merges d7 into the memory at a2, then returns.
+- `frag_or_moveq_move_rts`: Short code fragment that merges d5 into the memory at a2 (advancing a2), then loads 255 into d6, then copies d6 to the memory at a2 (advancing a2), then merges d7 into the memory at a2, then returns.
+- `frag_or_moveq_move_rts_2`: Short code fragment that merges d5 into the memory at a2 (advancing a2), then loads 255 into d6, then copies d6 to the memory at a2 (advancing a2) (2 times in a row), then merges d7 into the memory at a2, then returns.
+- `frag_or_moveq_move_rts_3`: Short code fragment that merges d5 into the memory at a2 (advancing a2), then loads 255 into d6, then copies d6 to the memory at a2 (advancing a2) (2 times in a row), then merges d7 into the memory at a2, then returns.
+- `frag_or_moveq_move_rts_4`: Short code fragment that merges d5 into the memory at a2 (advancing a2), then loads 255 into d6, then copies d6 to the memory at a2 (advancing a2) (3 times in a row), then merges d7 into the memory at a2, then returns.
+- `frag_or_moveq_move_rts_5`: Short code fragment that merges d5 into the memory at a2 (advancing a2), then loads 255 into d6, then copies d6 to the memory at a2 (advancing a2) (3 times in a row), then merges d7 into the memory at a2, then returns.
+- `frag_or_moveq_move_rts_6`: Short code fragment that merges d5 into the memory at a2 (advancing a2), then loads 255 into d6, then copies d6 to the memory at a2 (advancing a2) (4 times in a row), then merges d7 into the memory at a2, then returns.
+- `frag_or_moveq_move_rts_7`: Short code fragment that merges d5 into the memory at a2 (advancing a2), then loads 255 into d6, then copies d6 to the memory at a2 (advancing a2) (4 times in a row), then merges d7 into the memory at a2, then returns.
+- `frag_or_moveq_move_rts_8`: Short code fragment that merges d5 into the memory at a2 (advancing a2), then loads 255 into d6, then copies d6 to the memory at a2 (advancing a2) (5 times in a row), then merges d7 into the memory at a2, then returns.
+- `frag_or_moveq_move_rts_9`: Short code fragment that merges d5 into the memory at a2 (advancing a2), then loads 255 into d6, then copies d6 to the memory at a2 (advancing a2) (5 times in a row), then merges d7 into the memory at a2, then returns.
+- `reset_blit_structure`: Clears several 16-bit fields in a structure at offset 9878 and sets specific values in local registers.
+- `calculate_table_indices_2`: Finds the minimum of three 16-bit values retrieved from a structure using offsets 4690, 4692, and 4694, performs several arithmetic and bitwise operations on these values, and writes the results to offsets 9844, 9846, 9842, 9840, and 9838 of the structure in a5.
+- `calculate_table_indices`: Computes new values based on an input register and a structure field, then stores the results back into the structure at offsets 9844, 9846, and 9850.
+- `setup_blit_rectangles`: If two structure fields are non-negative, it runs a loop three times to configure hardware registers and local variables using table data and structure values.
+- `setup_blit_rectangles_offset`: If two structure fields are non-negative, it runs a loop three times to configure hardware registers, adding a constant offset to a value derived from a table lookup.
+- `call_initialization_routines`: Calls five different initialization routines in sequence and then returns.
+- `initialize_incrementing_table`: Fills a table with 158 words, starting at 0 and incrementing each subsequent word by 72.
+- `generate_bit_pattern_table`: Fills a large table with a repeating pattern of bit-shifted values using a nested loop structure.
+- `initialize_global_data`: Fills a block of memory starting at a global variable with the value 2 using a loop that runs 256 times, sets that global variable to 0, and then sets eight specific memory locations to 1.
+- `initialize_ascending_data`: Clears 256 bytes starting at a global variable using a loop, writes the values 1 through 8 to specific offsets of a structure, and calls another routine with the structure data.
+- `initialize_descending_data`: Clears 256 bytes starting at a global variable using a loop, writes the values 8 through 1 to specific offsets of a structure, and calls another routine with the structure data.
+- `write_structured_data`: Writes a series of byte values ranging from 2 to 8 into various offsets of a structure pointed to by a2.
+- `populate_collision_table`: Initializes a table with incrementing values and then performs a search through a list of objects to identify those meeting specific coordinate and size criteria, storing the indices of matching objects into a global array.
+- `process_entity_data_table`: Searches a global table of 16-bit values using an index derived from a structure field, then conditionally updates a byte in a structure and performs several calls based on the value found and other structure flags.
+- `sort_data_table`: Performs a sorting operation on a table of 16-bit values using a loop, swapping values between a global table and several memory locations based on comparisons.
+- `process_collision_data`: Sets a 16-bit value at offset 102 of a structure based on a byte at offset 8867, then executes two loops that call another routine while iterating through a table using a count from offset 100 and a comparison against the value at offset 102.
+- `update_collision_mask`: Checks a value against a table and a bitmask to determine a priority level, then updates a bitmask in a global variable by performing a bitwise AND with a value from a table based on an index derived from a byte in a structure.
+- `update_status_table`: Iterates through a table of values, computes status information based on signs and magnitudes of 16-bit values, and stores the results in a global table.
+- `clamp_and_iterate_index_table`: Clamps a 16-bit value based on a flag in a structure, then enters a loop that performs bitwise arithmetic and comparisons on values retrieved from a table to conditionally update a 16-bit field in a structure and call other routines.
+- `check_byte_sequence`: Iterates through a sequence of bytes starting at an offset of 2 from a pointer in a5, returning if a zero byte is encountered before reaching an offset of 70.
+- `clear_memory_blocks`: Clears a series of 16-bit words starting at an offset of 8524 in a5, sets a byte at offset 8553 to 1, clears 180 bytes of a global table, and sets a 16-bit word at offset 8506 to 0.
+- `set_bit_in_bitmask_table`: Searches through a table of bitmasks to find the first bit position that matches a given value, then sets that bit in the corresponding mask and returns the remaining bits.
+- `frag_jmp_19`: Short code fragment that jumps to another point in the code.
+- `clear_and_save_registers`: Saves several registers to a global table, clears a series of 16-bit words at offsets determined by a table, and calls another routine.
+- `update_sprite_state`: Stores a byte from an offset of a structure into a global table at an index derived from a register, then calls three different routines based on the values at specific offsets of that structure.
+- `update_sprite_animation_frame_2`: Fetches animation data from a global table using an index derived from a structure, then performs bitwise manipulations and recursive calls to update sprite frame data and animation state.
+- `parse_string_data_table`: Selects a data table based on a character value and an offset, then recursively parses multi-byte entries from the table into a structure.
+- `update_scroll_and_process_sprite_list`: Calculates a new scroll value using a multi-stage conditional logic based on a base value and an offset, then updates a global structure.
+- `process_bitstream_expansion`: Iterates through a buffer to shift bits, calls three different routines based on byte values, and writes a final byte and a counter to a destination.
+- `pack_bits_into_stream_3`: Loops through a source, calls three different routines based on byte values, and writes shifted bits and a byte counter to a destination buffer.
+- `pack_bits_into_stream_4`: Reads bytes from a table using an index, processes them based on bit values, and writes shifted bits along with a counter to a destination buffer.
+- `calculate_sprite_attribute`: Calculates a value based on a table lookup and a division, then stores the result at offset 260c of the structure in a5 and offset 20e6 of the same structure.
+- `update_sprite_animation_frame`: Calculates an index based on a value in a structure to fetch animation data from a global table, then copies multiple bytes of sprite data into the structure at various offsets.
+- `update_index_and_data`: Modifies a byte at offset 20e6 of the structure in a5 based on its current value and a byte at offset 20e7, then copies three words from a table to offsets 212e, 212f, and 2130 of the structure in a5.
+- `process_loop_and_increment`: Runs a loop that updates a byte at offset 20ed, writes a byte to a table using an index from offset 20fe, shifts values at offsets 2130 and 212e, and decrements a byte at offset 1e, finally storing a byte at an offset determined by a value at offset 2100.
+- `shift_bitstream_into_buffer`: Reads a value from a table and performs bitwise shifts and rotations to insert a variable number of bits into a bitstream buffer.
+- `shift_bitstream_to_buffer`: Extracts a bitstream from a source table using a calculated index and bit offset, then performs a bit-by-bit shift-and-insert loop to populate a destination buffer.
+- `shift_bitstream_to_buffer_2`: Extracts a bitstream from a source table using a calculated index and performs bitwise shifts and rotations to write the resulting bits into a destination buffer.
+- `shift_bitstream_into_buffer_2`: Calculates a bit offset and length based on two input values, then performs a bitwise left-shift operation to insert a sequence of bits from a source into a destination buffer.
+- `pack_bits_into_stream`: Calculates a bit-stream offset and length based on input values, then performs a bit-shifting loop to pack variable-length data into a destination buffer.
+- `shift_and_pack_bitstream`: Calculates a bit-offset and performs bitwise left-shifts on a byte in a buffer to pack data, then enters loops to write these bits into a destination memory area, handling bit-alignment and sign-extension for each byte processed.
+- `perform_bitstream_expansion`: Performs a bitstream expansion by iterating through a source buffer and shifting bits left, while inserting zero bytes into a destination buffer whenever a bit is shifted out of the high position.
+- `pack_bits_into_stream_2`: Performs a bit-stream packing operation by reading bytes from a source table and shifting them into a destination buffer.
+- `unpack_bitstream_to_buffer`: Reads a bitstream from a source table and unpacks it into a destination buffer by shifting and masking bits.
+- `update_scrolling_buffer_and_dispatch`: Calculates a new scroll position, performs a memory shift to adjust a buffer using a loop, updates several values in a global structure, and calls another routine via an indirect jump from a table.
+- `frag_move_jmp`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_move_jmp_2`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_move_jmp_3`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_move_jmp_4`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_move_jmp_5`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_move_jmp_6`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_move_jmp_7`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_move_jmp_8`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_move_jmp_9`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_move_jmp_10`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_move_jmp_11`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_move_jmp_12`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_move_jmp_13`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_move_jmp_14`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_move_jmp_15`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_move_jmp_16`: Short code fragment that copies the memory at a6 (advancing a6) to d5, then jumps to another point in the code.
+- `frag_bra_2`: Short code fragment that jumps to another point in the code.
+- `frag_or_bra`: Short code fragment that merges d6 into d1, then merges d6 into d0, then jumps to another point in the code.
+- `frag_or_bra_2`: Short code fragment that merges d6 into d0, then merges d6 into d1, then merges d6 into d2, then jumps to another point in the code.
+- `frag_or_bra_3`: Short code fragment that merges d6 into d0, then merges d6 into d1, then merges d6 into d3, then jumps to another point in the code.
+- `frag_or_bra_4`: Short code fragment that merges d6 into d2, then merges d6 into d3, then merges d6 into d0, then jumps to another point in the code.
+- `frag_or_bra_5`: Short code fragment that merges d6 into d0, then merges d6 into d1, then merges d6 into d2, then merges d6 into d3, then jumps to another point in the code.
+- `frag_or_bra_6`: Short code fragment that merges d6 into d0, then merges d6 into d1, then merges d6 into d4, then jumps to another point in the code.
+- `frag_or_bra_7`: Short code fragment that merges d6 into d4, then merges d6 into d0, then merges d6 into d2, then jumps to another point in the code.
+- `frag_or_bra_8`: Short code fragment that merges d6 into d0, then merges d6 into d1, then merges d6 into d4, then merges d6 into d2, then jumps to another point in the code.
+- `frag_or_bra_9`: Short code fragment that merges d6 into d0, then merges d6 into d3, then merges d6 into d4, then merges d6 into d1, then jumps to another point in the code.
+- `frag_or_bra_10`: Short code fragment that merges d6 into d2, then merges d6 into d3, then merges d6 into d0, then merges d6 into d4, then jumps to another point in the code.
+- `update_bitmask_buffer`: Performs bitwise OR and AND operations to update specific 16-bit words at fixed offsets within a memory buffer using values from four registers.
+- `swap_registers_and_branch`: Swaps data in registers d0 through d3, sets d6 to negative 32768, sets d1 to 16, moves the value of a3 into d0, and branches to another routine.
+- `update_bitmask_and_dispatch_function`: Performs bitwise operations to update specific memory locations through a pointer using values from registers, then selects and calls a function from a table based on two compared byte values.
+- `process_structure_byte`: Updates a byte at offset 11 of a structure in a5, performs a conditional bitwise operation on a value derived from that byte, and uses the result to fetch and store two values from a table into offsets 12 and 9 of the structure.
+- `update_structure_offset`: Writes a byte to offset 182 of a structure by shifting a value derived from offset 44, then calls another routine and stores its result and a second value into offsets 22b4 and 22b6 of the structure.
+- `update_fixed_point_counters`: Calculates a fractional value by bit-shifting a byte from offset 14 and performs addition or subtraction on 16-bit fixed-point counters located at offsets 4498 and 4658 of the structure in a5.
+- `update_entity_physics_and_bounds`: Adjusts a 16-bit value at a specific offset in a structure by a small amount while clamping it within a range of negative 24 to positive 24.
+- `decrement_four_bytes`: Decrements four consecutive bytes at offsets 5f, 60, 61, and 62 of a structure in a5, provided each byte is non-zero.
+- `update_structure_state_and_offset`: Updates several 16-bit values in a structure based on the results of another routine and a table lookup, then enters a loop that increments a counter and modifies a byte value through repeated addition or subtraction until a threshold is met or a condition is satisfied.
+- `swap_structure_values`: Checks two conditions based on values at offsets 34 and 31 of a structure in a5, then either swaps two 16-bit values at offsets 2434 and 4386 with those at offsets 2354 and 4386, or vice versa, depending on a byte at offset 6.
+- `calculate_scaled_value_2`: Calculates a signed 16-bit value by multiplying a byte from a table with a value from a structure, then applies a multiplier based on a status byte stored at offset 1a of the structure in a5.
+- `multiply_and_store_result`: Multiplies a byte at offset 9 of a structure in a5 by the lower byte of a 16-bit value in d1, then stores the 16-bit result at offsets d and e of that structure.
+- `compute_ratio_and_update_status`: Determines a status byte based on the signs and relative magnitudes of two 16-bit values, retrieves a value from a table using a calculated index, and updates three bytes at offsets 6, 7, and 1f36 of a structure in a5.
+- `update_structure_state_2`: Decrements a byte at offset 1ed0 of a structure and, if it reaches zero, performs conditional updates to offsets 182, 952, and 1122 using values from another routine, then updates a byte at offset 3f based on the absolute value of a byte at offset 4e.
+- `update_entity_state_and_coordinates`: Checks a global flag and, if set, updates various fields within a structure pointed to by a5, including setting specific byte values at offsets 5, 7, and 9.
+- `update_structure_timer`: Updates a timer value in a table based on a structure's current state, modifies bits in a structure, and calls routines to update entity flags or modify structure bits depending on the timer's value.
+- `save_and_call_state_handler`: Saves a block of data from a global structure into local registers, performs a calculation to call a function pointer via a table using a global index, and then restores the original data from the registers back to the global structure.
+- `save_register_context`: Saves register contents to the stack, performs bit manipulation operations on input values, calls another routine, then restores register contents from the stack before returning.
+- `update_entity_coordinates`: Calculates new coordinate values by adding offsets to existing data and stores the results into global variables.
+- `update_state_and_call_subroutines`: Checks a global flag and compares a byte from a structure to a stored value; if they differ, it saves the new byte, pushes a series of values from the stack and registers into a global array, and calls three different routines with calculated parameters and updated global state.
+- `update_entity_state_and_iterate_table`: Checks a global variable and performs conditional logic to update a byte at offset 7 of a structure, then enters a loop that fetches 16-bit values from a table based on an index at offset 246, calls itself recursively, and decrements a counter.
+- `calculate_transformed_coordinates`: Retrieves scaled values from a table based on directional data, applies bit-shifting and negation operations to compute transformed coordinates, then stores the results to global variables.
+- `update_counter_on_threshold`: Compares a byte at offset 4e of a structure in a5 with the high byte of a 16-bit value in d0, then either increments a byte at offset 4e and adds 5 to a 16-bit value at offset 22c4, or decrements them, depending on the comparison and a flag at offset 1eca.
+- `frag_jmp_20`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_21`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_22`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_23`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_24`: Short code fragment that jumps to another point in the code.
+- `dispatch_handler_table`: Saves a large set of registers and data to a memory area, then uses a global variable as an index to call a routine from a table, or calls another routine if the global variable is zero.
+- `frag_bsr_movem_rts`: Short code fragment that calls another routine, then copies several registers to or from memory (2 times in a row), then returns.
+- `process_entity_state`: Reads a byte from a global variable and compares it to 129; if it is 129 or greater, it checks a bit in a table and calls another routine with a modified parameter, otherwise it checks if a second byte in the global variable is negative one and returns if so.
+- `frag_move_cmpi_bcs_rts`: Short code fragment that copies a fixed memory address to d2, then compares d2 with 5, then branches if the carry flag is set, then returns.
+- `check_offset_and_call_handler`: Compares a word at offset 84 of a structure in a5 to zero; if it is zero, it sets d1 to 9, calls another routine, sets the word at offset 84 of the structure in a5 to zero, and returns; otherwise it returns immediately.
+- `frag_move_bsr_rts`: Short code fragment that copies 6 to d1, then calls another routine, then copies 1 to the memory at an offset from a5, then returns.
+- `frag_move_bra`: Short code fragment that copies 0 to the memory at an offset from a5, then copies the memory at an offset from a5 to d2, then jumps to another point in the code.
+- `process_table_indices_2`: Decrements a value in a loop based on a comparison with a word at offset 166 of a structure in a5, performs arithmetic on bytes from a table, and stores a word from a table into offset 7734 of the structure in a5.
+- `copy_table_value`: Shifts d2 left by 1, loads a word from a table at address 41b0 using d2 as an index, stores it at offset 7734 of a structure in a5, and calls another routine before returning.
+- `frag_cmpi_bcs_rts`: Short code fragment that compares a fixed memory address with 5, then branches if the carry flag is set, then returns.
+- `update_sprite_attribute`: Reads a byte from an offset of 4674 in a6, masks it, and if it is not 2, sets it to 3 and calls another routine with a value shifted left by 8 bits.
+- `check_entity_flags`: Checks a global byte against values 2 and 3, then performs several calls to other routines based on the state of bits at offsets 7238, 7239, and 7240 of a structure in a5.
+- `branch_on_d1_and_call`: Sets d2 to 16, compares d1 to 3, and if d1 is not 3, sets d2 to 28, calls two different routines, and returns.
+- `check_byte_and_call`: Loads a byte from a global variable and calls another routine if the byte is 1, or calls another routine if the byte is 2, 3, or 4.
+- `frag_cmpi_bcs_rts_2`: Short code fragment that compares a fixed memory address with 5, then branches if the carry flag is set, then returns.
+- `update_sprite_attribute_alt`: Reads a byte from an offset of 4681 in a5, increments it, masks it, and if it is not 3, sets it to 0 and calls another routine with a value shifted left by 8 bits.
+- `check_structure_conditions`: Checks a global variable against specific values, and if it is 2, calls another routine; otherwise it checks bits in a structure and calls another routine if certain conditions are met.
+- `verify_structure_conditions`: Checks if bit 0 of a byte at offset 7238 of a structure in a5 is zero, then checks if a word at offset 48 and a byte at offset 7214 satisfy specific non-zero and non-two conditions before calling another routine.
+- `modify_structure_bits`: Checks a byte at an offset derived from a6 and d4; if the byte masked with 7 is 3, it calls another routine, otherwise it performs bitwise operations on a byte at offset 45 of a structure in a5 based on a bit at offset 2935.
+- `frag_move_bsr_rts_2`: Short code fragment that copies 1 to the memory at an offset from a5, then copies 32 to d1, then calls another routine (2 times in a row), then returns.
+- `frag_move_bsr_rts_3`: Short code fragment that copies 2 to the memory at an offset from a5, then copies 35 to d1, then calls another routine (2 times in a row), then returns.
+- `toggle_byte_and_process_data`: Calls another routine, toggles a bit in a byte at offset 7831 of a structure in a5, and then either performs a series of data movements and calls or calls another routine based on the sign of a 16-bit value in d3.
+- `validate_and_rotate_status_byte`: Calls another routine, rotates a 16-bit value in d6 right by 8 bits, and if the resulting byte is not 255, calls another routine before returning.
+- `update_status_and_counter`: Increments a byte in a structure, performs bounds checking against two other bytes in the same structure to update a 16-bit value, and conditionally modifies a byte at offset 39 based on its current value and the high byte of the updated 16-bit value.
+- `decrement_and_check_value`: Subtracts fifteen from a byte at offset 4149 of a structure in a5, ensures the result is at least eight, and stores it back to that offset.
+- `set_status_byte`: Sets a byte at offset 25 of a structure in a5 to 1 and a byte at offset 27 to a value determined by checking several conditions involving offsets 22ad, 1d3a, and 4e of the structure.
+- `frag_move_clr_rts`: Short code fragment that copies 5 to a fixed memory address, then clears the memory at an offset from a5, then returns.
+- `frag_move_clr_rts_2`: Short code fragment that copies 8 to a fixed memory address, then clears the memory at an offset from a5, then returns.
+- `frag_move_bsr_rts_4`: Short code fragment that copies 0 to d2, then calls another routine, then returns.
+- `frag_move_bsr_rts_5`: Short code fragment that copies 1 to d2, then calls another routine, then returns.
+- `frag_move_bsr_rts_6`: Short code fragment that copies 2 to d2, then calls another routine, then returns.
+- `compare_and_call_handler`: Compares a word from a pointer in a5 to 0 and 1, and compares a word at offset 4834 to 5; if the word at offset 4834 is 5 and the value in a5 is 2, it calls a routine with d1 set to 25.
+- `conditional_reset_status`: Checks if the lower two bits of a byte at offset 1d3a of a structure in a5 equal 2; if not, it stores d2 in a global word, writes 1 to another global word, and clears a byte at offset 22ad of the structure.
+- `frag_bsr_rts_6`: Short code fragment that calls another routine, then returns.
+- `check_threshold_and_call`: Compares a word at offset 48 of a global variable to 5; if it is 5 or greater, it calls a routine with d1 set to 18.
+- `update_state_if_match`: Compares a word at a global address to two; if it is not two, it checks if the byte at offset 7481 of a structure in a5 masked with 3 equals 2, and if so, writes two to a global word and clears a byte at offset 9389 of the structure in a5.
+- `compare_a5_and_call`: Compares a word at offset 48 of a global variable to 5; if it is 5 or greater and a word in a5 is 2, it calls a routine with d1 set to 27, otherwise it calls a routine with d1 set to 25.
+- `frag_bsr_rts_7`: Short code fragment that calls another routine, then returns.
+- `update_state_on_zero_match`: Checks if a global word is zero through two consecutive comparisons; if it is zero, it checks if the byte at offset 7480 of a structure in a5 masked with 3 equals 2, and if so, writes three to a global word and clears a byte at offset 9389 of the structure in a5.
+- `frag_bsr_rts_8`: Short code fragment that calls another routine, then returns.
+- `compare_a5_and_call_variant`: Compares a word at offset 48 of a global variable to 5; if it is 5 or greater and a word in a5 is 3, it calls a routine with d1 set to 27, otherwise it calls a routine with d1 set to 25.
+- `process_conditional_data`: Compares a 16-bit word at a pointer in a6 to zero and branches if not equal; otherwise, it tests bit 0 of a byte at a pointer in b6 and branches if set; if bit 0 is clear, it masks bits 0 and 1 of a byte at offset 7475 of a5, compares the result to 2, and if equal, it writes 4 to a 32-bit word at offset 30 of a5 and clears a byte at offset 8877 of a5, otherwise it returns.
+- `frag_bsr_rts_9`: Short code fragment that calls another routine, then returns.
+- `compare_a5_and_call_variant_2`: Compares a word at offset 48 of a global variable to 5; if it is 5 or greater and a word in a5 is 3, it calls a routine with d1 set to 27, otherwise it calls a routine with d1 set to 25.
+- `frag_move_clr_rts_3`: Short code fragment that copies 7 to a fixed memory address, then clears the memory at an offset from a5, then returns.
+- `frag_cmpi_bcs_rts_3`: Short code fragment that compares a fixed memory address with 5, then branches if the carry flag is set, then returns.
+- `modify_attribute_and_increment`: Increments a byte at offset 21 of a structure in a5 with a wrap-around at three, stores the result back to that offset, and sets bit five of a byte in a global table at an index determined by a global word.
+- `frag_cmpi_bcs_rts_4`: Short code fragment that compares a fixed memory address with 5, then branches if the carry flag is set, then returns.
+- `update_state_and_save_context`: Saves the current processor context and performs a series of conditional checks on bytes at specific offsets within a structure; if certain bitwise conditions are met, it updates a large block of global memory with values from registers and calls another routine with a value from a structure offset, then restores the context.
+- `frag_move_rts_2`: Short code fragment that copies 9 to d1, then copies d1 to a fixed memory address, then returns.
+- `update_structure_state`: If a byte at offset 8885 of a structure is zero, it sets a global variable to 2, copies a byte from offset 7638 to offset 8894, calls another routine, sets the byte at offset 8893 to 1, and sets the byte at offset 8519 to 1.
+- `toggle_structure_byte`: If a longword at offset 7680 is less than 5, it toggles the least significant bit of a byte at offset 7381, sets the byte at offset 7382 to 255, sets the byte at offset 8519 to 1, and calls another routine.
+- `update_structure_state_byte`: Reads a byte from an offset of 20 of a structure and performs bitwise operations with a global variable to determine a value.
+- `update_structure_byte_2`: Checks bits 0, 1, 2, and 3 of a byte in d0; if bit 0 is set and a condition between a byte at offset 71 and a byte at offset 7220 of a structure in a5 is met, it adds the latter to the former; if bit 1 is set and the difference between the byte at offset 7220 and the byte at offset 71 is greater than 47, it sets the byte at offset 7220 to that difference; otherwise, it calls another routine if bit 2 or bit 3 is set.
+- `update_structure_byte`: Clears bytes at offsets 8951 and 8871 of a structure in a5, calls another routine, and if a condition involving a byte at offset 71 and a byte at offset 68 is met, stores a byte at offset 75 and updates the byte at offset 71.
+- `update_structure_byte_2_2`: Clears bytes at offsets 8872 and 8871 of a structure in a5, calls another routine, and if a condition involving a byte at offset 71 and a byte at offset 68 is met, stores a byte at offset 75 and updates the byte at offset 71.
+- `update_accumulator_byte`: Updates a byte in a structure by either adding a value from a table or setting it to a calculated difference based on bits in a register, then conditionally calls itself.
+- `update_byte_offset_46`: Clears two bytes at offset 22a7 and 22a8 of a structure in a5, calls another routine, and if a specific condition involving a byte at offset 44 and a byte at offset 46 is met, stores a byte at offset 4a and updates offset 46.
+- `update_accumulator_byte_2`: Clears two bytes at offsets 22a7 and 22a8 of a structure in a5, calls another routine, and if a specific condition involving a byte at offset 44 and a byte at offset 46 is met, stores a byte at offset 4a and updates offset 46.
+- `update_accumulated_value`: Updates a byte in a structure by adding a value from a table or setting it to a difference if it exceeds forty-seven, based on bits in a register.
+- `update_byte_offset_45`: Clears two bytes at offset 22a7 and 22a8 of a structure in a5, calls another routine, and if a specific condition involving a byte at offset 44 and a byte at offset 45 is met, stores a byte at offset 49 and updates offset 45.
+- `reset_and_update_byte`: Clears two bytes at offsets 22a7 and 22a8 of a structure in a5, calls another routine, and if a specific condition involving a byte at offset 44 and a byte at offset 45 is met, stores a byte at offset 49 and updates offset 45.
+- `modify_structure_values`: Checks a bitmask in a returned byte, and if certain bits are set, performs arithmetic on a byte at offset 62 of a5 using values from offset 4673 and a table, then updates offset 62 and potentially offset 4677.
+- `update_structure_values`: Checks a byte at an offset within a structure pointed to by a6 and, based on various bitwise conditions and comparisons of bytes at offsets 60 and 66, increments or decrements those bytes or modifies a status byte at offset 62.
+- `update_status_byte_2`: Checks if bits 0 of bytes at offsets 7028 and 7029 of a structure in a5 are both zero; if so, it checks a byte at offset 43, and if that byte is not 0, it decrements a byte at offset 86 and calls another routine; it then stores a value of 1 or 2 into a byte at offset 98, copies a 16-bit word from offset 94 to offset 29, and calls another routine.
+- `update_state_and_recurse`: Checks specific bits and byte values within a structure pointed to by a5; depending on these values, it modifies bytes at various offsets, calls itself recursively, and copies a byte from offset 92 to offset 29.
+- `update_index_byte`: Checks if bit 0 of bytes at offsets 7019 and 7020 of a structure in a5 are both zero; if so, it increments a byte at offset 7767 and sets either a byte at offset 96 or 97 to 2 based on the parity of that byte, then calls another routine; it then copies a 16-bit word from offset 93 to offset 29 and calls another routine.
+- `decrement_structure_bytes`: Runs a loop four times, decrementing bytes at offsets 60 and 61 of a structure in a5 if they are greater than 8 and satisfy a comparison between the two bytes.
+- `rotate_four_bytes`: Clears two bytes at offset 22a7 and 22a8 of a structure in a5, then performs four consecutive calls to another routine, each time updating a byte at offset 44, 45, 47, or 46 with a value returned from the call.
+- `update_structure_bytes_via_calls`: Clears two bytes at a specific offset in a structure pointed to by a register, then performs four sequential calls to another routine, saving a byte from the structure into a new offset after each call.
+- `execute_three_subroutines`: Calls three different routines in sequence and then returns.
+- `update_wrapped_value_logic`: The routine performs arithmetic on a byte value and returns the result through the carry flag or an extended register.
+- `get_byte_with_carry`: Reads a byte from a memory location and returns it along with a carry flag that indicates if the value is within a specific range relative to a base byte.
+- `update_sprite_attribute_buffer`: Reads a series of bytes from a structure into a sequence of global variables, then calls another routine twice using calculated parameters derived from the structure and global state.
+- `save_registers_to_stack`: Saves the contents of d0 through d7 and a0 through a6 to a stack-like structure and calls another routine.
+- `process_input_status`: Saves several registers to a table in memory, reads the CIAA_PRA register to determine button and disk status, and stores a processed bitmask into a global variable at offset 60.
+- `calculate_and_decrement_value`: Calculates a 32-bit value using a table lookup and bitwise operations, stores it at offset 2614 of a structure in a5, calls another routine if a comparison between two bytes fails, and decrements a byte at offset 2294 before calling two more routines.
+- `apply_bitmask_to_video_buffer`: Iterates through a data structure to perform bitwise OR or AND operations on four segments of a video buffer using values retrieved from a table.
+- `subtract_offset_values`: Loops a number of times specified by a byte at offset 6 of a structure in a5, subtracting a 16-bit word at offset 8856 from a 16-bit word at offset 8852, and subtracting a 16-bit word at offset 8858 from a 16-bit word at offset 8854 during each iteration.
+- `subtract_and_clamp_values`: Loops a number of times specified by a byte at offset 6 of a structure in a5, subtracting a 16-bit word at offset 8860 from a 16-bit word at offset 8856; if the byte at offset 6 is 2 and the subtracted word is non-zero, it sets the word at offset 8860 to 128 or -32768 based on its sign.
+- `setup_blt_parameters`: Calculates a value based on a global variable and an offset, then enters a loop that runs three times to write specific values to several memory locations and hardware registers, including BLT registers.
+- `apply_bitmask_to_memory`: Checks a condition based on a word in d0 and a byte in d5, then either performs a loop three times to bitwise-OR or bitwise-AND a 32-bit value into memory at a calculated pointer, or performs a loop three times calling another routine based on the bits of a byte in d2.
+- `initialize_structure_data`: Waits for a bit in a structure at offset 2 to clear, then writes several 16-bit and 32-bit values to specific offsets within a structure pointed to by a6.
+- `initialize_structure_data_alt`: Waits for a bit in a structure at offset 2 to clear, then writes several 16-bit and 32-bit values to specific offsets within a structure pointed to by a6, using a different constant at offset 64.
+- `call_search_routine`: Sets a 16-bit value to 2, or 0 if a byte at offset 8877 of a structure in a5 is non-zero, and calls another routine with that value.
+- `sort_search_data`: Performs a search and sort operation on a data structure using values from a table, updating multiple memory locations and swapping values at various offsets based on comparisons between elements.
+- `swap_table_elements`: Swaps two 16-bit values at offsets provided by registers, then performs multiple redundant swaps of 16-bit values at an index derived from those registers.
+- `sort_data_tree`: Performs a search and sort operation on a data structure, updating multiple related memory locations and swapping values at various offsets as it traverses the structure.
+- `reorganize_memory_segments`: Loops through a table of 16-bit values starting at a global variable, performing comparisons and updates to the table based on bytes found at various offsets relative to the table entries; it then performs a final loop to compare the table against another table and calls another routine if a value in the first table is less than a value in the second.
+- `sort_binary_search_tree_nodes`: Performs a recursive search and reordering of a data structure by comparing 16-bit values and swapping elements at specific offsets.
+- `swap_memory_words`: Swaps two 16-bit words at offsets specified by d4 and d5 within two different memory tables located at 11266 and 12290.
+- `search_and_sort_structure`: Traverses a structure to find a value, then performs a series of swaps and updates to memory locations at specific offsets based on the results of the search.
+- `sort_and_update_priority_queue`: Iterates through a list of elements to update their values based on comparisons of bytes at specific offsets, then performs a heap-based sorting operation to maintain a priority queue structure within a global table.
+- `process_entity_state_loop`: Checks a flag in a structure, updates a counter, and enters a loop that decrements a value in a structure, performs bitwise checks and shifts on data from a table, and updates various bytes and shorts within the structure based on the results.
+- `write_constant_and_self`: Writes the constant 2623 to a location calculated from a global variable and an offset, then writes the same value back to two other locations calculated using a pointer in a5 and an offset.
+- `update_entity_state_and_tables`: Iterates through a sequence of bytes to find a null terminator, then updates various data structures at specific offsets within a structure, including a counter, a byte derived from a bitwise operation, and several 16-bit values.
+- `process_event_sequence_and_update_state`: Iterates through a sequence of bytes in a structure, decrementing each byte until a zero is reached, then performs conditional calculations and updates various 16-bit and 32-bit values in a global variable and a structure based on bitwise comparisons and arithmetic results.
+- `decrement_table_values`: Decrements a series of bytes in a table starting at offset 7892 of the structure in a5, looping downwards until the counter reaches zero, provided the lower 5 bits of each byte are non-zero.
+- `process_complex_table_data`: Performs a nested loop that reads values from a table and a global variable to calculate a value through multiple conditional checks and bit shifts, eventually returning a result based on byte comparisons.
+- `find_last_nonzero_byte`: Searches backwards through a table starting at offset 6625 of the structure in a5 for the first non-zero byte, then returns that index shifted left by 3 bits, or returns zero if no non-zero byte is found.
+- `calculate_scaled_coordinate_offset`: Calculates a scaled coordinate using fixed-point arithmetic and a division-based scaling factor, then applies the result to values stored in a global table and writes the updated 16-bit results to a structure at specific offsets.
+- `decrement_and_check_table_bytes`: Checks a byte at a specific offset in a structure; if it is non-zero, it decrements the byte in a table starting at an offset from that structure and calls itself recursively if the byte reaches zero.
+- `update_structure_attributes`: Calculates an offset by shifting a value in d2 left by 3, copies four bytes from a table to a structure in a5 at specific offsets, calls check_byte_sequence, updates a 16-bit value at offset 182 of the structure based on a byte at offset 14, and calls update_attribute_flags.
+- `update_attribute_flags`: Loops through a table of 16-bit values, and if a byte at an offset determined by the table value is less than 19 and a byte in the global table is less than 7, sets the high bit of a byte at a specific offset in a structure.
+- `process_entity_attribute_table`: Iterates through a table of 16-bit values using a loop, performing lookups in secondary tables to update bytes at offsets 29, 473, and 483 of a structure in a5.
+- `update_signed_byte`: Adds a byte from a table at offset 29 of the structure in a5 to d1, then clears d1 or sets it to 255 based on the carry flag and returns.
+- `search_table_and_increment`: Loops through a table of 16-bit values starting at offset 168 of a5, and if a match is found, increments a byte at offset 5642 and calls another routine if the byte reaches 3.
+- `call_handler_via_table`: Saves a large set of registers to a memory structure, calls another routine using a pointer from a table at an offset derived from a byte in a5, and then stores the result back into a global variable.
+- `calculate_scaled_value_3`: Performs arithmetic on a 16-bit value at offset 6416 of the structure in a5 using values from a table and other structure offsets, then conditionally updates a 16-bit value at offset 9744 based on several comparisons and a calculated magnitude.
+- `search_and_modify_table`: If a byte in d7 matches specific characters, it loops through a table, comparing high bytes of 16-bit values at offsets 3890 and 4916 of the structure in a5, and if a match is found, modifies a 16-bit value in a table and sets a global 16-bit variable to 65535.
+- `process_collision_and_proximity_logic`: Checks a status byte in a structure to determine if a specific event type is active, then performs distance calculations between coordinate pairs stored in tables.
+- `adjust_coordinate_offsets`: Calculates the difference between input values and table entries at offsets 2418 and 4386 of the structure in a5, adjusts two 16-bit values at offsets 7430 and 7432 by halving or negating them, and finally updates the table entries with the new values.
+- `validate_and_reset_entity_state`: Checks a flag at offset 7932 of the structure in a5 and increments a byte at offset 7868 if a bitmask check passes.
+- `frag_btst_ori_subi`: Short code fragment that tests bit d0 of d1, then tests bit d0 of d2, then tests bit d1 of d0, then merges 2 into d4, then subtracts 5 from d1.
+- `update_scaled_global_value`: Calls a routine to update a scaled value, adds 12345 to the result, and stores the new 32-bit value into a global variable.
+- `update_entity_state_and_attributes`: Updates an entity's state by writing a byte to a specific offset in a structure and conditionally modifies several other bytes and values based on bitwise checks.
+- `save_state_context_and_call`: Checks a register for specific control characters and a global variable for a mode; if conditions match, it saves a large block of data from the stack and a global table into memory, then calls another routine with a byte fetched from a pointer in a register before returning a concatenated 32-bit value.
+- `update_status_byte`: Checks if a global value is less than 5, then retrieves a byte from offset 8952 of the structure in a5, and if that byte differs from a global variable, updates the global variable with the byte masked by 3 and calls another routine.
+- `update_index_and_pointer`: Compares a byte at offset 7478 of a structure in a5 with a byte at offset 8995 of the same structure and updates the latter if it is smaller.
+- `update_bitmask_and_save_context`: Checks if a specific bit is unset in a global variable; if so, it sets a bit in a byte at a specific memory location using a bitmask derived from the global variable, saves a series of values from a memory block into local variables, calls another routine, and then restores the original memory block values.
+- `update_entity_state_and_coordinates_2`: Sets a flag in a structure and conditionally updates several bytes and a value at an offset based on a byte at another offset.
+- `decrement_and_recurse`: If a byte at an offset of 16 from a pointer in a5 is non-zero, it decrements that byte, calculates a value by multiplying it by two, and calls another routine using that value as an index into a table.
+- `frag_jmp_25`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_26`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_27`: Short code fragment that jumps to another point in the code.
+- `execute_conditional_updates`: Checks if a 16-bit word at offset 84 of a structure in a5 is non-zero and if a byte at offset 8861 of the structure is zero, then calls three different routines in sequence.
+- `update_structure_data_first`: Checks a global variable and a byte at offset 7079 of a structure in a5, then if conditions are met, writes 69 to offset 2 of the structure, copies a byte from offset 73 of the structure to offset 7, copies a byte from offset 3, sets offset 13 to a byte from offset 93, and writes 7824 to the start of the structure before calling another routine.
+- `update_structure_data_second`: Checks a global variable and a byte at offset 7075 of a structure in a5, then if conditions are met, writes 71 to offset 2 of the structure, copies a byte from offset 75 to offset 7, sets offset 3 to 1, copies a byte from offset 47 to offset 13, and writes 7825 to the start of the structure before calling another routine.
+- `update_structure_data_third`: Checks a global variable, a byte at offset 342 of a structure in a5, and a byte at offset 3707 of the structure, then if conditions are met, writes 70 to offset 2 of the structure, copies a byte from offset 37 to offset 7, sets offset 3 to 2, copies a byte from offset 46 to offset 13, and writes 7826 to the start of the structure before calling another routine.
+- `process_complex_table_data_2`: Performs a loop that reads a value from a global table using an index derived from a structure in a5, performs multiple conditional checks and arithmetic on values from the structure and the table, and calls another routine.
+- `check_structure_byte`: Checks if a byte at offset 6 of a structure is zero or less than 2, and if so, calls another routine; otherwise it calls another routine and returns.
+- `call_handler_with_context`: Saves all registers to the stack, loads a word from a specific memory location into the registers, sets a5 to a specific address, calls another routine, and restores the registers before returning.
+- `loop_entity_state_flags`: Executes a loop that calls another routine 30 times, starting with a value of 64 and incrementing until it reaches 94.
+- `decrement_and_loop_counter`: Decrements a byte at offset 7652 of a structure in a5 and, if the result is zero, sets it to 1 and calls another routine in a loop from 128 to 158.
+- `update_entity_state_flags`: Updates a byte in a table using an index derived from the lower bits of a parameter, performs bitwise masking and logical operations on that byte based on a global value, and conditionally modifies other bytes in a structure using offsets calculated from the input.
+- `update_ram_values_in_loop`: Executes a loop that calls another routine and updates a series of 16-bit and 32-bit values in memory, ending by writing a value to offset 62 of a memory block.
+- `update_sprite_attribute_and_call_handler`: Updates a sprite's attribute byte and coordinate data within a structure pointed to by a register, then calculates a memory offset to call another routine with sprite-related parameters.
+- `frag_jmp_28`: Short code fragment that jumps to another point in the code.
+- `decrement_structure_byte`: If a byte at offset 38 of a structure in a5 is non-zero, it decrements that byte; otherwise, it checks if a byte at offset 37 is zero or less than 2, and calls itself recursively if those conditions are met.
+- `process_coordinate_list_2_2`: Saves registers to the stack, calls another routine with an offset added to a value in a5, and restores the registers before returning.
+- `execute_complex_handler`: Saves registers, clears a global variable, calls another routine with zero, restores registers, calls another routine with the cleared global variable, and restores registers again before returning.
+- `call_subroutine_with_parameter`: Saves all registers, loads a long value from the stack into d1, calls another routine, and restores all registers before returning.
+- `save_and_restore_context`: Saves a large block of registers and local data to a memory area, performs several calls to another routine with varying parameters, and restores the saved values back to the registers.
+- `save_and_call_routine`: Saves a block of data from the stack into a series of global variables, calls another routine with a calculated address and a constant, and then restores the global variables from the stack.
+- `manipulate_bits_and_call`: Performs bitwise operations and shifts on d1 and d7 before calling another routine.
+- `prepare_decimal_byte`: Performs bitwise operations on d1 and d7 to combine nibbles, writes 1 to offset 7 of a structure in a5, and calls another routine.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (clr.b) and then falls through into the code that follows, with no return of its own.
+- `format_decimal_string`: Performs a loop to divide a value by 10, stores the resulting characters at offsets 7FE and 7FF of a structure in a5, and calls another routine.
+- `format_and_call_routine`: Performs a loop to divide a value by 10, stores the resulting characters at offsets 7FE and 7FF of a structure in a5, and calls another routine with a calculated address and a value derived from a byte at offset 7 of that structure.
+- `save_and_restore_registers_context`: Saves a block of registers and data from the stack into a series of global variables, calls another routine, and then restores the original values from those global variables back to the registers and stack before returning.
+- `frag_jmp_29`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_30`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_31`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_32`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_33`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_34`: Short code fragment that jumps to another point in the code.
+- `increment_nested_counters`: Increments a byte at an offset in a structure and, if it reaches 17, increments a second byte at a different offset.
+- `update_state_and_data`: Determines two byte values based on bytes at offsets 8809 and 8808 of the structure in a5, and if they differ from values at offsets 8737 and 8738, updates those offsets, sets a global 16-bit variable to 65535, and copies four bytes from a table to offsets 9456 through 9459 of the structure in a5.
+- `frag_jmp_35`: Short code fragment that jumps to another point in the code.
+- `decrement_structure_counters`: Decrements two bytes at offsets 56 and 57 of a structure in a5, resetting them to specific values if they reach zero, and updates a 16-bit value at offset 260c based on the result.
+- `update_entity_status_2`: Checks three conditions involving global variables and a byte at offset 3629 of a structure in a5; if met, it writes 0 to offsets 3733 and 3734, writes 2 to offset 3732, and writes the maximum of 8 and the minimum of bytes at offsets 60 and 61 to offset 3731.
+- `update_entity_status`: Calculates a status byte based on comparisons of bytes in a structure in a5, updates a byte at offset 1e95, and conditionally calls other routines based on values at offsets 1e94, 1e96, 44, 3e, 952, 1e9e, 1122, and 1ea0.
+- `update_proximity_tracking_metrics`: Calculates a value based on scaled bytes from a structure and updates a 16-bit field at offset 2478.
+- `frag_jmp_36`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_37`: Short code fragment that jumps to another point in the code.
+- `process_and_store_byte_stream`: Initializes several global variables with specific constants, then enters a loop that reads bytes from a source table and stores them into a destination buffer.
+- `copy_buffer_to_global`: Loops 1024 times to copy bytes from a source table to a global variable.
+- `shift_and_copy_buffers`: Calculates an offset and bit mask from a global variable, updates that variable, and if the offset is within range, copies a block of memory from a table to a global variable and then copies a second block from a source table to the end of that global variable.
+- `frag_move_rts_3`: Short code fragment that copies 9 to a fixed memory address, then copies 512 to a fixed memory address, then copies 258 to a fixed memory address, then returns.
+- `frag_movea_move_rts`: Short code fragment that copies a fixed memory address to a4, then copies d1 to the memory at a4 (advancing a4), then copies a4 to a fixed memory address, then returns.
+- `frag_move_lsl_add_rts`: Short code fragment that copies d2 to d6, then shifts d2 left by 1, then adds d6 to d2, then returns.
+- `write_to_table`: Calls another routine, then writes a byte, a character, and a high byte from a 16-bit value into a table at an offset determined by a global variable and a pointer in a2, and finally increments that global variable.
+- `execute_bytecode_sequence`: Reads a sequence of instructions from a data structure, where each instruction consists of a pointer to a routine and a repeat count.
+- `write_five_d0_bytes`: Writes the byte from register d0 to five consecutive memory locations pointed to by registers a0 through a4, then branches to another routine.
+- `write_mixed_d0_d1_bytes`: Writes the byte from register d1 to the location at a0, then writes the byte from register d0 to the locations at a1 through a4, and branches to another routine.
+- `write_alternating_d0_d1_bytes`: Writes the byte from register d0 to a0, the byte from register d1 to a1, and then writes the byte from register d0 to a2, a3, and a4 before branching to another routine.
+- `write_mixed_d1_d0_bytes`: Writes the byte from register d1 to a0 and a1, then writes the byte from register d0 to a2, a3, and a4, and branches to another routine.
+- `write_mixed_d0_d1_bytes_v2`: Writes the byte from register d0 to a0 and a1, the byte from register d1 to a2, and the byte from register d0 to a3 and a4, then branches to another routine.
+- `write_alternating_d1_d0_bytes`: Writes the byte from register d1 to a0 and a2, and the byte from register d0 to a1, a3, and a4, then branches to another routine.
+- `write_mixed_d0_d1_bytes_v3`: Writes the byte from register d0 to a0, the byte from register d1 to a1 and a2, and the byte from register d0 to a3 and a4, then branches to another routine.
+- `write_mixed_d1_d0_bytes_v2`: Writes the byte from register d1 to a0, a1, and a2, then writes the byte from register d0 to a3 and a4, and branches to another routine.
+- `write_mixed_d0_d1_bytes_v4`: Writes the byte from register d0 to a0, a1, and a2, the byte from register d1 to a3, and the byte from register d0 to a4, then branches to another routine.
+- `write_mixed_d1_d0_bytes_v3`: Writes the byte from register d1 to a0 and a3, and the byte from register d0 to a1, a2, a4, and then branches to another routine.
+- `write_alternating_bytes`: Stores bytes from d0 and d1 into five consecutive memory locations pointed to by a0 through a4, then branches to a fixed address.
+- `write_mixed_bytes`: Stores bytes from d1, d1, d0, d1, and d0 into five consecutive memory locations pointed to by a0 through a4, then branches to a fixed address.
+- `write_pattern_bytes`: Stores bytes from d0, d0, d1, d1, and d0 into five consecutive memory locations pointed to by a0 through a4, then branches to a fixed address.
+- `write_mixed_bytes_alt`: Stores bytes from d1, d0, d1, d1, and d0 into five consecutive memory locations pointed to by a0 through a4, then branches to a fixed address.
+- `write_mostly_d1_bytes`: Stores bytes from d0, d1, d1, d1, and d0 into five consecutive memory locations pointed to by a0 through a4, then branches to a fixed address.
+- `write_mostly_d1_bytes_alt`: Stores bytes from d1, d1, d1, d1, and d0 into five consecutive memory locations pointed to by a0 through a4, then branches to a fixed address.
+- `write_mostly_d0_bytes`: Stores bytes from d0, d0, d0, d0, and d1 into five consecutive memory locations pointed to by a0 through a4, then branches to a fixed address.
+- `write_mixed_d0_d1_bytes_2`: Stores bytes from d1, d0, d0, d0, and d1 into five consecutive memory locations pointed to by a0 through a4, then branches to a fixed address.
+- `write_d0_d1_pattern`: Stores bytes from d0, d1, d0, d0, and d1 into five consecutive memory locations pointed to by a0 through a4, then branches to a fixed address.
+- `write_d1_d0_pattern`: Stores bytes from d1, d1, d0, d0, and d1 into five consecutive memory locations pointed to by a0 through a4, then branches to a fixed address.
+- `write_bytes_pattern_a`: Stores bytes from d0 into a0, a1, and a3, and stores bytes from d1 into a2 and a4, then branches to a relative address.
+- `write_bytes_pattern_b`: Stores bytes from d1 into a0, a2, and a4, and stores bytes from d0 into a1 and a3, then branches to a relative address.
+- `write_bytes_pattern_c`: Stores bytes from d0 into a0 and a3, and stores bytes from d1 into a1, a2, and a4, then branches to a relative address.
+- `write_bytes_pattern_d`: Stores bytes from d1 into a0, a1, a2, and a4, and stores a byte from d0 into a3, then branches to a relative address.
+- `write_bytes_pattern_e`: Stores bytes from d0 into a0, a1, and a2, and stores bytes from d1 into a3 and a4, then branches to a relative address.
+- `write_bytes_pattern_f`: Stores bytes from d1 into a0 and a3 and a4, and stores bytes from d0 into a1 and a2, then branches to a relative address.
+- `write_bytes_pattern_g`: Stores bytes from d0 into a0 and a2, and stores bytes from d1 into a1, a3, and a4, then branches to a relative address.
+- `write_bytes_pattern_h`: Stores bytes from d1 into a0, a1, a3, and a4, and stores a byte from d0 into a2, then branches to a relative address.
+- `write_bytes_pattern_i`: Stores bytes from d0 into a0 and a1, and stores bytes from d1 into a2, a3, and a4, then branches to a relative address.
+- `write_bytes_pattern_j`: Stores bytes from d1 into a0, a2, a3, and a4, and stores a byte from d0 into a1, then branches to a relative address.
+- `copy_bytes_with_d0`: Copies a byte from d0 to the address in a0, then copies bytes from d1 to the addresses in a1, a2, a3, and a4, and finally performs a relative branch.
+- `copy_bytes_with_d1`: Copies a byte from d1 to the addresses in a0, a1, a2, a3, and a4, and finally performs a relative branch.
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `tiny_or_rts`: Small routine of 2 instructions that merges d7 into d0, then returns.
+- `tiny_or_rts_2`: Small routine of 2 instructions that merges d7 into d1, then returns.
+- `tiny_or_or_rts`: Small routine of 3 instructions that merges d7 into d0, then merges d7 into d1, then returns.
+- `tiny_or_rts_3`: Small routine of 2 instructions that merges d7 into d2, then returns.
+- `tiny_or_or_rts_2`: Small routine of 3 instructions that merges d7 into d0, then merges d7 into d2, then returns.
+- `tiny_or_or_rts_3`: Small routine of 3 instructions that merges d7 into d1, then merges d7 into d2, then returns.
+- `frag_or_rts`: Short code fragment that merges d7 into d0, then merges d7 into d1, then merges d7 into d2, then returns.
+- `tiny_or_rts_4`: Small routine of 2 instructions that merges d7 into d3, then returns.
+- `tiny_or_or_rts_4`: Small routine of 3 instructions that merges d7 into d0, then merges d7 into d3, then returns.
+- `tiny_or_or_rts_5`: Small routine of 3 instructions that merges d7 into d1, then merges d7 into d3, then returns.
+- `frag_or_rts_2`: Short code fragment that merges d7 into d0, then merges d7 into d1, then merges d7 into d3, then returns.
+- `tiny_or_or_rts_6`: Small routine of 3 instructions that merges d7 into d2, then merges d7 into d3, then returns.
+- `frag_or_rts_3`: Short code fragment that merges d7 into d0, then merges d7 into d2, then merges d7 into d3, then returns.
+- `frag_or_rts_4`: Short code fragment that merges d7 into d1, then merges d7 into d2, then merges d7 into d3, then returns.
+- `frag_or_rts_5`: Short code fragment that merges d7 into d0, then merges d7 into d1, then merges d7 into d2, then merges d7 into d3, then returns.
+- `tiny_or_rts_5`: Small routine of 2 instructions that merges d7 into d4, then returns.
+- `tiny_or_or_rts_7`: Small routine of 3 instructions that merges d7 into d0, then merges d7 into d4, then returns.
+- `tiny_or_or_rts_8`: Small routine of 3 instructions that merges d7 into d1, then merges d7 into d4, then returns.
+- `frag_or_rts_6`: Short code fragment that merges d7 into d0, then merges d7 into d1, then merges d7 into d4, then returns.
+- `tiny_or_or_rts_9`: Small routine of 3 instructions that merges d7 into d2, then merges d7 into d4, then returns.
+- `frag_or_rts_7`: Short code fragment that merges d7 into d0, then merges d7 into d2, then merges d7 into d4, then returns.
+- `frag_or_rts_8`: Short code fragment that merges d7 into d1, then merges d7 into d2, then merges d7 into d4, then returns.
+- `frag_or_rts_9`: Short code fragment that merges d7 into d0, then merges d7 into d1, then merges d7 into d2, then merges d7 into d4, then returns.
+- `tiny_or_or_rts_10`: Small routine of 3 instructions that merges d7 into d3, then merges d7 into d4, then returns.
+- `frag_or_rts_10`: Short code fragment that merges d7 into d0, then merges d7 into d3, then merges d7 into d4, then returns.
+- `frag_or_rts_11`: Short code fragment that merges d7 into d1, then merges d7 into d3, then merges d7 into d4, then returns.
+- `frag_or_rts_12`: Short code fragment that merges d7 into d0, then merges d7 into d1, then merges d7 into d3, then merges d7 into d4, then returns.
+- `frag_or_rts_13`: Short code fragment that merges d7 into d2, then merges d7 into d3, then merges d7 into d4, then returns.
+- `frag_or_rts_14`: Short code fragment that merges d7 into d0, then merges d7 into d2, then merges d7 into d3, then merges d7 into d4, then returns.
+- `frag_or_rts_15`: Short code fragment that merges d7 into d1, then merges d7 into d2, then merges d7 into d3, then merges d7 into d4, then returns.
+- `or_bits_and_restore_stack`: Ors the byte in d7 into d0, d1, d2, d3, and d4, restores d0 through d7 and a0 through a6 from the stack, and returns.
+- `update_structure_fields_loop`: Executes three separate loops that modify bytes at offsets 7 and 20e6 of a structure in a5 and calls another routine repeatedly.
+- `update_structure_values_2`: Fetches a value from a table using an offset from a structure in a5, updates several fields in that structure, and calls another routine multiple times based on the value of a byte at offset 235.
+- `frag_jmp_38`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_39`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_40`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_41`: Short code fragment that jumps to another point in the code.
+- `dispatch_via_table`: Saves d0 through d5 and a4 through a5 to a memory location, shifts d1 left by two, calls a routine from a table using the shifted d1 as an index, restores the saved registers from the same memory location, and returns.
+- `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
+- `frag_movem_jsr_lea_rts`: Short code fragment that copies several registers to or from memory, then calls another routine, then copies several registers to or from memory, then loads the address of a fixed memory address into a5, then returns.
+- `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
+- `frag_move_rts_5`: Short code fragment that copies 0 to the memory at an offset from a5 (2 times in a row), then returns.
+- `manage_task_ports`: Prepares parameters for a library call using global variable values and fixed constants, then invokes a task management routine with those parameters.
+- `frag_tst_bpl_neg_bsr_rts`: Short code fragment that tests d2, then branches if the last result was not negative, then negates d2, then calls another routine, then negates d1, then returns.
+- `frag_tst_bpl_neg_bsr_rts_2`: Short code fragment that tests d1, then branches if the last result was not negative, then negates d1, then calls another routine, then negates d1, then negates d2, then returns.
+- `frag_cmpi_bls_cmp_beq_move_moveq_rts`: Short code fragment that compares d2 with an address, then branches if the comparison was lower or same (unsigned), then compares d2 with d1, then branches if the last result was zero, then branches if the comparison was lower or same (unsigned), then copies d1 to d2, then loads 0 into d1, then returns.
+- `tiny_moveq_moveq_rts`: Small routine of 3 instructions that loads 0 into d2, then loads 1 into d1, then returns.
+- `divide_and_multiply`: Performs division and multiplication operations on word-sized values with specific bit manipulation, then compares results to determine conditional execution paths before returning.
+- `frag_subq_bra_2`: Short code fragment that subtracts 1 from d1, then jumps to another point in the code.
+- `function_epilogue_16`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+- `divide_coordinate_values`: Performs division operations on word-sized values, swaps the results, and returns the computed quotients through register modifications.
+- `update_port_signals`: Modifies hardware port registers by reading current values, applying bitwise AND and OR operations, and writing modified values back to specific memory locations.
+- `calculate_position_delta`: Reads byte values from hardware registers, compares them, performs bit shifting operations, and updates a global variable with the calculated result.
+- `check_bitmask_status`: Calls a library function with a value of 3072 and returns 0 if the result does not have bits 13 or 14 set.
+- `frag_bsr_rts_10`: Short code fragment that calls another routine, then returns.
+- `frag_jmp_42`: Short code fragment that jumps to another point in the code.
+- `search_table_for_value`: Iterates through a table of 32-bit values to find an entry matching the value in a parameter, returning a pointer to the match or a pointer to the table with a specific value set in a global variable if no match is found.
+- `initialize_library_state`: Checks a global variable, calls a routine to initialize it if zero, then calls a library function and returns zero if successful or a negative value otherwise.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `frag_jmp_43`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_44`: Short code fragment that jumps to another point in the code.
+- `divide_fixed_point`: Performs a 32-bit fixed-point division using a normalized method and returns the result in d0.
+- `normalize_fixed_point_divide`: Divides a 32-bit dividend in d0 by a 32-bit divisor in d1 using a normalized fixed-point method.
+- `multiply_32bit_words`: Multiplies two 32-bit values taken from the data registers using 16-bit partial products, adding the two cross terms to the low-word product.
+- `conditional_dispatch`: Calls another routine if a global variable is non-zero and then performs a second routine call.
+- `frag_jmp_45`: Short code fragment that jumps to another point in the code.
+- `handle_io_error`: Checks a bitmask status and attempts to process a string buffer, potentially calling an error routine and updating a global variable if an error occurs.
+- `frag_jmp_46`: Short code fragment that jumps to another point in the code.
+- `calculate_recursive_value`: Checks a bitmask status and attempts to process a string buffer, potentially calling an error routine and updating a global variable if an error occurs; otherwise, it performs arithmetic or recursive calls based on the value of a third parameter.
+- `frag_jmp_47`: Short code fragment that jumps to another point in the code.
+- `handle_io_error_2`: Checks a global variable for zero value and if not zero, calls another routine and clears the global variable.
+- `frag_jmp_48`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_49`: Short code fragment that jumps to another point in the code.
+- `traverse_callback_list`: Iterates through a linked list of structures and calls another routine if specific bitmask conditions are met within the structure, then calls another routine with a parameter.
+- `forward_single_argument`: Passes its one 32-bit argument unchanged to another routine and returns nothing of its own.
+- `traverse_linked_list`: Traverses a linked list of 32-bit values, performing various arithmetic and memory operations, and calls several routines including one for fixed-point division and one for list insertion.
+- `check_multiple_ranges`: Calls two different routines to check if a value is within specific ranges, returning 1 if either check succeeds and 0 otherwise.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: puts the result in d0, removes the stack frame with unlk, then returns to the caller.
+- `validate_character_range`: Calls check_byte_range with a value from the stack, and if that returns zero, calls check_byte_range_alt with the same value.
+- `function_epilogue_2`: Function exit sequence shared or jumped to by a routine: puts the result in d0, removes the stack frame with unlk, then returns to the caller.
+- `check_value_range`: Loads a long value from offset 8 of the structure in a5, compares it against the range between 48 and 57 decimal, and returns 1 if it is within that range, otherwise it returns 0.
+- `function_epilogue_3`: Function exit sequence shared or jumped to by a routine: puts the result in d0, removes the stack frame with unlk, then returns to the caller.
+- `check_byte_range`: Compares a value from a stack offset to two constants and sets d0 to one if the value is between 97 and 122 inclusive, otherwise it returns.
+- `function_epilogue_4`: Function exit sequence shared or jumped to by a routine: puts the result in d0, removes the stack frame with unlk, then returns to the caller.
+- `check_byte_range_alt`: Compares a value from a stack offset to two constants and sets d0 to one if the value is between 65 and 90 inclusive, otherwise it returns.
+- `function_epilogue_5`: Function exit sequence shared or jumped to by a routine: puts the result in d0, removes the stack frame with unlk, then returns to the caller.
+- `execute_search_sequence`: Calls another routine to find a value, then calls a second routine with three parameters, returning a specific value if either call returns zero or if a global variable is non-zero.
+- `append_node_to_list_2`: Calls another routine, updates a link at an offset in the returned pointer, calls a library function, and updates a global variable if it is zero.
+- `execute_conditional_branch`: Calls a routine via a branch-to-subroutine instruction, then checks the result in d0; if d0 is not zero, it unlinks the stack frame and returns, otherwise it continues.
+- `return_constant_minus_one`: Returns the value minus one with no other work, serving as a fixed return value for its caller.
+- `initialize_node_list`: Clears multiple global variables to zero, performs arithmetic calculations on global values, and calls another routine to append a node to a list structure.
+- `frag_move_jsr_addq_moveq_movem_unlk_rts`: Short code fragment that copies d7 to the stack, then copies a4 to the stack, then calls call_with_repeated_second_argument, then adds 8 to a7, then loads 0 into d0, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
+- `traverse_and_clear_list`: Iterates through a linked list, calling another routine for each element, and then clears the list head.
+- `append_node_to_list`: Appends a node to the tail of a doubly linked list whose header holds the head and tail pointers, setting the node's forward link to empty and its back link to the old tail.
+- `frag_jmp_50`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_51`: Short code fragment that jumps to another point in the code.
+- `process_recursive_buffer`: Iterates through a buffer, decrementing a global counter and either calling another routine recursively if the counter is negative or storing the current byte into a global buffer and incrementing its pointer.
+- `call_with_repeated_second_argument`: Passes its two arguments to another routine, repeating the second argument as the third.
+- `insert_into_binary_tree`: Inserts a new node into a binary tree structure, updating a global counter and adjusting tree pointers or node values based on the comparison of the input value with existing nodes.
+- `append_string_to_buffer`: Scans the destination string to its terminating zero and then copies the source string, including its terminator, starting at that point.
+- `compare_c_strings`: Compares two null-terminated strings and returns a value indicating if the first is greater, smaller, or equal.
+- `copy_cstring_to_buffer`: Copies a null-terminated byte string from a source pointer to a destination pointer, byte by byte, stopping when the terminating zero byte is written.
+- `calculate_string_length`: Walks a null-terminated string to find its end and returns the number of characters before the terminator.
+- `copy_string_segment`: Copies a sequence of characters from a source to a destination, ensuring the result is null-terminated.
+- `compare_memory_buffers`: Compares two memory buffers byte by byte up to a specified count, returning the difference between bytes if they are not equal, or 1, -1, or 0 depending on which buffer reaches a zero byte first.
+- `frag_subq_bra`: Short code fragment that subtracts 1 from the memory at an offset from a5, then jumps to another point in the code.
+- `verify_pointer_byte`: Checks a byte at an offset of 16 in a structure; if it is non-zero, it loads a pointer from offset 8 and checks if the byte at that pointer is non-zero, setting d0 to one if so, otherwise it returns.
+- `check_pointer_byte`: Loads a pointer from an offset of 12 in the structure pointed to by a5, checks if the byte at that pointer is zero, and if not, sets d0 to 255 before returning.
+- `function_epilogue_6`: Function exit sequence shared or jumped to by a routine: puts the result in d0, removes the stack frame with unlk, then returns to the caller.
+- `process_buffer_entry`: Looks up a value in a table and if found, checks a bit in the returned structure; if set, it calls another routine with specific parameters and returns a result based on a global variable's state.
+- `execute_callback_chain_3`: Iterates through a list of pointers and executes a routine for each non-zero entry that meets a specific bitmask condition, then calls another routine with two parameters.
+- `frag_jmp_52`: Short code fragment that jumps to another point in the code.
+- `process_recursive_buffer_structure`: Checks status bits in a structure to manage a recursive buffer operation, updating a pointer and an index at offset 12 based on a sign bit at offset 24.
+- `update_pointer_data`: Checks a condition using a byte at offset 1b and a longword at offset 14 of a structure in param_1, then calls another routine to update offsets 4, 10, 14, 18, c, and 8 of that structure.
+- `parse_command_string`: Parses a space, tab, or newline-delimited string into a table of pointers, supporting quoted segments by replacing the closing quote with a null terminator.
+- `frag_jmp_53`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_54`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_55`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_56`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_57`: Short code fragment that jumps to another point in the code.
+- `initialize_system_state`: Sets a global variable to one, calls another routine, and enters a loop that updates a global variable with the result of another routine.
+- `frag_bsr_clr_jsr_addq_rts`: Short code fragment that calls another routine, then clears the stack, then calls another routine, then adds 4 to a7, then returns.
+- `pass_global_pointer`: Calls another routine with a pointer to a global variable, where the specific pointer is selected based on the input parameter.
+- `process_data_with_callback`: Calls a routine with the first parameter, and if the result is zero, calls another routine with two parameters, then calls a third routine with the result of a fourth routine call.
+- `store_masked_word`: Extracts a word from a structure, extends it to a long, calls another routine, and stores the lower 16 bits of the result into a global variable.
+- `update_scaled_value`: Loads a 32-bit value from a global variable, calls a routine, adds 12345 to the result, stores the new value back in the global variable, and returns the result shifted right by 16 and masked with 32767.
+- `process_input_event_dispatch_2`: Processes an input event by retrieving a value through a pointer and performing a series of conditional checks and state updates.
+- `frag_bra_31`: Short code fragment that jumps to another point in the code.
+- `frag_bra_32`: Short code fragment that jumps to another point in the code.
+- `frag_bra_33`: Short code fragment that jumps to another point in the code.
+- `frag_bra_34`: Short code fragment that jumps to another point in the code.
+- `frag_bra_35`: Short code fragment that jumps to another point in the code.
+- `frag_bra_36`: Short code fragment that jumps to another point in the code.
+- `frag_bra_37`: Short code fragment that jumps to another point in the code.
+- `frag_bra_38`: Short code fragment that jumps to another point in the code.
+- `frag_bra_move_2`: Short code fragment that jumps to another point in the code, then copies 146 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_9`: Short code fragment that copies 147 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_10`: Short code fragment that copies 145 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_11`: Short code fragment that copies 152 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_12`: Short code fragment that copies 153 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_13`: Short code fragment that copies 151 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_14`: Short code fragment that copies 150 to the memory at an offset from a5, then jumps to another point in the code.
+- `handle_input_events`: Processes input events by reading from a structure and writing to a global variable at offset 6.
+- `initialize_global_pointers`: Calls a routine with various constant parameters and stores the returned values into a series of global variables, occasionally calling another routine if a return value is zero.
+- `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
+- `wait_for_pointer_match`: Calls two library functions, then enters a loop that waits until a long value at an offset of 34 from a global pointer matches a value at offset 24 of that same pointer.
+- `process_buffer_data`: Retrieves a pointer from a structure, calculates a size by shifting a short value, and if a second parameter is zero, calls another routine to update a structure before calling a third routine with the retrieved pointer and calculated size.
+- `update_pointer_state`: Compares two 16-bit values at a global location, calls a routine with a pointer to a global variable, updates one of the values based on the comparison, and sets a global variable to either 0 or 2 before setting another global variable to 1.
+- `update_display_registers`: Calculates values based on 32-bit arithmetic and writes them to various hardware registers, including bitplane pointers and color registers.
+- `manage_memory_and_buffers`: Performs several operations including updating a value at an offset of a global structure, calling routines to manipulate buffers, calling library functions to allocate and free memory, and setting a global variable to zero.
+- `shuffle_table_elements_2`: Uses a parameter to select one of four jump targets, performs a routine call with a pointer to a global variable, and sets various values in that global variable based on the selected target.
+- `execute_indirect_calls`: Calls a routine with several parameters, performs a switch based on a parameter, calls a routine via a pointer stored in a global variable, and then executes a sequence of five routine calls with varying parameters.
+- `update_sprite_bitmaps`: Updates multiple bitmap bitplanes by calling a bitplane transfer routine with varying parameters based on three input values.
+- `function_epilogue_7`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `call_indirect_with_bit_inversion`: Checks if a parameter is zero, then calls a routine twice using a global structure and various parameters, where the second call uses a bitwise inversion of a global variable, otherwise it performs the same calls using a different offset in the global structure.
+- `call_indirect_function_3`: Calls a function pointer from a global variable twice with different parameters, including one call where the tenth parameter is the bitwise NOT of another value.
+- `execute_single_call`: Calls a function pointer from a global variable with several constant arguments and then returns.
+- `process_multiple_segments`: Retrieves a pointer from a table and performs twenty different calls to another routine using that pointer and various offsets and constants.
+- `update_descending_offsets`: Retrieves a pointer from a table and performs ten calls to another routine using decreasing offsets and specific constant values.
+- `process_mixed_segments`: Retrieves a pointer from a table and performs twenty-one calls to another routine using a combination of increasing and decreasing offsets and constants.
+- `allocate_message_entry`: The routine attempts to allocate a message buffer, and if successful, populates several fields of that buffer with parameters and a value from another routine before dispatching it.
+- `delete_port`: The routine removes the port from a global list if a specific field is non-zero, sets status fields to indicate deletion, frees the associated signal bit, and releases the memory block.
+- `call_open`: Library stub: loads its arguments and the dos library base, calls Open and returns its result to the caller.
+- `call_close`: Library stub: loads its arguments and the dos library base, calls Close and returns its result to the caller.
+- `call_read`: Library stub: loads its arguments and the dos library base, calls Read and returns its result to the caller.
+- `call_write`: Library stub: loads its arguments and the dos library base, calls Write and returns its result to the caller.
+- `call_input`: Library stub: loads its arguments and the dos library base, calls Input and returns its result to the caller.
+- `call_output`: Library stub: loads its arguments and the dos library base, calls Output and returns its result to the caller.
+- `call_seek`: Library stub: loads its arguments and the dos library base, calls Seek and returns its result to the caller.
+- `call_io_err`: Library stub: loads its arguments and the dos library base, calls IoErr and returns its result to the caller.
+- `call_delay`: Library stub: loads its arguments and the dos library base, calls Delay and returns its result to the caller.
+- `read_asset_file`: Retrieves a value from a global table, calls a routine to copy strings, and then calls another routine to process data from a file, returning zero.
+- `unpack_and_expand_asset_data_2`: Reads data from a file into a buffer and expands nibble-packed bytes into 16-bit words stored in a destination array.
+- `unpack_and_expand_asset_data`: Unpacks nibbles from a buffer into 16-bit words and stores them in a destination array, then enters a loop to read further data and copy bytes from the unpacked buffer into a secondary structure using nested loops and pointer arithmetic.
+- `process_body_data_structure`: Reads data from a file into a buffer and performs nested loops to update a structure based on the loaded values.
+- `call_dos_read`: Pushes a value to the stack, calls a routine at an offset from a pointer in a parameter, and then either returns or sets a register and restores registers before returning.
+- `update_and_iterate_structure`: Updates a 16-bit value in a structure based on a returned value, updates a global minimum value from a table, and executes nested loops that call another routine and process data through pointers depending on the value of a global variable.
+- `frag_addq_bra`: Short code fragment that adds 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_addq_bra_2`: Short code fragment that adds 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `process_nested_loops`: If a global variable equals 1, it executes nested loops that call another routine using values from a structure in a5 and a table, then returns 0; otherwise it returns 1.
+- `frag_addq_bra_3`: Short code fragment that adds 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `function_epilogue_8`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `function_epilogue_9`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `process_byte_stream_data`: Iterates through a memory range pointed to by a parameter, calling another routine to retrieve a value and then using that value to determine how many subsequent bytes to retrieve and store into the destination buffer via a loop.
+- `process_byte_stream`: Performs a loop that increments a byte at a negative offset from a5, and while that byte is not zero, it decrements it, increments a 32-bit value at a negative offset from a5, and calls another routine to store the result at a pointer located at a negative offset from a5.
+- `function_epilogue_10`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
+- `decrement_and_copy_byte`: Links a5, moves a 16-bit word from a global variable into d0, stores d0 on the stack, decrements d0, updates the global variable with the new d0 value, checks if the stack value is zero, otherwise moves a pointer from a global variable to a0, increments that pointer, moves a byte from the address in a0 into d0, and returns.
+- `call_read_and_store_result`: Pushes a pointer from a structure in a5 onto the stack, calls a routine, and if the result is not zero, stores the result in a global variable and unlinks a5; otherwise, it sets d0 to 255 and returns.
+- `decrement_and_store_pointer`: Decrements a 16-bit word in a global variable, stores a new 32-bit pointer at a global variable, and returns a byte from the address pointed to by the original pointer location.
+- `open_file_with_constant`: Clears a 32-bit global variable and calls a routine with a constant value and a parameter passed through the stack.
+- `read_data_from_file`: Calls a routine using three parameters retrieved from the stack, including a value from an offset of the stack frame.
+- `close_file_handle`: Calls a routine using a parameter retrieved from the stack.
+- `seek_file_twice`: Calls a routine twice with different parameters, specifically using a constant value and a negative one value for the second parameter in the second call.
+- `seek_to_end`: Calls a routine with a parameter from the stack and a constant value of negative one as the third argument.
+- `open_file_with_error_handling`: Calls a routine and, if the result is zero, calls another routine to update a global variable; otherwise, it sets the global variable to zero.
+- `check_status_and_return_code`: Links a5, checks if a long value at an offset of a5 is zero, checks if a 16-bit word in a global variable is zero, and if neither is true, moves the value 242 into d0 and returns.
+- `handle_io_error_and_close`: Compares the result of a routine called with three arguments from a structure in a5 against a value at offset 16 of that structure; if they differ, it stores a value from a routine call into a global variable, calls another routine with an argument from the structure, and returns that global value; otherwise, it returns zero.
+- `function_epilogue_11`: Function exit sequence shared or jumped to by a routine: puts the result in d0, removes the stack frame with unlk, then returns to the caller.
+- `read_with_error_management`: Checks two conditions before calling a routine; if the call result does not match a parameter, it calls another routine to update a global variable and then calls a third routine.
+- `verify_roster_checksum`: Opens a file, reads its contents into a global variable, and performs a XOR checksum loop over the data to validate it against a constant value.
+- `verify_checksum_and_call`: Calls a routine with a pointer and an offset, performs a loop to XOR bytes from a global buffer to calculate a checksum, and then calls another routine with the result.
+- `xor_and_call_logic`: Xors a 16-bit word at an offset of a pointer with a constant, stores a byte from that location into a global variable, and performs conditional calls.
+- `manage_data_file_access`: Manages data access by performing conditional library calls, reading values from a table based on a parameter, and calculating the difference between two consecutive 32-bit values in that table.
+- `frag_move_rts_4`: Short code fragment that copies a fixed memory address to d0, then returns.
+- `call_reschedule`: Library stub: loads its arguments and the exec library base, calls Reschedule and returns its result to the caller.
+- `initialize_bytecode_execution_environment`: Sets up a series of global variables and calls various subroutines to configure bytecode parameters, load resources, and update coordinate tables.
+- `frag_bra_39`: Short code fragment that jumps to another point in the code.
+- `frag_bra_40`: Short code fragment that jumps to another point in the code.
+- `frag_bra_41`: Short code fragment that jumps to another point in the code.
+- `frag_bra_42`: Short code fragment that jumps to another point in the code.
+- `frag_bra_43`: Short code fragment that jumps to another point in the code.
+- `frag_bra_44`: Short code fragment that jumps to another point in the code.
+- `frag_bra_45`: Short code fragment that jumps to another point in the code.
+- `frag_bra_46`: Short code fragment that jumps to another point in the code.
+- `frag_bra_47`: Short code fragment that jumps to another point in the code.
+- `frag_move_andi_bra`: Short code fragment that copies a fixed memory address to d0, then masks d0 with 2, then copies d0 to a fixed memory address, then jumps to another point in the code.
+- `frag_clr_bra_move_andi`: Short code fragment that clears a fixed memory address, then jumps to another point in the code, then copies a fixed memory address to d0, then masks d0 with 1, then copies d0 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_bra_15`: Short code fragment that copies 1 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_ori_bra`: Short code fragment that copies a fixed memory address to d0, then merges 1 into d0, then copies d0 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_bra_16`: Short code fragment that copies 2 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_ori_bra_2`: Short code fragment that copies a fixed memory address to d0, then merges 2 into d0, then copies d0 to a fixed memory address, then jumps to another point in the code.
+- `configure_execution_parameters`: Configures execution parameters based on input values, updates table entries, performs scaled division operations, and manages coordinate list processing with various offsets and conditions.
+- `iterate_coordinate_list_recursively`: Iterates through a byte list by performing recursive calls and updates a global variable to zero.
+- `process_coordinate_list_recursively_2`: Iterates through a list of bytes, performing recursive calls using values from the list and a running sum, and continues until it encounters a byte with the high bit set.
+- `count_list_elements`: Iterates through a list of bytes starting at a pointer, incrementing a counter for every byte encountered that is less than 128, and then calls another routine with the pointer and the calculated count.
+- `loop_until_non_zero`: Enters a loop that calls a routine and stores the result in a local variable, breaking the loop if the value is non-zero or returning zero if a counter matches the input parameter.
+- `execute_sequence`: Links a5, pushes a 32-bit value of zero onto the stack, calls another routine, adjusts the stack pointer, calls a third routine, unlinks a5, and returns.
+- `frag_jsr_rts`: Short code fragment that calls another routine, then returns.
+- `frag_jsr_rts_2`: Short code fragment that calls another routine, then returns.
+- `frag_jsr_rts_3`: Short code fragment that calls another routine, then returns.
+- `frag_jsr_rts_4`: Short code fragment that calls another routine, then returns.
+- `empty_stub_8`: Empty routine: returns to the caller immediately without doing anything.
+- `repack_bit_fields`: Loops 32 times to extract bits from a global buffer and packs them into a new array of 16-bit words by shifting and combining three bytes at a time, then calls three other routines.
+- `frag_jsr_clr_rts`: Short code fragment that calls another routine, then clears a fixed memory address, then returns.
+- `frag_jsr_rts_5`: Short code fragment that calls another routine, then returns.
+- `frag_jsr_rts_6`: Short code fragment that calls another routine, then returns.
+- `execute_bytecode_script_sequence`: Sets a global flag and executes a sequence of bytecode instructions that configure port signals, update dual coordinates, and process coordinate lists.
+- `execute_bytecode_sequence_2`: Sets a global flag, calls several routines to process data from a table and a global variable, and updates a local status value before returning.
+- `execute_parameterized_subroutines`: Sets a global variable to one and then calls various routines with different combinations of constant values, a global variable, and immediate values.
+- `process_event_loop`: Sets a global variable to zero, calls another routine, and then enters a loop that decrements a global counter and calls various routines based on a value retrieved from a pointer.
+- `update_entity_position`: Processes an entity structure by checking its type and updating its position using a lookup table and bounds checking.
+- `compare_and_exit`: Loads a 16-bit word from an offset of negative 8 from a5, compares it to a 16-bit word at offset 38 of a5, and if they are not equal, sets d0 to 253, restores registers d2 and d3 from the stack, unlinks a5, and returns; otherwise it returns.
+- `calculate_jump_offset`: Loads a 16-bit word from an offset of negative 8 from a5, extends it to a 32-bit long, subtracts 145, and then either branches if the result is less than zero or performs a jump to an address calculated by shifting the result left by 2 and adding 16 to the program counter.
+- `frag_clr_bra`: Short code fragment that clears the memory at an offset from a5, then jumps to another point in the code.
+- `function_epilogue_12`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `call_table_function`: Updates a global variable with a 16-bit value from the stack, calls a function pointer from a table using four parameters, and compares a 16-bit value.
+- `process_table_and_library`: Updates a global variable with a 16-bit value from the stack, calls a function pointer from a table using four parameters, compares a 16-bit value at an offset of the stack frame to 3, and decrements a value in a structure in a5, calling another routine and a library function if the original value was not zero.
+- `update_coordinate_pattern`: Decrements two 16-bit values by 1 and 2 respectively, then executes two loops that each run five times to call various routines using modified coordinate parameters and a global variable.
+- `iterate_coordinate_range`: Decrements two 16-bit values in a structure by 5 and 1 respectively, then enters a loop that executes five times.
+- `call_routine_with_argument`: Calls another routine with nine as an argument and returns.
+- `configure_hardware_and_execute_state_loop`: Initializes several global variables and hardware port sequences, then enters a loop that executes different routines based on a state variable, including a complex case that processes a table of data and updates global counters.
+- `frag_bsr_bra`: Short code fragment that calls execute_conditional_logic, then calls another routine, then jumps to another point in the code.
+- `frag_bsr_bra_2`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `frag_clr_bsr_addq_bra`: Short code fragment that clears the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_moveq_move_bsr_addq_bra`: Short code fragment that loads 1 into d0, then copies d0 to the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `handle_event_processing`: Manages event loop processing by calling recursive coordinate list functions with specific parameters, updates table entries, and configures bytecode parameters based on global variable values.
+- `frag_bsr_bra_3`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `frag_moveq_move_bsr_addq_bra_2`: Short code fragment that loads 5 into d0, then copies d0 to the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_moveq_move_bsr_addq_bra_3`: Short code fragment that loads 5 into d0, then copies d0 to the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_moveq_move_bsr_addq_bra_4`: Short code fragment that loads 9 into d0, then copies d0 to the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_bsr_bra_4`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `frag_moveq_move_bsr_addq_bra_5`: Short code fragment that loads 9 into d0, then copies d0 to the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `process_coordinate_lists`: Processes multiple coordinate lists recursively, stores word pairs to global variables, and handles conditional execution based on hardware state and port signal configurations.
+- `execute_conditional_logic`: Calls two routines, calls a third routine with a constant, and if a global variable is zero, calls a fourth routine with several calculated parameters.
+- `manage_state_timers_and_logic`: Decrements two global counters and conditionally calls other routines based on bitmasks in a 16-bit value, while also updating a global counter and performing table-based updates using specific parameter sets.
+- `update_state_logic`: Checks bitmasks against a 16-bit word at offset negative 2 of a structure in a5 to conditionally call a function pointer, update a global variable, or decrement a global variable and call another routine.
+- `update_fixed_point_state_2`: Checks bitmasks against a 16-bit word at offset negative 2 from a5 to conditionally update a global variable, increment a counter, or call a routine; otherwise it performs a fixed-point division and stores a shifted value into a structure at offset negative 4 from a5.
+- `update_fixed_point_state`: Checks bitmasks against a 16-bit word at offset negative 2 from a5 to conditionally update a global variable, increment a counter, or perform a calculation involving a bit-shifted value and a new word stored at offset negative 2.
+- `perform_fixed_point_division_2`: Checks if a 16-bit word at an offset of negative 2 from a5 satisfies a bitmask, and if so, calls a routine, stores a shifted version of the result in a global variable at offset negative 4 from a5, updates a 16-bit word at offset negative 2 from a5, calls another routine, and sets a global variable to 8.
+- `configure_port_signals_3`: Calls a routine with the value 7, then calls another routine twice with specific four-parameter configurations involving constants.
+- `process_coordinate_list_3`: Updates several global variables using values from a structure in a5 and the stack, and calls multiple routines including one that copies a null-terminated byte string to a buffer.
+- `update_table_entry_4`: Sets a global variable to zero, calls another routine, calls a third routine with four parameters, and sets a global variable to 1.
+- `configure_and_process_coordinates_2`: Reads a word value from global memory, performs bit operations on it to calculate an address, calls a function to configure hardware signals, and updates a table entry with the result.
+- `configure_port_signals_and_update`: Reads a word value from global memory, performs bit operations on it, calculates an address using the result, calls a function to configure port signals with calculated parameters, and updates coordinate indices.
+- `update_coordinate_index_and_call`: Decrements a byte value at a global memory location, performs multiplication and address calculations, loads a byte from a calculated address to update the same memory location, then calls a library function with specific parameters including a calculated address and a constant value.
+- `frag_addq_bra_4`: Short code fragment that adds 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `update_coordinate_loop`: Initializes a global variable to 2, performs multiple operations including memory buffer comparisons and recursive coordinate processing, then updates table entries before returning.
+- `update_coordinate_data_5`: Updates dual coordinates by calling recursive coordinate list functions with specific parameters, performs multiplication operations, and processes coordinate lists with various memory access patterns.
+- `handle_event_loop`: Handles event loop processing by calling recursive coordinate list functions with specific parameters, manages stack operations, and updates global variables related to event handling.
+- `frag_moveq_move_bsr_addq_movem_unlk_rts`: Short code fragment that loads 60 into d0, then copies d0 to the stack, then calls loop_until_match_or_nonzero, then adds 4 to a7, then copies 4 to a fixed memory address, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
+- `manage_port_signals`: Configures port signals by checking multiple ranges, updating dual coordinates, storing word pairs to global variables, and processing coordinate lists with specific memory operations.
+- `function_epilogue_17`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `update_coordinate_data_6`: Processes coordinate data by calling functions to update dual coordinates and process coordinate lists, performs arithmetic operations on word values, and manages a loop counter for coordinate processing.
+- `handle_event_loop_and_update_coordinates`: Processes coordinate data by calling functions to update dual coordinates and process coordinate lists.
+- `frag_move_subq_ext_bsr_addq_bra`: Short code fragment that copies a fixed memory address to d0, then subtracts 1 from d0, then copies d0 to a fixed memory address, then sign-extends d0, then copies d0 to the stack, then calls another routine, then adds 4 to a7, then copies 4 to a fixed memory address, then jumps to another point in the code.
+- `handle_event_loop_and_update`: Sets a global byte variable to one, prepares several parameters for an event loop handler, calls the event loop function, stores the result to a local word variable, compares the result with a specific value, and updates another global variable when the comparison succeeds.
+- `update_coordinate_table_3`: Copies a word value from offset -2 of the structure in a5 to a global variable, compares values with another global variable, and updates table entries based on comparison results.
+- `frag_clr_bra_2`: Short code fragment that clears a fixed memory address, then jumps to another point in the code.
+- `function_epilogue_18`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `update_coordinate_table_2`: Updates coordinate table entries by performing multiplication operations, accessing memory locations, and processing coordinate lists with specific offset calculations.
+- `update_coordinate_table`: Updates coordinate table entries by performing multiplication operations, accessing memory locations, and processing coordinate lists with various offsets and conditional branches.
+- `frag_moveq_move_bsr_addq_unlk_rts`: Short code fragment that loads 30 into d0, then copies d0 to the stack, then calls loop_until_match_or_nonzero, then adds 4 to a7, then removes the stack frame held in a5, then returns.
+- `process_input_dispatch`: Handles input event dispatch by calling library functions, managing state timers, and processing hex string formatting with specific conditional jumps based on global variable values.
+- `frag_ori_bra_3`: Short code fragment that merges an address into d1, then merges 153 into d0, then jumps to another point in the code.
+- `frag_ori_bra_4`: Short code fragment that merges an address into the memory at a4, then merges 152 into d0, then jumps to another point in the code.
+- `frag_ori_bra_5`: Short code fragment that merges an address into the top of the stack, then merges 147 into d0, then jumps to another point in the code.
+- `frag_ori_bra_6`: Short code fragment that merges an address into the memory at a6, then merges 146 into d0, then jumps to another point in the code.
+- `frag_move_ext_subq_cmp_bne_clr_bra`: Short code fragment that copies a fixed memory address to d0, then sign-extends d0, then subtracts 1 from d0, then copies the memory at an offset from a5 to d1, then sign-extends d1, then compares d1 with d0, then branches if the last result was not zero, then clears the memory at an offset from a5, then jumps to another point in the code.
+- `frag_addq_move_ext_bsr_bra`: Short code fragment that adds 1 to the memory at an offset from a5, then copies the memory at an offset from a5 to d0, then sign-extends d0, then copies d0 to the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_tst_bne_move_subq_bra`: Short code fragment that tests the memory at an offset from a5, then branches if the last result was not zero, then copies a fixed memory address to d0, then subtracts 1 from d0, then copies d0 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_subq_move_ext_bsr_addq_bra`: Short code fragment that subtracts 1 from the memory at an offset from a5, then copies the memory at an offset from a5 to d0, then sign-extends d0, then copies d0 to the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_move_bra_17`: Short code fragment that copies the memory at an offset from a5 to a fixed memory address (2 times in a row), then jumps to another point in the code.
+- `function_epilogue_19`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
+- `process_hex_string_formatting`: Processes hex string formatting by calling library functions, handling coordinate list operations, and managing function pointer calls with specific parameters for string conversion.
+- `frag_bsr_movem_unlk_rts`: Short code fragment that calls update_table_entry_4, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
+- `format_hex_string`: Iterates through a list of pointers, calling another routine with byte values from the list, converting a 16-bit word into four ASCII characters stored in a global array, replacing leading zeros with spaces, and calling a fourth routine.
+- `initialize_list_pointer`: Clears a 16-bit word at offset negative 6 from a5, loads a 16-bit value from a global variable, and if that value minus 3 is zero, it branches to another routine; otherwise it stores a 16-bit value at offset 18 of a global variable and branches to another routine.
+- `convert_and_print_list`: Sets a global variable, calls another routine, and enters a loop that iterates through a list of pointers, performing 32-bit fixed-point division, storing values in global variables, and calling routines to convert and print characters until a null pointer is encountered.
+- `convert_and_print_values`: Iterates through a list of pointers, calling another routine with byte values, calling a third routine, incrementing a value in a structure, and then repeatedly calls other routines to convert and store characters in a global variable while replacing leading zeros with spaces.
+- `update_table_entry_2`: Clears d0 and d1, pushes d1 to the stack, calls another routine, and then unlinks a5 before returning.
+- `manage_state_timers_and_input`: Reads a word value from global memory, performs comparisons against specific constants, calls functions to perform scaled division and manage state timers, processes input events, and handles conditional jumps based on input values.
+- `frag_ori_bra_7`: Short code fragment that merges an address into the memory at a1 (advancing a1), then merges 148 into d0, then jumps to another point in the code.
+- `frag_ori_bra_8`: Short code fragment that merges an address into the memory at a0 (advancing a0), then merges 151 into d0, then jumps to another point in the code.
+- `frag_ori_bra_9`: Short code fragment that merges an address into the memory at a3, then merges 150 into d0, then jumps to another point in the code.
+- `frag_ori_bra_10`: Short code fragment that merges an address into the memory at a2, then merges 145 into d0, then jumps to another point in the code.
+- `frag_ori_bra_11`: Short code fragment that merges an address into d3, then merges 130 into d0, then jumps to another point in the code.
+- `frag_cmpi_bne_move_bra`: Short code fragment that compares the memory at an offset from a5 with 5, then branches if the last result was not zero, then copies 6 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_bra_18`: Short code fragment that copies 8 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_bra_19`: Short code fragment that copies the memory at an offset from a5 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_cmpi_bne_clr_bra`: Short code fragment that copies a fixed memory address to d0, then compares d0 with 16, then branches if the last result was not zero, then clears a fixed memory address, then jumps to another point in the code.
+- `increment_state_counter`: Increments a byte value in global memory, compares it against specific constants, updates the value to predefined constants when comparisons fail, and calls another routine with extended word data from a5 offset.
+- `frag_move_tst_bne_bra`: Short code fragment that copies a fixed memory address to d0, then tests d0, then branches if the last result was not zero, then copies 16 to a fixed memory address, then jumps to another point in the code.
+- `decrement_state_counter`: Decrements a byte value in global memory, compares it against specific constants, updates the value to predefined constants when comparisons fail, and calls another routine with extended word data from a5 offset.
+- `function_epilogue_20`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
+- `process_coordinate_list_and_update`: Loads a byte value from global memory, performs bit shifting and arithmetic operations to calculate an index, uses that index to call a coordinate processing function, stores word pairs to global variables, initializes a local counter, and handles conditional logic based on comparison results.
+- `process_bytecode_handler`: Processes coordinate data recursively, stores word values to global variables, then loads and jumps to a bytecode handler address from a table using a global variable as index.
+- `load_bytecode_handler`: Loads a bytecode handler address from a table using a global variable's value as index, then jumps to that address.
+- `frag_bra_48`: Short code fragment that jumps to another point in the code.
+- `frag_bra_49`: Short code fragment that jumps to another point in the code.
+- `frag_bra_50`: Short code fragment that jumps to another point in the code.
+- `frag_bra_51`: Short code fragment that jumps to another point in the code.
+- `frag_bra_52`: Short code fragment that jumps to another point in the code.
+- `frag_bra_53`: Short code fragment that jumps to another point in the code.
+- `frag_bra_54`: Short code fragment that jumps to another point in the code.
+- `frag_bra_55`: Short code fragment that jumps to another point in the code.
+- `frag_bra_56`: Short code fragment that jumps to another point in the code.
+- `frag_bra_57`: Short code fragment that jumps to another point in the code.
+- `frag_move_jsr_addq_bra`: Short code fragment that copies a fixed memory address to the stack (2 times in a row), then calls process_and_store_byte_stream, then adds 8 to a7, then copies d0 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_jsr_addq_bra_2`: Short code fragment that copies a fixed memory address to the stack (2 times in a row), then calls process_and_store_byte_stream, then adds 8 to a7, then copies d0 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_jsr_addq_bra_3`: Short code fragment that copies a fixed memory address to the stack (2 times in a row), then calls process_and_store_byte_stream, then adds 8 to a7, then copies d0 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_jsr_addq_bra_4`: Short code fragment that copies a fixed memory address to the stack (2 times in a row), then calls process_and_store_byte_stream, then adds 8 to a7, then copies d0 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_jsr_addq_bra_5`: Short code fragment that copies a fixed memory address to the stack (2 times in a row), then calls process_and_store_byte_stream, then adds 8 to a7, then copies d0 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_jsr_addq_bra_6`: Short code fragment that copies a fixed memory address to the stack (2 times in a row), then calls process_and_store_byte_stream, then adds 8 to a7, then copies d0 to a fixed memory address, then jumps to another point in the code.
+- `setup_bytecode_parameters_3`: Sets up bytecode parameters by checking a global variable, calling setup functions with specific values, and updating table entries when conditions are met.
+- `process_coordinate_data_and_dispatch`: Initializes a local counter to zero, calls functions to perform scaled division and manage state timers, processes input events, updates coordinate patterns, and calls recursive coordinate processing functions with different parameters.
+- `process_coordinate_data_3`: Processes coordinate data by calculating memory addresses, storing results to global variables, and performing conditional jumps based on comparison operations with global values.
+- `frag_ori_bra_12`: Short code fragment that merges an address into the memory at a1 (advancing a1), then merges 148 into d0, then jumps to another point in the code.
+- `frag_ori_bra_13`: Short code fragment that merges an address into the memory at a0 (advancing a0), then merges 151 into d0, then jumps to another point in the code.
+- `frag_ori_bra_14`: Short code fragment that merges an address into the memory at a3, then merges 150 into d0, then jumps to another point in the code.
+- `frag_ori_bra_15`: Short code fragment that merges an address into the memory at a2, then merges 145 into d0, then jumps to another point in the code.
+- `frag_ori_bra_16`: Short code fragment that merges an address into d4, then merges 130 into d0, then jumps to another point in the code.
+- `frag_move_bra_20`: Short code fragment that copies 6 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_bra_21`: Short code fragment that copies 7 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_ext_subq_cmp_bne_clr_bra_2`: Short code fragment that copies a fixed memory address to d0, then sign-extends d0, then subtracts 1 from d0, then copies a fixed memory address to d1, then sign-extends d1, then compares d1 with d0, then branches if the last result was not zero, then clears a fixed memory address, then jumps to another point in the code.
+- `frag_move_addq_bsr_bra`: Short code fragment that copies a fixed memory address to d0, then adds 1 to d0, then copies d0 to a fixed memory address, then calls another routine, then jumps to another point in the code.
+- `frag_move_tst_bne_subq_bra`: Short code fragment that copies a fixed memory address to d0, then tests d0, then branches if the last result was not zero, then copies a fixed memory address to d0, then subtracts 1 from d0, then copies d0 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_subq_bsr_bra`: Short code fragment that copies a fixed memory address to d0, then subtracts 1 from d0, then copies d0 to a fixed memory address, then calls another routine, then jumps to another point in the code.
+- `frag_move_bra_22`: Short code fragment that copies 9 to a fixed memory address, then jumps to another point in the code.
+- `function_epilogue_21`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `handle_coordinate_stream_and_dispatch`: Processes coordinate data recursively with different parameters, stores word pairs to global variables, processes coordinate data recursively again, loads a value from global memory, performs conditional jumps based on that value, calculates an address using bit shifts, loads a word from that address, and calls another routine with the accumulated value.
+- `load_and_accumulate_coordinate`: Loads a word value from a global memory location, extends it to long format, shifts it left by one bit, uses it as an address offset, adds another constant to that address, then loads a word from the resulting address and stores it to a global variable.
+- `handle_coordinate_stream`: Handles coordinate stream processing by calling recursive functions, managing byte stream operations, and updating global variables with specific word pairs and parameters.
+- `process_coordinate_data`: Processes coordinate data by calling recursive coordinate list functions, handling conditional execution based on byte values, and managing function pointer calls with stack operations.
+- `initialize_and_process_coordinates`: Initializes a local counter to zero, reads a word value from global memory, extends it to long format, and pushes it onto the stack before calling another routine.
+- `frag_ori_bra_17`: Short code fragment that merges an address into the memory at a1 (advancing a1), then merges 148 into d0, then jumps to another point in the code.
+- `frag_ori_bra_18`: Short code fragment that merges an address into the memory at a0 (advancing a0), then merges 151 into d0, then jumps to another point in the code.
+- `frag_ori_bra_19`: Short code fragment that merges an address into the memory at a3, then merges 150 into d0, then jumps to another point in the code.
+- `frag_ori_bra_20`: Short code fragment that merges an address into the memory at a2, then merges 145 into d0, then jumps to another point in the code.
+- `frag_ori_bra_21`: Short code fragment that merges an address into d4, then merges 131 into d0, then jumps to another point in the code.
+- `frag_move_bra_23`: Short code fragment that copies the memory at an offset from a5 to a fixed memory address, then jumps to another point in the code.
+- `frag_cmpi_bne_move_bra_2`: Short code fragment that compares the memory at an offset from a5 with 5, then branches if the last result was not zero, then copies 7 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_bra_24`: Short code fragment that copies 10 to a fixed memory address, then jumps to another point in the code.
+- `compare_coordinate_values`: Loads a byte value from global memory, tests if it's non-zero, compares a word value from global memory with another word value, and performs conditional jumps based on the comparison result.
+- `frag_move_addq_ext_bsr_bra`: Short code fragment that copies a fixed memory address to d0, then adds 1 to d0, then copies d0 to a fixed memory address, then copies the memory at an offset from a5 to d0, then sign-extends d0, then copies d0 to the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_move_tst_bne_subq_bra_2`: Short code fragment that copies a fixed memory address to d0, then tests d0, then branches if the last result was not zero, then copies a fixed memory address to d0, then tests d0, then branches if the last result was not zero, then copies a fixed memory address to d0, then subtracts 1 from d0, then copies d0 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_subq_ext_bsr_addq_bra_2`: Short code fragment that copies a fixed memory address to d0, then subtracts 1 from d0, then copies d0 to a fixed memory address, then copies the memory at an offset from a5 to d0, then sign-extends d0, then copies d0 to the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `function_epilogue_22`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
+- `process_coordinate_stream`: Initializes a counter in a local variable, checks for specific conditions, processes coordinate data through multiple recursive functions, stores word pairs to global variables, configures port signals with several parameters, and updates a global counter based on comparison results.
+- `process_byte_stream_data_2`: Processes byte stream data by calling stream functions, storing word pairs to global variables, and configuring bytecode parameters with specific values and memory operations.
+- `setup_stream_processing`: Sets up stream processing by calling byte stream functions, storing word pairs to global variables, and configuring bytecode parameters with specific values for different data streams.
+- `initialize_and_manage_global_counters`: Initializes several global byte variables to zero or one, calls a routine to process coordinate data, updates counters, and handles conditional jumps based on comparisons with specific constants.
+- `frag_ori_bra_22`: Short code fragment that merges an address into the memory at a4, then merges 152 into d0, then jumps to another point in the code.
+- `frag_ori_bra_23`: Short code fragment that merges an address into the memory at a6, then merges 146 into d0, then jumps to another point in the code.
+- `frag_ori_bra_24`: Short code fragment that merges an address into d4, then merges 130 into d0, then jumps to another point in the code.
+- `frag_move_bra_25`: Short code fragment that copies 8 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_bra_26`: Short code fragment that copies 10 to a fixed memory address, then jumps to another point in the code.
+- `process_coordinate_data_with_table_lookup`: Loads a byte value from global memory, calculates an address using that value, compares a word value from the calculated address with another word value, and performs conditional jumps based on the comparison result.
+- `update_coordinate_pattern_2`: Loads a byte value from global memory, calculates an address using that value, compares the loaded value with a word from the calculated address, and updates the byte at the calculated address based on the comparison result.
+- `update_counter_and_load_byte`: Increments a byte value at a global memory location, uses that value as an index to calculate an address, loads a byte from that address, performs bitwise AND with 255, stores the result as a word in a local variable, and handles conditional logic based on the counter value.
+- `update_global_counter_4`: Increments a word value at offset -4 of the structure in a5 and stores a long value from register d0 to the stack, then calls a routine with two long values on the stack before returning.
+- `function_epilogue_23`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `process_coordinate_data_recursively`: Sets up bytecode parameters for coordinate processing, initializes a counter to zero, calls recursive coordinate processing functions with different parameters, and stores word pairs to global variables.
+- `process_recursive_coordinate_data`: Initializes a word counter to zero, processes coordinate data recursively twice with different parameters, stores word pairs to global variables, performs arithmetic operations on values from global memory, and handles conditional logic based on comparison results between local and global values.
+- `process_coordinate_data_4`: Loads a word value from memory at offset 40248 plus the address in register a0, performs bitwise AND with 255, and stores the result to offset -4 of the structure in a5.
+- `handle_coordinate_updates`: Handles coordinate updates by checking a global variable, performing arithmetic operations on stack values, and calling table processing functions with specific parameters.
+- `configure_and_process_coordinates`: Initializes a global variable to zero, updates a table entry with the value, stores word pairs to global variables, processes coordinate data recursively, handles conditional logic based on byte comparisons, and manages counter values with specific arithmetic operations.
+- `handle_coordinate_logic`: Clears a word value at offset 0 of a table, calls a conditional logic routine, then processes coordinate data based on a comparison result with value 1 before returning.
+- `frag_move_ext_pea_jsr_addq_bra`: Short code fragment that copies the memory at an offset from a5 to d0, then sign-extends d0, then copies d0 to the stack, then pushes the address of a fixed memory address onto the stack, then calls process_coordinate_list_recursively_2, then adds 8 to a7, then copies d0 to the memory at an offset from a5, then jumps to another point in the code.
+- `process_coordinate_data_2`: Reads coordinate values from global variables, performs arithmetic operations on them, and stores results back to global variables while calling several helper routines for processing.
+- `process_coordinate_loop`: Initializes a global variable to zero, performs arithmetic operations on stack values, and processes coordinate data in a loop until a counter reaches 12.
+- `update_tile_buffer`: Calculates a memory address based on a global variable value, writes a byte from another global variable to that location, and then calls library routines for tile processing.
+- `increment_and_call`: Calls a routine with a 16-bit parameter, increments the result if it is less than 9999, and then calls another routine with that result.
+- `sum_and_clamp_values`: Calls two routines with provided parameters, adds the results, clamps the sum to a maximum of 9999, and calls another routine with the final value.
+- `calculate_scaled_value`: Performs a loop four times where it adds the high word of a parameter to a running total multiplied by ten and shifts the parameter left by four bits each iteration before returning the total.
+- `calculate_extended_result`: Calls another routine multiple times and returns a 32-bit value constructed from the combined results of several registers.
+- `loop_until_match_or_nonzero`: Iterates through a loop, calling a routine and storing the result in a local variable, breaking if the value is non-zero or returning if a counter matches the input parameter.
+- `frag_tst_beq_addq_bra`: Short code fragment that tests the memory at an offset from a5, then branches if the last result was zero, then adds 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `function_epilogue_13`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
+- `configure_hardware_port_sequences`: Sets a global flag to one, then executes a sequence of calls to configure hardware ports using specific constants and global values, before resetting the flag to zero and performing several final calls.
+- `configure_bytecode_parameters`: Sets a global variable to 1, calls several routines to update global variables using values from a structure in a5 and a table, and clears a global variable before calling another routine.
+- `call_library_vector_30`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `update_game_state_and_dispatch_events`: Updates several global variables with calculated offsets and performs a switch-based lookup in a table to add values to a local variable.
+- `execute_state_machine_loop`: Performs a complex state machine loop that updates global variables, manages internal state transitions via a switch statement, and executes various subroutines based on the value of a global variable.
+- `frag_bra_58`: Short code fragment that jumps to another point in the code.
+- `frag_bra_59`: Short code fragment that jumps to another point in the code.
+- `load_and_accumulate_value`: Calculates an address based on a global variable, reads a word from that location, stores it in a global variable, calls a library routine, and adds the result to the stored value.
+- `initialize_game_state`: Initializes game state by reading from global variables, calculating offsets, and calling library routines.
+- `dispatch_conditional_system_updates`: Checks a global variable to select one of three execution paths, which perform a sequence of system state updates, display register configurations, and bytecode parameter calculations.
+- `execute_recursive_calls`: Performs a series of conditional recursive calls and updates several global variables, including one via a specific offset.
+- `dispatch_bytecode_logic`: Executes a sequence of calls including a library function, conditional logic based on a global variable, and a loop that processes a byte stream into a global buffer.
+- `execute_system_logic`: Performs multiple routine calls including a library function and conditional logic based on a global variable to update various global values.
+- `transfer_register_values`: Moves a byte from a memory location to a register, and if the register is non-zero, pushes two values onto the stack and calls another routine.
+- `execute_parameter_sequence`: Performs a sequence of routine calls with various parameters, updates a global variable, and uses a value from a global variable to determine which routine to call next.
+- `frag_move_subq_bne_moveq_bra`: Short code fragment that copies a fixed memory address to d0, then subtracts 1 from d0, then branches if the last result was not zero, then loads 6 into d0, then jumps to another point in the code.
+- `process_parameter_sequence`: Executes a sequence of calls that updates a global variable and performs a specific routine call with four parameters.
+- `update_system_state`: Executes a sequence of routine calls, performs several assignments to a global variable, and updates a global variable at one offset with a value from another global variable.
+- `initialize_game_state_and_tables_2`: Clears several global variables, performs table substitution, and populates a table with increments of 40.
+- `initialize_global_state`: Clears a global variable, calls several routines to update various global variables and structures, and performs multiple calls to other routines with specific constant parameters.
+- `manage_coordinate_processing_loop`: Initializes a global variable to zero, updates a table entry, processes memory buffers, handles byte stream data, stores word pairs to global variables, processes coordinate data recursively, and manages multiple counters with arithmetic operations based on conditional comparisons.
+- `process_coordinate_condition`: Clears a word value at offset -2 of the structure in a5, calls a routine with specific parameters, and processes coordinate data based on comparison results with value 1.
+- `frag_move_ext_pea_jsr_addq_bra_2`: Short code fragment that copies the memory at an offset from a5 to d0, then sign-extends d0, then copies d0 to the stack, then pushes the address of a fixed memory address onto the stack, then calls process_coordinate_list_recursively_2, then adds 8 to a7, then copies d0 to the memory at an offset from a5, then jumps to another point in the code.
+- `process_coordinate_list_2`: Processes coordinate data by calling recursive functions with specific parameters, stores word pairs to global variables, and handles conditional execution based on hardware register values.
+- `update_coordinate_and_call`: Reads a word from a structure at offset -2, extends it to long, and passes it to a library routine.
+- `initialize_bytecode_execution`: Initializes bytecode execution environment by setting multiple global variables to zero, calling several setup routines, and processing coordinate lists with different parameters.
+- `empty_stub_9`: Empty routine: returns to the caller immediately without doing anything.
+- `process_state_switch_logic`: Checks a global variable and, if zero, calls another routine; otherwise, it performs a switch based on a second global variable to execute different branches of logic involving various conditional checks and calls to another routine with different parameters, before clearing a global variable and calling another routine before returning.
+- `configure_port_signals_5`: Calls another routine, then performs several conditional checks on a value derived from a parameter.
+- `configure_port_signals_2`: Updates a table entry, stores a 16-bit value into a global variable at offset 3c8, and calls a routine to configure port signals using a global variable and four parameters.
+- `dispatch_parameter_based_calls`: Checks if a global variable is zero and if a parameter is not 1, 2, or 3; if these conditions are met, it calls another routine multiple times with different constant arguments based on the value of the parameter.
+- `process_table_entries_in_loop`: Checks if a global variable is less than 5 and zero, then enters a loop that iterates based on a bitmask, calculates values from a global variable and a table, and calls another routine with derived parameters if certain conditions are met.
+- `setup_pointer_chain`: Stores the address of its pointer argument into the memory location pointed to by the argument, adds four to that stored value, clears the next word in the pointed-to block, and stores the original pointer value into the following word.
+
+### Gunboat (1991)(Accolade)[cr CSL][a2](Disk 1 of 2).adf:echo
+
+- `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
+- `frag_move_bra_2`: Short code fragment that copies d1 to d0, then jumps to another point in the code.
+
+### Gunboat (1991)(Accolade)[cr CSL][a2](Disk 1 of 2).adf:Crystal
+
+- `depack_packed_stream_backward`: Decodes a packed stream by calling a bit-reader refill and a multi-bit read routine, copying literal and back-reference runs backwards into memory.
+- `bk_refill_bit_buffer`: Depacker bit reader refill: fetches the previous longword of the packed stream, folds it into the checksum and shifts out its lowest bit with a marker bit entering at the top.
+- `bk_read_bits`: Depacker bit reader: collects the number of bits given in D1 from the bit buffer into D2, most significant first, refilling from the packed stream whenever the buffer runs empty.
+
+### Gunboat (1991)(Accolade)[cr CSL][a2](Disk 1 of 2).adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_addq_rts`: Short code fragment that adds 1 to a fixed memory address, then returns.

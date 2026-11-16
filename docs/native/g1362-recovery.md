@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (1802240 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 44 raw-word lines |
-| Functions named and described | pass, 204 of 204 named (0 author symbols), 204 of 204 described (2 by rule, 200 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 0 of 0 (0.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 151040 bytes, 196 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 9956 of 10652 instructions identical in start and length, 0 mismatches |
+| Bytes classified (1809040 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 11 of 11 units identical (bytes and relocations), 46 raw-word lines |
+| Functions named and described | pass, 264 of 264 named (0 author symbols), 264 of 264 described (22 by rule, 232 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 160 of 160 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 151040 bytes, 206 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 11718 of 11821 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 22954 |
-| code | 45076 |
-| data | 1453151 |
-| padding | 995 |
+| asset | 25162 |
+| code | 49878 |
+| data | 1452936 |
+| padding | 1000 |
 | unused | 280064 |
 
 ## Code units
@@ -31,7 +31,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | logged disk load from Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf boot-block load | 1 | 88 | 4 |
 | logged disk load from Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf boot-block load | 1 | 94 | 3 |
 | logged disk load from Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf boot-block load | 1 | 0 | 0 |
-| Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf bytes 457728-549376 (code never loaded by a reference run) | 1 | 9811 | 182 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 26 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 998 | 49 |
+| Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf bytes 457728-549376 (code never loaded by a reference run) | 1 | 9956 | 192 |
 | Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf bytes 639488-642048 (code never loaded by a reference run) | 1 | 633 | 14 |
 | Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf bytes 694272-708096 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf bytes 722944-757248 (code never loaded by a reference run) | 1 | 0 | 0 |
@@ -41,14 +43,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - celtic legends (1991)(ubi soft)(m4)[cr skr](disk 1 of 2)/Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf: custom-format (non-DOS) disk, 1435 non-empty blocks: matched against track-loaded segments
 - celtic legends (1991)(ubi soft)(m4)[cr skr](disk 2 of 2)/Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 2 of 2).adf: custom-format (non-DOS) disk, 1527 non-empty blocks: matched against track-loaded segments
+- 110 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
 - celtic legends (1991)(ubi soft)(m4)[cr skr](disk 1 of 2)/Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf: the boot block reads 22528 bytes from disk offset 799744 to an address (found statically); recovered as a unit
 - celtic legends (1991)(ubi soft)(m4)[cr skr](disk 1 of 2)/Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf: the boot block reads 11264 bytes from disk offset 822272 to an address (found statically); recovered as a unit
 - celtic legends (1991)(ubi soft)(m4)[cr skr](disk 1 of 2)/Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf: the boot block reads 1024 bytes from disk offset 788480 to an address (found statically); recovered as a unit
+- runtime segment an address: 8 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 152 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - celtic legends (1991)(ubi soft)(m4)[cr skr](disk 1 of 2)/Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf: bytes 457728-549376 look like code no run loaded: recovered position-independently (load address unknown)
 - celtic legends (1991)(ubi soft)(m4)[cr skr](disk 1 of 2)/Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf: bytes 639488-642048 look like code no run loaded: recovered position-independently (load address unknown)
 - celtic legends (1991)(ubi soft)(m4)[cr skr](disk 1 of 2)/Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf: bytes 694272-708096 look like code no run loaded: recovered position-independently (load address unknown)
 - celtic legends (1991)(ubi soft)(m4)[cr skr](disk 1 of 2)/Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf: bytes 722944-757248 look like code no run loaded: recovered position-independently (load address unknown)
 - celtic legends (1991)(ubi soft)(m4)[cr skr](disk 2 of 2)/Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 2 of 2).adf: bytes 816640-825344 look like code no run loaded: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 address
 - celtic legends (1991)(ubi soft)(m4)[cr skr](disk 1 of 2)/Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf: 7 logged loads cover 177152 bytes of the image
 - celtic legends (1991)(ubi soft)(m4)[cr skr](disk 1 of 2)/Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf: blocks 2-893 (bytes 1024-457728) outside the filesystem hold data, not code (opcode density 0.003, entropy 4.18)
 - celtic legends (1991)(ubi soft)(m4)[cr skr](disk 1 of 2)/Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf: blocks 1079-1136 (bytes 552448-582144) outside the filesystem hold data, not code (opcode density 0.003, entropy 3.73)
@@ -119,14 +125,78 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `bk_refill_bit_buffer`: Depacker bit reader refill: fetches the previous longword of the packed stream, folds it into the checksum and shifts out its lowest bit with a marker bit entering at the top.
 - `bk_read_bits`: Depacker bit reader: collects the number of bits given in D1 from the bit buffer into D2, most significant first, refilling from the packed stream whenever the buffer runs empty.
 
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `copy_memory_block_3`: Copies 1871 bytes from a source address determined by a global variable to a destination address at offset 1480, then calls another routine.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_move_rts`: Short code fragment that copies d5 to a fixed memory address, then copies the top of the stack to d5, then returns.
+- `handle_interrupt_and_input`: Checks custom chip interrupt requests and processes them by calling other routines or updating hardware registers.
+- `handle_audio_interrupts`: Checks specific bits in the interrupt status register and, if set, decrements corresponding counters in a table, clears specific audio volume registers, and enables specific DMA channels before returning via an interrupt return.
+- `clear_interrupt_flags`: Checks if specific bits are set in both the interrupt enable and interrupt request registers, and if so, clears the corresponding bits in the interrupt request register.
+- `frag_movem_lea_move_and_btst_beq_rte`: Short code fragment that saves registers on the stack, then loads the address of a fixed memory address into a5, then copies the memory at an offset from a5 to d6, then masks d6 with the memory at an offset from a5, then tests bit 2 of d6, then branches if the last result was zero, then copies 4 to the memory at an offset from a5, then restores saved registers from the stack, then returns from the exception.
+- `copy_table_entries`: Copies 16 longwords from a table location determined by a global variable to a destination starting at offset 3acc.
+- `configure_blitter_transfer_parameters`: Saves a pointer to the stack, checks a global byte, and calls another routine if the byte is non-zero; otherwise, it tests bit 14 of a hardware register, and if that bit is clear, it moves a longword from a global variable to an offset of 84 in that hardware register before branching.
+- `initialize_structure_data`: Writes several longwords and a word to a structure pointed to by a6, then loops until a specific bit in a byte at offset 2 of that structure is cleared, after which it writes a different word to offset 58.
+- `frag_moveq_rts`: Short code fragment that loads 0 into d0, then loads 0 into d1, then loads 0 into d2, then loads 0 into d3, then loads 0 into d4, then loads 0 into d5, then loads 0 into d6, then loads 0 into d7, then returns.
+- `frag_clr_tst_bne_beq_sf_bra`: Short code fragment that clears a fixed memory address, then tests a fixed memory address, then branches if the last result was not zero, then tests a fixed memory address, then branches if the last result was zero, then clears a fixed memory address, then jumps to another point in the code.
+- `frag_cmp_bge_rts`: Short code fragment that compares d7 with a fixed memory address, then branches if the comparison was greater or equal, then returns.
+- `update_sprite_attributes`: Loops through a table of 32 words, extracts nibbles to determine bitmask values, and adds these values to a destination structure pointed to by a global variable, provided the vertical position register is at least 195.
+- `decrement_attribute_nibbles`: Loops through a table of 32 words, extracts three nibbles from each word, decrements non-zero nibbles, and writes the combined result back to the table, then performs a secondary loop based on a constant.
+- `decrement_attributes_conditionally`: If a global variable is positive, it decrements the variable and then loops through a table of 32 words to decrement non-zero nibbles and write the result back, finally updating the global variable with the loop counter.
+- `increment_attributes_with_bounds`: If a global variable is positive, it decrements the variable and then loops through a table of 32 words, incrementing nibbles only if they are less than a value derived from the current loop counter and the nibble's position, then writes the result back.
+- `frag_movem_movea_moveq_move_addq_dbra_r`: Short code fragment that saves registers on the stack, then copies a fixed memory address to a0, then loads 31 into d4, then loads 0 into d0, then copies d0 to the memory at an offset from a0, then adds 4 to a0, then loops back while counting down d4, then restores saved registers from the stack, then returns.
+- `frag_movem_movea_lea_moveq_move_addq_db`: Short code fragment that saves registers on the stack, then copies a fixed memory address to a1, then loads the address of a fixed memory address into a0, then loads 31 into d4, then copies the memory at a0 (advancing a0) to the memory at an offset from a1, then adds 4 to a1, then loops back while counting down d4, then restores saved registers from the stack, then returns.
+- `copy_memory_block_2`: copies sixteen words from a source pointer to a destination pointer using a loop.
+- `frag_move_moveq_bsr_rol_dbra_rts`: Short code fragment that copies an address to d2, then loads 8 into d3, then copies d2 to d7, then calls another routine, then rotates d2 left by 3, then loops back while counting down d3, then returns.
+- `apply_bitmask_to_buffers`: Calls another routine and then loops 1999 times, applying a bitwise mask derived from a rotating bit in d7 to five different memory buffers of 2000 words each.
+- `draw_blt_tile_sequence`: Sets up and executes a series of Blitter operations to draw tiles using specific color modes and area parameters, then updates a global variable by shifting it and performing bitwise operations based on a loop counter.
+- `frag_tst_beq_bne_move_bra`: Short code fragment that tests a fixed memory address, then branches if the last result was zero, then tests a fixed memory address, then branches if the last result was not zero, then copies a fixed memory address to a fixed memory address (2 times in a row), then jumps to another point in the code.
+- `frag_move_rts_2`: Short code fragment that copies a fixed memory address to a fixed memory address (2 times in a row), then returns.
+- `read_joystick_status`: Clears two global words, reads joystick and mouse button states from hardware registers, and sets a global word to one when specific bits are clear.
+- `configure_blitter_transfers`: Sets several hardware registers and memory locations to prepare for bitplane transfers.
+- `copy_memory_blocks_2`: Performs a large series of word and longword copies between various global memory locations.
+- `process_sprite_blt_chain`: Waits for the DMA controller to be idle, then iterates through a structure to update various counters and coordinate values.
+- `update_object_state_and_counters`: Updates a 16-bit value in a structure by adding an offset, checks if the value reaches a specific threshold to reset it and increment a counter, and performs conditional decrements on several internal counters and timers within the structure.
+- `frag_tst_bmi_subq_bra`: Short code fragment that tests the memory at an offset from a0, then branches if the last result was negative, then subtracts 2 from the memory at an offset from a0, then jumps to another point in the code.
+- `frag_addq_movea_tst_beq_subq_bra`: Short code fragment that adds 2 to the memory at an offset from a0, then copies the memory at an offset from a0 to a6, then tests the memory at an offset from a0, then branches if the last result was zero, then tests the memory at an offset from a0, then branches if the last result was zero, then subtracts 1 from the memory at an offset from a0, then jumps to another point in the code.
+- `decrement_and_update_structure_offsets`: Decrements a 16-bit word at offset 50 of the structure in a0, copies a word from offset 54 to offset 52, and updates a pointer at offset 48 by adding a signed 16-bit value from offset 46 to it.
+- `update_structure_offsets`: Subtracts 1 from a 16-bit word at offset 40 of a structure in a0, copies a word from offset 44 to offset 42, adds a word from offset 38 to d6, stores d6 at offset 24 of the structure, increments a1 by d6, and then checks words at offsets 48 and 50 to either decrement the word at offset 50 or return.
+- `frag_subq_move_add_bra`: Short code fragment that subtracts 1 from the memory at an offset from a0, then copies the memory at an offset from a0 to the memory at an offset from a0, then copies the memory at an offset from a0 to d6, then adds d6 to the memory at an offset from a0, then jumps to another point in the code.
+- `update_sprite_position_with_dma_wait`: Checks a value at offset 22 of a structure in a0; if it is greater than 20, it performs a series of updates to a structure in a5 by copying data from a table and adding offsets, waiting for the DMA controller to be idle between each update.
+- `frag_move_neg_movea_bsr_bra`: Short code fragment that copies the memory at an offset from a0 to d0, then negates d0, then copies d0 to a0, then calls another routine, then jumps to another point in the code.
+- `frag_cmpi_bne_move_seq_beq_addq_bra`: Short code fragment that compares a fixed memory address with 1, then branches if the last result was not zero, then copies 3 to a fixed memory address, then compares a fixed memory address with 16, then sets a fixed memory address if the last result was zero, then branches if the last result was zero, then adds 4 to a fixed memory address, then jumps to another point in the code.
+- `initialize_counters_and_call_function_2`: Clears a word in a global variable, sets four word values to 10000 in a table, updates a pointer in a global variable, and calls a routine a.
+- `initialize_counters_and_call_function`: Clears a word in a global variable, sets four word values to 10000 in a table, updates a pointer in a global variable, and calls a routine at a specific address before waiting for a DMA bit to clear.
+- `update_sprite_animation_and_blit`: Waits for the DMA controller to be idle, configures Blitter mode and color registers, and updates multiple internal counters and pointers within a structure pointed to by a0.
+- `update_structure_counters_2`: Updates a series of counters and pointers within a structure pointed to by a0, including decrementing multiple internal counters and updating linked list pointers or offsets when counters reach zero.
+- `frag_tst_bmi_subq_bra_2`: Short code fragment that tests the memory at an offset from a0, then branches if the last result was negative, then subtracts 2 from the memory at an offset from a0, then jumps to another point in the code.
+- `update_structure_counters`: Increments a longword at offset 2 of a structure, moves a pointer from offset 2 of that structure into a6, and then conditionally decrements a 16-bit word at offset 34 of the structure if a 16-bit word at offset 32 is non-zero, otherwise it returns.
+- `update_linked_list_and_counters`: Decrements a 16-bit word at offset 50 of a structure and shifts a word from offset 54 to offset 52.
+- `modify_offset_and_pointer`: Decrements a 16-bit word at offset 40 of a structure in a0, moves a word from offset 44 to offset 42, adds a word from offset 38 to d6, stores d6 at offset 24 of the structure, adds d6 to a1, and then branches based on the zero status of words at offsets 48 and 50, potentially decrementing the word at offset 50.
+- `frag_subq_move_add_bra_2`: Short code fragment that subtracts 1 from the memory at an offset from a0, then copies the memory at an offset from a0 to the memory at an offset from a0, then copies the memory at an offset from a0 to d6, then adds d6 to the memory at an offset from a0, then jumps to another point in the code.
+- `modify_pointer_and_register`: Compares a word at an offset of a structure in a0 to 20, and if it is not less than or equal, performs arithmetic on d4 and a6 based on values in a0.
+- `copy_structured_data_loop`: Performs a loop four times to copy data from a source table to a destination structure, updating pointers and values in each iteration while waiting for a DMA bit to clear.
+- `copy_and_merge_data`: Copies a block of 4000 bytes from a source table to a destination, then performs a bitwise OR merge of three additional source tables into that same destination.
+- `process_bit_manipulation`: Performs complex bitwise shifts and logical operations on a global variable and writes results to a table based on calculated indices.
+
 ### Celtic Legends (1991)(UBI Soft)(M4)[cr SKR](Disk 1 of 2).adf bytes 457728-549376 (code never loaded by a reference run)
 
 - `initialize_engine_state_and_hardware`: Initializes several global pointers and hardware registers, including audio volume and display control, then performs a series of table updates and calls multiple subroutines to set up the system state.
 - `update_state_parameters`: Performs a series of conditional checks and data updates involving a table, a global variable, and several other global variables, including a call to another routine and a call to a function at a fixed address.
+- `validate_and_update_index`: Checks a global value against a range and performs bitwise shifts to derive an index, then compares a byte from a table at a calculated offset against a byte at offset 7 of a structure pointed to by a6.
+- `execute_blitter_sequence_2`: Performs a series of calls to check status, configure blitter sources, and copy data blocks, then updates a global variable by subtracting a value from another global variable.
+- `frag_move_jsr_bra`: Short code fragment that copies 65535 to a fixed memory address, then calls another routine, then jumps to another point in the code.
+- `update_and_copy_on_condition`: Checks a global variable, subtracts a value from another global variable, decrements a byte in a structure, calls a routine to iterate and copy data, and potentially calls another routine.
+- `frag_tst_beq_jsr_bsr_move_movem_rts`: Short code fragment that tests a fixed memory address, then branches if the last result was zero, then calls call_routine_with_sequence_of_values, then calls another routine (2 times in a row), then copies the top of the stack to a fixed memory address, then restores saved registers from the stack, then returns.
+- `setup_blt_transfers`: Configures Blitter registers and performs a loop three times to set up multiple Blitter transfers using data from two different tables.
 - `configure_blitter_and_tables`: Calls a blitter routine, performs several subroutines, and then enters a loop that calculates an index to fetch a byte from a table and writes it to a global variable, potentially calling another routine.
 - `configure_blitter_chain`: Configures Blitter registers by writing to hardware addresses and sets up a sequence of four Blitter operations using a table of source and destination pointers.
+- `filter_indices_to_tables`: Iterates through a loop to compare bytes from two tables and stores the index into one of two destination tables based on specific comparison results, then calls a routine.
 - `filter_index_table`: Iterates through a range of indices and writes them to one of two destination tables if the value at an offset in a table is less than a global word.
 - `mask_attribute_data`: Iterates through a table to perform bitwise AND operations on sixteen 16-bit words at specific offsets within a structure pointed to by a global variable, then calls another routine.
+- `frag_lea_jsr_movea_adda_move_bra`: Short code fragment that loads the address of a fixed memory address into a2, then calls copy_data_blocks_from_table, then copies a fixed memory address to a0, then adds 32 to a0, then loads the address of a fixed memory address into a3, then copies 65535 to the memory at a2, then jumps to another point in the code.
 - `copy_data_blocks_from_table`: Reads a value from a table, calculates an offset into a structure using a global variable, and then copies sixteen 16-bit words from a source table to that structure in a loop.
 - `update_global_pointer_and_call_routines`: Calls a routine, then checks a global variable to either clear a value at a specific address or update it with a value from a table using a shifted index, before calling two other routines.
 - `update_entity_attribute_table`: Iterates through a list of entities to update their attributes in a table, performing byte-swapping and bit-clearing operations on specific structure offsets.
@@ -229,7 +299,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `load_audio_sample_parameters`: Checks if a global flag is zero and a pointer is non-null, then calls another routine to load a sample, copies five values from the resulting pointer into audio hardware registers and a global variable, and calls that same routine again after updating the audio control and volume registers.
 - `duplicate_pointer_array_segments`: Splits two 32-bit values into high and low words and stores them in two separate locations, then calculates and stores three subsequent offsets based on the original value for each location.
 - `configure_blt_source`: Waits for a hardware flag and then configures Blitter registers with two different source pointers and waits for a hardware flag to clear.
-- `setup_blitter_registers`: Waits for a hardware flag and then sets Blitter registers with two specific source pointers and a control word, then waits for a hardware flag to clear.
+- `configure_blt_source_2`: Sets up Blitter registers with two different source pointers and waits for a hardware flag to clear.
 - `wait_for_flag`: Polls a word at a global variable address until it is non-zero, then calls another routine.
 - `execute_blitter_draws`: Iterates through a table, calculates Blitter parameters including source and destination addresses, and performs four Blitter operations per valid entry.
 - `update_blitter_sprite_table`: Iterates through a data table to update a sprite structure, calculating new source and destination coordinates and color attributes for the Blitter.
@@ -295,6 +365,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_color_palette`: Updates color registers based on the value of a global variable and contains a loop that copies a block of data from one memory location to another.
 - `fetch_table_value_2`: Sets two global variables to fifteen, calls another routine, and then uses the resulting global variable to index into a table to update itself.
 - `reset_global_variable`: Evaluates a global variable against several constant values and sets it to zero if certain conditions are met.
+- `search_table_for_byte`: Iterates through a table to find a non-zero byte based on values stored in another table and updates a global variable.
+- `decrement_and_clamp_byte_2`: Subtracts values from a byte at a global offset and resets it to zero if it falls below a certain threshold or a specific condition is met.
 - `accumulate_table_values`: Iterates backwards through a table, adding bytes to a global variable if specific conditions are met, and clamps the result to a maximum value.
 - `update_color_palette_registers`: Checks a global variable, calls another routine, and if not equal to one, performs three separate data transfers using a sub-routine to update specific memory locations before finally filling the first three color registers with 10000 in a loop.
 - `process_pointer_and_buffers`: Waits for a pointer in a memory location to change, then performs several loops to copy data between buffers and update color registers based on a global variable.

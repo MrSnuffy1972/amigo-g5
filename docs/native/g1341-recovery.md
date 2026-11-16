@@ -39,8 +39,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - reference run ref ends at a 68000 address error (odd PC an address after an address): the harness halted there, nothing after it ran (68000 HALTED: address error at odd PC an address after an address, vector 3 an address is not a handler in RAM (the 68000 double-faults and halts); run ended at frame 12)
 - dragon breed (1989)(activision)[cr angels]/Dragon Breed (1989)(Activision)[cr Angels].adf: the boot block reads 9216 bytes from disk offset 737280 to an address (found statically); recovered as a unit
 - 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
-- prefix run f1000 ignored: it logged 180964 PCs the canonical run never executed (not a prefix of it)
-- prefix run f2000 ignored: it logged 180964 PCs the canonical run never executed (not a prefix of it)
 - runtime segment an address: 89 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 629 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered

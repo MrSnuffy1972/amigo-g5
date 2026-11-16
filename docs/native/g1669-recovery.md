@@ -77,14 +77,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `wait_raster_and_setup_registers`: Waits for a video position, then writes custom-chip registers and calls a series of nine routines in a loop until a busy bit clears.
 - `shift_table_entries`: Decrements a counter in a global; when it reaches zero it resets the counter to three and shifts seven word entries of a table forward by one, storing the saved first word in the last slot.
-- `write_pair_then_call_loop`: Calls a routine, writes the same constant value to two offsets of a structure, then calls another routine 24 times in a loop.
+- `set_two_word_values`: The routine calls another routine, then writes the same constant word to two offsets of a structure pointed to by a register, and then loops calling another routine seventeen times while decrementing a counter.
 - `advance_countdown_timer_entry`: Writes two constant values into a structure, then decrements a countdown word.
 - `copy_longs_to_fixed_block`: Copies sixteen longwords from a global area to a fixed low-memory address and then sets a global to that address.
 - `compare_and_return_exception`: Compares a word at a specific memory location to the constant an address; if they are not equal, it branches to another routine, otherwise it loads 496 into register d0 and returns from an exception.
 - `perform_unconditional_branch`: Performs an unconditional branch to itself.
 - `step_frame_state_counter`: Decrements a small state counter held in globals and, when it reloads, steps a state word through a fixed sequence with wrap-around.
-- `store_two_buffer_pointers`: Stores two buffer addresses and two counts into four global words and returns.
-- `pack_input_bits_value`: Combines flag bits taken from two input words and a shifted coordinate into a packed 32-bit value, and returns a 16-bit result derived from one input.
+- `initialize_globals`: The routine writes constant values to three global variables and sets a fourth global variable to seven.
+- `pack_joypad_bits`: The routine builds a 32-bit value from two 16-bit inputs.
 - `store_struct_from_registers`: Calls a routine, then writes shifted short values from registers and two longs from the stack into fields of a structure, duplicating one long into another field.
 - `reset_object_state`: Calls a routine, clears a block of memory pointed to by a global, then stores fixed values into fields of a structure and copies a pointer into another field.
 - `wait_blitter_idle`: Spins until the blitter busy flag in the DMA status register clears.
@@ -93,13 +93,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_seed_and_modulo`: Advances a 16-bit state held in a global by a multiply, an add and a reduction, looping until no carry remains, then returns the new state modulo the input argument.
 - `scale_and_store_word_pair`: Calls a routine twice; stores the first result, offset by 176 and shifted left by eight, into a word, then stores the second result shifted left by eight into the next word, followed by a constant word.
 - `initialize_display_list`: When a global counter is zero, copies pairs of words from a table into a buffer and recurses to fill it; it then writes fields of a structure, including a word derived from the counter, and calls another routine.
-- `find_next_nonzero_entry`: Scans a byte table from a rotating global index for the next non-zero entry, decodes it by XOR and tests whether it lies in a fixed range; in-range values trigger a block copy of table entries.
+- `rotate_table_entries`: The routine finds the next non-zero entry in a global table using a rotating index, then checks if the derived value falls in a specific range.
 - `initialize_global_table`: Writes a series of fixed addresses into global variables, clears fifteen entries of a global table to zero, and copies one global pointer into another.
 - `silence_audio_channels`: Writes 65535 to a global variable, writes zero to four audio channel volume registers, clears three other global variables, and returns.
 - `clear_audio_volume_state`: Writes zero to six shared globals and fifteen to one more.
 - `tick_audio_step_counter`: Returns at once when a global counter is zero; otherwise it increments the counter and, on reaching six, resets it, calls four routines, runs a short delay loop and adjusts a global.
-- `program_audio_channel_registers`: Decodes a packed control byte for a sound sample and programs the location and length registers of the four audio channels, enabling their DMA through the DMA control register.
-- `update_nibble_indexed_record`: Reads a byte from a source record, uses its high nibble to index a table, and copies table values into fields of a destination record.
+- `set_audio_channel_lengths`: The routine configures the Amiga audio DMA by writing to AUD0LCH, AUD0LEN, AUD1LCH, AUD1LEN, AUD2LCH, AUD2LEN, AUD3LCH, AUD3LEN and DMACON, enabling DMA channels.
+- `update_sprite_frame`: The routine reads a byte from a source structure via a pointer, extracts a nibble to index a table and updates fields in a destination structure, including copying a short from a table and writing a value to another structure.
 
 ### Starglider 2 - The Egron's Strike Back (1988)(Rainbird)[cr Unit A - WOW].adf bytes 98816-114176 (code never loaded by a reference run)
 

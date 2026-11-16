@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (1827140 top-level bytes in 60 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 32 of 32 units identical (bytes and relocations), 23 raw-word lines |
-| Functions named and described | pass, 965 of 965 named (0 author symbols), 965 of 965 described (229 by rule, 717 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 4379 of 4383 (99.91%) |
+| Bytes classified (1831194 top-level bytes in 67 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 39 of 39 units identical (bytes and relocations), 198 raw-word lines |
+| Functions named and described | pass, 998 of 998 named (0 author symbols), 998 of 998 described (236 by rule, 741 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 5285 of 5285 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 596969 bytes, 29 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 16867 of 16886 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 22342 of 22389 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 628006 |
-| code | 67102 |
-| data | 876633 |
-| padding | 14759 |
+| code | 70902 |
+| data | 876935 |
+| padding | 14711 |
 | unused | 240640 |
 
 ## Code units
@@ -50,11 +50,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | TV Sports Basketball (1990)(Cinemaware)[cr PNA][h ACU - Dawn](Disk 1 of 2).adf:bootblock | 1 | 11 | 1 |
 | TV Sports Basketball (1990)(Cinemaware)[cr PNA][h ACU - Dawn](Disk 2 of 2).adf:bootblock | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 120 | 120 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 492 | 11 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2893 | 90 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1076 | 16 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 8 | 3 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 73 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 366 | 18 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 72 | 3 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 32 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 180 | 3 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 286 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 1 |
 | TV Sports Basketball (1990)(Cinemaware)[cr PNA][h ACU - Dawn](Disk 1 of 2).adf:dawn#unpacked | 1 | 1025 | 29 |
 | TV Sports Basketball (1990)(Cinemaware)[cr PNA][h ACU - Dawn](Disk 1 of 2).adf:pgame.BOLT (raw code file, load address unknown) | 1 | 0 | 0 |
 | TV Sports Basketball (1990)(Cinemaware)[cr PNA][h ACU - Dawn](Disk 2 of 2).adf:Fluff.BOLT (raw code file, load address unknown) | 1 | 0 | 0 |
@@ -62,19 +69,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Cases handled
 
+- extended reference run ignored: it does not re-execute 905 of the 5343 PCs the canonical run logged (4441 PCs logged; the harness no longer reproduces the game), so its PCs and RAM are not used
 - runtime segment an address: 48 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 183 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 520 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 711 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- 2 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 1 first-run image unit(s) in 1 version group(s); 92 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
+- 889 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 9 first-run image unit(s) in 1 version group(s); 874 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
 - tv sports basketball (1990)(cinemaware)[cr pna][h acu - dawn](disk 1 of 2)/TV Sports Basketball (1990)(Cinemaware)[cr PNA][h ACU - Dawn](Disk 1 of 2).adf:S/paranoimia: ByteKiller 1.3 (xfd) stream found by ancient scan (6920 -> 12322 bytes) but only 0 of 5 sampled windows are in reference RAM: not used
-- tv sports basketball (1990)(cinemaware)[cr pna][h acu - dawn](disk 1 of 2)/TV Sports Basketball (1990)(Cinemaware)[cr PNA][h ACU - Dawn](Disk 1 of 2).adf:dawn: crunched executable unpacked with ancient scan (DefJam Cruncher 3.2 (xfd), 48880 -> 196608 bytes), 14 of 35 windows confirmed in reference RAM, loaded at an address: recovered as u28
+- tv sports basketball (1990)(cinemaware)[cr pna][h acu - dawn](disk 1 of 2)/TV Sports Basketball (1990)(Cinemaware)[cr PNA][h ACU - Dawn](Disk 1 of 2).adf:dawn: crunched executable unpacked with ancient scan (DefJam Cruncher 3.2 (xfd), 48880 -> 196608 bytes), 14 of 35 windows confirmed in reference RAM, loaded at an address: recovered as u35
 - tv sports basketball (1990)(cinemaware)[cr pna][h acu - dawn](disk 2 of 2)/TV Sports Basketball (1990)(Cinemaware)[cr PNA][h ACU - Dawn](Disk 2 of 2).adf:XC2.1: TetraPack 2.2 (xfd) stream found by ancient scan (42108 -> 65536 bytes) but only 0 of 22 sampled windows are in reference RAM: not used
 - tv sports basketball (1990)(cinemaware)[cr pna][h acu - dawn](disk 1 of 2)/TV Sports Basketball (1990)(Cinemaware)[cr PNA][h ACU - Dawn](Disk 1 of 2).adf:pgame.BOLT: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - tv sports basketball (1990)(cinemaware)[cr pna][h acu - dawn](disk 2 of 2)/TV Sports Basketball (1990)(Cinemaware)[cr PNA][h ACU - Dawn](Disk 2 of 2).adf:Fluff.BOLT: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - tv sports basketball (1990)(cinemaware)[cr pna][h acu - dawn](disk 2 of 2)/TV Sports Basketball (1990)(Cinemaware)[cr PNA][h ACU - Dawn](Disk 2 of 2).adf:pgame.BOLT: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
-- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 4 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 4 immediate
 - tv sports basketball (1990)(cinemaware)[cr pna][h acu - dawn](disk 1 of 2)/TV Sports Basketball (1990)(Cinemaware)[cr PNA][h ACU - Dawn](Disk 1 of 2).adf:dawn: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 - 4 never-loaded region(s), 596969 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
@@ -975,10 +982,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `call_library_vector_144`: Library stub: loads a library base from a global variable and calls the library function at offset minus 144 of that base, returning its result to the caller.
-
-### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
-
 - `call_subsequent_functions`: Calls a routine that initializes memory blocks and then calls two other function pointers.
 - `populate_memory_tables`: Performs a series of writes to various memory locations using a loop and an offset derived from a global variable.
 - `update_sprite_attribute_table`: Iterates through a range of memory to update or duplicate sprite or object attribute data, including updating or clearing associated word-sized or byte-sized metadata or secondary attribute buffers.
@@ -1108,6 +1111,64 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `transfer_pointer_data`: Calls another routine, then copies a longword from a memory location pointed to by a value at a specific address into two different locations relative to a6, writes a word from a memory location to the address in a1, and performs a long jump.
 - `set_bit_and_jump`: Sets bit 0 of a byte at the address in a6 and then jumps to a long address.
 - `call_subroutine_at_offset_1f0`: Calls a subroutine located at a specific offset within the code segment.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_hardware`: Initializes hardware registers including interrupt enable, coprocessor, and DMA control with specific bit patterns, then repeatedly calls another routine and waits for a joystick button to be released.
+- `decrement_counter`: Decrements a global counter and returns immediately if it's not zero.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `process_data_loop`: Executes a loop that iterates 20 times, calling another routine twice in each iteration while incrementing a counter.
+- `process_character_data`: Reads bytes from a global table, performs character conversion and indexing calculations, then calls another routine with computed parameters before incrementing a counter and looping until it reaches fourteen.
+- `execute_render_operations`: Calls another routine multiple times with specific register values and address calculations, performing rendering-related operations.
+- `initialize_structure`: Writes multiple values including register contents and immediate constants to specific offsets within a structure referenced by a6, effectively initializing or resetting various fields of that structure.
+- `frag_move_clr_rts`: Short code fragment that copies 2304 to the memory at an offset from a6, then clears the memory at an offset from a6 (3 times in a row), then copies d1 to the memory at an offset from a6, then copies 33856 to the memory at an offset from a6, then copies a1 to the memory at an offset from a6, then copies d2 to the memory at an offset from a6, then copies 1024 to the memory at an offset from a6, then returns.
+- `process_and_store_values`: Rotates a word value right by four bits, XORs it with an immediate constant, and stores the result to a specific offset in a structure.
+- `handle_input_and_render`: Processes input data by checking a global counter, decrementing it if not zero, otherwise calling another routine to handle input processing and rendering operations.
+- `frag_moveq_move_lea_movea_addq_bsr_rts`: Short code fragment that loads 0 into d0, then loads 0 into d1, then copies 2837 to d2, then loads 14 into d3, then loads the address of a fixed memory address into a1, then copies a1 to a0, then adds 2 to a0, then calls another routine, then returns.
+- `frag_lea_movea_move_rts`: Short code fragment that loads the address of a location in the code into a5, then loads the address of a location in the code into a4, then loads the address of a location in the code into a0, then copies a location in the code to a2, then copies the memory at a0 to the memory at a2, then copies the memory at an offset from a0 to the memory at an offset from a2, then returns.
+- `update_object_positions`: Copies object data between memory locations, updates position values in a structure, and performs multiple iterations of data copying operations.
+- `frag_add_movea_subi_btst_moveq_ori_move`: Short code fragment that adds the memory at a0 to d4, then copies an indexed entry from a0 to a6, then subtracts 65 from d1, then tests bit d5 of d1, then loads 225 into d7, then merges 2 into d1, then copies a5 to the memory just below a6 (moving a6 down).
+- `fall_through_entry_2`: Entry point part-way through straight-line code: runs one instruction (divu.w) and then falls through into the code that follows, with no return of its own.
+- `frag_moveq_rts`: Short code fragment that loads 0 into d0, then loads 0 into d1, then loads 0 into d2, then loads 0 into d3, then returns.
+- `update_ball_position`: Updates ball coordinates and velocity based on collision detection, then writes computed values to a structure including position, speed, and status flags.
+- `calculate_and_store_values`: Performs mathematical calculations on coordinates and dimensions, stores results in a structure, and updates various fields including position, velocity, and flags.
+- `clear_struct_fields`: Clears multiple 32-bit and 16-bit fields in a structure pointed to by a6, setting them to zero values.
+- `frag_btst_bne_rts`: Short code fragment that tests bit 14 of the memory at an offset from a6, then branches if the last result was not zero, then returns.
+- `update_animation_state`: Manages animation timing by decrementing a counter, processes input data through a loop, and updates state flags based on input conditions.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `loop_and_accumulate`: Executes a loop of five iterations calling another routine each time, then performs a series of operations on a global variable by adding hexadecimal values to it.
+- `nested_loop_operations`: Performs two nested loops, each running fifteen and eleven times respectively, executing another routine in each iteration.
+- `frag_tst_beq_subq_rts`: Short code fragment that tests a fixed memory address, then branches if the last result was zero, then subtracts 1 from a fixed memory address, then returns.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `indexed_memory_access`: Calculates an index from input values, updates a memory location at that index, performs arithmetic operations on data from a table, and stores the result in a destination address.
+- `memory_increment_and_shift`: Increments elements of a global array by 65535, then shifts each element right by two bits, and finally writes a specific value to its own address.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `bit_manipulation_and_loop`: Processes a global variable through bit operations and conditional logic, then performs a loop that modifies data based on character comparisons and calculations.
+- `input_handling_and_data_copy`: Reads input from a hardware register, processes button states, and copies data from one memory location to another in a structured pattern based on loop iterations.
+- `initialize_data_table`: Populates a table with predefined values by performing multiple assignments of long and swapped word values, using loop counters and address calculations.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `process_audio_data`: Iterates through a data block to find a specific value, then populates a table with calculated values based on a source list, and clears audio volume registers.
+- `manage_frame_counter`: Increments a global frame counter and resets it to zero when reaching a specific value, then calls another routine if a condition is met.
+- `handle_audio_output`: Updates audio hardware registers based on game state, sets up sound channels and lengths, and manages DMA configuration for audio playback.
+- `update_joystick_input`: Reads joystick or mouse fire button status from CIAA_PRA, updates input state flags, and writes modified values to a data structure.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `call_library_vector_144`: Library stub: loads a library base from a global variable and calls the library function at offset minus 144 of that base, returning its result to the caller.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `read_interrupt_registers`: Reads interrupt status and enable registers from hardware memory locations, performs a bit test operation on the result, and returns without modifying any registers.
 
 ### TV Sports Basketball (1990)(Cinemaware)[cr PNA][h ACU - Dawn](Disk 1 of 2).adf:dawn#unpacked
 

@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (901120 top-level bytes in 1 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 52 of 52 named (0 author symbols), 52 of 52 described (7 by rule, 45 by the local model) |
+| Functions named and described | pass, 50 of 50 named (0 author symbols), 50 of 50 described (7 by rule, 43 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2 of 2 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 2048 bytes, 10 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1214 of 1235 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1223 of 1223 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 1500 |
-| code | 4132 |
-| data | 889340 |
+| code | 4084 |
+| data | 889388 |
 | padding | 4 |
 | unused | 6144 |
 
@@ -28,8 +28,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Super Hang-On.adf:bootblock | 1 | 77 | 3 |
-| logged disk load from Super Hang-On.adf boot-block load | 1 | 305 | 25 |
-| logged disk load from Super Hang-On.adf boot-block load | 1 | 500 | 14 |
+| logged disk load from Super Hang-On.adf boot-block load | 1 | 290 | 22 |
+| logged disk load from Super Hang-On.adf boot-block load | 1 | 503 | 15 |
 | Super Hang-On.adf bytes 11264-11776 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Super Hang-On.adf blocks 23-25 (bytes 11776-13312) (code never loaded by a reference run, load address unknown) | 1 | 353 | 10 |
 
@@ -69,8 +69,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `init_and_update_frame_delta`: Calls the exec library entry point, disables DMA, zeroes a block of memory, programs the blitter, and then updates a signed frame delta from the VBLANK counter while clamping it to zero.
 - `store_routine_addresses`: Loads thirteen routine addresses into a table and stores each longword into consecutive slots, then returns.
-- `zero_filled_data_area`: Contains only zero-filled words that decode as no-ops, so this range is most likely a zero-filled data area that other code refers to by address.
-- `zero_filled_data_area_2`: Contains only zero-filled words that decode as no-ops, so this range is most likely a zero-filled data area that other code refers to by address.
 - `clear_flag_and_store_bytes`: Clears a 16-bit field at offset 198 of the structure in a5, then stores the bytes 32, 78 and 79 at the address in a0.
 - `clear_flag_and_store_bytes_2`: Clears a 16-bit field at offset 19c of the structure in a5, then stores the bytes 32, 78 and 79 at the address in a0.
 - `clear_flag_and_store_bytes_3`: Clears a 16-bit field at offset 19a of the structure in a5, then stores the bytes 32, 78 and 79 at the address in a0.
@@ -86,7 +84,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispatch_via_jumptable`: Decrements a counter in a structure and returns when it is not zero, otherwise reads two counters from the structure and jumps through an indirect jump table using their scaled difference.
 - `update_frame_delta`: Reads the VBLANK frame counter and a stored byte, then updates a signed delta at offset 906 of the structure in a5, clamping it to zero when negative and raising it to a newer counter value if needed.
 - `fill_and_adjust_slots`: Loops over ten word slots, filling each with the value 4095 and copying a source word into matching slots, then adds an offset value to a counter and negates it when it reaches 3584 or 3822, and returns.
-- `tiny_ori_ori_ori`: Small routine of 3 instructions that merges 22 into d6, then merges 54 into -(a6), then merges 86 into d6.
 - `wait_for_raster_line`: Busy-waits by reading the beam position registers (VPOSR/VHPOSR) until the display beam reaches a given raster line, then returns.
 - `wait_for_blitter`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
 - `fill_blocks_from_table`: Loops nine times, reading a byte from a table and storing a value into a structure field indexed by a stored word, then overwrites that field with another value when a shifted difference is odd before calling a helper routine.
@@ -109,6 +106,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `check_cia_port_bit_2`: Tests bit 2 of a CIA port register and returns when that bit is clear, otherwise falling through into the following routine.
 - `write_alt_control_and_call`: Writes the byte 114 then 119 to the CIA port B register at a fixed address, calls one unnamed routine, and returns zero.
 - `wait_for_interrupt_flag`: Polls a global variable in a loop until bit 5 is set, then clears that bit, and returns.
+- `wait_for_blitter_2`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
 
 ### Super Hang-On.adf blocks 23-25 (bytes 11776-13312) (code never loaded by a reference run, load address unknown)
 

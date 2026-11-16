@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (1802304 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 2 raw-word lines |
-| Functions named and described | pass, 26 of 26 named (0 author symbols), 26 of 26 described (0 by rule, 13 by the local model) |
+| Functions named and described | pass, 27 of 27 named (0 author symbols), 27 of 27 described (0 by rule, 13 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2 of 2 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 341 of 341 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 346 of 346 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 1998 |
-| code | 1234 |
-| data | 3878 |
+| code | 1250 |
+| data | 3862 |
 | padding | 634 |
 | unused | 1794560 |
 
@@ -29,7 +29,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Graham Taylor Soccer Challenge (1992)(Krisalis Software)(M5)[cr CSL](Disk 1 of 2).adf:bootblock | 1 | 176 | 13 |
 | Graham Taylor Soccer Challenge (1992)(Krisalis Software)(M5)[cr CSL](Disk 2 of 2).adf:bootblock | 1 | 163 | 12 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 2 |
 
 ## Cases handled
 
@@ -80,3 +80,4 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `update_color_register`: Writes a value to the first color register.
+- `increment_on_nonzero_flag`: It checks a byte at a fixed offset in a structure and, when that byte is nonzero, clears it to zero and increments the adjacent short value.

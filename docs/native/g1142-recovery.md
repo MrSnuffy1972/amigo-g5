@@ -103,38 +103,38 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `load_track_decrunch_b`: Shares the loader logic of the preceding routine, entered from a second call site.
 - `copy_loader_blocks_until_limit`: Loops while a pointer is below a fixed limit, copying a block of longwords per pass and calling four unnamed routines.
 - `setup_copper_lists_and_decode`: Sets the two copper list pointers, the copper jump and the background colour, then decodes a packed stream into the display buffer, calling unnamed routines.
-- `map_sector_run_to_track`: Splits an input position into a track and sector using division and remainder by 11, then calls the blitter wait routine and other routines to consume bounded steps while updating a counter.
-- `write_sync_marks_and_check`: Clears four frame fields and, when a flag is set, writes the two MFM sync words into a buffer.
-- `start_disk_read_with_retries`: Repeats up to five times: it points disk DMA at a buffer, sets the MFM mode and a read length that is longer for large sector counts, enables disk DMA, and calls an unnamed routine until its completion flag is set.
-- `validate_sector_header_with_retries`: Retries up to 11 times to read a sector header, checking each read's flag.
+- `advance_blitter_cell_copy`: Divides a position by eleven to find a cell and offset, then copies a run of cells with the blitter, advancing until the count is used up.
+- `initialize_input_state`: Clears three 16-bit fields in a stack frame and enters a loop that runs five times.
+- `poll_input_and_update_globals`: Repeatedly calls another routine and updates a global variable based on a counter and the value held in a stack slot.
+- `validate_input_with_retry`: Repeatedly calls helper functions to check a flag and decrement a counter, returning early if the flag is clear or the counter expires.
 - `read_sector_data_and_verify`: Loops reading sector data, waiting for the disk ready bit, comparing sector and track values, and checking an allocation table.
 - `frag_move_sub_mulu_rts`: Short code fragment that copies d3 to d1, then subtracts the memory at an offset from a6 from d1, then copies 512 to d0, then multiplies d1 by d0 (unsigned), then returns.
 - `set_flag_increment_counter`: Sets one bit, chosen by the low five bits of data register D3, in a 16-bit word four bytes below the A6 base.
 - `clear_table_entries`: Writes zero to a 32-bit entry at ten successive positions, moving the address pointer in A5 forward by 272 bytes before each write.
-- `combine_low_word_top_byte`: Calls another routine and takes its 32-bit result.
+- `repack_result_word_and_byte`: Calls a routine and repacks its 32-bit result, placing the low word first and the top byte of the result in the second word.
 - `interleave_alternate_bits`: Reads two consecutive 32-bit values from the address in A0.
 - `call_and_forward_result`: Calls one routine, then passes its 32-bit return value as the argument to a second routine.
 - `compute_fixed_xor_checksum`: XORs ten 32-bit values, starting eight bytes past the A5 base, into an accumulator.
 - `compute_xor_checksum`: XORs a run of 32-bit values starting at the address in A0 into an accumulator.
-- `fill_block_alternating_bits`: Fills a 1024-byte block with a repeating 32-bit pattern of alternating ones and zeros.
-- `store_derived_structure_fields`: Calls a routine and computes three offsets from its result and two address-register outputs.
-- `write_structure_transform_fields`: Calls several helper routines, one of which waits for the blitter, and writes groups of fields into a structure pointed to by A2.
+- `fill_memory_with_pattern`: Fills a block whose pointer is stored in the frame with a repeating alternating-bit longword, writing eight longwords per loop pass.
+- `initialize_object_state`: Calls another routine and uses its result to compute three integers stored at fixed offsets in a structure, then writes two constant words and a derived word into it.
+- `set_object_transforms`: Writes several fields of a structure from the results of unnamed routines, storing constant words and copying values between the results, and calls a routine that waits for the blitter to finish.
 - `wait_for_blitter`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
 - `reset_blitter_state`: Waits for the blitter to finish, then loads a constant into the blitter C-data register and zeroes three blitter modulo registers.
 - `refresh_high_bit_after_calls`: Calls two routines, then reads the byte at the address in A0 and the flag byte just before it.
 - `apply_high_bit_flag`: Reads the byte at the address in A0 and the flag byte just before it.
 - `bitwise_mix_store_word`: The routine mixes the input word with a transformed mask derived from the low bits of the input, optionally clears the sign bit based on a flag byte before the output pointer, and stores the resulting word through the pointer.
-- `setup_disk_transfer`: Stores the address in A0 in the disk pointer register and writes the disk sync word.
+- `set_audio_dma_control`: The routine writes to a global variable, another global variable, a custom chip register, a custom chip register, a global variable, and a global variable.
 - `check_status_bit_after_call`: Calls a helper routine, then checks bit one of the status byte at offset 31 from the address in A1.
 - `set_global_flags`: Writes two constants to one global variable in sequence, so only the final value 16384 remains.
 - `store_ones_if_negative`: Writes 1024 to a global variable.
 - `set_bit_in_global_flag`: Reads a 16-bit value 36 bytes below A6, adds 3, and uses its low five bits as a bit index.
 - `set_global_flag_byte`: Writes an all-ones byte to a global variable, then calls two other routines.
-- `update_indexed_table_entry`: Reads a 16-bit table entry indexed by the value 36 bytes below A6.
-- `wait_for_bit_clear_entry`: Polls bit four of a global variable, calling a helper between checks for up to 86 passes.
-- `store_masked_flag_byte`: Calls a helper and takes its byte result, clearing bit one of that byte when a second helper output is non-negative.
+- `update_table_entry_3`: Reads a 16-bit value from a table via an index in a structure, calls another routine when the value is negative, then spins a number of times derived from the difference between two 16-bit fields before writing a value from a register back into the table and calling another routine.
+- `poll_status_with_timeout`: Repeatedly polls a global status byte up to eighty-five times, clearing a word in a table indexed by a value from the caller's stack frame if a specific bit is set, and returns a fixed non-zero value if the loop completes without success.
+- `read_port_into_status_byte`: It calls another routine to obtain a byte, clears bit one of that byte when a secondary value from the same call is non-negative, and then forces bit zero high before storing the result into a global variable.
 - `store_call_result_global`: Calls a helper routine and writes its return value to a global variable.
-- `compute_masked_flag_byte`: Builds a byte from a global flag value with the bit selected by the low byte of a value 36 bytes below A6 plus three cleared.
+- `compute_ciab_mask_from_table`: It derives a bit mask from a global variable by clearing one bit chosen by a frame-relative index, and also clears a second bit when a related table entry has its low bit set.
 - `wait_for_flag_and_result`: Repeatedly calls a helper until it returns one, waiting between calls while bit zero of a global variable is set.
 - `conditionally_write_global_sequence`: If bit zero of a global variable is clear and the input value in D0 is not one, it writes the constants 8, 204 and 2 to that global in sequence.
 - `write_global_three_constants`: Writes the constants 8, 204 and 2 to a single global variable in sequence, so the final value is 2.
@@ -310,7 +310,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_and_update_structure`: Increments a global variable, calculates an offset based on d2, copies a series of words from a table to a destination pointed to by a2 using a loop, and then writes several registers into a structure pointed to by a0.
 - `clear_and_copy_init_tables`: Sets a series of global variables to constants and clears several groups of memory in a loop.
 - `set_mask_words_from_bits`: Clears two longwords at the pointer in A1, then sets each of four 16-bit slots to all ones when the matching low bit of D0 is set.
-- `merge_bits_into_words`: Shifts the byte in d7 right three times and, for each zero bit produced, merges the word in d6 into d2 and then d3.
+- `process_conditional_swaps`: Performs a series of checks on the high bit of d7 to conditionally swap the upper and lower bytes of d2 and d3 and perform bitwise OR operations with d6.
 - `frag_move_mulu_addi_rts`: Short code fragment that copies a fixed memory address to d0, then multiplies d0 by 171 (unsigned), then adds 3847 to d0, then copies d0 to a fixed memory address, then returns.
 - `update_clamped_value`: Modifies a global variable by adding a value derived from a table lookup and then clamps the result between two constant bounds.
 - `interpret_command_stream`: Walks a stream of 16-bit commands, using the high byte of each word as an opcode.
@@ -319,7 +319,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `or_block_bytes_when_zero`: Calls a helper and, when its result is zero, ORs together the 512 bytes starting at a fixed address and returns the combined byte.
 - `copy_indexed_table_segment`: Uses an index to look up a 32-bit table entry, then splits its value by dividing by 5632 and multiplying by 11 to select a source segment.
 - `setup_registers_and_pointers`: Clears d0 and d1, sets d2 to 1 and d3 to 32768, then loads the addresses of two tables into a0 and a1, after which execution falls through to the following routine.
-- `split_by_eleven_and_consume`: Splits the input word into a quotient and remainder when divided by 11, then calls a helper repeatedly to consume a counted number of steps.
+- `advance_blitter_cell_copy_2`: Divides a position by eleven to find a cell and offset, then copies a run of cells with the blitter, advancing until the count is used up.
 - `write_track_gap_and_sync`: Clears three counters on each of five passes, calling helper routines that check the disk-status bit.
 - `retry_disk_read_transfer`: Repeatedly starts a disk read for up to five attempts, storing the buffer address in the disk pointer register and setting the disk sync word before each.
 - `validate_read_and_store_count`: Calls helpers up to eleven times until a read check matches the expected value and the counters are in range.
@@ -327,30 +327,30 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `frag_move_sub_mulu_rts_2`: Short code fragment that copies d3 to d1, then subtracts the memory at an offset from a6 from d1, then copies 512 to d0, then multiplies d1 by d0 (unsigned), then returns.
 - `frag_move_bset_addq_rts`: Short code fragment that copies the memory at an offset from a6 to d0, then sets bit d3 of d0, then copies d0 to the memory at an offset from a6, then adds 1 to the memory at an offset from a6, then returns.
 - `clear_strided_long_words`: Zeroes ten long words spaced at a fixed stride of 272 bytes, starting from the address held in the A5 register.
-- `forward_call_repack_result`: Calls another routine and repacks its 32-bit result, keeping the low word and moving the top byte into a second returned word.
+- `repack_result_word_and_byte_2`: Calls a routine and repacks its 32-bit result, placing the low word first and the top byte of the result in the second word.
 - `merge_odd_even_bit_words`: Combines the two consecutive longwords at a pointer by keeping the alternate bits of each and shifting the first left by one, so the two sets interleave, and returns the result.
 - `forward_result_to_routine`: Calls one routine and passes its result on to a second routine, then returns.
 - `fall_through_entry`: Entry point part-way through straight-line code: runs two instructions (lea.l, moveq) and then falls through into the code that follows, with no return of its own.
 - `xor_checksum_counted_longwords`: XORs a block of longwords whose count is derived from a size register shifted right by two, then returns the result masked to alternate bits.
-- `fill_block_with_alternating_pattern`: Fills a block of 256 longwords, counting down from its end, with a constant alternating-bit pattern.
-- `set_structure_bounds_fields`: Computes start and end values from one routine's result and an argument, then stores them with a constant word and a shifted value into fixed fields of a structure.
-- `program_blitter_block_passes`: Programs the blitter for a block in several passes, writing pointer, modulo and size values for each pass from computed word counts, and returns after the final pass.
+- `fill_memory_with_pattern_2`: Fills a block whose pointer is stored in the frame with a repeating alternating-bit longword, writing eight longwords per loop pass.
+- `initialize_object_state_2`: Calls another routine and uses its result to compute three integers stored at fixed offsets in a structure, then writes two constant words and a derived word into it.
+- `set_object_transforms_2`: Writes several fields of a structure from the results of unnamed routines, storing constant words and copying values between the results, and calls a routine that waits for the blitter to finish.
 - `wait_while_global_bit_set`: Loops while bit six of a global variable is set, doing nothing else, then returns.
 - `reset_blitter_masks_and_modulo`: Waits for the blitter, then sets its control and mask registers to fixed values and clears the modulo registers.
 - `frag_move_lsr_bsr`: Short code fragment that copies d0 to the stack, then shifts d0 right by 1, then calls bitwise_mix_store_word_2, then copies the top of the stack to d0, then calls another routine.
 - `set_high_bit_from_flag`: Reads a byte through a pointer and checks the low bit of the byte before it.
 - `bitwise_mix_store_word_2`: The routine mixes the input word with a transformed mask derived from the low bits of the input, optionally clears the sign bit based on a flag byte before the output pointer, and stores the resulting word through the pointer.
-- `setup_disk_sync_dma`: Writes the disk sync pattern, the disk pointer and a length value, then enables the disk DMA and interrupt bits to start a transfer.
+- `set_audio_dma_control_2`: The routine writes to a global variable, another global variable, a custom chip register, a custom chip register, a global variable, and a global variable.
 - `wait_for_disk_status_bit`: Waits on a status byte until a flag bit is set, then writes two disk control values and returns zero.
 - `frag_move_tst_rts`: Short code fragment that copies 2 to a fixed memory address, then copies 16384 to a fixed memory address, then tests d0, then returns.
 - `frag_move_tst_bpl_moveq`: Short code fragment that copies 1024 to a fixed memory address, then tests the memory at an offset from a6, then branches if the last result was not negative, then loads 255 into d1.
 - `update_ciab_port_bit`: Writes a value to the CIAB port B register with one bit set or cleared, using a bit index read from the stack.
 - `set_ciab_port_all_bits`: Writes all ones to the CIAB port B register, then calls two other routines and returns.
-- `step_stored_value_toward_target`: Reads a stored 16-bit value from a table indexed from the stack, moves it toward a new value by calling a routine once per step of the difference, then stores the new value and returns zero.
+- `update_table_entry_4`: Reads a 16-bit value from a table via an index in a structure, calls another routine when the value is negative, then spins a number of times derived from the difference between two 16-bit fields before writing a value from a register back into the table and calling another routine.
 - `poll_port_bit_with_timeout`: Polls a bit of the CIAA port register for up to 85 attempts, calling a routine between polls.
-- `update_ciab_control_bits`: Sets or clears bits in the CIAB port register according to the sign of an argument, then calls a routine to finish.
+- `read_port_into_status_byte_2`: It calls another routine to obtain a byte, clears bit one of that byte when a secondary value from the same call is non-negative, and then forces bit zero high before storing the result into a global variable.
 - `frag_bsr_move_rts`: Short code fragment that calls another routine, then copies d0 to a fixed memory address, then returns.
-- `compute_ciab_bit_mask`: Calculates a bit mask for a bit index read from the stack, combines it with the current port value, clears one bit when a stored flag is set, and returns the result with the input word.
+- `compute_ciab_mask_from_table_2`: It derives a bit mask from a global variable by clearing one bit chosen by a frame-relative index, and also clears a second bit when a related table entry has its low bit set.
 - `poll_cia_status_until_ready`: Repeatedly calls a routine and waits while a CIA status bit stays set, looping until the routine returns one, then returns zero.
 - `frag_btst_bne_subq_beq`: Short code fragment that tests bit 0 of a fixed memory address, then branches if the last result was not zero, then subtracts 1 from d0, then branches if the last result was zero.
 - `frag_move_rts`: Short code fragment that copies 8 to a fixed memory address, then copies 204 to a fixed memory address, then copies 2 to a fixed memory address, then returns.
@@ -367,30 +367,30 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `sort_byte_pairs_in_list`: Walks a list of byte pairs ended by an all-ones byte and swaps adjacent entries that are out of order.
 - `allocate_or_compact_blocks`: Manages a table of 219 ten-byte block descriptors, allocating a block from free space and moving other blocks with 32-byte copy loops when space is short.
 - `move_block_and_adjust_table`: Moves a block of memory in 32-byte steps, then reduces the descriptor pointers that lie above the moved block by its length.
-- `set_high_bit_in_records`: If the table entry for the index is non-zero, it sets the top bit of the first byte of each eight-byte record in its list, stopping at an all-ones marker byte.
+- `set_attribute_flags`: Checks a value in a table and, if non-zero, iterates through a list of pointers to set the high bit of bytes at eight-byte intervals until a specific terminator byte is encountered.
 - `transform_bitplane_rows`: Builds a 16-entry lookup table, then rearranges bits across four 16-bit words per row using that table, a bit-plane transform.
-- `visit_type_four_records`: Walks 220 ten-byte records from the highest index downward and updates two globals from index-based lookups for each one.
+- `iterate_and_process_table_entries`: Iterates backwards through a table, checking a specific value in each entry to determine if another routine should be called with a value from the table.
 - `process_selected_record_entries`: For a non-empty record selected by a global index, it either runs a loop of helper calls over the record's entries, or for index two copies a block whose length is the product of two record fields times ten.
 - `copy_product_sized_block`: Copies a block of bytes from the global pointer to the address in A0, with the length equal to the product of the words in D6 and D7 multiplied by ten.
-- `split_rows_into_bitplanes`: Copies words from source rows into four separate planes, storing the first plane inverted and the other three unchanged.
-- `transform_indexed_bytes`: Reads a byte from a table indexed by d2, rotates and swaps it, then repeats the same three-step transform on a byte indexed by d3 before returning.
+- `transpose_data_matrix`: Performs a multi-dimensional data transformation by reading values from a source and writing them into a new grid structure with bitwise inversion.
+- `transform_register_data_via_table`: Performs a series of bitwise rotations and swaps on the values in registers d2 and d3 by repeatedly fetching bytes from a table pointed to by a4 using the current register value as an index.
 - `swap_and_fill_tables`: Swaps two 32-bit pointers stored in global variables, calls another routine, calls a routine to fill two tables, and sets a global variable to 1.
 - `tiny_rte`: Small routine of 1 instruction that returns from the exception.
 - `set_copper_list_and_dma`: Writes copper list start addresses to the first and second copper location registers and triggers a copper jump.
-- `advance_state_flag_machine`: Checks a state flag byte: when bit five is set it advances a counter, calls helpers and resets counters; when bit six is set it clears the state and sets bit six; otherwise it checks bit four.
+- `advance_sound_state_machine`: Advances a sound state machine based on flag bits in a global byte.
 - `translate_keycode_into_buffer`: Translates a keyboard code through a lookup table indexed by the inverted code, appending the character to a buffer when the code's low bit is clear.
 - `fill_two_tables_stepped_values`: Writes a 32-bit value, split into high and low words, into four pairs of slots in two tables, adding 8000 to the value on each pass.
 - `update_color_tables`: Loops 16 times to read words from a table, performs arithmetic on each word, and stores the results into both the hardware color registers and a global table.
 - `clamp_shifted_value`: Reads a 32-bit value from a global variable, shifts it right by 2, adds 32, and stores the result in a global variable after clamping it to a maximum of 63.
-- `clear_global_repeatedly`: Stores zero into a global variable seventeen times in a straight-line sequence, with no loop or calls.
+- `clear_memory_range`: Sets a series of consecutive memory locations to zero.
 - `init_globals_return_address`: Clears several global variables and stores address constants into others, then returns a fixed 32-bit address.
-- `set_handler_address_table`: Clears two globals and stores four address constants into a table of handler slots, then returns.
+- `initialize_table_values`: Sets several specific entries in a global table to predefined constant values.
 - `set_handler_address_table_2`: The same handler-address setup as a neighbouring routine, decoded from an unreached gap.
 - `reset_table_values`: Sets a byte at a global address to zero and updates four global longwords with specific constant values.
 - `initialize_table_values_alt`: Sets a byte at a global address to zero, updates four global longwords with different constant values, and then performs a second sequence of setting a byte to zero and updating three global longwords and one more longword with different constants.
 - `store_handler_address_after_call`: Calls a helper routine, then stores a fixed address constant in a handler slot.
 - `frag_move_rts_2`: Short code fragment that copies 470 to a fixed memory address, then copies 1 to a fixed memory address, then returns.
-- `update_audio_channel_state`: Updates four audio channels each pass, writing their period, volume and length registers from per-channel tables and writing the DMA control register.
+- `play_audio_channel_sequence`: Plays a sequence on the four audio channels by writing their period, volume, pointer and length registers from table data, switching the DMA control register on and off.
 - `set_global_value_fifteen`: Writes 15 to a global variable and returns.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)

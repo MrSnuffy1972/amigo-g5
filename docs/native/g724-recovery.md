@@ -79,13 +79,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### logged disk load from Zeewolf.adf boot-block load
 
-- `copy_and_patch_code_block`: The routine copies a block of long words from a source area in RAM to a destination pointer derived from a global variable and a byte in RAM, aligning the pointers to even long-word boundaries.
+- `copy_block_with_alignment_fixups`: Copies a block of data between buffers, adjusting the source and destination pointers to even addresses before copying runs of longwords.
 - `copy_and_patch_memory`: Copies a block of memory or shifts a buffer and then writes a sequence of words from a global variable to a location near the stack.
 - `copy_and_shift_buffers_loop`: The routine repeatedly copies bytes between buffers using a counter, then shifts a buffer forward by one byte per iteration, and finally copies a small table from a global variable into a stack area before indirect calling a routine selected from that table.
-- `extract_bit_from_table`: The routine scans a table of 16-bit entries using a mask in a register until it finds a matching pair, then reads a byte from the table to form an index.
+- `extract_flag_bit_from_table`: Scans a table of word pairs until a condition on a global mask is met, then reads a byte from a table entry and uses it as an index into a global mask to extract a bit, calling another routine if a borrow condition is detected.
 - `return_masked_word`: The routine builds a 32-bit value from a global word and a constant high word, then conditionally calls another routine if a global byte is less than a threshold, and returns the resulting value.
 - `mask_and_conditional_call`: The routine masks a word from a register with a word from a global variable and, if a byte from a register is greater than a byte from a global variable, it calls another routine and returns its result; otherwise it returns the masked word.
-- `perform_boot_block_initialization`: The routine is empty; it contains no instructions that modify memory or registers and immediately returns.
+- `refill_bit_buffer_from_a3_stream`: Adds d1 back into d7, shifts d6 right by d7, swaps d6, advances a3 by four and loads two bytes backwards into d6 with a byte swap, then resets d7 to sixteen minus d1.
 - `accumulate_32bit_from_bytes`: Reads four consecutive bytes from a pointer in a register and concatenates them into a single 32-bit register value.
 - `decode_and_fill_table`: The routine reads a count from another routine, fills a temporary buffer with that many bytes from another routine, then iterates over a 12-byte stack buffer and a table pointed to by a register.
 - `copy_table_and_jump`: The routine copies ten 16-bit words from a global variable backwards into a stack area, then loads the word stored at the last copied location as a code pointer and jumps to it.

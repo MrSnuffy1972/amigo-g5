@@ -108,7 +108,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_stub_with_constant_five`: Calls a library stub with the constant five and a base-relative address, then returns.
 - `read_chip_register_with_flag`: Reads a 16-bit custom chip register word at an address indexed by its argument, then sets or clears bit four depending on a bit of a global value, and returns the adjusted word.
 - `call_routine_return_zero_2`: Calls one other routine and returns zero.
-- `initialize_sterne_text_record`: Fills a small structure with fixed byte and pointer values, including a pointer to the text Sterne, then calls a library stub with it and one other routine.
+- `initialize_tron_text_record_2`: Fills a small structure with fixed byte and pointer values, including a pointer to the text TRON, then calls a library stub with it and one other routine.
 - `call_library_function`: Calls a function from a library loaded from a global variable.
 - `fill_sixteen_by_sixteen_table`: Fills a sixteen-by-sixteen table by looping over both indices and storing a value read through two routines at each position, after an initial call.
 - `fill_offset_sixteen_table`: Fills the same sixteen-by-sixteen table as its neighbour, but starts the row index at one and the column index at two, skipping the first row and the first two columns.
@@ -132,7 +132,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `fill_slot_values_from_stub`: Loops over a count of four-byte slots, fetching a value through a routine and a library stub for each, storing it at a fixed offset in the slot and calling a further routine when the value is zero.
 - `release_nonzero_slot_handles`: Walks a slot array whose length is given by a count byte, releasing each non-zero pointer through another routine and clearing it to zero.
 - `load_sound_sample_file`: Loads a sound sample file for a slot by allocating memory, opening the file, examining its size and reading it into memory, and reports an error message through the text if memory, opening, examining, existence or reading fails.
-- `open_audio_device_and_slots`: Fills two arrays of five four-byte slots with values returned by other routines, then opens the audio device through the exec library and reports an error message through the text when the open fails.
+- `initialize_audio_slots_and_records`: Fills two arrays of five four-byte slots with values returned by other routines, then opens the audio device and reports an error through the text system if it fails.
 - `configure_channel_slot`: If the channel's flag is set, writes fixed field values and the channel's stored parameters into a slot structure and passes it to another routine.
 - `configure_channel_slot_pair`: If the channel and a shared flag are clear, writes field values into a slot structure, passes it to another routine, then writes a second configuration with position fields when a computed threshold is met.
 - `call_eight_routines_in_sequence`: Calls eight other routines in sequence and returns.
@@ -192,7 +192,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `run_ten_steps_then_cleanup`: Calls a routine ten times in a row, then calls an optional handler and releases two globals when they are set.
 - `run_ten_steps_library_call`: Runs the same ten-call sequence and optional cleanup as its neighbour, and through its callees it calls a library function.
 - `append_string_bounded`: Appends a zero-terminated source string to the end of a destination string, copying at most 32766 bytes and terminating the result.
-- `append_string_with_count_limit`: Appends a zero-terminated source string to the end of a destination string, copying no more than the count passed in, and terminates the result.
+- `append_string_with_count`: Walks to the end of the destination string and appends bytes from the source, stopping at the source terminator or when the count argument runs out, then null-terminates the destination.
 - `copy_string_until_terminator`: Copies bytes from a source pointer to a destination pointer up to and including the zero terminator.
 - `measure_zero_terminated_length`: Walks a zero-terminated byte string and returns its length, not counting the terminator.
 - `copy_string_with_zero_padding`: Copies a zero-terminated source into a destination for at most the given count of bytes, then fills any remaining part of that count with zero bytes.
@@ -297,7 +297,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### diskfont.library
 
 - `obtain_block_and_store_value`: Library code that calls a library function to obtain a block, and when that succeeds stores the value passed in a register at offset 34 in the block before calling another library function.
-- `obtain_and_tag_block`: Library code with the same logic as its neighbouring entry: it obtains a block through a library call, stores the value passed in a register in it and calls another library function.
+- `check_and_set_font_handle`: This library routine calls a routine via a table entry using a library base.
 - `open_dos_and_graphics_libraries`: Opens the dos and graphics libraries by name through library calls.
 - `close_library_and_free_block`: Closes a library base and frees a memory block through two library calls, then returns zero.
 - `unload_unused_list_entries`: Walks a list of entries and removes each one whose usage count is not positive, unlinking it and unloading its segment through the dos library.

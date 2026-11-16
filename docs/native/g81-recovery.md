@@ -130,12 +130,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `relocate_offsets_in_a0_table`: Saves all registers, loads a base pointer from a program-counter-relative long, then walks a table at offset an address from the base, adding the base to each nonzero entry until a zero terminator, and restores registers.
 - `dispatch_rnc_decompress_by_file_id`: Saves d1-d4/a0-a2, reads a byte from a table offset by the current file id, and if it is not the fourth entry and d2 is nonzero, calls the decompressor entry at offset 40 of the library base with computed d0/d1/d2 arguments, returning zero.
 - `call_library_offset_24_preserving_all`: Pushes all data and address registers, loads the library base from the pc-relative pointer, calls the function at offset 24 of that base, then restores all registers and returns.
-- `rnc_pack_method_unpack_to_buffer`: Checks the RNC signature, reads packed sizes, copies the bit stream backwards, then decodes literal and match runs into the caller's buffer using the library bit reader, returning the unpacked length.
-- `decode_bitstream_against_mask`: Reads masked word pairs from a0 until the masked value equals the second word, then extracts two bit fields using d6 and d7 and returns the combined bits in d0.
+- `decode_compressed_chunk`: The routine validates a data header signature and processes a compressed data stream using a stack-based algorithm.
+- `parse_bit_table`: Scans a table of words for a matching condition, then calculates a bit mask based on byte values and register contents.
 - `mask_d0_and_consume_d7_budget`: Masks d0 with d6, subtracts d1 from d7, and if the budget went negative calls the bitstream refill routine before shifting d6 right by d1 and returning.
-- `refill_bit_buffer_from_a3`: Adds d1 back to d7, shifts d6 right by d7, swaps d6, reads two bytes backwards from a3 into d6 with byte rotation, then resets d7 to sixteen minus d1.
+- `refill_bit_buffer_from_a3_stream`: Adds d1 back into d7, shifts d6 right by d7, swaps d6, advances a3 by four and loads two bytes backwards into d6 with a byte swap, then resets d7 to sixteen minus d1.
 - `read_four_bytes_into_d0`: Loads four bytes from the address in a0 into d0, shifting left by eight before each byte so the last byte read ends up in the low byte, then returns.
-- `build_huffman_decode_tables`: Reads a code-length table from the stack, then fills a0 with per-symbol masks, bit-reversed codes, code lengths and shift counts for decoding, advancing d0 and d1 per pass.
+- `build_huffman_tree_nodes`: Iterates over a buffer to match bytes against a running value, writing masks, shifted values, and node properties into a destination array to build a tree structure.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -205,7 +205,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `wait_for_raster_and_update_voices`: Polls the vertical position register until it changes, then calls the voice update routine for each of the four audio voice structures.
 - `decode_audio_command_and_program_channel`: Reads a command word from the sequence data, looks up a sample descriptor, fills the channel structure fields, and writes AUDxLCH, AUDxLEN and AUDxVOL plus DMACON bits for the given channel.
 - `apply_velocity_toward_target`: Reads the target distance at offset 22 of a4; if nonzero, adds or subtracts the speed byte at offset 21 to the position at offset 16 depending on the direction flag at offset 20, clamps to the target, clears the target and stores the position into 6(a5).
-- `compute_sine_scaled_vertical_offset`: Uses the angle byte at 25(a4) to index a sine table, multiplies by the low nibble of 24(a4), shifts right by seven, negates if the angle sign bit is set, adds the result to the position at 16(a4) and stores it into 6(a5), then advances the angle.
+- `update_coordinate_data`: Calculates a new value using bitwise operations and multiplication from a structure, updates a field in that structure, and stores the result in another field.
 - `dispatch_entity_command_nibble`: Reads the command word at 2(a4), switches on its low nibble to move the position at 16(a4) with clamping, call the velocity or sine routines, adjust the angle at 19(a4), toggle the CIAA fire bit, or set the global speed and direction bytes.
 - `blit_planar_tiles_to_bitplanes`: Saves registers, checks a dirty flag via a helper, then converts packed 4-bitplane tile data through a lookup table into two interleaved bitplane buffers at a1 and a2.
 - `rebuild_palette_lookup_table`: If the palette index at offset 2096 differs from the cached one, stores it and fills 128 bytes at offset 2104 with interpolated values derived from the index.

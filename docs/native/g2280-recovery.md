@@ -48,7 +48,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ## Cases handled
 
 - star wars (1988)(system breaker)(pd)/Star Wars (1988)(System Breaker)(PD).adf: file s/startup-sequence (header 62 bytes, blocks hold 69): its blocks are judged as raw blocks outside the filesystem
+- extended reference run ignored: it does not re-execute 29 of the 34 PCs the canonical run logged (393237 PCs logged; the harness no longer reproduces the game), so its PCs and RAM are not used
+- reference run failed (Karl 4 Nov 2026): run ext slid through memory (an address: 16 64 KB pages each with >= 29491 distinct PCs executed, 393177 of its 393237 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
 - star wars (1988)(system breaker)(pd)/Star Wars (1988)(System Breaker)(PD).adf: the boot block reads 11264 bytes from disk offset 0 to an address (found statically); recovered as a unit
+- prefix run f150 ignored: it logged 393232 PCs the canonical run never executed (not a prefix of it)
+- prefix run f75 ignored: it logged 393232 PCs the canonical run never executed (not a prefix of it)
 - runtime segment an address: 27 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 displacement
 - star wars (1988)(system breaker)(pd)/Star Wars (1988)(System Breaker)(PD).adf: 1 logged loads cover 6656 bytes of the image

@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (903952 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 2 of 2 units identical (bytes and relocations), 1 raw-word lines |
-| Functions named and described | pass, 28 of 28 named (0 author symbols), 28 of 28 described (0 by rule, 28 by the local model) |
+| Functions named and described | pass, 29 of 29 named (0 author symbols), 29 of 29 described (1 by rule, 28 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 186 of 186 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 407 of 407 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 413 of 413 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 2526 |
-| code | 1406 |
-| data | 827316 |
+| code | 1424 |
+| data | 827298 |
 | unused | 72704 |
 
 ## Code units
@@ -27,7 +27,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Manchester United - Europe (1991)(Krisalis Software)(M5)[cr CLS].adf:bootblock | 1 | 165 | 12 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 242 | 16 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 248 | 17 |
 
 ## Cases handled
 
@@ -52,12 +52,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Manchester United - Europe (1991)(Krisalis Software)(M5)[cr CLS].adf:bootblock
 
 - `initialize_system_with_io`: Calls a routine via a pointer, populates a structure with certain values, and copies a block of code to a high memory address.
-- `copy_boot_code_block`: Writes a specific value to a memory address and copies a fixed number of words from a routine to a destination address.
+- `store_vectors_and_copy_table`: Stores three pointer values into a fixed low-memory slot, calling a routine after each, then copies a table of words to a fixed buffer.
 - `copy_memory_block`: copies a block of memory from a source address to a destination address for a fixed number of words.
 - `write_text_marker_by_flag`: writes one of two four-character text markers, FAT0 or FAT1, chosen by one bit of a global value.
 - `detect_refresh_rate_hz`: Resets certain hardware or memory-mapped registers, checks a condition, and writes a text marker into a structure based on a threshold check.
 - `wait_until_status_byte_clear`: repeatedly checks a status byte at a fixed offset from a base register and returns minus one once its top bit is clear.
-- `initialize_linked_list_data`: Clears a range of memory, writes a signature, and then traverses a linked list to populate or modify data structures with specific signatures.
+- `initialize_tagged_structure`: Zeroes a 172-byte structure, writes the four-character tag RAMC into it, then stores two values and calls two routines to fill in the rest.
 - `traverse_linked_list_bit_test`: traverses a linked list of pointers and stops if a specific bit or a certain bit-pattern is detected in the next word.
 - `traverse_linked_list_with_data`: traverses a linked list of pointers and stops if a bit-pattern or certain bit is detected in a word located at a fixed offset from the current pointer.
 - `update_memory_with_word`: Checks a global variable and, if zero, constructs a value from a register and writes it to a global memory offset.
@@ -82,3 +82,4 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `loop_until_condition_met`: Executes a loop that checks a condition involving a pointer-based lookup and a multiplier, then sets a pointer-referenced value to zero.
 - `wait_for_value_match`: Sets a pointer-referenced value to zero and loops until a second pointer-referenced value matches that zeroed value.
 - `reset_global_variable`: Sets a global variable to zero and loops until that variable equals zero.
+- `frag_lea_moveq_clr_addq_dbra_rts`: Short code fragment that loads the address of a location in the code into a0, then loads 15 into d0, then clears the memory at an offset from a0, then adds 4 to a0, then loops back while counting down d0, then returns.

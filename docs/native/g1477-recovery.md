@@ -179,7 +179,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `draw_shifted_row_with_spill`: Draws up to eight source rows into four planes, each shifted by the low four bits of an x position with spilled bits carried into the following word.
 - `merge_sparse_table_at_offset`: Walks a fixed source table four words at a time, skipping all-zero groups and merging the others into four destination planes at an offset while keeping background pixels where the source is zero.
 - `merge_sparse_table_at_base`: Walks a second fixed source table four words at a time, skipping all-zero groups and merging the others into the base of the plane area.
-- `execute_looping_call`: Executes another routine four times within a decrementing loop.
+- `repeat_call_four_times`: Loops four times, calling another routine on each iteration and decrementing a counter, then returns.
 - `draw_shifted_masked_planes_wide`: Draws a bit-shifted, masked block of four consecutive source words per group into four destination planes, with a separate case for the final partial word.
 - `wrap_position_and_read_words`: Adds an offset to a 16-bit position and wraps it when it passes 318, repeating for a second offset.
 - `nudge_palette_components_toward_source`: Compares the 4-bit red, green and blue components of sixteen words with those of a second table, nudging a component one step toward it only when the two differ by fifteen.

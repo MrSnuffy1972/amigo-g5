@@ -91,7 +91,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `call_and_return_register_value`: Calls one routine and then returns the value held in a data register, which the call leaves unchanged.
-- `cycle_table_entries_into_slots`: Advances a global index and, when it is nonzero, copies words selected from a table by that index into two destination slots.
+- `poll_status_and_dispatch`: Loops reading a global status byte, calling another routine each pass, and branching on individual bits of the status; depending on the bit, calls further routines.
 - `install_interrupt_server`: Stores two constant bytes and two routine addresses into fixed global locations, then calls the exec library through a vector to add an interrupt server.
 - `call_rem_int_server`: Library stub: loads its arguments and the exec library base, calls RemIntServer and returns its result to the caller.
 - `initialize_global_values`: Clears a 16-bit word at a global address, sets a 16-bit word at another global address to 63184, sets a 32-bit long at a third global address to 1, copies a 16-bit word from one global address to another, and returns.
@@ -162,7 +162,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `loop_until_command_changes`: While the command code equals eighteen, clears a flag and reads further commands in nested loops until the code changes.
 - `store_operand_or_clear_field`: Handles command twenty by storing the command word and an operand pointer in the record and returning.
 - `clear_record_status_word`: Clears one word in a record, the status field at offset six, and returns.
-- `increment_and_clear_buffer`: Increments a global counter and then clears 2000 groups of four long words starting at a global buffer pointer.
+- `clear_buffer_alternating`: Increments a global counter, selects one of two buffer pointers based on the counter's low bit, stores that pointer in a global variable, then writes zero to four consecutive longwords per iteration for two thousand iterations, clearing the selected buffer.
 - `wait_for_hardware_flag`: Calls a routine through a pointer offset from a global base, then busy-waits until a bit in a hardware status global is set.
 - `set_constant_color`: Sets the first custom color register to 3840 and enters an infinite loop.
 - `poll_right_middle_buttons`: Reads the right and middle mouse button state from the POTGOR hardware register, then calls seven routines that handle the result.
@@ -178,7 +178,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `run_nibble_decrement_tick_loop`: Runs the nibble-decrement tick loop after setting its timing global to 256 and clearing the tick counter.
 - `decrement_nibbles_each_tick_2`: Waits for the hardware status bit on each tick, then decrements the low four bits of each of fifteen words when they are nonzero.
 - `set_bit_and_reset_timer`: Sets bit one of a control global, stores 256 in a timing global, then calls a routine.
-- `initialize_music_player_state`: Stores two pointers derived from a base pointer, clears a series of player globals, and sets a master value of fifteen.
+- `initialize_audio_and_scan_table`: Stores pointers derived from an incoming base pointer into globals, clears a series of global variables and sets one to a small constant, then scans a word table to find the maximum value while counting down, and finally calls another routine and stores a constant pointer.
 - `update_channel_period_accumulators`: Walks four-long channel records and, for each record with a nonzero first long, replaces that value and adjusts an accumulator by the difference.
 - `advance_channel_period_chain`: Updates a chain of four-long channel records in sequence, replacing each value and adjusting its accumulator by the difference.
 - `reset_channel_volumes_and_dma`: Sets the volume-register globals of all four audio channels to zero and a master value to fifteen.
@@ -186,7 +186,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `advance_pattern_step_counter`: Increments a tick counter and, when it reaches the stored tick limit, resets it and advances a step counter.
 - `advance_pattern_row_pointer`: When the step counter reaches sixty-five, advances the pattern position through its table and reloads the row address.
 - `start_pattern_playback`: Waits until a pattern table field is nonzero, points the row pointer at its entry, marks the player active, and calls eight routines before clearing a control global.
-- `advance_row_and_run_channels`: Advances the row pointer by sixteen bytes, calls eight routines in turn, and clears a control global.
+- `play_four_voices`: Loads four voice entries from a table, advances the table pointer by 16, calls two routines for each entry to set parameters, and finally writes d3 to the DMA controller.
 - `apply_channel_command_word`: Decodes a command word whose top nibble selects one of four audio channels.
 - `load_channel_zero_registers`: Loads the sample pointer, length, period and volume values for audio channel zero from the channel table and writes them into that channel's hardware-state globals.
 - `load_channel_one_registers`: Handles two modes for audio channel one: mode two loads the sample pointer, length, period and volume from the channel table, and mode three stores a pointer for the channel.
@@ -205,7 +205,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_value_two_way`: Stores a value into one of three player globals based on an index of two or three; any other index selects the third global.
 - `store_value_by_index_flag`: Stores a value into a player global when the index is three, and otherwise into a second player global.
 - `store_value_into_global_slot`: Stores the data-register value into a fixed player global without any index test.
-- `update_audio_channel_registers`: Adds per-channel period and volume deltas to the player globals for all four audio channels, then writes the pointer, length, period and volume values to the audio hardware registers.
+- `update_audio_channels`: Updates audio channel registers (pointer, length, period, volume) for channels 0-3 based on flags, enables DMA channels, and computes scaled values from global variables.
 - `add_indexed_byte_to_global`: Looks up a byte in a table indexed by the low 15 bits of a word, masks off one bit, adds it to a global variable and stores the sum back into the global.
 - `initialize_four_channel_records`: Fills four consecutive four-word records with values derived from a base offset and fixed addresses, then sets the low four bits of a status word to mark them as valid.
 - `copy_selected_channel_records`: Selects a 14-byte source entry by index, or a global default when the index is zero.

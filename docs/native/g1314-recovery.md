@@ -7,20 +7,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (901120 top-level bytes in 52 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 3 raw-word lines |
-| Functions named and described | pass, 81 of 81 named (0 author symbols), 81 of 81 described (28 by rule, 49 by the local model) |
+| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 1 raw-word lines |
+| Functions named and described | pass, 93 of 93 named (0 author symbols), 93 of 93 described (35 by rule, 54 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 85 of 85 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 2140 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1285 of 1285 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1482 of 1482 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 758515 |
-| code | 4284 |
-| data | 113574 |
-| padding | 12459 |
+| code | 4712 |
+| data | 113142 |
+| padding | 12463 |
 | unused | 12288 |
 
 ## Code units
@@ -28,9 +28,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | World Class Leader Board (1988)(Access).adf:Filter | 1 | 2 | 1 |
-| World Class Leader Board (1988)(Access).adf:Golf | 7 | 29 | 2 |
-| World Class Leader Board (1988)(Access).adf:    | 1 | 641 | 35 |
-| World Class Leader Board (1988)(Access).adf:nofastmem | 3 | 603 | 42 |
+| World Class Leader Board (1988)(Access).adf:Golf | 7 | 230 | 17 |
+| World Class Leader Board (1988)(Access).adf:    | 1 | 638 | 33 |
+| World Class Leader Board (1988)(Access).adf:nofastmem | 3 | 602 | 41 |
 | World Class Leader Board (1988)(Access).adf:bootblock | 1 | 10 | 1 |
 | HighScores (raw code file, load address unknown) | 1 | 0 | 0 |
 | font (raw code file, load address unknown) | 1 | 0 | 0 |
@@ -38,6 +38,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ## Cases handled
 
 - world class leader board (1988)(access)/World Class Leader Board (1988)(Access).adf: file s/startup-sequence (header 22 bytes, blocks hold 29): its blocks are judged as raw blocks outside the filesystem
+- world class leader board (1988)(access)/World Class Leader Board (1988)(Access).adf:Golf: Imploder (xfd) stream found by ancient scan (35684 -> 75052 bytes) but only 0 of 35 sampled windows are in reference RAM: not used
 - world class leader board (1988)(access)/World Class Leader Board (1988)(Access).adf:WCLB/Data/HighScores: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - world class leader board (1988)(access)/World Class Leader Board (1988)(Access).adf:WCLB/Data/font: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - world class leader board (1988)(access)/World Class Leader Board (1988)(Access).adf: blocks 884-884 (bytes 452608-453120) outside the filesystem hold data, not code (opcode density 0.008, entropy 1.89)
@@ -63,6 +64,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `free_blocks_and_clear_field`: Runs a short loop that releases memory blocks through the system FreeMem entry, then zeroes a longword field in the caller's structure.
 - `decrement_until_minus_one`: Decrements a local variable until it reaches negative one and then returns.
+- `initialize_score_table`: Initializes a score table by setting up pointers and calling a routine multiple times while incrementing a counter from zero to three, then returns.
+- `update_score_table`: Updates a score table by adding values from a register to memory locations calculated using another register's value, looping based on conditions from a comparison result.
+- `frag_beq_movea_bsr_bra`: Short code fragment that branches if the last result was zero, then copies a3 to a1, then calls another routine, then jumps to another point in the code.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs two instructions (lea.l, moveq) and then falls through into the code that follows, with no return of its own.
+- `frag_cmpa_beq_move_subq_bne_rts`: Short code fragment that compares a2 with a6, then branches if the last result was zero, then copies the memory just below a2 (moving a2 down) to the memory at a1 (advancing a1) (4 times in a row), then subtracts 2 from d0, then branches if the last result was not zero, then copies the memory just below a1 (moving a1 down) to d0, then returns.
+- `decode_golf_data_3`: Processes compressed bit data from a buffer using a lookup table, decodes bytes, and updates memory locations based on decoded values.
+- `frag_moveq_add_bne_move_addx_dbra_addq`: Short code fragment that loads 2 into d7, then adds d1 to d1, then branches if the last result was not zero, then copies the memory just below a0 (moving a0 down) to d1, then adds d1 and the extend flag to d1, then adds d0 and the extend flag to d0, then loops back while counting down d7, then adds 6 to d0, then loads 3 into d7, then jumps to another point in the code.
+- `frag_moveq_bra`: Short code fragment that loads 5 into d0, then loads 3 into d7, then jumps to another point in the code.
+- `frag_moveq_bra_2`: Short code fragment that loads 4 into d0, then loads 2 into d7, then jumps to another point in the code.
+- `frag_moveq_bra_3`: Short code fragment that loads 3 into d0, then loads 1 into d7, then jumps to another point in the code.
+- `decode_golf_data_2`: Processes compressed bit data from a buffer using a lookup table, decodes bytes, and updates memory locations based on decoded values.
+- `frag_add_bne_move_addx_bra`: Short code fragment that adds d1 to d1, then branches if the last result was not zero, then copies the memory just below a0 (moving a0 down) to d1, then adds d1 and the extend flag to d1, then adds d2 and the extend flag to d2, then jumps to another point in the code.
+- `decode_golf_bits`: Reads compressed bit data from a buffer, processes bits using a lookup table, and copies decoded bytes to another location while updating counters and pointers.
+- `decode_golf_data`: Processes compressed golf data from a buffer, decompressing bits and copying bytes to another location while updating counters and pointers.
+- `frag_move_movem_bra`: Short code fragment that copies d0 to the memory just below a4 (moving a4 down), then copies d1 to the memory just below a4 (moving a4 down), then copies d2 to the memory just below a4 (moving a4 down), then restores saved registers from the stack, then jumps to another point in the code.
 
 ### World Class Leader Board (1988)(Access).adf:   
 
@@ -99,8 +115,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_408`: Library stub: loads a library base from a global variable and calls the library function at offset minus 408 of that base, returning its result to the caller.
 - `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `clear_memory_loop`: Clears a longword at a memory location pointed to by a0 and then performs a branch to another location.
-- `tiny_ori`: Small routine of 1 instruction that merges 27 into d0.
-- `tiny_ori_ori`: Small routine of 2 instructions that merges 208 into d2, then merges 24 into d0.
 
 ### World Class Leader Board (1988)(Access).adf:nofastmem
 
@@ -108,7 +122,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_branch_on_result`: Loads a library base from a global variable and calls a library function through it, then passes the result to one of two routines depending on whether it is zero.
 - `process_nested_structure_elements`: Checks a pointer in a2, and if non-zero, enters a loop that iterates up to ten times to process elements from a linked list, calling several routines to manipulate data and library functions to handle resource pointers.
 - `initialize_and_manage_resources`: Calls a routine with two arguments, and if the result is non-zero, performs a series of library calls and data manipulations including setting specific byte values in a structure and iterating through a list of pointers to clear them.
-- `initialize_dos_and_clear_memory`: Initializes a DOS library handle and clears a block of memory using a loop.
 - `load_address_and_return`: Loads a longword from a PC-relative address into a4 and returns immediately.
 - `initialise_dos_library_handle`: Looks up the dos library and, if it is found, allocates a block, writes a four-character tag and a handle into it and calls library routines to set it up.
 - `tiny_move`: Small routine of 1 instruction that copies d0 to d0.

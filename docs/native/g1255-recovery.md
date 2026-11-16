@@ -6,20 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (1802240 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 2 of 2 units identical (bytes and relocations), 1 raw-word lines |
-| Functions named and described | pass, 40 of 40 named (0 author symbols), 40 of 40 described (2 by rule, 38 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 291 of 291 (100.00%) |
+| Bytes classified (1802342 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 1 raw-word lines |
+| Functions named and described | pass, 41 of 41 named (0 author symbols), 41 of 41 described (2 by rule, 39 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 294 of 294 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 790 of 790 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 810 of 816 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 1147 |
-| code | 3126 |
+| code | 3226 |
 | data | 1278799 |
+| padding | 2 |
 | unused | 519168 |
 
 ## Code units
@@ -28,13 +29,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Power Drift (1989)(Activision)(Disk 1 of 2).adf:bootblock | 1 | 44 | 2 |
 | logged disk load from Power Drift (1989)(Activision)(Disk 1 of 2).adf boot-block load | 1 | 746 | 38 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 26 | 1 |
 
 ## Cases handled
 
 - power drift (1989)(activision)(disk 1 of 2)/Power Drift (1989)(Activision)(Disk 1 of 2).adf: custom-format (non-DOS) disk, 934 non-empty blocks: matched against track-loaded segments
 - power drift (1989)(activision)(disk 2 of 2)/Power Drift (1989)(Activision)(Disk 2 of 2).adf: custom-format (non-DOS) disk, 1566 non-empty blocks: matched against track-loaded segments
 - power drift (1989)(activision)(disk 1 of 2)/Power Drift (1989)(Activision)(Disk 1 of 2).adf: the boot block reads 4608 bytes from disk offset 1024 to an address (found statically); recovered as a unit
-- 2 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- 3 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 1 first-run image unit(s) in 1 version group(s); 94 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
 - power drift (1989)(activision)(disk 1 of 2)/Power Drift (1989)(Activision)(Disk 1 of 2).adf: 1 logged loads cover 4608 bytes of the image
 - power drift (1989)(activision)(disk 1 of 2)/Power Drift (1989)(Activision)(Disk 1 of 2).adf: blocks 33-524 (bytes 16896-268800) outside the filesystem hold data, not code (opcode density 0.010, entropy 5.23)
 - power drift (1989)(activision)(disk 1 of 2)/Power Drift (1989)(Activision)(Disk 1 of 2).adf: blocks 528-538 (bytes 270336-275968) outside the filesystem hold data, not code (opcode density 0.001, entropy 4.67)
@@ -141,3 +143,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `check_mouse_button`: Tests bit 2 of the CIAA_PRA register and branches to a specific address if the bit is clear, otherwise it returns.
 - `toggle_ciab_bits_1`: Calls a wait routine, toggles bits 1 and 7 of a global variable related to CIAB port B, and calls another routine.
 - `compare_and_store_byte`: Compares a byte value with memory location a fixed address, branches if equal, stores the byte to that memory location, then performs unconditional branches to specific addresses.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `load_and_test_flag`: Loads a signed byte from a global table, tests if it is positive, and returns immediately without modifying the value.

@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (904112 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 12 raw-word lines |
-| Functions named and described | pass, 68 of 68 named (0 author symbols), 68 of 68 described (5 by rule, 63 by the local model) |
+| Functions named and described | pass, 81 of 81 named (0 author symbols), 81 of 81 described (18 by rule, 63 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 683 of 683 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 6656 bytes, 37 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1977 of 2019 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2049 of 2049 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 3741 |
-| code | 7156 |
-| data | 892702 |
+| code | 7274 |
+| data | 892584 |
 | padding | 1 |
 | unused | 512 |
 
@@ -27,9 +27,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Mean Arenas (1993)(ICE)[cr DLM](Disk 1 of 2)[t +22 GOD].adf:bootblock | 1 | 278 | 4 |
+| Mean Arenas (1993)(ICE)[cr DLM](Disk 1 of 2)[t +22 GOD].adf:bootblock | 1 | 258 | 3 |
 | logged disk load from Mean Arenas (1993)(ICE)[cr DLM](Disk 1 of 2)[t +22 GOD].adf boot-block load | 1 | 0 | 0 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 768 | 27 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 818 | 41 |
 | Mean Arenas (1993)(ICE)[cr DLM](Disk 1 of 2)[t +22 GOD].adf bytes 1024-7680 (code never loaded by a reference run) | 1 | 973 | 37 |
 
 ## Cases handled
@@ -37,6 +37,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - mean arenas (1993)(ice)[cr dlm](disk 1 of 2)[t +22 god]/Mean Arenas (1993)(ICE)[cr DLM](Disk 1 of 2)[t +22 GOD].adf: the boot block reads 4096 bytes from disk offset 12800 to an address (found statically); recovered as a unit
 - runtime segment an address: 521 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - mean arenas (1993)(ice)[cr dlm](disk 1 of 2)[t +22 god]/Mean Arenas (1993)(ICE)[cr DLM](Disk 1 of 2)[t +22 GOD].adf: bytes 1024-7680 look like code no run loaded: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate+displacement
 - mean arenas (1993)(ice)[cr dlm](disk 1 of 2)[t +22 god]/Mean Arenas (1993)(ICE)[cr DLM](Disk 1 of 2)[t +22 GOD].adf: 2 logged loads cover 10752 bytes of the image
 - mean arenas (1993)(ice)[cr dlm](disk 1 of 2)[t +22 god]/Mean Arenas (1993)(ICE)[cr DLM](Disk 1 of 2)[t +22 GOD].adf: blocks 16-24 (bytes 8192-12800) outside the filesystem hold data, not code (opcode density 0.022, entropy 3.21)
 - mean arenas (1993)(ice)[cr dlm](disk 1 of 2)[t +22 god]/Mean Arenas (1993)(ICE)[cr DLM](Disk 1 of 2)[t +22 GOD].adf: blocks 33-879 (bytes 16896-450560) outside the filesystem hold data, not code (opcode density 0.003, entropy 6.63)
@@ -48,6 +49,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Copy protection found
 
+- `call_free_mem` (bootblock): Library stub: loads its arguments and the exec library base, calls FreeMem and returns its result to the caller. Kind: trackdisk.device I/O check. Pass path: the routine returns 0 and execution continues normally, indicating the disk I/O operation was successful and the protection check passed.
 - `setup_io_request_two` (Mean Arenas (1993)(ICE)[cr DLM](Disk 1 of 2)[t +22 GOD].adf bytes 1024-7680 (code never loaded by a reference run)): Sets four consecutive memory locations with specific values and a value from a pointer, then executes a function via a pointer stored in a global variable. Kind: disk/track check. Pass path: the branch following the call (the code skips the BSR if the check passes, or the BSR is the check itself and the subsequent instruction is the pass path).
 - `prepare_io_request_parameters` (Mean Arenas (1993)(ICE)[cr DLM](Disk 1 of 2)[t +22 GOD].adf bytes 1024-7680 (code never loaded by a reference run)): Sets four consecutive memory locations with the values three, four thousand five hundred ninety-two, a value from a pointer at offset eight of a structure in a5, and seven thousand one hundred sixty-eight, then calls a function via a pointer stored in a global variable. Kind: track/disk integrity check. Pass path: the branch following the tst.l an address(a5) instruction (likely when the result is zero/non-error).
 - `call_do_i_o` (Mean Arenas (1993)(ICE)[cr DLM](Disk 1 of 2)[t +22 GOD].adf bytes 1024-7680 (code never loaded by a reference run)): Library stub: loads its arguments and the exec library base, calls DoIO and returns its result to the caller. Kind: disk/track check. Pass path: the branch not taken by the conditional jump (e.g., if tst.w an address.l results in zero, the code continues past an address).
@@ -66,7 +68,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `initialize_boot_sequence_2`: Sets up a structure with specific pointers and values, allocates memory, opens a device, performs several I/O operations, and executes a task before potentially setting a global longword.
 - `call_free_mem`: Library stub: loads its arguments and the exec library base, calls FreeMem and returns its result to the caller.
-- `initialize_boot_sequence`: Sets four values in a structure, calls a function via a pointer in a global variable, calls a routine at address an address, and writes a constant to a memory location before branching.
 - `decompress_and_expand_data`: Checks for a specific magic signature at the start of a buffer, then performs a multi-stage decompression and expansion process involving bit-shifting and table lookups to populate a destination memory area.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -79,6 +80,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `apply_bitwise_or_sequence`: Performs a series of bitwise OR operations on the byte in D4 using several different immediate values.
 - `initialize_memory_values`: Writes several words and a byte to specific offsets in memory using a2 and a1, then loads the address of the next instruction into a2.
 - `tiny_movea_rts`: Small routine of 2 instructions that copies (a7)+ to a2, then returns.
+- `initialize_input_handler`: Writes an immediate value to a global variable and initializes a table entry, then returns immediately.
+- `frag_lea_adda_movea_jmp`: Short code fragment that loads the address of a location in the code into a0, then adds the memory at a1 to a0, then copies a fixed memory address to a1, then copies a1 to a2, then adds 32768 to a2, then jumps to the address in a0.
+- `frag_eori_bra`: Short code fragment that exclusive-ors 25 into the memory at an offset from a1 (4 times in a row), then jumps to another point in the code.
+- `frag_eori_bra_2`: Short code fragment that exclusive-ors 7436 into the memory at an offset from a2, then jumps to another point in the code.
+- `frag_eori_bra_3`: Short code fragment that exclusive-ors 13245 into the memory at an offset from a2, then jumps to another point in the code.
+- `frag_eori_bra_4`: Short code fragment that exclusive-ors 13245 into the memory at an offset from a2, then jumps to another point in the code.
+- `frag_eori_bra_5`: Short code fragment that exclusive-ors 13245 into the memory at an offset from a1, then jumps to another point in the code.
+- `frag_eori_bra_6`: Short code fragment that exclusive-ors 61557 into the memory at an offset from a2, then jumps to another point in the code.
+- `frag_move_bra`: Short code fragment that copies 173 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_bra_2`: Short code fragment that copies 170 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_bra_3`: Short code fragment that copies 81 to a fixed memory address, then jumps to another point in the code.
+- `frag_move_bra_4`: Short code fragment that copies an address to the memory at an offset from a2, then copies 9 to the memory at an offset from a2, then jumps to another point in the code.
+- `frag_move_bra_5`: Short code fragment that copies 304 to the memory at an offset from a2, then jumps to another point in the code.
 - `branch_on_byte_value`: Tests a byte at a specific memory location; if it is zero, it branches to another routine, otherwise it loads the byte into d0, clears the memory location, and jumps to a calculated address in a1 based on whether d0 equals 249.
 - `jump_to_offset_address`: Adds a constant to the pointer in A1 and jumps to the resulting address.
 - `write_global_word_and_return_registers`: The routine stores a word to a global variable and returns the concatenation of two registers.
@@ -98,6 +112,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `parse_string_table`: Walks a global string table and copies each character into a global buffer, subtracting 48 from each byte, and sets a 16-bit value at a global location to 1 if a character is the digit 2, otherwise it sets it to 0.
 - `decrement_numeric_values`: Decrements a 16-bit counter in a global variable and, if not zero, iterates through a list of pointers to decrement specific nibbles of the 16-bit values they point to, returning 1 if any value was changed.
 - `increment_numeric_values`: Increments a 16-bit counter in a global variable and, if not zero, iterates through a list of pointers to increment specific nibbles of the 16-bit values they point to, returning 1 if any value was changed.
+- `frag_cmpi_bne_rts`: Short code fragment that compares the memory at an offset from a6 with 254, then branches if the last result was not zero, then compares the memory at an offset from a6 with 255, then branches if the last result was not zero, then returns.
 
 ### Mean Arenas (1993)(ICE)[cr DLM](Disk 1 of 2)[t +22 GOD].adf bytes 1024-7680 (code never loaded by a reference run)
 

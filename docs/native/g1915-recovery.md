@@ -45,14 +45,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Copy protection found
 
-- `delay_and_write_cia_bits` (runtime segment an address): Runs two short countdown loops, writes a masked value into the CIA B port B register, runs one more countdown, and returns. Kind: timing/delay loop for disk hardware synchronization. Pass path: the instructions immediately following the call (lea.l an address.l, a0).
+- `delay_and_set_cia_port` (runtime segment an address): Waits through three short countdown delays and, between them, writes a masked value to the port B data register of a CIA chip, then returns. Kind: timing/delay loop for disk hardware synchronization. Pass path: the instructions immediately following the call (lea.l an address.l, a0).
 
 ## Functions
 
 
 ### Indy-IV
 
-- `run_entry_sequence_then_free`: Program entry point.
+- `free_memory_blocks_loop`: Calls another routine and a function pointer, then loops four times calling another routine and a memory-free function pointer, clears the longword before a given pointer, and returns.
 - `decrement_until_minus_one`: Decrements a local counter until it reaches negative one, then returns.
 - `accumulate_table_two_passes`: Runs two passes over a table, calling an unnamed routine through a pointer on each step.
 - `enter_stream_decoder_stub`: A two-instruction entry stub whose listed facts show one call to a single-instruction routine.
@@ -78,14 +78,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `read_nine_bit_field`: Refills the bit source through an unnamed routine when the bit counter is below seven, advances the counter, and returns a nine-bit field taken from the current word.
 - `copy_block_then_start_program`: Copies a block of bytes from a source to a destination, then calls an operating system library routine.
 - `close_file_handle_if_open`: Closes a stored file handle through an operating system library call when it is not the sentinel value, then marks it as closed.
-- `delay_and_write_cia_bits`: Runs two short countdown loops, writes a masked value into the CIA B port B register, runs one more countdown, and returns.
+- `delay_and_set_cia_port`: Waits through three short countdown delays and, between them, writes a masked value to the port B data register of a CIA chip, then returns.
 - `reorder_and_dispatch_buffer`: Stores three values into global variables, calls another routine with a constant value of 974, reorders four bytes within a memory block using a series of byte moves, and then performs two subsequent calls to another routine before jumping to a location stored in a global variable.
 - `update_and_swap_buffer_data`: Stores two pointers into global variables, calls a routine with a constant of 621, and if successful, updates a global pointer with the result.
 - `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
 - `call_error_handler`: Calls another routine, loads a pointer into a0, and branches to another routine.
 - `allocate_signal_and_init_block`: Allocates an operating system signal and, on success, clears a block of bytes and fills in fields of a structure.
 - `perform_io_and_cleanup`: Attempts to open a device and, upon failure, performs a sequence of I/O operations using a structure in a1 to write specific command codes, data, and bit-shifted values before closing the device and performing bitwise operations on the CIA register via a loop.
-- `perform_io_and_delay`: Opens a device using a pointer from a global variable, then performs a sequence of I/O operations involving bitwise manipulation of a value and shifting it before closing the device and calling delay_and_write_cia_bits.
+- `perform_io_and_delay`: Opens a device using a pointer from a global variable, then performs a sequence of I/O operations involving bitwise manipulation of a value and shifting it before closing the device and calling delay_and_set_cia_port.
 - `call_error_handler_alt`: Calls another routine, loads a pointer into a0, and branches to another routine.
 - `fill_memory_with_byte`: Writes a byte value into a count of consecutive bytes starting at a destination pointer.
 - `copy_block_handling_overlap`: Copies a block of bytes between two pointers, choosing a forward or backward copy so that overlapping regions are copied correctly.
@@ -102,21 +102,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_joystick_data`: Calls another routine, reads a 16-bit value from the JOY0DAT register, and stores the low and high bytes into a table at offset 0, then repeats this process for the JOY1DAT register at offset 6 before calling another routine and returning.
 - `poll_joystick_and_pot_buttons`: Checks a value in a register and, if not equal to one, loads a table into registers, tests bit six of the CIAA register, and tests bit two of the custom chip register.
 - `check_hardware_status`: Loads values from a table, checks bit 7 of the CIAA register, writes 52224 to the POTGO register, and checks bit 6 of the POTGOR register to increment a value in d2.
-- `update_mouse_movement_deltas`: Reads the mouse port movement register for two ports and updates per-port position and delta fields in a small table.
+- `track_port_movement_deltas`: Reads the movement counter registers for the mouse and joystick ports, stores their low and high bytes, and adds each change since the previous reading to a running total for each port, for two entries.
 - `store_word_to_global`: Stores a 16-bit value from d0 into a global variable and returns.
 - `reenable_interrupt_system`: Calls an unnamed routine, shuffles a shared value through a second location, then writes the interrupt-enable value with its set bit to re-enable the interrupt system.
 - `check_interrupt_request_state`: Reads the interrupt enable and request registers and calls two unnamed routines.
 - `read_interrupt_request_bits`: Reads the interrupt request register and calls one unnamed routine.
 - `test_interrupt_bit`: Tests a specific bit within a value and returns the result.
 - `decode_keyboard_scancode`: Reads the keyboard serial data register, converts the raw code into a key number, and updates a key-state table entry from the press or release bit.
-- `record_key_state_change`: Stores a key code and its previous state into a table and updates the key state from the top bit of the raw code, using a key map referenced in the text.
+- `record_key_state_and_char`: Stores a masked code and the previous table entry, updates the table entry from the top bit of the input byte and, when the entry is set, records the matching character from a text table.
 - `call_then_enable_interrupts`: Calls two unnamed routines and then writes the interrupt-enable value with its set bit, switching the master interrupt enable on.
 - `disable_interrupt_master`: Clears the master interrupt-enable bit by writing the interrupt-enable register without its set bit.
 - `enable_interrupt_master`: Writes the interrupt-enable value with its set bit for the master interrupt enable, switching the interrupt system on.
 - `open_resource_and_init_fields`: Clears a few shared fields and stores the address of an unnamed routine in a shared slot.
 - `close_resource_if_open`: When a stored handle is set, calls two operating system library routines to release it.
 - `run_routines_then_halt`: Calls two unnamed routines and then loops forever.
-- `stub_empty_return_routine`: Its pseudo-code is an immediate return with no body, although the listed instruction count is larger, so no behaviour can be stated beyond that.
-- `copy_saved_words_into_table`: Copies sixteen-bit words from a source area into a shared table, choosing an alternate source pointer when the low bit of the argument is set.
+- `do_nothing`: This routine is empty and performs no operations before returning.
+- `copy_every_other_word_reversed`: Optionally selects a source pointer from a flag bit, then copies sixteen words in reverse order, taking one word from each pair of words in a source block into a global area.
 - `silence_audio_channels`: Disables the four audio DMA channels and sets their volume registers to zero.
 - `copy_indexed_long_words`: Walks a table of index and value pairs and writes each four-byte value into a destination at the given index offset.

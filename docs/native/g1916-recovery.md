@@ -51,7 +51,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Indy-IV
 
-- `run_program_startup_calls`: Program entry point.
+- `free_memory_blocks_loop`: Calls another routine and a function pointer, then loops four times calling another routine and a memory-free function pointer, clears the longword before a given pointer, and returns.
 - `decrement_until_minus_one`: Repeatedly decrements a data register, starting from its existing value, until it reaches negative one, then returns.
 - `run_two_pass_accumulate_loop`: Calls an indirect routine twice, then runs two passes.
 - `stub_zero_result_return`: Merges zero into a result register and returns.
@@ -112,9 +112,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_then_enable_interrupts`: Calls another routine, copies a global value to itself and writes an interrupt enable value that sets the master and external enable bits.
 - `disable_external_interrupt_bit`: Writes an interrupt enable value that clears the external interrupt bit without setting the enable bit, switching that interrupt off.
 - `enable_master_external_interrupts`: Writes an interrupt enable value with the master and external enable bits set to the interrupt enable register.
-- `open_resource_and_init_block`: Initialises fields of a memory block, stores a routine address in it, opens a named system resource through the exec library and, if that succeeds, calls two routines of the resource.
+- `open_resource_and_init_fields`: Clears a few shared fields and stores the address of an unnamed routine in a shared slot.
 - `call_resource_routines_if_set`: If a stored resource pointer is set, calls two routines through its function table and returns.
-- `call_routines_then_loop_forever`: Calls other routines and then loops forever.
+- `run_routines_then_halt`: Calls two unnamed routines and then loops forever.
 - `do_nothing`: This routine is empty and performs no operations before returning.
 - `copy_every_other_word_reversed`: Optionally selects a source pointer from a flag bit, then copies sixteen words in reverse order, taking one word from each pair of words in a source block into a global area.
 - `silence_audio_channels`: Writes the DMA control register with the four audio channel bits cleared, which disables those channels, and zeroes the volume registers of the four audio channels.

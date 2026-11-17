@@ -220,7 +220,7 @@ impl Assets {
             let period = int(&e["period"])? as u16;
             let name = e["name"].as_str().ok_or("sfx: no name")?;
             sfx.push(Sfx {
-                sample: p.sample(name, PAULA_CLOCK / period.max(1) as f32)?,
+                sample: p.sample(name, PAULA_CLOCK / period.max(1) as f32 * frame_clock_scale())?,
                 period,
                 volume: int(&e["volume"])?.clamp(0, 64) as u8,
                 duration: int(&e["duration"])? as u16,
@@ -283,9 +283,38 @@ impl Assets {
 /// The PAL sound clock: a sample played at period P runs at this many bytes a second over P.
 pub const PAULA_CLOCK: f32 = 3_546_895.0;
 
+/// The original's frame as the reference ran it: 313 lines of 227.5 colour clocks (20.076 ms), against the native
+/// tick of exactly 20 ms.
+pub const ORIGINAL_FRAME_CC: f64 = 313.0 * 227.5;
+
+/// fix-336 (16 Nov 2026): the sounds play this much faster than the plain PAL clock gives, so that one native tick
+/// plays as many bytes of a sample as one original frame did. The game counts its sounds in frames (each channel's
+/// frame count, the level music restarted on a new life), and the level music is one long looping sample: at the
+/// plain clock it fell 0.38% behind the game a frame (7 frames by the end of a 1750-frame life against the reference
+/// run) while the effects stayed on their frames. 1.0038 is 6.6 cents of pitch. `G336_FRAME_CLOCK=0` in the
+/// environment turns it off (the plain clock, as releases up to r5).
+pub fn frame_clock_scale() -> f32 {
+    if std::env::var("G336_FRAME_CLOCK").is_ok_and(|v| v == "0") {
+        return 1.0;
+    }
+    (ORIGINAL_FRAME_CC / PAULA_CLOCK as f64 / 0.02) as f32
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn the_frame_clock_plays_one_original_frame_a_tick() {
+        // 313 x 227.5 colour clocks at 44100 Hz output is 885.35 samples; the native tick renders 882
+        let s = frame_clock_scale() as f64;
+        if std::env::var("G336_FRAME_CLOCK").is_ok_and(|v| v == "0") {
+            assert_eq!(s, 1.0, "the off switch gives the plain clock");
+            return;
+        }
+        assert!((s * 882.0 - ORIGINAL_FRAME_CC * 44100.0 / PAULA_CLOCK as f64).abs() < 0.01, "{s}");
+        assert!((s - 1.0038).abs() < 0.0001, "{s}");
+    }
 
     #[test]
     fn hold_and_modify_keeps_and_changes_components() {

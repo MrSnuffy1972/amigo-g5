@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (1809552 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 31 raw-word lines |
-| Functions named and described | pass, 130 of 130 named (0 author symbols), 130 of 130 described (35 by rule, 82 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 848 of 848 (100.00%) |
+| Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 32 raw-word lines |
+| Functions named and described | pass, 139 of 139 named (0 author symbols), 139 of 139 described (39 by rule, 87 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1000 of 1000 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 29184 bytes, 31 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 4207 of 4289 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 4221 of 4303 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 32296 |
-| code | 16098 |
-| data | 1485683 |
+| code | 16148 |
+| data | 1485633 |
 | padding | 19 |
 | unused | 275456 |
 
@@ -34,7 +34,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | logged disk load from Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf boot-block load | 1 | 88 | 4 |
 | logged disk load from Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf boot-block load | 1 | 0 | 0 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 480 | 20 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1275 | 63 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1289 | 72 |
 | Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf bytes 6144-8192 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf bytes 12288-39424 (code never loaded by a reference run) | 1 | 2230 | 31 |
 
@@ -48,7 +48,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - air support (1992)(psygnosis)[cr skr](disk 2 of 2)/Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf: the boot block reads 22528 bytes from disk offset 878592 to an address (found statically); recovered as a unit
 - air support (1992)(psygnosis)[cr skr](disk 2 of 2)/Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf: the boot block reads 1536 bytes from disk offset 1024 to an address (found statically); recovered as a unit
 - runtime segment an address: 330 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 518 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 670 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - air support (1992)(psygnosis)[cr skr](disk 2 of 2)/Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf: bytes 6144-8192 look like code no run loaded: recovered position-independently (load address unknown)
 - air support (1992)(psygnosis)[cr skr](disk 2 of 2)/Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf: bytes 12288-39424 look like code no run loaded: recovered position-independently (load address unknown)
 - air support (1992)(psygnosis)[cr skr](disk 1 of 2)/Air Support (1992)(Psygnosis)[cr SKR](Disk 1 of 2).adf: 2 logged loads cover 27136 bytes of the image
@@ -202,8 +202,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_conditional_jump`: Saves registers, checks bit 14 of a 16-bit value from offset 28 of a6, and if bit 6 and bit 4 of a masked version of that value are both zero, it increments a 16-bit value at offset 1444 of a structure in a5 and performs an indirect jump using a value from a table.
 - `update_bit_and_counter`: Calculates a bit position using a 16-bit value from offset 1740 of a structure in a5, stores a bitmask in offset 1744 of the structure, and if the 16-bit value at offset 1738 is negative, it writes specific bytes to offset 256 of a0 and increments offset 1754 of the structure.
 - `update_entity_timers_and_flags`: Checks status bits in a structure pointed to by a0 and modifies various 16-bit counters and state bytes within a structure pointed to by a5.
+- `frag_btst_beq_moveq_bsr_bra_clr_addq`: Short code fragment that tests bit 4 of the memory at an offset from a0, then branches if the last result was zero, then loads 1 into d0, then calls frag_move_ori_bra_2, then jumps to another point in the code, then clears the memory at an offset from a5, then adds 2 to the memory at an offset from a5, then jumps to another point in the code.
+- `process_entity_movement`: Compares a 16-bit value at offset 1746 of a5 with a 16-bit value at offset 1738 of a5, calls frag_move_ori_bra_2 if the result is negative, calls update_entity_state_and_timers if the result is positive, or performs bitwise operations and writes a byte to offset 256 of a0 if the result is zero.
 - `frag_move_ori_bra_2`: Short code fragment that copies the memory at an offset from a5 to d1, then merges 128 into d1, then jumps to another point in the code.
 - `update_entity_state_and_timers`: Modifies a byte at an offset from a0 using bitwise operations, calls another routine, and updates several fields in a structure pointed to by a6 including timers and coordinate values.
+- `set_structure_parameters`: Writes several 16-bit values to various offsets of a6, loads a pointer from offset 6e0 of a5 into a1 and then into offset 20 of a6, increments a 16-bit value at offset 6da of a5, and branches to another routine.
+- `frag_move_btst_beq_addq_bra`: Short code fragment that copies the memory at an offset from a6 to d0, then tests bit 1 of d0, then branches if the last result was zero, then adds 2 to the memory at an offset from a5, then jumps to another point in the code.
+- `check_and_transform_range`: Tests a 16-bit value at offset 1736 of a5, compares 32-bit values at offsets 1750 and 1658 of a5, and if a range condition is met and bit 6 of a byte at offset 2 of a6 is clear, calls search_and_transform_data_2 and increments a 16-bit value at offset 1754 of a5.
+- `frag_btst_bne_bsr_addq_bra`: Short code fragment that tests bit 6 of the memory at an offset from a6, then branches if the last result was not zero, then calls another routine, then adds 2 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_btst_bne_subq_beq_addq_move_bra`: Short code fragment that tests bit 6 of the memory at an offset from a6, then branches if the last result was not zero, then subtracts 1 from the memory at an offset from a5, then branches if the last result was zero, then adds 1 to the memory at an offset from a5, then copies 8 to the memory at an offset from a5, then jumps to another point in the code.
+- `update_entity_data`: Writes several bytes to a buffer at offset 256 of a0 and offset 7425 of a0, clears a 16-bit value at offset 1754 of a5, calls calculate_status_flags, adjust_coordinate_values, process_and_call_subroutines, and expand_run_length_encoded_data, and calls scale_rgb_values if certain conditions are met.
 - `frag_movea_move_rts`: Short code fragment that copies a location in the code to a0, then copies 127 to the memory at an offset from a0, then copies 136 to the memory at an offset from a0, then copies 0 to the memory at an offset from a0, then returns.
 - `process_input_state`: Checks bits in a value from offset 28 of a6 and performs bitwise operations on a byte from a memory location to update a byte at offset 3584 and a value at offset 1446 of a5.
 - `frag_moveq_movea_move_bsr_dbra_rts`: Short code fragment that loads 0 into d1, then copies a location in the code to a0, then copies the memory at an offset from a0 to d1, then calls another routine, then loops back while counting down d1, then returns.
@@ -214,8 +222,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_structure_fields_2`: Calls another routine four times, each time passing a structure offset from a5 and a destination pointer in a1, to write specific 16-bit and 8-bit values into the destination.
 - `clear_structure_fields`: Clears two 16-bit words and two bytes at specific offsets within a structure pointed to by a0.
 - `search_and_transform_data_2`: Saves registers to the stack, calls another routine to search for data, and if the result in d0 is zero, copies two pointers from the result into global variables before returning.
+- `transform_search_data`: Loads four values into a0 and a1, calls search_and_transform_data, and if the return value in d0 is zero, adds 1600 to a 32-bit value at offset 1750 of a5; otherwise it writes 4 to a 16-bit value at offset 1754 of a5.
 - `search_and_transform_data`: Loops through a list of words until a specific value is found, then performs bitwise transformations on data from the list and stores the results into a destination buffer at an offset from a0.
-- `frag_ori_lsl_addq_move_rts`: Short code fragment that merges 96 into d1, then shifts d0 left by 3, then adds 2 to d0, then copies d0 to the memory at an offset from a5, then copies d0 to the memory at an offset from a6, then returns.
+- `frag_lsl_addq_move_rts`: Short code fragment that shifts d0 left by 3, then adds 2 to d0, then copies d0 to the memory at an offset from a5, then copies d0 to the memory at an offset from a6, then returns.
 - `frag_move_rts_9`: Short code fragment that copies the memory at an offset from a5 to the memory at an offset from a6, then returns.
 - `frag_move_lsr_tst_ori_btst_beq_rts`: Short code fragment that copies 127 to the memory at an offset from a0, then copies d0 to the memory at an offset from a0, then shifts d0 right by 8, then copies d0 to the memory at an offset from a0, then tests the memory at an offset from a0, then merges 25 into the memory at an offset from a0, then tests bit 0 of the memory at an offset from a0, then branches if the last result was zero, then returns.
 

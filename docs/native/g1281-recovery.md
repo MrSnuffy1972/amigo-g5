@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (901536 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 8 raw-word lines |
-| Functions named and described | pass, 10 of 10 named (0 author symbols), 10 of 10 described (0 by rule, 10 by the local model) |
+| Functions named and described | pass, 14 of 14 named (0 author symbols), 14 of 14 described (1 by rule, 10 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 18 of 18 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 375 of 375 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 425 of 425 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 14435 |
-| code | 1078 |
-| data | 884487 |
+| code | 1300 |
+| data | 884265 |
 | unused | 1536 |
 
 ## Code units
@@ -29,7 +29,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Dragon's Lair 2 - Time Warp (1990)(ReadySoft)[cr SKR](Disk 1 of 7)[t +1 Golden Betrayal].adf:bootblock | 1 | 14 | 1 |
 | logged disk load from Dragon's Lair 2 - Time Warp (1990)(ReadySoft)[cr SKR](Disk 1 of 7)[t +1 Golden Betrayal].adf boot-block load | 1 | 163 | 2 |
 | logged disk load from Dragon's Lair 2 - Time Warp (1990)(ReadySoft)[cr SKR](Disk 1 of 7)[t +1 Golden Betrayal].adf boot-block load | 1 | 163 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 35 | 5 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 85 | 9 |
 
 ## Cases handled
 
@@ -72,6 +72,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `increment_global_counter`: Adds a value from a register to a global variable, and when that variable reaches 512 it resets it to zero and increments the following variable, otherwise it returns.
 - `compare_and_call_routine`: Computes a difference between two global variables, and if the result is not less than a threshold it calls a routine at a fixed address, otherwise it returns.
+- `loop_and_compare_status`: Calls a routine via a pointer, updates two global variables using a value from d1, and if the difference between them is zero, calls another routine; otherwise, it enters a loop that increments d0 and calls another routine until d0 equals 44, then calls another routine and returns.
+- `frag_clr_move_lea_moveq_rts`: Short code fragment that clears a fixed memory address, then copies 2 to a fixed memory address, then loads the address of a location in the code into a0, then loads 0 into d0, then returns.
+- `process_address_offset`: Calculates a value from d2, compares it to 1600, stores a pointer in a global variable, and if a comparison with 84320 matches, subtracts 86464 from a pointer, stores the result in a global variable, clears a 32-bit and a 16-bit global variable, and calls another routine.
+- `increment_and_check_status_counters`: Increments a 16-bit value and a 32-bit value in global memory, then checks a status byte to conditionally call another routine and update a function pointer.
 - `setup_globals_and_jump`: Tests a byte in a global variable, and if it is set it returns; otherwise it copies two longs between globals, clears a flag byte, and jumps to a fixed address.
 - `conditionally_copy_globals`: Tests a byte in a global variable, and if it is zero it copies two longs from one pair of globals to another then jumps to a fixed address, otherwise it returns.
 - `clear_and_jump_if_zero`: Clears a byte in a global variable, tests another byte, and if that byte is zero it clears it and jumps to a fixed address, otherwise it returns.

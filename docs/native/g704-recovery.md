@@ -65,11 +65,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Graham Taylor Soccer Challenge (1992)(Krisalis Software)(M5)[cr CSL](Disk 2 of 2).adf:bootblock
 
 - `initialize_boot_sequence`: Sets up hardware registers, performs a memory copy of a code block, and manages several memory markers.
-- `relocate_code_block`: Copies a sequence of words from one memory location to another.
+- `store_slots_and_copy_block_2`: Writes three successive addresses into one fixed memory slot, calling an unnamed routine after each write.
 - `fetch_word_from_memory`: Returns a 16-bit word from a memory location.
 - `copy_memory_block`: Copies a specified number of 16-bit words from a source pointer to a destination pointer.
 - `write_text_marker`: Writes a four-character text marker to a memory location based on a bit in a global variable.
-- `check_hardware_status`: Clears several memory locations and checks a status byte to determine a return value.
+- `detect_refresh_rate_hz_2`: Resets the CIA-A and CIA-B port and timer registers, then reads a counter from two timer bytes and returns 50 or 60 depending on whether it is below a threshold.
 - `verify_memory_consistency`: Loops until a byte at a specific offset changes or a value in another location becomes negative.
 - `populate_marker_table`: Clears a block of memory, writes text markers, and populates a table with values from a linked list.
 - `search_linked_list_bit`: Walks a linked list until a specific bit is found set within a word in each node.

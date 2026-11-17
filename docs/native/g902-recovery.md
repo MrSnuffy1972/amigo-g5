@@ -183,20 +183,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Rally Championships (1994)(Flair)[cr PDY](Disk 1 of 4).adf:PDY-RALLY.EXE
 
-- `program_entry_free_memory`: Calls several unnamed routines, invokes a function pointer kept in a shared variable and zeroes a longword through a pointer.
+- `initialize_program_entry`: The routine calls another routine multiple times and invokes a function pointer stored in a global variable.
 - `decrement_to_minus_one`: The routine loads a short value from a register, repeatedly decrements it until it reaches -1, and then returns.
 - `expand_packed_offset_table`: Walks a packed stream of counts and offsets, copying blocks of longwords and single bytes and adding a computed value into table slots at each offset.
 - `select_half_or_input_word`: Returns the input word unchanged unless a flag equals one, in which case it returns a second word shifted right by one bit.
-- `mask_with_table_word`: Looks up a word in a fixed table at an index that is doubled into a byte offset, and returns it ANDed with a caller-supplied word.
+- `mask_word_with_table_entry`: Looks up a word in a fixed table using an index passed in a register, and returns it ANDed with the input word.
 
 ### Rally Championships (1994)(Flair)[cr PDY](Disk 1 of 4).adf:GO.EXE
 
 - `scan_tagged_block_and_unpack`: Calls the exec library AllocMem through a shared function pointer, then walks a linked list of blocks for an entry carrying a four-byte tag.
-- `match_table_entry_extract_bits`: Scans a table of word pairs for the first entry whose masked value equals its stored companion, then reads a count and a shift from that entry.
+- `extract_flag_bit_from_table`: Scans a table of word pairs until a condition on a global mask is met, then reads a byte from a table entry and uses it as an index into a global mask to extract a bit, calling another routine if a borrow condition is detected.
 - `tiny_moveq_moveq`: Small routine of 2 instructions that loads 255 into d0, then loads 16 into d1.
 - `mask_and_conditional_call`: ANDs two 16-bit values, then if one byte is less than another byte it calls an unnamed routine and returns that routine's result.
-- `return_empty_routine`: The shown pseudo-code is only a return, so it changes no memory or registers.
-- `build_canonical_code_table`: Reads a count and fills a stack buffer of code lengths, then assigns bit-reversed canonical codes for each length and stores them with their masks in a table.
+- `refill_bit_buffer_from_a3_stream`: Adds d1 back into d7, shifts d6 right by d7, swaps d6, advances a3 by four and loads two bytes backwards into d6 with a byte swap, then resets d7 to sixteen minus d1.
+- `fill_figure_table`: Reads a count, fills a table with values from a stack buffer, and then iterates through a loop to write bit masks and derived values into a table based on a key list.
 - `apply_longword_relocation_list`: When a marker word matches a fixed value, it clears the marker and walks lists of offsets, adding a base address to the longword at each offset.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `bounds_check_trap_handler`: Raises trap six when an index is negative or exceeds the bound stored at its target, and otherwise falls through into bad instruction data.
@@ -273,7 +273,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `load_out_of_time_asset`: Calls a routine with d1 set to 4003, loads a value from a global variable into d0, calls a routine at the address in a5, sets a global variable at offset 4160 to 1, stores d0 in a global variable at offset 4166, and calls another routine.
 - `load_damage_asset`: Calls a routine with d1 set to 4107, loads a value from a global variable into d0, calls a routine at the address in a5, sets a global variable at offset 4160 to 1, stores d0 in a global variable at offset 4166, and calls another routine.
 - `load_out_of_fuel_asset`: Calls a routine with d1 set to 4087, loads a value from a global variable into d0, calls a routine at the address in a5, sets a global variable at offset 4160 to 1, stores d0 in a global variable at offset 4166, and calls another routine.
-- `load_winner_single_asset`: Calls a routine with d1 set to 4016, loads d0 and d1 from global variables, calls a routine at the address in a5, sets a global variable at offset 4160 to 1, and calls another routine.
+- `load_winner_world_asset_2`: Calls a routine with d1 set to 4028, loads d0 and d1 from global variables, calls a routine at the address in a5, sets a global variable at offset 4160 to 1, and calls another routine.
 - `load_winner_world_asset`: Calls a routine with d1 set to 3980, loads d0 and d1 from global variables, calls a routine at the address in a5, sets a global variable at offset 4160 to 1, and calls another routine.
 - `load_flair_asset`: Calls a routine with d1 set to 3821, calls a routine at the address in a0, sets a global variable at offset 4160 to 1, and calls another routine.
 - `execute_task_pointer`: Loads a library base pointer into a6, calls a routine with an address in d1, then calls a routine at the address in a0, writes 1 to a global variable, and calls another routine before returning.

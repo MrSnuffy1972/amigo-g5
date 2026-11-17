@@ -6,20 +6,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901184 top-level bytes in 12 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 14 raw-word lines |
-| Functions named and described | pass, 142 of 142 named (0 author symbols), 142 of 142 described (40 by rule, 95 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 609 of 609 (100.00%) |
+| Bytes classified (901264 top-level bytes in 13 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 11 of 11 units identical (bytes and relocations), 3 raw-word lines |
+| Functions named and described | pass, 140 of 140 named (0 author symbols), 140 of 140 described (41 by rule, 91 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 640 of 640 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 2884 of 2892 instructions identical in start and length, 3 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2904 of 2904 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 232 |
-| code | 9350 |
-| data | 112749 |
+| code | 9376 |
+| data | 112803 |
 | padding | 3173 |
 | unused | 775680 |
 
@@ -27,20 +27,26 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| SetMap | 3 | 228 | 7 |
+| SetMap | 3 | 223 | 6 |
 | type | 2 | 117 | 2 |
 | cls | 2 | 20 | 1 |
-| border | 3 | 1788 | 113 |
+| border | 3 | 1800 | 114 |
 | DISK-VALIDATOR | 1 | 386 | 1 |
-| nitro | 1 | 13 | 1 |
+| nitro | 1 | 3 | 1 |
 | cosy | 2 | 24 | 4 |
-| Total Eclipse (1989)(Incentive Software)[b].adf:2 | 1 | 296 | 11 |
+| Total Eclipse (1989)(Incentive Software)[b].adf:2 | 1 | 304 | 7 |
 | Total Eclipse (1989)(Incentive Software)[b].adf:bootblock | 1 | 18 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 2 |
 
 ## Cases handled
 
+- 1 first-execution byte records contradict the logged opcode word (first an address): bad captures, the opcode word is used
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-lgpwide): 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- total eclipse (1989)(incentive software)[b]/Total Eclipse (1989)(Incentive Software)[b].adf:c/SetMap: TNM Cruncher 1.1 (xfd) stream found by ancient scan (3488 -> 4500 bytes) but only 0 of 3 sampled windows are in reference RAM: not used
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-lgpwide) and runtime segment an address): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 3 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 2 jump target, 1 displacement
 
 ## Cracktros (kept, not protection)
 
@@ -58,7 +64,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_and_jump`: Calls a routine and then jumps to a longword address.
 - `process_amiga_hunk_relocations`: Parses a list of data structures by comparing values against specific constants to identify hunk types, then performs pointer arithmetic and memory updates to handle relocations and data segments.
 - `update_map_pointers`: Uses a loop to update a series of pointers in a table based on values read from a source list.
-- `set_d0_bits`: Performs a series of bitwise OR operations on register d0 using the constants 248, 148, 0, 0, and 0.
 - `unpack_stream_with_pointer_shift`: Decompresses a packed stream by reading bits through a shift routine that takes a 32-bit value from the four bytes before the source pointer, shifts it right and sets its top bit, and writes the resulting bytes to a destination buffer.
 - `shift_pointer_value`: The routine reads a 32-bit value from four bytes before the address in A0, shifts it right by one bit and sets the most significant bit, then returns the result.
 - `shift_bitstream_store_pointer`: Repeats a shift of the bit buffer right by one place for a count in d1, storing the current pointer's low word into a global on each pass.
@@ -99,9 +104,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_and_terminate_buffer`: Stores its first parameter as a pointer, calls a routine with the second parameter and a stack address, then writes a zero byte at the stored pointer and returns the call's result.
 - `increment_pointer_and_store_byte`: Increments a global pointer and stores a byte from the first parameter at the original address.
 - `call_parse_format_string`: Pushes a pointer from offset 8 of a5 onto the stack, pushes a PC-relative address onto the stack, calls another routine, cleans the stack, and returns.
-- `process_conditional_data_transfer`: Checks a value at offset 18 of a structure in a5; if it is 4, it copies a longword from a pointer in a0 to d4, otherwise it performs a series of sign extensions, negations, and calls two different routines using values from a structure and a table before potentially writing a byte to a memory location.
+- `call_with_stack_argument_list`: Calls a routine with its format argument and the address of its stack argument list, then returns.
 - `parse_formatted_string`: Parses a string containing format specifiers to extract and convert values into a local buffer, supporting integer, floating-point, and string types.
 - `perform_signed_division`: The routine reads two signed inputs, flips the sign flag based on their signs, calls another routine and optionally negates its result, then combines that result with the second input into a 32-bit value.
+- `normalize_vector`: Calculates the absolute value of two signed 32-bit integers stored in d0 and d1, increments a counter in d4 for each negative value encountered, and returns the final absolute values in d0 and d1.
 - `call_and_return_concatenated`: The routine calls another routine and returns a 64-bit value formed by concatenating the original D1 contents with the value left in D1 by the call.
 - `recursive_call`: The routine calls another routine and then returns.
 - `perform_32bit_division`: The routine calculates the quotient and remainder of a 32-bit integer division using inputs in registers D0 and D1.
@@ -208,11 +214,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `allocate_and_initialize_display_buffer`: Allocates memory and initializes a display buffer by performing bitwise transformations and swaps on data, then copies a block of 32000 bytes from a global area into the buffer.
 - `update_display_registers`: Checks a bit in a hardware register, decrements a counter in a global variable, and if not zero, enters a loop that calls a routine three times to process bytes from three different pointers before updating hardware color registers with swapped values from a table.
 - `process_display_buffer`: Allocates memory, performs several library calls to manage data, executes a loop that performs bitwise transformations and swaps on data, and uses a jump table to call a routine via a pointer.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `clear_d0_byte`: Performs a bitwise OR on register d0 with zero.
-- `clears_data_register_zero`: Performs a logical OR operation on data register zero with zero.
-- `clears_data_register_zero_2`: Performs a bitwise OR operation on data register zero with zero.
-- `clear_data_register_d0`: Performs a logical OR operation on data register d0 with zero.
+- `open_library_and_loop`: Opens a library and then executes a routine from that library fifty times using a loop.
 - `copy_nested_data`: This routine performs nested loops to transfer data between two memory areas using word-based assignments and bit manipulation.
 - `double_word_table_entries`: Doubles each of sixteen words from one global table into a second table, then copies four further words into separate globals.
 - `copy_global_block_to_buffer`: Copies a block of 8000 longwords, 32000 bytes, from a global area into the buffer held in a global pointer.
@@ -224,3 +226,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `return_constant`: Returns the constant -1 in d0 to the caller without any other effect.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_move_movem_rts`: Short code fragment that copies an address to a fixed memory address, then copies several registers to or from memory, then returns.
+- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.

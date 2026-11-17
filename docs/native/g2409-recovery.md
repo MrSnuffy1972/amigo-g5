@@ -7,29 +7,29 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (1802320 top-level bytes in 16 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 103 of 103 named (0 author symbols), 103 of 103 described (26 by rule, 76 by the local model) |
+| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 1 raw-word lines |
+| Functions named and described | pass, 119 of 119 named (0 author symbols), 119 of 119 described (31 by rule, 84 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 118 of 118 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1438 of 1438 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1831 of 1831 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 2057 |
-| code | 4658 |
-| data | 1037464 |
-| padding | 3965 |
+| code | 5934 |
+| data | 1036186 |
+| padding | 3967 |
 | unused | 754176 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| run | 2 | 117 | 2 |
+| run | 2 | 458 | 12 |
 | dB | 2 | 228 | 12 |
-| joy_acc-handler | 3 | 224 | 17 |
+| joy_acc-handler | 3 | 276 | 23 |
 | 9 | 1 | 2 | 1 |
 | 9 | 1 | 2 | 1 |
 | diskfont.library | 13 | 830 | 67 |
@@ -41,6 +41,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - dragon's breath (1990)(palace)[b](disk 2 of 2)/Dragon's Breath (1990)(Palace)[b](Disk 2 of 2).adf: custom-format (non-DOS) disk, 1747 non-empty blocks: matched against track-loaded segments
 - dragon's breath (1990)(palace)[b](disk 1 of 2)/Dragon's Breath (1990)(Palace)[b](Disk 1 of 2).adf:ddata: high-entropy data file (7.99 bits/byte), classified as packed data
 - runtime segment an address: 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 jump target
 - dragon's breath (1990)(palace)[b](disk 2 of 2)/Dragon's Breath (1990)(Palace)[b](Disk 2 of 2).adf: blocks 1749-1759 (bytes 895488-901120) outside the filesystem hold data, not code (opcode density 0.000, entropy 3.97)
 - 1 packed track region(s), 888832 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)
 
@@ -59,6 +60,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_memory_block`: Copies sixteen words from a source address to a destination address and then calls another routine.
+- `initialize_entity_data`: Reads byte values from tables using indices, stores them into structure fields, updates counters and offsets, and performs conditional data copying between memory regions.
+- `update_entity_data_2`: Reads a byte from a table using an index, stores it in a structure, updates counters and offsets, then performs conditional data copying and updates based on the read value.
+- `copy_entity_data`: Copies entity data from one location to another based on calculated offsets, updates counters, and performs conditional operations on entity structure fields.
+- `update_entity_data`: Updates entity data structures by copying values between array elements and modifying counters based on conditions.
+- `frag_moveq_add_bra`: Short code fragment that loads 1 into d1, then adds the memory at an offset from a1 to d1, then jumps to another point in the code.
+- `frag_tst_bne_bra`: Short code fragment that tests the memory at an offset from a1, then branches if the last result was not zero, then jumps to another point in the code.
+- `frag_move_and_tst_beq_ori_moveq_cmp_blt`: Short code fragment that copies 128 to d1, then masks d1 with the memory at an offset from a1, then tests d1, then branches if the last result was zero, then merges an address into the memory at an offset from a1, then loads 133 into d1, then compares d1 with the memory at an offset from a1, then branches if the comparison was less, then jumps to another point in the code.
+- `copy_and_initialize`: Copies a value from one location in a data structure to another, then initializes multiple fields in the same structure based on values from other structures, including setting a counter to zero and copying specific fields.
+- `initialize_structure_2`: Initializes multiple fields in a data structure pointed to by a1, including setting a counter to zero and copying values from the structure.
+- `initialize_structure`: Initializes multiple fields in a data structure pointed to by a1, including setting a counter to zero and copying values from the structure to memory locations.
 
 ### dB
 
@@ -86,8 +97,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_indirect_list`: This routine stores a value from a pointer and then iterates through a list of pointers, calling another routine for each until it returns zero.
 - `return_immediately`: This routine is empty and performs no operations before returning to its caller.
 - `execute_indirect_call`: Performs an indirect call to a location stored in a jump table.
+- `clear_and_setup_handler`: Clears a block of memory by writing zeros to it, sets up a handler routine in a global variable, and calls the supervisor function if a specific bit is set.
+- `frag_lea_jsr_move_bne_bra`: Short code fragment that loads the address of a location in the code into a1, then calls another routine, then copies d0 to the memory at an offset from a4, then branches if the last result was not zero, then copies an address to d7, then calls another routine, then jumps to another point in the code.
+- `frag_jsr_addq_rts`: Short code fragment that calls trigger_infinite_recursion, then adds 8 to a7, then returns.
 - `return_from_handler`: The routine is empty and performs no operations before returning.
 - `perform_signed_division`: The routine reads two signed inputs, flips the sign flag based on their signs, calls another routine and optionally negates its result, then combines that result with the second input into a 32-bit value.
+- `prepare_signed_division`: It saves registers on the stack and clears a local counter.
+- `call_and_return_concatenated_2`: Pushes the original contents of register d1 onto the stack, calls a routine that performs a 32-bit division, then restores d1 and returns a 64-bit value formed by concatenating the original d1 contents with the quotient left in d0.
+- `frag_move_bsr_tst_rts`: Short code fragment that copies d1 to the stack, then calls another routine, then copies the top of the stack to d1, then tests d0, then returns.
 - `perform_long_division`: Calculates a quotient and remainder using a loop of shifts and subtractions or a division algorithm based on the input values.
 - `swap_and_rotate_words`: The routine swaps the high and low words of a value in a register, then repeatedly doubles a pair of words while propagating carry, subtracting a constant if the intermediate value exceeds a threshold, and decrements a counter fifteen times.
 - `call_library_vector_120`: Library stub: loads a library base from a global variable and calls the library function at offset minus 120 of that base, returning its result to the caller.

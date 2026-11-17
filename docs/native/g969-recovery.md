@@ -6,41 +6,40 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (903728 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
+| Bytes classified (904048 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 36 of 36 named (0 author symbols), 36 of 36 described (6 by rule, 30 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 187 of 187 (100.00%) |
+| Functions named and described | pass, 46 of 46 named (0 author symbols), 46 of 46 described (8 by rule, 9 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 223 of 223 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 617 of 617 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 730 of 730 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 422 |
-| code | 3276 |
-| data | 885694 |
+| code | 4750 |
+| data | 884962 |
 | unused | 14336 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Midwinter (1990)(MicroProse)(En)[cr Defjam - CCS - ACC].adf:bootblock | 1 | 189 | 10 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 285 | 11 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 140 | 14 |
+| Midwinter (1990)(MicroProse)(En)[cr Defjam - CCS - ACC].adf:bootblock | 1 | 180 | 9 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 308 | 14 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 237 | 22 |
 
 ## Cases handled
 
 - midwinter (1990)(microprose)(en)[cr defjam - ccs - acc]/Midwinter (1990)(MicroProse)(En)[cr Defjam - CCS - ACC].adf: custom-format (non-DOS) disk, 1730 non-empty blocks: matched against track-loaded segments
-- runtime segment an address: 138 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 47 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- midwinter (1990)(microprose)(en)[cr defjam - ccs - acc]/Midwinter (1990)(MicroProse)(En)[cr Defjam - CCS - ACC].adf: 2 track-loaded blocks found in recovered runtime segments and classified through them
+- runtime segment an address: 163 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 55 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- midwinter (1990)(microprose)(en)[cr defjam - ccs - acc]/Midwinter (1990)(MicroProse)(En)[cr Defjam - CCS - ACC].adf: 3 track-loaded blocks found in recovered runtime segments and classified through them
 - midwinter (1990)(microprose)(en)[cr defjam - ccs - acc]/Midwinter (1990)(MicroProse)(En)[cr Defjam - CCS - ACC].adf: blocks 2-135 (bytes 1024-69632) outside the filesystem hold data, not code (opcode density 0.012, entropy 6.59)
 - midwinter (1990)(microprose)(en)[cr defjam - ccs - acc]/Midwinter (1990)(MicroProse)(En)[cr Defjam - CCS - ACC].adf: blocks 137-996 (bytes 70144-510464) outside the filesystem hold data, not code (opcode density 0.015, entropy 6.68)
-- midwinter (1990)(microprose)(en)[cr defjam - ccs - acc]/Midwinter (1990)(MicroProse)(En)[cr Defjam - CCS - ACC].adf: blocks 998-1084 (bytes 510976-555520) outside the filesystem hold data, not code (opcode density 0.035, entropy 5.60)
+- midwinter (1990)(microprose)(en)[cr defjam - ccs - acc]/Midwinter (1990)(MicroProse)(En)[cr Defjam - CCS - ACC].adf: blocks 999-1084 (bytes 511488-555520) outside the filesystem hold data, not code (opcode density 0.034, entropy 5.59)
 - midwinter (1990)(microprose)(en)[cr defjam - ccs - acc]/Midwinter (1990)(MicroProse)(En)[cr Defjam - CCS - ACC].adf: blocks 1087-1152 (bytes 556544-590336) outside the filesystem hold data, not code (opcode density 0.054, entropy 5.69)
 - midwinter (1990)(microprose)(en)[cr defjam - ccs - acc]/Midwinter (1990)(MicroProse)(En)[cr Defjam - CCS - ACC].adf: blocks 1154-1279 (bytes 590848-655360) outside the filesystem hold data, not code (opcode density 0.033, entropy 6.46)
 - midwinter (1990)(microprose)(en)[cr defjam - ccs - acc]/Midwinter (1990)(MicroProse)(En)[cr Defjam - CCS - ACC].adf: blocks 1284-1304 (bytes 657408-668160) outside the filesystem hold data, not code (opcode density 0.023, entropy 6.07)
@@ -72,39 +71,49 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `pulse_control_port_count`: For each count in its input, writes a pair of control-port values one bit apart so that each pair produces a single pulse, then waits a fixed delay loop before the next pair.
 - `store_params_and_loop_calls`: Stores two register inputs into structure fields, then calls subroutines once per count in a loop, setting a field to two on each pass.
 - `read_mfm_sector_with_retries`: Starts a disk read DMA with the MFM sync word and a fixed buffer address, waits for the read to finish, then searches for the sync word and decodes an MFM sector while checking its checksum.
-- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `initialize_audio_and_reset_pointers`: Checks a global flag, then loops to write multiplied values from a pointer-based table into a hardware register range.
+- `process_vertical_blank_sequence`: Waits for the vertical blank to start, then clears a global flag and increments two 16-bit counters before calling a handler.
 - `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
-- `initialize_global_with_table_values`: If a certain condition is met, it copies a sequence of bytes from a table into a memory range and sets a global variable to a constant; otherwise, it fills a memory range with an incrementing sequence of bytes.
-- `update_global_pointer_via_table`: Calculates a new index using bitwise shifts and an XOR mask, then loads a value from a table into a global variable.
-- `update_pointer_with_calculated_value`: Calculates a new value based on a global pointer and writes it to the memory location pointed to by that global pointer.
+- `frag_bra`: Short code fragment that jumps to another point in the code.
+- `init_captains_from_table`: Returns immediately unless a global longword matches a fixed address, then returns when a byte at offset 59 is nonzero, and otherwise when a byte at offset 60 is nonzero and a global word is at least four, it indexes a table by a tripled value and stores three bytes into three global words before setting several constants.
+- `update_global_pointer_via_table`: Reads a global word, transforms it with a rotate and bit change, and loads a value from a table into a structure, setting a flag word to all ones or clearing it depending on the sign, then clears the flag word when it was zero.
+- `update_pointer_with_calculated_value`: If a value at offset 0 of a global pointer is not 2, it combines a shifted value from one global with a scaled value from another global, stores the sum at the pointer, writes a carry-adjusted result two bytes later, and clears the global at offset 0.
 - `clamp_global_value`: Checks a global variable and, if certain conditions are met, clamps its value within a specific range or sets it to a constant.
-- `set_global_constant`: Stores the value 65535 in a global variable and returns.
-- `accumulate_modified_pointer_values`: Checks a byte at an offset from a global pointer, modifies that byte, and then adds the signed or unsigned version of that pointer to two different global counters.
-- `accumulate_joystick_input_to_counters`: Reads certain bits from a joystick or mouse register and, based on the state of those bits, adds a modified version of the input value to two global counters.
-- `update_joystick_structure`: Checks a global variable, sets bits in a structure at a fixed address based on the state of specific bits in a hardware register, and adds processed values from the mouse port to two fields in that structure.
-- `dispatch_jump_table_entry`: Checks a byte from a pointer in a0, updates several global words based on its bits, and performs an indirect jump to an address from a table.
+- `frag_move_rts`: Short code fragment that copies 65535 to a fixed memory address, then returns.
+- `accumulate_modified_pointer_values`: Sets bits in a structure based on the state of bytes indexed by two global pointers, then, when a flag word is nonzero, clears one of those bytes and adds the signed or unsigned version of a global pointer to two counters.
+- `accumulate_joystick_input_to_counters`: When a flag word is nonzero, it reads a joystick register, derives a gray-code difference, and based on the state of specific bits adds a signed or unsigned version of two global pointers to two counters.
+- `update_joystick_coordinates`: Checks a global word and hardware registers for joystick and mouse input, then updates two global longwords using bitwise manipulations of the input data.
+- `dispatch_via_table`: Updates several global words based on bits in a byte from a0, and if two 32-bit values at offsets 2 and 6 of a0 are zero, it performs an indirect jump through a table.
+- `frag_add_rts`: Short code fragment that adds d1 to a fixed memory address, then adds d0 to a fixed memory address, then returns.
+- `update_global_with_clamping`: Adds a value to a global variable and clamps the result so it does not drop below zero or exceed a certain threshold.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `wait_for_non_zero_word`: Loops until the word at a specific global address is non-zero.
+- `wait_for_global_state`: Spins in a loop until the global variable at offset 1FF38 becomes non-zero, then spins in a second loop until the global variable at offset 1FF52 becomes zero, and returns.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `execute_conditional_routines`: Checks if a global variable is zero, then sets it to a specific address and executes a sequence of routines or indirect calls via that address; otherwise it sets four consecutive words to zero.
-- `set_global_pointer`: Sets three global words to specific constants and then sets a global variable to point to itself.
+- `calculate_table_index`: Sets a global variable to a constant and returns a value calculated using a modulo and a lookup in a table based on the global variable.
+- `execute_conditional_routines`: Checks if a 16-bit word in a global variable is zero; if so, it sets a hardware register to 8200, executes a sequence of indirect calls and branch routines, otherwise it sets four consecutive words to zero and returns.
+- `init_audio_registers_self`: Writes the constant 12 to the second audio period register, sets bit 0 of the DMA control register, sets bit 0 of the blit control register, and stores the address of itself at offset 63784 of a global structure, then returns.
+- `setup_audio_channels_two_three`: Stores a routine address in a global variable, then copies channel, length, volume, and period data from a table into audio channels two and three and enables DMA channels two and three.
+- `copy_audio_volume_registers`: Copies four consecutive words from global variables into the four audio volume registers, then returns.
+- `frag_move_rts_2`: Short code fragment that copies 12 to a fixed memory address, then copies 0 to a fixed memory address (2 times in a row), then copies 61630 to a fixed memory address, then returns.
+- `clear_audio_and_settings`: Sets the DMA controller, clears the volume of all four audio channels, stores several routine addresses in global variables, and clears six bytes in a global table.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
-- `find_first_set_bit`: Checks a bitmask and searches downwards for a bit, then loads a value from a table using a calculated offset.
-- `load_table_data`: Loads several values from a table into a global variable using an offset calculated from a constant.
+- `find_first_set_bit`: Reads a flag byte and returns immediately if it is zero, otherwise clears it, scans bits seven down to zero of a value for the first set bit while decrementing a counter, stores the counter, and loads a longword from a table using an offset derived from the bit index, then returns.
+- `load_table_data`: Sets two hardware registers to 1, calculates an offset from a value in a global variable, and loads five values from a table into a series of global variables using that offset.
+- `load_table_data_2`: Sets two hardware registers to 1, calculates an offset from a value in a global variable, and loads five values from a table into a series of global variables using that offset.
+- `configure_audio_channel_zero`: Copies a channel, length, and volume from a table, sets the period of audio channel zero, and enables DMA channel one.
 - `modify_global_variable`: Performs bitwise operations on a global variable and conditionally resets it to a specific value or a routine address.
-- `set_bit_in_global`: Sets a bit in a global variable where the bit position is determined by the lower three bits of another global variable.
+- `set_bit_from_low_three_bits`: Reads the low three bits of a global word, sets the corresponding bit in a global byte, then calls another routine and returns.
 - `find_bit_and_load`: Searches for a bit in a bitmask and loads a value from a table using a calculated offset.
-- `update_audio_table_pointer`: Calculates an offset into a table and updates a global variable with a sequence of values or pointers loaded from that table, while also modifying audio period and DMA control registers.
+- `load_audio_table_pointer`: Enables an audio channel and DMA request, then reads a counter, masks its low three bits, multiplies by fourteen and uses that offset to copy two longwords and three words from a table into a global variable, finally storing a routine address there.
+- `load_audio_table_pointer_2`: Enables an audio channel and DMA request, then reads a counter, masks its low three bits, multiplies by fourteen and uses that offset to copy two longwords and three words from a table into a global variable, finally storing a routine address there.
+- `configure_audio_channel_zero_2`: Copies a channel, length, and volume from a table, sets the period of audio channel zero, and enables DMA channel one.
 - `modify_global_variable_alt`: Performs bitwise negation and conditional assignment to a global variable, potentially setting it to a routine address.
-- `update_table_bitmask`: Sets a bit in a global variable based on a bitmask or a bit in the same variable using a table-based offset.
+- `set_bit_from_low_three_bits_2`: Reads the low three bits of a global word, sets the corresponding bit in a global byte, then calls another routine and returns.
 - `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
-- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.

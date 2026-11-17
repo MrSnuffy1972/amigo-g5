@@ -238,7 +238,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `evaluate_entity_collision_states`: Checks if three entities have positive values at offset 2304 and exceed a threshold of 2000 at offset 5184, then updates a global variable and a secondary global variable based on shared bit flags in their status words.
 - `update_structure_elements`: Iterates 144 times through a structure in a6, performing arithmetic on values at various offsets and writing results to offsets 2880, 3456, and 5184, or setting bit 15 of the value at offset 2304.
 - `calculate_scaled_products`: Fetches two 16-bit values from tables at a1 and a2 using an index in d6, multiplies them by d0 and d1 respectively, and returns the results in d4 and d5 as 32-bit values.
-- `process_input_and_update_camera`: Reads the vertical scroll position from a hardware register and updates several global variables based on joystick or mouse movement.
+- `process_input_and_update_state`: Clears four words at specific offsets, performs bitwise operations on the value from a hardware register to update several global words, and uses various conditional branches to modify values in a structure and hardware registers.
 - `combine_bit_fields`: Combines several bit-manipulated values derived from a table and a global variable into a single 32-bit result returned in d0.
 - `update_data_tables`: Copies three longwords from specific memory locations to a global variable, performs arithmetic on values from hardware registers, and uses a loop to call another routine and update a table of values.
 - `scale_and_swap_values`: Multiplies d0 and d1 by zero, adds them to values derived from d0 and d1, and performs swaps on the resulting 32-bit registers before returning.

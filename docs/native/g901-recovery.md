@@ -65,8 +65,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `wait_and_clear_flags`: Waits in a loop until a word at offset -31368 of a1 is nonzero and then has bit 7 clear, clears that word, zeroes eleven consecutive words starting at offset -31426, and sets bit 7 of six more words before returning.
-- `frag_move_jsr_lsl_lea_rts`: Short code fragment that copies d1 to the stack, then calls wait_and_clear_flags, then copies d0 to d1, then shifts d1 left by 1, then loads the address of the memory at an offset from a1 into a5, then copies an indexed entry from a5 to d0, then copies the top of the stack to d1, then returns.
+- `clear_and_set_flags`: waits for a specific bit in a memory location to be set, clears that location, and then initializes a series of memory words with specific bit patterns.
+- `frag_move_jsr_lsl_lea_rts`: Short code fragment that copies d1 to the stack, then calls clear_and_set_flags, then copies d0 to d1, then shifts d1 left by 1, then loads the address of the memory at an offset from a1 into a5, then copies an indexed entry from a5 to d0, then copies the top of the stack to d1, then returns.
 - `update_state_machine`: Updates a state value based on comparisons with stored values and a flag, then performs conditional operations including clearing and setting specific memory locations depending on the computed state.
 - `frag_cmpi_beq_bne_subq_jmp`: Short code fragment that compares d4 with 68, then branches if the last result was zero, then compares d4 with 79, then branches if the last result was not zero, then compares d2 with 0, then branches if the last result was zero, then subtracts 1 from d2, then jumps to another point in the code.
 - `frag_cmpi_bne_beq_addq_jmp`: Short code fragment that compares d4 with 78, then branches if the last result was not zero, then compares d2 with 3, then branches if the last result was zero, then adds 1 to d2, then jumps to another point in the code.

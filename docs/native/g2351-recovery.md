@@ -57,33 +57,33 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `try_dos_library_then_cleanup`: Calls a library routine at a fixed offset and returns its result if nonzero, referring to the text dos.library.
 - `set_io_parameters`: Stores two parameters and a constant into global variables before calling an I/O routine.
 - `initialize_io_request`: Sets a global variable with a constant, a pointer to a global variable, and a constant before calling an I/O routine.
-- `get_message_from_port`: The routine waits for a port, retrieves a message, and returns the value of a global variable.
-- `exchange_two_byte_sequence`: Builds a two-byte sequence in a stack buffer and passes it through a routine with the parameter.
-- `read_characters_into_buffer`: Reads input until a sentinel value arrives, then reads characters into a buffer until the terminator value.
+- `wait_for_message_return_byte`: Waits for a message port, fetches the message, saves its first byte, calls another routine, and returns that byte.
+- `send_console_sequence_and_echo`: Writes a two-byte sequence whose first byte is 155 and whose second byte is zero through another routine with the incoming value.
+- `read_string_until_delimiter`: Waits for a start marker value, then copies incoming values into the buffer until the delimiter byte arrives.
 - `trigger_conditional_beep`: Checks if a parameter equals a certain value, then triggers a beep using a value fetched from a table offset by a pointer.
 - `get_current_time`: Calls a library routine to retrieve the current time and returns a value from the stack.
 - `dispatch_io_by_type`: Checks a parameter and calls another routine with a pointer to a global variable for certain input values.
-- `reply_pending_port_message`: Gets a message from a port held in a fixed structure, and if one arrives it replies to it.
+- `reply_pending_message`: Gets a message from the port stored in the structure and, when one is returned, replies to it.
 - `compute_grid_cell_counts`: Computes how many columns and rows fit in a rectangle, after subtracting two margin values from each dimension and dividing by the cell sizes.
-- `build_text_pieces_in_buffer`: Uses a 64-byte stack buffer and calls routines to build two text pieces in it, terminating each with a zero byte.
-- `combine_two_text_fields`: Copies two 32-byte text fields from its arguments into stack buffers, appends them with a global text piece into one 64-byte buffer, and passes that buffer to a final routine.
-- `emit_line_break_or_position`: Calls a helper, then compares two stored counters.
+- `query_console_window_size`: Sends two console cursor-position queries and parses each reply at its separator, then stores the two numbers minus one in global variables as the window size.
+- `format_two_numbers_as_text`: Converts two numbers, each increased by one, into 32-byte text buffers.
+- `write_line_break_or_padding`: If a stored column value is below its limit, it writes a carriage return and a line feed.
 - `pass_global_to_routine`: Passes a global value to another routine and returns.
 - `empty_c_function`: Compiled C function with no body: sets up a stack frame with link, removes it with unlk and returns without doing any work.
-- `emit_global_text_sequence`: Calls a routine with zero arguments, then with the global text, then with a stored count minus one as the position.
+- `write_text_with_stored_index`: Calls one routine with zero arguments, passes a global text buffer to a second routine, then calls a third routine with a zero argument and a stored count minus one.
 - `forward_pair_to_routine`: Forwards its two arguments unchanged to another routine and returns.
-- `emit_character_with_control_codes`: Sends one character: a carriage return triggers a line-break routine, a backspace is expanded into the three bytes that erase the previous character, and any other character is written as a single byte.
+- `echo_character_with_backspace_handling`: Writes one character.
 - `call_no_argument_routine`: Calls one routine with no arguments and returns.
-- `write_padded_text_field`: Positions the output from its arguments and a stored width, pads with spaces when the width leaves room, writes the second text piece and then the text saved at the start.
-- `display_more_prompt`: Writes six-character blocks from a fixed text buffer that holds a [MORE] prompt, with a helper call between writes.
+- `draw_padded_text_field`: Writes a padded text field: it positions output with stored values, fills a computed run of spaces when there is room, writes the caller's text, and finishes by positioning the cursor at the stored values.
+- `write_more_prompt`: Writes a six-character blank run, then the [MORE] prompt text through routines, calls another routine in between, and then writes the blank run again to clear the prompt.
 - `do_nothing`: the routine is empty and performs no operations before returning.
 - `call_global_pair_either_branch`: Calls one routine with the global value as both arguments, regardless of its argument, because both branches make the same call.
 - `call_global_pair_once`: Calls a routine with the global value as both arguments and returns.
-- `trim_path_after_separator`: Searches a string for a slash or colon path separator, trying the slash first, and when one is found it cuts the string just after that separator and stores the result back.
+- `truncate_path_after_separator`: Searches a global path string for a slash or a colon.
 - `save_disk_object_if_loaded`: If an object pointer is set, it marks two fields with a fixed flag value and saves the object with PutDiskObject.
 - `save_disk_object_unchecked`: Sets two fields of the disk object held in a global to a fixed flag value and saves it with PutDiskObject, without a null check.
 - `return_zero_result`: Sets a local result to zero and returns it.
-- `read_block_at_offset`: Seeks to an offset in a file unless the cached handle and position already match, then reads a block of bytes into the buffer.
+- `seek_and_read_block`: Seeks to a file position when the stored position differs, then reads a block of bytes into the buffer and records the new position.
 - `write_block_at_offset`: Seeks to an offset in a file and writes a block of bytes from the buffer.
 - `write_block_from_frame`: Writes a block described by fields of a frame record: the handle, buffer and length.
 - `tiny_moveq_unlk_rts`: Small routine of 3 instructions that loads 0 into d0, then removes the stack frame held in a6, then returns.
@@ -98,19 +98,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `release_stored_lock`: Releases the lock whose handle is held in a stack slot and returns one.
 - `open_story_data_file`: Opens the file named by the text Story.Data in old-file mode and stores its handle in a global.
 - `close_given_file_handle`: Closes the file handle passed to it and returns zero.
-- `calculate_time_difference`: Updates global variables via parameters, calls an I/O routine, and calculates if a certain amount of time has passed since a previous time check.
-- `open_or_close_printer_device`: With a nonzero argument it opens printer.device, allocates a signal, finds the current task and adds a message port.
+- `timed_io_request_with_timeout`: Performs an I/O request and reads the current time before and after it.
+- `open_or_close_printer_port`: When the argument is non-zero, opens the printer device, allocates a signal, finds the current task and adds a message port.
 - `send_escape_sequence_once`: Sends a two-byte escape sequence of 27 then 99 when a stored flag is clear and the argument is nonzero, and records success in the flag.
-- `write_block_then_escape_fallback`: Writes a block of the given length when that length is positive.
-- `format_memory_status_line`: Reads the available memory and builds a status line with the free amount, the used amount and a maximum marker, using the text bytes free and bytes used.
+- `write_text_or_escape_sequence`: Writes the given number of text bytes when that count is positive.
+- `format_memory_status_text`: Reads the available-memory figure, works out the bytes in use against a stored limit, and writes a status line with labels such as bytes free and bytes used.
 - `allocate_remembered_block`: Allocates memory of the requested size through a remember key held in a global, using the public memory flag.
-- `open_window_and_resources`: Opens the libraries and device named in its text, a fixed-size window and a message port.
-- `release_window_and_resources`: Releases what the opening routine acquired: it frees the disk object and remembered memory when present, removes the port, closes the device and the window, and closes the libraries.
+- `open_window_and_devices`: Opens the intuition library and a fixed-size window, then the console device, a signal and a message port.
+- `close_window_and_devices`: Releases what the setup routine acquired: it frees the disk icon object and the tracked memory list, removes the message port, frees the signal, closes the device, window and libraries.
 - `echo_input_until_quit`: Reads characters and echoes each one until the letter q is read, reading and echoing a line with a carriage return whenever z arrives.
 - `relay_keys_until_quit`: Echoes the character held in a stack slot and reads the next one, repeating until q arrives, with a z triggering a line read and carriage return.
 - `echo_keys_with_line_read`: Echoes a stored character, then reads characters until q, reading and echoing a line whenever z arrives.
 - `tiny_unlk_rts`: Small routine of 2 instructions that removes the stack frame held in a6, then returns.
-- `parse_f_slash_argument`: Checks whether a string argument begins with the letter F or f followed by a slash, and if so passes the rest of the name to a routine.
+- `open_optional_file_argument`: Sets a file index to minus one.
 - `validate_story_header_version`: Reads the story file header and reports a wrong version through the matching text when the check fails.
 - `fetch_and_advance_story_page`: Reads a block of data from the story file into a buffer, updates a pointer to a new memory location offset by 512 bytes, sets bit 5 of a flag in a structure, and performs a bitwise shift on a value before calling routines to advance the page counter and dispatch the next opcode.
 - `swap_halfwords_and_shift`: The routine swaps the two 16-bit halves of the 32-bit value in D0, then shifts the result right by 7 bits.
@@ -118,9 +118,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `add_block_size_if_unaligned`: Adds 512 to its argument when the low nine bits are nonzero, otherwise it returns the argument unchanged.
 - `return_value_via_pointer`: The routine returns the 16-bit value pointed to by a pointer in A0.
 - `store_word_big_endian`: Stores its 16-bit argument at the target address with the high byte first.
-- `compare_index_and_step`: Compares its argument with a stored value and calls one of two routines accordingly.
+- `advance_value_at_limit`: Compares the incoming 16-bit value with a limit stored in the frame, fetching a value through another routine on either side.
 - `call_routine_twice`: Calls two routines in sequence and returns.
-- `read_next_buffer_byte`: Returns the byte at the current index of a buffer and advances the index, calling a refill routine when the index passes 511.
+- `read_next_byte_from_buffer`: Reads the next byte from a buffer whose base address is stored in the frame, advances the buffer offset by one, and calls another routine when the offset passes 511.
 - `read_selected_word_value`: Returns a value chosen by its argument: a non-positive argument reads two bytes and joins them, the value one reads the next buffered byte, and other values read a word from one of two tables depending on whether they are below sixteen.
 - `read_word_from_selected_table`: Returns a word from a pointer when its argument is zero, from a first table for arguments below sixteen, and from a second table otherwise, with the table index taken from the argument.
 - `store_word_by_selector`: Stores its 16-bit value at a pointer when its selector is zero, in a first table for selectors below sixteen, and otherwise in a second table.
@@ -179,11 +179,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `step_back_table_search`: Steps the table search position back using helper results and returns once a match or limit is reached.
 - `append_byte_to_output_buffer`: Stores its byte argument at the current position of an output buffer and advances the position.
 - `emit_string_characters`: Passes each character of a zero-terminated string to a routine in turn, then returns zero.
-- `draw_status_line`: Draws the status line with the labels Score and Time, choosing one of two layouts from a flag.
+- `format_score_and_time_line`: Builds a status line in a 256-byte stack buffer, emitting the score and time fragments and a divided value when the counter is nonzero.
 - `append_character_or_flush`: When a mode flag is set it appends its character to a buffer, otherwise it calls a routine and clears a state field.
 - `print_decimal_number`: For a nonzero argument it negates negative values, splits the magnitude into decimal digits by repeated division by ten and writes them with a routine.
 - `decode_zstring_text`: Decodes packed text: each 16-bit word yields three 5-bit characters, with handling of alphabet shifts, abbreviation codes and the end bit set on the last word.
-- `decode_z_string_data`: Decodes a compressed string by iterating through bytes, performing bitwise shifts and masking to extract values, and calls decode_zstring_text_body or write_character_or_flush_pending based on the extracted bits.
+- `decode_z_string_data`: Decodes a compressed string by iterating through bytes, performing bitwise shifts and masking to extract values, and calls decode_token_stream_direct or write_character_or_flush_pending based on the extracted bits.
 - `decode_zstring_text_entry`: Enters the same packed text decoder as its neighbour, after first making three helper calls.
 - `update_paged_address_base`: Splits a 17-bit address into a 512-byte page number and an offset, and when the page changes it stores the new page and computes its base address through a routine.
 - `update_paged_address_base_and_branch`: Updates the paged address base, calls a routine to set a constant and branch, and then performs a relative branch to another location.
@@ -200,7 +200,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `branch_to_distant_routine_2`: Performs a short relative branch to a routine located at a fixed offset.
 - `branch_to_text_output_routine`: Performs a short relative branch to another routine.
 - `branch_to_address`: Performs a relative branch to a specific offset.
-- `update_buffer_pointer`: Calculates a new address by adding a value from a global variable to a pointer stored at an offset in a6, updates three words at offsets -4a, -48, and -4e of the structure in a6, calls advance_page_counter_cached, calls process_buffer_byte, and branches to another routine.
+- `update_buffer_pointer`: Calculates a new address by adding a value from a global variable to a pointer stored at an offset in a6, updates three words at offsets -4a, -48, and -4e of the structure in a6, calls update_scaled_position_state, calls process_buffer_byte, and branches to another routine.
 - `set_constant_and_branch`: Sets d0 to 1 and branches to another routine.
 - `clear_and_branch`: Clears d0 and branches to another routine.
 - `decrement_and_update_counter`: Subtracts two from d0, adds the result to a 16-bit value at a negative offset from a6, and branches to another routine.
@@ -214,12 +214,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_routine_with_argument`: Pushes a word from d0 onto the stack, calls another routine, restores the word to d0 from the stack, loads a constant address into a0, and branches to another routine.
 - `call_routine_with_address`: Pushes a word from d0 onto the stack, calls another routine, restores the word to d0 from the stack, loads a constant address into a0, and branches to another routine.
 - `refresh_story_page`: Clears a 16-bit value at a negative offset from a6, calls a routine to output a text sequence, calls a routine to read a block from the story file into a buffer, updates a pointer with a 512-byte offset, sets bit 5 of a byte at a specific offset in a structure, and branches to another routine.
-- `jump_to_return_constant_one`: Jump stub: passes control straight on to return_constant_one.
+- `jump_to_return_constant_one`: Jump stub: passes control straight on to report_story_file_error.
 - `print_interpreter_version_and_update`: Prints the interpreter version and sub-version strings, then performs a loop to compare an index against a step value.
 - `decode_variable_length_integer_3`: Reads a variable-length encoded integer from a buffer and updates a value and a secondary counter within a structure pointed to by a6.
 - `dispatch_instruction_opcode`: Reads an opcode byte and dispatches on its low four bits through a switch, calling helper routines for each case.
 - `clear_d0_and_load_address`: Clears d0, loads the address of a global variable into a0, and branches to another routine.
-- `decode_zstring_text_body`: Decodes packed text in the same way as its neighbouring entries: three 5-bit characters per word, shift and abbreviation codes, and an end bit.
+- `decode_token_stream_direct`: Decodes packed five-bit tokens from a stack buffer with the same dispatch as its sibling routines, but without the setup calls.
 - `classify_character_case`: Returns three for a zero byte, the argument with its low word cleared for a lowercase letter, one for an uppercase letter and two for any other character.
 - `classify_letter_case`: Returns the argument with its low word cleared for a lowercase letter, one for an uppercase letter and two for any other character.
 - `test_uppercase_letter`: Returns one when its character is an uppercase letter and two otherwise.
@@ -229,7 +229,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
 - `process_character_stream`: Loops up to six times to load bytes from a1, classify them, and push various derived values onto the stack, then performs a second loop to combine these values into a table at a0.
 - `populate_table_with_bit_shifted_values`: Runs a loop to write the value five to a stack-based array, then performs a second loop that reads two 16-bit values from a stack-based array, shifts and combines them into a single 16-bit value, stores the result in a table at a2, and sets the high bit of the last entry in the table.
-- `init_buffer_header`: Initialises a buffer header: it points the first pointer field at the data that follows, clears a count, stores two argument values and clears a flag byte.
+- `initialise_linked_record`: Calls a subroutine, then sets up a small record: it writes a self-referencing pointer, clears a counter word, stores two argument values and clears a flag byte.
 - `tiny_moveq`: Small routine of 1 instruction that loads 13 into d0.
 - `write_character_or_flush_pending`: When a mode flag is zero it runs a flush step guarded by two flags, otherwise it appends the character to the output buffer.
 - `buffer_text_with_word_wrap`: Buffers output characters into words and flushes them at spaces or carriage returns, keeping a running width count.
@@ -237,20 +237,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `restart_buffer_after_call`: Calls one routine, then resets the buffer pointer to the start of the buffer and sets a flag byte to one.
 - `pass_character_through_echo`: Reads a character through a routine and, when a mode flag is set and the character is not a backspace or a counter is nonzero, passes it to a second routine.
 - `append_char_with_wrap`: Appends a character to a line buffer, flushing at a carriage return and wrapping at spaces when the buffered width is too great.
-- `call_counted_loop_when_nonzero`: Calls one routine first.
-- `advance_page_counter_cached`: Advances a page counter by the high bits of an offset and keeps the low nine bits, and when the page changes it stores the previous state and reloads the page base through a routine.
-- `find_or_create_table_entry`: Searches a table of four-word entries for the given key, updating the entry's counter and remembering the matching entry.
-- `find_least_used_entry`: Scans a table of entries ended by a sentinel and returns the address of the entry with the smallest counter, computed from a base address and a 64-byte entry size.
+- `repeat_helper_until_count_zero`: When its flag is nonzero it repeatedly calls a subroutine while decrementing a 16-bit count until the count reaches zero, then calls a final subroutine.
+- `update_scaled_position_state`: Adds the upper bits of a packed word into a stored value and masks the lower bits.
+- `find_or_allocate_table_entry`: Scans a table of four-word entries for a matching key and updates the entry's stored counter when the key changes.
+- `find_least_used_table_entry`: Scans a table of four-word entries and finds the one with the smallest counter value.
 - `handle_story_open_error`: Runs the error path for a failed story file open: it calls routines to clean up and, when a status value is nonzero, to report it, then returns the status.
 - `report_not_enough_memory`: If a helper returns zero, it calls routines to report the referenced message Not enough memory and clean up, then returns the result.
 - `forward_call_to_routine`: Calls one routine and returns.
 - `forward_word_argument`: Passes its word argument to one routine and returns.
 - `relay_call_to_routine`: Calls one routine and returns, with no other work.
 - `tiny_clr_rts`: Small routine of 2 instructions that clears d0, then returns.
-- `return_constant_one`: The decompiled body returns the constant one.
+- `report_story_file_error`: Displays an error message regarding the story file and waits for a key press from the user before exiting.
 - `pass_through_routine_call`: Calls one routine and returns, with no other work.
 - `read_and_echo_character`: Reads a character through a routine and, when a mode flag is set and the character is not a backspace or a counter is nonzero, echoes it through a second routine.
-- `read_key_mapping_delete`: Sets two state fields to one and reads keys until a carriage return, backspace or printable character arrives.
+- `read_editing_key_code`: Sets two state words to one and reads keys until a carriage return or backspace arrives, skipping other control codes.
 - `clear_state_then_call`: Clears a state field and calls one routine.
 - `call_subroutine`: The routine calls another routine and returns.
 - `count_and_flush_at_difference`: Increments a counter and, when it reaches the difference between two stored values, calls two routines and resets the counter to two.
@@ -258,7 +258,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_result_in_record`: Conditionally calls routines based on a flag and a comparison of two values, then stores the result of a further call as a word in a record at offset 4.
 - `store_helper_result_in_record`: Stores the word returned by a helper routine in a record at offset 4.
 - `return_difference_or_helper`: Returns the difference between two arguments, or the result of a helper routine when the difference is nonzero and the first argument is not below the second.
-- `emit_string_with_optional_result`: Passes each character of a zero-terminated string to a routine, then returns zero, or the result of a further routine call when a state field is nonzero.
+- `emit_string_return_optional_result`: Passes each byte of a zero-terminated string to a subroutine, then returns zero unless a state word is set, in which case it returns the result of another subroutine.
 - `emit_line_end_or_call`: When its argument is nonzero it calls a routine, and when a mode flag is set it appends a carriage return to the buffer, otherwise it calls routines chosen by two flags.
 - `call_routine_by_record_flag`: Tests bit zero of a flag byte at offset 17 in a record and calls one of two routines accordingly, returning its result.
 - `pass_word_to_routine`: Passes its word argument to one routine and returns.
@@ -270,7 +270,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `consume_saved_argument`: Passes a saved frame value to one routine and then clears that slot to zero.
 - `call_routine_then_return`: Calls one routine and returns, performing no other operations.
 - `read_story_file_block`: Reads a block from the story file by calling a read helper, returns zero when the read fails and otherwise calls further routines.
-- `read_capital_letter_or_return`: Reads characters until a carriage return or an uppercase letter arrives, folding lowercase letters to capitals, then returns the stored value.
+- `read_uppercase_letter_or_return`: Reads characters through a subroutine until it gets an uppercase letter or a carriage return, converting lowercase letters to uppercase before testing them.
 - `check_first_answer_letter`: Calls another routine and, if it returns non-zero, calls three other routines to emit a string, reset a buffer, and read an input line; it then scans the input buffer for the first non-space character, returning zero if that character is 'y' and one otherwise.
 - `call_then_handle_zero`: Saves registers on the stack, pushes the arguments one and zero, calls a routine, then restores the registers.
 - `call_and_update_global`: Saves registers, calls a routine, and if d0 is zero, copies a value from a global variable to an offset of negative 256 from a6 and clears d0.
@@ -325,16 +325,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `_OpenWindow`: Library stub: loads a library base from a global variable and calls the library function at offset minus 204 of that base, returning its result to the caller.
 - `_AllocRemember`: Library stub: loads a library base from a global variable and calls the library function at offset minus 396 of that base, returning its result to the caller.
 - `_FreeRemember`: Calls the library function at a fixed offset of 408 bytes below the stored library base and returns.
-- `copy_zero_terminated_string`: Copies a zero-terminated string from the source to the destination and returns the destination address.
+- `copy_string_to_destination`: Copies a null-terminated string from the second argument into the first, byte by byte including the terminator, and returns the destination.
 - `copy_string_with_limit`: Copies at most a given number of characters, stopping early at a zero byte, then terminates the destination and returns it.
 - `terminate_string_at_pointer`: Writes a zero byte through a stored pointer and returns a value from the frame.
-- `format_decimal_digits`: Writes the decimal digits of a value into an eleven-character buffer from the right, copies at most the requested number of trailing digits to the output and returns the count.
+- `format_unsigned_decimal_string`: Formats a number as decimal digits into a caller buffer, extracting each digit by repeated division by ten and writing at most the requested number of characters.
 - `copy_string_to_offset`: Calls a routine with its first argument, then copies a zero-terminated string from the second argument to the address formed by the returned value plus the first argument.
 - `copy_string_to_offset_limited`: Like its neighbour, copies a string to an offset computed by a routine, but copies at most a given count of characters and terminates the destination with a zero byte.
 - `terminate_string_at_slot`: Writes a zero byte through a stored pointer and returns a frame value.
 - `count_string_bytes`: Scans forward from the offset given as its argument until a zero byte and returns the number of bytes before it.
-- `parse_signed_decimal`: Parses an optional plus or minus sign and a run of decimal digits from a string, stores the signed value through a pointer and returns the number of characters consumed.
-- `find_first_character`: Searches a zero-terminated string for the given character and returns a pointer to its first occurrence, or null when it is absent.
+- `parse_signed_decimal_string`: Reads an optional plus or minus sign followed by decimal digits, using a character-class table to recognise digits and accumulating the value.
+- `find_char_in_string`: Scans a zero-terminated string for the given character and returns a pointer to its first match, or null if it is absent.
 - `pass_search_args_onward`: Passes its arguments to one routine and returns.
 - `find_last_character`: Scans a zero-terminated string and returns a pointer to the last occurrence of the given character, or null when there is none.
 - `return_frame_slot_value`: Returns a value stored in a frame slot.
@@ -350,8 +350,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `_Lock`: Library stub: loads its arguments and the dos library base, calls Lock and returns its result to the caller.
 - `_UnLock`: Library stub: loads its arguments and the dos library base, calls UnLock and returns its result to the caller.
 - `_IoErr`: Library stub: loads its arguments and the dos library base, calls IoErr and returns its result to the caller.
-- `fill_global_table_entries`: Calls a routine twenty times and passes the address of a global table entry, chosen by each returned index, to a second routine.
-- `allocate_sized_block_with_header`: Allocates a memory block 12 bytes larger than its argument and returns zero if the allocation fails.
+- `visit_global_table_indices`: Loops twenty times calling one routine to get an index and passing the global table address offset by that index to a second routine, then loops a variable number of times passing each counter value to the second routine, and finally forwards two parameters to a third routine.
+- `allocate_and_init_block`: Allocates a block sized to the input plus a constant, stores that size inside the block, passes the global block and the block address to another routine, and returns the block address plus a constant offset.
 - `return_result_or_minus_one`: Calls a routine with its argument and returns that result when it is nonzero, otherwise it returns minus one.
 - `return_minus_one`: The routine is unreachable and consists of a single instruction that returns a constant value.
 - `call_then_clear_globals`: Calls another routine, then clears the long values stored at offsets 16, 8, 12, 8, 0, 12, and 4 of two global structures before returning.
@@ -360,9 +360,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_pointer_value`: Checks if a pointer retrieved from a stack-based structure is null, otherwise it copies a longword from offset 4 of that structure to offset 4 of another structure retrieved from a6 plus 8.
 - `update_list_pointer_2`: Loads a pointer from the stack, accesses a second structure via that pointer, and copies a value from an offset of 4 in the second structure to an offset of 4 in the first structure; otherwise, it copies a value from the second structure to an offset of 8 from the stack pointer.
 - `update_list_pointer`: Loads a pointer from a structure at offset 12 of the stack frame, accesses a second structure via an offset of 4 from that pointer, and stores the first pointer into the location pointed to by the second structure.
-- `split_words_and_get_handles`: Splits a text string into up to 32 words at separator characters, storing a pointer to each word and terminating it with a zero byte.
-- `divide_with_shift_subtract`: Divides its first argument by its second using a 32-step shift and subtract loop, returning the quotient, or zero when either argument is zero.
-- `empty_stub_function`: The routine contains a block of 31 68000 instructions but ends by returning without performing any observable effect on memory, registers, or I/O.
+- `split_arguments_and_open_streams`: Splits an argument string in place into up to 32 words, storing a pointer to each word and clearing the separators, then opens the input and output handles through DOS calls and records them.
+- `compute_binary_weighted_sum`: Takes two integer inputs and returns an integer result.
+- `multiply_signed_integers`: Calculates the product of two signed 16-bit integers using multiple 16-bit multiplication and addition steps to produce a 32-bit result in the return register.
 - `claim_free_table_entry`: Searches a table of 24-byte entries for the first one whose flag byte at offset 16 is clear, then passes the arguments and that entry to a routine.
 - `call_routine_with_table_entry`: Returns zero when the entry pointer is the table end marker, otherwise it passes the stored arguments and the entry pointer to a routine.
 - `pass_table_entry_arguments`: Passes stored arguments from a frame to one routine and returns.
@@ -381,9 +381,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialise_record_with_mode_two`: Stores the constant two as the mode value, consults a table flag through a called routine, then sets the link field, clears the pointer fields and returns the record.
 - `return_zero`: The routine is empty and returns a zero value to the caller.
 - `initialise_record_from_lookup`: Calls a routine and then either clears the link field or sets a flag bit and points the link field at an offset within the record.
-- `finish_record_without_link`: Clears the link field of the record, copies a saved value into it, clears the two pointer fields and returns the record.
+- `clear_stream_record_fields`: Clears the record's count word, sets its buffer fields and state byte, then returns the record.
 - `clear_object_links`: Releases the first linked object when a flag bit is set, and releases the second linked object when its flag bits are clear and its pointer is non-zero.
-- `lookup_valid_table_entry`: Checks that the index is non-negative and below a limit and that the table entry at that index is marked in use, then returns the entry's address.
+- `lookup_open_table_entry`: Checks that an index lies within the table bounds and that the top bit of the entry's flag byte is set.
 - `claim_slot_and_open_file`: Finds a free entry in a fixed table, marks it with access and direction bits taken from the mode argument, optionally deletes the named file and then opens it.
 - `open_slot_from_record`: Uses the record's stored slot to set its direction and access bits, optionally deletes the named file and opens it, storing the returned handle in the record.
 - `open_record_slot_for_request`: Derives the access and direction bits for the record's slot from its mode field, optionally deletes the named file and opens it, storing the handle in the record.
@@ -396,12 +396,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `open_named_file_from_flags`: Optionally deletes the named file, chooses an open mode from the request bits and opens the file, storing the handle in the slot.
 - `open_file_with_constant_mode`: Opens the named file with a fixed mode constant and stores the returned handle in the record.
 - `return_saved_local_value`: Returns the four-byte value held in a local stack slot without doing anything else.
-- `forward_open_request_with_flags`: Forwards the first argument unchanged to another routine, together with two values derived from the second: its top bit combined with a fixed set of access bits, and its remaining bits unchanged.
+- `clear_status_flag_and_recurse`: Calls another routine with the first argument unchanged and the second argument modified by setting bit fifteen and clearing bits zero through eight.
 - `read_buffer_from_handle`: The routine checks if a table index is valid, retrieves a handle, and reads a specified number of bytes into a buffer, recording an error if the read fails.
-- `read_bytes_into_buffer`: Reads the requested number of bytes from the handle held in a local record into the given buffer and stores the result.
-- `write_to_handle_with_error_check`: The routine obtains a handle from another routine and, if the handle is valid and a flag in the handle is set, it calls another routine.
+- `read_into_buffer_checked`: Calls a read library routine on the stored handle with the caller's buffer and length, and keeps the byte count.
+- `write_to_handle_checked`: Checks if a parameter is non-negative, obtains a pointer from another routine, and if the pointer is not null, checks a bit in the value at that pointer to decide whether to call another routine with specific arguments before calling another routine to write data; if the write fails, it records an error status and returns minus one.
 - `seek_file_with_offset_table`: The routine obtains a file handle from another routine and, if valid and the index is less than three, seeks the file to a position taken from a global table using a second argument, records an I/O error if the seek fails, then seeks the file back to the unable and returns the result.
-- `close_handle_if_active`: The routine retrieves a handle from a table, checks a flag, and if the flag is not set, closes the handle and records an error if the close fails.
+- `close_file_entry`: Closes a file entry's handle unless a flag bit says not to, records an I/O error and minus one if the close fails, and clears the entry's flag byte; it returns minus one when the entry is missing.
 - `delete_named_file`: Deletes the named file and returns zero on success.
 - `return_zero_2`: The routine returns a zero value and does not perform any other operations.
 - `forward_delete_file`: Passes a single argument from the stack to a routine that deletes a file and returns.
@@ -412,7 +412,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `read_single_byte_from_handle`: Reads one byte from the global handle into a local stack slot and returns that byte.
 - `read_and_mask_byte`: Checks a byte at a global variable, and if it is non-zero, moves it to d0, clears the global variable, stores the byte at an offset of negative 1 from a6, and masks d0 with 255.
 - `call_read_buffered_byte`: Calls a routine to read a buffered byte and then returns.
-- `write_single_byte_to_handle`: Writes its single byte argument to the global handle, first calling a routine if no handle has been set, and returns that byte.
+- `write_byte_to_default_file`: Calls a routine, then if a value at offset 32 of d1 is zero, calls another routine and writes a single byte from a6 plus 11 to a file handle provided by d1 plus 20.
 - `check_and_return_constant`: Checks a byte at a global variable, and if it is non-zero, sets d0 to 255 and returns.
 - `store_byte_from_argument`: Copies the low byte of its stack argument into a global variable and returns.
 - `read_file_into_buffer`: Checks for signals, opens a file handle if necessary, reads up to 255 bytes into a buffer, and if the read returns a negative value, clears a byte at the calculated buffer position.
@@ -425,14 +425,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `refill_and_read_buffer_byte`: Marks the record as in use and fills its buffer through a called routine, recording error or end flags from the result.
 - `take_next_buffered_byte`: Decrements the buffer count and returns the next byte, calling a routine to refill the buffer when the count goes negative.
 - `forward_record_to_routine`: Passes the record pointer held in a local slot to another routine and returns nothing else.
-- `write_byte_into_buffer`: Writes one byte from the argument into the record's output buffer and decrements its count, flushing through a called routine when the buffer is full.
-- `allocate_record_buffer`: Returns zero if the record already has a buffer and its flag bit is clear.
+- `write_byte_with_retry`: Writes a byte from its first argument into a buffer tracked by a state byte and a count field, updating the buffer position and counter.
+- `reset_target_flags`: Returns zero immediately when the structure already has a target and no reset flag is set.
 - `scale_global_by_eight`: Returns a global variable multiplied by eight, using a left shift by three bits.
 - `forward_value_twice`: Passes its single argument to another routine as both arguments and returns.
-- `allocate_from_free_list`: Allocates a block of the requested size from a free list kept in globals, splitting a larger block when needed and reducing the free total.
+- `find_node_by_distance`: Walks a linked list of nodes from a global head, moving by the requested distance and updating a global counter.
 - `forward_with_repeated_second`: Forwards its two arguments to another routine with the second argument repeated as a third argument, then returns.
-- `release_block_to_free_list`: Returns a block to the address-sorted free list held in globals, merging it with an adjacent block when they touch and adding its size to the free total.
-- `report_pending_break_signal`: Checks the task's signal mask for the Ctrl-C and Ctrl-D break bits and returns zero when neither is set.
+- `insert_or_update_list_node`: Inserts a node into a list anchored by a global variable at a position derived from a global counter, or updates an existing node.
+- `check_signal_and_dispatch`: Calls another routine and, if the result masked with 12288 is non-zero, checks a global variable and calls another routine with either 67 or 68, then calls another routine with 10, and finally loops from 0 up to a global count to call another routine with each index.
 - `compute_signed_magnitude_division`: Divides two 32-bit values using their magnitudes in a restoring shift-and-subtract loop over 32 bits, then applies the sign of the xor of the inputs to the quotient.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)

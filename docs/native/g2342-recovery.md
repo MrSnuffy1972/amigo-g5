@@ -88,7 +88,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### logged disk load from Blades of Steel.adf boot-block load
 
-- `select_drive_and_read_track`: Selects the disk drive through a CIA port, sets the disk DMA pointer and length, and calls positioning routines.
+- `seek_track_find_sync`: Compares the requested track with the current track and, when they differ, steps the drive head toward it, then reads raw data until the disk sync marker appears.
 - `copy_words_from_offset`: Copies a run of 16-bit words from a source address offset by a global value into a destination pointer, for a count given in a data register.
 - `decode_mfm_sector_bits`: Decodes MFM-encoded data over ten passes.
 - `skip_mfm_sync_words`: Searches forward for the MFM sync word and then skips any consecutive sync words, leaving the pointer at the first non-sync data.
@@ -116,7 +116,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `setup_blt_registers`: Copies various values from a structure pointed to by a2 into the hardware bitplane and block transfer registers.
 - `poll_until_high_word_clears`: Writes a fixed value to a control field, then repeatedly calls a routine and stores its low word until the high word of the returned value is zero.
 - `forward_call_to_routine`: Calls one routine and returns, adding no logic of its own.
-- `copy_table_entry_double_buffers`: Looks up a three-word entry from a table indexed by a shifted value, optionally replaces the last word with all ones, and writes the three words into two parallel buffers at an offset taken from a stored position.
+- `copy_table_entry_to_buffers`: Reads three 16-bit values from a table entry chosen by flag bits and stores them into two parallel buffers at an offset, substituting all-ones for one value when a flag bit is set.
 - `advance_frame_counter_and_call`: Calls two routines, increments a 16-bit counter in the object, then calls a third routine.
 - `write_longword_pairs_to_buffers`: Writes a pair of 32-bit values, as high and low words, into two parallel buffers, then writes a second pair eight and twelve bytes further on.
 - `init_sprite_position_from_table`: Looks up a base value in a table indexed by a short entry, adds a second value from the same entry and stores the sum.
@@ -130,11 +130,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `setup_and_run_blitter_alt`: Calculates a destination address using values from a4, populates a structure at offset -26982 of a4 with different blitter parameters, calls a routine to perform the transfer, and waits for a DMA bit to clear.
 - `initialize_graphics_buffers`: If a value at a specific offset in a4 is non-negative, it sets a field in a structure, calls another routine to setup graphics fields, calls another routine to initialize sprite positions, and calls another routine to setup paired buffer objects.
 - `write_longword_into_double_buffers`: Reads a 32-bit value through a pointer table and writes its high and low words into two parallel buffers at an offset computed from a stored position.
-- `configure_cia_timer_and_interrupts`: Writes a sequence of constants to the CIA A timer and interrupt control registers and then to the interrupt enable register, with one call.
+- `setup_cia_timer_interrupt`: Writes a sequence of values to the CIA-A timer and interrupt control registers and the interrupt enable register to set up a timer interrupt; some decompiled values are garbled.
 - `advance_timer_and_acknowledge_interrupt`: When a status bit is set, advances a counter, and when a timer reaches its limit it resets state fields and calls routines to restart the sequence.
 - `return_stack_value`: It returns the 64-bit value that was passed to it on the stack without modifying anything.
 - `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `swap_buffer_pointer_sets`: Swaps several pointer and longword fields between two buffer sets, clears a counter and copies a selected pointer into a global value.
+- `swap_double_buffer_pointers`: Exchanges front and back pointers for several double-buffered lists and writes the chosen list to the copper list pointer register.
 - `compute_position_deltas_and_copy`: Computes the differences between current and previous coordinate fields, copies several fields into their companion fields, and clears a counter.
 - `fill_column_cells_with_ff`: Computes a table address from a pair of 16-bit inputs, calls one routine, then writes all ones to eight bytes spaced 44 bytes apart in the table.
 - `fill_cells_in_nested_loop`: Clears two values in a4, then executes nested loops that call another routine to fill column cells, using values from a stack-based structure to control the iteration counts.

@@ -7,20 +7,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (905664 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 5 raw-word lines |
-| Functions named and described | pass, 38 of 38 named (0 author symbols), 38 of 38 described (9 by rule, 8 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 76 of 76 (100.00%) |
+| Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 13 raw-word lines |
+| Functions named and described | pass, 48 of 48 named (0 author symbols), 48 of 48 described (14 by rule, 10 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 100 of 100 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 2048 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 872 of 872 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1036 of 1036 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 2679 |
-| code | 3746 |
-| data | 893088 |
-| padding | 7 |
+| code | 4352 |
+| data | 892483 |
+| padding | 6 |
 | unused | 6144 |
 
 ## Code units
@@ -30,17 +30,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf:bootblock | 1 | 46 | 2 |
 | logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf boot-block load | 1 | 469 | 16 |
 | logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf boot-block load | 1 | 147 | 5 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 210 | 15 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 374 | 25 |
 | Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf bytes 1024-2048 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf bytes 283136-284160 (code never loaded by a reference run) | 1 | 0 | 0 |
 
 ## Cases handled
 
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: custom-format (non-DOS) disk, 1746 non-empty blocks: matched against track-loaded segments
-- 76 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
+- 100 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: the boot block reads 2048 bytes from disk offset 11264 to an address (found statically); recovered as a unit
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: the boot block reads 3584 bytes from disk offset 2048 to an address (found statically); recovered as a unit
-- runtime segment an address: 76 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 100 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: bytes 1024-2048 look like code no run loaded: recovered position-independently (load address unknown)
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: bytes 283136-284160 look like code no run loaded: recovered position-independently (load address unknown)
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: 4 logged loads cover 7680 bytes of the image
@@ -108,6 +108,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `wait_for_interrupt_flag_2`: Polls the interrupt request register until one bit is set, then writes the same bit back to acknowledge it.
 - `frag_clr_move_rts`: Short code fragment that clears a fixed memory address (2 times in a row), then copies 4178 to a fixed memory address, then copies 252 to a fixed memory address, then copies 13 to a fixed memory address, then copies 1 to a fixed memory address, then copies 130 to a fixed memory address, then copies 32776 to a fixed memory address, then returns.
 - `frag_clr_move_rts_2`: Short code fragment that clears a fixed memory address, then copies 50332 to d0, then copies d0 to a fixed memory address (2 times in a row), then copies 10249 to a fixed memory address, then copies 9 to a fixed memory address, then copies 2 to a fixed memory address, then clears a fixed memory address (2 times in a row), then returns.
+- `handle_cia_interrupt`: Clears the CIAA control register, reads the CIAA interrupt request register, and if bit 3 is set, calls another routine; otherwise, it checks bit 1 of the interrupt register to either increment a global variable or perform a series of conditional checks and calls to other routines before setting the custom interrupt request bit 3 and returning.
+- `frag_cmpi_ble_bgt_addq_bra`: Short code fragment that compares a fixed memory address with 130, then branches if the comparison was less or equal, then compares a fixed memory address with 130, then branches if the comparison was greater, then adds 1 to the memory at a0, then jumps to another point in the code.
+- `frag_clr_bsr_movem_move_rte`: Short code fragment that clears the memory at a0, then clears a fixed memory address, then calls another routine, then clears a fixed memory address, then restores saved registers from the stack, then copies 8 to a fixed memory address, then returns from the exception.
+- `frag_addq_bne_move_rts`: Short code fragment that adds 1 to the memory at a0, then branches if the last result was not zero, then copies 156 to the memory at a0, then adds 1 to the memory just below a0 (moving a0 down), then branches if the last result was not zero, then copies 196 to the memory at a0, then adds 1 to the memory just below a0 (moving a0 down), then returns.
+- `frag_clr_move_bra`: Short code fragment that clears a fixed memory address, then copies 65280 to a fixed memory address, then jumps to another point in the code.
+- `process_status_flags`: Tests three specific memory locations and branches based on their values; if all three are zero, it loads a word from a memory offset, subtracts 32768, performs a signed division by 7, and if the result is non-zero, stores it in a global variable before returning.
+- `frag_tst_bne_move_rts`: Short code fragment that tests a fixed memory address, then branches if the last result was not zero, then copies 0 to the condition codes, then returns.
+- `frag_moveq_mulu_move_subq_lsr`: Short code fragment that loads 7 into d2, then multiplies d2 by a location in the code (unsigned), then copies d2 to d3, then subtracts 1 from d2, then shifts d3 right by 1.
+- `frag_move_rts`: Short code fragment that copies d2 to a fixed memory address, then copies d3 to a fixed memory address, then returns.
+- `frag_moveq_move_clr_not_lea_lsr_scc_rts`: Short code fragment that loads 0 into d0, then copies a fixed memory address to d0, then clears a fixed memory address, then copies 64 to a fixed memory address, then inverts d0, then copies d0 to a fixed memory address, then loads the address of a location in the code into a0, then shifts d0 right by 1, then sets an indexed entry from a0 if the carry flag is clear, then returns.
 - `read_joystick_input`: Processes joystick and mouse input from hardware registers and stores the resulting control state in a global variable.
 - `initialize_graphics_registers`: Initializes various graphics hardware registers including bitplane control, display window settings, copper list pointers, and sprite configurations.
 - `setup_copper_list`: Configures a copper list pointer by loading an address from program memory into a global variable, then writes a specific value to a hardware register to point the copper interpreter at that list.

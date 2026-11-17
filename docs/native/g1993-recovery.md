@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (911136 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 31 of 31 units identical (bytes and relocations), 10 raw-word lines |
-| Functions named and described | pass, 119 of 119 named (0 author symbols), 119 of 119 described (6 by rule, 71 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 260 of 260 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 110080 bytes, 17 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 3348 of 3408 instructions identical in start and length, 0 mismatches |
+| Bytes classified (911568 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 30 of 30 units identical (bytes and relocations), 9 raw-word lines |
+| Functions named and described | pass, 126 of 126 named (0 author symbols), 126 of 126 described (12 by rule, 64 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 309 of 309 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 109568 bytes, 16 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 3352 of 3412 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 3292 |
-| code | 17252 |
-| data | 632540 |
-| padding | 4 |
+| code | 17804 |
+| data | 632418 |
+| padding | 6 |
 | unused | 258048 |
 
 ## Code units
@@ -28,7 +28,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf:bootblock | 1 | 195 | 10 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 308 | 14 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 410 | 22 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 71 | 3 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 855 | 75 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 11264-16384 (code never loaded by a reference run) | 1 | 1125 | 7 |
@@ -40,7 +40,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 484352-489472 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 495616-500736 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 506880-510464 (code never loaded by a reference run) | 1 | 0 | 0 |
-| Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 511488-512000 (code never loaded by a reference run) | 1 | 98 | 1 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 529408-534528 (code never loaded by a reference run) | 1 | 197 | 1 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 540672-545792 (code never loaded by a reference run) | 1 | 53 | 1 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 551936-555520 (code never loaded by a reference run) | 1 | 0 | 0 |
@@ -62,7 +61,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ## Cases handled
 
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: custom-format (non-DOS) disk, 1254 non-empty blocks: matched against track-loaded segments
-- runtime segment an address: 158 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 207 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 47 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 55 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: bytes 11264-16384 look like code no run loaded: recovered position-independently (load address unknown)
@@ -74,7 +73,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: bytes 484352-489472 look like code no run loaded: recovered position-independently (load address unknown)
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: bytes 495616-500736 look like code no run loaded: recovered position-independently (load address unknown)
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: bytes 506880-510464 look like code no run loaded: recovered position-independently (load address unknown)
-- midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: bytes 511488-512000 look like code no run loaded: recovered position-independently (load address unknown)
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: bytes 529408-534528 look like code no run loaded: recovered position-independently (load address unknown)
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: bytes 540672-545792 look like code no run loaded: recovered position-independently (load address unknown)
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: bytes 551936-555520 look like code no run loaded: recovered position-independently (load address unknown)
@@ -92,8 +90,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: bytes 709632-714752 look like code no run loaded: recovered position-independently (load address unknown)
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: bytes 720896-726016 look like code no run loaded: recovered position-independently (load address unknown)
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: bytes 765952-771072 look like code no run loaded: recovered position-independently (load address unknown)
-- midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: 27 logged loads cover 110080 bytes of the image
-- midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: 14 track-loaded blocks found in recovered runtime segments and classified through them
+- midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: 26 logged loads cover 109568 bytes of the image
+- midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: 15 track-loaded blocks found in recovered runtime segments and classified through them
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: blocks 11-20 (bytes 5632-10752) outside the filesystem hold data, not code (opcode density 0.009, entropy 6.88)
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: blocks 33-42 (bytes 16896-22016) outside the filesystem hold data, not code (opcode density 0.007, entropy 6.93)
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: blocks 44-53 (bytes 22528-27648) outside the filesystem hold data, not code (opcode density 0.019, entropy 4.21)
@@ -230,20 +228,28 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `process_vertical_blank_sequence`: If bit 5 of a hardware register is set, it clears a global word, increments two 16-bit counters, calls a routine, and then executes a sequence of indirect calls and subroutines including clearing a structure at offset 0, 2, and 4 before returning via an interrupt return.
+- `process_vertical_blank_sequence`: Waits for the vertical blank to start, then clears a global flag and increments two 16-bit counters before calling a handler.
 - `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
-- `branch_to_offset`: Performs a short branch to an offset.
+- `frag_bra`: Short code fragment that jumps to another point in the code.
 - `init_captains_from_table`: Returns immediately unless a global longword matches a fixed address, then returns when a byte at offset 59 is nonzero, and otherwise when a byte at offset 60 is nonzero and a global word is at least four, it indexes a table by a tripled value and stores three bytes into three global words before setting several constants.
 - `update_global_pointer_via_table`: Reads a global word, transforms it with a rotate and bit change, and loads a value from a table into a structure, setting a flag word to all ones or clearing it depending on the sign, then clears the flag word when it was zero.
 - `update_pointer_with_calculated_value`: If a value at offset 0 of a global pointer is not 2, it combines a shifted value from one global with a scaled value from another global, stores the sum at the pointer, writes a carry-adjusted result two bytes later, and clears the global at offset 0.
-- `clamp_global_value`: Checks a global variable and, if certain conditions are met, clamps its value within a specific range or sets it to a constant.
-- `set_global_word_to_ffff`: Stores the value 65535 into a global word and returns.
+- `clamp_two_values`: Returns early unless two global words equal one and eight, then shifts and subtracts from two global words, clamps each result to a range, increments a counter for each clamp, and stores all ones into a global word only when no clamp occurred.
+- `frag_move_rts`: Short code fragment that copies 65535 to a fixed memory address, then returns.
 - `accumulate_modified_pointer_values`: Sets bits in a structure based on the state of bytes indexed by two global pointers, then, when a flag word is nonzero, clears one of those bytes and adds the signed or unsigned version of a global pointer to two counters.
 - `accumulate_joystick_input_to_counters`: When a flag word is nonzero, it reads a joystick register, derives a gray-code difference, and based on the state of specific bits adds a signed or unsigned version of two global pointers to two counters.
-- `update_joystick_coordinates`: If a global word is non-zero, it checks bits 6 and 2 of a hardware register to set bits 1 and 0 of a structure at offset 0.
-- `dispatch_via_jump_table`: Reads a byte from a structure, uses its lower two bits to index a jump table, and performs an indirect jump to a routine if two other longwords in the structure are zero.
-- `add_to_global_longwords`: Adds the value in d1 to a global longword and adds the value in d0 to another global longword.
-- `update_global_with_clamping`: Adds a value to a global variable and clamps the result so it does not drop below zero or exceed a certain threshold.
+- `update_input_counters`: Checks a global word, then sets bits in a global word based on CIA and POT status, and adds processed values from a joystick register to two global longwords.
+- `dispatch_via_table`: Reads a byte from a pointer in a0 and masks it, then clears a global word and sets others based on the masked bits before performing an indirect jump through a table indexed by the masked value.
+- `frag_add_rts`: Short code fragment that adds d1 to a fixed memory address, then adds d0 to a fixed memory address, then returns.
+- `clamp_global_variable_range`: Adds the value in d0 to a 32-bit global variable at offset 1FF3E, clamps it to a minimum of zero and a maximum of 326, then stores the result back.
+- `clamp_global_variable_bounds`: Adds the value in d0 to a 32-bit global variable at offset 1FF3E, clamps it to a minimum of three and a maximum of 325, then stores the result back.
+- `load_table_pair_values`: Clears two 32-bit global variables at offsets 1FED8 and 1FEDC, then, when two flag bytes at offsets 2A9B8 and 2A9BA are both zero, reads a pair of 32-bit values from a table indexed by a shifted global variable and stores them into those two variables.
+- `enable_interrupts_set_vectors`: Points a register at the custom chip, clears both interrupt mask words at offsets 154 and 156 to enable all interrupts, stores seven routine addresses into the interrupt vector table, sets the DMA enable word at offset 154, and restores the saved registers before returning.
+- `frag_movem_lea_move_btst_beq_and_andi`: Short code fragment that saves registers on the stack, then loads the address of a fixed memory address into a6, then copies the memory at an offset from a6 to d0, then tests bit 14 of d0, then branches if the last result was zero, then masks d0 with the memory at an offset from a6, then masks d0 with 16383, then copies d0 to the memory at an offset from a6, then restores saved registers from the stack.
+- `frag_move_rte`: Short code fragment that copies 3840 to a fixed memory address, then returns from the exception.
+- `handle_cia_port_toggle`: Checks whether a specific interrupt bit and a status bit are both set, and if so saves a CIA port byte, runs a 100-iteration delay loop, clears that status bit, and toggles a bit in a global byte before setting or clearing a table entry based on the toggled value.
+- `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
+- `stub_infinite_loop`: Spins forever in an empty loop, so the routine never returns.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -338,10 +344,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `blit_masked_bitplane_rectangle`: Copies a rectangle across four bitplanes from a source address, combining each word with a mask and its complement so that unmasked pixels keep the destination.
 - `write_joystick_test_sequence`: Stores one word constant eight times, then a small constant eight times, and finally zero, matching writes to the joystick test register.
 - `copy_sixteen_longs_from_table`: Copies sixteen consecutive 32-bit values from a fixed constant table into the buffer that the address register points to.
-
-### Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 511488-512000 (code never loaded by a reference run)
-
-- `dispatch_via_indexed_vector_table`: Returns immediately if both longwords at offsets 2 and 6 from the A0 pointer are zero.
 
 ### Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 529408-534528 (code never loaded by a reference run)
 

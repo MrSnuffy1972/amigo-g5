@@ -633,11 +633,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `patch_branch_return_when_flagged`: When a global flag is set, overwrites several instruction words with a short branch and a return instruction, then clears a byte at another offset.
 - `update_keyboard_state_byte`: Reads a global keyboard-state byte, clears related bits, then computes an inverted, shifted value and stores it back when the shifted value is zero.
 - `fill_word_pairs_from_source`: Writes 48 pairs of 16-bit words into a buffer at a fixed address.
-- `draw_string_glyphs_into_plane`: Draws each character of a zero-terminated string by copying eight glyph bytes from a font table into a buffer, advancing 40 bytes per row across a 320-pixel-wide plane.
+- `draw_text_glyphs_to_bitplane_2`: Draws each character of a zero-terminated string into a 320-pixel-wide bitplane by copying its eight-row glyph from a font table.
 
 ### F-15 Strike Eagle II (1991)(MicroProse)(M3)[cr CSL][h Gollum][m Goonies][t +4 Metal Force].adf:wait
 
-- `scan_linked_table_for_max`: Program entry that sets up a 140-byte stack buffer and calls one routine through a register.
+- `find_max_and_prepare_buffer_2`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_sixteen_longs_from_table`: If a pointer argument is non-null, copies sixteen longwords from a table at a fixed offset of a base register into it.
 - `update_entity_input_state`: Updates a structure by clearing three fields at offsets 208, 212, and 216, then calls process_entity_event_table and check_table_and_branch to determine if a numeric input string should be parsed via parse_numeric_input_string.
 - `process_entity_event_table`: Fetches an index from a structure, uses it to look up a table entry, and retrieves a byte value from that table.

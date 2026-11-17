@@ -150,6 +150,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - rally championships (1994)(flair)[cr pdy](disk 4 of 4)/Rally Championships (1994)(Flair)[cr PDY](Disk 4 of 4).adf:tracks.tab: (Dtpk) Data Cruncher (xfd)-packed, unpacked with ancient (10552 -> 40320 bytes)
 - rally championships (1994)(flair)[cr pdy](disk 4 of 4)/Rally Championships (1994)(Flair)[cr PDY](Disk 4 of 4).adf:scenarydw6.raw: (Dtpk) Data Cruncher (xfd)-packed, unpacked with ancient (116868 -> 204800 bytes)
 - rally championships (1994)(flair)[cr pdy](disk 4 of 4)/Rally Championships (1994)(Flair)[cr PDY](Disk 4 of 4).adf:BonusSC2.raw: (Dtpk) Data Cruncher (xfd)-packed, unpacked with ancient (740 -> 1120 bytes)
+- 1 first-execution byte records contradict the logged opcode word (first an address): bad captures, the opcode word is used
 - runtime segment an address: 88 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 153 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered

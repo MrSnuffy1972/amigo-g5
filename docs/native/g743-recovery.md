@@ -38,6 +38,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - benefactor (1994)(psygnosis)[cr cls](disk 1 of 3)/Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3).adf: custom-format (non-DOS) disk, 1747 non-empty blocks: matched against track-loaded segments
 - benefactor (1994)(psygnosis)[cr cls](disk 2 of 3)/Benefactor (1994)(Psygnosis)[cr CLS](Disk 2 of 3).adf: custom-format (non-DOS) disk, 1758 non-empty blocks: matched against track-loaded segments
 - benefactor (1994)(psygnosis)[cr cls](disk 3 of 3)/Benefactor (1994)(Psygnosis)[cr CLS](Disk 3 of 3).adf: custom-format (non-DOS) disk, 1753 non-empty blocks: matched against track-loaded segments
+- reference run failed (Karl 4 Nov 2026): run play-lgpwide slid through memory (an address: 1 64 KB pages each with >= 29491 distinct PCs executed, 12140 of its 12268 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
 - reference run failed (Karl 4 Nov 2026): run play-rs-x25k slid through memory (an address: 2 64 KB pages each with >= 29491 distinct PCs executed, 21755 of its 21988 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
 - reference run failed (Karl 4 Nov 2026): run play-rs-x35k slid through memory (an address: 2 64 KB pages each with >= 29491 distinct PCs executed, 21755 of its 21988 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
 - benefactor (1994)(psygnosis)[cr cls](disk 1 of 3)/Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3).adf: the boot block reads 7680 bytes from disk offset 854528 to an address (found statically); recovered as a unit
@@ -71,10 +72,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### logged disk load from Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3).adf boot-block load
 
 - `copy_word_to_color01_pair`: Obtains a word from a helper call and writes it both to a memory slot and to the COLOR01 palette register, twice in a row, advancing both pointers each time.
-- `step_nibbles_toward_target`: Compares the three nibble fields of the input word with those of a target value and moves each nibble one step toward its target.
+- `adjust_nibbles_combine_2`: Extracts the low nibble, the next nibble and the third nibble of d0 and d3, then increments or decrements each differing nibble toward the target before combining them into a single value and returning.
 - `wait_for_raster_line`: Busy-waits by reading the beam position registers (VPOSR/VHPOSR) until the display beam reaches a given raster line, then returns.
 - `clear_memory_array`: Writes zero into each of 8000 longword entries of a memory array in a loop.
-- `open_graphics_and_intuition_libraries`: Opens the graphics and intuition libraries through the exec library routine, storing the two returned library base pointers in global data.
+- `call_open_libraries_2`: Reads a global pointer, calls the routine stored at offset 552 from it twice, and stores each returned value into consecutive memory locations.
 - `scan_text_lines_advancing_rows`: Walks a text buffer one newline-terminated line at a time, advancing a row value by sixteen after each line.
 - `measure_text_and_call_library`: Counts the characters of a string up to a newline or terminator.
 - `point_globals_and_load_font`: Points seven global pointers at one shared variable, then calls two library routines through the library base.

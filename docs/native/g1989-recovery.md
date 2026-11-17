@@ -218,7 +218,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `pulse_control_port_bits`: Writes six fixed byte values to a control port, clearing one of five bits in turn and then restoring all bits.
 - `wait_status_bit_then_clear`: Calls an unnamed routine repeatedly while a status bit on a port stays set, then clears a word field of a structure.
 - `step_pulses_toward_target`: Compares an input value with a stored position and, when they differ, updates the stored value and selects a direction bit.
-- `pulse_control_port_repeatedly`: Repeats a two-stage port write for the count in its input, with a fixed delay after each pair.
+- `pulse_control_port_count`: For each count in its input, writes a pair of control-port values one bit apart so that each pair produces a single pulse, then waits a fixed delay loop before the next pair.
 - `poll_with_retry_count`: Stores two input words in a structure, then loops over a retry counter starting at two while calling unnamed routines to test a condition.
 - `forbid_and_configure_dma`: The pseudo-code is mostly a pass-through of its input and does not show the listed behaviour.
 
@@ -229,8 +229,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_to_offset`: Performs a short branch to a specific offset.
 - `update_global_from_table`: If a global variable matches a specific constant, it either fills a memory range with an incrementing sequence of bytes or, if another condition is met, writes a sequence of bytes from a table into a memory range.
-- `update_global_via_table_lookup`: Uses a bit-manipulated version of a global variable as an index into a table to update two global variables.
-- `update_joystick_position_values`: Checks a global variable; if it does not equal two, it calculates two new 16-bit values using arithmetic on that variable and two other global values, then writes these values to a memory location pointed to by a third global variable.
+- `modify_global_with_table_lookup`: Uses a bit-manipulated version of a global variable as an index into a table to update a global variable.
+- `update_pointer_with_calculated_value`: If a value at offset 0 of a global pointer is not 2, it combines a shifted value from one global with a scaled value from another global, stores the sum at the pointer, writes a carry-adjusted result two bytes later, and clears the global at offset 0.
 - `clamp_global_value`: Checks a global variable and, if certain conditions are met, clamps its value within a specific range or sets it to a constant.
 - `set_global_to_max`: Sets a global variable to a constant value of sixty-five thousand five hundred thirty-five and returns.
 - `accumulate_modified_pointer_values`: Checks a byte at an offset from a global pointer, modifies that byte, and then adds the signed or unsigned version of that pointer to two different global counters.
@@ -294,7 +294,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Midwinter (1990)(MicroProse)(De)[cr TT].adf bytes 563200-568320 (code never loaded by a reference run)
 
 - `call_unnamed_routine_then_return`: Calls one unnamed routine and returns, with no other work of its own.
-- `multiply_add_fold_store`: Multiplies two words, adds the first word to the product, and subtracts the high half of the sum from its low half.
+- `multiply_and_store_offset`: Multiplies two 16-bit memory values, adds the second value, adjusts the result by its high and low halves, and stores the modified 16-bit result back into the first source location.
 
 ### Midwinter (1990)(MicroProse)(De)[cr TT].adf bytes 585728-590336 (code never loaded by a reference run)
 

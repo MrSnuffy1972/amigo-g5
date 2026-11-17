@@ -223,9 +223,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `wait_status_bit_then_clear`: Calls an unnamed routine repeatedly while a status bit on a port stays set, then clears a word field of a structure.
 - `step_pulses_toward_target`: Compares an input value with a stored position and, when they differ, updates the stored value and selects a direction bit.
-- `pulse_control_port_repeatedly`: Repeats a two-stage port write for the count in its input, with a fixed delay after each pair.
+- `pulse_control_port_count`: For each count in its input, writes a pair of control-port values one bit apart so that each pair produces a single pulse, then waits a fixed delay loop before the next pair.
 - `poll_with_retry_count`: Stores two input words in a structure, then loops over a retry counter starting at two while calling unnamed routines to test a condition.
-- `configure_disk_sync_and_wait`: Writes a sync-pattern word and a set of disk control words to hardware fields, sets a buffer pointer, then polls a status bit for a bounded count.
+- `start_disk_read_wait_sync`: Sets up a disk transfer by writing fixed values to a structure and to the disk sync word and length registers, then polls a status bit until it sets or a 16-bit counter wraps.
 - `decode_mfm_sector_blocks`: Scans a track buffer for disk sync words and decodes the odd and even bit pairs of the following longwords.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -236,14 +236,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `init_captains_from_table`: Returns immediately unless a global longword matches a fixed address, then returns when a byte at offset 59 is nonzero, and otherwise when a byte at offset 60 is nonzero and a global word is at least four, it indexes a table by a tripled value and stores three bytes into three global words before setting several constants.
 - `update_global_pointer_via_table`: Reads a global word, transforms it with a rotate and bit change, and loads a value from a table into a structure, setting a flag word to all ones or clearing it depending on the sign, then clears the flag word when it was zero.
 - `update_pointer_with_calculated_value`: If a value at offset 0 of a global pointer is not 2, it combines a shifted value from one global with a scaled value from another global, stores the sum at the pointer, writes a carry-adjusted result two bytes later, and clears the global at offset 0.
-- `clamp_two_values`: Returns early unless two global words equal one and eight, then shifts and subtracts from two global words, clamps each result to a range, increments a counter for each clamp, and stores all ones into a global word only when no clamp occurred.
+- `clamp_global_value`: Checks a global variable and, if certain conditions are met, clamps its value within a specific range or sets it to a constant.
 - `set_global_word_to_ffff`: Stores the value 65535 into a global word and returns.
 - `accumulate_modified_pointer_values`: Sets bits in a structure based on the state of bytes indexed by two global pointers, then, when a flag word is nonzero, clears one of those bytes and adds the signed or unsigned version of a global pointer to two counters.
 - `accumulate_joystick_input_to_counters`: When a flag word is nonzero, it reads a joystick register, derives a gray-code difference, and based on the state of specific bits adds a signed or unsigned version of two global pointers to two counters.
 - `update_joystick_coordinates`: If a global word is non-zero, it checks bits 6 and 2 of a hardware register to set bits 1 and 0 of a structure at offset 0.
 - `dispatch_via_jump_table`: Reads a byte from a structure, uses its lower two bits to index a jump table, and performs an indirect jump to a routine if two other longwords in the structure are zero.
 - `add_to_global_longwords`: Adds the value in d1 to a global longword and adds the value in d0 to another global longword.
-- `clamp_global_variable_range`: Adds the value in d0 to a 32-bit global variable, clamps it to a minimum of zero and a maximum of 310, then repeats the same addition for a second 32-bit global variable with a maximum of 198.
+- `update_global_with_clamping`: Adds a value to a global variable and clamps the result so it does not drop below zero or exceed a certain threshold.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -307,7 +307,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_state_and_call_routine`: Clears a global longword, stores the value 43 at offset 360 of the block in a6, and calls a routine before returning.
 - `update_global_pointers_2`: Compares a word from a global address to 28800; if it is not less than that value, it stores a longword and a word into two global addresses.
 - `update_global_pointers`: Compares a word from a global address to 28800; if it is not less than that value, it stores a longword and a word into two global addresses and returns.
-- `run_conditional_indirect_calls`: Returns immediately if a global word is non-zero, otherwise it clears the word, sets a hardware register, and executes a sequence of indirect calls through pointers in several tables before clearing four hardware registers and returning.
+- `execute_conditional_routines`: Checks if a 16-bit word in a global variable is zero; if so, it sets a hardware register to 8200, executes a sequence of indirect calls and branch routines, otherwise it sets four consecutive words to zero and returns.
 - `init_audio_registers_self`: Writes the constant 12 to the second audio period register, sets bit 0 of the DMA control register, sets bit 0 of the blit control register, and stores the address of itself at offset 63784 of a global structure.
 - `setup_audio_channels_two_three`: Stores a routine address in a global variable, then copies channel, length, volume, and period data from a table into audio channels two and three and enables DMA channels two and three.
 - `copy_audio_volume_registers`: Copies four consecutive words from global variables into the four audio volume registers, then returns.
@@ -316,16 +316,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
 - `find_first_set_bit`: Reads a flag byte and returns immediately if it is zero, otherwise clears it, scans bits seven down to zero of a value for the first set bit while decrementing a counter, stores the counter, and loads a longword from a table using an offset derived from the bit index.
-- `load_table_via_audio_offset`: Sets bits in the audio and DMA control registers, then reads a counter, masks its low three bits, multiplies by fourteen and uses that offset to copy two longwords and three words from a table into a global variable, finally storing a routine address there.
+- `load_table_data_2`: Sets two hardware registers to 1, calculates an offset from a value in a global variable, and loads five values from a table into a series of global variables using that offset.
 - `load_table_data`: Sets two hardware registers to 1, calculates an offset from a value in a global variable, and loads five values from a table into a series of global variables using that offset.
 - `configure_audio_channel_zero`: Copies a channel, length, and volume from a table, sets the period of audio channel zero, and enables DMA channel one.
-- `toggle_flag_and_set_handler`: Negates a global byte and ANDs it into a flag, then if a counter is non-negative and a masked bit is set it enables an audio channel, resets the counter, stores a routine address and clears a DMA request, otherwise it just clears the flag.
+- `modify_global_variable`: Performs bitwise operations on a global variable and conditionally resets it to a specific value or a routine address.
 - `set_bit_from_low_three_bits`: Reads the low three bits of a global word, sets the corresponding bit in a global byte, then calls another routine and returns.
-- `find_bit_and_load_table`: If a flag byte is nonzero it clears that flag and counts down from seven while the corresponding bit is clear, storing each value, then reads a table entry using the low three bits of the counter shifted left by two into a global longword.
+- `find_bit_and_load`: Searches for a bit in a bitmask and loads a value from a table using a calculated offset.
 - `load_audio_table_pointer`: Enables an audio channel and DMA request, then reads a counter, masks its low three bits, multiplies by fourteen and uses that offset to copy two longwords and three words from a table into a global variable, finally storing a routine address there.
-- `update_audio_parameter_table`: Sets the DMA control and audio period registers, then calculates an offset into a table by masking a global variable with seven and multiplying by fourteen.
+- `load_audio_table_pointer_2`: Enables an audio channel and DMA request, then reads a counter, masks its low three bits, multiplies by fourteen and uses that offset to copy two longwords and three words from a table into a global variable, finally storing a routine address there.
 - `configure_audio_channel_zero_2`: Copies a channel, length, and volume from a table, sets the period of audio channel zero, and enables DMA channel one.
-- `update_dma_sound_channel`: Reads a 16-bit value at offset 170 and masks its low 8 bits, then clears bit 5 of the byte at offset 191 and stores the result back.
+- `modify_global_variable_alt`: Performs bitwise negation and conditional assignment to a global variable, potentially setting it to a routine address.
 - `set_bit_from_low_bits_second`: Reads the low three bits of a global word, sets the corresponding bit in a different global byte, then calls another routine and returns.
 - `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
 
@@ -371,4 +371,4 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `compute_weighted_table_adjustment`: Multiplies two input words, combines the product with a state word using the result of an unnamed routine, and selects an additive adjustment from five table-keyed branches.
 - `lookup_even_index_table_word`: Masks the input word to an even index and returns the 16-bit entry of a constant table at that index.
-- `update_object_coordinate_fields`: Looks up a value from an array indexed by the low three bits of a computed value and stores it in an object field.
+- `interpolate_and_store_values`: Reads a value, stores a table entry at offset 36, then splits the value into three fields and combines them with other registers to compute two quotients that are added to base values and stored at offsets 266 through 272 before calling a final routine.

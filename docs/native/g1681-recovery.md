@@ -77,14 +77,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf boot-block load
 
 - `initialize_boot_sequence`: Verifies the boot name, searches for specific signature strings in memory to locate entry points, and performs a block memory copy.
-- `verify_boot_name_bytes`: Calls two other routines and stores a fixed byte in a global cell, then walks eight bytes of that cell, returning a negative error code on any mismatch.
+- `check_eight_byte_boot_signature`: Calls two unnamed routines, stores a value in a global, and returns it if negative.
 - `search_table_and_emit_entry`: Searches a table of byte-keyed entries for the key in the data register, returning an error code when no entry matches.
 - `set_disk_read_configuration`: Stores a sequence of disk-controller values, including a zero, a length value, a sync pattern and control words, into consecutive global cells.
 - `store_disk_length_config`: Stores three fixed values into consecutive global cells, forming a disk length configuration, and returns.
-- `copy_disk_sector_from_buffer`: Checks a block number and, if it differs from the current one, calls a other routine to load it.
+- `copy_sectors_after_seek`: Compares a passed value against a stored one and returns it when they match.
 - `read_disk_track_sectors`: Waits for the disk controller, issues a sync-word read, then searches for the sync pattern and decodes each sector's odd and even bit fields into the buffer.
 - `check_and_read_disk_sectors`: Returns an error when a count is zero.
-- `step_value_toward_target`: Compares an incoming value with a stored value and calls other routines to step the stored value toward it one unit at a time.
+- `seek_to_target_position`: If the short at a1 is negative it polls the CIA port A register until bit 4 is set, then clears that location.
 - `set_port_state_code`: Calls a other routine, then writes one of two fixed state codes into a global cell depending on a status bit, calling other routines around each write.
 - `return_status_if_flag_set`: When one bit of a status cell is set, it writes a fixed code, calls a other routine and returns zero.
 - `store_state_code_and_call`: Stores a fixed state code in a global cell, calls another routine, and returns zero.

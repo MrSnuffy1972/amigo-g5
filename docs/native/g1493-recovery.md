@@ -6,20 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (856064 top-level bytes in 1 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 16 of 16 named (0 author symbols), 16 of 16 described (0 by rule, 16 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 0 of 0 (0.00%) |
+| Bytes classified (860608 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 10 raw-word lines |
+| Functions named and described | pass, 41 of 41 named (0 author symbols), 41 of 41 described (10 by rule, 25 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 100 of 100 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 504 of 504 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 884 of 884 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 735 |
-| code | 1652 |
-| data | 847533 |
+| asset | 2029 |
+| code | 4642 |
+| data | 847791 |
+| padding | 2 |
 | unused | 6144 |
 
 ## Code units
@@ -28,17 +29,23 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf:bootblock | 1 | 40 | 2 |
 | logged disk load from Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf boot-block load | 1 | 0 | 0 |
-| logged disk load from Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf boot-block load | 1 | 464 | 14 |
+| logged disk load from Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf boot-block load | 1 | 469 | 16 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 375 | 23 |
 
 ## Cases handled
 
 - distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: custom-format (non-DOS) disk, 1658 non-empty blocks: matched against track-loaded segments
+- 100 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
 - distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: the boot block reads 1024 bytes from disk offset 1024 to an address (found statically); recovered as a unit
 - distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: the boot block reads 2048 bytes from disk offset 11264 to an address (found statically); recovered as a unit
+- runtime segment an address: 100 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: 2 logged loads cover 3072 bytes of the image
+- distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: 8 track-loaded blocks found in recovered runtime segments and classified through them
 - distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: blocks 4-21 (bytes 2048-11264) hold ASCII text
 - distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: blocks 33-341 (bytes 16896-175104) outside the filesystem hold data, not code (opcode density 0.004, entropy 5.54)
-- distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: blocks 343-569 (bytes 175616-291840) outside the filesystem hold data, not code (opcode density 0.010, entropy 5.27)
+- distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: blocks 343-536 (bytes 175616-274944) outside the filesystem hold data, not code (opcode density 0.002, entropy 5.25)
+- distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: blocks 539-549 (bytes 275968-281600) outside the filesystem hold data, not code (opcode density 0.000, entropy 3.41)
+- distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: blocks 556-569 (bytes 284672-291840) outside the filesystem hold data, not code (opcode density 0.044, entropy 5.42)
 - distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: blocks 571-640 (bytes 292352-328192) outside the filesystem hold data, not code (opcode density 0.048, entropy 6.31)
 - distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: blocks 644-1671 (bytes 329728-856064) outside the filesystem hold data, not code (opcode density 0.002, entropy 4.76)
 
@@ -64,6 +71,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### logged disk load from Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf boot-block load
 
+- `initialize_graphics_hardware`: Sets up multiple Amiga custom chipset registers including bitplane control, display window parameters, copper list pointers, and sprite configurations.
 - `compare_and_call_subroutine`: Calls two different routines, then enters a loop to compare seven bytes from two memory locations, otherwise it returns with a negative value in d0.
 - `process_data_structure`: Loads a pointer from a global variable and enters a loop to iterate through a data structure, calling another routine or a second routine depending on specific conditions and bit tests.
 - `configure_hardware_registers`: Clears a register, writes two bytes to a port, and sets several hardware registers including DSKLEN and DMACON before returning.
@@ -78,3 +86,30 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `test_button_bit_branch`: Tests bit 2 of a hardware register and branches to another routine if the bit is not set.
 - `write_port_and_call_alt`: Writes two bytes to a port and calls another routine before returning.
 - `check_interrupt_status`: Writes a value to a register, checks a bit in another register, and either returns or writes the same value to the first register again.
+- `wait_for_blitter`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_tst_bne_rts`: Short code fragment that tests a fixed memory address, then branches if the last result was not zero, then returns.
+- `frag_btst_bne_rte`: Short code fragment that tests bit 4 of a fixed memory address, then branches if the last result was not zero, then tests bit 5 of a fixed memory address, then branches if the last result was not zero, then tests bit 6 of a fixed memory address, then branches if the last result was not zero, then returns from the exception.
+- `wait_for_interrupt_flag`: Polls the interrupt request register until one bit is set, then writes the same bit back to acknowledge it.
+- `frag_clr_move_rts`: Short code fragment that clears a fixed memory address (2 times in a row), then copies 4178 to a fixed memory address, then copies 252 to a fixed memory address, then copies 13 to a fixed memory address, then copies 1 to a fixed memory address, then copies 130 to a fixed memory address, then copies 32776 to a fixed memory address, then returns.
+- `frag_clr_move_rts_2`: Short code fragment that clears a fixed memory address, then copies 50332 to d0, then copies d0 to a fixed memory address (2 times in a row), then copies 12809 to a fixed memory address, then copies 9 to a fixed memory address, then copies 2 to a fixed memory address, then clears a fixed memory address (2 times in a row), then returns.
+- `process_input_interrupts`: Reads input interrupt flags from CIA hardware registers and updates a global counter based on interrupt conditions.
+- `frag_addq_bne_move_rts`: Short code fragment that adds 1 to the memory at a0, then branches if the last result was not zero, then copies 156 to the memory at a0, then adds 1 to the memory just below a0 (moving a0 down), then branches if the last result was not zero, then copies 196 to the memory at a0, then adds 1 to the memory just below a0 (moving a0 down), then returns.
+- `frag_clr_move_bra`: Short code fragment that clears a fixed memory address, then copies 65280 to a fixed memory address, then jumps to another point in the code.
+- `calculate_input_modifier`: Tests specific memory locations for zero or non-zero values and branches accordingly.
+- `frag_tst_bne_move_rts`: Short code fragment that tests a fixed memory address, then branches if the last result was not zero, then copies 0 to the condition codes, then returns.
+- `frag_moveq_mulu_move_subq_lsr`: Short code fragment that loads 7 into d2, then multiplies d2 by a location in the code (unsigned), then copies d2 to d3, then subtracts 1 from d2, then shifts d3 right by 1.
+- `frag_move_rts`: Short code fragment that copies d2 to a fixed memory address, then copies d3 to a fixed memory address, then returns.
+- `frag_moveq_move_clr_not_lea_lsr_scc_rts`: Short code fragment that loads 0 into d0, then copies a fixed memory address to d0, then clears a fixed memory address, then copies 64 to a fixed memory address, then inverts d0, then copies d0 to a fixed memory address, then loads the address of a location in the code into a0, then shifts d0 right by 1, then sets an indexed entry from a0 if the carry flag is clear, then returns.
+- `read_joystick_input`: Processes joystick and mouse input from hardware registers including joystick movement data, mouse port data, and fire button status.
+- `setup_video_registers`: Initializes various graphics hardware registers including bitplane control, display window settings, copper list pointers, and sprite configurations.
+- `execute_copper_list`: Contains a trap instruction followed by several hardware register writes including setting the copper list pointer, modifying a flag bit, and branching based on that flag's state.
+- `start_copper_list`: Points the copper at a new copper list by writing its address to COP1LC, then returns.
+- `copy_graphics_data`: Copies graphics data from program memory to a specific memory location in the custom chipset area.
+- `frag_st_tst_bne_clr_move_rts`: Short code fragment that sets a fixed memory address to all ones, then tests a fixed memory address, then branches if the last result was not zero, then clears a fixed memory address, then copies 416 to a fixed memory address, then returns.
+- `frag_st_move_rts`: Short code fragment that sets a fixed memory address to all ones, then copies d0 to a fixed memory address, then returns.
+- `frag_tst_bne_rts_2`: Short code fragment that tests a fixed memory address, then branches if the last result was not zero, then returns.
+- `wait_for_interrupt`: Contains a trap instruction followed by several hardware register operations including setting processor status, testing a flag value, and branching based on that flag's state.
+- `clear_coprocessor`: Clears the high word of the coprocessor 2 location register and writes to the interrupt request register, then returns.

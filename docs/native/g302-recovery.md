@@ -170,13 +170,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `parse_signed_integer`: Converts a numeric string into a signed integer by skipping whitespace and handling optional sign characters.
 - `parse_signed_integer_2`: Parses a signed integer from a string by skipping whitespace and handling optional sign characters.
 - `store_parameter_and_call`: Stores a parameter into a stack-based location and calls another routine.
-- `return_immediately`: This routine is empty and performs no operations before returning to the caller.
+- `initialize_buffer_and_call_library`: Initializes a buffer with zeros using a loop, then checks a bit in a library-provided structure to decide whether to call a routine with a pointer or call another routine with a specific string or constant, otherwise it returns.
 - `return_from_subroutine`: This routine is empty and performs no operations before returning.
 - `process_window_data`: Tokenizes strings, interacts with windowing and DOS libraries to retrieve pointers, and updates various fields within a structure based on indirect function results.
 - `tiny_move_2`: Small routine of 1 instruction that copies d0 to d5.
 - `tokenize_string_into_array`: Parses a string by skipping whitespace and extracting individual tokens, handling both quoted substrings and space-delimited words.
 - `copy_string_pad_zeros`: The routine copies bytes from a source to a destination up to a count or until a null terminator is found, then fills any remaining bytes in the count with zeros.
-- `copy_string_and_pad_nulls`: Copies bytes from a source pointer to a destination pointer for a specified length, stopping early if a null terminator is encountered.
+- `copy_string_pad_zeros_2`: Copies bytes from a source to a destination up to a specified count or until a null terminator is found, then fills any remaining bytes in the count with zeros.
 - `copy_string_with_limit_2`: The routine calculates the length of a source string and then copies bytes from a source pointer to a destination pointer until a null terminator is reached or a maximum count is exceeded.
 - `copy_string_with_limit`: The routine copies bytes from a source pointer to a destination pointer, stopping at a null terminator or when a counter in the third argument reaches -1.
 - `compare_two_byte_strings`: The routine compares two byte strings byte by byte.

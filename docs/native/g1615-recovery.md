@@ -90,7 +90,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Type
 
-- `build_handler_table_from_sizes`: Finds the largest value in a linked list, then fills a table sized from it with a counted pattern and stores a handler address in it.
+- `find_max_and_prepare_buffer_2`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_table_block`: Copies a fixed 16-word block from a source table into a destination buffer pointed to by an argument, then invokes another routine.
 
 ### Rick Dangerous (1989)(Micro Style)[cr QTX].adf:VIRUS
@@ -106,7 +106,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_empty_stub`: Contains only a return and performs no work.
 - `spin_register_until_zero`: Decrements a 32-bit register in a loop until it reaches zero, then returns.
 - `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (chk.w) and then falls through into the code that follows, with no return of its own.
-- `decode_run_length_bytes_backwards`: Decodes a stream of run-length and back-reference codes, writing bytes backwards from the end of a buffer until the write pointer reaches the start.
+- `decode_run_length_backwards`: Reads two little-endian words from the stack, combines their bytes into a bit offset and a bit count, and sets d7 to a space character minus the offset.
 - `tiny_moveq`: Small routine of 1 instruction that loads 1 into d0.
 - `decrement_byte_with_wrap`: Decrements a byte counter for a given number of iterations and resets it to a space character whenever it reaches zero.
 - `record_undecoded_routine`: The decompiler timed out on this three-instruction routine, so its behaviour cannot be recovered from the listed facts.

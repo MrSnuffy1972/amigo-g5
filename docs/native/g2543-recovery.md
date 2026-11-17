@@ -80,7 +80,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `function_epilogue`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
 - `process_interleaved_data_table`: Searches a table for a specific marker, then calculates a range based on values extracted from the table and compares it against two input parameters.
 - `restore_registers_and_branch`: Restores d2 through d7 and a1 through a3 from the stack, increments the stack pointer, sets bit 1 of a byte in a6, and branches to another location.
-- `compare_masked_values`: Performs bitwise AND operations on two values from a structure in a1 using a mask in d6, executes a loop 255 times to XOR a value from a1 with d3, and compares the result with the previously calculated value.
+- `countdown_delay_loop`: Loads 255 into a 16-bit counter and decrements it until it wraps past zero, busy-waiting for that many iterations, then returns with d0 and d1 unchanged.
 - `call_toggle_status_bit_routine`: Calls a routine to toggle the first bit of a byte located at the address stored in register a5.
 - `set_bit_and_branch`: Sets bit 1 of a byte in a5, tests bit 4 of a byte in a6, and branches to another routine if bit 4 is set, otherwise it returns.
 - `toggle_status_bit`: Clears bit 0 of a byte at the address in a5, sets bit 0 of the same byte, and then branches to another location.

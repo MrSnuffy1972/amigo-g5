@@ -50,7 +50,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Copy protection found
 
-- `stub_infinite_wait_loop` (runtime segment an address): Contains only an endless empty loop that never returns. Kind: sabotage path / infinite loop trap. Pass path: not determined.
+- `spin_in_endless_loop` (runtime segment an address): The visible body is only an endless loop with no exit, although the facts list disk length, pointer, sync and ADKCON registers as touched. Kind: sabotage path / infinite loop trap. Pass path: not determined.
 - `select_drive_and_wait_ready` (runtime segment an address): Updates the low drive-control bits of the disk control register, waits a fixed count, then waits until a status bit clears. Kind: disk hardware/drive status check. Pass path: the instruction immediately following the call (e.g., bsr.w an address).
 - `set_drive_bits_and_wait` (runtime segment an address): Sets the low two drive-control bits, waits a fixed count, then waits until a status bit clears. Kind: disk hardware/drive configuration check. Pass path: the loop completes and execution continues to the next instruction after the call.
 - `set_control_byte_and_wait` (runtime segment an address): Stores 117 into a control global, waits a fixed count, then waits until a status bit clears. Kind: disk hardware status polling/sync check. Pass path: the instruction immediately following the call (bset.b #an address, an address.l).
@@ -81,10 +81,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `loop_head_undecoded_routine`: Entered at a loop head and makes one call, with twelve instructions in total.
-- `copy_interleaved_rows_to_planes`: Copies sixteen rows from a source table into four bitplanes located 8000 bytes apart, taking four bytes from each eight-byte source group and advancing 40 bytes per row.
-- `write_intena_around_two_calls`: Writes an interrupt enable mask with the set bit, calls two routines, and then writes a second mask to the same register.
-- `start_disk_track_read`: Converts a block number into track and sector values by dividing by 22 and then 11.
-- `stub_infinite_wait_loop`: Contains only an endless empty loop that never returns.
+- `write_tile_into_four_planes`: Reads four consecutive words from a source table and writes them into four bitplanes spaced eight thousand bytes apart, copying one forty-byte row per step for fifteen rows.
+- `set_interrupt_masks_around_calls`: Writes one interrupt-enable mask with bit 15 set, calls two routines, then writes a second mask with bit 15 set.
+- `seek_and_read_disk_sector`: Converts a block number into track, side and sector numbers, steps the drive to the required track, then reads the remaining sectors of that track into memory through DMA.
+- `spin_in_endless_loop`: The visible body is only an endless loop with no exit, although the facts list disk length, pointer, sync and ADKCON registers as touched.
 - `select_drive_and_wait_ready`: Updates the low drive-control bits of the disk control register, waits a fixed count, then waits until a status bit clears.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `check_enable_and_ack_interrupt`: Tests bit 1 of the interrupt enable register and returns immediately if it is clear, otherwise it enables DMA, acknowledges an interrupt, sets a global byte, and returns.
@@ -100,4 +100,4 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `handle_vblank_serial_bit`: Checks whether the VBLANK interrupt is enabled and pending, then increments two global counters and stores the next serial bit in a bitmap when it is, otherwise it sets a flag if a counter already exceeds two, and finally acknowledges the interrupt before returning.
 - `write_incrementing_values`: Writes a 32-bit value split into two little-endian words into a table at offsets 2 and 6, then advances the pointer and repeats the process until a counter in a register reaches zero.
 - `load_palette_from_table`: Copies 32 words from a source table into the colour registers, starting at the first colour register.
-- `store_serial_bit_in_bitmap`: Handles one step of a serial input word: when its high bit is set it toggles a parity flag, and on one phase it writes a single bit into a 128-bit bitmap at an index taken from the input and a lookup table.
+- `record_keyboard_key_state`: Handles a keyboard serial byte by converting its code into a key index, looking up the key value in a table, and setting the matching bit in a byte array on every other call.

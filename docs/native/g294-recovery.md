@@ -63,7 +63,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `initialize_system_and_display`: Initializes the system by opening a library, clearing a memory region, starting the graphics and font systems, computing sizes from stored addresses, and then configuring display and DMA registers before returning.
-- `fill_routine_table`: Stores the addresses of thirteen routines into consecutive longword slots in a table, then returns.
+- `store_routine_addresses`: Loads thirteen routine addresses into a table and stores each longword into consecutive slots, then returns.
 - `set_flag_bits`: Sets specific bits in three global variables using bitwise OR operations with immediate values.
 - `set_more_bits_in_d7`: Sets bits 142, 192, 222, 252, 26 and 34 of the byte register d7 in sequence, then returns.
 - `decrement_and_format_counter`: Reads a 16-bit counter at offset 374 of the structure in a5 and, when it is nonzero, decrements that counter and stores the previous value divided and modulo by ten as two ASCII digits at offsets -2 and -1 of a table, then returns.
@@ -99,7 +99,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_bits_in_registers`: Applies a series of immediate OR operations to registers d0, d6 and d7, setting specific bits in each, and then falls through into the following routine.
 - `update_palette_entries`: Clears 32 consecutive 16-bit palette entries in a color table when the branch is taken, otherwise loads a value from a source, doubles it, adds 273, masks the low 12 bits, and stores the result into each palette entry in a loop.
 - `init_display_if_flag_clear`: Checks a flag in a custom register and returns immediately when it is set.
-- `call_routines_in_sequence`: Calls a routine, then sets up register pairs and calls another routine several times with different source and destination addresses.
+- `call_eleven_routines_in_order`: Calls eleven other routines in sequence and then returns, with no other code.
 - `call_four_routines_only`: Sets a value in a register and calls a routine, then sets up register pairs and calls another routine.
 - `call_routines_then_jump`: Sets a value in a register and calls a routine, then calls another routine directly.
 - `call_three_routines_only_2`: Calls three other routines in sequence and returns, with no other code.
@@ -123,15 +123,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `queue_four_blits_clamped`: Returns unless a register holds a value between 39 and 199, then computes a size from that value, sets the DMA control register and blitter pointers, and fills four sets of blitter registers with increasing destination addresses before calling a blit routine for each and clearing the DMA control register.
 - `set_two_audio_channel_registers`: It stores the sample pointer an address, a length of 60944, a volume of 64, and a period of 729 into two channel blocks sixteen bytes apart, one block for each of two channels, then returns.
 - `start_audio_channel_on_index`: When the index equals 128 it enables audio channel zero via a DMA control write and an interrupt-enable write that set bit 15, and when it equals 122 it enables channel one the same way, setting a flag byte for channel zero, and it returns without otherwise doing anything.
-- `copy_segmented_byte_data`: Reads a table entry containing a pointer, a length and an offset, then copies that many bytes from a source area into a destination area in a loop.
+- `copy_rows_of_sample_data`: It then sets a completion flag, and it calls routines between segments.
 - `configure_disk_after_key`: Waits for a key record whose top 16 bits match a value, then configures the disk and audio hardware by writing the disk length and pointer registers, setting the audio and DMA control registers, and calling two routines before returning.
 - `configure_disk_after_key_2`: Waits for a key record whose top 16 bits match a value, then configures the disk and audio hardware by writing the disk length and pointer registers, and finally calls the audio routines.
 - `process_linked_key_records`: Walks a linked list of records, each holding a 32-bit key and a 16-bit value, and for every record whose key matches the top 16 bits of a value read from a table at a fixed address, stores the key, a count of 15, and the next key at the following record.
 - `initialize_disk_drive_ports`: Writes fixed values to the DMA control register and three custom registers, stores 255 into the byte at offset 768 of the CIAB port and 3 into the byte at offset 512 of the CIAA port, then calls three routines and returns.
 - `wait_for_interrupt_bit`: Waits in a busy loop until bit 2 of the interrupt request register is set, then writes 2 to the interrupt request register at offset 156 and returns the bit's value.
 - `process_input_byte`: Toggles bit 2 of the CIA-B port based on bit 0 of the input byte, then adjusts a bit in that port depending on whether a computed difference is negative, pulses bit 0 in a nested delay loop, and finally stores the input byte into a global byte.
-- `step_track_counter`: Increments a global counter and, while it stays below 160, pulses a CIA port bit with a fixed delay on even steps and clears it on odd steps, otherwise clears a direction bit and calls another routine.
-- `pulse_line_while_flag`: Sets bit 1 of the CIA-B port, then pulses bit 0 in a fixed delay loop while a flag bit in a global word stays set, and finally clears that bit and resets the global word to zero.
+- `step_disk_head_one_track`: Increments the current track counter and, while it stays below 160, pulses the head step line with a fixed delay on even steps and clears it on odd steps, then returns the new count.
+- `pulse_disk_line_while_flag`: Sets a control bit on a CIA-B port, then pulses another bit with a fixed delay for as long as a flag bit in a global word stays set.
 - `toggle_ciab_bits`: Sets bits 3 and 7 of the CIA-B port, clears bit 3, and sets bit 3 again, with no loop or call in the instructions.
 - `pulse_ciab_bit4`: Sets bits 4 and 7 of the CIA-B port, clears bit 4, and sets bit 4 again, with no loop or call in the instructions.
 - `clear_drive_control_bits`: Clears bit 3 of the byte at offset 0 of the structure referenced by a4, then clears bit 7 and bit 3 of that same byte, then calls another routine, and returns; it then clears bit 4 of that byte, clears bit 7 and bit 3 again, calls the same routine, and returns.

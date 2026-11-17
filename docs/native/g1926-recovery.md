@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (905360 top-level bytes in 49 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 0 raw-word lines |
 | Functions named and described | pass, 160 of 160 named (0 author symbols), 160 of 160 described (32 by rule, 38 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 337 of 337 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 348 of 348 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 2042 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 2595 of 2595 instructions identical in start and length, 0 mismatches |
 
@@ -42,7 +42,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - indiana jones and the last crusade (1989)(lucasfilm games)(disk 1 of 3)[cr pna][a]/Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:IndyCodes1.zoo: high-entropy data file (7.91 bits/byte), classified as packed data
 - reference run failed (Karl 4 Nov 2026): run play-long-keys slid through memory (an address: 132 64 KB pages each with >= 29491 distinct PCs executed, 2160417 of its 2160997 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
 - reference run failed (Karl 4 Nov 2026): run play-long-mixed slid through memory (an address: 132 64 KB pages each with >= 29491 distinct PCs executed, 2160417 of its 2160997 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
-- runtime segment an address: 237 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 248 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - indiana jones and the last crusade (1989)(lucasfilm games)(disk 1 of 3)[cr pna][a]/Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:Rooms/98.LFL: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - indiana jones and the last crusade (1989)(lucasfilm games)(disk 1 of 3)[cr pna][a]/Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:paranoimia: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 - 1 never-loaded region(s), 2042 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
@@ -110,7 +110,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `fill_record_from_buffer_and_link`: Obtains a record through a helper and, on success, copies a buffer of ten longwords and several single fields into it.
 - `copy_fields_into_record_link`: Copies ten longwords and several single fields from a source block into a record at fixed offsets, then sets the back-link in the record referenced by one of its fields when that link is present.
 - `return_zero_stub`: Empty library stub that immediately returns zero and does no other work.
-- `copy_record_to_stack_and_call`: Copies ten longwords and several fields from a structure at an offset into a local buffer on the stack, prefixes the buffer with a fixed two-word header, then calls another routine with the first two arguments and a pointer to that buffer.
+- `copy_icon_data_to_stack`: This library routine copies ten longwords from an offset within a structure pointed to by the third argument into a local array on the stack, then copies several additional fields from the same structure into other stack slots and finally calls another routine with the first two arguments and a pointer to a stack-resident header.
 - `read_icon_record_from_stream`: Reads an icon record through library calls using a 260-byte scratch buffer and a fixed mode number, then checks a signature word and version field before filling the record's fields and reading its optional lists.
 - `read_icon_record_fields`: Checks a signature word and version field, then reads the record's fields and optional lists through library calls.
 - `read_icon_optional_lists`: Reads two fields into the record and then, for each optional list present at fixed offsets, reads its longword entries through library calls.
@@ -121,9 +121,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `write_icon_record_fields`: Writes an icon record's fields and optional lists to a stream through library calls, using the .info text the routine references.
 - `write_icon_optional_lists`: Writes the optional lists of an icon record through library calls, each list preceded by its byte size, and returns the final success flag.
 - `write_icon_pointer_list`: Measures a null-terminated list of pointers, then writes each entry's length-prefixed data through library calls, followed by an optional extra entry.
-- `write_pointer_table_entries`: Walks a null-terminated table of pointers, writing each entry's byte size and data through library calls, then writes an optional extra entry.
+- `iterate_icon_table_entries`: Library code that walks a null-terminated table of pointers, calling a routine for each entry, updating a counter, and invoking a callback while potentially processing a secondary entry.
 - `iterate_linked_list_nodes`: Walks a linked list from a head pointer, calling a helper on each node until the list ends or the head sentinel is reached, then calls the helper once more on a remaining node if there is one.
-- `iterate_node_chain_callback`: Walks a chain of nodes by following a link field, calling a callback on each node until the chain ends or a helper returns nothing, then calls the callback on a remaining node if present.
+- `iterate_linked_list_nodes_2`: The routine traverses a linked list structure by following pointers stored at an offset from the current node.
 - `call_with_offset_argument`: Calls another routine with the same first argument and the second argument advanced by a fixed field offset, then returns.
 - `allocate_record_with_setup`: Allocates a 168-byte block, sets a link field inside it, then calls a helper with the new block.
 - `call_refill_helper`: Library code that calls a routine to decrement a counter in a structure and invokes a helper to refill it when the counter reaches zero.
@@ -165,7 +165,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_and_verify`: Library code that calls another routine and returns zero if the result does not match a provided parameter.
 - `return_void`: The routine returns without performing any operations.
 - `divide_unsigned_32bit`: Divides a 32-bit unsigned value by another, using a bit-by-bit restoring loop for large divisors and direct 16-bit division otherwise.
-- `divide_unsigned_bit_loop`: Runs the sixteen-step restoring division loop on a 32-bit dividend, subtracting the divisor whenever the partial remainder is at least the divisor.
+- `rotate_32bit_value`: The library code rotates a 32-bit value left by one bit per iteration for sixteen iterations, using a carry flag to move bits between the high and low halves.
 - `multiply_32_bit_integers`: Computes the low 32-bit product of two values from 16-bit partial products, and also returns a half-word swapped copy of the second operand.
 - `forward_call_to_helper`: As library code, it calls one helper and returns, with no other work.
 - `call_helper_return_register`: As library code, it pushes a data register onto the stack, shifts two data registers for a helper, calls that helper, moves the helper's result into a data register, restores the saved register, and returns.
@@ -185,7 +185,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_c_string_padded`: Copies a null-terminated string into a destination of a given size, stopping at the terminator and zero-filling the remaining bytes of the destination up to that size.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `initialize_list_head`: Initialises a list header in place: it stores the header's own address plus four in its first field, clears the second field, and points the third field back at the header.
-- `process_entry_with_helpers`: Returns one for a null entry; otherwise it looks up or allocates related data, calls helpers to process the entry's pointer field, and returns the helper result.
+- `process_icon_request`: Library code that validates a parameter, calls another routine to check a return value, and if successful, performs further calls using a value from a pointer.
 - `walk_entries_checking_helpers`: Walks a linked list of entries through the link field, calling a helper on each entry and on its sized data block.
 - `walk_entries_with_two_checks`: Walks a linked list of entries through the link field, requiring two helper calls to succeed on each entry.
 - `return_zero_2`: The routine returns a zero value.
@@ -199,10 +199,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Indiana Jones and the Last Crusade (1989)(LucasFilm Games)(Disk 1 of 3)[cr PNA][a].adf:LoadWB
 
 - `parse_command_line_into_argv`: Program entry that finds the task's command-line string, opens the DOS and exec libraries, and allocates a block for the split arguments.
-- `release_task_resources`: Stores a parameter into the task's control record, then conditionally closes a file handle, frees a memory block, closes a library and replies to a message through library calls.
-- `launch_workbench_tool`: Opens the icon and intuition support libraries, decodes a text block by exclusive-ORing it with a fixed byte, allocates a 160-byte record and starts the requested workbench tool through library calls.
-- `compare_c_strings`: Compares two null-terminated strings byte by byte, returning minus one when the first is less than the second, one when it is greater, and zero when they are equal.
-- `build_list_from_table`: Walks a chain of table records, allocating an 8-byte node for each, copying a value from the record into it through a helper and linking the nodes together.
+- `restore_patch_state`: Retrieves a pointer from a global structure and saves a parameter into a slot within a structure pointed to by that pointer.
+- `initialize_workbench_data`: Performs complex data initialization involving string comparisons, linked list construction, and multiple library function calls to manage system resources and memory.
+- `compare_null_terminated_strings`: Compares two null-terminated strings byte by byte and returns minus one when the first is lower, one when it is higher, and zero when they match.
+- `build_linked_list_from_table`: Walks a table of pointer and value pairs, allocating a fixed-size node for each entry through a memory allocation call and storing the looked-up value in it.
 - `invoke_table_entry_2`: Calls the routine stored at a fixed offset in the library's global data structure, then returns.
 - `call_library_vector_414`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
 - `call_library_vector_624`: Library stub: loads a library base from a global variable and calls the library function at offset minus 624 of that base, returning its result to the caller.
@@ -222,7 +222,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_dispatch`: Library stub: loads its arguments and the exec library base, calls Dispatch and returns its result to the caller.
 - `call_reschedule`: Library stub: loads its arguments and the exec library base, calls Reschedule and returns its result to the caller.
 - `call_with_stack_slot`: Calls another routine with the two incoming arguments and a pointer to a local stack slot, then returns.
-- `measure_stack_text_and_send`: Calls a library routine first, then measures a 140-byte local text buffer.
+- `call_global_and_checksum_buffer`: Invokes a function pointer stored in a global variable, then computes a rolling checksum over a stack buffer until a null terminator is found.
 - `store_byte_at_pointer`: Stores one byte value through a pointer argument.
 - `compare_and_loop_bytes`: Compares a register against a constant, saves registers, and enters a loop that compares bytes from two memory locations until a mismatch is found.
 - `write_dot_padding_bytes`: Writes a dot followed by four spaces into five fixed positions of a buffer.

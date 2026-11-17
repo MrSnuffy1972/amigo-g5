@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (935088 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 42 raw-word lines |
-| Functions named and described | pass, 361 of 361 named (0 author symbols), 361 of 361 described (14 by rule, 323 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 766 of 766 (100.00%) |
+| Functions named and described | pass, 365 of 365 named (0 author symbols), 365 of 365 described (16 by rule, 324 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 784 of 784 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 5120 bytes, 46 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 6123 of 6123 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 6164 of 6164 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 32513 |
-| code | 19936 |
-| data | 811685 |
+| code | 20092 |
+| data | 811529 |
 | padding | 810 |
 | unused | 70144 |
 
@@ -29,14 +29,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Mortal Kombat II (1994)(Acclaim)[cr PSG](Disk 1 of 4)[a2].adf:bootblock | 1 | 49 | 2 |
 | logged disk load from Mortal Kombat II (1994)(Acclaim)[cr PSG](Disk 1 of 4)[a2].adf boot-block load | 1 | 116 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5133 | 311 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5174 | 315 |
 | Mortal Kombat II (1994)(Acclaim)[cr PSG](Disk 1 of 4)[a2].adf bytes 1024-6144 (code never loaded by a reference run) | 1 | 825 | 46 |
 
 ## Cases handled
 
 - mortal kombat ii (1994)(acclaim)[cr psg](disk 1 of 4)[a2]/Mortal Kombat II (1994)(Acclaim)[cr PSG](Disk 1 of 4)[a2].adf: custom-format (non-DOS) disk, 1621 non-empty blocks: matched against track-loaded segments
 - mortal kombat ii (1994)(acclaim)[cr psg](disk 1 of 4)[a2]/Mortal Kombat II (1994)(Acclaim)[cr PSG](Disk 1 of 4)[a2].adf: the boot block reads 18944 bytes from disk offset 817152 to an address (found statically); recovered as a unit
-- runtime segment an address: 766 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 784 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - mortal kombat ii (1994)(acclaim)[cr psg](disk 1 of 4)[a2]/Mortal Kombat II (1994)(Acclaim)[cr PSG](Disk 1 of 4)[a2].adf: bytes 1024-6144 look like code no run loaded: recovered position-independently (load address unknown)
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 2 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 2 immediate
 - mortal kombat ii (1994)(acclaim)[cr psg](disk 1 of 4)[a2]/Mortal Kombat II (1994)(Acclaim)[cr PSG](Disk 1 of 4)[a2].adf: 2 logged loads cover 24064 bytes of the image
@@ -133,6 +133,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `fill_memory_with_register`: Fills a block of memory locations with a value held in a register and waits for a flag to clear.
 - `initialize_array_offsets`: Clears a word, loads two pointers, and calls another routine twice with different counts and pointer pairs.
 - `add_offset_to_array`: Adds a longword value from a register to each longword in a source list and stores the results in a destination list using a loop controlled by a counter in a register.
+- `read_input_signal`: Reads a byte from a memory location, tests bits 0 and 3 of that byte, and based on the results sets or clears a bit in another memory location.
+- `frag_movem_lea_move_btst_bne_bra`: Short code fragment that saves registers on the stack, then loads the address of a fixed memory address into a0, then loads the address of a fixed memory address into a1, then copies the memory at an offset from a0 to d0, then tests bit 0 of d0, then branches if the last result was not zero, then tests bit 3 of d0, then branches if the last result was not zero, then jumps to another point in the code.
+- `frag_move_not_ror_bset_bra`: Short code fragment that copies the memory at an offset from a0 to d0, then inverts d0, then rotates d0 right by 1, then copies d0 to the memory at an offset from a1, then sets bit 6 of the memory at an offset from a0, then copies 1 to the memory at an offset from a0, then jumps to another point in the code.
+- `clear_register_bit`: Clears a bit in a memory location relative to a pointer and copies a byte from one pointer-offset to another.
 - `manage_display_and_input_state`: Checks a bit in the interrupt status register to update several global counters and a status byte, then modifies the Amiga copper list and hardware registers to adjust display colors and bitplane settings based on input from the joystick and custom hardware registers.
 - `set_interrupt_request_seven`: Writes 7 to the interrupt request register and returns from interrupt.
 - `set_interrupt_request_high`: Writes 1952 to the interrupt request register and returns from interrupt.

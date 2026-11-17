@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (905084 top-level bytes in 10 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 12 of 12 units identical (bytes and relocations), 11 raw-word lines |
-| Functions named and described | pass, 47 of 47 named (0 author symbols), 47 of 47 described (8 by rule, 36 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 825 of 826 (99.88%) |
+| Bytes classified (905822 top-level bytes in 8 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 12 of 12 units identical (bytes and relocations), 16 raw-word lines |
+| Functions named and described | pass, 55 of 55 named (0 author symbols), 55 of 55 described (7 by rule, 44 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1069 of 1071 (99.81%) |
 | Recovered without load address (counted in proof 1, flagged) | 1536 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1611 of 1635 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1869 of 1893 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 8582 |
-| code | 5116 |
-| data | 885741 |
-| padding | 13 |
+| code | 5888 |
+| data | 885709 |
+| padding | 11 |
 | unused | 5632 |
 
 ## Code units
@@ -31,13 +31,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | logged disk load from Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3)[t +3 FLT].adf boot-block load | 1 | 389 | 13 |
 | logged disk load from Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3)[t +3 FLT].adf boot-block load | 1 | 103 | 3 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 139 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 49 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 144 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 389 | 6 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 110 | 7 |
+| logged disk load from Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3)[t +3 FLT].adf | 1 | 18 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 389 | 8 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 394 | 6 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 117 | 8 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 88 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 24 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 48 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 80 | 2 |
 | Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3)[t +3 FLT].adf bytes 1024-2560 (code never loaded by a reference run) | 1 | 0 | 0 |
 
 ## Cases handled
@@ -48,14 +48,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - benefactor (1994)(psygnosis)[cr cls](disk 1 of 3)[t +3 flt]/Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3)[t +3 FLT].adf: the boot block reads 10752 bytes from disk offset 854528 to an address (found statically); recovered as a unit
 - benefactor (1994)(psygnosis)[cr cls](disk 1 of 3)[t +3 flt]/Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3)[t +3 FLT].adf: the boot block reads 5632 bytes from disk offset 854528 to an address (found statically); recovered as a unit
 - runtime segment an address: 113 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- 713 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 7 first-run image unit(s) in 1 version group(s); 1220 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
+- benefactor (1994)(psygnosis)[cr cls](disk 1 of 3)[t +3 flt]/Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3)[t +3 FLT].adf: 4 executed PCs whose RAM was overwritten before any snapshot match its bytes 160160-160256: recovered as a unit run at an address
+- 954 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 6 first-run image unit(s) in 1 version group(s); 1222 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
 - benefactor (1994)(psygnosis)[cr cls](disk 1 of 3)[t +3 flt]/Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3)[t +3 FLT].adf: bytes 1024-2560 look like code no run loaded: recovered position-independently (load address unknown)
-- benefactor (1994)(psygnosis)[cr cls](disk 1 of 3)[t +3 flt]/Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3)[t +3 FLT].adf: 3 logged loads cover 12288 bytes of the image
+- benefactor (1994)(psygnosis)[cr cls](disk 1 of 3)[t +3 flt]/Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3)[t +3 FLT].adf: 4 logged loads cover 12384 bytes of the image
 - benefactor (1994)(psygnosis)[cr cls](disk 1 of 3)[t +3 flt]/Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3)[t +3 FLT].adf: blocks 12-12 (bytes 6144-6656) outside the filesystem hold data, not code (opcode density 0.016, entropy 6.04)
-- benefactor (1994)(psygnosis)[cr cls](disk 1 of 3)[t +3 flt]/Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3)[t +3 FLT].adf: blocks 307-676 (bytes 157184-346624) hold 1 packed streams (IMP: File Imploder) found by scanning, 99% of the bytes
 - benefactor (1994)(psygnosis)[cr cls](disk 1 of 3)[t +3 flt]/Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3)[t +3 FLT].adf: blocks 1690-1759 (bytes 865280-901120) outside the filesystem hold data, not code (opcode density 0.004, entropy 4.21)
 - 1 never-loaded region(s), 1536 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
-- 2 packed track region(s), 656384 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)
+- 4 packed track region(s), 845312 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)
 
 ## Cracktros (kept, not protection)
 
@@ -107,13 +107,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_and_expand_rle_buffer`: Copies a block of bytes from one buffer to another using a pre-decrement loop, then decodes a bit-packed run-length sequence from a source table, expanding each run into repeated bytes written to a destination buffer.
 - `expand_rle_buffer`: Decodes a run-length encoded stream from a source buffer into a destination buffer using a series of conditional checks and table lookups to determine expansion counts and data values.
 
+### logged disk load from Benefactor (1994)(Psygnosis)[cr CLS](Disk 1 of 3)[t +3 FLT].adf
+
+- `process_bcd_data`: Performs arithmetic on several registers, executes a BCD adjustment, and then adds a value to a location pointed to by a0 before moving a byte from a5 to a3.
+
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `initialize_system_parameters`: Increments a global counter and, if it reaches a specific value, calculates a memory offset and populates a structure in a6 with various configuration values and pointers.
-
-### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
-
-- `update_configuration_state`: Increments a global counter and, if non-zero, updates a structure in a6 with specific values and pointers derived from a table and the counter's value.
+- `configure_structure_parameters`: Increments a global byte, checks a value from a table, and then populates various offsets of a structure in a6 with calculated values and pointers.
+- `search_and_patch_buffer`: Searches for a specific byte within a buffer by comparing it against a global variable, and if found, copies the subsequent byte to that location.
+- `compare_nibble_pairs`: Compares a byte with a value formed by combining nibbles from two other bytes, decrementing the source values in a loop before setting four bytes from a table.
+- `combine_nibbles_into_register`: Rotates four registers, masks specific bits from each, and combines the results into register d7 before returning.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs two instructions (moveq, cmp.l) and then falls through into the code that follows, with no return of its own.
+- `update_structure_with_rle`: Updates a global byte and a structure in a6 with values derived from a table, potentially performing two separate updates based on calculated results.
+- `apply_bitmask_to_buffer`: Iterates through a list of offsets, reads bytes from a table, and performs bitwise OR and bitwise AND operations on specific offsets of a buffer pointed to by a1.
+- `initialize_and_apply_buffer`: Sets several fields in a structure in a6 and then enters a loop that applies bitwise OR operations to a buffer using data from a table.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -129,6 +136,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_word_if_conditions_met`: Clears a 16-bit word at a specific offset in a structure if a byte at a different offset does not equal one and another value shifted right is non-zero.
 - `set_attribute_mask`: Checks a byte at an offset from a pointer; if it is not one, it clears a word in a structure and potentially stores a masked byte from another structure into a specific offset.
 - `frag_move_cmpi_bls_rts`: Short code fragment that copies the memory at an offset from a4 to d0, then compares d0 with 64, then branches if the comparison was lower or same (unsigned), then copies d0 to the memory at an offset from a4, then returns.
+- `update_structure_counters`: The routine stores a byte from a register through a pointer into a word field of a structure and increments two short counters in the same structure.
 - `copy_state_entries`: Copies four word-sized values from four source globals to four destination offsets in a structure pointed to by a6, invoking another routine and a table-driven callback before each copy, then stores a pointer to another routine into a global table and sets a global variable to 25.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `apply_bitwise_or`: Loads a word from a structure and, if it is non-zero, performs a series of bitwise OR operations on that value before returning.
@@ -145,5 +153,5 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `undecodable_bytes_92`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_93`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `process_data_block_list`: Loops through a list of values, moving data from a table into registers and calling another routine for each entry until a null pointer is encountered.
+- `transform_word_table`: Iterates through two tables of 16-bit words, performs arithmetic on the nibbles of the second table based on the first, and stores the result back in the second table.

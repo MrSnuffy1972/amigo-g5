@@ -7,31 +7,32 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (901120 top-level bytes in 8 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 1 of 1 units identical (bytes and relocations), 3 raw-word lines |
-| Functions named and described | pass, 206 of 206 named (0 author symbols), 206 of 206 described (3 by rule, 33 by the local model) |
+| Byte-identical reassembly with vasm | pass, 1 of 1 units identical (bytes and relocations), 6 raw-word lines |
+| Functions named and described | pass, 465 of 465 named (0 author symbols), 465 of 465 described (16 by rule, 33 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 0 of 0 (0.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 4161 of 4189 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 8313 of 8361 instructions identical in start and length, 1 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 5466 |
-| code | 12254 |
-| data | 858521 |
-| padding | 3375 |
+| code | 24562 |
+| data | 846201 |
+| padding | 3387 |
 | unused | 21504 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Worms - Custom Levels (1995)(Various)[h RamKids][a][addon levels][WB].adf:lha | 3 | 4189 | 206 |
+| Worms - Custom Levels (1995)(Various)[h RamKids][a][addon levels][WB].adf:lha | 3 | 8361 | 465 |
 
 ## Cases handled
 
 - worms - custom levels (1995)(various)[h ramkids][a][addon levels][wb]/Worms - Custom Levels (1995)(Various)[h RamKids][a][addon levels][WB].adf:Worms.lha: high-entropy data file (8.00 bits/byte), classified as packed data
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate
 
 ## Cracktros (kept, not protection)
 
@@ -48,11 +49,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `initialise_program_and_run`: Program entry point: it opens the arp and dos libraries, allocates the working state block, sets the task priority and signal mask, then calls two routines to run the LhA program.
 - `shutdown_program_resources`: Restores the task priority, closes the opened libraries and frees the allocated state memory through the exec library before returning.
+- `compute_a4_offset_address`: Loads the address of a global-data location at offset 1308 from the base in a4 into a0, copies it to d0, and returns it in d0.
 - `process_entry_list`: When a state word is non-zero, walks a circular list of entries and calls routines for each entry's fields until the list returns to its head.
 - `copy_entry_name_into_buffer`: When the mode is zero or three and the entry has a name or the name option is clear, copies the entry's name string into the destination buffer, then calls a routine.
 - `clear_buffer_append_slash`: Clears a buffer, then appends a trailing slash and a terminator when a state field is zero.
 - `append_trailing_slash_always`: Appends a slash and a terminator to the end of a string.
 - `copy_state_string_to_buffer`: Copies the null-terminated string pointed to by a state field into the destination buffer, including its terminator.
+- `selects_pointer_or_returns_one`: Saves two address registers, copies a0 into a3 and a1 into a2, and tests whether a3 is nonnull.
+- `copies_string_into_status_buffer`: Loads a pointer from offset 30 of the structure in a2 and, when it is non-null, copies the bytes it points to one at a time into a buffer at offset 2056 of the structure in a4 until a zero byte is copied.
+- `reset_path_buffer_and_trim`: Clears a status byte in a global structure and, when a string pointer read from a2 is non-empty, appends a path component.
+- `scan_back_to_delimiter`: Steps a pointer in a3 backward one byte at a time until it reaches the boundary at a global offset from a4 or finds a slash or colon character, then calls another routine.
+- `set_file_protection_conditionally`: Saves d2, a3 and a6, copies the pointer in a0 into a3, and if the 32-bit value at offset 1572 of the base in a4 is nonzero it calls the DOS SetProtection function with that name and the value 2 in d2, then restores the saved registers and returns.
+- `write_file_list_entries`: Opens a file, reports the attempt through a message, then walks a linked list and writes each entry whose flag bit 2 is clear as a line terminated by a newline with dos.Write.
+- `emit_list_creation_error`: Pushes the address of a message string onto the stack, calls a routine that emits a local buffer string with the global variable as argument, then pops the argument and returns.
+- `jump_to_check_and_recursively_call`: Jump stub: passes control straight on to check_and_recursively_call.
 - `read_confirmation_response`: Returns a stored yes or no decision from a state flag when one is already set.
 - `test_whitespace_character`: Returns 1 when the character in the data register is a space, tab, line feed or carriage return, and 0 for any other character.
 - `parse_lha_command_line`: Splits the command-line argument string into words and quoted strings, recognises option switches and at-sign include files, and reads the LHAOPTS environment variable when it is set.
@@ -67,8 +77,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `insert_into_list`: Counts leading non-zero entries in a list and stores a value into the next available table slot if the count is below a certain limit.
 - `store_at_list_length_index`: Counts how many leading nonzero entries the pointed-to list holds, up to 64, and writes the register value into the table slot at that index when it is in range.
 - `store_value_at_table_index`: Writes the value held in one data register into the 64-slot table at the index held in another data register, with no bounds check.
-- `unlock_and_clear_slot`: Finds the 64-slot table entry matching the value in the data register, clears it, releases that lock through the library jump table and then runs a cleanup routine.
+- `unlock_and_clear_lock_entry`: Searches the 64-entry lock table for the matching handle, clears its slot and releases the lock through the dos library.
 - `copy_stored_name_to_buffer`: Copies the zero-terminated name held in a state field into a local 256-byte buffer, then passes it on to two follow-up routines.
+- `build_archive_path_entry`: Copies three longwords of constants into a 16-byte stack buffer, then copies a null-terminated string from the pointer at offset 1388 of a4 into a 256-byte stack buffer, appends a path component, and passes the result to a file-entry allocation routine.
+- `rename_or_replace_file_entry`: Duplicates a file name, seeks the entry position, and compares the DOS device handles of the source and target names.
+- `rename_entry_with_backup_fallback`: Compares the DOS device handles of two file names and, when they match, either deletes or renames the target file, moving the existing file aside to a backup name through a 260-byte local buffer when a flag at offset 1460 of the structure in a4 is set, then renames the second name to the first.
+- `moves_name_and_deletes_entry`: Calls a DOS library function with the name in a2 and, when that call returns nonzero, pushes a value from a field of an entry record and calls a helper, then clears a flag bit in that record and calls another routine.
+- `move_name_and_call_rename`: Moves a3 into a0, calls a routine that handles the entry record, reloads a3 from the stack, places a3 and a2 into d1 and d2, and calls a library function through the base pointer from a4 before branching to another routine.
+- `replace_file_with_backup`: If a flag in the structure at a4 offset 1460 is set, it copies the string at a2 into a 260-byte local buffer below the frame pointer and calls a routine on it, then locks that path and, if the lock succeeds, unlocks it and deletes the file at that path.
+- `release_entry_and_delete_file`: Calls a routine that releases an entry record, calls a routine that closes and clears a slot, calls the DOS DeleteFile function on the name from the stack, calls a routine that handles a helper and library call, and returns zero in d0.
 - `allocate_file_entry`: Finds a free slot in a ten-entry table, allocates a new entry record and fills its fields from the mode letter, covering write, multivolume and temporary variants.
 - `allocate_file_entry_indexed`: Works like the file entry allocator but takes its free slot from a counter held in the caller's frame, then writes the new record into that slot.
 - `build_file_entry_record`: Allocates and initialises an entry record from the mode letter and the caller's counter, then stores it in the ten-slot table.
@@ -103,6 +120,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_entry_offset_from_register`: Updates an entry record's buffered offset fields to the position held in a data register, calling a helper to refill the block when that position is outside the current range.
 - `reset_entry_buffer_window`: Marks the entry's buffer window as invalid, sets its start offset to the value passed in and clears the buffered count, then calls a helper.
 - `set_entry_buffer_count`: Stores the difference between the passed value and the entry's start offset as its buffered count, then calls a helper.
+- `test_flag_and_return_minus_one`: Saves d2, d3, a3 and a6 on the stack, copies a0 into a3, and tests bit 7 of the byte at offset 27 of the structure in a3.
+- `check_and_emit_terminator_byte`: Seeks the file handle pointed to by a3 back one byte and then to the saved position using DOS Seek, reads a byte from the entry buffer, and if that byte is zero emits a local buffer string and repositions the entry, then returns zero.
 - `copy_from_entry_buffer`: Copies the requested number of bytes from the entry's buffer block through a copy helper, refilling the block when it runs out.
 - `copy_entry_bytes_with_counter`: Copies bytes out of the entry's buffer block like the buffered copy routine, adding to the caller's running total as it goes.
 - `copy_entry_bytes_until_end`: Repeatedly copies from the entry's buffer block until the requested count is satisfied or the end of the entry is reached, refilling as needed.
@@ -114,22 +133,120 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_entry_bytes_stepwise`: Copies bytes from the entry buffer block in steps, refilling when needed and recording the buffered high-water mark.
 - `copy_entry_bytes_mark_flag`: Copies from the entry buffer block with the library memory copy call in steps, refilling between steps and setting the buffered flag.
 - `copy_entry_bytes_tail_loop`: Finishes a copy from the entry's buffer block through the library memory copy call, setting the buffered flag and advancing the high-water mark.
+- `writes_or_reads_buffered_data`: Writes the buffer at offset 4 of the structure in a0 to a file handle when no pending flag is set, recording the DOS error code on failure.
+- `read_until_count_exhausted`: Reads from a file through dos.Read in a loop, reducing a remaining count by each returned amount until it reaches zero.
+- `open_library_then_store_result`: Loads d7 into d1, the longword at offset 4 of a3 into d2 and d5 into d3, then calls a library routine through a6 at offset -48.
+- `subtract_d3_from_d6`: Subtracts the longword in d3 from the longword in d6, then branches forward to another routine.
+- `read_file_into_buffer_2`: Loads the longword at a3 into d1, the longword at offset 4 of a3 into d2 and the longword at offset 8 of a3 into d3, then calls a dos library routine at offset -42 through a library base taken from a global variable at offset 1284 of a4.
+- `open_library_and_store_handle`: Copies d7, the longword at offset 4 of a3 and d5 into d1, d2 and d3, calls a library function, and if the result is negative it calls another library function and stores its result in a global variable at offset 1936 from a4; otherwise it sets d0 to -1 and branches to the exit code.
+- `subtracts_d3_and_branches_on_result`: Subtracts the longword in d3 from d6, then branches to an earlier point of the routine when the result is nonzero, and otherwise jumps forward to the common exit sequence.
+- `report_internal_error_and_store_result`: Compares d6 with the longword at offset 20 of a3 and, when d6 is greater, pushes an internal error message and calls a routine to emit it.
+- `write_block_or_store_error`: Moves the values in d7, the longword at offset 4 of a3, and d6 into d1, d2 and d3, calls the DOS Write function, and if the result is non-negative branches to the exit; otherwise it calls the DOS IoErr function, stores the error code in a global variable at offset 1936 of a4, and places minus one in d0.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `set_bit_and_jump`: Saves the register arguments into a stack frame, stores the second argument in a local slot and sets bit 0 of the byte at offset 26 of the structure it points to, then branches to a later point in the program.
+- `forwards_result_or_returns_minus_one`: Copies a2 into a0, calls a routine that returns a count in d0, and tests the sign of d0.
+- `copy_buffered_data_or_refill`: Loops while a byte count remains, copying the smaller of the remaining count and the available span from the source buffer into the destination via exec.CopyMem, advancing both pointers and the count, and updating the high-water mark and flag bit 2 of the structure at the offset held in a5.
+- `copy_memory_and_adjust_sizes`: Copies d6 bytes from a2 to the address in a1 using the system copy-memory function, subtracts d6 from d7, and adds d6 to the longword at offset 12 of the structures pointed to by a2 and a3 before branching to another routine.
+- `read_file_chunks_into_buffer`: Loops over a file handle, reading data through the DOS read call into a buffer in chunks sized by the requested count, updating the read position and fill counters in the structure in a3 and copying leftover bytes with exec copy memory.
+- `read_file_into_buffer_chunks_2`: Repeatedly reads data from a file handle into a buffer through the DOS Read call, updating the read position and buffer fill counters, and on a negative result fetches the DOS error code into a field at offset 1936 of the structure in a4 and returns -1.
+- `adjust_fields_and_subtract_d3`: Loads a2 from a global variable at offset -16 from a5, adds d3 to the longword at offset 16 of a3, copies the longword at offset 8 of a2 into offset 12 of a2, subtracts d3 from d7, and branches to another routine.
+- `reads_file_size_or_error`: Loads a longword from offset 16 of the structure in a3 into d0, calls a helper with a3 in a0, and if the result is negative stores the DOS error code from the library in a global variable and returns -1, otherwise it returns 0.
+- `read_file_into_buffer_chunks`: Reads from an AmigaDOS file handle into a buffer at the current fill offset, and if the read fails it stores the DOS error code in a global variable and returns -1.
+- `read_file_chunks_into_buffer_loop`: Repeatedly fills a buffer structure from an open file: it copies available source bytes into the destination window, advances the segment's fill position, and when the remaining count exceeds the segment size it seeks and reads the file directly into the buffer, returning 0 on success or -1 after recording the DOS error code at offset 1936 of the structure in a4 if a seek or read fails.
+- `flags_position_and_jumps_on`: Saves registers and copies the three arguments into d7, a3 and d6, clearing d5.
+- `refill_buffer_on_negative`: Calls the routine at the address in a3 to refill the buffer of the structure, and when the returned longword in d0 is negative it sets d0 to -1 and branches to another routine; otherwise it continues on a non-negative result.
+- `reads_buffered_file_chunks`: Loops reading from the file handle in d7 into the buffer at the current fill offset of the structure in a3, sets bit 2 of the flag byte at offset 27, updates the fill and valid-data offsets, and refills the buffer through another routine until the requested count is satisfied, storing the DOS error code in a global variable and returning -1 on a read failure.
+- `sets_flag_and_copies_pointer`: Sets bit 2 of the byte at offset 27 of the structure in a3, adds d4 to d5 and subtracts d4 from d6, then copies the longword at offset 8 of that structure into the longwords at offsets 12 and 20, and branches to a later point in the code.
+- `reads_file_or_records_error`: Loads the library base from a global slot in a4 into a6 and calls a library function with d7, a2 and d6 as arguments.
+- `read_file_chunks_until_done`: Sets bit 2 of the byte at offset 27 of the structure in a3 and adds the pending count to the position at offset 12, raising the high-water value at offset 20 when needed.
+- `saves_frame_and_jumps_to_read_loop`: Creates a stack frame with 16 bytes of locals, saves registers, and copies the arguments into d7, a3, d6 and a local slot at offset -16, clearing d5.
+- `refill_buffer_then_store_word`: Passes the structure in a3 to a refill helper, tests the returned longword in d0 for sign, and sets d0 to -1 and branches to another routine when it is negative.
+- `reads_chunks_and_stores_word`: Loops reading from the file handle in d7 into the buffer at the current fill offset of the structure in a3, then stores the word returned by a delay counter helper through a pointer held in a global variable, sets bit 2 of the flag byte at offset 27, and refills through another routine until the requested count is read; a read failure stores the DOS error code and returns -1.
+- `reads_chunks_into_buffer`: Repeatedly calls a delay counter helper, stores its word result through a pointer in a global variable, sets bit 2 of the byte at offset 27 of the structure in a3, and updates counters d5 and d6 while copying longwords between offsets 8, 12 and 20.
+- `read_file_into_buffer`: Loads the library base from a global variable at offset 1284 of a4 and calls the library routine at offset -42 with the buffer address in d2, the length in d3 and the file handle in d1.
+- `read_file_chunks_with_delay`: Calls a delay helper and stores its 16-bit result through a pointer held in a global variable, then performs the same buffer accounting as the neighboring chunk reader: it sets bit 2 at offset 27, advances the position at offset 12 and the high-water value at offset 20, and loops refilling and reading into the buffer.
 - `write_byte_to_entry_buffer`: Appends one byte to the entry's output buffer, allocating the buffer on first use, advancing the write position and high-water mark, and flushing when the buffer is full.
 - `append_byte_to_output_buffer`: Appends the byte in the data register to the entry's output buffer, advancing the write position and high-water mark, and flushes when the buffer is full.
 - `store_byte_flush_when_full`: Stores the byte in the data register at the write position of the entry buffer, updates the high-water mark and flushes the buffer when it is full.
 - `stub_return_zero`: Routine that returns zero immediately, with no other work.
 - `read_byte_from_entry_buffer`: Reads the next byte from the entry's buffer after a refill check.
 - `read_buffered_byte`: Returns the byte at the current read position of the entry's buffer and advances that position, with no refill check.
+- `tests_flag_returns_one`: Saves a3 on the stack and loads a0 into a3, then tests bit 0 of the byte at offset 27 of the structure in a3.
+- `check_read_buffer_bounds`: Calls a refill routine on the structure in a3, then loads the longword at offset 20 and compares it with the longword at offset 8; if it is greater than or equal, it leaves d0 unchanged, otherwise it compares it with the longword at offset 12 and sets d0 to 1 when it is not less, then exits through a shared epilogue.
+- `function_epilogue_2`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `sum_two_structure_fields`: Saves a3, copies the pointer in a0 into a3, adds the longwords at offsets 12 and 16 of that structure into d0, restores a3 and returns the sum in d0.
+- `store_constant_at_offset_144`: Stores the longword constant 488 into the global-data location at offset 144 from the base in a4, then returns.
 - `check_break_signal_once`: Polls the task signal mask through the library call and, when the break bit is set, runs two helpers and sets a state flag so that the handling happens only once.
 - `read_char_checking_break`: Reads one character through two library helpers and, when it equals the break character code, runs the break signal check before returning it.
 - `forward_to_helper`: Trampoline that calls another routine and returns, with no other work of its own.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (moveq) and then falls through into the code that follows, with no return of its own.
+- `allocate_and_initialize_record`: Allocates a block, copies a long from offset 124 and a word from offset 116 of the structure in a0 into it, duplicates a string into a field at offset 22, stores the long in a1 and the value in d0 at offsets 12 and 16, then returns the block pointer.
+- `dispatch_list_node_insertion`: Checks two global flags and a flag bit in the structure pointed to by a0, then either calls a helper pair for the simple case or walks the circular list headed at a1, calling another routine on each node with a nonzero field at offset 16.
+- `walks_list_inserting_matching_nodes`: Walks a linked list from the node in a2 until it returns to the list head stored in a global variable, calling another routine for each node whose word at offset 16 is non-zero and stopping early when that routine returns a value below 1; afterwards it either inserts a node before the current position or calls a helper twice, depending on the final result in d7.
+- `inserts_node_via_helper`: Tests d7 and, when it is non-negative, loads a3 into a0 and a2 into a1, then calls a helper routine to insert a list node.
+- `calls_two_helpers_sequentially`: Calls one helper with the pointer in a0 loaded from offset 22 of a3, then calls the same helper again with a3 as the pointer, and returns.
+- `saves_path_arguments_and_scans`: Builds a stack frame, saves registers d2, d7, a2 and a3, keeps d0 in d7 and stores the two pointer arguments a0 and a1 into the frame, then sets a2 and a3 to the first pointer and branches into the path scanning code.
+- `parse_path_component_into_node`: Scans forward through a path string in a2 until a NUL, a slash, or a colon is found, then either duplicates the leading component or copies it byte by byte into a newly allocated buffer, appending a colon and terminating zero when one follows.
+- `copy_string_into_list_entry`: Copies bytes from a source string into a newly allocated buffer until it reaches the source end pointer, then appends a colon and a terminating zero if the source ends in a colon.
+- `build_named_list_entry`: Copies a string from the pointer in a global variable into a buffer in a3, appending a colon and a terminating zero when the source starts with a colon.
+- `initializes_path_parse_state`: Saves two registers and two address registers on the stack, then copies the two incoming address arguments into local frame slots and stores the second one into two more local slots.
+- `parse_path_component_into_node_2`: Scans a path string forward to the next '/' or ':' or terminator, then either duplicates the remaining text or copies the component byte by byte into a newly allocated buffer, appending a colon if one was found.
+- `allocate_and_copy_string_node`: Allocates a block of memory and stores its pointer in a local slot, then copies bytes from a global pointer into it until the stored end pointer is reached.
+- `copy_string_and_find_node`: Copies bytes from a global pointer into a buffer until it reaches a stored end pointer, appends a colon or terminator, then walks a linked list comparing node fields.
+- `copy_pointer_and_chain_lookup`: Copies the pointer in a0 into a1, moves d7 into d0 and a3 into a0, then calls a routine and stores its returned pointer in a3 and in a local slot at offset -24 of a5.
+- `builds_list_node_from_string`: Sets up a stack frame with local slots and walks a linked list through a pointer in a local slot, comparing node fields against a value in d7.
+- `stores_pointer_in_local_slot`: Stores the longword in a3 into a local slot at offset minus 24 from a5, then branches to a later point in the code.
+- `frees_block_and_returns_field`: Frees the memory block whose pointer is in a0 loaded from a local slot, then returns the long stored at a second local slot.
+- `allocates_node_with_string_copy`: Allocates a new node, sets its first longword to zero, stores a duplicated string pointer at offset 12, and sets the 16-bit field at offset 16 to 1.
+- `passes_arguments_and_returns_result`: Clears d0, loads a0 from a field at offset 12 of a2 and copies a3 into a1, then calls another routine.
+- `frees_linked_list_nodes`: Walks a circular list starting at a0, checking a count field at offset 8 and calling a routine when it is nonzero, then unlinks each node and frees two memory blocks per node until it returns to the starting node.
+- `initialise_path_scan_state`: Saves registers and copies the two arguments from registers a0 and a1 into a stack frame.
+- `scan_directory_entries_recursively`: Gets the length of a path string held in a global structure and allocates a file information block, then locks a file and examines it.
+- `walk_directory_entries_recursively`: Iterates over the entries of a directory with a FileInfoBlock, recursing into subdirectories by changing the current directory and restoring it afterward, and for each file it duplicates and lowercases a name, optionally appends a path component, and frees the temporary memory.
+- `walks_directory_tree_recursively`: Locks each directory entry, changes the current directory into subdirectories and restores it afterwards, and uses an examine-next loop over the FileInfoBlock to process entries.
+- `walk_directory_tree_with_path_buffer`: Takes two string arguments, measures both to their terminating zero bytes, and allocates a FileInfoBlock.
+- `walk_directory_entries_and_examine`: Tests bit 1 of the byte at offset 17 of the structure in a3 and, when it is clear, loads a pointer from a global structure and calls the library routine at offset -102 of that library base with the file name in a0 and a lock in d1, then branches to a later point.
+- `walk_directory_tree_and_process_entries`: Iterates over a linked list of directory entry records, skipping those whose flag bit 1 is set, and for each entry locks the named file or directory, examines it with a file info block, and recurses into directories by setting the current directory and calling another routine.
+- `walk_directory_tree_entries`: Loops over the entries of a directory list in a linked structure, locking and examining each one through the file info block.
+- `tests_flag_then_calls_dos`: Tests bit 1 of the byte at offset 17 from a3 and, if it is clear, branches forward past the rest of the code.
+- `walk_directory_tree_recursively`: Iterates over directory entries with the AmigaDOS examine/next calls, duplicating and lowercasing each name, dispatching on a state flag, and recursing into subdirectories by changing the current directory and restoring it afterwards.
+- `walk_directory_recursive_entries`: Locks the current directory, then loops over its entries with the AmigaDOS examine and next calls, recording each entry's name, and descends into subdirectories by calling the directory walker again, restoring the previous current directory and freeing temporary buffers on exit.
+- `walk_directory_tree_recursively_3`: Locks each entry of the current directory with dos.Examine and reads its directory type from the file info block, recursing into subdirectories through the parent path buffer and restoring the current directory after each child.
+- `load_a5_and_jump`: Loads the longword at offset 12 of the base register a5 into a0, copies a3 into a1, then calls a routine at a fixed offset from the program counter and branches to a point further along the code.
+- `test_flag_then_jump`: Loads a2 with the address 8 bytes past a2 and reads a pointer from a5 at offset -24, then tests bit 0 of the byte at offset 17 of that structure and, if the bit is clear, branches ahead; otherwise it loads a0 from offset 8 of a5, copies a3 into a1, calls a routine at a fixed offset from the program counter, and branches further along the code.
+- `walk_directory_tree_recursively_2`: Walks a directory tree by repeatedly locking entries in the current directory and examining them with the file info block, descending into subdirectories and recursing through another routine when a flag is set.
+- `select_pointer_or_zero_result`: Saves a3 on the stack, copies a0 into a3, and returns a3 in d0 when it is non-zero; otherwise it sets d0 to 0 and branches to a shared exit that restores a3 from the stack.
+- `compares_string_length_result`: Loads the address of a text location into a0 and copies a3 into a1, then calls another routine.
+- `function_epilogue_3`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `walk_and_duplicate_paths`: Walks a linked list of nodes from the head in a0, copying the path string at offset 8 of each node with both pointer fields at offsets 8 and 12 set into a buffer, appending a component, and calling the directory examine routine to test whether the entry is a directory.
+- `walk_list_and_copy_paths`: Walks a linked list of nodes from the head pointer, and for each node whose two pointer fields at offsets 8 and 12 are both non-null it copies the stored path string into a buffer, appends a component, and examines it via DOS to decide whether to recurse into a subdirectory or to unlink and free the node.
+- `walk_and_copy_paths`: Walks a linked list of nodes, and for each node whose two pointer fields are non-null it copies the stored path string into a buffer, appends a path component, and examines the file with dos_Examine.
+- `clear_two_pointer_fields`: Clears a0, then stores it into the longword at offset 12 and the longword at offset 8 of the structure in a3, and branches to a point further along the code.
+- `follow_pointer_and_branch`: Loads the longword pointed to by a2 into a2, then branches to a point further along the code.
+- `follow_link_and_free`: Loads the pointer stored at the address in a2 into a2, then compares a2 with a global variable's pointer and, if they differ, branches elsewhere.
+- `checks_and_walks_path_list`: Clears d0 and, if the list head in a0 is empty and the string at offset 12 is missing or empty, stores a global variable address into that field.
+- `builds_directory_scan_paths`: Checks whether a list head is empty and whether a string is nonempty, and if either is not so it zeroes two 256-byte local buffers at stack offsets -520 and -264, then calls a routine with those buffers.
+- `match_names_through_list`: Walks a linked list starting at a1, copying the name in each node into a stack buffer, applying a path-component append and a state dispatch routine to each node, and returning 1 as soon as a dispatch reports success or the list ends with a null link, otherwise returning 0 after the list cycles back to its start.
+- `sets_result_and_branches_ahead`: Sets d0 to 1 and branches forward into the middle of another routine.
+- `advance_pointer_until_match`: Loads the pointer stored at the address in a3 into a3 and compares it with a2; if they differ it branches back to the earlier pointer-loading step, and once equal it jumps to the shared function exit sequence.
+- `sets_result_and_branches_into_epilogue`: Sets d0 to 1 and branches forward into the middle of another routine.
+- `function_epilogue_4`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `concatenate_or_copy_node_string`: Walks the list starting at a0, and for each node with a non-null string field it recursively processes the rest of the list, measures the length of a global string and of the node string, and either allocates a new buffer for the node string or copies the global string over the node string, then moves to the next node until the list returns to its start.
+- `copy_string_into_linked_node`: Copies bytes one at a time from a fixed offset of a4 into the buffer pointed to by the field at offset 12 of the structure in a2, stopping after the zero terminator.
+- `scan_and_append_entry_names`: Loops over a linked list of entry nodes, finds the last component of each node's path string by scanning backwards to a slash or dot, and when the test passes it allocates a new node and copies the name into a freshly allocated buffer, linking the new node into the list.
+- `scan_path_and_build_entries`: Walks backwards through a path string in a2, stopping at a slash or dot, and when a match is found it allocates a node and copies the name into a new buffer, then inserts the node into the list through the pointer at offset -16 from a5.
+- `build_file_list_nodes`: Walks a list of zero-terminated file name strings, and for each one allocates a node, copies the name into a newly allocated buffer, and stores the node pointer at offset 12 of the structure in a3, looping back to process the next name through a global variable list head until the list is exhausted.
+- `call_copy_string_with_literal`: Loads the longword at offset 12 of a3 into a0, points a1 at a fixed string literal relative to the program counter, calls a routine at a fixed offset from the program counter, and branches to a point further along the code.
+- `build_archive_file_entries`: Walks a list of file name strings, allocating a node for each entry and copying the name into a newly allocated buffer, then inserts each node into a list.
 - `append_path_component`: Appends a second string to the first as a path part, inserting a slash between them unless the first ends in a colon or slash.
 - `unlink_list_node`: Removes a node from a doubly linked list by joining its neighbours, using the node's back and forward links.
 - `scan_back_for_separator`: Scans backward through a path string looking for a directory separator, stopping at the start of the string or at a volume colon.
+- `jump_to_pack_dos_timestamp`: Jump stub: passes control straight on to pack_dos_timestamp.
 - `duplicate_string_copy`: Measures a zero-terminated string, allocates memory for a copy through a helper, copies the string into it and returns the new buffer, or zero when the allocation fails.
 - `allocate_memory_retrying`: Requests a memory block through a helper and, when the request fails, checks the break flag and waits for the user's response.
 - `allocate_with_retry`: Attempts to allocate a memory block and repeatedly retries or prompts the user based on a certain condition or character input.
 - `init_empty_list_head`: Points both link fields of the node at itself, creating an empty circular list head.
+- `jump_to_copy_string_or_library`: Jump stub: passes control straight on to copy_string_or_library.
 - `insert_list_node_before`: Inserts a node into a doubly linked list immediately before the given node, relinking the neighbouring pointers on both sides.
 - `dispatch_by_state_flag`: Calls one of two helpers depending on whether a state field is set, one of them through a different jump table offset.
 - `emit_local_buffer_string`: When a state field is clear, calls a helper, measures a local 1024-byte text buffer up to its terminator, passes it through a library call and finishes with a cleanup helper.
@@ -146,7 +263,24 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `flush_window_output_checked`: Writes out a pending window buffer through the library write call when the pending flag is set, storing the library error code and returning -1 on failure.
 - `return_window_result`: Returns the stored result field of the window with no other work.
 - `store_result_with_status`: Calls two helpers, stores the second result as a 16-bit value in the state block, and returns the first result with a minus one mapped to zero.
+- `stores_status_and_accumulates_result`: Copies a word from offset 78 of a1 into a global variable, calls a routine to produce a value, restores the word from the global variable back to offset 78 of a1, adds the result to the long at offset 60 of a1, calls a second routine, and returns the result.
+- `forwards_entry_with_match_check`: Saves d7 and a2-a3 on the stack, copies a0 into a3 and a1 into a2, and passes d0 through d7 to a called routine with a0 set from a pointer at offset 72 of a2 and a1 set to a3.
+- `flushes_output_buffer_on_match`: Loads a pointer from offset 72 of a2, compares the long at its offset 8 with d7, and when they match calls a routine and returns minus one if its result is negative, otherwise it returns zero.
+- `function_epilogue_5`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `allocate_three_blocks_store_pointers`: Calls an allocation routine three times in sequence, storing each returned pointer into the structure in a0 at offsets 104, 108 and 112.
+- `frees_two_pointers_and_clears_them`: Frees the block whose pointer is at offset 108 of a3, clears that long, frees the block at offset 104, clears it, and returns zero.
+- `initialises_record_and_table_pointers`: Stores two self-referencing code addresses and a global address into the structure at a0, writes a constant word at offset 82, and copies two words from a table selected by a global index into offsets 86 and 22-based fields, sets a word at offset 46 to 1, then calls another routine.
+- `save_a3_and_call_helper`: Preserves a3 on the stack, copies the pointer in a0 into a3, calls a helper routine with that pointer in a0, and then restores a3 and returns.
+- `allocate_three_blocks_or_rollback`: Allocates three memory blocks through the allocation routine and stores each pointer at offsets 104, 108 and 112 of the structure in a0, stopping at the first failure.
+- `frees_two_pointers_and_clears_them_2`: Frees the block whose pointer is at offset 108 of a3, clears that long, frees the block at offset 104, clears it, and returns zero.
+- `store_value_and_accumulate`: Saves a 16-bit field from the structure in a1 into a global variable, calls another routine to obtain a result, then writes the field back and adds that result to a 32-bit field of the same structure.
+- `initialises_structure_fields_and_pointers`: Stores two routine addresses and a global variable's address into the first longwords of the structure in a0, writes the constant 8192 at offset 82 and copies two 16-bit values from a table indexed by a value read from the structure in a4 into offsets 86 and 90.
+- `save_a3_and_call_helper_2`: Pushes the value in a3 onto the stack, copies the pointer in a0 into a3, passes that pointer to a helper routine in a0, and then restores a3 from the stack before returning.
 - `decompress_lzss_stream`: Decodes an LZSS compressed stream: it fills a 4096-byte ring buffer with spaces, then reads flag bits and copies either literal bytes or back-references from the ring buffer to the output until the input runs out.
+- `clears_buffer_by_mode_value`: Checks two global longwords; when both are zero it reads a longword at a fixed offset from a4 and, if it is outside 1 to 3, clears the global buffer, if it is 1 or 2 clears it, and if it is exactly 3 clears it and then calls another routine.
+- `reset_buffer_when_mode_three`: Reads the longword at a fixed offset from the base register a4 and, when it is between 1 and 3 inclusive, formats a global buffer with a routine call; when the value is exactly 3, it also calls a second routine to check and reset a buffer flag.
+- `compare_mode_format_buffer`: Compares the long in d0 with the constant 3 and, when they are equal, pushes a long from offset 26 of a3, the pointer in a2 and a fixed address onto the stack and calls a formatting routine.
+- `conditionally_format_and_reset`: Compares a long global variable to the constant 3 and, only when equal, calls one routine to format a global buffer and then calls another routine to check and reset a buffer flag.
 - `stub_bad_instruction_data`: The bytes here do not decode to a valid instruction, so there is no real routine to describe.
 - `report_stored_message`: Reads a value through a helper, then calls a formatting routine with a message containing the word Stored and the stored state values, followed by an optional helper when a flag is set.
 - `emit_mode_dependent_value`: Dispatches on a mode value in the state block: mode one emits the next byte of a four-entry rotating buffer, mode two emits 100 or a supplied value, mode three emits a bounded value through helpers, and other modes call a fallback helper.
@@ -156,27 +290,148 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `emit_constant_hundred`: Passes the constant 100 to a helper and returns zero.
 - `update_stored_maximum`: Works out a limit of 19, or one less than a helper's value when the data register is nonzero, and when the stored 16-bit value is below that limit it calls two helpers and stores the new limit.
 - `print_separator_line`: When the stored counter is below 19, prints a row of underscore characters through the library output and write calls and sets the counter to 19.
+- `skip_length_prefixed_block_sum`: Saves d7 and a2-a3, copies a0 into a3, advances a3 by two bytes, and reads the byte at a0 as a length.
+- `sum_bytes_in_range`: Adds each byte from the memory range between a3 and a2 into a running byte total in d7 and returns that total in d0.
 - `set_status_two_and_report`: Obtains a value from a helper, sets a state field to 2, passes four state fields to a helper and then runs four further helpers.
 - `record_archive_name_fields`: Copies two leading bytes into state fields, sets a flag mask on an entry in a table and passes the remaining text on to a helper that prints an archive heading.
 - `resolve_work_directory`: Resolves the work directory when none is recorded yet: it looks up the current task through the library call, reports a mismatch error when the lookup result does not match the expected value, and stores the resulting directory name.
 - `initialize_program_state`: Performs complex setup involving command-line parsing, directory resolution, and status reporting while interacting with several internal helper routines.
+- `sets_bits_in_indexed_byte`: Computes an address from a global table base plus the word index in d0 and the pointer in a0 plus a fixed offset of 310 decimal, then ORs the value 48 into the byte at that address.
+- `concatenates_string_list_nodes`: Loads the address of a global string field into a0, calls a routine that walks the node list from that address, and then branches to another routine.
+- `selects_pointer_and_scans_entries`: Calls routines to format a buffer, scan entry names and run a recursive command, and selects the pointer in a0 or a zero value as the return value.
+- `unlocks_file_slot_on_success`: Loads the value 254 into d0 and the address of a global structure field into a0, then calls a routine.
+- `dispatches_archive_command`: Works on a global structure and a list of entries by calling several routines in sequence, and writes status text through the DOS output routine.
 - `write_output_if_enabled`: Calls two helpers, then sends a message through the library output and write calls only when two state fields are both clear.
-- `replace_path_extension`: Scans backward from the end of the path for a dot that comes after the last directory separator.
+- `clear_two_global_pointers`: Writes zero as a long value into two 32-bit global variables addressed relative to a4.
+- `call_constant_return_routine`: Loads a pointer from a global variable into a0 and then calls another routine that returns a constant one.
+- `replace_file_extension`: Copies a file name into a buffer, replacing the text after its last dot with a new extension when a dot follows the last slash, and appending the extension otherwise.
+- `copy_colon_prefixed_string`: Copies the value of a0 into d0, then reads bytes from a0 with post-increment, and if the first byte is a colon copies the next byte to a1 with post-increment, ending when a zero byte is read and returning.
+- `move_d0_to_a0_jump`: Copies the value in d0 into a0 and then branches to a fixed point in the code that follows.
 - `format_nibble_digits`: Converts a value into text by repeatedly taking its top four bits and looking each up in a digit table, shifting left until no significant digits remain, then writes a zero terminator.
 - `tiny_clr_rts`: Small routine of 2 instructions that clears (a0), then returns.
+- `write_decimal_digits_backward`: Divides d0 by 10 and, while the quotient is nonzero, writes each remainder as an ASCII digit by adding 48 and storing it at a0 with post-increment, swapping the halves of d0 between digits.
+- `clear_byte_at_pointer`: Writes zero to the single byte addressed by a0.
 - `parse_signed_decimal`: Parses an optional leading minus sign and a run of decimal digits into a signed integer, stopping at the first non-digit character.
 - `copy_string_with_limit_2`: Copies a string from a source pointer to a destination pointer until a null terminator or a certain count is reached.
 - `copy_string_with_limit`: Copies the source string to the destination, returning as soon as the terminating zero is copied or the count runs out.
+- `saves_a2_and_branches_into_counter`: Pushes a2 onto the stack, clears d0 to zero, copies a1 into a2, and branches into the byte-counting loop of another routine.
+- `scan_for_matching_byte`: Reads a byte from a1 with post-increment into d2 and, if it is zero, stops.
+- `count_bytes_until_zero`: Increments the longword counter in d0, copies a2 into a1, reads bytes from a0 with post-increment until a zero byte is found, restores a2 from the stack, and returns.
+- `append_zero_terminated_string`: Advances a0 to the terminating zero of the string it points to, then copies bytes from a1 over that point, including the zero terminator, and stops after copying the zero.
+- `compare_zero_terminated_strings`: Compares two zero-terminated strings byte by byte through a global translation table, returning the difference of the first mismatched translated bytes or zero if the second string ends first.
 - `lowercase_or_map_string`: Rewrites a zero-terminated string in place.
+- `translate_or_uppercase_string`: If a long at offset 1484 of a global structure is nonzero, it replaces each byte of the zero-terminated string at a0 with the value from a global translation table until a zero byte is written.
+- `translate_string_in_place`: Replaces each byte of the zero-terminated string at a0 with the value looked up in a global translation table, until it writes a zero byte.
 - `match_wildcard_pattern`: Compares a pattern string with a name, treating a question mark as a single-character wildcard and an asterisk as a run of any characters.
 - `match_pattern_character`: Compares one pattern character with one name character, advancing through the pattern and the name.
 - `scan_name_for_character`: Scans backward through the name for a given character, calling a helper on each step.
 - `tiny_moveq_movea_rts`: Small routine of 3 instructions that loads 0 into d0, then copies (a7)+ to a2, then returns.
 - `stub_return_one`: Routine that returns one, with no other work.
+- `validate_and_open_path`: If a global-state word at offset 1508 of the structure in A4 is zero and a lock succeeds, it either returns -1 when a flag at offset 1488 is set, or otherwise, depending on a flag at offset 1492, examines the locked object into a buffer and rejects it with -1 when a size field at offset 36 is at or below a stored value, or prompts for confirmation through a text-formatting step and returns -1 on refusal.
+- `validate_examine_and_create_path`: Checks a global-state word and either clears a slot and reads a confirmation, returning -1 on refusal, or calls the dos Examine function and compares a timestamp field before returning -1.
+- `prepare_and_create_directories`: Clears a file slot and formats a message with a global variable, then reads a confirmation and opens a file into a slot.
+- `loads_file_result_or_zero`: Sets d0 to the constant 1006 and copies a3 into a0, then calls another routine through a pc-relative jump and stores its result in d7.
+- `create_directory_path_components`: Walks a slash-separated path buffer, temporarily terminating each component, locking it, and creating a directory with dos.CreateDir when the lock fails, then restores the slash.
+- `stores_fill_byte_then_jumps`: Copies the value in d6 into d0 and calls a subroutine at a fixed offset, then stores the byte 47 through the a2 pointer with post-increment and branches to an earlier point in the surrounding code.
+- `stores_fill_byte_then_jumps_2`: Sets d0 to a fixed constant and copies a3 into a0, calls a routine through a pc-relative jump, saves the result in d7, and when the byte at a2 is zero restores saved registers and returns with d7 as the result, otherwise it branches into another routine.
 - `decrement_delay_counter`: decrements a 16-bit register value until it reaches zero.
 - `count_down_delay`: Busy-wait loop that counts a 16-bit value down from the value passed in the data register, then returns.
-- `stub_return_only`: Routine consisting only of a return, with no calls, memory access or hardware register use; it performs no work.
+- `fill_memory_with_sentinel_words`: Writes the 32-bit value a fixed address to 2048 consecutive long words through two pointers, one based on a5 and one on a4, and then stores the 16-bit value 32768 at the end of the first region.
+- `copies_upper_buffer_half_down`: Selects one of two buffers based on a word in d7 and calls through a function pointer in the structure at a6, then for the value 12288 copies 32 longwords from the upper half of a 4096-word buffer at a6 down to its lower half.
+- `loads_buffer_offset_then_branches`: Loads the address of a4-relative buffer at offset 4352 into a0, then branches to a shared point in the surrounding code.
+- `loads_second_buffer_then_branches`: Loads the address of the a6-relative buffer at offset 8448 into a0, then branches to a shared point in the surrounding code.
+- `copies_words_in_blocks`: Calls one routine, then copies 32 words from the upper half of a 4096-word buffer through a6 down to its lower half, reading and writing two consecutive words per iteration, and returns the stored value.
+- `finds_longest_matching_prefix_2`: Updates a hashed linked-chain table entry for the current position in a buffer, then walks earlier candidate positions in the chain, comparing bytes against the buffer at a2 and tracking the longest match up to 255 bytes, calling another routine when the position wraps at a 4096 boundary.
+- `finds_longest_matching_prefix`: Scans a linked chain of table entries whose offsets are read from a table, comparing bytes in a buffer at a2 against each candidate and tracking the longest match length in d4 with its offset in d1 and d2.
+- `sets_width_and_copies_index`: Sets d4 to the word value 256, copies the low word of d0 into d3, and branches to a later point in the surrounding code.
+- `finds_best_match_capped_at_60`: Performs the same hashed chain update and candidate comparison as a neighbouring matcher, but limits the match length to 60 bytes and calls another routine when the position wraps at a 4096 boundary.
+- `finds_longest_match_bounded_60`: Searches a chain of table entries like the adjacent matcher, comparing bytes at a2 against candidate positions and keeping the best match length capped at 60 in d4.
+- `sets_limit_and_copies_index`: Sets d4 to the word value 60, copies the low word of d0 into d3, and branches to a later point in the surrounding code.
+- `fill_sentinel_and_init_hash`: Fills a block of 2048 longwords through two pointers with a fixed 32-bit sentinel value, then fills the buffer with spaces and seeds the hashed linked-chain table from the leading input bytes, calling the sentinel fill, chain-table initialiser and run-encoder routines.
+- `fill_hash_chain_table`: Clears a 64-word block at the pointer in a6 with spaces, then seeds a hashed linked-chain table from the leading bytes of the input buffer and enters a token loop that emits literal bytes or match runs through the encoder and matcher routines.
+- `encode_literal_or_match_run`: Clears a 32-byte block at the pointer in a6, seeds a hashed linked-chain table from the first bytes of the buffer, then loops over input positions: for each position it either writes a literal byte from the buffer or, when the candidate match is long enough, writes a flagged length byte and a 14-bit backward offset and advances the position by the match length.
+- `emits_run_length_hash_entries`: Loops while a counter in the 16-bit low word of d5 stays positive and no end flag is set, repeatedly writing a marker and a length byte into a buffer through a1 and a0, inserting positions into a hash table via another routine, and linking entries until the counter is exhausted.
 - `stub_return_constant_one`: Routine that only returns one, with no other work.
+- `inserts_hashed_positions_repeatedly`: Loops a counter in d2 down to minus one, and for each position computes a hash from a byte at a6 and links the position into a hash table at a5 and a chain at a4, then sets a marker word in the table and advances the position in d7 and d6.
+- `increments_depth_then_recurses_twice`: Compares d0 with a 32-bit limit in the structure at a4; below the limit it increments a 16-bit counter at an index derived from a global variable, otherwise it increments a depth counter at offset 972, calls another routine twice, and decrements that counter again.
+- `increments_nesting_counter_around_calls`: Increments a 32-bit counter at offset 972 of the structure in a4, scales d7 by two into a stack slot, calls another routine twice, then decrements the same counter and returns.
+- `saves_registers_and_loads_pointer`: Saves registers d5-d7 and a2-a3 on the stack, copies d0 into d7, loads a3 from a global structure at offset 3588 and sets a2 to 32 bytes past it, then branches into the middle of another routine.
+- `clears_word_and_shifts_sum`: Clears the word at the pointer in a3 and advances a3 by two bytes, looping back until a3 reaches the limit in a2.
+- `accumulates_shifted_word_sum`: Loads a word from the memory addressed by a3, shifts it left by an amount computed from 16 minus the counter in d6, and adds the result to d7.
+- `decrements_timer_and_sets_pointer`: Loads a pointer from offset 3640 of the structure in a4, decrements the word at offset 32 of the pointed structure, sets a3 to that structure plus 30, and branches to a later point in the surrounding code.
+- `decrements_word_and_advances_pair`: Reads the word at the address in a3, and if it is zero branches to a later point; otherwise it decrements that word and adds 2 to the word at offset 2 of the same structure, then branches onward.
+- `decrements_and_reloads_pointer_state`: Subtracts 2 from a3, compares it with a longword in the structure at a4 and, when above, otherwise decrements d7 and resets it to 16 with d6 set to 32 when it reaches 65536, then branches into another routine.
+- `reads_word_at_offset_from_index`: Loads a pointer from offset 3640 of the structure in a4, adds d6 to it, clears d5, reads the word at that address into the low word of d5, and branches to a later point in the surrounding code.
+- `emits_bytes_from_pointer_stream`: Repeatedly reads a word through a pointer stored in the structure at a4, advances that pointer, and writes the low byte of d7 to the buffer at the offset given by that word.
+- `saves_registers_and_loads_index_word`: Saves d6, d7, a2, a3 and a6 on the stack, copies d0 into d7, doubles it into a byte offset, reads the word at that offset from the table at offset 3628 of the structure in a4 into d6 with sign extension, and branches to a later point in the surrounding code.
+- `inserts_index_into_heap`: Repeatedly compares entries of a 16-bit index array referenced through the structure in a4 and sifts the value in d6 into a binary-heap-style array, writing the final index into the slot reached when no smaller child remains.
+- `sets_up_histogram_frame_and_branches`: Builds a stack frame, saves registers d2, d6 and d7 and address registers a2 and a3, copies d0 to d7 and the two address arguments into a3 and a2, clears a word at offset minus 38 of the frame, sets d6 to 2, and branches to a point in another routine.
+- `builds_byte_histogram_mapping`: Doubles each word of a 16-entry table in the structure at a5 after adding a word from a table, then counts each byte of a source buffer by incrementing a word counter indexed by the byte value times two, and stores the running count into a destination buffer through a pointer.
+- `counts_byte_frequencies`: Loops over bytes from a source buffer, uses each byte value times two as an offset into a word table in the structure at a5, increments that table entry, and stores the previous count into a sequential output array.
+- `build_pair_index_list`: Clears a per-entry byte for each of the first N entries of a table and records the index of each nonzero 16-bit entry into a global index list while counting them.
+- `partition_and_pair_table_entries`: Walks a table of 16-bit flags, clearing a per-entry byte and collecting the indices of nonzero entries into a global index list, then if at least two indices were collected it repeatedly pops pairs from that list, sums their associated 16-bit table values into a result array, and records the pair indices in two further tables, recursing into another routine on each pass before finally returning the last index value.
+- `loads_halved_signed_longword`: Loads a longword from the global structure at offset 3624 into d0, adds one to it when it is negative, arithmetically shifts it right by one bit, and copies the result into d7.
+- `processes_paired_word_entries`: Loops over word entries, reading two values from a table and writing them into a global structure using pointers, then combines the two values by summing table entries into a word array.
+- `saves_registers_and_seeks_table`: Saves registers d5 to d7 and a2 to a3 on the stack, loads a3 from a pointer held in a global structure at offset 3616, sets a2 to 38 bytes past a3, and then branches to a later point in the code.
+- `clears_word_array_to_end`: Clears the word at the address in a3 and advances a3 by two bytes, repeating while a3 is below the end address in a2.
+- `decrements_counter_and_tests_byte`: Decrements the counter in d7 and tests it, then reads a byte from a buffer whose base is held in a global structure at offset 3588 and clears d6 if that byte is zero.
+- `advances_offset_and_reads_byte`: Computes a pointer from a base address in a global structure at offset 3588 plus the offset in d6, then increments d6.
+- `increments_table_counters_by_position`: Advances the counters d5 and d6 and then walks a byte sequence addressed through a global structure, adding 1 to a word in the table at offset 3616 selected by d5 or by each nonzero byte value.
+- `increments_word_when_d5_is_small`: Compares d5 with 18 and, when it is not greater, increments the 16-bit word at the start of the structure pointed to by a global longword, then branches into another routine.
+- `bumps_word_counters_on_match`: Compares d5 against 19 and, when they are equal, increments the 16-bit word at the start of the structure pointed to by a global variable and the word at offset 2 of that structure, then branches to a later point; otherwise it branches to another location.
+- `increments_word_counter_branch`: Loads a pointer from a global variable, adds 1 to the 16-bit word at offset 4 of the structure it points to, writes the result back, and then branches to another routine.
+- `increments_scaled_word_counter`: Doubles d5, adds it to a base pointer read from a global structure at offset 3616, and increments the word four bytes into that entry.
+- `saves_registers_and_copies_args`: Saves registers d4 to d7 on the stack, copies the values in d0 and d1 into d7 and d6, loads a stack argument into d5, and branches to a later point in the code.
+- `computes_shifted_bit_mask`: Decrements d7 and, while it stays positive, checks the byte just before the position d7 indexes into the buffer at offset 3600 of the global structure.
+- `computes_shifted_bit_from_byte`: Reads a byte from a buffer whose base is in a global structure at offset 3592, indexed by d6, then increments d6.
+- `computes_bit_shift_difference`: Copies d4 into d0 and subtracts 3 from it, then sets d1 to 1 and shifts it left by d0.
+- `scans_bytes_and_computes_shifts`: Repeatedly increments the index in d6 and reads bytes from a buffer whose base is in a global structure at offset 3592, calling another routine for each byte that is below 7 or otherwise.
+- `save_registers_and_set_mask`: Pushes registers d4 through d7 onto the stack, loads 510 into d6, and branches forward into the middle of another routine.
+- `decrement_index_and_check_byte`: Decrements the longword in d6 and branches out if it is not positive.
+- `loads_byte_and_flags_zero`: Loads a3 from a pointer in a global structure at offset 3588 and adds the value in d7 to it, increments d7 by one, then reads the byte at that address into d5.
+- `emits_zero_run_markers`: Walks a byte buffer whose base is held in the global structure at offset 3588, counting consecutive zero bytes in d5 and calling another routine for each nonzero byte.
+- `loads_two_table_values_repeatedly`: Loads a byte from a table pointed to by the structure at offset 3592 into d0 and a word from a table pointed to by the structure at offset 3612 into d1.
+- `counts_zero_byte_runs`: Walks a byte buffer from a global structure at offset 3588, counting runs of zero bytes into d5 and calling another routine for each nonzero byte or run of length not above two.
+- `scans_buffer_runs_and_dispatches`: Walks a byte buffer from a global structure at offset 3588, counting runs of zero bytes into d5 and calling another routine for each nonzero byte, with extra calls when a run length is 19 or more.
+- `scans_zero_runs_in_buffer`: Walks a byte buffer whose base is stored in the structure at offset 3588, calling a routine for each nonzero byte.
+- `scan_zero_runs_and_dispatch`: Walks a byte table from a global pointer at offset 3588, measuring each run of zero bytes and calling other routines per run length: one call per byte for runs under 3, two calls for runs from 3 to 18, three calls for exactly 19, and two calls for longer runs.
+- `tail_calls_shift_helper`: Calls a routine and then returns.
+- `saves_registers_and_counts_shifts`: Saves registers d2 and d5-d7 on the stack, copies d0 into d7, clears d6, and copies d7 into d5, then branches into the middle of another routine.
+- `counts_bits_and_calls_helpers`: Shifts d5 right one bit at a time while incrementing d6 until d5 becomes zero.
+- `clears_index_tables_after_scan`: Scans a table of 16-bit entries up to a count taken from a global structure, reading packed bits through a byte pointer and calling other routines for each bit.
+- `set_bitmask_and_call_clear`: Loads 5 into d0 and 0 into d1 and calls a routine, then loads 5 into d0 and copies d5 into d1 and calls it again.
+- `build_bitmap_index_and_clear_tables`: Calls four routines, then reads a longword from a global structure and calls a routine with an adjusted value, branching to a second path if it is 14 or more.
+- `set_zero_fill_arguments`: Loads 4 into d0 and 0 into d1, calls a routine, then loads 4 into d0 and copies d5 into d1 before calling it again.
+- `fetches_control_byte_from_buffer`: Takes the low three bits of d4 and, when they are zero, loads the buffer base from the global structure at offset 3584 and reads the byte at index d5 into d7 after incrementing d5.
+- `unpacks_bitstream_and_clears_tables`: Shifts a control byte left one bit per step, advances a counter in d5 by one or three depending on the top bit, and reads the next control byte from a buffer every eighth step.
+- `clears_table_words_and_advances`: Increments d5 by one, reads a byte through a3 into d0 and passes it to another routine, then checks a global variable at offset 976 and, when it is zero, increments d4 and compares it against d6.
+- `clears_words_then_branches`: Clears 16-bit words starting at a3 in a loop that continues until a3 reaches the end address in a2, then loads a pointer from a global variable and computes an end address 28 bytes past it before branching to another routine.
+- `clears_word_array`: Writes zero to consecutive words starting at the address in a3 and stops once the pointer reaches the end address in a2.
+- `initialises_global_table_pointers`: Writes a series of derived pointers, offset from a base in a0 by fixed constants, into global longword slots, copies several longwords and a word from a0 into globals, clears two further longwords, zeroes one byte and a block of 16-bit words, and a second short block, then calls another routine.
+- `clears_words_up_to_end_pointer`: Clears 16-bit words starting at a3, advancing one word at a time while a3 is below the end address in a2, then reloads a3 from a pointer in the structure at a4 and sets a2 to 28 bytes past it before branching to another point.
+- `clears_words_then_calls_reset`: Clears 16-bit words starting at a3 until the pointer reaches the end address in a2, then calls another routine, restores a2 and a3 from the stack and returns.
+- `copies_longword_fields_to_record`: When the longword at offset 976 and the longword at offset 3584 in the structure at a4 are both zero, it calls a routine.
+- `stores_shifted_bit_mask`: Compares two longword counters in the structure at a4 and, when the first is below the second, subtracts the first from the second and stores it back.
+- `stores_bit_entries_into_buffer`: Compares two longword counters in the structure at a4 and, while the first is below the second, writes a byte into an entry buffer and increments the first counter, with a fallback path that stores a shift count and shifts d6 left by it.
+- `stores_shift_or_writes_entry_byte`: Sets a flag longword in the structure at a4 to 1, then when d7 is below 8 stores 8 minus d7 as a shift count and shifts d6 left by it.
+- `stores_shift_parameters_entry`: Checks a 32-bit counter against a limit in the structure at a4 and, while below it, writes a byte to the entry buffer and increments the counter, otherwise it sets a flag.
+- `sets_shift_parameters`: Stores 1 in a global variable of the structure at a4, computes 16 minus d7 and stores it as a shift count, then shifts d6 left by that count and stores the result in another field.
+- `resets_bit_state_fields`: Stores 8 into a shift-count field of the structure in a4 and zeroes two other 32-bit fields of that structure.
+- `packs_bits_into_bit_buffer`: Combines the value in d1 shifted right by a stored bit count with a stored bit buffer, adds d0 to the bit count, and when eight or more bits are pending writes a byte to the entry buffer.
+- `packs_byte_into_long`: Shifts the value in d4 left by 8 bits, increments a 32-bit counter in the structure at a4, stores the shifted value into a global variable, and stores the low byte of d5 into a separate byte field.
+- `initializes_pair_sum_table_state`: Sets up a stack frame with a 32-byte local area, saves registers d4-d7 and a2-a3, clears d6 and d7, then branches into the middle of another routine.
+- `build_sorted_pair_sum_table`: Fills a word table in a global structure with the sums of consecutive word pairs from an input table, inserting each new sum in ascending order by shifting larger entries up, while a parallel table records the matching index and a lookup table of values below 627 is rebuilt at the end.
+- `builds_sorted_word_tables`: Fills a word table with sums of consecutive pairs read through a pointer in a3, inserting each new value into an ordered position in a second table and shifting larger entries up.
+- `shift_word_tables_insert`: Walks backward through two word tables reached through a4-relative pointers, shifting entries up one position to open a slot, then stores the value in d6 and an index into those tables and advances a counter in a5.
+- `shifts_table_entries_and_maps`: Shifts a run of 16-bit words in a table up by one position using a pointer walk, stores a value and an index into two tables, and advances a list pointer in the stack frame.
+- `builds_sorted_pair_sum_table`: Stores the sum of consecutive word pairs read through a3 into a word table, shifting existing entries to insert each sum in ascending order.
+- `stores_word_index_into_table`: Reads a word through a pointer, sign-extends it and doubles it to index a table in the structure at a4, then stores either that word value or the constant from d7 into the indexed entry.
+- `store_doubled_index_pair`: Stores the low word of d7 into two consecutive words addressed by a2 and then advances d7 and a3 by one and two.
+- `updates_ranked_word_table`: Increments a word in a table in a global structure, then moves it up through a sorted word list by swapping entries and updating two index tables at offsets 3664 and 3668.
+- `flushes_pending_byte`: If the byte flag in the structure at a4 is nonzero, calls a routine to write the byte and increments a 32-bit counter; then copies that counter into a field of the structure at a0 and sets a flag word there to 1 when the counter reaches the limit stored in the same structure.
+- `initialise_link_tables`: Stores the longword at offset 72 of a0 into a global longword and clears two further globals.
+- `initialises_two_linked_tables`: Fills two word tables with initial values in a loop of 313 iterations, then fills the remaining entries with a running index and counter, sets a terminating word to 65535 and clears a bit buffer and its bit count in the structure at a4.
+- `initialises_link_table`: Loops 627 times filling two tables: each entry receives the sum of two neighbouring words, a running index value, and a counter; afterwards it writes fixed sentinel words at the end of the tables and clears a byte flag and a 32-bit field in the structure at a4.
 - `build_path_entry_node_checked`: Builds a list node for the base name of a path, linking it into a list and filling its fields from library lookups.
 - `build_path_entry_node`: Builds a list node for the base name of a path, copying the name after the last separator, linking the node and filling its size and location fields from library lookups.
 - `build_parent_directory_node`: Locks the parent directory through the library call and builds a list node for the base name of the path, linking it and filling its fields.
@@ -224,6 +479,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `read_indexed_confirmation`: Checks a per-item confirmation byte selected by the index in the data register, returning a cached result when one is set.
 - `manage_memory_with_retry`: performs memory allocation and deallocation, checks task status, and executes fixed-point division.
 - `sum_three_helper_results`: Calls one helper for its side effect, then adds the results of three further helper calls and returns the total.
+- `computes_packed_timestamp`: Calls a fixed-point division routine four times, then a fixed-point product routine, and finally a routine that packs a DOS timestamp, returning the value left in the stack slot.
 - `pack_dos_timestamp`: Packs a file's date and time into DOS-style bit fields of a 32-bit word.
 - `pack_date_from_day_count`: Subtracts month lengths from a day count to find the month and day, then writes the year, month and day into the bit fields of the destination word.
 - `pack_month_day_from_days`: Subtracts month lengths from a day count until the remainder fits the current month, then writes the month and day fields of the destination word.
@@ -245,10 +501,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `shutdown_and_exit`: Runs a helper and then library shutdown calls, one of them only when a state field is set.
 - `compute_fixed_point_product`: Multiplies two 32-bit values held in the data registers as fixed-point numbers.
 - `divide_fixed_point_values`: Divides one 32-bit fixed-point value by another, handling the signs separately and normalising the divisor by shifts before dividing.
-- `divide_with_remainder_pair`: Divides a 32-bit dividend by a 32-bit divisor and returns a 64-bit value that packs the quotient in the high part and the remainder in the low 32 bits.
+- `normalize_fixed_point_divide`: The routine divides a 32-bit dividend in d0 by a 32-bit divisor in d1 using a normalized fixed-point method.
 - `fill_four_handler_entries`: Writes four routine addresses into consecutive words of the table it is given, filling a small dispatch table.
 - `fill_handler_entries_with_stack`: Writes two routine addresses and one value taken from the caller's stack into consecutive words of the destination table.
 - `return_constant_one`: Returns the integer value one.
+- `jump_to_finish_window_handle`: Jump stub: passes control straight on to finish_window_handle.
+- `jump_to_close_window_handle`: Jump stub: passes control straight on to close_window_handle.
+- `jump_to_return_helper_unless_stopped`: Jump stub: passes control straight on to return_helper_unless_stopped.
+- `jump_to_read_chunk_with_retry_limit`: Jump stub: passes control straight on to read_chunk_with_retry_limit.
 - `lookup_error_code_entry`: Searches a table of four-word entries for the key in the data register, reports the matching entry's message through a library call and returns its status code.
 - `search_error_table`: Searches through a table for a specific value and handles error reporting or status updates if a match or an end-of-list marker is found.
 - `print_table_entry_message`: Prints the message stored in a table entry through a library call and returns the entry's status code, or the fallback code for the special key combination.

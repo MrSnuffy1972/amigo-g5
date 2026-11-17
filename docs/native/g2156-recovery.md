@@ -114,7 +114,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Install
 
-- `install_command_entry`: Looks up the largest existing entry number in a linked list, allocates a new entry through the system, writes a header followed by a sequence of marker values, and copies a function table into the new entry.
+- `find_max_and_prepare_buffer_2`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_memory_block_and_call_8`: Copies sixteen bytes from a memory location to a destination pointed to by a stack address, then executes a function via a pointer.
 - `load_and_check_pointer`: Loads an address into a1, calls a library routine, and if d0 is not zero, loads a pointer from a structure in a0 into a0 and then returns.
 - `loads_minus_one_and_branches`: Loads d0 with the value -1 and performs an unconditional branch to a later instruction.
@@ -136,7 +136,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Delete
 
-- `traverse_linked_list_and_update_table`: Traverses a linked list to find the maximum value in a specific field and then updates a table structure.
+- `find_max_and_prepare_buffer_3`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_memory_block_and_call_10`: Copies sixteen bytes from a memory location to a destination pointer using a loop, then calls another routine.
 - `update_table_index_and_traverse_2`: Calculates a new index or pointer for a table in a1, clears certain fields in a1 and a2, and calls another routine to check or update a secondary table or list, potentially entering a loop that traverses or updates entries based on values read from a table in a0.
 - `update_list_index_from_table_2`: Reads a value from a table using an offset, calculates a new index, and stores two bytes or a word into a structure at offset 544 and 548, then branches to another routine.
@@ -182,7 +182,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Avail
 
 - `run_avail_command`: Program entry point for the Avail command.
-- `cleanup_program_and_reply`: Stores a result code in the control block, then closes the open file handle when present, frees the memory block, closes the library and replies to the owning message.
+- `process_message_reply_2`: Handles message processing by updating message fields, calling various functions based on flags, and returning a value from the message structure.
 - `sum_memory_region_sizes`: Adds up the sizes of every memory region in a linked list whose attribute flags match the given mask, and returns the total.
 - `print_memory_availability_table`: Prints the memory availability table for the Avail command, showing available, in-use, maximum and largest-block figures for each memory type.
 - `call_reschedule`: Library stub: loads its arguments and the exec library base, calls Reschedule and returns its result to the caller.
@@ -191,7 +191,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_132`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
 - `call_library_vector_138`: Library stub: loads a library base from a global variable and calls the library function at offset minus 138 of that base, returning its result to the caller.
 - `call_library_vector_216`: Library stub: loads a library base from a global variable and calls the library function at offset minus 216 of that base, returning its result to the caller.
-- `call_hook_then_measure_string`: Calls a function pointer loaded from a global table, then counts the characters of a stack buffer up to its terminating zero byte.
+- `call_global_and_checksum_buffer_2`: Invokes a function pointer stored in a global variable, then computes a rolling checksum over a stack buffer until a null terminator is found.
 - `tiny_move_rts`: Small routine of 2 instructions that copies d0 to (a3)+, then returns.
 
 ### addbuffers
@@ -205,7 +205,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Resident
 
-- `traverse_list_and_expand_table`: Traverses a linked list to find the maximum value in a specific field and then expands a table by writing a header and copying data blocks.
+- `find_max_and_prepare_buffer_4`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_memory_block_and_call_12`: Copies sixteen bytes from a memory location to a destination pointed to by a stack pointer, then executes another routine.
 - `validate_and_update_structure_pointer`: Calculates a new pointer or index, updates a field in a structure, and calls several subroutines to check or update further structure members; if certain conditions are met, it checks a bitmask in a table and updates a field before performing an indirect jump or calling another routine.
 - `clear_d1_and_jump_indirect`: Clears the d1 register to zero and then jumps indirectly to the address held in a6, without returning to its caller.
@@ -222,19 +222,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### EndCLI
 
-- `expand_and_populate_table`: Traverses a linked list to find a maximum value, then expands a table by writing a header and a sequence of incrementing values.
+- `find_max_and_prepare_buffer_5`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_memory_block_and_call`: Copies sixteen bytes from a memory location offset from a register to a destination pointer, then calls another routine.
 - `modify_list_and_table`: Modifies a bitmask in a structure, updates a pointer in a structure, and conditionally decrements a value in a table if it is greater than zero.
 
 ### Rename
 
-- `find_max_and_populate_table`: Traverses a linked list to find the maximum value in a specific field and then populates a table with a header and a sequence of incrementing values.
+- `find_max_and_prepare_buffer_6`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_memory_block_and_call_2`: Copies sixteen bytes from a memory location to a destination pointed to by a stack pointer.
 - `update_pointer_and_call`: Updates a pointer in a structure, calls a routine, and conditionally updates a value in a structure or table.
 
 ### Dir
 
-- `traverse_list_and_update_table`: Traverses a linked list to find the maximum value in a specific field and then updates a table structure.
+- `find_max_and_prepare_buffer_7`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_memory_block_and_call_3`: Copies sixteen bytes from a memory location offset from a register to a destination pointed to by a stack pointer, then calls another routine.
 - `update_entity_bounds_and_state`: Updates several pointer-based offsets in a structure in a1 to define a memory range, clears certain fields, and conditionally updates a structure in a2 with values from a1 or a table, then calls another routine or returns.
 - `update_structure_field_from_registers`: If a longword at offset 332 of the structure in a1 is non-zero, it loads three values from offsets 88, 48, and 48 (the same offset) into d3, d2, and d1, then calls another routine using a pointer-adjusted a4, and finally writes the value from d1 into offset 320 of the structure in a1 before branching away.
@@ -248,7 +248,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### NewCLI
 
-- `traverse_list_and_populate_buffer`: Traverses a linked list to find the maximum value in a specific field and then populates a destination buffer with a header and a sequence of incrementing values.
+- `find_max_and_prepare_buffer_8`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_memory_block_and_call_4`: Copies sixteen bytes from a memory location offset from a register to a destination pointed to by the stack.
 - `recalculate_bounds_and_copy_table_entries`: Updates a table of bounds or limits by recalculating or copying pointer-indexed values, and then performs a loop to copy a range of entries from one table or array to another, potentially incrementing a counter if a certain value is non-zero.
 - `update_table_and_recalculate_bounds_2`: Updates a table entry by copying a value from one pointer-indexed location to another and increments a counter if it is non-zero, then calls another routine to perform further updates or resets on a structure, potentially involving a loop that searches for a zero-value entry in a table or updates a pointer-based bound or counter.
@@ -339,7 +339,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Makedir
 
-- `traverse_list_and_populate_table`: Traverses a linked list to find the maximum value in a specific field, then uses that value to calculate a size and populate a table with a header and subsequent data.
+- `find_max_and_prepare_buffer_9`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_memory_block_2`: Copies sixteen bytes from a memory location offset by a value in a register to a destination pointed to by a stack pointer.
 - `execute_conditional_logic_2`: Performs several routine calls and updates various offsets in a structure based on values retrieved from a source table.
 - `execute_conditional_logic`: Performs several routine calls and updates various offsets in a structure in a1 based on values retrieved from a source table, including conditional logic that sets a value to 10 if a certain check fails, before jumping to an indirect address.
@@ -477,8 +477,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `parse_command_line_and_run`: Program entry point.
 - `restore_patch_state`: Retrieves a pointer from a global structure and saves a parameter into a slot within a structure pointed to by that pointer.
-- `start_workbench_task`: Starts the Workbench task.
-- `compare_strings_ordering`: Compares two zero-terminated strings byte by byte and returns minus one when the first sorts before the second, one when it sorts after, and zero when they are equal.
+- `start_tool_from_resident_tag`: XOR-decodes a global string with one key applied twice, allocates a 160-byte block, and uses icon, intuition, and workbench library calls to start a tool.
+- `compare_null_terminated_strings`: Compares two null-terminated strings byte by byte and returns minus one when the first is lower, one when it is higher, and zero when they match.
 - `build_linked_list_from_table`: Walks a table of entries, allocating a small node for each one, storing a value from the entry in the node, and chaining the nodes together.
 - `call_library_vector_96`: Library stub: loads a library base from a global variable and calls the library function at offset minus 96 of that base, returning its result to the caller.
 - `call_library_offset_84`: Calls a function via a pointer located at an offset from a library base address.
@@ -512,7 +512,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_message_reply`: Handles message processing by updating message fields, calling various functions based on flags, and returning a value from the message structure.
 - `check_library_version`: Parses the command arguments, opens the named library or device, reads its version and revision from the library base, and compares them with the user-supplied minimums.
 - `call_fixed_code_then_forward`: Calls a routine with its first argument and a fixed code, then passes the second argument on to a further routine and returns.
-- `parse_signed_decimal`: Reads a signed decimal number from a string by skipping an optional leading plus or minus sign and accumulating digits until a non-digit character, then applies the sign to the result.
+- `parse_integer_string`: Parses a string to convert it into an integer, handling optional sign characters and digit sequences.
 - `compare_strings`: Compares two null-terminated strings byte by byte and returns a value indicating their lexicographical order or equality.
 - `measure_cstring_length`: Counts the bytes that come before the terminating zero byte of a string and returns that count.
 - `call_library_vector_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 48 of that base, returning its result to the caller.
@@ -524,19 +524,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_444`: Library stub: loads a library base from a global variable and calls the library function at offset minus 444 of that base, returning its result to the caller.
 - `call_library_vector_450`: Library stub: loads a library base from a global variable and calls the library function at offset minus 450 of that base, returning its result to the caller.
 - `execute_indirect_function_2`: Fetches a function pointer from a location calculated by an offset from a global variable and executes it.
-- `invoke_and_verify_stack_buffer`: Invokes a function pointer stored in a global variable and computes a rolling checksum over the local stack buffer until a null terminator is reached.
+- `call_global_and_checksum_buffer_3`: Invokes a function pointer stored in a global variable, then computes a rolling checksum over a stack buffer until a null terminator is found.
 - `store_byte_via_pointer`: Stores a byte from a register into a memory location pointed to by another register.
 
 ### SetMap
 
 - `parse_command_string`: Parses a command string by splitting it into tokens based on whitespace and handling quoted substrings.
-- `update_state_and_trigger_callbacks`: Retrieves a pointer from a global structure and saves a parameter into a slot within a structure pointed to by that pointer.
+- `restore_patch_state_2`: Retrieves a pointer from a global structure and saves a parameter into a slot within a structure pointed to by that pointer.
 - `call_switch`: Library stub: loads its arguments and the exec library base, calls Switch and returns its result to the caller.
 - `call_super_state`: Library stub: loads its arguments and the exec library base, calls SuperState and returns its result to the caller.
 - `execute_indirect_function_3`: Loads a function pointer from a global variable and executes it.
 - `call_user_state`: Library stub: loads its arguments and the exec library base, calls UserState and returns its result to the caller.
 - `reschedule_tasks`: Calls the exec reschedule function through the stored library base, which lets the scheduler reconsider which task should run next.
-- `free_saved_blocks`: Releases each recorded block in a counted table of saved pointers, then releases the remaining saved blocks and the block passed in, using a release routine for each.
+- `flush_pending_map_entries_then_close`: It walks a pending entry counter backwards, calls an entry processor for each non-empty slot, then closes the map file, frees buffers and passes the argument to the resource cleanup routine.
 - `save_arguments_and_run`: Stores its two arguments in global variables, then calls a routine with fixed size and count values and a final routine with a fixed code.
 - `load_keymap_for_console`: Loads a keyboard keymap for the console from the keymaps directory or from the keymap resource.
 - `call_library_vector_240`: Library stub: loads a library base from a global variable and calls the library function at offset minus 240 of that base, returning its result to the caller.
@@ -557,46 +557,46 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_78`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
 - `forward_argument_to_library_stub`: Passes its one incoming argument, a library base pointer read from a global variable, and the address of its own stack argument to the library call stub at offset minus 132.
 - `call_library_vector_348`: Library stub: loads a library base from a global variable and calls the library function at offset minus 348 of that base, returning its result to the caller.
-- `measure_stack_string_and_forward`: Calls a function pointer stored in a global variable, then counts the characters of a 140-byte stack buffer up to its null terminator.
+- `call_global_and_checksum_buffer_4`: Invokes a function pointer stored in a global variable, then computes a rolling checksum over a stack buffer until a null terminator is found.
 - `store_byte_through_a3_pointer`: Writes the low byte of data register D0 to the memory address held in address register A3 and returns.
 
 ### More
 
 - `parse_command_line_and_start`: Program entry that opens the dos library and allocates a control block, then splits the command line into argument strings, honoring double quotes and asterisk escapes.
-- `release_file_and_library_state`: Fetches a state pointer from a global library base, stores the given value in it, and conditionally closes a file, closes a library, frees memory and replies to a message based on flags in that state.
-- `run_file_pager_session`: Sets up a pager session for one file, allocating its control block, opening the file and an output window, and choosing the display mode from the arguments.
-- `reschedule_four_global_slots`: Calls the reschedule library stub four times, each time pairing a field of its structure argument with one of four consecutive global words.
-- `scan_buffer_for_control_bytes`: Fills a buffer of 80 bytes through another routine, makes a second call with zero and minus-one arguments, then scans the bytes.
+- `restore_patch_state_3`: Retrieves a pointer from a global structure and saves a parameter into a slot within a structure pointed to by that pointer.
+- `load_and_initialize_file_data`: Parses a file header to populate a structure with metadata and then loads associated data into memory.
+- `iterate_table_with_function`: Iterates through a table of four values, passing a pointer from a structure and each value from the table to another routine.
+- `validate_input_buffer`: Calls another routine twice with arguments derived from an input pointer and then scans a range of bytes to check if they fall within certain allowed ranges.
 - `dispatch_pager_key_input`: Waits for a console input signal, reads one key and dispatches it through a large switch on character codes.
 - `execute_page_routines`: Checks if a value at a2 plus 60 is positive, then calls a routine using a2, calls another routine using a2, and jumps back to the start.
 - `call_through_address_register`: Calls a routine with a global argument, calls a second routine, then jumps through a function pointer held in address register A3.
-- `initialize_session_and_loop`: Sets a counter to 1 and clears a flag in its structure, stores a routine result in one field, and repeats another routine call while the counter stays positive and a size comparison holds.
+- `initialize_entity_state`: Sets a 32-bit field at offset 60 and a 16-bit field at offset 94 of a structure to specific values, calls another routine with a pointer from offset 52, calls itself recursively if offset 116 is not 4096 and offset 120 is non-zero, and enters a loop that calls another routine while certain conditions regarding offset 60, offset 8 of a pointed-to structure, and offset 94 are met.
 - `update_entity_and_increment_counter`: Calls two routines on a buffer inside its structure and stores the second result in a field of that structure.
-- `read_line_convert_formfeed`: Reads up to 128 bytes into a buffer, scans to the next newline or form-feed, and repositions the stream past that line.
-- `run_step_loop_until_quit`: Runs a loop of 9, 13 or 14 steps, with the count chosen by flags in its structure, calling routines from a global table of pointers on each step.
-- `search_stream_until_match`: Formats a search message from a flag-selected global string, then reads and tests the stream until a match is found or the attempt counter drops below one.
-- `wrap_call_with_setup_teardown`: Runs a setup call, a call using its structure and a global, and an optional second global call.
-- `call_pair_then_flagged_once`: Calls another routine with two arguments, then calls it again with its first argument alone only when a short flag at offset 98 in the structure is zero.
-- `call_stream_then_window_bound`: Calls one routine with a stream handle field, a second field and minus one, then calls another routine with a window bound value read through a structure pointer.
-- `call_stream_then_decrement_bound`: Calls one routine with a stream handle field, zero and one, then calls another routine with the window's bound value minus one.
-- `display_text_lines_up_to_count`: Reads text in chunks of at most 128 bytes and counts newline characters until the requested number of lines is reached.
-- `reschedule_with_structure_field`: Passes its second argument to another routine, then calls the reschedule stub with the structure's field at offset 16, a global address and its first argument.
-- `mark_flag_then_forward`: Sets a short value in a linked structure to one when a field at offset 4 is zero, then calls the reschedule stub with the structure's field at offset 16 and a global address.
-- `select_reschedule_arguments_by_flag`: Chooses its second and third arguments by a flag in its structure: either two global addresses, or a global address and a window bound plus one.
-- `reschedule_with_flag_arguments`: Calls the reschedule stub with a structure field and either three global addresses or one global address and a window bound value, chosen by a flag in the structure.
-- `call_twice_and_clamp_result`: Calls another routine twice with the same first argument and different trailing arguments, then returns the second result with any negative value replaced by zero.
-- `consume_buffered_bytes`: Copies up to the requested number of bytes from the structure's buffer into the destination, refilling through another routine first when the buffer is short.
-- `refill_read_buffer`: When the 4096-byte read buffer is exactly full, passes its pending bytes to another routine first.
+- `parse_buffer_content`: Uses another routine to check a buffer, updates a size field, and scans for a newline or form-feed character while potentially modifying a flag or string content.
+- `process_entity_list`: Determines a loop limit based on fields in a passed structure and iterates to call another routine using a pointer to a table and a global variable; it also recursively calls itself, calls another routine with a pointer to a stack buffer, and calls a library routine to reschedule.
+- `handle_search_loop`: Uses a flag in an argument block to select a global variable and repeatedly calls another routine, updating a counter and looping while a search result is zero.
+- `initialize_handler`: Calls another routine with zero, then with a parameter, then with a pointer from offset 16 of a structure, a global variable, and a parameter, conditionally calls another routine with the same arguments but without the parameter, calls another routine with two arguments, calls another routine with a constant, calls another routine with a parameter, and returns the result of the call involving two arguments.
+- `check_flag_and_call`: Calls another routine with two arguments, then checks a short value at an offset from a pointer and conditionally calls another routine with one argument.
+- `draw_scroll_window_bounds`: The routine calls a drawing routine using a pointer and a certain value, then calls another routine using a value or offset from a pointer-based structure.
+- `draw_text_window_range`: The routine calls a drawing routine with a fixed or zeroed argument, then calls another routine with a decremented value derived from a pointer-based structure.
+- `draw_text_line`: Uses a handler pointer to call drawing primitives while iterating over a text buffer, tracking line count and stopping if a certain character or flag is encountered.
+- `dispatch_recursive_pointer`: The routine calls another routine with a single argument, then calls another routine using a pointer from a structure and a global variable.
+- `set_flag_and_forward`: Checks a field in a passed structure, optionally sets a flag in a remote structure, and calls another routine using a global variable.
+- `dispatch_by_flag`: Selects two pointers based on a flag in a parameter block and calls another routine using either a global variable or a table entry.
+- `dispatch_handler_by_flag`: Reads a flag from a parameter block and calls another routine with either three references to a global variable or a value from a table entry.
+- `clamp_negative_result`: The routine calls another routine twice with the same first argument and different third arguments, then clamps a negative return value to zero before returning it.
+- `consume_from_buffer`: Checks a size field in a structure and, if a certain condition or partial way is met, updates several offset or remaining size fields and calls another routine with a pointer derived from the structure.
+- `recursively_process_buffer_segments`: If a field at offset 120 is non-zero and a field at offset 116 is not 4096, it calls itself recursively with a pointer into the structure and a size from offset 120.
 - `update_scroll_window`: Computes a target scroll position from its offset argument, then compares it with the visible window range in its structure.
-- `read_line_into_buffer`: Reads characters one at a time through another routine into a destination buffer, storing the newline and stopping there or after 127 characters.
+- `read_line_from_buffer`: Repeatedly calls another routine to read bytes from a source buffer into a destination buffer, stopping at a newline or a fixed limit, and appends a null terminator.
 - `copy_null_terminated_string`: Copies bytes from a source string to a destination one at a time, including the terminating null byte.
 - `convert_string_to_uppercase`: Converts each lowercase ASCII letter in a null-terminated string to uppercase in place by subtracting 32, and leaves all other characters unchanged.
-- `parse_signed_decimal_string`: Reads an optional plus or minus sign followed by decimal digits from a string and returns the signed integer value.
-- `call_library_if_pointers_set`: Calls a library routine with a pointer from its structure, its first argument and minus one, but only when that first argument and the structure's field at offset 4 are both nonzero.
-- `close_pager_state_and_free`: Tears down a pager session by closing its file and window handles and restoring saved pointers, with a nonempty text argument and a flag causing input to be read until a newline.
-- `call_with_single_value_buffer`: Gets a pointer from another routine, stores its argument in a one-slot stack buffer, and passes that buffer with code 994 and length one to a second routine.
-- `allocate_block_and_copy_fields`: Allocates a 36-byte block and, if that succeeds, passes a value derived from its address to a library call through a stack buffer.
-- `create_block_from_source_words`: Allocates a 68-byte object, copies a given number of words from a source array into it, and links it to a handle from another routine.
+- `parse_signed_decimal_3`: Parses a signed decimal integer from a null-terminated character string, handling an optional leading sign.
+- `call_library_function_with_mask`: Checks if a pointer in a structure or table is non-null, then calls a library function using a base address from a global variable and a provided mask.
+- `process_message`: Recursively processes a structure by invoking itself on various fields and string arguments, conditionally updates fields at offsets 8, 6, and 7, and performs a loop based on a return value.
+- `build_message_buffer`: The routine obtains a pointer from another routine and then calls another routine with that pointer, a constant, a stack-allocated buffer containing the input parameter, and a size of one.
+- `copy_entity_data`: The routine obtains a handle from another routine and, if valid, reads a value from that handle, passes it to another routine together with a small stack buffer, and copies two fields from the handle into the caller-provided structure.
+- `initialize_object_from_template`: Obtains a template identifier, allocates an object, links its fields to a template and source block, and copies words from a source address into the new object.
 - `call_supervisor`: Library stub: loads its arguments and the exec library base, calls Supervisor and returns its result to the caller.
 - `call_exit_intr`: Library stub: loads its arguments and the exec library base, calls ExitIntr and returns its result to the caller.
 - `call_schedule`: Library stub: loads its arguments and the exec library base, calls Schedule and returns its result to the caller.
@@ -625,27 +625,27 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_minus_552_2`: Calls a library routine at offset minus 552 from a library base pointer held in a global variable.
 - `call_library_vector_minus_624`: Calls a library routine at offset minus 624 from a library base pointer held in a global variable.
 - `forward_with_stack_slot_pointer`: Passes its two arguments to another routine together with a pointer to a fixed slot 12 bytes into the caller's stack frame.
-- `read_one_byte_or_minus_one`: Calls another routine to read one byte into a small stack buffer.
+- `extract_byte_from_call`: Calls another routine with a pointer to a small stack buffer and a constant, returning a byte from that buffer if the call returns certain a value, otherwise returning negative one.
 - `measure_stack_string_and_forward_2`: Calls a function pointer from a global variable to fill a 140-byte stack buffer, then counts the characters up to the null terminator.
 - `store_byte_through_a3_pointer_2`: Writes the low byte of data register D0 to the memory address held in address register A3 and returns.
-- `divide_32_bit_unsigned`: Divides a 32-bit unsigned value in D1 by the divisor in D2 and returns the quotient and remainder in two registers.
+- `modular_inverse_32bit_2`: The routine performs a 32-bit modular reduction or a 16-bit modulo operation depending on the size of an input value, using repeated doubling and subtraction, and returns a combined 32-bit result.
 - `multiply_32_bit_integers`: Multiplies the 32-bit values in D0 and D1 from their 16-bit halves and returns the low 32 bits of the product.
 - `call_adjacent_routine_and_return`: Calls one unnamed routine and returns, passing no arguments.
 - `call_helper_return_register`: Pushes a data register onto the stack, shifts two data registers for a helper, calls that helper, moves the helper's result into a data register, restores the saved register, and returns.
 - `negate_result_on_flag_2`: Handles the signs of two values, calls a helper, and negates the result when the flag the helper leaves in an address register is nonzero before returning.
-- `negate_result_on_flag`: Calls another routine and returns its first result, negated when the second result register is nonzero.
+- `call_and_negate_on_flag`: Calls a helper, then returns its first result, or the negation of that result when the second result left in an address register is nonzero.
 - `call_rawdofmt_from_global`: Calls the Exec RawDoFmt function through a function pointer stored at a fixed offset in a global variable.
 - `store_byte_to_pointer`: Stores a byte from a register into a memory location pointed to by a register.
 - `call_library_vector_minus_276`: Calls a library routine at offset minus 276 from a library base pointer held in a global variable.
-- `allocate_signal_message_block`: Allocates a signal bit and, if that succeeds, allocates a 34-byte message block.
-- `free_signal_message_block`: Marks a 34-byte signal message block as deleted, first calling another routine on it when its field at offset 10 is nonzero.
-- `search_substring_within_line`: Searches a null-terminated line for a pattern string, stopping at a newline, and returns 1 if the pattern occurs as a substring and 0 otherwise.
+- `allocate_message_entry`: Attempts to allocate a message buffer, and if successful, populates several fields of that buffer with parameters and a value from another routine before dispatching it.
+- `delete_port`: Removes the port from a global list if a specific field is non-zero, sets status fields to indicate deletion, frees the associated signal bit, and releases the memory block.
+- `compare_strings_with_wrap`: Compares two null-terminated strings byte by byte, skipping the check if the first string contains a newline character.
 - `initialize_empty_exec_list`: Initializes a list header in place: the first word points to the following word, the second word is cleared, and the last word points back to the header.
 
 ### Format
 
 - `parse_command_line_and_start_2`: Program entry for the Format utility that opens the dos library and allocates a control block, then splits the command line into argument strings, honoring double quotes and asterisk escapes.
-- `update_and_cleanup_state`: Retrieves a pointer from a global variable and stores a parameter into a specific slot within the pointed-to structure.
+- `restore_patch_state_4`: Retrieves a pointer from a global structure and saves a parameter into a slot within a structure pointed to by that pointer.
 - `call_disable`: Library stub: loads its arguments and the exec library base, calls Disable and returns its result to the caller.
 - `call_deallocate`: Library stub: loads its arguments and the exec library base, calls Deallocate and returns its result to the caller.
 - `call_exec_allocmem_vector_2`: Calls the Exec AllocMem function through an exec base pointer kept in a global variable, at offset minus 198.
@@ -662,7 +662,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_exec_reschedule_vector_2`: Calls the Exec Reschedule function through an exec base pointer kept in a global variable, at offset minus 48.
 - `format_disk_from_arguments`: Main routine of the Format utility: it reads the DRIVE, NAME and option arguments, checks the drive, and asks the user to insert a disk.
 - `release_format_buffers_and_handles`: Releases the buffers and handles that the format routine allocated, calling a release routine for each field that is set.
-- `report_disk_error_and_retry`: Performs a disk operation and loops while it returns error code 28 and the retry request succeeds.
+- `process_disk_error_status`: Evaluates a status code returned by a disk operation and maps it to specific error messages such as bad sector, seek error, or disk change.
 - `store_matched_table_byte`: Searches an eight-entry global byte table for the given value and records the matching entry in a field of a structure obtained from another routine.
 - `find_drive_list_entry`: Walks a linked list of drive entries until one matches the given number or pointer, marks that entry, and returns 1.
 - `calculate_string_length`: Returns the number of characters in a null-terminated string before its terminator.
@@ -697,10 +697,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_204`: Library stub: loads a library base from a global variable and calls the library function at offset minus 204 of that base, returning its result to the caller.
 - `format_disk_tracks_and_verify`: Formats a disk track by track, building the track data in a buffer and writing it through the disk device, then verifies the tracks.
 - `write_value_to_output_handle`: Calls two output routines with fixed arguments of 20, 30 and 1 on a handle taken from a structure, then passes a value from another routine through the same handle.
-- `invoke_and_checksum_stack_buffer`: Invokes a function pointer stored in a global variable and computes a rolling checksum over a stack buffer until a null terminator is found.
+- `call_global_and_checksum_buffer_5`: Invokes a function pointer stored in a global variable, then computes a rolling checksum over a stack buffer until a null terminator is found.
 - `store_byte_via_pointer_2`: Stores a single byte from a data register into a memory location pointed to by an address register.
 - `divide_32_bit_unsigned_2`: Divides a 32-bit unsigned value in D1 by the divisor in D2 and returns the quotient and remainder in two registers.
-- `run_restoring_division_steps`: Performs a 16-step restoring division: each step shifts a 32-bit value left through the carry and subtracts the divisor from the high half when it fits, setting a quotient bit.
+- `rotate_32bit_value`: The library code rotates a 32-bit value left by one bit per iteration for sixteen iterations, using a carry flag to move bits between the high and low halves.
 - `multiply_32_bit_integers_2`: Computes the 32-bit product of two 32-bit registers using 16-bit partial products and combines the results.
 - `forward_call_to_helper`: Saves d2 on the stack, copies d1 into d2 and d0 into d1, calls the division helper, then restores d2 from the stack and returns.
 - `call_helper_return_register_2`: Pushes a data register onto the stack, shifts two data registers for a helper, calls that helper, moves the helper's result into a data register, restores the saved register, and returns.
@@ -708,8 +708,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `negate_on_flag_2`: Calls a routine and keeps its first result, which is negated when the second result is non-zero.
 - `invoke_table_entry`: The library code invokes a function pointer retrieved from an offset within a global variable.
 - `store_byte_via_pointer_3`: Stores a byte from a data register into a memory location pointed to by an address register.
-- `allocate_and_initialize_block`: Calls a library function to allocate a memory block, fills in fields including a stored parameter and flag bytes, and calls further library functions, returning the block address or zero.
-- `reset_object_and_recurse`: Recursively processes a linked structure when a pointer field is non-zero, sets a byte field to all ones and a four-byte field to all ones, then calls another routine on a byte field value and again with a constant second argument.
+- `allocate_indexed_record_block`: Obtains a slot index from an unnamed routine and, when valid, allocates a 34-byte block through a library call with flags 65537.
+- `release_record_chain`: Recursively releases a linked chain of records, processing the linked record first when its link field is set.
 - `forward_argument_with_code_48`: Passes its one argument to another routine together with the constant 48.
 - `forward_single_argument`: Passes its one argument on to another routine and returns nothing.
 - `initialize_system_structures`: Initializes several global pointers and variables by retrieving values from a memory block, potentially setting them to default values if the block is null, and performs a series of function calls to manage these structures.
@@ -718,8 +718,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_342`: Library stub: loads a library base from a global variable and calls the library function at offset minus 342 of that base, returning its result to the caller.
 - `call_library_vector_60`: Library stub: loads a library base from a global variable and calls the library function at offset minus 60 of that base, returning its result to the caller.
 - `setup_pointer_chain`: Stores the address of its pointer argument into the memory location pointed to by the argument, adds four to that stored value, clears the next word in the pointed-to block, and stores the original pointer value into the following word.
-- `allocate_node_with_type_and_pointer`: Allocates a node of the size given by its second argument.
-- `reset_node_then_forward`: If the pointer is nonzero, sets the node's byte at offset 8 to 255 and writes minus one into two longword fields, then passes the node and the word at offset 18 to another routine and returns its result.
+- `store_word_and_pointer_in_node`: Calls a library-backed allocation routine with a second argument, and if it returns a non-null block, stores a byte value, a word from the second argument, and the first argument pointer into fixed offsets of that block.
+- `reset_node_and_release_it`: If the given pointer is non-null, it sets a byte field to 255 and clears two longword fields of the structure, then passes the pointer and a word field to another routine and returns its result.
 - `call_library_vector_minus_90`: Calls a library routine at offset minus 90 from a library base pointer held in a global variable.
 - `call_library_vector_minus_78`: Calls a library routine at offset minus 78 from a library base pointer held in a global variable.
 - `call_library_vector_84`: Library stub: loads a library base from a global variable and calls the library function at offset minus 84 of that base, returning its result to the caller.
@@ -738,7 +738,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_exec_allocentry_vector`: Calls the Exec AllocEntry function through an exec base pointer kept in a global variable, at offset minus 222.
 - `open_cli_window_and_run_startup`: Creates the shell's control block and a console window from a CON or NEWCON specification, then runs the s:CLI-Startup or s:Shell-Startup script when the argument is zero.
 - `build_linked_node_chain`: Walks a list of entries, allocating an 8-byte node for each and storing a value from the entry in it, then links the nodes together with shifted pointers.
-- `free_linked_node_chain`: Walks the linked node chain built earlier, releasing each node's secondary item through another routine and then freeing the node with its 8-byte size.
+- `traverse_and_free_linked_list`: Recursively traverses a linked list by calling another routine on the second element of each node before freeing the node itself.
 - `parse_signed_decimal_2`: Parses a signed decimal integer from a null-terminated character string, handling an optional leading sign.
 - `call_library_function_a`: Calls a function pointer stored at a calculated offset within a global table.
 - `call_library_function_b`: Invokes a function pointer by accessing a global variable with a specific offset.
@@ -752,8 +752,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `multiply_32_bit_integers_3`: Computes the 32-bit product of two 32-bit integers using 16-bit partial products.
 - `forward_call_to_inverse`: Saves d2 on the stack, copies d1 into d2 and d0 into d1, calls the modular inverse routine, then restores d2 from the stack and returns.
 - `call_helper_return_register_3`: Pushes a data register onto the stack, shifts two data registers for a helper, calls that helper, moves the helper's result into a data register, restores the saved register, and returns.
-- `negate_inverse_on_flag`: Calls the modular inverse routine, then negates the 32-bit result in d0 when the 16-bit value left in a0 is nonzero, and returns it.
-- `negate_on_flag`: Calls another routine and returns its first return value, or the negation of that value if the second return value is non-zero.
+- `negate_result_on_flag_4`: Calls the modular inverse routine, then negates the 32-bit result in d0 when the 16-bit value left in a0 is nonzero, and returns it.
+- `call_and_negate_on_flag_2`: Calls a helper, then returns its first result, or the negation of that result when the second result left in an address register is nonzero.
 
 ### Disk-Validator
 
@@ -778,7 +778,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Ambermoon (1993)(Thalion)(De)(Disk 01 of 10)(A).adf:AM2_CPU
 
-- `clear_cpu_state_at_entry`: Program entry for AM2_CPU that calls routines and a library function in a loop from 8 down to 5, then clears a word at a fixed location.
+- `initialize_game_state`: Executes a sequence of function calls and checks a global pointer to swap a memory value if a specific constant is found.
 - `decrement_until_minus_one_2`: Decrements a local variable until it reaches negative one and then returns.
 - `update_array_with_loop_2`: Clears d5, increments d6, calls a routine, increments a pointer in a1, calls another routine, sets a6 to that pointer, and then enters a loop that increments d5 and checks if it equals 6, calling a routine if a certain condition is met.
 - `update_array_with_loop`: Checks if a value in d0 is negative, otherwise it calls another routine and, if d0 is not zero, enters a loop that adds a value from a pointer in a3 to a table and decrements a counter until it reaches zero.
@@ -798,7 +798,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Ambermoon (1993)(Thalion)(De)(Disk 01 of 10)(A).adf:Ambermoon
 
-- `reset_game_state_at_entry`: Program entry for Ambermoon that calls routines and a library function in a loop from 6 down to 3, then clears a word at a fixed location.
+- `initialize_system_memory`: Performs a series of function calls, decrements a counter in a loop, and checks a specific memory pattern to update a global variable.
 - `decrement_d6_until_negative_one`: Decrements the value in register D6 until it reaches negative one and then returns.
 - `update_a1_from_a3_2`: Clears d5, increments d6, calls a routine, increments a pointer in a1, calls another routine, sets a6 to that pointer, and then enters a loop that increments d5 and checks if it equals 4, calling a routine if a certain condition is met.
 - `loop_copy_longword_pass`: Repeatedly calls the routine that dispatches a pointer and adds a longword from a register to a longword in the buffer at a3, advancing an offset by the high word of each returned value until the low word equals 1.
@@ -818,7 +818,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Ambermoon (1993)(Thalion)(De)(Disk 01 of 10)(A).adf:Ambermoon_install
 
-- `reset_install_state_at_entry`: Program entry for Ambermoon_install that calls routines and a library function in a loop from 5 down to 2, then clears a word at a fixed location.
+- `run_hdinstall_entry`: Program entry for the HDinstall tool.
 - `decrement_d6_to_negative_one`: Decrements the value in register D6 by one in a loop until the value reaches negative one.
 - `modify_table_elements_2`: Clears d5, increments d6, calls a routine, increments a pointer in a1, calls another routine, sets a6 to that pointer, and then enters a loop that increments d5 and checks if it equals 3, calling a routine if a certain condition is met.
 - `runs_blit_copy_loop`: Repeatedly calls a routine that yields a value and, while the loop condition holds, adds a longword from a register into a memory location indexed by an accumulated offset, then calls a routine through a register pointer and returns to the caller at the end of its outer loop.
@@ -859,14 +859,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `function_epilogue`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
 - `appends_record_under_limit`: Scans a table of four-word records for one matching the values in d7, d0 and d1; if found, it stores d2 into that record's fourth word, and if not found and the global counter is below 512, it increments the counter and appends a new record with those values and a zeroed final word.
 - `advances_pointer_six_bytes_branch`: Adds 6 to the address register a0 and then branches unconditionally to a nearby point in the program.
-- `append_record_if_under_limit`: If a global counter is below 512, increments it and writes a record of four words to the pointer in a0, taking the word from d7, two bytes from d0 and d1, and the word from d2, then clears the fourth word; otherwise it returns without writing.
+- `update_structure_data`: Increments a global 16-bit value and, if it is less than 513, writes a 16-bit word, two bytes, and a 16-bit word from registers to a structure pointed to by a0.
 - `saves_registers_and_matches_stored_word`: Saves d0, d1, d3, d6, a0 and a1 on the stack, then if the byte at address 1332 equals 1 it loads the address of a table at 3396 into a0 and compares the word at its offset 2 with d7, branching on mismatch.
 - `advances_pointer_and_loops`: Adds 4 to the address register a0, then decrements the counter in d6 and branches back to an earlier point of the code inside another routine when it has not reached minus one.
 - `stores_conditional_byte_or_word`: Checks that d7 matches a global value and that the words in d0 and d1 are within 1 and two global limits, then stores the word in d2 or the low byte of d2 into a table inside a structure selected by a helper routine, depending on a global flag.
 - `stores_byte_into_offset_table`: Stores the byte in d2 into a table of bytes at an offset formed from the word in d1 plus a fixed base of 332, using a pointer obtained from a called routine.
-- `conditionally_stores_word_from_structure`: Stores the low word of d0 into a global word when it is below 11 and a global byte has a particular value, then calls a routine and, if another global byte is nonzero, stores a byte looked up from a global table and clears a second global word.
+- `process_conditional_data`: Compares d0 to 11, stores d0 in a global word if it is less than 11, calls another routine if a global byte is greater than 2, and if a global byte is non-zero, retrieves a byte from a table using d0 as an index, stores it in a global word, and calls another routine.
 - `clear_upper_byte_conditionally`: Takes the high byte of d0 and, when it is nonzero and differs from a global word, calls another routine; d0 is returned unchanged, with d0 and d7 saved and restored around the work.
-- `updates_flag_and_global`: Reads a byte from a global table indexed by d7 and, if it is nonzero, calls routines and tests a word at offset 30 of a returned structure against a mask.
+- `process_conditional_updates`: Uses a byte from a table to call a routine, performs several conditional checks against global values and structure members, and updates a global pointer to a calculated offset in a table.
 - `loads_constant_256_and_jumps`: Loads the constant 256 into d0 and jumps to another routine, which conditionally adjusts d0 and returns it.
 - `loads_constant_512_and_jumps`: Loads the constant 512 into d0 and jumps to another routine, which conditionally adjusts d0 and returns it.
 - `loads_constant_768_and_jumps`: Loads the constant 768 into d0 and jumps to another routine, which conditionally adjusts d0 and returns it.
@@ -891,7 +891,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispatch_slot_seven_handler`: Loads the value 7 into d0 and jumps to a shared dispatcher, which handles the slot identified by that value.
 - `dispatch_slot_eight_handler`: Loads the value 8 into d0 and jumps to a shared dispatcher, which handles the slot identified by that value.
 - `dispatch_slot_nine_handler`: Loads the value 9 into d0 and jumps to a shared dispatcher, which handles the slot identified by that value.
-- `tests_global_slots_calling_handler`: Saves d7 and a0, then walks six bytes starting at a fixed global address, and for each nonzero byte calls the indexed-slot storing routine.
+- `iterate_and_call_handler`: Iterates through a series of bytes starting at an address in a0, calling a routine if a byte is non-zero, and continues for up to seven iterations.
 - `updates_flag_and_clears_global`: Reads a word at offset 30 of the structure returned by a called routine; if bit 5 is clear and a global byte is non-zero, it clears that byte and calls another routine, otherwise it sets the global byte to -1.
 - `clear_flags_and_copy_buffer`: Clears a global longword counter, then scans a table of five bytes and, when a nonzero entry is found, calls another routine with its word value and tests a status word at offset 30 against a mask.
 - `store_init_constants_and_call`: Stores the constant 222 into a global word and the constant 2352 into a global longword, loads the address of a buffer into a0, calls two routines, then restores registers and returns.
@@ -924,15 +924,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `fills_twenty_entries_random_values`: Writes 20 to a byte at a fixed address offset by d0, then runs a loop 20 times that calls the pseudo-random word advance routine, storing a table-derived shifted byte at offset 2 from a0 and masked values into two more bytes per iteration, decrementing a counter until it reaches -1.
 - `conditionally_updates_slot_counter`: When the table index in d7 selects a nonzero global byte and a global mode value is not 6, it looks up a structure, subtracts the word in d0 from a word at offset 202 of that structure, and either leaves it or stores the result and writes the low byte of d0 and the value 10 into two global bytes indexed by d7.
 - `stores_word_and_byte_into_table`: Stores the word in d2 at offset 202 of the structure in a0, then calls a routine with the low byte of d0, and writes that byte into a fixed table at an index from d7 offset by -1, and the constant 10 at offset 5 of the same indexed slot.
-- `marks_slot_flag_and_clears_word`: When a global byte indexed by d7 is nonzero, it sets bit 13 of the word at offset 30 of a structure, clears the word at offset 202, calls three helpers and, when d7 matches a global word and a global byte is zero, calls one more helper.
-- `build_blitter_list_entries`: Computes a row offset from d7 and stores values into global variables, then calls several helpers to fetch a pointer and copies a zero-terminated string from it into a global buffer up to four characters.
+- `process_table_entry_and_set_bit`: Retrieves a byte from a table using d7 as an index, calls two routines, sets bit 13 of a word at offset 30 of a structure, clears a word at offset 202 of that structure, and calls three more routines if certain conditions are met.
+- `manage_blit_sequence`: Calculates a value based on d7, stores it in a structure, and then executes a complex sequence of calls including a loop that copies bytes and several routines to manage memory and blitting.
 - `clears_indexed_slot_and_counter`: Calls several helpers, clears the byte at a1 and the indexed global byte and word slots, decrements a global byte counter, and calls one more helper when d7 matches a global word.
 - `initializes_blit_state_and_copies_string`: Computes a value from a global counter and stores it into two global variables, then calls several helpers and copies a null-terminated string from a table entry into a global buffer of up to five bytes.
 - `shift_entries_when_flag_set`: When bit 6 of a word at offset 30 of the structure in a0 is set, clears that bit and copies each entry of two tables in the structure forward by one slot, eight entries at offset 42 and ten at offset 122, each entry being four words apart.
 - `advances_word_toward_limit`: If the byte at a global table indexed by d7 is non-zero, it reads two words at offsets 204 and 206 of a structure from a called routine, adds them, and when the stored word at offset 202 is below that sum it adds d0 to it, capping at the sum.
 - `advances_word_toward_limit_alt`: If the byte at a global table indexed by d7 is non-zero, it reads two words at offsets 212 and 210 of a structure from a called routine, adds them, and when the stored word at offset 208 is below that sum it adds d0 to it, capping at the sum.
 - `add_signed_byte_from_table`: Adds the signed byte from a global table, indexed by the low two bits of d2 times two, to the word in d0 and returns the sum in d0.
-- `add_signed_byte_from_table_eight`: Adds the signed byte from a global table, indexed by the low three bits of d2 times two, to the word in d0 and returns the sum in d0.
+- `add_table_offset_high`: Calculates an offset into a table using a 3-bit mask of d2, retrieves a signed byte from that table, and adds it to d0.
 - `clear_128_bytes_global`: Saves d7 and a0, then writes zero to 128 consecutive bytes of a global variable block starting at a fixed location, and restores the saved registers.
 - `sets_clears_or_toggles_bit`: When d1 indexes a valid entry in a global table and d2 is 0, 1 or 2, it clears, sets or toggles the bit numbered by the low three bits of d0 in the byte at the computed position in a table, leaving the other bits unchanged.
 - `set_bit_or_toggle_bit`: Compares d2 with 1 and, if equal, sets the bit numbered by d1 in the byte at a0; otherwise it branches to a later point that toggles that bit in the same byte instead, then returns.
@@ -943,7 +943,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `function_epilogue_2`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
 - `scan_and_stage_table_entries`: Walks a table of six slots in a global variable, and for each non-zero slot calls another routine to fetch a structure, adds 1 to the word at offset 26 and adds 250 to the long at offset 270, and decrements the staged count, looping until the requested count reaches zero or no staged entries remain.
 - `function_epilogue_3`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
-- `waits_then_calls_helpers`: Calls a helper routine, runs a countdown loop of 23 iterations on a 16-bit counter, then calls the helper routine again and returns the value held in d0.
+- `process_pointer_table`: Retrieves a pointer from a location specified by a byte in d0, then iterates through a table of 23 elements starting at offset 344 of the retrieved structure, performing bitwise OR operations on values at 6-byte intervals.
 - `waits_then_returns_register_pair`: Calls a helper routine, runs a countdown loop of 23 iterations on a 16-bit counter, calls the helper routine again, and returns the values in d0 and d1 combined as one 64-bit result.
 - `scans_structure_chain_for_zero`: Calls a helper routine to obtain a pointer, then steps that pointer forward by 6 bytes per iteration for up to 24 iterations, breaking early when the word at offset 4 is zero, and then calls another routine before returning.
 - `counts_active_entries_in_global_table`: Walks a global table of six byte-flagged entries and, for each nonzero flag, calls a helper with a counter, tests a bit selected by a byte at offset 2 and a mask in a word at offset 30, increments a counter when both tests pass, and then returns.
@@ -967,7 +967,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clears_flag_and_stores_pointer`: Sets d0 to zero and jumps to a shared routine that clears a global byte, stores the address in a0 into a global pointer, and writes 255 to a global variable.
 - `loads_code_and_jumps_shared`: Loads the constant 293 into d0 and jumps to a shared routine that clears a global byte, stores the address in a0 into a global pointer, and writes 255 to a global variable.
 - `scans_flags_and_sets_global`: Loops over six bytes of a global array and, for each non-zero entry, calls a helper and sets bit 5 of a word at offset 30 of the structure it returns.
-- `indexes_table_and_calls_handler`: Calls a series of other routines, then shifts the low word of d0 left by 3 to index a global table, copies a longword from that table into a global variable, and calls the handler pointer stored in the same table entry when it is nonzero.
+- `execute_table_callback`: Performs several routine calls to process data, then uses a value from the stack to calculate an offset into a table.
 - `blits_fixed_rectangle_one`: Sets d4 to 28 and the corner coordinates in d0 to d3 to fixed values, then calls the rectangle clipping and blit routine once and returns.
 - `blits_fixed_rectangle_two`: Sets d4 to 28 and the corner coordinates in d0 to d3 to a different set of fixed values, then calls the rectangle clipping and blit routine once and returns.
 - `blits_two_fixed_rectangles`: Sets d4 to 28 and two sets of corner coordinates in d0 to d3, calling the rectangle clipping and blit routine once for each set, then returns.
@@ -981,19 +981,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `syncs_flags_and_updates_bytes`: Copies a word from one global variable to another and, when they differ, clears the previous slot to a constant and sets the new one.
 - `computes_sprite_dimensions_and_copies`: Computes a position from a global index multiplied by 48 plus 16, calls two routines, and branches on a per-index global byte to choose between two positioning paths.
 - `update_sprite_state_flags`: Reads a 16-bit flag word from a record selected by a global index and, depending on whether its high bits are set, either clears or sets bit 2 of a status byte and flags a state change.
-- `decrements_nonzero_slot_counters`: Calls a helper, then walks six global byte entries, decrementing each nonzero counter and calling another routine when a counter reaches zero.
+- `update_element_arrays`: Calls a routine, then enters a loop that checks a byte at an offset of a structure, calls a routine, decrements that byte, and continues until the byte is zero; it then performs a second loop that calls two routines for up to seven iterations.
 - `saves_registers_and_branches_forward`: Pushes registers d7 and a0 onto the stack and then branches to a later point in another routine.
 - `waits_blit_and_scans_flags`: Repeatedly calls a blitter-waiting routine and a blit routine, then scans six global flag bytes from the start, restarting the outer loop when a nonzero byte is found.
-- `sets_blit_flag_when_nonzero`: Calls a clipping and blit routine, then if the low word of d0 is nonzero it stores 2 into a global longword and calls two further routines, returning with d0 and d1 unchanged.
+- `execute_scaled_blit_sequence`: Calculates a value using multiplication and addition, calls a routine, and if d2 is non-zero, updates a global variable and calls two more routines.
 - `updates_slot_table_counter`: Reads a byte counter from a table indexed by d7, computes a longword offset from d7 multiplied by 48, appends a pointer to a list, and then loops 20 times over a global record table, adjusting byte fields at offsets 1 and 2 and decrementing the counter byte when a slot's flag is set before writing the counter back.
-- `fill_slot_table_entries`: Loops over a word counter in d7, stores bytes from d1 into the structure at a1 with a per-iteration decrement of the byte at offset 2, and steps a global list pointer back through a fixed address check.
+- `process_byte_array`: Decrements a byte at an offset of a1, and if it reaches zero, it decrements a word in d4 and calls another routine; it then enters a loop that calls another routine and writes bytes to a table based on d4 and d7.
 - `scans_table_writes_indexed_bytes`: Walks a table of flag bytes in a loop controlled by a counter, checking each entry against a bitmask, and stores an index or a constant byte through the pointers in a1 and a0 at each step.
 - `scans_bits_and_writes_bytes`: Loops over a bitmask in d5 and a counter in d7, searching a global-variable table for a set bit and storing the matching index and a value of 10 plus that index through the pointers in a1 and a3.
 - `write_strided_word_and_byte`: Writes the word in d2 to the address in a3 and the low byte of d2 plus 10 to the address in a1, then advances a0, a1 and a3 and increments d7.
 - `increments_global_word_counter`: Adds one to a global 16-bit counter addressed by absolute long, leaving all other registers and memory unchanged, then returns.
 - `iterates_blit_entries_by_flag`: Walks five 4-byte entries starting from a global variable, and for each entry calls one routine when a word is zero or three routines otherwise, advancing through the entries using the address returned in a1.
 - `clamps_word_and_branches`: Compares d7 with 180 and, if d7 is less than that, branches to the code after; otherwise it loads 12 into d7 and branches forward.
-- `blits_rows_until_count_exhausted`: Repeatedly calls three routines, then steps through a linked structure, decrementing a word counter taken from the stack until it reaches minus one.
+- `execute_blitter_sequence`: Performs arithmetic on d7, calls a routine with a pointer in a3, and executes a loop that performs two blitter-related routine calls while incrementing d0 and d1 and decrementing d3.
 - `saves_registers_and_sets_mask`: Saves registers d0 through d7 and a0 on the stack, stores 31 into a global word, and compares another global word with 6 to choose which word is loaded into d3.
 - `updates_masks_and_draws_rows`: Inverts a global word and ORs it into a second global word, then conditionally calls helper routines depending on bits 0 through 5 of the combined value.
 - `tests_flags_and_draws_masked_rows`: Branches on bits 0 through 5 of two saved halfword registers to choose among helper calls, writes an all-ones word and a zero word to a global word around a call, stores a constant byte through a0, and returns the saved stack longword.
@@ -1010,12 +1010,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `stores_fetched_byte_in_global`: Saves d0 and d1 on the stack, loads the constant 14 into d1, calls a routine that returns a byte, stores that byte into a global byte, restores d0 and d1, and returns.
 - `blits_then_updates_byte_slot`: Calls a blit routine, then a routine that handles a byte value in d0 and may increment a byte at offset 19 of a0, then a routine that may decrement the same byte, before returning with d0 and d1 unchanged.
 - `initializes_structure_with_offset`: Stores the register a0 into the longword at offset 4 of the structure in a1, then stores the sum of a value from another routine and 274 into the longword at offset 0 of the same structure and clears the word at offset 8.
-- `initializes_slot_pointer_record`: Calls several routines, stores a longword from a0 at offset 4 of the structure in a1, and writes a word computed from a routine result plus 274 into the structure's first longword.
+- `update_structure_pointer`: Saves d0, d7, and a0 through a1 to the stack, loads two pointers into a1 and a0, calls a routine, stores the result in a structure, loads a byte from a table using d7, calls another routine, updates a pointer in a structure, clears a long value, and calls a third routine before finally calling a fourth routine and returning.
 - `stores_offset_plus_274`: Calls two routines, then writes the result plus 274 as a longword through the pointer in a0.
 - `stores_adjusted_value_and_pointer`: Calls one routine, adds 274 to its result and stores the sum as a longword at the address in a0.
 - `resets_pair_and_swaps_globals`: Sets two global words to 65535, then swaps two longword globals, copies the first into a third global, and inverts a global byte, calling several other routines along the way before a final jump.
 - `swaps_buffers_then_blits`: Calls two routines and a third with a0 as argument, then exchanges two longword globals, copies the first into a third global and inverts a global byte.
-- `conditionally_adjusts_table_entry`: Takes the low byte of d0 and, when it is non-zero and not 255, computes an index from a global variable and that byte, reads a word from a table at a fixed offset, and calls two routines if that word is non-zero, storing a register value into a global longword.
+- `process_indexed_callback`: Checks if d0 is zero or negative one, calls a routine, calculates an index using a word from a global variable and a multiplication, calls two routines using values retrieved from a table, and if a value is non-zero, stores a word in a global variable and calls a third routine.
 - `reads_indexed_table_word`: When the low byte of d0 is non-zero, computes a table index from that byte minus 1, reads a word from a table entry at offset 294 of a structure, and calls two routines, storing a register value into a global longword when the word is non-zero.
 - `reads_offset_table_word`: When the low byte of d0 is non-zero and not 255, adds a global variable and that byte plus 8 to form an index, reads a word from a table entry at offset 294 of a structure, and calls two routines, storing a register value into a global longword when the word is non-zero.
 - `adjusts_index_and_calls_handler`: Branches out when d0 is zero or 255, masks d0 to a byte, decrements it, adds a global word, and when the result equals a global word it calls one routine, then branches onward.
@@ -1027,8 +1027,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `stores_sentinel_and_calls_routine`: Saves d0 and a0, multiplies d0 minus 1 by 60 to form an offset into a fixed buffer, stores the word 2 into a global variable, adds 40 to the pointer, calls a routine, and restores the saved registers before returning.
 - `waits_and_clips_blit_pair`: Runs a counted loop of twelve iterations, each calling a wait routine, then makes a final call to another routine.
 - `accumulates_record_word_over_range`: Loops 12 times calling a helper routine that looks up a record and returns a word, keeps the last returned word, and returns it incremented by one.
-- `computes_centered_blit_mask`: Calls a set of helper routines to locate a 6-byte record from d0 minus 1 in a table, reads the word at offset 4 of that record and, when nonzero, calls further routines and sets a global byte to 2 when a byte at offset 0 is not 1.
-- `locates_table_record_and_blits`: Computes the address of a 6-byte record at index d0 minus 1 from a table base offset by 290, calls a routine, and when the record's word at offset 4 is nonzero calls routines using that count minus 1 scaled by 60.
+- `update_graphics_structure`: Saves registers, performs multiple calculations involving multiplication and table lookups, calls several routines to update data, and modifies a global word at a specific offset.
+- `update_graphics_structure_parameters`: Calculates an offset into a table using a value from a register, retrieves a pointer, and performs arithmetic on a structure to determine a new address.
 - `advances_byte_stream_cursor`: Decrements a global countdown word and, when it reaches zero, advances a global stream index and reloads the countdown with 4.
 - `advances_byte_table_cursor`: Decrements a global countdown word and, when it reaches zero, increments a global table index and reloads the countdown with 4.
 - `select_and_decrement_counter`: Chooses a value from a global byte, calling a helper with 0, 1 or 2 as a parameter, then calls another helper and, when the byte equals 200 and a field of a structure is nonzero, decrements that field.
@@ -1038,13 +1038,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_slot_and_chain_jump`: Calls three routines in sequence, stores the value 31 into a global variable, calls one more routine, and returns with d0 as it was left by the first call.
 - `stores_registers_and_resets_global_byte`: Copies a0 into a global longword, copies d6 and d7 into two further globals, then calls two routines and clears a global byte to zero before returning.
 - `stores_registers_and_sets_global_byte`: Copies a0 into a global longword, copies d6 and d7 into two further globals, then calls two routines and sets a global byte to 255 before returning.
-- `releases_slot_when_active`: Compares a longword global variable against -1 and, when it differs, calls routines, clears a global byte flag check and then clears the same longword global to -1.
-- `calls_when_flag_nonzero`: Calls one routine, then tests a global-variable byte and, when it is nonzero, calls another routine.
+- `update_conditional_fields`: Checks a word in a global variable, calls two routines with different pointers if the word is not all ones, and finally writes a constant to a global variable.
+- `calculate_dual_values`: Calls another routine using values from two different global locations, then checks a byte at a global address and calls the same routine again with a different set of parameters.
 - `compute_clamped_offset_store`: Saves d0, d1 and d7, stores d1 minus 7 into the word at offset 2 of the structure at a0, and computes a value from d7 times 6 minus 1 halved and negated, added to a global word.
 - `stores_clamped_word_complement`: Adds d7 and d0 with a one-unit reduction, and if the sum is 320 or greater, replaces d0 with 320 minus d7.
 - `transforms_word_run_through_helper`: Saves d0, d1, d7 and a0 on the stack, copies d0 into d1, advances a0 by 2, then 31 times reads the word at a0, passes it through a helper call, and stores the result back at a0 with post-increment.
 - `saves_registers_and_selects_blit_record`: Saves registers d0-d7 and a0-a2 on the stack, returns immediately if d0 is 9 or greater, and otherwise copies d0 into d4, increments d4, and loads two table addresses into a1 and a2 before branching to a later point.
-- `blits_centered_masked_rows`: Looks up a word from a table using d0 and a global value, then calls a blitter routine three times for each of four row groups, with a row count taken from the low three bits of a returned word plus eight.
+- `calculate_scaled_parameters`: Calculates a value from a global word, uses it to index into a table to retrieve two words, calls a routine, and then enters a loop that performs several calculations and calls a routine multiple times based on a counter.
 - `clears_table_and_counts_entries`: Sets a global word to -1 and a global byte to 255, then copies non-sentinel words from a table into a0 for 1024 entries, counting them into a global word.
 - `calls_two_routines_in_sequence_5`: Calls one routine and then a second routine in sequence, then returns to its caller.
 - `copies_byte_and_jumps_onward`: Copies the byte at a fixed absolute address into d0, calls a routine with that value, and then jumps to a fixed later address without returning.
@@ -1055,11 +1055,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `blits_text_rows_and_decrements_byte`: Sets a global word to 31 and calls two routines, then loops from d7 to the start of its block adding 7 to d3 for each pass, calling a bit-level routine on each pass.
 - `calls_helpers_on_flag_byte_variant`: Loads constants 144 and 164 into d0 and d1 and 30 into d3, then calls a routine.
 - `run_bit_and_rectangle_bookkeeping`: Stores the value 2 into a global variable, calls a routine, and if that call leaves a flag set it makes a series of calls, including a check of a global byte and a global address dereferenced through a0.
-- `copies_indexed_table_entry_to_global`: Takes the high byte of d0 and, when it is nonzero, adds a global byte to it and compares the result to a longword global; when within bounds it loads a word from a table at that index into a global, sets two global words, calls routines for the blit, and clears a global byte.
+- `process_scaled_index`: Checks if a value in d0 is within a specific range, calls two routines to fetch and process data, updates a global word, and performs arithmetic to set several global values.
 - `clears_scroll_counter_and_sets_mask`: When the byte in d0 is nonzero and the sum of a global byte and the high byte of d0 is at most a global limit, it calls four routines, clears one global word, sets another global word to 65535, and calls two more routines before clearing the first again.
 - `clears_counter_and_sets_mask`: Calls two routines, then clears one global word and sets another global word to 65535.
 - `calls_pair_and_swaps_result`: Calls one routine, saves the word it returns in d0, calls a second routine and then a third, and returns the saved word.
-- `compares_strings_until_null`: Calls two routines and then compares bytes at the pointers in a0 and a1 one by one, advancing both.
+- `compare_string_buffers`: Saves registers to the stack, fetches two pointers from a table using values in d5 and d6, calls another routine for each pointer, and then compares bytes from the two resulting locations in a loop until a null byte is found or a mismatch occurs.
 - `swaps_two_word_table_entries`: Doubles the indices in d5 and d6 to word offsets, then exchanges the 16-bit entries at those two offsets relative to a6 with each other, using d0 as a temporary; d0, d5 and d6 are preserved.
 - `selects_slot_and_checks_limit`: Saves the registers d0, d1, a0 and a1 on the stack, reads a byte from a global variable, and calls a routine to obtain a pointer in a1.
 - `counts_down_then_clears_byte`: Decrements the word in d0 in a loop until it reaches minus one, then calls a routine, clears the byte at the address in a0 and calls another routine.
@@ -1085,7 +1085,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `load_seven_loop_sequence_hooks`: Calls two helper routines with the value 6 in d0, then fetches a pointer and, when a global pointer is nonzero and a longword at offset 38 of the structure it points to is nonzero, sets a global byte to 255 and calls further helpers.
 - `clears_flag_then_jumps`: Calls the pair-swap routine and then the slot-release routine, clears a global byte, calls three more routines and tail-jumps to another routine.
 - `dispatches_status_update_sequence`: Calls four routines in sequence: a slot synchroniser, a counter decrementer, a mask comparer and a status writer, then jumps to a final routine.
-- `sets_high_bit_if_flags_set`: Calls a routine to obtain a pointer, masks the word at offset 30 of that structure with 1162, and sets bit 7 of the byte at the address in a0 when the masked result or the byte at offset 9 is nonzero.
+- `set_status_bit`: Fetches a pointer from a table, checks specific bits in a word at offset 30 of the structure, and if certain conditions are met, sets bit 7 of the byte at the address in a0.
 - `chains_release_and_handler_call`: Calls one routine to release a linked slot and its callbacks, then calls a handler through the code pointer at offset 30 of a global structure when that pointer is non-null, and finally jumps to a further routine.
 - `copies_state_and_updates_slot_table`: Calls two helper routines, then copies one byte from the buffer in a0 into a structure field at offset 54 and a second byte at offset 55.
 - `dispatches_slot_by_byte_value`: Tests the byte in d0 and returns immediately to the caller when it is zero.
@@ -1101,7 +1101,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `draws_status_text_and_masks`: Calls several helpers and tests a bit selected by a byte read from the structure in a1 against a word value; when the bit is clear it runs five further helper calls.
 - `writes_status_chars_to_a_pointer`: Calls a clipped rectangle blit and a masked blit, stores the byte 47 through a pointer in a0, calls further routines, writes 47 again through a second pointer when a byte at offset 4 of a1 is nonzero, then writes 32 through a third pointer and sets a global word to 2 or to another global depending on two flags.
 - `sets_timing_word_around_drawing`: Stores 2 into a global word, calls routines to draw, and stores either 2 or a global longword into the same word depending on a global flag.
-- `sets_timing_word_and_calls`: Stores the value 2 into a global word, calls several routines, stores 2 into the same global word again, and then calls three more routines before returning the stack value unchanged.
+- `perform_scaled_calculations`: Writes two to a global word, performs a series of multiplications and divisions using values from a structure in a1, calls three different routines to update parameters and perform drawing, and finally restores registers and returns.
 - `dispatch_to_jump_chain`: Calls one routine and then jumps to another fixed address without returning here directly.
 - `scan_and_expire_slots`: Walks a table of 40-byte entries up to 6 at a time, skipping entries whose first byte is zero.
 - `dispatch_slot_by_type`: Checks a type byte in the structure at a1 and, for type 4 or 7, compares selected fields against entries of a table, clearing an active slot's type byte and setting its link word to 65535 when a comparison fails.
@@ -1126,23 +1126,23 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispatches_conditional_routine_calls`: Tests a global byte, a global flag word and a bit of a global word against a bit number stored at offset 21 of the structure in a2, then makes either three calls followed by a fourth or a single call followed by one more call.
 - `saves_word_around_calls`: Loads the constant 282 into d0, calls one routine, pushes the returned word onto the stack, reads a byte from a global variable into d0 and calls a second routine, then pops the saved word back into d0 and returns.
 - `select_table_entry_and_flag`: Sets a global byte to 28, reads a global word and returns it immediately when negative.
-- `stores_record_fields_and_sets_flag`: Sets a global byte to 1, and when bit 2 of the byte at offset 32 of the structure in a1 is set and the byte at a0 is not 1, it copies that byte and the word at offset 4 of a0 into global variables, stores 40 into another global, clears two globals, and calls another routine.
-- `adjusts_counter_and_stores_pointer`: Calls two routines, loads a word from a structure at offset 24 into a global longword, sets two global variables to 32 and 1 and clears a third to 0.
+- `update_event_parameter`: Checks a bit in a structure and a byte in a passed pointer, then if both conditions are met, updates several global variables from the pointer, calls a routine, and if a specific global is non-zero, calls another routine to increment a global counter and calls a third routine.
+- `update_structure_fields`: Calls several routines to retrieve a pointer, updates a global structure with a value from a structure in a0, and performs arithmetic on a field at offset 270 of that structure.
 - `adjusts_counter_scaled_by_250`: Calls two routines, loads a word from a structure at offset 26 into a global longword, and sets two global variables to 33 and 2 and clears a third.
 - `loads_table_entry_into_globals_2`: Calls two routines, sets a global byte to 31 and reads a global word.
 - `adjusts_record_position_by_five`: Looks up a record from the table-value routine and subtracts the amount in a global variable, multiplied by five, from the 16-bit field at offset 24 and the 32-bit field at offset 270 of that record, then adds the same scaled amount back to a record found through a second lookup.
-- `transfers_scaled_amount_between_fields`: Calls a routine, stores a pointer to a global variable, and calls a routine returning a value.
+- `adjust_structure_values`: If a global word is non-zero, it retrieves a pointer, subtracts a value from offset 24 of that structure, multiplies the value by 5, and subtracts the result from offset 270 of the structure; it then retrieves another pointer via a table, adds a value to offset 24, multiplies it by 5, and adds the result to offset 270.
 - `adjusts_record_position_by_250`: Looks up a record from the table-value routine and subtracts the amount in a global variable, multiplied by 250, from the 16-bit field at offset 26 and the 32-bit field at offset 270 of that record, then adds the same scaled amount back to a record found through a second lookup.
 - `transfers_250_scaled_amount_between`: Calls a routine, stores a pointer to a global variable, and calls a routine returning a value.
 - `copy_entry_fields_into_globals`: Sets a global byte to 84 and reads a global word, returning it when negative.
-- `calls_helpers_conditionally_preserving_d0`: Loads a word from a global variable into d0, increments it, and calls a routine, then if the word in d2 is nonzero it calls another routine.
+- `process_conditional_call`: Increments a word from a global variable, calls another routine, and if d2 is not zero, calls another routine with d0 set to 92 before calling another routine and returning.
 - `transfers_amount_to_counter_record`: Reads the 16-bit field at offset 24 of a looked-up record and, when it is nonzero, stores 86 into a global variable, sets another global to 1 and clears a third.
-- `sets_counter_and_adjusts_fields`: Stores 86 into a global variable, sets another global to 1 and clears a further global, then copies the low word of d0 into a global and calls a routine.
+- `update_structure_values`: Stores a longword from d0 into a global variable, sets a word at offset 22 of a global structure to 86, sets a byte at offset 237 of a global structure to 1, clears a longword at offset 3520, calls another routine, and if a global longword is non-zero, performs arithmetic on a structure in a0 using values from d0 and a global longword before calling two more routines.
 - `transfers_amount_to_second_counter`: Reads the 16-bit field at offset 26 of a looked-up record and, when it is nonzero, stores 87 into a global variable, sets another global to 2 and clears a third.
 - `sets_counter_and_adjusts_fields_alt`: Stores 87 into a global variable, sets another global to 2 and clears a further global, then copies the low word of d0 into a global and calls a routine.
 - `draws_entry_and_updates_flags`: Reads a 16-bit index from a table entry selected by the word in d2, and when that index is nonzero and the matching record lacks bit 5 of its flag byte, sets bit 1 of a byte in the entry at offset 3 and then either copies a rectangle or calls helpers depending on a comparison with 10.
 - `computes_offset_and_calls_helpers`: Computes a table index from d2 minus a global word minus 9, calls three routines in sequence while preserving the stack, and returns with the saved registers restored.
-- `initializes_pointer_globals`: Stores the result of a call into a global longword, adds 274 to it, and stores the address of a global variable plus 40 into a second global pointer.
+- `initialize_structure_pointer`: Saves registers, calls another routine to retrieve a pointer, stores the result plus an offset into a global variable, sets a global pointer to a structure, calls another routine, and calls a third routine before returning.
 - `fills_words_from_counter_loop`: Computes a slot address from the word in d0 minus a global variable, loads two words from it into globals, and when a record index is nonzero copies those words into a buffer at a0 through a loop of up to nine iterations, then runs a further loop that decrements the counter in d7 until it reaches minus one.
 - `copies_words_until_limit`: Loops calling three routines per pass, storing two preset 16-bit globals into the first two words at the address in a0 and calling another routine each pass.
 - `loops_helpers_across_counter`: Repeatedly calls three helper routines, decrementing the word counter in d7 until it reaches minus one, then restores the saved registers and returns.
@@ -1151,7 +1151,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `loops_three_calls_decrementing_counter`: Reads a byte from a global variable into d0, makes three calls, decrements the 16-bit counter in d7 and repeats the loop until the counter reaches -1.
 - `store_word_from_structure`: Saves d0, d1 and a0, loads a fixed address into a0 and doubles a global word into d1, calls a helper that reads a word from the structure pointed to by a global longword, and stores that word at the computed offset from a0 before restoring the saved registers and returning.
 - `updates_display_values_and_marks`: Calls routines to fetch a pointer and reads two words and a longword from a structure pointed to by a result.
-- `scan_table_flag_bits`: Calls another routine to obtain a pointer, then sets the high bit of several status bytes in the structure it addresses based on global flags and bitmask tests.
+- `update_entity_status_flags`: Retrieves an entity structure via a call, then performs multiple conditional checks on its fields to set specific bits in a status structure passed in a0.
 - `initializes_layout_pointer_and_globals`: Saves d0, d1, a1 and a2, stores the pointer in a0 into a global variable, clears a global to 65535, sets two other globals to 344 and to the address of a global, and loads a global word from a table indexed by a global counter before calling helpers.
 - `gathers_records_and_blits_rectangle`: Calls a helper eight times, looks up a structure through the result plus one, and checks the word at offset 316 and the word at offset 330 against zero, calling further routines when each is nonzero.
 - `clears_global_word_and_calls_helpers`: Clears a global word, loads 44 into d0, calls one routine, then calls a second routine and returns.
@@ -1162,9 +1162,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_shift_flag_writes_nine`: Saves registers, sets a flag byte in a global variable, and loads the address of a hardware-adjacent location into a0.
 - `write_nine_bytes_sequence`: Writes the byte 9 to the address in a0 and advances a0, increments d7 and repeats while d7 is below 7, then restores saved registers and returns.
 - `renders_multi_field_text_block`: Derives a 60-byte record offset from a global byte, stores the negated low bit of a flag into a global variable, and loops over ten bit positions of a 16-bit mask, calling two routines for each set bit.
-- `conditionally_calls_helpers_twice`: Tests whether the low bit of a global byte is set or a second global byte equals 6, and if so clears a local flag, makes a call, and calls a second helper only when that flag is set.
+- `check_and_process_blit`: Checks a bit in a global structure, compares a global word to 6, and if both conditions are met, calls another routine with specific parameters and then calls a third routine.
 - `draws_text_block_with_markers`: Computes a row offset from a 16-bit global counter, stores the word 2 and the word 17 into a global slot, and calls many routines to draw text lines, conditionally drawing sub-blocks based on bytes in a table entry.
-- `sets_slot_and_writes_byte_through_pointer`: Calls two routines, stores the word 2 into a global longword slot, writes the byte 41 through the pointer in a0, then calls five routines in sequence.
+- `calculate_string_offset`: Fetches a byte from a structure, calls a routine, performs arithmetic on a value multiplied by 30, and calls several routines to update a global word and a structure field.
 - `conditionally_reinitialises_display_state`: Tests a global byte and, when it is non-zero, calls a routine, copies a global word into another global word, and calls another routine.
 - `conditionally_negates_low_byte`: Tests a global byte and, when it is nonzero, negates the low byte of d0; the subsequent return leaves the routine in either case.
 - `dispatches_table_record_to_blit_setup`: Takes the low byte of d0, and when it is nonzero it looks up a 6-byte record in a table, skipping the record when its word at offset 4 is zero.
@@ -1197,7 +1197,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `swaps_records_and_accumulates_word`: Saves a longword and a word from the structure in a2 into globals, copies the structure in a3 into a2 and accumulates the byte at a3 times a word from a1 into a longword at offset 270 of a0, then restores the saved values into a3 and makes six calls before reading a global and returning the result of a call.
 - `calls_helpers_and_preserves_word`: Calls two routines, then tests a word at offset 4 of the structure in a3 and, when it is zero, calls two more routines.
 - `updates_slot_record_with_accumulated_2`: Reads a value from a called routine and, when the record in a table at the slot computed from a global counter has a zero word at offset 4, stores the accumulated global value into that record.
-- `tests_bit_then_conditionally_updates`: Reads a value through a helper and tests one bit of a global bitmask indexed by the high byte of that value; when the bit is set it compares the high byte against a global byte and calls further routines conditionally.
+- `execute_conditional_callbacks`: Calls a routine, then checks a bit in a word from a global variable; if the bit is set, it retrieves a byte from a table using an offset in d0, calls another routine, and then performs a series of conditional calls based on a global word and a comparison with a value in d7.
 - `allocates_or_merges_record_entry`: Uses a structure pointer and a table of 24 six-byte entries.
 - `copies_record_and_advances_source`: Copies a longword and a word from one record to another, sets the destination byte at offset 4 to zero, subtracts a byte from the source byte and adds the same value to the destination byte.
 - `advances_record_pointer_until_empty`: Copies the pointer in a3 into a4 and loops up to 24 times, advancing a4 by six bytes each time until the word at offset 4 of the current record is zero.
@@ -1212,13 +1212,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `stores_blitter_state_and_slot`: Saves d0, d1, d2, d5, d6, d7 and a1 with a0 and d0 on the stack, then stores a longword into a global variable, copies two words from globals into a fixed buffer and writes a byte at offset 16 of that buffer.
 - `calls_three_setup_routines`: Calls three routines in sequence and returns the value in d0 unchanged.
 - `copies_flag_byte_into_slot`: Saves d0 and a0 on the stack, reads a global byte into d0 and calls a routine, then calls a routine and stores the resulting byte into a global variable.
-- `blits_masked_rectangle_and_resets_state`: Reads a byte from the structure in a0 and a word from a table entry, calls routines to blit with the selected bitplane data, and calls further routines when the byte at offset 3 has bit 1 set.
+- `manage_complex_graphics_state`: Saves registers, calls several routines to retrieve values, updates a global pointer and two global words, and performs a series of conditional routine calls and data updates.
 - `scans_slots_setting_bits`: Walks a linked list of records whose head is in a global variable, testing a bit mask and several byte, word and longword fields in each record.
 - `sets_bit_writes_word`: Sets a bit in d6 selected by d7, reads a byte from a1 offset -1 into d0, and calls a helper routine.
 - `updates_table_record_and_flags`: Converts the low byte of the value passed in d0 into a table index, calls several helper routines to look up a record and compute a slot, and when the record's type byte equals 5 calls helpers that adjust a value compared against 10.
 - `compute_record_and_blit_mask`: Reads a global byte into d0, sets d3 to 1 and calls two routines, then if d0 equals 5 it moves d2 into d0 and, when d0 is below 10, calls one routine, otherwise it branches past that call.
 - `subtracts_offset_then_calls_three`: Subtracts a word global from d0, then subtracts 9 from the result, calls two routines, moves d2 into d0, calls another routine, and restores d0, d2 and a0 from the stack before returning.
-- `loads_table_pair_into_globals`: Derives a table index from d0 (reducing it by a global variable when it is 10 or more), then copies a 16-bit pair from a table into two global words.
+- `copy_table_elements`: Compares a word in d0 to ten, and if it is not less than ten, subtracts a word from a global variable, calculates an offset into a table, copies two words from that table to a new location, and calls three other routines.
 - `updates_flag_bits_from_table_entry`: Looks up a 16-bit value through a call, then sets bit 7 of bytes in the structures at a0 and a1 depending on bit 4 of a word read from a structure and on a bit test against a global longword.
 - `sets_status_flags_from_results`: Calls a routine and sets bit 7 of a byte at offset 6 of a structure when the returned word is zero.
 - `stores_handler_and_calls_setup`: Compares the global byte at 1330 with 2 and branches to another routine when it is not less than 2.
@@ -1237,14 +1237,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `stores_flag_nibble_and_calls`: Tests a word global; when it is nonzero, it loads 15 into d0.
 - `copies_record_fields_and_cycles_bits`: Calls three routines, then copies a byte and a word from the buffer in a0 into a structure, merges nine longword entries from the buffer with a stored table, then toggles bit 1 of a byte and loops over a global counter, calling routines until the value changes; finally it jumps to a routine with a table address in a0.
 - `merges_buffer_entries_into_record`: Copies a byte and a word from the buffer in a0 into a structure, merges nine longword entries from the buffer with a stored table where a value of minus one selects the stored entry, copies two more longwords, and then toggles a flag bit and loops on a global counter before returning.
-- `initializes_pointer_list_entries`: When a global flag is zero, it stores two derived values into global variables, then fills 24 consecutive longword entries starting at the buffer in a0, each receiving a value from a helper and a stepped counter.
+- `populate_structure_table`: If a global byte is zero, it calls two routines, calculates two offsets based on global words, stores these offsets and a byte into a structure at a global address, then enters a loop that performs 24 iterations of storing a longword and calling a routine.
 - `loads_words_calls_index`: Saves registers and loads three global words into d0, d1 and d2 when a global byte is below 2.
 - `compute_shifted_column_index`: Calls a helper that computes a shifted column index from d0 and d1 after shifting both right by 9.
 - `copy_state_into_structure`: Calls two routines, stores a fixed longword into a global variable, then copies a byte from the buffer in a0 into offset 54 of the structure in d6 (or stores 1 there when a global flag is set) and copies the next byte to offset 55.
 - `compares_stores_pointer_conditionally`: Compares two word-sized global values, each offset by a constant and shifted right, against two other globals and then calls another routine on either branch of the comparison.
 - `loads_address_and_calls`: Loads the address 23408 (decimal, from the constant at 23346) into a0, calls another routine with it, and then returns.
 - `dispatches_through_table_pointer`: Calls two routines, then calls the code address held in a global longword, acting as an indirect dispatch through a stored pointer.
-- `check_bounds_then_call`: Compares a global word in d0 and a word in d1 against two stored global words using offset range tests, and calls a routine only when both differences fall inside their small ranges.
+- `validate_range_and_call`: Calls another routine, then checks if the result in d0 satisfies a range condition relative to a global word at offset 3704, and if the value in d1 satisfies a range condition relative to a global word at offset 3706, before calling another routine.
 - `computes_four_global_coordinate_bounds`: Scales two global counter words by 16 and derives four global word values from each, offset by constants, clamping each result to a fixed lower or upper bound when it falls outside the range.
 - `computes_two_sprite_bounds`: Takes a counter from a global variable, multiplies it by 16 and writes four clamped coordinate values into global variables: two offsets at 7 and 72 (with fixed caps) from the first counter, and two offsets at 40 and 105 (with fixed caps) from the second counter.
 - `scans_records_for_matching_entry_2`: Loops up to 32 times over 32-byte records in a global array, testing each record's flag byte, a bit mask, and two stored words against d0 and d1, and on a match with the required flags calls several routines and jumps out of the loop; otherwise it calls one routine and returns.
@@ -1252,7 +1252,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `resets_and_conditionally_clears_flag`: Clears a global byte, sets a flag local to the routine, and calls a helper to test it.
 - `call_then_restore_saved_registers`: Calls one routine, sets d7 to 255 or 0 from the result's flag, tests d7, then restores d0 and d1 and d7 from the stack and returns.
 - `calls_handlers_for_nonzero_table_entry`: Saves d0 and a0, reads a byte from a table indexed by d0, and when it is nonzero calls two routines and returns with d0 unchanged after restoring the saved registers; for a zero entry it skips the calls and restores d0 and a0, then sets the status flags from d0 and returns.
-- `clears_and_tests_flag_byte`: Sets a local flag to false and a byte value to 1, calls another routine, and if the flag is still clear, calls another routine and tests a global byte against a bit mask; when the test passes it sets the global byte to 255 and then clears it to zero.
+- `check_attribute_conditions`: Calls two routines and, if the results meet specific criteria involving a byte from a global structure and specific bit tests, it sets a global byte to 255, calls another routine, and then sets the global byte to zero.
 - `call_then_conditionally_call_pair`: Calls a routine, and if its result sets the zero condition it calls a list-walking routine and then a routine that returns immediately when a global word is 1; it then returns.
 - `scans_structure_list_and_updates`: Walks a list of 32-byte records through the pointer in a0 while the counter in d7 is below 32, testing flag bits and two 16-bit fields in each active record against values in d0 and d1.
 - `conditionally_updates_structure_state`: Tests bit 4 of the byte at offset 2 from a0 and, when it is clear, calls two routines, combines a status bit from a table-derived structure with the previous result, and clears a global variable and writes d7 to a global word when the combined bit is set; otherwise it calls a routine that handles the byte at a0 and then calls two further routines.
@@ -1261,8 +1261,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `advances_pointer_and_tests_counter`: Adds 32 to the pointer in a0 and increments d7 by one, looping back while d7 is below 32.
 - `conditionally_update_global_table`: Returns immediately when a global word is 1.
 - `copies_table_entries_into_globals`: Calls several helpers, stores the constant 103 and a handler address into a global table, and when a global index is nonzero either calls a helper or loads a global variable from a table indexed by that index, then stores 255 into another global.
-- `stores_index_and_sentinel_globals`: Loads a byte from a table indexed by the low word of d0 into a global, stores a second byte from a table offset by that index into another global, saves the word in d0 to a global, stores 255 into a global variable, then calls two routines and returns.
-- `tests_bit_and_clears_global_byte`: Clears a local flag and sets a second local to true, calls a routine, then if the first flag is still clear and a bit of a global byte selected by a range check is zero, it sets a global byte to 255 and calls a routine; otherwise it clears the global byte and returns.
+- `fetch_and_process_index`: Copies two bytes from a table into global variables, stores a word in a global variable, adds d0 to itself, loads a word from a table into d0, calls a routine, copies a byte into a global variable, stores a longword in a global variable, calls two more routines, and restores registers before returning.
+- `process_conditional_file_data`: Saves registers, calls two routines, branches if the first returns a negative value, checks a byte from a global variable against specific values, calls a routine, loads an address into a0, calls another routine, calls a third routine, and if a global byte is zero, copies a word from one global variable to another before returning.
 - `initializes_layout_record_and_global`: Stores a0 into a global pointer, clears a global longword and a second global longword, sets a word at a fixed address to 24, clears a word at offset 18 of a structure, and calls a routine before restoring d0 and a0.
 - `initializes_globals_and_marks_slots`: Clears two global longwords, then walks a 6-entry global byte array and writes a running index into the array slot named by each nonzero byte, and finally calls four routines and one more with a0 set.
 - `clears_table_and_global_byte`: Walks backward through a 12-byte region from a global address, storing the down-counting value into a second table at the index given by each nonzero byte, then runs three calls, clears a global byte to zero, runs three more calls and tail-jumps to another routine.
@@ -1322,7 +1322,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
 - `clear_counters_and_swap_buffers`: Clears a global longword, sets a global word to 31, calls several helper routines, then swaps two longword globals, copies the first into a third global and inverts a global byte.
 - `blits_then_loops_clearing_flags`: Calls a helper routine, stores 31 into a global word, and then runs a loop of ten iterations that calls helper routines and increments a counter in d3 each time.
-- `conditionally_blit_text_and_count`: If the byte in d0 is nonzero and a table entry for the row index is set, it writes 26 and 31 to two blitter-control globals, stores the byte into another global, and calls helper routines to draw the line.
+- `process_scaled_tile_data`: Shifts d0 right by 8 bits, and if the result is non-zero, calls a routine, calculates an offset into a table using d0, checks a byte at that offset, writes d0 to a global variable, sets two global variables, performs a routine call with d0, calls another routine, and finally calls three more routines.
 - `clips_and_blits_bounded_rectangle`: Takes the high byte of d0 and, when it is non-zero, calls a helper routine to clip a rectangle, decrements the index, and compares a byte in a table with zero.
 - `processes_nonzero_high_byte_of_d0`: When the high byte of d0 is nonzero, stores it in a global and sets a table entry and a second global to fixed constants.
 - `forwards_call_then_returns`: Calls the routine at a fixed absolute address and then returns to its caller without changing any registers itself.
@@ -1349,8 +1349,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `saves_a0_then_guards_pointer`: Calls two helper routines and keeps the result of the first one, then if a global pointer is nonzero and the longword at offset 38 of its structure is nonzero, stores 255 into a global byte and calls three further routines before returning the saved result.
 - `refresh_globals_and_process_dirty_table`: Recomputes a 16-bit dirty mask by comparing eight words of a global table against a shadow copy, copies the changed shadow words back, and then calls a routine for each set bit whose table entry has its top bit set.
 - `clears_flag_and_copies_table_block`: Clears a global byte when it is set and calls three routines.
-- `sets_status_bits_in_records`: Compares a global byte with zero and calls two helper routines, then conditionally sets bit 7 of the byte at offset 8 of a0 and bit 7 of the bytes at offsets 6 and 12 of a second structure.
-- `conditionally_clears_global_flags`: Clears a flag that controls a branch, then if it is set and a global byte is nonzero it calls a routine and, when the result is nonzero, calls several more routines.
+- `update_structure_flags`: Calls two different routines, sets various bits in a structure based on the results, and then performs several conditional bit sets in the structure based on values retrieved from a table and global variables.
+- `process_event_callback_chain`: Loads a byte from a global structure, calls a routine with a constant in d7, and if the result is zero, checks a byte in another global structure to decide whether to call a sequence of three routines or a different sequence of three routines based on the status of two additional bytes in the global structure.
 - `calls_helpers_on_longword_sentinel`: Calls four helpers in sequence, then tests a global byte, and when it is zero compares a global longword against -1.
 - `sets_flag_and_calls_handler`: Clears a local flag, calls a routine with d0 cleared, and if the flag was set, calls a routine with 107 in d0; it then returns.
 - `initializes_slot_state_and_calls`: Stores constants 108, 344 and 24 into global variables and writes a zero byte to another global, stores the address of a global variable into a global pointer slot, and makes a series of calls to other routines.
@@ -1366,15 +1366,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `compares_word_and_calls_fixed_routine`: Compares a global word with the constant 6 and, if it is not below 6, loads 121 into d0, calls a fixed routine, and then branches to a later point; if the word is below 6 it branches directly to that later point.
 - `dispatch_flag_gated_routines`: Calls a routine that returns a pointer, reads the byte it points to, then calls another routine.
 - `sets_flag_and_calls_routines`: Loads the constant 5 into d0 and calls a routine, then when the result is non-negative calls a second routine.
-- `stores_table_entry_and_flags`: Calls two helpers, reads a 16-bit word at offset 24 of the structure returned by the second helper into a global longword, and stores 110 into a global word.
-- `stores_table_entry_with_alternate_offset`: Calls two helpers, reads a 16-bit word at offset 26 of the structure returned by the second helper into a global longword, and stores 111 into a global word.
+- `update_event_state`: Calls a routine, stores a pointer from the result into a global variable, writes 110 into a memory location, sets a byte at a memory location to 1, clears a longword at a memory location, calls a routine, and performs several conditional checks and calls based on the state of a memory location.
+- `update_event_state_variant`: Calls a routine, stores a pointer from the result into a global variable, writes 111 into a memory location, sets a byte at a memory location to 2, clears a longword at a memory location, calls a routine, and performs several conditional checks and calls based on the state of a memory location.
 - `loads_long_from_table`: Reads a byte through a0, shifts it left by 2 to form a table index, and returns the 32-bit longword stored at that index in a table in memory.
-- `computes_slot_and_copies_point_pair`: Computes an offset from a 16-bit input and a global counter, copies a pair of 16-bit words from a table into globals, and calls helpers.
-- `copies_globals_and_calls_five`: Copies one longword global into another and a second longword global into a third, then calls five other routines and returns the values held in d0 and d1.
+- `scale_and_copy_data`: Saves registers, calculates an offset into a table using d2, copies two words from that table into global variables, calls two routines, calculates a new offset using multiplication, copies a byte from a memory location into a structure, and calls three more routines.
+- `copy_and_process_data`: Copies two words from a source address to a destination address, calls three subroutines, and uses d0 and d1 to pass values to a subroutine using a global address in a0.
 - `saves_registers_and_calls_helpers_2`: Saves d0 through d2 and a0 on the stack, points a0 at a fixed address, loads two 16-bit globals into d0 and d1 and the constant 10 into d2.
 - `saves_registers_and_scans_flags`: Saves d0-d2, d6-d7 and a0 on the stack, points a0 at a fixed address, sets d6 to 1 and d7 to 5, then tests bytes through a0 and jumps forward to a later instruction when a zero byte is found, otherwise it adds to d6 and loops.
-- `builds_bitmask_and_stores_index`: Stores a byte from a global variable through the pointer at a0 minus one, then combines five consecutive global bytes into a 32-bit bitmask by shifting 1 left by each byte value, searches downward from bit 11 for the highest clear bit, and stores that index into a byte at an offset from a global variable.
-- `builds_and_draws_indexed_rows`: Computes a 48-byte-stride offset from a register, stores it and fixed values into global variables, copies a null-terminated string from a table into a global buffer, calls a series of routines, then loops from 1 to 36 calling four routines per iteration before a final set of calls.
+- `update_graphics_and_table`: Stores a byte at a negative offset of a pointer in a0, calculates an offset into a table using a global word and a value in d0, calls a routine, and then enters a loop that sets bits in a bitmask based on bytes read from a table.
+- `update_graphics_structure_3`: Calculates a value based on d7, stores it in a local stack area and a global word, calls a routine, and then enters a loop that copies bytes from a table to a global location, performing various routine calls and updates to a global word and a structure byte.
 - `calls_setup_or_wait_routine`: Tests a byte in a global variable, branching when it is nonzero; otherwise it calls a routine at a fixed address and branches forward to return.
 - `forwards_init_call_then_returns`: Calls the routine at a fixed absolute address, which stores a0 into a global pointer and clears two global longwords, then returns to its caller.
 - `saves_a0_and_initializes_globals`: Pushes a0 onto the stack, clears a global longword, sets a global longword to a fixed pointer value, stores 24 into a word at a fixed address, and clears the word at offset 18 of the structure in a0 before calling another routine and restoring a0 from the stack.
@@ -1400,7 +1400,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `repeat_call_then_two_calls`: Calls the first routine in a loop controlled by the signed word counter in d3, decrementing it after each pass until it reaches minus one, then calls two further routines in sequence and returns.
 - `dispatches_on_returned_value`: Calls a routine and tests the word it returns; when that word is non-negative it branches to another part of the code, otherwise it calls a different routine and then branches forward.
 - `compares_word_and_calls`: Compares a global word with d0 and, when they differ, calls one routine and then branches forward to a later point in the code.
-- `stores_address_and_sets_counter`: Calls a routine that returns a value, stores the low word of that value into a global word, passes the value to another routine, writes the constant 23 into a global longword, and calls one more routine.
+- `update_tile_offset`: Calls a routine, stores the result in a global variable, pushes d0 to the stack, loads a byte from a global address, calls another routine, calculates an offset by multiplying d0 by 20 and adding it to a global pointer, stores the constant 27 in a global variable, and calls a final routine.
 - `dispatches_with_index_one`: Sets d0 to 1 and branches to a shared dispatch routine, then returns the value that routine yields.
 - `dispatches_with_index_three`: Sets d0 to 3 and branches to a shared dispatch routine, then returns the value that routine yields.
 - `dispatches_with_index_five`: Sets d0 to 5 and branches to a shared dispatch routine, then returns the value that routine yields.
@@ -1427,10 +1427,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `scans_grid_and_blits_cells`: Repeatedly calls a routine while decrementing a global counter, then walks a grid of cells with nested counters, calling a blitting routine for each nonzero byte and a separate routine for one marked cell whose choice depends on bit 0 of a global byte.
 - `iterates_grid_cells_and_clips_blits`: Calls a routine repeatedly and increments a global word, then iterates over a grid of cells using two global counters: for each nonzero byte it calls a routine, and at one specific cell it either calls one routine or another depending on bit 0 of a global byte, returning the parameter unchanged.
 - `steps_pointer_and_clips_blit`: Loops over characters at a pointer in a2 with counters in d4 and a stack word, incrementing two global words on each step and calling a routine when the character is nonzero.
-- `forwards_to_masked_rectangle_clip`: Calls one routine and returns, leaving the registers as the called routine set them.
+- `calculate_blit_offset`: Retrieves two bytes from a table, performs a conditional check, and if certain bits are set, calculates a destination address and calls a scaled blit routine.
 - `adds_offset_and_blits_rows`: Saves d3 and a0, adds a 192-byte multiple selected by the low two bits of the word at absolute address 598 to a0, and calls the row-blitting routine before restoring the saved registers and returning.
 - `tests_mask_and_calls_helpers`: Calls six other routines, tests bit 4 of a global longword to optionally call five more, then tests bit 0 to choose between two routines, and returns the d0 and d1 values.
-- `calls_clip_and_decrement_pair`: Calls a clipping routine and then a routine that decrements a byte at offset 19 of a0, and returns with the value in d0 unchanged.
+- `execute_blit_and_modify`: Calculates a destination address through division and multiplication, calls a scaled blit routine, and then calls another routine to modify a value from a global pointer.
 - `scans_control_bytes_with_branches`: Reads bytes from a buffer through a0 in a loop, returning when a zero byte is found, and branches on each byte value: 17 tests bit 0 of a global byte, 8 tests bit 1, and values whose bit is set in the mask 112 test bit 2, with other values calling three routines before looping again.
 - `tests_bit_and_branches_on_mode`: Compares d0 with 8, branches if not equal, and tests bit 1 of a global byte; depending on the result it branches to one of two code paths, or falls through to an unconditional branch.
 - `dispatch_bit_test_loop`: Tests a bit of the value in d0 against a bitmask in d4 and, when it is set, branches to a flag-masking path.
@@ -1455,7 +1455,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `draws_text_line_with_fill`: Clips a rectangle, then walks up to 16 entries of a table, selecting one of two fill values per entry, and when the byte at offset 2 of the current record is nonzero it sets a global byte to 40 and writes two bytes through a0 before returning the final register value.
 - `set_default_status_word`: Tests the byte at the address in a1; when it is zero, writes the word 31 to a fixed global address, and otherwise branches past that write to a later instruction.
 - `copies_text_line_with_fill`: Loops over a count in d2, and when the byte at offset 2 of the structure in a1 is nonzero it stores the value 40 into a global byte, writes 41 and 0 to the buffer in a0 and calls a routine, decrementing d2 each pass until it reaches -1.
-- `blit_entry_from_index_table`: When d0 has a nonzero high byte and the summed index is within a limit and its table flag is zero, it stores a table byte into a global word, sets blitter-control globals to 26 and 31, and calls helper routines.
+- `check_and_store_tile_byte`: Shifts d0 right by 8 bits, and if non-zero, checks if a calculated address is within bounds and points to a zero byte, then stores a byte from that address into a global variable, performs a routine call, sets two global variables, performs a routine call with a calculated value, and calls three more routines.
 - `clears_blitter_state_for_row_byte`: Adds the high byte of d0 to a global byte and, when the sum is within a global limit, reads a table entry for that index; if the entry is zero it clears a global word and sets another to 65535 around two calls, otherwise it writes 31 to a global word and calls two routines.
 - `sets_word_when_byte_equals_one`: Compares the byte at the address in a0 with 1 and, when equal, loads 27 into d3 before branching unconditionally to a fixed location in another routine; otherwise it branches to a different fixed location.
 - `set_word_and_branch_back`: Loads 241 into d3, calls another routine, and then branches unconditionally to a fixed location in another routine.
@@ -1464,7 +1464,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `sets_globals_and_calls_helpers`: Shifts the high byte of d0 into position, calls a helper, stores the bytes and words 240 and 2 into global variables, loads a fixed address into a0 and calls another helper.
 - `tests_bit_and_stores_words`: Tests bit 0 of d0 and, depending on the result and a global byte, stores the word 284 into a global word, then branches to a later instruction.
 - `stores_constants_and_sets_bit_mask`: Stores the word 235 and the longword 2626 into two global variables, loads a0 with a fixed address and calls a routine, then if a global word is nonzero it shifts 1 left by that value into a global word, otherwise it clears a global byte and branches to a later point.
-- `clears_flag_and_conditionally_calls`: Stores constants into two global variables, then when a pointer taken from an indexed table is nonzero and a second pointer from it is nonzero, calls that pointer, and finally clears a global byte and calls another routine if it was nonzero.
+- `execute_indirect_callback`: Stores 126 in a global variable, saves a value to a global variable, loads a pointer from a table into a1, and if the pointer at an offset from a1 is non-zero, calls another routine; it then checks a global byte, potentially negates it, and calls another routine before returning.
 - `save_and_branch_conditionally`: Saves d0, d1 and a0 on the stack, then tests a global flag byte; if it is set and a second global flag byte is also set, it loads the byte at offset 27 of the structure whose pointer is in a global longword into d0 and branches on to another routine's code, and otherwise it branches past that load to the same continuation point.
 - `branches_into_helper_then_clears`: Loads a word from a global variable into d0, calls a fixed routine, clears a global byte, and then branches to another routine's code.
 - `decrements_structure_word_and_sets_flag`: Subtracts a table byte from a word at offset 208 of a structure, clamps it at zero, then adds two words at offsets 194 and 198, stores the sign of the sum as 0 or -1 in a global byte, and calls routines depending on that flag.
@@ -1501,15 +1501,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `tests_flag_then_branches_to_helper`: Calls one routine and branches on the zero flag, either calling a helper routine or branching forward to a later routine.
 - `conditionally_updates_byte_offset_one`: Converts the low byte of a value from a table into a word-sized comparison against a byte at offset 1 of a structure in a0, and when the result is positive it adds one to that byte at offset 1 of a0 after multiplying the 16-bit halves of a longword result.
 - `conditionally_decrements_offset_one`: Subtracts the byte at offset 1 of a0 from the low byte of a value read from a1, branches to a path that calls routines when the result is positive, and otherwise stores d0 and calls another routine with d0 set to 257 before jumping to a common exit.
-- `increments_byte_at_offset_one`: Calls two other routines, obtains a longword result, multiplies its two 16-bit halves, adds the high word of the product plus one to the byte at offset 1 of the structure in a0, then calls two more routines and returns.
+- `calculate_and_update_byte`: Calls two subroutines, compares a byte from a structure in a2 to d0, and if d0 is not positive, performs a multiplication, swaps the result, and adds it to a byte at offset 1 of a structure in a0.
 - `dispatches_on_byte_then_calls_pair`: Calls one routine and, when the zero flag is set, reads a word from a global variable, subtracts 2 from it and doubles it to index a table, then loads two bytes from that table; it then calls two further routines and returns.
 - `tests_flag_then_calls_routines_again`: Calls one routine and, when the zero flag it leaves set is true, calls two further routines; otherwise it returns.
 - `advance_counter_and_add_offset`: Tests a masked word field at offset 30 of the structure in a0 and, when the masked bits are zero and the word at offset 26 is not 32767, increments that word and adds 250 to a long at offset 270, then calls another routine which returns the value; otherwise it returns.
 - `dispatches_flagged_handlers_conditionally`: Calls a helper that tests flag state and, when the second flag test is also set, calls another routine; otherwise it skips that call and then calls a second routine that stores a fixed address into a0 and calls a further routine before returning.
-- `accumulates_flagged_entries_and_calls`: Reads a word at offset 30 of the structure in a0, and when the masked bits are zero, it reads a global byte and calls routines to store it.
+- `process_graphics_list`: Checks bits 13 and 14 of a word at offset 30 of a structure in a0, and if they are clear, performs a sequence of routine calls, manipulates a global byte, and enters a loop that iterates up to 10 times to process structure data and call routines.
 - `tests_bit_and_stores_word_pair`: Clears a global byte, derives a shift count from a global variable and tests a bit of a word read from the same source; when the bit is set and the second word also passes, it stores two words into global variables and calls two routines before returning.
 - `calls_routine_with_code_66_2`: Sets d0 to 66, calls another routine, and then returns.
-- `copies_three_words_into_structure`: After calling a helper that returns a pointer in a0-derived form, writes three global words into a structure at offsets 36, 38 and 40 and then calls two other routines.
+- `update_structure_pointers_3`: Calls a routine and, if the zero flag is set, retrieves a pointer from a table, uses it to write three words into a structure at offset 36, and then calls two more routines.
 - `updates_global_words_from_structure`: Reads a word at offset 38 and a word at offset 40 of a structure, then branches on the second word: when it is zero it calls one routine, and otherwise it compares it with a global word and conditionally stores two global words and calls further routines.
 - `stores_words_into_globals`: Calls a routine with d0 set to 260, then compares a global word with d3; if they differ it stores d1 and d2 into two global words and calls another routine, otherwise it branches to a common exit.
 - `stores_d1_d2_d3_into_globals`: Calls one other routine, then stores the word values in d3, d1 and d2 into three global words in that order, and calls one more routine before returning.
@@ -1520,7 +1520,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `stores_offset_and_calls_blit_helpers`: Loads the constant 64 into d0 and calls a helper, compares a global byte with 2 and calls a second routine when it is not lower, then loads a global word into d0 and the constant 2 into d1 before branching to a later point.
 - `loops_blit_rows_with_offsets`: Stores d0 into a global word and runs a loop of calls, subtracting d1 from d0 and adding 2 to d1 on each pass, using d7 as a signed counter that is decremented until it reaches minus one.
 - `stores_table_pair_into_slot_four`: After the flag test, loads a word from a global, subtracts 21, doubles it, reads two bytes from a table indexed by that offset into d1 and d0, sets the slot selector to 4 and calls a routine to store the pair.
-- `calls_five_routines_when_flagged`: After the flag test, calls five routines in sequence, the first of which is preceded by a comparison of a global byte against 2; the others are plain calls and nothing else is done.
+- `execute_multiple_updates`: Calls a routine and, if the zero flag is set, performs four separate calls to another routine with varying values in d0 and d7, then calls a final routine before returning.
 - `branches_to_record_update_routine`: Calls a routine and, when it reports zero, branches forward; otherwise it calls a second routine and then branches unconditionally to a later point in the code.
 - `toggles_bit1_indexed_byte`: Computes an address from a global value scaled by six plus a base offset applied to the result of a routine call, clears bit 1 of the byte at offset 3 of that address if it is set, and then calls two other routines.
 - `clears_bit_one_of_structure_byte`: Clears bit 1 of the byte at offset 3 of the structure in a0, then calls two other routines, one after saving d0 and loading it from a global word, and returns.
@@ -1541,9 +1541,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `stores_fixed_values_into_slots`: Calls a routine and, when the zero flag from that test is set, sets d0 to 0 and d1 to 180, stores d1 into slot 5 with a call, then stores into slot 6 with a second call.
 - `tests_global_then_calls`: Tests a word-sized global variable and, when it is nonzero, loads the constant 283 into d0 and calls a fixed system routine.
 - `compare_flag_and_call_handler`: Compares the byte at a fixed global address against 1 and branches forward when they are equal; otherwise it loads the constant 244 into d0, calls a routine, and then branches to the end.
-- `conditionally_sets_flag_and_calls`: Calls two routines and then compares a returned byte with 2 when the zero flag from the first test is set.
+- `execute_conditional_sequence`: If a condition is met, it calls two routines with d0 set to 46, and if the result is two, it sets a global word to one, calls a routine, and calls another routine with d0 set to five.
 - `calls_handler_with_fixed_address`: Calls a routine and, when the zero flag from that test is set, loads a fixed address into a0 and calls a second routine, then calls a third routine.
-- `updates_health_and_flag_globals`: Masks the word at offset 30 of the structure in a0 with 58496, and when that result is zero it subtracts a scaled value from the word at offset 106, clamps the result to a minimum of 18, and calls several routines, then checks a global flag against a global word before calling further routines.
+- `calculate_and_verify_offset`: Checks if bits 14, 15, and 16 of a word at offset 30 of a structure in a0 are zero; if so, it calls another routine, calculates a new value for a word at offset 102 of the structure based on a multiplication and subtraction, calls another routine, and if a global byte and a global word match specific values, calls two more routines.
 - `copies_fixed_address_into_a0_and_calls`: Calls a routine and, when the zero flag from that test is set, loads a fixed address into a0 and calls a second routine with it before returning.
 - `swap_globals_and_toggle_flag`: Clears a longword global, calls five other routines, then swaps two longword globals and copies the first into a third global.
 - `resets_mask_and_calls_helpers`: Stores 31 into a global word, calls two helper routines, computes a count from a global variable clamped to 16 or 32, and then loops that count down, calling two helper routines on each pass until the count reaches zero.
@@ -1564,7 +1564,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `sets_flag_and_runs_helpers`: Calls one routine, sets a global byte to 255 twice with a second routine call between, then calls a further routine and finally clears the same global byte to zero before returning.
 - `dispatch_conditional_slot_bit5`: Calls a subroutine, and if the zero flag is set afterward, loads the address of a further data item into a0 and calls two further subroutines.
 - `set_bit5_and_call_handler`: Reads the word at offset 30 of the structure in a0 and, when its masked bits are zero, sets bit 5 of that word and calls another routine, then returns.
-- `fills_pointer_slots_with_table_values`: When a global flag is zero, it stores two derived values into global variables, then writes 24 consecutive longword entries starting at the buffer in a0, each taken from a helper and incremented by one, and calls three routines before returning.
+- `update_table_with_offsets`: If a global byte is zero, it calls two routines, calculates two offsets using global words and bit shifts, stores these and a byte into a structure, and then enters a loop of 24 iterations that increments d0 and d1 while storing a longword and calling a routine.
 - `dispatches_record_updates_and_countdown`: Calls a sequence of helper routines, including one with the 6-byte record selected by the word in d1 minus 1 from a table, then compares a global variable with 200 and, when it is below 200, calls a routine and decrements the byte at offset 19 of a0 if that byte is nonzero and the comparison was equal.
 - `stores_pair_in_indexed_slot`: Preserves d7 and a0, and when the low byte of d1 is not less than the word at a computed table slot selected by d7, writes the low byte of d0 and the low byte of d1 into that slot, then restores the registers and returns.
 - `reset_clamped_coordinate_globals`: Clears four 16-bit globals and sets a global from the sign of the doubled coordinate values, then computes two clamped coordinate words from the table values when they fall below fixed thresholds.
@@ -1572,7 +1572,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clamps_coordinates_and_swaps_longwords`: Copies two global words into two other globals, sets a global byte from sign tests on each offset value and computes replacement words from fixed constants when negative, swaps two longword globals and copies the first into a third, inverts a global byte, and calls several routines.
 - `reads_byte_and_clears_slot_entry`: Reads a global byte into d0, calls several routines, decrements a global byte, and then calls more routines, including one that is made only when the longword at offset 36 of the structure returned is nonzero.
 - `draws_rectangle_at_fixed_coordinates`: Loads fixed constants 16, 49, 11 and 9 into the data registers and a fixed address into a0, calls a routine and the rectangle-drawing routine, then calls a routine that advances a table index and tail-jumps to a final routine.
-- `advance_table_index_and_call`: Computes a table offset from two word globals, passes it to a helper routine and calls further helpers.
+- `update_clipping_and_counters`: Calls a routine with a pointer from a table, performs several calculations involving global values and bit tests, updates a counter in a global variable, and calls two more routines before returning.
 - `dispatch_indexed_handlers_conditionally`: If the high byte of the register d0 is nonzero, it computes an index from bits 8 to 11 minus one and calls a handler from a table through a pointer, then calls the same handler a second time when that index is odd.
 - `decrement_word_if_flag`: When the global variable at address 1 byte is nonzero and the word global variable at offset 3442 is at least 2, it subtracts 2 from that word and returns.
 - `decrement_word_at_0d70_flagged`: When the byte global variable is nonzero and the word global variable at offset 3440 minus 2 is not negative, it subtracts 2 from that word and then returns.
@@ -1588,19 +1588,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initializes_and_blits_bordered_rectangle`: Copies a block of eight words between two global variable areas, sets a global word to 2, and looks up a byte from a structure in a global pointer against a table of eight words before storing the match index in a global.
 - `fills_entry_and_clears_global`: Calls a routine eight times in a countdown loop, then calls a routine that returns a structure pointer and writes a flag bit and a byte derived from a global word table into it; it then calls several more routines, clears a global longword, and returns the value from one of its calls.
 - `blit_centered_bordered_rectangle`: Calls several helpers, then loops five times calling two routines each pass while counting a word from 4 down to 0.
-- `blits_fixed_width_rectangle_and_returns`: Calls a routine with the constant 144 and then several helper routines, computes a value from a returned word plus 2 and passes it to another routine, then returns the word returned by a helper in d0.
+- `execute_callback_sequence`: Loads a pointer from a table, calls a routine, then calls another routine using values from the stack, performs a triple callback with specific constants, and finally calls a routine with a modified pointer.
 - `resets_counter_on_wrap_threshold`: Calls another routine that loads a table entry and sets the zero flag, then if that flag was set and the global word is at least 4 it clears that global word to zero.
 - `clamps_counter_up_to_four`: Calls a table-entry helper, and when the global word is below 4 it stores 4 into it, otherwise it leaves the word unchanged and returns.
 - `cycles_counter_down_within_group`: Calls a table-entry helper and, when its flag is set, divides the global word by 4, subtracts 1 from the remainder with wraparound to 3, and writes back the group base times 4 plus the adjusted remainder.
-- `cycles_counter_up_within_group`: Calls a table-entry helper and, when its flag is set, takes the global word modulo 4, adds 1, and resets it to 0 if the remainder was 3 or more, then writes back the group base times 4 plus the new value.
+- `increment_global_word`: Calls a routine, and if the return value is zero, divides a word in a global variable by four and updates it with a new value based on the quotient and a modulo-based offset.
 - `invokes_callback_after_table_check`: Calls a table-entry helper and, when its flag is set, calls another routine and calls a further routine only if that result byte is nonzero.
-- `calls_helper_and_returns_word`: Calls one routine with the constant 112, then calls another routine to obtain a word, calls a further routine, and returns that word in d0.
+- `execute_nested_calls`: Pushes a constant to the stack, calls a routine to get a pointer, uses that pointer to call another routine with an offset, and then calls a third routine after pushing and popping a byte from a global variable.
 - `loads_table_entry_and_calls_helper`: Multiplies d0 by 6 to index a table at a fixed address, reads two words from it and adds 48 and 49 to them, reads a third word, then calls a routine that writes to a global byte based on a zero test and tail-jumps to a routine.
 - `calls_four_routines_then_jumps_2`: Calls three routines in sequence, then calls a routine that copies eight words from a global pointer into a buffer, clearing the top bit of each word, and executes a jump to another routine.
 - `decrements_counters_and_scans_flags`: Calls two routines, then walks six global byte counters, decrementing each nonzero one and calling a routine when it reaches zero, then walks six global bytes again and calls routines for each nonzero one, returning the value returned by the first routine.
 - `waits_releases_and_pops_record`: Calls a routine that waits for status bits to clear, calls two routines, and if the global record pointer is not the sentinel it decrements a global variable when bit 0 is set, moves the pointer back by 54 bytes, and calls another routine when bit 1 of the old flags is set, then tail-jumps to a releasing routine.
 - `releases_slot_and_calls_handler_30`: Calls a routine that releases a linked slot, then tail-jumps to a routine, and invokes the code pointer at offset 30 of the global structure when that pointer and the structure are non-null.
-- `reads_status_and_sets_globals`: Calls two helper routines, reads a word through a pointer returned by one of them, and stores a sign value or a small code into a global variable depending on bit 1 of that byte-sized value.
+- `process_event_data`: Retrieves a word from a global variable, calls a routine, and stores the result in another global variable.
 - `clears_flag_and_pops_record`: Releases a linked slot if a global byte is nonzero, sets that byte to 255, calls two routines, and when the global record pointer is not the sentinel it decrements a global variable if bit 0 is set and moves the pointer back by 54 bytes, calling another routine when bit 1 of the old flags is set.
 - `sets_flag_brackets_blit_calls`: Sets a global byte to 255, calls three routines, then clears the same byte to 0 and calls three more routines before jumping to a final routine.
 - `saves_registers_and_runs_blit_setup`: Saves registers d0 through d7 and a0 through a6 on the stack, then calls four routines in sequence, one of which is a blit-related setup routine.
@@ -1620,7 +1620,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `scan_table_for_matching_entry`: Walks a table of 20-byte records, advancing a0 by 20 each step and decrementing a counter, until it finds a record whose first two bytes match the values held in d0 and d1; the routine then carries on with the matched record.
 - `scan_table_then_update_flags`: Walks a table of 20-byte records from the address in a0, advancing by 20 bytes per step and decrementing a counter in d7 until it finds a record whose first two bytes match d0 and d1, then calls another routine on that record.
 - `updates_selected_slots_and_flags`: When a global byte equals 7 it iterates over a 6-byte global array, calling routines on each nonzero entry that passes a bit test on a structure word, then conditionally applies bit tests, clears a global byte and sets a global byte to 255 before calling further routines.
-- `conditionally_calls_routine_on_bit_test`: Calls two routines, clears a global byte when it equals 1 and the table byte at the index in a global word is nonzero, and then calls another routine.
+- `check_attribute_and_call`: Calls two routines, compares a global byte to one, and if it matches, retrieves a byte from a table and calls another routine if the byte is non-zero.
 - `computes_flag_bits_and_stores_global_byte`: Loops over six global bytes, setting a bit in a mask for each non-zero entry whose two words satisfy a comparison, then loops over five more entries looking for one whose flag word has its high bits clear, clears the top bit of the mask on a match, and stores the final byte into a global variable.
 - `stores_byte_and_calls_helper`: Saves registers and the low word of d0, loads the byte at offset -1 from a0 into d0, calls a helper, restores d0 and stores d6 as a byte to a fixed absolute address before restoring the saved registers and returning.
 - `saves_registers_and_dispatches_by_flag`: Saves registers d1 to d7 and a0 to a1 on the stack, copies the words in d0 and d1 into d4 and d5, and branches on a global byte: if it is 2 or more it jumps to one fixed location, if it is zero it jumps to another, otherwise it loads a global byte into d7 and branches elsewhere.
@@ -1650,20 +1650,5 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `updates_stored_position_pair_clamped`: Calls two routines and computes a new pair of longwords from two global longwords and a returned value, storing them into globals.
 - `subtract_scaled_offset_from_accumulator`: Reads a global word, subtracts 128, scales it by a global word, shifts the product left by 13 bits and subtracts it from a global longword, then jumps to a fixed address.
 - `shifts_stored_position_pair_clamped`: Calls two routines and subtracts a returned longword from one global longword and the high part from another, then writes the result pair to globals through the same zero-test and 255-flag exit as its neighbours.
-- `offsets_position_by_word_scaled_value`: Reads a global word, subtracts 128 and shifts it right by two, then calls two routines.
-- `offsets_position_by_word_halved_value`: Reads a global word, subtracts 145 and shifts it right by one, then calls two routines.
-- `offsets_position_by_word_arithmetic_shift`: Reads a global word, subtracts 161 and arithmetically shifts it right by one, then calls two routines.
-- `subtract_halved_offset_from_accumulator`: Halves a global word after subtracting 128, scales it by a global word, shifts the product and subtracts it from a global longword, then jumps to a fixed address.
-- `add_negated_halved_offset_to_accumulator`: Offsets a global word, negates it, halves it, scales the result by a global word, shifts the product left by 13 bits and adds it to a global longword, then jumps to a fixed address.
-- `clamp_and_halve_word_in_d0`: Returns zero in d0 when the word there is negative; otherwise it branches to a routine that clamps the word to 47 and halves it, adding 1.
-- `halve_clamped_word_plus_one`: Compares the word in d0 against 48 and, if it is 48 or more, replaces it with 47; it then halves the value, adds 1 and returns the result in d0.
-- `scale_table_samples_pair`: Multiplies the word in d0 by a global word and shifts the product right by 4, then uses a global word masked to 10 bits, doubled, as an index into a global table to read two signed words, multiply each by the scaled value and by 4, and return both products as a pair of longwords.
-- `computes_grid_cell_index_2`: Calls a helper that yields a value in d6 and a word coordinate in the low bits, then when the masked high byte equals a fixed address it derives a grid index.
-- `computes_grid_cell_index`: Subtracts 32 from d0 and 49 from d1, divides each by 48, combines the results as the column plus three times the row, and stores the sum as a word in a global variable before calling a helper and returning.
-- `dispatch_grid_cell_handler`: When the masked high bytes of d2 equal a fixed value, it derives a cell index from two divided coordinates in d1 and d0 (offset by constants, divided by 48, and combined as a row times three plus column), scales that index by four to look up a pointer in a table, and calls the routine at that pointer if it is non-zero.
-- `calls_lookup_and_scan_routines`: Calls three routines in sequence, tests a global byte, and conditionally calls up to three more routines, returning after the final call.
-- `calls_helpers_when_key_mismatch`: Loads two words from absolute addresses into d0 and d1, calls a helper, and when the masked high bytes of d2 are not equal to the constant a fixed address, loads a0 with an address and calls another helper before returning.
-- `stores_scaled_lookup_byte`: Saves d0 and d1, reads a word from a global variable, calls a routine with the constant 15 in d1, stores the returned byte into a global variable and restores the registers.
-- `copies_word_block_into_globals`: Calls several routines, then copies either 32 words or 16 words from a buffer pointed to by a0 into a global word array, with the 16-word case copying the buffer twice, depending on the signed value of a global byte.
 
 The function list continues in: g2156-recovery-functions-2.md, g2156-recovery-functions-3.md, g2156-recovery-functions-4.md, g2156-recovery-functions-5.md.

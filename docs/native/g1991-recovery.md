@@ -67,10 +67,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `initialize_audio_and_reset_pointers`: Checks a global flag, then loops to write multiplied values from a pointer-based table into a hardware register range.
+- `process_vertical_blank_sequence`: Waits for the vertical blank to start, then clears a global flag and increments two 16-bit counters before calling a handler.
 - `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_forward`: Performs a short branch to an instruction at a fixed offset and returns.
-- `initialize_global_with_table_values`: If a certain condition is met, it copies a sequence of bytes from a table into a memory range and sets a global variable to a constant; otherwise, it fills a memory range with an incrementing sequence of bytes.
+- `init_captains_from_table`: Returns immediately unless a global longword matches a fixed address, then returns when a byte at offset 59 is nonzero, and otherwise when a byte at offset 60 is nonzero and a global word is at least four, it indexes a table by a tripled value and stores three bytes into three global words before setting several constants.
 - `update_global_pointer_via_table`: Calculates a new index using bitwise shifts and an XOR mask, then loads a value from a table into a global variable.
 - `update_pointer_with_calculated_value`: Calculates a new value based on a global pointer and writes it to the memory location pointed to by that global pointer.
 - `clamp_global_value`: Checks a global variable and, if certain conditions are met, clamps its value within a specific range or sets it to a constant.
@@ -88,7 +88,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `calculate_complex_index`: Performs a loop that modifies a global variable and returns a value composed of a modulo operation and a byte from a table or memory.
+- `calculate_table_index`: Sets a global variable to a constant and returns a value calculated using a modulo and a lookup in a table based on the global variable.
 - `execute_conditional_routines`: Checks if a global variable is zero, then sets it to a specific address and executes a sequence of routines or indirect calls via that address.
 - `set_global_pointer`: Sets a global variable to a constant and then sets it to point to itself.
 - `setup_audio_channels_two_three`: Stores a routine address in a global variable, then copies channel, length, volume, and period data from a table into audio channels two and three and enables DMA channels two and three.
@@ -104,7 +104,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `modify_global_variable`: Performs bitwise operations on a global variable and conditionally resets it to a specific value or a routine address.
 - `set_bit_in_global`: Sets a bit in a global variable where the bit position is determined by a bitmask or a bit in the same variable.
 - `find_bit_and_load`: Searches for a bit in a bitmask and loads a value from a table using a calculated offset.
-- `update_audio_table_pointer`: calculates an offset into a table and updates a global variable with a sequence of values or pointers loaded from that table.
+- `load_audio_table_pointer_2`: Enables an audio channel and DMA request, then reads a counter, masks its low three bits, multiplies by fourteen and uses that offset to copy two longwords and three words from a table into a global variable, finally storing a routine address there.
 - `load_audio_table_pointer`: Enables an audio channel and DMA request, then reads a counter, masks its low three bits, multiplies by fourteen and uses that offset to copy two longwords and three words from a table into a global variable, finally storing a routine address there.
 - `configure_audio_channel_zero_2`: Copies a channel, length, and volume from a table, sets the period of audio channel zero, and enables DMA channel one.
 - `modify_global_variable_alt`: Performs bitwise negation and conditional assignment to a global variable, potentially setting it to a routine address.

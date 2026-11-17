@@ -69,7 +69,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `pulse_control_port_bits`: Writes six byte values to a control port, each clearing one of five bits in turn and then restoring all bits.
 - `wait_status_bit_then_clear`: Loops while a status bit on a port is set, calling a subroutine on each pass.
 - `step_position_toward_target`: Moves a stored position toward the input value, one step per unit of difference, by writing alternating control port values with a fixed delay between steps.
-- `pulse_control_port_repeatedly`: Repeats a two-stage port write for the count in its input, with a fixed delay after each pair.
+- `pulse_control_port_count`: For each count in its input, writes a pair of control-port values one bit apart so that each pair produces a single pulse, then waits a fixed delay loop before the next pair.
 - `store_params_and_loop_calls`: Stores two register inputs into structure fields, then calls subroutines once per count in a loop, setting a field to two on each pass before the calls.
 - `read_mfm_sector_with_retries`: Starts a disk read DMA with the MFM sync word and a fixed buffer address, waits for the read to finish, then searches for the sync word and decodes an MFM sector while checking its checksum.
 
@@ -81,14 +81,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `init_captains_from_table`: Returns immediately unless a global longword matches a fixed address, then returns when a byte at offset 59 is nonzero, and otherwise when a byte at offset 60 is nonzero and a global word is at least four, it indexes a table by a tripled value and stores three bytes into three global words before setting several constants.
 - `update_global_pointer_via_table`: Reads a global word, transforms it with a rotate and bit change, and loads a value from a table into a structure, setting a flag word to all ones or clearing it depending on the sign, then clears the flag word when it was zero.
 - `update_pointer_with_calculated_value`: If a value at offset 0 of a global pointer is not 2, it combines a shifted value from one global with a scaled value from another global, stores the sum at the pointer, writes a carry-adjusted result two bytes later, and clears the global at offset 0.
-- `clamp_two_values`: Returns early unless two global words equal one and eight, then shifts and subtracts from two global words, clamps each result to a range, increments a counter for each clamp, and stores all ones into a global word only when no clamp occurred.
+- `clamp_global_value_2`: Checks a global variable and, if certain conditions are met, clamps its value within a specific range or sets it to a constant.
 - `set_global_to_max`: Writes a maximum unsigned word value to a global variable and returns.
 - `accumulate_modified_pointer_values`: Sets bits in a structure based on the state of bytes indexed by two global pointers, then, when a flag word is nonzero, clears one of those bytes and adds the signed or unsigned version of a global pointer to two counters.
 - `accumulate_joystick_input_to_counters`: When a flag word is nonzero, it reads a joystick register, derives a gray-code difference, and based on the state of specific bits adds a signed or unsigned version of two global pointers to two counters.
 - `dispatch_via_table_index_2`: Reads a byte from a pointer, updates several global words, and if certain conditions are met, jumps to a destination address retrieved from a table.
 - `dispatch_via_table_index`: Reads a byte from a pointer, updates several global words, and if certain conditions are met, jumps to a destination address retrieved from a table indexed by a scaled version of a global variable.
 - `add_to_global_counters`: Adds the contents of two registers to two global longwords and returns.
-- `clamp_global_variable_range`: Adds the value in d0 to a 32-bit global variable at offset 21588, clamps it to a minimum of zero and a maximum of 326, then stores the result back.
+- `update_global_with_clamping_2`: Adds a value to a global variable and clamps the result so it does not drop below zero or exceed a certain threshold.
 - `clamp_global_variable_bounds`: Adds the value in d0 to a 32-bit global variable at offset 21588, clamps it to a minimum of three and a maximum of 325, then stores the result back.
 - `load_table_pair_values`: Clears two 32-bit global variables at offsets 21522 and 21526, then, when two flag bytes at offsets 2c002 and 2c004 are both zero, reads a pair of 32-bit values from a table indexed by a shifted global variable and stores them into those two variables.
 - `enable_interrupts_set_vectors`: Points a register at the custom chip, clears both interrupt mask words at offsets 154 and 156 to enable all interrupts, stores seven routine addresses into the interrupt vector table, sets the DMA enable word at offset 154, and restores the saved registers before returning.
@@ -104,8 +104,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `calculate_complex_index`: Performs a loop that updates a global variable and returns a value composed of a remainder and a byte from a table-based lookup.
-- `reset_pointer_and_execute`: If a global variable is zero, it assigns a specific address to that variable, executes the routine at that address, and then executes several other routines or calls via the pointer.
+- `calculate_table_index`: Sets a global variable to a constant and returns a value calculated using a modulo and a lookup in a table based on the global variable.
+- `execute_conditional_routines`: Checks if a 16-bit word in a global variable is zero; if so, it sets a hardware register to 8200, executes a sequence of indirect calls and branch routines, otherwise it sets four consecutive words to zero and returns.
 - `set_audio_parameters`: Sets a global variable to a constant value and then updates it with its own address.
 - `setup_audio_channels_two_three`: Stores a routine address in a global variable, then copies channel, length, volume, and period data from a table into audio channels two and three and enables DMA channels two and three.
 - `copy_audio_volume_registers`: Copies four consecutive words from global variables into the four audio volume registers, then returns.
@@ -120,9 +120,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `modify_global_variable`: Performs bitwise operations on a global variable and, if a certain condition is met, resets a global variable to a specific value and a routine address.
 - `set_bit_in_variable`: Sets a specific bit in a global variable based on a bitmask derived from that variable's own value.
 - `find_bit_and_load`: Searches for a bit in a mask and loads a value from a table using a calculated offset.
-- `update_audio_dma_parameters`: calculates an offset into a table and loads several values into a global variable, which includes updating audio or DMA-related registers.
+- `load_audio_table_pointer_2`: Enables an audio channel and DMA request, then reads a counter, masks its low three bits, multiplies by fourteen and uses that offset to copy two longwords and three words from a table into a global variable, finally storing a routine address there.
 - `load_audio_table_pointer`: Enables an audio channel and DMA request, then reads a counter, masks its low three bits, multiplies by fourteen and uses that offset to copy two longwords and three words from a table into a global variable, finally storing a routine address there.
 - `configure_audio_channel_zero_2`: Copies a channel, length, and volume from a table, sets the period of audio channel zero, and enables DMA channel one.
-- `reset_global_variable`: Performs bitwise logic on a global variable and, if a condition is met, resets a global variable to a specific constant and a routine address.
+- `modify_global_variable_alt`: Performs bitwise negation and conditional assignment to a global variable, potentially setting it to a routine address.
 - `update_table_data`: Sets a bit in a global variable based on a bitmask derived from that variable's own value.
 - `do_nothing_routine`: the routine is empty and performs no operations.

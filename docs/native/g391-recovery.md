@@ -107,7 +107,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### more
 
 - `initialize_buffer_pointers`: Clears a block of memory and updates a global variable and a stack-derived pointer.
-- `process_string_and_library_calls`: Performs several string operations including calculating length and copying strings with or without limits, while invoking various library functions and indirect functions via a global pointer and a table.
+- `display_listing_header`: Prints the text string 'Listing of ' to the screen.
 - `process_text_input_loop`: The routine enters a loop to process character input from a buffer, checking for specific keys like Escape, 't', 'b', 'd', or Enter to determine the return value and modify state variables.
 - `search_for_newline`: Decrements a counter or pointer while searching for a newline character and performs indirect function calls or updates a value based on a limit.
 - `parse_string_to_buffers`: Reads characters into several buffers until a delimiter or limit is reached, then potentially updates a global pointer or variable using a function call.
@@ -118,7 +118,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `tiny_move`: Small routine of 1 instruction that copies d0 to d0.
 - `process_global_state_flags`: Iterates ten times calling a helper routine, then conditionally invokes callbacks or other routines based on the values of several global variables.
 - `copy_string_with_limit_5`: Finds the end of a destination buffer and copies bytes from a source pointer until a null terminator or a fixed limit is reached.
-- `copy_string_with_limit`: The routine finds the end of the destination string, then copies bytes from the source pointer into the destination buffer one by one, stopping at the first null byte or when a counter in the third argument reaches -1, and finally ensures thedestination is null terminated.
+- `append_string_with_count`: Walks to the end of the destination string and appends bytes from the source, stopping at the source terminator or when the count argument runs out, then null-terminates the destination.
 - `copy_string_to_buffer`: The routine copies bytes from a source pointer to a destination pointer until a zero byte is encountered, including the terminator.
 - `compute_string_length`: calculates the length of a null-terminated string.
 - `copy_bytes_with_padding`: The routine copies bytes from a source pointer to a destination pointer for a limited count derived from a 32-bit parameter, stopping early if a zero byte is encountered, then writes zero bytes to the remainder of the destination area for the same count.
@@ -357,11 +357,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_subroutine`: Calls another routine and returns a zero value.
 - `adjust_coordinate_bounds`: Reads a six-word structure from a pointer and performs arithmetic adjustments on its high and low 16-bit components to correct coordinate or offset values.
 - `prepare_blit_transfer`: Calculates the source and destination addresses and control words for a blitter-based graphics transfer, waits for the blitter to be idle, configures the blitter registers, and triggers the operation.
-- `setup_blitter_copy_params`: Calculates the source and destination pointers, dimensions, and control words based on input parameters and a global table, then programs the blitter registers and waits for the blitter to become idle.
+- `configure_blitter_copy`: Calculates the source and destination pointers, dimensions, and control words based on input parameters and a global table, then programs the blitter registers and waits for the blitter to become idle.
 - `allocate_and_initialize_memory_block`: Calculates a required memory size based on input parameters and uses a memory allocation routine to initialize a new block or object.
 - `blit_sprite_with_clipping`: Calculates clipping boundaries for a graphical object against a global viewport, configures the Amiga blitter hardware registers for a raster operation, and executes the transfer while managing blitter ownership.
 - `update_layer_masks`: Iterates through a bit sequence to calculate offsets and update five separate memory buffers.
-- `blitter_draw_masked_sprite`: Configures the blitter to copy a sprite or pattern from a source table to a destination, using a bitmask to handle transparency or a specific bit-plane masking pattern.
+- `draw_sprite_with_mask`: Configures the blitter to copy a sprite from a source table to the display memory, applying a bitmask to handle transparency.
 - `check_button_flags`: Checks two specific bits in a global variable and returns a bitmask indicating whether those bits are clear.
 - `copy_byte_array`: Copies a specified number of bytes from a source pointer to a destination pointer, incrementing both pointers and decrementing the count until zero.
 - `compare_string_length`: Compares two memory buffers for equality and returns or checks if a counter reaches zero.
@@ -437,7 +437,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `parse_script_string_3`: Parses and executes a custom instruction-based script string, processing certain characters and updating a pointer if a percent sign or double percent sign is encountered.
 - `parse_percent_format_string`: Iterates through a string, calling another routine to process certain characters and updating a pointer if a percent sign is encountered.
 - `empty_routine`: This unable to be determined as the routine is empty.
-- `parse_command_line_arguments`: Parses a string by splitting it into tokens based on whitespace, handling quoted strings, and processing escape-like sequences.
+- `parse_command_line_args`: Tokenizes a string input by splitting on whitespace and handling quoted sections with escape sequences, storing pointers to the resulting tokens in a global table.
 - `execute_single_instruction_28`: This routine contains a single instruction that calls another routine.
 - `invoke_font_handler_2`: Invokes a single routine and returns.
 - `allocate_memory_block`: Checks a block's size and flags, then either recursively allocates a new block or updates a pointer and clears certain memory offsets.
@@ -459,7 +459,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `load_word_to_d0`: Clears register d0, loads a word from the stack into d0, and performs a tail branch to another routine.
 - `convert_number_to_ascii`: The routine converts an integer into ASCII decimal digits using a temporary stack buffer and copies them in reverse order to a buffer.
 - `reverse_nibbles_from_table`: The routine expands a packed nibble value using a global lookup table and writes the resulting bytes in reverse order to a destination.
-- `extract_string_prefix`: Searches backward through a string for a delimiter and copies the prefix or a portion of the string to a destination buffer.
+- `extract_path_filename`: The routine calculates the length of a string and scans it backwards to find a path separator character, such as a slash or colon.
 - `parse_signed_integer_2`: Converts an ASCII string representing a signed decimal integer into a 16-bit value and returns the number of characters processed.
 - `allocate_heap_block`: It rounds the requested size up to a four-byte boundary and searches a linked list of free blocks for a suitable gap, splitting or merging blocks as needed.
 - `allocate_heap_block_wrapper`: Passes two arguments to a routine that allocates a memory block of a specified size from a global heap, rounding the size up to a four-byte boundary, traversing a linked list of free blocks.
@@ -474,7 +474,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_memory_block`: It copies a given number of bytes from a source address to a destination address.
 - `free_linked_list_nodes`: It walks a linked list held in a global pointer, invoking a destructor stored at a fixed offset within each node.
 - `clear_global_and_update_pointer`: Checks a global variable; if non-null, it calls another routine with that variable and then nullifies it, then processes an input parameter to find and update a pointer.
-- `check_linked_list_and_return_error`: Calls another routine to retrieve a pointer and recursively checks the next entry in a linked structure, returning an error if a global variable is non-zero.
+- `validate_linked_entry`: Calls another routine to retrieve a pointer.
 - `allocate_linked_list_node`: It obtains a memory block and initializes its fields with a provided value and a global pointer.
 - `copy_string_and_allocate`: Copies a string from a source pointer to a destination pointer and recursively calls a routine to manage memory allocation or string copying.
 - `allocate_free_memory_block`: Traverses a linked list of free memory blocks to find a segment large enough for the requested size, splitting the block if necessary to fit alignment requirements.
@@ -491,9 +491,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `parse_movement_command`: Parses a command string starting with 'a', 'r', or 'w' to determine movement direction and flags.
 - `process_structure_flags`: Checks a bit in a byte offset within a structure, potentially calls another routine using a value from the pointer, and clears a word offset before calling another routine.
 - `process_linked_list_flags`: Iterates through a global linked list of structures, checking for specific bit flags and calculating a difference between two fields before invoking a helper routine.
-- `execute_global_callback`: Recursively calls a routine if a global variable is non-zero, then invokes a function pointer at an offset from that variable.
-- `execute_global_callback_with_offset`: Recursively calls a routine if a global variable is non-zero, then invokes a function pointer at an offset from a global variable and conditionally modifies a passed parameter.
-- `process_global_callback_chain`: Recursively calls itself if a global variable is non-zero, then executes a function pointer located at an offset from the cleared global variable.
+- `invoke_global_callback`: Invokes a callback through a pointer in a global table and, when a global flag is set, recursively calls itself first.
+- `dispatch_callback_with_adjustment`: Invokes a callback through a pointer in a global table and, when a global flag is set, recursively calls itself first.
+- `execute_global_callback_offset_2a`: Checks a global variable and recursively calls another routine if it is non-zero, then invokes a function pointer at an offset from the global variable.
 - `execute_global_callback_with_zero_check`: Recursively calls itself if a global variable is non-zero, then invokes a function pointer and handles a zero return value by invoking another function pointer.
 - `handle_global_callback_chain`: Recursively calls itself if a global variable is non-zero, then clears that global variable and executes a function pointer located at a certain offset from the original value.
 - `execute_chained_callbacks`: Recursively calls another routine if a global variable is non-zero, then executes a sequence of function pointers located at certain offsets from the saved global variable value.
@@ -1039,7 +1039,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispatch_with_summed_parameters_2`: Executes several recursive calls passing or summing parameters and or passed values.
 - `traverse_message_table`: Recursively traverses a table of pointers while checking return values and updating a flag or index.
 - `jump_to_process_string_input`: Jump stub: passes control straight on to process_string_input.
-- `jump_to_blitter_draw_masked_sprite`: Jump stub: passes control straight on to blitter_draw_masked_sprite.
+- `jump_to_blitter_draw_masked_sprite`: Jump stub: passes control straight on to draw_sprite_with_mask.
 - `jump_to_calculate_efficiency_report_me`: Jump stub: passes control straight on to calculate_efficiency_report_metrics.
 - `update_boundary_state`: Checks if a value is outside a certain range and updates a global or structure-based flag, then calls other routines with a calculated value.
 - `return_empty_routine_5`: the routine performs no operations and returns immediately.
@@ -1052,7 +1052,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_global_flags_and_clear_memory`: Calls another routine and conditionally sets a global variable to one if a certain value is present, then clears two certain global variables.
 - `parse_and_format_string_lines`: Iterates through a null-terminated string to parse line breaks and spaces, storing line-start offsets and line-length information in a global array.
 - `update_recursive_parameters`: Performs recursive calls that modify or increment parameters and writes a value to a global variable offset.
-- `dispatch_with_parameter_updates`: Passes a global variable and modified parameters to a dispatch routine, including a parameter that sums two values.
+- `perform_recursive_operations`: Performs a series of calls to another routine using various combinations of input parameters derived from a structure in a5.
 - `calculate_string_length_5`: iterates through a null-terminated string to calculate its length.
 - `set_and_restore_global_flag`: Sets a value in a global structure, calls another routine, and then restores a different value to that same location.
 - `pass_global_to_dispatch_4`: Passes a global variable and two provided parameters to another routine via a dispatch function.
@@ -1063,7 +1063,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `negate_if_negative_6`: checks if a signed integer is negative and negates it if so, before returning the result.
 - `select_maximum_value`: compares two values and returns or stores the larger of the two or a provided value.
 - `replace_string_chars_and_update_struct`: replaces characters in a string with backslashes and updates a field in a global structure using a provided value.
-- `dispatch_with_params`: Calls another routine passing a global value and two provided parameters.
+- `execute_callback_table`: Calculates an offset into a global table using a provided parameter and executes three function pointers stored within the resulting structure.
 - `modify_string_and_assign_param`: Replaces characters in a string with a specific character and assigns a parameter or a value to an offset in a global structure.
 - `set_and_restore_flag`: Sets a value in a global structure, calls another routine, and then restores a different value to the same location.
 - `recurse_with_incremented_parameter`: Recursively calls itself while incrementing a passed parameter, then calls itself again without any parameters.
@@ -2028,5 +2028,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `toggle_global_flag_6`: Sets a specific byte in a global structure to zero, calls another routine, and then sets that same byte to one.
 - `clip_rectangle_bounds_2`: Adjusts a rectangle's dimensions based on provided boundaries and updates structure pointers before calling a function with the new dimensions.
 - `copy_string_with_limit_43`: Copies a string from a source to a destination using an offset-based pointer if a specific condition is met.
+- `copy_string_with_limit_17`: Calculates the length of a source string and copies it to a destination buffer while ensuring a null terminator is present and a maximum length or limit is not exceeded.
+- `apply_graphics_attributes_9`: Updates a pointer in a structure to point to an element in a global array, executes several function pointers, and modifies a byte in a structure.
 
 The function list continues in: g391-recovery-functions-2.md.

@@ -5,8 +5,6 @@
 ### Railroad Tycoon (1990)(MicroProse)(Disk 1 of 2).adf:game
 (continued)
 
-- `copy_string_with_limit_17`: Calculates the length of a source string and copies it to a destination buffer while ensuring a null terminator is present and a maximum length or limit is not exceeded.
-- `apply_graphics_attributes_9`: Updates a pointer in a structure to point to an element in a global array, executes several function pointers, and modifies a byte in a structure.
 - `clamp_coordinate_bounds`: Checks a pointer-referenced structure of coordinate or boundary values and adjusts the high and low or minimum and maximum bounds if they fall outside the allowed range.
 - `copy_string_to_buffer_15`: Copies bytes from a source pointer to a destination pointer until a null terminator is encountered, including the terminator in the copy.
 - `rebuild_string_table_and_flags`: Iterates through a table of structures to update string pointers and reset bitmask flags.
@@ -130,7 +128,7 @@
 
 - `initialize_reinstall_environment`: Initializes a global memory buffer and parses a formatted string to prepare file paths or string buffers.
 - `cleanup_library_resources`: Performs a series of library calls to close or free resources, including freeing a linked list and calling several other subroutines or handlers.
-- `call_indirect_function`: Loads a function pointer from an offset relative to a value stored on the stack and executes it.
+- `execute_indirect_stack_pointer_offset`: Loads a function pointer from a fixed offset relative to a value currently on the stack and executes it.
 - `return_immediately_2`: The routine is empty and performs no operations before returning to its caller.
 - `empty_routine_2`: This routine contains no instructions and does nothing.
 - `traverse_pointer_tree`: Recursively traverses a pointer-based structure, checking a global variable for a stop condition and validating a byte in a structure.
@@ -175,7 +173,7 @@
 - `validate_index_and_get_pointer`: Checks if a provided index is within a certain range and if a value at a calculated table offset is non-zero.
 - `check_and_clear_pointer_2`: Calls a routine, checks if a certain bitmask is set in the returned value, and if a certain pointer is non-null, clears that pointer and calls another routine.
 - `call_check_and_clear_pointer_2`: Call stub: calls check_and_clear_pointer_2, then returns to its own caller.
-- `clear_memory_buffer`: Calls a function to get a pointer, then uses a loop to zero out a range of memory determined by a previously returned value.
+- `zero_memory_block`: Calls another routine to obtain a pointer and then fills a specified number of bytes starting at that pointer with zeros.
 - `format_string_to_buffer`: Calculates the length of a source string and copies a limited number of bytes to a destination buffer, appending a null terminator.
 - `copy_string_buffer`: Copies a certain number of bytes from a source string to a destination buffer and appends a null terminator.
 - `copy_string_buffer_2`: Performs a string copy or lack thereof from a source pointer to a destination buffer, ensuring the destination ends with a null byte.

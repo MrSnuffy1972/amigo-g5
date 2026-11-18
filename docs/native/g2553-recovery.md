@@ -1,0 +1,1834 @@
+# Game 2553 (king's bounty (1990)(new world computing)): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/02553). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (901120 top-level bytes in 89 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 1 raw-word lines |
+| Functions named and described | pass, 1762 of 1762 named (65 author symbols), 1762 of 1762 described (923 by rule, 94 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 0 of 0 (0.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 30648 of 30648 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 551462 |
+| code | 105076 |
+| data | 140907 |
+| padding | 23803 |
+| unused | 79872 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| Binddrivers | 11 | 652 | 35 |
+| EndCLI | 2 | 182 | 3 |
+| King's Bounty (1990)(New World Computing).adf:King's Bounty | 29 | 30428 | 1535 |
+| Disk-Validator | 1 | 386 | 1 |
+| 8 | 3 | 2 | 1 |
+| icon.library | 10 | 1421 | 110 |
+| diskfont.library | 15 | 1040 | 76 |
+| King's Bounty (1990)(New World Computing).adf:bootblock | 1 | 10 | 1 |
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- none found
+
+## Functions
+
+
+### Binddrivers
+
+- `initialize_fast_memory_and_parse_args`: The routine attempts to locate a fast memory block and then retrieves the command line arguments from the operating system.
+- `bind_expansion_drivers`: Opens the expansion library and a second library by name, allocates a working buffer, and walks the list of expansion devices, passing each matching device to a per-device routine.
+- `find_driver_entry`: Searches a table of entries from a starting index for a fixed marker word whose following pointer refers back to the same entry, and returns that entry or null if none matches.
+- `iterate_driver_data`: Iterates through a buffer or list, performing arithmetic on a counter and updating a value via another routine.
+- `calculate_string_index`: Uses a series of calls to determine an index and a value, then performs conditional logic to return a result or zero.
+- `traverse_handler_chain`: Iterates through a linked list of handlers and updates a pointer in a structure if a certain bit is set in a memory location.
+- `follow_parent_chain`: The routine receives two pointers and walks a linked list by repeatedly following a field located at a fixed offset from the current node.
+- `skip_non_slash_colon`: The routine checks a character string for a leading slash or colon.
+- `parse_decimal_integer`: Reads characters from a null-terminated string and accumulates consecutive decimal digits into a number, stopping at the first character that is not a digit or at the terminator.
+- `clamp_value_by_offset`: The routine calls another routine with the first two arguments and receives a result.
+- `call_library_vector_102`: Library stub: loads a library base from a global variable and calls the library function at offset minus 102 of that base, returning its result to the caller.
+- `call_library_vector_198`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_210`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `call_library_vector_414`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `call_library_vector_552`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `call_library_vector_72`: Library stub: loads a library base from a global variable and calls the library function at offset minus 72 of that base, returning its result to the caller.
+- `call_library_vector_120`: Library stub: loads a library base from a global variable and calls the library function at offset minus 120 of that base, returning its result to the caller.
+- `call_library_vector_126`: Library stub: loads a library base from a global variable and calls the library function at offset minus 126 of that base, returning its result to the caller.
+- `call_library_vector_132`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
+- `call_make_library`: Library stub: loads its arguments and the exec library base, calls MakeLibrary and returns its result to the caller.
+- `call_make_functions`: Library stub: loads its arguments and the exec library base, calls MakeFunctions and returns its result to the caller.
+- `call_init_resident`: Library stub: loads its arguments and the exec library base, calls InitResident and returns its result to the caller.
+- `call_alert`: Library stub: loads its arguments and the exec library base, calls Alert and returns its result to the caller.
+- `call_enable`: Library stub: loads its arguments and the exec library base, calls Enable and returns its result to the caller.
+- `call_super_state`: Library stub: loads its arguments and the exec library base, calls SuperState and returns its result to the caller.
+- `call_user_state`: Library stub: loads its arguments and the exec library base, calls UserState and returns its result to the caller.
+- `compare_two_strings`: Compares two zero-terminated byte strings one byte at a time, returning a negative value when the first differing byte is smaller or equal, a positive value when it is larger, and zero when the strings match up to the terminator.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (movea.l) and then falls through into the code that follows, with no return of its own.
+- `measure_string_length_up_to`: Scans bytes at a0 until a zero byte or 255 bytes counted, advancing a0, then returns the bitwise complement of the count in d0.
+- `find_char_in_string`: Scans a zero-terminated string for a given character and returns a pointer to its first occurrence, or null when the terminator is reached first.
+- `copy_c_string`: The library code copies bytes from a source pointer to a destination pointer until a zero byte is encountered, advancing both pointers each iteration.
+- `compute_range_adjusted_offset`: Calls two routines to obtain a value and a range, returns zero when the range start is above its end or a further check fails, and otherwise returns the first value adjusted by the argument and the range start.
+- `call_library_vector_78`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
+- `call_library_vector_90`: Library stub: loads a library base from a global variable and calls the library function at offset minus 90 of that base, returning its result to the caller.
+- `call_library_vector_96`: Library stub: loads a library base from a global variable and calls the library function at offset minus 96 of that base, returning its result to the caller.
+
+### EndCLI
+
+- `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
+- `frag_move_bra`: Short code fragment that copies d1 to d0, then jumps to another point in the code.
+- `initialize_game_data`: Initializes game data structures by setting up pointers and clearing memory locations, then performs several conditional operations based on comparison results.
+
+### King's Bounty (1990)(New World Computing).adf:King's Bounty
+
+- `clear_memory_and_launch_process`: Clears a large block of memory and then sets up a new process: it builds a quoted command line from the argument text, copies a code block into the new process record and links that record into the process list.
+- `release_current_task_resources`: Finds the current task, reads the resource pointer recorded for it and returns that resource through library calls made inside a forbidden section.
+- `shutdown_and_reply_message`: Runs an optional hook routine when one is installed, then forbids multitasking and sends a reply to the stored message if one is pending.
+- `open_library_or_cleanup`: Opens the library named in the program's base and keeps its handle, returning at once on success.
+- `frag_lea_jsr_rts`: Short code fragment that loads the address of the memory at an offset from a3 into a0, then calls another routine, then loads the address of the memory at an offset from a3 into a0, then calls another routine, then returns.
+- `frag_jmp`: Short code fragment that jumps to another point in the code.
+- `decompress_lzss_stream`: Decodes an LZSS-compressed stream: it fills a 4096-byte ring buffer with spaces, then reads flag bytes whose bits select either a literal byte or a two-byte back-reference giving a window offset and a length.
+- `reverse_bits_in_words`: Reverses the bit order of each 16-bit word in an array, shifting bits out of the low end and building the result from the high end, for the given number of words.
+- `dispatch_request_by_code`: Branches on a numeric request code and, for each recognised code, calls library routines and stores state in the structure it is given, returning one when the request is handled.
+- `swap_first_and_third_words`: Swaps the first and third 16-bit words of each six-byte record in an array, moving record by record for the given count.
+- `execute_indirect_stack_pointer_offset`: Loads a function pointer from a fixed offset relative to a value currently on the stack and executes it.
+- `call_library_vector_36`: Library stub: loads a library base from a global variable and calls the library function at offset minus 36 of that base, returning its result to the caller.
+- `call_stored_library_routine`: Loads a library base from a global variable and calls the routine at a fixed offset from it, then returns.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `dispatch_request_with_error_check`: Calls a routine with a pointer from the stack, then if the result is not zero, checks bit 3 of a byte at offset 3 of the result; if set, it calls another routine with a pointer from the stack, and finally calls a third routine using a pointer from a3 and a value from a2, returning the result unless a global variable is non-zero.
+- `parse_printf_format_specifier`: Parses a printf-style conversion specifier: it reads flags, width, precision and length modifiers, takes the next argument from the argument list for each conversion, and formats it as a character, decimal, hexadecimal, string or padded number.
+- `parse_format_string`: Recursively walks a null-terminated string and calls a callback for each character, attempting to handle percent-prefixed format specifiers.
+- `allocate_stream_buffer_if_needed`: Allocates a stream buffer when none is set up or a reset flag is present, storing the buffer pointers and clearing the counters.
+- `write_char_with_newline_translation`: Writes one character into a buffered stream, expanding each line feed into a carriage return followed by a line feed.
+- `process_display_buffer`: Reads one byte from a buffered stream, refilling the buffer through a lower-level read call when it is empty.
+- `process_flagged_table_entries`: Walks a table of eight-byte entries from last to first, calling a routine with the stored value of each entry whose flag byte is set and whose bit four is clear.
+- `frag_jmp_2`: Short code fragment that jumps to another point in the code.
+- `read_uppercase_character`: Calls two routines to obtain a byte, then converts it to uppercase when it is a lowercase letter and returns the result.
+- `convert_lowercase_to_uppercase`: Converts a lowercase ASCII letter to its uppercase form by subtracting the case offset, and returns any other character unchanged.
+- `convert_uppercase_to_lowercase`: Converts an uppercase ASCII letter to lowercase by adding the case offset, and returns any other character unchanged.
+- `tokenize_command_line_arguments`: Splits a command line into up to thirty-two arguments on spaces, tabs and newlines, treating double-quoted text as a single argument and terminating each argument with a zero byte.
+- `frag_jmp_3`: Short code fragment that jumps to another point in the code.
+- `uppercase_string_in_place`: Converts each character of a zero-terminated string to uppercase in place, changing only the characters that a lookup table in the base area flags as lowercase, and returns the string pointer.
+- `copy_n_terminated_bytes`: The routine copies bytes from a source pointer to a destination pointer until a zero byte is encountered, stopping early if a counter reaches zero and returning the original destination pointer.
+- `measure_string_length_3`: Returns the number of bytes before the zero terminator of the string it is given.
+- `copy_c_string_2`: Copies a zero-terminated string from the source address to the destination address, including the terminating zero byte, and returns the destination pointer.
+- `compare_two_strings_2`: Compares two zero-terminated strings character by character, returning a negative value when the first differing character is smaller or equal, a positive value when it is larger, and zero when the strings match up to the terminator.
+- `append_c_string`: Appends a zero-terminated source string to the end of the destination string, including its terminator, and returns the destination pointer.
+- `reverse_engineer`: Repeatedly calls another routine, stores a byte from a register through a pointer, and then reverses a 12-byte buffer in place before terminating it with a null byte.
+- `convert_number_to_ascii`: The routine converts an integer into ASCII decimal digits using a temporary stack buffer and copies them in reverse order to a buffer.
+- `reverse_nibbles_from_table`: The routine expands a packed nibble value using a global lookup table and writes the resulting bytes in reverse order to a destination.
+- `parse_signed_decimal`: Reads an optional plus or minus sign followed by decimal digits, stores the signed value through the integer pointer and returns the number of characters consumed.
+- `append_byte_to_buffer`: Stores one byte at the current position of a global output buffer, advances the position and increments the byte count.
+- `format_text_into_buffer`: Formats text into a buffer by running the format routine with the byte-append routine as its output callback.
+- `return_block_to_free_list`: Returns a block of memory to a sorted free list, rounding its size up to a multiple of four with a minimum of eight bytes and merging it with adjacent free blocks.
+- `forward_two_arguments`: Passes its two arguments unchanged to another routine and returns.
+- `lookup_and_forward_request_2`: Looks up a descriptor from the first argument and returns minus one if it is missing.
+- `store_adjusted_masked_value`: Calls a routine for a value, adds three to it, masks the result to its low 31 bits and stores it in a global variable.
+- `frag_move_rts`: Short code fragment that copies d7 to the stack, then copies the memory at an offset from a7 to d7, then copies d7 to the memory at an offset from a4, then copies the top of the stack to d7, then returns.
+- `open_stream_in_slot`: Finds the first free entry in a table of eight-byte stream slots, starting from the fourth entry.
+- `copy_memory_block`: Copies a block of bytes from the source address to the destination address, copying backwards when the source is at or below the destination so that overlapping regions are handled correctly.
+- `fill_memory_with_byte`: Writes the given byte value into each position of a block of the given length and returns the block start.
+- `free_tracked_allocation_list`: Walks a linked list of tracked allocations, freeing each block with the system memory-free call, then clears the list head and its count and returns zero.
+- `retrieve_offset_entry`: Retrieves a pointer from a routine, and if it is valid, uses that pointer with two additional parameters to fetch an entry from a table, returning a status value or a failure code.
+- `allocate_tracked_memory_block`: Allocates a block with the system memory call, sized to the requested amount plus a header, records its size and links it at the end of the tracked allocation list.
+- `allocate_block_from_free_list`: Allocates a block of at least the requested size, rounded to a multiple of four with a minimum of eight bytes.
+- `forward_one_argument`: Passes its single argument unchanged to another routine and returns.
+- `fetch_info_block_into_buffer`: Obtains a handle from the first argument or a global variable, allocates a temporary block, has a library routine fill it, and copies its contents into the caller's buffer.
+- `write_items_to_stream`: Writes a number of items of a given size from the source buffer to a stream structure one byte at a time, and returns the count of complete items written before a write fails.
+- `seek_stream_position`: Resets a stream's buffer pointers and counters and repositions the stream through a lower-level routine.
+- `read_items_from_stream`: Reads a number of items of a given size from a stream structure into the destination buffer one byte at a time, and returns the count of complete items read before the stream ends or fails.
+- `find_or_allocate_stream_structure`: Finds an unused stream structure in a linked list, or allocates and clears a new thirty-four-byte one and links it in.
+- `parse_stream_open_mode`: Reads an open-mode string whose first character selects append, read or write, and whose later characters select a binary flag and an update flag.
+- `clear_display_state`: The routine clears a status flag in a structure and conditionally invokes another routine based on a byte flag and two fields in the structure.
+- `flush_all_stream_buffers`: Walks the stream list and writes out the pending bytes of each open writable stream that has unwritten data, then passes its argument to a final routine.
+- `call_library_and_record_error`: Calls a library routine and, when it returns minus one, fetches the library's error code and stores it in a global variable while setting a status value.
+- `call_library_seek_position`: Calls a library routine to obtain the current position and records the library error code and a status value when it fails.
+- `fetch_library_data`: Checks a global flag and, if set, invokes a helper, then reads a value from a global variable and calls a routine through a pointer, storing the result and a status value into global variables when the call fails.
+- `test_library_and_record_error`: Calls a library routine and, when it returns zero, fetches the library's error code, stores it in a global variable, sets a status value and returns minus one.
+- `cleanup_display_context`: It conditionally invokes a callback when a structure field is nonzero, then writes reset values at two fixed offsets.
+- `close_handle_or_report_error`: Calls a library routine and, when it returns nonzero, calls a close routine and returns minus one.
+- `reset_handle_and_report_error`: Closes a handle through two library routines when the first check finds it open, then calls a second routine.
+- `call_library_then_return_zero`: Calls a library routine at a fixed offset from the library base, ignores its result and returns zero.
+- `open_intuition_library_and_setup`: Opens the intuition library by name and reports code 20 to a routine when it cannot be opened.
+- `compute_fixed_point_product`: The routine takes two 32-bit fixed-point values from registers and returns their product as a 32-bit fixed-point value.
+- `divide_signed_32bit_values`: Divides one signed 32-bit value by another by working on operand magnitudes and calling the unsigned division routine, then negates the result when the dividend is negative.
+- `normalize_fixed_point_divide`: The routine divides a 32-bit dividend in d0 by a 32-bit divisor in d1 using a normalized fixed-point method.
+- `create_message_node`: It obtains a global variable and calls another routine through a table.
+- `release_message_port_node`: Looks up a node by its argument and, when its flag bit four is clear, releases the node's signal through a library call and clears the node.
+- `get_stream_slot_pointer`: Returns the address of an active entry in the eight-byte stream table for the given index.
+- `check_break_signal_handler`: Reads the task's signal state through a library call.
+- `call_check_break_signal_handler`: Call stub: calls check_break_signal_handler, then returns to its own caller.
+- `check_access_mode_flags`: Allocates a temporary block, obtains a flags word from a library routine and frees the block.
+- `frag_cmpa_bcs_moveq_rts`: Short code fragment that compares a7 with the memory at an offset from a4, then branches if the carry flag is set, then loads 0 into d0, then returns.
+- `run_resource_input_loop`: Initialises program resources, then runs a loop that reads characters and processes them until a terminating zero is encountered.
+- `allocate_buffers_and_init_structures`: Allocates a small control structure and a large buffer, then initialises the structure with buffer pointers and sizes.
+- `free_buffers_and_structures`: Frees the control structures and buffers recorded by the setup routine, releasing each one whose pointer is set through the memory-free stub, and returns the result of the last release.
+- `jump_to__freemem`: Jump stub: passes control straight on to _FreeMem.
+- `frag_jmp_4`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_5`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_6`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_7`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_8`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_9`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_10`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_11`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_12`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_13`: Short code fragment that jumps to another point in the code.
+- `jump_to__allocmem`: Jump stub: passes control straight on to _AllocMem.
+- `set_mode_byte_from_flag`: When enough stack space is available, it calls a routine with a fixed argument, reads a stored byte through another routine, sets a stored mode byte to one of two fixed values depending on the flag argument and returns the routine's result.
+- `draw_rectangle_outline`: When enough stack space is available, it issues a long series of move and draw calls with coordinates derived from its four arguments, drawing outline segments and a fill, then calls a final routine and returns its result.
+- `call_routine_with_code_ten`: When enough stack space is available, it calls a routine with a fixed first argument of ten and its two arguments, and returns the result.
+- `store_available_memory_kilobytes`: When enough stack space is available, it obtains the available memory amount through a memory-query call with the argument two, stores it shifted right by ten bits in a global variable and returns that value.
+- `allocate_entry_from_small_table`: When enough stack space is available, it searches a table of three thirty-two-byte entries for one whose last byte is clear, initialises that entry with the four arguments and zeroed fields, and returns it.
+- `allocate_record_from_table`: When enough stack space is available, it searches a table of three twenty-byte records for a free one, initialises it from the arguments with scaled values and returns its pointer.
+- `store_field_and_call_routine`: When enough stack space is available, it stores its byte argument in a field of a structure held in a global variable, calls a routine with the argument two and returns that result.
+- `clamp_point_to_bounds`: When enough stack space is available, it adds a stored offset pair to two coordinates and clamps each into the bounds stored in a structure.
+- `fill_rectangle_between_corners`: When enough stack space is available, it adjusts two corner coordinate pairs through routines and fills the rectangle they bound with a fill call, returning that call's result.
+- `write_character_with_cursor_wrap`: When enough stack space is available, it handles one character code: a special code redraws a frame, carriage return and line feed reset the column and advance the row, and any other character is passed to an output routine with wrapping at the right edge.
+- `assign_next_slot_number`: When enough stack space is available, it stores its argument in a global variable, counts the in-use entries of a table of thirty-two-byte entries and writes that count plus one into the argument's last byte, then returns the register value.
+- `assign_next_record_number`: When enough stack space is available, it stores its argument in a global variable, counts the in-use records of a table of twenty-byte records and writes that count plus one into the argument's byte field, then returns the register value.
+- `find_record_slot_offset`: When enough stack space is available, it clears a byte in its argument, finds the largest of three byte fields in a twenty-byte table, calls a routine to obtain an index and stores the matching table address in a global variable.
+- `find_largest_record_field_and_store`: Finds the largest byte at offset eleven among three twenty-byte records, calls a routine to obtain an index and stores the matching record address in a global variable.
+- `store_pair_in_structure`: When enough stack space is available, it stores its two arguments at fixed offsets in a structure held in a global variable and returns the register value.
+- `clamp_and_store_point`: Stores coordinate pairs in a structure, clamps them to bounds using a helper routine, and then calls another routine with specific parameters to update point data.
+- `validate_and_store_coordinates`: Copies coordinate values to temporary storage, stores them in a structure using a helper routine, clamps coordinates to bounds twice, and then calls another routine with specific parameters to update coordinate data.
+- `validate_and_update_point`: Copies coordinate values to temporary storage, stores them in a structure using a helper routine, clamps coordinates to bounds twice, and then calls another routine with specific parameters to update point data.
+- `process_point_clamping`: Stores register values on the stack, calls routines to clamp point coordinates, compares pairs of long values from memory locations, and calls another routine with parameters when the values are not equal.
+- `frag_move_pea_jsr_lea_bra`: Short code fragment that copies d1 to the stack, then copies d0 to the stack, then pushes the address of a fixed memory address onto the stack, then calls frag_jmp_15, then loads the address of the memory at an offset from a7 into a7, then jumps to another point in the code.
+- `compare_and_call`: Compares two long values from memory locations, branches if they are not equal, pushes several register contents and addresses onto the stack, then calls a routine with parameters.
+- `prepare_and_call_routine`: Pushes several values onto the stack including register contents and memory addresses, calls a routine with a parameter, and then cleans up the stack before returning.
+- `set_mode_if_valid`: When enough stack space is available, it accepts a value of zero or one, stores it in a global variable and calls a routine with that value.
+- `call_routine_with_code_nine`: When enough stack space is available, it calls a routine with a fixed first argument of nine and its two arguments, and returns the result.
+- `call_with_obtained_handle`: When enough stack space is available, it calls a routine with its argument to obtain a handle, calls a second routine with that handle and the value sixteen, releases the handle through a routine and returns the second result.
+- `release_linked_handle`: When enough stack space is available, it clears a field referenced by the argument when the argument is set, then calls a routine with the argument and returns its result.
+- `clamp_coordinates_then_call`: When enough stack space is available, it adjusts its third and fourth arguments through a routine and then calls a routine with a fixed code of nineteen and all four arguments.
+- `frag_cmpa_bcs_rts`: Short code fragment that compares a7 with the memory at an offset from a4, then branches if the carry flag is set, then returns.
+- `store_status_byte_field`: When enough stack space is available, it stores its byte argument at offset six of a structure held in a global variable and returns the register value.
+- `store_byte_and_call_two_routines`: When enough stack space is available, it stores its byte argument in a structure field, passes the byte to two routines through stored pointers and returns the second routine's result.
+- `set_low_bits_mode_field`: When enough stack space is available, it sets the low two bits of a structure field to the argument when the argument is zero to two.
+- `set_cursor_position_fields`: When enough stack space is available, it stores the first argument at offset four and the second at offset five of a structure in a global variable, subtracting a stored offset from the second when that offset is nonzero, and returns the offset.
+- `read_structure_byte_four`: When enough stack space is available, it returns the byte stored at offset four of a structure held in a global variable.
+- `sum_two_structure_bytes`: When enough stack space is available, it returns the sum of two bytes from a structure, masked to eight bits.
+- `step_counter_with_reload`: When enough stack space is available, it repeats the argument number of times: each pass calls a routine with the value thirty-two and decrements a counter byte, reloading that byte from a second field when it reaches zero.
+- `draw_text_entry`: When enough stack space is available, it chooses pen and background colours from a flag bit, moves to a position computed from the entry's coordinates and draws its text with those colours.
+- `draw_wrapped_text_lines`: When enough stack space is available, it walks a string line by line, aligns each line according to a mode field in a structure and draws it.
+- `call_routine_with_three_arguments`: When enough stack space is available, it calls a routine with its three arguments and returns the result.
+- `build_digit_string_and_call`: When enough stack space is available, it counts how many entries of a table are at or below the first argument, fills the remaining positions with the third argument, converts the table values into digit characters in a temporary buffer and passes the buffer to a routine.
+- `poll_input_message_for_slot`: When enough stack space is available, it fetches a message from an input port and classifies it by its class flags.
+- `classify_input_message_class`: Classifies the message class held in a register: class eight checks that the coordinates fall in a range and computes a slot index, while class 1024 forwards the message to a routine.
+- `compute_slot_index_in_range`: Checks that the message code register holds the value 232 and that the two stored coordinates lie in a fixed range.
+- `store_slot_index_from_coordinates`: Computes a slot index from two stored coordinates by dividing each offset by a fixed size and combining the results.
+- `wait_and_read_input_event`: When enough stack space is available, it waits for and fetches the next input message from the port and turns it into an event code by its class.
+- `select_pointer_shape_for_position`: When enough stack space is available, it checks that a coordinate pair lies inside a boundary and computes a zone from its position against stored limits.
+- `translate_key_code_to_char`: Translates a raw key code into a character by selecting from fixed code-to-character pairs and a lookup table for other codes.
+- `drain_message_port`: When enough stack space is available, it repeatedly fetches messages from a port and passes each one to a routine.
+- `close_display_resources`: When enough stack space is available, it restores several stored fields and releases the program's display resources.
+- `compute_and_delay`: When enough stack space is available, it calls a routine to obtain a value, passes that value to a second routine that performs a delay, and returns the second routine's result.
+- `read_current_time_masked`: When enough stack space is available, it reads the current time into two stack values through a routine, derives a value from them, masks it to 31 bits and passes it to another routine, returning that result.
+- `advance_value_below_limit`: When enough stack space is available and the first argument is below the second, it adds the result of a routine to the first argument and returns it.
+- `fade_palette_to_black`: When enough stack space is available, it copies a 64-byte colour table, then sixteen times decrements the red, green and blue values of every entry that is above zero, loads the table into the colour registers and pauses briefly.
+- `fade_palette_toward_target`: When enough stack space is available, it copies a 64-byte colour table, then sixteen times increments the red, green and blue values of each entry that is below a stored target palette, loads the table into the colour registers and pauses briefly.
+- `frag_jmp_14`: Short code fragment that jumps to another point in the code (2 times in a row).
+- `frag_jmp_15`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_16`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_17`: Short code fragment that jumps to another point in the code.
+- `jump_to__clearmenustrip`: Jump stub: passes control straight on to _ClearMenuStrip.
+- `frag_jmp_18`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_19`: Short code fragment that jumps to another point in the code.
+- `jump_to__draw`: Jump stub: passes control straight on to _Draw.
+- `jump_to__move`: Jump stub: passes control straight on to _Move.
+- `jump_to__setapen`: Jump stub: passes control straight on to _SetAPen.
+- `frag_jmp_20`: Short code fragment that jumps to another point in the code.
+- `jump_to__waitport`: Jump stub: passes control straight on to _WaitPort.
+- `jump_to__freemem_2`: Jump stub: passes control straight on to _FreeMem.
+- `jump_to__closefont`: Jump stub: passes control straight on to _CloseFont.
+- `jump_to__getmsg`: Jump stub: passes control straight on to _GetMsg.
+- `jump_to__currenttime`: Jump stub: passes control straight on to _CurrentTime.
+- `frag_jmp_21`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_22`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_23`: Short code fragment that jumps to another point in the code.
+- `jump_to__delay`: Jump stub: passes control straight on to _Delay.
+- `jump_to__loadrgb4`: Jump stub: passes control straight on to _LoadRGB4.
+- `frag_jmp_24`: Short code fragment that jumps to another point in the code.
+- `jump_to__rectfill`: Jump stub: passes control straight on to _RectFill.
+- `jump_to__setpointer`: Jump stub: passes control straight on to _SetPointer.
+- `frag_jmp_25`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_26`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_27`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_28`: Short code fragment that jumps to another point in the code.
+- `jump_to__setdrmd`: Jump stub: passes control straight on to _SetDrMd.
+- `frag_jmp_29`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_30`: Short code fragment that jumps to another point in the code.
+- `jump_to__closewindow`: Jump stub: passes control straight on to _CloseWindow.
+- `jump_to__text`: Jump stub: passes control straight on to _Text.
+- `jump_to__setbpen`: Jump stub: passes control straight on to _SetBPen.
+- `jump_to__availmem`: Jump stub: passes control straight on to _AvailMem.
+- `jump_to__closescreen`: Jump stub: passes control straight on to _CloseScreen.
+- `frag_jmp_31`: Short code fragment that jumps to another point in the code.
+- `jump_to__closelibrary`: Jump stub: passes control straight on to _CloseLibrary.
+- `measure_text_without_trailing_spaces`: When enough stack space is available, it finds the end of a zero-terminated string, steps back over trailing space characters and returns the length without them.
+- `wait_for_key_with_cycling_marker`: When enough stack space is available, it loops until a key is read.
+- `read_char_in_range`: When enough stack space is available, it reads characters through a routine until one falls within the range given by the two arguments or the escape code is read, and returns that character.
+- `wait_until_value_received`: When enough stack space is available, it repeatedly calls a routine until it returns the argument value.
+- `read_char_in_range_or_return`: When enough stack space is available, it reads characters until one falls within the given range or the return or escape code is read, and stores each character read.
+- `store_and_convert_lowercase`: Checks a global flag and, if set, forwards a pointer into a helper, then stores two fixed data values into a slot, invokes a helper, reads the stored result, and converts a lowercase letter to uppercase.
+- `poll_routine_with_retries`: When enough stack space is available, it calls a routine up to twice the argument number of times, stopping as soon as it returns a nonzero value.
+- `frag_moveq_move_subq_tst_bne_movem_rts`: Short code fragment that loads 0 into d6, then copies d6 to d0, then subtracts 1 from d6, then tests d0, then branches if the last result was not zero, then copies d5 to d0, then restores saved registers from the stack, then returns.
+- `call_routine_by_threshold`: When enough stack space is available, it calls a routine with the argument, the value one and the value thirty-two.
+- `copy_state_and_call_routines`: When enough stack space is available, it copies several state bytes into a saved area, points a stored pointer at a buffer and calls a series of routines with the state and two fixed sizes.
+- `visit_neighbour_positions`: When enough stack space is available, it visits a five-by-three set of positions around a stored position, wrapping the coordinates at sixty-four.
+- `set_three_entry_values`: When enough stack space is available, it calls a routine three times with successive indices, passing a value from a stored table each time, then returns twenty-three.
+- `reset_five_stored_entries`: When enough stack space is available, it releases each non-null entry of a five-entry table through a routine and clears it.
+- `compare_stored_value_with_result`: When enough stack space is available, it calls a routine and returns one when a stored 16-bit value is below its result, otherwise zero.
+- `lookup_flag_in_table_rows`: Looks up table entries for a byte argument and for five stored bytes.
+- `reacquire_indexed_resource`: When enough stack space is available, it releases a previously stored resource if one is held, then obtains a new one from a table indexed by a stored byte and stores it.
+- `layout_gadget_panel`: When enough stack space is available, it removes a gadget, sets up display rows from stored tables and draws the entries in two groups depending on a flag.
+- `update_entry_for_mode`: When enough stack space is available and a stored mode byte is not one, it passes a stored value and two table entries to routines and returns the result of a further call.
+- `apply_default_configuration`: When enough stack space is available, it clears a stored byte, issues a series of configuration calls with stored values and fixed numbers, and returns the result of a final call.
+- `build_interface_and_wait_for_input`: When enough stack space is available, it removes an existing gadget list if one is present, builds gadgets and text items from fixed coordinates and stored tables, then loops reading input until a nonzero code arrives.
+- `run_input_loop_until_escape`: When enough stack space is available, it releases stored resources, clears a status table and rebuilds a lookup table from stored values.
+- `refresh_gadget_states`: When enough stack space is available, it sets up a refresh with a fixed call.
+- `draw_entry_frame`: When enough stack space is available, it draws a frame around one of the stored entries by issuing a series of move and line calls with coordinates taken from tables, then returns the result of the final call.
+- `reset_state_and_call_routine`: When enough stack space is available, it calls a series of routines with fixed arguments, clears one byte and restores another, then returns the result of a call made with the low byte of a stored value.
+- `repeat_call_with_decreasing_value`: When enough stack space is available, it calls a routine the argument number of times, each time passing a value that decreases by two, and returns the last result.
+- `loop_and_convert_lowercase`: Loops a given number of times, calling a helper with a stored pointer and a changing argument each iteration when a global flag is set, then stores two fixed data values into a slot, invokes a helper, reads the result, and converts a lowercase letter to uppercase.
+- `loop_and_convert_lowercase_alt`: Loops a given number of times, calling a helper with a stored pointer and a different changing argument each iteration when a global flag is set, then stores two fixed data values into a slot, invokes a helper, reads the result, and converts a lowercase letter to uppercase.
+- `call_with_clamped_counts`: When enough stack space is available, it issues a fixed call with the value 158, then reads up to three counts through routines, clamping the first to thirteen and passing each positive count to a routine.
+- `read_key_in_range_animated`: On first use it allocates and initialises a cursor record, then loops animating a four-phase cursor glyph while polling a key through helper routines.
+- `wait_for_key_within_bounds`: Loops drawing a four-phase cursor and polling a key until the key is Escape, Return, or lies between the two bounds passed in.
+- `draw_three_stat_fields`: Draws three fields in fixed columns, each at a row chosen from the argument plus a fixed offset when its corresponding flag byte is set, otherwise from a fixed default row.
+- `invoke_setup_then_stored_handler`: Calls a helper on a fixed table entry, then returns the result of a second helper called on a pointer stored in the data block.
+- `swap_pairs_and_test_match`: Swaps two adjacent pairs of stored bytes, then clears a flag at a fixed offset when three of the compared bytes match their stored counterparts.
+- `lookup_threshold_bucket_entry`: Compares a 16-bit argument against thresholds 10, 20, 50, 100 and 500, selects one of six fixed table entries for that bucket, and returns the helper's result for that entry.
+- `call_threshold_bucket_entry`: Uses a 16-bit value to choose one of five fixed table entries by thresholds of 10, 20, 50 and 100, then passes that entry to a helper with no return value.
+- `call_small_threshold_bucket_entry`: Chooses one of four fixed table entries for a 16-bit value using thresholds of 10, 20 and 50, then passes it to a helper.
+- `call_tiny_threshold_bucket_entry`: Selects one of three fixed table entries for a 16-bit value using thresholds of 10 and 20, then passes it to a helper with no return value.
+- `call_threshold_split_entry`: Passes one of two fixed table entries to a helper, choosing the first when a 16-bit value is below 10 and the second otherwise.
+- `frag_pea_jsr_addq_move_rts`: Short code fragment that pushes the address of the memory at an offset from a4 onto the stack, then calls another routine, then adds 4 to a7, then copies the top of the stack to d7, then returns.
+- `fill_empty_slot_from_later`: Finds the first of five slots whose byte value is 26 or more, then moves the first later slot with a value below 25 into it, copying its paired short and long fields and marking the source as free.
+- `init_state_and_draw_rows`: Allocates a state record through a helper, resets five slot tables and several byte fields to fixed starting values, then draws six rows spaced nine units apart and a frame at fixed positions.
+- `dispatch_keyed_glyph_or_table`: Selects a helper and a table entry from a byte argument: values 17 to 19 use a secondary indexed table when a stored mode byte is non-zero, values below 36 use one table, and higher values use another with 36 subtracted.
+- `step_window_entity_movement`: On its first call it only sets a flag; afterwards it copies a five-by-five window of a sixty-four-cell grid into a scratch buffer, moves each marked entry to a free neighbouring cell, and writes the window back.
+- `send_each_byte_of_buffer`: Obtains a length from a helper for the pointer argument, then passes each byte of the buffer to a second helper in order and returns the last result.
+- `reinit_record_and_return_status`: Stores a status byte in a stack record, points a list head at a stored record, runs setup helpers on two regions, and restores the list head.
+- `fill_72_byte_table`: Writes a seventy-two-entry byte table from several source bytes in fixed-size runs and sets a few individual entries.
+- `read_bounded_text_line`: Reads keystrokes into a buffer until Return or Escape, accepting printable characters up to a length limit and treating codes 8 and 240 as a delete.
+- `draw_layout_then_wait_key`: Frees stored resources, then draws either a full layout of six by four grids with twenty-five entries each or a reduced layout, and loops until a helper returns a key.
+- `draw_twenty_entry_menu`: Draws a twenty-entry list at a fixed origin, reading each row's text pointer from a table; when the flag is set the table offset shifts by twenty, and the first row is spaced differently.
+- `compute_weighted_flag_bonus`: Sums weighted flag counts (250 per set entry over eight entries, 500 over seventeen, 100 per entry equal to minus one), stores the excess over a stored value, then halves, doubles or quadruples it according to a mode byte and returns it.
+- `call_table_entry_after_setup`: Passes two arguments to a helper, runs setup helpers on a fixed record and a data pointer, then fetches an entry from a two-dimensional table indexed by two stored bytes and returns that helper's result.
+- `call_table_entry_with_args`: Runs setup helpers on a fixed record and a stored pointer, passes the two arguments to a helper, then returns the result of a helper on the same two-dimensional table entry.
+- `assign_unique_symbols_to_row`: For each of up to five positions, reads a character through a helper, skips it when an earlier position already holds that character, and otherwise stores it with a converted value in a parallel array.
+- `store_looked_up_handle`: Calls a helper with a stored data value, saves the returned handle in a fixed slot, and returns zero.
+- `frag_jmp_32`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_33`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_34`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_35`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_36`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_37`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_38`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_39`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_40`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_41`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_42`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_43`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_44`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_45`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_46`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_47`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_48`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_49`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_50`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_51`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_52`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_53`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_54`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_55`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_56`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_57`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_58`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_59`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_60`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_61`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_62`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_63`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_64`: Short code fragment that jumps to another point in the code.
+- `jump_to__rectfill_2`: Jump stub: passes control straight on to _RectFill.
+- `frag_jmp_65`: Short code fragment that jumps to another point in the code.
+- `jump_to__removegadget`: Jump stub: passes control straight on to _RemoveGadget.
+- `frag_jmp_66`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_67`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_68`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_69`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_70`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_71`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_72`: Short code fragment that jumps to another point in the code.
+- `jump_to__removeglist`: Jump stub: passes control straight on to _RemoveGList.
+- `frag_jmp_73`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_74`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_75`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_76`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_77`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_78`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_79`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_80`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_81`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_82`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_83`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_84`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_85`: Short code fragment that jumps to another point in the code.
+- `run_keypad_command_loop`: Sets up screen state and drawing resources, draws the board, then loops reading key codes and dispatching each to a branch.
+- `draw_status_panel`: Redraws a status panel: twelve flagged entries, a banner and four bars, then ten labelled rows whose numbers come from counts of set flags in stored tables or from fixed fields.
+- `run_animated_choice_until_escape_2`: Checks whether enough stack space is available and, if not, raises an out-of-memory error via a handler pointer.
+- `draw_entry_detail_row`: Draws the detail line for one indexed entry, writing labelled fields and numbers taken from tables and counters, choosing between two text strings by a flag, and returns the product of a table value and a stored count.
+- `run_animated_choice_until_escape`: Draws five entry markers, then loops redrawing animated markers and reading a key with a pause on each pass, until the key is Escape.
+- `loop_until_flag_clears`: Checks whether enough stack space is available and, if not, raises an out-of-memory error via a handler pointer.
+- `animate_until_key_pressed`: Repeatedly redraws a three-phase marker and a four-phase cell pattern with a pause on each pass, until a helper returns a non-zero key, and then returns that helper's result for the key.
+- `move_cursor_on_grid_cell`: Moves a two-dimensional cursor by the given offsets, rejecting positions outside the grid, then reads the cell code and sets or clears a mode byte and remembers the origin according to which code range it falls in.
+- `prompt_yes_or_no`: Draws a two-line prompt whose text is chosen by the argument, then reads keys in the range from N to y until one is answered.
+- `tally_and_draw_slot_totals`: Advances a counter by a fixed step of five, then for each of five slots with a value below twenty-five draws its entry, adds its weighted value to a running total and clears any slot whose total exceeds a limit.
+- `draw_label_then_value`: Sets a stored display state, draws a fixed label using stored resources, then draws its argument as a value and returns the result of that draw.
+- `select_entry_by_letter`: Draws up to five entries lettered from A onward, then reads keys in the range A to e until Escape.
+- `draw_four_bars_and_confirm`: Draws four stacked bars at fixed offsets, then reads keys in the range N to y until Y or N is pressed.
+- `toggle_side_state_flag`: Flips a stored side-state byte when the argument differs from it and draws an update through a helper.
+- `update_countdown_indicators`: Checks whether the cell under the cursor holds a value in a fixed range, then either decrements one of two countdown counters, resetting it to 40 when it reaches zero, or decrements a shared timer.
+- `choose_entry_1_to_4`: Draws up to four numbered entries and a frame, then reads keys until a digit from 1 to 4 selects an available entry, which is recorded in the state with its coordinates.
+- `confirm_action_with_check`: Draws a confirmation prompt, then reads keys in the range N to y: N or Escape cancels.
+- `decrement_timer_by_step`: Subtracts the argument from a stored timer.
+- `sum_completed_entry_bonus`: Adds 250 for each of twenty-six table entries equal to minus one, then returns that total plus a stored base value.
+- `frag_jmp_86`: Short code fragment that jumps to another point in the code (2 times in a row).
+- `frag_jmp_87`: Short code fragment that jumps to another point in the code.
+- `jump_to__refreshglist`: Jump stub: passes control straight on to _RefreshGList.
+- `frag_jmp_88`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_89`: Short code fragment that jumps to another point in the code.
+- `jump_to__onmenu`: Jump stub: passes control straight on to _OnMenu.
+- `frag_jmp_90`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_91`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_92`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_93`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_94`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_95`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_96`: Short code fragment that jumps to another point in the code.
+- `jump_to__addglist`: Jump stub: passes control straight on to _AddGList.
+- `frag_jmp_97`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_98`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_99`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_100`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_101`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_102`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_103`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_104`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_105`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_106`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_107`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_108`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_109`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_110`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_111`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_112`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_113`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_114`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_115`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_116`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_117`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_118`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_119`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_120`: Short code fragment that jumps to another point in the code.
+- `jump_to__offmenu`: Jump stub: passes control straight on to _OffMenu.
+- `frag_jmp_121`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_122`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_123`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_124`: Short code fragment that jumps to another point in the code.
+- `jump_to__rectfill_3`: Jump stub: passes control straight on to _RectFill.
+- `frag_jmp_125`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_126`: Short code fragment that jumps to another point in the code.
+- `jump_to__removegadget_2`: Jump stub: passes control straight on to _RemoveGadget.
+- `frag_jmp_127`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_128`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_129`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_130`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_131`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_132`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_133`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_134`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_135`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_136`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_137`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_138`: Short code fragment that jumps to another point in the code.
+- `jump_to__removeglist_2`: Jump stub: passes control straight on to _RemoveGList.
+- `frag_jmp_139`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_140`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_141`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_142`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_143`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_144`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_145`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_146`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_147`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_148`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_149`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_150`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_151`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_152`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_153`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_154`: Short code fragment that jumps to another point in the code.
+- `run_slot_key_loop`: Loops on keypresses: A to D choose one of four entries, L draws a four-row list, and Escape or Q leaves the loop.
+- `draw_fixed_option_screen`: Draws a fixed screen of labelled options at fixed coordinates, using stored text pointers and a value from a stored resource, then returns the result of a final helper call.
+- `select_menu_option`: Picks a menu item from a four-option list by drawing a beveled frame and labelled panels, then waits for the user to press A, B, C, or D and returns the selected index, or aborts when Escape is pressed.
+- `render_four_plane_cell_map`: Draws a header of four rows, then for each of four 64-by-64 cell planes draws every cell whose top bit is set, using the cell value and plane index, and returns the result of a final helper.
+- `collect_unique_characters_from_prompt`: Collects twenty-one distinct characters: for each slot it repeatedly reads a character through a helper until the character is not already in the list, stores it, and returns 21 once the list is full.
+- `store_pair_for_slot`: For slot indices other than three, stores two argument bytes in that slot's pair of state bytes and returns the index.
+- `update_checksum_table`: Loads three bytes from the stack, uses one as an index to store two bytes in a table at offset 1958 of a global variable, and then returns without additional processing.
+- `update_advanced_checksum`: Loads three bytes from the stack, uses one as an index to store two bytes in a table at offset 1966 of a global variable, performs arithmetic operations on coordinates, and stores a specific byte value at a calculated memory address.
+- `store_byte_offset_table`: Writes two bytes to a table at offset 1966 in a4 using values from registers and calculates an address offset with bit shifts before storing the byte 142.
+- `calculate_address_from_bytes`: Loads three bytes from stack offsets 43, 47, and 51 into registers d7, d6, and d5 respectively, performs bit shifts and additions on the value in d7 to calculate an address, and stores the result at stack offset 28.
+- `update_selection_flags`: Updates selection flags in a table by setting bits based on register values, using address calculations to determine the target location.
+- `set_selection_flag`: Increments a counter in register d4, performs a boundary check against value 5, calculates an address using bit shifts and additions, and stores the value 145 at that calculated memory location.
+- `store_byte_offset_table_2`: Writes a byte to a table at offset 3570 in a4 using values from registers and calculates an address offset with bit shifts before storing the byte 146.
+- `store_byte_offset_table_3`: Writes a byte to a table at offset 3570 in a4 using values from registers and calculates an address offset with bit shifts before storing the byte 147.
+- `pick_empty_cell_encode_key`: Obtains a key byte and a random value from helpers, then finds the n-th empty cell of a 64-by-64 grid, where n comes from a table.
+- `initialise_slot_state_from_table`: Loads per-slot values from fixed tables into the active state: two slot entries take their values from the table, three slots are cleared to 255, and several counters and bytes are set to starting values.
+- `assign_unique_random_slots`: Marks twenty-six entries as unassigned, then assigns indices zero to thirteen to randomly chosen unused entries, skipping index seven, and fills any remaining entries with random values from zero to thirteen.
+- `dispatch_code_with_counter`: Dispatches on a code: code 145 passes its three arguments to a helper, code 139 increments a counter and then does the same, and the pair 27 and 11 maps to a fixed call.
+- `dispatch_by_matched_table_index`: Searches a twenty-one-entry table for the stored character, then dispatches on the matched index: indices zero to five each call their own handler, indices six to fifteen use a generic helper, and indices sixteen to twenty use another handler.
+- `record_unique_triples_for_slot`: Stores a pair of argument bytes in a per-slot table, then for up to three positions draws a value through a helper, skipping values already drawn in this round, and records each value with a paired value in a second table.
+- `select_threshold_table_value`: Compares a stored counter with two per-index thresholds.
+- `call_helper_pair_four_args`: Passes the value returned by one helper, along with three register arguments, to a second helper.
+- `record_cell_and_advance_counter`: Stores the fourth argument in a per-slot table indexed by a counter, records a paired value at an index from a helper, advances the counter, writes the value into a grid cell at the given position, and returns the fourth argument.
+- `convert_table_entry_to_upper`: Reads a value from a table using an index, converts it to uppercase when it is a lowercase letter, and returns the result.
+- `lookup_slot_table_by_selector`: Maps a selector of zero, one or two to a helper lookup that indexes a stored byte table, and for any other selector returns the result of a helper call with fixed arguments 20 and 24.
+- `lookup_table_byte_zero`: Passes zero and fourteen to a helper and returns the byte it indexes in a stored table.
+- `lookup_table_byte_one`: Passes one and fourteen to a helper and returns the byte it indexes in a stored table.
+- `lookup_table_byte_two`: Passes two and fourteen to a helper and returns the byte it indexes in a stored table.
+- `call_helper_20_and_24`: Passes the constants 20 and 24 to a helper and returns nothing.
+- `lookup_table_maybe_add_values`: Looks up a byte in a two-dimensional table indexed by two values, and when that byte equals one it adds together two other table entries and returns the sum.
+- `reset_slot_table_from_groups`: Marks twenty-six slots as unused, then for each of four groups copies entries from stored tables into free slots, giving each a sequential index, and finally calls a helper for every slot still unused.
+- `prompt_yes_or_no_inverted`: Draws a two-option prompt with a labelled panel, then reads keys until Y or N is pressed.
+- `draw_fixed_rect_panel`: Sets a pen and draws a fixed rectangle at the decimal coordinates 40, 59, 240 and 64, then returns the helper's result.
+- `draw_three_stacked_entries_2`: Initialises a display panel, then loops three times drawing each of three stacked entries with their stored attributes and positions.
+- `send_code_4_then_query`: Passes operation code 4 with the argument 60 to a helper, then returns the result of a helper call with the value 44.
+- `draw_numbered_list_until_choice`: Draws a title and a list of text rows, one per count from the argument, each showing a stored string and a value, then waits for a digit from 1 to 8 or Escape.
+- `sanitize_name_to_eight_letters`: Copies up to eight characters of an input string into a fixed buffer, keeping only letters A to Z after case folding and replacing every other character with an underscore.
+- `initialise_four_colour_display`: Applies four table entries as colour settings, one per palette index stepping by nine from a starting index, through library calls.
+- `initialise_three_colour_display`: Loops three times over palette indices stepping by nine, applying one stored colour value per index through library calls.
+- `check_protection_question_answer`: Shows a randomly chosen question from a 128-entry table, reads up to 32 typed characters, transforms them and compares a derived word with the stored answer.
+- `check_protection_question_answer_2`: Runs the same question-and-answer check as the wrapper routine without its stack-limit branch: it selects a table entry, reads and transforms the typed text, and compares the derived word against the stored value.
+- `continue_protection_question_loop`: Resumes the question loop by transforming each typed character in turn until the input is complete.
+- `retry_protection_question_until_match`: Sets the success flag and repeatedly shows a question, reads and transforms the typed answer, and compares it with the stored word.
+- `clear_protection_state_flag`: Clears a status byte in a structure reached through a global pointer, calls a routine to finish the step, and returns the success flag held in the state block.
+- `compute_string_checksum_word`: Adds every byte of a string into a running 16-bit total, shifting each byte by a count supplied by a library routine before adding it.
+- `add_bytes_to_checksum`: Continues a checksum by adding each byte in a range, shifted by a count from a library routine, into a running total truncated to 16 bits.
+- `frag_jmp_155`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_156`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_157`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_158`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_159`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_160`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_161`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_162`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_163`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_164`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_165`: Short code fragment that jumps to another point in the code.
+- `jump_to__addglist_2`: Jump stub: passes control straight on to _AddGList.
+- `frag_jmp_166`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_167`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_168`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_169`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_170`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_171`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_172`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_173`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_174`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_175`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_176`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_177`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_178`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_179`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_180`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_181`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_182`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_183`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_184`: Short code fragment that jumps to another point in the code.
+- `jump_to__displaybeep`: Jump stub: passes control straight on to _DisplayBeep.
+- `jump_to__removegadget_3`: Jump stub: passes control straight on to _RemoveGadget.
+- `frag_jmp_185`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_186`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_187`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_188`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_189`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_190`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_191`: Short code fragment that jumps to another point in the code.
+- `jump_to__removeglist_3`: Jump stub: passes control straight on to _RemoveGList.
+- `frag_jmp_192`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_193`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_194`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_195`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_196`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_197`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_198`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_199`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_200`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_201`: Short code fragment that jumps to another point in the code.
+- `jump_to__modifyidcmp`: Jump stub: passes control straight on to _ModifyIDCMP.
+- `frag_jmp_202`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_203`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_204`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_205`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_206`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_207`: Short code fragment that jumps to another point in the code.
+- `open_screen_window_and_fonts`: Opens the operating-system libraries, a screen with its window and rastport, and the default font, then creates a bitmap and a gadget list.
+- `refresh_display_and_menu_strip`: When given zero it copies a saved colour table and reinitialises the rendering object before setting the menu strip and drawing the background panel.
+- `read_system_preferences_flag`: Allocates a preferences record, reads the system preferences into it through the library, and sets a flag to one when the read fails and zero when it succeeds.
+- `copy_name_into_state_field`: Calls the string copy routine with the address of a state text field and a second state field as its source, returning the routine's result.
+- `frag_jmp_208`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_209`: Short code fragment that jumps to another point in the code.
+- `jump_to__initrastport`: Jump stub: passes control straight on to _InitRastPort.
+- `frag_jmp_210`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_211`: Short code fragment that jumps to another point in the code.
+- `jump_to__openscreen`: Jump stub: passes control straight on to _OpenScreen.
+- `frag_jmp_212`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_213`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_214`: Short code fragment that jumps to another point in the code.
+- `jump_to__openwindow`: Jump stub: passes control straight on to _OpenWindow.
+- `frag_jmp_215`: Short code fragment that jumps to another point in the code.
+- `jump_to__setfont`: Jump stub: passes control straight on to _SetFont.
+- `jump_to__findtask`: Jump stub: passes control straight on to _FindTask.
+- `jump_to__initbitmap`: Jump stub: passes control straight on to _InitBitMap.
+- `jump_to__freemem_3`: Jump stub: passes control straight on to _FreeMem.
+- `frag_jmp_216`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_217`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_218`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_219`: Short code fragment that jumps to another point in the code.
+- `jump_to__openlibrary`: Jump stub: passes control straight on to _OpenLibrary.
+- `frag_jmp_220`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_221`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_222`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_223`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_224`: Short code fragment that jumps to another point in the code.
+- `jump_to__opendiskfont`: Jump stub: passes control straight on to _OpenDiskFont.
+- `frag_jmp_225`: Short code fragment that jumps to another point in the code.
+- `jump_to__deviceproc`: Jump stub: passes control straight on to _DeviceProc.
+- `frag_jmp_226`: Short code fragment that jumps to another point in the code.
+- `jump_to__setpointer_2`: Jump stub: passes control straight on to _SetPointer.
+- `jump_to__setmenustrip`: Jump stub: passes control straight on to _SetMenuStrip.
+- `jump_to__getprefs`: Jump stub: passes control straight on to _GetPrefs.
+- `frag_jmp_227`: Short code fragment that jumps to another point in the code.
+- `jump_to__closeworkbench`: Jump stub: passes control straight on to _CloseWorkBench.
+- `jump_to__showtitle`: Jump stub: passes control straight on to _ShowTitle.
+- `jump_to__setdrmd_2`: Jump stub: passes control straight on to _SetDrMd.
+- `frag_jmp_228`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_229`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_230`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_231`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_232`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_233`: Short code fragment that jumps to another point in the code.
+- `jump_to__modifyidcmp_2`: Jump stub: passes control straight on to _ModifyIDCMP.
+- `frag_jmp_234`: Short code fragment that jumps to another point in the code.
+- `jump_to__allocmem_2`: Jump stub: passes control straight on to _AllocMem.
+- `frag_jmp_235`: Short code fragment that jumps to another point in the code.
+- `run_event_command_sequence`: For an index below ten, and only when a flag is set, walks a list of byte pairs for that index until a terminator.
+- `open_audio_device_channels`: Allocates a 680-byte block, sets up pointers for four audio channel request blocks and their paired copies, and opens the audio device through the library.
+- `control_audio_channel_mode`: Switches on a mode from zero to five: the lower modes stop and abort pending requests on each channel, then either reinitialise the channel block or only pause.
+- `queue_channel_sample_request`: Fills a channel request with the data pointer, length, period and volume, aborts any request still pending on that channel, and sends the new one through the device library.
+- `set_channel_period_and_volume`: Stores two 16-bit values into a channel request block and sends that block through a library routine.
+- `release_pending_channel_requests`: For each of four channels that has a pending request, aborts it through a library call and clears its pending flag.
+- `fill_identity_byte_table`: Writes every value from zero to 255 in order into a 256-byte table and returns the final index value.
+- `build_six_octave_decimated_tables`: Fills six successive blocks after a 256-byte table, each taking every second, fourth, eighth and further sample from the block before it.
+- `allocate_chip_sample_buffer`: Allocates a 1024-byte block of chip-accessible memory and signals an error when the allocation fails.
+- `play_note_on_channel`: For a note number below one hundred, looks up the period, sample and volume for the channel, clamps the volume to thirty-two, and either updates the voice already playing or starts a new sample.
+- `ramp_channel_volumes_down`: Repeats the given number of steps, lowering the volume on four audio channels along a fixed decreasing pattern, then silences all four channels.
+- `frag_jmp_236`: Short code fragment that jumps to another point in the code (2 times in a row).
+- `frag_jmp_237`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_238`: Short code fragment that jumps to another point in the code.
+- `jump_to__freemem_4`: Jump stub: passes control straight on to _FreeMem.
+- `jump_to__waitio`: Jump stub: passes control straight on to _WaitIO.
+- `jump_to__closedevice`: Jump stub: passes control straight on to _CloseDevice.
+- `jump_to_cleanup_display_context`: Jump stub: passes control straight on to cleanup_display_context.
+- `jump_to__opendevice`: Jump stub: passes control straight on to _OpenDevice.
+- `jump_to__delay_2`: Jump stub: passes control straight on to _Delay.
+- `frag_jmp_239`: Short code fragment that jumps to another point in the code.
+- `jump_to__checkio`: Jump stub: passes control straight on to _CheckIO.
+- `jump_to__beginio`: Jump stub: passes control straight on to _BeginIO.
+- `jump_to__allocmem_3`: Jump stub: passes control straight on to _AllocMem.
+- `draw_rectangle_outline_2_2`: Checks whether enough stack space is available, and if so issues a long series of coordinate-derived draw calls that trace the outline and interior of a rectangle.
+- `frag_jmp_240`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_241`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_242`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_243`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_244`: Short code fragment that jumps to another point in the code.
+- `update_menu_check_marks`: Sets the checked state of a group of menu items from three on-off flags, either for the full set when given zero or for a single item otherwise.
+- `handle_menu_selection_code`: Decodes a menu selection code: for option codes it toggles one of several on-off settings, stores a mode value or redraws the menu strip, and for other codes it looks up the matching item and returns its state byte.
+- `increment_shared_counter`: It increments a shared counter held in a global variable and, when that counter reaches zero, invokes a routine through a stored argument and, if a flag is set, calls another routine with several fixed arguments.
+- `decrement_shared_counter`: It decrements a shared counter held in a global variable and, when that counter reaches zero, invokes a routine through a stored argument and, if a flag is set, calls another routine with several fixed arguments.
+- `refresh_menu_item_states`: Sets the normal or checked state of each menu item from its stored setting flag, then redraws the menu list.
+- `jump_to__onmenu_2`: Jump stub: passes control straight on to _OnMenu.
+- `jump_to__clearmenustrip_2`: Jump stub: passes control straight on to _ClearMenuStrip.
+- `frag_jmp_245`: Short code fragment that jumps to another point in the code.
+- `jump_to__offmenu_2`: Jump stub: passes control straight on to _OffMenu.
+- `jump_to__setpointer_3`: Jump stub: passes control straight on to _SetPointer.
+- `jump_to__setmenustrip_2`: Jump stub: passes control straight on to _SetMenuStrip.
+- `jump_to__itemaddress`: Jump stub: passes control straight on to _ItemAddress.
+- `jump_to__modifyidcmp_3`: Jump stub: passes control straight on to _ModifyIDCMP.
+- `create_pair_of_gadgets`: When given a nonzero handle, creates two items of width 322 and height 56 through a library routine, one with flag zero and one with flag one, and stores both results in state fields.
+- `wait_for_either_signal`: Loops until one of two events fires, polling the first event and an optional input key that can end the wait with the space character.
+- `index_to_uppercase_char`: Converts a numeric index into a character code by looking up a value in a table of word-sized entries, then uppercases the resulting byte if it falls within the lowercase letter range.
+- `frag_ori_pea_move_bsr_addq_bra`: Short code fragment that merges 18 into the memory just below a4 (moving a4 down), then merges 148 into d2, then merges 82 into an indexed entry from a2, then merges an address into d4, then pushes the address of a fixed memory address onto the stack, then copies the memory at an offset from a4 to the stack, then calls create_pair_of_gadgets, then adds 8 to a7, then jumps to another point in the code.
+- `frag_tst_beq_pea_move_bsr_addq_bra`: Short code fragment that tests the memory at an offset from a4, then branches if the last result was zero, then pushes the address of a fixed memory address onto the stack, then copies the memory at an offset from a4 to the stack, then calls create_pair_of_gadgets, then adds 8 to a7, then jumps to another point in the code.
+- `frag_moveq_bra_13`: Short code fragment that loads 1 into d6, then jumps to another point in the code.
+- `frag_pea_move_bsr_addq_bra`: Short code fragment that pushes the address of a fixed memory address onto the stack, then copies the memory at an offset from a4 to the stack, then calls create_pair_of_gadgets, then adds 8 to a7, then jumps to another point in the code.
+- `frag_pea_move_bsr_addq_bra_2`: Short code fragment that pushes the address of a fixed memory address onto the stack, then copies the memory at an offset from a4 to the stack, then calls create_pair_of_gadgets, then adds 8 to a7, then jumps to another point in the code.
+- `frag_pea_move_bsr_addq_bra_3`: Short code fragment that pushes the address of a fixed memory address onto the stack, then copies the memory at an offset from a4 to the stack, then calls create_pair_of_gadgets, then adds 8 to a7, then jumps to another point in the code.
+- `frag_move_bsr_addq_bra`: Short code fragment that copies 51832 to the stack, then copies the memory at an offset from a4 to the stack, then calls create_pair_of_gadgets, then adds 8 to a7, then jumps to another point in the code.
+- `frag_pea_move_bsr_addq_bra_4`: Short code fragment that pushes the address of a fixed memory address onto the stack, then copies the memory at an offset from a4 to the stack, then calls create_pair_of_gadgets, then adds 8 to a7, then jumps to another point in the code.
+- `frag_move_bsr_addq_bra_2`: Short code fragment that copies 48556 to the stack, then copies the memory at an offset from a4 to the stack, then calls create_pair_of_gadgets, then adds 8 to a7, then jumps to another point in the code.
+- `setup_and_wait`: Prepares a pair of gadgets using a global variable and then waits for a signal before continuing execution.
+- `convert_byte_to_uppercase_2`: Checks whether enough stack space is available and, if not, raises an out-of-memory error via a handler pointer.
+- `increment_resource_counter`: Initialises a resource counter to zero, and when the given value is nonzero it increments the counter and returns the result.
+- `load_four_named_resources`: Looks up four named resources through a routine and stores each returned pointer in its own state slot.
+- `release_four_named_resources`: Frees the four resource pointers held in state slots, clearing each slot after its release, and returns the result of the last free.
+- `load_two_named_resources`: Looks up two named resources through a routine and stores each returned pointer in its own state slot, returning the second pointer.
+- `release_two_named_resources`: Frees the two resource pointers held in state slots, clearing each slot after release, and returns the result of the last free.
+- `frag_jmp_246`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_247`: Short code fragment that jumps to another point in the code (2 times in a row).
+- `frag_jmp_248`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_249`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_250`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_251`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_252`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_253`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_254`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_255`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_256`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_257`: Short code fragment that jumps to another point in the code.
+- `jump_to__checkio_2`: Jump stub: passes control straight on to _CheckIO.
+- `frag_jmp_258`: Short code fragment that jumps to another point in the code.
+- `dispatch_handler_command_code`: Decodes a seven-bit command code and ignores codes below five.
+- `frag_link_cmpa_bcs_movem_moveq_bra`: Short code fragment that creates a stack frame in a5, then compares a7 with the memory at an offset from a4, then branches if the carry flag is set, then saves registers on the stack, then loads 0 into d5, then loads 0 into d7, then jumps to another point in the code.
+- `validate_input_pair`: Compares two byte values from memory with corresponding bytes in a table, branching to an error handler if they don't match, otherwise stores the loop counter.
+- `frag_addq_moveq_cmp_bcs_bne_bra`: Short code fragment that adds 1 to d7, then loads 27 into d0, then compares d7 with d0, then branches if the carry flag is set, then loads 27 into d0, then compares d7 with d0, then branches if the last result was not zero, then loads 0 into d0, then jumps to another point in the code.
+- `handle_display_update`: Processes input values to determine display actions, calls several system routines for drawing operations, removes gadgets from a list, and updates global variables related to object status.
+- `remove_gadgets_and_draw`: Removes three gadgets from a list by calling a removal function multiple times, then calls a drawing routine to update the display.
+- `remove_multiple_gadgets`: Removes three gadgets from a list by calling a removal function multiple times with different parameters.
+- `update_object_status`: Calculates an address using a register value as an index, sets a byte at that location to 1, loads a byte from the calculated address into a register, and calls a fragment routine with the register value.
+- `handle_input_and_display`: Processes input by comparing a value with a constant, then calls routines to draw messages and show status updates based on the input.
+- `process_input_and_display`: Processes character input and displays corresponding messages, updating various game state variables based on the input value.
+- `frag_pea_clr_bsr_addq_moveq_bra`: Short code fragment that pushes the address of a fixed memory address onto the stack, then clears the stack, then calls draw_message_box_by_flag, then adds 8 to a7, then loads 0 into d4, then jumps to another point in the code.
+- `draw_and_update_graphics`: Draws graphics elements and updates a counter in a loop, then calls several system functions to handle display operations.
+- `frag_moveq_bra_14`: Short code fragment that loads 1 into d0, then jumps to another point in the code.
+- `decrement_and_check_timer`: Decrements a timer value and checks if it has reached zero, then performs cleanup operations before returning.
+- `frag_link_cmpa_bcs_movem_moveq_bra_2`: Short code fragment that creates a stack frame in a5, then compares a7 with the memory at an offset from a4, then branches if the carry flag is set, then saves registers on the stack, then loads 0 into d7, then jumps to another point in the code.
+- `validate_input_pair_2`: Compares two byte values from memory with corresponding bytes in another table, branching to an error handler if they don't match, otherwise stores the loop counter.
+- `frag_addq_moveq_cmp_bcs_bne_bra_2`: Short code fragment that adds 1 to d7, then loads 27 into d0, then compares d7 with d0, then branches if the carry flag is set, then loads 27 into d0, then compares d7 with d0, then branches if the last result was not zero, then loads 0 into d0, then jumps to another point in the code.
+- `frag_moveq_move_lea_jsr_cmpi_bge_bra`: Short code fragment that loads 0 into d0, then copies d6 to d0, then loads the address of the memory at an offset from a4 into a0, then copies 1 to an indexed entry from a0, then calls another routine, then compares the memory at an offset from a4 with 50, then branches if the comparison was greater or equal, then loads 0 into d7, then jumps to another point in the code.
+- `process_object_data_loop`: Loads object data using an index from a register, performs conditional operations based on that data, calls several fragment routines with parameters, and manages a counter in register d7 before looping back.
+- `load_object_data`: Loads object data based on a global index and performs conditional operations using table lookups and memory accesses.
+- `frag_pea_jsr_addq_bra`: Short code fragment that pushes the address of a fixed memory address onto the stack, then calls frag_jmp_270, then adds 4 to a7, then pushes the address of the memory at an offset from a4 onto the stack, then calls frag_jmp_279, then adds 4 to a7, then jumps to another point in the code.
+- `load_and_process_object_data`: Loads object data from tables based on index values, performs conditional operations using memory lookups, and manages graphics lists by adding and refreshing entries.
+- `check_and_reset_entries`: Checks a condition and resets stored entries if certain criteria are met, then calls system functions to manage graphics lists.
+- `validate_input_bytes`: Compares bytes from global memory locations with register values, performs conditional jumps based on these comparisons, loads a byte from a global variable and stores it at an offset on the stack.
+- `process_game_iteration`: Processes game loop iterations by updating counters and calling various system routines with calculated memory addresses.
+- `update_selection_flag`: Compares bytes from global memory locations with register values, performs conditional jumps based on these comparisons, loads a byte from stack offset 28 into d0, and updates a flag in a global table.
+- `handle_selection_and_display`: Handles selection prompts and display operations by processing input values, calling system functions, and managing graphics gadgets.
+- `calculate_animation_step`: Calls routines to set up display parameters, loads bytes from tables using register indices, performs arithmetic operations on register values, and calls fragment routines with calculated parameters before returning.
+- `process_input_and_update_gadgets`: Performs a sequence of data lookups and calls to various routines, including a loop that increments a byte in a stack structure, reads a character, converts it to uppercase, and checks if it equals sixty-five; if so, it calls a routine to remove two gadgets and updates a value in a structure via a4 before branching.
+- `update_position_counters`: Updates two 16-bit position counters in a global structure by adding values from register d6, then branches to a specific location.
+- `process_animation_step`: Compares a value with memory data and calculates new values based on table lookups, then calls an animation processing routine with the calculated parameters.
+- `process_animation_frame`: Processes animation data by calculating memory addresses, calling system routines with parameters, and updating a counter in a global variable before branching.
+- `frag_moveq_move_lea_cmp_bcc_bra`: Short code fragment that loads 0 into d0, then copies the memory at an offset from a7 to d0, then loads the address of the memory at an offset from a4 into a0, then copies an indexed entry from a0 to d1, then copies the memory at an offset from a7 to d0, then compares d0 with d1, then branches if the carry flag is clear, then loads 0 into d7, then jumps to another point in the code.
+- `handle_sprite_data`: Handles sprite-related data by calculating memory locations, calling system routines, and incrementing a counter in a global structure before branching.
+- `validate_and_update_state`: Compares input values with memory data and updates game state variables by performing arithmetic operations on register d5.
+- `update_game_state_values`: Updates game state values by performing arithmetic operations on register d5, calling system routines with parameters, and updating a byte value in a global structure before branching.
+- `frag_moveq_move_lea_cmp_bcc_bra_2`: Short code fragment that loads 0 into d0, then copies the memory at an offset from a7 to d0, then loads the address of the memory at an offset from a4 into a0, then copies an indexed entry from a0 to d1, then copies the memory at an offset from a7 to d0, then compares d0 with d1, then branches if the carry flag is clear, then loads 0 into d7, then jumps to another point in the code.
+- `process_game_loop_iteration`: Processes a game loop iteration by updating counters, calling various system routines, and performing memory operations based on calculated offsets.
+- `validate_and_copy_data`: Validates data by comparing values and copying bytes between memory locations, then returns immediately if the comparison fails.
+- `frag_move_moveq_pea_jsr_unlk_rts`: Short code fragment that copies the memory at an offset from a7 to d0, then loads 0 into d1, then copies d0 to d1, then pushes the address of a fixed memory address onto the stack, then copies the memory at an offset from a4 to the stack, then copies d1 to the stack, then calls frag_jmp_267, then copies the memory at an offset from a5 to d2, then removes the stack frame held in a5, then returns.
+- `process_input_validation`: Processes input validation by comparing data and copying bytes between memory locations, then returns immediately if the comparison fails.
+- `setup_and_call_subroutine`: Prepares parameters for a subroutine call by loading a byte value into registers, then executes the subroutine and retrieves a result from memory.
+- `check_coordinate_values`: Compares coordinate values from memory locations with stored data, updating memory locations if they match, then calls another routine with the results.
+- `compare_and_update_coordinates`: Compares coordinate values from memory locations with stored data, updating memory locations if they match, then calls another routine with a parameter.
+- `compare_and_update_values`: Compares two byte values with stored data, updating memory locations if they match, then calls another routine to handle further processing.
+- `frag_bsr_moveq_move_not_cmp_bne_bra`: Short code fragment that calls another routine, then loads 0 into d1, then copies d0 to d1, then copies d0 to the memory at an offset from a7, then loads 0 into d2, then inverts d2, then compares d1 with d2, then branches if the last result was not zero, then loads 0 into d0, then jumps to another point in the code.
+- `frag_move_moveq_clr_jsr_movem_unlk_rts`: Short code fragment that copies the memory at an offset from a7 to d0, then loads 0 into d1, then copies d0 to d1, then clears the stack, then copies the memory at an offset from a4 to the stack, then copies d1 to the stack, then calls frag_jmp_267, then copies several registers to or from memory, then removes the stack frame held in a5, then returns.
+- `validate_coordinate_data`: Validates coordinate data by comparing values and copying bytes between memory locations, then returns immediately if the comparison fails.
+- `setup_and_call_subroutine_2`: Prepares parameters for a subroutine call by loading a byte value into registers, then executes the subroutine and retrieves a result from memory.
+- `setup_requester_box`: Initializes a requester box by copying data from a global structure, setting up stack parameters, and calling system routines to build and display the box.
+- `frag_moveq_bra_15`: Short code fragment that loads 0 into d7, then jumps to another point in the code.
+- `process_game_coordinates`: Processes game coordinates by calculating memory addresses, performing comparisons, calling system routines with parameters, and updating a global variable before branching.
+- `update_coordinates`: Increments counters in registers d5, d6, and d7, performs boundary checks against the value 64, and calls several system routines with parameters from the stack.
+- `frag_cmpa_bcs_movem_moveq_move_bsr_addq`: Short code fragment that compares a7 with the memory at an offset from a4, then branches if the carry flag is set, then saves registers on the stack, then loads 1 into d0, then copies d0 to the stack (2 times in a row), then calls draw_message_box_by_flag, then adds 8 to a7, then loads 0 into d7, then jumps to another point in the code.
+- `handle_frame_data`: Handles frame data by calculating memory addresses, calling system routines with parameters, updating a counter in a global structure, and returning to the caller.
+- `validate_stack_pointer`: Compares the stack pointer with a memory location, branches if the stack pointer is below that location, saves registers d2 and d7 to the stack, and calls a routine with two parameters.
+- `process_game_state`: Iterates through game state values using a counter in d7, updates global variables based on the counter value, and calls fragment routines for processing.
+- `build_requester_box_fixed`: Releases any previously created requester items, then creates a new box at a fixed location, either 288 or 240 pixels wide depending on the arguments.
+- `draw_standard_message_box`: Draws a 240-pixel wide message box at a fixed position and height, using a value from a stored byte, and finishes with a call to a routine with the value 255.
+- `draw_indexed_stat_panel`: Draws a panel of labelled values taken from tables for the selected entries, choosing the row layout from a stored byte and a computed count.
+- `draw_indexed_stat_panel_2`: Draws a panel of labelled values taken from tables for the selected entries, choosing the row layout from a stored byte and a computed count.
+- `draw_value_entry_list`: Draws table entries in rows spaced nine pixels apart until the limit is reached, then draws a border using the stored bounds.
+- `frag_moveq_bra`: Short code fragment that loads 0 into d7, then loads 0 into d6, then jumps to another point in the code.
+- `render_counted_label_list`: Counts how many of the first sixteen entries in a table are non-empty, then uses that count to size a labelled list routine that prints a header, one labelled row per entry with the count shown, and a trailing separator.
+- `draw_label_rows_panel`: Draws a fixed header text, then labelled rows from a table spaced nine pixels apart with the counted value shown on one row, followed by a separator and the frame.
+- `draw_label_column_rows`: Draws labelled rows from a table between two positions, showing the value for the chosen row, then draws a separator and the stored frame.
+- `spend_from_stored_budget`: Subtracts the requested amount from a stored total when enough remains and returns one.
+- `frag_sub_moveq_move_rts`: Short code fragment that subtracts d7 from the memory at an offset from a4, then loads 1 into d0, then copies the top of the stack to d7, then returns.
+- `print_indexed_text_entry`: Draws a fixed text block, then passes the entry in a table selected by the argument to a routine.
+- `print_indexed_text_entry_2`: Draws a fixed text block, then passes the entry in a table selected by the argument to a routine.
+- `frag_cmpa_bcs_movem_move_moveq_bra`: Short code fragment that compares a7 with the memory at an offset from a4, then branches if the carry flag is set, then saves registers on the stack, then copies the memory at an offset from a7 to d7, then loads 0 into d5, then loads 0 into d6, then jumps to another point in the code.
+- `update_game_state_loop`: Updates game state in a loop by calculating indices, performing arithmetic operations, and calling system routines to handle data processing.
+- `frag_link_cmpa_bcs_movem_move_moveq_bra`: Short code fragment that creates a stack frame in a5, then compares a7 with the memory at an offset from a4, then branches if the carry flag is set, then saves registers on the stack, then copies the memory at an offset from a7 to d7, then loads 0 into d6, then loads 0 into d5, then jumps to another point in the code.
+- `handle_game_events`: Processes game events by checking conditions, managing memory operations, and calling drawing routines based on event flags and counters.
+- `handle_game_event_processing`: Processes game events by checking conditions, calling drawing routines, and managing memory operations based on event flags and counters.
+- `update_game_state`: Processes different game state values based on a counter in d7 and updates various global variables accordingly.
+- `handle_status_update`: Loads a status value from the stack, passes it to a message handler routine, and then calls several other routines with specific parameters to update game state or display information.
+- `initialize_coordinates`: Initializes coordinate values by loading data from global variables, performs arithmetic operations on them, and sets up pointers for further processing in a loop structure.
+- `frag_moveq_move_cmp_bne_bra`: Short code fragment that loads 0 into d0, then copies the memory at a3 to d0, then compares d0 with d6, then branches if the last result was not zero, then loads 0 into d0, then copies the memory at an offset from a3 to d0, then compares d0 with d5, then branches if the last result was not zero, then copies d4 to d7, then jumps to another point in the code.
+- `frag_addq_moveq_move_cmp_blt_movem_rts`: Short code fragment that adds 1 to d4, then adds 2 to a3, then loads 0 into d0, then copies the memory at a2 to d0, then compares d4 with d0, then branches if the comparison was less, then copies d7 to d0, then restores saved registers from the stack, then returns.
+- `process_request_queue`: Checks if a request queue is empty and handles different cases based on a flag value.
+- `prompt_until_return_pressed`: Shows the label chosen by the argument, then reads input characters until the return key is pressed.
+- `show_status_message_for_value`: Shows a message for the given value and sets a mode byte to 23, then returns the result of the last draw call.
+- `draw_message_box_by_flag`: Draws a box at a fixed position with a height of 68 pixels, using a width of 240 when the flag is zero and 288 otherwise.
+- `init_library_state`: It checks whether enough stack space is available and, if so, initializes a library state by storing a fixed helper address, then a size, then another helper address into consecutive words of a global table.
+- `draw_selected_frame_box`: Resets two display states, then draws one of two fixed boxes depending on whether the argument is zero or one, and finishes with a call that returns its result.
+- `draw_left_frame_box`: Draws a fixed box at a set position with a fixed size, then resets a display state.
+- `draw_right_frame_box`: Draws a fixed box at a second set position with a fixed size, then resets a display state.
+- `frag_jmp_259`: Short code fragment that jumps to another point in the code (2 times in a row).
+- `frag_jmp_260`: Short code fragment that jumps to another point in the code.
+- `jump_to__refreshglist_2`: Jump stub: passes control straight on to _RefreshGList.
+- `jump_to_dispatch_request_by_code`: Jump stub: passes control straight on to dispatch_request_by_code.
+- `frag_jmp_261`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_262`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_263`: Short code fragment that jumps to another point in the code.
+- `jump_to_divide_signed_32bit_values`: Jump stub: passes control straight on to divide_signed_32bit_values.
+- `frag_jmp_264`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_265`: Short code fragment that jumps to another point in the code.
+- `jump_to__addglist_3`: Jump stub: passes control straight on to _AddGList.
+- `jump_to_invoke_setup_then_stored_handl`: Jump stub: passes control straight on to invoke_setup_then_stored_handler.
+- `jump_to_advance_value_below_limit`: Jump stub: passes control straight on to advance_value_below_limit.
+- `frag_jmp_266`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_267`: Short code fragment that jumps to another point in the code.
+- `jump_to_convert_byte_to_uppercase_2`: Jump stub: passes control straight on to convert_byte_to_uppercase_2.
+- `frag_jmp_268`: Short code fragment that jumps to another point in the code.
+- `jump_to_run_selection_prompt`: Jump stub: passes control straight on to run_selection_prompt.
+- `jump_to_set_low_bits_mode_field`: Jump stub: passes control straight on to set_low_bits_mode_field.
+- `jump_to_release_four_named_resources`: Jump stub: passes control straight on to release_four_named_resources.
+- `frag_jmp_269`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_270`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_271`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_272`: Short code fragment that jumps to another point in the code.
+- `jump_to_reacquire_indexed_resource`: Jump stub: passes control straight on to reacquire_indexed_resource.
+- `jump_to_load_four_named_resources`: Jump stub: passes control straight on to load_four_named_resources.
+- `frag_jmp_273`: Short code fragment that jumps to another point in the code.
+- `jump_to__removegadget_4`: Jump stub: passes control straight on to _RemoveGadget.
+- `frag_jmp_274`: Short code fragment that jumps to another point in the code.
+- `jump_to_build_interface_and_wait_for_i`: Jump stub: passes control straight on to build_interface_and_wait_for_input.
+- `jump_to_draw_inset_rectangle_frame_2`: Jump stub: passes control straight on to draw_inset_rectangle_frame_2.
+- `jump_to_lookup_threshold_bucket_entry`: Jump stub: passes control straight on to lookup_threshold_bucket_entry.
+- `jump_to_call_with_clamped_counts`: Jump stub: passes control straight on to call_with_clamped_counts.
+- `frag_jmp_275`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_276`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_277`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_278`: Short code fragment that jumps to another point in the code.
+- `jump_to_store_available_memory_kilobyt`: Jump stub: passes control straight on to store_available_memory_kilobytes.
+- `jump_to_reset_five_stored_entries`: Jump stub: passes control straight on to reset_five_stored_entries.
+- `jump_to_read_uppercase_char_variant`: Jump stub: passes control straight on to read_uppercase_char_variant.
+- `jump_to_unpack_header_bytes_and_call`: Jump stub: passes control straight on to unpack_header_bytes_and_call.
+- `frag_jmp_279`: Short code fragment that jumps to another point in the code.
+- `jump_to_read_char_in_range_or_return`: Jump stub: passes control straight on to read_char_in_range_or_return.
+- `jump_to__removeglist_7`: Jump stub: passes control straight on to _RemoveGList.
+- `frag_jmp_280`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_281`: Short code fragment that jumps to another point in the code.
+- `jump_to_draw_two_fixed_panels`: Jump stub: passes control straight on to draw_two_fixed_panels.
+- `jump_to_draw_inset_rectangle_frame`: Jump stub: passes control straight on to draw_inset_rectangle_frame.
+- `frag_jmp_282`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_283`: Short code fragment that jumps to another point in the code.
+- `jump_to_wait_until_value_received`: Jump stub: passes control straight on to wait_until_value_received.
+- `frag_jmp_284`: Short code fragment that jumps to another point in the code.
+- `jump_to_compute_fixed_point_product`: Jump stub: passes control straight on to compute_fixed_point_product.
+- `jump_to_convert_lowercase_to_uppercase`: Jump stub: passes control straight on to convert_lowercase_to_uppercase.
+- `draw_positioned_box_frame`: Draws a fixed-size box at the given position through the drawing routine, stores the box corners offset by three in the state record, and passes that record to the rendering routine, returning its result.
+- `draw_inset_rectangle_frame`: Stores a rectangle position inset by three and a size reduced by six in the state record, then passes that record to the rendering routine and returns its result.
+- `draw_inset_rectangle_frame_2`: Stores a rectangle position inset by three and a size reduced by six in the state record, then passes that record to the rendering routine and returns its result.
+- `draw_two_fixed_panels`: Draws two fixed-size panels at preset positions, then fills a rectangle record and passes it to the rendering routine, returning that result.
+- `setup_screen_layout_variant`: Carries the same two-mode screen layout setup as its near-identical sibling, filling coordinates, drawing panels and bars, and returning the width and height minus one packed together.
+- `setup_default_layout_panels`: Fills the default layout coordinates, draws the default panel frames and separator bar, and stores the width and height minus one.
+- `draw_stacked_row_panels`: Draws a stack of rows at a fixed horizontal position, stepping down by thirteen units from a starting value until a limit is reached, then draws a bottom bar and stores the width and height minus one.
+- `draw_list_entry_rows`: Stores the list dimensions, draws a column of entries down from a fixed start with fixed spacing, then draws a footer bar and stores the width and height minus one.
+- `draw_marked_list_entry_rows`: Marks each entry record with a fixed value, draws the entry rows down from a fixed start with fixed spacing, then draws a footer bar and stores the width and height minus one.
+- `build_seven_item_menu`: Fills seven menu entries with fixed positions and sizes, labelling them with consecutive letters from A, then passes the entries to the menu routine and returns its result.
+- `build_labelled_entry_list`: Fills one lettered list entry per count argument, stepping each entry down by a fixed amount, then draws a heading and bordered panel and passes the list to the menu routine.
+- `build_numbered_entry_list`: Fills one numbered list entry per count argument at fixed spacing, then passes the entries to the menu routine and returns its result.
+- `build_four_option_panel`: Draws four option rows, each with a frame, a text label from a stored string table and a letter, records each row as a menu entry, and passes the four entries to the menu routine.
+- `build_numbered_row_menu`: Draws one numbered row per count argument, records each row as a list entry, and passes the list to the menu routine, returning its result.
+- `jump_to__refreshglist_3`: Jump stub: passes control straight on to _RefreshGList.
+- `frag_jmp_285`: Short code fragment that jumps to another point in the code.
+- `jump_to__addglist_4`: Jump stub: passes control straight on to _AddGList.
+- `frag_jmp_286`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_287`: Short code fragment that jumps to another point in the code.
+- `jump_to__rectfill_4`: Jump stub: passes control straight on to _RectFill.
+- `frag_jmp_288`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_289`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_290`: Short code fragment that jumps to another point in the code.
+- `run_main_command_screen`: Draws the main command screen, either a short prompt or a full list of seven lettered slots, then reads one keystroke.
+- `initialise_display_bit_flags`: Sets bit flags in a few locations addressed through pointer registers and then makes a short sequence of setup calls.
+- `frag_bsr_bra_6`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `frag_pea_bsr_lea_bra`: Short code fragment that pushes the address of a fixed memory address onto the stack (4 times in a row), then calls highlight_and_select_entry, then loads the address of the memory at an offset from a7 into a7, then jumps to another point in the code.
+- `frag_pea_bsr_lea_bra_2`: Short code fragment that pushes the address of a fixed memory address onto the stack (4 times in a row), then calls highlight_and_select_entry, then loads the address of the memory at an offset from a7 into a7, then jumps to another point in the code.
+- `frag_bsr_bra_7`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `frag_bsr_bra_8`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `frag_bsr_bra_9`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `frag_bsr_bra_10`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `frag_bsr_bra_11`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `frag_bsr_jsr_bra`: Short code fragment that calls frag_jmp_312, then calls frag_jmp_313, then calls another routine, then jumps to another point in the code.
+- `frag_clr_bsr_addq_bra_2`: Short code fragment that clears the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `initialize_display_elements`: Calls several fragment routines with different parameters, copies a byte from memory to the stack, performs conditional calls based on register values, and manages stack space before returning.
+- `update_slot_counter_and_draw`: Looks up a slot record from the current index, adds a stored increment to its counter, clamps the record's maximum and draws the new value with the text routines.
+- `process_input_loop`: Processes input by adding a constant to a register value, calls fragment routines for drawing operations, and loops back to itself if a counter condition is met.
+- `handle_pair_selection`: Handles pair selection by calling drawing routines, updating selection flags in a table, and calling various fragment routines for display updates.
+- `frag_cmpa_bcs_movem_moveq_bra_3`: Short code fragment that compares a7 with the memory at an offset from a4, then branches if the carry flag is set, then saves registers on the stack, then loads 0 into d7, then jumps to another point in the code.
+- `update_selection_position_2`: Updates a selection position value in a table, adjusts related counters, and calls several fragment routines for drawing and display updates.
+- `update_selection_position`: Updates a selection position value in a table, adjusts related counters, and calls several fragment routines for drawing and updating display elements.
+- `frag_cmpa_bcs_movem_moveq_bra_4`: Short code fragment that compares a7 with the memory at an offset from a4, then branches if the carry flag is set, then saves registers on the stack, then loads 0 into d7, then jumps to another point in the code.
+- `handle_selection_update`: Processes selection updates by checking conditions, calling a fragment routine to handle input, and updating internal counters before potentially looping back or returning.
+- `frag_moveq_move_pea_bsr_lea_movem_rts`: Short code fragment that loads 6 into d0, then copies d0 to the stack, then pushes the address of a fixed memory address onto the stack, then copies d0 to the stack (2 times in a row), then calls highlight_and_select_entry, then loads the address of the memory at an offset from a7 into a7, then restores saved registers from the stack, then returns.
+- `process_input_branches`: Loads bytes from stack offsets 5 and 6 into registers, performs arithmetic operations on these values, calls fragment routines with specific parameters, and branches to different locations based on the results of comparisons.
+- `validate_position_increment`: Loads bytes from stack offsets 5 and 6 into registers d0 and d0 respectively, performs arithmetic operations on these values, calls a validation routine with calculated parameters, and branches based on the result.
+- `validate_and_process_position`: Loads bytes from stack offsets 5 and 6 into registers, performs arithmetic operations on these values, stores a modified byte at offset 20 of the stack, then calls another routine with specific parameters.
+- `prepare_position_data`: Loads bytes from stack offsets 5 and 6 into registers, performs arithmetic operations on these values, stores a modified byte at offset 20 of the stack, then calls another routine with specific parameters.
+- `calculate_and_call`: Loads bytes from stack offsets 5 and 6 into registers d0 and d2 respectively, performs arithmetic operations on these values, calls a subroutine with calculated parameters, and then makes several system calls before returning.
+- `validate_position_data`: Loads bytes from the stack into registers d4 through d7, calculates an address using bit shifts and additions, reads a byte from that location, performs boundary checks against values 20 and 32, and calls several fragment routines based on conditions.
+- `update_position_and_flags`: Updates position values in tables based on register contents, performs calculations involving bit shifts and arithmetic operations, and calls fragment routines for further processing.
+- `conditional_jump_and_call`: Checks a condition and branches if zero, then pushes values onto the stack and calls several fragment routines before jumping to another location in code.
+- `frag_moveq_bra_16`: Short code fragment that loads 0 into d0, then jumps to another point in the code.
+- `function_epilogue_12`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `update_input_counter`: Updates an input counter by adding a value from memory, calls a fragment routine for processing, and manages bounds checking for the counter value.
+- `frag_cmpa_bcs_movem_moveq_bra_5`: Short code fragment that compares a7 with the memory at an offset from a4, then branches if the carry flag is set, then saves registers on the stack, then loads 0 into d7, then jumps to another point in the code.
+- `set_flag_and_increment`: Sets a specific flag bit in a table entry, increments a counter, and loops back to itself if the counter hasn't reached its limit.
+- `initialize_and_loop`: Initializes registers and memory locations, calls fragment routines for display updates, and enters a loop that continues based on input values from memory.
+- `update_counter_and_draw`: Updates counters and draws elements based on input values, calls fragment routines for display updates, and manages a loop that continues until a counter reaches a threshold.
+- `update_counter_and_draw_2`: Updates a counter value by adding a byte from memory to a register, then calls a drawing routine with the updated value, and stores the result back to memory.
+- `set_five_by_five_bitmap_bits`: Sets bits in a bitmap buffer across a five-by-five block centred on a stored position, skipping any cell outside the bitmap bounds, and returns five.
+- `run_selection_prompt`: Draws a selection prompt and reads keys in a loop: carriage return confirms and returns the stored result, while a space key redraws the highlighted entry with its text.
+- `animate_cursor_until_confirm`: Repeatedly redraws four marker points around a cursor position, cycling a palette index each time, until a key is read; it exits when carriage return or space is pressed.
+- `redraw_sixty_four_cell_grid`: Redraws a 64 by 64 cell grid, filling each cell from the bitmap bits or from a stored tile value and outlining each cell, then returns the result of a final call.
+- `draw_stored_status_value`: Clears the drawing state, draws a stored status value through the text routines and returns the result of a final call.
+- `draw_pair_selection_panel`: Clears the current selection, draws a panel whose two labels come from lookup tables indexed by its two arguments, and returns the result of a final call.
+- `check_selected_entry_marker`: Returns one when no entry is selected or when the selected entry carries a specific marker byte, calling a routine in the marker case; otherwise it returns zero.
+- `test_selected_entry_marker`: Returns true when the selected entry carries a specific marker byte, and in that case calls a routine to act on it.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `find_entry_matching_code`: Scans the entry table from a start index for an entry whose code byte matches the argument, confirming it through a lookup routine for two key codes, and stores the found index as the selection.
+- `scan_entries_for_code`: Scans forward through the entry table for an entry whose code byte matches a register-supplied code, stores the index as the selection and returns one, or returns zero when nothing matches.
+- `find_next_entry_code_match`: Advances through the entry table one slot at a time looking for an entry whose code byte matches, confirming two key codes through a lookup routine; it stores the index as the selection and returns one, or returns zero at the end of the table.
+- `highlight_and_select_entry`: Draws the highlighted form of the entry given by its arguments and, when the entry check passes, draws its stored label and calls the selection routine for the current index, returning that result.
+- `process_display_elements`: Copies a value from the stack to memory, then calls several drawing routines with different parameters before returning.
+- `frag_move_jsr_addq_pea_moveq_bra`: Short code fragment that copies the memory at an offset from a4 to the stack, then calls frag_jmp_309, then adds 4 to a7, then pushes the address of a fixed memory address onto the stack (2 times in a row), then calls frag_jmp_321, then adds 8 to a7, then loads 0 into d5, then loads 0 into d6, then jumps to another point in the code.
+- `check_and_process_data`: Tests a long integer in a register for zero value, loads a byte from a table using another register value as index, performs conditional jumps based on the result, and calls another routine with two register values as parameters.
+- `loop_and_call_fragment`: Increments a counter in a register and processes data with validation, calling another routine with two parameters, then calls two fragment routines before branching to the end.
+- `process_data_with_validation`: Calls fragment routines with specific parameters, checks a global variable for zero value, and either continues processing or calls another routine based on this check.
+- `validate_and_process_data`: Calls several fragment routines with specific parameters, compares a register value against 27, and either continues processing or calls another routine based on the comparison result.
+- `lookup_and_validate_entry`: Subtracts 65 from a register value, uses the result as an index to read a byte from a table, and checks if another table entry is set before branching based on that condition.
+- `load_and_copy_values`: Loads values from tables using an index from a register, copies them to multiple global variables, and updates a status byte in a global variable.
+- `update_multiple_values`: Copies values from tables to global variables, decrements a value in one of them, and calls fragment routines for further processing before returning.
+- `process_input_and_loop`: Processes input by adding a constant to a register value, calls fragment routines for drawing, and loops back to itself if the counter hasn't reached its limit.
+- `frag_jmp_291`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_292`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_293`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_294`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_295`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_296`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_297`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_298`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_299`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_300`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_301`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_302`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_303`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_304`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_305`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_306`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_307`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_308`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_309`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_310`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_311`: Short code fragment that jumps to another point in the code.
+- `jump_to__rectfill_5`: Jump stub: passes control straight on to _RectFill.
+- `jump_to__removegadget_5`: Jump stub: passes control straight on to _RemoveGadget.
+- `frag_jmp_312`: Short code fragment that jumps to another point in the code.
+- `jump_to_lookup_threshold_bucket_entry_2`: Jump stub: passes control straight on to lookup_threshold_bucket_entry.
+- `frag_jmp_313`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_314`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_315`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_316`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_317`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_318`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_319`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_320`: Short code fragment that jumps to another point in the code.
+- `jump_to__removeglist_4`: Jump stub: passes control straight on to _RemoveGList.
+- `frag_jmp_321`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_322`: Short code fragment that jumps to another point in the code.
+- `jump_to_loop_until_flag_clears`: Jump stub: passes control straight on to loop_until_flag_clears.
+- `frag_jmp_323`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_324`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_325`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_326`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_327`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_328`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_329`: Short code fragment that jumps to another point in the code.
+- `list_directory_entries_up_to_eight`: Locks a file-system path, examines it and then steps through its entries with the next-entry call, copying up to eight entries into a table before unlocking it.
+- `lock_path_and_run_operation`: Builds a path in a stack buffer from stored name fields, locks it through the file library, runs the requested operation with the second argument, unlocks it and returns the operation result.
+- `lookup_name_with_fallback`: Looks up a name in a 40-byte buffer and, when the lookup fails, takes a fallback value from a routine, returning either the value found or the fallback.
+- `load_name_buffer_and_call`: Initialises a fixed buffer from two stored sources, then passes the buffer with its argument to a routine and returns that result.
+- `run_check_with_status_suspended`: Temporarily sets a stored status field to minus one, runs the operation on its argument with a zero flag, restores the field and returns one when the operation reported zero.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `verify_name_in_buffer`: Passes its argument to a routine, looks up the fixed name buffer and returns one when the lookup finds nothing, otherwise zero.
+- `forward_result_through_handle`: Passes its first argument to a routine to obtain a handle, calls a second routine with the handle and the remaining two arguments, releases the handle through a third call and returns the second result.
+- `set_fixed_name_then_call`: Passes a fixed name buffer to a routine, calls a second routine with no arguments and returns the result of a third call made with the value ten.
+- `dispatch_on_lookup_result`: Calls a routine with its argument and, depending on whether it returns zero, calls one of two follow-up routines, one with no arguments and one with the fixed name buffer.
+- `forward_with_flag_one`: Passes its three arguments to a routine in rearranged order with a fixed flag of one in the second position and returns the result.
+- `forward_with_flag_one_2`: Passes its three arguments to a routine in rearranged order with a fixed flag of one in the second position and returns the result.
+- `bring_screen_to_front`: Passes its argument to a routine, then brings the stored screen to the front through the library and returns that result.
+- `frag_jmp_330`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_331`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_332`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_333`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_334`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_335`: Short code fragment that jumps to another point in the code.
+- `jump_to__exnext`: Jump stub: passes control straight on to _ExNext.
+- `jump_to__unlock`: Jump stub: passes control straight on to _UnLock.
+- `frag_jmp_336`: Short code fragment that jumps to another point in the code.
+- `jump_to__screentofront`: Jump stub: passes control straight on to _ScreenToFront.
+- `frag_jmp_337`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_338`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_339`: Short code fragment that jumps to another point in the code.
+- `jump_to__lock`: Jump stub: passes control straight on to _Lock.
+- `frag_jmp_340`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_341`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_342`: Short code fragment that jumps to another point in the code.
+- `jump_to__examine`: Jump stub: passes control straight on to _Examine.
+- `frag_jmp_343`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_344`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_345`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_346`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_347`: Short code fragment that jumps to another point in the code.
+- `copy_display_record_safely`: Copies a 40-byte display record out to a local buffer and back into a second area while task switching is blocked, then refreshes the display and returns the result of a final call.
+- `draw_row_range_of_cells`: Draws five cell values for each row in a range of rows, stepping through the row table, and returns the row spacing.
+- `select_active_target`: Selects one of two stored targets as the active target according to whether its argument is zero or one, and returns one.
+- `enable_both_targets`: Applies the argument to both stored targets, sets each to one, marks the state as changed and returns one.
+- `write_pixel_on_target`: Writes a pixel on the active target by passing its arguments to the pixel routine, and returns one.
+- `draw_offset_line_pair`: Draws two line segments with their start and end values offset by eight from the third argument, and returns one.
+- `draw_two_offset_points`: Draws two points on a shared row, each at one of two column arguments offset by eight, and returns one.
+- `wait_for_raster_line`: Polls the video beam position up to 1200 times until it falls inside a band eight lines high near a computed scan line, returning one when found and zero on timeout.
+- `blit_region_between_screens`: Copies a rectangle between the two stored bitmaps, choosing source and destination from the first two arguments, and returns one.
+- `draw_fixed_screen_rectangle`: Passes its three arguments together with a fixed rectangle from x 0 to 319 and y minus 8 to 191 to a drawing routine, and returns one.
+- `allocate_five_plane_bitmap`: Allocates a bitmap header and five bit-plane buffers sized from the given rectangle, freeing any planes already allocated if one allocation fails.
+- `free_bitmap_planes`: Frees a bitmap's record and its bit-plane buffers, releasing the first five plane pointers when the second argument is set, and returns zero.
+- `load_sprite_record`: Reads the size of a sprite from its source, allocates a row table and a record, copies a 32-byte data block and fills per-row descriptors.
+- `draw_sprite_clipped_to_screen`: Draws a sprite record at the given position, clipping its width and height to a 320 by 200 screen and drawing each bit plane in turn when the record has several.
+- `draw_character_cell`: Draws one character cell at the current text position using the active drawing mode and the character's stored pixel data, then restores the previous mode and returns one.
+- `allocate_sized_memory_block`: Allocates a block from one of two memory pools chosen by its flag, rounding the requested size up to a multiple of eight and adding a four-byte size header.
+- `free_sized_memory_block`: Frees a block previously returned by the sized allocator, reading its size from the four bytes before it and returning it to the pool chosen by the flag.
+- `copy_thirty_two_byte_block`: Copies a 32-byte block from a fixed offset in the state record into a stored buffer and returns the copy result.
+- `jump_to__draw_2`: Jump stub: passes control straight on to _Draw.
+- `jump_to__move_2`: Jump stub: passes control straight on to _Move.
+- `jump_to__setapen_2`: Jump stub: passes control straight on to _SetAPen.
+- `jump_to__makescreen`: Jump stub: passes control straight on to _MakeScreen.
+- `jump_to__initbitmap_2`: Jump stub: passes control straight on to _InitBitMap.
+- `jump_to__rethinkdisplay`: Jump stub: passes control straight on to _RethinkDisplay.
+- `jump_to__waitblit`: Jump stub: passes control straight on to _WaitBlit.
+- `frag_jmp_348`: Short code fragment that jumps to another point in the code.
+- `jump_to__vbeampos`: Jump stub: passes control straight on to _VBeamPos.
+- `jump_to__allocate`: Jump stub: passes control straight on to _Allocate.
+- `jump_to__loadrgb4_2`: Jump stub: passes control straight on to _LoadRGB4.
+- `frag_jmp_349`: Short code fragment that jumps to another point in the code.
+- `jump_to__forbid`: Jump stub: passes control straight on to _Forbid.
+- `jump_to__deallocate`: Jump stub: passes control straight on to _Deallocate.
+- `frag_jmp_350`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_351`: Short code fragment that jumps to another point in the code.
+- `jump_to__permit`: Jump stub: passes control straight on to _Permit.
+- `jump_to__writepixel`: Jump stub: passes control straight on to _WritePixel.
+- `jump_to__setdrmd_3`: Jump stub: passes control straight on to _SetDrMd.
+- `frag_jmp_352`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_353`: Short code fragment that jumps to another point in the code.
+- `jump_to__text_2`: Jump stub: passes control straight on to _Text.
+- `jump_to__setbpen_2`: Jump stub: passes control straight on to _SetBPen.
+- `jump_to__copymem`: Jump stub: passes control straight on to _CopyMem.
+- `frag_jmp_354`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_355`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_356`: Short code fragment that jumps to another point in the code.
+- `run_command_input_loop`: Services the five command slots in turn, then reads a key and maps digit, letter and cursor keys to matching action codes, sending each one to the action routine until the loop ends.
+- `run_command_input_slot_scan`: Scans the command slots for a pending entry and dispatches it when one is found.
+- `service_command_slots_then_keys`: Services the current command slot and then reads and dispatches keys in a loop, using the same key-to-action mapping as its siblings, until the end-of-input test succeeds.
+- `process_slot_then_read_key`: Dispatches the current command slot through the handler and, when it is empty, scans for the next filled slot before reading and mapping keys to actions.
+- `scan_slots_and_read_keys`: Scans the command slot table for an active entry and dispatches it, otherwise reads and maps key codes to actions in a loop that finishes when the end-of-input test succeeds.
+- `run_key_action_dispatcher`: Reads a key and maps digit, letter and cursor codes to action codes, sending each action to the handler, and fills free command slots from the queued entries when no key is waiting.
+- `frag_clr_bsr_addq_bra`: Short code fragment that clears the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_pea_bsr_addq_bra`: Short code fragment that pushes the address of a fixed memory address onto the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_pea_bsr_addq_bra_2`: Short code fragment that pushes the address of a fixed memory address onto the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_pea_bsr_addq_bra_3`: Short code fragment that pushes the address of a fixed memory address onto the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_pea_bsr_addq_bra_4`: Short code fragment that pushes the address of a fixed memory address onto the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_pea_bsr_addq_bra_5`: Short code fragment that pushes the address of a fixed memory address onto the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_pea_bsr_addq_bra_6`: Short code fragment that pushes the address of a fixed memory address onto the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_pea_bsr_addq_bra_7`: Short code fragment that pushes the address of a fixed memory address onto the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_bsr_bra`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `frag_bsr_bra_2`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `run_input_loop_clear_slot`: Clears the pending flag for the current slot and then runs the shared key-dispatch and slot-fill loop, with one key code re-entering this entry point.
+- `run_input_loop_after_slot_check`: Either clears a status flag and calls a routine, or redraws the stored status line when the flag is set, then decrements the slot counter and runs the shared key-dispatch and slot-fill loop.
+- `run_input_loop_reset_flag`: Clears the pending input flag, decrements the slot counter and runs the shared key-dispatch and slot-fill loop.
+- `frag_bsr_bra_3`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `run_input_loop_mark_pending`: Sets the pending input flag to one, decrements the slot counter and runs the shared key-dispatch and slot-fill loop, re-entering it when one particular key is read.
+- `run_input_loop_mark_and_refresh`: Sets the pending input flag to one, calls a routine, decrements the slot counter and runs the shared key-dispatch and slot-fill loop, which restarts here when one particular key is read.
+- `frag_bsr_bra_4`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `run_input_loop_clear_attribute`: Clears the input attribute byte, calls a routine, decrements the slot counter and runs the shared key-dispatch and slot-fill loop, which restarts from this point when a particular key is read.
+- `reset_input_state_and_release`: Clears the input flags, stores the new mode, resets the command slot table and releases every stored resource that is set, then reloads the saved values.
+- `clear_command_slots_and_release`: Clears all ten command slot entries, releases each of slots five to nine that is set, reloads two saved values into the display records and clears the input flags.
+- `release_all_command_slots`: Releases each of the ten stored slot resources that is set, reloads the saved values into the display records and clears the input flags.
+- `load_command_slot_table`: Fills the ten command slot records for the chosen page from a stored table, marking unused slots empty, resolves the five upper slot resources and sums a stored value across them.
+- `refill_command_slots_from_table`: Refills the ten command slot records from a stored table for the page index held in a register, marking unused slots empty and summing a stored value across the upper slots.
+- `fill_command_slot_records`: Fills the ten command slot records for the page in a register from a stored table, marking unused slots empty, then resolves the five upper slot resources and sums a stored value across them.
+- `fill_command_slot_records_from_entry`: Enters the command slot fill partway through the table with a record pointer already set, finishing the ten records, resolving the upper slot resources and summing the stored values.
+- `frag_moveq_bra_2`: Short code fragment that loads 0 into d6, then jumps to another point in the code.
+- `refill_command_slots_from_table_2`: Refills the ten command slot records from a stored table for the page index held in a register, marking unused slots empty and summing a stored value across the upper slots.
+- `fill_command_slots_without_defaults`: Fills the first eight slot records from the per-page table selected by a global index, marking the rest empty, then resolves the upper slot resources and sums a stored value across them.
+- `fill_command_slots_resume`: Resumes the per-page slot fill partway through the table, marking records empty as it goes, then resolves the upper slot resources and sums the stored values.
+- `refresh_slot_records_and_sum`: Refreshes the first five slot records from the stored slot list, copies five default values, resolves the upper five slot resources and sums a stored value across them.
+- `fill_five_slot_records_from_list`: Writes a slot code into the records from the stored list, sets their widths, copies five default values and resolves the upper slot resources.
+- `resolve_upper_slots_and_sum`: Copies five default values into the first slot table entries, resolves the upper five slot resources through the library and sums a stored value across them.
+- `resolve_all_slot_resources_and_sum`: Resolves each of the ten slot resources that has a valid index and stores the result, then sums a stored value across the upper five slots.
+- `accumulate_slot_weighted_total`: Accumulates a weighted total across the ten slot records, multiplying each record's stored value by a table entry and five, and stores the running total in the state.
+- `build_weighted_tile_table`: Sets up twenty tile-classification entries: with the default flag it writes fixed codes, otherwise it samples a block of map tiles around a stored position, counts tiles in three ranges, rolls twenty weighted choices and copies them into the output table.
+- `frag_moveq_bra_3`: Short code fragment that loads 2 into d7, then jumps to another point in the code.
+- `frag_moveq_bra_4`: Short code fragment that loads 254 into d6, then jumps to another point in the code.
+- `refresh_weighted_state_table`: Draws a value from 1 to 100 for each of 20 entries and maps it to one of four codes using thresholds tallied from byte-range counts over an 8-byte table, then copies the codes into a second 20-entry table through an index map.
+- `tally_counts_and_roll_codes`: Counts 8 table bytes into threshold counters by byte range, then draws a value from 1 to 100 for each of 20 entries and maps it to one of four codes.
+- `frag_addq_bra`: Short code fragment that adds 5 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_addq_bra_2`: Short code fragment that adds 5 to the memory at an offset from a5, then jumps to another point in the code.
+- `scan_bytes_then_roll_again`: Repeatedly adds 5 to a threshold counter and scans 8 table bytes by range, stopping once a byte falls outside the 59 to 71 band, then runs the same draw-to-code and copy steps as the surrounding routines.
+- `roll_codes_into_table`: Draws a value from 1 to 100 for each of 20 entries, maps it to one of four codes using three threshold counters, and copies the 20 codes into a second table through an index map.
+- `fill_table_in_code_runs`: Fills a 20-entry table in runs: it draws values from 1 to 100 and repeats the current code while draws stay below the upper threshold, then picks the next code by comparing against the lower thresholds.
+- `fill_table_in_threshold_runs`: Fills a 20-entry table in runs of identical codes chosen from two counter thresholds, drawing values from 1 to 100 to decide when each run ends, and copies the finished codes into a second table.
+- `fill_codes_with_draw_thresholds`: Sets codes in a 20-entry table by comparing draws from 1 to 100 against threshold counters, starting from code 0 and switching codes when a draw crosses a threshold, then copies the codes through an index map.
+- `copy_codes_through_index_map`: Copies 20 code bytes from one table into a second table, where each destination position is selected by an index byte read from a map.
+- `emit_entries_or_uppercase_char`: On one path it calls a helper 30 times with table-derived values for each entry.
+- `clear_pairs_or_uppercase_char`: On one path it walks four groups of flag pairs and clears one flag from each pair that is set, choosing which by a coin flip, and returns 18.
+- `clear_random_flag_pairs`: Walks four groups of flag pairs and clears one flag from each pair that is fully set, using a coin flip for which one, then runs a further pass over the remaining pairs at a stride of four.
+- `scan_and_clear_flag_pairs`: Scans the flag table for pairs whose flags are set and uses a coin flip to clear one flag per pair, repeating until no pair is left.
+- `clear_flags_in_three_passes`: Runs three passes over the flag table: a coin flip clears one flag from each set pair in the first group, a three-way random choice clears a flag from each fully set triple, and a final stride-four pass clears remaining set pairs by coin flip.
+- `scan_and_clear_flag_pairs_2`: Scans the flag table for pairs whose flags are set and uses a coin flip to clear one flag per pair, repeating until no pair is left.
+- `clear_triple_flags_then_pairs`: Clears one flag from each fully set triple using a three-way random choice, then runs a stride-four pass that clears one flag from each set pair by coin flip.
+- `clear_triple_flags_with_pointer`: Clears one flag from each fully set triple using a three-way random choice, writing the result through either a caller-supplied pointer or an internal one, then runs a stride-four coin-flip pass over the flag pairs.
+- `frag_clr_addq_moveq_cmp_bcs_bra`: Short code fragment that clears the memory at a3, then adds 1 to d7, then loads 4 into d0, then compares d7 with d0, then branches if the carry flag is set, then loads 0 into d7, then jumps to another point in the code.
+- `clear_strided_flag_pairs`: Walks 18 table positions in steps of four and, for each set pair of flags four positions apart, uses a coin flip to clear one of the two.
+- `clear_one_of_strided_pairs`: Walks 18 table positions in steps of four and, for each set pair of flags, uses a coin flip to clear either the first or the second flag of the pair.
+- `render_record_entry_value`: Looks up a 16-byte record by index and passes its text entry to helper routines.
+- `frag_cmpa_bcs_movem_moveq_bra`: Short code fragment that compares a7 with the memory at an offset from a4, then branches if the carry flag is set, then saves registers on the stack, then loads 0 into d7, then jumps to another point in the code.
+- `remap_ten_record_slots`: For each of 10 records whose slot byte is not the 255 sentinel, stores a byte from a lookup table into a field of that record.
+- `scan_slots_and_emit_result`: Scans 8 table entries for one whose two bytes differ from the current record and whose target slot is empty, emits its text through helper calls and records the chosen value.
+- `emit_result_from_entry_scan`: Scans table entries from a given start position for one that differs from the current record and has an empty slot, emitting its text through helper calls.
+- `scan_matching_entries_and_emit`: Advances through record bytes while they match a stored value, then scans 8 table entries for one that differs from the current record and has an empty slot, emitting its text through helper calls.
+- `emit_text_and_store_result`: Emits a separator when a flag is set and then the text for the current entry through helper calls, followed by a roll from 5 to 10 that can add a further text fragment.
+- `poll_helper_until_nonzero`: Repeatedly calls helper routines with a rotating index from 0 to 3 and a fixed value of 200, looping until a draw returns a nonzero result, which it returns.
+- `advance_slot_cursor_state`: Advances a cursor over up to 10 slots, bumping a per-slot count and making coin-flip decisions, and resets all slot fields when the scan wraps.
+- `advance_slot_cursor_with_reset`: Copies a field forward through a slot and advances a cursor across 10 slots, skipping slots whose flags are both set and making coin-flip decisions at the wrap points.
+- `advance_slot_cursor_from_start`: Moves the cursor forward one slot, copying field values along the way, then scans 10 slots with coin-flip checks at the wrap points.
+- `clear_slot_fields_then_scan`: Clears five state bytes in each of 10 slots, then scans for a slot with a clear flag using coin-flip checks at the wrap points.
+- `scan_slots_for_clear_flag`: Scans 10 slots for one with a clear flag and saves it as the cursor, returning 0.
+- `frag_move_moveq_bra`: Short code fragment that copies d6 to the memory at an offset from a4, then loads 0 into d0, then jumps to another point in the code.
+- `walk_slots_for_free_entry`: Walks 10 slots looking for one with a clear flag, with coin-flip checks and field copying at the halfway and wrap points.
+- `advance_cursor_copy_then_scan`: Copies a slot's field forward and advances through slots, returning 1 on helper failure and saving the first clear-flag slot as the cursor with a 0 return.
+- `scan_slots_from_cursor_position`: Starting from the current cursor, copies slot fields forward and scans for a slot with a clear flag, with coin-flip checks at the halfway and wrap points.
+- `function_epilogue_2`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+- `frag_cmpa_bcs_move_moveq_bra`: Short code fragment that compares a7 with the memory at an offset from a4, then branches if the carry flag is set, then copies d7 to the stack, then loads 0 into d7, then jumps to another point in the code.
+- `check_five_slots_then_reset`: Returns 0 when any of the first five slot flags is clear.
+- `check_slots_then_reset_all`: Scans slots one to four for a clear flag and returns 0 if it finds one.
+- `reset_five_slot_table`: Marks the first five slots with the 255 sentinel and zeroes their counters, then sets the first slot's byte to zero and its counter to 20, and returns 1.
+- `frag_cmpa_bcs_move_moveq_bra_2`: Short code fragment that compares a7 with the memory at an offset from a4, then branches if the carry flag is set, then copies d7 to the stack, then loads 0 into d7, then jumps to another point in the code.
+- `clear_marked_slot_flags`: Walks 10 slots and clears a flag byte in each slot whose id byte is 17.
+- `check_cursor_slot_available`: Returns 0 when the cursor slot's second flag is set, returns 1 when its count byte is zero, and otherwise returns 1 only if the count is below a limit taken from a lookup table keyed by the slot's id byte.
+- `frag_move_bne_moveq_bra`: Short code fragment that copies the memory at an offset from a3 to d0, then branches if the last result was not zero, then loads 1 into d0, then jumps to another point in the code.
+- `compare_slot_count_to_limit`: Returns whether a slot's count byte is below the limit read from a lookup table indexed by its id byte.
+- `function_epilogue_3`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `match_or_claim_slot_entry`: Compares a byte from an 8-byte table with the current slot's stored value and its neighbour.
+- `find_value_or_replace_slot`: Searches 10 slots for one holding a given byte.
+- `search_slots_from_second_slot`: Searches slots from the second onward for one holding a given byte.
+- `frag_pea_jsr_bra`: Short code fragment that pushes the address of a fixed memory address onto the stack, then calls another routine, then jumps to another point in the code.
+- `forward_two_stack_bytes`: Forwards two byte arguments from its stack frame to a helper routine and returns.
+- `check_slot_and_store_result`: Calls a helper with the slot's id byte and its stored word, saves the returned flag in a state byte, then either passes 1 to a helper when the flag is zero or passes the slot index with zeros to a helper.
+- `advance_slot_count_and_report`: Emits one of two text entries through helpers according to a state flag, clears that flag, bumps the cursor slot's count from a lookup table, and reports the cursor position through helpers.
+- `report_slot_after_count_bump`: Emits a fixed text entry through a helper, clears the state flag, bumps the cursor slot's count from a lookup table, and reports the cursor position through helpers.
+- `bump_state_and_mark_cursor`: Increments a per-cursor state byte and, when a second state byte is zero, copies the cursor slot's field forward and marks its flag with 255, then returns the result of a helper.
+- `report_or_decrement_cursor_slot`: If the cursor slot's lookup value is zero, it passes a position and fixed values to a helper and returns that helper's result.
+- `report_fixed_coordinates_pair`: Passes two table-derived values together with the fixed numbers 11 and 12 to a helper, then passes zero to another helper.
+- `report_slot_or_decrement_count`: On a zero roll from 5 to 10, if the cursor slot's id byte falls in certain ranges and a byte beside it is set, it reports fixed coordinates through a helper and returns 1.
+- `branch_report_or_decrement`: If a flag byte passed in is zero, it passes 2 to a helper and decrements the cursor slot's counter.
+- `confirm_then_reset_slots`: Displays three fixed-position lines through helpers, then waits for a key: Y marks five slots with the 255 sentinel, while N or escape skips that step.
+- `show_prompt_and_reset_slots`: Shows three fixed-position lines through helpers, then waits for a Y or N key or escape, and on Y marks five slots with the 255 sentinel.
+- `reset_five_slot_markers`: Marks the first five slots by setting three of their bytes to the 255 sentinel, then calls a helper and a second helper with a fixed buffer and the value 2.
+- `pass_cursor_entry_pointer`: Passes fixed zero and one values to helpers, then passes the table entry selected by the cursor slot's id byte to another helper and returns its result.
+- `pass_secondary_entry_pointer`: Passes one to a helper, then passes the table entry selected by the secondary cursor's slot id byte to another helper and returns its result.
+- `pass_cursor_entry_and_report`: Passes one to a helper, then passes the table entry selected by the cursor slot's id byte and a fixed pointer to further helpers, and returns the result of a last helper.
+- `chain_helper_results`: Passes the result of one helper call into a second helper and returns that result.
+- `handle_grid_cursor_command`: Processes one command code from a key-driven loop.
+- `run_grid_key_loop`: Repeatedly reads a key through helpers and updates the cursor on a grid of slots, with keypad-style codes moving it and select codes checking, emitting text and marking the slot.
+- `run_cursor_key_loop`: Runs a key-driven loop over a 6-column slot grid: command codes move the cursor by keypad-style offsets, select codes check slot entries through helpers and emit text, and an escape code decrements the cursor slot's counter.
+- `step_cursor_and_read_key`: Moves the cursor back one slot unless its id byte is 15, emits the old and new slot entries through helpers when it has moved, then reads the next key and dispatches it through the same command handling as its sibling routines.
+- `advance_cursor_read_key`: Advances the cursor one slot unless its id byte is -1, emits the old and new slot entries through helpers when it has moved, then reads the next key and dispatches it through the same command handling as its sibling routines.
+- `frag_move_subq_blt_bra`: Short code fragment that copies d6 to d0, then subtracts 6 from d0, then branches if the comparison was less, then copies d0 to d6, then jumps to another point in the code.
+- `advance_cursor_row_key_loop`: Runs the key-driven grid loop with a cursor step that moves down one row of six slots when the target stays within the 30-slot grid.
+- `run_grid_loop_up_left`: Runs the key-driven grid loop starting with an up-left step: the cursor moves back seven positions only when its id byte is not 15 and the byte beside it is not 22.
+- `run_grid_loop_up_right`: Runs the key-driven grid loop starting with an up-right step: the cursor moves back five positions only when its id byte is not -1 and the byte beside it is not 22.
+- `run_grid_loop_down_left`: Runs the key-driven grid loop starting with a down-left step: the cursor moves forward five positions only when its id byte is not 15 and the byte beside it is not -98.
+- `run_grid_loop_down_right`: Runs the key-driven grid loop starting with a down-right step: the cursor moves forward seven positions only when its id byte is not -1 and the byte beside it is not -98.
+- `grid_dispatch_from_command_zero`: Enters the grid command dispatch at the mode-zero handler, which checks the cursor slot through a helper and, when it passes, records the cursor as the secondary cursor and bumps that slot's counter.
+- `grid_dispatch_from_command_two`: Enters the grid command dispatch at the mode-two handler, which checks the cursor slot against a range of 5 through a helper and, on success, sets the mode flags.
+- `grid_dispatch_three_or_four`: Enters the grid command dispatch at the handler for modes three and four, which checks the cursor slot against a range of 10 through a helper and, on success, emits the slot text and sets flags.
+- `grid_dispatch_from_command_five`: Enters the grid command dispatch at the mode-five handler, which checks the cursor slot through a helper and, on success, compares two stored counts of the secondary slot.
+- `frag_move_bra_2`: Short code fragment that copies 255 to the memory at an offset from a4, then jumps to another point in the code.
+- `grid_dispatch_from_command_six`: Enters the grid command dispatch at the mode-six handler, which checks the cursor slot through a helper and, when its id byte is 4 and the byte beside it is not 23, emits slot text and sets flags.
+- `frag_move_bra_3`: Short code fragment that copies 255 to the memory at an offset from a4, then jumps to another point in the code.
+- `grid_dispatch_from_command_one`: Enters the grid command dispatch at the mode-one handler: when a helper check with a range of 4 passes, it emits the cursor slot's text, updates the slot's count from a lookup table, and sets flags.
+- `grid_dispatch_from_escape_code`: Enters the grid command dispatch at the escape handler, which decrements the cursor slot's counter.
+- `clear_slot_displays_or_uppercase`: On the main path it calls a helper to start a display update, passes the index and zero to a helper for each of the 10 slots, and returns the result of a final helper.
+- `frag_jmp_357`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_358`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_359`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_360`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_361`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_362`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_363`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_364`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_365`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_366`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_367`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_368`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_369`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_370`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_371`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_372`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_373`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_374`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_375`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_376`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_377`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_378`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_379`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_380`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_381`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_382`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_383`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_384`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_385`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_386`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_387`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_388`: Short code fragment that jumps to another point in the code.
+- `jump_to__setpointer_4`: Jump stub: passes control straight on to _SetPointer.
+- `frag_jmp_389`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_390`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_391`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_392`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_393`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_394`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_395`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_396`: Short code fragment that jumps to another point in the code.
+- `jump_to__removeglist_5`: Jump stub: passes control straight on to _RemoveGList.
+- `frag_jmp_397`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_398`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_399`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_400`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_401`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_402`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_403`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_404`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_405`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_406`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_407`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_408`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_409`: Short code fragment that jumps to another point in the code.
+- `allocate_block_and_init_fields`: Allocates a block through a helper with a size of 68 and a flag word, stores its pointer through the output argument, then fills the block's fields from one of two stored addresses chosen by a flag.
+- `allocate_block_with_defaults`: Allocates a 68-byte block through a helper, sets default values in its fields, and links it to a stored address through another helper.
+- `frag_move_tst_beq_lea_bra`: Short code fragment that copies a2 to the memory at an offset from a0, then tests d4, then branches if the last result was zero, then loads the address of the memory at an offset from a4 into a0, then jumps to another point in the code.
+- `init_block_fields_then_call`: Sets a stored address pointer and a width field in a block, then calls a helper with it.
+- `set_block_flag_to_one_2`: Writes a fixed value and several fields into a block through a pointer, then stores a register value or a constant depending on a comparison.
+- `frag_move_movem_unlk_rts_2`: Short code fragment that copies 1 to the memory at an offset from a2, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
+- `walk_block_entries_with_count`: Sets up a result index, sets the count to one less than the third argument (or -1 when it is zero), and passes the arguments to helpers that scan block entries.
+- `walk_block_entries_until_done`: Stores the block pointer, passes block fields to helpers, and loops over block entries until a helper check returns zero.
+- `loop_block_entries_with_helper`: Repeatedly calls a helper on a stored address and, for each nonzero result, calls further helpers on the block entry according to counters.
+- `continue_block_entry_loop`: Advances a counter while passing block entries to helpers, and returns a flag from a nested loop.
+- `forward_stored_block_result`: Passes a stored address to a helper and returns its result.
+- `clear_block_pointers_then_forward`: Passes the block to a helper, passes its two stored pointers to helpers when they are set, then passes the block with a size of 68 to another helper and returns its result.
+- `clamp_and_store_value`: Clamps a value into a fixed range and stores it through a pointer, then records the clamped value and an accompanying integer into two adjacent fields of a structure.
+- `store_value_and_clear_output_2`: Stores a fixed value into a pointer, copies it and another pointer into two fields, then adjusts the stored value and pointer depending on whether they match a register.
+- `frag_clr_movem_unlk_rts`: Short code fragment that clears the memory at a3, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
+- `store_value_and_clear_output_3`: Reads a value and two pointers, then either stores the value directly or splits it around a fixed threshold before writing into two block fields and adjusting the stored values.
+- `store_value_and_clear_output`: Stores its register argument and a value read through a stored pointer into two fields of a block, then zeroes the word at the output address.
+- `frag_jmp_410`: Short code fragment that jumps to another point in the code (2 times in a row).
+- `jump_to__freemem_5`: Jump stub: passes control straight on to _FreeMem.
+- `jump_to__closedevice_2`: Jump stub: passes control straight on to _CloseDevice.
+- `frag_jmp_411`: Short code fragment that jumps to another point in the code.
+- `jump_to__opendevice_2`: Jump stub: passes control straight on to _OpenDevice.
+- `jump_to__checkio_3`: Jump stub: passes control straight on to _CheckIO.
+- `jump_to__beginio_2`: Jump stub: passes control straight on to _BeginIO.
+- `jump_to__abortio`: Jump stub: passes control straight on to _AbortIO.
+- `jump_to__allocmem_4`: Jump stub: passes control straight on to _AllocMem.
+- `compact_five_slot_entries`: Copies five slot entries into a compact table, storing 255 and zero for each unused slot; with a flag set it works on three entries with a different layout.
+- `emit_matching_entries_or_layout`: Loops over five entries, calling a helper for each active one with its index and a computed value and counting the matches.
+- `emit_fixed_screen_layout`: Emits a fixed layout through helper calls with constant coordinates, table-selected entries and a stored pointer, branching on a stored byte when it is below 35.
+- `emit_fixed_panel_entries`: Emits three computed entries in a loop, followed by fixed items, through helpers that use table entries and computed positions.
+- `emit_eight_entry_column`: Emits the entries of a column through helper calls at positions computed from the index, looping over eight table entries, and then updates a stored total with the width of one entry.
+- `assign_sequential_ids_to_matches`: For each of 10 table bytes equal to a stored value, takes the next value from a running counter and writes it into that byte.
+- `frag_moveq_bra_5`: Short code fragment that loads 10 into d6, then jumps to another point in the code.
+- `emit_header_and_list_rows`: Emits three entries at computed positions through helpers, then loops through a list using helper results over a range of 25.
+- `reset_cell_and_emit_header`: Clears a cell in a grid buffer when a flag is set, then calls helpers, including one with the constant 3 and a conditional branch.
+- `clear_five_entry_row`: Marks five entries of a row, selected by a stored byte, with the 255 sentinel and zero words.
+- `frag_move_tst_bne_moveq_bra`: Short code fragment that copies the memory at an offset from a4 to d0, then tests d0, then branches if the last result was not zero, then loads 0 into d6, then jumps to another point in the code.
+- `copy_entries_to_row_table`: Copies entries into a row table selected by a stored byte, one entry per loop step.
+- `copy_five_entries_to_outputs`: Copies the byte and word fields of five entries into two output locations, one entry per loop step, and returns 0 once all five are copied.
+- `copy_three_entries_after_frame`: Emits a frame through a helper call with fixed values, then copies three entries into a compact table indexed by a stored value.
+- `copy_entries_into_indexed_table`: Copies entries into a table indexed by a stored value and a loop index, one entry per step.
+- `copy_entries_into_grid_cells`: Copies each entry's byte and word into cells of a grid, using a stored row index and a stride.
+- `check_slot_ids_in_loop`: Runs a cursor step like its sibling routines, checking a helper result and the cursor slot's id against a set of ids to decide whether the key-driven step continues.
+- `choose_helper_by_slot_flag`: Chooses between helper calls according to a slot flag and a state byte, then runs a loop with threshold values.
+- `pick_threshold_and_check`: Selects a threshold of 5 or 10 from a flag, calls a helper with it, and continues a loop depending on the result.
+- `check_threshold_five_slot_id`: Calls a helper with a threshold of 5 and, when it returns zero, examines the cursor slot's id to decide whether to continue.
+- `frag_bsr_bra_5`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `check_cursor_fields_for_step`: Calls a helper and, when it returns zero, checks a field of the cursor slot and calls further helpers, branching on a table value.
+- `handle_codes_nineteen_or_twenty`: When the key code is 19 or 20 and a cursor slot field is set, it calls helpers and updates the slot.
+- `emit_first_unflagged_entry`: Scans nine buffer entries for the first whose high bit is clear, passes its value to a helper and returns 0.
+- `emit_first_unflagged_after_first`: Like its sibling, scans nine buffer entries starting from the second for one with the high bit clear, passes it to a helper and returns 0.
+- `frag_moveq_bra_6`: Short code fragment that loads 255 into d4, then loads 255 into d5, then loads 0 into d7, then jumps to another point in the code.
+- `emit_best_unflagged_entry`: Scans nine buffer entries whose high bit is clear, uses a table value to choose one, and emits it through a helper.
+- `compare_table_byte_to_cursor`: Looks up a byte in a stored table and compares it with a cursor value, storing the result.
+- `increment_record_field_and_emit`: Stores the table value of a record's byte plus one into the record's sixth byte, then passes fixed values and the cursor's stored byte to helpers.
+- `emit_chosen_text_entry`: Emits a text entry chosen by a stored value through helper calls and returns a computed character.
+- `advance_counter_on_mismatch`: Compares its register argument with a table byte selected by the cursor slot and returns 0 when they match.
+- `advance_index_and_check_slot`: Adds a small delta to a stored index byte and tests a flag table entry at that index.
+- `frag_moveq_bra_7`: Short code fragment that loads 0 into d6, then jumps to another point in the code.
+- `scan_records_until_value_found`: Walks the ten 16-byte records with a do-while loop, comparing each first byte with the stored value.
+- `find_next_record_matching_value`: Increments a record index before each comparison and stops at the tenth record.
+- `pick_cheapest_candidate_or_uppercase`: When the stack guard trips, it fetches a character through two helper calls and converts a lowercase letter to uppercase.
+- `frag_moveq_bra_8`: Short code fragment that loads 5 into d6, then loads 0 into d7, then jumps to another point in the code.
+- `scan_forward_for_typed_record`: Advances a record index and tests each record for an unoccupied entry of one of six listed types, returning the type when found.
+- `frag_addq_cmp_bcs_moveq_bra`: Short code fragment that adds 1 to d7, then compares d7 with d6, then branches if the carry flag is set, then loads 0 into d7, then jumps to another point in the code.
+- `find_cheapest_record_below_count`: Walks records from a start index up to a count limit, skipping the stored index and occupied records, and keeps the record with the lowest cost value and its index.
+- `apply_step_toward_target`: Compares the lookup values of the current record and the target record along two axes to derive direction flags.
+- `choose_move_direction_and_apply`: Derives a direction value from a stored byte and runs a sequence of neighbour tests in order.
+- `dispatch_by_direction_then_commit`: Selects one of several test sequences based on a direction value, runs the tests in a loop, then writes the chosen byte into the current record and calls two helpers.
+- `frag_tst_bne_bra`: Short code fragment that tests d6, then branches if the last result was not zero, then jumps to another point in the code.
+- `frag_btst_beq_bra`: Short code fragment that tests bit 7 of d6, then branches if the last result was zero, then jumps to another point in the code.
+- `run_checks_then_commit_step`: Repeats a set of neighbour tests with a retry flag, leaving the loop on the first failing test, and then writes the chosen byte into the current record with helper calls.
+- `frag_jsr_bra`: Short code fragment that calls another routine, then jumps to another point in the code.
+- `commit_after_two_tests`: Runs two initial tests and, when both pass, loops over a third test until it fails.
+- `commit_after_two_tests_2`: Runs two initial tests and, when both pass, loops over a third test until it fails.
+- `frag_bsr_tst_bne_beq_bra`: Short code fragment that calls another routine, then tests d0, then branches if the last result was not zero, then calls another routine, then tests d0, then branches if the last result was not zero, then calls another routine, then tests d0, then branches if the last result was zero, then jumps to another point in the code.
+- `commit_step_swap_values`: Repeatedly runs neighbour tests with a retry flag, exiting the loop on the first failing test and writing the selected byte into the current position, then swaps two stored values from a table and a register and writes them back.
+- `wait_then_swap_table_bytes`: Waits for a non-zero result from a sequence of neighbour tests, retrying until one succeeds or a guard byte is already set, then swaps two single bytes stored in a table using an offset derived from a byte value.
+- `wait_then_swap_table_bytes_2`: Waits for a non-zero result from a sequence of neighbour tests, retrying until one succeeds or a guard byte is already set, then swaps two single bytes stored in a table using an offset derived from a byte value.
+- `frag_bsr_tst_bne_beq_bra_2`: Short code fragment that calls another routine, then tests d0, then branches if the last result was not zero, then calls another routine, then tests d0, then branches if the last result was not zero, then calls another routine, then tests d0, then branches if the last result was zero, then jumps to another point in the code.
+- `run_then_commit_step`: Runs a set of neighbour tests with a retry flag, exiting the loop on the first failing test, then writes the selected byte into the current record.
+- `read_uppercase_char_or_fallback`: When the stack guard trips, it passes selector 0 to a helper and returns that result.
+- `read_uppercase_char_or_fallback_2`: When the stack guard trips, it passes selector 1 to a helper and returns that result.
+- `read_uppercase_char_or_fallback_3`: When the stack guard trips, it passes selector 2 to a helper and returns that result.
+- `read_uppercase_char_or_fallback_4`: When the stack guard trips, it passes selector 3 to a helper and returns that result.
+- `read_uppercase_char_or_fallback_5`: When the stack guard trips, it passes selector 4 to a helper and returns that result.
+- `read_uppercase_char_or_fallback_6`: When the stack guard trips, it passes selector 5 to a helper and returns that result.
+- `read_uppercase_char_or_fallback_7`: When the stack guard trips, it passes selector 6 to a helper and returns that result.
+- `read_uppercase_char_or_fallback_8`: When the stack guard trips, it passes selector 7 to a helper and returns that result.
+- `claim_free_neighbour_cell`: Scans eight neighbour offsets of the current record for an unoccupied cell whose value is not already in use, writes that value into the current record and decrements its counter.
+- `claim_neighbour_cell_by_scan`: Walks the records and their eight neighbour offsets until it finds an unoccupied cell with an unused value.
+- `claim_value_if_unused_slot`: Counts how many of the ten records already hold the candidate value.
+- `claim_neighbour_value_if_free`: Steps through neighbour offsets of the current record and checks each resulting value against the ten records.
+- `frag_jsr_movem_unlk_rts`: Short code fragment that calls another routine, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
+- `count_matching_neighbour_records`: Clears a nine-entry index table, then fills it with unflagged records in the given index range whose value plus a direction offset matches the current record's value.
+- `frag_move_bra_4`: Short code fragment that copies d7 to the memory at an offset from a5, then jumps to another point in the code.
+- `tally_neighbour_match_candidates`: Makes a single pass over the records for one direction, counting those whose value plus the direction offset matches the current record and recording their indexes.
+- `block_three_slots_if_flagged`: If the byte at the pointer equals minus one, it marks three slot bytes that differ from the given value as blocked and decrements the returned counter for each one.
+- `run_guarded_four_helper_steps`: On stack-guard overflow it runs four helper iterations with a rotating two-bit index, then returns 4.
+- `run_four_helper_iterations`: Repeats four times: advances a rotating two-bit index, calls helpers with the current record value and the constant 200, and makes a fixed helper call.
+- `resolve_action_and_print_message`: Looks up per-type values from tables, combines them with a random roll and the record's stored value, then subtracts the result from a 16-bit field of the current record.
+- `resolve_action_over_record_loop`: Loops over the records, computing per-record values from type tables and a roll, updating each record's 16-bit field and recording the best slot.
+- `finish_action_and_restore_index`: Continues the shared action-resolution body at a labelled entry point, calling helpers to report the result.
+- `resume_action_resolution_entry`: Enters the shared action-resolution body at a midpoint, looking up a type value and applying the same calculation, field update and message output as its neighbours.
+- `frag_moveq_cmp_bne_bra`: Short code fragment that loads 8 into d1, then compares d0 with d1, then branches if the last result was not zero, then loads 1 into d6, then jumps to another point in the code.
+- `frag_moveq_cmp_bne_bra_2`: Short code fragment that loads 9 into d1, then compares d0 with d1, then branches if the last result was not zero, then loads 2 into d6, then jumps to another point in the code.
+- `resolve_action_type_22_entry`: Maps a type byte of 22 to a table index, then runs the shared action body that looks up a per-type value, updates the record's 16-bit field and prints the result text.
+- `resolve_action_loop_and_restore`: Runs the shared action body in a loop over affected records, then increments a per-record counter, restores the saved current-record index and prints a closing message when a threshold is met.
+- `resolve_action_from_pointer_entry`: Prints a fixed text reference and enters the shared action loop at a labelled point, updating each affected record's 16-bit field and printing result text.
+- `resolve_action_plain_message_entry`: Prints a fixed text reference, then enters the shared action loop at a labelled point that updates record fields and prints result text.
+- `subtract_field_and_report_action`: Subtracts a 16-bit amount from the current record's field, copies the result into the per-slot value table, and prints the associated result text.
+- `report_action_result_and_restore`: Prints a text reference for the action result, then restores the saved current-record index before returning.
+- `increment_record_counter_and_restore`: Looks up a value from a table keyed by the record's type, increments a per-record counter by that amount, restores the saved current-record index, and prints a closing message when the count changed.
+- `emit_event_and_increment_count`: Calls a helper with the record's selector values and then increments a counter byte in the current record, returning that record's index.
+- `release_two_records_and_compact`: Clears the per-record pointer-table entries for two given record indexes, then compacts the record table by moving active records into the freed slots.
+- `compact_record_table_by_copy`: Walks the record table and, for each removed record, copies the following active record's 16-byte contents into its slot while clearing the flag byte of the source.
+- `swap_record_slots_for_compaction`: Swaps the contents of two 16-byte record slots and clears the flag byte of the vacated slot.
+- `compact_record_table_forward_scan`: Scans forward through the record table and moves each active record into the next free slot, copying its 16-byte contents and clearing the flag of the source.
+- `select_first_record_matching_value`: Checks the first five records in order for one whose first byte equals the given value, stores its index as the current record, and stops.
+- `select_next_record_matching_value`: Advances to the next record before each comparison and stops at the fifth record.
+- `copy_record_into_slot`: Copies a record's type, flag, position and counter bytes from one slot to another, clearing the destination's flag and counter bytes.
+- `adjust_record_counter_by_type`: For a record of type 13 it adds the given amount to the record's 16-bit counter.
+- `frag_cmpa_bcs_movem_moveq_bra_2`: Short code fragment that compares a7 with the memory at an offset from a4, then branches if the carry flag is set, then saves registers on the stack, then loads 0 into d7, then jumps to another point in the code.
+- `clear_invalid_records_loop`: Walks all ten records and clears each one whose type exceeds 24 or whose flag is 255 by setting its type, flag and cell byte to 255.
+- `process_matching_records_by_type`: Calls a helper with the given type's table value, then calls a second helper for every one of the ten records that has the given type.
+- `process_records_of_type_loop`: Loops over the ten records and, for each one with the given type, calls a helper with that record's index and a zero argument.
+- `check_value_unused_in_records`: Searches the ten records for one with the given type or with a non-zero table entry for it.
+- `check_value_unused_from_index`: Starting from the given index, scans the ten records for one with the given type or a non-zero table entry for it.
+- `frag_addq_moveq_cmp_bcs_movem_rts`: Short code fragment that adds 1 to d6, then loads 10 into d0, then compares d6 with d0, then branches if the carry flag is set, then loads 1 into d0, then restores saved registers from the stack, then returns.
+- `set_record_type_and_notify`: On stack-guard overflow it saves the current record's type byte, stores the given value there, and calls helpers with the table values for that type before returning the helper result.
+- `report_table_entry_for_index`: On stack-guard overflow it calls helpers with a fixed code and the table entry for the given index, then returns the helper result.
+- `emit_record_status_report`: Reads the given record's type and calls helpers with fixed codes and that type's table values, adding a second report when the flag argument is set.
+- `test_and_report_type_24`: Returns 1 when the given value equals 24 and 0 otherwise.
+- `function_epilogue_4`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `frag_jmp_412`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_413`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_414`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_415`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_416`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_417`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_418`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_419`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_420`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_421`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_422`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_423`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_424`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_425`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_426`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_427`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_428`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_429`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_430`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_431`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_432`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_433`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_434`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_435`: Short code fragment that jumps to another point in the code.
+- `jump_to__removegadget_6`: Jump stub: passes control straight on to _RemoveGadget.
+- `frag_jmp_436`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_437`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_438`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_439`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_440`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_441`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_442`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_443`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_444`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_445`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_446`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_447`: Short code fragment that jumps to another point in the code.
+- `run_entry_selection_menu`: Starts the selection from a table entry, redraws the frame, then reads keys in a loop: escape ends it, space toggles a flag, and a letter within range selects an entry.
+- `run_letter_selection_loop`: Reads keys until escape, toggling a flag on space and selecting an entry for each letter in range, with helper calls that redraw the selection.
+- `run_letter_selection_with_exit`: Reads keys in a loop, toggling a flag on space and selecting an entry for each letter in range.
+- `handle_letter_key_selection`: Handles a key that falls in the letter range by calling a helper with the key and the current flag, then resumes the key loop until escape.
+- `run_menu_redraw_loop`: Redraws the menu entries and reads keys in a loop, redrawing the current selection whenever a key changes it.
+- `draw_menu_and_read_choice`: Draws the menu entries and reads a choice from the keyboard, redrawing as the selection changes.
+- `advance_to_matching_table_entry`: Advances an index until a table byte equals the given value, then continues into a shared body.
+- `match_slot_and_deduct_amount`: Scans five slots for one whose byte equals the given value and subtracts that slot's stored amount from a running total.
+- `tally_slots_and_report_totals`: Counts slots whose byte is below 25, then steps through the five slots calling helpers with fixed constants for each one.
+- `frag_clr_bra`: Short code fragment that clears the memory at an offset from a5, then jumps to another point in the code.
+- `decrement_timer_and_draw_entry`: Counts a timer byte down when it is non-zero and calls helpers to draw the updated entry when it changes.
+- `frag_tst_bne_clr_bra`: Short code fragment that tests d6, then branches if the last result was not zero, then clears the memory at an offset from a5, then jumps to another point in the code.
+- `check_threshold_and_mark_pending`: Compares a value with a limit and, when a special flag is set, draws a fixed text reference before continuing.
+- `loop_over_threshold_slots`: Loops while a value is at or below a limit, calling helpers for each step.
+- `find_slot_and_set_value`: Looks up a table entry indexed by the current slot, calls a helper and, when it succeeds, scans five slots for an empty one.
+- `frag_clr_bra_2`: Short code fragment that clears the memory at an offset from a5, then jumps to another point in the code.
+- `assign_value_slot_from_index`: Scans five slots from the given index and stores the given value in the first slot whose byte is 26 or more, recording the amount in the matching short table.
+- `advance_slot_scan_index`: Increments a scan index and, while it stays below five, tests the slot at that index.
+- `read_numeric_key_into_field`: When a digit key is read within range, it draws the digit with a helper and stores it in the input field, returning the helper result.
+- `draw_pair_then_return_status`: Calls helpers with the two arguments and fixed constants, then returns the status from the final helper.
+- `draw_indexed_label_entry`: Draws a label from a table indexed by the argument, passing a fixed attribute value and the following index to helpers.
+- `unpack_header_bytes_and_call`: Reads several packed byte fields from a buffer and passes them to helpers.
+- `find_matching_byte_pair_slot`: Scans a table of two-byte entries for one that matches two stored bytes, then calls helpers for the match.
+- `count_slots_matching_below_limit`: Counts slots whose byte is below 25 and walks the slot list for the given value, returning the count.
+- `confirm_yes_no_prompt`: Draws a yes-or-no prompt, reads a key and, when the answer is the letter Y, applies a slot update.
+- `frag_clr_bra_3`: Short code fragment that clears the memory at an offset from a5, then jumps to another point in the code.
+- `store_pair_first_free_slot`: Scans five slots and stores the given byte and short value in the first slot whose byte is 26 or more.
+- `store_byte_first_free_slot`: Advances through five slots and stores the given byte in the first slot whose value is 26 or more.
+- `handle_yes_no_answer_loop`: Repeats a yes-or-no prompt until an answer is given, and on the letter N draws a fixed text reference and leaves the loop.
+- `scan_entries_with_prompt`: Walks a count of entries, drawing a prompt and reading a value for each, and clears a flag when the walk ends.
+- `find_pair_in_second_table`: Searches a second two-byte table for an entry that matches two stored bytes and returns its position.
+- `compute_grid_cell_and_draw`: Computes a grid offset from three indexes, checks the cell's byte, and draws the cell label through helper calls.
+- `find_pair_entry_after_index`: Advances an index through the two-byte table and stops at the first entry matching two stored bytes.
+- `clear_menu_state_and_redraw`: Draws a fixed text reference, clears a state byte, and redraws the menu area when the display flag is set.
+- `draw_two_labels_from_table`: Draws two labels selected from a table of pointers by the given index and the next index.
+- `read_uppercase_char_variant`: Reads a character through two helper calls and converts a lowercase letter to uppercase on the stack-guard fallback path.
+- `draw_four_item_row_summary`: Draws four entries from a table with fixed labels and then draws a summary and a fixed text reference.
+- `await_yes_confirmation_or_escape`: Repeats a yes-or-no prompt until the answer is Y, and leaves early on escape or on N. The listing is cut off partway through.
+- `confirm_and_deduct_five_thousand`: On a yes answer it draws a fixed text reference and subtracts 5000 from a stored total when the total is at least 5000.
+- `show_threshold_menu_or_fallback`: When a stored total is below 5000 it draws a five-item selection menu with a prompt.
+- `draw_five_item_menu`: Draws five menu labels from a table with their prompt characters, then draws a closing text reference.
+- `draw_menu_items_from_index`: Draws the remaining menu labels from the given index up to the fifth, passing each label and its prompt character to helpers.
+- `function_epilogue_5`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `draw_panel_for_selector`: Draws a panel for the given selector, choosing between two text references and table labels.
+- `count_rows_below_limit`: Counts rows whose stored byte is below 25 across the row table and returns the total.
+- `count_row_entries_below_limit`: Counts row entries whose stored byte is below 25 for each row, walking the row table once.
+- `draw_labelled_row_entries`: Draws labelled row entries from the table, offsetting each label by a fixed amount.
+- `draw_table_text_row`: Draws a row of text from a table entry, with fixed attribute arguments, and then clears its state.
+- `draw_indexed_row_labels`: Draws row labels with their prompt characters while the index is below the row limit, using table values for each entry.
+- `draw_grid_cell_label`: Draws the label for a grid cell selected by two indexes, using table values from a five-column table.
+- `draw_value_with_prompt_labels`: Draws a numeric value with a width of one and its prompt labels through helper calls.
+- `match_character_in_table_entry`: Compares a character against table bytes and, on the stack-guard fallback path, converts a lowercase letter to uppercase.
+- `find_slot_matching_table_value`: Scans slots for one whose byte matches a table value for the given row, and returns its index.
+- `match_row_entries_store_index`: Compares a stored byte with table entries for a row and stores the matching index.
+- `finish_slot_scan_return_zero`: Scans five slots, calls a helper with zero once the scan completes, and returns.
+- `assign_slot_when_free`: Writes a table value into the first slot whose byte is above 25 and reports the slot through a helper.
+- `copy_table_value_to_slot`: Copies a table value into the given byte and stores a short value in the matching slot entry.
+- `scan_next_free_slot_report`: Scans five slots for the next one whose byte is below 26 and calls a helper with its value.
+- `mark_table_cell_empty`: Writes an empty marker into a grid cell of the five-column table and calls a helper with the given value.
+- `scan_slot_pairs_for_candidate`: Walks slot pairs looking for a candidate that matches the table, and on the stack-guard fallback converts a lowercase letter to uppercase.
+- `frag_moveq_bra_9`: Short code fragment that loads 0 into d4, then jumps to another point in the code.
+- `find_grid_cell_matching_slot`: Compares a slot byte with the grid cells of the table and returns the position of the first cell that matches.
+- `advance_grid_row_scan`: Advances the grid row index and continues the scan while it stays below five.
+- `check_grid_cell_free`: Checks whether a grid cell of the five-by-five table is free, using the row and column indexes to address it.
+- `scan_grid_row_report_zero`: Advances through the five cells of a grid row and calls a helper with zero when the row is exhausted.
+- `mark_slot_empty_and_report`: Writes an empty marker into a slot of the table and calls a helper with the given value.
+- `compare_grid_bytes_with_helper`: Compares grid bytes with the given values and returns a helper result on the stack-guard fallback path.
+- `compute_grid_offset_pairs`: Computes the table offsets of a grid cell from two indexes and a stride of five, walking neighbouring cells.
+- `find_lowest_row_value`: Scans a per-row table of values and keeps the lowest one along with its row index.
+- `advance_row_and_continue_scan`: Advances the row index and continues the table scan until the last row.
+- `draw_status_line_with_value`: On stack-guard overflow it draws a status line with a value and fixed attributes through calls into other routines.
+- `update_status_entry_and_draw`: Updates a status entry from table values and draws the result.
+- `accumulate_scored_entries`: Accumulates scores over the table entries and stores the total in a record field.
+- `frag_clr_bra_4`: Short code fragment that clears the memory at an offset from a5, then jumps to another point in the code.
+- `process_flagged_entries_loop`: Loops over table entries, processing those with a flag set.
+- `frag_tst_bne_clr_bra_2`: Short code fragment that tests d4, then branches if the last result was not zero, then clears the memory at an offset from a5, then jumps to another point in the code.
+- `continue_entry_loop_if_nonzero`: Continues the entry loop while the count stays non-zero.
+- `stop_when_count_reached`: Ends the entry loop once the processed count reaches the stored limit.
+- `write_cell_byte_from_table`: Writes a byte from a table into a cell of the record table.
+- `scan_cells_with_threshold`: Scans cells in the record table and compares each against a threshold.
+- `function_epilogue_6`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `frag_jmp_448`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_449`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_450`: Short code fragment that jumps to another point in the code.
+- `jump_to__refreshglist_4`: Jump stub: passes control straight on to _RefreshGList.
+- `frag_jmp_451`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_452`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_453`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_454`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_455`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_456`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_457`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_458`: Short code fragment that jumps to another point in the code.
+- `jump_to__move_3`: Jump stub: passes control straight on to _Move.
+- `jump_to__addglist_5`: Jump stub: passes control straight on to _AddGList.
+- `jump_to__setapen_3`: Jump stub: passes control straight on to _SetAPen.
+- `frag_jmp_459`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_460`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_461`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_462`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_463`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_464`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_465`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_466`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_467`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_468`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_469`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_470`: Short code fragment that jumps to another point in the code.
+- `jump_to__removegadget_7`: Jump stub: passes control straight on to _RemoveGadget.
+- `frag_jmp_471`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_472`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_473`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_474`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_475`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_476`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_477`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_478`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_479`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_480`: Short code fragment that jumps to another point in the code.
+- `jump_to__setdrmd_4`: Jump stub: passes control straight on to _SetDrMd.
+- `frag_jmp_481`: Short code fragment that jumps to another point in the code.
+- `jump_to__removeglist_6`: Jump stub: passes control straight on to _RemoveGList.
+- `frag_jmp_482`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_483`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_484`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_485`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_486`: Short code fragment that jumps to another point in the code.
+- `jump_to__text_3`: Jump stub: passes control straight on to _Text.
+- `frag_jmp_487`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_488`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_489`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_490`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_491`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_492`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_493`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_494`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_495`: Short code fragment that jumps to another point in the code.
+- `_ClearMenuStrip`: Library stub: loads a library base from a global variable and calls the library function at offset minus 54 of that base, returning its result to the caller.
+- `_CloseScreen`: Library stub: loads a library base from a global variable and calls the library function at offset minus 66 of that base, returning its result to the caller.
+- `_CloseWindow`: Library stub: loads a library base from a global variable and calls the library function at offset minus 72 of that base, returning its result to the caller.
+- `_CloseWorkBench`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
+- `_CurrentTime`: Library stub: loads a library base from a global variable and calls the library function at offset minus 84 of that base, returning its result to the caller.
+- `_DisplayBeep`: Library stub: loads a library base from a global variable and calls the library function at offset minus 96 of that base, returning its result to the caller.
+- `_GetPrefs`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
+- `_ItemAddress`: Library stub: loads a library base from a global variable and calls the library function at offset minus 144 of that base, returning its result to the caller.
+- `_ModifyIDCMP`: Library stub: loads a library base from a global variable and calls the library function at offset minus 150 of that base, returning its result to the caller.
+- `_OffMenu`: Library stub: loads a library base from a global variable and calls the library function at offset minus 180 of that base, returning its result to the caller.
+- `_OnMenu`: Library stub: loads a library base from a global variable and calls the library function at offset minus 192 of that base, returning its result to the caller.
+- `_OpenScreen`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `_OpenWindow`: Library stub: loads a library base from a global variable and calls the library function at offset minus 204 of that base, returning its result to the caller.
+- `_RemoveGadget`: Library stub: loads a library base from a global variable and calls the library function at offset minus 228 of that base, returning its result to the caller.
+- `_ScreenToFront`: Library stub: loads a library base from a global variable and calls the library function at offset minus 252 of that base, returning its result to the caller.
+- `_SetMenuStrip`: Library stub: loads a library base from a global variable and calls the library function at offset minus 264 of that base, returning its result to the caller.
+- `_SetPointer`: Library stub: loads a library base from a global variable and calls the library function at offset minus 270 of that base, returning its result to the caller.
+- `_ShowTitle`: Library stub: loads a library base from a global variable and calls the library function at offset minus 282 of that base, returning its result to the caller.
+- `_MakeScreen`: Library stub: loads a library base from a global variable and calls the library function at offset minus 378 of that base, returning its result to the caller.
+- `_RethinkDisplay`: Library stub: loads a library base from a global variable and calls the library function at offset minus 390 of that base, returning its result to the caller.
+- `_RefreshGList`: Library stub: loads a library base from a global variable and calls the library function at offset minus 432 of that base, returning its result to the caller.
+- `_AddGList`: Library stub: loads a library base from a global variable and calls the library function at offset minus 438 of that base, returning its result to the caller.
+- `_RemoveGList`: Library stub: loads a library base from a global variable and calls the library function at offset minus 444 of that base, returning its result to the caller.
+- `_Text`: Library stub: loads a library base from a global variable and calls the library function at offset minus 60 of that base, returning its result to the caller.
+- `_SetFont`: Library stub: loads a library base from a global variable and calls the library function at offset minus 66 of that base, returning its result to the caller.
+- `_CloseFont`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
+- `_LoadRGB4`: Library stub: loads a library base from a global variable and calls the library function at offset minus 192 of that base, returning its result to the caller.
+- `_InitRastPort`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `_WaitBlit`: Library stub: loads a library base from a global variable and calls the library function at offset minus 228 of that base, returning its result to the caller.
+- `_Move`: Library stub: loads a library base from a global variable and calls the library function at offset minus 240 of that base, returning its result to the caller.
+- `_Draw`: Library stub: loads a library base from a global variable and calls the library function at offset minus 246 of that base, returning its result to the caller.
+- `_RectFill`: Library stub: loads a library base from a global variable and calls the library function at offset minus 306 of that base, returning its result to the caller.
+- `_WritePixel`: Library stub: loads a library base from a global variable and calls the library function at offset minus 324 of that base, returning its result to the caller.
+- `_SetAPen`: Library stub: loads a library base from a global variable and calls the library function at offset minus 342 of that base, returning its result to the caller.
+- `_SetBPen`: Library stub: loads a library base from a global variable and calls the library function at offset minus 348 of that base, returning its result to the caller.
+- `_SetDrMd`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
+- `_VBeamPos`: Library stub: loads a library base from a global variable and calls the library function at offset minus 384 of that base, returning its result to the caller.
+- `_InitBitMap`: Library stub: loads a library base from a global variable and calls the library function at offset minus 390 of that base, returning its result to the caller.
+- `_Lock`: Library stub: loads a library base from a global variable and calls the library function at offset minus 84 of that base, returning its result to the caller.
+- `_UnLock`: Library stub: loads a library base from a global variable and calls the library function at offset minus 90 of that base, returning its result to the caller.
+- `_Examine`: Library stub: loads a library base from a global variable and calls the library function at offset minus 102 of that base, returning its result to the caller.
+- `_ExNext`: Library stub: loads a library base from a global variable and calls the library function at offset minus 108 of that base, returning its result to the caller.
+- `_DeviceProc`: Library stub: loads a library base from a global variable and calls the library function at offset minus 174 of that base, returning its result to the caller.
+- `_Delay`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `_Forbid`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
+- `_Permit`: Library stub: loads a library base from a global variable and calls the library function at offset minus 138 of that base, returning its result to the caller.
+- `_Allocate`: Library stub: loads a library base from a global variable and calls the library function at offset minus 186 of that base, returning its result to the caller.
+- `_Deallocate`: Library stub: loads a library base from a global variable and calls the library function at offset minus 192 of that base, returning its result to the caller.
+- `_AllocMem`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `_FreeMem`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `_AvailMem`: Library stub: loads a library base from a global variable and calls the library function at offset minus 216 of that base, returning its result to the caller.
+- `_FindTask`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
+- `_GetMsg`: Library stub: loads a library base from a global variable and calls the library function at offset minus 372 of that base, returning its result to the caller.
+- `_ReplyMsg`: Library stub: loads a library base from a global variable and calls the library function at offset minus 378 of that base, returning its result to the caller.
+- `_WaitPort`: Library stub: loads a library base from a global variable and calls the library function at offset minus 384 of that base, returning its result to the caller.
+- `_CloseLibrary`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `_OpenDevice`: Library stub: loads a library base from a global variable and calls the library function at offset minus 444 of that base, returning its result to the caller.
+- `_CloseDevice`: Library stub: loads a library base from a global variable and calls the library function at offset minus 450 of that base, returning its result to the caller.
+- `_CheckIO`: Library stub: loads a library base from a global variable and calls the library function at offset minus 468 of that base, returning its result to the caller.
+- `_WaitIO`: Library stub: loads a library base from a global variable and calls the library function at offset minus 474 of that base, returning its result to the caller.
+- `_AbortIO`: Library stub: loads a library base from a global variable and calls the library function at offset minus 480 of that base, returning its result to the caller.
+- `_OpenLibrary`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `_CopyMem`: Library stub: loads a library base from a global variable and calls the library function at offset minus 624 of that base, returning its result to the caller.
+- `_OpenDiskFont`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `_BeginIO`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### Disk-Validator
+
+- `program_entry_initialise_state`: Program entry point that sets up the game's working state, draws a two-digit value from a counter, and clears a table of 32-bit slots.
+
+### 8
+
+- `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
+
+### icon.library
+
+- `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d0, then returns.
+- `increment_counter_clear_bit`: Library code that increments a 16-bit value at a specific offset from a base pointer and clears a single bit in a byte at another offset from the same pointer.
+- `decrement_library_refcount`: Decrements a 16-bit reference count in a structure.
+- `release_object_or_defer`: This library routine removes an object from its parent list when the object is flagged as already detached, relinking the surrounding nodes, and then releases it.
+- `frag_bset_moveq_rts`: Short code fragment that sets bit 3 of the memory at an offset from a6, then loads 0 into d0, then returns.
+- `return_constant_3`: Returns the constant an address in d0 to the caller without any other effect.
+- `store_library_handle_or_alert`: Library code that stores two argument values in an object, then calls a library routine.
+- `copy_two_pointers_from_table`: Library code that copies two 32-bit values from an address derived from a register into two global variables.
+- `frag_move_jsr_addq_rts`: Short code fragment that copies a0 to the stack, then copies a6 to the stack, then calls another routine, then adds 8 to a7, then returns.
+- `frag_movem_move_jsr_lea_rts`: Short code fragment that saves registers on the stack, then copies a6 to the stack, then calls copy_icon_data_to_stack, then loads the address of the memory at an offset from a7 into a7, then returns.
+- `invoke_icon_structure_update`: This library routine calls a function to update various fields within an icon structure or its associated linked lists.
+- `frag_movem_move_jsr_lea_rts_2`: Short code fragment that saves registers on the stack, then copies a6 to the stack, then calls copy_icon_data_to_stack, then loads the address of the memory at an offset from a7 into a7, then returns.
+- `frag_move_jsr_addq_rts_2`: Short code fragment that copies a0 to the stack, then copies a6 to the stack, then calls another routine, then adds 8 to a7, then returns.
+- `frag_move_jsr_addq_rts_3`: Short code fragment that copies a0 to the stack, then copies a6 to the stack, then calls another routine, then adds 8 to a7, then returns.
+- `frag_move_jsr_addq_rts_4`: Short code fragment that copies a6 to the stack, then calls another routine, then adds 4 to a7, then returns.
+- `invoke_icon_structure_update_2`: This library routine calls a function to update various fields within an icon structure or its associated linked lists.
+- `push_args_and_call_init`: Pushes a0 and a6 onto the stack, calls a library initialization routine, removes the two pushed longwords, and returns.
+- `icon_library_call_vector_at_7fc`: Pushes a0 and a6 on the stack, calls the library vector at offset 2044, then discards both saved registers and returns to the caller.
+- `frag_movem_jsr_addq_rts`: Short code fragment that saves registers on the stack, then calls another routine, then adds 8 to a7, then returns.
+- `frag_movem_jsr_addq_rts_2`: Short code fragment that saves registers on the stack, then calls another routine, then adds 8 to a7, then returns.
+- `frag_movem_jsr_addq_rts_3`: Short code fragment that saves registers on the stack, then calls another routine, then adds 8 to a7, then returns.
+- `update_data_field`: Calls a library routine through a function table on the structure, then stores the second argument into a field of the returned block at a fixed offset.
+- `fill_structure_from_local_buffer`: Library code that obtains a structure from a routine and, when a second routine succeeds, copies a block of ten 32-bit words and several other fields from a local buffer into it.
+- `copy_state_block_to_object`: Library code that copies ten 32-bit words and several other fields from a source record into the object at fixed offsets.
+- `frag_moveq_movem_unlk_rts`: Short code fragment that loads 0 into d0, then copies several registers to or from memory, then removes the stack frame held in a6, then returns.
+- `copy_icon_data_to_stack`: This library routine copies ten longwords from an offset within a structure pointed to by the third argument into a local array on the stack, then copies several additional fields from the same structure into other stack slots and finally calls another routine with the first two arguments and a pointer to a stack-resident header.
+- `load_icon_info_structure`: Library code that looks up a file name with the .info suffix and reads its header.
+- `validate_icon_header_and_read`: Library code that checks a signature word and version word in a file header, then clears two fields and reads further fields from the file.
+- `read_icon_optional_blocks`: Library code that reads two 32-bit values into the object, then reads optional blocks for list fields, calling routines to allocate and link each block when it is present.
+- `read_pointer_list_with_count`: Library code that reads a count-driven list of pointers, storing each value through a pointer and reducing the remaining byte count by four per entry.
+- `frag_moveq_bra_10`: Short code fragment that loads 0 into d4, then jumps to another point in the code.
+- `frag_move_movem_unlk_rts`: Short code fragment that copies d4 to d0, then copies several registers to or from memory, then removes the stack frame held in a6, then returns.
+- `load_icon_from_path_buffer`: Library code that allocates a 260-byte buffer, builds a file path in it, and reads the icon structure through a routine with a fixed size.
+- `read_icon_file_fields`: Library code that reads a file header and fields of an icon structure, then reads optional list entries when the flags require them.
+- `save_icon_structure_fields`: Library code that writes an icon structure's fields to a file in order, including optional text blocks and a list of pointers.
+- `write_pointer_list_until_null`: Library code that walks a zero-terminated list of pointers, writing each entry's length and data, then writes an optional extra block.
+- `iterate_icon_table_entries`: Library code that walks a null-terminated table of pointers, calling a routine for each entry, updating a counter, and invoking a callback while potentially processing a secondary entry.
+- `frag_move_movea_lea_bra`: Short code fragment that copies a2 to the stack, then copies the memory at an offset from a7 to a0, then loads the address of the memory at an offset from a0 into a2, then jumps to another point in the code.
+- `iterate_linked_list_nodes`: The routine traverses a linked list structure by following pointers stored at an offset from the current node.
+- `call_routine_on_offset_block`: Library code that calls a routine with a block located at a fixed offset of 140 bytes into the object it is given.
+- `allocate_icon_object`: Library code that allocates a 168-byte cleared block, initialises a list-header pointer inside it, and calls routines to fill it in.
+- `push_pair_into_slot`: Adds a pair of values into the next free eight-byte slot of an array held in a structure and then returns the constant zero.
+- `function_epilogue_7`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `push_entry_into_slot_array`: Library code that adds a pair of values to the next free 8-byte slot of an array held in a structure.
+- `decrement_counter_and_store_pair`: The routine decrements a short counter through a pointer, then uses the counter value as an index into a table pointed to by a global variable.
+- `allocate_icon_node`: Library code that allocates a 94-byte block, initialises an embedded name field, and reads an entry through routines.
+- `frag_bra`: Short code fragment that jumps to another point in the code.
+- `call_library_routine_and_return_zero`: Library code that calls another routine through the library base and then returns the constant zero to its caller.
+- `incremental_recursive_call`: Library code that performs a recursive call with an incremented parameter until the callee stops the recursion.
+- `find_keyed_string_value`: Library code that searches a null-terminated list of strings for an entry whose name matches the given key followed by an equals sign.
+- `search_key_value_list`: Library code that scans a null-terminated list of strings for the given key followed by an equals sign, returning a pointer to the value text or null when there is no match.
+- `search_key_value_pointer`: Library code that scans a null-terminated list of pointers for the given key followed by an equals sign, returning a pointer to the value text or null when there is no match.
+- `match_delimited_entries`: Library code that walks a list of text segments separated by the character with value 124 and checks their lengths and contents against the given key.
+- `scan_segments_for_match`: Library code that scans text segments separated by the character with value 124, checking each segment's length and contents against the key.
+- `find_segment_by_length_match`: Library code that walks segments separated by the character with value 124, comparing each segment's length with the key length and then its contents.
+- `frag_tst_beq_move_addq_bra`: Short code fragment that tests d4, then branches if the last result was zero, then copies d4 to d2, then adds 1 to d2, then jumps to another point in the code.
+- `find_first_matching_segment`: Library code that walks segments separated by the character with value 124 and returns one when it finds a segment matching the key, or zero when it finds none.
+- `parse_copy_count_field`: Library code that clears a flag byte, checks the text after a fixed prefix for a count, and parses decimal digits into a number.
+- `parse_copy_number_prefix`: Library code that checks the text against a fixed prefix, then parses decimal digits into a number.
+- `frag_moveq_bra_11`: Short code fragment that loads 0 into d3, then jumps to another point in the code.
+- `parse_copy_counter_suffix`: Library code that parses decimal digits from a name into a number.
+- `digit_char_to_value`: Library code that returns the numeric value of a decimal digit character, or minus one when the character is not a digit.
+- `tiny_moveq_rts_2`: Small routine of 2 instructions that loads 255 into d0, then returns.
+- `call_library_vector_198_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_210_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `call_library_vector_228`: Library stub: loads a library base from a global variable and calls the library function at offset minus 228 of that base, returning its result to the caller.
+- `call_library_vector_246`: Library stub: loads a library base from a global variable and calls the library function at offset minus 246 of that base, returning its result to the caller.
+- `call_library_vector_264`: Library stub: loads a library base from a global variable and calls the library function at offset minus 264 of that base, returning its result to the caller.
+- `call_library_vector_30`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `call_library_vector_36_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 36 of that base, returning its result to the caller.
+- `call_library_vector_42`: Library stub: loads a library base from a global variable and calls the library function at offset minus 42 of that base, returning its result to the caller.
+- `call_library_vector_48`: Library stub: loads a library base from a global variable and calls the library function at offset minus 48 of that base, returning its result to the caller.
+- `propagate_icon_change`: The library routine forwards a set of four parameters to another routine, checks the returned value, and if non-zero calls the same routine again with a modified argument list.
+- `allocate_ten_entry_block`: Allocates a 96-byte cleared block, sets two 16-bit fields to ten, passes the block to a routine, and returns whether the allocation succeeded.
+- `function_epilogue_8`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `check_result_matches_expected`: Calls a routine with the first three arguments and returns that result when it equals the fourth argument.
+- `tiny_move_rts`: Small routine of 2 instructions that copies d1 to d0, then returns.
+- `check_result_matches_expected_2`: Calls a routine with the first three arguments and returns that result when it equals the fourth argument.
+- `tiny_move_rts_2`: Small routine of 2 instructions that copies d1 to d0, then returns.
+- `divide_unsigned_32_bitwise`: Unsigned 32-by-32 division performed one bit at a time, returning the quotient and remainder as a 64-bit pair.
+- `rotate_32bit_value`: The library code rotates a 32-bit value left by one bit per iteration for sixteen iterations, using a carry flag to move bits between the high and low halves.
+- `multiply_32_bit_integers`: Multiplies two 32-bit values from registers using 16-bit partial products and returns the low 32 bits of the product.
+- `frag_move_bsr_rts`: Short code fragment that copies d2 to the stack, then copies d1 to d2, then copies d0 to d1, then calls divide_unsigned_32_bitwise, then copies the top of the stack to d2, then returns.
+- `frag_move_bsr_rts_2`: Short code fragment that copies d2 to the stack, then copies d1 to d2, then copies d0 to d1, then calls divide_unsigned_32_bitwise, then copies d1 to d0, then copies the top of the stack to d2, then returns.
+- `signed_divide_positive`: Performs unsigned 32-bit division on two values, handling negative inputs by converting them to positive first.
+- `unsigned_divide_with_sign`: Handles unsigned 32-bit division with sign correction, using a global variable for intermediate calculations.
+- `call_raw_do_fmt`: Calls the exec library's RawDoFmt entry, which formats text into a buffer under the control of a format string.
+- `tiny_move_rts_3`: Small routine of 2 instructions that copies d0 to (a3)+, then returns.
+- `compute_string_checksum`: The library code iterates through a null-terminated byte string, updating a 32-bit accumulator with a decrementing 1s-complement-style pattern for each character.
+- `find_character_in_string`: Returns a pointer to the first occurrence of a given character in a null-terminated string, or null if the character is absent.
+- `frag_moveq_bra_12`: Short code fragment that loads 0 into d0, then jumps to another point in the code.
+- `copy_c_string_3`: The library code copies bytes from a source pointer to a destination pointer until a zero byte is encountered, advancing both pointers each iteration.
+- `frag_movem_tst_bne_subq_bra`: Short code fragment that copies several registers to or from memory, then tests the memory at a0 (advancing a0), then branches if the last result was not zero, then subtracts 1 from a0, then jumps to another point in the code.
+- `compare_strings_limited`: Compares two strings up to a given length.
+- `frag_moveq_bgt_rts`: Short code fragment that loads 1 into d0, then branches if the comparison was greater, then loads 255 into d0, then returns.
+- `find_string_end_within_limit`: Walks forward through a string for up to a given number of characters, calling a routine when the terminating null is reached.
+- `frag_subq_bsr_rts`: Short code fragment that subtracts 1 from a0, then calls another routine, then returns.
+- `copy_string_limited`: Copies at most a given number of characters from one string to another, then fills the rest of the space with zero bytes.
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `init_empty_list_header`: Library code that sets up an empty circular list header in the given structure, with its head and tail pointing back at itself.
+- `process_icon_request`: Library code that validates a parameter, calls another routine to check a return value, and if successful, performs further calls using a value from a pointer.
+- `frag_movem_move_movea_bra`: Short code fragment that saves registers on the stack, then copies the memory at an offset from a7 to d2, then copies the memory at an offset from a7 to d3, then copies the memory at an offset from a7 to a2, then jumps to another point in the code.
+- `verify_entry_chain`: Library code that walks a chain of entries, requiring two routine calls to succeed on each, and returns one when the chain ends without a failure.
+- `function_epilogue_9`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `create_entry_from_pair`: Library code that allocates a 20-byte entry, stores into it a value returned by a routine, and returns the entry.
+- `function_epilogue_10`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `build_entry_list`: Library code that allocates and links a list of 16-byte entries from a count, storing a computed size in each.
+- `walk_and_check_entry_links`: Library code that walks a list of entries, allocating a pointer field for each and checking it, and returns the entry or minus one on failure.
+- `walk_and_link_entries`: Library code that walks and links a list of entries, allocating each one through a routine and returning the entry found, or minus one when a step fails.
+- `function_epilogue_11`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+
+### diskfont.library
+
+- `frag_bra_2`: Short code fragment that jumps to another point in the code.
+- `check_and_set_font_handle`: Library code that calls a routine via a table entry using the library base.
+- `open_dos_and_graphics_libs`: Library code that opens the dos and graphics shared libraries through the exec OpenLibrary entry, initialises a list header in the object, and releases the object if either library fails to open.
+- `close_libraries_and_free_object`: Library code that closes the libraries opened by the object through the exec CloseLibrary entry, then frees the object's memory through the exec FreeMem entry and returns zero.
+- `unload_segments_in_list`: Library code that walks a list of loaded segments, unlinking each entry whose use count is below one and unloading its code through the dos UnLoadSeg entry.
+- `release_object_when_unused`: Library code that closes the object's libraries and frees its memory through the exec entries, but only when its use counts are zero.
+- `fall_through_entry_5`: Entry point part-way through straight-line code: runs two instructions (bset.b, moveq) and then falls through into the code that follows, with no return of its own.
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `clear_flag_and_increment_counter`: Library code that clears the most significant bit of a byte at a fixed offset and increments a short integer at another fixed offset.
+- `frag_subq_bne_btst_beq_jmp`: Short code fragment that subtracts 1 from the memory at an offset from a6, then branches if the last result was not zero, then tests bit 7 of the memory at an offset from a6, then branches if the last result was zero, then jumps to another point in the code.
+- `return_constant_4`: Returns the constant an address in d0 to the caller without any other effect.
+- `parse_text_buffer_records`: Library code that parses a text buffer of a given length into fixed-size records, using a 256-byte scratch buffer for the text of each entry.
+- `frag_movea_moveq_bra`: Short code fragment that copies the memory at an offset from a4 to a1, then loads 1 into d4, then jumps to another point in the code.
+- `tally_text_entry_lengths`: Library code that walks null-terminated text entries and tallies their lengths against a limit, returning a count when the entries fit.
+- `process_font_files`: Walks a directory of font files, copying each matching filename into a buffer while recording its size and attributes, then copies text entries into a buffer computing each entry's length.
+- `read_font_file_entries`: Library code that searches for a file name with the .font suffix, reads names through the dos library, and builds font entries from the file, allocating and filling structures when the name matches.
+- `copy_text_fragments_into_record`: Library code that copies text fragments into a fixed-width record, handling the record's size and counts as it goes.
+- `copy_and_index_string_entries`: Copies characters from a source string into a destination buffer while advancing the destination pointer, then scans the source for a specific marker and, when found, records the matching entry's size and attributes into a table.
+- `read_font_file_entries_2`: Reads directory entries from a disk file, copying each matching filename into a buffer and recording its size and attributes, then frees the temporary storage and closes the file.
+- `frag_moveq_movem_unlk_rts_2`: Short code fragment that loads 0 into d0, then copies several registers to or from memory, then removes the stack frame held in a6, then returns.
+- `compute_bitmask_distance`: Library code that computes a weighted difference between two 16-bit records by summing table values for each of the seven bit positions where they differ, returning a scaled result.
+- `subtract_bitmask_table_values`: Library code that subtracts table values from a running total for each bit position where two records differ, and returns the resulting total.
+- `sum_bitmask_table_values`: Library code that subtracts table entries from a running total for each bit position set in one record's flags, and returns the total.
+- `subtract_alternate_bitmask_values`: Library code that subtracts table entries from a running total for bit positions set in a record's second flag byte, and returns the total.
+- `return_constant_value`: This library routine returns a constant value without using any arguments or registers.
+- `measure_font_layout`: Library code that queries font and text measurements through the dos library and calls a routine to lay out the result.
+- `release_font_cache_slot_2`: Finds the font entry with the lowest usage count among the remaining cache slots, then closes that font's graphics handle and frees its memory.
+- `release_font_cache_slot`: Frees a previously opened font, then repeatedly scans the font cache for the entry with the lowest usage count and removes it until enough free space exists to load the requested font.
+- `frag_clr_moveq_bra`: Short code fragment that clears d4, then loads 255 into d2, then clears d3, then jumps to another point in the code.
+- `select_best_font_entry`: Walks a font's glyph table, scoring each character by its advance width, then selects the best-scoring glyph entry, records its metrics, and marks it as used before returning the chosen entry.
+- `free_and_select_font_entry`: Frees a font entry and then scans the font's glyph table to find the highest-scored remaining entry, updating the current selection and its bookkeeping counters.
+- `close_font_and_select_entry`: Library code that closes a font's graphics handle and frees its memory, then runs the same highest-score selection loop over the remaining entries.
+- `build_font_table_from_path`: Library code that takes a file path, replaces its extension with the text .font, and locks the result.
+- `load_disk_font_table`: Library code that counts directory entries until none remain, then allocates a cleared memory block for a font table with a 16-bit count and an initial header field.
+- `dispatch_font_request`: As part of library code, this routine reads a pointer and an argument from the stack and passes them to another routine.
+- `call_forbid`: Library stub: loads its arguments and the exec library base, calls Forbid and returns its result to the caller.
+- `call_permit`: Library stub: loads its arguments and the exec library base, calls Permit and returns its result to the caller.
+- `call_alloc_mem`: Library stub: loads its arguments and the exec library base, calls AllocMem and returns its result to the caller.
+- `call_free_mem`: Library stub: loads its arguments and the exec library base, calls FreeMem and returns its result to the caller.
+- `call_add_tail`: Library stub: loads its arguments and the exec library base, calls AddTail and returns its result to the caller.
+- `call_open`: Library stub: loads its arguments and the dos library base, calls Open and returns its result to the caller.
+- `call_close`: Library stub: loads its arguments and the dos library base, calls Close and returns its result to the caller.
+- `call_read`: Library stub: loads its arguments and the dos library base, calls Read and returns its result to the caller.
+- `call_lock`: Library stub: loads its arguments and the dos library base, calls Lock and returns its result to the caller.
+- `call_un_lock`: Library stub: loads its arguments and the dos library base, calls UnLock and returns its result to the caller.
+- `call_examine`: Library stub: loads its arguments and the dos library base, calls Examine and returns its result to the caller.
+- `call_ex_next`: Library stub: loads its arguments and the dos library base, calls ExNext and returns its result to the caller.
+- `call_current_dir`: Library stub: loads its arguments and the dos library base, calls CurrentDir and returns its result to the caller.
+- `call_io_err`: Library stub: loads its arguments and the dos library base, calls IoErr and returns its result to the caller.
+- `call_load_seg`: Library stub: loads its arguments and the dos library base, calls LoadSeg and returns its result to the caller.
+- `call_un_load_seg`: Library stub: loads its arguments and the dos library base, calls UnLoadSeg and returns its result to the caller.
+- `call_parent_dir`: Library stub: loads its arguments and the dos library base, calls ParentDir and returns its result to the caller.
+- `copy_null_terminated_string`: Copies bytes from a source string to a destination, including the zero terminator, stopping after the terminator is copied.
+- `frag_movea_move_bra`: Short code fragment that copies the memory at an offset from a7 to a0, then copies the memory at an offset from a7 to d0, then jumps to another point in the code.
+- `skip_string_end_and_call`: Advances a pointer to the zero terminator of a string and then calls a library function through the library base with that pointer.
+- `frag_movea_moveq_bra_2`: Short code fragment that copies the memory at an offset from a7 to a0, then loads 0 into d0, then jumps to another point in the code.
+- `count_null_terminated_bytes`: As part of library code, this routine increments a counter while advancing a pointer and reading bytes until a zero byte is encountered, returning the final count.
+- `frag_movea_bra`: Short code fragment that copies the memory at an offset from a7 to a1, then copies the memory at an offset from a7 to a0, then jumps to another point in the code.
+- `frag_tst_bne_moveq_bra`: Short code fragment that tests the memory at a0 (advancing a0), then branches if the last result was not zero, then loads 0 into d0, then jumps to another point in the code.
+- `compare_strings_register_args`: Compares two zero-terminated strings passed in address registers, returning zero when they match and a negative or positive ordering value at the first differing byte.
+- `return_constant_5`: Returns the constant an address in d0 to the caller without any other effect.
+- `frag_movea_move_bra_2`: Short code fragment that copies the memory at an offset from a7 to a0, then copies the memory at an offset from a7 to d0, then jumps to another point in the code.
+- `frag_cmp_bne_move_bra`: Short code fragment that compares d1 with d0, then branches if the last result was not zero, then copies a0 to d0, then jumps to another point in the code.
+- `frag_addq_move_bne_moveq_rts`: Short code fragment that adds 1 to a0, then copies the memory at a0 to d1, then branches if the last result was not zero, then loads 0 into d0, then returns.
+- `find_last_char_in_string`: Measures a zero-terminated string and scans backward from its last byte for a given byte.
+- `frag_cmp_bne_move_bra_2`: Short code fragment that compares d2 with the memory at a0, then branches if the last result was not zero, then copies a0 to d0, then jumps to another point in the code.
+- `find_previous_char_bounded`: Steps a pointer back one byte and then checks it against a lower bound and a byte held in a register.
+- `skip_path_prefix_to_name`: Looks for a slash in a path, or failing that a colon, and returns the position just after the first one found.
+- `increment_returned_value`: This library routine returns the value passed in D0 incremented by one.
+- `call_open_font`: Library stub: loads its arguments and the graphics library base, calls OpenFont and returns its result to the caller.
+- `call_close_font`: Library stub: loads its arguments and the graphics library base, calls CloseFont and returns its result to the caller.
+- `call_add_font`: Library stub: loads its arguments and the graphics library base, calls AddFont and returns its result to the caller.
+- `call_unknown_handler`: The routine invokes another unnamed function and returns.
+- `call_external_handler`: The routine calls another unnamed routine and returns.
+- `frag_movem_jsr_addq_rts_4`: Short code fragment that saves registers on the stack, then calls another routine, then adds 8 to a7, then returns.
+- `call_another_routine`: This library routine is library code that acts as a thin wrapper which immediately invokes another routine and then returns without performing any additional operations.
+
+### King's Bounty (1990)(New World Computing).adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.

@@ -82,7 +82,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `unpack_payload_after_hardware_setup`: Writes boot-time values to the interrupt and DMA control registers, then runs a bit-driven unpacker.
 - `decode_mfm_sector_into_buffer`: Programs the disk controller with a sync pattern and transfer setup, waits for the read to finish, and scans the raw track for the sync word.
-- `seek_drive_to_track`: Sets or clears one drive control bit from the low bit of a value, then steps a track counter word toward a target by calling a helper until the two match.
+- `step_head_to_target_track`: Sets or clears one drive control bit from the low bit of a value, then steps a track counter word toward a target by calling a helper until the two match.
 - `wait_drive_reset_counter`: Waits while a busy flag is set, clears a track counter, sets one drive control bit, and then runs a short delay loop.
 - `pulse_step_line_decrement_track`: Pulses the step line in a drive control byte by setting one bit, clearing another, and setting it again.
 - `pulse_step_line_increment_track`: Pulses the step line in a drive control byte by clearing one bit, clearing another, and setting a third.
@@ -100,7 +100,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `run_poll_loop_with_helpers`: Writes constant values to a state word, then loops calling helper routines and clearing a memory flag, with an inner wait on that flag.
 - `wait_until_counter_clears`: Calls helper routines in a loop until a returned counter reaches zero, then calls one more helper and returns the result pair.
 - `update_bitmapped_data`: Waits for bit 5 of the CIAA_PRA register to clear, then searches a table for a specific 16-bit constant and performs bitwise operations to copy and transform data from one memory location to another using a loop.
-- `adjust_track_value`: Sets or clears one drive control bit from the low bit of a value, then steps a track counter word toward a target by calling a helper until the two match.
+- `step_head_to_target_track_2`: Sets or clears one drive control bit from the low bit of a value, then steps a track counter word toward a target by calling a helper until the two match.
 - `wait_drive_reset_counter_2`: Waits while a busy flag is set, clears a track counter, sets one drive control bit, and then runs a short delay loop.
 - `pulse_step_line_decrement_track_2`: Pulses the step line in a drive control byte by setting one bit, clearing another, and setting it again.
 - `pulse_step_line_increment_track_2`: Pulses the step line in a drive control byte by clearing one bit, clearing another, and setting a third.
@@ -120,74 +120,74 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `adjust_counter_by_code_byte`: When the coordinate pair matches one of two stored pairs, it reads the high byte of a table word and adjusts a counter.
 - `call_helper_then_clear_state`: Calls a helper routine, then clears two state bytes.
 - `call_then_reset_state_pair`: Calls one unnamed routine and then clears two global variables, with the same pattern shared by four callers.
-- `wait_while_timer_nonzero`: Repeatedly calls two unnamed routines while a longword assembled from two memory words is non-zero, returning once it reaches zero.
+- `wait_while_counter_nonzero`: Repeatedly calls two unnamed routines while a longword assembled from two memory words is non-zero, returning once it reaches zero.
 - `wait_while_countdown_nonzero`: Calls two helper routines repeatedly while a second 32-bit countdown stored in memory stays nonzero, then returns.
-- `call_helpers_until_sentinel`: Walks a table of three-byte records from a global start address until a terminator byte, calling two unnamed routines for each record.
-- `advance_mixed_radix_clock`: Adds ten units to a counter stored as digit fields with weights of one, ten, sixty and six hundred, carrying between fields, then calls one unnamed routine.
-- `copy_longword_row_from_table`: Copies 100 longwords from a table row chosen by a global index into a fixed destination, then loads three byte fields from a second table entry selected by the same index.
-- `scale_time_records_by_third`: Iterates through a list of four-byte records, calculating a value from the bytes and updating the record with a new encoded format based on a global sign flag.
+- `walk_three_byte_records`: Walks a table of three-byte records from a global start address until a terminator byte, calling two unnamed routines for each record.
+- `advance_mixed_radix_counter`: Adds ten units to a counter stored as digit fields with weights of one, ten, sixty and six hundred, carrying between fields, then calls one unnamed routine.
+- `copy_row_and_load_fields`: Copies 100 longwords from a table row chosen by a global index into a fixed destination, then loads three byte fields from a second table entry selected by the same index.
+- `convert_encoded_values`: Iterates through a list of four-byte records, calculating a value from the bytes and updating the record with a new encoded format based on a global sign flag.
 - `call_seven_helpers_clear_state`: Calls seven helper routines in sequence, then clears a state byte.
 - `clear_state_and_call_helpers`: Clears several state bytes and calls two helper routines.
 - `call_helpers_around_state_clear`: Calls one helper routine, clears three state bytes, then calls two more helper routines.
 - `set_offset_value_by_mode`: When a selector byte is zero, sets a state byte from a table value adjusted by a mode value: subtracts 400 with clamping at zero for mode 0, keeps the value for mode 1, and adds 600 for other modes.
 - `forward_to_helper_routine`: Calls one helper routine and returns.
-- `copy_tile_block_into_buffer`: Copies a block of 18 tile rows, each 18 bytes wide, from a source selected by a global index into a destination with a 40-byte row stride, with a larger stride between four sub-blocks.
+- `copy_strided_tile_block`: Copies a block of 18 tile rows, each 18 bytes wide, from a source selected by a global index into a destination with a 40-byte row stride, with a larger stride between four sub-blocks.
 - `advance_state_by_ten_steps`: Branches on a state byte with values from zero to three, calling helper routines and adding 10 to the state byte once or twice depending on whether it is nonzero.
-- `compare_and_store_larger_entries`: If a stored limit is below one stored value, copies that value into a global; repeats the test for a second stored value, then returns.
-- `copy_strided_pixel_rows`: Copies a block of four rows by eight entries from a source with a four-byte stride into a destination with a 40-byte row stride, moving three bytes per entry.
+- `copy_values_above_limit`: If a stored limit is below one stored value, copies that value into a global; repeats the test for a second stored value, then returns.
+- `copy_strided_three_byte_rows`: Copies a block of four rows by eight entries from a source with a four-byte stride into a destination with a 40-byte row stride, moving three bytes per entry.
 - `copy_table_column_into_buffer`: Calls three helper routines, then copies a column of 12 bytes from a table, selected by a scaled index, into five spaced rows of a destination grid.
 - `copy_table_column_into_buffer_2`: Calls three helper routines, then copies a column of 12 bytes from a table, selected by a scaled index, into five spaced rows of a destination grid.
 - `copy_block_to_third_area`: Calls three unnamed routines, then copies twelve byte values from a table row scaled by a stored index into five destinations spaced sixteen rows apart, advancing 40 bytes per row, at a further target area.
-- `copy_indexed_table_column`: Copies twelve bytes from a source offset derived from a parameter into five destinations spaced sixteen rows apart at 40-byte row strides, with no preceding calls.
-- `call_four_helpers_in_sequence`: Calls four unnamed routines in sequence and returns.
+- `copy_param_block_five_lines`: Copies twelve bytes from a source offset derived from a parameter into five destinations spaced sixteen rows apart at 40-byte row strides, with no preceding calls.
+- `call_four_routines_in_sequence`: Calls four unnamed routines in sequence and returns.
 - `copy_column_to_rows`: Copies a column of 12 bytes from a source pointer into five spaced rows of a destination grid.
 - `build_cell_run_list`: Builds a list of four-byte cell records along a straight run between two coordinate pairs, ending the list with a sentinel.
 - `build_cell_path_list`: Walks from one grid cell toward another one step at a time, writing a four-byte record for each step and ending with a sentinel.
 - `emit_column_entries_until_bound`: Runs a counter from a start value toward a bound of twenty or minus one, writing byte pairs and a marker word for each step while calling four unnamed routines.
-- `advance_index_and_clamp_value`: Advances a global by two and calls an unnamed routine; when a comparison between two stored values holds, copies one of them into the global and calls another routine.
-- `classify_entry_against_record`: Copies a header record and then a run of two-byte entries terminated by a marker into a destination, padding each entry with a fixed byte; it sets a state value to two or three depending on how the last entry compares with a reference pair.
+- `advance_and_clamp_by_flag`: Advances a global by two and calls an unnamed routine; when a comparison between two stored values holds, copies one of them into the global and calls another routine.
+- `copy_record_and_flag_position`: Copies a header record and then a run of two-byte entries terminated by a marker into a destination, padding each entry with a fixed byte; it sets a state value to two or three depending on how the last entry compares with a reference pair.
 - `blit_cell_rows_from_list`: Combines four rows of 20 cells into a temporary buffer, then programs the blitter control registers, size and pointers and waits for the blitter-busy bit to clear.
 - `spin_delay_counter`: Counts a register down to zero as a short delay.
 - `read_grid_cell_flag`: Reads one cell byte from a grid and returns without changing any state.
-- `check_grid_cell_usable`: Checks whether a column index is below nine and a table byte is non-zero and not one of three marker values, but every branch returns with no recorded effect.
+- `check_cell_marker_values`: Checks whether a column index is below nine and a table byte is non-zero and not one of three marker values, but every branch returns with no recorded effect.
 - `check_cell_marker_values_alt`: Checks whether a column index is below nine and a table byte is non-zero and not one of three marker values, using register parameters, but every branch returns with no recorded effect.
-- `copy_twenty_words_to_column`: Copies twenty words from a source into a destination column, advancing the destination by 40 bytes per word, with the column offset taken from two register parameters; eight unnamed routines call it.
+- `copy_twenty_words_down_column`: Copies twenty words from a source into a destination column, advancing the destination by 40 bytes per word, with the column offset taken from two register parameters; eight unnamed routines call it.
 - `wait_status_bit_with_delays`: Runs a fixed countdown, waits until a status bit is set, then runs a second countdown.
-- `call_helper_over_grid_cells`: Runs nested loops that call an unnamed routine once for each cell of an eight-by-eighteen grid, then clears two globals and calls one more routine.
-- `compare_grid_cells_between_buffers`: Sets a flag to 255, then compares two table entries at the same offset; if they differ it calls two unnamed routines, and the flag ends at zero either way.
+- `iterate_grid_calling_routine`: Runs nested loops that call an unnamed routine once for each cell of an eight-by-eighteen grid, then clears two globals and calls one more routine.
+- `compare_table_entries_flag`: Sets a flag to 255, then compares two table entries at the same offset; if they differ it calls two unnamed routines, and the flag ends at zero either way.
 - `call_helper_countdown_loop`: Calls a helper repeatedly while a 16-bit counter in a register stays non-negative, counting it down on each pass.
 - `call_helper_countdown_loop_2`: Calls a helper in a loop that counts a 16-bit value down until it goes negative.
-- `copy_grid_rows_after_wait`: Performs a short status check, then copies rows of twenty-word source data into four destinations spaced 4800 bytes apart, advancing 40 bytes per row until the row counter wraps.
-- `call_helper_over_cell_grid`: Runs nested loops that call an unnamed routine once for each cell of a ten-by-twenty grid.
-- `blit_four_rows_per_plane`: Writes blitter setup values, then runs five passes, waiting for the blitter to go idle before each pass, starting a copy at the current source and destination and advancing both by 9600 bytes.
-- `call_helper_pairs_three_times`: Calls two unnamed routines in each of three passes.
+- `copy_rows_into_four_planes`: Performs a short status check, then copies rows of twenty-word source data into four destinations spaced 4800 bytes apart, advancing 40 bytes per row until the row counter wraps.
+- `iterate_grid_ten_by_twenty`: Runs nested loops that call an unnamed routine once for each cell of a ten-by-twenty grid.
+- `start_blitter_copy_rows`: Writes blitter setup values, then runs five passes, waiting for the blitter to go idle before each pass, starting a copy at the current source and destination and advancing both by 9600 bytes.
+- `repeat_two_calls_three_times`: Calls two unnamed routines in each of three passes.
 - `calculate_table_index`: Calculates an index by shifting a value in d6 left by one, adding the result of multiplying d7 by forty, and then fetches a word from a table using a pointer in a5 and this calculated offset, finally masking the result to keep only the lowest byte.
 - `delegate_to_unnamed_routine`: Passes control to one unnamed routine and returns, with no other work shown in the body.
 - `start_copper_list`: Points the copper at a new copper list by writing its address to COP1LC and strobing COPJMP1 so it starts at once, then returns.
 - `set_fixed_state_words`: Writes a fixed word value to a state location, then writes an all-ones word to it.
-- `call_five_helpers_in_sequence`: Calls the copper-start routine and then four unnamed routines in sequence.
+- `start_copper_then_run_steps`: Calls the copper-start routine and then four unnamed routines in sequence.
 - `set_two_words_to_constant`: Writes one constant to two state words, calling a helper routine after each write, and returns.
 - `set_paired_locations_to_680`: Writes the value 680 to two memory locations, calling one unnamed routine after each write.
 - `set_second_pair_to_342`: Writes the value 342 to a second pair of memory locations, calling one unnamed routine after each write.
 - `call_two_helpers_in_sequence`: Calls two helper routines in sequence and returns.
 - `call_two_helpers_in_sequence_2`: Calls two helper routines in sequence and returns.
 - `latch_masked_value_when_set`: When a field is nonzero and a rotated word overlaps the status byte, copies the word into a state location and clears the field.
-- `write_custom_register_block`: Writes a block of channel parameters to DMA-related hardware registers with short delays between writes, sets a bit in a global, and marks the block as pending.
-- `fill_pointer_tables_into_records`: Fills a table of longword pointers split into word halves, writing successive groups of four and five entries that step by fixed byte offsets such as 640 and 9600 bytes.
-- `draw_text_string_glyphs`: Measures a zero-terminated string, centres it in a 40-byte row, and copies each character's glyph block from a font table into the destination, mapping a space to a fixed glyph index.
-- `decrement_packed_digit_fields`: For each word in a row, subtracts one from its hundreds, tens and units digit nibbles whenever they are non-zero, records whether any digit changed, and repeats the row pass until nothing changes.
-- `normalize_packed_digits_into_list`: Copies a run of words into a buffer, then repeatedly moves each word's hundreds, tens and units digit nibbles one unit at a time into a parallel array, repeating passes until no digit moves; it also calls one unnamed routine.
+- `apply_channel_block_with_delays`: Writes a block of channel parameters to DMA-related hardware registers with short delays between writes, sets a bit in a global, and marks the block as pending.
+- `fill_pointer_table_words`: Fills a table of longword pointers split into word halves, writing successive groups of four and five entries that step by fixed byte offsets such as 640 and 9600 bytes.
+- `draw_centered_text_string`: Measures a zero-terminated string, centres it in a 40-byte row, and copies each character's glyph block from a font table into the destination, mapping a space to a fixed glyph index.
+- `decrement_bcd_digit_words`: For each word in a row, subtracts one from its hundreds, tens and units digit nibbles whenever they are non-zero, records whether any digit changed, and repeats the row pass until nothing changes.
+- `transfer_bcd_digits_to_array`: Copies a run of words into a buffer, then repeatedly moves each word's hundreds, tens and units digit nibbles one unit at a time into a parallel array, repeating passes until no digit moves; it also calls one unnamed routine.
 - `wait_for_raster_frames`: Waits on the vertical position register for a fixed raster condition, repeating the wait a counted number of times.
 - `update_mouse_position_from_counter`: Compares the current mouse counter with the previous sample on each axis, adds or subtracts the change within clamp limits, then stores a scaled row value.
 - `write_record_for_position`: Selects one of two four-byte table entries by a threshold test, then writes four bytes built from the input coordinates and a flag into a record.
 - `store_four_byte_record`: Writes four bytes taken from register inputs into a record at an address register.
 - `clear_long_buffer`: Zeroes 14,400 longwords starting at a fixed buffer address.
-- `skip_counted_strings_then_call`: When a counter is a multiple of ten, skips a number of zero-terminated strings in a table and then makes an indirect call to a target that is not resolved.
+- `skip_strings_and_dispatch_indirect`: When a counter is a multiple of ten, skips a number of zero-terminated strings in a table and then makes an indirect call to a target that is not resolved.
 - `copy_longs_from_table`: Copies 12,000 longwords from a source table into a fixed buffer, then waits for a busy flag to clear with a bounded countdown and sets a state word.
 - `copy_memory_block`: Sets a global variable, copies a block of twelve thousand bytes from one memory location to another, and performs a busy-wait loop on a bit in a global variable.
 - `poll_helper_until_zero`: Calls helper routines in a loop, choosing the helper from a flag, until a returned value is zero, then calls one more helper.
 - `read_and_decode_disk_track`: Selects a track buffer, programs the disk controller with a sync word and DMA values, waits for the read, and decodes the MFM data into longwords.
-- `update_track_step`: Sets or clears one drive control bit from the low bit of a value, then steps a track counter word toward a target by calling a helper until the two match.
+- `step_head_to_target_track_3`: Sets or clears one drive control bit from the low bit of a value, then steps a track counter word toward a target by calling a helper until the two match.
 - `wait_drive_reset_counter_2_2`: Waits while a busy flag is set, clears a track counter, sets one drive control bit, and then runs a short delay loop.
 - `pulse_step_line_decrement_track_2_2`: Pulses the step line in a drive control byte by setting one bit, clearing another, and setting it again.
 - `pulse_step_line_increment_track_2_2`: Pulses the step line in a drive control byte by clearing one bit, clearing another, and setting a third.
@@ -196,29 +196,29 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `encode_and_write_disk_track`: Copies 144 bytes into a track buffer, fills the rest of the track with gap longwords and sync words across 11 sectors, then programs the disk controller for a DMA write and waits for it to finish.
 - `encode_mfm_longword`: Computes an MFM-style clock pattern for a longword from its data and the previous bits, masks the top bit according to the low bit of the preceding byte, and stores the result.
 - `encode_mfm_longword_2`: Calls a helper routine, then computes the same MFM-style clock pattern for a longword and stores the result.
-- `build_audio_sample_pointers`: Scans a byte table for the first entry above a running value, then fills thirty entries of a global table from a second table using the matched index; the facts record audio volume register touches.
+- `scan_table_build_audio_entries`: Scans a byte table for the first entry above a running value, then fills thirty entries of a global table from a second table using the matched index; the facts record audio volume register touches.
 - `advance_audio_channel_envelopes`: Advances a sample counter and, on every sixth call, selects a sample address from a table and resets channel state.
-- `update_audio_channel_state`: For each of four audio channels, applies a per-step effect selected by the low nibble of a control byte, such as stepping a period value up or down with clamping, then writes the channel's length, pointer and period registers and updates DMA control.
-- `parse_sound_record_into_channel`: Reads a four-byte pattern row, extracts an instrument index from its nibbles, and loads that instrument's pointer, length and volume values into a channel record; a zero index sets default values.
-- `copy_sample_block_fifth_tick`: Advances a tick counter and, every fifth call, copies a block of seventeen rows across four columns from a table selected by a stored index into destinations spaced 9600 bytes apart.
+- `process_audio_channel_effects`: For each of four audio channels, applies a per-step effect selected by the low nibble of a control byte, such as stepping a period value up or down with clamping, then writes the channel's length, pointer and period registers and updates DMA control.
+- `decode_pattern_row_to_channel`: Reads a four-byte pattern row, extracts an instrument index from its nibbles, and loads that instrument's pointer, length and volume values into a channel record; a zero index sets default values.
+- `copy_frame_rows_on_timer`: Advances a tick counter and, every fifth call, copies a block of seventeen rows across four columns from a table selected by a stored index into destinations spaced 9600 bytes apart.
 - `run_text_entry_loop`: Copies a 12,000-longword block into a buffer, then loops on input state, drawing characters into a text line at a cursor and handling a delete code, until a finish code is read.
-- `insert_ranked_entry`: Walks six stored values and, when one is no greater than a reference value, records its index and copies a block of five-longword rows from a fixed table into a destination.
-- `draw_six_ranked_rows`: Loops over five stored longword entries, passing each to an unnamed routine and calling two more routines per pass.
-- `copy_glyph_block_to_plane`: Copies a four-row by ten-column block from a source selected by a parameter index scaled by 55 bytes, writing each value into a 40-byte column stride with rows spaced 9600 bytes apart.
+- `copy_matching_table_rows`: Walks six stored values and, when one is no greater than a reference value, records its index and copies a block of five-longword rows from a fixed table into a destination.
+- `loop_five_entries_with_routine`: Loops over five stored longword entries, passing each to an unnamed routine and calling two more routines per pass.
+- `copy_index_selected_rows_grid`: Copies a four-row by ten-column block from a source selected by a parameter index scaled by 55 bytes, writing each value into a 40-byte column stride with rows spaced 9600 bytes apart.
 
 ### Turn It (1989)(Kingsoft)(M3)[cr Best].adf bytes 585728-588800 (code never loaded by a reference run)
 
-- `initialise_copper_and_clear_audio`: Entry code that sets the chipset interrupt and DMA state, runs three unnamed routines and the audio clearing routine, then waits on a status bit before continuing.
+- `initialise_entry_and_await_input`: Entry code that sets the chipset interrupt and DMA state, runs three unnamed routines and the audio clearing routine, then waits on a status bit before continuing.
 - `build_audio_entries_second_table`: Scans a byte table for the first entry above a running value, then fills thirty entries of a global table from a second table using the matched index; this copy reads from a different table.
 - `clear_audio_dma`: The routine writes to the four audio volume registers and to the DMA control register, setting the audio channels off and clearing DMA enables.
 - `advance_audio_sequence_second`: Advances a frame counter and, every sixth call, reloads the audio pointer from a different table, waits briefly, and writes per-channel values from stored entries.
 - `process_audio_channel_effects_second`: Applies the same per-channel effect steps as its neighbour to four audio channels, using the low nibble of a control byte, clamping stepped period values, and writing the channel's length, pointer and period registers.
 - `parse_sound_record_into_channel_2`: Reads a four-byte sound record, sets the sample pointer and period for the channel from tables when the instrument nibble is nonzero, and applies an effect chosen by the low nibble of the second byte.
-- `clear_indexed_byte_grid`: Zeroes a four-by-four grid of bytes, advancing 28 bytes per cell and 6440 bytes per row from a base offset.
-- `blit_clear_four_rows`: Waits for the blitter to be idle, then starts four blit operations whose addresses are scaled from a stored index, advancing both source and destination by fixed steps per row.
-- `blit_copy_four_rows`: Runs four passes, each waiting for the blitter to be idle and starting a blit whose addresses are scaled from a stored index, with a fixed row size and per-pass offsets.
+- `clear_byte_grid_block`: Zeroes a four-by-four grid of bytes, advancing 28 bytes per cell and 6440 bytes per row from a base offset.
+- `start_blitter_rows_from_index`: Waits for the blitter to be idle, then starts four blit operations whose addresses are scaled from a stored index, advancing both source and destination by fixed steps per row.
+- `start_indexed_blit_row_set`: Runs four passes, each waiting for the blitter to be idle and starting a blit whose addresses are scaled from a stored index, with a fixed row size and per-pass offsets.
 - `decrement_digit_words_until_clear`: Repeatedly subtracts one from the nibble digits of each word in a row, calling an unnamed routine after each pass, until a pass changes no digit.
 - `copy_row_then_transfer_digits`: Copies a row of words into a buffer, then repeatedly moves each word's digit nibbles into a parallel array one unit at a time, calling one unnamed routine per pass until no digit moves.
 - `wait_raster_ten_passes`: Waits for a vertical beam position field to reach a fixed value ten times in succession, then returns.
-- `build_copper_bitplane_pointers`: Writes four pointer pairs into a copper-related table at fixed steps of 6440 bytes, then writes two fixed words to globals.
-- `next_pseudo_random_mod`: Advances a 32-bit seed by doubling it and exclusive-ORing with a fixed constant on overflow or zero, then returns the seed modulo the requested range.
+- `write_copper_pointer_pairs`: Writes four pointer pairs into a copper-related table at fixed steps of 6440 bytes, then writes two fixed words to globals.
+- `generate_pseudo_random_modulo`: Advances a 32-bit seed by doubling it and exclusive-ORing with a fixed constant on overflow or zero, then returns the seed modulo the requested range.

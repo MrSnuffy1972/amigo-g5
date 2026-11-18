@@ -273,7 +273,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `boot_block_read_reset_chips`: Fills an I/O request structure with a fixed length and offset, runs the library call that performs the I/O, then writes the custom chip registers to disable all DMA and interrupts and to set the disk-control bits.
 - `undecoded_ciab_port_routine`: The decompiler timed out, so only the instruction count, the single call, and the CIA-B port B register access are known.
-- `initialise_ciab_and_copy_block`: Writes constants to a global and to a CIA-B register, saves two address values into globals and calls several routines.
+- `initialize_hardware_and_copy_block`: Writes constants to a global and to a CIA-B register, saves two address values into globals and calls several routines.
 - `set_control_port_bits`: Sets bits 4 to 6 of a byte at a fixed offset from an address register, then clears the top bit and bit 3, leaving the other bits unchanged.
 - `set_two_control_port_bits`: Sets the top bit and bit 3 of a byte at a fixed offset from an address register and leaves the other bits unchanged.
 - `find_named_entry_and_copy`: Hashes a zero-terminated name by multiplying a running value by thirteen and adding each character, then picks a bucket of entries by taking the hash modulo seventy-two.
@@ -288,22 +288,22 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `run_transfer_with_timing_values`: Sets a control bit, writes a count and a second value to two registers and waits for a status bit before clearing the control bit.
 - `wait_while_flag_set`: Sets a control bit and, while a shared flag's fourth bit stays set, pulses another control bit and calls a routine.
 - `call_then_clear_count`: Calls one unnamed routine and then clears a 16-bit count in a structure.
-- `start_sync_word_dma_read`: Writes a set of 16-bit control words to hardware registers offset from a base register, including a sync word and a DMA-related value, and stores a 32-bit pointer from a second base-relative location into a register-offset slot.
+- `configures_disk_sync_transfer`: Writes a set of 16-bit control words to hardware registers offset from a base register, including a sync word and a DMA-related value, and stores a 32-bit pointer from a second base-relative location into a register-offset slot.
 - `decode_mfm_sector_with_retry`: Searches a raw buffer for the sync word and matches the sector identity, then decodes the data by separating alternate bits and checks it with an XOR checksum.
 - `decode_mfm_sector_payload`: Decodes sector data in place by separating alternate bits and checks the result with an XOR checksum, returning on a match.
 - `decode_mfm_sector_search_loop`: Fetches the next word and searches the raw buffer for a sector that matches, then splits each long into alternate bits while copying data and computing an XOR checksum.
 
 ### logged disk load from Micro Machines (1992)(Codemasters)[cr CSL].adf boot-block load
 
-- `relocate_block_backwards_and_copy`: Copies a block of data between buffers, adjusting the source and destination pointers to even addresses before copying runs of longwords.
+- `copy_block_with_alignment_fixups`: Copies a block of data between buffers, adjusting the source and destination pointers to even addresses before copying runs of longwords.
 - `unpack_literal_and_repeat_runs`: Reads length counts from a stream and copies literal byte runs from one buffer to another, repeating earlier output bytes as back-reference runs until the output end is reached.
 - `unpack_repeat_runs_and_launch`: Copies a literal byte and then a run of bytes from a stream, alternating with repeats of earlier output until the output limit is reached.
-- `match_table_entry_extract_bits`: Scans a table of word pairs until a condition on a global mask is met, then reads a byte from a table entry and uses it as an index into a global mask to extract a bit, calling another routine if a borrow condition is detected.
+- `extract_flag_bit_from_table`: Scans a table of word pairs until a condition on a global mask is met, then reads a byte from a table entry and uses it as an index into a global mask to extract a bit, calling another routine if a borrow condition is detected.
 - `tiny_moveq_moveq`: Small routine of 2 instructions that loads 255 into d0, then loads 16 into d1.
 - `mask_and_conditional_call`: ANDs two 16-bit values, then if one byte is less than another byte it calls an unnamed routine and returns that routine's result.
-- `frag_add_lsr_swap_addq_move_rol_sub_mov`: Adds d1 back into d7, shifts d6 right by d7, swaps d6, advances a3 by four and loads two bytes backwards into d6 with a byte swap, then resets d7 to sixteen minus d1.
+- `refill_bit_buffer_from_a3_stream`: Adds d1 back into d7, shifts d6 right by d7, swaps d6, advances a3 by four and loads two bytes backwards into d6 with a byte swap, then resets d7 to sixteen minus d1.
 - `read_four_bytes_into_long`: Reads four consecutive bytes from a pointer and builds them into one 32-bit value with the first byte in the highest position.
-- `build_canonical_code_table`: The routine reads a count, fills a buffer from another routine, then iterates over a stack buffer and a table, writing bit masks and derived values into table entries based on matching bytes.
+- `decode_and_fill_table`: The routine reads a count, fills a buffer from another routine, then iterates over a stack buffer and a table, writing bit masks and derived values into table entries based on matching bytes.
 - `launch_from_saved_words`: Copies ten words from a data area onto the stack in reverse order and then jumps to the address now on top of the stack.
 - `restore_registers_from_stack`: Moves the value in d1 to the stack, restores d0 through d7 and a0 through a7 from the stack, and returns.
 - `clear_bytes_dbra_restore_regs_return`: Clears a byte at offset 0 from a6 using a loop, stores a5 at offset 50 of the stack, restores all registers from the stack, and returns.

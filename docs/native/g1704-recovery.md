@@ -6,20 +6,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (933520 top-level bytes in 6 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 6 raw-word lines |
-| Functions named and described | pass, 117 of 117 named (0 author symbols), 117 of 117 described (12 by rule, 102 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 5663 of 5673 (99.82%) |
+| Bytes classified (914092 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 5 raw-word lines |
+| Functions named and described | pass, 97 of 97 named (0 author symbols), 97 of 97 described (11 by rule, 83 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1410 of 1420 (99.30%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 6348 of 6348 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1873 of 1873 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 11057 |
-| code | 27216 |
-| data | 877826 |
+| code | 9378 |
+| data | 876236 |
 | padding | 13 |
 | unused | 17408 |
 
@@ -30,22 +30,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | New Zealand Story, The (1989)(Ocean)[cr ACC][t +3 Band].adf:bootblock | 1 | 6 | 1 |
 | logged disk load from New Zealand Story, The (1989)(Ocean)[cr ACC][t +3 Band].adf boot-block load | 1 | 106 | 4 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1570 | 91 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 363 | 18 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1336 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2952 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 191 | 1 |
 
 ## Cases handled
 
 - new zealand story, the (1989)(ocean)[cr acc][t +3 band]/New Zealand Story, The (1989)(Ocean)[cr ACC][t +3 Band].adf: custom-format (non-DOS) disk, 1724 non-empty blocks: matched against track-loaded segments
+- reference run failed (Karl 4 Nov 2026): run ext slid through memory (an address: 1 64 KB pages each with >= 29491 distinct PCs executed, 4253 of its 5706 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-rs-m1500 slid through memory (an address: 1 64 KB pages each with >= 29491 distinct PCs executed, 4253 of its 5579 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-rs-m3000 slid through memory (an address: 1 64 KB pages each with >= 29491 distinct PCs executed, 4253 of its 5579 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-rs-menu slid through memory (an address: 1 64 KB pages each with >= 29491 distinct PCs executed, 4253 of its 5579 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
+- reference run failed (Karl 4 Nov 2026): run play-rs-mixed slid through memory (an address: 1 64 KB pages each with >= 29491 distinct PCs executed, 4253 of its 5579 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
 - 10 first-execution byte records contradict the logged opcode word (first an address): bad captures, the opcode word is used
 - new zealand story, the (1989)(ocean)[cr acc][t +3 band]/New Zealand Story, The (1989)(Ocean)[cr ACC][t +3 Band].adf: the boot block reads 6656 bytes from disk offset 1024 to an address (found statically); recovered as a unit
 - runtime segment an address: 1118 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 157 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 1321 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address (play-rs-m1500): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- 2950 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 1 first-run image unit(s) in 1 version group(s); 8 unexecuted gap bytes taken from the RAM snapshot; 10 not decodable
-- self-modifying code at an address (3 bytes change between runtime segment an address and runtime segment an address (play-rs-m1500)): both forms recovered; writer: not identified statically (indirect store)
+- 190 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 1 first-run image unit(s) in 1 version group(s); 4 unexecuted gap bytes taken from the RAM snapshot; 10 not decodable
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 jump target
 - new zealand story, the (1989)(ocean)[cr acc][t +3 band]/New Zealand Story, The (1989)(Ocean)[cr ACC][t +3 Band].adf: 1 logged loads cover 6656 bytes of the image
 - new zealand story, the (1989)(ocean)[cr acc][t +3 band]/New Zealand Story, The (1989)(Ocean)[cr ACC][t +3 Band].adf: 2 track-loaded blocks found in recovered runtime segments and classified through them
@@ -60,6 +58,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - new zealand story, the (1989)(ocean)[cr acc][t +3 band]/New Zealand Story, The (1989)(Ocean)[cr ACC][t +3 Band].adf: blocks 1715-1733 (bytes 878080-887808) outside the filesystem hold data, not code (opcode density 0.001, entropy 3.84)
 - new zealand story, the (1989)(ocean)[cr acc][t +3 band]/New Zealand Story, The (1989)(Ocean)[cr ACC][t +3 Band].adf: blocks 1737-1755 (bytes 889344-899072) outside the filesystem hold data, not code (opcode density 0.002, entropy 4.25)
 - new zealand story, the (1989)(ocean)[cr acc][t +3 band]/New Zealand Story, The (1989)(Ocean)[cr ACC][t +3 Band].adf: blocks 1759-1759 (bytes 900608-901120) outside the filesystem hold data, not code (opcode density 0.000, entropy 2.96)
+- SLIDEOK (fix-r4, 19 Nov 2026): the reference run slide was redone and slid again; its PCs are excluded and the 1420 clean executed game-code addresses pass proof 4, so the slide no longer blocks R (it still needs the G0 harness fix): reference run slides reproducibly (harness runaway at an address in the canonical and the extended run): re-running does not help; fix the reference harness at G0 (Karl 11 Nov 2026: send it back to the gate that can fix it)
 
 ## Cracktros (kept, not protection)
 
@@ -92,7 +91,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_decompress_then_setup_disk`: Calls the decompression routine and returns if the result is non-negative, otherwise loads a word from offset 12 of the structure in a6 into a data register and jumps to the disk setup routine.
 - `decode_palette_rle`: Reads a compressed byte stream from the palette data at the palette pointer, decoding run-length markers (a byte of 128 ends a run, a negative byte counts as a repeat), and calls the store routine for each decoded byte.
 - `copy_bytes_loop_store`: It masks d0 to seven bits, copies successive bytes from the source in a0 into d1, calls the store routine for each byte, and decrements the loop counter until it reaches zero.
-- `store_byte_and_update_counters`: Stores the byte in d1 through the pointer in a1, then checks bit 7 of d5 and increments it until it reaches 40, at which point it clears d5.
+- `store_byte_and_update_counters`: Stores a single byte from a register into the memory location pointed to by a register.
 - `copy_and_expand_stream`: Copies a reversed block from one memory region to another, then processes a stream by copying bytes and repeating a value a number of times until a counter reaches zero.
 - `copy_pair_bytes_loop`: It clears d1, copies two consecutive bytes from the source in a1 into d0 and d1, stores the first byte to the destination in a0, decrements d3, and repeats until d3 is exhausted before restoring registers and returning.
 - `set_joystick_bitmask_and_wait`: Sets bits 3 to 7 and bit 2 of the joystick port register, clears bit derived from a structure value, then waits until bit 5 of the keyboard register is clear.
@@ -108,18 +107,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `tiny_move_moveq_rts`: Small routine of 3 instructions that copies d0 to d1, then loads 254 into d0, then returns.
 - `scan_for_marker_word`: Reads words from a pointer, advancing it, until a word equals 17529, then clears d0 and returns.
 - `sum_array_words`: Clears d0 and d2, then loops d1 times adding each word from a pointer to the running total in d0.
-- `combine_bit_patterns`: Loops d1 times combining bits from two source pointers with the mask 85 and writing the result to a destination pointer, then restores a2 to a0.
+- `combine_bit_patterns`: Iterates through two source buffers and writes a new pattern to a destination buffer by combining bits from both sources using bitwise operations.
 - `clear_and_set_structure_words`: Clears the word at offset 12 of the structure in a6 and stores 82 at offset 14, then returns.
-- `process_input_timing_loop`: Loops while bit 4 of the keyboard register is set, adjusting a structure value by a direction flag with delay loops, then clears structure fields and selects a delay constant based on its value.
+- `process_input_timing_loop`: Updates a value in a structure by comparing it to a value derived from a register, using delays and bitwise flags to control the loop.
 - `set_audio_and_blitter_registers`: Clears bit 6 of the keyboard register, then writes a series of constant values to the audio and blitter registers before returning.
-- `clear_registers_memory`: Clears the CPU interrupts, writes constant values to several video and blitter registers, clears a 8191-word block starting at address an address, clears eight word registers, clears a 31-word block of sprite registers, and re-enables interrupts before returning.
+- `clear_registers_memory`: Clears large blocks of memory and sets multiple hardware registers and global variables to specific constant values.
 - `setup_interrupt_vectors`: Opens a library and, if successful, sets up five interrupt vectors with a trap-and-return sequence, installs a video interrupt handler, and stores a set of computed source addresses in a table, then returns.
 - `install_handlers_and_decompress_data`: Writes the trap-and-rts sequence to five global vectors, sets a video interrupt handler and installs a copy of itself at the reset vector, then decodes a bit-packed table and decompresses it into a memory block.
-- `copy_source_blocks`: Computes two source addresses from a value in d0, then loops 17 times to copy a 6-byte chunk from each source into a destination table at a fixed address.
-- `copy_source_blocks_alt`: Computes two source addresses from a value in d0, then loops 17 times to copy a 6-byte chunk from each source into a destination table at a different fixed address.
-- `copy_from_a2_blocks`: Computes two destination addresses from a value in d2, then loops 17 times to copy a 6-byte chunk from the address in a2 into each destination.
-- `compute_indexed_offsets`: Reads a 16-bit index from a global variable and multiplies it by 40 to form an offset.
-- `run_blitter_transfers`: Sets up source and destination addresses and calls a blitter transfer routine twice, then adjusts the destination by two different offsets and calls a second blitter transfer routine twice before returning.
+- `copy_source_blocks`: Calculates two source addresses based on a value in d0, then loops 17 times to copy 6-byte chunks from these sources to a destination table at a fixed address.
+- `copy_source_blocks_alt`: Calculates two source addresses based on a value in d0, then loops 17 times to copy 6-byte chunks from these sources to a destination table at a fixed address.
+- `copy_from_a2_blocks`: Calculates two destination addresses based on a value in d2, then loops 17 times to copy 6-byte chunks from the address in a2 to those destinations.
+- `compute_indexed_offsets`: Calculates two destination addresses based on a value in a global variable, writes the results to a table at a fixed address, and increments the global variable, resetting it to zero if it reaches 43.
+- `run_blitter_transfers`: Sets up and calls four different blitter transfer routines using various source and destination addresses derived from offsets.
 - `setup_blitter_transfer`: Calls another routine, then writes values to the blitter registers, storing the source address in one register and the destination address in another before returning.
 - `setup_blitter_transfer_alt`: Calls another routine, then writes values to the blitter registers, storing the source address in one register and a different destination address in another before returning.
 - `fill_memory_with_byte`: Computes a destination address and loops 1703 times to store the byte value 255 at each location.
@@ -149,15 +148,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_boundary_values`: Reads a byte index from a global variable and compares it to zero; if it is not zero it sets a byte at offset 3618 of a structure to 255, clears a byte at offset 3616 and a word at offset 3620, stores the index in the word at offset 3622, and clears the byte at the computed offset, otherwise it returns.
 - `copy_interpolated_blocks`: Computes a memory range using a value from a global variable, calls a routine to clear that range, and then enters a loop to copy 12-byte blocks from two tables into two destination areas using a calculated offset.
 - `clear_memory_blocks`: Computes a count from a word in a global variable, scales it, and adds it to two base addresses to obtain two destinations, then loops 17 times clearing four-byte blocks at both locations.
-- `convert_number_to_ascii`: Reads a byte from a global variable, divides it by ten, and stores the quotient and remainder as two ASCII digit characters into a table at offset 61ea6, then returns.
+- `convert_number_to_ascii`: Divides a byte from a global variable by 10, stores the quotient and remainder as ASCII characters into a table, then performs a series of calls with varying parameters and destination addresses.
 - `execute_nested_loops`: Loops over a count stored in a global variable, calling a series of library stubs and other routines, then runs a second loop that calls the same set of routines a fixed number of times.
 - `loop_and_call_subroutines`: Decrements a value from a global longword and enters a loop that performs division on a value in d0, checks a byte in a table, and calls various subroutines with specific register parameters based on the table contents.
 - `iterate_and_call_library`: Enters a loop that updates a global longword with a starting value of 64, calls another routine, and increments the global longword by 20 each iteration until d0 matches a value from a global longword, then calls another routine.
 - `call_library_vector_354`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
 - `call_library_vector_240`: Library stub: loads a library base from a global variable and calls the library function at offset minus 240 of that base, returning its result to the caller.
 - `call_library_vector_60`: Library stub: loads a library base from a global variable and calls the library function at offset minus 60 of that base, returning its result to the caller.
-- `execute_several_library_calls`: Loads values from a global variable into registers along with constants, then performs four calls to library routines with different parameter combinations.
-- `conditional_library_calls`: Tests a byte at an offset from a global variable and, when it is non-zero, runs a sequence of eight library calls with specific register parameters and destination addresses.
+- `execute_several_library_calls`: Performs several calls to subroutines using values from a global variable and specific constants in registers d0 through d4.
+- `conditional_library_calls`: Checks a byte at an offset from a global variable and, if non-zero, executes a sequence of calls with specific register parameters and destination addresses.
 - `invoke_library_helpers`: Loads a base address from a global variable, increments it by one and two, and calls three different library helper routines with distinct register values, then jumps back.
 - `call_library_vector_342`: Library stub: loads a library base from a global variable and calls the library function at offset minus 342 of that base, returning its result to the caller.
 - `call_library_vector_348`: Library stub: loads a library base from a global variable and calls the library function at offset minus 348 of that base, returning its result to the caller.
@@ -172,40 +171,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_nested_delays`: Runs two nested loops that decrement registers d0 and d1 to create a delay, then restores the saved registers and returns.
 - `populate_data_table_2`: Fills a memory area with a repeating pattern of bytes and 32-bit words retrieved from a table using an index, adjusting the pattern and switching to a second byte after the first inner loop completes.
 - `add_table_values`: Loops 131 times, adding a byte from one table to a byte in another table and storing the result, advancing the destination by eight bytes and the source by one byte each iteration.
-- `disable_interrupts_swap_vector`: Reads the interrupt enable register and stores it in memory, then disables interrupts by writing to the enable register.
+- `disable_interrupts_swap_vector`: Reads INTENAR into memory, writes 32767 then 32800 to INTENA, saves a6 and calls exec Disable, saves the old level three interrupt vector, installs a new one, calls exec Enable, restores a6 and returns.
 - `toggle_interrupts`: Subtracts 32768 from a global variable and writes it to the INTENA register to change interrupt status, then calls two library functions via pointers stored in the exec library base.
 - `decode_and_reencode_bitstream`: Decodes a bit-packed stream from a global buffer into a byte table, copying run-length groups forward or expanding single bytes backward, then re-encodes the result into a second buffer while translating the byte 109 into a multi-byte sequence.
 - `copy_word_sequence`: Loops 31 times copying a word from a source table to a destination table at four-byte intervals, then restores the saved registers and returns.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `set_vector_and_disable_ints`: Writes the address of the next routine into the vector table entry at offset 32 of the system library and sets the interrupt mask bits in the system register, then returns.
-- `initialize_and_decompress_data`: Initializes Amiga hardware state by writing to the color palette and blitter, then decompresses a data block by decoding a bit-packed table and storing the resulting bytes into a destination buffer.
-- `copy_and_decode_bitstream`: Copies a run of bytes from one buffer to another while decoding a bit stream, then copies a block of 256 words from one routine's code into a fixed 1024-byte region of RAM and jumps back into that routine.
-- `call_and_store_byte`: Calls another routine, then stores the byte from d1 through the pointer in a1 and returns.
-- `copy_compressed_bytes`: Reads bytes from a source table, handling negative and marker values by calling a helper routine, and stores each resulting byte through a pointer into a destination buffer.
-- `store_byte_at_pointer`: Stores the byte in d1 through the pointer in a1, then returns.
-- `shift_and_copy_memory_blocks`: Shifts a block of bytes left within a structure by the count in d1, then copies a trailing run of bytes from a second source into the structure, filling gaps left by the shift.
-- `modify_global_bitmask`: Sets bits 3 to 7 and bit 2 of the global variable at a fixed address, clears the bit selected by a value in the structure in a6, then spins until bit 5 of that variable is set.
-- `set_specific_bit`: Sets bits 3 to 7 of the global variable at a fixed address, then sets the bit selected by a value in the structure in a6, leaving that bit in the set state.
-- `manage_dma_and_disk`: Configures DMA channels and disk controller registers, then monitors hardware status bits and updates a structure using timing loops.
-- `process_array_with_helper`: Calls a helper routine four times, returns negative one if a byte at a pointer is negative one, otherwise computes an address and calls two more routines before looping over a word array.
-- `return_constant_value`: Copies d0 into d1, loads d0 with the constant 254, and returns.
-- `sum_array_elements`: Adds each word in the array pointed to by a1 to a running total in d0, decrementing the loop counter in d1, then returns the sum in d0.
-- `interleave_bit_patterns`: Loops through two source buffers, writing to the destination at a1 a byte formed by combining the low nibble bits of the matching source bytes, then restores a0 from a2 and returns.
-- `clear_and_load_word_pair`: Clears the word at offset 12 in the structure in a6, then loads the constant 82 into the word at offset 14.
-- `process_input_timing`: Loops while bit 4 of the global variable at a fixed address is set, updating a counter in the structure in a6, applying delays, and toggling bits of that variable, then clears two counters and loads a constant into the audio volume register.
-- `set_hardware_registers`: Points a0 at the custom chip base, clears bit 6 of the global variable at a fixed address, then writes a sequence of constant values to the audio channel registers and a global variable before returning.
-- `initialize_hardware_state`: Writes multiple constant values to Amiga hardware registers, clears a large block of memory, zeroes a range of sprite registers, and calls a helper routine before restoring interrupts.
-
-### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
-
-- `describe_data_table`: It contains no working instructions, only zero words that do nothing, so this range is most likely a data table that other code refers to by address rather than executable code.
-
-### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
-
-- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-
-### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
-
-- `store_data_table`: This routine consists of a data table containing values that are interpreted as instructions but perform no functional operations.
+- `contains_null_data_table`: This routine consists of a sequence of operations that perform a logical OR with zero on a data register, effectively acting as a table of zero values.

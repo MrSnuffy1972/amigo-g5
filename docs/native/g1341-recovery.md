@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (907216 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 0 raw-word lines |
 | Functions named and described | pass, 26 of 26 named (0 author symbols), 26 of 26 described (1 by rule, 0 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 776 of 776 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 863 of 863 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 924 of 924 instructions identical in start and length, 0 mismatches |
 
@@ -40,7 +40,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - dragon breed (1989)(activision)[cr angels]/Dragon Breed (1989)(Activision)[cr Angels].adf: the boot block reads 9216 bytes from disk offset 737280 to an address (found statically); recovered as a unit
 - 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - runtime segment an address: 89 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 629 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 716 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 branch displacement
 - dragon breed (1989)(activision)[cr angels]/Dragon Breed (1989)(Activision)[cr Angels].adf: 1 logged loads cover 9216 bytes of the image

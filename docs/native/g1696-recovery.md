@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (908752 top-level bytes in 5 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 2 raw-word lines |
 | Functions named and described | pass, 54 of 54 named (0 author symbols), 54 of 54 described (3 by rule, 1 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 880 of 880 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 914 of 914 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 1569 of 1569 instructions identical in start and length, 0 mismatches |
 
@@ -44,7 +44,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - blues brothers, the (1991)(titus)[cr company][t +3 slipstream]/Blues Brothers, The (1991)(Titus)[cr Company][t +3 Slipstream].adf: the boot block reads 8192 bytes from disk offset 855040 to an address (found statically); recovered as a unit
 - 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - runtime segment an address: 143 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 675 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 709 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 jump target

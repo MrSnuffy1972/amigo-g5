@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (851968 top-level bytes in 1 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 2 of 2 units identical (bytes and relocations), 0 raw-word lines |
 | Functions named and described | pass, 12 of 12 named (0 author symbols), 12 of 12 described (4 by rule, 1 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 143 of 143 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 147 of 147 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 191 of 191 instructions identical in start and length, 0 mismatches |
 
@@ -34,7 +34,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - leander (1991)(psygnosis)[cr skr][t +3 goonies](disk 1 of 3)[b]/Leander (1991)(Psygnosis)[cr SKR][t +3 Goonies](Disk 1 of 3)[b].adf: custom-format (non-DOS) disk, 1658 non-empty blocks: matched against track-loaded segments
 - reference run failed (Karl 4 Nov 2026): run ext slid through memory (an address: 8 64 KB pages each with >= 29491 distinct PCs executed, 169348 of its 169348 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
-- reference run ref ends at a 68000 address error (odd PC an address after an address): the harness halted there, nothing after it ran (68000 HALTED: address error at odd PC an address after an address, vector 3 an address is not a handler in RAM (the 68000 double-faults and halts); run ended at frame 31)
 - leander (1991)(psygnosis)[cr skr][t +3 goonies](disk 1 of 3)[b]/Leander (1991)(Psygnosis)[cr SKR][t +3 Goonies](Disk 1 of 3)[b].adf: the boot block reads 2048 bytes from disk offset 1536 to an address (found statically); recovered as a unit
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 displacement
 - leander (1991)(psygnosis)[cr skr][t +3 goonies](disk 1 of 3)[b]/Leander (1991)(Psygnosis)[cr SKR][t +3 Goonies](Disk 1 of 3)[b].adf: 1 logged loads cover 2048 bytes of the image

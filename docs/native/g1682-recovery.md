@@ -59,7 +59,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `read_mfm_sector_with_retries` (Super Hang On (1988)(Activision)[cr Defjam - CCS][t +3 Subway - Dream Team].adf boot-block load +an address to an address (2048 bytes)): Starts a disk read, searches the raw MFM stream for the sync word, and decodes each sector's odd and even bit planes into memory. Kind: checksum/data integrity check. Pass path: the loop continues or returns the original value (in_D1) if sVar3 reaches -1 without a checksum failure.
 - `write_drive_control_and_call` (Super Hang On (1988)(Activision)[cr Defjam - CCS][t +3 Subway - Dream Team].adf boot-block load +an address to an address (2048 bytes)): Writes a fixed control value to the CIA-B port B drive register, makes one call, and returns zero. Kind: disk hardware/track check. Pass path: bra.b an address.
 - `write_alt_control_and_call` (Super Hang On (1988)(Activision)[cr Defjam - CCS][t +3 Subway - Dream Team].adf boot-block load +an address to an address (2048 bytes)): Writes the second fixed control value to the CIA-B port B drive register, makes one call, and returns zero. Kind: disk hardware/checksum trap. Pass path: bra.b an address.
-- `load_data_blocks` (Super Hang On (1988)(Activision)[cr Defjam - CCS][t +3 Subway - Dream Team].adf blocks 23-25 (bytes 11776-13312) (code never loaded by a reference run, load address unknown)): Loops to call another routine and potentially another routine to copy data, then clears the interrupt request register and writes specific values to the CIA port B and DMA control registers. Kind: disk hardware/sync check. Pass path: the loop continues to the next block/iteration.
+- `read_sectors_in_chunks` (Super Hang On (1988)(Activision)[cr Defjam - CCS][t +3 Subway - Dream Team].adf blocks 23-25 (bytes 11776-13312) (code never loaded by a reference run, load address unknown)): Computes a sector count from a passed value, repeatedly calls a read helper while it reports an error, then splits the remaining sectors into chunks and returns zero. Kind: disk hardware/sync check. Pass path: the loop continues to the next block/iteration.
 - `process_disk_data_block` (Super Hang On (1988)(Activision)[cr Defjam - CCS][t +3 Subway - Dream Team].adf blocks 23-25 (bytes 11776-13312) (code never loaded by a reference run, load address unknown)): Checks a value against a global variable and calls another routine, then configures DMA and custom hardware registers before entering a nested loop that performs bitwise manipulations and XOR operations to write data from a source table to a destination buffer starting at a fixed address. Kind: bit-manipulation checksum/decryption trap. Pass path: the branch where sVar3 reaches -1 and returns in_D1.
 - `write_drive_control_and_call_2` (Super Hang On (1988)(Activision)[cr Defjam - CCS][t +3 Subway - Dream Team].adf blocks 23-25 (bytes 11776-13312) (code never loaded by a reference run, load address unknown)): Writes the byte 112 then 117 to the CIA port B register at a fixed address, calls another routine, and returns zero. Kind: disk hardware/sync check. Pass path: bra.b an address.
 - `write_alt_control_and_call_2` (Super Hang On (1988)(Activision)[cr Defjam - CCS][t +3 Subway - Dream Team].adf blocks 23-25 (bytes 11776-13312) (code never loaded by a reference run, load address unknown)): Writes the byte 114 then 119 to the CIA port B register at a fixed address, calls another routine, and returns zero. Kind: disk hardware/sync check. Pass path: bra.b an address.
@@ -71,11 +71,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `boot_block_allocmem_entry`: Boot-block entry that calls exec.AllocMem and makes two further unnamed calls.
 - `set_display_color_and_dma`: Nine-instruction routine whose listed registers are the bitplane control, background colour, DMA control and interrupt enable registers.
-- `fade_color_on_raster_lines`: Waits for raster lines through the vertical position register and, on every eighth line, steps a colour value down in each of its three 4-bit fields before writing it to the colour register.
+- `wait_vbl_and_call_library`: Waits for the vertical retrace in a loop, then stores the library base address and two pointers into a global structure, calls the library entry twice, and finally jumps to the routine at a fixed address.
 
 ### logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][t +3 Subway - Dream Team].adf boot-block load
 
-- `open_graphics_and_setup_copper`: Opens the graphics library, clears a block of memory, and sets the copper pointers and DMA control register.
+- `init_and_update_frame_delta`: Calls the exec library entry point, disables DMA, zeroes a block of memory, programs the blitter, and then updates a signed frame delta from the VBLANK counter while clamping it to zero.
 - `store_routine_addresses`: Loads thirteen routine addresses into a table and stores each longword into consecutive slots, then returns.
 - `clear_word_store_three_bytes_3`: Clears a word in an object structure and writes three constant bytes to a fixed memory location.
 - `clear_word_store_three_bytes_4`: Clears a word at a different object offset and writes three constant bytes to another fixed memory location.
@@ -89,18 +89,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_word_flag_to_one_2`: Sets a word flag in an object structure to one and returns.
 - `empty_return_stub_2`: Returns at once without doing any work.
 - `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
-- `handle_button_press_with_delay`: Counts down a delay and, once it expires, checks the fire-button bit of the CIA-A port register and the right-button bit of the POTGOR register.
-- `update_mouse_position_from_delta`: Computes the change in the mouse movement byte since the last call, subtracts it from a stored position value, and clamps the value between zero and a stored maximum.
-- `cycle_color_entry_values`: Sets a set of colour entries to white, copies a stored value into the entry chosen by an index, and then steps that stored value by a signed step.
+- `dispatch_via_jumptable`: Decrements a counter in a structure and returns when it is not zero, otherwise reads two counters from the structure and jumps through an indirect jump table using their scaled difference.
+- `update_frame_delta`: Reads the VBLANK frame counter and a stored byte, then updates a signed delta at offset 906 of the structure in a5, clamping it to zero when negative and raising it to a newer counter value if needed.
+- `fill_and_adjust_slots`: Loops over ten word slots, filling each with the value 4095 and copying a source word into matching slots, then adds an offset value to a counter and negates it when it reaches 3584 or 3822, and returns.
 - `wait_for_raster_line`: Busy-waits by reading the beam position registers (VPOSR/VHPOSR) until the display beam reaches a given raster line, then returns.
 - `wait_for_blitter`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
-- `set_entries_by_parity_pattern`: Loops ten times over a table of offsets, setting each selected entry to one of two constant values depending on the parity of a stored byte, and makes one call per pass.
-- `program_blitter_and_advance_counter`: Waits for the blitter to finish, writes a fixed set of words into its mask, control, modulo, pointer and size registers, then increments a counter.
-- `draw_ascii_text_rows`: For each character in a string, takes the character code minus the ASCII space offset and selects its eight-row glyph from a table with a 192-byte stride.
+- `fill_blocks_from_table`: Loops nine times, reading a byte from a table and storing a value into a structure field indexed by a stored word, then overwrites that field with another value when a shifted difference is odd before calling a helper routine.
+- `program_blitter_and_copy`: Programs the blitter registers with fixed control and pointer values, then increments a counter and, when its low bits are clear, loads a source address and calls a copy routine.
+- `copy_block_data`: Loops over a number of blocks copying 48 bytes from a source table into a destination area, scaling each block by subtracting 32 from a source index and advancing the pointers by fixed amounts each iteration.
 
 ### logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][t +3 Subway - Dream Team].adf boot-block load
 
-- `check_status_then_compare_bytes`: Makes two calls and stores a value in a global, then returns the routine's result if it is negative.
+- `check_eight_byte_boot_signature`: Calls two unnamed routines, stores a value in a global, and returns it if negative.
 - `find_entry_and_process_chunks`: Searches a table of up to 63 two-word entries for a matching key and returns a negative error code when none matches.
 - `init_disk_controller_registers`: Writes a fixed sequence of values to the disk length, sync word, ADKCON, DMA control and interrupt request registers.
 - `write_disk_drive_control_values`: Writes three fixed values to the CIA-B port B register, the disk length register and the DMA control register.
@@ -118,7 +118,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Super Hang On (1988)(Activision)[cr Defjam - CCS][t +3 Subway - Dream Team].adf blocks 23-25 (bytes 11776-13312) (code never loaded by a reference run, load address unknown)
 
-- `load_data_blocks`: Loops to call another routine and potentially another routine to copy data, then clears the interrupt request register and writes specific values to the CIA port B and DMA control registers.
+- `read_sectors_in_chunks`: Computes a sector count from a passed value, repeatedly calls a read helper while it reports an error, then splits the remaining sectors into chunks and returns zero.
 - `copy_sectors_after_seek_2`: Compares a passed value against a stored one and returns it when they match.
 - `process_disk_data_block`: Checks a value against a global variable and calls another routine, then configures DMA and custom hardware registers before entering a nested loop that performs bitwise manipulations and XOR operations to write data from a source table to a destination buffer starting at a fixed address.
 - `seek_to_target_position_2`: If the short at a1 is negative it polls the CIA port A register until bit 4 is set, then clears that location.

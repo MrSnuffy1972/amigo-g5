@@ -43,8 +43,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - reference run ref ends at a 68000 address error (odd PC an address after an address): the harness halted there, nothing after it ran (68000 HALTED: address error at odd PC an address after an address, vector 3 an address is not a handler in RAM (the 68000 double-faults and halts); run ended at frame 12)
 - blues brothers, the (1991)(titus)[cr company][t +3 slipstream]/Blues Brothers, The (1991)(Titus)[cr Company][t +3 Slipstream].adf: the boot block reads 8192 bytes from disk offset 855040 to an address (found statically); recovered as a unit
 - 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
-- prefix run f1000 ignored: it logged 2207192 PCs the canonical run never executed (not a prefix of it)
-- prefix run f2000 ignored: it logged 2207192 PCs the canonical run never executed (not a prefix of it)
 - runtime segment an address: 143 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 675 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
@@ -129,7 +127,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `reset_audio_channels_and_clear_dma`: Clears a word at a fixed address, points a5 at the custom chip base, zeroes four audio channel pointer registers, sets audio period register to fifteen, and clears the CIAA fire button bit.
 - `init_audio_channels_and_sample_tables`: Enables CIA fire-button bit and audio DMA, builds per-channel sample pointer tables from the module header, and programs four audio channel registers with period, volume and sample start addresses.
 - `audio_channel_dma_reload_tick`: Decrements a frame counter and, when it expires, rebuilds four audio sample pointers and lengths, writes them to the four channel registers and enables DMA channels via DMACON.
-- `advance_sound_sequence_stream`: Steps a sound channel's sequence pointer, reloads note and instrument bytes from the pattern data, updates the channel's sample pointer and period, and enables its DMA bit in DMACON.
+- `advance_channel_sequence_and_trigger`: Advances the sequence pointer of a channel structure, and when the step byte is non-zero it reloads the instrument and note bytes from the pattern data, updates the channel's sample pointer and period, and writes the channel's DMA enable bit to the custom DMA control register.
 - `interpret_sound_command_stream`: Walks a sound channel's command bytes, handling sample, volume, tempo and loop opcodes, updating channel state fields and writing DMA enable bits to DMACON.
 - `check_flag_and_call_sound_then_jump`: Tests bit 4 of the word at offset 30 in a5; if set, stores 16 at offset 156 in a5, saves all registers, calls the sound routine, restores them, then saves d0/a0-a2, calls another routine and jumps to a fixed address.
 
@@ -137,16 +135,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `install_copper_and_interrupt_vectors`: Writes level interrupt and copper list pointers with high bits set, stores the stack pointer, installs a trap handler, then masks interrupt bits and reads the copper and DMA control registers.
 - `build_copper_lists_and_init_display`: Clears memory, fills copper list tables with bitplane pointers and color values, sets up blitter and copper registers, then reads VPOSR and joystick bits to drive the game's display and input state.
-- `init_audio_vectors_and_wait_vposr`: Clears 456 words at a fixed buffer, stores three pointers and two counts in the a5 structure, then polls VPOSR until the beam position matches and returns via rte.
+- `clear_block_and_wait_frames_2`: Clears a block of 456 words, sets two stored addresses and a count, then loops waiting for the beam to reach a line, calling helpers on each pass.
 - `advance_sound_channel_and_fill_buffer`: Reads a channel index from the a5 structure, increments it by two, stores it back, then fills 14 entries of a buffer using a6 pointing at custom chip base before jumping to the main loop.
 - `set_channel_flag_and_jump_main_loop`: Writes byte 255 to offset 4731 of the a5 structure and branches unconditionally to the main sound driver loop.
 - `init_copper_and_blit_scroll_strip`: Loads the custom chip base into a6, reads a scroll offset, stores it in the a5 structure, sets up source and destination pointers and calls the blit routine thirteen times with a fixed blitter control word.
 - `reset_scroll_flag_and_restart_loop`: Clears the byte flag at offset 127b of the a5 structure, calls the scroll setup routine, then jumps back into the main loop entry point.
-- `animate_water_reflection_columns`: Decrements a frame counter, advances a table index by two, wraps at the end, then copies column words from the table into two mirrored screen buffers at increasing offsets.
+- `advance_colour_step_frame_2`: Counts down a frame counter and, when it reaches zero, moves a step index forward by two, wrapping after 456 entries.
 - `reset_pointer_if_end_marker`: Loads a pointer from pc-relative memory, adds 376 to it, checks whether the word there is minus one, and if so reloads the pointer from another pc-relative table and stores it in a5-relative memory before branching away.
 - `wait_for_vertical_position_b000`: Reads the VPOSR hardware register, masks it to the vertical position bits, compares against the value b000, and if equal sets a5 from a pc-relative address and calls a subroutine.
-- `build_scanline_table_from_keymap`: Advances a pointer past a terminator, then fills 160 word entries at a fixed table with the value 4 and a byte looked up from a keymap, and marks a flag as 2 if it was 1.
-- `queue_sound_command_from_stream`: Reads a word from (a1)+, and unless it is 640, writes sound command words and pointers from a2/a3 tables plus d7 and a computed a4 offset into a6 structure fields.
+- `remap_row_colours_without_wait_2`: Advances the source row pointer and, for each of 160 bytes, searches a small palette list for the matching value, writing the match into a copper list entry with a fixed value of 4 beside it.
+- `write_indexed_list_block_entries_2`: When the input value is not the end marker 640, writes two groups of words into a list record, each group taken from pointer tables at that index, together with fixed control words and an offset computed from a parameter.
 - `step_sprite_toward_target_nibbles`: Decrements a counter at 2994(a5), then compares low nibbles of a target word with a sprite word and adjusts the sprite word by one.
 - `adjust_sprite_high_nibble_toward_target`: Increments the word at (a1), then compares high nibbles of a0 and a1 words, subtracting 16 from (a1) when the target nibble is lower.
 - `adjust_palette_entry_by_high_nibble`: Adds 16 to the word at a1, compares the high nibbles of the words at a0 and a1, and subtracts 256 from the a1 word if the a0 nibble is lower.

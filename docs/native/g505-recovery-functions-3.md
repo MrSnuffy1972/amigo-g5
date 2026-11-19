@@ -5,7 +5,6 @@
 ### Halls of Montezuma (1990)(SSG)[cr CSL](Disk 1 of 2).adf:HOM
 (continued)
 
-- `process_stack_parameters`: Compares a 16-bit value from a structure to a global value; if the value is greater, it pushes two values from the structure and a decremented global value onto the stack, calls three routines, and then calls a fourth routine.
 - `execute_multiple_handlers`: Calls five different routines using a pointer from a global table, performs arithmetic on a value from a structure to update a local variable, modifies bits in a table entry, and then calls three more routines.
 - `process_event_loop`: Calls a routine via a pointer in a4, increments a global counter, and enters a loop that iterates up to 60 times to check table entries, update values, and call various routines via pointers in a4.
 - `update_event_table_entry`: Iterates through a table of 60 entries, each 10 bytes wide, to find an entry where a specific 16-bit value at offset 8 is non-zero and a 16-bit value at offset 0 is zero.
@@ -575,3 +574,30 @@
 - `mask_and_compare_word`: The routine reads a word from a pointer, masks it to twelve bits, stores the masked value into an offset of the same structure and clears a byte at another offset.
 - `update_structure_value_via_command`: Reads a command byte from offset 2 of a structure in a6 and performs different arithmetic or table-lookup operations on a 16-bit value at offset 16 based on that command.
 - `modify_ciaa_register`: Takes a byte from offset 3 of the structure in a6, masks it, shifts it, and performs a bitwise OR to update the CIAA Port A Register.
+
+### Halls of Montezuma (1990)(SSG)[cr CSL](Disk 1 of 2).adf:NOMAD#unpacked
+
+- `update_library_pointers`: Copies a pointer from a global variable to a global structure, replaces that pointer with a previously saved value, calls a routine, performs a trap, and restores the original pointer to the global structure.
+- `initialize_system_state_3`: Saves system register states, initializes hardware components like DMA and interrupts, sets up graphics coprocessor pointers, handles joystick input processing, and manages interrupt service routines.
+- `copy_and_update_table`: Uses a loop to copy a certain number of longwords from a source table to a destination, while simultaneously updating the source pointer and a secondary pointer, then returns.
+- `tiny_rte_2`: Small routine of 1 instruction that returns from the exception.
+- `copy_source_to_destination`: Uses a loop to copy a certain number of longwords from a source address to a destination address, then returns.
+- `wait_for_bit_toggle`: Loops until bit 0 of a 16-bit word at offset 4 of a structure in a5 is 1, then loops until bit 0 is 0.
+- `manipulate_cia_timer_and_return_bit`: Checks bit 3 of a value at offset 30 from a pointer in a5; if set, it reads a byte from a CIAA register, performs a bitwise rotation and shift on its complement, sets bit 6 of the CIAA control register, executes a loop that decrements a counter 1536 times, and clears bit 6 of the CIAA control register before returning the transformed value; otherwise, it returns the transformed value.
+- `clear_bit_on_condition_2`: Checks bit 3 of a word at offset 30 of a structure, and if that bit is set it runs a delay loop of 1536 iterations and then clears bit 6 of the keyboard serial register.
+- `update_graphics_library_pointers`: Loads a library base from a global variable and copies two pointers from that library base into a global structure, then calls a routine using the library base.
+- `initialize_structure_fields_5`: Loads a pointer to a memory address, calls another routine to retrieve a value, and then populates several fields in a structure pointed to by a5 with that value and certain constants, before calling another routine again and returning.
+- `frag_btst_bne_rts`: Short code fragment that tests bit 14 of the memory at an offset from a5, then branches if the last result was not zero, then returns.
+- `initialize_game_state`: Initializes game state variables including joystick input handling, timer counters, and data structure offsets.
+- `configure_structure_fields`: Calls a routine, then writes several constant values and register contents to specific offsets of a structure in a5, then calls another routine and returns.
+- `write_constant_table`: Writes a series of 16-bit values and 16-bit constants to various offsets of a structure in a6.
+- `update_structure_pointers_5`: Loads a 32-bit value from a global variable, performs four additions of 14880 to the value, and stores the resulting 16-bit halves into a structure at offsets 4512, 4516, 4520, 4524, 4528, 4532, 4536, 4540, 4544, and 4548.
+- `interpolate_positions`: Performs fixed-point arithmetic interpolation between two sets of word values, storing the results in a third location while updating counters and handling conditional logic based on a global variable.
+- `initialize_graphics_data`: Writes a sequence of predefined word values to memory locations, including incrementing values and repeated patterns, then copies data from one memory area to another using a loop with specific counter values.
+- `generate_sequence_pattern`: Generates a sequence of word values by incrementing and decrementing a counter while filling memory locations with these values in a nested loop structure.
+- `update_sprite_coordinates`: Calculates sprite coordinates using lookup table data, performs bit manipulation on the results, and stores byte values to memory locations while iterating through a counter.
+- `setup_rendering_parameters`: Initializes various rendering parameters including memory pointers, counters, and data structure offsets, then calls another routine multiple times with updated values before returning.
+- `frag_btst_bne_rts_2`: Short code fragment that tests bit 6 of the memory at an offset from a5, then branches if the last result was not zero, then returns.
+- `populate_memory_from_calculation`: Uses a loop to call a routine that performs a calculation, and stores the resulting word into a memory location pointed to by a0, decrementing a counter until finished.
+- `calculate_scaled_division_2`: Performs a complex calculation involving masking, multiplication, and division, and returns a value that is a combination of the quotient and remainder, otherwise it returns.
+- `clear_buffer_loop`: Clears a sequence of words in a buffer by looping through a pointer and setting a certain number of words to zero.

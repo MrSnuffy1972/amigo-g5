@@ -6,12 +6,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (1807248 top-level bytes in 54 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 19 of 19 units identical (bytes and relocations), 3 raw-word lines |
-| Functions named and described | pass, 3399 of 3399 named (15 author symbols), 3399 of 3399 described (265 by rule, 3077 by the local model) |
+| Bytes classified (1807248 top-level bytes in 55 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 20 of 20 units identical (bytes and relocations), 156 raw-word lines |
+| Functions named and described | pass, 3423 of 3423 named (15 author symbols), 3423 of 3423 described (268 by rule, 3084 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 841 of 841 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 76613 of 76613 instructions identical in start and length, 0 mismatches |
+| Recovered without load address (counted in proof 1, flagged) | 196608 bytes, 24 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 77227 of 77245 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
@@ -46,12 +46,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Halls of Montezuma (1990)(SSG)[cr CSL](Disk 1 of 2).adf:bootblock | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 454 | 24 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 383 | 7 |
+| Halls of Montezuma (1990)(SSG)[cr CSL](Disk 1 of 2).adf:NOMAD#unpacked | 1 | 632 | 24 |
 
 ## Cases handled
 
 - runtime segment an address: 426 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 319 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- halls of montezuma (1990)(ssg)[cr csl](disk 1 of 2)/Halls of Montezuma (1990)(SSG)[cr CSL](Disk 1 of 2).adf:NOMAD: crunched executable unpacked with ancient scan (TetraPack 2.2 (xfd), 8356 -> 196608 bytes), 4 of 4 windows confirmed in reference RAM, loaded at an address: recovered as u19
 - halls of montezuma (1990)(ssg)[cr csl](disk 2 of 2)/Halls of Montezuma (1990)(SSG)[cr CSL](Disk 2 of 2).adf: boot area holds bytes but the checksum is invalid, so Kickstart never runs it
+- 1 never-loaded region(s), 196608 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
@@ -60,6 +63,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ## Copy protection found
 
 - `configure_hardware_and_dispatch` (runtime segment an address): Saves the status register, configures several custom hardware registers and DMA settings, calls multiple subroutines to process data, and eventually performs a loop to update a bitfield before returning via an exception return. Kind: disk hardware/track check. Pass path: The loop involving u17__sub_0A9A, u17__sub_0CC2, u17__sub_0C74, u17__sub_0626, and u17__sub_0296 completes, leading to u18__sub_0086 and the subsequent hardware re-configuration..
+- `initialize_system_state_3` (NOMAD#unpacked): Saves system register states, initializes hardware components like DMA and interrupts, sets up graphics coprocessor pointers, handles joystick input processing, and manages interrupt service routines. Kind: disk hardware check. Pass path: The routine initializes system state and performs checks on input devices (like POTGOR and CIAA_PRA) to verify hardware state, likely checking for specific joystick or paddle positions that indicate a valid disk or hardware setup. The loop .
 
 ## Functions
 
@@ -124,7 +128,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_string_to_offset`: Calls a helper with the first argument to find an offset, then copies a NUL-terminated string from the second argument to that offset in memory, and returns the first argument.
 - `copy_string_with_limit_2`: Calls a helper to find an offset, then copies up to a specified number of bytes from a source to a destination, ensuring the destination is NUL-terminated.
 - `clear_byte_and_get_word`: Writes a zero byte to the memory location pointed to by an offset in the stack frame and returns a word from a different offset in the same frame.
-- `empty_stub_function`: The routine contains a block of 31 68000 instructions but ends by returning without performing any observable effect on memory, registers, or I/O.
+- `multiply_signed_integers`: Calculates the product of two signed 16-bit integers using multiple 16-bit multiplication and addition steps to produce a 32-bit result in the return register.
 - `compare_and_branch_pointer`: Initializes a local stack frame, sets a 32-bit value at offset -4 of the structure in a6 to zero, and compares this value to 480; if it is not less than 480, it checks a byte at offset 16 of the pointer in a0 and branches if that byte is not zero.
 - `compare_pointer_value`: Loads a longword from offset -4 of a structure in a6 into a0, compares it to 480, and if they are not equal branches to another routine; otherwise it clears d0, unlinks a6, and returns.
 - `forward_stored_arguments`: Pushes three values stored at offsets -4, 12, and 8 from a structure in a6 onto the stack, calls another routine, and then returns.
@@ -145,7 +149,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_stream_record`: Calls a routine to get a pointer, checks a byte at an offset from that pointer, and either sets a bit in a stack-based variable and updates a field in a structure or clears several fields in a structure.
 - `clear_stream_record_fields`: Clears the record's count word, sets its buffer fields and state byte, then returns the record.
 - `clear_object_links`: Calls another routine if bit 1 of a byte at offset 16 of a structure in a0 is set, then calls another routine if bits 2 and 3 of that same byte are clear and a longword at offset 12 is not zero, clears the longwords at offsets 12 and 18, clears the byte at offset 16, and calls another routine with a byte from offset 17.
-- `validate_and_get_table_entry`: Checks if a provided index is non-negative and less than a global limit, then calls another routine to retrieve the entry's base address.
+- `lookup_open_table_entry`: Checks that an index lies within the table bounds and that the top bit of the entry's flag byte is set.
 - `process_file_list`: Loops while a counter in a local variable is less than a global value, calling another routine and checking a byte at an offset from a pointer returned by that routine; if the loop completes, it writes a byte to a structure and calls another routine.
 - `check_and_set_constant`: Compares a longword at offset -4 of a structure in a6 to zero and loops if it is non-zero, otherwise it writes the constant 24 to a global variable and the constant 255 to d0.
 - `open_file_with_logic`: Calls a routine with a value from a6 and a constant, calculates a pointer by adding an offset to the result, modifies a value in a global variable using a bitwise AND and XOR, and then calls another routine to open a file.
@@ -163,7 +167,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `read_into_buffer_checked`: Calls a read library routine on the stored handle with the caller's buffer and length, and keeps the byte count.
 - `write_to_handle_checked`: Checks if a parameter is non-negative, obtains a pointer from another routine, and if the pointer is not null, checks a bit in the value at that pointer to decide whether to call another routine with specific arguments before calling another routine to write data; if the write fails, it records an error status and returns minus one.
 - `seek_file_with_offset_table`: Obtains a file handle and, for an index below three, seeks to an offset taken from a global table, records any I/O error, then seeks back to the start and returns the result.
-- `close_file_if_not_already_closed`: Looks up a file record from the argument, returns minus one if missing, returns zero if its flag bit 2 is set, otherwise closes the handle, records any error with code 5, clears the flag byte and returns the status.
+- `close_file_entry`: Closes a file entry's handle unless a flag bit says not to, records an I/O error and minus one if the close fails, and clears the entry's flag byte; it returns minus one when the entry is missing.
 - `delete_file_checked`: Calls a file deletion routine and, if it fails, records an error code and returns minus one; otherwise it returns zero.
 - `tiny_moveq_unlk_rts_2`: Small routine of 3 instructions that loads 0 into d0, then removes the stack frame held in a6, then returns.
 - `forward_delete_file`: Passes a single argument from the stack to a routine that deletes a file and returns.
@@ -273,7 +277,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### fastmemfirst
 
-- `allocate_fast_memory_and_parse_args`: Allocates a block of fast memory and stores the requested size, a pointer to the block, and the address of the caller's stack frame into it, then calls a routine that parses the command-line arguments from a DOS library into a linked list of null-terminated strings, handling quoted text and asterisk conversions.
+- `initialize_fast_memory_and_parse_args`: The routine attempts to locate a fast memory block and then retrieves the command line arguments from the operating system.
 - `find_and_copy_fastmem_block`: Walks a linked list of memory blocks starting from a global variable, storing the first block whose type tag at offset 14 equals 5 and whose value is between an address and an address in d2, and the next block after the first whose type tag equals 3 and whose value is below an address in d3, then returns.
 - `call_library_vector_132_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
 - `call_library_vector_138_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 138 of that base, returning its result to the caller.
@@ -283,7 +287,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### loadwb
 
 - `parse_command_line_string`: Parses a command-line string by splitting it into tokens, handling quoted substrings and converting specific character sequences like asterisk-N or asterisk-E into newline or escape characters, then stores the resulting pointers in a structure.
-- `update_state_with_callbacks`: Retrieves a pointer from a global variable and saves a parameter into a slot within a structure pointed to by that pointer.
+- `restore_patch_state_2`: Retrieves a pointer from a global structure and saves a parameter into a slot within a structure pointed to by that pointer.
 - `start_tool_from_resident_tag`: XOR-decodes a global string with one key applied twice, allocates a 160-byte block, and uses icon, intuition, and workbench library calls to start a tool.
 - `compare_null_terminated_strings`: Compares two null-terminated strings byte by byte and returns minus one when the first is lower, one when it is higher, and zero when they match.
 - `build_linked_list_from_table`: Walks a table of pointer and value pairs, allocating a fixed-size node for each entry through a memory allocation call and storing the looked-up value in it.
@@ -306,7 +310,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_permit`: Library stub: loads its arguments and the exec library base, calls Permit and returns its result to the caller.
 - `call_alloc_mem`: Library stub: loads its arguments and the exec library base, calls AllocMem and returns its result to the caller.
 - `recurse_with_stack_slot`: Calls another routine passing two parameters and a pointer to a specific location on the stack.
-- `invoke_global_and_verify_checksum`: Invokes a function pointer stored in a global variable, then computes a rolling checksum over a stack buffer until a null terminator is found.
+- `call_global_and_checksum_buffer_2`: Invokes a function pointer stored in a global variable, then computes a rolling checksum over a stack buffer until a null terminator is found.
 - `tiny_move_rts_2`: Small routine of 2 instructions that copies d0 to (a3)+, then returns.
 - `compare_memory_blocks_3`: Compares a memory block starting at a pointer in a2 with a block of data, returning if the pointer is all ones or if the comparison fails.
 - `write_byte_sequence`: The routine writes the bytes 2e, 20, 20, 20, and 20 to consecutive offsets starting at 11 of A2, then branches.
@@ -685,7 +689,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `calculate_offset_address`: Multiplies a 16-bit value from offset 8 of the stack frame by 30, adds it to a constant, and returns the resulting address.
 - `call_indirect_via_pointer`: Checks if a value at offset 8 of the stack frame is nonzero; if so, it pushes a pointer from offset 14 of the stack frame and a pointer from offset 14 of that pointer, then calls a routine at an offset from a4.
 - `store_extended_value`: Extends a 16-bit value from offset 12 of the stack frame to a 32-bit value, pushes it and a value from offset 8 onto the stack, calls a routine, and stores the extended value into a location pointed to by offset 14 of the stack frame.
-- `call_routine_with_three_arguments`: Pushes two 16-bit values from structure offsets 8 and 10 as 32-bit values onto the stack, pushes a 32-bit value from a global table, calls a routine at an offset from a4, and returns.
+- `push_three_pointers_and_call`: Pushes two extended 32-bit values and a third pointer from a global address onto the stack, calls another routine, and cleans up the stack.
 - `copy_bytes_from_table`: Copies a 32-bit word from a global table to a location pointed to by a structure, then copies four consecutive bytes from a global table to offsets 4, 5, 6, and 7 of that same location.
 - `frag_link_moveq_unlk_rts`: Short code fragment that creates a stack frame in a5, then loads 0 into d0, then removes the stack frame held in a5, then returns.
 - `compare_four_words`: Compares four 16-bit words between two structures and returns 1 if all words match, otherwise it returns 0 via another routine.
@@ -829,9 +833,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `setup_structure_with_flags`: Copies 10 words from a table to a destination, populates various fields in a structure from a5, sets bit 2 of a value at offset 13 of a structure in a1 if a comparison with 4 matches, and copies data from a table to a structure at offset 24 of a5.
 - `call_parameterized_pairs`: Pushes a value onto the stack, calls a routine using a pointer from a structure in a5, then calculates four different values by adding or subtracting 16-bit words from a structure in a5 and calls another routine with them.
 - `execute_parameterized_calls_10`: Calls a function via a pointer, then pushes four calculated 16-bit values onto the stack before calling execute_multiple_parameterized_calls.
-- `call_routines_with_pairs_2`: Calls a function via a pointer, then pushes four calculated 16-bit values onto the stack before calling call_routines_with_pairs.
-- `call_routines_with_wrappers`: Calls a function via a pointer, pushes four calculated 16-bit values to call call_routines_with_pairs, and then calls the original function via a pointer again.
-- `call_routines_with_pairs`: Calls several routines by passing pairs of 16-bit values extended to 32-bit integers from a structure in a5.
+- `call_routines_with_pairs_2`: Calls a function via a pointer, then pushes four calculated 16-bit values onto the stack before calling invoke_subroutines_with_arguments.
+- `call_routines_with_wrappers`: Calls a function via a pointer, pushes four calculated 16-bit values to call invoke_subroutines_with_arguments, and then calls the original function via a pointer again.
+- `invoke_subroutines_with_arguments`: Calls several subroutines, passing or extending values from a5 as arguments, and cleans up the stack before returning.
 - `execute_multiple_parameterized_calls`: Performs a sequence of calls to various routines using values and pointers from a structure in a5, often involving adding offsets to 16-bit values before passing them as parameters.
 - `format_calculated_integer`: Performs a division by ten on a value from a structure, and if the result is not greater than zero, performs a subtraction involving a multiplication by six before calling format_integer_string_2.
 - `format_short_calculated_integer`: Performs a division by ten on a value from a structure, and if the result is not greater than zero, performs a subtraction involving a multiplication by six before calling format_integer_string_short.
@@ -865,9 +869,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `get_nested_long_value_offset_1c`: Loads a 32-bit value from an offset of twenty-eight of a structure pointed to by an offset of thirty-four of a structure pointed to by an offset of eight of a5.
 - `calculate_scaled_word`: Loads a pointer from offset 22 of a structure pointed to by a0, retrieves a 16-bit word from offset 2 of the pointed-to structure, multiplies it by the value at offset 12 of the stack frame plus 1, and returns the result shifted right by 16 bits.
 - `calculate_scaled_word_offset_4`: Loads a pointer from offset 22 of a structure pointed to by a0, retrieves a 16-bit word from offset 4 of the pointed-to structure, multiplies it by the value at offset 12 of the stack frame plus 1, and returns the result shifted right by 16 bits.
-- `call_routine_with_multiple_parameters`: Calls one routine with a pointer to a local variable, then calls another routine using four values retrieved from a structure pointed to by offset 8 of the stack frame.
-- `call_scaled_routine`: Calls update_function_pointer, then calls call_routine_with_calculated_scaling using several values pushed from a structure pointed to by an offset of eight of a5.
-- `call_routine_with_calculated_scaling`: Sets two values at offsets 28 and 30 of the stack frame to 1 if they are 0, performs several divisions and multiplications to calculate four scaling values, pushes these values and several other parameters onto the stack, and calls another routine.
+- `push_parameters_and_call_3`: Pushes a pointer to a local variable, then pushes several values from a structure and calls another routine.
+- `call_scaled_routine`: Calls update_function_pointer, then calls calculate_scaled_parameters_and_call using several values pushed from a structure pointed to by an offset of eight of a5.
+- `calculate_scaled_parameters_and_call`: Checks if certain values in a structure are zero and sets them to one, calculates several scaled parameters using division and multiplication, pushes several registers onto the stack, calls another routine, cleans up the stack, and returns.
 - `execute_conditional_calls_3`: Calls a routine using a pointer from a global variable, and if the return value in d0 is not zero, calls another routine using a pointer stored at offset -4 of a structure.
 - `unlock_address_register_a5`: Unlocks address register a5 and returns immediately.
 - `loop_and_call_functions`: Enters a loop where it calls a routine using a pointer from a global variable; if the return value is not zero and a value at offset 20 of a structure is 4, it calls another routine, then calls a third routine before repeating.
@@ -938,8 +942,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `push_parameter_and_call_subroutine`: Pushes a 32-bit value from a memory location onto the stack, calls a subroutine, adjusts the stack pointer, and performs a short branch.
 - `compare_and_copy_word`: Compares a longword at a global address to a constant, and if it matches, compares a value in a pointer to another global address; if both match, it copies a word from an offset of a structure into a stack location and branches.
 - `update_resource_index_and_process_list`: Calls calculate_and_update_value_2, then calculates an index into a table using a value from a structure and a constant, and if the resulting pointer is non-zero, calls process_resource_directory_list with a pointer from the structure.
-- `decrement_and_call_scaled_routine`: Decrements a 16-bit value in a global variable by seven and, if the result is negative, clears it; it then decrements a second 16-bit value in a structure by seven, and if that result is non-negative, it calls loop_parameterized_calls_2 and then calls call_routine_with_calculated_scaling using parameters derived from the stack and global variables.
-- `update_clamped_counter_and_call_scaled`: Increments a global 16-bit value by 7, clamps it between 0 and a value derived from another global variable, and then calls loop_parameterized_calls_2 and call_routine_with_calculated_scaling with several parameters pushed onto the stack.
+- `decrement_and_call_scaled_routine`: Decrements a 16-bit value in a global variable by seven and, if the result is negative, clears it; it then decrements a second 16-bit value in a structure by seven, and if that result is non-negative, it calls loop_parameterized_calls_2 and then calls calculate_scaled_parameters_and_call using parameters derived from the stack and global variables.
+- `update_clamped_counter_and_call_scaled`: Increments a global 16-bit value by 7, clamps it between 0 and a value derived from another global variable, and then calls loop_parameterized_calls_2 and calculate_scaled_parameters_and_call with several parameters pushed onto the stack.
 - `validate_and_execute_parameterized_calls`: Subtracts seven from a value loaded from a global variable and stores the result in a stack-based local variable.
 - `update_resource_directory_pointer`: Performs three consecutive calls to a routine using specific parameters, stores the result of the third call into a global word, and then calls process_resource_directory_list before performing a tail branch.
 - `initialize_resource_directory_list`: Performs three consecutive calls to a function using various combinations of two constants, stores the result of the third call into a global word, and then calls process_resource_directory_list before performing a tail branch.
@@ -1583,5 +1587,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_offset_5fa`: Clears a 16-bit word at offset -1530 of a structure in a5 and branches to another routine.
 - `update_table_and_call_routines`: Executes a loop that calculates an index, updates a table with values from a structure in a5, and then performs a series of calls to other routines using various parameters from the structure and the stack.
 - `restore_structure_values`: Saves two 16-bit values from a structure in a5, calls three different routines using a4, and if the result of the third call does not match a global variable, restores the original 16-bit values to the structure in a5.
+- `copy_string_to_buffer`: Copies bytes from a source pointer to a destination pointer until a zero byte is encountered, including the terminator.
+- `compute_string_length`: Walks forward through a zero-terminated byte string and returns the number of bytes before the terminator.
 
 The function list continues in: g505-recovery-functions-2.md, g505-recovery-functions-3.md.

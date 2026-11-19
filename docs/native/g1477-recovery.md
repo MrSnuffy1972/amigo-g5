@@ -6,20 +6,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (910832 top-level bytes in 13 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 3 raw-word lines |
-| Functions named and described | pass, 105 of 105 named (0 author symbols), 105 of 105 described (20 by rule, 52 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 601 of 601 (100.00%) |
+| Bytes classified (908000 top-level bytes in 58 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 53 of 53 units identical (bytes and relocations), 64 raw-word lines |
+| Functions named and described | pass, 132 of 132 named (0 author symbols), 132 of 132 described (28 by rule, 71 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 954 of 954 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 526110 bytes, 40 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 4125 of 4131 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 4035 of 4041 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 157753 |
-| code | 11602 |
-| data | 526388 |
+| asset | 155020 |
+| code | 11006 |
+| data | 526885 |
 | padding | 2097 |
 | unused | 212992 |
 
@@ -31,7 +31,52 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Castle Master (1990)(Domark)(M3)[cr][m ACU].adf:cm | 1 | 116 | 2 |
 | Castle Master (1990)(Domark)(M3)[cr][m ACU].adf:bootblock | 1 | 18 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 23 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1579 | 57 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 129 | 9 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 8 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 103 | 6 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 164 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 13 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 24 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 14 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 17 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 20 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 20 | 3 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 18 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 20 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 10 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 18 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 9 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 21 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 20 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 20 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 16 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 16 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 13 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 11 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 13 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 9 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 146 | 6 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 145 | 7 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 47 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 9 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 17 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 137 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 134 | 3 |
 | Castle Master (1990)(Domark)(M3)[cr][m ACU].adf:dawn4#unpacked | 1 | 1041 | 18 |
 | Castle Master (1990)(Domark)(M3)[cr][m ACU].adf:x (raw code file, load address unknown) | 1 | 2 | 1 |
 | Castle Master (1990)(Domark)(M3)[cr][m ACU].adf:intro (raw code file, load address unknown) | 1 | 1253 | 21 |
@@ -39,11 +84,212 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ## Cases handled
 
 - runtime segment an address: 19 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address (play-rs-x25k): 392 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- castle master (1990)(domark)(m3)[cr][m acu]/Castle Master (1990)(Domark)(M3)[cr][m ACU].adf:dawn4: crunched executable unpacked with ancient scan (TetraPack 2.2 (xfd), 10568 -> 53248 bytes), 9 of 9 windows confirmed in reference RAM, loaded at an address: recovered as u5
+- runtime segment an address (play-rs-m1500-unpk02): 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 63 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 63 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 143 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 7 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 10 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 8 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 146 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 53 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 47 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk02): 70 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-x25k): 70 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- castle master (1990)(domark)(m3)[cr][m acu]/Castle Master (1990)(Domark)(M3)[cr][m ACU].adf:dawn4: crunched executable unpacked with ancient scan (TetraPack 2.2 (xfd), 10568 -> 53248 bytes), 9 of 9 windows confirmed in reference RAM, loaded at an address: recovered as u50
 - castle master (1990)(domark)(m3)[cr][m acu]/Castle Master (1990)(Domark)(M3)[cr][m ACU].adf:x: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - castle master (1990)(domark)(m3)[cr][m acu]/Castle Master (1990)(Domark)(M3)[cr][m ACU].adf:intro: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
-- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate+address
+- self-modifying code at an address (57 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (57 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (57 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (57 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (45 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (29 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (29 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (60 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (44 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (44 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (15 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (59 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (59 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (30 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (15 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (59 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (59 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (30 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (15 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (59 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (30 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (15 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (59 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (30 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (15 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (59 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (44 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (15 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (59 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (44 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (15 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (57 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (28 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (13 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (13 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (57 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (28 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (13 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (13 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (44 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (29 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (29 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (60 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (45 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (45 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (61 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (61 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (61 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (61 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (61 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (61 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (64 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (64 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (64 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (64 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (64 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (64 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (64 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (64 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (48 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (32 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (16 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (62 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (62 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (46 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (46 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (30 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (62 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (62 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (46 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (30 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (62 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (46 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (46 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (30 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (62 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (46 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (30 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (61 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (61 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (45 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (61 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (45 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (61 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (45 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (45 bytes change between runtime segment an address (play-rs-x25k) and runtime segment an address (play-rs-m1500-unpk02)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (60 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying code at an address (46 bytes change between runtime segment an address (play-rs-m1500-unpk02) and runtime segment an address (play-rs-x25k)): both forms recovered; writer: not identified statically (indirect store)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 jump target
 - 2 never-loaded region(s), 472862 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
@@ -79,63 +325,225 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `execute_unnamed_routine`: This routine consists of three instructions and calls another routine.
-- `frag_moveq_bra`: Short code fragment that loads 0 into d0, then loads 0 into d1, then jumps to another point in the code.
-- `relocate_function_pointers`: Iterates through a table of function pointers and updates them with relative offsets based on a base address.
-- `process_jump_table`: Iterates through a data structure to perform indirect jumps or calls based on table entries.
-- `perform_delay_loop`: Decrements a value from a large constant in a loop until it reaches zero.
-- `clear_memory_block`: Clears a block of memory by writing zero to a series of words and then updates a global variable with the value of another global variable.
-- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (movea.w) and then falls through into the code that follows, with no return of its own.
-- `process_string_data`: Iterates through a source string and copies characters to a destination buffer while performing bitwise operations and checking for a specific character.
+- `frag_bra_move`: Short code fragment that jumps to another point in the code, then copies d0 to a fixed memory address, then jumps to another point in the code.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_bra_move_2`: Short code fragment that jumps to another point in the code, then copies d0 to a fixed memory address, then jumps to another point in the code.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `clear_memory_block`: Clears a block of memory by writing zero to a series of words.
+- `handle_keyboard_input`: Reads keyboard input from a hardware register and stores the result at specific locations in a table.
+- `frag_st_movem_jmp`: Short code fragment that sets an indexed entry from a0 to all ones, then restores saved registers from the stack, then jumps to another point in the code.
+- `tiny_rte`: Small routine of 1 instruction that returns from the exception.
+- `process_input_sequence_2`: Processes sequential keyboard input by reading from an input buffer and storing characters into another buffer.
+- `frag_clr_addq_dbra_rts`: Short code fragment that clears the memory at an offset from a0, then adds 1 to a1, then loops back while counting down d0, then returns.
 - `clear_memory_range`: Fills a range of 111 words starting at a specific memory address with zeros.
-- `load_global_value`: Stores the value of a global variable into another global variable.
-- `update_audio_parameters`: Checks a signature in memory and, if matched, performs complex data manipulation involving multiple tables and hardware audio volume registers.
-- `initialize_global_values`: Sets a global variable to zero multiple times before assigning it a final value of fifteen.
-- `frag_addq_cmpi_bne_clr_bra`: Short code fragment that adds 1 to a fixed memory address, then compares a fixed memory address with 6, then branches if the last result was not zero, then clears a fixed memory address, then jumps to another point in the code.
-- `setup_game_object`: Sets up game object properties including position, graphics data, and audio parameters using values from predefined tables, then configures the object's rendering and audio characteristics.
+- `frag_movea_move_rts`: Short code fragment that copies a fixed memory address to a0, then copies a0 to a fixed memory address, then returns.
+- `update_audio_parameters`: Checks for a specific memory signature and performs complex data manipulation involving multiple tables and hardware audio volume registers when the signature matches.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `clear_memory_block_2`: Clears a block of memory by writing zero to a series of words.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
-- `process_state_byte`: Reads a byte from offset 2 of a structure, masks it with 15, tests the result, and branches to different locations based on whether the value equals 0, 1, 2, or 10.
-- `subtract_byte_clamp_copy`: Subtracts the byte at offset 3 of the structure in a6 from the word at offset 22 of that structure, forces the result to a minimum of 113 if it falls below, and copies it to offset 6 of the structure in a5.
-- `slide_channel_value_up`: Adds a parameter byte to a running value in a structure, clamps the result to an upper limit of one thousand three hundred and thirty-six, and copies the result to an output field.
-- `update_movement_counter`: Reads a byte from memory offset 3 of a structure, shifts it right by 4 bits, and adds the result to a word value at offset 18 of the same structure.
-- `frag_moveq_move_andi_sub_bpl_clr_bsr_rt`: Short code fragment that loads 0 into d0, then copies the memory at an offset from a6 to d0, then masks d0 with 15, then subtracts d0 from the memory at an offset from a6, then branches if the last result was not negative, then clears the memory at an offset from a6, then copies the memory at an offset from a6 to d0, then calls another routine, then copies d0 to the memory at an offset from a5, then returns.
-- `dispatch_by_global_value`: Loads a word value from a fixed memory location, compares it against constants 1 through 5, and branches to different locations based on the comparison results.
-- `frag_moveq_move_lsr_bra`: Short code fragment that loads 0 into d0, then copies the memory at an offset from a6 to d0, then shifts d0 right by 4, then jumps to another point in the code.
-- `frag_moveq_move_andi_bra`: Short code fragment that loads 0 into d0, then copies the memory at an offset from a6 to d0, then masks d0 with 15, then jumps to another point in the code.
-- `frag_move_bra`: Short code fragment that copies the memory at an offset from a6 to d2, then jumps to another point in the code.
-- `frag_add_moveq_move_andi_lea_cmp_beq_ad`: Short code fragment that adds d0 to d0, then loads 0 into d1, then copies the memory at an offset from a6 to d1, then masks d1 with 4095, then loads the address of a location in the code into a0, then copies an indexed entry from a0 to d2, then compares d1 with the memory at a0, then branches if the last result was zero, then adds 2 to a0, then jumps to another point in the code.
-- `frag_move_rts`: Short code fragment that copies d2 to the memory at an offset from a5, then returns.
-- `initialize_sequence_2`: Writes a series of longwords and words to memory locations starting at a global variable, updating values in a loop with incrementing counters and managing sequence progression.
-- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
-- `process_animation_data`: Reads animation parameters from a structure, updates position values based on multiplication results, and writes updated values to multiple memory locations.
-- `process_dma_and_conditions`: Performs several memory operations including adding values to a structure, copying data to various locations, and setting up DMA channels.
-- `frag_not_moveq_move_rts`: Short code fragment that inverts a fixed memory address, then loads 0 into d0, then copies the memory at an offset from a6 to d0, then copies d0 to a fixed memory address, then returns.
-- `frag_move_ext_bsr_rts`: Short code fragment that copies the memory at an offset from a6 to d0, then sign-extends d0, then calls another routine, then copies d0 to the memory at an offset from a5, then returns.
-- `frag_not_rts`: Short code fragment that inverts a fixed memory address, then returns.
-- `frag_moveq_move_andi_rol_or_rts`: Short code fragment that loads 0 into d0, then copies the memory at an offset from a6 to d0, then masks d0 with 1, then rotates d0 left by 1, then masks a fixed memory address with 253, then merges d0 into a fixed memory address, then returns.
-- `reset_counter_if_nonzero`: If the low nibble of a parameter byte is not zero, it clears a global word and stores that nibble into another global variable.
-- `calculate_fixed_point_multiplication`: Performs a multiplication of a short integer by a global value and returns the result as a 32-bit value split across two registers.
-- `initialize_audio_and_coprocessor`: Sets up audio system by opening libraries, configuring coprocessor pointers, and initializing memory blocks.
-- `fill_multiple_buffers`: Clears various offsets within a memory block by writing zero to them in a loop.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_lea_clr_dbra_movea_move_rts`: Short code fragment that loads the address of a fixed memory address into a0, then clears the memory at a0 (advancing a0), then loops back while counting down d0, then copies a fixed memory address to a0, then copies a0 to a fixed memory address, then copies an address to a fixed memory address, then returns.
+- `process_memory_blocks`: Processes memory blocks by clearing flags, handling bit operations, and managing data transfer between different memory locations based on conditional checks.
+- `frag_clr_addq_dbra_rts_2`: Short code fragment that clears the memory at an offset from a0, then adds 1 to a1, then loops back while counting down d0, then returns.
+- `clear_memory_range_2`: Fills a range of 111 words starting at a specific memory address with zeros.
+- `frag_movea_move_rts_2`: Short code fragment that copies a fixed memory address to a0, then copies a0 to a fixed memory address, then returns.
+- `update_audio_parameters_2`: Checks for a specific memory signature and if matched, updates audio volume registers and performs table data manipulation involving multiple hardware audio channels.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_coprocessor`: Initializes coprocessor registers by setting up multiple data structures and performing bit manipulations on memory locations, then calls several routines for further processing.
+- `fill_multiple_buffers`: Clears various offsets within a memory block by writing zero to them in a loop, performing multiple memory writes per iteration.
+- `shift_and_write_values`: Reads 16-bit values from a table, shifts them based on a global variable's lower nibble, and writes the results to multiple destination buffers at different offsets.
+- `copy_tile_data`: Copies tile data from a table to multiple memory locations using bit shifting, then updates global variables with computed values before returning.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_library`: Opens a library and initializes global variables based on the library's return value.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `shift_and_store`: Shifts data from multiple source locations and stores them into destination arrays with specific offsets.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_render_data_3`: Sets up rendering parameters for a sequence of graphical elements by copying data from a source table to a target buffer, updating counters and pointers as it progresses through the data.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `copy_and_update`: Copies data from one memory location to another while updating counters and status flags, then continues processing until a condition is met.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_graphics`: Sets up graphics parameters by loading specific values into registers and calling a library function, then stores the result to a global memory location and branches based on the result.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `process_data_loop`: Processes data in a nested loop structure, updating pointers and counters while copying values between memory locations and calling a handler when a condition is met.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `setup_rendering`: Initializes rendering parameters by loading values from global memory, calling library functions, and setting up registers before checking a condition and branching accordingly.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_move_suba_bra`: Short code fragment that copies the memory at an offset from a0 to d2, then copies the memory at an offset from a0 to d3, then copies the memory at an offset from a0 to d4, then copies the memory at an offset from a0 to d5, then subtracts 40 from a0, then jumps to another point in the code.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `handle_rendering`: Executes a rendering operation by calling library functions, updating flags in memory, and entering an infinite loop that continuously sets a bit in a memory location.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_move_suba_bra_2`: Short code fragment that copies the memory at an offset from a0 to d5, then subtracts 40 from a0, then jumps to another point in the code.
+- `frag_movea_dbra_addq_rts`: Short code fragment that copies the top of the stack to a0, then loops back while counting down d0, then adds 2 to a7, then returns.
+- `copy_table_to_buffers`: Copies data from a source table into multiple destination buffers using nested loops, with the outer loop controlling the number of iterations and the inner loop processing individual elements.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `update_buffer_values`: Updates buffer values by loading a word from memory, storing it at multiple offsets, performing arithmetic operations, and then swapping bytes before storing results to specific memory locations.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `transfer_data_blocks`: Transfers data blocks between source and destination buffers using nested loops, copying values from a table to multiple memory locations while incrementing pointers and decrementing counters.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `update_timer_values`: Updates timer-related values in a data structure by storing word-sized values at specific offsets, performing arithmetic operations with a constant, and swapping byte order during the process.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `update_rendering_data`: Updates rendering data by copying values from a table to memory locations with specific offsets, incrementing pointers, and using decrementing counters in nested loops for iteration.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `update_graphics_parameters`: Updates graphics parameters by performing arithmetic operations on register values, storing results at specific memory offsets, and entering a loop that continues until a counter reaches zero.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_move_addq_dbra_lea_rts`: Short code fragment that copies d3 to the memory at an offset from a1, then copies d4 to the memory at an offset from a1, then copies d5 to the memory at an offset from a1, then copies d2 to the memory at a1 (advancing a1), then adds 2 to a0, then loops back while counting down d6, then loads the address of the memory at an offset from a0 into a0, then loops back while counting down d0, then returns.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `store_word_pairs`: Stores a 16-bit value and its swapped version into memory locations spaced by 8 bytes, repeating this pattern four times while incrementing the source pointer each iteration.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_move_addq_dbra_lea_rts_2`: Short code fragment that copies d5 to the memory at an offset from a1, then copies d2 to the memory at a1 (advancing a1), then adds 2 to a0, then loops back while counting down d6, then loads the address of the memory at an offset from a0 into a0, then loops back while counting down d0, then returns.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `store_swapped_words`: Writes the high and low words of a 32-bit value into memory locations with specific offsets, then performs a series of operations on global variables before returning.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_move_addq_dbra_lea_rts_3`: Short code fragment that copies d2 to the memory at a1 (advancing a1), then adds 2 to a0, then loops back while counting down d6, then loads the address of the memory at an offset from a0 into a0, then loops back while counting down d0, then returns.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `fill_buffer_with_data`: Copies data from a source location to multiple destinations in a buffer pattern, updating global variables and performing bitwise operations based on the copied values.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_dbra_rts`: Short code fragment that loops back while counting down d0, then returns.
+- `fill_buffers_from_table`: Reads values from a table and writes them into multiple destination buffers in a repeating pattern, using loop counters to control the number of iterations.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `store_swapped_values`: Processes a 32-bit value by swapping its bytes, adds specific constants, and stores the results at multiple memory locations while updating global variables.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_ori_rts`: Short code fragment that merges 20936 into a fixed memory address, then returns.
+- `copy_table_values`: Reads word values from a source table and writes them into multiple destination buffers with specific offsets in a repeating pattern.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `process_data_and_fill`: Processes data from a table by copying values until reaching a specific marker, then fills buffers with repeated patterns while updating global variables and hardware registers.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `fill_buffers_with_pattern`: Copies data from a source table to multiple destination buffers in a repeating pattern, using loop counters to control the number of iterations and storing specific values at calculated offsets.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `update_collision_data`: Updates collision detection parameters by swapping and adding a fixed value to a register, then storing the result in a table.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `fill_buffers_with_pattern_2`: Copies data from a source table to multiple destination buffers in a repeating pattern, using loop counters to control the number of iterations and storing specific values at calculated offsets.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `copy_word_pairs`: Copies word pairs from a source table to a destination buffer until encountering the value -2, then updates hardware registers.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_move_dbra_rts`: Short code fragment that copies d4 to the memory at an offset from a1, then copies d1 to the memory at a1 (advancing a1), then loops back while counting down d5, then loops back while counting down d0, then loops back while counting down d7, then returns.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `copy_words_loop`: Repeatedly copies words from a source table to a destination buffer in a loop until reaching the value -2.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_dbra_rts_2`: Short code fragment that loops back while counting down d0, then loops back while counting down d7, then returns.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `copy_words_until_end`: Copies words from one buffer to another in a loop until encountering the value -2, then performs several memory operations and calls another routine.
+- `clear_multiple_offsets`: Clears specific longword offsets in a memory block through a loop, writing zero values to each offset.
 - `write_shifted_values_to_buffers`: Reads values from a table, shifts them based on a global value, and writes them to multiple destination buffers.
 - `copy_shifted_longs_to_planes_2`: Reads four source longwords per step from a table, shifts them left by the low four bits of a position value, and writes each one to a different plane buffer.
-- `copy_table_to_buffers`: Copies data from a source table into multiple destination buffers using nested loops.
-- `fill_buffers_from_table`: Reads values from a table and writes them into multiple destination buffers in a repeating pattern.
-- `blend_table_to_buffers`: Performs bitwise logical operations between a source table and a destination buffer before clearing the remaining buffer space.
-- `validate_global_range`: Performs multiple conditional checks on a global variable to determine if it falls within specific numeric ranges.
-- `clamp_global_value`: Checks a global variable against specific bounds and performs conditional updates or calls to other routines.
-- `draw_clipped_masked_block_2`: Draws a bit-shifted block from four source planes into four destination planes, limiting the column count by the distance to a 320-pixel edge and keeping destination pixels wherever all source planes are zero.
-- `draw_wide_clipped_masked_block_2`: Draws a bit-shifted, masked four-plane block, limiting the column count to eight and reading its source planes from a wider offset.
-- `draw_masked_planes`: Draws bit-shifted data into four destination planes using a mask, with the specific plane update logic determined by a global variable.
-- `draw_shifted_row_with_spill_2`: Draws up to eight source rows into four planes, each shifted by a value derived from an x position with spilled bits carried into the following word.
+- `copy_table_to_buffers_2`: Copies data from a source table into multiple destination buffers using nested loops with fixed iteration counts.
+- `fill_buffers_from_table_2`: Reads values from a table and writes them into multiple destination buffers in a repeating pattern with specific offsets.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
 - `clear_destination_area`: Iterates through a source table to perform bitwise masking and OR operations on a destination buffer to clear specific pixel patterns.
 - `clear_destination_buffer`: Clears a destination buffer by applying bitwise operations from a source table to the memory pointed to by a global variable.
-- `execute_repeated_routine`: Calls another routine four times in a loop.
-- `blend_nibble_data_to_buffers`: Iterates through a source table of nibble values to perform bitwise masking and logical OR operations on multiple destination buffers.
-- `resolve_indirect_pointer`: Traverses multiple levels of indirection through a pointer structure to retrieve a short integer value.
-- `interpolate_nibble_values`: Iterates through two tables of 16-bit words to incrementally adjust three nibbles per word toward target values.
-- `execute_infinite_loop`: This routine is empty and consists only of an infinite loop.
-- `clear_large_buffer_set`: Iterates through a large memory area, writing zero to many specific offsets and indices within a loop.
+- `execute_repeated_routine`: Calls another routine four times in a loop using a decrementing counter, with the called routine's return value preserved on the stack.
+- `update_pattern_data`: Processes and updates pattern data using bit manipulation and table lookups based on input parameters, writing modified values back to memory locations.
+- `load_and_branch`: Loads long values from memory locations relative to a0 pointer and branches to another routine based on a conditional check.
+- `update_pattern_data_2`: Performs bitwise operations on multiple 16-bit values and writes modified results to specific memory locations relative to a pointer, using shift and mask operations based on input parameters.
+- `update_bitwise_buffers`: Updates multiple buffers using bitwise operations on data from tables, applying masks and combining values before continuing the processing loop.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `clear_destination_area_v2`: Iterates through a source table to perform bitwise masking and OR operations on a destination buffer to clear specific pixel patterns, using a different base address.
+- `apply_bitwise_operations`: Processes a source table of 16-bit words through a destination buffer using bitwise AND, OR, and NOT operations.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_bsr_clr_tst_bpl_addq_bra`: Short code fragment that calls another routine, then clears a fixed memory address, then tests a fixed memory address, then branches if the last result was not negative, then calls another routine, then adds 1 to a fixed memory address, then jumps to another point in the code.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs two instructions (addi.l, cmpi.w) and then falls through into the code that follows, with no return of its own.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_game_loop`: Sets up the main game execution loop by initializing various hardware registers, clearing global variables, and configuring interrupt handlers.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_addq_move_rts`: Short code fragment that adds 2 to d0, then copies d0 to a fixed memory address, then returns.
+- `interpolate_nibble_values`: Adjusts nibble values in two tables of 16-bit words toward target values through incremental steps.
+- `execute_infinite_loop`: Contains an empty loop that repeatedly checks a condition and branches back to itself.
+- `clear_memory_blocks`: Writes zero values to multiple memory locations in a data structure through four separate memory copy operations.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `interpolate_nibbles`: Adjusts three nibbles within each word of a table toward target values from another table, incrementing or decrementing each nibble by one step per iteration if the difference is less than sixteen.
+- `update_timer_values_2`: Updates multiple timer-related values in a global structure starting at offset a fixed address, using data from global variables and a loop that increments a counter until it reaches 10000.
+- `clear_memory_blocks_2`: Writes zero values to multiple memory locations in a global table, advancing the write pointer by ten elements each iteration for a total of 199 iterations.
 
 ### Castle Master (1990)(Domark)(M3)[cr][m ACU].adf:dawn4#unpacked
 

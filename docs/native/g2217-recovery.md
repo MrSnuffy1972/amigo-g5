@@ -112,35 +112,35 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### More
 
 - `start_program_open_libraries`: Program entry that opens the DOS and Exec library calls, finds the current task, allocates memory and waits for a port message.
-- `release_libraries_and_memory`: Closes a DOS file and a library, frees allocated memory and replies to a message port while the task is protected.
-- `display_paged_file_contents`: Pages through a file on screen, showing prompts for quitting, end of file, file not found and binary-content warnings, and an error when a window cannot be opened.
-- `relay_call_to_unnamed_routine`: A 16-instruction handler reached through a data pointer that makes one unnamed call.
-- `dispatch_two_unnamed_calls`: A 41-instruction handler reached through a data pointer that makes two unnamed calls.
+- `restore_patch_state`: Retrieves a pointer from a global structure and saves a parameter into a slot within a structure pointed to by that pointer.
+- `load_and_initialize_file_data`: Parses a file header to populate a structure with metadata and then loads associated data into memory.
+- `iterate_table_with_function`: Iterates through a table of four values, passing a pointer from a structure and each value from the table to another routine.
+- `validate_input_buffer`: Calls another routine twice with arguments derived from an input pointer and then scans a range of bytes to check if they fall within certain allowed ranges.
 - `allocate_absolute_memory_block`: Calls the Exec absolute-address allocation stub and a library vector at offset minus 306, plus five unnamed routines.
 - `dispatch_conditional_callback_chain`: Checks if a longword at offset 96 of a structure pointed to by a2 is greater than zero; if so, it calls a routine via a data pointer and then calls a rescheduling routine.
 - `show_pager_help_prompt`: Handles pager messages, including a find-previous-page status, a press-h-for-help prompt, a can't-reopen-file error and an editor lookup through the ENV:EDITOR variable.
-- `dispatch_four_unnamed_calls`: An address-taken routine of 34 instructions that makes four unnamed calls and is reached from two unnamed routines.
-- `reschedule_then_call_routine`: Calls the Exec reschedule stub and one unnamed routine.
-- `coordinate_two_unnamed_calls`: A 51-instruction handler that makes two unnamed calls and is called by two unnamed routines.
-- `show_more_page_prompt`: A 51-instruction routine that references the text 'More' and makes five unnamed calls.
-- `report_search_progress`: Prints the searching progress message with a name argument, using the text for a searching status, and makes six unnamed calls.
-- `sequence_five_unnamed_calls`: A 32-instruction routine that makes five unnamed calls and is called by one unnamed routine.
-- `call_two_unnamed_routines_first`: A 15-instruction routine that makes two unnamed calls and is called by one unnamed routine.
-- `relay_two_unnamed_calls`: A 17-instruction routine that makes two unnamed calls and is called by one unnamed routine.
-- `execute_subroutines`: This routine calls a routine that processes a pager request block and a routine that raises an exception after a check.
-- `process_pager_request_block`: A 134-instruction routine called by three unnamed routines that makes two unnamed calls.
+- `initialize_entity_state`: Sets a 32-bit field at offset 60 and a 16-bit field at offset 94 of a structure to specific values, calls another routine with a pointer from offset 52, calls itself recursively if offset 116 is not 4096 and offset 120 is non-zero, and enters a loop that calls another routine while certain conditions regarding offset 60, offset 8 of a pointed-to structure, and offset 94 are met.
+- `update_entity_and_increment_counter`: Calls another routine twice with arguments derived from the input pointer, stores the second result into a field of the pointed-to structure, and if a flag field at offset 4 is zero it increments a short located at an offset from a pointer stored in the structure.
+- `parse_buffer_content`: Uses another routine to check a buffer, updates a size field, and scans for a newline or form-feed character while potentially modifying a flag or string content.
+- `process_entity_list`: Determines a loop limit based on fields in a passed structure and iterates to call another routine using a pointer to a table and a global variable; it also recursively calls itself, calls another routine with a pointer to a stack buffer, and calls a library routine to reschedule.
+- `handle_search_loop`: Uses a flag in an argument block to select a global variable and repeatedly calls another routine, updating a counter and looping while a search result is zero.
+- `initialize_handler`: Calls another routine with zero, then with a parameter, then with a pointer from offset 16 of a structure, a global variable, and a parameter, conditionally calls another routine with the same arguments but without the parameter, calls another routine with two arguments, calls another routine with a constant, calls another routine with a parameter, and returns the result of the call involving two arguments.
+- `check_flag_and_call`: Calls another routine with two arguments, then checks a short value at an offset from a pointer and conditionally calls another routine with one argument.
+- `draw_scroll_window_bounds`: The routine calls a drawing routine using a pointer and a certain value, then calls another routine using a value or offset from a pointer-based structure.
+- `draw_text_window_range`: The routine calls a drawing routine with a fixed or zeroed argument, then calls another routine with a decremented value derived from a pointer-based structure.
+- `draw_text_line`: Uses a handler pointer to call drawing primitives while iterating over a text buffer, tracking line count and stopping if a certain character or flag is encountered.
 - `wrap_two_unnamed_calls`: A 12-instruction routine whose address is taken by a PC-relative load, called by four unnamed routines, that makes two unnamed calls.
 - `wrap_single_unnamed_call`: A 12-instruction routine called by four unnamed routines that makes one unnamed call.
-- `relay_call_via_data_pointer`: A 16-instruction routine reached through a data pointer and by three unnamed routines, which makes one unnamed call.
-- `print_concatenated_text_pair`: Prints text built from two string fields using the text pattern for two string arguments, and makes one unnamed call.
-- `raise_exception_and_return`: Calls the Exec exception stub and returns its result.
-- `invoke_library_vector_entry`: Calls a library function at offset minus 624 from a library base held in a global, plus one unnamed routine.
-- `schedule_then_call_library_vector`: A 36-instruction routine called by three unnamed routines that calls the Exec schedule stub and a library function at offset minus 624.
-- `raise_exception_after_check`: A 131-instruction routine called by nine unnamed routines that calls the Exec exception stub and one unnamed routine.
-- `relay_one_call_checked`: A 20-instruction routine called by two unnamed routines that makes one unnamed call.
+- `dispatch_by_flag`: Selects two pointers based on a flag in a parameter block and calls another routine using either a global variable or a table entry.
+- `dispatch_handler_by_flag`: Reads a flag from a parameter block and calls another routine with either three references to a global variable or a value from a table entry.
+- `clamp_negative_result`: The routine calls another routine twice with the same first argument and different third arguments, then clamps a negative return value to zero before returning it.
+- `consume_from_buffer`: Checks a size field in a structure and, if a certain condition or partial way is met, updates several offset or remaining size fields and calls another routine with a pointer derived from the structure.
+- `recursively_process_buffer_segments`: If a field at offset 120 is non-zero and a field at offset 116 is not 4096, it calls itself recursively with a pointer into the structure and a size from offset 120.
+- `update_scroll_window`: Calculates a target position based on provided offsets and compares it against the current window bounds.
+- `read_line_from_buffer`: Repeatedly calls another routine to read bytes from a source buffer into a destination buffer, stopping at a newline or a fixed limit, and appends a null terminator.
 - `stub_short_routine_no_calls`: A six-instruction routine called by one unnamed routine with no listed calls.
-- `process_routine_without_listed_calls`: An 18-instruction routine called by two unnamed routines with no listed calls.
-- `process_medium_body_no_calls`: A 36-instruction routine called by one unnamed routine with no listed calls.
+- `convert_string_to_uppercase`: Iterates through a null-terminated string and converts any lowercase ASCII letters to uppercase by subtracting a constant.
+- `parse_signed_decimal`: Parses a signed decimal integer from a null-terminated character string, handling an optional leading sign.
 - `invoke_library_function_276`: A 15-instruction routine called by three unnamed routines that calls a library function at offset 276.
 - `enable_and_call_library_vectors`: An 81-instruction routine called by four unnamed routines that calls the Exec exit-interrupt and enable stubs, library functions at offsets 132, 138, 210 and 414, and six unnamed routines.
 - `invoke_library_vector_294`: A 19-instruction routine called by three unnamed routines that calls a library function at offset 294 and one unnamed routine.
@@ -177,8 +177,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `schedule_task_and_return`: A 19-instruction routine called by five unnamed routines that calls the Exec schedule stub and one unnamed routine.
 - `format_text_and_reschedule`: A 22-instruction routine called by one unnamed routine that calls the Exec RawDoFmt text formatting function, the reschedule stub and a tiny routine.
 - `tiny_move_rts`: Small routine of 2 instructions that copies d0 to (a3)+, then returns.
-- `process_block_two_callers`: A 29-instruction routine called by two unnamed routines with no listed calls.
-- `process_small_block_pair`: A 16-instruction routine called by two unnamed routines with no listed calls.
+- `modular_inverse_32bit`: The routine performs a 32-bit modular reduction or a 16-bit modulo operation depending on the size of an input value, using repeated doubling and subtraction, and returns a combined 32-bit result.
+- `multiply_32_bit_integers`: The library code computes the 32-bit product of two 32-bit registers using 16-bit partial products.
 - `forward_single_unnamed_call`: A six-instruction routine that makes one unnamed call and has no other listed behaviour.
 - `call_helper_return_register`: Pushes a data register onto the stack, shifts two data registers for a helper, calls that helper, moves the helper's result into a data register, restores the saved register, and returns.
 - `negate_result_on_flag`: Handles the signs of two values, calls a helper, and negates the result when the flag the helper leaves in an address register is nonzero before returning.
@@ -186,14 +186,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `format_message_with_rawdofmt`: A nine-instruction routine that calls the Exec RawDoFmt text formatting function and one unnamed routine.
 - `stub_two_instruction_return`: A two-instruction routine called by one unnamed routine with no listed calls, so it has no behaviour to recover.
 - `call_library_vector_276`: Library stub: loads a library base from a global variable and calls the library function at offset minus 276 of that base, returning its result to the caller.
-- `invoke_library_vectors_in_block`: A 48-instruction routine called by one unnamed routine that calls library functions at offsets 198, 294, 330, 336 and 354, and one unnamed routine.
-- `invoke_three_library_vectors`: A 20-instruction routine called by one unnamed routine that calls library functions at offsets 210, 336 and 360.
-- `process_block_single_caller`: A 25-instruction routine called by one unnamed routine with no listed calls.
+- `allocate_message_entry`: Attempts to allocate a message buffer, and if successful, populates several fields of that buffer with parameters and a value from another routine before dispatching it.
+- `delete_port`: Removes the port from a global list if a specific field is non-zero, sets status fields to indicate deletion, frees the associated signal bit, and releases the memory block.
+- `compare_strings_with_wrap`: Compares two null-terminated strings byte by byte, skipping the check if the first string contains a newline character.
 - `stub_brief_routine_single_caller`: A six-instruction routine called by one unnamed routine with no listed calls.
 
 ### Assign
 
-- `process_block_two_unnamed_calls`: A 115-instruction routine called by two unnamed routines that makes two unnamed calls.
+- `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `stub_forward_call_only`: A two-instruction routine that makes one unnamed call and nothing else.
 - `update_entity_spatial_data`: Calculates and stores new coordinate offsets in a structure, clears two status fields, and calls update_entity_state_and_linked_list.
 - `update_entity_state_and_linked_list`: Updates an entity's state by calling another routine with various parameters, manages a linked list by traversing and modifying pointers, and performs conditional updates to structure offsets based on comparison results.
@@ -221,12 +221,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Execute
 
-- `setup_execution_environment`: This routine calls a routine that opens libraries and manages tasks, and is also reachable via a forward call stub.
+- `find_max_and_prepare_buffer_2`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `modify_instruction_operand`: updates an instruction or a piece of code by modifying its immediate value or target address.
 
 ### Copy
 
-- `initialize_program_environment`: A routine that serves as the program entry point to open libraries, locate the current task, and manage memory allocation and port messages.
+- `find_max_and_prepare_buffer_3`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `modify_instruction_operand_2`: updates an instruction or operand via a relative or direct memory reference.
 - `update_structure_and_fetch_table_byte`: Calculates a value based on a pointer in a1, stores it in a structure at offset 12, and clears several fields in a structure at offset 532 and 680.
 - `extract_event_data_pair`: Calculates an index into a table using a value from a structure, retrieves a pointer from that table, and then fetches two consecutive bytes from the memory location pointed to by that retrieved pointer to store them in a structure.
@@ -271,7 +271,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Makedir
 
-- `initialize_program_execution`: A large routine that acts as a program entry point and calls a routine that opens libraries and manages task memory.
+- `find_max_and_prepare_buffer_4`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `execute_stub_call`: A two-instruction routine that is called by the program entry routine.
 - `update_structure_offsets`: Updates a value in a structure by adding a pointer to it and shifting it right by two, clears offsets 208 and 212 of a structure in a1, and performs a series of calls to update offsets 212 and 208 based on results from a5.
 - `execute_sequence_of_calls`: Performs a series of calls to another routine with various d0 and a4 values, updating offsets 216, 212, 208, and 216 of a1 based on the results, and performs conditional logic based on the value at offset 216 of a1.
@@ -310,15 +310,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `open_libraries_and_wait_port`: A 132-instruction program entry that opens the DOS and Exec libraries, finds the current task, allocates memory and waits for a message port.
 - `release_libraries_and_memory_2`: Closes a DOS file and a library, frees allocated memory and replies to a message port while the task is protected.
-- `check_workbench_and_open_console`: Checks that the program was started from Workbench, reporting a used-from-Workbench-only message and a not-enough-memory error.
-- `launch_command_shell_with_wait`: Builds a command line containing the text for a wait of 999 minutes and an endcli redirect to the null device, then calls a library function at offset 318 and eleven unnamed routines.
-- `install_library_and_functions`: Calls the Exec make-library and make-functions routines and two unnamed routines to set up a library structure.
-- `initialise_resident_ram_module`: Uses the text for the RAM device and calls the make-functions, init-resident and free-memory routines, plus five unnamed routines.
-- `invoke_two_unnamed_routines`: A 20-instruction routine called by two unnamed routines that makes two unnamed calls.
+- `dispatch_cli_or_workbench_start`: Chooses between a command-line start and a Workbench start by checking a parameter and a byte in a structure, then proceeds to allocate memory, parse decimal values, and perform various library calls including icon and exec functions.
+- `build_wait_and_endcli_command`: Builds a command string from a template and the given name, including a wait command with a long timeout and an endcli redirected to NIL, after checking whether the name starts with a dot.
+- `install_library_functions`: Creates and installs a library from a descriptor: it makes the library structure, sets up its function table, and returns the result.
+- `scan_ram_entries_for_names`: Allocates a buffer, walks a linked list of entries, copies entries with name bytes above 31 into the buffer using various helper routines, performs string replacements, and returns a value.
+- `concatenate_strings_and_call_helper`: Copies a null-terminated string into a destination buffer, appends a second null-terminated string to that buffer, and then calls another routine with the buffer pointer and the total length of the combined strings.
 - `stub_short_routine_four_callers`: A seven-instruction routine called by four unnamed routines with no listed calls.
 - `stub_short_routine_two_callers`: A six-instruction routine called by two unnamed routines with no listed calls.
 - `forward_call_three_callers`: An 11-instruction routine called by three unnamed routines that makes one unnamed call.
-- `write_data_from_memory`: copies a block of bytes from a memory location to another or a destination buffer.
+- `parse_signed_decimal_2`: Parses a signed decimal integer from a null-terminated character string, handling an optional leading sign.
 - `call_supervisor_stub`: A six-instruction Exec library stub that loads its arguments and the library base, calls the Supervisor function and returns its result.
 - `call_exit_intr_stub`: A six-instruction Exec library stub that loads its arguments and the library base, calls the interrupt-exit function and returns its result.
 - `call_schedule_stub`: A six-instruction Exec library stub that loads its arguments and the library base, calls the Schedule function and returns its result.
@@ -341,7 +341,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_78`: Library stub: loads a library base from a global variable and calls the library function at offset minus 78 of that base, returning its result to the caller.
 - `call_library_vector_90`: Library stub: loads a library base from a global variable and calls the library function at offset minus 90 of that base, returning its result to the caller.
 - `call_library_vector_96`: Library stub: loads a library base from a global variable and calls the library function at offset minus 96 of that base, returning its result to the caller.
-- `format_message_and_call_two`: A 22-instruction routine that calls the Exec RawDoFmt text formatting function and two unnamed routines.
+- `call_global_and_checksum_buffer`: Invokes a function pointer stored in a global variable, then computes a rolling checksum over a stack buffer until a null terminator is found.
 - `return_immediately_stub`: A two-instruction routine that returns at once with no listed calls.
 - `format_message_with_rawdofmt_2`: A nine-instruction routine that calls the Exec RawDoFmt text formatting function and one unnamed routine.
 - `load_address_relative`: This routine performs a relative load or address calculation using a single instruction.

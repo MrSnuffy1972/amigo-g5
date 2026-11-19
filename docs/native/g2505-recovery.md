@@ -49,7 +49,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Copy protection found
 
-- `update_system_state` (runtime segment an address): Updates several global variables and pointers, modifies a bitmask in a global byte, and calls another routine through a pointer. Kind: checksum trap / integrity check. Pass path: the instruction following the call (bsr.w an address), specifically the execution of 'rte' which implies the routine is called from an interrupt or exception handler context, or a return to the main loop..
+- `install_copper_interrupt_and_disk_control` (runtime segment an address): Calls exec Forbid, sets up the copper list pointer, saves and replaces the level 3 interrupt vector, enables DMA and interrupts, and toggles the CIAB disk control lines. Kind: checksum trap / integrity check. Pass path: the instruction following the call (bsr.w an address), specifically the execution of 'rte' which implies the routine is called from an interrupt or exception handler context, or a return to the main loop..
 
 ## Functions
 
@@ -108,9 +108,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `initialize_system_libraries`: Performs a system trap and uses pointers from a global variable to call several functions and modify memory through an offset.
 - `call_subroutines_repeatedly`: Calls another routine five times in succession after clearing a global variable.
-- `initialize_data_tables`: Performs a loop that writes specific constant values into two separate memory tables.
-- `populate_incrementing_tables`: Fills two memory tables with values that increment by a fixed amount during each iteration of a loop.
-- `update_system_state`: Updates several global variables and pointers, modifies a bitmask in a global byte, and calls another routine through a pointer.
+- `patch_eight_sprite_pointer_pairs`: Loads a base address, then for eight iterations writes the high and low halves of that address into the position fields of two sprite pointer tables, advancing both pointers by eight bytes.
+- `patch_sprite_pointer_tables`: Writes the address of the sprite data at a fixed address into six pointer slots across three sprite tables, then fills three more slots with addresses stepping by 682 bytes.
+- `install_copper_interrupt_and_disk_control`: Calls exec Forbid, sets up the copper list pointer, saves and replaces the level 3 interrupt vector, enables DMA and interrupts, and toggles the CIAB disk control lines.
 - `xor_obfuscated_data_loop`: XORs a byte from a global variable with a value from a register and stores the result into a memory location in a loop.
 - `write_obfuscated_data`: Performs a loop that XORs a byte from a global variable with a value from a register and stores the result into a memory location.
 - `clear_memory_block_small`: Fills a specific range of memory with zeros.
@@ -124,10 +124,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `increment_bytes_and_pointer`: Increments bytes at two memory locations, increments a pointer, and branches back to an earlier instruction in the same routine.
 - `compare_and_load_strings`: Loads addresses into multiple registers, compares a long word value with a fixed address, branches if not equal, and then returns immediately.
 - `compare_and_modify_byte`: Compares a byte value with 48, branches if not equal, decrements another byte, sets the first byte to 57, and then branches back to an earlier instruction.
-- `decrement_and_load_attributes`: Decrements bytes at two memory locations, increments a pointer, and repeatedly calls another routine until a condition is met.
+- `decrement_and_load`: Decrements bytes at two memory locations, increments a pointer, and repeatedly calls another routine until a condition is met.
 - `invoke_character_attribute_loading`: Calls a routine to load character attributes by using a byte from a pointer to index into a table and copying data into a destination structure.
-- `load_character_attributes`: Uses a byte from a pointer to index into a table and copies several bytes from that table into a destination structure.
-- `increment_multiple_tables`: Runs two loops that increment bytes at regular intervals across three different memory locations.
+- `fetch_char_and_copy_seven_plane_rows`: Reads the character at a0 indexed by d1, returns minus one in d4 for end marker, skips zero, and copies seven bytes from the font table into a1 at plane offsets 0, 88, 176, 264, 352, 440 and 528.
+- `increment_three_sprite_palette_columns`: Adds 1, 2 and 3 to bytes at three parallel tables, stepping 8 bytes per entry, for 13 entries then 24 entries, then returns.
 - `copy_memory_block`: Copies a block of memory from one location to another using a loop.
 - `write_constant_and_call`: Writes a specific constant value to a global variable multiple times and then calls a function through a pointer.
 - `execute_system_calls_and_updates`: Updates several memory locations, performs a system trap, and executes multiple subroutines via pointers.

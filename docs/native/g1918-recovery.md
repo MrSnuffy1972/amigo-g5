@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (906320 top-level bytes in 9 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 7 raw-word lines |
 | Functions named and described | pass, 62 of 62 named (0 author symbols), 62 of 62 described (6 by rule, 1 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 294 of 294 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 368 of 368 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 1338 of 1338 instructions identical in start and length, 0 mismatches |
 
@@ -33,7 +33,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ## Cases handled
 
 - indiana jones and the fate of atlantis - arcade (1992)(lucasarts)[cr csl][v systemz v4.0]/Indiana Jones and the Fate of Atlantis - Arcade (1992)(LucasArts)[cr CSL][v SystemZ v4.0].adf:Indy IV/disk_00.cnc: CNC data cruncher (xfd)-packed, unpacked with ancient (786219 -> 3736 bytes)
-- runtime segment an address: 65 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- reference crashes at an address (OSHLE RUNAWAY: PC reached an address after an address (op 0008) A7=an address (A7)=an address, slid to exec.library -an address): 557 executed addresses of the slide through empty memory after it (an address) are not game code and are excluded from proof 4
+- runtime segment an address: 139 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - indiana jones and the fate of atlantis - arcade (1992)(lucasarts)[cr csl][v systemz v4.0]/Indiana Jones and the Fate of Atlantis - Arcade (1992)(LucasArts)[cr CSL][v SystemZ v4.0].adf:Indy IV/Indy-IV: Imploder (xfd) stream found by ancient scan (51748 -> 111660 bytes) but only 9 of 49 sampled windows are in reference RAM: not used
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 jump target
 - indiana jones and the fate of atlantis - arcade (1992)(lucasarts)[cr csl][v systemz v4.0]/Indiana Jones and the Fate of Atlantis - Arcade (1992)(LucasArts)[cr CSL][v SystemZ v4.0].adf:Indy IV/Indy-IV: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data

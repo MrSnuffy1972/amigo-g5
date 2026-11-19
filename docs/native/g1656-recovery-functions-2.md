@@ -712,3 +712,7 @@
 
 - `initialize_system_and_restore_context`: Calls two library functions with specific parameters, moves a value from a global variable into a pointer, clears a value at a specific memory location, restores all registers from a table at a fixed address, and jumps to a location stored in a pointer.
 - `return_constant_3`: Returns the constant -1 in d0 to the caller without any other effect.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_addq_move_movem_rts`: Short code fragment that adds 4 to a7, then copies 0 to a fixed memory address, then copies several registers to or from memory, then returns.

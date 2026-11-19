@@ -6,19 +6,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901296 top-level bytes in 52 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 30 of 30 units identical (bytes and relocations), 19 raw-word lines |
-| Functions named and described | pass, 2618 of 2618 named (0 author symbols), 2618 of 2618 described (160 by rule, 2440 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 544 of 544 (100.00%) |
+| Bytes classified (901318 top-level bytes in 53 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 31 of 31 units identical (bytes and relocations), 19 raw-word lines |
+| Functions named and described | pass, 2619 of 2619 named (0 author symbols), 2619 of 2619 described (161 by rule, 2440 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 547 of 547 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 299904 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 48846 of 48847 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 48850 of 48851 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 224526 |
-| code | 154078 |
+| code | 154100 |
 | data | 512331 |
 | padding | 10361 |
 
@@ -45,6 +45,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Sim City (1989)(Infogrames)[cr Tristar - DCS].adf:PrintCity | 8 | 4673 | 167 |
 | Sim City (1989)(Infogrames)[cr Tristar - DCS].adf:bootblock | 1 | 18 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 1 |
 | Dullsville (raw code file, load address unknown) | 1 | 0 | 0 |
 | Tokyo (raw code file, load address unknown) | 1 | 0 | 0 |
 | Detroit (raw code file, load address unknown) | 1 | 0 | 0 |
@@ -59,7 +60,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Cases handled
 
-- runtime segment an address (play-rs-m1500): 14 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500): 13 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- 4 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 1 first-run image unit(s) in 1 version group(s); 0 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
 - sim city (1989)(infogrames)[cr tristar - dcs]/Sim City (1989)(Infogrames)[cr Tristar - DCS].adf:Scenarios/Dullsville: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - sim city (1989)(infogrames)[cr tristar - dcs]/Sim City (1989)(Infogrames)[cr Tristar - DCS].adf:Scenarios/Tokyo: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - sim city (1989)(infogrames)[cr tristar - dcs]/Sim City (1989)(Infogrames)[cr Tristar - DCS].adf:Scenarios/Detroit: raw code file no run loaded verbatim: recovered position-independently (load address unknown)

@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (4527408 top-level bytes in 121 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 9 raw-word lines |
-| Functions named and described | pass, 299 of 299 named (0 author symbols), 299 of 299 described (20 by rule, 56 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 3244 of 3244 (100.00%) |
+| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 10 raw-word lines |
+| Functions named and described | pass, 300 of 300 named (0 author symbols), 300 of 300 described (20 by rule, 57 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 3246 of 3246 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 8469 of 8472 instructions identical in start and length, 1 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 8474 of 8475 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 302736 |
-| code | 27748 |
-| data | 3964845 |
+| code | 27758 |
+| data | 3964835 |
 | padding | 28815 |
 | unused | 203264 |
 
@@ -29,7 +29,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Fightin' Spirit (1996)(Neo)(AGA)(M3)(Disk 1 of 5).adf:LightForce.exe | 2 | 235 | 8 |
 | run | 2 | 590 | 15 |
-| Fightin' Spirit (1996)(Neo)(AGA)(M3)(Disk 1 of 5).adf:FS | 4 | 1698 | 56 |
+| Fightin' Spirit (1996)(Neo)(AGA)(M3)(Disk 1 of 5).adf:FS | 4 | 1701 | 57 |
 | Fightin' Spirit (1996)(Neo)(AGA)(M3)(Disk 1 of 5).adf:Installer | 2 | 267 | 8 |
 | Fightin' Spirit (1996)(Neo)(AGA)(M3)(Disk 1 of 5).adf:bootblock | 1 | 18 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 2 |
@@ -143,7 +143,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `extract_flag_bit_from_table`: Scans a table of word pairs until a condition on a global mask is met, then reads a byte from a table entry and uses it as an index into a global mask to extract a bit, calling another routine if a borrow condition is detected.
 - `tiny_moveq_moveq`: Small routine of 2 instructions that loads 255 into d0, then loads 16 into d1.
 - `mask_and_conditional_call`: The routine masks a word from a register with a word from a register and, if a byte from a register is less than a byte from a register, it calls another routine and uses its returned word as the result; otherwise it returns the masked word.
-- `return_empty_routine`: It contains only a single return instruction and does nothing else.
+- `refill_bit_buffer_from_a3_stream`: Adds d1 back into d7, shifts d6 right by d7, swaps d6, advances a3 by four and loads two bytes backwards into d6 with a byte swap, then resets d7 to sixteen minus d1.
 - `fill_figure_table`: Fills a stack buffer with values, then loops through a key list writing bit masks and derived values into a table, and finally restores the stack and returns.
 - `free_and_merge_node_lists`: It clears the header word of a linked list at a4, then for each node walks a self-referential chain and adds the resulting offset to the corresponding slot in the structure at a5.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
@@ -169,7 +169,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Fightin' Spirit (1996)(Neo)(AGA)(M3)(Disk 1 of 5).adf:FS
 
 - `initialize_game_structure_2`: Clears two long variables in a global structure, then calls a routine that returns a pointer to a game structure and checks a flag at offset 172 of that structure.
-- `store_a1_and_return`: It stores the 32-bit value from a1 into the global variable at offset 24d4, then returns via rte.
+- `clear_vbr_and_store`: Clears the address register a0, sets the VBR register to the value in a1, then stores the value from a1 into a global variable at offset 9428 decimal, and returns.
 - `initialize_game_structure`: Initializes a game structure by storing routine addresses and data values at many of its offsets, copies a block of words from a table into the structure, and clears several fields.
 - `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (subq.w) and then falls through into the code that follows, with no return of its own.
 - `process_and_dispatch_game_state`: Copies a block of 16-bit words from a source table to a destination table using a computed count, then calls a scaled-value routine and a routine pointed to by a vector table.
@@ -178,6 +178,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_d7_ten`: Loads the value ten into d7 and branches into the middle of the following routine.
 - `round_result_up_eight_2`: Copies two 16-bit words from indexed table locations into memory, calls another routine, and returns the input value rounded up to a mult.
 - `round_result_up_eight`: It copies two 16-bit words from indexed table locations into memory, calls another routine, and returns the input value rounded up to a multiple of eight when non-zero.
+- `allocate_and_align_memory`: Reads a word from a table at offset an address decimal, decrements a register, stores the value into memory, allocates memory using a library routine, stores the result pointer into memory, and returns an aligned address based on the allocation result.
 - `build_indexed_table`: Sets up stack space, builds a table of offsets and pointers, then loops calling a routine indexed by a value from a0 until a condition is met, and finally restores the stack and returns.
 - `return_constant_one_2`: It returns the constant value one to the caller.
 - `jump_to_routine`: Jumps to another routine and does not return.

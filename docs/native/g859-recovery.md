@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (1809552 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 32 raw-word lines |
 | Functions named and described | pass, 139 of 139 named (0 author symbols), 139 of 139 described (39 by rule, 87 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1000 of 1000 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 1076 of 1076 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 29184 bytes, 31 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 4221 of 4303 instructions identical in start and length, 0 mismatches |
 
@@ -48,7 +48,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - air support (1992)(psygnosis)[cr skr](disk 2 of 2)/Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf: the boot block reads 22528 bytes from disk offset 878592 to an address (found statically); recovered as a unit
 - air support (1992)(psygnosis)[cr skr](disk 2 of 2)/Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf: the boot block reads 1536 bytes from disk offset 1024 to an address (found statically); recovered as a unit
 - runtime segment an address: 330 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 670 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 746 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - air support (1992)(psygnosis)[cr skr](disk 2 of 2)/Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf: bytes 6144-8192 look like code no run loaded: recovered position-independently (load address unknown)
 - air support (1992)(psygnosis)[cr skr](disk 2 of 2)/Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf: bytes 12288-39424 look like code no run loaded: recovered position-independently (load address unknown)
 - air support (1992)(psygnosis)[cr skr](disk 1 of 2)/Air Support (1992)(Psygnosis)[cr SKR](Disk 1 of 2).adf: 2 logged loads cover 27136 bytes of the image

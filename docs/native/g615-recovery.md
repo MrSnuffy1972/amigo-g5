@@ -7,20 +7,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (901120 top-level bytes in 1 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 50 of 50 named (0 author symbols), 50 of 50 described (7 by rule, 43 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 2 of 2 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 2048 bytes, 10 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1223 of 1223 instructions identical in start and length, 0 mismatches |
+| Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 3 raw-word lines |
+| Functions named and described | pass, 56 of 56 named (0 author symbols), 56 of 56 described (9 by rule, 47 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 28 of 28 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 14688 bytes, 14 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 1304 of 1304 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 1500 |
-| code | 4084 |
-| data | 889388 |
-| padding | 4 |
+| code | 4360 |
+| data | 889110 |
+| padding | 6 |
 | unused | 6144 |
 
 ## Code units
@@ -30,23 +30,31 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Super Hang-On.adf:bootblock | 1 | 77 | 3 |
 | logged disk load from Super Hang-On.adf boot-block load | 1 | 290 | 22 |
 | logged disk load from Super Hang-On.adf boot-block load | 1 | 503 | 15 |
+| logged disk load from Super Hang-On.adf | 1 | 30 | 2 |
 | Super Hang-On.adf bytes 11264-11776 (code never loaded by a reference run) | 1 | 0 | 0 |
+| Super Hang-On.adf bytes 315392-315808 beside a logged load (code never loaded by a reference run, load address unknown) | 1 | 0 | 0 |
+| Super Hang-On.adf bytes 315968-316416 beside a logged load (code never loaded by a reference run, load address unknown) | 1 | 51 | 4 |
 | Super Hang-On.adf blocks 23-25 (bytes 11776-13312) (code never loaded by a reference run, load address unknown) | 1 | 353 | 10 |
+| Super Hang-On.adf blocks 618-640 (bytes 316416-328192) (code never loaded by a reference run, load address unknown) | 1 | 0 | 0 |
 
 ## Cases handled
 
 - Super Hang-On/Super Hang-On.adf: custom-format (non-DOS) disk, 1746 non-empty blocks: matched against track-loaded segments
 - Super Hang-On/Super Hang-On.adf: the boot block reads 4608 bytes from disk offset 1024 to an address (found statically); recovered as a unit
 - Super Hang-On/Super Hang-On.adf: the boot block reads 2048 bytes from disk offset 5632 to an address (found statically); recovered as a unit
+- Super Hang-On/Super Hang-On.adf: 26 executed PCs whose RAM was overwritten before any snapshot match its bytes 315808-315968: recovered as a unit run at an address
 - Super Hang-On/Super Hang-On.adf: bytes 11264-11776 look like code no run loaded: recovered position-independently (load address unknown)
-- Super Hang-On/Super Hang-On.adf: 3 logged loads cover 7168 bytes of the image
+- Super Hang-On.adf bytes 315392-315808 beside a logged load (code never loaded by a reference run, load address unknown): never-loaded code-like bytes recovered position-independently (load address unknown, 0 of 416 bytes decode)
+- Super Hang-On.adf bytes 315968-316416 beside a logged load (code never loaded by a reference run, load address unknown): never-loaded code-like bytes recovered position-independently (load address unknown, 176 of 448 bytes decode)
+- Super Hang-On/Super Hang-On.adf: 6 logged loads cover 7328 bytes of the image
 - Super Hang-On/Super Hang-On.adf: blocks 15-21 (bytes 7680-11264) hold ASCII text
 - Super Hang-On.adf blocks 23-25 (bytes 11776-13312) (code never loaded by a reference run, load address unknown): never-loaded code-like bytes recovered position-independently (load address unknown, 1026 of 1536 bytes decode)
 - Super Hang-On/Super Hang-On.adf: blocks 33-341 (bytes 16896-175104) outside the filesystem hold data, not code (opcode density 0.004, entropy 5.54)
 - Super Hang-On/Super Hang-On.adf: blocks 343-569 (bytes 175616-291840) outside the filesystem hold data, not code (opcode density 0.010, entropy 5.27)
-- Super Hang-On/Super Hang-On.adf: blocks 571-640 (bytes 292352-328192) outside the filesystem hold data, not code (opcode density 0.048, entropy 6.31)
+- Super Hang-On/Super Hang-On.adf: blocks 571-615 (bytes 292352-315392) outside the filesystem hold data, not code (opcode density 0.038, entropy 6.38)
+- Super Hang-On.adf blocks 618-640 (bytes 316416-328192) (code never loaded by a reference run, load address unknown): never-loaded code-like bytes recovered position-independently (load address unknown, 0 of 11776 bytes decode)
 - Super Hang-On/Super Hang-On.adf: blocks 644-1759 (bytes 329728-901120) outside the filesystem hold data, not code (opcode density 0.002, entropy 4.74)
-- 1 never-loaded region(s), 512 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+- 3 never-loaded region(s), 12704 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
@@ -107,6 +115,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `write_alt_control_and_call`: Writes the byte 114 then 119 to the CIA port B register at a fixed address, calls one unnamed routine, and returns zero.
 - `wait_for_interrupt_flag`: Polls a global variable in a loop until bit 5 is set, then clears that bit, and returns.
 - `wait_for_blitter_2`: Waits until the blitter has finished its current operation by polling the blitter-busy bit of DMACONR in a loop, then returns.
+
+### logged disk load from Super Hang-On.adf
+
+- `frag_move_moveq_bra`: Short code fragment that copies a0 to d3, then loads 2 into d7, then loads 1 into d1, then jumps to another point in the code.
+- `blit_setup`: Configures bitmap transfer hardware registers for a block fill operation with specific control and depth settings, then performs four iterations of setting the destination pointer and initiating the transfer.
+
+### Super Hang-On.adf bytes 315968-316416 beside a logged load (code never loaded by a reference run, load address unknown)
+
+- `register_store`: Calls another routine three times, stores a word value to three different global variables, and returns values from the stack.
+- `zero_check`: Performs bitwise operations on a word value, calls other routines three times, and decrements a global variable when the masked value equals zero.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs three instructions (lsl.w, rol.w, rol.w) and then falls through into the code that follows, with no return of its own.
+- `condition_check`: Compares two byte values after masking their lower four bits and returns early if the condition is met, otherwise continues execution.
 
 ### Super Hang-On.adf blocks 23-25 (bytes 11776-13312) (code never loaded by a reference run, load address unknown)
 

@@ -37,8 +37,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - vroom - graphic and qwerty keyboard fix (1992)(yakoul)[req. vroom]/Vroom - Graphic and Qwerty Keyboard Fix (1992)(Yakoul)[req. Vroom].adf:VROOM: Action Replay II (ARPF) Data Cruncher (xfd)-packed, unpacked with ancient (94022 -> 522240 bytes)
 - reference run ref ends at a 68000 address error (odd PC an address after an address): the harness halted there, nothing after it ran (68000 HALTED: address error at odd PC an address after an address, vector 3 an address is not a handler in RAM (the 68000 double-faults and halts); run ended at frame 0)
-- prefix run f100 ignored: it logged 75 PCs the canonical run never executed (not a prefix of it)
-- prefix run f50 ignored: it logged 75 PCs the canonical run never executed (not a prefix of it)
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - vroom - graphic and qwerty keyboard fix (1992)(yakoul)[req. vroom]/Vroom - Graphic and Qwerty Keyboard Fix (1992)(Yakoul)[req. Vroom].adf:VROOM#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate

@@ -121,8 +121,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - extended reference run ignored: it does not re-execute 214 of the 235 PCs the canonical run logged (131341 PCs logged; the harness no longer reproduces the game), so its PCs and RAM are not used
 - reference run failed (Karl 4 Nov 2026): run ext slid through memory (an address: 8 64 KB pages each with >= 29491 distinct PCs executed, 131198 of its 131341 PCs), a runaway, not game code; the run is not used (re-run it: pipeline.py extend regenerates ext when its RAM is moved aside)
-- prefix run f150 ignored: it logged 131190 PCs the canonical run never executed (not a prefix of it)
-- prefix run f75 ignored: it logged 131182 PCs the canonical run never executed (not a prefix of it)
 - runtime segment an address (play-lgpwide): 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-m1500): 18 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-lgpwide): 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered

@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (901200 top-level bytes in 19 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 14 raw-word lines |
 | Functions named and described | pass, 126 of 126 named (0 author symbols), 126 of 126 described (35 by rule, 86 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 324 of 324 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 429 of 429 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 2838 of 2838 instructions identical in start and length, 0 mismatches |
 
@@ -34,7 +34,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Cases handled
 
-- 2 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- 3 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - runtime segment an address: 9 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - hyper viper (1996)(l. carminati)[h ale]/Hyper Viper (1996)(L. Carminati)[h ALE].adf:type: Imploder (xfd) stream found by ancient scan (2812 -> 19504 bytes) but only 0 of 2 sampled windows are in reference RAM: not used
 

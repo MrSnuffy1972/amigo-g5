@@ -7,20 +7,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (3613216 top-level bytes in 29 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 19 of 19 units identical (bytes and relocations), 72 raw-word lines |
-| Functions named and described | pass, 331 of 331 named (0 author symbols), 331 of 331 described (26 by rule, 301 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1099 of 1100 (99.91%) |
-| Recovered without load address (counted in proof 1, flagged) | 3301234 bytes, 162 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 11566 of 15639 instructions identical in start and length, 0 mismatches |
+| Byte-identical reassembly with vasm | pass, 19 of 19 units identical (bytes and relocations), 89 raw-word lines |
+| Functions named and described | pass, 343 of 343 named (0 author symbols), 343 of 343 described (37 by rule, 302 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1169 of 1169 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 3301234 bytes, 168 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 12005 of 15871 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 756006 |
-| code | 60968 |
-| data | 2107879 |
-| padding | 4843 |
+| code | 61520 |
+| data | 2107319 |
+| padding | 4851 |
 | unused | 683520 |
 
 ## Code units
@@ -29,17 +29,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Type | 1 | 426 | 2 |
 | 1 | 2 | 3 | 1 |
-| Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 1 of 4).adf:LKATRO.EXE | 8 | 45 | 2 |
-| Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 1 of 4).adf:lionking | 4 | 1693 | 124 |
+| Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 1 of 4).adf:LKATRO.EXE | 8 | 250 | 17 |
+| Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 1 of 4).adf:lionking | 4 | 1673 | 119 |
 | Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 1 of 4).adf:bootblock | 1 | 10 | 1 |
 | Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 2 of 4).adf:bootblock | 1 | 54 | 1 |
 | Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 3 of 4).adf:bootblock | 1 | 54 | 1 |
 | Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 4 of 4).adf:bootblock | 1 | 54 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 548 | 22 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 462 | 12 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 545 | 18 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 489 | 12 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
-| Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 1 of 4).adf:LION (raw code file, load address unknown) | 1 | 12285 | 162 |
+| Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 1 of 4).adf:LION (raw code file, load address unknown) | 1 | 12308 | 168 |
 | Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 1 of 4).adf:LEVEL1#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
 | Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 2 of 4).adf:LEVEL3#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
 | Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 2 of 4).adf:LEVEL4#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
@@ -50,15 +50,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ## Cases handled
 
 - lion king, the (1994)(virgin)(aga)[cr cls](disk 1 of 4)/Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 1 of 4).adf:LEVEL1: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (448788 -> 818052 bytes)
-- lion king, the (1994)(virgin)(aga)[cr cls](disk 2 of 4)/Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 2 of 4).adf:LEVEL3: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (293182 -> 528216 bytes)
-- lion king, the (1994)(virgin)(aga)[cr cls](disk 2 of 4)/Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 2 of 4).adf:LEVEL4: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (126344 -> 218380 bytes)
-- lion king, the (1994)(virgin)(aga)[cr cls](disk 2 of 4)/Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 2 of 4).adf:LEVEL5: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (138661 -> 260506 bytes)
+- lion king, the (1994)(virgin)(aga)[cr cls](disk 2 of 4)/Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 2 of 4).adf:LEVEL3: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (293184 -> 528216 bytes)
+- lion king, the (1994)(virgin)(aga)[cr cls](disk 2 of 4)/Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 2 of 4).adf:LEVEL4: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (126346 -> 218380 bytes)
+- lion king, the (1994)(virgin)(aga)[cr cls](disk 2 of 4)/Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 2 of 4).adf:LEVEL5: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (138664 -> 260506 bytes)
 - lion king, the (1994)(virgin)(aga)[cr cls](disk 4 of 4)/Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 4 of 4).adf:LEVEL8: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (298871 -> 555238 bytes)
 - lion king, the (1994)(virgin)(aga)[cr cls](disk 4 of 4)/Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 4 of 4).adf:LEVELA: RNC1: Rob Northen RNC1 Compressor-packed, unpacked with ancient (337825 -> 620386 bytes)
-- runtime segment an address: 495 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 345 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 516 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 393 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- lion king, the (1994)(virgin)(aga)[cr cls](disk 1 of 4)/Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 1 of 4).adf:LKATRO.EXE: Imploder (xfd) stream found by ancient scan (4424 -> 5308 bytes) but only 0 of 3 sampled windows are in reference RAM: not used
 - lion king, the (1994)(virgin)(aga)[cr cls](disk 1 of 4)/Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 1 of 4).adf:LION: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - lion king, the (1994)(virgin)(aga)[cr cls](disk 1 of 4)/Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 1 of 4).adf:LEVEL1#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - lion king, the (1994)(virgin)(aga)[cr cls](disk 2 of 4)/Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 2 of 4).adf:LEVEL3#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
@@ -90,7 +91,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Type
 
 - `parse_type_command_arguments`: Parses command-line arguments to identify hex or number flags, validates that they are not used simultaneously, and handles error reporting for invalid options or file access failures.
-- `format_and_print_string`: Iterates through a loop to format a string and numeric values into a local buffer using a hexadecimal character table, then writes the resulting string to a destination via a library call.
+- `format_output_string`: Formats strings and numbers into a character buffer using specific text patterns and hexadecimal characters.
 
 ### 1
 
@@ -100,6 +101,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `run_hdinstall_entry`: Runs a fixed sequence of helper calls and a loop that calls FreeMem three times, clears a word in a shared record, and swaps one table entry with a RAM variable when it matches a fixed constant.
 - `decrement_until_minus_one`: Decrements a local variable until it reaches negative one and then returns.
+- `initialize_and_process`: Initializes counters and processes data through a loop that handles conditional branches and calls another routine, with operations on registers and memory addressing.
+- `process_data_with_loop`: Processes data through a loop that handles conditional branches and calls another routine, with operations on registers and memory addressing.
+- `frag_beq_movea_bsr_bra`: Short code fragment that branches if the last result was zero, then copies a3 to a1, then calls another routine, then jumps to another point in the code.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs two instructions (lea.l, moveq) and then falls through into the code that follows, with no return of its own.
+- `frag_cmpa_beq_move_subq_bne_rts`: Short code fragment that compares a2 with a6, then branches if the last result was zero, then copies the memory just below a2 (moving a2 down) to the memory at a1 (advancing a1) (4 times in a row), then subtracts 2 from d0, then branches if the last result was not zero, then copies the memory just below a1 (moving a1 down) to d0, then returns.
+- `decode_pattern_2`: Processes bit patterns from a source buffer, copying bytes and managing carry flags through multiple conditional branches based on bit values, then loads a final value into a register and branches to a handler.
+- `frag_moveq_add_bne_move_addx_dbra_addq`: Short code fragment that loads 2 into d7, then adds d1 to d1, then branches if the last result was not zero, then copies the memory just below a0 (moving a0 down) to d1, then adds d1 and the extend flag to d1, then adds d0 and the extend flag to d0, then loops back while counting down d7, then adds 6 to d0, then loads 3 into d7, then jumps to another point in the code.
+- `frag_moveq_bra`: Short code fragment that loads 5 into d0, then loads 3 into d7, then jumps to another point in the code.
+- `frag_moveq_bra_2`: Short code fragment that loads 4 into d0, then loads 2 into d7, then jumps to another point in the code.
+- `frag_moveq_bra_3`: Short code fragment that loads 3 into d0, then loads 1 into d7, then jumps to another point in the code.
+- `decode_bit_pattern`: Processes bits from a buffer using shift operations and copies decoded bytes to another location while updating counters.
+- `frag_add_bne_move_addx_bra`: Short code fragment that adds d1 to d1, then branches if the last result was not zero, then copies the memory just below a0 (moving a0 down) to d1, then adds d1 and the extend flag to d1, then adds d2 and the extend flag to d2, then jumps to another point in the code.
+- `decode_pattern_loop`: Processes bits from a buffer using shift operations and copies decoded bytes to another location while updating counters.
+- `decode_pattern`: Decodes a pattern from a buffer, processes bits using shift operations, and copies decoded bytes to another location while updating counters and pointers.
+- `frag_move_movem_bra`: Short code fragment that copies d0 to the memory just below a4 (moving a4 down), then copies d1 to the memory just below a4 (moving a4 down), then copies d2 to the memory just below a4 (moving a4 down), then restores saved registers from the stack, then jumps to another point in the code.
 
 ### Lion King, The (1994)(Virgin)(AGA)[cr CLS](Disk 1 of 4).adf:lionking
 
@@ -131,7 +147,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_min_value_to_offset`: Calls another routine, compares the long value at offset 14 of the structure in a4 with d1, and stores the minimum of these two values at offset 6 of the structure in a4.
 - `update_minimum_delta_and_counters`: Calculates the difference between two values in a structure, updates a global minimum value if the difference is smaller, and performs conditional increments and resets on structure fields based on comparisons with a scaled value.
 - `update_structure_counters`: Increments a counter within a structure and performs conditional checks against other fields, calculates a value based on register inputs, updates memory locations via pointers, and handles alignment or masking operations before returning a combined result.
-- `calculate_scaled_value`: Performs a series of arithmetic operations including multiplication and division on a value in d0, and returns the result in d2 masked to 16 bits.
+- `mask_low_bits`: The routine reads an input value from the D0 register and returns the bitwise AND of that value with a constant mask, effectively keeping only the lowest ten bits.
 - `compute_price_index_from_a4`: Calculates a 16-bit value by multiplying a value derived from a4 by 18, checks a global variable at that index, and returns the index or zero.
 - `clear_and_load_registers`: Calls another routine and, if the zero flag is not set, loads a long from offset 144 of a structure in a0 into d7, clears a long at offset 1fc of a structure in a6, and loads the address of offset 138 of that same structure into a2.
 - `compare_and_increment_pointer`: Calls another routine and, if the zero flag is not set, copies d1 to d2 and d4, modifies a pointer in a5, and either branches to another routine or compares a value in d7 against 488 before incrementing d2.
@@ -167,11 +183,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_and_test_d0`: Saves d2 and d3 to the stack, calls another routine, restores d2 and d3, and branches if d0 is non-zero.
 - `check_sum_result`: Calls another routine and, if the zero flag is not set, loads the value 373 into d0 before returning.
 - `sum_negate_array_words`: It adds 128 consecutive 32-bit words pointed to by a pointer in A0, accumulating the sum in a register.
-- `fill_zero_data`: This routine performs nine consecutive bitwise OR operations on D0 with zero.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
-- `perform_zero_or`: This routine performs a single bitwise OR operation on D0 with zero.
-- `set_zero_register`: Sets the low byte of register d0 to zero.
-- `set_multiple_zero_registers`: Sets the low byte of register d0 to zero eight times consecutively.
 - `update_offset_value`: Clears a longword at offset 20 of the structure in a0, calls another routine, and then stores the resulting d0 value into that same offset.
 - `tiny_moveq`: Small routine of 1 instruction that loads 1 into d2.
 - `recursive_call_stub`: Saves d3 to the stack, sets d3 to 1, calls itself, restores d3, and returns.
@@ -247,14 +258,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `configure_hardware_and_tables`: Sets the interrupt enable and DMA control registers to enable interrupts and DMA, clears a range of memory using a loop, populates several table entries with specific 16-bit values, and calls another routine before updating several global pointers.
-- `store_and_branch`: Stores the contents of register d0 into a longword at a specific memory location and then performs a short branch.
-- `manage_blitter_state_and_interrupts`: Updates several hardware registers including Blitter and DMA control, performs conditional jumps based on a structure in a5, and calls several routines to manage data streams and interrupt flags.
 - `dispatch_indirect_jump`: Sets the user stack pointer from a value on the stack, clears the interrupt mask bit 6, and performs an indirect jump using a pointer popped from the stack.
-- `clear_d0_byte`: Performs a logical OR on register d0 with zero.
-- `tiny_ori_2`: Small routine of 1 instruction that merges 202 into d0.
-- `tiny_ori_3`: Small routine of 1 instruction that merges 0 into d7.
+- `fall_through_entry_2`: Entry point part-way through straight-line code: runs one instruction (and.b) and then falls through into the code that follows, with no return of its own.
 - `update_state_and_blitter_2`: Tests bit 5 of a hardware register and, if set, saves all registers, calls seven different routines, restores the registers, writes a value to a hardware register, and returns from an interrupt.
-- `tiny_ori_4`: Small routine of 1 instruction that merges 64 into d0.
+- `fall_through_entry_3`: Entry point part-way through straight-line code: runs one instruction (movea.w) and then falls through into the code that follows, with no return of its own.
 - `wait_for_blt_interrupt`: Loops while bit 6 of a hardware register is set, then writes several values to Blitter and DMA registers before returning if bit 6 is cleared.
 - `parse_data_stream`: Reads bytes from a source, advancing a destination pointer by 640 bytes if the byte is 1, or copying 8 blocks of 96 bytes from a table based on the byte value minus 32.
 - `update_state_and_blitter`: Manages a counter and index to fetch a 16-bit value from a table, or updates Blitter registers and a pointer based on a sequence of bytes in a data stream.
@@ -273,14 +280,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `branch_to_offset`: Performs a relative branch to an offset.
 - `decompress_and_configure_audio`: Decompresses a data stream by applying bitwise NOT operations and multi-byte expansions into a destination buffer, then configures audio registers, DMA, and interrupt settings.
-- `tiny_rte`: Small routine of 1 instruction that returns from the exception.
+- `update_vector_base`: Loads a value from a data register into the vector base register and returns from the routine.
 - `reset_hardware_state`: Clears four 16-bit words at offsets 168, 184, 200, and 216 from a6, modifies a bit in the CIAA_PRA register, and stores a 16-bit value and a pointer from memory into a6-relative offsets.
 - `process_data_stream_structure`: Iterates through a structure in a loop to decompress data by reading bytes and applying bitwise NOT operations or multi-byte expansions.
+- `update_stream_position`: Updates a stream position counter based on comparison with a threshold value, clears a flag when the threshold is reached, and stores the final position in a structure.
 - `process_compressed_data_stream`: Iterates through a structure in a loop to decompress data by reading bytes and applying bitwise NOT operations or multi-byte expansions based on specific marker values.
-- `process_data_byte`: Reads a byte from offset 2 of a structure in a5 and, if it is not zero, stores it at offset 21 of the structure; otherwise, it performs a series of bitwise and arithmetic operations using values from the structure and a table in a2 to update offsets 8 and 18 of the structure before branching to another routine.
 - `transfer_byte_and_branch`: Moves a byte from offset 13 of a structure in a5 to offset 13 of the same structure and then branches to another routine.
 - `expand_compressed_data_structure`: Reads a byte from a source pointer to determine a control value, then uses it to fetch four 16-bit words from a table and stores them at specific offsets within a structure.
-- `configure_decompression_parameters`: Reads a byte from a structure to determine expansion or scaling factors, then updates a control structure by writing specific values to offsets 7, 9, and 10, or performs a division to calculate and store two related values at offsets 26 and 28.
+- `skip_data_bytes`: Skips a series of data bytes by decrementing a counter and branching based on its value, then saves a register and branches again.
 - `configure_dma_transfer`: Sets a source address, a destination address, and a transfer count or control value, affecting hardware DMA registers.
 - `load_audio_registers`: Copies four sets of 32-bit data from memory into the audio registers starting at a fixed address, sets a 16-bit value at an offset from a1, and writes two bytes to hardware registers.
 
@@ -340,6 +347,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `search_parameter_table`: Iterates through a table starting at offset 54 of a structure in a0 using a loop that decrements a counter, checking if specific values exist at offset 34 and offset 14 of each entry.
 - `tiny_clr`: Small routine of 1 instruction that clears d0.
 - `set_pointer_and_call`: If a global variable is 0, it sets several global variables to specific values and then calls another routine, otherwise it sets a global variable to the value in d0 and calls another routine.
+- `jump_to_select_parameter_and_branch_2`: Jump stub: passes control straight on to select_parameter_and_branch_2.
+- `jump_to_evaluate_animation_conditions`: Jump stub: passes control straight on to evaluate_animation_conditions.
+- `jump_to_fetch_indexed_data`: Jump stub: passes control straight on to fetch_indexed_data.
+- `jump_to_process_entity_counters`: Jump stub: passes control straight on to process_entity_counters.
+- `frag_bra_rts`: Short code fragment that jumps to another point in the code, then returns.
 - `process_entity_state_and_collision`: Checks several global status flags and, if conditions are met, updates a global counter, modifies a pointer in a global variable, and calls other routines to handle specific state changes.
 - `process_callback_list_2`: Checks several global variables and a pointer table; it updates a global word, increments two global counters, calls another routine, and if a counter reaches 5, clears it and calls a routine via a pointer from a global variable before jumping to a location.
 - `process_state_and_update_counters`: Checks a 16-bit value in a global variable and, if non-zero, clears a 16-bit value in another global variable, sets a 16-bit flag, and performs several subroutine calls.
@@ -401,7 +413,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `perform_blitter_transfers_2`: Configures Blitter hardware registers, decrements pointers within a structure, and executes multiple data transfers using a loop that processes bit-packed data and stack-based values.
 - `extract_flag_bit_from_table`: Scans a table of word pairs until a condition on a global mask is met, then reads a byte from a table entry and uses it as an index into a global mask to extract a bit, calling another routine if a borrow condition is detected.
 - `mask_and_conditional_call`: The routine masks a word from a register with a word from a register and, if a byte from a register is less than a byte from a register, it calls another routine and uses its returned word as the result; otherwise it returns the masked word.
-- `manipulate_registers_from_table`: Reads two bytes from a table pointed to by a3, performs bitwise shifts and swaps on them, and modifies d1, d6, and d7.
+- `refill_bit_buffer_from_a3_stream`: Adds d1 back into d7, shifts d6 right by d7, swaps d6, advances a3 by four and loads two bytes backwards into d6 with a byte swap, then resets d7 to sixteen minus d1.
 - `accumulate_32bit_from_bytes`: The routine reads four consecutive bytes from a pointer in a register and builds a 32-bit value in a register by concatenating each byte into the result.
 - `decode_and_fill_table`: Reads a count, fills a buffer from another routine, then iterates over a stack buffer and a table, writing bit masks and derived values into table entries based on matching bytes.
 - `multiply_and_copy_data_2`: Reads several words from a source, performs arithmetic to calculate a new value, and then uses multiple loops to copy and fill data into a destination buffer at a fixed address.
@@ -434,6 +446,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_system_parameters_3`: Clears d1, calls another routine, decrements a word in a global variable, loads two pointers into a0 and a1, and calls a third routine before returning.
 - `modify_structure_offset_2`: Stores a word into a global variable, loads a word from a global variable into d1, and either branches or increments d1 based on a comparison.
 - `update_structure_offsets_2`: Stores a 16-bit word from d1 into a global variable, then accesses a table via a1 to conditionally add or subtract values from offsets 2 and 50 of a structure based on bit flags and comparisons.
+- `clear_structure_fields`: Clears specific fields in a data structure array by writing zero values to memory locations offset by 45 words, repeating 41 times.
 - `update_structure_offsets`: Checks specific bit flags and values within a structure, then either adds or subtracts a value from offsets 2 and 50 of that structure based on a global variable.
 - `update_collision_bounds`: Calculates a bounding range based on a structure's properties and a table, then performs collision detection by checking if a coordinate falls within specific intervals.
 - `branch_with_offset`: Sets a1 to point to offset 91 of the structure in a1, branches to another routine, and otherwise clears d0 and returns.

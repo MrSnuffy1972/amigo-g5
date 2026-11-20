@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (1843997 top-level bytes in 12 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 17 of 17 units identical (bytes and relocations), 82 raw-word lines |
-| Functions named and described | pass, 378 of 378 named (0 author symbols), 378 of 378 described (19 by rule, 359 by the local model) |
+| Functions named and described | pass, 441 of 441 named (0 author symbols), 441 of 441 described (63 by rule, 377 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 5905 of 5905 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 20880 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 8472 of 8472 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 9003 of 9003 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 933332 |
-| code | 32202 |
-| data | 878447 |
+| asset | 933699 |
+| code | 34332 |
+| data | 875950 |
 | padding | 16 |
 
 ## Code units
@@ -28,9 +28,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | OverkillAGA.slave | 1 | 80 | 9 |
 | Disk.1:bootblock | 1 | 87 | 4 |
+| logged disk load from Disk.1 | 1 | 22 | 3 |
 | logged disk load from Disk.1 | 1 | 0 | 0 |
-| logged disk load from Disk.1 | 1 | 0 | 0 |
-| logged disk load from Disk.1 | 1 | 8230 | 353 |
+| logged disk load from Disk.1 | 1 | 8713 | 400 |
 | logged disk load from Disk.1 | 1 | 0 | 0 |
 | logged disk load from Disk.2 | 1 | 0 | 0 |
 | logged disk load from Disk.2 | 1 | 0 | 0 |
@@ -41,7 +41,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 13 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 55 | 4 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 6 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 32 | 19 |
 | OSEmu.400 (raw code file, load address unknown) | 1 | 0 | 0 |
 
 ## Cases handled
@@ -55,6 +55,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address: 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 6 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - Overkill_v1.1_AGA_0707/OverkillAGA/OSEmu.400: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 5 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 2 branch displacement, 1 immediate, 1 displacement, 1 address
 - Overkill_v1.1_AGA_0707/OverkillAGA/Disk.1: 4 logged loads cover 515584 bytes of the image
 - Overkill_v1.1_AGA_0707/OverkillAGA/Disk.1: blocks 1007-1759 (bytes 515584-901120) outside the filesystem hold data, not code (opcode density 0.002, entropy 5.60)
 - Overkill_v1.1_AGA_0707/OverkillAGA/Disk.2: 6 logged loads cover 449536 bytes of the image
@@ -93,9 +94,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### logged disk load from Disk.1
 
+- `load_and_execute`: Loads a library base from a global variable and calls three library functions at specific offsets, then stores a value to a memory location and jumps to another function.
+- `call_library_vector_456_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 456 of that base, returning its result to the caller.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+
+### logged disk load from Disk.1
+
 - `branch_to_address`: Branches to a relative address.
 - `store_word_to_global`: Stores a 16-bit word from d0 into a global variable and returns.
 - `calculate_scaled_value`: Subtracts 64 from a value in d0 if it is greater than 64, multiplies the result by a constant from a table, and stores the result in a 16-bit word at offset 8 of the structure in a1.
+- `copy_memory_block`: Copies a block of data from one memory location to another using a loop that decrements a counter, then stores a value in a global variable and calls two functions.
+- `update_structure_fields_5`: Saves the current register state on the stack, updates several fields in a structure pointed to by a global variable, and restores the register state before returning.
+- `conditional_structure_update`: Checks if a specific global variable is zero, and if so, reads values from a structure and stores them in other global variables.
+- `update_structure_with_byte`: Updates fields in a structure based on calculations involving register values and memory access, then stores the result in specific offsets of that structure.
 - `load_pointers_and_call`: Loads a pointer from a table into a2, calls another routine, loads a pointer from the same table into a0, and then branches to another location.
 - `call_stub_2`: Performs a branch to a specific address.
 - `relocate_pointer_table_entries`: Walks a chain of records and, for each active one, adds the record's base address to a run of longword fields starting at a fixed offset, using a count stored in the record.
@@ -112,18 +123,43 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_sprite_attribute_and_offset`: Updates a sprite's attribute in a hardware register table based on a value in a register, then calculates a new memory offset for the sprite structure by multiplying a value from a structure by a constant and adding a byte from a register, storing the result at offset 2 of that structure.
 - `subtract_and_store_byte`: Subtracts a word from a global variable and stores the result as a byte in a global variable at offset 769, then branches to another routine.
 - `update_sprite_dma_settings`: Iterates through a list of sprite structures to update their dimensions, memory offsets, and visibility, then modifies the DMA controller register to enable specific channels based on a bitmask.
+- `frag_tst_bne_move_bra`: Short code fragment that tests d4, then branches if the last result was not zero, then copies the memory at an offset from a2 to the memory at an offset from a6, then jumps to another point in the code.
+- `frag_tst_beq_subq_bra`: Short code fragment that tests the memory at an offset from a6, then branches if the last result was zero, then subtracts 1 from the memory at an offset from a6, then branches if the last result was zero, then jumps to another point in the code.
+- `frag_move_addq_bra`: Short code fragment that copies d4 to the memory at an offset from a6, then copies the memory at an offset from a6 to d0, then adds 1 to d0, then copies d0 to the memory at an offset from a6, then jumps to another point in the code.
+- `frag_moveq_move_asl_bra`: Short code fragment that loads 0 into d1, then copies the memory at an offset from a5 to d1, then shifts d1 left by 3, then copies d4 to an indexed entry from a4, then jumps to another point in the code.
+- `frag_move_lsr_andi_bra`: Short code fragment that copies d4 to d0, then shifts d4 right by 4, then masks d0 with 15, then copies d4 to the memory at an offset from a5, then copies d0 to the memory at an offset from a5, then jumps to another point in the code.
 - `shift_and_store_word`: Shifts the value in d4 left by 8 bits, stores the result in a word at offset 12 of a structure in a5, and branches.
 - `update_sprite_dma_settings_2`: Iterates through a list of sprite structures to update their display data and attributes, performs scaling calculations using a table, and modifies the DMA controller register to enable specific DMA channels.
+- `frag_move_addq_bra_2`: Short code fragment that copies 511 to the memory at an offset from a6, then adds 1 to d4, then copies d4 to the memory at an offset from a6, then jumps to another point in the code.
+- `update_sprite_dma_settings_3`: Updates DMA channel settings based on sprite attributes and waits for vertical blank periods, then writes updated values to hardware registers.
 - `enable_dma_channels`: Sets bit 15 of the DMA controller register to enable DMA channels and calls calculate_scaled_value, wait_for_vblank, and write_pending_entry_and_shift.
+- `frag_move_bra`: Short code fragment that copies 6 to the memory at an offset from a5, then jumps to another point in the code.
+- `update_sprite_attributes`: Processes sprite attribute data from a global structure, modifies sprite position and scaling parameters based on lookup table values, and updates the global structure with modified values.
+- `frag_tst_bne_btst_bsr_bra`: Short code fragment that tests d3, then branches if the last result was not zero, then tests bit 5 of the memory at an offset from a4, then branches if the last result was not zero, then calls another routine, then jumps to another point in the code.
+- `update_sprite_scale`: Processes sprite scaling parameters from global variables, applies a lookup table to scale values, and updates sprite attributes including position and size.
+- `frag_tst_bne_btst_bsr_bra_2`: Short code fragment that tests d3, then branches if the last result was not zero, then tests bit 5 of the memory at an offset from a4, then branches if the last result was not zero, then calls another routine, then jumps to another point in the code.
+- `frag_move_moveq_andi_bne_sub`: Short code fragment that copies d4 to d0, then loads 0 into d1, then copies the memory at an offset from a5 to d1, then masks d0 with 240, then branches if the last result was not zero, then subtracts d4 from d1.
 - `branch_if_positive`: If the value in the status register indicates a positive result, it clears d1 and branches to another location; otherwise, it continues to the next instruction.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs two instructions (lsr.b, add.b) and then falls through into the code that follows, with no return of its own.
 - `clamp_and_store_byte`: Compares a byte against sixty-four and stores the larger of the two values into a memory location offset by two from a pointer.
 - `increment_and_clamp_sprite_attribute`: Tests a byte in register d3 and, if zero, adds a byte from register d4 to a byte located at offset 2 of the pointer in a5 and calls clamp_and_store_byte; otherwise it branches to another routine.
 - `update_sprite_attributes_and_sync_dma`: Calculates scaled values for sprite attributes stored in a structure, waits for vertical blanking to update the DMA controller, and calls a routine to write pending entries to a list based on a bitmask.
+- `frag_tst_bne_btst_bsr_bra_3`: Short code fragment that tests d3, then branches if the last result was not zero, then tests bit 5 of the memory at an offset from a4, then branches if the last result was not zero, then calls another routine, then jumps to another point in the code.
+- `adjust_position`: Adjusts a position value based on a global variable and compares it with another value, branching conditionally based on the comparison result.
+- `frag_sub_cmp_bgt_move_clr_bra`: Short code fragment that subtracts d4 from d1, then compares d1 with d0, then branches if the comparison was greater, then copies the memory at an offset from a5 to d1, then clears the memory at an offset from a5, then copies d1 to the memory at an offset from a5, then copies d1 to d5, then jumps to another point in the code.
+- `update_dma_channels`: Updates DMA channel settings based on sprite attributes and waits for vertical blank periods, then writes updated values to hardware registers.
 - `wait_for_vblank`: Compares the value in the video hardware register at offset 6 with itself in a loop, otherwise it returns.
 - `write_pending_entry_and_shift`: Shifts an input flag value right by one bit.
+- `frag_cmp_bne_beq_rts`: Short code fragment that compares d4 with 241, then branches if the last result was not zero, then compares d3 with 3, then branches if the last result was zero, then returns.
+- `frag_cmp_bne_beq_rts_2`: Short code fragment that compares d4 with 242, then branches if the last result was not zero, then compares d3 with 3, then branches if the last result was zero, then returns.
+- `compare_and_branch`: Compares a register with a constant value and branches if they are not equal, performs bitwise operations on another register, and handles conditional jumps based on multiple comparisons.
+- `store_structure_byte`: Reads the byte at offset 8 of the structure in a5 and, when it is zero, replaces it with the value minus one stored at offset 7, otherwise stores minus one at offset 7, then calls another routine and returns.
+- `frag_cmp_beq_bne_bclr_rts`: Short code fragment that compares d4 with 248, then branches if the last result was zero, then compares d4 with 249, then branches if the last result was not zero, then clears bit 1 of a fixed memory address, then returns.
+- `frag_bset_rts`: Short code fragment that sets bit 1 of a fixed memory address, then returns.
 - `update_tables_and_buffers`: Multiplies a byte from a structure by another byte and stores the result in a table, then either clears a buffer or copies data from a source structure into a destination table based on specific conditions.
 - `clear_structure_field`: If a global variable is not zero, it clears a 16-bit word at an offset of 40 from that global variable and then sets the global variable to zero.
 - `process_structure_chain`: Calls two routines, then traverses a linked list of structures in a0 while decrementing a global variable, finally updating a byte at offset 50 of a structure using a value from another structure and modifying a global variable based on a bit in a CIAA register.
+- `frag_movem_rts_bra`: Short code fragment that saves registers on the stack, then restores saved registers from the stack, then returns, then jumps to another point in the code.
 - `increment_and_mask_global`: Increments a 16-bit global variable, uses the lower 4 bits of that variable to index into a table, and returns the lower 4 bits of the byte found at that index.
 - `update_global_with_bit_manipulation`: Performs arithmetic and bitwise operations on a value from a table and stores the result in a global variable.
 - `combine_shifted_values`: Calls another routine twice, shifting the first result left by 4 bits and the second result left by 8 bits, then combines them using a bitwise OR.
@@ -167,6 +203,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_dynamic_parameters`: Calculates a value from a longword at offset 32 of a structure in a0 and a global variable, and if this value is within a specific range, it updates a structure at offset 80 of a0 with values derived from a table and performs several arithmetic operations to store results into a structure pointed to by a6.
 - `calculate_complex_offsets`: Uses a table to calculate several values through multiplication and bit manipulation, then, if certain conditions are met, populates a structure with these values and updates hardware registers.
 - `update_structure_offsets_3`: Performs several additions on longwords at offsets 20, 24, 32, 36, and 40 of a structure in a0, calls three different routines, and finally stores a word into a memory location at an offset calculated from a pointer in a1 and a modified value from offset 128 of a0.
+- `process_structure_data_2`: Loads data from a structure's array using an index, updates fields in the current structure with values from that array, and decrements a counter field.
+- `initialize_structure_data`: Initializes multiple data fields within a structure pointed to by a0, including memory table setup and conditional updates based on comparison results, then performs similar initialization for another structure referenced via a global pointer.
+- `frag_subq_beq_bpl_addq_bne_bsr_andi_add`: Short code fragment that subtracts 1 from the memory at an offset from a0, then branches if the last result was zero, then branches if the last result was not negative, then adds 2 to the memory at an offset from a0, then branches if the last result was not zero, then calls generate_obfuscated_value, then masks d0 with 63, then adds 64 to d0, then copies d0 to the memory at an offset from a0, then returns.
+- `frag_bsr_andi_addi_neg_move_rts`: Short code fragment that calls generate_obfuscated_value, then masks d0 with 63, then adds 32 to d0, then negates d0, then copies d0 to the memory at an offset from a0, then returns.
+- `update_structure_values`: Reads a value from a structure at offset 112, processes it through a threshold check, and stores the result at offset 24 of the same structure.
 - `populate_structure_with_calculated_data`: Calculates a pointer based on a global variable and d0, then, if a specific bit in a hardware register is not set, populates a structure in a6 with various values including a bitwise ORed version of d3 and several pointers and constants.
 - `update_entity_state_structure`: Calculates an offset into a table based on a global value and a register, then populates a structure pointed to by a6 with derived pointers, modified bitmasks, and updated coordinate or timing values.
 - `update_pointer_and_structure`: Calculates a value using a bitwise rotation and a pointer, then, if a hardware bit is not set, populates a structure with calculated values and stores a pointer into a global variable.
@@ -186,18 +227,22 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `modify_pointer_and_call`: Adds a longword from d6 to offset 70 of a0, moves that value into d6, adds a longword from offset 14 of a0 to d4, calls another routine, and performs two subtractions of d6 from d4.
 - `initialize_linked_list`: Sets a word at offset 154 of a6, updates a pointer at offset 6c, and if a global pointer is non-zero, performs a series of pointer manipulations and clears several offsets in a structure before calling a routine to update a linked list structure.
 - `manipulate_linked_list_pointers`: Sets a word at offset 154 of a6 to 4000 and updates a pointer at offset 6c.
+- `frag_bchg_move_add_cmp_bcc_rts`: Short code fragment that flips bit 0 of the memory at an offset from a0, then copies the memory at an offset from a0 to d0, then adds the memory at an offset from a0 to d0 (2 times in a row), then compares d0 with a fixed memory address, then branches if the carry flag is clear, then returns.
+- `initialize_entity_state`: Initializes entity state fields including position, velocity, and linked list pointers.
 - `update_entity_state_and_linked_list`: Checks bounds and values within a structure to determine if it should trigger a table population and a linked list insertion.
 - `branch_on_subtraction`: Calls another routine, subtracts a word from a global variable from a word at offset 54 of a0, and if the result is not less than or equal to zero, returns; otherwise it calls another routine, loads a longword from a global variable into a7, and branches to another routine.
 - `process_multiple_nodes`: Calls a routine, sets values in a6, and then performs a sequence of pointer swaps and offset clears for two different structures derived from a structure in a0, finally updating a pointer at offset 6c.
 - `adjust_structure_values`: Adds the longwords at offsets 72 and 76 of a0.
 - `compare_and_branch_longword`: Loads a longword from offset 76 of a structure in a0 into d2, calls another routine, and if the value in d2 does not match the longword at offset 76 of a0, it branches to another location; otherwise it returns.
 - `clamp_structure_value_2`: Calls another routine, then compares a longword at offset 112 of a structure in a0 with a longword at offset 24 of the same structure.
+- `normalize_value`: Compares values from two memory locations, negates one if it's positive and the other is negative, then stores the result back to a memory location.
 - `clamp_structure_value`: Compares the longword at offset 116 of a0 with the negation of the longword at offset 36 of a0.
 - `check_structure_threshold`: Subtracts a word from a global variable from the word at offset 20 of a0, masks the result with 1fff, and compares it to 1000.
 - `negate_d0_if_negative_2`: Subtracts a word from a memory location at offset 9ec2 from a word at offset 20 of a0, then negates d0 if it is negative.
 - `negate_d0_if_negative`: Tests d0; if it is negative, it negates the long value and then returns.
 - `update_and_validate_structure`: Subtracts a word from a global variable and stores the result in offset 84 of a0.
 - `calculate_offset_sums`: Increments the word at offset 10 of a0 by 1, then calculates two sums: one by adding the longword at offset 14 of a0 to the half-value of the longword at offset 50 of a0, and another by adding the longword at offset 20 of a0 to the half-value of the word at offset 52 of a0.
+- `frag_move_lsr_add`: Short code fragment that copies the memory at an offset from a0 to d0, then shifts d0 right by 1, then adds the memory at an offset from a0 to d0, then copies the memory at an offset from a0 to d1, then shifts d1 right by 1, then adds the memory at an offset from a0 to d1.
 - `calculate_differences`: Saves registers to the stack, increments a pointer by an offset stored at that pointer, and then subtracts two values derived from words at the new pointer location from d0 and d1 respectively before restoring registers.
 - `update_linked_list_structure`: Initializes a structure in a0 with several constants and zeroed fields, then, if a global pointer is not null, performs a series of pointer swaps and updates a linked list structure.
 - `calculate_scaled_offsets`: Calls another routine to calculate differences, then calculates two new longwords by shifting a value in d6 and adding a global value to d4, storing the results at offsets 18 and 24 of a1.
@@ -205,11 +250,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_structure_values_2`: Calls another routine and then stores a word, a word, and four longwords into offsets 54, 5c, 38, 2c, 3c, and 40 of the structure in a1.
 - `update_offset_48_with_sum`: Adds the longwords at offsets 48 and 4c of a0.
 - `update_overflow_counter`: Adds the values at offset 48 and 4c of a structure in a0, compares the result to a value at offset 8 of a structure pointed to by offset 44 of a0, and if the result is greater or equal, clears offset 4c of the structure in a0 and stores the remainder in offset 48 of a0; otherwise it subtracts the value at offset 8 of the structure in a1 from the sum and stores the result in offset 48 of a0.
+- `frag_bsr_move_add_swap_cmp_bcc_rts`: Short code fragment that calls branch_on_subtraction, then copies the memory at an offset from a0 to d0, then adds the memory at an offset from a0 to d0, then swaps the halves of d0, then adds the memory at an offset from a0 to d0, then compares d0 with a fixed memory address, then branches if the carry flag is clear, then returns.
+- `frag_move_add_cmp_bcc_bsr_bra`: Short code fragment that copies the memory at an offset from a0 to d0, then adds the memory at an offset from a0 to d0 (2 times in a row), then compares d0 with a fixed memory address, then branches if the carry flag is clear, then calls initialize_structure_pointers, then jumps to another point in the code.
+- `initialize_structure`: Calculates an obfuscated value, performs bit operations on it, and initializes multiple fields of a structure with computed values and constants.
+- `validate_and_update_structure`: Reads a word value from a structure, performs bit operations and comparisons to validate it against thresholds, then updates multiple structure fields based on the validation result.
+- `update_linked_structure_2`: Validates a structure, calculates offsets, updates linked list elements, and sets specific memory locations to predefined constant values.
 - `update_structure_offset`: Loads a longword from offset 24 of a0 into d1, and if d1 is negative, it branches to another location; otherwise it calls another routine, increments d2 by 8, and stores the result in a word at offset 72 of a0 before returning.
 - `subtract_and_store_constant`: Negates d1, calls another routine, and stores the result of subtracting d2 from 7 into offset 48 of a0.
 - `calculate_and_store_difference`: Moves a longword from offset 24 of a0 to d1, branches if d1 is positive, negates d0, calls another routine, subtracts d2 from 27, and stores the resulting word into offset 48 of a0.
 - `add_constant_to_d2`: Negates d0 and d1, calls another routine, and stores the value of d2 plus 24 into offset 48 of a0.
 - `decode_gap_instructions`: Decodes the data located at the gap following the routine and executes it as code.
+- `setup_structure_fields`: Validates a structure, calculates offset sums, clears several fields, performs bit manipulations on a value, and initializes multiple fields with constants.
+- `configure_object_properties`: Updates overflow counter, validates structure, populates a table from source, clears specific fields, calculates an obfuscated value, and sets multiple memory locations to constant values.
 - `adjust_structure_values_2`: Calls three routines, performs several comparisons and negations involving a word at offset 18 of a structure in a0, and either clears that word, stores a longword at offset 40, or calls another routine and performs a calculation with multiply_and_swap to update offset 18.
 - `initialize_multiple_structures`: Calls another routine and branches if the zero flag is set, then calls another routine and branches if the zero flag is set; if both calls succeed, it calls another routine, loads a pointer into a2, sets d0 to 4 and d1 to 64, and branches to another routine.
 - `manage_structure_data`: Calls four routines, performs arithmetic and comparisons using values from offsets 18, 32, 82, and 116 of a structure in a0, and either clears offset 18, stores a longword at offset 36, or updates offset 18 using multiply_and_swap.
@@ -217,6 +269,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `limit_d1_value`: Compares d1 to 4096; if d1 is less than 4096, it sets d1 to 255.
 - `calculate_absolute_difference`: subtracts a global variable from a 16-bit value at offset 14 of a structure in a0 and returns the absolute value of the result.
 - `initialize_memory_table`: subtracts a 16-bit value at offset 20 of a structure in a0 from a global variable and returns the absolute value of the result; otherwise it enters a loop that writes the value 479 to a table at offset b8ec for 256 iterations.
+- `initialize_structure_fields`: Initializes specific fields in a structure with computed values, including a threshold-checked value and a negated value, then returns.
 - `add_constant_to_global`: Adds an address to the value in a global variable and returns.
 - `update_max_memory`: Calls a routine at an offset from a global variable, then updates that global variable with the absolute difference between its current value and the returned value if that difference is greater than the current value.
 - `reset_memory_tracker`: Calls a routine at an offset from a global variable, stores the result in that global variable, and then clears the global variable at a different address.
@@ -273,14 +326,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `free_multiple_memory_blocks`: Calls several routines to manage linked lists and status, then performs multiple memory free operations by multiplying register values and passing them to a routine with pointers from various global tables.
 - `update_game_state_and_hardware`: Checks a global value against nine, pushes a constant to the stack, and executes a sequence of subroutines based on the result.
 - `initialize_and_branch`: Loads values into d0 and d1, sets a pointer in a2, calls another routine, and then performs a short branch.
-- `clear_d0_register`: Sets the lowest byte of the d0 register to zero five times and then returns.
 - `calculate_and_free_memory`: Calculates a value by multiplying a constant by 512, then calls a routine to free a memory block at the address stored in a global variable.
 - `initialize_branch_parameters_2`: Loads 128 into d0, 24 into d1, loads a relative address into a2, calls another routine, and then branches to another location.
-- `initialize_branch_parameters`: Clears the low byte of register d0 five times, sets d0 and d1 to 32, loads a relative address into register a2, calls another routine, and branches to another routine.
-- `initialize_branch_data`: Clears the low byte of d0 five times, sets d0 and d1 to 32, loads a relative address into a2, calls another routine, and branches to an earlier instruction.
-- `initialize_and_branch_data`: Sets d0 to 20, sets d1 to 28, loads a pointer into a2 from a relative address, calls another routine, and branches to an earlier instruction.
-- `initialize_and_branch_2`: Sets d0 to 32, sets d1 to 1048, loads a pointer into a2 from a relative address, calls another routine, and branches to an earlier instruction in this routine.
-- `populate_data_tables`: Calls another routine multiple times to fill various global memory locations with specific values, performs two loops to copy words from a source table to a destination table, executes a loop to mask bytes in a table, and conditionally writes values to global variables and hardware registers based on the result of a routine call.
 - `process_and_copy_data_tables`: Clears a global word, executes two loops involving routine calls and decrementing a value in d7, then executes two nested loops to write zero bytes to a table and a conditional loop to copy bytes from one table to another.
 - `write_alternating_words`: Loops fifteen times to write alternating 16-bit words from a table into a destination structure in a6, while toggling a value in a hardware register at offset 106 of a6.
 - `initialize_object_structure`: Clears several global variables and populates a structure with specific values, including a pointer to a hardware register and several constants, then updates a global counter and calls three other routines before returning.
@@ -318,7 +365,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_table_and_flags`: Performs several calls to another routine with varying d0, d1, and a0 values, clears a global word, loads a longword into memory, calls two other routines, and enters a loop that tests bits in a table and performs conditional writes and calls based on a byte value.
 - `branch_with_values`: Loads the value 144 into d0, the value 208 into d1, and branches to another routine.
 - `invert_byte_flags`: Inverts four specific bytes at fixed offsets from a calculated address derived from a global variable.
-- `copy_table_entries_2`: Iterates through a table of 44 entries, comparing a value to a global variable and copying 8-byte blocks of data from one location to another.
 - `tiny_move_move_ori`: Small routine of 3 instructions that copies -(a0) to d0, then copies d0 to d0, then merges 0 into d0.
 - `search_and_shift_table`: Searches a table for a value and, if found, shifts subsequent table entries to update a pointer.
 - `execute_complex_sequence`: Calls several routines, clears several words in a global variable, and performs a loop that calls another routine multiple times based on a counter, while also checking a bit in a hardware register.
@@ -361,9 +407,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `apply_masked_result`: Calls multiply_and_swap with d0 set to 8192, masks the result with 1020, and stores it in a structure at offset 20.
 - `initialize_structure_values`: Calls a routine, stores a word from a global into a structure at offset 20, subtracts 192 from it, and clears several other fields in the structure.
 - `reorganize_table_pointers`: Calls a routine, manipulates a pointer from a global to insert a new structure into a list, and then runs a loop to fill a table with concatenated words.
+- `update_counter_and_state`: Calculates a counter value based on input, updates a global variable with a wrapped increment, and copies data from a global structure to another location.
 - `calculate_obfuscated_offset`: Calls calculate_and_store_offset, performs arithmetic using a global variable and a value from a structure, calls multiply_and_swap, and then calls generate_obfuscated_value.
 - `store_difference_to_structure`: Subtracts a 16-bit value at offset 82 of a structure from a global variable and stores the result in a structure at offset 32.
 - `copy_and_shift_values`: Calls two routines, then copies a longword from offset 70 to offset 18 and stores a bit-shifted version of that longword at offset 4c.
+- `frag_bsr_clr_rts`: Short code fragment that calls apply_masked_result, then calls store_difference_to_structure, then clears the memory at an offset from a0, then returns.
 - `update_linked_structure`: Calls generate_obfuscated_value, stores a bit-shifted result into offset 20 of a structure in a0, and calls another routine.
 - `empty_stub_8`: Empty routine: returns to the caller immediately without doing anything.
 - `update_structure_fields_2`: Copies a value from a1 to offset 44 of a structure in a0, clears offset 48 of a0, copies a value from offset 4 of a1 to offset 4c of a0, and copies a value from a pointer at offset c of a1 into offset 50 of a0.
@@ -376,13 +424,23 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `check_and_update_structure`: Calculates sums from offsets 20, 80, 32, and 82 of a structure in a0, compares these against values in a structure pointed to by a global pointer, and if a specific bitmask check on offset 72 of that structure passes, decrements a global variable, updates three longwords in the structure, calls another routine, decrements a word at offset 92 of a0, and either jumps to an address in a1 or returns.
 - `update_structure_list`: Calculates two values from offsets 80 and 20 of a structure in a0, then enters a loop that uses a pointer from offset 52 of a0 to update various fields in a new structure, including several longwords and a calculated value, based on a count from offset 8 of the original structure.
 - `subtract_and_branch_on_negative`: Subtracts a 16-bit value loaded from a global variable from a 16-bit value at offset 84 of the structure in a0, then branches to another routine if the result is negative; otherwise it returns.
+- `frag_move_beq_addq_bra`: Short code fragment that copies a fixed memory address to d0, then branches if the last result was zero, then copies d0 to the memory at an offset from a0, then adds 2 to a fixed memory address, then copies 35022 to the memory at an offset from a0, then jumps to another point in the code.
+- `empty_stub_9`: Empty routine: returns to the caller immediately without doing anything.
 - `initialize_structure_pointers`: Calls a routine, branches, and if not branched, loads a pointer from offset 124 of a structure in a0, follows it to another pointer at offset 8, clears words at offsets 20 and 24 of that second structure, and stores two longwords at offsets 44 and 60.
+- `populate_structure_loop`: Processes a loop of linked list elements, performs bit operations on values, calculates obfuscated values, and initializes multiple fields with constants.
+- `update_linked_list_fields`: Updates two word fields in a structure by adding obfuscated values masked with 7 to values at specific offsets, then decrements a counter at another offset and branches if positive.
+- `process_linked_list_elements`: Processes a loop of linked list elements, performs bit operations on values, calculates obfuscated values, and initializes multiple fields within each element.
+- `empty_stub_10`: Empty routine: returns to the caller immediately without doing anything.
+- `process_linked_list_entry_2`: Returns immediately if a memory location is zero, otherwise loads data from a linked structure, modifies specific fields, and sets constant values.
+- `process_linked_list_entry`: Returns immediately if a memory location is zero, otherwise loads data from a linked structure, modifies specific fields, and sets constant values in memory locations.
 - `populate_and_update_table`: Calls a routine, loads a pointer into a2, calls populate_table_from_source, decrements a global word, and if the result is not greater than zero, performs a calculation involving multiply_and_swap and a global word before calling two other routines and branching.
 - `process_conditional_data`: Calculates a sum from offsets 20 and 52 of a structure in a0, and if this sum is less than a global variable and the global variable is non-zero, calls multiply_and_swap and another routine.
 - `update_structure_fields_4`: Calculates two new values by adding half of the values at offsets 80 and 82 of a structure in a0 to the values at offsets 20 and 32, calls another routine, and then stores the difference between the original half-values and the results of that routine back into offsets 20 and 32.
 - `execute_callback_chain`: Sets two values in a6, calls two routines, and then iterates through a linked list to call functions at specific offsets and update structure fields based on a bit test.
 - `clear_on_bit_test`: Tests bit 4 of a global variable and, if it is zero, clears a 32-bit value in a global variable and returns.
 - `initialize_entity_linked_list`: Initializes a structure by setting several fields to zero and specific constants, then inserts this structure into a doubly linked list managed by a global variable.
+- `initialize_and_update_entities`: Initializes table data and updates entity linked list entries with specific parameters, then manages the linked list structure by updating pointers and clearing fields in the entity nodes.
+- `initialize_and_update_entity_list`: Initializes a data table and manages a linked list of entities by updating their properties and linking them together.
 - `initialize_and_insert_entity_node`: Initializes a new entity structure with specific constant values and spatial data, then inserts it into a doubly linked list by updating the pointers of the preceding and succeeding nodes.
 - `initialize_table_data`: Sets d0 to 1, d1 to 64, and performs a branch to another routine.
 - `initialize_table_and_clear_registers`: Loads a pointer into a register, calls initialize_table_data, and then clears four registers and sets a third register to a constant value of one million nine hundred fifty-three thousand one hundred thirty-six.
@@ -421,6 +479,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `traverse_linked_list`: Iterates through a list of values starting at a global variable, calling another routine when a word value of 384 is encountered, and returns when a long value of -2 is found.
 - `process_linked_list_and_build_buffer`: Iterates through a linked list of structures, clearing a global variable and updating a list of pointers.
 - `write_formatted_data`: Adds 61 to a value in d0 and, if the result is within a specific range and d3 is zero, writes a sequence of bytes to a buffer starting at a1.
+- `empty_stub_11`: Empty routine: returns to the caller immediately without doing anything.
 - `pack_color_data`: If bit 0 of a pointer in a0 is set, it packs nibbles from four consecutive bytes into two 16-bit words and writes them to a buffer at a1 along with header values.
 - `branch_to_offset_51d74`: Performs a relative branch to a specific instruction.
 - `branch_to_middle_of_routine`: Performs a short branch into the middle of another routine.
@@ -433,7 +492,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_library_calls`: Calls a routine, then uses a pointer from a global variable to perform two subsequent library calls and an indirect jump via the exec base.
 - `call_library_vector_456_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 456 of that base, returning its result to the caller.
 - `ensure_function_pointer`: Checks if a global variable contains a non-zero value; if it is zero, it allocates memory and calls a routine to initialize that pointer, then enters a loop calling that pointer until it returns zero.
-- `tiny_ori`: Small routine of 1 instruction that merges 0 into d0.
 - `clear_function_pointer`: Clears a global variable and then performs an indirect jump via the exec base.
 - `initialize_function_pointer`: Compares a value in a global variable with register d0 and, if they are not equal, calls several routines with various arguments to update the global variable with the result in d0.
 - `jump_to_routine`: Performs a short branch to another routine.
@@ -441,11 +499,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_interrupt_mask_and_status`: Copies five longwords from a table into a destination pointed to by a0 and then sets the two most significant bits of the interrupt status register.
 - `configure_interrupt_and_memory`: Sets interrupt mask registers, copies several longwords from a source to a destination, and performs a series of library calls and memory operations involving a loop.
 - `process_memory_structure`: Compares a memory range, updates several global variables with calculated values, and calls a library function using a pointer from a structure.
-- `fill_zero_data`: Contains eleven consecutive instructions that perform a bitwise OR with zero on register d0.
-- `fill_zero_data_single`: Performs a bitwise OR with zero on register d0.
-- `clears_data_register_zero`: Performs a logical OR operation on data register zero with zero.
-- `zeroes_data_byte`: Performs a logical OR operation on a byte in register d0 with zero.
-- `clear_d0_and_return`: Performs two bitwise OR operations with zero on register d0, clears register d0 using a moveq instruction, and then returns.
+- `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -468,5 +522,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_2`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_3`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_4`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_5`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_6`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_7`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_8`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_9`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_10`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_11`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_12`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_13`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.

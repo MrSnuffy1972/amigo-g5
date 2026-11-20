@@ -6,96 +6,101 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (5263680 top-level bytes in 122 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 14 raw-word lines |
-| Functions named and described | pass, 484 of 484 named (0 author symbols), 484 of 484 described (301 by rule, 0 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 998 of 1000 (99.80%) |
+| Bytes classified (5264080 top-level bytes in 124 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 11 raw-word lines |
+| Functions named and described | pass, 782 of 782 named (0 author symbols), 782 of 782 described (611 by rule, 17 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 7244 of 7244 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 8774 of 8775 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 9457 of 9457 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 32980 |
-| code | 39640 |
-| data | 5191048 |
-| padding | 12 |
+| asset | 32898 |
+| code | 42942 |
+| data | 5188225 |
+| padding | 15 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| game.slave | 1 | 790 | 61 |
-| tube | 5 | 7698 | 136 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 127 | 127 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 69 | 69 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 80 | 80 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 3 |
+| game.slave | 1 | 910 | 72 |
+| tube | 5 | 7874 | 117 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 59 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 197 | 197 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 165 | 165 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 194 | 194 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 5 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 7 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 51 | 29 |
 
 ## Cases handled
 
 - TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA.hdf: hard-disk image (AmigaDOS OFS, 5760 blocks): its filesystem parses and all 60 files in it are byte-identical to the extracted tree TubeWarriors_v1.0_AGA_hdf, which is recovered file by file; no block outside the filesystem holds data
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/caciara.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2526 -> 5312 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/caciara2.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2630 -> 5552 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/diskchange1.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1004 -> 51328 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/diskchange2.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1048 -> 51328 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/diskchange3.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1042 -> 51328 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/dynabyte.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (8966 -> 41024 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/facce.sprite.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (29538 -> 78752 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione1.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (9810 -> 82944 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione2.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (9448 -> 82944 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione3.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (14420 -> 82944 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione4.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (9028 -> 82944 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione5.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (9436 -> 82944 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione6.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (11528 -> 82944 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione7.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (11606 -> 82944 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione8.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (11306 -> 82944 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/facebox.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2688 -> 4160 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/ghork.sprite.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (134938 -> 427104 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/instruments.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (144846 -> 163996 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/intro.mod.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (180652 -> 223928 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/kenju.sprite.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (77058 -> 273312 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/kyoshi.sprite.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (110466 -> 362912 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/level1.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (50476 -> 164864 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/level2.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (80614 -> 164864 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/level3.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (56988 -> 164864 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/level4.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (75696 -> 164864 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/mako.sprite.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (105626 -> 336800 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/mappa.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (44372 -> 82944 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/metrobrush.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (9532 -> 45024 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/metrobrush1.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (8440 -> 41504 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/metrobrush2.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1640 -> 4544 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/mitzuko.sprite.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (90742 -> 313568 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/music1.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1754 -> 11324 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/music2.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1788 -> 8252 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/music3.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (1788 -> 8252 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/music4.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3086 -> 17468 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/ouch1.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3438 -> 3860 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/caciara.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (2526 -> 5312 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/caciara2.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (2630 -> 5552 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/diskchange1.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (1004 -> 51328 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/diskchange2.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (1048 -> 51328 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/diskchange3.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (1042 -> 51328 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/dynabyte.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (8966 -> 41024 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/facce.sprite.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (29538 -> 78752 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione1.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (9810 -> 82944 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione2.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (9448 -> 82944 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione3.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (14420 -> 82944 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione4.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (9028 -> 82944 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione5.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (9436 -> 82944 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione6.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (11528 -> 82944 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione7.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (11606 -> 82944 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/faccione8.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (11306 -> 82944 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/facebox.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (2688 -> 4160 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/ghork.sprite.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (134938 -> 427104 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/instruments.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (144846 -> 163996 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/intro.mod.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (180652 -> 223928 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/kenju.sprite.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (77058 -> 273312 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/kyoshi.sprite.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (110466 -> 362912 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/level1.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (50476 -> 164864 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/level2.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (80614 -> 164864 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/level3.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (56988 -> 164864 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/level4.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (75696 -> 164864 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/mako.sprite.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (105626 -> 336800 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/mappa.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (44372 -> 82944 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/metrobrush.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (9532 -> 45024 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/metrobrush1.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (8440 -> 41504 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/metrobrush2.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (1640 -> 4544 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/mitzuko.sprite.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (90742 -> 313568 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/music1.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (1754 -> 11324 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/music2.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (1788 -> 8252 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/music3.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (1788 -> 8252 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/music4.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (3086 -> 17468 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/ouch1.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (3438 -> 3860 bytes)
 - TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/ouch3.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2806 -> 2696 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/ranza.sprite.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (119062 -> 371616 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/robby.sprite.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (115904 -> 402016 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/satoru.sprite.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (104178 -> 283488 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/score.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (2584 -> 7264 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/swish.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (3344 -> 3572 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/titolo.sprite.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (25128 -> 77120 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/versus.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (37088 -> 82944 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0000.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (45908 -> 65024 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0001.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (46680 -> 65024 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0002.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (46088 -> 65024 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0003.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (45790 -> 65024 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0004.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (46562 -> 65024 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0005.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (46510 -> 65024 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0006.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (45570 -> 65024 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0007.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (45856 -> 65024 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0008.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (45868 -> 65024 bytes)
-- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0009.raw.crm: CrM!: Crunch-Mania standard-mode-packed, unpacked with ancient (45732 -> 65024 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/ranza.sprite.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (119062 -> 371616 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/robby.sprite.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (115904 -> 402016 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/satoru.sprite.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (104178 -> 283488 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/score.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (2584 -> 7264 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/swish.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (3344 -> 3572 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/titolo.sprite.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (25128 -> 77120 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/versus.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (37088 -> 82944 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0000.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (45908 -> 65024 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0001.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (46680 -> 65024 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0002.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (46088 -> 65024 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0003.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (45790 -> 65024 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0004.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (46562 -> 65024 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0005.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (46510 -> 65024 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0006.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (45570 -> 65024 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0007.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (45856 -> 65024 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0008.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (45868 -> 65024 bytes)
+- TubeWarriors_v1.0_AGA/TubeWarriors_v1.0_AGA_hdf/TubeWarriorsAGA/data/data/tubeintro/TUBE0009.raw.crm: CrunchMania Data (xfd)-packed, unpacked with ancient (45732 -> 65024 bytes)
+- 7 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- runtime segment an address: 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 93 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 41 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 54 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 42 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 57 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 7 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 
@@ -120,17 +125,22 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `read_status_word_clear_bits_4_to_6`: Loads a longword from a pc-relative location into d0, clears bits 4 through 6 with an and-immediate, and returns the masked value in d0.
 - `test_interrupt_request_and_rte`: Reads the interrupt request register at the custom chip base, restores d0-d1, a0-a1 and a5-a6 from the stack, then returns from the exception with rte.
 - `clear_bit4_and_store_word_flag`: Clears bit 4 of the byte at offset 455 in a1, writes d4 to a fixed memory word, sets the following byte to all ones, and returns.
+- `store_pointer_and_copy_field_to_flag_2`: Writes d2 to offset 460 of a0, copies the longword at offset 54 of a1 to offset 132 of a0, stores the low word of d2 and the flag byte to fixed memory, copies that longword to another fixed location, adds 4 to the return address on the stack, and returns.
 - `store_pointer_and_copy_field_to_flag_area`: Writes d2 to offset 460 of a0, copies the longword at offset 50 of a1 to offset 132, stores d2 and a flag in fixed memory, then skips four stack bytes and returns.
 - `store_d4_to_a0_offset_and_pc_table`: Clears bit 13 of d4, writes the result to offset 476 of a0 and to a pc-relative word, sets the following byte to 255, then skips two bytes on the stack and returns.
 - `copy_a0_byte6_to_a6_offset_2048`: Reads the byte at offset 6 of a0 into d0 and stores it at offset 2048 of a6, then returns to the caller.
+- `frag_move_tst_beq_jmp`: Short code fragment that copies a location in the code to a fixed memory address, then tests a location in the code, then branches if the last result was zero, then copies a location in the code to a fixed memory address, then tests a location in the code, then branches if the last result was zero, then copies a location in the code to a fixed memory address, then jumps to the address in a0.
 - `set_vposr_bit12_from_pc_flag`: Reads the VPOSR hardware register into d0, compares a pc-relative longword with an address, and sets or clears bit 12 of d0 accordingly before returning.
 - `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
 - `decrement_d0_set_borrow_byte`: Subtracts one from the low longword in d0, then sets the low byte of d0 to all ones if the subtraction borrowed or to zero otherwise.
-- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `compute_scaled_offset_from_pc_table`: Loads a pointer from a pc-relative table into a0, reads the longword it points to into d0, multiplies d0 by one thousand four hundred forty and adds the longword at offset four of a0.
-- `add_scaled_a0_offset_to_d0_store_a2`: Divides the longword at offset eight of a0 by fifty, sign-extends the quotient, adds it to d0, stores the result at offset sixty-four of a2, then restores d2 and a2-a3 and returns.
+- `update_object_flag`: Reads a byte from a structure, clears a flag byte at offset 31 of another structure, then sets the flag to either 29 or 28 based on bit testing and conditional logic before returning the flag value.
+- `update_object_position`: Updates the position of an object by reading from a data structure, performing bit testing operations, and copying data between memory locations.
+- `frag_move_btst_bne_bra`: Short code fragment that copies a location in the code to d0, then tests bit d1 of d0, then branches if the last result was not zero, then copies 28 to the memory at an offset from a1, then jumps to another point in the code.
+- `build_string_byte`: Loads a pointer to a string table, reads a byte from the table using an index in d1, adds 48 to that byte, stores the result at offset 5 of the string buffer, then performs several memory operations and calls another routine.
 - `toggle_bit7_at_a3_offset_61`: Flips bit 7 of the byte at offset 97 in the a3 structure, then sets d0 to all ones if the old bit was clear, otherwise zero, and returns.
 - `store_bit_test_result_to_a1_offset`: Clears d0, reads a bit index from a3 offset 99 and a bit mask from pc-relative memory, tests the bit, stores the inverted zero flag as a longword at a1 offset 32, then skips the return address adjustment.
+- `frag_move_addi_rts`: Short code fragment that copies a location in the code to the stack, then adds an address to the top of the stack, then returns.
 - `push_pc_relative_long_plus_offset`: Pushes the longword at the program counter relative location onto the stack, adds a fixed immediate value to it, and returns, leaving the adjusted value on the stack.
 - `set_state_ptr_to_offset_14c`: Loads the address of the structure field at offset 332 into a0, stores it at offset 16 of the a3 context, sets bit 1 of the byte at offset 96, skips two bytes on the stack and returns.
 - `toggle_bit_and_advance_counter`: Reads a bit index from offset 99 of a3, clears that bit in a global bitmap, and if it was set, sets bit 1 at offset 96, conditionally increments the counter at offset 60 and calls a routine before clearing the bit.
@@ -138,13 +148,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `open_dos_library_and_call_vectors`: Saves registers, opens dos.library via exec OldOpenLibrary using a name string, then calls two library vectors with the passed arguments and returns.
 - `allocate_and_enqueue_whdload_structures`: Allocates two memory blocks with AllocMem, fills in tags and pointers, opens expansion.library, sets up a jump table and enqueues a message on the whdload device list.
 - `open_dos_and_jump_to_offset`: Calls the dos.library open vector with a name string, loads a pointer from offset 22 of the returned structure and jumps to it.
-- `open_dos_and_create_message_port`: Opens dos.library, allocates a message port named DOS, stores it in a5, patches the task's port list, then waits for and dispatches incoming messages until a matching command arrives.
+- `process_message_queue`: Reads messages from a system message port and updates task-related data structures, including setting flags and moving message pointers between task and port structures.
 - `read_joystick_and_compare_state`: Calls two input routines, copies d7 into d0 and d1, loads the current state from offset 28 of a4, calls a comparison routine, shifts the result right by two and branches to the main loop or exit.
 - `read_input_and_exit_with_minus_one`: Calls an input routine, copies d7 into d0, calls another routine, sets d0 to minus one and branches back to the main loop exit.
 - `load_and_validate_game_state`: Calls three setup routines, checks the returned structure's flag at offset 28, invokes a2 callbacks at offsets 124 and 88, then calls a cleanup routine and returns minus one or zero in d0.
 - `cleanup_and_return_zero_with_mask`: Moves d7 into d0, calls the cleanup routine, sets d0 to zero and d1 to the bitwise complement of 39, then branches back to the common exit.
+- `process_system_message`: Handles system messages by copying data between memory structures, managing message ports, and updating task-related data structures.
+- `frag_movea_move_jsr_moveq_bra`: Short code fragment that copies d2 to a1, then copies the memory at a1 to d0, then calls another routine, then loads 0 into d0, then loads 103 into d1, then jumps to another point in the code.
+- `initialize_audio_system`: Initializes audio channel resources, handles error conditions, and manages system message processing for audio operations.
+- `frag_moveq_not_bra`: Short code fragment that loads 34 into d1, then inverts d1, then jumps to another point in the code.
+- `frag_movea_bra`: Short code fragment that copies the memory at an offset from a4 to a0, then jumps to another point in the code.
 - `copy_state_or_whdload_name`: Calls two setup routines; if a0 is zero it copies the WHDLoad string into d7 offset 8, otherwise copies 57 longs from a0 offset 24 into d7, then calls two more routines and returns minus one.
 - `build_path_and_call_twice`: Calls a setup routine, then uses d7 as an object pointer to call a function through a2, and calls another routine twice with a0 pointing at offsets 8 and 144 from that object before branching away.
+- `frag_bsr_bra`: Short code fragment that calls load_a4_offset24_shifted_left_two, then jumps to another point in the code.
+- `clear_and_setup_buffer`: Clears memory locations in a data structure and writes fixed values to specific offsets, then returns with a predefined value.
 - `extract_dirname_and_call`: Calls a check routine, scans the string at offset 4 of the d7 object for its length, walks back to the last slash, copies the directory prefix onto the stack, calls a routine with it, and stores results at offsets 12 and 16 of a4.
 - `compare_two_object_strings`: Calls two routines to fetch two objects, compares the strings at offset 4 of each byte by byte, and returns all-ones in d0 when they match or zero when either is missing or they differ.
 - `find_first_nonempty_string_in_list`: Loads a1 into d0, returns zero if a1 is null or the byte at a1 is zero, otherwise follows the pointer at offset 4 of a1 and returns zero in d0 and d1 before branching away.
@@ -157,20 +174,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `load_a4_fields_and_add_a0_offset148`: Loads a0 from offset 20 of a4, d2 from offset 24, d1 from offset 28; if d1 is positive, adds the longword at offset 148 of a0 to d2, then branches to b28.
 - `add_a0_offset20_to_d2_and_clamp`: Adds the longword at offset 20 of a0 to d2, compares with offset 148 of a0, and if not above stores d2 there, returns d0 and clears d1 before branching to 734.
 - `set_d0_ff_and_d1_e4_branch`: Loads 255 into d0 and 36 into d1, inverts the low byte of d1 to 219, then branches to another routine.
+- `frag_bsr_movea_move_moveq_bra`: Short code fragment that calls load_a4_offset20_shifted_left_two, then copies d7 to a0, then calls load_a4_offset24_shifted_left_two, then copies d7 to the memory at an offset from a0, then loads 255 into d0, then jumps to another point in the code.
+- `frag_moveq_not_bra_2`: Short code fragment that loads 0 into d0, then loads 46 into d1, then inverts d1, then jumps to another point in the code.
 - `load_a4_offset20_shifted_left_two`: Reads the longword at offset 20 from a4, shifts it left by two bits into d7, and returns to the caller.
 - `load_a4_offset24_shifted_left_two`: Reads the longword at offset 24 from a4, shifts it left by two bits into d7, and returns to the caller.
 - `load_a4_offset_1c_shifted_left_two`: Reads the longword at offset 28 from the a4 base pointer, shifts it left by two bits into d7, and returns.
-- `shift_bytes_backward_and_store_count`: Copies bytes from a0 forward into the preceding positions until a zero byte is seen, then writes the byte count into the slot before the shifted block and returns.
+- `shift_string_left_and_store_length`: Copies bytes from a0 forward one position until a zero byte, then writes the byte count into the slot before the shifted string and returns.
 - `open_and_initialize_audio_channel`: Calls a setup routine, opens a library resource, fills a structure with channel fields and saved registers, and returns the structure pointer or zero on failure.
 - `close_library_and_return`: Tests d0 for a library base; if non-zero, pushes the library's base pointer from offset four, calls the close-library vector with d0 set to -4, then pops the base and jumps to the expunge vector.
 - `build_path_and_trim_slashes`: Allocates memory via the exec allocator for a combined directory and filename, copies both parts separated by a slash, then collapses duplicate slashes and strips trailing ones, returning the buffer or an error code.
 - `check_whdboot_files_present`: Calls a file-existence check for WHDBoot.exe and WHDBoot.ss using the given name and length pairs, returning zero only if both checks succeed.
 - `compare_null_terminated_strings`: Saves a0 on the stack, compares bytes at a0 and a1 until a mismatch or a zero byte, then restores a0 and returns.
-- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `push_pc_relative_long_plus_32`: Pushes the longword stored at the program-counter-relative location onto the stack, adds 32 to it, and returns.
 - `open_dos_library_and_run_game`: Saves registers, opens dos.library, loads the Tube executable, runs it via its entry vector, then closes the library and exits.
-- `zero_filled_data_area_ef8`: Twelve zero words that decode as ori.b #0,d0; this is a zero-filled data area referenced by address, not executable code.
-- `zero_word_data_slot_f28`: A single zero word that decodes as ori.b #0,d0; it is a zero-filled data slot referenced by address, not executable code.
 - `patch_three_embedded_branch_opcodes`: Saves all registers, locates two code blocks via a helper, then replaces three embedded branch opcode longwords at offsets in the found block with no-operation pairs, restoring registers and returning.
 - `find_node_by_id_in_linked_list`: Walks a linked list starting at a0, comparing each node's previous word to d0; returns the matching node pointer in a0 and d0, or zero when the list terminator is reached.
 
@@ -180,6 +196,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `allocate_buffers_and_load_game_assets`: Allocates memory with exec.AllocMem, clears and copies screen buffers, loads the game's raw and crm asset files, sets up copper and interrupt state, and initializes the level data structures.
 - `main_game_frame_update`: Runs the per-frame game logic: initializes copper and display, updates player and enemy state, handles input flags, and calls many subroutines to draw and animate the playfield.
 - `level_start_reset_and_display_setup`: Disables interrupts, sets the copper list and bitplane pointers, clears state buffers, initializes player and enemy variables, and jumps to the main frame loop.
+- `setup_playfield_and_assets`: Initializes playfield settings and clears tube columns while managing asset loading states through conditional checks and hardware register updates.
 - `advance_level_and_scroll_display`: Increments the level counter, sets scroll and bitplane registers, copies sixteen words from the level data into the copper list, and returns.
 - `reset_tube_warriors_level_state`: Decrements a counter, calls two setup routines, copies 16 words from one table to another, clears eight word variables, sets two words to 34816 and derives a masked word, then conditionally adjusts two coordinates and sets two words to 40.
 - `spawn_tube_segment_chain`: Looks up a segment record from a table indexed by d0, computes its length and flags, writes position and length fields, then fills four linked segment entries in the a1 output list with coordinates adjusted by the segment width.
@@ -188,6 +205,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `init_second_tube_pointer_set`: Saves registers, indexes the table at a0 by d0, reads the masked header size into d1, and fills the second pair of pointer sets with data offsets without touching the first pair.
 - `swap_globals_and_render_two_tubes`: Swaps many word, byte and long globals in pairs, sets a flag byte to two, then twice calls the pointer-setup routine and a render routine for the two tube pointer sets.
 - `copy_sprite_ptrs_and_call_blit`: Copies four longwords from the d3 structure and four from a fixed table into globals, optionally subtracts four from the second set, then pushes arguments and calls the blit routine.
+- `frag_btst_bne_rts`: Short code fragment that tests bit 6 of a fixed memory address, then branches if the last result was not zero, then returns.
+- `frag_btst_bne_beq_rts`: Short code fragment that tests bit 6 of a fixed memory address, then branches if the last result was not zero, then tests bit 6 of a fixed memory address, then branches if the last result was zero, then returns.
 - `wait_for_vertical_blank_loop`: Loads the graphics library base from address 8 into a6, calls the vertical blank wait function at offset minus 384, and repeats while the returned value is less than d1.
 - `cycle_three_sprite_positions`: Increments a counter, and every twentieth call rotates three pairs of longword globals and writes computed x and y words into display copper list registers.
 - `restore_system_and_free_audio_buffers`: Frees many memory blocks via exec.FreeMem, clears two pointers, disables and re-enables interrupts through INTENA/INTREQ, restores the old level 3 vector, and calls two subroutines with arguments 1 and 3.
@@ -204,20 +223,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_four_offsets_after_skipping_five`: Skips five longwords from (a1), then for four longwords adds d1 and stores the high and low words into a0 offsets 2 through 30, returning.
 - `set_sprite_positions_from_index`: Multiplies d0 by 80, adds the result to four longwords from a table and stores the split high and low words into sprite fields at offsets 2 through 30 of a0.
 - `wait_for_vblank_and_ack_interrupt`: Sets the byte at 5521 to 1, spins until it clears, calls a routine, waits until the word at 5392 is zero, clears 5521 and writes 4 to INTREQ to acknowledge the interrupt.
-- `vblank_interrupt_copy_scroll_registers`: Acknowledges interrupt 4 in INTREQ, copies the words at 634, 638 and 640 into 32622, 32590 and 32606, stores the masked OR of 634 and 636 into 30402, sets 643 to 1, restores registers and returns from the exception.
 - `vblank_interrupt_dispatch`: Reads INTREQR, acknowledges vertical blank or copper interrupts in INTREQ, decrements two counters, calls sound and display routines, then restores registers and returns from the exception.
-- `irq_restore_regs_and_rte`: Tests bit 6 of d0; if clear, pops d0-d4 and a0-a3 from the stack and returns from the interrupt with rte, otherwise branches away to other code.
-- `copper_list_upload_and_blitter_restart`: Checks INTREQR bit 14, toggles the copper list pointer, acknowledges the interrupt, then copies a copper list from memory into the custom chip registers and restarts the blitter before returning from exception.
 - `level3_interrupt_acknowledge_rte`: Tests bit 7 of d0, saves d0-d3/a0-a3, reads INTREQR, checks bit 5 and branches to the level 3 handler if set, otherwise restores registers and returns from interrupt.
 - `tube_rotate_left_right_update`: Checks direction bits, decrements or increments the rotation counter and angle, redraws the tube segments via helper calls, adjusts the scroll offset and returns.
 - `set_tube_color_nibble_all_segments`: Masks d3 to a nibble, writes the doubled nibble to the color register and loops over 35 tube segments setting the low nibble of each segment color byte.
 - `apply_palette_and_scroll_offsets`: Reads the shared parameter word, writes nibble-derived colour bytes into 40 palette entries spaced 40 bytes apart, then stores three scroll positions computed from the parameter into the display register pairs.
-- `zero_filled_data_word`: A single zero word that decodes as ori.b #0,d0; it is a zero-filled data area referenced by address, not executable code.
-- `zero_filled_data_word_second`: Another single zero word decoding as ori.b #0,d0; a zero-filled data area referenced by address, not executable code.
 - `open_debug_and_alloc_two_buffers`: Saves registers, opens the debug library, allocates two memory buffers via exec.AllocMem, and on failure frees them and returns zero; otherwise stores the buffer pointers and returns the second allocation.
 - `push_d1_and_load_delay_count`: Pushes the current d1 register onto the stack and loads d1 with the immediate value an address, leaving it for the caller to use as a delay count.
 - `decompress_rle_stream_to_buffer`: Decodes a run-length compressed byte stream from a2 into the buffer ending at a1, using d1 and d2 as offsets, writing bytes backwards and returning the last decoded word in d0.
-- `shift_bitstream_word_with_refill`: Decrements d7; when it reaches zero reloads d7 with 16 and shifts the 32-bit d6 right by one, swapping in a new word from -(a2); otherwise returns d0 unchanged after shifting d0 right by one.
+- `select_half_or_input_word`: Returns half of a second word when a flag equals one, otherwise returns the input word unchanged.
 - `extract_masked_bitfield_word`: Copies d6 to d0, shifts d6 right by d1, subtracts d1 from d7, rotates d6 by d7 and refills from -(a2), then masks d0 with a table word indexed by doubled d1.
 - `intro_sequence_disk_and_copper_setup`: Runs the tube intro: allocates and frees chip memory, loads raw.crm and sprite files, builds copper lists and bitplanes, polls joystick fire and disk status, and enables interrupts before jumping to the next stage.
 - `load_tube_level_and_setup_display`: Loads level graphics and sprite files, copies tile rows into chip memory, installs the copper list and interrupt handler, and runs the main input and selection loop.
@@ -229,6 +243,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `wait_for_flag_then_clear`: Spins while the byte at absolute address 6059 is zero, then writes zero to that byte and returns.
 - `load_and_display_congratulations_screen`: Allocates memory, builds a copper list, copies a bitmap into a buffer, disables and enables the OS, installs the copper list, waits for the copper, frees memory and jumps back to the main loop.
 - `blit_text_glyphs_into_bitmap`: Reads characters from a string, looks up each glyph in a font table, and ORs or ANDs the glyph rows into two bitmap planes at the given offsets.
+- `populate_tile_data`: Copies byte data from a source table into a destination buffer at calculated offsets, using nested loops to process multiple rows and columns of tile information.
 - `clear_tube_columns_by_scroll_offset`: Saves registers, reads the scroll offset from the object, computes a row offset, then fills four plane buffers with zero or all-ones words across 110 rows to blank the tube columns.
 - `save_registers_and_jump_to_clear`: Moves the stack pointer into a0, pushes d0-d7 and a1-a6 onto the stack, then branches to the shared clear routine.
 - `blit_tube_columns_with_flip`: Saves registers, clamps the vertical position, copies three 20-byte rows per column from source planes into the destination planes, toggles the flip word, and fills the last column with all-ones.
@@ -236,6 +251,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `blit_8x8_tile_rows_with_clip`: Copies eight rows of five longwords from source to destination bitplanes, clipping the row count to the 180-line screen limit and toggling the copper color register per row.
 - `clear_8x8_tile_rows_with_clip`: Writes zero longwords into eight rows of destination bitplanes, clipping the row count to the 180-line screen limit and toggling the copper color register per row.
 - `clear_tube_columns_and_flip_mask`: Saves registers, computes a column offset from the tube width and scroll position, then writes zeroed longwords down each of four columns and toggles a mask word in memory.
+- `fill_memory_blocks`: Writes fixed 32-bit values into memory locations at calculated addresses, with nested loops that iterate through data blocks and apply bitwise operations to modify a hardware register.
 - `build_and_draw_tube_segments`: Saves registers, reads tube and sprite descriptors, computes segment positions and blitter words into the copper list, and calls the segment draw routine for each active bit.
 - `reset_tube_state_and_jump`: Saves registers, clears the tube state word in memory, then jumps to the tube setup routine to continue initialization.
 - `setup_two_blit_planes_from_rect`: Reads rectangle fields from the caller frame, computes blit modulo and control words, fills two blitter descriptors in the shared structure and invokes the blit routine twice.
@@ -243,10 +259,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `wait_blitter_and_start_copy_blit`: Waits until the blitter busy bit clears, then programs blitter control, modulo, pointers and size registers to start a copy blit.
 - `save_regs_and_set_render_mode`: Copies a7 into a0, pushes d0-d7 and a1-a6 onto the stack, then stores the longword 1 at the global render mode flag.
 - `render_tube_scanline_spans`: Reads tube geometry from the structure at a0, adjusts scroll offsets and clip words in globals, then fills copper span entries via a2 and calls the span writer for each row.
-- `zero_filled_data_area`: A single zero word that decodes as ori.b #0,d0; this address is a zero-filled data area referenced by other code, not executable instructions.
-- `ori_b_immediate_data_byte`: Performs a bitwise OR of the immediate byte value 178 into the low byte of d0, then falls through into the following routine.
 - `set_clip_limit_and_jump`: Stores the long immediate value 45 at absolute address 22320, then branches unconditionally to the code at 22352.
 - `render_tube_segment_scanlines`: Clips a tube segment against stored start and end limits, fills copper list entries with bitplane pointers, colors and scroll values, then calls the line blitter for each of four scanline groups.
+- `frag_move_cmp_bra`: Short code fragment that copies the memory at an offset from a0 to d0, then compares d0 with a fixed memory address, then jumps to another point in the code.
+- `adjust_tube_segment`: Processes tube segment data by calculating position adjustments, updating display list entries, and managing segment properties.
+- `update_tube_segment`: Processes tube segment data for rendering by calculating position adjustments, updating display list entries, and managing segment properties like size and orientation based on input parameters.
 - `queue_display_list_entry`: Waits while the DMACONR bit 14 is set, then copies a 36-byte display list entry from the current pointer to the next slot, clears its last word, advances the pointer and increments the entry counter.
 - `expand_eight_bytes_via_lookup_table`: Reads eight source bytes, maps each through a byte lookup table in reverse order, writes eight expanded bytes to the destination, and repeats for the given count.
 - `blit_tube_sprite_clipped`: Checks the sprite rectangle against the tube bounds, sets the collision flag, then shifts and ORs table-translated pixel bytes into the destination bitplane words for the overlapping rows.
@@ -274,71 +291,88 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `player_one_input_and_script_advance`: Reads player one joystick and fire from CIA and JOY registers, updates movement and script pointers, and advances the player one script byte stream.
 - `player_two_input_and_script_advance`: Reads player two joystick and fire from CIA and JOY registers, updates movement and script pointers, and advances the player two script byte stream.
 - `script_command_dispatch`: Dispatches script command codes in d1 to set flags, load script pointers, update score and speed, and call subroutines for player movement.
+- `validate_object_state`: Compares a word value at offset 106 with 100 and branches if greater or equal, then tests a byte at offset 13743 and branches if zero, followed by another test of a byte at offset 5546 and branches if zero, then compares a long value at offset 45968 with 59 and branches if less than or equal, otherwise it returns.
+- `frag_move_subi_bra`: Short code fragment that copies a fixed memory address to d1, then subtracts 43 from d1, then copies 43 to a fixed memory address, then copies a fixed memory address to d0, then jumps to another point in the code.
+- `frag_cmpi_bge_move_add_bra`: Short code fragment that compares a fixed memory address with 259, then branches if the comparison was greater or equal, then copies a fixed memory address to d0, then copies 16 to d1, then adds d1 to a fixed memory address, then jumps to another point in the code.
+- `update_projectile_position_2`: Updates the position of a projectile by calculating its new coordinates based on velocity and collision detection, then clears the previous pixel position and sets the new one across four bitplanes.
+- `check_projectile_limit`: Compares a word value at offset 134 with 100 and branches if greater or equal, then tests a byte at offset 13743 and branches if zero, followed by another test of a byte at offset 5546 and branches if not zero, then compares a long value at offset 45968 with 59 and branches if less than or equal, otherwise it returns.
+- `frag_move_subi_bra_2`: Short code fragment that copies a fixed memory address to d1, then subtracts 43 from d1, then copies 43 to a fixed memory address, then copies a fixed memory address to d0, then jumps to another point in the code.
+- `frag_cmpi_bge_move_add_bra_2`: Short code fragment that compares a fixed memory address with 259, then branches if the comparison was greater or equal, then copies a fixed memory address to d0, then copies 16 to d1, then adds d1 to a fixed memory address, then jumps to another point in the code.
+- `update_projectile_position`: Updates projectile coordinates and handles collision detection with game objects, clearing pixels and setting audio registers during movement.
 - `wait_until_fire_button_released`: Reads the CIAA port A fire button bit and branches back to itself while bit 6 stays set, then returns once the button is released.
+- `frag_btst_bne_beq_rts_2`: Short code fragment that tests bit 6 of a fixed memory address, then branches if the last result was not zero, then tests bit 6 of a fixed memory address, then branches if the last result was zero, then returns.
 - `select_animation_frame_from_input_bits`: Tests bits of d0 and the current d1 value to choose and return a new d1 frame index, returning early if a global flag is set.
 - `update_tube_warrior_state_machine`: Checks global flags and the a0 state bytes, compares d1 against many values, sets d1 and a0 fields, and calls two routines to swap pointers and update state.
 - `tube_warrior_state_timer_update`: Compares d1 to 1; if not equal clears byte at offset 2 of a0 and returns, otherwise checks and increments a counter byte at offset 3 of a0 against two global flags, clearing d1 on completion.
 - `tube_warrior_spawn_slot_scan`: Checks global flags, clears a pending slot, sets CIAA control register bit, reads CIAA timer low byte into d0, then walks an eight-byte-stride table comparing accumulated counts and horizontal distance to pick a spawn entry, returning d1 and d2.
-- `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_4`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_5`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_6`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_7`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_8`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_9`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_10`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_11`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_12`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `zero_filled_data_area_2`: Single zero word that decodes as ori.b #0,d0; this address is a zero-filled data area referenced by other code, not executable instructions.
-- `zero_filled_data_word_at_1590`: This single zero word decodes as ori.b with immediate zero to d0; it is zero-filled data referenced by address, not executable code.
-- `zero_fill_word_at_1594`: This single zero word decodes as ori.b with immediate zero on d0; it is zero-filled data referenced by address, not executable code.
-- `zero_fill_word_at_1598`: One zero word at this offset decodes as ori.b zero to d0; the bytes are padding data pointed to by absolute references, not a real routine.
-- `zero_fill_data_word_at_159c`: A single zero word that decodes as ori.b with immediate zero to d0; it is zero-filled data referenced by address, not executable code.
-- `zero_fill_data_word_at_15a0`: One zero word in the same zero-filled data area, decoded as ori.b immediate zero to d0; referenced by address from four callers, not real code.
-- `zero_fill_data_word_at_15a4`: Another zero word of the zero-filled data region, decoding as ori.b immediate zero to d0; used as an address and handler pointer, not executable.
-- `zero_fill_word_at_15a8`: A lone zero word here decodes as ori.b immediate zero on d0; it is part of a zero-filled data area reached through handler pointers, not code.
-- `zero_word_data_at_15ac`: One zero word at this offset, decoding as ori.b immediate zero to d0; the bytes are a zero-filled data area pointed to by absolute references.
-- `zero_word_data_at_15b0`: One zero word referenced by absolute addi, cmpi and move operands plus a hunk data pointer; the bytes are filler data, not a real instruction.
-- `zero_word_data_at_15b4`: A lone zero word reached through an absolute move operand and a data handler pointer; it is padding data rather than runnable code.
-- `zero_filled_data_word_at_15b8`: One zero word taken as an address by two callers; the bytes are a zero-filled data area, not a real instruction sequence.
-- `zero_filled_data_word_at_15bc`: A lone zero word in a zero-filled data region, referenced by address and handler pointers; it is data, not executable code.
-- `zero_filled_data_word_at_15c0`: A single zero word that decodes as ori.b with immediate zero to d0; it is data, not executable code, referenced by address.
-- `zero_fill_word_at_15c4`: This single zero word decodes as an ori.b immediate instruction but is really zero-filled data referenced by address from six callers.
-- `zero_fill_word_at_15c8`: This lone zero word is data, not code, sitting in the zero-filled table and reached by address from three callers.
-- `zero_filled_data_words_at_15cc`: Two zero words that decode as ori.b immediate zero to d0; this is zero-filled data referenced by address, not executable code.
-- `zero_filled_data_word_at_15d4`: A single zero word decoding as ori.b immediate zero to d0; this is zero-filled data referenced by address, not executable code.
-- `zero_filled_data_words_at_15d8`: Two zero words decoding as ori.b immediate zero to d0; this is zero-filled data referenced by address, not executable code.
 - `write_audio_channel_registers`: Computes the audio channel register base from the channel index, stores pointer, period, volume and length into the four channel registers, then enables that channel's DMA bit in DMACON.
 - `enable_audio_dma_channel`: Reads the channel number argument, builds a single DMA enable bit for that channel and writes it to DMACON to turn on that audio channel.
 - `write_audio_channel_length`: Computes the audio channel register base from the channel index and writes the length value into the channel's length register.
+- `frag_movea_move_mulu_adda_rts`: Short code fragment that copies an address to a0, then copies the memory at an offset from a7 to d1, then multiplies d1 by 16 (unsigned), then adds d1 to a0, then copies the memory at an offset from a7 to d2, then copies d2 to the memory at a0, then returns.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_game_state`: Sets up game state variables including timer values and memory pointers, then copies data from a source buffer to a destination buffer of fixed size.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_2`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_245`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_3`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_4`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_5`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_246`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_247`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_248`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_6`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_7`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_249`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_250`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_251`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_252`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_253`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_254`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_255`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_256`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_257`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_258`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_259`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_8`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_9`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `undecodable_bytes_13`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_14`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_15`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_16`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_4`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_5`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_6`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_17`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_18`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_19`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_20`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_21`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_22`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_7`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_8`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_9`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_10`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_11`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_12`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_49`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_50`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_51`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_52`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_53`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_23`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_24`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_25`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_26`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_27`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_54`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_28`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_29`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_30`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
@@ -346,6 +380,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `undecodable_bytes_32`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_33`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_34`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `undecodable_bytes_55`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_35`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_36`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_37`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
@@ -353,19 +388,43 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `jump_vector_entry_10`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_11`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_12`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_260`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_261`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_262`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_263`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_13`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_14`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_264`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_265`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_266`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_267`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_268`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_15`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_16`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_269`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_270`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_271`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_272`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_273`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_17`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_18`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_19`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_20`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_274`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_275`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_276`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_277`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_21`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_22`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_23`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_24`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_25`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_278`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_279`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_280`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_281`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_282`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_283`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_26`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_27`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_28`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
@@ -373,6 +432,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `undecodable_bytes_39`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `jump_vector_entry_30`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_31`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_284`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_285`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_32`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_33`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_34`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
@@ -397,6 +458,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `jump_vector_entry_48`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_49`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_50`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_286`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_287`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_288`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_289`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_51`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_52`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_53`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
@@ -421,14 +486,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `jump_vector_entry_72`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_73`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_74`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_290`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_291`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_292`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_75`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_76`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_77`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_293`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_294`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_78`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_79`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_80`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_81`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_82`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_295`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_83`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_84`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_85`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
@@ -448,51 +519,128 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `undecodable_bytes_45`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_46`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `undecodable_bytes_47`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `jump_vector_entry_296`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_297`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `undecodable_bytes_48`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `jump_vector_entry_96`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_97`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_98`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_99`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_298`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_299`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_300`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_301`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_302`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_303`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_304`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_305`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_306`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_307`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_308`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_100`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_101`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_309`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_102`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_103`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_310`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_104`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_105`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_311`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_312`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_313`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_314`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_315`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_316`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_317`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_318`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_319`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_320`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_321`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_106`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_107`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_108`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_109`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_322`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_323`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_324`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_325`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_326`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_327`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_110`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_111`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_112`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_113`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_328`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_114`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_115`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_116`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_117`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_118`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_119`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_329`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_330`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_331`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_120`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_121`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_122`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_123`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_332`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_333`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_334`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_335`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_336`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_337`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_338`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_339`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_340`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_341`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_342`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_124`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_125`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_343`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_344`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_345`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_346`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_347`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_348`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_349`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_350`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_351`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_352`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_353`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_126`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_127`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_128`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_129`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_354`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_355`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_356`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_357`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_358`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_130`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_131`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_359`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_360`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_361`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_362`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_132`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_133`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_363`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_364`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_365`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_134`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_135`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_366`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_367`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_368`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_369`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_370`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_371`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_136`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_137`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_138`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_139`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_372`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_140`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_141`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_142`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
@@ -500,6 +648,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `jump_vector_entry_144`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_145`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_146`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_373`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_147`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_148`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_149`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
@@ -508,10 +657,28 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `jump_vector_entry_152`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_153`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_154`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_374`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_375`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_376`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_377`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_378`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_379`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_380`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_381`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_382`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_383`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_384`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_155`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_156`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_157`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_158`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_385`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_386`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_387`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_388`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_389`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_390`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_391`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_159`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_160`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 
@@ -519,32 +686,73 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `jump_vector_entry_161`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_162`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_392`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_393`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_394`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_395`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_396`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_397`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_398`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_399`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_400`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_401`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_402`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_163`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_164`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_165`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_403`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_404`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_166`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_167`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_168`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_169`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_405`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_406`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_407`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_170`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_171`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_408`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_409`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_172`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_173`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_174`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_175`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_410`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_176`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_177`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_411`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_412`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_178`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_179`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_180`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_413`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_414`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_181`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_415`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_416`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_417`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_418`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_419`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_420`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_182`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_183`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_184`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_421`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_185`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_186`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_187`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_188`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_422`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_423`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_424`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_425`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_426`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_427`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_428`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_429`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_430`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_431`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_432`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_189`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_190`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_191`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
@@ -553,40 +761,112 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `jump_vector_entry_194`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_195`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_196`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_433`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_434`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_435`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_197`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_198`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_436`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_437`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_438`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_439`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_440`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_441`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_442`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_199`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_200`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_201`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_443`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_444`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_445`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_202`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_203`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_204`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_446`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_447`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_448`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_449`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_450`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_451`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_452`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_453`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_454`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_455`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_456`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_205`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_206`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_457`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_458`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_459`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_460`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_461`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_462`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_463`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_464`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_465`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_466`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_467`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_207`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_208`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_468`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_469`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_470`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_471`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_472`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_209`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_210`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_473`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_474`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_475`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_476`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_477`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_478`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_479`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_480`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_481`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_482`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_483`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_211`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_212`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_213`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_214`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_484`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_485`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_486`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_487`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_215`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_216`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_217`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_488`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_489`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_490`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_491`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_492`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_218`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_219`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_493`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_494`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_495`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_496`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_497`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_498`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_499`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_500`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_220`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_221`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_222`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_223`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_224`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_225`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_501`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_502`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_226`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_227`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_228`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_229`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_230`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_503`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_504`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_231`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_232`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_233`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
@@ -594,6 +874,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `jump_vector_entry_235`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_236`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_237`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_505`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_238`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_239`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_240`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
@@ -602,6 +883,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `jump_vector_entry_241`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_242`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_506`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_507`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_243`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -610,10 +893,36 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
 - `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_2`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_3`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_4`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_5`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_6`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_7`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_8`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_9`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_10`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_11`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_12`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_13`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_14`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_15`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_16`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_8`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_17`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_18`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_19`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_20`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_21`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `frag_move_rte`: Short code fragment that copies 32767 to a fixed memory address, then returns from the exception.

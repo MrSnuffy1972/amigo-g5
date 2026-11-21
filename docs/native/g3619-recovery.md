@@ -18,8 +18,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | class | bytes |
 |---|---|
 | asset | 34700 |
-| code | 1290 |
-| data | 836954 |
+| code | 1484 |
+| data | 836760 |
 | padding | 14864 |
 | unused | 13312 |
 
@@ -27,7 +27,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Type | 2 | 117 | 2 |
+| Type | 2 | 188 | 2 |
 | wait | 2 | 117 | 2 |
 | Fetiche Maya, Le (1990)(Silmarils)(Fr)[cr Avenger].adf:t.x | 1 | 216 | 5 |
 | Fetiche Maya, Le (1990)(Silmarils)(Fr)[cr Avenger].adf:Mouse | 2 | 4 | 1 |

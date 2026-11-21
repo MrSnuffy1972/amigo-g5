@@ -11,15 +11,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Functions named and described | pass, 45 of 45 named (0 author symbols), 45 of 45 described (15 by rule, 21 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 156 of 156 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 9728 bytes, 9 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1859 of 1868 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1925 of 1934 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 20028 |
-| code | 7110 |
-| data | 848812 |
+| code | 7374 |
+| data | 848548 |
 | padding | 2 |
 | unused | 27648 |
 
@@ -33,7 +33,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | logged disk load from Brides of Dracula.adf boot-block load | 1 | 94 | 3 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 428 | 26 |
 | Brides of Dracula.adf bytes 45056-49152 (code never loaded by a reference run) | 1 | 1126 | 9 |
-| Brides of Dracula.adf bytes 375296-380928 (code never loaded by a reference run) | 1 | 0 | 0 |
+| Brides of Dracula.adf bytes 375296-380928 (code never loaded by a reference run) | 1 | 66 | 0 |
 
 ## Cases handled
 

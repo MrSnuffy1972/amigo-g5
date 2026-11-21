@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (913584 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 28 raw-word lines |
 | Functions named and described | pass, 121 of 121 named (0 author symbols), 121 of 121 described (44 by rule, 73 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 988 of 988 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 994 of 994 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 1536 bytes, 9 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 2990 of 2990 instructions identical in start and length, 0 mismatches |
 
@@ -39,7 +39,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - neverending story ii, the - the arcade game (1990)(linel)[cr qtx]/Neverending Story II, The - The Arcade Game (1990)(Linel)[cr QTX].adf: the boot block reads 5632 bytes from disk offset 895488 to an address (found statically); recovered as a unit
 - runtime segment an address: 103 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 21 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 864 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 870 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - neverending story ii, the - the arcade game (1990)(linel)[cr qtx]/Neverending Story II, The - The Arcade Game (1990)(Linel)[cr QTX].adf: bytes 1024-2560 look like code no run loaded: recovered position-independently (load address unknown)
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate
 - neverending story ii, the - the arcade game (1990)(linel)[cr qtx]/Neverending Story II, The - The Arcade Game (1990)(Linel)[cr QTX].adf: 2 logged loads cover 7168 bytes of the image

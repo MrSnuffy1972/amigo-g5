@@ -11,15 +11,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Functions named and described | pass, 79 of 79 named (0 author symbols), 79 of 79 described (41 by rule, 34 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 614 of 614 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 2048 bytes, 1 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1544 of 1547 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1557 of 1560 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 17683 |
-| code | 10014 |
-| data | 884399 |
+| code | 10064 |
+| data | 884349 |
 | padding | 16 |
 | unused | 5632 |
 
@@ -31,7 +31,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | logged disk load from Navy Seals (1990)(Ocean)[cr QTX].adf boot-block load | 1 | 94 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 769 | 41 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 551 | 34 |
-| Navy Seals (1990)(Ocean)[cr QTX].adf bytes 709120-709632 (code never loaded by a reference run) | 1 | 0 | 0 |
+| Navy Seals (1990)(Ocean)[cr QTX].adf bytes 709120-709632 (code never loaded by a reference run) | 1 | 13 | 0 |
 | Navy Seals (1990)(Ocean)[cr QTX].adf bytes 712192-712704 (code never loaded by a reference run) | 1 | 93 | 1 |
 | Navy Seals (1990)(Ocean)[cr QTX].adf bytes 719872-720384 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Navy Seals (1990)(Ocean)[cr QTX].adf bytes 721408-721920 (code never loaded by a reference run) | 1 | 0 | 0 |

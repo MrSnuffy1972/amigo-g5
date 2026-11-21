@@ -11,16 +11,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Functions named and described | pass, 17 of 17 named (0 author symbols), 17 of 17 described (5 by rule, 10 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 428 of 428 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 45056 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 882 of 882 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 922 of 922 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 33629 |
-| code | 3402 |
-| data | 837718 |
-| padding | 3 |
+| code | 3558 |
+| data | 837560 |
+| padding | 5 |
 | unused | 31232 |
 
 ## Code units
@@ -33,8 +33,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 540 | 6 |
 | Angel Nieto Pole 500 (1990)(Opera Sport)[cr Cool-X].adf bytes 1024-4096 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Angel Nieto Pole 500 (1990)(Opera Sport)[cr Cool-X].adf bytes 4608-8704 (code never loaded by a reference run) | 1 | 0 | 0 |
-| Angel Nieto Pole 500 (1990)(Opera Sport)[cr Cool-X].adf bytes 107008-125952 (code never loaded by a reference run) | 1 | 0 | 0 |
-| Angel Nieto Pole 500 (1990)(Opera Sport)[cr Cool-X].adf bytes 369152-388096 (code never loaded by a reference run) | 1 | 0 | 0 |
+| Angel Nieto Pole 500 (1990)(Opera Sport)[cr Cool-X].adf bytes 107008-125952 (code never loaded by a reference run) | 1 | 20 | 0 |
+| Angel Nieto Pole 500 (1990)(Opera Sport)[cr Cool-X].adf bytes 369152-388096 (code never loaded by a reference run) | 1 | 20 | 0 |
 
 ## Cases handled
 

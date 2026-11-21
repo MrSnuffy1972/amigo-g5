@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (911984 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 0 raw-word lines |
 | Functions named and described | pass, 33 of 33 named (0 author symbols), 33 of 33 described (10 by rule, 21 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 783 of 783 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 815 of 815 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 1008 of 1008 instructions identical in start and length, 0 mismatches |
 
@@ -38,7 +38,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - reference run ref ends at a 68000 address error (odd PC an address after an address): the harness halted there, nothing after it ran (68000 HALTED: address error at odd PC an address after an address, vector 3 an address is not a handler in RAM (the 68000 double-faults and halts); run ended at frame 75)
 - Insects in Space/Insects in Space.adf: the boot block reads 55808 bytes from disk offset 318976 to an address (found statically); recovered as a unit
 - runtime segment an address: 149 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 576 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 608 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - Insects in Space/Insects in Space.adf: 1 logged loads cover 55808 bytes of the image
 - Insects in Space/Insects in Space.adf: blocks 4-10 (bytes 2048-5632) outside the filesystem hold data, not code (opcode density 0.006, entropy 5.05)
 - Insects in Space/Insects in Space.adf: blocks 22-622 (bytes 11264-318976) outside the filesystem hold data, not code (opcode density 0.002, entropy 4.81)

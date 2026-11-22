@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (921840 top-level bytes in 9 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 25 raw-word lines |
-| Functions named and described | pass, 388 of 388 named (0 author symbols), 388 of 388 described (69 by rule, 308 by the local model) |
+| Functions named and described | pass, 394 of 394 named (0 author symbols), 394 of 394 described (74 by rule, 307 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2089 of 2089 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 2560 bytes, 9 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 6528 of 6528 instructions identical in start and length, 0 mismatches |
+| Recovered without load address (counted in proof 1, flagged) | 2560 bytes, 11 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 6597 of 6597 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 4731 |
-| code | 40548 |
-| data | 802833 |
+| code | 40784 |
+| data | 802597 |
 | unused | 73728 |
 
 ## Code units
@@ -28,14 +28,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | R-Type.adf:bootblock | 1 | 36 | 4 |
 | logged disk load from R-Type.adf boot-block load | 1 | 116 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3958 | 200 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3962 | 204 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1026 | 89 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 236 | 6 |
-| R-Type.adf bytes 1024-1536 (code never loaded by a reference run) | 1 | 0 | 0 |
+| R-Type.adf bytes 1024-1536 (code never loaded by a reference run) | 1 | 73 | 2 |
 | R-Type.adf bytes 143872-144384 (code never loaded by a reference run) | 1 | 127 | 3 |
-| R-Type.adf bytes 156672-157696 (code never loaded by a reference run) | 1 | 93 | 3 |
+| R-Type.adf bytes 156672-157696 (code never loaded by a reference run) | 1 | 107 | 3 |
 | R-Type.adf blocks 1759-1759 (bytes 900608-901120) (code never loaded by a reference run, load address unknown) | 1 | 116 | 3 |
-| R-Type.adf:blocks 66-275 (bytes 33792-141312)#unpacked | 1 | 820 | 78 |
+| R-Type.adf:blocks 66-275 (bytes 33792-141312)#unpacked | 1 | 847 | 78 |
 
 ## Cases handled
 
@@ -48,7 +48,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - R-Type/R-Type.adf: bytes 1024-1536 look like code no run loaded: recovered position-independently (load address unknown)
 - R-Type/R-Type.adf: bytes 143872-144384 look like code no run loaded: recovered position-independently (load address unknown)
 - R-Type/R-Type.adf: bytes 156672-157696 look like code no run loaded: recovered position-independently (load address unknown)
-- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 6 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 5 address, 1 branch displacement
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 7 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 5 address, 2 branch displacement
 - R-Type/R-Type.adf: 4 logged loads cover 7168 bytes of the image
 - R-Type/R-Type.adf: 39 track-loaded blocks found in recovered runtime segments and classified through them
 - R-Type/R-Type.adf: blocks 4-62 (bytes 2048-32256) hold 3 packed streams (BK: ByteKiller) found by scanning, 96% of the bytes
@@ -72,7 +72,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - R-Type/R-Type.adf: blocks 1584-1590 (bytes 811008-814592) outside the filesystem hold data, not code (opcode density 0.028, entropy 5.49)
 - R-Type.adf blocks 1759-1759 (bytes 900608-901120) (code never loaded by a reference run, load address unknown): never-loaded code-like bytes recovered position-independently (load address unknown, 268 of 512 bytes decode)
 - R-Type/R-Type.adf:blocks 66-275 (bytes 33792-141312)#unpacked: hunk executable inside unpacked track data, recovered as unit u9 after the main pass
-- 1 never-loaded region(s), 512 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 - 4 packed track region(s), 280576 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)
 
 ## Cracktros (kept, not protection)
@@ -99,7 +98,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### logged disk load from R-Type.adf boot-block load
 
-- `select_half_or_input`: Returns the input word unchanged unless the D7 word equals one, in which case it returns the D6 word shifted right by one bit, so half its value.
+- `select_half_or_input_word_2`: Returns half of a second word when a flag equals one, otherwise returns the input word unchanged.
 - `lookup_masked_table_word`: Reads a word from a table indexed by twice the D1 word, ANDs it with the D6 word, and returns the result.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -110,6 +109,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `frag_bra_4`: Short code fragment that jumps to another point in the code.
 - `frag_bra_5`: Short code fragment that jumps to another point in the code.
 - `frag_bra_6`: Short code fragment that jumps to another point in the code.
+- `jump_to_initialize_and_copy_data`: Jump stub: passes control straight on to initialize_and_copy_data.
+- `jump_to_calculate_scaled_index`: Jump stub: passes control straight on to calculate_scaled_index.
+- `jump_to_subtract_and_branch`: Jump stub: passes control straight on to subtract_and_branch.
+- `jump_to_adjust_bcd_values`: Jump stub: passes control straight on to adjust_bcd_values.
 - `initialize_system_state`: Branches to another routine, clears many global words and bytes, sets values in a structure, calls several routines to initialize tables and lists, and finally jumps to an address in a0 if a specific global byte is zero.
 - `frag_bsr`: Short code fragment that calls another routine.
 - `frag_btst_beq_move`: Short code fragment that tests bit 6 of a fixed memory address, then branches if the last result was zero, then copies 868 to a fixed memory address.
@@ -406,6 +409,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_audio_parameters`: Performs a loop that calculates values using a table, updates the AUD0LCH register, and writes to a global table and the DMA controller to manage audio playback.
 - `push_registers_to_stack`: Pushes several words from registers a6, d0, a4, and d5 onto the stacks pointed to by a3 and a4.
 
+### R-Type.adf bytes 1024-1536 (code never loaded by a reference run)
+
+- `bk_refill_bit_buffer_3`: Depacker bit reader refill: fetches the previous longword of the packed stream, folds it into the checksum and shifts out its lowest bit with a marker bit entering at the top.
+- `bk_read_bits_2`: Depacker bit reader: collects the number of bits given in D1 from the bit buffer into D2, most significant first, refilling from the packed stream whenever the buffer runs empty.
+
 ### R-Type.adf bytes 143872-144384 (code never loaded by a reference run)
 
 - `clear_cia_interrupts_and_initialize`: Clears the least significant bit of the control registers for both CIA chips and performs three loops: copying sixteen words from a table to an offset in a6, filling a table with zero and increments of 208, and filling another table with zero and increments of 208 up to a count of 271.
@@ -466,10 +474,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_subroutine_repeatedly`: Loads three addresses into a6, a5, and a4, then calls another routine four times, incrementing a5 by 4 and a4 by 16 before each call.
 - `branch_on_word_value`: Tests a 16-bit word at offset 2 of a structure in a5 and branches if it is zero or negative; if the condition is met, it calls four different routines in sequence, otherwise it calls one routine and returns.
 - `update_structure_fields`: Tests a 16-bit word at offset 2 of a structure in a5 and branches based on the result; if the value is negative, it clears words at offsets 64 and 66 of the structure, sets words at offsets 2 and 98 to all ones, and returns if the word at offset 66 is zero; otherwise, it decrements the word at offset 66 and returns.
-- `update_jump_table_entry`: Fetches a value from a table using an index stored at offset 64 of a structure, then either increments that index or updates a global pointer with a new address calculated from a relative offset in a table.
 - `jump_vector_entry_4`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
-- `frag_addi_rts_2`: Short code fragment that adds 1 to the memory at an offset from a5, then returns.
-- `frag_addi_bra_2`: Short code fragment that adds 1 to the memory at an offset from a5, then jumps to another point in the code.
 - `reset_dma_and_counters`: Updates the DMA control register using a word from an offset of 52 in a structure, clears three bytes at offsets 70, 92, and 112, increments a counter at offset 64, and branches to another routine.
 - `frag_move_bra_4`: Short code fragment that copies the memory at an offset from a5 to a fixed memory address, then jumps to another point in the code.
 - `update_indexed_pointer`: Masks a 32-bit value from a structure in a6 to 24 bits, adds an offset from a6 to it, and stores the result into a pointer at offset 176 of a structure in a5 and into the location pointed to by a4.
@@ -483,6 +488,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `calculate_offset_value`: Adds a byte from offset 41 of a structure in a6 to a byte from offset 17 of a structure in a5, shifts the result left by 1, and uses it as an index into a table to fetch a word.
 - `update_structure_value`: Takes a byte from offset 41 of a structure in a6, masks it, shifts it left by 1, and uses it to index a table to fetch a word.
 - `update_object_state_and_index`: Copies a byte and a word from a structure pointed to by a6 into a structure pointed to by a5, sets a byte at offset 131 of the a5 structure to 1, and increments a counter at offset 64 of the a5 structure before branching.
+- `frag_move_asl_add_bra`: Short code fragment that copies the memory at an offset from a5 to d0, then shifts d0 left by 1, then adds the memory at an offset from a5 to d0, then adds the memory at an offset from a6 to d0, then copies d0 to the memory at an offset from a4, then copies d0 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_8`: Short code fragment that copies the memory at an offset from a6 to the memory at an offset from a4, then copies the memory at an offset from a6 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_9`: Short code fragment that copies the memory at an offset from a6 to the memory at an offset from a5 (4 times in a row), then jumps to another point in the code.
 - `update_structure_and_counter`: Stores a 16-bit value split into two bytes at a pointer in a6, clears a bit in a byte at a6 minus one, and if a byte at offset 148 of a5 is non-zero, performs arithmetic on values at offsets 144, 160, and 192 of a5, potentially updating a 16-bit value at offset 6 of a4 and decrementing a byte at offset 147 of a5.
 - `update_structure_values`: If a byte at offset 146 of a structure in a5 is non-zero, it adds a signed byte from offset 128 to a 16-bit value at offset 144, and if a 16-bit value at offset 192 is zero, it stores a sum in a location pointed to by a4.
 - `update_structure_values_3`: Decrements a byte at offset 131 of a structure in a5 using a byte from offset 130, and if the result is non-zero, performs arithmetic comparisons between words at offsets 160, 192, and 194 of the structure to potentially clear offset 192 and update offsets 194 and 6 of a4.

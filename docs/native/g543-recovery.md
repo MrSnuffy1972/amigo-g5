@@ -11,16 +11,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Functions named and described | pass, 595 of 595 named (0 author symbols), 595 of 595 described (31 by rule, 562 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 1040 of 1040 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 68064 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 12169 of 12169 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 12170 of 12170 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 1078843 |
-| code | 39054 |
-| data | 1534549 |
-| padding | 21794 |
+| code | 40074 |
+| data | 1533524 |
+| padding | 21799 |
 | unused | 29184 |
 
 ## Code units
@@ -31,9 +31,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:Install | 10 | 250 | 17 |
 | Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:sp0 | 10 | 250 | 17 |
 | Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:more | 6 | 250 | 17 |
-| run | 2 | 458 | 12 |
+| run | 2 | 759 | 12 |
 | resident | 2 | 171 | 4 |
-| sp | 35 | 960 | 52 |
+| sp | 35 | 986 | 52 |
 | Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:sim | 12 | 250 | 17 |
 | SKID_ROW | 2 | 267 | 8 |
 | Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:title | 17 | 250 | 17 |
@@ -42,7 +42,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:ttl | 12 | 250 | 17 |
 | Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:intro | 21 | 3126 | 142 |
 | Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:amigasnd.drv | 3 | 1820 | 112 |
-| Nova 9 (1991)(Dynamix)(Disk 3 of 3).adf:story | 11 | 3039 | 114 |
+| Nova 9 (1991)(Dynamix)(Disk 3 of 3).adf:story | 11 | 3040 | 114 |
 | Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:bootblock | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
 | ACTORS5.TBC (raw code file, load address unknown) | 1 | 0 | 0 |
@@ -131,7 +131,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:sp0
 
-- `verify_and_swap_memory_constant`: Executes a loop of function calls and checks a value at a calculated offset from a global pointer.
+- `initialize_game_state_2`: Executes a sequence of function calls and checks a global pointer to swap a memory value if a specific constant is found.
 - `decrement_d6_until_negative_one_2`: Decrements the value in register D6 until it reaches negative one and then returns.
 - `accumulate_array_elements_loop`: Executes a loop six times, calling a subroutine to fetch values and adding them to an array located at a pointer in a1.
 - `update_table_via_function_return`: Calls a subroutine and uses the returned value to calculate an offset, then adds the value from a register to a memory location at that offset within a table pointed to by a register.
@@ -151,7 +151,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:more
 
-- `patch_aga_hardware`: Checks a specific bitmask against a value in a memory structure and, if it matches, updates a global variable and clears a memory location.
+- `initialize_aga_patch_2`: Executes a loop of function calls and checks a structure value against a specific bitmask to update a global variable.
 - `decrement_register_until_negative_one_3`: Decrements a 16-bit value stored in a register until it reaches negative one and then returns.
 - `update_table_and_call_exec`: Calls a subroutine twice, then enters a loop that executes a subroutine and updates a table by adding a value to an entry at an offset determined by a counter.
 - `add_values_to_table_more`: Doubles d0 and branches if positive; otherwise it calls another subroutine, then enters a loop that runs up to two times, calling another subroutine, calls a fourth subroutine, and adds the result to a table at offset d2 of a3.
@@ -186,7 +186,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### resident
 
-- `initialize_resident_memory_structure`: Traverses a linked list to find the maximum value in a sequence and then populates a memory structure with a pattern of incrementing values.
+- `find_max_and_prepare_buffer_2`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_memory_block_and_call`: Copies sixteen bytes from a memory location to a destination pointed to by the stack and then executes a function via a pointer.
 - `update_structure_and_call_handlers`: Calculates a value by shifting a register, stores it at offset 4 of a structure in a1, and performs several calls to a routine in a5 while updating various offsets in the structure in a1.
 - `jump_to_address`: Clears register d1 and performs an indirect jump using the address in a6.
@@ -210,7 +210,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_420`: Library stub: loads a library base from a global variable and calls the library function at offset minus 420 of that base, returning its result to the caller.
 - `allocate_and_patch_memory`: Checks fields of a global structure and, if conditions are met, obtains a memory block and a code pointer via library calls, copies a small code stub from another routine into the target, updates a pointer in the global structure, computes a checksum over a short array in the structure and stores its complement, then returns.
 - `sum_and_store_inverted`: Iterates through a table of words to calculate a sum, stores the bitwise NOT of that sum in a global variable, and then performs an indirect call.
-- `patch_resource_function`: Checks a global variable and calls a routine through a pointer.
+- `disable_interrupts_and_patch`: The routine checks a global variable and calls another routine through a table.
 - `check_flag_and_copy_word`: The routine calls another routine and tests its return value.
 - `dispatch_conditional_pointer_call`: Compares a value against a global variable and a constant, then executes another routine via a pointer if the conditions are met.
 - `dispatch_conditional_call`: Checks if a register contains a specific value and, if not, calls another routine via a pointer stored in a global variable.
@@ -229,7 +229,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `find_node_by_string`: Iterates through a linked list and returns a pointer to a node if a string stored within the node matches a provided input string.
 - `call_supervisor`: Library stub: loads its arguments and the exec library base, calls Supervisor and returns its result to the caller.
 - `reset_global_variable`: Sets a global variable to zero and returns its previous value.
-- `call_indirect_via_table`: The routine calls another routine through a pointer stored in a global variable.
+- `call_patch_hook_with_stack_scratch`: Saves registers, builds a scratch stack pointer below the current stack, loads a function pointer from the patch base plus offset and calls it with d0 set to twelve, then returns d1.
 - `execute_conditional_logic`: Calls a routine with a value from a pointer, and if the result is non-zero, performs two subsequent routine calls using that same value.
 - `tiny_clr_movea_rts`: Small routine of 3 instructions that clears d0, then copies (a7)+ to a2, then returns.
 - `scan_for_marker`: Iterates through an array of words starting from an input pointer.
@@ -315,7 +315,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:gameover
 
-- `execute_sequence_and_swap_constant`: Executes a series of function calls and a loop containing function calls, then checks a value at an offset from a pointer derived from a global variable; if that value matches a specific constant, it swaps the value with a stored constant and clears the original source.
+- `initialize_game_state_3`: Executes a sequence of function calls and checks a global pointer to swap a memory value if a specific constant is found.
 - `decrement_d6_until_negative_one`: Decrements the value in a data register until it reaches negative one and then returns.
 - `iterate_and_accumulate_array`: Executes a subroutine six times within a loop, using the results to fetch values and add them to an array located at a specific offset from a pointer.
 - `add_values_to_table`: Doubles d0 and branches if positive; otherwise it calls another subroutine, then enters a loop that calls another subroutine, calls a fourth subroutine, and adds the result to a table at offset d2 of a3.
@@ -400,10 +400,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_masked_data`: Iterates through a source buffer and copies bytes to a destination only if a bitwise comparison with a mask table succeeds.
 - `write_table_values`: Waits for a condition in a global variable to be met, then writes two specific words into a table.
 - `write_long_to_table`: Waits for a condition in a global variable to be met, then stores a 32-bit value into a table as two words.
-- `modify_memory_word`: Performs bitwise manipulations on input values and stores the resulting 32-bit value at a pointer address.
+- `update_pointer_value`: Checks if a pointer is null, then performs bitwise manipulations and arithmetic on registers to calculate a new 32-bit value, which is then stored back into the memory location pointed to by the original pointer.
 - `reset_hardware_registers`: Sets a global variable based on a register value, waits for a condition, and then clears several memory locations.
-- `copy_string_and_search`: Copies a null-terminated string to a global variable and then searches a memory area for a specific pattern of words.
-- `sync_object_data_table`: Checks a condition against a global variable before copying a sequence of longwords from a memory location into a global table and updating a global pointer.
+- `copy_string_and_search_pattern_2`: Copies a null-terminated string from a source in a0 to a global variable, then searches that variable for a specific pattern of two 32-bit words with bits 1 and 3 cleared, returning a calculated address or zero.
+- `copy_bitplane_data`: Checks a value in a global variable against a threshold and, if it meets the condition, copies 18 longwords from a source pointer to the bitplane memory while temporarily modifying interrupt enable bits.
 - `rotate_color_palette_data`: Copies a source table of color data to a destination buffer while applying a modular arithmetic rotation to each color component.
 - `apply_color_palette_rotation`: Copies a source table of color data to a destination buffer while applying a modular arithmetic rotation to each color component.
 - `update_mouse_cursor_position`: Calculates new cursor coordinates by computing the difference between current and previous input values, applies boundary clamping, and updates a data structure.
@@ -427,14 +427,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `extract_nibble_and_branch`: Extracts a byte from a register, shifts it right by four bits, masks the lower three bits of the result, and then loads a byte from the address in a0 into d0 before branching to another routine.
 - `manage_library_and_interrupts`: Interacts with system libraries to manage resources and manipulates hardware interrupt registers.
 - `configure_bitplane_and_copper_data`: Calculates bitplane dimensions and color palette parameters based on a bitmask, then populates a table with interleaved copper instruction data.
-- `execute_callback_chain`: Executes a function pointer from a global structure, potentially calling another function if the result is non-zero, and updates a global pointer from a specific offset.
-- `execute_callback_pointers_and_reset`: Checks several global variables for non-zero values, executes functions located at an offset from a global pointer, and resets both the global variables and several other global variables to zero.
+- `cleanup_and_reconfigure_display`: Calls a routine to free multiple memory blocks, then checks a global pointer to determine if it should update the display configuration by writing values to the custom chip registers and calling another routine.
+- `free_multiple_memory_blocks`: Checks four global pointers and calls a memory deallocation routine for each non-zero pointer, adding eighty to the size parameter before clearing the pointer; it then clears a fifth pointer and stores the result of the final deallocation into five different global locations.
 - `initialize_display_parameters`: Calculates display dimensions, bitplane counts, and color palette settings based on a bitmask retrieved from a function call.
 - `swap_and_copy_pointers`: Swaps two global variables and copies several consecutive longwords from a memory location to a destination buffer.
 - `update_dma_buffer_pointers`: Calculates a series of memory addresses based on an offset and a loop counter, then stores these resulting values into a sequence of global memory locations.
 - `update_vertical_position`: Performs a loop to calculate a series of words based on an input value and stores them in a table, while interacting with a hardware register.
 - `update_bit_patterns`: Stores a bitwise mask in a global variable, calculates a value based on the sign of d0, and writes a modified version of d0 to another global variable.
-- `free_memory_via_callback`: Checks a global variable, and if non-zero, calls a function using a size from another global variable and then clears the global variable and another global variable.
+- `free_allocated_memory`: Checks if a global pointer is non-zero, then frees the memory at that pointer with an additional fifty bytes of size and clears the pointer and an adjacent global variable.
 - `allocate_memory_via_callback`: If a global variable is zero, it calls a function to allocate memory and stores the resulting pointer in two global variables; otherwise it returns -1.
 - `verify_and_load_data_block`: Reads a data block from a file, allocates memory, and verifies that the loaded content begins with a specific four-byte signature before calling another routine and freeing the allocated memory.
 - `call_exec_functions`: Calls two different library functions using addresses from a table and then restores registers before returning.
@@ -465,7 +465,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clip_and_update_blitter_parameters`: Clips a coordinate pair against a bounding box and updates Blitter control registers and memory pointers based on the resulting offsets.
 - `configure_blt_line_drawing`: Calculates and writes parameters to the Blitter registers to perform line drawing or shape filling.
 - `configure_blitter_sequence_2`: Compares several values from global variables and registers, and if certain conditions are met, performs calculations to set up blitter parameters.
-- `configure_blitter_sequence`: Calculates blitter parameters and source/destination addresses based on several global variables, then enters a loop that checks a bitmask in a global variable to conditionally update the blitter control, path, and size registers for a series of operations.
+- `update_blitter_parameters_3`: Calculates values based on several global variables and updates multiple hardware registers including the blitter and DMA control.
 - `configure_blitter_parameters`: Waits for a bit in a global variable to clear before writing several values to memory locations used for hardware configuration.
 - `apply_bitmask_to_memory_2`: Performs bitwise AND and OR operations on a memory buffer using a bitmask.
 - `apply_bitmask_to_memory`: Performs bitwise AND and OR operations on a memory buffer using a bitmask.
@@ -645,9 +645,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `perform_conditional_copy`: Copies bytes from a source to a destination while checking against a global table and potentially calling another routine if a bitwise match is found.
 - `fall_through_entry_9`: Entry point part-way through straight-line code: runs one instruction (lea.l) and then falls through into the code that follows, with no return of its own.
 - `write_long_to_table_2`: Waits for bit 8 of the VPOSR register to be set, then stores a 32-bit value into a table as two words at an offset calculated from a value in d0.
-- `update_pointer_value_via_bit_shifts`: Checks if a pointer is null, then performs a series of bitwise rotations and shifts on values in d0, d1, and d2 to construct a new 32-bit word, which is then stored at the address pointed to by a0.
+- `update_pointer_value_2`: Checks if a pointer is null, then performs bitwise manipulations and arithmetic on registers to calculate a new 32-bit value, which is then stored back into the memory location pointed to by the original pointer.
 - `reset_hardware_registers_2`: Checks if a global variable is zero and if a value in a register is within a specific range, then clears four longwords at specific offsets in a structure and sets a value in a custom register.
-- `sync_display_parameters`: Synchronizes a series of longwords from a source pointer into a global variable while waiting for a specific bitmask condition.
+- `copy_bitplane_data_2`: Checks a value in a global variable against a threshold and, if it meets the condition, copies 18 longwords from a source pointer to the bitplane memory while temporarily modifying interrupt enable bits.
 - `rotate_palette_colors`: Calculates a bitwise rotation offset for color components and uses it to transform a sixteen-word color table into a destination buffer via a loop.
 - `transform_palette_colors_2`: Copies a sixteen-word table to a destination buffer, then iterates through a specified range of color entries to apply a signed offset to each color component while clamping the results within a four-bit range.
 - `transform_palette_colors`: Iterates through a source table to extract color components, applies a signed offset and clamps the results between two bounds, and writes the transformed 16-bit color values to a destination table.
@@ -661,12 +661,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_ten_words_2`: Obtains two memory addresses from another routine and copies ten words from the first address to the second.
 - `manage_library_resources`: Interacts with graphics and intuition libraries to configure display parameters and clean up allocated resources while manipulating interrupt enable registers.
 - `configure_video_display_parameters`: Calculates display dimensions, bitplane counts, and color palette values based on a bitmask.
-- `cleanup_library_resources`: Executes a sequence of function calls to check global pointers, frees associated memory, and clears those pointers while interacting with intuition.library and hardware registers.
-- `clear_memory_pointers`: Checks several global pointers for non-zero values, calls a function to free the associated memory, and then clears those pointers and several other global variables.
+- `cleanup_and_reconfigure_display_2`: Calls a routine to free multiple memory blocks, then checks a global pointer to determine if it should update the display configuration by writing values to the custom chip registers and calling another routine.
+- `free_multiple_memory_blocks_2`: Checks four global pointers and calls a memory deallocation routine for each non-zero pointer, adding eighty to the size parameter before clearing the pointer; it then clears a fifth pointer and stores the result of the final deallocation into five different global locations.
 - `initialize_video_buffer_structures`: Calculates display dimensions and bitplane counts based on a bitmask, then populates a table with memory addresses for video buffers.
 - `swap_and_copy_pointers_2`: Swaps two values in a table and then copies a series of longwords from a code location into several global variables.
 - `modify_dma_control`: Swaps two values in a table and then copies a series of calculated longwords into a set of global variables while touching the DMA control register.
-- `copy_calculated_longwords`: Calculates a series of longwords based on an input and stores them into a set of global variables while updating the video port register.
+- `update_vertical_position_2`: Performs a loop to calculate a series of words based on an input value and stores them in a table, while interacting with a hardware register.
 - `modify_word_and_store`: Stores a bit-manipulated version of a word into a global variable and updates two other global variables based on the sign bit and a masked value.
 - `free_memory_via_callback_2`: Checks a global variable, and if non-zero, calls a function using a size from another global variable and then clears the global variable and another global variable.
 - `allocate_memory_via_callback_2`: Checks if a global variable is zero, and if so, calls a function to allocate memory and stores the resulting pointer in two global variables.
@@ -692,18 +692,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_all_ones`: The routine returns a value consisting of all bits set to one.
 - `execute_blitter_area_fills`: Configures and triggers the Amiga Blitter to perform area fills or block transfers using calculated dimensions and bitmask patterns.
 - `process_keyboard_input_2`: Reads a byte from the keyboard serial register, updates a global variable, and stores a bit-manipulated value into a table if a condition is met.
-- `open_resource_handler`: Attempts to open a resource and, if successful, performs several operations using the returned pointer before returning a failure code.
-- `close_resource_handler`: Checks if a resource pointer is valid and, if so, performs two operations using that pointer before clearing it.
+- `open_resource_and_initialize_2`: Clears a 16-bit value in a global variable and, if a global pointer is zero, opens a resource via a library call, stores the resulting pointer in a global variable, and then performs several function calls through that pointer and its associated library interface.
+- `close_resource_and_clear_2`: Checks if a global pointer is non-zero, calls two functions via pointers retrieved from that global variable, and then clears the global variable to zero.
 - `get_concatenated_byte`: Returns a 16-bit value formed by concatenating a bit-shifted version of a register with a byte from a table.
-- `pop_table_element`: Decrements a global counter and shifts elements within a table to remove the first entry, returning the removed value.
+- `pop_queue_element_2`: Removes a word from a table and shifts the remaining elements forward.
 - `get_recursive_bit_shifted_value_2`: If a global variable is non-zero, it calls another routine and constructs a 16-bit value using a byte from a table lookup at an index derived from the returned value and a bit-shifted version of that value.
-- `get_concatenated_table_value`: If a global variable is non-zero, it calls another routine to retrieve a byte, then constructs a 16-bit value by concatenating that byte with a byte retrieved from a table using an index calculated from the retrieved byte and its own bit-shifted value; otherwise it returns zero.
+- `get_recursive_concatenated_value_2`: If a global variable is non-zero, it calls another routine and constructs a 16-bit value by concatenating the returned byte with a byte from a table lookup at an index derived from the returned value and a bit-shifted version of that value.
 - `fetch_joystick_table_value_2`: Calculates an index by processing bits from the joystick 1 data register and returns a byte from a table at that calculated offset.
 - `calculate_joystick_mask_2`: Reads the joystick 1 data register, calculates an index via bitwise manipulation, and returns a byte formed by ORing a value from a table at that index with a bitmask constructed from multiple bytes in another table.
 - `process_joystick_bits`: Checks bit 0 of d0, and if not set, performs arithmetic and bitwise operations on d0 before returning.
 - `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
-- `configure_blitter_transfer`: Sets up Blitter hardware registers and memory locations using values derived from input registers and a loop.
-- `setup_blitter_state`: Writes specific values to memory locations and Blitter registers to prepare for a hardware transfer.
+- `execute_blitter_operation_2`: Calculates Blitter parameters and sets multiple Blitter mode and control registers to perform a hardware graphics transfer.
+- `initialize_blitter_registers_2`: Writes specific values to Blitter registers to prepare for a transfer.
 - `validate_resource_header`: Checks a memory block for specific magic signatures and validates its structure using library function calls.
 - `execute_conditional_callback`: Checks if a value at a pointer matches a specific four-byte constant and, if so, calls a function pointer stored at a fixed offset from a global variable.
 - `copy_with_conditional_branch`: Copies a block of bytes from a source to a destination while checking each byte against a global table.

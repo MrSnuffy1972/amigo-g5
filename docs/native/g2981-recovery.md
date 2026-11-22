@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (903600 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 22 raw-word lines |
-| Functions named and described | pass, 45 of 45 named (0 author symbols), 45 of 45 described (15 by rule, 21 by the local model) |
+| Functions named and described | pass, 56 of 56 named (0 author symbols), 56 of 56 described (21 by rule, 26 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 156 of 156 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 9728 bytes, 9 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1925 of 1934 instructions identical in start and length, 0 mismatches |
+| Recovered without load address (counted in proof 1, flagged) | 9728 bytes, 18 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 2010 of 2019 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 20028 |
-| code | 7374 |
-| data | 848548 |
+| asset | 20002 |
+| code | 7788 |
+| data | 848160 |
 | padding | 2 |
 | unused | 27648 |
 
@@ -31,9 +31,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | logged disk load from Brides of Dracula.adf boot-block load | 1 | 94 | 3 |
 | logged disk load from Brides of Dracula.adf boot-block load | 1 | 92 | 2 |
 | logged disk load from Brides of Dracula.adf boot-block load | 1 | 94 | 3 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 428 | 26 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 441 | 28 |
 | Brides of Dracula.adf bytes 45056-49152 (code never loaded by a reference run) | 1 | 1126 | 9 |
-| Brides of Dracula.adf bytes 375296-380928 (code never loaded by a reference run) | 1 | 66 | 0 |
+| Brides of Dracula.adf bytes 375296-380928 (code never loaded by a reference run) | 1 | 177 | 9 |
 
 ## Cases handled
 
@@ -61,7 +61,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - Brides of Dracula/Brides of Dracula.adf: blocks 1592-1639 (bytes 815104-839680) outside the filesystem hold data, not code (opcode density 0.024, entropy 5.05)
 - Brides of Dracula/Brides of Dracula.adf: blocks 1650-1715 (bytes 844800-878592) hold ASCII text
 - Brides of Dracula/Brides of Dracula.adf: blocks 1744-1759 (bytes 892928-901120) hold ASCII text
-- 1 never-loaded region(s), 5632 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
@@ -112,13 +111,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `frag_move_dbra_moveq_rts`: Short code fragment that copies the memory at a1 (advancing a1) to d1, then copies d0 to the memory at a3 (advancing a3), then loops back while counting down d1, then loads 0 into d1, then loops back while counting down d2, then returns.
 - `setup_graphics_registers`: Sets up various graphics hardware registers including display dimensions, color settings, and DMA control registers for video output.
 - `handle_color_data`: Handles color data by copying values from memory to hardware registers, with conditional branches that process different data sets based on a global variable value.
-- `frag_move_dbra_rts`: Short code fragment that copies 0 to the memory at a1, then copies the memory at a0 (advancing a0) to the memory at a1 (advancing a1), then copies 0 to the memory at a2 (advancing a2), then loops back while counting down d7, then returns.
+- `copy_data_blocks`: Copies data blocks from a source pointer to two destination locations while clearing intermediate memory locations, with loop control based on a counter value.
 - `distribute_data_blocks`: Distributes data blocks across multiple memory locations using a loop that copies words from source addresses to destination addresses with specific offset calculations.
 - `update_bit_flags`: Updates a global variable's bits based on conditions derived from another global variable's value, then performs conditional data transfers using a lookup table.
+- `update_bit_flags_2`: Updates bit flags in a global variable and branches to different code paths based on the value of another global variable, calling other routines conditionally.
 - `frag_move_ori`: Short code fragment that copies d0 to the memory at a0 (advancing a0), then merges 196 into d5, then merges 4 into d5, then merges 8 into d5.
 - `copy_data_loop`: Copies word values from two source pointers to two destination pointers in a loop, processing fifteen iterations before returning.
 - `copy_data_block_a`: Copies data between memory locations using a transfer routine, performing two separate copy operations with different source and destination addresses.
 - `copy_data_block_b`: Copies data between memory locations using a transfer routine, performing two separate copy operations with different source and destination addresses.
+- `frag_move_bra`: Short code fragment that copies 0 to a fixed memory address, then jumps to another point in the code.
 - `frag_cmpi_bne_adda_dbra_rts`: Short code fragment that compares the memory at a0 with 0, then branches if the last result was not zero, then adds 16 to a0, then loops back while counting down d7, then returns.
 - `advance_channel_period_chain`: Updates a chain of four-long channel records in sequence, replacing each value and adjusting its accumulator by the difference.
 - `frag_lea_move_clr_adda_dbra_rts`: Short code fragment that loads the address of a fixed memory address into a1, then copies 3 to d1, then clears the memory at an offset from a1, then adds 16 to a1, then loops back while counting down d1, then copies 15 to a fixed memory address, then returns.
@@ -136,3 +137,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_render_state`: Sets up rendering state data including position coordinates, color values, and pointer addresses, then performs multiple iterations of DMA processing with incrementing pointers.
 - `wait_for_dma_ready`: Waits for DMA to become ready by continuously checking a hardware register bit until it clears, then returns immediately.
 - `loop_counter_decrement`: Performs a simple decrement loop operation on a register value, executing the loop three times before returning.
+
+### Brides of Dracula.adf bytes 375296-380928 (code never loaded by a reference run)
+
+- `frag_clr_move_mulu_addq_rts_2`: Short code fragment that clears d0, then copies a fixed memory address to d0, then multiplies d0 by 5 (unsigned), then adds 1 to d0, then copies d0 to a fixed memory address, then returns.
+- `frag_lea_move_dbra_rts_2`: Short code fragment that loads the address of a fixed memory address into a0, then loads the address of a fixed memory address into a1, then copies 6466 to d0, then copies the memory at a0 (advancing a0) to the memory at a1 (advancing a1), then loops back while counting down d0, then returns.
+- `process_data_loop`: Processes data by copying bytes from input pointers to output locations, with conditional branching based on bit testing and loop control using decrementing counters.
+- `frag_move_dbra_moveq_bra_3`: Short code fragment that copies d2 to the memory at a2 (advancing a2), then loops back while counting down d1, then loads 0 into d1, then jumps to another point in the code.
+- `frag_move_dbra_moveq_bra_4`: Short code fragment that copies the memory at a1 (advancing a1) to d2, then copies d2 to the memory at a2 (advancing a2), then loops back while counting down d0, then loads 0 into d0, then jumps to another point in the code.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `load_and_copy_word`: Loads a word value from memory, copies a byte value from another location, and conditionally stores that byte to a destination while looping based on a counter.
+- `frag_move_dbra_moveq_rts_2`: Short code fragment that copies the memory at a1 (advancing a1) to d1, then copies d0 to the memory at a3 (advancing a3), then loops back while counting down d1, then loads 0 into d1, then loops back while counting down d2, then returns.
+- `setup_graphics_registers_2`: Initializes multiple graphics hardware registers including bitplane control, display window settings, copper list pointers, and DMA configuration for Amiga video output.

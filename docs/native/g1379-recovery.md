@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (1849072 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 2 of 2 units identical (bytes and relocations), 89 raw-word lines |
-| Functions named and described | pass, 374 of 374 named (0 author symbols), 374 of 374 described (198 by rule, 163 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 5460 of 5460 (100.00%) |
+| Byte-identical reassembly with vasm | pass, 2 of 2 units identical (bytes and relocations), 91 raw-word lines |
+| Functions named and described | pass, 378 of 378 named (0 author symbols), 378 of 378 described (198 by rule, 167 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 5549 of 5549 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 8931 of 8931 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 9027 of 9027 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 8282 |
-| code | 34460 |
-| data | 1806290 |
+| code | 34802 |
+| data | 1805948 |
 | padding | 40 |
 
 ## Code units
@@ -27,13 +27,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Super Cars II (1991)(Gremlin)[cr Hyperion](Disk 1 of 2).adf:bootblock | 1 | 155 | 8 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 8776 | 366 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 8872 | 370 |
 
 ## Cases handled
 
 - super cars ii (1991)(gremlin)[cr hyperion](disk 1 of 2)/Super Cars II (1991)(Gremlin)[cr Hyperion](Disk 1 of 2).adf: custom-format (non-DOS) disk, 1758 non-empty blocks: matched against track-loaded segments
 - super cars ii (1991)(gremlin)[cr hyperion](disk 2 of 2)/Super Cars II (1991)(Gremlin)[cr Hyperion](Disk 2 of 2).adf: custom-format (non-DOS) disk, 1758 non-empty blocks: matched against track-loaded segments
-- runtime segment an address: 5460 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 5549 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 branch displacement
 - 2 packed track region(s), 1800192 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)
 
@@ -172,6 +172,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_object_state`: Updates object state variables including position, velocity, and flags based on input parameters and global data tables.
 - `initialize_object`: Initializes an object at a calculated offset based on input parameter, setting various fields including type, position, and velocity components, then returns.
 - `accumulate_scaled_values`: Scales values from a global table using a register value, shifts the result right by eight bits, and accumulates these into two word offsets in another structure.
+- `transform_coordinates`: Performs matrix-like coordinate transformations using multiplication and addition operations on word-sized values from memory, storing the results as bytes in two separate output locations.
+- `initialize_tables`: Populates multiple memory regions with predefined word values through a series of loops, copying data from one table to another and generating sequential values with incrementing offsets.
 - `copy_vertex_data`: Copies vertex data from one memory location to another, processing sixteen word values through a loop with fixed offsets and incrementing pointers.
 - `read_joystick_input`: Reads joystick and mouse input registers, processes bit flags for movement and button states, then stores the combined result in a global variable.
 - `initialize_audio_buffers`: Initializes audio buffer structures by clearing memory locations, setting up pointers, and configuring various audio parameters for multiple channels.
@@ -259,6 +261,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `interrupt_handler`: Reads the interrupt request register and clears bit four when set, then reads counter values and updates a state word before calling a handler from a function table.
 - `copy_memory_block`: Copies 765 32-bit words from one memory location to another using a loop that advances both pointers after each iteration.
 - `xor_global_byte`: Performs a bitwise XOR operation between a byte in the d0 register and a byte at a specific memory address, storing the result back at that address.
+- `copy_pattern_data`: Copies structured data from a source table to multiple destination locations based on index calculations, handling different data segments through conditional branching and fixed offset addressing.
+- `set_global_variables`: Initializes several global variables with specific word values and updates a status flag based on a conditional test of another global variable's value.
 - `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
 - `frag_bsr_rts`: Short code fragment that calls another routine, then returns.
 - `frag_bsr_rts_2`: Short code fragment that calls another routine, then returns.

@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (4858239 top-level bytes in 17 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 66 of 66 named (0 author symbols), 66 of 66 described (44 by rule, 22 by the local model) |
+| Functions named and described | pass, 70 of 70 named (0 author symbols), 70 of 70 described (45 by rule, 22 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 58 of 58 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1654 of 1654 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1678 of 1678 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 2010746 |
-| code | 6284 |
-| data | 2690739 |
+| code | 6390 |
+| data | 2690633 |
 | padding | 3014 |
 | unused | 147456 |
 
@@ -28,7 +28,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Links Championship Course 1 - Firestone Country Club Akron, Ohio (Europe) (Addon).adf:golf153 | 3 | 380 | 7 |
-| Links Championship Course 1 - Firestone Country Club Akron, Ohio (Europe) (Addon).adf:instalcrs | 3 | 447 | 26 |
+| Links Championship Course 1 - Firestone Country Club Akron, Ohio (Europe) (Addon).adf:instalcrs | 3 | 471 | 30 |
 | Links Championship Course 1 - Firestone Country Club Akron, Ohio (Europe) (Addon).ipf#adf:golf153 | 3 | 380 | 7 |
 | Links Championship Course 1 - Firestone Country Club Akron, Ohio (Europe) (Addon).ipf#adf:instalcrs | 3 | 447 | 26 |
 
@@ -87,6 +87,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `frag_movem_movea_jsr_rts_5`: Short code fragment that saves registers on the stack, then copies several registers to or from memory (2 times in a row), then copies a fixed memory address to a6, then calls another routine, then restores saved registers from the stack, then returns.
 - `frag_movem_movea_jsr_rts_6`: Short code fragment that saves registers on the stack, then copies the memory at an offset from a7 to a0, then copies several registers to or from memory, then copies a fixed memory address to a6, then calls another routine, then restores saved registers from the stack, then returns.
 - `frag_movea_pea_bra_3`: Short code fragment that copies the memory at an offset from a7 to a0, then pushes the address of a fixed memory address onto the stack, then jumps to another point in the code.
+- `link_string_gadget`: Library stub: loads a library base from a global variable and calls the library function at offset minus 150 of that base, returning its result to the caller.
+- `link_prop_gadget`: Library stub: loads a library base from a global variable and calls the library function at offset minus 156 of that base, returning its result to the caller.
+- `get_string`: Library stub: loads a library base from a global variable and calls the library function at offset minus 162 of that base, returning its result to the caller.
+- `frag_movea_pea_bra_7`: Short code fragment that copies the memory at an offset from a7 to a0, then pushes the address of a fixed memory address onto the stack, then jumps to another point in the code.
 - `frag_pea_move_movea_add_rts`: Short code fragment that pushes the address of a fixed memory address onto the stack, then copies the memory at an offset from a7 to the stack, then copies a6 to the memory at an offset from a7, then copies a fixed memory address to a6, then copies d0 to the stack, then copies a6 to d0, then adds d0 to the memory at an offset from a7, then copies the top of the stack to d0, then returns.
 - `function_epilogue`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
 - `prepare_and_call_structure`: Initializes a stack structure with multiple pointers and a constant value, then invokes a function through a pointer stored in a global variable.

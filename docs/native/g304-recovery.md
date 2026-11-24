@@ -6,20 +6,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (907200 top-level bytes in 12 containers) | pass, 100.000%, 0 unknown |
+| Bytes classified (906322 top-level bytes in 12 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 8 of 8 units identical (bytes and relocations), 18 raw-word lines |
-| Functions named and described | pass, 286 of 286 named (0 author symbols), 286 of 286 described (15 by rule, 238 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 3782 of 3782 (100.00%) |
+| Functions named and described | pass, 282 of 282 named (0 author symbols), 282 of 282 described (13 by rule, 234 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 3771 of 3771 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 7583 of 7583 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 7508 of 7508 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 420896 |
-| code | 22306 |
-| data | 57572 |
+| asset | 420146 |
+| code | 22074 |
+| data | 57676 |
 | padding | 1434 |
 | unused | 404992 |
 
@@ -28,23 +28,22 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Zaxxon.adf:trainer | 3 | 160 | 5 |
-| Zaxxon.adf:Game | 1 | 5224 | 224 |
+| Zaxxon.adf:Game | 1 | 5247 | 227 |
 | Zaxxon.adf:bootblock | 1 | 18 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 101 | 8 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 508 | 12 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 529 | 11 |
 | Zaxxon.adf:trainer#unpacked | 1 | 1037 | 24 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 1 |
 
 ## Cases handled
 
-- 8 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
-- runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- 1 first-execution byte records contradict the logged opcode word (first an address): bad captures, the opcode word is used
 - runtime segment an address: 317 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 419 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 408 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - Zaxxon/Zaxxon.adf:trainer: crunched executable decrunched by XFDMaster (CrunchMania Normal (xfd), 16096 -> 103584 bytes), 9 of 10 windows confirmed in reference RAM: recovered as a hunk executable
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 2 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 2 displacement
+- RAMSCAN: 2 confirmed routine segment(s) from the run-end RAM image, 50 bytes, added as run-time units
 - Zaxxon/Zaxxon.adf:trainer: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 
 ## Cracktros (kept, not protection)
@@ -61,7 +60,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### Zaxxon.adf:trainer
 
-- `free_memory_and_clear_slot`: Calls a subroutine and a function pointer, calls the system memory-free function through a global, and zeroes a longword just before a pointer.
+- `initialize_program_entry`: The routine calls another routine multiple times and invokes a function pointer stored in a global variable.
 - `decrement_to_minus_one`: The routine loads a short value from a register, repeatedly decrements it until it reaches -1, and then returns.
 - `unpack_stream_with_table_updates`: Decodes a packed stream into a buffer filled from its end toward its start.
 - `select_half_or_input_word`: Returns half of a second word when a flag equals one, otherwise returns the input word unchanged.
@@ -119,6 +118,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_status_flag`: Sets a global flag to one if the value at a specific pointer is non-zero.
 - `update_entity_state_and_bounds`: Iterates through a list of data structures to update position values and check for boundary collisions.
 - `copy_data_block`: copies eight 32-bit words from a source table to a destination buffer using a loop.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs two instructions (ori.b, ori.b) and then falls through into the code that follows, with no return of its own.
 - `process_graphics_data`: performs bitwise operations on data in two memory locations or copies bytes from a source table to those locations based on specific state conditions.
 - `initialize_memory_tables`: Sets several global variables to specific constant values and then enters a loop to fill a memory block with a repeating pattern of words and zeros.
 - `clear_memory_tables`: Clears a block of memory with zeros and then performs loops to fill specific memory regions with either zero or a constant value based on the contents of a global variable.
@@ -208,6 +208,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_linked_list_and_bounds`: Traverses a linked list structure to update values and performs bounds checking on coordinates before storing them in a table.
 - `increment_and_fetch_table_entry`: Increments a global byte and returns a concatenated value from a table using the previous value as an index.
 - `search_and_execute_jump_table`: Iterates through a list of data to find a specific marker and then executes an indirect call based on an offset.
+- `store_render_data`: Writes fixed-width values to a global structure starting at offset 64 of a6, then copies register contents to offsets 80, 84, 100, 102 and 88 of the same structure.
+- `frag_addi_add_bsr_move_rts`: Short code fragment that adds 128 to d0, then adds a location in the code to d1, then calls wait_for_bit_clear, then copies d0 to the memory at an offset from a6, then copies d1 to the memory at an offset from a6, then copies 2050 to the memory at an offset from a6, then returns.
 - `search_memory_pattern`: Iterates through a memory block in fixed increments to search for a specific byte pattern.
 - `process_linked_list`: Traverses a linked list by updating a pointer and a counter.
 - `check_memory_bounds`: Compares a value derived from a pointer against a global variable and performs bounds checking against two other memory-related values.
@@ -300,28 +302,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `add_to_pointer_list`: Iterates through a list of longwords starting at the address in a5, adding the value in d0 to each non-zero longword, until the address in a4 is reached.
-
-### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
-
-- `tiny_subq_rts_2`: Small routine of 2 instructions that subtracts 1 from (a5), then returns.
-- `update_audio_dma_channels`: Updates audio data by reading from a table, writing to the DMA controller and the audio channel register, and performs a loop that decrements a counter and shifts a value.
-- `clear_and_branch`: Clears a byte in a register and performs a relative branch.
-- `update_dma_control`: Decrements a word at an offset of a pointer in a0, decrements a0 by 4, loads a value into a1, performs a loop based on d7, performs a second loop based on d0, and writes d5 to the DMA control register.
-- `fall_through_entry`: Entry point part-way through straight-line code: runs three instructions (ori.b, ori.b, ori.b) and then falls through into the code that follows, with no return of its own.
-- `update_table_entries`: Processes a table of structures, calculating various values including a division by a constant and a division involving a value from a global variable, and writes these results into a destination structure while advancing through the table.
-- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
-- `tiny_move_rts`: Small routine of 2 instructions that copies a0 to (a5)+, then returns.
-
-### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
-
 - `initialize_system_and_idle`: Clears a small block of state, sets up several global words and writes DMA and interrupt enable values.
 - `toggle_nop_code_patches`: Swaps two sets of instruction words between their patched and original forms, using a state byte to choose which form is written.
 - `toggle_keyboard_code_patches`: Switches two code patch sites between no-operation and original instruction words, selected by a state byte, then clears the state byte.
 - `write_patch_word_and_toggle`: Writes a fixed instruction word to a location, then toggles a second instruction word between a no-operation and its original form when the state byte matches.
 - `write_on_state_patch_words`: Writes two fixed instruction words to a location and clears the state byte, then returns a value derived from the input registers.
 - `advance_table_on_timer`: Counts a delay timer down and, when it expires, resets it and advances a pointer through a table of words, wrapping at the end.
-- `copy_glyph_to_two_rows`: Looks up a character code in a table of up to seventy-three codes, then copies its eight glyph bytes to two destinations a fixed distance apart, one row per byte.
+- `find_byte_in_table_record`: Searches a table of up to 73 bytes for the current byte, then uses the match position to compute a record address.
 - `rotate_points_and_start_blit`: Swaps two buffer pointers, then computes rotated and offset coordinates for eleven pairs of table entries using fixed-point multiplication and stores them.
 - `reset_blitter_masks_and_modulo`: Waits until the blitter is idle, then writes full first and last mask words, a control word and two modulo values for the blitter.
 - `build_row_offset_table`: Fills 256 consecutive words with offsets that increase by forty for each row, forming a lookup table of row start positions.
@@ -351,7 +338,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `configure_hardware_registers`: Writes zero to a hardware register, writes a constant to a memory location, adds a constant to a pointer, compares a byte at a memory location to 93, branches if not equal, adds a constant to the pointer, compares a word at the pointer to 18545, branches if equal, writes one to a hardware register, writes 18545 to the pointer location, and writes 18545 to two subsequent memory locations.
 - `configure_system_hardware`: Initializes hardware registers, copies several words from various locations to a set of global variables, performs a loop to multiply and store values in a table, and contains complex logic to update hardware settings and global variables based on input from the mouse and keyboard.
 - `update_table_data`: Checks a byte at a global variable and decrements a long value at another global variable; if that value reaches zero, it resets it to two, copies four words from a table to several global variables, increments a global offset, calls another routine, and calls a function via a pointer before returning with negative one in d0.
-- `render_text_string_to_buffers`: Iterates through a string of character codes, looking up each code in a table to find its corresponding glyph data.
+- `find_byte_in_table_record_2`: Searches a table of up to 73 bytes for the current byte, then uses the match position to compute a record address.
 - `calculate_blitter_line_parameters`: Swaps two pointers, writes values to a global variable and blitter registers, waits for a DMA bit to clear, performs a loop to calculate and store transformed coordinates using multiplication and bit shifts, calls another routine, performs a second loop to call another routine, waits for a DMA bit to clear, and updates blitter registers with a new address and configuration.
 - `reset_blitter_masks_and_modulo_2`: Polls the blitter status bit until the blitter is idle, then writes full mask words, a control word, and two modulo values to the blitter registers and returns.
 - `fill_array_with_increments`: Fills a 256-word array starting at a location relative to the program counter with values that increment by 40 at each step.
@@ -368,3 +355,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_masked_byte_offset_29`: Masks the lower 6 bits of a byte in a register and stores the result at offset 29 of a structure pointed to by a6.
 - `store_masked_byte_a6`: Masks the lower 6 bits of a byte in a register and stores the result at offset 46 of a structure pointed to by a6.
 - `calculate_table_pointer`: Masks the lower 6 bits of a register, shifts the value left by 4, and stores the resulting address calculated from a global table into a structure at offset 44 of the structure pointed to by a6.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_tst_move_rte`: Short code fragment that tests a fixed memory address (2 times in a row), then copies 16271 to a fixed memory address, then returns from the exception.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `sets_global_pointer_returns_minus_one`: Stores a constant into a global variable, removes 4 bytes from the stack, restores registers from memory, and returns the value -1 in d0.

@@ -1,0 +1,855 @@
+# Game 3491 (dynamite warriors (1992)(a. wiethoff)): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/03491). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (944464 top-level bytes in 21 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 0 raw-word lines |
+| Functions named and described | pass, 773 of 773 named (0 author symbols), 773 of 773 described (333 by rule, 436 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 3578 of 3578 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 19804 of 19804 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 2886 |
+| code | 35588 |
+| data | 106113 |
+| padding | 3205 |
+| unused | 796672 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| Dynamite Warriors (1992)(A. Wiethoff).adf:DynamiteWarriors | 2 | 233 | 8 |
+| Dynamite Warriors (1992)(A. Wiethoff).adf:bootblock | 1 | 18 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 9 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7600 | 280 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 157 | 18 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2015 | 78 |
+| Dynamite Warriors (1992)(A. Wiethoff).adf:DynamiteWarriors#unpacked | 4 | 9772 | 387 |
+
+## Cases handled
+
+- dynamite warriors (1992)(a. wiethoff)/Dynamite Warriors (1992)(A. Wiethoff).adf:DynamiteWarriors.Doc: PowerPacker Data (xfd)-packed, unpacked with ancient (2000 -> 3895 bytes)
+- dynamite warriors (1992)(a. wiethoff)/Dynamite Warriors (1992)(A. Wiethoff).adf:DynamiteWarriors.ReadMe: PowerPacker Data (xfd)-packed, unpacked with ancient (588 -> 814 bytes)
+- dynamite warriors (1992)(a. wiethoff)/Dynamite Warriors (1992)(A. Wiethoff).adf:DynamiteWarriors.LiesMich: PowerPacker Data (xfd)-packed, unpacked with ancient (596 -> 801 bytes)
+- dynamite warriors (1992)(a. wiethoff)/Dynamite Warriors (1992)(A. Wiethoff).adf:DynamiteWar.lha: high-entropy data file (7.99 bits/byte), classified as packed data
+- dynamite warriors (1992)(a. wiethoff)/Dynamite Warriors (1992)(A. Wiethoff).adf:DynamiteWarriors.Anl: PowerPacker Data (xfd)-packed, unpacked with ancient (2332 -> 4478 bytes)
+- runtime segment an address: 9 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 1883 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 147 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 1314 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- dynamite warriors (1992)(a. wiethoff)/Dynamite Warriors (1992)(A. Wiethoff).adf:DynamiteWarriors: crunched executable decrunched by XFDMaster (PowerPacker 3.0 (xfd), 35792 -> 70804 bytes), 31 of 31 windows confirmed in reference RAM: recovered as a hunk executable
+- dynamite warriors (1992)(a. wiethoff)/Dynamite Warriors (1992)(A. Wiethoff).adf:DynamiteWarriors: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- none found
+
+## Functions
+
+
+### Dynamite Warriors (1992)(A. Wiethoff).adf:DynamiteWarriors
+
+- `process_relocation_entries`: Processes relocation entries in a data structure, handling memory allocation and copying of data blocks based on entry types.
+- `decrement_counter_loop`: Decrements a counter in a loop until it reaches zero, performing no other operations during the loop iterations.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `shift_and_rotate_data_2`: Shifts and rotates data using bit manipulation techniques while decrementing a counter, handling various conditional branches based on results and managing memory operations.
+- `frag_lsr_beq_rts_move_roxr`: Short code fragment that shifts d5 right by d4, then branches if the last result was zero, then returns, then copies the memory just below a0 (moving a0 down) to d5, then rotates d5 right through the extend flag by d4, then returns.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (sub.w) and then falls through into the code that follows, with no return of its own.
+- `shift_and_rotate_data`: Shifts and rotates data using bit manipulation techniques while decrementing a counter, handling various conditional branches based on results.
+- `load_word_from_memory`: Loads a word from memory address c0d relative to a2 into d4 and then executes a trap instruction.
+
+### Dynamite Warriors (1992)(A. Wiethoff).adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_movem_movea_jsr_moveq_rts`: Short code fragment that saves registers on the stack, then copies a1 to a2, then copies an address to a0, then copies the memory at an offset from a2 to a1, then copies the memory at an offset from a2 to a2, then calls the routine whose address is in a2, then restores saved registers from the stack, then loads 0 into d0, then returns.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_runtime`: Initializes a runtime structure at offset an address with zero values, sets up memory pointers and system resources, then performs system library calls to manage task execution and directory changes.
+- `manage_system_resources`: Copies data from various offsets in the structure pointed to by a4 to memory locations pointed to by a3, calls several library routines including dos.CurrentDir and exec.CloseLibrary, and handles message processing with exec.Forbid and exec.ReplyMsg.
+- `frag_move_clr_rts`: Short code fragment that copies 65792 to the memory at a0 (advancing a0), then copies d0 to the memory at a0 (advancing a0), then copies d1 to the memory at a0 (advancing a0), then clears the memory at a0 (advancing a0), then copies d2 to the memory at a0 (advancing a0), then clears the memory at a0 (advancing a0), then returns.
+- `initialize_and_process`: Initializes several variables, performs library operations including opening and closing libraries, and processes data through multiple subroutines based on conditional checks.
+- `copy_and_process`: Copies data from two locations in a5 to specific offsets in a4, then conditionally loads a string pointer and branches based on a test result.
+- `update_memory_structure`: Updates a memory structure by reading values from a pointer, storing them at specific offsets, and setting a byte flag to zero before returning.
+- `handle_indexed_access_2`: Processes indexed memory operations by comparing values with constants, storing data at calculated addresses, and updating register states based on conditional branches.
+- `frag_cmpi_beq_bne_addq_bra`: Short code fragment that compares d1 with 2, then branches if the last result was zero, then compares d1 with 3, then branches if the last result was not zero, then adds 4 to a1, then jumps to another point in the code.
+- `frag_cmpi_bne_lea_bra`: Short code fragment that compares d1 with 7, then branches if the last result was not zero, then loads the address of the memory at an offset from a1 into a1, then jumps to another point in the code.
+- `frag_cmpi_bne_lea_bra_2`: Short code fragment that compares d1 with 8, then branches if the last result was not zero, then loads the address of the memory at an offset from a1 into a1, then jumps to another point in the code.
+- `frag_cmpi_bne_lea_bra_3`: Short code fragment that compares d1 with 9, then branches if the last result was not zero, then loads the address of the memory at an offset from a1 into a1, then jumps to another point in the code.
+- `frag_cmpi_bne_lea_bra_4`: Short code fragment that compares d1 with 10, then branches if the last result was not zero, then loads the address of the memory at an offset from a1 into a1, then jumps to another point in the code.
+- `handle_indexed_access`: Compares a value with constants and performs indexed memory operations, storing data at calculated addresses based on conditional branches.
+- `frag_move_bsr`: Short code fragment that copies d0 to the memory at an offset from a4, then calls another routine.
+- `frag_movea_jmp`: Short code fragment that copies the memory at an offset from a4 to a0, then jumps to the address in a0.
+- `check_and_jump`: Tests a byte at offset 12 of a structure in a5, branches to another routine if zero, otherwise returns.
+- `multiply_wide_words`: Performs a 32-bit multiplication of two 16-bit values using multiple multiply and add operations, then stores the result in d0 and d1.
+- `perform_multiplication`: Executes a multiplication operation using a helper routine, applies sign handling logic, and sets the carry flag based on intermediate results.
+- `fall_through_entry_2`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `execute_division`: Performs division with bit shifting operations for large values, handles overflow conditions, and manages register state during computation.
+- `divide_with_shifts`: Carries out a division operation using bit shifting and addition, with a loop that processes 15 bits of the dividend.
+- `signed_division`: Performs signed 32-bit division with remainder handling, manages sign flags for both dividend and divisor, and calls another routine to complete the division process.
+- `open_library`: Calls the OpenLibrary function with parameters from registers and handles a null return by calling another routine, then returns.
+- `frag_move_beq_movea_jsr_rts`: Short code fragment that copies a1 to d0, then branches if the last result was zero, then copies a6 to the stack, then copies a fixed memory address to a6, then calls another routine, then copies the top of the stack to a6, then returns.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `open_dos_library_2`: Increments a counter and opens the dos.library when the counter reaches one, storing the library handle and a word value from its structure.
+- `frag_subq_bne_movea_jsr_rts`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then copies the memory at an offset from a4 to a1, then calls another routine, then returns.
+- `open_exec_library_2`: Increments a counter and opens the exec.library when the counter reaches one, storing the library handle and a word value from its structure.
+- `frag_subq_bne_movea_jsr_rts_2`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then copies the memory at an offset from a4 to a1, then calls another routine, then returns.
+- `open_graphics_library_2`: Increments a counter and opens the graphics.library when the counter reaches one, storing the library handle and a word value from its structure.
+- `frag_subq_bne_movea_jsr_rts_3`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then copies the memory at an offset from a4 to a1, then calls another routine, then returns.
+- `open_intuition_library_2`: Increments a counter and opens the intuition.library when the counter reaches one, storing the library handle and a word value from its structure.
+- `frag_subq_bne_movea_jsr_rts_4`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then copies the memory at an offset from a4 to a1, then calls another routine, then returns.
+- `allocate_and_update_memory`: Allocates memory blocks using system calls, updates linked list entries by decrementing counters and calling traversal routines, and manages data copying between memory locations based on calculated offsets and conditions.
+- `process_linked_list`: Processes a linked list entry by checking conditions, calling a traversal routine, and clearing a pointer in the list structure before jumping to an indirect address.
+- `initialize_entity`: Initializes an entity structure with dimensions and pointers, sets up linked list entries, and configures various data fields including counters, coordinates, and status flags.
+- `update_linked_list_entry_2`: Updates a linked list entry by decrementing a counter, calling traversal routines, and conditionally copying data from one pointer to another based on multiple conditions.
+- `fall_through_entry_3`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `read_vposr_and_call`: Reads a 16-bit value from a hardware register, checks if it's less than 65535, and triggers an exception if not.
+- `initialize_collision_data_2`: Initializes collision-related data structures by clearing specific memory locations and setting predefined values.
+- `initialize_collision_data`: Initializes collision-related data structures by clearing specific memory locations and setting predefined values.
+- `call_library_functions`: Calls three different library functions using indirect jumps based on an offset from a global variable, then returns.
+- `swap_and_call_functions`: Swaps data between memory locations and calls multiple library functions with different parameters, performing several memory operations before returning.
+- `fall_through_entry_4`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `call_multiple_functions`: Calls a series of library functions in sequence, passing different parameters each time, and handles multiple conditional branches based on register values.
+- `process_game_state`: Processes game state by calling several system library routines with different parameters, storing a computed value in a global variable, and then performing multiple operations involving window coordinates and graphics rendering through system calls.
+- `frag_move_bsr_jsr_rts`: Short code fragment that copies 64 to the stack, then copies 16 to the stack, then copies 1 to the stack, then calls another routine, then copies d0 to the memory at an offset from a4, then copies the memory at an offset from a4 to the stack, then calls another routine, then copies d0 to the memory at an offset from a4, then returns.
+- `call_library_functions_twice`: Calls two library functions with different parameters, where the second call uses a different set of values for its arguments.
+- `call_library_functions_once`: Calls two library functions with similar parameters but only executes one of them based on conditional logic.
+- `clear_screen_area`: Clears a screen area by setting coordinates and dimensions, then invokes a graphics routine to perform the clearing operation.
+- `process_game_state_2`: Calls a routine multiple times with different parameters including a constant value, a global variable address, a fixed increment, and a table pointer.
+- `process_game_input`: Processes game input by calling multiple routines with different parameters including window handles, string pointers, and various control values.
+- `update_input_state_2`: Updates input state by reading joystick and keyboard data, storing computed values in a global variable, and managing input buffer indices.
+- `update_game_stats_2`: Updates and displays game statistics including monsters, obstacles, bombs, and bomb range by converting numeric values to ASCII characters and rendering them on screen.
+- `update_game_stats`: Updates and displays game statistics including monsters, obstacles, bombs, and bomb range by converting numeric values to ASCII characters and calling graphics routines to render text on screen.
+- `initialize_game_loop`: Initializes a loop counter in memory, reads a value from a global variable, and performs a conditional operation based on that value before branching to another routine.
+- `decrement_counter`: Decrements a word value at offset 292 of the structure in a4 and calls several library functions with parameters including a computed character value, then returns.
+- `increment_counter`: Increments a word value at offset 292 of the structure in a4 and calls several library functions with parameters including a computed character value, then returns.
+- `decrement_timer`: Decrements a word value at offset 296 of the structure in a4 and calls several library functions with parameters including a computed character value, then returns.
+- `increment_timer`: Increments a word value at offset 296 of the structure in a4 and calls several library functions with parameters including a computed character value, then returns.
+- `decrement_value`: Decrements a word value at offset 300 of the structure in a4 and calls several library functions with parameters including a computed character value, then returns.
+- `increment_value`: Increments a word value at offset 300 of the structure in a4 and calls several library functions with parameters including a computed character value, then returns.
+- `handle_library_call`: Tests a flag byte and calls library functions conditionally based on its value, performing different operations depending on whether the flag is set or cleared.
+- `load_and_call`: Loads a value from a global structure, prepares parameters on the stack, and calls library routines with specific values and offsets.
+- `frag_move_moveq_pea_bsr_rts`: Short code fragment that copies the memory at an offset from a4 to the stack, then loads 2 into d7, then copies d7 to the stack, then pushes the address of a location in the code onto the stack, then copies 260 to the stack, then copies 90 to the stack, then calls another routine, then returns.
+- `lookup_and_execute`: Performs a table lookup using a register value as index, executes the function pointer found at that location, and continues looping until a specific condition is met.
+- `fall_through_entry_5`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `initialize_input_state`: Initializes input state data by copying predefined values to multiple memory locations, then processes game state and updates animation counters.
+- `update_animation_counter`: Increments a counter at offset -10 in the structure, updates a value at offset -2 based on comparison with data from a table, and handles overflow conditions for multiple counters.
+- `update_animation_frame_2`: Updates an animation frame counter stored at offset -6 in a data structure, performs multiple memory operations including table lookups and arithmetic calculations, and calls library functions to handle graphics rendering.
+- `initialize_and_loop`: Sets up parameters for library calls, clears a global variable, checks its value, and enters an infinite loop after calling several routines.
+- `initialize_game_data_2`: Initializes game data by copying values from multiple tables into structured arrays, setting up control parameters and flags based on calculated indices, and invoking several subroutines to process input and update game state.
+- `update_animation_states`: Manages animation state updates for two different object types by iterating through counters, calling rendering routines, and storing results in indexed tables.
+- `fall_through_entry_6`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `update_entity_flags`: Updates a global entity structure by setting a specific bit in its status byte and writing a fixed value to a timer field based on an index parameter.
+- `compare_and_store`: Compares a word value with data at a memory location and stores another value if they match, then returns.
+- `frag_movea_bra`: Short code fragment that copies a0 to a1, then copies the memory at a1 to a0, then jumps to another point in the code.
+- `allocate_and_link`: Allocates memory through a system call, stores the returned pointer and associated data values into a structure, and manages linked list operations by checking existing entries and updating their values when matches are found.
+- `frag_movea_bra_2`: Short code fragment that copies a0 to a1, then copies the memory at a1 to a0, then jumps to another point in the code.
+- `allocate_and_initialize`: Allocates memory through a system call, then stores the returned pointer and associated data values into a structure pointed to by a parameter.
+- `read_table_entry_a`: Calculates an address using a shift operation on an input value, adds a fixed offset, and reads a 16-bit value from the resulting memory location.
+- `read_table_entry_b`: Calculates an address using a shift operation on an input value, adds a fixed offset, and reads a 16-bit value from the resulting memory location.
+- `frag_movem_move_asl_lea_rts`: Short code fragment that saves registers on the stack, then copies d0 to d7, then shifts d7 left by 3, then loads the address of the memory at an offset from a4 into a3, then copies the memory at an offset from a4 to d6, then shifts d6 left by 2, then loads the address of an indexed entry from a3 into a3, then copies an indexed entry from a3 to d0, then restores saved registers from the stack, then returns.
+- `process_collision_data`: Reads position and velocity values from a structure, performs boundary checks on movement deltas, and updates collision detection state based on the results.
+- `process_movement`: Processes movement coordinates and velocity values, performs boundary checks on position deltas, and updates collision detection state.
+- `update_collision_state`: Updates collision detection state by processing movement coordinates and velocity values, then performs boundary checks on position deltas before continuing to next iteration.
+- `reset_buffer_state`: Clears two global variables and copies data between buffer locations if a condition is met, then returns immediately.
+- `process_animation_frames`: Processes animation data by calling system routines to handle drawing operations, updating counters in nested loops, and managing memory stack pointers.
+- `initialize_entity_data`: Initializes multiple global variables with fixed values, then iterates through a loop to set up entity structure fields using an index parameter.
+- `initialize_entity_2`: Sets up an entity structure by copying data from global variables, performing calculations on coordinates, and updating various fields in the structure.
+- `frag_movea_move_bra`: Short code fragment that copies the memory at an offset from a5 to a3, then copies the memory at an offset from a5 to the memory at a3, then jumps to another point in the code.
+- `setup_entity_attributes`: Sets up an entity structure by copying data from global variables, performing calculations on coordinates, and updating various fields in the structure.
+- `frag_moveq_move_bsr_movem_unlk_movea_ad`: Short code fragment that loads 15 into d3, then copies the memory at an offset from a3 to d1, then copies the memory at an offset from a3 to d0, then calls another routine, then restores saved registers from the stack, then removes the stack frame held in a5, then copies the top of the stack to a0, then adds 2 to a7, then jumps to the address in a0.
+- `update_entity_state_2`: Reads a word value from a calculated offset, performs conditional operations based on that value, and updates memory locations accordingly.
+- `frag_cmpi_bne_move_muls_lea_addq_bra`: Short code fragment that compares the memory at an offset from a5 with 2, then branches if the last result was not zero, then copies the memory at an offset from a5 to d7, then multiplies d7 by 52 (signed), then loads the address of the memory at an offset from a4 into a3, then adds 1 to an indexed entry from a3, then jumps to another point in the code.
+- `frag_cmpi_bne_move_muls_lea_addq_bra_2`: Short code fragment that compares the memory at an offset from a5 with 3, then branches if the last result was not zero, then copies the memory at an offset from a5 to d7, then multiplies d7 by 52 (signed), then loads the address of the memory at an offset from a4 into a3, then adds 1 to an indexed entry from a3, then jumps to another point in the code.
+- `update_entity_flags_5`: Updates entity flags based on comparison results and modifies specific bits in a data structure, then increments a counter until it reaches four.
+- `update_entity_flags_3`: Sets a specific bit in a data structure and updates a memory location with a calculated value based on input parameters.
+- `process_entity_grid`: Iterates through a grid structure to update entity states and flags, then processes linked list entries based on grid values.
+- `initialize_and_process_2`: Clears a global variable, performs several library function calls with different parameters, and updates a status value in a data structure.
+- `update_entity_flag_2`: Updates a flag bit in a table entry based on a counter value, then modifies a position value at another table offset.
+- `update_entity_flag`: Updates a flag bit in a table entry based on a counter value, then modifies a position value at another table offset.
+- `set_entity_flag_and_update_position`: Sets a specific bit in a table entry based on an index calculated from input parameters, then updates a position value at another table offset with a fixed increment.
+- `toggle_entity_flag`: Checks if a specific condition is met using a global variable, and if so, toggles a bit in a table entry based on an index calculated from that variable.
+- `set_entity_flag`: Sets a specific flag bit in a table entry based on an index from a global variable, then updates a data field in the same table entry with a calculated value.
+- `handle_entity_collision`: Checks a condition and performs different operations based on the result, updating a value in a data structure before returning.
+- `update_entity_data`: Updates a word value at an offset calculated from input parameters and stores a fixed value at another offset, then performs conditional execution based on a comparison result.
+- `check_and_set_flag`: Reads a status byte from an entity structure, checks specific bit conditions, and sets a flag bit if all conditions are met before returning.
+- `update_entity_flag_1`: Loads entity properties from tables using an index, modifies coordinates and state flags, and updates entity properties based on conditional checks.
+- `update_entity_timer`: Loads an entity index from the stack, uses it to access a table of entity data, increments a counter at offset 48 within that data structure, and clears a word-sized value at offset -4 relative to the stack frame.
+- `update_entity_flag_3`: Loads entity properties from tables using an index, modifies coordinates and state flags, and updates entity properties based on conditional checks.
+- `update_entity_state_3`: Loads entity properties from tables using an index, modifies coordinates and state flags, and updates entity properties based on conditional checks.
+- `update_entity_data_3`: Loads entity properties from tables using an index, modifies coordinates and state flags, and updates entity properties based on conditional checks.
+- `update_entity_coordinates`: Loads entity data from tables using an index, modifies coordinates and state flags, and updates entity properties based on conditional checks.
+- `update_entity_flags_4`: Loads entity data from tables using an index, modifies coordinates and state flags, and updates entity properties based on conditional checks.
+- `update_entity_data_2`: Updates entity data structures by loading values from tables based on an index, modifying coordinates and state flags, and calling another routine with the updated data.
+- `update_entity_position_2`: Updates entity position coordinates by adding velocity values and manages entity state flags based on conditional checks.
+- `update_animation_state_10`: Processes animation frame data by calculating offsets into tables, testing values against specific constants, and updating state flags based on comparison results.
+- `frag_tst_bne_andi_bra`: Short code fragment that tests the memory at an offset from a5, then branches if the last result was not zero, then masks the memory at an offset from a5 with 65533, then jumps to another point in the code.
+- `frag_cmpi_bne_andi_bra`: Short code fragment that compares the memory at an offset from a5 with 3, then branches if the last result was not zero, then masks the memory at an offset from a5 with 65531, then jumps to another point in the code.
+- `update_sprite_data`: Processes sprite data by clearing a bit in a global variable, calling a system routine to get a value, then copying data between sprite tables based on bit testing results.
+- `update_animation_state_15_2`: Updates an animation counter in a local variable and manages a bit field, performing conditional operations based on the counter's value.
+- `update_animation_state_15`: Updates an animation counter in a local variable and manages a bit field, performing conditional operations based on the counter's value.
+- `update_animation_frame`: Processes animation frame data by calculating offsets into tables, testing values against specific constants, and updating state flags based on the results.
+- `update_animation_state_11`: Updates an animation counter in a local variable and manages a bit field, performing conditional operations based on the counter's value before making a call to another routine.
+- `fall_through_entry_7`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `set_animation_flag_3`: Checks a global variable's bit 0, and if clear, sets it, updates position data, and calls another routine.
+- `set_animation_flag`: Checks a global variable's bit 1, and if clear, sets it, updates position data, and calls another routine.
+- `update_entity_direction`: Processes entity movement direction and velocity based on bitwise flags and arithmetic operations, updating position and state variables accordingly.
+- `frag_move_lea_btst_beq_bra`: Short code fragment that copies the memory at an offset from a5 to d7, then loads the address of the memory at an offset from a4 into a3, then copies an indexed entry from a3 to d6, then tests bit 0 of d6, then branches if the last result was zero, then copies 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_lea_btst_beq_bra_2`: Short code fragment that copies the memory at an offset from a5 to d7, then loads the address of the memory at an offset from a4 into a3, then copies an indexed entry from a3 to d6, then tests bit 3 of d6, then branches if the last result was zero, then copies 65535 to the memory at an offset from a5, then jumps to another point in the code.
+- `adjust_entity_movement`: Reads entity state flags and modifies movement direction and velocity based on bitwise tests and arithmetic operations.
+- `frag_move_muls_lea_bra`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 52 (signed), then loads the address of the memory at an offset from a4 into a3, then copies 2 to an indexed entry from a3, then jumps to another point in the code.
+- `frag_tst_bge_move_muls_lea_bra`: Short code fragment that tests the memory at an offset from a5, then branches if the comparison was greater or equal, then copies the memory at an offset from a5 to d7, then multiplies d7 by 52 (signed), then loads the address of the memory at an offset from a4 into a3, then copies 1 to an indexed entry from a3, then jumps to another point in the code.
+- `frag_move_muls_lea_clr_bra`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 52 (signed), then loads the address of the memory at an offset from a4 into a3, then clears an indexed entry from a3, then jumps to another point in the code.
+- `update_entity_state`: Updates entity state variables including position, velocity, and flags based on input conditions and memory offsets.
+- `frag_move_muls_lea_bra_2`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 52 (signed), then loads the address of the memory at an offset from a4 into a3, then copies 2 to an indexed entry from a3, then jumps to another point in the code.
+- `frag_tst_bge_move_muls_lea_bra_2`: Short code fragment that tests the memory at an offset from a5, then branches if the comparison was greater or equal, then copies the memory at an offset from a5 to d7, then multiplies d7 by 52 (signed), then loads the address of the memory at an offset from a4 into a3, then copies 1 to an indexed entry from a3, then jumps to another point in the code.
+- `frag_move_muls_lea_clr_addq_bvc_movem_u`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 52 (signed), then loads the address of the memory at an offset from a4 into a3, then clears an indexed entry from a3, then adds 1 to the memory at an offset from a5, then branches if the overflow flag is clear, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
+- `check_and_clear_flag`: Examines entries in a table and clears a specific flag if multiple conditions based on bit tests and value comparisons are met, then increments a counter.
+- `update_movement_counter`: Increments a word value at a calculated memory location and updates another word value based on comparison results with boundary limits.
+- `frag_move_bra`: Short code fragment that copies 16 to the memory at an offset from a5, then jumps to another point in the code.
+- `evaluate_movement_bounds`: Compares values from a data structure with zero and sets a global variable based on the comparison results.
+- `calculate_offset_and_store`: Calculates a word value by adding two values together, stores the result in memory, then calls another routine with specific parameters.
+- `decrement_and_check`: Decrements a word value at an offset calculated from coordinates in a structure, then compares the result with one and branches if greater or equal.
+- `check_surrounding_cells`: Compares values from adjacent memory locations relative to coordinates in a structure, updates a global variable based on the comparison results, and calls another routine.
+- `check_surroundings`: Examines two adjacent word values in a table relative to coordinates stored in a structure, updates a global variable with either 20 or 20 depending on the examined values, then calls another routine.
+- `initialize_and_call`: Initializes a word value in a global variable, performs arithmetic on values from a structure, and calls another routine with parameters loaded from the structure.
+- `frag_clr_move_rts`: Short code fragment that clears the memory at an offset from a4 (2 times in a row), then copies 65535 to the memory at an offset from a4, then copies 1 to the memory at an offset from a4, then copies 65535 to the memory at an offset from a4, then copies 1 to the memory at an offset from a4, then clears the memory at an offset from a4 (2 times in a row), then returns.
+- `fall_through_entry_8`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `process_collision_data_4`: Processes collision-related data by loading values from memory locations relative to a5, performing conditional checks and arithmetic operations, and updating animation frame data based on a counter value.
+- `write_byte_to_table`: Writes the value 12 to a memory location calculated from two offset values and a table base address.
+- `write_byte_to_table_2`: Writes the value 13 to a memory location calculated from two offset values and a table base address.
+- `write_byte_to_table_3`: Writes the value 14 to a memory location calculated from two offset values and a table base address.
+- `frag_pea_jsr_move_bra`: Short code fragment that pushes the address of a fixed memory address onto the stack, then calls another routine, then copies d0 to the memory at an offset from a5, then copies the memory at an offset from a5 to d7, then jumps to another point in the code.
+- `frag_move_muls_lea_add_rts`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 1 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_2`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 2 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_3`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 3 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_4`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 4 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_5`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 5 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_6`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 6 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_7`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 7 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_8`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 8 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_9`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 9 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_10`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 10 to an indexed entry from a2, then returns.
+- `set_entity_animation`: Checks a global variable's bit, calls another routine if clear, and updates a value in a data structure before returning.
+- `frag_move_muls_lea_add_rts_11`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 11 to an indexed entry from a2, then returns.
+- `conditional_jump_and_store`: Performs a conditional jump based on a value, then calculates and stores a word value in memory using an indirect lookup table.
+- `update_animation_frame_3`: Updates animation frame data based on a counter value and processes related collision mask bits.
+- `frag_move_add_lea_tst_sne_bsr_bra`: Short code fragment that copies the memory at an offset from a5 to the stack (2 times in a row), then copies the memory at an offset from a5 to d7, then adds d7 to d7, then loads the address of the memory at an offset from a4 into a2, then tests an indexed entry from a2, then sets the stack if the last result was not zero, then calls another routine, then jumps to another point in the code.
+- `update_animation_state_21`: Updates animation state based on frame counter conditions, modifies collision mask bits, and manages related data structures.
+- `update_collision_mask`: Updates a collision mask bit based on a counter value and modifies related data structures.
+- `update_counter_and_process`: Updates a counter at offset 14 of a structure, processes conditional logic based on the counter's value, and manages related state variables including a global counter at offset -22, then returns.
+- `frag_tst_bne_move_bsr_bra`: Short code fragment that tests the memory at an offset from a3, then branches if the last result was not zero, then copies the memory at an offset from a3 to the stack (2 times in a row), then calls another routine, then jumps to another point in the code.
+- `decrement_timer_value`: Decrements a timer value at a specific memory location and performs a conditional check before returning.
+- `frag_move_pea_jsr_tst_beq_bra`: Short code fragment that copies the memory at a3 to the memory at an offset from a4, then pushes the address of the memory at an offset from a5 onto the stack, then calls another routine, then tests the memory at an offset from a5, then branches if the last result was zero, then copies the memory at an offset from a5 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_clr_subq_bra`: Short code fragment that clears the memory at an offset from a5, then subtracts 1 from the memory at an offset from a3, then jumps to another point in the code.
+- `frag_addq_bra`: Short code fragment that adds 1 to the memory at an offset from a3, then jumps to another point in the code.
+- `update_animation_state_20`: Updates an animation state value stored at a specific offset in a structure, clamps it between 1 and 4, and then calls another routine to process the updated value.
+- `update_animation_state_19`: Updates an animation state value stored at a specific offset in a structure, clamps it between 1 and 4, and then calls another routine to process the updated value.
+- `adjust_and_compare`: Adjusts a value using division and addition operations, then compares it with data at a memory location.
+- `process_collision_data_2`: Processes collision-related data by loading values from memory locations relative to a5, performing conditional checks and arithmetic operations on loaded values, and calling another routine based on the results.
+- `manage_movement_flags`: Manages movement flags by checking various conditions, modifying bit states, and calling another routine with parameters based on those checks.
+- `initialize_game_tables`: Initializes multiple lookup tables with predefined word values starting at offset 1708 of a structure, then performs a series of memory operations including clearing counters, setting up data structures, and calling library functions to open system libraries.
+- `frag_st_jsr_move_pea_addq_bra`: Short code fragment that sets the memory at an offset from a4 to all ones, then calls another routine, then copies the memory at an offset from a4 to the stack, then pushes the address of a fixed memory address onto the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `initialize_entity_counters`: Initializes entity-related counters and processes entity data by clearing specific memory locations, incrementing counters, and performing conditional checks based on entity values.
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `frag_jsr_bsr_clr_rts`: Short code fragment that calls another routine (2 times in a row), then clears the memory at an offset from a4, then returns.
+- `frag_jsr_move_bsr_clr_rts`: Short code fragment that calls another routine, then copies the memory at an offset from a4 to the stack, then calls another routine, then clears the memory at an offset from a4, then returns.
+- `process_input_bits`: Processes input bit flags by checking and modifying bitmask values in global variables, updating counters, and setting specific short values based on conditional logic.
+- `frag_rts_lea_subi_cmpi_bls_moveq_asl_mo`: Short code fragment that returns, then loads the address of a location in the code into a3, then subtracts 144 from d7, then compares d7 with 68, then branches if the comparison was lower or same (unsigned), then loads 255 into d7, then shifts d7 left by 1, then copies an indexed entry from a3 to d7, then calls another routine, then jumps to another point in the code.
+- `initialize_entity_data_3`: Initializes entity-related data by clearing counters and setting predefined values in global structures, then performs a loop to process indexed table lookups and update related fields based on conditional logic.
+- `initialize_entity_animation`: Initializes animation-related data for entity structures by clearing multiple global variables, performing indexed table lookups with bit shifts, and setting up specific memory fields based on counter values.
+- `test_and_push`: Tests a 16-bit value from a global variable for positivity, and if positive, negates it and pushes the result onto the stack before calling another routine.
+- `update_game_state`: Updates a game state counter and manages related flags and memory locations, performing conditional operations based on the counter's value and handling various game logic states.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+- `update_animation_state_16`: Increments a global counter at offset 1796 from a4, processes animation data based on the counter value, and manages audio channel updates while handling conditional jumps and routine calls.
+- `update_animation_state`: Updates an animation state counter and writes a value from a table to a structure, then sets a flag in the structure based on the counter's value.
+- `update_animation_state_2`: Updates an animation frame counter and resets it when reaching a specific limit, while managing a state flag and setting a status word.
+- `handle_animation_frame_3`: Manages animation frame data by copying values from memory locations and updating counters with specific conditional logic.
+- `update_animation_state_3`: Updates an animation frame counter and writes a word value to a global structure while managing a state flag and conditional logic based on the counter's value.
+- `update_animation_states_2`: Updates multiple animation state counters by calling four different subroutines that handle specific animation frame logic and status flags.
+- `frag_move_moveq_rts`: Short code fragment that copies d7 to the stack, then copies 2598 to the memory at an offset from a4, then copies 1326 to the memory at an offset from a4, then loads 80 into d7, then copies d7 to the memory at an offset from a4, then copies 742 to the memory at an offset from a4, then copies the top of the stack to d7, then returns.
+- `frag_move_clr_rts_2`: Short code fragment that copies 63 to a fixed memory address, then clears the memory at an offset from a4, then returns.
+- `frag_move_clr_rts_3`: Short code fragment that copies 63 to a fixed memory address, then clears the memory at an offset from a4, then returns.
+- `frag_move_clr_rts_4`: Short code fragment that copies 63 to a fixed memory address, then clears the memory at an offset from a4, then returns.
+- `fall_through_entry_9`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `frag_move_clr_rts_5`: Short code fragment that copies 63 to a fixed memory address, then clears the memory at an offset from a4, then returns.
+- `initialize_audio_channels_2`: Initializes audio channel data by setting up multiple sound registers with specific values, manages animation state counters, and updates linked list structures for audio processing.
+- `manage_audio_channels`: Manages audio channel processing by decrementing a counter, setting hardware registers, and calling multiple routines to handle audio data.
+- `process_string_loop`: Processes a string character by character in a loop until reaching a null terminator or counter expiration, then jumps to an indirect address.
+- `empty_stub_5`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
+- `linked_list_traversal`: Traverses a linked list structure, comparing pointers and updating values until finding a match or reaching the end of the list, then performs an indirect jump.
+- `allocate_memory_block_2`: Allocates a memory block using system calls, updates a counter in a global structure, and manages linked list entries.
+- `update_linked_list_entry`: Updates a linked list entry by decrementing a counter, calling a traversal routine, and conditionally copying data from one pointer to another based on the traversal result.
+- `update_linked_list_entry_3`: Processes a linked list entry by decrementing a counter, calling a traversal routine, and conditionally copying data from one pointer to another.
+- `frag_addq_cmpi_bne_jsr_move_rts`: Short code fragment that adds 1 to the memory at an offset from a4, then compares the memory at an offset from a4 with 1, then branches if the last result was not zero, then calls another routine (2 times in a row), then copies 1 to the memory at an offset from a4, then returns.
+- `frag_subq_bne_bsr_jsr_rts`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then calls another routine (3 times in a row), then returns.
+- `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_2`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_3`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_4`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `frag_jmp`: Short code fragment that jumps to another point in the code.
+- `jump_vector_entry_5`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_6`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `frag_jmp_2`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_3`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_4`: Short code fragment that jumps to another point in the code.
+- `jump_vector_entry_7`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_8`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `frag_jmp_5`: Short code fragment that jumps to another point in the code.
+- `jump_vector_entry_9`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_10`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `frag_jmp_6`: Short code fragment that jumps to another point in the code.
+- `jump_vector_entry_11`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_12`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_13`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_14`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `frag_jmp_7`: Short code fragment that jumps to another point in the code.
+- `jump_vector_entry_15`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_16`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_17`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_18`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `frag_jmp_8`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_9`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_10`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_11`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_12`: Short code fragment that jumps to another point in the code.
+- `jump_vector_entry_19`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_20`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_21`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_22`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `manage_memory_blocks_2`: Manages memory blocks by traversing linked lists, allocating new structures, and copying data between memory locations while maintaining pointer references.
+- `process_animation_data_2`: Handles animation data processing by calling two subroutines with parameters from the stack and managing pointer assignments to update animation states.
+- `process_animation_frame`: Handles animation frame processing by updating pointer values and managing linked list traversal, then performs conditional calls based on structure offsets and increments a counter.
+- `perform_collision_check`: Checks for collisions by calling library functions with specific parameters derived from structure offsets, updates a status byte in memory based on the results, and then jumps to an unresolved address.
+- `update_collision_data`: Processes collision detection by calling library functions with parameters derived from structure offsets, updates a status byte in memory, and manages linked list traversal for memory block allocation.
+- `process_audio_channels`: Processes audio channel data by checking for negative values, calling a library function, and clearing specific fields in a structure when conditions are met.
+- `handle_audio_and_animation`: Manages audio channel data by checking for negative values and calling library functions, processes animation data through subroutine calls, and handles memory operations for structure fields.
+- `execute_rendering_operations`: Executes rendering operations by calling library functions with parameters from the routine's stack, and performs conditional checks on structure fields before returning.
+- `process_linked_list_operations`: Processes linked list node operations by checking pointer validity, updating node data, managing conditional calls based on memory values, and performing cleanup operations when counters reach zero.
+- `manage_memory_blocks`: Manages memory blocks by traversing linked lists, allocating new structures, and copying data between memory locations while maintaining pointers in a loop.
+- `retrieve_pointer_value`: Retrieves a value from a structure's pointer field and returns it as a long integer, or returns zero if the pointer is null.
+- `update_linked_list_node`: Updates a linked list node by copying data from one location to another, performing conditional checks on structure fields, and calling library functions with parameters.
+- `compare_and_assign_pointers`: Compares values in structures and assigns pointers based on comparison results, returning a pointer value after processing the input data.
+- `synchronize_linked_list_nodes`: Synchronizes linked list nodes by comparing memory addresses, updating pointers, and calling library functions with parameters while maintaining loop structures.
+- `process_animation_data`: Handles animation data processing by calling two subroutines with parameters from the stack and managing pointer assignments.
+- `frag_addq_cmpi_bne_jsr_move_rts_2`: Short code fragment that adds 1 to the memory at an offset from a4, then compares the memory at an offset from a4 with 1, then branches if the last result was not zero, then calls another routine (2 times in a row), then copies 1 to the memory at an offset from a4, then returns.
+- `frag_subq_bne_jsr_rts`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then calls another routine (2 times in a row), then returns.
+- `frag_addq_cmpi_bne_jsr_move_rts_3`: Short code fragment that adds 1 to the memory at an offset from a4, then compares the memory at an offset from a4 with 1, then branches if the last result was not zero, then calls another routine (2 times in a row), then copies 1 to the memory at an offset from a4, then returns.
+- `frag_subq_bne_jsr_rts_2`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then calls another routine (2 times in a row), then returns.
+- `clear_structure_fields`: Clears all fields in a structure by setting them to zero or specific byte values, then returns immediately without further processing.
+- `cleanup_linked_list_entry`: Cleans up a linked list entry by comparing memory addresses, updating pointers, calling library functions, and clearing structure fields before returning.
+- `update_status_byte`: Reads a value from a global variable, compares it against multiple constants, and writes a corresponding status byte to a structure pointed to by a register.
+- `update_movement_status`: Manages movement state by comparing values, performing arithmetic operations, and updating status bytes based on comparison results.
+- `clear_and_cleanup`: Clears specific structure fields and performs cleanup operations by comparing memory addresses, updating pointers, calling library functions, and managing movement state based on comparison results.
+- `frag_addq_cmpi_bne_jsr_move_rts_4`: Short code fragment that adds 1 to the memory at an offset from a4, then compares the memory at an offset from a4 with 1, then branches if the last result was not zero, then calls another routine (3 times in a row), then copies 1 to the memory at an offset from a4, then returns.
+- `decrement_and_cleanup`: Decrements a word value at a fixed offset from a4, and if it reaches zero, processes cleanup operations including calling library functions and updating pointers in a global structure.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_tile_data`: Initializes tile data structures by writing values to multiple memory locations based on nested loop counters, updating pointers and incrementing values with fixed offsets.
+- `frag_jsr_rts`: Short code fragment that calls another routine, then returns.
+- `jump_vector_entry_23`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_24`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_25`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_26`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_27`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_28`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_29`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_30`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_31`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_32`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_33`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_34`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_35`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_36`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_37`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_38`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `initialize_render_data`: Sets up rendering parameters for a graphic object by storing scaled width and height values, clearing a status byte, setting a type byte to four, and initializing a counter.
+- `frag_lea_btst_bne_rts`: Short code fragment that loads the address of a fixed memory address into a1, then tests bit 30 of the memory at an offset from a1 (2 times in a row), then branches if the last result was not zero, then returns.
+- `setup_blitter_parameters`: Configures blitter hardware registers for graphics rendering by setting up various control words and memory addresses.
+- `update_blitter_params`: Updates blitter control and dimension registers based on input parameters.
+- `populate_blitter_tables`: Populates multiple tables with calculated values by iterating through indices and performing arithmetic operations.
+- `update_blitter_source_addresses`: Updates source addresses for blitter operations by calculating offsets based on table lookups and arithmetic operations.
+- `update_sprite_dma`: Updates DMA memory pointers for sprite rendering based on sprite data and performs bit block transfers using custom hardware registers.
+- `render_sprites`: Sets up and executes two sprite rendering operations using a graphics library call, with different parameters for each call including position, size, and color values.
+- `setup_blitter`: Configures multiple blitter hardware registers with specific values and calculates memory addresses for blitter operations based on input parameters.
+- `update_sprite_data_2`: Processes sprite animation frame data by reading coordinates from a table, performing bit manipulation to extract components, and storing modified values back into a structured array.
+- `update_palette_entries`: Processes palette data by reading color components from a table, applying bit shifts and masking operations, and storing modified values back into another table.
+- `initialize_runtime_tables`: Initializes multiple lookup tables in memory with sequential bit patterns and sets up runtime structure values including counters and status flags.
+- `update_animation_state_4`: Updates animation state variables and manages indexed accesses to multiple data tables based on counter values, performing conditional operations and subroutine calls for each table entry.
+- `frag_move_tst_beq_moveq_clr_btst_bne_br`: Short code fragment that copies d2 to the stack, then tests d0, then branches if the last result was zero, then loads 0 into d0, then clears a fixed memory address, then copies a fixed memory address to d1, then tests bit 7 of a fixed memory address, then branches if the last result was not zero, then loads 16 into d0, then jumps to another point in the code.
+- `calculate_direction`: Processes joystick input from multiple sources to determine a directional value, clearing specific bits based on conditions and returning the result in a register.
+- `read_joystick_input`: Reads input from two hardware ports, applies bit masking operations, and sets flags based on the state of specific bits to return a combined input value.
+- `frag_btst_bne_bset_bra`: Short code fragment that tests bit 5 of d2, then branches if the last result was not zero, then sets bit 0 of d0, then jumps to another point in the code.
+- `frag_btst_bne_bset_bra_2`: Short code fragment that tests bit 6 of d2, then branches if the last result was not zero, then sets bit 3 of d0, then jumps to another point in the code.
+- `frag_btst_bne_bset_move_rts`: Short code fragment that tests bit 7 of d2, then branches if the last result was not zero, then sets bit 1 of d0, then tests bit 0 of d1, then branches if the last result was not zero, then sets bit 4 of d0, then copies the top of the stack to d2, then returns.
+- `process_controller_data`: Processes controller data from hardware registers by applying bit masks, clearing certain bits in memory, and setting flags based on input states to return a control value.
+- `frag_btst_bne_bset_bra_3`: Short code fragment that tests bit 1 of d2, then branches if the last result was not zero, then sets bit 0 of d0, then jumps to another point in the code.
+- `frag_btst_bne_bset_bra_4`: Short code fragment that tests bit 2 of d2, then branches if the last result was not zero, then sets bit 3 of d0, then jumps to another point in the code.
+- `frag_btst_bne_bset_move_rts_2`: Short code fragment that tests bit 3 of d2, then branches if the last result was not zero, then sets bit 1 of d0, then tests bit 2 of d1, then branches if the last result was not zero, then sets bit 4 of d0, then copies the top of the stack to d2, then returns.
+- `update_input_state`: Processes input state changes from a global structure, updates various flags and bitmasks based on input values, and clears a control flag when specific conditions are met.
+- `update_collision_table`: Updates a collision table by setting specific entries to -1 while incrementing a counter, and when the counter overflows, sets multiple entries in the table to -1.
+- `populate_object_tables`: Populates two tables with data based on input parameters, writing word values to one table and byte values to another at calculated offsets.
+- `update_single_table_entry`: Updates a single entry in a table with a provided value, using an index from input parameters to calculate the memory address.
+- `store_joystick_input`: Processes joystick input from multiple hardware ports by testing values, calling input routines, and storing results in a memory table.
+- `process_character_data`: Initializes character data by setting up flags and word values, then calls a library function with parameters from the stack.
+- `frag_moveq_move_sub_rts`: Short code fragment that loads 0 into d7, then copies the memory at an offset from a5 to d7, then loads 32 into d6, then subtracts d6 from d7, then copies d7 to the memory at an offset from a5, then returns.
+- `execute_indexed_function`: Executes a function from a jump table based on an index, after adjusting the index and performing bounds checking.
+- `initialize_character_data`: Sets up character data flags and word values, then initializes multiple game object properties by calling a routine with parameters from the stack.
+- `update_frame_counter_2`: Increments a word counter at a fixed offset from a4, and when it reaches one, calls several routines to process game state updates including input handling, collision detection, and memory management before resetting the counter.
+- `decrement_and_call`: Decrements a 16-bit value at a fixed offset from a4, then branches if the result is not zero.
+- `initialize_device_resources`: Initializes device resources by setting up pointers, calling library functions for device management, and handling resource cleanup if initialization fails.
+- `check_input_device`: Tests a global flag byte and branches if set, otherwise initializes an input device by calling library functions, stores results in global variables, and sets the flag to indicate completion.
+- `initialize_device`: Sets up device resources by initializing pointers, calling library functions, and updating device state flags based on conditions.
+- `update_device_state`: Updates device state by checking readiness flags, modifying buffer contents, calling a library function, and clearing a flag if certain conditions are met.
+- `fall_through_entry_10`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `update_device_resources`: Updates device state by checking readiness flags, calling library functions for device management, and clearing a device flag when complete.
+- `frag_addq_cmpi_bne_jsr_move_clr_rts`: Short code fragment that adds 1 to the memory at an offset from a4, then compares the memory at an offset from a4 with 1, then branches if the last result was not zero, then calls another routine (2 times in a row), then copies 1 to the memory at an offset from a4, then clears the memory at an offset from a4 (2 times in a row), then returns.
+- `frag_subq_bne_bsr_jsr_rts_2`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then calls another routine (3 times in a row), then returns.
+- `normalize_float`: Reads a 32-bit value from a global variable, clears its sign bit, writes it back, then performs bit manipulation on a copy of the value and calls another routine with the modified value.
+- `process_float_values`: Handles floating-point operations by calling multiple subroutines with stack values and performing bit manipulation on the results.
+- `frag_nop_link_move_unlk_movea_addq_jmp`: Short code fragment that pauses for one no-operation step, then creates a stack frame in a5, then copies the memory at an offset from a5 to the memory at an offset from a4, then removes the stack frame held in a5, then copies the top of the stack to a0, then adds 4 to a7, then jumps to the address in a0.
+- `frag_addq_cmpi_bne_jsr_move_rts_5`: Short code fragment that adds 1 to the memory at an offset from a4, then compares the memory at an offset from a4 with 1, then branches if the last result was not zero, then calls another routine (2 times in a row), then copies 1 to the memory at an offset from a4, then copies 65539 to the memory at an offset from a4, then returns.
+- `frag_subq_bne_jsr_rts_3`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then calls another routine (2 times in a row), then returns.
+- `compute_bit_shift_result`: Computes a bit shift result based on input values, performing conditional operations and bit manipulations to determine the final output.
+- `frag_cmpi_ble_ori_bra`: Short code fragment that compares d1 with 30, then branches if the comparison was less or equal, then merges 2 into the condition codes, then jumps to another point in the code.
+- `frag_subi_neg_lsr_tst_bne_move_rts`: Short code fragment that subtracts 31 from d1, then negates d1, then shifts d0 right by d1, then tests d2, then branches if the last result was not zero, then negates d0, then copies the top of the stack to d2, then returns.
+- `calculate_normalized_value`: Calculates a normalized value from an input by performing bit shifts, comparisons, and arithmetic operations while tracking shift counts.
+- `frag_bchg_bra`: Short code fragment that flips bit 31 of d1, then jumps to another point in the code.
+- `normalize_fixed_point_2`: Processes fixed-point numbers through bit rotation, subtraction, and conditional shifts while managing carry flags and result storage.
+- `normalize_fixed_point`: Processes a fixed-point number by subtracting values, swapping bits, and shifting left or right based on conditions, then stores the result in a global variable.
+- `frag_cmpi_blt_ori_bra`: Short code fragment that compares d5 with 255, then branches if the comparison was less, then merges 2 into the condition codes, then jumps to another point in the code.
+- `frag_lsl_move_ror_roxr_movem_rts`: Short code fragment that shifts d0 left by 1, then copies d5 to d0, then rotates d0 right by 8, then rotates d3 right through the extend flag by 1, then rotates d0 right through the extend flag by 1, then restores saved registers from the stack, then returns.
+- `multiply_fixed_point`: Performs multiplication of two fixed-point numbers with bit manipulation, handles overflow by shifting and adjusting exponents, and returns the normalized result.
+- `frag_moveq_bra`: Short code fragment that loads 0 into d0, then jumps to another point in the code.
+- `frag_lsl_move_ror_roxl_roxr_movem_rts`: Short code fragment that shifts d0 left by 1, then copies d5 to d0, then rotates d0 right by 8, then rotates d7 left through the extend flag by 1, then rotates d0 right through the extend flag by 1, then restores saved registers from the stack, then returns.
+- `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_8`: Empty routine: returns to the caller immediately without doing anything.
+- `jump_vector_entry_39`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_40`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_41`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_42`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_43`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_44`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_45`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_46`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_47`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_48`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_49`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_50`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_51`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_52`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_53`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_54`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_55`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### Dynamite Warriors (1992)(A. Wiethoff).adf:DynamiteWarriors#unpacked
+
+- `initialize_system_2`: Initializes system memory pointers and task context variables, sets up global data structures, and prepares for further execution by configuring stack pointers and memory boundaries.
+- `update_file_system_pointers`: Updates file system pointers and handles directory operations by copying data between memory locations, calling library functions for file management, and managing message handling with specific register values.
+- `frag_move_clr_rts_6`: Short code fragment that copies 65792 to the memory at a0 (advancing a0), then copies d0 to the memory at a0 (advancing a0), then copies d1 to the memory at a0 (advancing a0), then clears the memory at a0 (advancing a0), then copies d2 to the memory at a0 (advancing a0), then clears the memory at a0 (advancing a0), then returns.
+- `initialize_system`: Initializes system resources by opening and closing libraries, setting up memory structures, and calling various initialization routines based on conditional checks.
+- `process_input_data`: Processes input data by copying pointers to memory locations, performing conditional operations based on a flag, and calling other routines with specific parameters.
+- `process_data_structure_2`: Processes a data structure by reading word values, performing bit shifts, comparing with constants, and updating pointers based on comparison results.
+- `process_data_structure`: Processes a data structure by reading word values, performing bit shifts, comparing with constants, and updating pointers based on comparison results before returning.
+- `frag_cmpi_beq_bne_addq_bra_2`: Short code fragment that compares d1 with 2, then branches if the last result was zero, then compares d1 with 3, then branches if the last result was not zero, then adds 4 to a1, then jumps to another point in the code.
+- `frag_cmpi_bne_lea_bra_5`: Short code fragment that compares d1 with 7, then branches if the last result was not zero, then loads the address of the memory at an offset from a1 into a1, then jumps to another point in the code.
+- `frag_cmpi_bne_lea_bra_6`: Short code fragment that compares d1 with 8, then branches if the last result was not zero, then loads the address of the memory at an offset from a1 into a1, then jumps to another point in the code.
+- `frag_cmpi_bne_lea_bra_7`: Short code fragment that compares d1 with 9, then branches if the last result was not zero, then loads the address of the memory at an offset from a1 into a1, then jumps to another point in the code.
+- `frag_cmpi_bne_lea_bra_8`: Short code fragment that compares d1 with 10, then branches if the last result was not zero, then loads the address of the memory at an offset from a1 into a1, then jumps to another point in the code.
+- `check_and_store_word`: Compares a word value with constants and stores data at an address offset based on the comparison results, then returns.
+- `frag_move_bsr_2`: Short code fragment that copies d0 to the memory at an offset from a4, then calls another routine.
+- `frag_movea_jmp_2`: Short code fragment that copies the memory at an offset from a4 to a0, then jumps to the address in a0.
+- `process_assertion`: Checks a condition and calls another routine if the condition is false, then performs cleanup and jumps to a location pointed to by a register.
+- `multiply_unsigned_words`: Multiplies two unsigned 16-bit values using multiple intermediate calculations, combines results through addition and bit manipulation, and returns a 32-bit result.
+- `multiply_with_sign_handling`: Performs multiplication of two values with sign handling and conditional adjustments based on the signs of input values, then returns.
+- `fall_through_entry_11`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `divide_fixed_point_numbers`: Divides fixed-point numbers using either direct division or a bit-shifting loop approach, storing results in registers before returning.
+- `divide_fixed_point`: Performs division of fixed-point numbers using bit shifting and subtraction operations within a loop that runs 15 times, storing the quotient in a global variable.
+- `signed_divide`: Performs signed 32-bit division with remainder handling, managing sign flags for both dividend and divisor, and calls another routine to complete the division process.
+- `open_library_and_process`: Opens a library using a system call and processes input data if the library opening succeeds, then returns.
+- `frag_move_beq_movea_jsr_rts_2`: Short code fragment that copies a1 to d0, then branches if the last result was zero, then copies a6 to the stack, then copies a fixed memory address to a6, then calls another routine, then copies the top of the stack to a6, then returns.
+- `empty_stub_9`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_10`: Empty routine: returns to the caller immediately without doing anything.
+- `open_dos_library`: Increments a counter at offset a8 from a4, then compares it with one.
+- `frag_subq_bne_movea_jsr_rts_5`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then copies the memory at an offset from a4 to a1, then calls another routine, then returns.
+- `open_exec_library`: Increments a counter at offset b0 from a4, then compares it with one.
+- `frag_subq_bne_movea_jsr_rts_6`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then copies the memory at an offset from a4 to a1, then calls another routine, then returns.
+- `open_graphics_library`: Increments a counter at offset b8 from a4, then compares it with one.
+- `frag_subq_bne_movea_jsr_rts_7`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then copies the memory at an offset from a4 to a1, then calls another routine, then returns.
+- `open_intuition_library`: Increments a counter at offset c0 from a4, then compares it with one.
+- `frag_subq_bne_movea_jsr_rts_8`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then copies the memory at an offset from a4 to a1, then calls another routine, then returns.
+- `manage_linked_list_entry_4`: Manages a linked list entry by searching for a matching item, updating pointers when found, and calling a memory deallocation function before returning.
+- `manage_linked_list_entry_2`: Manages a linked list entry by searching for a matching item, updating pointers when found, and calling a memory deallocation function before returning to a jump table.
+- `initialize_sprite_data_2`: Initializes sprite data structures with dimensions and pointers, sets up linked list entries, and configures sprite properties including position, size, and flags.
+- `process_linked_list_entries`: Processes multiple linked list entries by checking various flags, calling library functions for different operations, and deallocating memory when complete before returning to a jump table.
+- `fall_through_entry_12`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `read_video_registers`: Reads video hardware registers from CIA and VHPOSR, performs bit manipulation on the values, and calls another routine with the combined result.
+- `initialize_explosion_pattern_2`: Initializes a pattern of explosion effects by clearing and setting specific memory locations based on counter values, then performs a series of operations to configure explosion behavior and updates related data structures.
+- `initialize_explosion_pattern`: Initializes a pattern of explosion effects by clearing and setting specific memory locations based on counter values, then performs a series of operations to configure explosion data in memory tables.
+- `process_render_data`: Checks if a global pointer is non-zero, and if so, calls three library functions with specific offsets from the pointer.
+- `update_object_links`: Updates object link structures by copying values between memory locations, performing several memory operations, and calling library functions with specific parameters.
+- `fall_through_entry_13`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `render_sprite_frames`: Renders sprite frames by calling multiple library functions with different parameters, performs calculations on coordinates and dimensions, and executes repeated function calls with varying inputs.
+- `update_object_position`: Updates object position coordinates by calling library routines with specific parameters, manipulating movement data through multiple iterations, and handling state transitions via indirect jumps based on processed values.
+- `allocate_render_resources`: Allocates rendering resources by calling memory allocation routines with specific parameters, stores the allocated memory addresses in global variables, and performs subsequent library calls with those addresses.
+- `setup_render_call`: Saves registers, loads a pointer from a global table, calls a library routine, then makes two separate calls to another library routine with different parameters.
+- `configure_display`: Saves registers, loads a pointer from a global table, calls a library routine, then makes one call to another library routine with specific parameters.
+- `set_video_mode`: Saves registers, loads a pointer from a global table, calls a library routine, then makes one call to another library routine with different specific parameters.
+- `update_object_positions`: Updates object position coordinates by calling a library routine with specific parameters, manipulating movement data through multiple iterations.
+- `update_game_objects`: Updates multiple game object properties by calling helper routines with specific parameters, manipulating data through several memory operations and library calls, then performs a final update operation.
+- `update_object_animation`: Updates object animation state by processing movement data and calling rendering routines with specific parameters.
+- `update_start_display`: Updates display text for monster count, obstacle count, bomb count, and bomb range options based on values in a structure, then performs a final animation update.
+- `update_start_options`: Updates display text for monster count, obstacle count, bomb count, and bomb range options based on values in a structure, then performs a loop that modifies a global variable until a specific condition is met.
+- `reset_and_check_counter`: Clears a 16-bit value in a global variable, copies it to memory location pointed by a5, and checks if the copied value is less than 128.
+- `decrement_counter_2`: Decrements a counter at offset 292 from a4 and performs several rendering operations if the counter is positive, including calling library functions with specific parameters and storing a character representation of the counter value.
+- `increment_counter_2`: Increments a counter at offset 292 from a4 and performs several rendering operations if the counter is less than 9, including calling library functions with specific parameters and storing a character representation of the counter value.
+- `decrement_timer_2`: Decrements a timer at offset 296 from a4 and performs several rendering operations if the timer is greater than 1, including calling library functions with specific parameters and storing a character representation of the timer value.
+- `increment_timer_2`: Increments a timer at offset 296 from a4 and performs several rendering operations if the timer is less than 9, including calling library functions with specific parameters and storing a character representation of the timer value.
+- `decrement_delay`: Decrements a delay counter at offset 300 from a4 and performs several rendering operations if the counter is greater than 1, including calling library functions with specific parameters and storing a character representation of the counter value.
+- `increment_delay`: Increments a delay counter at offset 300 from a4 and performs several rendering operations if the counter is less than 9, including calling library functions with specific parameters and storing a character representation of the counter value.
+- `render_and_update_sprite`: Tests a byte value at offset 302 of a structure, sets it to -1 if zero, then calls rendering routines with different parameters based on the test result, and finally branches to a specific location.
+- `render_sprite_conditionally`: Calls library functions to render sprite frames with specific parameters, then checks a byte at offset 302 from a4 and calls different rendering routines based on whether that byte is zero or not.
+- `frag_move_moveq_pea_bsr_rts_2`: Short code fragment that copies the memory at an offset from a4 to the stack, then loads 2 into d7, then copies d7 to the stack, then pushes the address of a location in the code onto the stack, then copies 260 to the stack, then copies 90 to the stack, then calls another routine, then returns.
+- `process_game_state_3`: Processes game state by indexing into a table with a modified register value, executing a routine from the table, and checking a condition in a global structure before looping.
+- `fall_through_entry_14`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `initialize_object_data_2`: Initializes multiple data structures in the object by copying byte sequences from global tables, then performs several game state updates including animation, position, and display configuration.
+- `update_object_state_3`: Updates object state by incrementing counters and checking conditions, modifying values at specific offsets within the object structure based on comparisons with stored data.
+- `update_object_animation_2`: Updates object animation state by modifying a counter at offset -6 in a structure, performing arithmetic operations on coordinates, and calling routines with calculated parameters.
+- `update_game_object_properties`: Updates game object properties by calling various helper routines with specific parameters, managing memory operations through multiple iterations, and performing conditional calls based on counter values.
+- `update_object_data`: Updates object data structures by copying values between memory locations based on loop counters, setting specific offsets in tables, and performing arithmetic operations on indices.
+- `initialize_animation_frames`: Initializes animation frame data for two different sets of frames, storing results at specific offsets in memory tables.
+- `fall_through_entry_15`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `update_entity_flags_2`: Loads a word from offset 8 of the structure in a5, multiplies it by 52, calculates a memory address using that offset, stores the value 9999 at offset 48 of the calculated address, then loads the same word again, multiplies it by 52, calculates another address, and sets bit 5 of the byte at offset 8 of that address.
+- `validate_memory_block`: Validates a memory block by comparing a value with data in the block, updates a field in the block if they match, then branches to different locations based on the comparison result.
+- `frag_movea_bra_3`: Short code fragment that copies a0 to a1, then copies the memory at a1 to a0, then jumps to another point in the code.
+- `manage_memory_block`: Allocates memory for a data block, initializes its fields with register values, and manages a linked list structure by checking existing entries and updating them when matches are found.
+- `frag_movea_bra_4`: Short code fragment that copies a0 to a1, then copies the memory at a1 to a0, then jumps to another point in the code.
+- `allocate_and_initialize_2`: Calls a library routine to allocate memory, stores the result in a global variable, copies data from registers to allocated memory, and returns immediately if the allocation failed.
+- `read_short_table_entry`: Takes a word value from d0, shifts it left by 2 bits, calculates an address using offset 2880 of a4, adds another offset based on a global short variable, and returns the signed 16-bit value at that calculated address.
+- `read_short_table_entry_2`: Takes a word value from d0, shifts it left by 2 bits, calculates an address using offset 2884 of a4, adds another offset based on a global short variable, and returns the signed 16-bit value at that calculated address.
+- `read_long_table_entry`: Takes a word value from d0, shifts it left by 3 bits, calculates an address using offset 2840 of a4, adds another offset based on a global short variable shifted left by 2 bits, and returns the 32-bit value at that calculated address.
+- `update_object_positions_2`: Processes object movement coordinates, performs boundary checks on position values, updates animation states, and manages buffer swapping for object data.
+- `update_movement_state`: Updates movement coordinates and boundary checks for an object, managing state transitions based on position values and calling animation update routines.
+- `update_animation_state_12`: Updates animation state variables including counters and coordinates, performs boundary checks on movement values, and manages state transitions based on conditional logic.
+- `swap_and_clear_buffers`: Checks if a long value at offset 1684 of a4 is non-zero, calls a library routine if so, then copies values between global buffers and clears the source buffer.
+- `process_animation_frames_2`: Initializes several variables, calls two library routines with parameters from global tables, and processes animation data by incrementing counters and calling another routine with multiple parameters.
+- `initialize_entity_data_2`: Sets up initial values for various entity properties in a global table, loops through 4 iterations to initialize each entity's data structure with specific byte and word values.
+- `clear_linked_list_entry`: Clears a linked list entry by setting the value at offset 1804 of a global structure to zero, then follows the chain of pointers from that entry until it finds a null pointer, and sets that final pointer to zero.
+- `frag_movea_move_bra_2`: Short code fragment that copies the memory at an offset from a5 to a3, then copies the memory at an offset from a5 to the memory at a3, then jumps to another point in the code.
+- `initialize_object_data`: Initializes object data structure fields including counters, coordinates, and flags based on input parameters from the stack frame, then updates a global counter and sets bit 3 of a status byte.
+- `load_and_validate`: Loads two 16-bit values from offsets 4 and 6 of a structure in a3, passes them to a validation routine, then restores registers and jumps to an address stored on the stack.
+- `update_animation_state_22`: Reads a word value from a table using parameters from a structure, updates the value based on its range, and modifies a global table entry by setting bit 5.
+- `check_timer_and_update`: Compares a global timer value with 2 and branches if not equal, otherwise reads a word from a table, multiplies it by 52, uses the result as an index to increment a byte in another table, then branches to a different routine.
+- `check_timer_limit`: Compares a global timer value with 3 and branches if not equal, otherwise continues to update a table entry based on a calculated index.
+- `update_object_flag_bits`: Updates specific bits in object flag fields based on conditions derived from object properties and a global timer, then increments a counter.
+- `update_object_flags`: Sets a specific bit in an object's flag field and updates a timestamp field in an object structure based on a global timer value, then increments a counter in the stack frame.
+- `update_grid_entry`: Updates grid-based data entries by iterating through coordinates, modifying values in two tables based on conditions, and managing linked list operations.
+- `process_object_operations`: Clears a global variable, performs several memory operations including calls to other routines, and updates object link structures before making a library call and returning.
+- `update_object_flag`: Updates a flag in a table based on conditional logic derived from structure offsets, then performs a conditional jump to another routine.
+- `update_object_state_5`: Updates object state flags and timestamp fields in a table based on conditional logic derived from structure offsets, then performs a conditional branch based on carry flag.
+- `update_object_flags_2`: Sets a specific bit in a table entry and updates a timestamp field based on an index from the structure, then calls another routine with parameters from the structure.
+- `handle_collision_flag`: Checks if a specific bit is set in a byte value from a table, and if so, clears that bit and updates a timestamp field in an object structure based on a global timer value.
+- `set_object_collision_flag`: Sets a specific bit in an object's flag field and updates a timestamp field in an object structure based on a global timer value, then returns immediately.
+- `update_object_state`: Compares a value from the stack frame with a constant, performs conditional operations including library calls, and updates a table entry based on input parameters before returning.
+- `update_and_branch`: Updates values in a table based on parameters from a structure, calls another routine with specific arguments, and conditionally jumps to a different code location.
+- `check_and_set_flag_2`: Loads a byte from a global table using an index, checks if bit 5 is clear, loads another value from a different table, checks if that value is positive, then checks if bit 0 is clear before setting bit 5 of the original byte.
+- `update_object_state_7`: Processes object state flags and coordinates based on position and condition checks, updating flags and timer values while managing object movement and collision detection.
+- `update_object_timer_2`: Increments a timer value in a data table based on an index from the stack, then clears a word-sized value at a specific offset in the local stack frame.
+- `update_object_flags_3`: Loads object data using an index from the stack, checks and sets specific flags based on conditions, then updates object state and coordinates.
+- `update_object_state_6`: Loads object data using an index from the stack, updates coordinates and state flags, then performs conditional operations based on the loaded values.
+- `update_object_data_2`: Loads object data from tables using an index from the stack, updates coordinates and state flags, then performs conditional operations based on the object's properties.
+- `update_object_coordinates`: Loads object data from tables using an index from the stack, updates coordinates and state flags, then performs conditional operations based on bit 0 of a byte from the table.
+- `check_object_state`: Reads an object state from a global structure, compares it to five, and if equal, loads object data from tables and updates flags.
+- `load_object_data`: Loads object properties from tables using an index from the stack, updates coordinates and state flags, then performs conditional operations based on the state value.
+- `update_object_position_2`: Updates object position coordinates by adding velocity values from a table to current coordinates, and manages object state flags based on comparison results.
+- `update_animation_state_13`: Processes animation frame data based on input parameters and updates state flags, then performs conditional operations based on the processed values.
+- `frag_tst_bne_andi_bra_2`: Short code fragment that tests the memory at an offset from a5, then branches if the last result was not zero, then masks the memory at an offset from a5 with 65533, then jumps to another point in the code.
+- `frag_cmpi_bne_andi_bra_2`: Short code fragment that compares the memory at an offset from a5 with 3, then branches if the last result was not zero, then masks the memory at an offset from a5 with 65531, then jumps to another point in the code.
+- `update_animation_state_5`: Compares a word at offset 8 of a structure with 2, clears bit 3 of another word in that structure if equal, calls a routine to get a value, stores that value in the structure, and updates animation state based on bit testing.
+- `update_animation_state_17`: Reads an animation state counter from a global variable, checks a bit in another global variable, and based on the result either calls a routine with specific parameters or updates counters and calls another routine.
+- `update_animation_flag`: Clears a specific bit in a global variable based on a counter value, then updates animation state variables and increments counters in tables referenced by the same counter.
+- `update_animation_counters`: Updates animation state counters and performs arithmetic operations on movement values based on table lookups, then checks proximity conditions and modifies status flags accordingly.
+- `update_animation_state_14`: Updates an animation counter in a local variable and accesses two tables based on that counter to load values for subsequent processing.
+- `fall_through_entry_16`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `set_animation_flag_4`: Checks a flag in a global variable, and if clear, sets it and copies word values from a structure to other global variables before calling a routine.
+- `set_animation_flag_2`: Checks a flag in a global variable, and if clear, sets it and copies word values from a structure to other global variables before calling another routine.
+- `update_entity_direction_3`: Processes entity movement direction and updates velocity components based on input flags and collision detection, then modifies entity state and boundary checks in a table.
+- `validate_entity_state`: Loads a byte value from a table at an offset determined by a word value from the stack frame, tests bit 0 of that byte, and if the bit is clear, sets a specific word value in the stack frame.
+- `check_entity_collision`: Loads a byte value from a table, tests a specific bit in that byte, and if the bit is clear, sets a negative word value in the stack frame before returning.
+- `update_entity_position`: Updates entity position coordinates based on velocity and direction flags, then modifies entity state and boundary checks in a table.
+- `frag_move_muls_lea_bra_3`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 52 (signed), then loads the address of the memory at an offset from a4 into a3, then copies 2 to an indexed entry from a3, then jumps to another point in the code.
+- `frag_tst_bge_move_muls_lea_bra_3`: Short code fragment that tests the memory at an offset from a5, then branches if the comparison was greater or equal, then copies the memory at an offset from a5 to d7, then multiplies d7 by 52 (signed), then loads the address of the memory at an offset from a4 into a3, then copies 1 to an indexed entry from a3, then jumps to another point in the code.
+- `frag_move_muls_lea_clr_bra_2`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 52 (signed), then loads the address of the memory at an offset from a4 into a3, then clears an indexed entry from a3, then jumps to another point in the code.
+- `update_entity_direction_2`: Updates directional properties of an entity in a table based on values from another structure, then modifies the entity's state and position according to movement flags and conditions.
+- `frag_move_muls_lea_bra_4`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 52 (signed), then loads the address of the memory at an offset from a4 into a3, then copies 2 to an indexed entry from a3, then jumps to another point in the code.
+- `frag_tst_bge_move_muls_lea_bra_4`: Short code fragment that tests the memory at an offset from a5, then branches if the comparison was greater or equal, then copies the memory at an offset from a5 to d7, then multiplies d7 by 52 (signed), then loads the address of the memory at an offset from a4 into a3, then copies 1 to an indexed entry from a3, then jumps to another point in the code.
+- `update_counter_and_clear`: Updates a counter value by incrementing it and clears a word at a specific offset in a table, then branches back to an earlier instruction if no overflow occurs.
+- `update_collision_flags`: Processes collision detection data for up to four entries, clearing specific flags based on multiple conditions and incrementing a counter.
+- `increment_table_entry`: Increments a word value in a table at an offset determined by coordinates from the stack frame, then performs boundary checks on object coordinates and updates a counter based on those checks.
+- `frag_move_bra_2`: Short code fragment that copies 16 to the memory at an offset from a5, then jumps to another point in the code.
+- `validate_object_position`: Performs boundary checks on object coordinates by testing adjacent table entries and sets a specific word value in the stack frame based on whether the checks pass or fail.
+- `initialize_counter`: Sets a word value of 20 in a memory location relative to the stack pointer, then calls another routine and returns.
+- `decrement_and_compare`: Decrements a word value at a calculated offset in a table and compares the result with a constant value, branching if the result is greater than or equal.
+- `validate_entity_position_2`: Performs boundary checks on entity coordinates by testing adjacent table entries and sets a specific word value in the stack frame based on whether the entity is at a boundary or in open space.
+- `validate_entity_position`: Performs boundary checks on entity coordinates by testing adjacent table entries and sets a specific word value in the stack frame based on whether the checks pass or fail.
+- `setup_parameters`: Initializes a word value of 16 in a memory location relative to the stack pointer, then calls another routine and returns.
+- `frag_clr_move_rts_2`: Short code fragment that clears the memory at an offset from a4 (2 times in a row), then copies 65535 to the memory at an offset from a4, then copies 1 to the memory at an offset from a4, then copies 65535 to the memory at an offset from a4, then copies 1 to the memory at an offset from a4, then clears the memory at an offset from a4 (2 times in a row), then returns.
+- `fall_through_entry_17`: Entry point part-way through straight-line code: runs one instruction (nop) and then falls through into the code that follows, with no return of its own.
+- `initialize_attack_data`: Initializes attack-related data by setting up local variables and loading object coordinates from memory, then performs boundary checks and conditional updates based on calculated values.
+- `write_byte_value`: Calculates an address using two values from the stack frame, writes the value 12 to that location, then calls another routine and returns.
+- `store_word_value`: Calculates an address using two values from the stack frame, writes the value 13 to that location, then calls another routine and returns.
+- `update_flag_value`: Calculates an address using two values from the stack frame, writes the value 14 to that location, then calls another routine and returns.
+- `frag_pea_jsr_move_bra_2`: Short code fragment that pushes the address of a fixed memory address onto the stack, then calls another routine, then copies d0 to the memory at an offset from a5, then copies the memory at an offset from a5 to d7, then jumps to another point in the code.
+- `frag_move_muls_lea_add_rts_12`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 1 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_13`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 2 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_14`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 3 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_15`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 4 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_16`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 5 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_17`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 6 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_18`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 7 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_19`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 8 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_20`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 9 to an indexed entry from a2, then returns.
+- `frag_move_muls_lea_add_rts_21`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 10 to an indexed entry from a2, then returns.
+- `set_animation_state`: Tests a global flag byte, and if clear, calls another routine to copy values from the stack frame to global variables before updating a table entry with a specific word value and returning.
+- `frag_move_muls_lea_add_rts_22`: Short code fragment that copies the memory at an offset from a5 to d7, then multiplies d7 by 26 (signed), then loads the address of the memory at an offset from a4 into a2, then copies the memory at an offset from a5 to d6, then adds d6 to d6, then loads the address of an indexed entry from a2 into a2, then copies 11 to an indexed entry from a2, then returns.
+- `dispatch_function`: Uses a value from the stack to index into a table, loads a function pointer from that table, and calls it with no arguments.
+- `update_attack_timer_2`: Increments a counter in a local variable and performs boundary checks on object coordinates, updating collision mask bits based on the object's position and state.
+- `load_coordinates_and_test`: Loads two word values from specific offsets in the stack frame, uses one as an index to access a table, tests a bit in the table entry, and stores the result of the test in a global variable.
+- `process_object_collision`: Updates collision mask bits based on object coordinates and increments table entries, then performs boundary checks on object coordinates.
+- `update_collision_mask_2`: Modifies a collision mask word by clearing a specific bit based on a counter value, then updates a table entry with an incremented value while managing overflow conditions.
+- `update_attack_timer`: Updates an attack timer value based on comparisons with threshold values, and manages related state flags and counters.
+- `frag_tst_bne_move_bsr_bra_2`: Short code fragment that tests the memory at an offset from a3, then branches if the last result was not zero, then copies the memory at an offset from a3 to the stack (2 times in a row), then calls another routine, then jumps to another point in the code.
+- `decrement_and_copy`: Decrements a long value at an offset in a calculated address, checks if another value is zero, and if not, copies data from one location to another.
+- `move_and_check_pointer`: Loads a long value from a memory location pointed to by a3 into a register, then calls a routine with a stack argument.
+- `frag_clr_subq_bra_2`: Short code fragment that clears the memory at an offset from a5, then subtracts 1 from the memory at an offset from a3, then jumps to another point in the code.
+- `frag_addq_bra_2`: Short code fragment that adds 1 to the memory at an offset from a3, then jumps to another point in the code.
+- `update_attack_collision`: Updates collision state based on attack data and validates collision conditions, modifying attack parameters and collision counters accordingly.
+- `update_collision_state_2`: Updates a collision-related state value in memory, clamps it between 1 and 4, and then performs further processing based on the updated value.
+- `validate_collision_data`: Compares specific data values from two memory locations and sets a flag in a structure if they match, then branches to a common exit point.
+- `process_collision_data_3`: Processes collision-related data by loading values from memory locations relative to a5, performing conditional checks on loaded values, and calling another routine based on division results.
+- `handle_object_conditions`: Checks various object state conditions and modifies bit flags in a structure, calling another routine with parameters when certain comparisons are met.
+- `initialize_lookup_tables`: Initializes multiple lookup tables with sequential word values starting from 1, and sets up global variables with specific bit patterns and offsets.
+- `frag_st_jsr_move_pea_addq_bra_2`: Short code fragment that sets the memory at an offset from a4 to all ones, then calls another routine, then copies the memory at an offset from a4 to the stack, then pushes the address of a fixed memory address onto the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `initialize_animation_loop`: Initializes animation state by clearing counters and processing frame data through a loop that updates offsets and checks conditions before proceeding.
+- `empty_stub_11`: Empty routine: returns to the caller immediately without doing anything.
+- `frag_jsr_bsr_clr_rts_2`: Short code fragment that calls another routine (2 times in a row), then clears the memory at an offset from a4, then returns.
+- `frag_jsr_move_bsr_clr_rts_2`: Short code fragment that calls another routine, then copies the memory at an offset from a4 to the stack, then calls another routine, then clears the memory at an offset from a4, then returns.
+- `update_object_state_4`: Manages object state flags using bitmask operations based on conditional checks, updates counters, and modifies memory locations with values derived from table lookups.
+- `manage_object_flags`: Manages bitmask flags in global variables based on conditions derived from a table lookup, updates a counter, and modifies bitmasks according to signed values read from a table.
+- `update_object_state_2`: Updates an object's state by manipulating bits in a global variable based on conditions, then loads a value from a table and stores it in another global variable before returning.
+- `update_animation_data`: Updates animation-related data by processing frame information through a loop that modifies offsets and clears specific memory locations.
+- `initialize_animation_data`: Initializes animation-related data by clearing multiple global variables, processing frame information through a loop that updates offsets and values in tables, and managing counters for animation state progression.
+- `check_and_process_frame`: Tests a global counter and branches based on its value, then moves a word from a global variable to the stack before calling another routine.
+- `process_animation_frames_4`: Iterates through animation frame data, updates counters and state flags based on conditions, and manages frame progression for object animations.
+- `function_epilogue_2`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
+- `update_animation_state_18`: Updates an animation state counter stored at offset 1796 in a4, managing different animation sequences based on the counter's value, and performs related operations including calls to other routines and library functions.
+- `update_animation_state_6`: Updates an animation frame counter and loads frame data from a table into memory, resetting the animation when the end is reached.
+- `update_animation_state_7`: Updates an animation frame counter and loads frame data from a table into memory at offset 186 of a structure, resetting the animation when reaching the end of the sequence.
+- `update_animation_state_8`: Updates an animation counter and reads frame data from a table, resetting the animation when the end is reached.
+- `process_animation_frame_4`: Loads animation frame data from a table into memory at offset 218 of a structure, updating counters and resetting state when reaching end of sequence.
+- `process_animation_frames_3`: Processes animation frame data by calling multiple subroutines that update different aspects of animation state, then jumps to another routine based on a computed address.
+- `frag_move_moveq_rts_2`: Short code fragment that copies d7 to the stack, then copies 2598 to the memory at an offset from a4, then copies 1326 to the memory at an offset from a4, then loads 80 into d7, then copies d7 to the memory at an offset from a4, then copies 742 to the memory at an offset from a4, then copies the top of the stack to d7, then returns.
+- `frag_move_clr_rts_7`: Short code fragment that copies 63 to a fixed memory address, then clears the memory at an offset from a4, then returns.
+- `frag_move_clr_rts_8`: Short code fragment that copies 63 to a fixed memory address, then clears the memory at an offset from a4, then returns.
+- `frag_move_clr_rts_9`: Short code fragment that copies 63 to a fixed memory address, then clears the memory at an offset from a4, then returns.
+- `frag_move_clr_rts_10`: Short code fragment that copies 63 to a fixed memory address, then clears the memory at an offset from a4, then returns.
+- `initialize_audio_channels`: Initializes audio channel data structures and sets up DMA for sound playback, configuring four audio channels with specific sample pointers, lengths, volumes, and periods, then enables DMA and interrupt handling.
+- `manage_audio_sequence`: Manages audio playback by setting volume registers, calling a library routine to generate sound data, and processing multiple audio buffer updates.
+- `process_string_loop_2`: Iterates through a string until reaching a null terminator or counter expires, then jumps to an indirect address based on the final state.
+- `empty_stub_12`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_13`: Empty routine: returns to the caller immediately without doing anything.
+- `linked_list_search`: Searches through a linked list structure for a matching entry, updating pointers and performing comparisons until match found or end reached.
+- `allocate_memory_block`: Allocates a memory block using a system call with specific parameters, updates a counter in a global structure, and manages linked list entries.
+- `manage_linked_list_entry`: Manages a linked list entry by searching for a matching item, updating pointers when found, and calling a memory deallocation function before clearing the list entry.
+- `manage_linked_list_entry_3`: Processes a linked list entry by retrieving data from memory, calling another routine with the data, and updating pointers in the structure.
+- `frag_addq_cmpi_bne_jsr_move_rts_6`: Short code fragment that adds 1 to the memory at an offset from a4, then compares the memory at an offset from a4 with 1, then branches if the last result was not zero, then calls another routine (2 times in a row), then copies 1 to the memory at an offset from a4, then returns.
+- `frag_subq_bne_bsr_jsr_rts_3`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then calls another routine (3 times in a row), then returns.
+- `frag_jmp_13`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_14`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_15`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_16`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_17`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_18`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_19`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_20`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_21`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_22`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_23`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_24`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_25`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_26`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_27`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_28`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_29`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_30`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_31`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_32`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_33`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_34`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_35`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_36`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_37`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_38`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_39`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_40`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_41`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_42`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_43`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_44`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_45`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_46`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_47`: Short code fragment that jumps to another point in the code.
+- `populate_table_entries`: Populates table entries with calculated values based on loop iterations, updating memory locations with computed results and incrementing counters.
+- `frag_lea_btst_bne_rts_2`: Short code fragment that loads the address of a fixed memory address into a1, then tests bit 30 of the memory at an offset from a1 (2 times in a row), then branches if the last result was not zero, then returns.
+- `setup_blitter_parameters_2`: Sets up blitter parameters for graphics rendering by configuring various hardware registers with specific values and performing calculations based on input coordinates.
+- `configure_blitter_rendering`: Configures blitter rendering parameters by setting register values, performing arithmetic operations on input coordinates, and updating graphics display settings.
+- `render_sprite_animation`: Renders sprite animations by processing multiple data tables, performing calculations on coordinates, and configuring blitter registers for graphics output.
+- `execute_blitter_loop`: Executes a blitter loop that processes graphics data by setting up register values, performing calculations on coordinates, and updating display parameters in a decrementing loop.
+- `update_sprite_dma_2`: Updates DMA parameters for sprite rendering based on indexed table data and performs bit manipulation on control registers before setting up blitter operations.
+- `render_sprites_2`: Processes sprite rendering parameters from a structure and makes two calls to a graphics library routine using different parameter sets.
+- `setup_blitter_2`: Configures blitter hardware registers with specific values derived from input parameters and calculates memory addresses for bit block transfer operations.
+- `update_sprite_data_3`: Processes sprite coordinates by reading from a table, performing bit manipulation and arithmetic operations on the values, storing results back into a structured format, and updating counters in a global data structure.
+- `process_color_components`: Reads sprite coordinate data and performs bit manipulations on color values to populate frame tables.
+- `initialize_lookup_table`: Populates a table with precalculated bit patterns and initializes counters in global variables.
+- `update_animation_state_9`: Updates animation state counters and processes animation frames by calculating table offsets based on counter values, then calls another routine with calculated addresses.
+- `read_joystick_input_2`: Reads joystick movement data from a hardware register, tests a bit in another register, and sets a global variable based on the result before branching to another routine.
+- `calculate_joystick_input`: Processes joystick input from hardware registers and returns a computed value based on bit tests and arithmetic operations.
+- `read_joystick_port_a`: Reads input from joystick port A and port B, performs bit testing to determine direction, and sets flags in a return value.
+- `frag_btst_bne_bset_bra_5`: Short code fragment that tests bit 5 of d2, then branches if the last result was not zero, then sets bit 0 of d0, then jumps to another point in the code.
+- `frag_btst_bne_bset_bra_6`: Short code fragment that tests bit 6 of d2, then branches if the last result was not zero, then sets bit 3 of d0, then jumps to another point in the code.
+- `frag_btst_bne_bset_move_rts_3`: Short code fragment that tests bit 7 of d2, then branches if the last result was not zero, then sets bit 1 of d0, then tests bit 0 of d1, then branches if the last result was not zero, then sets bit 4 of d0, then copies the top of the stack to d2, then returns.
+- `read_joystick_port_b`: Reads input from joystick port A and port B, performs bit testing to determine direction, and sets flags in a return value.
+- `frag_btst_bne_bset_bra_7`: Short code fragment that tests bit 1 of d2, then branches if the last result was not zero, then sets bit 0 of d0, then jumps to another point in the code.
+- `frag_btst_bne_bset_bra_8`: Short code fragment that tests bit 2 of d2, then branches if the last result was not zero, then sets bit 3 of d0, then jumps to another point in the code.
+- `frag_btst_bne_bset_move_rts_4`: Short code fragment that tests bit 3 of d2, then branches if the last result was not zero, then sets bit 1 of d0, then tests bit 2 of d1, then branches if the last result was not zero, then sets bit 4 of d0, then copies the top of the stack to d2, then returns.
+- `update_combo_counter`: Increments a combo counter when a specific condition is met, resets the counter and sets a flag when the counter reaches a threshold, then updates a global status byte based on data from a structure.
+- `frag_cmpi_beq_bne_clr_bra`: Short code fragment that compares the memory at an offset from a4 with 69, then branches if the last result was zero, then compares the memory at an offset from a4 with 226, then branches if the last result was not zero, then clears the memory at an offset from a4, then jumps to another point in the code.
+- `frag_cmpi_bne_st_bra`: Short code fragment that compares the memory at an offset from a4 with 98, then branches if the last result was not zero, then sets the memory at an offset from a4 to all ones, then jumps to another point in the code.
+- `update_bitmask_array_2`: Clears specific bits in a bitmask array based on shift operations and logical AND with a computed value, then sets a bit in another location using a left shift operation.
+- `update_bitmask_array`: Updates a bitmask array by clearing specific bits based on shift operations and logical AND with a computed value.
+- `fill_word_array`: Fills an array of words with 65535 values while incrementing a counter, stopping when the counter reaches 127.
+- `update_two_arrays`: Updates two arrays with word and byte values based on parameters from a linked structure, then performs an indirect jump.
+- `update_word_array`: Updates a word array at an offset calculated from input parameters, then performs an indirect jump.
+- `update_joystick_input`: Reads joystick input values from hardware registers and stores corresponding control bytes into a table at different offsets based on the register values.
+- `initialize_device_and_call_functions_2`: Initializes a device structure, calls several library functions in sequence, and returns the initialized value while handling character case conversion.
+- `decrement_byte_value`: Decrements a byte value by 32 and returns immediately without additional processing.
+- `initialize_device_2`: Initializes a device structure at offset 5292 in the data segment, sets up device parameters including dimensions and flags, and performs several library function calls to open and configure the console.device.
+- `increment_frame_counter_2`: Increments a word value at offset 4696 in the structure pointed to by a4, and when it reaches one, calls several library routines and updates values in the same structure before resetting the counter.
+- `decrement_and_branch`: Decrements a 16-bit counter at offset 4696 of the structure in a4, and if the result is zero, calls multiple routines before returning.
+- `initialize_device_and_call_functions`: Initializes a device structure, calls several library functions in sequence, and returns the initialized value.
+- `setup_input_device`: Sets up an input device by calling several library functions, initializes arrays, and sets a flag when complete.
+- `initialize_render_state_2`: Sets a specific word value in a structure and calls a library routine, then clears a byte flag if another condition is met, managing device initialization flow.
+- `initialize_render_state`: Sets a specific word value in a structure and calls a library routine, then clears a byte flag if another condition is met.
+- `process_render_operations`: Performs conditional checks on flags, calls library functions for rendering operations, and clears a flag before returning to the caller.
+- `increment_frame_counter`: Increments a frame counter and resets it to one when it reaches a specific value, also clearing two byte flags.
+- `frag_subq_bne_bsr_jsr_rts_4`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then calls another routine (3 times in a row), then returns.
+- `process_float_operations`: Performs bitwise operations on floating-point data and stores the result back to memory, then calls another routine with modified data.
+- `execute_float_operations`: Executes a series of bit manipulation and arithmetic operations involving floating-point data, calling multiple routines with computed values and returning control to a jump table.
+- `frag_link_move_unlk_movea_addq_jmp`: Short code fragment that creates a stack frame in a5, then copies the memory at an offset from a5 to the memory at an offset from a4, then removes the stack frame held in a5, then copies the top of the stack to a0, then adds 4 to a7, then jumps to the address in a0.
+- `update_frame_counter`: Increments a frame counter and resets it to one when it reaches a specific value, also setting a specific memory location to a constant value.
+- `frag_subq_bne_jsr_rts_4`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then calls another routine (2 times in a row), then returns.
+- `compute_bit_shift_result_2`: Processes input data through multiple bit manipulation operations and returns a computed result based on conditional logic.
+- `frag_cmpi_ble_ori_bra_2`: Short code fragment that compares d1 with 30, then branches if the comparison was less or equal, then merges 2 into the condition codes, then jumps to another point in the code.
+- `frag_subi_neg_lsr_tst_bne_move_rts_2`: Short code fragment that subtracts 31 from d1, then negates d1, then shifts d0 right by d1, then tests d2, then branches if the last result was not zero, then negates d0, then copies the top of the stack to d2, then returns.
+- `perform_bit_manipulation`: Executes a series of bit shifts, rotations, and arithmetic operations on input data to produce a final result.
+- `frag_bchg_bra_2`: Short code fragment that flips bit 31 of d1, then jumps to another point in the code.
+- `calculate_scaled_value_2`: Performs arithmetic operations including subtraction, multiplication, and bit shifting to compute a scaled value with conditional adjustment using rotation and addition operations.
+- `calculate_scaled_value`: Performs arithmetic operations including subtraction, multiplication, and bit shifting to compute a scaled value with conditional adjustments.
+- `frag_cmpi_blt_ori_bra_2`: Short code fragment that compares d5 with 255, then branches if the comparison was less, then merges 2 into the condition codes, then jumps to another point in the code.
+- `frag_lsl_move_ror_roxr_movem_rts_2`: Short code fragment that shifts d0 left by 1, then copies d5 to d0, then rotates d0 right by 8, then rotates d3 right through the extend flag by 1, then rotates d0 right through the extend flag by 1, then restores saved registers from the stack, then returns.
+- `compute_floating_point_product`: Multiplies two floating-point values using bit manipulation techniques and returns the result after applying scaling and sign handling.
+- `frag_moveq_bra_2`: Short code fragment that loads 0 into d0, then jumps to another point in the code.
+- `frag_lsl_move_ror_roxl_roxr_movem_rts_2`: Short code fragment that shifts d0 left by 1, then copies d5 to d0, then rotates d0 right by 8, then rotates d7 left through the extend flag by 1, then rotates d0 right through the extend flag by 1, then restores saved registers from the stack, then returns.
+- `empty_stub_14`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_15`: Empty routine: returns to the caller immediately without doing anything.
+- `frag_jmp_48`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_49`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_50`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_51`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_52`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_53`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_54`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_55`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_56`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_57`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_58`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_59`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_60`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_61`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_62`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_63`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_64`: Short code fragment that jumps to another point in the code.
+- `allocate_and_initialize_memory`: Allocates memory blocks based on size parameters, initializes allocated memory with specific data, and handles allocation failures by returning early.
+- `process_list_entry`: Retrieves a pointer from a structure, checks if it's non-zero, calls another routine with data from that pointer, clears the pointer, and then jumps to an address stored in the structure.
+- `iterate_linked_list_entries`: Iterates through a linked list by checking each entry up to a maximum count, calling another routine for valid entries, and updating a counter.
+- `allocate_and_initialize_3`: Allocates memory by calling a library function, stores the result in a local variable, and if allocation succeeded, writes a parameter value to an offset in the allocated structure before jumping to another routine.
+- `update_target_coordinates`: Updates coordinate values in a target structure when a pointer is valid, then jumps to an indirect address based on the final state.
+- `process_object_linked_list`: Traverses a linked list of objects starting at a specified address, processes each object by calling another routine, and updates pointers in the list structure.
+- `initialize_collision_check`: Initializes a collision detection routine by setting up registers and calling library functions to check for collisions.
+- `setup_sprite_attributes`: Sets up sprite attributes by copying coordinate values from parameters to a target structure, calculating an index value, and allocating memory for sprite data.
+- `initialize_sprite_data`: Initializes sprite-related data by setting up memory allocation, copying coordinates, and configuring sprite attributes based on input parameters.
+- `clear_flags_and_call`: Checks two word values in a structure and if both are non-negative, it clears them and calls a library function.
+- `process_linked_list_entry_2`: Processes a linked list entry by retrieving data from a structure, passing it to another routine, and then jumping to a function pointer returned by a subroutine.
+- `copy_and_process_data`: Copies data from one location to another and processes it through a loop.
+- `process_collision`: Checks for non-zero values at multiple offsets in a structure and performs library function calls based on conditional checks.
+- `execute_collision_check`: Performs collision detection by calling a library function with coordinates from a structure, then conditionally calls the same function again if a byte at offset 12 of the structure is non-zero.
+- `load_and_process_pointers`: Loads values from multiple memory locations using indirect addressing and stores them into a structure at offset 4 of another structure.
+- `manage_global_counter`: Manages a global counter by incrementing it and calling multiple routines when the counter reaches a specific value.
+- `decrement_and_process`: Decrements a counter at offset 2028 of the structure in a4, and if the result is zero, processes linked list entries by calling another routine for each entry and updating pointers.
+- `process_memory_allocation`: Processes memory allocation by checking if memory is allocated, then calling functions to allocate and initialize new memory blocks.
+- `retrieve_object_value`: Retrieves a value from an object's data structure by checking if the object exists, then accessing a specific offset to return a long integer value.
+- `update_memory_pointers`: Updates memory pointers by copying values between locations and calling functions to handle memory operations.
+- `update_linked_list`: Updates a linked list structure by comparing values and moving pointers when conditions are met, then returns the final value from the list.
+- `process_game_objects`: Processes game objects by checking various flags and conditions, performing operations on object data structures, and calling a handler routine with specific parameters.
+- `process_linked_list_entry`: Processes a linked list entry by retrieving data from a structure, passing it to another routine, and then jumping to a function pointer retrieved from the stack.
+- `frag_addq_cmpi_bne_jsr_move_rts_7`: Short code fragment that adds 1 to the memory at an offset from a4, then compares the memory at an offset from a4 with 1, then branches if the last result was not zero, then calls another routine (2 times in a row), then copies 1 to the memory at an offset from a4, then returns.
+- `frag_subq_bne_jsr_rts_5`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then calls another routine (2 times in a row), then returns.
+- `frag_addq_cmpi_bne_jsr_move_rts_8`: Short code fragment that adds 1 to the memory at an offset from a4, then compares the memory at an offset from a4 with 1, then branches if the last result was not zero, then calls another routine (2 times in a row), then copies 1 to the memory at an offset from a4, then returns.
+- `frag_subq_bne_jsr_rts_6`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then calls another routine (2 times in a row), then returns.
+- `clear_structure_fields_2`: Clears all fields of a structure pointed to by the input parameter, setting multiple longword and byte values to zero.
+- `manage_object_list`: Manages an object list by checking conditions, updating pointers, performing memory operations, and clearing structure fields when certain criteria are met.
+- `map_input_to_sprite`: Maps input values to sprite data by comparing against specific constants and writing corresponding byte values to a target location.
+- `handle_object_movement`: Handles object movement logic by comparing position values, performing calculations with memory addresses, and updating state flags based on comparison results.
+- `handle_object_movement_2`: Handles object movement logic by checking state flags, performing calculations with memory addresses, updating state flags based on conditions, and clearing structure fields when certain criteria are met.
+- `frag_addq_cmpi_bne_jsr_move_rts_9`: Short code fragment that adds 1 to the memory at an offset from a4, then compares the memory at an offset from a4 with 1, then branches if the last result was not zero, then calls another routine (3 times in a row), then copies 1 to the memory at an offset from a4, then returns.
+- `update_object_timer`: Decrements a word value at offset 2080 in the structure pointed to by a4, and if the result is zero, processes a linked list of objects by calling another routine with specific parameters.
+- `initialize_game_data`: Initializes game data structures by writing memory locations based on counter values, then increments counters and performs conditional operations before returning.
+- `frag_subq_bne_pea_jsr_rts`: Short code fragment that subtracts 1 from the memory at an offset from a4, then branches if the last result was not zero, then pushes the address of the memory at an offset from a4 onto the stack, then calls another routine, then pushes the address of the memory at an offset from a4 onto the stack, then calls another routine (3 times in a row), then returns.
+- `frag_jmp_65`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_66`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_67`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_68`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_69`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_70`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_71`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_72`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_73`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_74`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_75`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_76`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_77`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_78`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_79`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_80`: Short code fragment that jumps to another point in the code.

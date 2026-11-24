@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (6061554 top-level bytes in 27 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 12 raw-word lines |
-| Functions named and described | pass, 249 of 249 named (0 author symbols), 249 of 249 described (28 by rule, 180 by the local model) |
+| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 13 raw-word lines |
+| Functions named and described | pass, 256 of 256 named (0 author symbols), 256 of 256 described (30 by rule, 183 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 2424 of 2424 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 5047 of 5047 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 5163 of 5163 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 290331 |
-| code | 17876 |
-| data | 5602300 |
+| asset | 289736 |
+| code | 18284 |
+| data | 5602487 |
 | padding | 7 |
 | unused | 151040 |
 
@@ -27,8 +27,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| game.slave | 1 | 250 | 14 |
-| logged disk load from Disk.1 | 1 | 853 | 29 |
+| game.slave | 1 | 258 | 16 |
+| logged disk load from Disk.1 | 1 | 961 | 34 |
 | logged disk load from Disk.1 | 1 | 0 | 0 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 116 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 921 | 58 |
@@ -101,6 +101,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d0, then returns.
 - `init_then_jump_to_start`: Sets a few globals, stores a library base and makes five calls, then writes a jump instruction, calls through a library pointer at offset 100 and transfers control to the start label.
+- `tiny_addq_rts`: Small routine of 2 instructions that adds 8 to (a7), then returns.
 - `replace_marker_values`: Unpacks a compressed stream and then iterates through a table, replacing specific short values with a different constant until a terminator is reached.
 - `wait_flag_edge_then_call`: Waits for a byte flag at offset 5 to become set and then clear, and then calls through a pointer slot at offset 32.
 - `apply_hunk_relocations`: Scans an AmigaDOS-style executable for the code and relocation hunk markers by comparing values with their hunk type codes, then adds the load base to each longword in the relocation table.
@@ -109,6 +110,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `combine_conditions_and_store`: Combines a couple of conditions into a single boolean result and stores it in a global variable, then returns without calling anything else.
 - `copy_back_reference_bytes`: Copies a run of bytes backward from a source offset into the output, stepping a count down to minus one, then checks an end bound.
 - `copy_back_reference_bytes_2`: Copies a run of bytes backward from a source offset into an output buffer, stepping a count down to minus one and stopping when the destination pointer reaches an end bound.
+- `frag_subi_or_rts`: Short code fragment that subtracts 1 from d3, then merges d7 into d4, then merges d5 into d3, then merges d3 into d2, then merges d1 into d1, then returns.
 - `scale_value_by_512`: Multiplies a 16-bit value by 512 after subtracting eleven when a global equals one, and returns the result of a table-slot call at offset 40 instead when a second argument is non-zero.
 - `xor_block_with_descending_key`: XORs a block of bytes with a descending key from 223 to zero after calling through two table slots, the second only when the first result is non-zero.
 - `call_pointer_then_optional_slot`: Calls through a computed pointer and returns its result, also calling a table slot at offset 12 and one unnamed routine when a flag global is zero.
@@ -116,6 +118,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### logged disk load from Disk.1
 
+- `set_bit_mask`: Sets a bit mask in two memory locations based on a shift value from a register, with conditional adjustments for values greater than four.
+- `compute_character_cell_index`: Maps a character code into a range using a fixed offset and a conditional adjustment, then combines the result with a row value scaled by 18 to produce a table index.
+- `process_byte_sequence`: Processes a sequence of bytes from a source pointer, adjusting values and calling another routine based on conditional checks, then increments the source pointer and loops until a counter reaches zero.
+- `copy_color_data`: Copies color data from a table to multiple destinations, processing 8 iterations and writing bytes to offsets 0 and 40 of each destination.
+- `frag_cmpi_beq_bne_dbra_rts`: Short code fragment that compares the memory at an offset from a6 with 32, then branches if the last result was zero, then compares the memory at an offset from a6 with 32, then branches if the last result was not zero, then loops back while counting down d5, then returns.
 - `tiny_rte`: Small routine of 1 instruction that returns from the exception.
 - `check_and_set_flag`: Tests specific bits in a global variable and conditionally stores a value to a memory location while setting a word at another global address.
 - `initialize_graphics_data`: Writes word values to multiple memory locations using a base value and incremental additions, then stores a value from a global variable and sets a word at a fixed offset in a structure.

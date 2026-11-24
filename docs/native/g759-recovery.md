@@ -7,36 +7,40 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (901120 top-level bytes in 13 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 9 raw-word lines |
-| Functions named and described | pass, 705 of 705 named (120 author symbols), 705 of 705 described (172 by rule, 512 by the local model) |
+| Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 6 raw-word lines |
+| Functions named and described | pass, 718 of 718 named (120 author symbols), 718 of 718 described (183 by rule, 514 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 1507 of 1507 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 14265 of 14393 instructions identical in start and length, 1 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 14290 of 14418 instructions identical in start and length, 1 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 340407 |
-| code | 53596 |
-| data | 86633 |
-| padding | 3204 |
+| code | 54250 |
+| data | 85975 |
+| padding | 3208 |
 | unused | 417280 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Type | 2 | 117 | 2 |
+| Type | 2 | 188 | 2 |
 | setfont | 23 | 877 | 39 |
 | cls | 3 | 19 | 1 |
-| border | 3 | 1788 | 113 |
+| border | 3 | 1800 | 114 |
 | Super Huey.adf:title | 45 | 2716 | 64 |
 | 8 | 1 | 2 | 1 |
-| Super Huey.adf:superhuey | 69 | 7769 | 403 |
+| Super Huey.adf:superhuey | 69 | 7885 | 414 |
 | diskfont.library | 15 | 1040 | 76 |
-| Super Huey.adf:sh | 8 | 55 | 5 |
+| Super Huey.adf:sh | 8 | 58 | 6 |
 | Super Huey.adf:bootblock | 1 | 10 | 1 |
+
+## Cases handled
+
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 49 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 47 immediate, 1 displacement, 1 operand
 
 ## Cracktros (kept, not protection)
 
@@ -132,6 +136,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_with_stack_argument_list`: Calls a routine with its format argument and the address of its stack argument list, then returns.
 - `parse_format_string`: Parses a format string to extract and convert various data types including integers, floating-point numbers, and strings.
 - `perform_signed_division`: The routine reads two signed inputs, flips the sign flag based on their signs, calls another routine and optionally negates its result, then combines that result with the second input into a 32-bit value.
+- `normalize_vector`: Calculates the absolute value of two signed 32-bit integers stored in d0 and d1, increments a counter in d4 for each negative value encountered, and returns the final absolute values in d0 and d1.
 - `call_and_return_concatenated`: The routine calls another routine and returns a 64-bit value formed by concatenating the original D1 contents with the value left in D1 by the call.
 - `recursive_call`: The routine calls another routine and then returns.
 - `perform_32bit_division`: The routine calculates the quotient and remainder of a 32-bit integer division using inputs in registers D0 and D1.
@@ -281,7 +286,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_rgb4_palette`: Iterates through a buffer in steps of three bytes to extract high nibbles and calls a routine to set four-bit color values.
 - `populate_buffer_via_nested_loops`: Executes nested loops to perform repeated calls to a string copying routine and a game event handler.
 - `copy_compressed_string`: Copies bytes from a source to a destination, handling both direct copying and a simple decompression scheme.
-- `empty_stub_function`: This routine consists of 31 instructions but performs no observable effect on memory, registers, or I/O before returning.
+- `multiply_signed_integers`: Calculates the product of two signed 16-bit integers using multiple 16-bit multiplication and addition steps to produce a 32-bit result in the return register.
 - `handle_game_event`: The routine is 21 instructions long but ends with an immediate return, performing no observable work on data or registers.
 - `clear_data_area`: Performs a series of operations that clear the d0 register to zero.
 
@@ -292,6 +297,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Super Huey.adf:superhuey
 
 - `set_global_pointers_and_call`: Stores a global variable into a memory location and then calls another routine using a value from a register as a pointer.
+- `frag_move_movea_rts`: Short code fragment that copies the memory at an offset from a7 to d0, then copies a fixed memory address to a7, then returns.
 - `initialize_system_libraries`: Opens graphics and intuition libraries, creates a window, and calls several initialization routines for state, graphics, and interrupts.
 - `initialize_device_interrupts`: Opens a device, performs I/O operations, and allocates memory to set up interrupt vectors for specific hardware lines.
 - `send_io_request`: Stores a value into a global variable, sends an I/O request, waits for a port, and retrieves a message.
@@ -581,13 +587,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `check_state_and_clear`: Compares a value to a constant and calls another routine if they are not equal, then clears a global variable if a specific condition is met.
 - `decrement_and_reload_byte`: Decrements a byte in a global variable and conditionally reloads it with a different value from a table.
 - `conditionally_call_routine`: Checks if a global variable is non-zero and if a register matches a specific value before calling another routine.
+- `frag_cmpi_beq`: Short code fragment that compares a fixed memory address with 24, then branches if the last result was zero.
 - `test_and_call_subroutine`: Tests a word in a global variable and calls another routine if the value is zero.
 - `select_value_from_table`: Updates a global short variable by selecting a byte from a table or a global array based on several conditional checks.
 - `increment_and_calculate_state`: Increments a global variable up to a maximum value, updates several other global variables with calculated quotients, and manages a pointer to a table based on the incremented value.
 - `update_state_and_calculate_indices`: Decrements a global counter and uses its value to calculate a pointer into a table and several derived byte values.
 - `update_scaled_counters`: Increments a global variable and updates two other global variables with values derived from dividing that variable by ten and by a constant.
 - `process_indirect_pointer`: Checks bits in a register and, if a condition is met, loads a value from a table and performs a bitwise OR on it.
-- `test_register_bits`: Sets a bit in a register and performs bit tests on two different registers.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs three instructions (btst.l, btst.l, btst.l) and then falls through into the code that follows, with no return of its own.
 - `set_bit_flags`: Sets the second bit of a byte in a data register and tests two specific bits in two different longword registers.
 - `tiny_ori_ori_2`: Small routine of 2 instructions that merges 4 into d2, then merges 6 into d4.
 - `manage_state_logic`: Performs complex conditional checks on global variables and executes various branches, including recursive calls and state modifications.
@@ -608,7 +615,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_bytes_to_offset`: Calculates an offset based on a register and stores two bytes at that location in memory.
 - `load_table_values`: Calculates an offset based on a value, loads two words from a table into global variables, and calls several other routines.
 - `test_and_store_values`: Tests the contents of two global variables and, if they meet specific conditions, stores a byte and several word values into a set of global locations.
-- `print_constant_string`: Sets a global variable to a constant value and passes its address to another routine twice.
+- `frag_sf_moveq_lea_jsr_jmp`: Short code fragment that clears a fixed memory address, then loads 11 into d0, then loads the address of a fixed memory address into a0, then loads 105 into d1, then loads 5 into d2, then calls assign_global_registers, then jumps to another point in the code.
 - `initialize_string_draw_2`: Sets a global variable to a constant value and calls another routine with a pointer to that variable.
 - `set_initial_value`: Sets a global variable to one and calls another routine.
 - `clear_global_byte`: Tests a global byte and, if it is zero, stores a zero byte into another global location before branching to another routine.
@@ -626,6 +633,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_byte_to_multiple_locations`: Iterates a fixed number of times to fetch a byte from one memory location and store it in several other memory locations and registers.
 - `draw_line_segments`: Iterates through a table of data to draw lines on the screen by calculating pixel coordinates and stepping through them.
 - `process_io_message`: Retrieves a message and, if valid, iterates through a loop to potentially call a routine via an indirect jump before sending an I/O request.
+- `update_game_state`: Calculates a quotient using a global variable and a constant, then stores the result in a local stack location before performing several operations including reading from a table, updating a counter, and calling rendering functions.
 - `update_table_entry`: Fetches a byte from a table and either loads a view if the byte is a specific value or stores the byte into a table at an incrementing index.
 - `handle_message_reply`: Fetches a message from a pointer, replies to it, and either calls another routine or increments a global counter based on a value in the message.
 - `process_io_loop`: Repeatedly retrieves messages and processes them until a specific condition involving a global variable is met.
@@ -637,6 +645,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_data_tables`: Iterates through a loop to extract data from a table using calculated offsets and stores the results into several destination tables.
 - `initialize_data_tables`: Sets multiple global variables and performs loops to clear or initialize various memory locations and tables with specific byte values.
 - `process_command_bytecode`: Interprets a sequence of commands from a data buffer to update a list of structures.
+- `frag_bra`: Short code fragment that jumps to another point in the code.
+- `frag_bra_2`: Short code fragment that jumps to another point in the code.
+- `frag_bra_3`: Short code fragment that jumps to another point in the code.
+- `frag_bra_4`: Short code fragment that jumps to another point in the code.
+- `frag_move_bra`: Short code fragment that copies 128 to a fixed memory address, then jumps to another point in the code.
+- `frag_movea_move_addq_bra`: Short code fragment that copies a fixed memory address to a0, then copies the memory at a0 to a fixed memory address, then adds 2 to a fixed memory address, then copies 1 to a fixed memory address, then jumps to another point in the code.
+- `render_graphics_list`: Processes graphical data by reading from multiple tables and memory locations, performs calculations on coordinates and dimensions, and calls sorting and drawing routines to update the display list.
+- `process_command_tail`: Handles command processing by calling another routine with a tail branch, likely continuing execution in a different code path without returning to the original caller.
 - `_ModifyIDCMP`: Library stub: loads a library base from a global variable and calls the library function at offset minus 150 of that base, returning its result to the caller.
 - `_OpenWindow`: Library stub: loads a library base from a global variable and calls the library function at offset minus 204 of that base, returning its result to the caller.
 - `_SetPointer`: Library stub: loads a library base from a global variable and calls the library function at offset minus 270 of that base, returning its result to the caller.
@@ -689,11 +705,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_complex_logic_sequence`: Executes a large sequence of operations including graphics rendering, audio configuration, table updates, and state logic processing.
 - `run_six_routines_in_sequence`: Calls six routines one after another in a fixed order and does no other work.
 - `handle_game_event_2`: This routine is 21 instructions long but performs no observable work on data or registers before returning immediately.
+- `calculate_quotient`: Performs a division-like calculation using two input values to determine a quotient through a loop of shifts and subtractions.
+- `return_zero`: The routine is empty and simply returns a zero value to the caller.
 - `_NewList`: Stores the address of its pointer argument into the memory location pointed to by the argument, adds four to that stored value, clears the next word in the pointed-to block, and stores the original pointer value into the following word.
 - `_CreateExtIO`: The routine allocates memory for an I/O request structure when the first argument is non-zero, initializes specific fields with constants and arguments, and returns the pointer to the block or zero.
 - `_DeleteExtIO`: The routine clears specific fields in the I/O request structure and frees the memory block using the size stored within the structure, performing no operation if the pointer is zero.
-- `calculate_quotient`: Performs a division-like calculation using two input values to determine a quotient through a loop of shifts and subtractions.
-- `return_zero`: The routine is empty and simply returns a zero value to the caller.
 
 ### diskfont.library
 
@@ -777,6 +793,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Super Huey.adf:sh
 
 - `store_register_to_globals`: Stores a byte from a global variable into a global variable and stores a pointer from a register into another global variable before calling another routine.
+- `frag_move_movea_rts_2`: Short code fragment that copies the memory at an offset from a7 to d0, then copies a fixed memory address to a7, then returns.
 - `load_and_execute_segments`: The routine opens a library, loads a segment, executes code at a calculated offset, unloads the segment, and then repeats the load and execution process for a second segment.
 - `_OpenLibrary`: Library stub: loads its arguments and the exec library base, calls OpenLibrary and returns its result to the caller.
 - `_LoadSeg`: Library stub: loads a library base from a global variable and calls the library function at offset minus 150 of that base, returning its result to the caller.

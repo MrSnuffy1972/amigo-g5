@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (907184 top-level bytes in 14 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 0 raw-word lines |
 | Functions named and described | pass, 151 of 151 named (0 author symbols), 151 of 151 described (35 by rule, 84 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1417 of 1417 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 3136 of 3136 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 6530 of 6530 instructions identical in start and length, 0 mismatches |
 
@@ -39,10 +39,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Cases handled
 
-- 2 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- 5 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 389 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address: 333 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 460 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - gardener (1995)(intersoft)(de)[h smurf]/Gardener (1995)(Intersoft)(De)[h Smurf].adf:SMURF: crunched executable decrunched by XFDMaster (StoneCracker 4.04 (xfd), 17784 -> 139024 bytes), 14 of 15 windows confirmed in reference RAM: recovered as a hunk executable
 - gardener (1995)(intersoft)(de)[h smurf]/Gardener (1995)(Intersoft)(De)[h Smurf].adf:SMURF: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 

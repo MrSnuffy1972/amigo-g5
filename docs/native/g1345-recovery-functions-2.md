@@ -5,8 +5,6 @@
 ### Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software).adf:Distant Armies
 (continued)
 
-- `validate_and_call_event_handler_2`: Compares a 16-bit value from a table at an offset calculated from a register to a value in a structure, and if they match, pushes several pointers onto the stack to call another routine.
-- `set_a3_to_negative_one_and_branch`: Sets register a3 to the value negative one and performs a short branch to another routine.
 - `iterate_event_table_and_dispatch`: Increments a counter in d5 and compares it against a limit in a structure; if the counter is within range and a specific bitmask is set in a structure field, it enters a loop that iterates sixteen times to look up values in tables and calls resolve_event_index_and_call if certain conditions are met.
 - `calculate_index_and_store_value`: Performs a bitwise AND on a longword loaded from an offset of negative 8 from a5 with the constant 8448, and if the result is non-zero, loads a longword from an offset of negative 32 from a5, shifts it left by 1, uses it as an index into a table at a specific offset from a4 to load a word, extends that word to a longword, shifts it right by 6, and stores the result at an offset of negative 28 from a5.
 - `iterate_and_validate_piece_moves`: Iterates through a list of pieces using a loop, performs multiple table lookups to validate piece properties and movement constraints, and calls another routine if the validation criteria are met.
@@ -351,7 +349,7 @@
 - `decrement_counter_and_clear_flag`: The routine checks a flag byte in the structure pointed to by a1 and, if set, copies the structure’s first word through a pointer stored in the structure, updates a pointer stored at an offset from that word, decrements a short counter in a6, modifies two flag bytes in the structure and clears a byte.
 - `call_library_vector_480_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 480 of that base, returning its result to the caller.
 - `check_and_return_zero`: Sets d0 to zero, checks a word at offset 32 of a6, and returns if that word is zero; otherwise, it returns.
-- `invoke_library_vectors_then_unlink`: Calls several routines via pointers in a6 and a structure in a6, copies a longword from a structure in a6, and unlinks a block from a list by updating pointers.
+- `invoke_vectors_then_unlink`: Calls several routines via pointers in a6 and a structure, copies a longword from a field at offset 426 of a6 as the return value, then unlinks a block from a doubly linked list by updating the surrounding pointers.
 - `register_serial_device_2`: Clears a longword at offset 50 of a1, and if a longword at offset 54 is not zero, updates hardware registers, modifies flags in a1 and a6, and links a1 into a list via a structure in a6.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `register_serial_device`: The routine links a serial device structure into a global device list and updates a device counter.
@@ -1026,7 +1024,7 @@
 - `test_status_bit`: Tests bit 5 of a byte at offset 3 of the structure in a0 and branches to another routine based on the result.
 - `test_bit_with_table_lookup`: Loops reading a byte from a buffer and a word from a table indexed by a word, modifies the word based on bits in the byte, and exits when a specific bit is set or a termination condition is met.
 - `check_buffer_limit`: Loads a word from offset 154 of a structure in a5, compares it to 512, and branches to another routine or sets the carry flag and branches if the value is 512 or greater.
-- `shift_three_buffers_and_update_counter`: Increments a word counter at offset 154 in a structure, then shifts bytes backward in three buffers by a computed count, writes a byte from a register to the first buffer, and clears the last byte in the other two buffers.
+- `shift_bytes_and_clear_fields`: Increments a word counter in a structure and shifts bytes backward in three buffers by a computed count, then writes a byte from a register and two zero bytes to the new ends of the buffers.
 - `execute_multiple_subroutines_2`: Calls seven different subroutines in sequence, clears register d0, and returns.
 - `set_byte_if_not_full`: Loads a pointer from offset 40 of the structure in a5 into a6, compares the byte at the address in a6 to 255, and if they are not equal, loads the pointer from offset 40 of the structure in a5 into a6 again and writes 160 to offset 7 of the structure in a6 before returning.
 - `clear_and_increment_pointer`: Clears a byte at offset 7 of the structure in a6, increments a6 by 8, and branches to another routine.
@@ -1476,7 +1474,7 @@
 - `multiply_32_bit_integers_4`: Library code that computes the 32-bit product of two 32-bit registers using 16-bit partial products and returns the result in d0.
 - `forward_call_to_helper_4`: Saves d2 on the stack, copies d1 into d2 and d0 into d1, calls a nearby helper, then restores d2 and returns.
 - `call_helper_return_register_2`: Saves d2 on the stack, shifts d0 into d1 and d1 into d2, calls another routine, copies d1 into d0, restores d2 and returns.
-- `normalize_signs_and_divide`: Normalizes the signs of two input values, calls compute_modular_result, and negates the returned value if the result in the address register is non-zero before returning.
+- `negate_result_on_flag_4`: Normalizes the signs of two input values, calls modular_inverse_32bit, and negates the returned value if the result in the address register is non-zero before returning.
 - `call_and_negate_on_flag_3`: Calls a helper, then returns its first result, or the negation of that result when the second result left in an address register is nonzero.
 - `invoke_table_entry_4`: This library routine invokes a function pointer retrieved from an offset within a global variable.
 - `store_byte_and_increment`: Library code that stores a byte from d0 into the memory location pointed to by a3 and increments a3.
@@ -1518,7 +1516,7 @@
 - `setup_library_context`: Library code that loads a pointer from offset 4 of a5 into a6, follows that pointer to another address, adds a constant to a6, and calls two different routines before branching based on the value in d7.
 - `match_multiple_tags`: Library code that calls three different routines sequentially, using the results of each to determine whether to branch or continue, and restores a2 from the stack before returning.
 - `compare_byte_tags`: Library code that loads two pointers from the stack into a3 and a2, reads a byte from a structure pointed to by a6, and branches to another routine if that byte is 92 or 96.
-- `calculate_table_offset`: Library code that reads a byte from a pointer, performs bitwise shifts and table lookups to calculate a value, and adds that value to a6 before returning.
+- `returns_without_data_access`: The decompiled body consists only of a return and shows no reads or writes to any global variable, table or structure in the library.
 - `match_bracketed_tag_text`: Library code that skips forward to an opening bracket character, then compares the characters that follow against a reference string until a closing bracket.
 - `check_table_and_compare_byte`: Swaps d6, decrements it, and if the result is positive, loads a byte from a table using d6 as an index, shifts it left, uses the result to index another table, and compares a byte from that table with a byte from a pointer in a2.
 - `set_carry_flag`: Library code that sets the carry flag in the condition code register and returns.
@@ -1533,3 +1531,5 @@
 - `branch_on_signed_d7`: Library code that checks if d7 is negative; if not, it moves a byte from a memory location pointed to by a2 into d1 and branches to another location.
 - `stub_empty_return_slot`: Contains only a return in the decompiled output, so it is an empty stub with no visible effect on the library.
 - `test_data_bit_six`: Library code that calls another routine, tests bit 6 of d4, and returns.
+- `wait_while_status_bit_set`: Library code that calls a routine once, then calls it again while bit 5 of d4 remains set, and sets the interrupt mask in the condition code register when that bit clears.
+- `library_empty_return`: Library code that calls a routine to load a byte, tests bit 3 and then bit 5 of d4, and returns without storing any result.

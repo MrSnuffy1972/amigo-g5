@@ -5,8 +5,6 @@
 ### translator.library
 (continued)
 
-- `wait_while_status_bit_set`: Library code that calls a routine once, then calls it again while bit 5 of d4 remains set, and sets the interrupt mask in the condition code register when that bit clears.
-- `library_empty_return`: Library code that calls a routine to load a byte, tests bit 3 and then bit 5 of d4, and returns without storing any result.
 - `check_data_values`: Library code that calls a routine, tests bit 5 of d4, and if set, calls the routine again to compare d1 against decimal 73 and 69, setting the interrupt mask in the condition code register if neither matches.
 - `set_negative_condition_code`: Sets the negative condition code in the status register and returns.
 - `validate_character_sequence`: Library code that calls another routine and performs multiple comparisons on the resulting byte in d1 against various constants, while also checking bit 7 of d4.
@@ -516,16 +514,11 @@
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `initialize_system`: Initializes the system by setting up registers, calling OS library functions, configuring hardware registers, and loading memory segments before jumping to a specific address.
 - `return_constant_21`: Returns the constant -1 in d0 to the caller without any other effect.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
-- `undecodable_bytes_2`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `jump_vector_entry_222`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
-- `jump_vector_entry_223`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
-- `undecodable_bytes_3`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -534,3 +527,7 @@
 - `jump_vector_entry_226`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_227`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_228`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_move_movem_rts`: Short code fragment that copies 0 to a fixed memory address, then copies several registers to or from memory, then returns.

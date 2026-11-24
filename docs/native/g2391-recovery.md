@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (855183 top-level bytes in 9 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 13 of 13 units identical (bytes and relocations), 120 raw-word lines |
-| Functions named and described | pass, 200 of 200 named (0 author symbols), 200 of 200 described (27 by rule, 173 by the local model) |
+| Functions named and described | pass, 205 of 205 named (0 author symbols), 205 of 205 described (30 by rule, 175 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 1101 of 1101 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 27392 bytes, 1 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 3417 of 3419 instructions identical in start and length, 0 mismatches |
+| Recovered without load address (counted in proof 1, flagged) | 27392 bytes, 3 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 4166 of 4166 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 26710 |
-| code | 33894 |
-| data | 723898 |
+| code | 36044 |
+| data | 721748 |
 | padding | 25 |
 | unused | 70656 |
 
@@ -29,17 +29,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | game.slave | 1 | 209 | 12 |
 | logged disk load from Disk.1 | 1 | 0 | 0 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3147 | 168 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3156 | 171 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 36 | 19 |
-| Disk.1 bytes 20224-20480 (code never loaded by a reference run) | 1 | 0 | 0 |
-| Disk.1 bytes 24832-25344 (code never loaded by a reference run) | 1 | 0 | 0 |
-| Disk.1 bytes 33792-46336 (code never loaded by a reference run) | 1 | 0 | 0 |
-| Disk.1 bytes 198400-198656 (code never loaded by a reference run) | 1 | 0 | 0 |
-| Disk.1 bytes 203008-203520 (code never loaded by a reference run) | 1 | 0 | 0 |
+| Disk.1 bytes 20224-20480 (code never loaded by a reference run) | 1 | 2 | 0 |
+| Disk.1 bytes 24832-25344 (code never loaded by a reference run) | 1 | 1 | 0 |
+| Disk.1 bytes 33792-46336 (code never loaded by a reference run) | 1 | 366 | 1 |
+| Disk.1 bytes 198400-198656 (code never loaded by a reference run) | 1 | 2 | 0 |
+| Disk.1 bytes 203008-203520 (code never loaded by a reference run) | 1 | 1 | 0 |
 | Disk.1 bytes 206336-206592 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Disk.1 bytes 206848-207104 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Disk.1 bytes 210432-210688 (code never loaded by a reference run) | 1 | 27 | 1 |
-| Disk.1 bytes 211968-224512 (code never loaded by a reference run) | 1 | 0 | 0 |
+| Disk.1 bytes 211968-224512 (code never loaded by a reference run) | 1 | 366 | 1 |
 
 ## Cases handled
 
@@ -90,7 +90,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - Mercenary_v1.2_0955/Mercenary_v1.2_0955_hdf/Mercenary/Disk.1: chunks 1298-1330 (bytes 332288-340736) outside the filesystem hold data, not code (opcode density 0.000, entropy 1.20)
 - Mercenary_v1.2_0955/Mercenary_v1.2_0955_hdf/Mercenary/Disk.1: chunks 1336-1363 (bytes 342016-349184) outside the filesystem hold data, not code (opcode density 0.000, entropy 4.76)
 - Mercenary_v1.2_0955/Mercenary_v1.2_0955_hdf/Mercenary/Disk.1: chunks 1384-1415 (bytes 354304-362496) outside the filesystem hold data, not code (opcode density 0.006, entropy 5.45)
-- 8 never-loaded region(s), 27136 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+- 6 never-loaded region(s), 2048 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
@@ -98,7 +98,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Copy protection found
 
-- `initialize_game_state` (runtime segment an address (play-rs-m1500)): Calls several routines, toggles a bit in a hardware register, and loops while a comparison between a0 and a1 is not met, finally returning a value from a global variable. Kind: checksum/data-dependent trap. Pass path: the loop continues if the XORed CIAB_PRB value and the manual decrement loop do not cause a branch or exit condition failure, specifically looking for the loop to terminate via the extraout_A0 < extraout_A1 condition.
+- `poll_joystick_input` (runtime segment an address (play-rs-m1500)): The routine repeatedly clears a palette buffer, triggers a disk load routine twice with a short delay between them, toggles a bit in a global variable, polls the joystick button, and waits for game frames until a condition on two output registers is met, then returns the global variable. Kind: checksum/data-dependent trap. Pass path: the loop continues if the XORed CIAB_PRB value and the manual decrement loop do not cause a branch or exit condition failure, specifically looking for the loop to terminate via the extraout_A0 < extraout_A1 condition.
 - `initialize_audio_hardware_2_3` (runtime segment an address (play-rs-m1500)): Writes several constants to custom hardware registers, calls another routine, and then writes further constants to custom hardware registers before returning. Kind: disk hardware/track/sync check. Pass path: The routine configures specific hardware registers (ADKCON, DMACON, DSKPTH, DSKSYNC, DSKLEN) to a fixed state and then calls a subsequent routine (u2__sub_502E) to validate if the hardware/track/sync or checksums match this hardcoded config.
 - `configure_dma_and_vblank` (runtime segment an address (play-rs-m1500)): Sets several custom hardware registers, including DMA controller and dsk registers, and calls a routine that waits for vblank. Kind: disk hardware/track check. Pass path: the routine sets specific hardware registers (ADKCON, DMACON, DSKPTH, DSKLEN) to a fixed state, which is characteristic of a check for a specific disk/track or a way to configure the drive for a specific read, rather than a generic load..
 - `clear_ciab_bits` (runtime segment an address (play-rs-m1500)): Sets a byte in the CIAB_PRB register, clears several bits, sets bit 2, and calls another routine. Kind: bit-masking/sabotage path. Pass path: u2__sub_523C().
@@ -261,8 +261,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_pointer_data_6`: Loads a pointer from a global variable, decrements a long-word at an offset of that pointer, and if the result is negative, clears that long-word.
 - `update_pointer_data_5`: Decrements a register, adds a constant to another, writes the result to an offset of a pointer in a0, swaps a register, and then checks a value to potentially update a pointer or modify a register and write it back to an offset of a pointer in a0.
 - `update_pointer_data_4`: Decrements d0, adds a constant to d1, writes d1 to an offset of a pointer in a0, swaps d0, writes d0 to an offset of a pointer in a0, decrements a0, and then checks if d0 is positive before returning.
+- `frag_tst_bne_bra`: Short code fragment that tests a fixed memory address, then branches if the last result was not zero, then jumps to another point in the code.
 - `set_global_value_2_2`: Checks if a certain word in a global variable is zero; if so, it calls another routine and then checks if a certain word in a global variable is equal to a constant before returning.
-- `initialize_game_state`: Calls several routines, toggles a bit in a hardware register, and loops while a comparison between a0 and a1 is not met, finally returning a value from a global variable.
+- `poll_joystick_input`: The routine repeatedly clears a palette buffer, triggers a disk load routine twice with a short delay between them, toggles a bit in a global variable, polls the joystick button, and waits for game frames until a condition on two output registers is met, then returns the global variable.
 - `transform_and_store_word_2`: Fills a memory range with a constant, copies several longwords from a source to a destination, calls another routine multiple times with different byte values, and then enters a loop that adds a byte from a pointer to d7, rotates d7, and calls another routine before finally performing a bit shift and calling another routine before returning.
 - `populate_bit_table`: Fills a table starting at a certain address with a sequence of words, where each word contains a bit-reversed or bit-shifted representation of the current loop index.
 - `transform_and_store_word`: Reads a word from a table using d1 as an index, then performs bitwise operations involving d2 and d3, and stores the resulting word at the location pointed to by a4.
@@ -286,8 +287,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `wait_game_frames`: The routine contains a decrementing loop that counts down from a constant value to zero and then returns the value originally in D0 without modifying it.
 - `wait_for_button_release`: Loops until bit 5 of the CIAA_PRA register is cleared, then returns.
 - `initialize_and_update_data`: Calls three other routines, then checks if d0 is equal to a constant; if not, it decrements d0 and checks if it is less than a constant, potentially writing d0 to a global array before calling three more routines and finally jumping to an indirect address.
+- `frag_moveq_bsr_rts`: Short code fragment that loads 51 into d1, then calls set_ciab_portb_mask, then calls set_global_value_2_2, then returns.
 - `set_register_value`: Loads a constant into a register and calls another routine.
 - `update_array_from_pointers`: Calls three other routines, then checks if d0 equals a constant; if not, it decrements d0 and checks if it is less than a constant, potentially writing d0 to a global array before calling three more routines and then copying four long-words from one memory location to another before jumping to an indirect address.
+- `frag_moveq_bra`: Short code fragment that loads 50 into d1, then jumps to another point in the code.
 - `process_bit_manipulation_loop`: Checks a bit in a global variable, and if set, executes a loop that rotates a byte, inverts it, and writes a new value to a global variable, then returns.
 - `process_bit_and_loop`: Checks a bit in a global word, and if certain conditions are met, enters a loop that modifies a byte from a global address and repeats until a counter reaches zero.
 - `clear_flag_and_transform`: Checks a bit in a global variable, and if set, performs a loop to decrement a value before clearing the global variable and applying a bitwise transformation.
@@ -318,6 +321,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `nop_padding_16`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `nop_padding_17`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 
+### Disk.1 bytes 33792-46336 (code never loaded by a reference run)
+
+- `initialize_data_blocks`: Initializes data blocks by copying values from a register to memory locations, with separate handling for high and low word portions of the register value, and stores results at fixed offsets.
+
 ### Disk.1 bytes 210432-210688 (code never loaded by a reference run)
 
 - `update_global_value`: Performs bitwise operations on a byte through a pointer and updates a global variable based on comparison logic.
+
+### Disk.1 bytes 211968-224512 (code never loaded by a reference run)
+
+- `fill_memory_blocks`: Fills memory blocks with data from registers and stores the results at specific offsets in two memory areas, using a loop that decrements a counter in register d0.

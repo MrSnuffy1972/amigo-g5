@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (2752736 top-level bytes in 173 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 52 of 52 units identical (bytes and relocations), 193 raw-word lines |
-| Functions named and described | pass, 1054 of 1054 named (0 author symbols), 1054 of 1054 described (263 by rule, 630 by the local model) |
+| Bytes classified (2763148 top-level bytes in 174 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 53 of 53 units identical (bytes and relocations), 194 raw-word lines |
+| Functions named and described | pass, 1114 of 1114 named (0 author symbols), 1114 of 1114 described (280 by rule, 665 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 7143 of 7143 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 32376 of 32376 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 34715 of 34715 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 571055 |
-| code | 62864 |
-| data | 2045951 |
-| padding | 26274 |
+| code | 70058 |
+| data | 2049142 |
+| padding | 26301 |
 | unused | 46592 |
 
 ## Code units
@@ -79,6 +79,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5791 | 163 |
 | Turbo Trax (1995)(Arcane Entertainment)[cr FLT](Disk 1 of 3).adf:TurboTrax.Exe#unpacked | 6 | 7941 | 286 |
 | Turbo Trax (1995)(Arcane Entertainment)[cr FLT](Disk 1 of 3).adf:Galahad#unpacked | 1 | 503 | 28 |
+| unit:u21#packproof-None#unpacked | 2 | 2339 | 60 |
 
 ## Cases handled
 
@@ -158,6 +159,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - turbo trax (1995)(arcane entertainment)[cr flt](disk 1 of 3)/Turbo Trax (1995)(Arcane Entertainment)[cr FLT](Disk 1 of 3).adf:TurboTrax.Exe: crunched executable decrunched by XFDMaster (PowerPacker 4.0 (xfd), 40296 -> 85360 bytes), 37 of 39 windows confirmed in reference RAM: recovered as a hunk executable
 - turbo trax (1995)(arcane entertainment)[cr flt](disk 1 of 3)/Turbo Trax (1995)(Arcane Entertainment)[cr FLT](Disk 1 of 3).adf:Galahad: crunched executable decrunched by XFDMaster (PowerPacker 4.0 (xfd), 19888 -> 53188 bytes), 12 of 13 windows confirmed in reference RAM: recovered as a hunk executable
 - turbo trax (1995)(arcane entertainment)[cr flt](disk 3 of 3)/Turbo Trax (1995)(Arcane Entertainment)[cr FLT](Disk 3 of 3).adf:c/ppmore: PowerPacker 3.0 (xfd) stream found by ancient scan (7180 -> 10412 bytes) but only 0 of 6 sampled windows are in reference RAM: not used
+- u21#packproof-None: code lead from fmtread (10412 bytes, hunk exe), 0 of 6 windows confirmed in reference RAM (hunk exe, relocatable: no RAM confirmation needed): recovered
 - self-modifying code at an address (17 bytes change between runtime segment an address and runtime segment an address (play-rs-m1500-unpk00)): both forms recovered; writer: not identified statically (indirect store)
 - self-modifying code at an address (37 bytes change between runtime segment an address (play-rs-m1500-unpk01) and runtime segment an address (play-rs-m1500-unpk00)): both forms recovered; writer: not identified statically (indirect store)
 - self-modifying code at an address (50 bytes change between runtime segment an address (play-rs-m1500-unpk00) and runtime segment an address (play-rs-m1500-unpk01)): both forms recovered; writer: not identified statically (indirect store)
@@ -190,6 +192,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_game_loop` (runtime segment an address (play-rs-m1500)): Initializes global variables and hardware registers including DMA control and serial peripheral settings, then enters a main game loop that processes input conditions and updates game state based on structured data values. Kind: disk hardware ADKCON check. Pass path: The routine initializes ADKCON and waits for a specific VPOSR value, suggesting a track or disk integrity check. If the check passes (i.e., no protection triggered), execution continues normally through the game loop..
 - `initialize_system_and_manage_resources` (TurboTrax.Exe#unpacked): Initializes system libraries and clears global data before managing memory allocation and resource loading. Kind: disk hardware check. Pass path: The routine initializes system resources and manages hardware (ADKCON, custom registers), then enters a loop checking for specific conditions like VPOSR sync, and handles various subroutines that suggest a disk integrity or track validation.
 - `initialize_graphics_system_2` (Galahad#unpacked): Configures custom hardware registers for graphics display, sets up interrupt vectors, and initializes audio DMA channels while waiting for a specific vertical blanking period. Kind: disk hardware check. Pass path: The routine initializes hardware registers related to CIAB and CUSTOM chipset, and sets up DMA and interrupt configurations. If this check passes (i.e., the expected hardware state is found), it proceeds with initializing audio channels and.
+- `load_and_decrunch_file` (u21#packproof-None#unpacked): Reads a file header to determine its format, allocates memory based on the file size, reads the file content into the allocated buffer, and performs basic validation checks on the read data. Kind: password check. Pass path: bra.b an address.
 
 ## Functions
 
@@ -1403,3 +1406,66 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `wait_for_frame_flag`: Clears a frame flag byte and spins until that byte becomes non-zero, then performs additional operations based on comparison results with specific constants.
 - `wait_for_frame_flag_reverse`: Clears a frame flag byte and spins until that byte becomes zero, then performs additional operations based on comparison results with specific constants.
 - `wait_tof_2`: Clears a frame flag byte and spins until that byte becomes non-zero.
+
+### unit:u21#packproof-None#unpacked
+
+- `initialize_game`: Allocates memory for game structures, initializes global variables, sets up system signals, and opens the DOS library.
+- `cleanup_and_exit`: Performs cleanup operations including calling a custom function, closing libraries, exiting interrupts, forbidding further operations, replying messages, and freeing allocated memory before returning.
+- `parse_command_line`: Parses command line arguments to extract options and file paths, handling quoted strings and option markers.
+- `open_window`: Opens a window using intuition library calls, stores the window pointer in a global variable, and handles error conditions by calling cleanup routines.
+- `load_and_decrunch_file`: Reads a file header to determine its format, allocates memory based on the file size, reads the file content into the allocated buffer, and performs basic validation checks on the read data.
+- `close_resources`: Closes file handles and frees memory blocks when resources are allocated, waits for port messages if specified, and calls cleanup routines to release system resources.
+- `close_and_free_resources`: Closes various system resources including devices and windows, frees memory blocks, closes libraries, and calls cleanup routines based on flags in global variables.
+- `display_beep_and_set_titles`: Calls the intuition library to produce a system beep and set window titles using a global screen pointer and a string parameter from the stack.
+- `initialize_window_resources`: Sets up window positioning and gadget display, configures input handling through intuition library calls, and initializes resource management flags for subsequent operations.
+- `set_window_titles`: Sets window titles using the intuition library with a global string buffer, then stores specific numeric values in global variables for later use.
+- `format_and_draw_text`: Formats a text string with a numeric value using a global format string, then draws the formatted text on a raster port at specific coordinates with pen settings.
+- `process_input_event`: Processes input events based on parameter values, updating global variables and triggering various routines depending on the event type and conditions.
+- `process_input_data_3`: Processes input data based on a parameter value, updates global variables, and handles conditional execution paths including calls to display and coordinate update routines.
+- `handle_numeric_input`: Validates numeric input values within a specific range, performs fixed-point arithmetic operations, and updates position coordinates based on calculated values.
+- `update_text_display`: Updates text display by processing character sequences, handling line breaks and tab stops, calling drawing functions to render formatted text segments, and updating internal state pointers.
+- `process_text_buffer`: Processes text buffer data by clearing flags, calling routines to handle text display, and updating pointers in global variables while performing multiple drawing operations.
+- `repeat_operations`: Repeatedly calls another routine with specific parameters a number of times determined by a value in global memory, decrementing a counter each iteration until zero.
+- `frag_movea_adda_jsr_move_bsr_rts`: Short code fragment that copies the memory at an offset from a4 to a0, then adds the memory at an offset from a4 to a0, then calls another routine, then copies d0 to the memory at an offset from a4, then calls another routine, then returns.
+- `frag_bsr_pea_addq_moveq_move_rts`: Short code fragment that calls another routine, then pushes the address of a location in the code onto the stack, then calls another routine, then adds 4 to a7, then loads 0 into d0, then copies d0 to the memory at an offset from a4 (2 times in a row), then returns.
+- `manage_window_messages`: Manages window message handling by waiting for port messages, processing incoming messages, and setting window titles using intuition library calls.
+- `update_display_and_coordinates`: Updates display state variables, processes text buffers with multiple routines, performs coordinate calculations, and handles text rendering operations based on buffer positions.
+- `compare_coordinates`: Compares coordinate values with stored data, performs arithmetic operations on coordinates, and triggers updates when coordinate changes are detected.
+- `calculate_and_store_coordinates`: Reads byte values from a structure at offset 2284 of a4, performs arithmetic operations including shifts and subtractions, then stores the results as word values in global variables at offsets 2680 and 2678.
+- `open_printer_device`: Opens a printer device using the exec library, sets up I/O request structures with device parameters, sends the I/O request, and updates global variables tracking printer status.
+- `update_window_display`: Updates window display properties based on input parameter, handles message loop with port waiting, and manages window closing conditions.
+- `initialize_io_request`: Sets up an I/O request structure with a specific command value and device pointer, then calls the OpenDevice library function to open a console device.
+- `frag_link_movea_move_jsr_unlk_rts`: Short code fragment that creates a stack frame in a5, then copies the memory at an offset from a5 to a0, then copies 3 to the memory at an offset from a0, then copies the memory at an offset from a5 to the memory at an offset from a0 (2 times in a row), then copies a0 to a1, then copies a fixed memory address to a6, then calls another routine, then removes the stack frame held in a5, then returns.
+- `frag_tst_bne_subq`: Short code fragment that tests the memory at a0 (advancing a0), then branches if the last result was not zero, then subtracts 1 from a0.
+- `frag_move_bne_rts`: Short code fragment that copies the memory at a1 (advancing a1) to the memory at a0 (advancing a0), then branches if the last result was not zero, then returns.
+- `search_string_pattern`: Searches for a pattern in a string buffer by comparing characters and handling case conversion, returning a pointer to the matched position or null if not found.
+- `frag_cmpi_bls_bhi_subi_rts`: Short code fragment that compares d0 with 96, then branches if the comparison was lower or same (unsigned), then compares d0 with 122, then branches if the comparison was higher (unsigned), then subtracts 32 from d0, then returns, then compares d0 with 223, then branches if the comparison was lower or same (unsigned), then subtracts 64 from d0, then returns.
+- `validate_hex_chars`: Validates that a sequence of characters in a buffer are valid hexadecimal digits, stopping early if an invalid character is encountered and returning the count of valid characters processed.
+- `frag_movem_movea_bsr_rts`: Short code fragment that saves registers on the stack, then copies a1 to a3, then calls another routine, then restores saved registers from the stack, then returns.
+- `decode_and_copy_data`: Decodes data from a buffer, performs bit operations and shifts, then copies bytes to another location while updating pointers and handling conditional branches based on values.
+- `frag_move_roxr_rts`: Short code fragment that copies the memory just below a0 (moving a0 down) to d5, then copies 16 to the condition codes, then rotates d5 right through the extend flag by 1, then returns.
+- `frag_lsr_bne_bsr_rts`: Short code fragment that shifts d5 right by 1, then branches if the last result was not zero, then calls another routine, then returns.
+- `shift_and_process_loop`: Processes a loop of bits by shifting a register right and handling carry flags, then calls another routine based on conditions, with a final check against a global variable.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (movep.w) and then falls through into the code that follows, with no return of its own.
+- `frag_moveq_move_beq_ror_add_bra`: Short code fragment that loads 0 into d0, then loads 0 into d1, then copies the memory at a0 (advancing a0) to d1, then branches if the last result was zero, then rotates d0 right by d1, then adds d1 to d0, then jumps to another point in the code.
+- `frag_moveq_move_beq_rol_add_swap_bra_rt`: Short code fragment that loads 0 into d0, then loads 0 into d1, then copies the memory at a0 (advancing a0) to d1, then branches if the last result was zero, then rotates d0 left by 1, then adds d1 to d0, then swaps the halves of d0, then jumps to another point in the code, then returns.
+- `frag_move_addq_lsr_subq_eor_dbra_rts`: Short code fragment that copies d2 to the stack, then adds 3 to d1, then shifts d1 right by 2, then subtracts 1 from d1, then copies the memory at a0 to d2, then exclusive-ors d0 into d2, then copies d2 to the memory at a0 (advancing a0), then loops back while counting down d1, then copies the top of the stack to d2, then returns.
+- `parse_hex_string`: Converts a hexadecimal string into its integer representation, updating a pointer to point to the end of the processed string after conversion.
+- `process_text_characters`: Processes characters from a text buffer, handling special control characters and calculating column positions while tracking line breaks and tab stops.
+- `find_line_start`: Traverses backwards through a buffer to find the start of a line by looking for newline characters, then processes text characters using another routine and returns the position.
+- `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
+- `empty_stub_13`: Empty routine: returns to the caller immediately without doing anything.
+- `delete_std_io`: Sets specific fields in a structure to fixed values and then frees the memory allocated for that structure.
+- `free_msgport_signal_and_memory`: Removes the message port from the exec list if its name is set, marks it invalid, frees its signal bit and releases its thirty-four byte memory block.
+- `close_file_and_cleanup`: Checks if a global pointer is valid, calls another routine if so, then closes a file handle using the dos library and returns zero.
+- `compute_fixed_point_product_2`: The routine takes two 32-bit fixed-point values from registers and returns their product as a 32-bit fixed-point value.
+- `frag_tst_bpl_neg_bsr_rts`: Short code fragment that tests d0, then branches if the last result was not negative, then negates d0, then tests d1, then branches if the last result was not negative, then negates d1, then calls another routine, then negates d1, then returns.
+- `frag_bsr_neg_rts`: Short code fragment that calls another routine, then negates d0, then negates d1, then returns.
+- `frag_tst_bpl_neg_bsr_rts_2`: Short code fragment that tests d1, then branches if the last result was not negative, then negates d1, then calls another routine, then negates d0, then returns.
+- `normalize_fixed_point_divide_2`: The routine divides a 32-bit dividend in d0 by a 32-bit divisor in d1 using a normalized fixed-point method.
+- `allocate_and_set_node`: Allocates a memory block through the system routine and, when it succeeds, stores a type value of five, clears one byte and records the argument in the node.
+- `allocate_and_initialize_structure_2`: The routine allocates memory for a structure, populates its fields with provided arguments and system values, and inserts it into a linked list.
+- `free_memory_blocks`: Frees all memory blocks in a linked list starting from a global variable, clearing the head pointer after freeing all nodes in the chain.
+- `cleanup_and_close_entries`: Iterates through a table of entries, calls cleanup functions for valid entries that don't have a specific flag set, then calls another routine with a parameter.
+- `check_and_handle_signal`: Checks for specific signal bits in the system, verifies a global pointer is valid, calls a function through that pointer if conditions are met, and clears the pointer when done.
+- `frag_bsr_rts`: Short code fragment that calls another routine, then returns.

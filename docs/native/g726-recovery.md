@@ -7,134 +7,136 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (2444062 top-level bytes in 198 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 11 of 11 units identical (bytes and relocations), 41 raw-word lines |
-| Functions named and described | pass, 1234 of 1234 named (0 author symbols), 1234 of 1234 described (49 by rule, 1183 by the local model) |
+| Byte-identical reassembly with vasm | pass, 11 of 11 units identical (bytes and relocations), 46 raw-word lines |
+| Functions named and described | pass, 1680 of 1680 named (0 author symbols), 1680 of 1680 described (400 by rule, 1231 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 28365 of 28375 (99.96%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 70078 of 70295 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 74591 of 74797 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 181066 |
-| code | 234244 |
-| data | 2028495 |
-| padding | 257 |
+| code | 254412 |
+| data | 2008385 |
+| padding | 199 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| game.slave | 1 | 1512 | 96 |
+| game.slave | 1 | 1623 | 101 |
 | PDY-STC.EXE | 2 | 267 | 8 |
-| tennis2 | 1 | 65264 | 748 |
-| ramdrive.device | 3 | 345 | 17 |
-| Ram-Handler | 2 | 1341 | 16 |
+| tennis2 | 1 | 67169 | 834 |
+| ramdrive.device | 3 | 436 | 37 |
+| Ram-Handler | 2 | 1804 | 40 |
 | diskfont.library | 13 | 830 | 53 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 308 | 245 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 298 | 28 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 91 | 7 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 21 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 18 | 14 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 469 | 391 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 788 | 40 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1211 | 68 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 351 | 16 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1587 | 92 |
 
 ## Cases handled
 
 - SuperTennisChamps_v1.1/SuperTennisChamps_v1.1.hdf: hard-disk image (AmigaDOS OFS, 2752 blocks): its filesystem parses and all 103 files in it are byte-identical to the extracted tree SuperTennisChamps_v1.1_hdf, which is recovered file by file; no block outside the filesystem holds data
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/3dCOURT: S404: StoneCracker v4.10-packed, unpacked with ancient (4532 -> 8912 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/ABCD: S404: StoneCracker v4.10-packed, unpacked with ancient (1204 -> 5264 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/ABS: S404: StoneCracker v4.10-packed, unpacked with ancient (2690 -> 5408 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/AYRTON.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (19234 -> 36646 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/AYRTONxt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (4432 -> 8470 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BALL: S404: StoneCracker v4.10-packed, unpacked with ancient (442 -> 2954 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BCUP1: S404: StoneCracker v4.10-packed, unpacked with ancient (852 -> 2472 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BCUP2: S404: StoneCracker v4.10-packed, unpacked with ancient (772 -> 1922 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BCUP3: S404: StoneCracker v4.10-packed, unpacked with ancient (684 -> 2472 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BCUP4: S404: StoneCracker v4.10-packed, unpacked with ancient (542 -> 1922 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BOB1: S404: StoneCracker v4.10-packed, unpacked with ancient (3630 -> 7750 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BOB2: S404: StoneCracker v4.10-packed, unpacked with ancient (4108 -> 8040 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BOB3: S404: StoneCracker v4.10-packed, unpacked with ancient (4158 -> 7894 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BOB4: S404: StoneCracker v4.10-packed, unpacked with ancient (4030 -> 7888 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BUZZ.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (17064 -> 37146 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BUZZxt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (3852 -> 8470 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CARLOS.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (17756 -> 36646 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CARLOSxt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (3970 -> 8470 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CBOX: S404: StoneCracker v4.10-packed, unpacked with ancient (9662 -> 17050 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CHAMP: S404: StoneCracker v4.10-packed, unpacked with ancient (2580 -> 4730 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CHAMPION: S404: StoneCracker v4.10-packed, unpacked with ancient (1110 -> 1898 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CHAMPIONS: S404: StoneCracker v4.10-packed, unpacked with ancient (1190 -> 2066 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CHARS: S404: StoneCracker v4.10-packed, unpacked with ancient (1074 -> 2050 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CHUCK.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (17032 -> 36646 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CHUCKxt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (3858 -> 8470 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CLAP1: S404: StoneCracker v4.10-packed, unpacked with ancient (446 -> 682 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CLAP2: S404: StoneCracker v4.10-packed, unpacked with ancient (438 -> 682 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CSEL: S404: StoneCracker v4.10-packed, unpacked with ancient (1486 -> 2694 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CURS: S404: StoneCracker v4.10-packed, unpacked with ancient (198 -> 1704 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/DANIEL.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (17970 -> 36646 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/DANIELxt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (4156 -> 8470 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/DISK: S404: StoneCracker v4.10-packed, unpacked with ancient (256 -> 422 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/DOOGIE.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (17192 -> 36646 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/DOOGIExt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (3904 -> 8470 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/FLAGS: S404: StoneCracker v4.10-packed, unpacked with ancient (716 -> 2112 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/GBOBS: S404: StoneCracker v4.10-packed, unpacked with ancient (3856 -> 9314 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/GRASS: S404: StoneCracker v4.10-packed, unpacked with ancient (31240 -> 47218 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/GREG.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (17494 -> 36646 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/GREGxt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (3946 -> 8470 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/HC1: S404: StoneCracker v4.10-packed, unpacked with ancient (196 -> 282 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/HC2: S404: StoneCracker v4.10-packed, unpacked with ancient (196 -> 282 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/HC3: S404: StoneCracker v4.10-packed, unpacked with ancient (196 -> 282 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/HC4: S404: StoneCracker v4.10-packed, unpacked with ancient (196 -> 282 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/HENRI.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (17578 -> 36646 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/HENRIxt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (3986 -> 8470 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/IHARA.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (17308 -> 36646 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/IHARAxt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (3968 -> 8470 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/JAKE.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (18350 -> 36646 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/JAKExt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (4112 -> 8470 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/JULIUS.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (17768 -> 39126 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/JULIUSxt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (4064 -> 8470 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/KRAS.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (18188 -> 36646 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/KRASxt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (4106 -> 8470 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/LOAD: S404: StoneCracker v4.10-packed, unpacked with ancient (1202 -> 5910 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/LOGO: S404: StoneCracker v4.10-packed, unpacked with ancient (3908 -> 7436 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/MAC.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (18716 -> 39126 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/MACxt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (4206 -> 8470 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PAL: S404: StoneCracker v4.10-packed, unpacked with ancient (196 -> 282 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PBOBS: S404: StoneCracker v4.10-packed, unpacked with ancient (6916 -> 21848 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC1: S404: StoneCracker v4.10-packed, unpacked with ancient (1348 -> 3552 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC10: S404: StoneCracker v4.10-packed, unpacked with ancient (1132 -> 2732 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC11: S404: StoneCracker v4.10-packed, unpacked with ancient (1338 -> 3552 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC12: S404: StoneCracker v4.10-packed, unpacked with ancient (1338 -> 3552 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC13: S404: StoneCracker v4.10-packed, unpacked with ancient (1090 -> 2732 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC14: S404: StoneCracker v4.10-packed, unpacked with ancient (1216 -> 3552 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC15: S404: StoneCracker v4.10-packed, unpacked with ancient (1228 -> 2732 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC16: S404: StoneCracker v4.10-packed, unpacked with ancient (1326 -> 2732 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC2: S404: StoneCracker v4.10-packed, unpacked with ancient (1310 -> 2732 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC3: S404: StoneCracker v4.10-packed, unpacked with ancient (1072 -> 2732 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC4: S404: StoneCracker v4.10-packed, unpacked with ancient (1246 -> 2732 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC5: S404: StoneCracker v4.10-packed, unpacked with ancient (1252 -> 2732 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC6: S404: StoneCracker v4.10-packed, unpacked with ancient (1422 -> 3552 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC7: S404: StoneCracker v4.10-packed, unpacked with ancient (1164 -> 2732 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC8: S404: StoneCracker v4.10-packed, unpacked with ancient (1330 -> 3552 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC9: S404: StoneCracker v4.10-packed, unpacked with ancient (1300 -> 3552 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/R: S404: StoneCracker v4.10-packed, unpacked with ancient (280 -> 402 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/ROGER.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (17306 -> 36646 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/ROGERxt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (3918 -> 8470 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SCTIT: S404: StoneCracker v4.10-packed, unpacked with ancient (650 -> 1208 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SCUP1: S404: StoneCracker v4.10-packed, unpacked with ancient (278 -> 612 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SCUP2: S404: StoneCracker v4.10-packed, unpacked with ancient (312 -> 612 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SCUP3: S404: StoneCracker v4.10-packed, unpacked with ancient (264 -> 612 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SCUP4: S404: StoneCracker v4.10-packed, unpacked with ancient (252 -> 442 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SCURS: S404: StoneCracker v4.10-packed, unpacked with ancient (226 -> 332 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/STAN.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (15702 -> 36646 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/STANxt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (3522 -> 8470 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SYNEX.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (17640 -> 36646 bytes)
-- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SYNEXxt.Ltb: S404: StoneCracker v4.10-packed, unpacked with ancient (3942 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/3dCOURT: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (4532 -> 8912 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/ABCD: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1204 -> 5264 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/ABS: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (2692 -> 5408 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/AYRTON.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (19236 -> 36646 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/AYRTONxt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (4432 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BALL: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (444 -> 2954 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BCUP1: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (852 -> 2472 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BCUP2: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (772 -> 1922 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BCUP3: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (684 -> 2472 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BCUP4: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (544 -> 1922 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BOB1: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (3632 -> 7750 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BOB2: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (4108 -> 8040 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BOB3: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (4160 -> 7894 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BOB4: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (4032 -> 7888 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BUZZ.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (17064 -> 37146 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/BUZZxt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (3852 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CARLOS.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (17756 -> 36646 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CARLOSxt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (3972 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CBOX: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (9664 -> 17050 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CHAMP: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (2580 -> 4730 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CHAMPION: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1112 -> 1898 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CHAMPIONS: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1192 -> 2066 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CHARS: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1076 -> 2050 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CHUCK.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (17032 -> 36646 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CHUCKxt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (3860 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CLAP1: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (448 -> 682 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CLAP2: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (440 -> 682 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CSEL: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1488 -> 2694 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/CURS: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (200 -> 1704 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/DANIEL.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (17972 -> 36646 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/DANIELxt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (4156 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/DISK: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (256 -> 422 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/DOOGIE.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (17192 -> 36646 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/DOOGIExt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (3904 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/FLAGS: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (716 -> 2112 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/GBOBS: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (3856 -> 9314 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/GRASS: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (31240 -> 47218 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/GREG.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (17496 -> 36646 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/GREGxt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (3948 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/HC1: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (196 -> 282 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/HC2: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (196 -> 282 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/HC3: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (196 -> 282 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/HC4: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (196 -> 282 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/HENRI.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (17580 -> 36646 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/HENRIxt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (3988 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/IHARA.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (17308 -> 36646 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/IHARAxt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (3968 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/JAKE.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (18352 -> 36646 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/JAKExt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (4112 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/JULIUS.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (17768 -> 39126 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/JULIUSxt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (4064 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/KRAS.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (18188 -> 36646 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/KRASxt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (4108 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/LOAD: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1204 -> 5910 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/LOGO: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (3908 -> 7436 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/MAC.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (18716 -> 39126 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/MACxt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (4208 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PAL: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (196 -> 282 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PBOBS: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (6916 -> 21848 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC1: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1348 -> 3552 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC10: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1132 -> 2732 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC11: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1340 -> 3552 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC12: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1340 -> 3552 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC13: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1092 -> 2732 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC14: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1216 -> 3552 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC15: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1228 -> 2732 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC16: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1328 -> 2732 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC2: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1312 -> 2732 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC3: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1072 -> 2732 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC4: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1248 -> 2732 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC5: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1252 -> 2732 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC6: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1424 -> 3552 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC7: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1164 -> 2732 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC8: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1332 -> 3552 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PIC9: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (1300 -> 3552 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/R: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (280 -> 402 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/ROGER.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (17308 -> 36646 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/ROGERxt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (3920 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SCTIT: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (652 -> 1208 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SCUP1: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (280 -> 612 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SCUP2: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (312 -> 612 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SCUP3: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (264 -> 612 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SCUP4: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (252 -> 442 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SCURS: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (228 -> 332 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/STAN.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (15704 -> 36646 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/STANxt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (3524 -> 8470 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SYNEX.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (17640 -> 36646 bytes)
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/SYNEXxt.Ltb: StoneCracker 4.04 Data (xfd)-packed, unpacked with ancient (3944 -> 8470 bytes)
 - 6 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - runtime segment an address: 222 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 11 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 5 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 18 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- SuperTennisChamps_v1.1/SuperTennisChamps_v1.1_hdf/SuprTennisChmps/data/PDY-STC.EXE: PowerPacker 4.0 (xfd) stream found by ancient scan (3728 -> 25300 bytes) but only 0 of 1 sampled windows are in reference RAM: not used
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 41 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 37 immediate, 2 displacement, 1 branch displacement, 1 address
 
 ## Cracktros (kept, not protection)
 
@@ -142,7 +144,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Copy protection found
 
-- none found
+- `process_disk_operation` (runtime segment an address): Handles disk-related operations including setting bits in hardware registers and performing arithmetic calculations on data from memory. Kind: disk hardware check. Pass path: DSKLEN register read and comparison with expected values, continues execution if match.
 
 ## Functions
 
@@ -162,6 +164,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_unnamed_routine`: Calls another unnamed routine and returns immediately.
 - `copy_data_table`: Copies a sequence of words from one table to another using a loop.
 - `call_vector_at_offset`: The routine executes a function pointer located at a negative offset from a base address held in a register.
+- `frag_movea_move_andi_rte`: Short code fragment that copies a0 to a5, then copies d1 to the memory at an offset from a7, then masks the top of the stack with 57343, then returns from the exception.
 - `find_node_by_string`: Iterates through a linked list pointed to by a global variable.
 - `write_ciab_port_a`: Stores the value passed in register D0 into the CIAB Port A hardware register.
 - `dispatch_cop2_lch_handler`: Loads a global variable from a specific memory location and executes an indirect jump through a function pointer table.
@@ -176,8 +179,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `compute_and_store_byte_logic`: Calls a function pointer from a global structure and combines its result with register values using bitwise logic.
 - `negate_boolean_result`: Takes a value in register D0 and returns the negation of its boolean state.
 - `set_vhposr_bit`: Sets a specific bit in the vertical position register via a pointer offset.
-- `wait_register_match`: Compares a byte read from a global variable with the current value of a custom hardware register, then repeats the same comparison after reloading the register until the values match, before incrementing the return address and disabling interrupts.
-- `calculate_scaled_value`: Computes a value by dividing a global variable by a constant and adding a scaled sum of other global variables.
+- `spin_infinite_loop`: Reads a hardware register and a global variable, then loops forever on a condition that is always true, so it never returns.
+- `calculate_table_offset`: Reads values from a global table and performs arithmetic operations including division, multiplication, and addition.
 - `check_disk_status`: Checks a global flag to determine disk activity status.
 - `negate_skip_and_toggle_flag`: Negates a short value at an offset in a pointer-based structure.
 - `set_bit_in_memory`: Reads a byte offset from a global table and a bit mask from another global variable.
@@ -191,16 +194,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispatch_function_pointer`: Checks a global variable against a specific constant.
 - `dispatch_indirect_call`: Compares a register value against a global variable.
 - `set_global_pointer`: Stores the address of the current routine into a global variable.
-- `allocate_and_copy_string`: Calculates the length of a null-terminated string passed in a register and allocates memory for it.
-- `setup_whdload_task`: Allocates memory and configures task structures for the WHDLoad loader by modifying flags and pointers in allocated blocks.
+- `copy_string_to_buffer_2`: The routine copies a null-terminated string from an input pointer to a newly allocated buffer, prefixing it with its length byte, and then sets up a structure with fields derived from a global table and a library base, storing the buffer address in the structure.
+- `initialize_expansion_structures`: Uses memory allocation and queueing functions to build descriptor structures, sets flags, and stores global pointers into RAM.
 - `call_dos_library_entry`: Loads a function pointer from a global variable and executes it.
 - `open_dos_library`: Allocates a message block on the stack and calls the exec library to open the dos.library.
 - `dispatch_game_state`: Calls three initialization routines and stores their results in a structure.
 - `dispatch_table_based_call`: Calls three routines from a fixed offset table and writes values to a structure.
 - `initialize_and_dispatch`: Initializes a game object and performs an indirect call based on a value found in a table.
 - `dispatch_indirect_call_2`: The routine initializes memory offsets and invokes two helper functions.
+- `initialize_and_dispatch_2`: Initializes a game object and dispatches a pointer call based on the initialization result, then sets a flag in a global structure before sending a message.
+- `frag_moveq_not_bra`: Short code fragment that loads 34 into d1, then inverts d1, then jumps to another point in the code.
 - `process_string_and_dispatch`: Copies or moves data into a buffer, reverses a string, and performs an indirect call based on a table search.
 - `dispatch_global_table_entry`: Calls several routines via indirect pointers and stores return values into a structure.
+- `frag_bsr_bra`: Short code fragment that calls return_immediately_2, then jumps to another point in the code.
+- `setup_message_structure`: Initializes a message structure with predefined values including a library name, a pointer to a global variable, and several zero values.
 - `copy_buffered_data`: This routine manages a data buffer by calculating remaining capacity and performing memory copies.
 - `copy_circular_buffer_data`: Copies a block of data from a source buffer to a destination buffer using a circular wrap-around logic.
 - `dispatch_table_jump`: Calls several routines via function pointers and copies values into a structure.
@@ -212,7 +219,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_from_subroutine`: The routine performs a return from a subroutine.
 - `return_immediately_2`: Executes three instructions to return control to the caller without performing any operations.
 - `return_from_subroutine_2`: This routine executes a return instruction.
-- `reverse_string_and_store_length`: Reverses a null-terminated string in place and stores its length as a signed byte at the beginning of the buffer.
+- `shift_string_left_and_store_length`: Copies bytes from a0 forward one position until a zero byte, then writes the byte count into the slot before the shifted string and returns.
 - `initialize_game_object`: Calls external routines to validate state and allocate memory for a game object.
 - `dispatch_pointer_call`: Checks a value in a register and, if non-zero, reads a pointer from a structure offset.
 - `resolve_and_normalize_path`: Calculates the length of a source string, allocates a buffer via an indirect function call, and constructs a normalized file path by concatenating directory and filename components while handling slash separators and null terminators.
@@ -286,7 +293,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_zero_byte`: It writes a zero byte through the pointer in a0, then returns.
 - `store_byte_pointer`: Writes the low byte of d0 to the byte pointed to by a0, then returns.
 - `zero_memory_word`: Fills a 16-bit word in memory with zero.
-- `tiny_ori_unlk_rts`: Small routine of 3 instructions that merges 117 into d0, then removes the stack frame held in a4, then returns.
+- `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
 - `handle_interrupt_event`: The routine acts as an interrupt handler, likely for the vertical blank or copper interrupt, given its entry via a handler pointer.
 - `process_sprite_collision`: Iterates through a linked list of objects, checking their coordinates against global state variables.
 - `call_another_routine`: Calls another routine and returns.
@@ -467,15 +475,23 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `read_data_by_size`: Reads a byte, word, or string from a source pointer based on a size parameter.
 - `copy_bytes_loop`: Copies a sequence of bytes from a source pointer to a destination pointer.
 - `write_value_by_size`: Writes a value from a source pointer to a destination pointer based on a size code.
+- `frag_movea_jmp`: Short code fragment that copies d0 to a0, then jumps to the address in a0.
+- `return_constant_5`: Returns the constant an address in d0 to the caller without any other effect.
 - `count_set_bits_and_call`: Counts the number of set bits in a word stored in a global variable.
 - `count_set_bits_and_call_2`: Calculates the number of set bits in a word stored in a global variable.
 - `count_set_bits_and_call_3`: Counts the number of set bits in a global variable's field and conditionally invokes two function pointers if the count exceeds one.
 - `calculate_bit_count_and_branch`: Counts the number of set bits in a word stored in a global variable.
 - `calculate_bit_count_and_branch_2`: Counts the number of set bits in a global variable field and conditionally invokes two function pointers if the count exceeds one.
+- `call_library_vector_156`: Library stub: loads a library base from a global variable and calls the library function at offset minus 156 of that base, returning its result to the caller.
 - `return_global_variable`: Returns the value of a specific global variable.
+- `frag_move_rts`: Short code fragment that copies a location in the code to d0, then returns.
+- `frag_move_rts_2`: Short code fragment that copies a location in the code to d0, then returns.
+- `frag_move_rts_3`: Short code fragment that copies a location in the code to d0, then returns.
+- `frag_move_rts_4`: Short code fragment that copies a location in the code to d0, then returns.
 - `return_global_pointer`: Returns a global variable containing a pointer to another routine.
 - `return_self_pointer`: The routine returns its own entry address.
 - `return_self_address`: Returns the address of the routine itself.
+- `return_constant_6`: Returns the constant an address in d0 to the caller without any other effect.
 - `wait_for_task_completion`: Polls a function pointer located at an offset from a global variable until it returns a non-zero value.
 - `call_close_library`: Wrapper that calls the exec library function CloseLibrary and returns its result to the caller.
 - `check_and_trap`: Checks if a global variable is non-zero.
@@ -483,44 +499,51 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `handle_custom_trap`: Checks a global flag; if set, it writes a value from another global variable into a specific offset of a base pointer and then executes a trap instruction.
 - `check_and_trap_on_flag`: Checks a global variable and performs a trap instruction if it is non-zero, after writing a value to a memory offset.
 - `return_stack_pointer`: The routine returns a pointer to a location on the stack.
+- `frag_movea_jmp_2`: Short code fragment that copies the top of the stack to a0, then copies d0 to a7, then jumps to the address in a0.
 - `setup_state_handler`: Calculates a bit count from a global variable and invokes function pointers if the count exceeds one.
+- `frag_jsr_move_movea_clr_rts`: Short code fragment that calls check_and_trap_if_active, then copies d2 to a fixed memory address, then copies a location in the code to a0, then copies the memory at an offset from a0 to a fixed memory address, then copies an address to the memory at an offset from a0, then clears a fixed memory address (2 times in a row), then returns.
 - `check_animation_flag`: Checks a flag and performs a trap operation within an animation sequence.
 - `store_input_values`: Stores the value from register D0 into a global variable and stores the address of a stack location into another global variable.
 - `return_global_value`: Returns the contents of a specific global variable.
+- `frag_clr_rts`: Short code fragment that clears a fixed memory address, then returns.
 - `dispatch_tennis_event`: Checks a status flag and a global variable to determine if an indirect jump should be performed.
 - `call_function_pointer_3`: Invokes a routine through a function pointer stored in a global variable.
 - `call_function_pointer_4`: Invokes a function pointer stored in a global variable.
+- `return_constant_7`: Returns the constant an address in d0 to the caller without any other effect.
 - `update_keyboard_state`: Reads a byte from a memory location and stores it into a specific offset within a global table.
 - `update_keyboard_state_2`: Reads a byte from a memory location and stores it into a specific offset within a data structure.
 - `clear_memory_block`: Clears a specific range of memory by writing zeros to it.
 - `forbid_and_set_handler`: If a global byte flag is clear, sets it to a negative value, calls a routine via a pointer stored in a table, then sets a byte flag in a structure and writes a constant to a field.
 - `clear_flag_and_call`: Checks a global variable and calls a function pointer from a table if non-zero.
-- `init_cop_jam_and_view`: Loads the copper list and jump address for the coprocessor, then updates the graphics view and waits for the top of frame.
+- `init_copper_and_view`: Clears a global flag and, if another flag is clear, sets it from a table, calls routines via pointers, clears and sets global variables, and writes values to hardware registers for the copper and beam control.
 - `load_offset_data_and_set_flag`: Loads a word from a table at a specific offset into a global variable and sets another global variable to a constant value.
 - `reset_copper_and_dma`: Clears state flags and disables DMA channels by writing to the DMACON register.
 - `init_blitter_wait`: Checks a global flag and, if unset, initializes it to a negative value and invokes a function pointer from a table to wait for the blitter.
 - `invoke_blitter_callback`: Checks a global variable for a non-zero value, masks it to a byte, and executes a function pointer retrieved from a table offset by that value.
 - `set_global_flag_to_one`: Calls four other routines sequentially.
+- `frag_bsr_jsr_move_rts`: Short code fragment that calls forbid_and_set_handler, then calls init_blitter_wait, then calls initialize_global_counter, then calls load_offset_data_and_set_flag, then copies a location in the code to d0, then copies 65535 to a fixed memory address, then returns.
 - `set_interrupt_handler`: Checks a global flag, sets it to a negative value, and executes a routine via a pointer from a table.
 - `clear_and_return_global_word`: Calls four other routines sequentially.
 - `toggle_global_flag`: Calls four other routines sequentially.
 - `locate_keyboard_resource`: The routine opens system libraries and resources, then traverses a linked list of structures to find an entry identified by the string 'keyboard'.
 - `invoke_global_function_pointer`: The routine executes a function address retrieved from a global variable.
 - `reset_state_and_store_input`: Clears a global variable to zero and assigns the value from register A0 to another global variable.
+- `return_constant_8`: Returns the constant an address in d0 to the caller without any other effect.
 - `call_vector_loop_n_times`: Repeats a function pointer dereference from a global table N times based on the input word counter.
 - `wait_for_bit_toggle`: Polls a global variable for a specific bit state, waiting for it to become zero and then non-zero, repeating this cycle a number of times determined by an input counter.
 - `clear_global_table`: Zeros out a block of 32 longwords starting at a global variable address.
 - `clear_linked_list_table`: Iterates through a table of pointers and frees the memory of linked lists starting at each entry.
-- `iterate_pointer_table_loop`: Iterates through a table of pointers sixteen times, dereferencing each entry to traverse a linked list.
-- `iterate_and_call_function_table`: Iterates through a linked list structure stored in a table, calling a function pointer derived from a global variable for each node.
+- `add_interrupt_server_2`: Iterates sixteen times over a table of pointers, following each linked list and invoking a function pointer derived from the routine address for every node.
+- `remove_interrupt_server_2`: Iterates sixteen times over a table of pointers, following each linked list and invoking a function pointer derived from the routine address for every node.
 - `increment_integer_value`: Increments a two-byte integer located at a memory address stored in a register.
 - `do_nothing_stub_2`: The routine is empty and returns immediately without performing any operations or accessing memory.
 - `swap_and_init_node`: Swaps pointers in a linked structure and initializes fields of the new node using register values.
-- `add_interrupt_server`: Initializes a global variable and swaps pointers in a table based on a register value.
+- `initialize_interrupt_server`: The routine initializes two global variables, swaps pointers in a table based on an input register, sets fields in the allocated structure, and conditionally calls an indirect function.
 - `search_linked_list_entry`: Iterates through a linked list structure stored in memory, comparing a value in register D0 against entries in the list.
 - `remove_interrupt_server`: Removes an interrupt server from the system using the Exec library.
 - `initialize_global_counter`: Checks if a global variable is zero.
 - `mask_and_recurse_global`: Checks if a global variable is non-zero.
+- `return_constant_9`: Returns the constant an address in d0 to the caller without any other effect.
 - `clear_d0_and_call_routine`: Sets two global variables to zero and calls another routine.
 - `loop_until_zero_flag`: Calls another routine in a loop until the zero flag is set.
 - `allocate_linked_node`: Calls a global function pointer to obtain a memory block.
@@ -540,6 +563,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `or_with_constant`: The routine performs a bitwise OR operation on the value in register D0 with a constant and returns the result.
 - `or_constant_with_d0`: The routine performs a bitwise OR operation between the value in register D0 and a constant, then returns the result.
 - `clear_global_flag`: Sets a global variable to zero and returns.
+- `frag_move_rts_5`: Short code fragment that copies d0 to a fixed memory address, then returns.
+- `frag_move_rts_6`: Short code fragment that copies a location in the code to d0, then returns.
 - `loop_check_global_flag`: Calls two helper routines and checks a global variable.
 - `poll_input_state`: Calls helper routines to update input state.
 - `update_input_state`: Reads a byte from a memory location and stores it into a global variable.
@@ -562,12 +587,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `do_nothing`: The routine is empty and immediately returns without performing any operations.
 - `return_d0_d1_concatenated`: The routine returns a 64-bit value constructed by concatenating the contents of registers D0 and D1.
 - `call_and_return_pair`: Calls another routine and returns the concatenated 32-bit values from registers D0 and D1.
+- `frag_movea_move_movem_bsr_rts`: Short code fragment that copies d1 to a0, then copies d2 to d0, then saves registers on the stack, then copies d0 to d2, then calls another routine, then restores saved registers from the stack, then returns.
 - `handle_copper_list_trap`: Checks a global flag and, if set, updates a memory region in a loop before returning.
 - `write_score_entry`: Iterates through a table to find an insertion point based on a counter, then writes two values and fixed constants into the table entries.
 - `store_word_via_pointer`: Stores a 16-bit value from a register into a memory location pointed to by another register.
 - `clear_state_and_recurse`: Checks a short value at an offset in a pointer-based structure.
+- `frag_move_rts_8`: Short code fragment that copies d0 to a fixed memory address, then returns.
 - `extract_color_data`: Checks a global flag and calculates a loop count based on pointer values.
 - `extract_color_palette`: The routine reads a count from a structure and iterates through a source array of 32-bit values.
+- `initialize_and_store_structure`: Calls another routine, populates a structure at a0 with values from a3 and a pointer from a2, updates a global pointer, and calls another routine if a condition is met.
+- `set_global_word_and_call`: Sets a word value in register d0 to 32773, calls a routine at a fixed offset from a6, and then returns.
+- `frag_moveq_bra_2`: Short code fragment that loads 4 into d7, then jumps to another point in the code.
+- `frag_moveq_bra_3`: Short code fragment that loads 8 into d7, then jumps to another point in the code.
 - `extract_nibble_from_table`: Reads a word from a global table using an index scaled by four and an offset.
 - `extract_nibble_from_table_2`: Calculates an address using a base pointer, an offset from a global variable, and a scaled input value.
 - `fetch_nibble_from_table`: Calculates an address using a global pointer, a fixed offset, and a scaled input value.
@@ -584,6 +615,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `shift_block_entries`: Iterates through a list of pointers, modifying indices and shifting arrays of twelve-byte structures either forward or backward based on sign flags to reorder or remove entries.
 - `store_word_and_shift`: Stores a word from a register into a memory location pointed to by a register and then calls another routine to shift a block of memory entries.
 - `jump_to_store_word`: Passes control to a routine that stores a word and then calls another function.
+- `update_global_pointer`: Updates a global pointer and its associated word value, then performs a swap operation on the pointer and returns it.
+- `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
+- `calculate_weighted_sum`: Computes a weighted sum of two 32-bit values using a scaling factor from register d3, stores the result in memory, and loops through a counter to process multiple entries.
 - `update_global_pointer_table`: Stores a value into a global variable and updates a pointer table entry with the result of another routine.
 - `store_return_value`: The routine stores the value passed in register A0 into a global variable.
 - `store_return_value_2`: The routine stores a value passed in register A0 into a global variable.
@@ -599,17 +633,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `loop_call_until_zero`: Calls another routine repeatedly while decrementing a counter passed in D0, stopping when the counter reaches zero.
 - `copy_bytes_from_table`: Copies a sequence of bytes from a source table to a destination buffer using a global offset and count.
 - `jump_to_store_word_and_call_function`: Jump stub: passes control straight on to store_word_and_call_function.
-- `copy_bytes_until_limit`: Copies bytes from a source address to a destination pointer in a loop, decrementing a counter.
-- `store_word_and_call_function`: Stores a word from a register into a global variable and executes a function pointer retrieved from a table offset by that variable.
+- `return_constant_10`: Returns the constant an address in d0 to the caller without any other effect.
 - `wait_for_event_loop`: The routine enters a loop that repeatedly calls a function pointer stored in a global structure.
 - `dispatch_indirect_function_pointer`: Invokes a function pointer retrieved from a table located at an offset from a global variable.
 - `wait_for_event_loop_2`: Polls a function pointer stored in a global structure until it returns a non-zero value.
 - `close_library`: Calls the exec library function to close a previously opened library.
+- `frag_move_rts_9`: Short code fragment that copies d0 to a fixed memory address, then returns.
+- `frag_move_rts_10`: Short code fragment that copies d0 to a fixed memory address, then returns.
 - `enable_dma_channels`: Writes a value to the DMACON register to enable DMA channels.
 - `enable_dma_channels_2`: Writes a value to the DMACON hardware register to enable DMA channels.
 - `initialize_cop_jumper_table`: Clears a block of memory and copies a table of code pointers into a global buffer.
 - `copy_global_table`: Copies a block of 32-bit words from a global table into a buffer pointed to by a register.
 - `return_from_subroutine_5`: Performs a return from a subroutine.
+- `frag_move_rts_11`: Short code fragment that copies a location in the code to d0, then returns.
 - `call_routines_and_set_globals`: Calls two other routines sequentially.
 - `configure_sprite_data`: Calculates sprite attributes based on flags and writes them to a buffer, including size, position, and control words.
 - `call_routines_and_clear_globals`: Calls two other routines and stores the result in a global variable.
@@ -623,19 +659,29 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
 - `update_sprite_offsets_2`: Calculates a displacement value based on flag bits and iterates through a list of pointers to update paired short integer fields in memory.
 - `compute_and_store_vertex_positions`: Calculates a series of 16-bit coordinates by combining a base value, a step derived from a register, and values from a table, storing the results into a destination buffer.
+- `compute_and_store_offset_positions`: Processes a table of integers, adds a flag-derived offset, and writes 16-bit high and low parts to a destination buffer with a variable stride.
 - `set_unknown_flag_to_max`: Sets a global variable to the maximum value for an unsigned 16-bit integer.
 - `update_bloom_overlay_parameters`: Updates a global variable by loading a value from a memory location pointed to by a register.
+- `check_collision_metrics`: Checks collision metrics by calling library routines with specific parameters, compares results against fixed values, and branches based on the outcomes to continue or exit processing.
 - `process_input_event_table`: Iterates through a table of input event structures, validating mathematical relationships between their fields and calling sub-routines to process valid entries.
 - `apply_bloom_overlay`: Copies and blends a source image block into a destination buffer using bitwise OR operations, likely creating a glow or bloom effect for visual elements.
 - `copy_struct_with_optional_offset`: Copies a fixed number of words from a source pointer to a destination pointer.
 - `copy_word_block`: Checks a condition in a global structure and, if true, copies a sequence of 16-bit words from a source pointer to a destination pointer.
-- `compute_bitmap_or`: Performs a bitwise OR operation between two rectangular regions of 16-bit word arrays.
+- `frag_move_rts_12`: Short code fragment that copies d0 to a fixed memory address, then returns.
+- `tiny_move_rts`: Small routine of 2 instructions that copies (a0) to d0, then returns.
+- `frag_move_rts_13`: Short code fragment that copies the memory at an offset from a0 to d0, then returns.
+- `halve_a3_words_into_offsets`: Reads the words at a3 and a3 plus two, shifts each right by one, stores the results at offsets ten and twelve from a3, then returns.
+- `frag_move_rts_14`: Short code fragment that copies d1 to the memory at an offset from a3, then copies d2 to the memory at an offset from a3, then returns.
+- `or_source_bitmap_into_dest_buffer`: Frees the old buffer at offset 18 of a3, allocates a new one, then ORs the source bitmap at offset 14 into it row by row using the width and height fields, and returns.
 - `clear_entity_state_flags`: Checks a pointer-based structure and clears specific fields if they are non-zero, including a status flag and a pair of integer values.
 - `calculate_bitmap_address_2`: Adds a specified offset to a base address stored in a global variable and returns the resulting memory address.
 - `calculate_bitmap_address`: Adds a specified offset to a base address stored in a global variable and returns the resulting memory address.
+- `initialize_entity_data`: Initializes entity data by clearing state flags, copying data from a source structure to a destination, and performing bit manipulations to update pointer and size values before returning.
 - `update_bitmap_pointer`: Calculates a new memory address for a bitmap by adding an offset to a base address stored in a global variable.
 - `calculate_collision_metrics`: The routine computes derived values from input registers, including shifts and multiplications, and stores the results into a structure pointed to by a register.
 - `return_global_word`: The routine returns the value of a global word variable.
+- `frag_move_rts_15`: Short code fragment that copies a location in the code to d0, then returns.
+- `frag_move_rts_16`: Short code fragment that copies a location in the code to d0, then returns.
 - `return_from_subroutine_6`: The routine is empty and performs only a return instruction.
 - `call_two_routines`: Calls two unnamed routines sequentially and returns.
 - `check_conditions_and_update_flags`: The routine checks several conditions involving a zero flag and calls multiple other routines to retrieve values.
@@ -650,33 +696,29 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_sprite_data_loop`: Waits for a hardware flag to clear, then iterates through a table of sprite attributes.
 - `process_offset_values`: Processes data by calling another routine twice to handle offset values.
 - `process_offset_value`: Reads a signed 16-bit integer from a global structure offset.
-- `update_player_positions`: Iterates through a table of player pointers, checking a status flag in memory.
+- `process_entity_table`: Iterates over a table of pointers using a counter from the stack.
 - `update_bitplane_pixels`: Calculates a byte offset and bit position within a set of bitplanes based on input coordinates and a stride.
 - `toggle_bytes_in_table`: Iterates through a table of pointers, toggling a specific bit in the byte at an offset within each pointed-to buffer.
 - `fill_table_with_ones`: The routine calculates a pointer to a global table and iterates through 35 entries, setting each 32-bit word to all ones.
 - `calculate_sprite_offsets_2`: Calls another routine twice to calculate sprite offsets.
 - `calculate_sprite_offset`: Computes memory offsets and configuration values for a sprite or tile based on coordinate inputs and global state tables.
-- `update_entity_positions`: Iterates through a list of entities, updating their position fields by adding offset values from source tables.
-- `setup_copper_list_entry`: Calculates memory addresses and control words for a graphics hardware update, writing values to a buffer structure while iterating through a table of parameters.
 - `clear_block_entry`: Waits for a status bit in a memory-mapped register to clear.
 - `copy_coplist_buffers`: Polls the copper list busy flag until clear, then copies source and destination buffer pointers and cycle counts into the current hardware list entry.
-- `copy_vector_array`: Iterates through a loop to copy integer values from source pointers into a destination structure at specific offsets.
 - `populate_sprite_data_block`: Initializes a memory block with calculated values, including a loop that updates an accumulator based on register inputs.
 - `update_ball_trajectory_state`: Calculates a new trajectory using a lookup table and updates a global state variable.
 - `call_subroutine`: The routine calls another routine and returns.
 - `check_and_clear_flag_3`: The routine checks a flag and clears it if necessary.
-- `compute_trajectory_table`: The routine calculates a series of values based on input parameters and stores them in a memory buffer.
+- `compute_and_validate_values`: The routine computes a series of values based on input parameters and stores them in a memory buffer, performs arithmetic checks on the stored values to determine a status flag and result, and writes the final results to the buffer.
 - `check_and_clear_flag`: Reads a signed 16-bit value from a global structure.
 - `call_recursive_routine_3`: Calls another routine and returns.
 - `copy_byte_buffer`: Copies a sequence of bytes from a source pointer to a destination pointer.
 - `return_zero_immediately`: The routine is empty and simply returns a value of zero.
 - `write_buffered_block`: Allocates or reuses a buffer if necessary, then copies a specified number of bytes from a source pointer to the buffer, handling word-aligned blocks and remaining bytes separately, and finally null-terminates the destination.
 - `write_buffered_string`: Checks a global buffer pointer and allocates memory if necessary or full.
+- `return_constant_12`: Returns the constant an address in d0 to the caller without any other effect.
 - `set_global_constant`: Stores a specific constant value into a global variable.
 - `write_sprite_data_block`: Iterates through a table of pointers to write sprite attributes, including position, color, and flags, into memory buffers while polling a status byte.
-- `return_immediately_stub_2`: The routine consists of a single 68000 instruction and no decompiled body is available, so its only observable behavior is to return to its caller without performing other work.
 - `compute_render_table`: Initializes a destination buffer by clearing flags and setting default values.
-- `copy_vector_array_loop`: Iterates through a source array, copying integer and word-sized values into a destination structure at fixed offsets.
 - `setup_trajectory_loop`: Calculates position and velocity offsets into a control block and iterates through a coefficient table.
 - `return_error_flag`: Returns a constant value of minus one, likely indicating an error or failure status to the caller.
 - `wait_and_dispatch_events`: Invokes a function pointer from a global structure, executes another routine, and polls a byte in memory until a specific bit is cleared.
@@ -691,6 +733,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `manage_io_file_handles`: Opens and closes file handles using the Exec library vector table, performing read and write operations while managing global state flags for active connections.
 - `initialize_global_pointers`: The routine assigns the return values of two separate function calls to two distinct global variables.
 - `call_indirect_function_2`: Calls another routine and then executes a function pointer retrieved from a global table offset by a negative value.
+- `create_directory_and_unlock`: Creates a directory using a library function, unlocks it if successful, and returns a failure indicator while storing the directory lock in a global variable.
+- `lock_and_get_file_info`: Locks a file path using a library function, retrieves file information into a global structure, unlocks the file handle, and returns a success indicator based on the operation result.
+- `frag_move_jsr_rts`: Short code fragment that copies a fixed memory address to d0, then copies a fixed memory address to d1, then calls another routine, then returns.
+- `frag_move_jsr_rts_2`: Short code fragment that copies a fixed memory address to d0, then copies a fixed memory address to d1, then calls another routine, then returns.
+- `frag_move_rts_17`: Short code fragment that copies a fixed memory address to d0, then returns.
+- `frag_move_rts_18`: Short code fragment that copies a fixed memory address to d0, then returns.
+- `frag_move_rts_19`: Short code fragment that copies a fixed memory address to d0, then returns.
+- `frag_move_sub_jsr_rts`: Short code fragment that copies a fixed memory address to d0, then subtracts a fixed memory address from d0, then copies a fixed memory address to d1, then calls multiply_signed_fixed_point, then returns.
 - `initialize_dos_library`: Opens the dos.library using exec.OpenLibrary and stores the resulting library pointer in a global variable.
 - `invoke_cleanup_handlers`: The routine checks a global variable against another value.
 - `return_zero_constant_5`: Returns a constant value of zero.
@@ -718,6 +768,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_bytes_loop_2`: Copies a sequence of bytes from a source pointer to a destination pointer, decrementing a counter in D0 until it reaches zero.
 - `copy_bytes_loop_3`: Copies a sequence of bytes from a source pointer to a destination pointer.
 - `copy_string_and_count`: Copies a null-terminated string from a source pointer to a destination pointer while incrementing a counter.
+- `frag_bsr_moveq_jsr_rts`: Short code fragment that calls call_indirect_pointer, then loads 10 into d0, then calls another routine, then returns.
+- `frag_subq_move_bsr_dbra_rts`: Short code fragment that subtracts 1 from d7, then copies the memory just below a2 (moving a2 down) to d0, then calls another routine, then loops back while counting down d7, then returns.
+- `dispatch_conversion_case`: Compares a value against several constants and branches to different routines based on the match, then performs sign extension and loads a constant into another register before jumping to a common location.
 - `parse_numeric_string`: Checks a condition flag and processes a string by skipping leading '0' characters.
 - `convert_float_to_string`: Converts a 32-bit floating-point number passed in D0 into an ASCII string representation, handling sign, exponent, and mantissa formatting.
 - `skip_leading_zeros`: The routine iterates through a string, skipping over consecutive '0' characters until it finds a non-zero character or the null terminator.
@@ -729,18 +782,24 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_function_pointer_5`: Loads a function pointer from a global variable and executes it.
 - `call_function_pointer_6`: Loads a function pointer from a global variable offset and executes it.
 - `call_indirect_function_3`: Calls a function pointer retrieved from a global table offset by a negative constant.
+- `frag_bra`: Short code fragment that jumps to another point in the code.
+- `jump_to_call_global_function_pointer`: Jump stub: passes control straight on to call_global_function_pointer.
 - `store_d0_and_call_function`: Stores the value in register D0 into a global variable.
 - `call_global_function_pointer`: Loads a function pointer from a global variable and executes the pointed-to routine.
-- `update_function_pointer`: The routine swaps a global variable with a value passed in register A0 and stores the global variable's previous value into a memory location calculated from a base address and an offset.
+- `process_string_with_library_call`: Processes a string by counting characters, then calls a library function with specific parameters while saving and restoring registers during the operation.
+- `push_pointer_into_ring_buffer`: Stores a0 into a circular buffer indexed by a counter masked to 63 entries, advances the index by four, increments the count and returns the previous pointer in d0.
 - `decrement_and_fetch_table_entry`: Decrements a global counter and updates an index by subtracting four and masking it.
 - `store_value_in_ring_buffer`: Stores a value into a global table at an offset determined by a ring buffer index.
-- `update_function_pointer_ring`: The routine swaps a function pointer stored in a global variable with the value passed in register A0.
+- `push_pointer_into_ring_buffer_2`: Stores a0 into a circular buffer indexed by a counter masked to 63 entries, advances the index by four, increments the count and returns the previous pointer in d0.
 - `decrement_and_lookup_table`: Decrements a global counter and updates an index by subtracting four and masking it.
+- `frag_move_movea_jsr_rts_2`: Short code fragment that copies a6 to the stack, then copies a location in the code to a6, then calls the routine whose address is in a6, then copies the top of the stack to a6, then returns.
+- `call_library_vector_4`: Library stub: loads a library base from a global variable and calls the library function at offset minus 4 of that base, returning its result to the caller.
 - `call_indirect_pointer`: The routine executes a function call through a pointer stored in memory.
 - `call_function_pointer_7`: Loads a function pointer from a global variable and executes the referenced routine.
 - `call_global_function_pointer_2`: Loads a function pointer from a global variable and invokes the referenced routine.
 - `call_old_open_library`: Wrapper that calls the exec library function OldOpenLibrary and returns its result to the caller.
 - `indirect_jump_via_global_pointer`: Executes a function pointer retrieved from a global variable offset.
+- `return_constant_13`: Returns the constant an address in d0 to the caller without any other effect.
 - `return_global_word_2`: Returns the value of a global word variable.
 - `initialize_tennis_state`: Sets specific memory locations to zero and assigns a default value to a global variable, which is conditionally reduced if another global variable's value is below a threshold.
 - `toggle_global_flag_2`: Reads a global variable and returns its value.
@@ -749,21 +808,33 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_stack_value_2`: The routine returns a 32-bit value located on the stack, sign-extended to 64 bits.
 - `call_function_pointer_8`: Loads a function pointer from a global variable and executes it.
 - `check_bit_in_table`: Reads a bit from a global byte array using an index passed in D0.
+- `return_constant_14`: Returns the constant an address in d0 to the caller without any other effect.
+- `compare_instruction_bytes`: Compares an instruction byte against values in a lookup table using a loop that decrements a counter until zero, then branches based on the comparison results.
+- `frag_moveq_sub_movem_rts`: Short code fragment that loads 104 into d0, then subtracts d2 from d0, then restores saved registers from the stack, then returns.
 - `decode_character_code`: The routine processes a 32-bit value by modifying its lower byte and using the result as an index into a lookup table.
 - `decode_character_code_2`: The routine processes a 32-bit value by modifying its lower byte and using the result as an index into a lookup table.
 - `decode_instruction_byte`: Reads a byte from a code table using an index derived from input registers.
+- `decode_character_with_table`: Uses a lookup table to decode character values based on input parameters, performs bit testing and comparisons, then modifies the result before returning.
 - `return_without_effect`: The routine executes nine instructions that perform no observable state changes or data manipulation before returning.
 - `process_character_code`: Checks if the input value matches specific character codes and returns a modified value if so.
-- `initialize_console_device`: Clears a memory buffer and configures parameters for the console device, including signal allocation and task finding, likely to set up text output or input handling.
+- `open_console_and_build_keymap_tables`: Clears a 41-word structure, opens console.device, allocates a signal, then loops 105 times calling the code translator to fill two keymap byte tables.
 - `invoke_device_handlers`: Calls two function pointers located at fixed offsets from a global device structure pointer.
 - `return_d0_byte`: Returns the value currently held in the D0 register.
 - `return_d0_value`: Returns the value currently held in the D0 register to the caller without modification.
 - `return_d0_value_2`: The routine returns the value currently held in the D0 register.
+- `return_constant_15`: Returns the constant an address in d0 to the caller without any other effect.
+- `frag_move_rts_20`: Short code fragment that copies d0 to a fixed memory address, then returns.
 - `copy_byte_buffer_2`: Copies a specified number of bytes from a source pointer to a destination pointer.
 - `set_global_word_to_max`: Sets a global word-sized variable to the maximum unsigned value.
 - `scan_backwards_for_char`: Iterates backwards through a memory buffer pointed to by a global variable, decrementing an index until a specific character is found or the buffer start is reached.
+- `frag_move_sub_addq_bra`: Short code fragment that copies the memory at an offset from a2 to d2, then subtracts d1 from d2, then adds 1 to d2, then jumps to another point in the code.
 - `copy_byte_buffer_3`: Copies a specified number of bytes from a source pointer to a destination pointer, using an optimized loop for blocks of eight bytes and a fallback loop for remaining bytes.
 - `check_flag_and_return_byte`: Checks if a specific global variable is non-zero.
+- `frag_move_subq_bra`: Short code fragment that copies d2 to d4, then subtracts 2 from d4, then jumps to another point in the code.
+- `frag_move_lsr_addq_moveq_rts`: Short code fragment that copies d0 to the memory at an offset from a3, then shifts d0 right by 8, then copies d0 to the memory at a3, then adds 2 to a3, then loads 2 into d0, then returns.
+- `frag_move_lsr_swap_addq_moveq_rts`: Short code fragment that copies d0 to the memory at an offset from a3, then shifts d0 right by 8, then copies d0 to the memory at an offset from a3, then swaps the halves of d0, then copies d0 to the memory at an offset from a3, then shifts d0 right by 8, then copies d0 to the memory at a3, then adds 4 to a3, then loads 4 into d0, then returns.
+- `read_big_endian_word_from_a0`: Copies d0 into a0 and a3, reads a byte from (a0) into d0, shifts it left eight bits, then reads the next byte from (a0) into d0 and returns.
+- `frag_movea_moveq_lsl_move_dbra_rts`: Short code fragment that copies d0 to a0, then copies d0 to a3, then loads 3 into d1, then shifts d0 left by 8, then copies the memory at a0 (advancing a0) to d0, then loops back while counting down d1, then returns.
 - `set_constant_value`: The routine stores a specific constant value into a global variable.
 - `wait_and_dispatch_events_2`: The routine calls a function pointer from a global structure, then waits in a loop until a specific bit is set in a status byte.
 - `process_linked_data_chain`: Iterates through a linked list structure pointed to by a global variable, copying fields from each node into a fixed memory buffer while polling a status flag.
@@ -774,7 +845,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_result_and_zero`: Calls another routine to retrieve a value, stores that value and a zero into a structure pointed to by a register, and returns.
 - `advance_pointer_clear_next`: Advances a pointer stored in register A3 by two words and sets the word at the original pointer location to zero.
 - `configure_sprite_data_2`: Iterates through a table of pointers to update sprite attributes.
-- `return_immediately_stub`: The routine consists of a single 68000 instruction and no pseudo-code body was recovered, so it performs no work of its own.
 - `wait_and_invoke_handlers`: Invokes a function pointer from a global structure, then waits in a loop until a specific bit is cleared in a status byte.
 - `setup_ball_trajectory`: Calculates initial velocity and position for a projectile based on player input and game state.
 - `compute_vector_angle`: Calculates the angle of a 2D vector defined by the difference between input coordinates and global reference values.
@@ -782,7 +852,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `compute_indexed_xor_value`: Calculates an index by dividing a rotated input value by a divisor and shifting the result.
 - `dispatch_input_handler`: Checks a state value in a global structure to determine which routine to invoke, either a specific handler or a function pointer from a table.
 - `multiply_word_by_word`: Calls another routine to retrieve a value, masks the lower 16 bits, and multiplies it by a word-sized input value.
-- `update_random_seed_state`: Computes a new pseudo-random value by shifting and XORing the current state with a derived constant.
+- `mix_vhposr_joy0dat_cia_timer_seed`: Combines VHPOSR, JOY0DAT and the CIA timer byte with two rotating seed words, updates both seed words and returns the mixed value in d0.
+- `frag_cmp_bge_move_rts`: Short code fragment that compares d0 with d1, then branches if the comparison was greater or equal, then copies d1 to d0, then returns.
+- `frag_cmp_blt_move_rts`: Short code fragment that compares d0 with d2, then branches if the comparison was less, then copies d2 to d0, then returns.
 - `dispatch_value_conversion`: Checks a global status word and performs specific sign-extension or bit-shifting operations on the input value based on the status.
 - `call_unnamed_subroutine`: Calls another unnamed routine.
 - `parse_numeric_string_2`: Skips leading spaces in a character string and parses subsequent digits, handling optional signs, decimal points, or hexadecimal prefixes.
@@ -798,13 +870,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `compute_signed_value_from_table`: Checks the sign bit of an input value; if set, it negates the result of a recursive call.
 - `query_and_update_state`: The routine calls several function pointers stored in a global structure to perform updates and queries.
 - `return_zero_value_10`: The routine is empty and immediately returns a zero value.
+- `frag_move_moveq_bra`: Short code fragment that copies d5 to the stack, then loads 31 into d5, then jumps to another point in the code.
 - `divide_signed_integers`: Performs signed integer division of the value in D0 by the value in D1 using a bit-shifting algorithm.
 - `return_zero_constant_8`: The routine is empty and returns zero immediately.
+- `frag_ori_bsr_exg_rts`: Short code fragment that merges 77 into the stack, then calls check_and_fetch_value, then exchanges a4 and a5, then returns.
 - `check_and_fetch_value`: Checks a word-sized value at an offset from a base pointer; if non-zero, calls another routine.
 - `scale_fixed_point_value`: Multiplies a 32-bit fixed-point number by a 16-bit integer plus one.
 - `insert_linked_list_node_2`: The routine calls another routine to insert a node into a linked list.
-- `insert_linked_list_node`: Allocates a node and inserts it into a doubly linked list by updating forward and backward pointers.
+- `allocate_and_link_32_byte_blocks`: Allocates 32-byte blocks via two called routines, links each new block into a circular list at offsets 4 and 20, stores a tag, advances by d4 and repeats until reaching the limit in a1.
+- `return_constant_18`: Returns the constant an address in d0 to the caller without any other effect.
 - `manage_callback_state`: Checks a pointer in D0; if non-zero, calls a function via an offset in A6 and clears the pointer.
+- `check_and_loop`: Loads an immediate value into a register, executes a trap instruction, tests a different register for negativity, and enters a loop if negative, otherwise returns.
+- `return_constant_19`: Returns the constant an address in d0 to the caller without any other effect.
 - `execute_state_handler`: Invokes a function pointer from a structure and conditionally calls additional handlers if the result is positive.
 - `check_state_and_dispatch`: Calls a routine via a function pointer stored in a structure and checks its return value.
 - `check_and_process_entity`: Calls a function pointer from a structure to retrieve a result.
@@ -816,20 +893,28 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_score_accumulation`: Checks a status flag and conditionally invokes two function pointers from a global table.
 - `copy_data_block`: Copies a block of bytes from a source pointer to a destination offset within a structure, updating size and maximum bounds fields.
 - `update_clamped_counter_and_copy`: Increments a 16-bit counter at a fixed offset in a structure pointed to by a register, clamping it to a maximum value defined by another field in the same structure.
-- `update_sprite_position`: Adjusts a sprite's vertical coordinate by a delta value and updates its source pointer.
+- `buffered_read_with_refill`: Copies d3 bytes from the a3 buffer to the caller's pointer, refilling via the flush routine and a library read when the buffer is exhausted, updating the buffer count and position fields.
 - `update_offset_with_bounds_check`: Calculates a new offset by adding a value to a base pointer and checks if it falls within defined limits.
 - `check_offset_threshold`: Compares two word-sized values at fixed offsets from a base pointer.
 - `check_and_invoke_routine`: Calls another routine and checks its return value.
 - `return_constant_minus_one`: Returns the constant value of minus one to the caller.
+- `read_a2_offset_1a_plus_1c`: Clears d0, loads the word at offset 26 from a2 into d0, adds the long at offset 28 from a2, and returns.
+- `frag_move_moveq_bsr_addq_beq_rts`: Short code fragment that copies d1 to d2, then copies a2 to d1, then loads 255 into d3, then calls another routine, then adds 1 to d0, then branches if the last result was zero, then returns.
 - `store_d0_to_global_2`: Stores the 32-bit value from register D0 into a specific global variable.
 - `initialize_object_data`: Calls another routine to retrieve a value and stores it into a memory structure pointed to by a register.
-- `initialize_message_structure`: The routine clears a byte in a structure, obtains a value via indirect handlers, and if the value is acceptable it stores the value and zeros into a structure pointed to by a register and returns a constant.
+- `frag_moveq_bra_4`: Short code fragment that loads 1 into d7, then jumps to another point in the code.
+- `open_file_and_init_stream_struct`: Saves a3 and d1, calls a helper, clears a byte in a buffer, opens a file via the library, fills the a3 structure with the handle and constants, and returns minus one on success or zero on failure.
 - `clear_linked_list_state`: Checks a global flag and, if set, invokes a function pointer from a structure and resets the flag and a related counter.
 - `process_linked_list_nodes`: Iterates through a linked list structure pointed to by a global register, calculating offsets and accumulating a total value based on node types.
 - `execute_callback_with_bounds`: The routine executes a function pointer and updates an offset using a bounds check.
 - `invoke_callback_pointer`: Retrieves a function pointer from a table and executes it.
 - `execute_callback_routine`: Executes a function pointer and updates an offset using a bounds check while copying data blocks.
 - `execute_function_pointer_2`: Loads a function pointer from a global structure offset and executes the referenced routine.
+- `frag_move_lea_jsr_rts`: Short code fragment that copies a3 to a fixed memory address, then loads the address of a location in the code into a0, then calls another routine, then returns.
+- `process_segment_data`: Processes segment data by storing pointer values, calling a ring buffer routine, and performing conditional operations based on memory comparisons and register contents.
+- `frag_bra_11`: Short code fragment that jumps to another point in the code.
+- `parse_input_state`: Reads input data using a buffered reader, updates state handlers based on the read value, and performs bounds checking before returning.
+- `parse_and_execute_state`: Parses input data using a buffered reader, handles state transitions, and updates offsets with bounds checking before returning.
 - `load_med_module_library`: Opens a Med Module library using Amiga OS library calls.
 - `clear_pointer_array`: Checks if the second word of a pointer array is non-zero; if so, it calls another routine.
 - `reset_game_state`: Calls another routine and stores its return value in a global variable.
@@ -841,6 +926,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decrement_struct_field_and_zero`: Decrements a 16-bit value at an offset within a structure pointed to by a global variable.
 - `scale_palette_colors`: Iterates through a table of pointers to global structures, multiplying a byte from a source buffer by a constant and shifting the result right by four bits.
 - `fetch_and_clear_table_entry`: Reads a byte from a specific offset within a structure pointed to by an index in a global table.
+- `frag_lea_lsl_adda_movea_moveq_move_rts`: Short code fragment that loads the address of a fixed memory address into a2, then shifts d0 left by 2, then adds d0 to a2, then copies the memory at a2 to a3, then loads 0 into d0, then copies the memory at an offset from a3 to d0, then copies 0 to the memory at an offset from a3, then returns.
+- `frag_lea_lsl_adda_movea_moveq_move_rts_2`: Short code fragment that loads the address of a fixed memory address into a2, then shifts d0 left by 2, then adds d0 to a2, then copies the memory at a2 to a3, then loads 0 into d0, then copies the memory at an offset from a3 to d0, then copies 0 to the memory at an offset from a3, then returns.
+- `frag_move_rts_21`: Short code fragment that copies d0 to a fixed memory address, then returns.
 - `copy_entity_state_flags`: Iterates through a linked list of entity structures to find a valid target, then copies specific byte fields and flag bits from a source structure to the target.
 - `update_entity_state_flags`: Iterates through a linked list of entity structures to find a valid target.
 - `call_recursive_routine_5`: Calls another routine and returns.
@@ -859,31 +947,67 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_sprite_dma_configuration`: Decodes sprite animation data and configures the DMA controller state.
 - `store_entity_state_flags`: It masks a byte from d1 and stores it at an indexed offset of a structure in a4, then, when a flag bit is set in the same structure, it computes a value from d4 and stores a shifted byte into offset 2 of that structure.
 - `update_entity_dma_state`: Stores a byte into a status field, then updates a copper DMA list and processes sprite DMA by indexing tables, copying entity state flags, and dispatching through a jump table based on a flag index.
+- `frag_move_bra`: Short code fragment that copies d4 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_tst_bne_move_bra`: Short code fragment that tests d4, then branches if the last result was not zero, then copies the memory at an offset from a2 to the memory at an offset from a6, then jumps to another point in the code.
+- `frag_tst_beq_subq_bra`: Short code fragment that tests the memory at an offset from a6, then branches if the last result was zero, then subtracts 1 from the memory at an offset from a6, then branches if the last result was zero, then jumps to another point in the code.
+- `frag_move_addq_bra`: Short code fragment that copies d4 to the memory at an offset from a6, then copies the memory at an offset from a6 to d0, then adds 1 to d0, then copies d0 to the memory at an offset from a6, then jumps to another point in the code.
+- `frag_moveq_move_asl_bra`: Short code fragment that loads 0 into d1, then copies the memory at an offset from a5 to d1, then shifts d1 left by 3, then copies d4 to an indexed entry from a4, then jumps to another point in the code.
+- `frag_move_lsr_and_bra`: Short code fragment that copies d4 to d0, then shifts d4 right by 4, then masks d0 with 15, then copies d4 to the memory at an offset from a5, then copies d0 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_lsl_move_bra`: Short code fragment that shifts d4 left by 8, then copies d4 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_st_bra`: Short code fragment that copies d4 to the memory at an offset from a2, then sets the memory at an offset from a6 to all ones, then jumps to another point in the code.
+- `frag_move_addq_bra_2`: Short code fragment that copies 511 to the memory at an offset from a6, then adds 1 to d4, then copies d4 to the memory at an offset from a6, then jumps to another point in the code.
+- `update_dma_configuration_2`: Updates DMA configuration by reading structure values, performing conditional operations based on flags, setting up sprite data pointers, and managing copper DMA list configurations while touching hardware registers.
 - `process_and_update_dma`: Tests d4 and branches away when it is zero, otherwise computes a table index from d3 and d4 and loads a word from that table into d5.
+- `frag_move_bra_2`: Short code fragment that copies 6 to the memory at an offset from a5, then jumps to another point in the code.
+- `calculate_sprite_position`: Calculates sprite position values using bit manipulation, table lookups, multiplication and shift operations, then updates structure fields with computed results before branching to another routine.
+- `frag_tst_bne_btst_bsr_bra`: Short code fragment that tests d3, then branches if the last result was not zero, then tests bit 5 of the memory at an offset from a4, then branches if the last result was not zero, then calls another routine, then jumps to another point in the code.
+- `calculate_sprite_coordinates`: Calculates sprite position values using bit manipulation, table lookups, multiplication and shift operations, then updates structure fields with the calculated values.
+- `frag_tst_bne_btst_bsr_bra_2`: Short code fragment that tests d3, then branches if the last result was not zero, then tests bit 5 of the memory at an offset from a4, then branches if the last result was not zero, then calls another routine, then jumps to another point in the code.
+- `frag_move_moveq_and_bne_sub`: Short code fragment that copies d4 to d0, then loads 0 into d1, then copies the memory at an offset from a5 to d1, then masks d0 with 240, then branches if the last result was not zero, then subtracts d4 from d1.
+- `frag_bpl_moveq_bra`: Short code fragment that branches if the last result was not negative, then loads 0 into d1, then jumps to another point in the code.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs two instructions (lsr.b, add.b) and then falls through into the code that follows, with no return of its own.
+- `frag_cmpi_ble_moveq_move_rts`: Short code fragment that compares d1 with 64, then branches if the comparison was less or equal, then loads 64 into d1, then copies d1 to the memory at an offset from a5, then returns.
+- `frag_tst_bne_move_add_bsr_bra`: Short code fragment that tests d3, then branches if the last result was not zero, then copies the memory at an offset from a5 to d1, then adds d4 to d1, then calls another routine, then jumps to another point in the code.
+- `frag_tst_bne_move_sub_bsr_bra`: Short code fragment that tests d3, then branches if the last result was not zero, then copies the memory at an offset from a5 to d1, then subtracts d4 from d1, then calls another routine, then jumps to another point in the code.
+- `frag_tst_bne_btst_bsr_bra_3`: Short code fragment that tests d3, then branches if the last result was not zero, then tests bit 5 of the memory at an offset from a4, then branches if the last result was not zero, then calls another routine, then jumps to another point in the code.
+- `validate_and_compare_values`: Compares word values from structure fields against stored data, performs conditional arithmetic operations, and branches based on comparison results to update or skip further processing.
+- `frag_sub_cmp_bgt_move_clr_bra`: Short code fragment that subtracts d4 from d1, then compares d1 with d0, then branches if the comparison was greater, then copies the memory at an offset from a5 to d1, then clears the memory at an offset from a5, then copies d1 to the memory at an offset from a5, then copies d1 to d5, then jumps to another point in the code.
+- `update_dma_configuration`: Updates DMA configuration by reading structure values, performing conditional operations based on flags, setting up sprite data pointers, and writing to DMACON register with bit 15 set.
 - `wait_indefinitely`: The routine enters an infinite loop without performing any operations or modifying hardware registers.
 - `update_pointer_if_flag_set`: Checks if the least significant bit of a byte is set and if a specific integer field in a structure is non-zero.
+- `frag_cmpi_bne_beq_rts`: Short code fragment that compares d4 with 241, then branches if the last result was not zero, then compares d3 with 3, then branches if the last result was zero, then returns.
+- `frag_cmpi_bne_beq_rts_2`: Short code fragment that compares d4 with 242, then branches if the last result was not zero, then compares d3 with 3, then branches if the last result was zero, then returns.
+- `validate_and_store_state`: Validates a byte value against specific constants, performs bitwise operations on register contents, and stores computed results based on conditional branches.
+- `frag_cmpi_beq_bne_bclr_rts`: Short code fragment that compares d4 with 248, then branches if the last result was zero, then compares d4 with 249, then branches if the last result was not zero, then clears bit 1 of a fixed memory address, then returns.
+- `frag_bset_rts`: Short code fragment that sets bit 1 of a fixed memory address, then returns.
 - `process_vertex_data`: Multiplies input bytes by a scaling factor and stores the result in a global table.
 - `clear_pointer_and_call`: Checks if a global pointer is non-zero, sets a word at an offset within the pointed structure to zero, and nullifies the pointer.
 - `process_entity_state_flags`: Iterates through a linked list structure to locate a target entity, then copies specific byte fields and updates status flags in a global variable and local memory based on the entity's state.
 - `update_entity_state_from_source`: The routine traverses a linked list structure to locate a target entry, then copies specific status bytes and flags from a source object into the target.
+- `frag_movem_rts`: Short code fragment that saves registers on the stack, then restores saved registers from the stack, then returns.
 - `return_d0_byte_2`: The routine immediately returns the value contained in register D0.
-- `return_d0_byte_3`: Returns the value currently held in the D0 register.
+- `return_constant_20`: Returns the constant an address in d0 to the caller without any other effect.
 - `return_from_subroutine_7`: The routine performs a single instruction that returns from a subroutine.
 - `initialize_font_data`: The routine writes several values to global variables and references a font table.
 - `write_sprite_position`: Stores a shifted value and a masked value into specific offsets of a global structure pointer, likely updating sprite coordinates or attributes.
+- `read_audio_period_shifted`: Loads a pointer from a nearby constant, reads the word at offset 40 into d0, swaps halves and shifts right by three, returning the result.
+- `validate_and_store_pointer`: Validates pointer values against specific conditions using comparison operations, stores validated pointers in global memory locations, and returns after completing validation checks.
 - `clear_flag_and_call_function`: Checks a global pointer; if non-zero, it sets the pointer to zero and invokes a function address stored in a structure field relative to another global variable.
 - `store_a3_to_global`: Stores the value of register A3 into a specific global variable.
 - `store_value_in_global`: Stores a value passed in register A0 into a global variable.
 - `store_value_and_recurse`: Stores a 32-bit value into a global variable and immediately calls itself recursively.
 - `update_global_state_3`: Loads a value from register A0 into a global variable and calls another routine.
 - `call_subroutine_and_store_result`: Calls another routine and stores the returned value into a global variable.
+- `frag_bra_2`: Short code fragment that jumps to another point in the code.
+- `jump_to_repeat_call_until_count_exhaus`: Jump stub: passes control straight on to repeat_call_until_count_exhausted.
 - `call_two_routines_2`: Calls two other routines sequentially.
-- `loop_and_call_routine`: Checks if a value in D0 is non-zero.
+- `repeat_call_until_count_exhausted`: Saves registers, pushes the count from d0, calls the setup routine with a0, then loops reading bytes from a2 and calling the byte routine until the count reaches zero, restoring registers and returning.
+- `scan_string_and_call`: The routine scans a zero-terminated string pointed to by a register, counting its length, and if the length is non-zero it calls another routine, then returns the incoming long word.
 - `check_and_trap_on_null`: Checks two global pointers for null or zero values; triggers a trap if either is invalid or if the second pointer is valid but the first is not.
 - `store_global_values`: Stores a byte from a register into a global variable and sets a function pointer to a value from another register.
 - `empty_stub_routine_2`: The routine contains seven instructions and performs no observable work; it ends with a return.
 - `execute_stub_routine`: Executes a sequence of instructions that performs no observable work before returning.
-- `decode_tile_row`: Checks a byte range against two bytes from a structure and, if the check passes, updates a width field in a structure and then iterates over a stack-held count of entries.
+- `blit_masked_sprite_column_to_bitmap`: Validates a sprite index against two bounds, advances the destination row, then loops copying eight masked source bytes per row into the bitmap using d3/d2 masks and d1/d0 strides.
 - `process_text_input`: Reads characters from an input source and stores them into a buffer pointed to by a register.
 - `call_function_pointer_9`: Invokes a routine via a function pointer stored in a global variable.
 - `process_text_input_buffer`: Reads characters from an input source and updates a text buffer in memory.
@@ -895,7 +1019,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_text_input_buffer_6`: Reads character codes from an input source and updates a text buffer managed by a pointer, handling backspace, carriage return, and line wrapping logic.
 - `skip_trailing_spaces`: Iterates backwards through a string buffer pointed to by a register, decrementing an offset while the current character is a space.
 - `empty_stub_routine_3`: The routine consists of three instructions and performs no observable work.
-- `update_offset_and_call`: Saves a 32-bit value from a structure offset, updates a 16-bit field at that same offset by adding a scaled register value, calls another routine, and then restores the original 32-bit value.
+- `blit_shifted_row_into_bitmap`: Saves the bitmap pointer at offset 40 of a4, advances it by d7 times eight, then calls the blit routine with d0 set to d6 minus d7 and restores the pointer.
 - `invert_tile_pixels`: Iterates through a table of pointers and inverts the bits of a byte at each address.
 - `wait_for_library_load`: Polls a status flag within a library structure until it indicates readiness.
 - `poll_event_loop`: Repeatedly calls a function pointer stored in a global table while a zero flag condition holds true.
@@ -905,18 +1029,24 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `transform_word_with_flags`: The routine takes a 32-bit value and performs bitwise operations on its lower 16 bits, including a right shift and XOR. It conditionally shifts the lower bits again and sets a flag based on the parity of the least significant bit, returning the modified value and the flag.
 - `lookup_table_entry`: Calls two other routines to obtain indices, masks the lower bits of each result, and combines them to calculate an offset into a global table.
 - `read_potgo_state`: Reads the parallel port register to trigger joystick sampling and interprets the resulting status bits.
-- `read_potgo_buttons`: Triggers the Amiga POTGO hardware register to sample analog joystick or mouse inputs.
+- `ciaa_potgo_button_poll_loop`: Selects fire or right button via CIAA PRA and POTGO, pulses the line and polls POTGOR up to seven times, returning a bitmask in d0.
 - `compare_byte_sequences`: Compares two byte sequences up to a specified length, returning 1 if the first sequence is lexicographically greater or equal, -1 if smaller, and 0 if the length counter expires with a secondary flag unset.
 - `call_subroutine_and_return`: The routine pushes a value from register D1 onto the stack, calls another routine, and returns a combined value using the original D0 and the stacked D1.
+- `return_constant_21`: Returns the constant an address in d0 to the caller without any other effect.
 - `store_value_to_global`: Stores the value passed in register D0 into a specific global variable.
 - `store_d0_to_global_3`: Stores the value passed in the D0 register into a specific global variable.
 - `get_subroutine_pointer`: Returns the address of another routine stored in a global variable.
+- `return_constant_22`: Returns the constant an address in d0 to the caller without any other effect.
 - `toggle_global_bit_one`: Checks the lower word of register D0.
 - `toggle_flag_bit_one`: Checks the value in register D0.
 - `toggle_global_bit_one_2`: Checks a word in register D0; if non-zero, sets bit 1 of a global variable, otherwise clears it.
 - `toggle_global_flag_bit`: Checks the value in the D0 register.
 - `toggle_global_bit_one_3`: Checks a word passed in register D0.
 - `toggle_bit_one_flag`: Checks a value passed in a register; if non-zero, it sets bit one of a global variable, otherwise it clears bit one.
+- `frag_move_rts_22`: Short code fragment that copies d0 to a fixed memory address, then returns.
+- `frag_movea_moveq_lsr_bcc_move_lea_dbra`: Short code fragment that copies an address to a0, then loads 3 into d1, then shifts d0 right by 1, then branches if the carry flag is clear, then copies the memory just below a2 (moving a2 down) to the memory at an offset from a0, then loads the address of the memory at an offset from a0 into a0, then loops back while counting down d1, then returns.
+- `update_video_dma_control`: Writes a word value to a DMA control register, reads from video position registers, compares values, and updates a counter until reaching zero.
+- `update_video_dma_control_2`: Configures video DMA control registers and updates a counter until zero, while reading from video position registers and comparing values.
 - `check_and_clear_flag_2`: Checks a global variable for a non-zero value and a specific short offset for a magic value.
 - `configure_dma_interrupts`: Sets global configuration variables and initializes a table entry to zero.
 - `clear_dma_channels`: Writes zero to a sequence of hardware registers at fixed offsets to disable DMA channels.
@@ -924,64 +1054,41 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `save_return_context`: Stores the incoming D0 register value and the current stack pointer into two adjacent global variables.
 - `store_return_value_and_stack`: Stores the value in register D0 into a global variable and saves the current stack pointer into another global variable.
 - `call_indirect_handler`: Invokes a function pointer stored in a global variable.
+- `return_constant_23`: Returns the constant an address in d0 to the caller without any other effect.
 - `write_custom_register`: Writes the value of a global variable to a specific Amiga custom chip hardware register.
+- `frag_lsr_beq_addq_add_btst_sne_ext_rts`: Short code fragment that shifts d1 right by 1, then shifts d0 right by 1, then branches if the last result was zero, then adds 1 to d0, then adds d0 to d1, then tests bit d1 of a fixed memory address, then sets d0 if the last result was not zero, then sign-extends d0, then returns.
 - `negate_zero_flag_byte`: Reads a byte from the D0 register and the state of the Zero Flag.
+- `compute_collision_data`: Calculates coordinate differences between two structures, adjusts these differences using byte and word values from the structures, performs comparisons between adjusted values and stored coordinates, and returns -1 or 0 based on comparison results.
 - `check_boundary_limits`: Compares accumulated values against limits stored in a global structure.
+- `frag_move_rts_23`: Short code fragment that copies 61505 to a fixed memory address, then copies a fixed memory address to d0, then returns.
+- `update_clxcon_via_bit_manipulation`: Calls another routine, then performs a loop to set bit 6 of a value derived from a register, and finally writes the modified value to the color control register and updates a register with the value from the custom chip's register.
+- `frag_moveq_lsr_bcc_bset_addq_dbra_move`: Short code fragment that loads 5 into d7, then loads 0 into d6, then loads 0 into d5, then shifts d0 right by 1, then branches if the carry flag is clear, then sets bit d5 of d6, then adds 2 to d5, then loops back while counting down d7, then copies d6 to d0, then returns.
+- `frag_moveq_subq_lsl_move_or_ori_rts`: Short code fragment that loads 1 into d1, then subtracts 1 from d0, then shifts d1 left by d0, then copies d1 to d2, then shifts d2 left by 6, then merges d2 into d1, then merges 61440 into d1, then copies d1 to a fixed memory address, then copies a fixed memory address to d0, then returns.
+- `frag_tst_beq_movem_rts`: Short code fragment that tests the memory at an offset from a0, then branches if the last result was zero, then copies several registers to or from memory, then returns.
+- `process_and_copy_data`: Checks flag fields at offset 62 in two structures, performs arithmetic operations on data from the first structure, copies processed values to the second structure, updates various fields including a bitmask and related counters, and sets a final flag field to indicate completion.
 - `decrement_loop_counter_2`: Decrements a global counter variable and calls another routine repeatedly until the counter reaches zero.
 - `conditional_vector_fill`: Calculates a geometric determinant from a pointer array to decide between two filling patterns.
 - `copy_vertex_pairs_to_buffers`: Calculates a cross-product determinant from a vertex array to determine winding order.
-- `copy_loop_and_dispatch`: Copies a sequence of 32-bit values from a source pointer to two destination locations in a loop, then calls a specific subroutine.
 - `interpolate_vertex_coordinates`: Applies a global offset to a list of vertex positions and performs linear interpolation between coordinate pairs based on depth values.
 - `interpolate_collision_bounds`: Updates vertex positions by adding a displacement value and performs linear interpolation on coordinate tables to calculate precise collision boundaries.
-- `interpolate_tennis_animation_frames`: The routine updates animation frame offsets and interpolates values from a lookup table based on game state variables.
-- `interpolate_sprite_position`: Iterates through a table of coordinate pairs to find boundary values and performs linear interpolation to calculate a new position.
-- `interpolate_table_values`: Searches a table of short integers to find bounding entries based on input values.
-- `interpolate_values`: Performs interpolation calculations for various data sets including positions, collision data, and animation frames.
-- `interpolate_collision_data`: Performs linear interpolation on coordinate tables to calculate precise intersection points and stores the resulting values into a global buffer.
-- `calculate_ball_trajectory_2`: Interpolates coordinates from a linked list of points to determine a path segment.
-- `calculate_ball_trajectory_3`: Interpolates ball position and speed based on paddle input and table limits, then updates global state variables for rendering or collision detection.
-- `compute_ball_trajectory_segments`: Calculates the number of frames and horizontal displacement for a ball's flight path by iterating through vertical steps.
-- `calculate_trajectory`: Calculates trajectory points for a specific movement path.
-- `compute_court_geometry`: Calculates intersection points and slope values for line segments using integer arithmetic.
-- `calculate_shot_trajectory_points`: Computes a series of intermediate coordinates and timing values for a ball trajectory by interpolating between start and end points.
-- `update_court_state`: Adjusts a global coordinate based on a proportional calculation using input registers.
-- `render_court_graphics`: The routine updates several registers and performs bit block transfers to draw court elements.
-- `render_tennis_court_lines`: Calculates screen coordinates for court markings based on perspective projection and writes line drawing commands to the blitter control registers.
-- `draw_tennis_court_blt`: This routine configures the Copper list or DMA controller to render a 2D court surface using the Blitter.
-- `draw_court_blt`: Performs a bitblock transfer operation related to drawing a court.
-- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
 - `store_d0_to_globals`: Stores the value from the D0 register into two adjacent global variables.
 - `store_d0_to_globals_2`: Copies the value in the D0 register to two adjacent global variables.
 - `set_global_d0_values`: Stores the value passed in register D0 into two adjacent global variables.
-- `update_tennis_state`: Calculates a value from memory offsets and compares it to a global variable.
+- `frag_moveq_move_rts`: Short code fragment that loads 0 into d0, then copies d0 to a fixed memory address (2 times in a row), then returns.
+- `update_state_from_memory`: The routine computes a value from two memory offsets, compares it to a global variable and, if it has changed and is non-zero, updates the global variable and calls another routine.
 - `check_and_call_flagged_routine`: Checks if a specific global variable is non-zero.
 - `trace_ball_collision_path`: The routine iterates through a bitmap grid to find a set bit, then propagates that bit state to adjacent rows based on a direction mask.
 - `process_collision_bitmap`: Iterates through a bitmap array to find and clear specific bit flags, updating related state variables and pushing results onto a stack structure.
-- `trace_bitmask_boundary`: Traces a contiguous region of set bits within a bitmap array, pushing boundary coordinates and identifiers onto the stack.
-- `process_collision_bits`: Iterates through a bitmap array to find and clear a specific bit, then updates related bitmaps based on a control table.
-- `return_immediately_3`: The routine is empty and returns immediately to the caller without performing any operations.
 - `call_two_routines_3`: Calls two unnamed routines sequentially.
 - `call_other_routine_twice`: The routine calls another routine twice and then returns.
 - `configure_copper_list`: Constructs and updates a copper list in memory by reading parameters from a source buffer.
 - `configure_copper_list_2`: The routine performs twenty-three instructions to update sprite properties and hardware settings.
-- `update_sprite_properties`: Iterates through a list of entities, updating their state flags and position values based on register inputs.
 - `process_animation_frames`: The routine manages animation processing through a series of subroutine calls.
 - `process_animation_frame`: Iterates through a series of frames by updating state variables and checking a global condition, likely related to animation or timing.
-- `update_sprite_properties_variant`: The routine loops over entries to update position fields and write masked values to offsets using a table.
 - `decrement_loop_counter_3`: The routine decrements a register value in a loop until it reaches negative one.
 - `clip_and_render_line`: Clips a line segment defined by input coordinates against a rectangular boundary stored in a global structure.
 - `clip_and_render_line_2`: Clips a line segment defined by two endpoints against a rectangular boundary using the Cohen-Sutherland algorithm.
 - `clip_and_render_line_3`: Clips a line segment against a rectangular boundary using linear interpolation and calculates its slope class.
-- `render_sprite_list`: Iterates through a table of offsets to calculate screen coordinates and attributes for multiple sprites.
-- `render_ball_sprite_data`: Calculates sprite coordinates and attributes based on input values, then writes them to a sprite structure while waiting for hardware readiness.
-- `draw_coplist_entries`: Constructs and writes display list entries to a buffer, configuring horizontal and vertical positions, colors, and interrupt flags while waiting for the copper to reach specific addresses.
-- `render_copper_list_entries_3`: The routine performs eight instructions to process entries for a copper list.
-- `render_copper_list_entries`: Iterates through a table of values to construct and write copper list instructions into a buffer, calculating offsets and setting control flags while polling a hardware status register.
-- `render_graphic_strip`: Iterates through a table of offsets to calculate positions and writes rendering commands to a buffer.
-- `render_copper_list_entries_2`: Iterates through a table of values to construct and write copper list instructions to a buffer, inserting wait states and checking a hardware status register for readiness before each write.
-- `process_sprite_table_loop`: Iterates through a table of pointers, updating sprite attributes such as position and flags in a memory block while waiting for a hardware status bit to clear.
-- `update_entity_properties`: Iterates through a table of pointers, updating specific fields within each referenced structure while waiting for a status flag to clear.
-- `update_entity_state_loop`: Iterates through a table of pointers, updating memory offsets within a base structure with calculated values and flags.
 - `update_ball_trajectory_2`: Calculates new coordinates by adding velocity offsets to base positions stored in a structure, swaps values to ensure minimum and maximum bounds are ordered, and updates a global state variable before invoking sub-routines.
 - `wait_and_call_handlers`: Invokes a function pointer from a global table, recursively calls itself, and loops until a specific bit is set in a global byte.
 - `render_copper_list_block`: Calculates display list parameters and writes copper list instructions to a buffer, including wait states and register updates, while polling a hardware status register for readiness.
@@ -989,28 +1096,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `compute_squared_values`: Calculates squares and double-squares of two input values stored in registers.
 - `draw_tennis_ball_sprite`: Calculates screen coordinates and bounds for a sprite, then iterates through a bitmap to toggle pixels using XOR operations, likely rendering a ball or small object.
 - `render_bitplane_sprite`: Calculates clipping bounds and bit offsets for a graphical element relative to a display buffer.
-- `render_ball_sprite`: Calculates screen coordinates and updates a sprite control block with position and visibility flags.
-- `draw_diagonal_line_segment`: Renders a diagonal line segment onto a bitmap buffer using a Bresenham-style algorithm, flipping bits at calculated coordinates.
-- `update_ball_physics_3`: Calculates ball trajectory and collision response by updating position and velocity variables.
-- `update_sprite_animation_state_2`: The routine toggles a global state flag and updates position variables based on input registers.
-- `update_sprite_color_index`: Reads a byte from a memory location pointed to by a register and writes it to a specific bitplane offset.
-- `spawn_ball_particles_2`: This routine performs a tail branch to another routine.
-- `spawn_ball_particles`: Iterates through a table of offsets to configure and initialize multiple particle structures in memory.
-- `update_sprite_properties_2`: Iterates through a table of offsets to update multiple sprite control block fields in a global structure.
-- `initialize_entity_properties`: Loops through a table of values to populate a block of memory with specific offsets, including coordinates, flags, and conditional parameters based on register inputs.
-- `populate_object_table`: Iterates through a pointer array, decrementing a counter until it reaches negative one.
 - `set_global_flag_bit`: Reads a word from a register, performs a bitwise OR with 1, and stores the result into a global variable.
 - `store_word_to_global_2`: Stores a 16-bit value from the D0 register into a specific global variable.
 - `process_bitmapped_data_loop`: Calls a helper routine and iterates through a range defined by global variables.
-- `do_nothing_2`: The routine is empty and performs no operations before returning.
 - `clear_register_d7_2`: Loads zero into a register and returns.
-- `clear_register_d7`: This routine loads zero into a register and returns.
-- `update_entity_positions_2`: Iterates through a list of entities, updating their position and state fields based on accumulated values and a source table.
-- `tiny_moveq_rts`: Small routine of 2 instructions that loads 0 into d7, then returns.
 
 ### ramdrive.device
 
 - `return_constant_value`: The routine returns a fixed 32-bit value of all ones.
+- `return_constant_24`: Returns the constant an address in d0 to the caller without any other effect.
+- `return_constant_25`: Returns the constant an address in d0 to the caller without any other effect.
 - `initialize_ramdrive`: Initializes a device node and a ramdrive device by storing pointers to internal buffers and linking it into a global list.
 - `initialize_device_node`: Copies a name string and a table of values into global buffers, then allocates and populates a device node structure by linking it into a global list and setting its function pointers.
 - `initialize_device_node_2`: Allocates and populates a device node structure by copying initialization tables and setting up function pointers.
@@ -1023,7 +1118,25 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_d1_to_offset_18`: Stores the value in register D1 into a memory location calculated by adding an offset to the address in register A1.
 - `process_device_message`: Executes a function pointer from a global structure, then looks up a value in a table based on a field in the message structure.
 - `return_constant_value_2`: Returns a fixed constant value to the caller.
+- `jump_to_return_constant_fd`: Jump stub: passes control straight on to return_constant_fd.
+- `frag_bra_3`: Short code fragment that jumps to another point in the code.
+- `frag_bra_4`: Short code fragment that jumps to another point in the code.
+- `frag_bra_5`: Short code fragment that jumps to another point in the code.
+- `frag_bra_6`: Short code fragment that jumps to another point in the code.
+- `jump_to_return_constant_fd_2`: Jump stub: passes control straight on to return_constant_fd.
+- `jump_to_return_constant_fd_3`: Jump stub: passes control straight on to return_constant_fd.
+- `jump_to_return_constant_fd_4`: Jump stub: passes control straight on to return_constant_fd.
+- `frag_bra_7`: Short code fragment that jumps to another point in the code.
+- `jump_to_return_constant_fd_5`: Jump stub: passes control straight on to return_constant_fd.
+- `frag_bra_8`: Short code fragment that jumps to another point in the code.
 - `return_constant_fd`: Returns the value -3 immediately.
+- `set_long_word_and_return_zero`: Stores the value 1 as a 32-bit long word at offset 32 of the structure pointed to by a1, then sets d0 to 0 and returns.
+- `frag_move_bne_moveq_rts`: Short code fragment that copies the memory at an offset from a1 to d0, then branches if the last result was not zero, then loads 0 into d0, then copies d0 to the memory at an offset from a1, then returns.
+- `frag_movea_addq_move_beq_add_bra`: Short code fragment that copies the memory at an offset from a1 to a6, then adds 1 to the memory at an offset from a6, then copies the memory at an offset from a6 to d0, then branches if the last result was zero, then adds the memory at an offset from a1 to d0, then copies d0 to a0, then copies the memory at an offset from a1 to a2, then jumps to another point in the code.
+- `frag_subq_moveq_rts`: Short code fragment that subtracts 1 from the memory at an offset from a6, then loads 29 into d0, then returns.
+- `copy_memory_blocks`: Checks a bit in a structure, performs memory address calculations, copies data blocks between memory locations using looped moves, updates counters and flags, and returns zero when complete.
+- `tiny_moveq_rts_2`: Small routine of 2 instructions that loads 28 into d0, then returns.
+- `frag_movea_addq_bra`: Short code fragment that copies a fixed memory address to a0, then adds 1 to the memory at an offset from a0, then jumps to another point in the code.
 - `unlink_and_free_node`: Removes a node from a linked list by updating pointers and decrements a counter.
 - `update_linked_list_and_string`: Traverses a linked list structure to update a pointer, calls a routine to fetch a value into a global variable, and appends a colon character to the end of a null-terminated string.
 - `terminate_string_with_colon`: The routine iterates through a string pointer until it finds the null terminator, replacing it with a colon character.
@@ -1041,7 +1154,31 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_linked_list_state`: Updates fields within a linked list node based on a conditional branch and indirect jump table logic, modifying pointers and status values.
 - `update_player_state_table`: The routine updates entries in a player state table based on an index and a condition check.
 - `manage_ram_handler_state`: This routine executes a large block of instructions after being entered from outside the static flow.
+- `copy_structure_data_2`: Copies data fields from one structure to another using indexed calculations with shift operations, updates multiple data fields in a target structure based on source data.
+- `update_and_validate_data`: Updates data fields in a structure based on indexed calculations from another structure, performs comparisons between values, handles conditional jumps based on comparison results, and exits with a specific value.
+- `frag_move_lsl_cmp_bge_moveq_jmp`: Short code fragment that copies the memory at an offset from a1 to d1, then shifts d1 left by 2, then copies an indexed entry from a0 to d2, then compares d2 with the memory at an offset from a1, then branches if the comparison was greater or equal, then copies 219 to the memory at an offset from a2, then loads 255 into d1, then jumps to the address in a6.
+- `frag_tst_bne_move_lsl_moveq_jmp`: Short code fragment that tests the memory at an offset from a1, then branches if the last result was not zero, then copies the memory at an offset from a1 to d1, then shifts d1 left by 2, then tests an indexed entry from a0, then branches if the last result was not zero, then loads 0 into d1, then jumps to the address in a6.
+- `frag_move_lsl_tst_bne_moveq_jmp`: Short code fragment that copies the memory at an offset from a1 to d1, then shifts d1 left by 2, then copies an indexed entry from a0 to the memory at an offset from a1, then tests the memory at an offset from a1, then branches if the last result was not zero, then copies 219 to the memory at an offset from a2, then loads 255 into d1, then jumps to the address in a6.
+- `update_calculated_values`: Calculates memory offsets using shift operations, stores calculated values to indexed locations in memory, updates multiple data fields in a structure with arithmetic operations.
+- `store_calculated_values`: Calculates memory offsets using shift operations, stores calculated values to indexed locations in memory, updates multiple data fields in a structure, and jumps to another routine when complete.
+- `setup_and_call_routine`: Calculates memory addresses using shift operations, stores these addresses to specific offsets in a structure, prepares parameters for a function call, executes the function call, and returns based on the function result.
+- `frag_move_moveq_lea_jsr_tst_bne_jmp`: Short code fragment that copies the memory at an offset from a1 to d1, then loads 124 into d0, then loads the address of the memory at an offset from a4 into a4, then calls the routine whose address is in a5, then copies d1 to the memory at an offset from a1, then tests d1, then branches if the last result was not zero, then loads 0 into d1, then jumps to the address in a6.
+- `validate_and_update_flags_3`: Compares values from a structure with stored data, updates flag fields based on comparison results, performs logical operations on flags, and returns control to another routine with conditional execution paths.
+- `validate_and_update_flags_2`: Compares values from a structure with stored data, updates flag fields based on comparison results, performs logical operations on flags, and handles conditional jumps.
+- `validate_and_update_flags`: Compares values from a structure with stored data, updates flag fields based on comparison results, performs logical operations on flags, and jumps to another routine when certain conditions are met.
+- `frag_move_lsl_moveq_cmp_bne_jmp`: Short code fragment that copies the memory at an offset from a1 to d1, then shifts d1 left by 2, then loads 253 into d2, then compares d2 with an indexed entry from a0, then branches if the last result was not zero, then copies 212 to the memory at an offset from a2, then loads 0 into d1, then jumps to the address in a6.
+- `frag_moveq_move_lea_jsr_tst_bne_jmp`: Short code fragment that loads 254 into d2, then copies the memory at an offset from a1 to d1, then loads 124 into d0, then loads the address of the memory at an offset from a4 into a4, then calls the routine whose address is in a5, then copies d1 to the memory at an offset from a1, then tests d1, then branches if the last result was not zero, then loads 0 into d1, then jumps to the address in a6.
+- `transfer_and_process_data_3`: Copies memory locations between structures using shift operations, performs arithmetic operations on values from memory, stores calculated results, and returns immediately.
+- `transfer_and_process_data_2`: Copies memory locations between structures using shift operations, performs arithmetic operations on values from memory, stores calculated results in a global buffer, and returns control to another routine.
+- `transfer_and_process_data`: Copies memory locations between structures using shift operations, performs arithmetic operations on values from memory, stores calculated results to indexed locations in memory.
+- `execute_function_calls`: Executes two function calls with specific parameters, performs arithmetic operations on return values, and returns a predefined value after completing the calls.
 - `process_game_state_flags_2`: Reads state flags from offset tables to determine execution paths and updates global state variables accordingly.
+- `process_and_store_byte_data`: Calculates memory offsets using shift operations, loads byte data from indexed locations, stores this data to specific fields in a structure, and exits with a conditional jump based on the loaded value.
+- `frag_moveq_movea_jsr_move_tst_bne_jmp`: Short code fragment that loads 12 into d1, then loads 36 into d0, then copies the memory at an offset from a2 to a4, then calls the routine whose address is in a5, then copies d1 to the memory at an offset from a1, then tests d1, then branches if the last result was not zero, then copies 221 to the memory at an offset from a2, then loads 0 into d1, then jumps to the address in a6.
+- `execute_multiple_function_calls`: Executes multiple function calls with varying parameters, performs memory operations using calculated offsets, updates data fields in structures, and returns a specific value after completing all operations.
+- `copy_and_execute`: Copies a long value from memory at a1 to a register, shifts it left by two bits, reads a long value from memory at an offset from a0 using the shifted value as index, stores that value to memory at an offset from a1, and calls a function with specific parameters.
+- `frag_move_lsl_clr_tst_bne_moveq_bra`: Short code fragment that copies the memory at an offset from a1 to d1, then shifts d1 left by 2, then copies an indexed entry from a0 to the memory at an offset from a1, then clears the memory at an offset from a2, then tests the memory at an offset from a1, then branches if the last result was not zero, then loads 0 into d1, then jumps to another point in the code.
+- `frag_moveq_move_lea_jsr_jmp`: Short code fragment that loads 254 into d2, then copies the memory at an offset from a1 to d1, then loads 28 into d0, then loads the address of the memory at an offset from a4 into a4, then calls the routine whose address is in a5, then jumps to the address in a6.
 - `resolve_linked_list_entry`: Traverses a linked list structure using a base pointer and an index until a match or null terminator is found.
 - `resolve_and_update_state`: Traverses a linked list structure to find a matching entry, then updates global state variables and memory offsets based on the result of an external routine call.
 - `resolve_linked_list_entry_2`: Traverses a linked list structure pointed to by registers to find a matching or null entry.
@@ -1060,7 +1197,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `decrement_ref_count_and_dispatch`: Decrements a reference counter stored in the library context structure.
 - `return_zero_constant_9`: This routine immediately returns a zero value without performing any other operations or accessing memory.
 - `compute_font_offset`: Calculates a signed offset value based on the difference between two 16-bit values and a bitwise comparison of two byte arrays.
-- `process_font_data_block`: Copies a header from the input parameter and processes a table of font character structures.
+- `process_font_character_table`: Iterates through a table of font character structures to find the entry with the highest metric value.
 - `call_font_open_handler`: Invokes a function pointer stored in a global variable within the diskfont library.
 - `call_font_close_handler`: Executes a function pointer stored in a global variable to handle font closing operations.
 - `call_font_init_handler`: The routine retrieves a function pointer from a global table offset by a negative constant and invokes it.
@@ -1108,6 +1245,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `infinite_loop_halt`: The routine executes an infinite loop without performing any operations or returning.
 - `infinite_loop`: The routine executes an unconditional infinite loop without performing any other operations or returning.
 - `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_18`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_19`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_20`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_21`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `copy_byte_to_memory`: Copies a single byte from a source address held in a register to a destination address stored in a global variable.
 - `enter_infinite_loop`: The routine executes an unconditional infinite loop without performing any other operations.
 - `infinite_loop_hang`: The routine enters an unconditional infinite loop, effectively halting execution flow at this point.
@@ -1116,8 +1257,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `enter_infinite_loop_2`: The routine executes an unconditional branch to itself, creating an infinite loop that halts further execution.
 - `jump_to_enter_infinite_loop_38`: Jump stub: passes control straight on to enter_infinite_loop_38.
 - `decode_invalid_code`: The routine contains no valid instructions and is unreachable.
+- `jump_vector_entry_22`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_23`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_2`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_3`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_24`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_25`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_26`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `hang_execution_forever`: The routine enters an infinite loop that performs no operations.
 - `hang_processor_forever`: Enters an infinite loop without performing any operations.
 - `enter_infinite_loop_3`: The routine executes an unconditional infinite loop without performing any operations or returning control to the caller.
@@ -1142,6 +1288,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_from_subroutine_8`: The routine performs a single instruction to return control to the calling function.
 - `infinite_loop_hang_6`: The routine enters an unconditional infinite loop without performing any operations or returning control.
 - `wait_forever`: The routine enters an infinite loop that performs no operations.
+- `jump_vector_entry_27`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_28`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_29`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `spin_forever`: The routine contains an infinite loop that does nothing.
 - `loop_forever`: The routine executes an infinite loop with no instructions to exit or perform actions.
 - `infinite_loop_hang_7`: The routine enters an unconditional infinite loop, causing the processor to halt execution indefinitely.
@@ -1167,21 +1316,27 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `infinite_loop_hang_12`: The routine executes an unconditional infinite loop, causing the processor to hang indefinitely without performing any other operations.
 - `do_nothing_3`: The routine is empty and returns immediately.
 - `enter_infinite_loop_12`: The routine executes a branch instruction that jumps back to itself, creating an infinite loop.
+- `jump_vector_entry_30`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_31`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_4`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `infinite_loop_hang_13`: The routine enters an unconditional infinite loop, effectively halting execution flow.
 - `halt_execution_2`: The routine is empty and contains no executable instructions.
 - `infinite_loop_hang_14`: The routine executes an unconditional infinite loop.
+- `jump_vector_entry_32`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_33`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `infinite_loop_4`: The routine executes an unconditional branch to itself, creating an infinite loop that prevents execution from proceeding further.
 - `update_pointer_value`: Loads a value from a memory location pointed to by a register and stores it into another memory location.
 - `update_sprite_position_2`: Reads a coordinate value from a memory location and writes it to a hardware register to update a sprite's position on the screen.
 - `execute_infinite_loop`: This routine consists of a single infinite loop that continuously executes without performing any operations.
 - `halt_on_bad_data_2`: The routine contains no valid 68000 instructions and immediately terminates execution due to invalid opcodes.
+- `jump_vector_entry_34`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `infinite_loop_hang_15`: The routine enters an unconditional infinite loop without performing any operations or returning.
 - `infinite_loop_5`: The routine enters an unconditional infinite loop.
 - `copy_memory_block`: copies a block of data from a source address to a destination address using a length specified in a register.
 - `halt_execution_infinite_loop`: This routine enters an unconditional infinite loop that performs no operations.
 - `enter_infinite_loop_13`: The routine contains an unconditional infinite loop, causing execution to halt indefinitely at this point.
 - `infinite_loop_halt_3`: The routine enters an infinite loop that performs no operations.
+- `jump_vector_entry_35`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `halt_on_bad_data_3`: The routine is empty and contains no valid instructions, causing execution to stop immediately.
 - `infinite_loop_halt_4`: The routine enters an unconditional infinite loop, effectively halting execution.
 - `infinite_loop_hang_16`: The routine executes an unconditional infinite loop without performing any operations or returning control.
@@ -1189,6 +1344,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `halt_execution_forever`: The routine enters an infinite loop that continuously performs a no-operation.
 - `update_pointer_offset_2`: Increments a value stored in a memory location by a constant amount.
 - `infinite_loop_hang_17`: The routine executes an unconditional infinite loop, causing the processor to halt execution indefinitely within this block.
+- `jump_vector_entry_36`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_37`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `enter_infinite_loop_14`: The routine contains a single unconditional branch instruction that jumps back to itself, creating an infinite loop that halts execution flow.
 - `halt_execution_3`: The routine contains no valid instructions and immediately terminates control flow.
 - `infinite_loop_hang_18`: The routine enters an infinite loop without performing any operations or returning control to the caller.
@@ -1199,27 +1356,61 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `infinite_loop_7`: The routine contains an infinite loop that prevents execution from returning to the caller.
 - `infinite_loop_8`: The routine consists solely of an unconditional infinite loop.
 - `mark_invalid_data`: The routine is empty and contains no executable instructions.
+- `jump_vector_entry_38`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_39`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_40`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_41`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_42`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_43`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_44`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `infinite_loop_9`: The routine executes an unconditional infinite loop.
 - `store_byte_indirect`: stores a single byte from a data register into a memory location pointed to by an address register.
+- `jump_vector_entry_45`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_46`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_47`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_48`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_49`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_50`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_51`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_52`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_53`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_54`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_55`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `enter_infinite_loop_15`: The routine executes an unconditional jump to its entry point, creating an infinite loop.
 - `infinite_loop_hang_19`: The routine executes an unconditional infinite loop without performing any operations or returning.
 - `infinite_loop_10`: The routine executes an unconditional infinite loop without performing any operations or returning.
 - `halt_on_bad_data_4`: The routine is empty and contains no executable instructions.
+- `jump_vector_entry_56`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_57`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `store_byte_via_pointer_2`: Stores a single byte from a data register into a memory location pointed to by another register.
 - `infinite_loop_halt_5`: The routine executes an unconditional infinite loop, causing the processor to halt execution at this point.
 - `fill_uninitialized_gap`: The routine is empty and contains no executable instructions.
+- `jump_vector_entry_58`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_59`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_60`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_61`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `infinite_loop_11`: The routine consists of a single instruction that creates an unconditional infinite loop.
 - `infinite_loop_12`: The routine executes an endless loop without performing any operations or returning.
 - `infinite_loop_spin_3`: The routine enters an unconditional infinite loop without executing any other instructions.
+- `jump_vector_entry_62`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_63`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_64`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_65`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `update_sprite_position_3`: updates a coordinate value in memory by adding a signed integer from a register to a value stored at a pointer-based location.
 - `update_player_position_3`: Calculates a new coordinate by adding a signed offset to a value stored in a global variable and writes the result back to that variable.
 - `enter_infinite_loop_16`: The routine enters an unconditional infinite loop that prevents further execution.
 - `infinite_loop_13`: The routine consists of a single instruction that creates an infinite loop, causing the processor to halt execution within this segment.
+- `jump_vector_entry_66`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_67`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_68`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_69`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `enter_infinite_loop_17`: The routine consists of a single unconditional branch that jumps to itself, creating an infinite loop.
 - `infinite_loop_14`: The routine consists solely of an unconditional infinite loop.
+- `jump_vector_entry_70`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `enter_infinite_loop_18`: The routine consists of an unconditional branch back to itself, creating an infinite loop.
 - `infinite_loop_15`: The routine contains an unconditional infinite loop with no operations or exits.
 - `infinite_loop_16`: The routine contains an infinite loop with no exit condition.
+- `jump_vector_entry_71`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `enter_infinite_loop_19`: The routine contains a single unconditional branch that jumps back to itself, creating an infinite loop that never returns to the caller.
 - `enter_infinite_loop_20`: The routine contains an unconditional jump back to its start, creating an infinite loop that halts execution.
 - `infinite_loop_wait`: The routine executes an infinite loop without any operations or exits.
@@ -1227,21 +1418,31 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_sprite_attribute`: reads a value from a register and writes it to a memory location pointed to by another register.
 - `enter_infinite_loop_21`: The routine executes an unconditional branch to its own entry point, creating an infinite loop that halts further execution flow.
 - `loop_forever_2`: The routine enters an infinite loop and never returns.
+- `jump_vector_entry_72`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `loop_forever_3`: The routine enters an infinite loop without performing any operations.
 - `nop_instruction`: The routine consists of a single no-operation instruction.
+- `jump_vector_entry_73`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_74`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_75`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `infinite_loop_17`: The routine executes an infinite loop without performing any operations or returning.
 - `infinite_loop_18`: The routine contains an infinite loop with no other instructions.
 - `update_sprite_position_4`: Updates the horizontal and vertical coordinates of a sprite by adding an offset value to a memory location.
 - `hang_infinite_loop`: The routine executes an unconditional infinite loop that never returns.
 - `infinite_loop_19`: The routine consists of an unconditional infinite loop.
+- `jump_vector_entry_76`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_77`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_78`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `enter_infinite_loop_22`: The routine consists solely of an unconditional jump to itself.
 - `infinite_loop_20`: The routine consists of a single infinite loop instruction.
 - `infinite_loop_hang_20`: The routine executes an unconditional infinite loop.
 - `execute_single_instruction`: Is composed of one instruction.
 - `enter_infinite_loop_23`: The routine contains an unconditional branch to itself, creating an infinite loop.
 - `infinite_loop_wait_2`: The routine consists of a single infinite loop instruction.
+- `jump_vector_entry_79`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `enter_infinite_loop_24`: The routine executes an unconditional jump to itself, creating an infinite loop that halts execution flow.
 - `nop_padding_4`: This routine consists of a single no-operation instruction.
+- `jump_vector_entry_80`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_81`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `infinite_loop_21`: The routine consists of an unconditional infinite loop.
 - `infinite_loop_hang_21`: The routine enters an unconditional infinite loop, effectively halting execution flow.
 - `enter_infinite_loop_25`: The routine contains an unconditional infinite loop that prevents execution from returning to the caller.
@@ -1252,6 +1453,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `infinite_loop_23`: The routine enters an infinite loop without performing any operations or checking conditions.
 - `enter_infinite_loop_27`: The routine enters an unconditional infinite loop without performing any other operations.
 - `enter_infinite_loop_28`: The routine consists of an unconditional infinite loop with no exit or side effects.
+- `jump_vector_entry_82`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_83`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_84`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_85`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_86`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_87`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_88`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_89`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_90`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_91`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_92`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `update_sprite_attribute_2`: Writes a word value from a register into a memory location pointed to by a register.
 - `update_player_position_4`: calculates a new coordinate for a character by adding a velocity value to a current position stored in memory.
 - `nop_padding_5`: This routine consists of a single no-operation instruction and serves as padding within the executable segment.
@@ -1260,50 +1472,101 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `loop_forever_5`: The routine contains an infinite loop that never returns.
 - `infinite_loop_spin_4`: The routine executes an unconditional infinite loop without performing any other operations.
 - `infinite_loop_hang_22`: The routine consists solely of an unconditional infinite loop.
+- `jump_vector_entry_93`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `update_player_position_5`: Calculates a new coordinate by adding an offset to a value stored in a global variable and writes the result back to that variable.
 - `update_pointer_value_2`: loads a value from a memory location into a register and then stores that value into a different memory location via a pointer.
 - `enter_infinite_loop_29`: The routine consists solely of an unconditional jump to itself, creating an infinite loop that halts execution.
+- `jump_vector_entry_94`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_95`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `infinite_loop_24`: The routine consists of a single unconditional branch to itself, creating an infinite loop that halts execution flow.
 - `enter_infinite_loop_30`: The routine enters an unconditional infinite loop without performing any operations or returning.
 - `infinite_loop_halt_7`: The routine enters an infinite loop without performing any operations.
+- `jump_vector_entry_96`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_97`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `enter_infinite_loop_31`: The routine contains an infinite loop that never returns execution to the caller.
 - `infinite_loop_25`: The routine consists of a single infinite loop instruction with no operations or exits.
 - `infinite_loop_26`: The routine consists of a single unconditional branch to itself, creating an infinite loop that never returns.
+- `jump_vector_entry_98`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_99`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `enter_infinite_loop_32`: The routine consists of a single unconditional branch that creates an infinite loop.
 - `jump_vector_entry_5`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `update_player_position_6`: Calculates a new coordinate value by adding an offset to a stored position and writes the result back to a memory location.
 - `halt_on_invalid_data`: The routine contains only a single invalid instruction that halts execution.
+- `jump_vector_entry_100`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `update_player_coordinate_5`: updates a specific coordinate value within a player data structure using a value from a register.
 - `infinite_loop_hang_23`: Executes an unconditional infinite loop that prevents the routine from returning.
 - `loop_forever_6`: The routine consists of an infinite loop that does not perform any operations or return.
 - `infinite_loop_27`: The routine consists solely of an infinite loop with no other instructions or side effects.
+- `jump_vector_entry_101`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_102`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `update_bitplane_pointer`: Updates a pointer in a global structure by loading a value from a memory location into a register and storing it back.
 - `halt_execution_4`: The routine is empty and contains no valid instructions.
 - `clear_memory_block_2`: fills a specified range of memory with zeros using a loop.
+- `jump_vector_entry_103`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `update_sprite_attribute_3`: Reads a value from a memory location and writes it to a specific offset within a data structure.
 - `loop_forever_7`: The routine contains an infinite loop that never returns.
+- `jump_vector_entry_104`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `update_player_position_7`: Calculates a new coordinate by adding a velocity value to a current position stored in memory.
 - `loop_forever_8`: The routine enters an infinite loop and never returns.
 - `jump_vector_entry_6`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `loop_forever_9`: The routine executes an infinite loop without performing any operations or returning.
 - `loop_forever_10`: The routine contains an infinite loop that never returns.
+- `jump_vector_entry_105`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_106`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_107`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_108`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_109`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_110`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_111`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_112`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_113`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_114`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_115`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `enter_infinite_loop_33`: The routine executes an unconditional jump to itself, creating an infinite loop that halts further execution.
 - `update_player_position_8`: Calculates a new coordinate by adding a velocity value to a current position stored in a global variable.
 - `enter_infinite_loop_34`: The routine executes a jump to itself, creating an infinite loop.
+- `jump_vector_entry_116`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_117`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `enter_infinite_loop_35`: The routine executes an unconditional jump to itself, creating an infinite loop.
 - `infinite_loop_28`: The routine executes an infinite loop without performing any operations or returning.
 - `infinite_loop_29`: The routine consists of a single infinite loop instruction that prevents execution from returning to the caller.
 - `loop_forever_11`: The routine enters an infinite loop and never returns.
 - `enter_infinite_loop_36`: The routine contains a single unconditional branch back to itself, creating an infinite loop that prevents execution from proceeding to subsequent code.
 - `infinite_loop_30`: The routine contains an unconditional branch to itself, creating an infinite loop.
+- `jump_vector_entry_118`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_119`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `loop_forever_12`: The routine contains an infinite loop that prevents execution from reaching a return instruction.
 - `halt_execution_5`: The routine is empty and contains no valid instructions.
 - `update_sprite_position_6`: reads a value from a memory location and adds it to a coordinate stored in a different memory location.
+- `jump_vector_entry_120`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_121`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `update_player_coordinate_6`: Reads a value from a memory location and stores it into a different offset within a data structure.
 - `infinite_loop_31`: The routine consists of an unconditional infinite loop.
 - `infinite_loop_32`: The routine contains an unconditional infinite loop.
+- `jump_vector_entry_122`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_123`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_124`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_125`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_126`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_127`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_128`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_129`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_130`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_131`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_132`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `loop_forever_13`: The routine consists solely of an infinite loop that does not perform any operations or return.
 - `loop_forever_14`: The routine consists solely of an infinite loop that does nothing.
+- `jump_vector_entry_133`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_134`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_135`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_136`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_137`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_138`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_139`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_140`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_141`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_142`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_143`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `execute_infinite_loop_2`: Performs an unconditional jump to its own entry point, creating an infinite loop that halts further execution flow.
 - `jump_vector_entry_7`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_8`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
@@ -1311,26 +1574,44 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `jump_vector_entry_10`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_11`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_12`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_144`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_13`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_14`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_15`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `jump_vector_entry_16`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_145`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_146`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `clear_memory_block_3`: fills a specified range of memory with zeros using a loop.
 - `infinite_loop_spin_5`: The routine executes an unconditional infinite loop without performing any other operations or returning control to the caller.
 - `nop_padding_6`: The routine is empty and consists of a single no-operation instruction.
+- `jump_vector_entry_147`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+- `jump_vector_entry_148`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `enter_infinite_loop_37`: The routine enters an infinite loop without performing any operations.
 - `call_indirect_function_4`: Executes a function pointer stored at a specific memory location.
 - `call_indirect_function_5`: Executes a function pointer stored in a global variable and returns the result.
+- `frag_moveq_bra_5`: Short code fragment that loads 87 into d0, then jumps to another point in the code.
+- `frag_moveq_bra_6`: Short code fragment that loads 47 into d0, then jumps to another point in the code.
+- `frag_moveq_bra_7`: Short code fragment that loads 231 into d0, then jumps to another point in the code.
+- `frag_moveq_bra_8`: Short code fragment that loads 232 into d0, then jumps to another point in the code.
+- `frag_moveq_bra_9`: Short code fragment that loads 233 into d0, then jumps to another point in the code.
+- `frag_moveq_bra_10`: Short code fragment that loads 234 into d0, then jumps to another point in the code.
+- `frag_moveq_bra_11`: Short code fragment that loads 235 into d0, then jumps to another point in the code.
+- `frag_moveq_bra_12`: Short code fragment that loads 236 into d0, then jumps to another point in the code.
+- `frag_moveq_bra_13`: Short code fragment that loads 82 into d0, then jumps to another point in the code.
 - `call_jmp_table_entry`: Invokes a routine located at a specific offset within a global jump table in RAM. Returns the value left in the D1 register by the called function.
 - `jump_to_code_table_entry`: Performs an indirect jump to an address stored in a specific global pointer variable.
+- `frag_moveq_bra_14`: Short code fragment that loads 238 into d0, then jumps to another point in the code.
 - `call_indirect_function_pointer`: Executes a function located at an address stored in a global variable.
 - `call_function_pointer_11`: Invokes a routine via a function pointer stored in memory.
 - `call_indirect_function_6`: Executes a function pointer stored in a global variable.
+- `frag_moveq_bra_15`: Short code fragment that loads 242 into d0, then jumps to another point in the code.
+- `frag_moveq_bra_16`: Short code fragment that loads 243 into d0, then jumps to another point in the code.
 - `jump_indirect_c44cee`: Executes a routine located at the memory address stored in a specific global pointer variable.
 - `jump_indirect_pointer`: Executes a jump to an address stored in a specific global pointer variable.
 - `call_function_pointer_12`: Invokes a routine via a function pointer stored in a global variable.
 - `call_function_pointer_13`: Invokes a routine address stored in a global variable.
 - `call_indirect_function_7`: Executes a function pointer stored at a specific memory location and returns the value in register D1.
+- `frag_moveq_bra_17`: Short code fragment that loads 247 into d0, then jumps to another point in the code.
 - `jump_vector_entry_17`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
 - `call_function_pointer_14`: Invokes a routine located at a memory address stored in a global pointer variable.
 - `call_function_pointer_15`: Invokes a routine using a function pointer stored at a fixed memory location.
@@ -1339,8 +1620,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `handle_negative_condition`: Checks a register value; if zero, returns immediately.
 - `allocate_game_object`: Checks initialization flags and calls a memory allocator routine to reserve space for a new object.
 - `return_zero_value_12`: Returns a zero value without modifying memory or calling other hardware functions.
+- `frag_nop_bra`: Short code fragment that pauses for one no-operation step, then jumps to another point in the code.
+- `frag_nop_bra_2`: Short code fragment that pauses for one no-operation step, then jumps to another point in the code.
 - `increment_a6_offset_0x20`: Increments a 16-bit value located at a fixed offset from the base pointer in register A6.
-- `decrement_counter_at_offset`: The routine decrements a 16-bit value located at a fixed offset from a base pointer stored in register A6.
+- `decrement_word_at_offset`: The routine decrements a 16-bit value located at a fixed positive offset from a base pointer register and then returns a zero value.
 - `hang_forever`: The routine enters an infinite loop with no exit condition.
 - `halt_on_bad_data_5`: The routine is empty or contains invalid instructions, causing the control flow to halt immediately without performing any operations.
 - `abort_on_bad_data_2`: The routine is empty and contains no valid instructions, causing execution to halt immediately.
@@ -1356,8 +1639,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_register_d0`: Clears the 8-bit value in register d0 by OR-ing it with zero, clears it a second time, then jumps to another routine.
 - `jump_to_routine_3`: Jumps directly to another routine without touching any register or memory location.
 - `jump_to_routine`: Immediately branches to another routine and never executes any instruction of its own.
+- `frag_jmp`: Short code fragment that jumps to another point in the code.
+- `jump_to_check_flag_jump_routine`: Jump stub: passes control straight on to check_flag_jump_routine.
 - `jump_to_helper_routine`: Unconditionally transfers execution to another routine and does not return.
-- `clear_flag_increment_counter_2`: It clears bit 7 of the byte at offset 14 of the structure in a6, increments a 16-bit counter at offset 22 of that structure, and returns.
+- `copy_memory_block_2`: Sets bits in memory using OR operations, copies data between registers and memory locations, and then calls the CopyMem library function to copy memory from one location to another.
+- `frag_lea_andi_bra`: Short code fragment that loads the address of the memory at an offset from a0 into a2, then masks an indexed entry from a0 with 49, then jumps to another point in the code.
+- `initialize_display_system`: Saves the current stack frame, sets up pointers to display configuration data, calls library functions to configure display settings, and manages global variables for display parameters.
 - `check_flag_jump_routine`: It decrements a 16-bit counter at offset 22 of the structure in a6 and returns if it reached zero.
 - `return_constant_3`: Returns the constant an address in d0 to the caller without any other effect.
 - `execute_dual_subroutine_calls`: It saves two registers, pushes a pointer and calls a routine, cleans the stack, then pushes the pointer again and calls a second routine before restoring registers and returning.
@@ -1375,40 +1662,201 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `compare_byte_pointers`: Loads two pointers from the stack, then compares bytes at each address while advancing both pointers, returning zero when the bytes differ and continuing until a non-matching byte is found.
 - `compare_byte_sequence`: Copies a byte from the address in a0 into d0, decrements a1, copies a1 back into a0, compares the byte now at a0 with d0, and returns d0 as 255 when d0 is not greater.
 - `return_constant_4`: Returns the constant an address in d0 to the caller without any other effect.
+- `frag_movea_move_beq_cmp_bne_bra`: Short code fragment that copies the memory at an offset from a7 to a0, then copies the memory at an offset from a7 to d0, then copies the memory at a0 to d1, then branches if the last result was zero, then compares d1 with d0, then branches if the last result was not zero, then copies a0 to d0, then jumps to another point in the code.
+- `frag_addq_bra`: Short code fragment that adds 1 to a0, then jumps to another point in the code.
+- `return_constant_26`: Returns the constant an address in d0 to the caller without any other effect.
 - `count_then_scan_bytes`: Saves two registers, loads arguments from the stack, calls a routine to count bytes until a zero, then walks forward from a base pointer comparing each byte against a value and jumping to different routines when they differ.
 - `decrement_pointer_branch`: Decrements the 32-bit pointer in a0 by one and then branches to a routine that does not return.
 - `clear_d0_and_pop`: Loads zero into d0, pops two registers from the stack into d2 and d3, then returns.
 - `call_routine_twice_conditional`: It pushes a constant and a saved register, calls a routine, and stores the result in d3.
 - `copy_d3_to_d0_pop`: Copies d3 into d0, pops two registers from the stack into d2 and d3, then returns.
-- `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
+- `setup_message_structure_2`: Calls several library functions to initialize message structures, performs bit operations on memory locations, and then jumps to another routine with a fixed address.
+- `return_constant_27`: Returns the constant an address in d0 to the caller without any other effect.
+- `read_hardware_registers`: Saves registers on the stack, calls a library function to get system time, restores registers from the stack, reads values from specific hardware registers, and performs bit operations on those values.
+- `function_epilogue_2`: Function exit sequence shared or jumped to by a routine: puts the result in d0, removes the stack frame with unlk, then returns to the caller.
+- `dispatch_function_call`: Saves registers on the stack, calls a library function to get system time, restores registers from the stack, compares a value with a constant, and then uses a jump table to dispatch control to different functions based on that value.
+- `tiny_ori_asr_rts`: Small routine of 3 instructions that merges 191 into d1, then shifts d1 right by 8, then returns.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `write_beamcon0_value`: Writes a constant value to the BEAMCON0 custom chip register.
+- `frag_movem_movea_move_rts`: Short code fragment that saves registers on the stack, then copies a location in the code to a6, then copies the memory at an offset from a6 to a fixed memory address, then restores saved registers from the stack, then copies 65535 to a fixed memory address, then returns.
+- `frag_tst_bne_movem_st_movea_jsr_rts`: Short code fragment that tests a fixed memory address, then branches if the last result was not zero, then saves registers on the stack, then sets a fixed memory address to all ones, then copies a location in the code to a6, then calls another routine, then restores saved registers from the stack, then returns.
+- `clear_and_set_flag`: Tests a word value at a fixed memory address and branches if zero, then clears that address and sets a bit in another fixed memory location before returning.
+- `call_close_library_2`: Wrapper that calls the exec library function CloseLibrary and returns its result to the caller.
+- `frag_move_rts_7`: Short code fragment that copies 0 to a fixed memory address, then copies a0 to a fixed memory address, then returns.
+- `frag_move_jsr_dbra_rts`: Short code fragment that copies d0 to d2, then calls another routine, then loops back while counting down d2, then returns.
+- `wait_for_bit_toggle_2`: The routine polls a hardware register for a specific bit state, waiting for it to become zero and then non-zero, repeating this cycle a number of times determined by an input counter.
+- `initialize_linked_nodes`: Clears memory locations, initializes linked node structures, and manages linked lists by calling other routines to process nodes.
+- `process_interrupt_list`: Iterates through a table of pointers up to sixteen times, following linked lists and calling a function pointer derived from the routine address for each node.
+- `manage_linked_nodes`: Processes a linked list structure by iterating through entries, updating pointers, and invoking another routine with specific parameters before returning.
+- `manage_interrupt_queue`: Allocates memory for interrupt handling, sets up queue entries with specific values, and adds an interrupt server to the system.
+- `remove_interrupt_node`: Removes a node from a linked list by updating pointers, handles interrupt server removal, and cleans up memory for the removed node.
+- `frag_tst_bne_st_movem_lea_bsr_rts`: Short code fragment that tests a fixed memory address, then branches if the last result was not zero, then sets a fixed memory address to all ones, then saves registers on the stack, then loads the address of a location in the code into a2, then calls another routine, then restores saved registers from the stack, then returns.
+- `manage_linked_nodes_2`: Processes a linked list structure by iterating through entries, updating pointers, and invoking another routine with specific parameters before returning.
+- `return_constant_11`: Returns the constant an address in d0 to the caller without any other effect.
+- `frag_clr_bsr_move_rts`: Short code fragment that clears a fixed memory address, then calls allocate_linked_node_3, then copies an address to d0, then clears a fixed memory address, then returns.
 - `loop_until_zero_flag_2`: Calls another routine repeatedly in a loop.
-- `clear_linked_list`: iterates through a linked list and removes its elements.
+- `allocate_linked_node_3`: Calls an external routine and a function pointer from a global table to obtain a memory block.
+- `jump_to_allocate_linked_list_node`: Jump stub: passes control straight on to allocate_linked_list_node.
+- `frag_bra_9`: Short code fragment that jumps to another point in the code.
+- `frag_bra_10`: Short code fragment that jumps to another point in the code.
+- `frag_tst_beq_movea_bra`: Short code fragment that tests the memory at a0, then branches if the last result was zero, then copies the memory at a0 to a0, then jumps to another point in the code.
+- `frag_move_movea_bsr_rts`: Short code fragment that copies a0 to the stack, then copies a location in the code to a0, then copies a0 to the stack, then calls another routine (2 times in a row), then copies the top of the stack to a fixed memory address, then copies the top of the stack to a0, then returns.
+- `frag_move_movea_bsr_rts_2`: Short code fragment that copies a0 to the stack, then copies a location in the code to a0, then copies a0 to the stack, then calls another routine (2 times in a row), then copies the top of the stack to a fixed memory address, then copies the top of the stack to a0, then returns.
+- `allocate_and_link_node`: Allocates memory for a node, initializes its fields, links it into a list, and returns a pointer to the allocated structure.
 - `allocate_linked_list_node`: Searches a global linked list for a specific entry; if not found, allocates a new node using an internal allocator and inserts it at the head of the list.
-- `allocate_memory_block`: Traverses a linked list to check for existing entries.
+- `allocate_linked_list_node_2`: Allocates memory for a new node, initializes its fields, and links it into a global linked list structure.
 - `cleanup_linked_list_2`: Iterates through a linked list stored in a global variable, calling a function pointer offset from each node, and updates the list head.
-- `modify_custom_register`: Writes a value to a custom hardware register.
+- `frag_clr_rts_2`: Short code fragment that clears a fixed memory address, then returns.
+- `frag_move_rts_25`: Short code fragment that copies d0 to a fixed memory address, then returns.
+- `frag_move_rts_26`: Short code fragment that copies a location in the code to d0, then returns.
+- `frag_moveq_bsr_bra`: Short code fragment that loads 0 into d1, then calls another routine (2 times in a row), then jumps to another point in the code.
+- `frag_bsr_move_bne_moveq_jsr_dbra_rts`: Short code fragment that calls another routine (2 times in a row), then copies a location in the code to d0, then branches if the last result was not zero, then loads 15 into d7, then copies a location in the code to d0, then calls another routine (2 times in a row), then loops back while counting down d7, then returns.
+- `frag_moveq_move_subq_cmp_bcs_rts`: Short code fragment that loads 0 into d2, then copies the memory at an offset from a0 to d3, then subtracts 1 from d3, then compares d3 with the memory at an offset from a1, then branches if the carry flag is set, then copies the memory at an offset from a1 to d3, then subtracts 1 from d3, then returns.
+- `frag_move_bne_rts`: Short code fragment that copies a location in the code to d0, then branches if the last result was not zero, then returns.
+- `copy_and_shift_bytes`: Copies byte values from source memory, shifts them right by four bits, and stores the results in a destination table at specific offsets.
+- `frag_bsr_lea_moveq_move_dbra_rts`: Short code fragment that calls another routine, then loads the address of a location in the code into a2, then loads 23 into d0, then loads 0 into d4, then copies d4 to the memory at a2 (advancing a2), then loops back while counting down d0, then returns.
+- `frag_bsr_lea_moveq_move_lsl_neg_dbra_rt`: Short code fragment that calls another routine, then loads the address of a location in the code into a2, then loads the address of a location in the code into a3, then loads 95 into d0, then copies the memory at a3 to d4, then shifts d4 left by 4, then copies d4 to the memory at a2 (advancing a2), then negates the memory at a3 (advancing a3), then loops back while counting down d0, then returns.
+- `free_allocated_block_and_return`: Tests d0 for zero and returns if null; otherwise saves d1 and a0-a1, loads the block pointer from d0, reads the size word before it, adds five and calls the free routine.
+- `fill_table_with_calls_2`: The routine iterates over a table of offsets, calling another routine for each entry and storing the returned value at a calculated address until a counter reaches negative one.
+- `return_constant_28`: Returns the constant an address in d0 to the caller without any other effect.
+- `combine_word_values`: Combines word values by shifting and ORing them together, storing intermediate results in registers before returning.
+- `append_12byte_entry_to_growable_array`: Packs d2, d3 and d4 into three longwords, grows the array at a0 by one 12-byte entry, copies the old data, stores the packed values and increments the count.
+- `expand_palette_entries_2`: The routine reads a count from a structure, clamps it, and expands colour words from the structure into a palette-like table pointed to by a pointer.
+- `frag_move_clr_jsr_cmpi_sge_ext_rts`: Short code fragment that copies a0 to a fixed memory address, then clears a fixed memory address (2 times in a row), then calls another routine, then compares d0 with 39, then sets d0 if the comparison was greater or equal, then sign-extends d0, then copies d0 to a fixed memory address, then returns.
+- `expand_palette_color_entries`: Expands palette color entries by processing data from multiple sources, updating color values in a target buffer through bit manipulation.
+- `update_sprite_data`: Writes values from registers to specific offsets in a structure pointed to by a0, then performs a conditional operation on a word value and calls a library function with fixed parameters.
+- `read_palette_entry`: Reads a palette entry using a library function, processes the result with bit rotation and masking operations, and returns the final value.
+- `frag_moveq_bra`: Short code fragment that loads 4 into d7, then jumps to another point in the code.
+- `rotate_and_store_palette`: Rotates and swaps byte values from three data registers, stores the results into a table structure, and calls a library function using a fixed offset from the base pointer.
+- `process_sprite_data`: Processes sprite data by reading coordinates and handling overflow conditions, then performs palette entry updates when certain flags are set.
+- `update_sprite_position`: Updates sprite position values in a structure and handles movement calculations using division operations on coordinate differences.
+- `frag_movem_move_movea_jsr_clr_rts`: Short code fragment that saves registers on the stack, then copies a location in the code to d1, then copies a location in the code to d2, then copies 2048 to d3, then copies a location in the code to a6, then calls another routine, then copies d0 to a fixed memory address, then clears a fixed memory address, then restores saved registers from the stack, then returns.
+- `call_library_vector_36`: Library stub: loads a library base from a global variable and calls the library function at offset minus 36 of that base, returning its result to the caller.
+- `fetch_byte_from_table_2`: Checks a global counter against limits and table size, increments the counter if valid, and returns a byte from a memory table indexed by that counter.
+- `check_and_fetch_data_2`: Tests whether the input value in D1 is zero and calls another routine.
+- `validate_and_process_data`: Validates data by comparing values against specific constants, updates a counter, and performs bit shifting operations before returning.
+- `process_data_with_counter`: Checks a global counter against limits and table size, increments the counter if valid, and returns a byte from a memory table indexed by the counter value.
+- `copy_and_update_counter`: Copies data from a table to a buffer while updating a counter, and makes a library call with specific parameters.
+- `return_constant_16`: Returns the constant an address in d0 to the caller without any other effect.
+- `frag_ori_jsr_tst_beq_rts`: Short code fragment that merges 120 into the stack, then merges 250 into d4, then merges 0 into the memory at a0 (advancing a0), then calls another routine, then tests d0, then branches if the last result was zero, then returns.
+- `frag_movea_jmp_ori_jsr_tst_beq_rts`: Short code fragment that copies a fixed memory address to a6, then jumps to another point in the code, then merges 0 into the memory at a0 (advancing a0), then calls another routine, then tests d0, then branches if the last result was zero, then returns.
+- `frag_move_rts_24`: Short code fragment that copies d0 to a fixed memory address, then returns.
+- `frag_move_rts_28`: Short code fragment that copies d0 to a fixed memory address, then returns.
+- `frag_moveq_jsr_move_rts`: Short code fragment that loads 0 into d0, then calls another routine, then copies 384 to a fixed memory address, then returns.
+- `frag_moveq_jsr_move_rts_2`: Short code fragment that loads 0 into d0, then calls another routine, then copies 33152 to a fixed memory address, then returns.
+- `frag_move_bra_3`: Short code fragment that copies a0 to a fixed memory address, then copies d0 to a fixed memory address, then copies an address to a fixed memory address, then jumps to another point in the code.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `init_structure_and_lookup`: Skips four padding instructions and branches to the main body, then tests d0 and returns without action when it is zero.
-- `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
+- `frag_movem_rts_2`: Short code fragment that saves registers on the stack, then restores saved registers from the stack, then returns.
+- `frag_ori_move_lea_jsr_rts`: Short code fragment that merges 192 into d1, then copies a0 to a fixed memory address, then loads the address of a location in the code into a0, then calls another routine, then returns.
+- `frag_lea_jsr_move_rts_ori_tst_beq`: Short code fragment that loads the address of a location in the code into a0, then calls another routine, then copies d0 to a fixed memory address, then returns, then merges 0 into the memory at a0 (advancing a0), then calls another routine, then tests d0, then branches if the last result was zero, then returns.
+- `handle_dma_operations`: Manages DMA control register settings and reads video position registers to synchronize display operations with hardware state.
+- `check_input_device_active_2`: Reads a global variable to determine if the mouse or joystick ports are active by checking specific bit flags.
+- `frag_move_tst_beq`: Short code fragment that copies a fixed memory address to d1, then tests d0, then branches if the last result was zero, then copies a fixed memory address to d1.
+- `parity_bit_from_d1_low_bits`: Copies d1 to d2, shifts d2 right one bit and XORs into d1, then tests bit 8 and the shifted-out low bit to return 255, 1 or 0 in d0.
+- `process_input_device`: Processes input device data by reading from POTGO and POTGOR registers, performing bit operations on the results, and returning a computed value in d0.
+- `compare_string_data`: Compares byte sequences from two memory locations, returning different values based on comparison results and handling string length differences.
+- `return_constant_17`: Returns the constant an address in d0 to the caller without any other effect.
+- `frag_ori_tst_beq_rts`: Short code fragment that merges 176 into d1, then tests d0, then branches if the last result was zero, then returns.
+- `frag_ori_asr_rts`: Short code fragment that merges 191 into d1, then shifts d1 right by 8, then returns (2 times in a row).
+- `tiny_ori_asr_rts_2`: Small routine of 3 instructions that merges 191 into d1, then shifts d1 right by 8, then returns.
+- `frag_move_rts_27`: Short code fragment that copies d0 to a fixed memory address, then returns.
+- `frag_movea_moveq_lsr_bcc_move_lea_dbra_2`: Short code fragment that copies an address to a0, then loads 3 into d1, then shifts d0 right by 1, then branches if the carry flag is clear, then copies the memory just below a2 (moving a2 down) to the memory at an offset from a0, then loads the address of the memory at an offset from a0 into a0, then loops back while counting down d1, then returns.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `empty_stub_8`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_9`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_10`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_7`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_8`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_stub_11`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_12`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_9`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_10`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_11`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_12`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_13`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_stub_13`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_14`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_15`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_16`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_17`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_stub_14`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_15`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_18`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_19`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_20`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `empty_stub_16`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_17`: Empty routine: returns to the caller immediately without doing anything.
+- `nop_padding_21`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_22`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_23`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_24`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `nop_padding_25`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
+- `frag_move_rte`: Short code fragment that copies 32767 to a fixed memory address, then returns from the exception.
+- `initialize_player_data`: Sets up player-related data structures and initializes counters, then performs a loop to process player attributes.
+- `call_library_vector_30`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `validate_string_match`: Compares two strings byte by byte and returns a pointer to the second string if they match, otherwise it returns immediately.
+- `frag_lea_move_rts`: Short code fragment that loads the address of a location in the code into a6, then copies d0 to the memory at a6, then loads the address of a fixed memory address into a6, then returns.
+- `frag_move_jmp`: Short code fragment that copies a location in the code to a fixed memory address, then jumps to the address in a0.
+- `frag_move_rts_29`: Short code fragment that copies the memory at an offset from a0 to d0, then copies d0 to the memory at an offset from a6, then returns.
+- `return_constant_29`: Returns the constant an address in d0 to the caller without any other effect.
+- `frag_moveq_move_cmpi_beq_rts`: Short code fragment that loads 4 into d0, then copies a location in the code to d1, then compares d1 with an address, then branches if the last result was zero, then loads 1 into d0, then returns.
+- `initialize_object_data_2`: Sets up object data structures by copying pointers from input locations and calling a library function to perform some initialization.
+- `tiny_addq_rts`: Small routine of 2 instructions that adds 8 to a7, then returns.
+- `frag_move_beq_rts`: Short code fragment that copies a0 to d0, then branches if the last result was zero, then copies a1 to d0, then branches if the last result was zero, then copies the memory at an offset from a0 to the memory at an offset from a1, then returns.
+- `update_collision_flags`: Updates collision flags in an object structure using bitwise operations on data from memory locations.
+- `frag_subq_scc_ext_rts`: Short code fragment that subtracts 1 from d0, then sets d0 if the carry flag is clear, then sign-extends d0 (2 times in a row), then returns.
+- `process_disk_operation`: Handles disk-related operations including setting bits in hardware registers and performing arithmetic calculations on data from memory.
+- `frag_neg_move_ori_btst_bchg_seq_rts`: Short code fragment that negates the memory at an offset from a1, then copies d0 to d7, then merges 2 into d0, then tests bit d1 of d4, then merges 0 into d0, then flips bit 7 of the memory at an offset from a3, then sets d0 if the last result was zero, then returns.
+- `frag_moveq_move_btst_seq_addi_rts`: Short code fragment that loads 0 into d0, then copies the memory at an offset from a3 to d1, then copies a location in the code to d0, then tests bit d1 of d0, then sets d0 if the last result was zero, then copies d0 to the memory at an offset from a1, then adds 44 to the top of the stack, then returns.
+- `frag_move_addi_rts`: Short code fragment that copies a location in the code to the stack, then adds an address to the top of the stack, then returns.
+- `toggle_bit_and_count`: Toggles a bit in memory, increments a counter, and recursively calls itself while managing bit states in a structure.
+- `frag_move_bra_4`: Short code fragment that copies 65537 to d1, then jumps to another point in the code.
+- `frag_tst_bmi_move_rts`: Short code fragment that tests d2, then branches if the last result was negative, then copies an indexed entry from a0 to d3, then copies d3 to d1, then returns.
+- `frag_move_bra_5`: Short code fragment that copies 280 to d1, then jumps to another point in the code.
+- `frag_clr_moveq_lea_move_rts_jmp`: Short code fragment that clears the memory at an offset from a1, then loads 12 into d4, then loads the address of a location in the code into a6, then copies a4 to the memory at a6, then loads the address of a location in the code into a6, then returns, then jumps to another point in the code.
+- `allocate_length_prefixed_string_entry`: Copies a text string into newly allocated memory with a leading length byte when its first character is above the space code, then allocates a structure, sets its fields from a library lookup, and links it into a list.
+- `manage_string_resources`: Allocates memory for string operations, opens a DOS library connection, and manages various string-related data structures through multiple library calls.
+- `manage_string_resources_2`: Calls multiple string handling routines with different parameters, checks for a null return value, and performs conditional cleanup operations before branching to another routine.
+- `load_string_resources`: Allocates memory for string operations, opens a DOS library connection, and manages various string-related data structures through multiple routines.
+- `frag_bsr_movea_jsr_lea_bra`: Short code fragment that calls frag_move_lsl_rts_2, then copies d7 to a0, then calls shift_string_left_and_store_length_2, then copies d7 to a1, then loads the address of the memory at an offset from a1 into a0, then calls another routine, then loads the address of the memory at an offset from a1 into a0, then calls another routine, then jumps to another point in the code.
+- `frag_bsr_bra_2`: Short code fragment that calls frag_move_lsl_rts_2, then jumps to another point in the code.
+- `open_dos_library_2`: Opens a connection to the DOS library, allocates memory for string operations, and manages file path handling through multiple string-related routines.
+- `update_position_and_collision`: Updates position values in a structure, performs collision detection calculations, and handles memory allocation for collision data.
+- `frag_move_movea_jsr_bra`: Short code fragment that copies d6 to d0, then copies d7 to d1, then copies the memory at an offset from a0 to a0, then copies d5 to a1, then calls another routine, then copies the memory at an offset from a4 to d0, then jumps to another point in the code.
+- `process_string_resources`: Processes string resources by allocating memory, copying strings, and managing various string operation states through multiple library calls.
+- `frag_move_lsl_rts`: Short code fragment that copies the memory at an offset from a4 to d7, then shifts d7 left by 2, then returns.
+- `frag_move_lsl_rts_2`: Short code fragment that copies the memory at an offset from a4 to d7, then shifts d7 left by 2, then returns.
+- `frag_move_lsl_rts_3`: Short code fragment that copies the memory at an offset from a4 to d7, then shifts d7 left by 2, then returns.
+- `shift_string_left_and_store_length_2`: Copies bytes from a0 forward one position until a zero byte, then writes the byte count into the slot before the shifted string and returns.
+- `allocate_and_copy_string`: Allocates memory for string data using system calls, copies string components to allocated memory, and sets up structure fields with calculated values before returning.
+- `free_string_structure`: Frees memory allocated for a string structure by calling the system allocator with a specific size, then performs cleanup operations on the structure's fields before returning.
+- `process_string_operations`: Processes string data by parsing components, calculating memory requirements, allocating memory through a system call, and copying string data to the allocated memory location.
+- `compare_filename_strings`: Compares specific filename strings against predefined patterns using a comparison routine, returning a zero flag when matches are found or continuing to check additional patterns.
+- `compare_null_terminated_strings_4`: Saves a0 on the stack, compares bytes at a0 and a1 until a mismatch or a zero byte, then restores a0 and returns.
+- `load_and_process_file_data`: Loads file data by allocating memory, reading from specific addresses, performing comparisons on loaded values, and setting up jump table entries based on the comparison results.
+- `setup_jump_table_routines`: Sets up jump table entries by copying function addresses and parameters into memory locations, then configures several routines with specific values before calling a system function.
+- `frag_move_cmp_bne_tst_rts`: Short code fragment that copies the memory at a0 (advancing a0) to d3, then compares d3 with the memory at a1 (advancing a1), then branches if the last result was not zero, then tests d3, then branches if the last result was not zero, then returns.
+- `check_invisibility_status`: Checks for specific string matches against invisibility-related text, clears or sets a flag in a global variable based on the comparison results, and returns accordingly.
+- `initialize_memory_block`: Allocates memory using a library function, clears a global variable, and performs arithmetic operations on register values before returning.
+- `allocate_and_init_memory`: Allocates memory using a library function, initializes fields of a data structure pointed to by the allocated address, and updates global variables based on the allocation result.
+- `initialize_memory_structure`: Initializes a memory structure with default values and calls another routine to handle specific initialization tasks based on input conditions.
+- `copy_and_update_pointer_data`: Copies data between memory locations, updates pointer values in a structure, and performs byte-by-byte copying operations with loop control.
+- `update_velocity_value`: Processes a velocity value based on conditions and updates a structure field, with conditional branches determining the operation performed.
+- `process_shifted_data_2`: Performs arithmetic operations on register values, compares against a constant, and uses conditional branches to set up jump table offsets for data processing tasks.
+- `process_shifted_data`: Performs arithmetic operations on register values, compares against a constant, and uses conditional branches to set up jump table offsets for further processing.
+- `adjust_and_branch`: Updates a value in a register by adding another register's value, inverts the other register's byte, and conditionally branches based on the inverted value's comparison to zero.
+- `copy_and_shift_bytes_2`: Copies bytes between memory locations while shifting data, performs conditional operations based on register values, and uses a jump table for control flow.
+- `frag_moveq_bra_18`: Short code fragment that loads 255 into d3, then jumps to another point in the code.
+- `encode_shifted_bytes`: Encodes bytes by shifting and swapping bits, storing results in memory while decrementing a counter until it reaches zero or less.
+- `frag_move_movea_rts_pea_bra_addq`: Short code fragment that copies 65538 to d1, then copies a fixed memory address to a6, then returns, then pushes the address of a fixed memory address onto the stack (2 times in a row), then jumps to another point in the code, then pushes the address of a fixed memory address onto the stack, then copies a location in the code to the stack, then adds 4 to the top of the stack, then returns.
+- `frag_pea_move_addq_rts`: Short code fragment that pushes the address of a fixed memory address onto the stack, then copies a location in the code to the stack, then adds 4 to the top of the stack, then returns.
 - `load_255_and_jump`: Loads the byte value 255 into a data register and jumps to another routine at a fixed address.
 - `pass_value_93_call`: Loads the byte value 93 into a data register and jumps to a routine at a fixed address, passing that value as its argument.
 - `store_253_jump_routine`: Loads the byte value 253 into a data register and jumps to a routine at a fixed address.

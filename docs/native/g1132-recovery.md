@@ -8,19 +8,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (901600 top-level bytes in 80 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 15 of 15 units identical (bytes and relocations), 2 raw-word lines |
-| Functions named and described | pass, 1053 of 1053 named (0 author symbols), 1053 of 1053 described (23 by rule, 1016 by the local model) |
+| Functions named and described | pass, 1060 of 1060 named (0 author symbols), 1060 of 1060 described (29 by rule, 1017 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 1333 of 1333 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 630514 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 15673 of 15673 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 16003 of 16003 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 13293 |
-| code | 71552 |
-| data | 796738 |
-| padding | 11825 |
+| code | 72894 |
+| data | 795392 |
+| padding | 11829 |
 | unused | 8192 |
 
 ## Code units
@@ -28,13 +28,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB | 1 | 14990 | 1022 |
-| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:type2 | 2 | 117 | 2 |
-| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:EXIT | 2 | 117 | 2 |
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:type2 | 2 | 434 | 3 |
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:EXIT | 2 | 208 | 2 |
 | Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:BOOT1 | 1 | 45 | 2 |
 | Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:BOOT2 | 1 | 31 | 3 |
-| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:BaNaNa.exe | 3 | 349 | 18 |
+| Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:BaNaNa.exe | 3 | 355 | 24 |
 | Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 14 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 13 | 2 |
 | Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R53#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
 | Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R55#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
@@ -45,37 +45,37 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Cases handled
 
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.G00: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (15692 -> 42230 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.G01: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (7791 -> 24562 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.C00: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (5709 -> 32136 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.M05: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (26439 -> 44122 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.M06: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (20569 -> 32748 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.G15: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (4775 -> 11024 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R50: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (60103 -> 207618 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R52: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (66186 -> 224626 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R53: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (53688 -> 163410 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R54: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (22241 -> 91714 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R55: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (73068 -> 215462 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.B99: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (32014 -> 41720 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T80: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (3034 -> 5824 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T81: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (1827 -> 3182 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T82: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (1461 -> 2462 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T83: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (1696 -> 2652 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T84: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (793 -> 1068 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R14: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (57161 -> 189432 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R19: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (32920 -> 96480 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I00: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (9804 -> 16684 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I01: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (5525 -> 15662 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I02: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (10881 -> 25736 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.B01: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (28454 -> 58680 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.S00: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (12861 -> 29810 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I03: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (8760 -> 22581 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.B02: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (19706 -> 31231 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I04: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (8634 -> 20459 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I05: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (11207 -> 24065 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I06: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (2276 -> 9230 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I07: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (16391 -> 34428 bytes)
-- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.B06: RNC2: Rob Northen RNC2 Compressor-packed, unpacked with ancient (63093 -> 87536 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.G00: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (15692 -> 42230 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.G01: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (7791 -> 24562 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.C00: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (5709 -> 32136 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.M05: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (26439 -> 44122 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.M06: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (20569 -> 32748 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.G15: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (4775 -> 11024 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R50: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (60103 -> 207618 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R52: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (66186 -> 224626 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R53: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (53688 -> 163410 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R54: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (22241 -> 91714 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R55: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (73068 -> 215462 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.B99: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (32014 -> 41720 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T80: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (3034 -> 5824 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T81: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (1827 -> 3182 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T82: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (1461 -> 2462 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T83: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (1696 -> 2652 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.T84: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (793 -> 1068 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R14: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (57161 -> 189432 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R19: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (32920 -> 96480 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I00: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (9804 -> 16684 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I01: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (5525 -> 15662 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I02: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (10881 -> 25736 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.B01: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (28454 -> 58680 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.S00: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (12861 -> 29810 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I03: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (8760 -> 22581 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.B02: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (19706 -> 31231 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I04: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (8634 -> 20459 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I05: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (11207 -> 24065 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I06: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (2276 -> 9230 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.I07: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (16391 -> 34428 bytes)
+- dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.B06: ProPack (RNC) Data (xfd)-packed, unpacked with ancient (63093 -> 87536 bytes)
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address (play-rs-m1500): 7 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - dreamweb (1995)(empire)(disk 1 of 4)[cr psg]/Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:DREAMWEB.R53#unpacked: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
@@ -1126,10 +1126,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_and_execute_block`: Copies a block of sixteen bytes from a source offset to a destination and then calls a function pointer.
+- `initialize_state_flags`: Initializes state flags and clears multiple global variables before processing game events.
 
 ### Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:EXIT
 
-- `update_buffer_and_execute_block`: Traverses a linked list to find a maximum value, writes a header to a buffer, and then copies data from a source to a destination before calling a function pointer.
+- `find_max_and_prepare_buffer_2`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_memory_block_2`: Copies sixteen bytes from a memory location offset from a register to a destination address.
 
 ### Dreamweb (1995)(Empire)(Disk 1 of 4)[cr PSG].adf:BOOT1
@@ -1151,12 +1152,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_data_loop`: Copies a sequence of words from one location to another using a decrementing counter.
 - `compare_and_update_byte`: Compares three bit-masked segments of an input value against another value and sets a byte in a structure to 255 if any segment differs.
 - `call_supervisor_function`: Checks a bit in a system structure and, if set, calls a function pointer retrieved from that structure, storing the result in a global variable.
-- `execute_conditional_function`: Checks specific bits in a global variable and executes an indirect function call if certain conditions are met.
+- `frag_rte_lea_move_movem_rts`: Short code fragment that returns from the exception, then loads the address of a location in the code into a0, then copies a1 to the memory at a0, then restores saved registers from the stack, then returns.
+- `check_system_bits`: Checks specific bits in a memory location and, depending on the result, calls another routine or calls a routine via a pointer in a memory location.
+- `frag_rte_bsr_movea_lea_jsr_bra`: Short code fragment that returns from the exception, then calls call_supervisor, then copies a fixed memory address to a6, then loads the address of a location in the code into a5, then calls another routine, then jumps to another point in the code.
+- `frag_rte_movem_rts`: Short code fragment that returns from the exception, then restores saved registers from the stack, then returns.
 - `tiny_ori_2`: Small routine of 1 instruction that merges 46 into d0.
 - `execute_indirect_function_5`: Loads a function pointer from a global variable and calls it.
 - `execute_indirect_call`: Executes a function through a pointer stored in a global variable.
+- `frag_rte_movem_rts_2`: Short code fragment that returns from the exception, then restores saved registers from the stack, then returns.
 - `call_supervisor`: Library stub: loads its arguments and the exec library base, calls Supervisor and returns its result to the caller.
-- `initialize_library_context`: Checks a pointer from a global variable, executes several functions through that pointer, and updates hardware registers if a specific bit pattern is found in a global variable.
+- `tiny_rte_2`: Small routine of 1 instruction that returns from the exception.
+- `tiny_rte_3`: Small routine of 1 instruction that returns from the exception.
+- `manage_library_and_dma`: Calls a function to obtain a library pointer, performs several library calls including close and forbid, and if a specific bit pattern is found in a hardware register, configures DMA registers before calling another routine.
 - `update_structure_fields`: Executes three function calls through pointers and then stores two values into a structure at specific offsets.
 - `initialize_buffer_structure`: Clears a memory range with zeros, sets several word values in a structure, and modifies an interrupt request register.
 - `populate_structure_data`: Loops until a character in a structure is zero, then writes several constant and register-sourced values into various offsets of that structure.

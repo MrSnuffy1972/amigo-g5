@@ -7,20 +7,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (2752736 top-level bytes in 173 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 52 of 52 units identical (bytes and relocations), 192 raw-word lines |
-| Functions named and described | pass, 1060 of 1060 named (0 author symbols), 1060 of 1060 described (266 by rule, 633 by the local model) |
+| Byte-identical reassembly with vasm | pass, 52 of 52 units identical (bytes and relocations), 193 raw-word lines |
+| Functions named and described | pass, 1054 of 1054 named (0 author symbols), 1054 of 1054 described (263 by rule, 630 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 7143 of 7143 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 31913 of 31913 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 32376 of 32376 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 571055 |
-| code | 61910 |
-| data | 2046906 |
-| padding | 26273 |
+| code | 62864 |
+| data | 2045951 |
+| padding | 26274 |
 | unused | 46592 |
 
 ## Code units
@@ -40,7 +40,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | assign | 2 | 435 | 7 |
 | Echo | 2 | 241 | 10 |
 | Lab | 1 | 2 | 1 |
-| Skip | 2 | 117 | 2 |
+| Skip | 2 | 220 | 2 |
 | Execute | 1 | 1182 | 33 |
 | Copy | 2 | 1671 | 5 |
 | MakeDir | 1 | 112 | 1 |
@@ -58,26 +58,26 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 8 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 22 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 44 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 45 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 14 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 64 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 67 | 3 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 19 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 29 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 13 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 14 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 37 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 17 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 124 | 6 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 125 | 6 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 270 | 11 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 397 | 10 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 19 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 17 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 15 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 609 | 84 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1086 | 61 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 19 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 19 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 638 | 83 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1130 | 63 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1143 | 17 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5708 | 167 |
-| Turbo Trax (1995)(Arcane Entertainment)[cr FLT](Disk 1 of 3).adf:TurboTrax.Exe#unpacked | 6 | 7749 | 288 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5791 | 163 |
+| Turbo Trax (1995)(Arcane Entertainment)[cr FLT](Disk 1 of 3).adf:TurboTrax.Exe#unpacked | 6 | 7941 | 286 |
 | Turbo Trax (1995)(Arcane Entertainment)[cr FLT](Disk 1 of 3).adf:Galahad#unpacked | 1 | 503 | 28 |
 
 ## Cases handled
@@ -662,7 +662,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `initialize_library_system`: Opens a library, initializes global variables with library data, performs a loop of function calls, sets multiple status flags and clears a table of 24 words in memory.
+- `initialize_library_and_registers`: Opens a library, initializes global variables with library node values, sets multiple register fields to specific constants, clears a table of 24 words, and configures audio-related settings based on library availability.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -670,10 +670,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `initialize_memory_block`: Clears a block of 24 longwords starting at an offset in a4, then conditionally sets specific word values in global variables based on a byte test, and calls another routine before returning.
+- `initialize_and_call_2`: Initializes a memory range with zero values, sets specific values in a structure based on a flag, and calls another routine.
 - `restore_system_2`: Resets various hardware registers and executes a sequence of function calls to restore the system state.
 - `getvbr`: Reads the vector base register through the exec Supervisor call when the CPU-type flag is set, and stores the result at the address held in a register.
-- `update_game_state`: Updates game state variables and performs looped operations until a condition is met, then calls a final cleanup routine.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -685,7 +684,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `process_joystick_input`: Processes joystick input by reading a hardware register, checking for button presses, and updating various game state variables based on input conditions.
+- `process_input_loop_2`: Processes input from hardware registers in a loop, handles conditional execution based on button states, and manages global variables during execution.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -697,7 +696,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `manage_game_objects`: Manages game object states by checking input conditions, updating object positions, and handling various game events in a continuous loop until termination.
+- `handle_input_and_update`: Handles input processing with nested loops, updates global variables, and manages function calls based on button states and conditional checks.
 - `toggle_flag_and_update`: Toggles a flag bit in memory, and if the result is zero, updates multiple memory locations with a constant value before returning.
 - `decrement_and_update`: Decrements a counter and checks if it becomes negative, and if so, updates multiple memory locations with a constant value before returning.
 - `split_nibbles_into_table`: Calls a routine 32 times, then iterates over a table of 32 words, splitting each word into four-bit nibbles and storing them with their negated values into a destination structure.
@@ -741,15 +740,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `update_dma_counters_2`: Updates multiple DMA-related counters in global variables and sets corresponding hardware registers.
+- `update_dma_counters_2`: Increments multiple global counters used for DMA timing and conditionally calls data decoding routines based on counter values.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `update_dma_counters_3`: Updates multiple DMA-related counters and performs conditional operations based on their values, including modifying bytes in tables and toggling bits in a global structure.
+- `update_dma_counters`: Increments multiple global counters and updates DMA-related registers based on their values.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `update_track_data_2`: Updates multiple track-related data fields using a decoding routine, then processes byte values from a table and modifies memory based on conditional checks.
+- `update_track_data_2`: Updates track-related data by decoding variable-length information and modifying values based on conditional checks, then performs bit manipulation on a table entry before returning.
 - `decode_variable_length_data`: Reads a header byte to determine operand size and type, updates a pointer and length value in memory, then performs an indirect jump to a calculated address.
 - `nop_padding_3`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
 - `nop_padding_4`: Padding: one no-op instructions followed by a return to the caller, so calling it has no effect on any register or memory.
@@ -823,7 +822,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `frag_clr_moveq_and_move_btst_beq_st_rts_2`: Short code fragment that clears the memory at an offset from a1, then loads 15 into d2, then masks d2 with the memory at an offset from a1, then copies d2 to the memory at an offset from a1, then tests bit 2 of the memory at an offset from a1, then branches if the last result was zero, then sets the memory at an offset from a1 to all ones, then returns.
 - `frag_clr_rts_4`: Short code fragment that clears the memory at an offset from a1, then returns.
 - `frag_move_andi_beq_tst_bne_clr_rts`: Short code fragment that copies 36 to the memory at an offset from a1, then masks the memory at an offset from a1 with 15, then branches if the last result was zero, then tests d0, then branches if the last result was not zero, then clears the memory at an offset from a1, then returns.
-- `update_and_store_fields`: Loads a byte from offset minus eight of a structure into a register, performs an OR operation with a byte at offset forty-seven of another structure, stores the result back to that location.
 - `frag_addq_clr_andi_neg_bsr_subq_rts_2`: Short code fragment that adds 4 to a1, then clears the memory at a1 (advancing a1), then masks the memory at a1 with 15, then negates the memory at an offset from a1, then calls another routine, then subtracts 6 from a1, then returns.
 - `initialize_parameters`: Sets a word at offset 4 of a1 to 44, masks a word at offset 6 of a1 with 15, and clears multiple memory locations if the masked value is zero.
 - `frag_subq_bne_clr_rts_2`: Short code fragment that subtracts 1 from the memory at a1, then branches if the last result was not zero, then clears the memory just below a1 (moving a1 down), then clears the memory at an offset from a1, then clears the memory at an offset from a3, then returns.
@@ -863,6 +861,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_function_result_5`: Stores a value from a register at an offset in a structure, then calls a function and checks its result before returning.
 - `init_and_iterate`: Initializes a global variable via a function pointer if it is zero, then iterates through a null-terminated string.
 - `copy_string_and_null_terminate`: Initializes a global variable via a function pointer if it is zero, reads data into a buffer, copies characters from the buffer to another location until null terminator is found, and returns.
+- `frag_btst_bne_move_rts_4`: Short code fragment that tests bit 14 of the memory at an offset from a6, then branches if the last result was not zero, then copies 64 to the memory at an offset from a6, then returns.
+- `validate_tile_offset`: Checks if a specific tile offset matches a predefined value and returns immediately if not, otherwise continues execution.
 - `initialize_and_loop`: Initializes multiple fields in a structure, then performs a loop that updates specific offsets based on conditional checks and calls another routine with varying parameters.
 - `initialize_memory_blocks_2_2`: Clears a memory block, populates integer and short tables with incrementing values, calls functions, and updates pointers and status registers.
 - `call_multiple_routines_with_pointers`: Calls another routine multiple times with different pointer values loaded into register a0.
@@ -1010,12 +1010,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `frag_cmpi_bne_move_rts_3`: Short code fragment that compares the memory at an offset from a4 with 41, then branches if the last result was not zero, then copies 40 to the memory at an offset from a4, then returns.
 - `validate_and_update_score`: Validates input data against multiple structure values and updates score-related fields when validation passes, then calls a function after reaching a specific count.
 - `frag_cmpi_bne_move_rts_4`: Short code fragment that compares the memory at an offset from a4 with 40, then branches if the last result was not zero, then copies 42 to the memory at an offset from a4, then returns.
-- `frag_andi_addi_sub_move_clr_st_rts`: Short code fragment that masks d0 with 65520, then adds 16 to d0, then subtracts the memory at an offset from a3 from d0, then copies d0 to the memory at an offset from a4, then clears the memory at an offset from a4, then subtracts the memory at an offset from a3 from d1, then copies d1 to the memory at an offset from a4, then sets d7 to all ones, then returns.
-- `frag_andi_sub_move_clr_st_rts`: Short code fragment that masks d0 with 65520, then subtracts the memory at an offset from a3 from d0, then copies d0 to the memory at an offset from a4, then clears the memory at an offset from a4, then sets d7 to all ones, then returns.
 - `frag_andi_addi_sub_move_clr_st_rts_2`: Short code fragment that masks d1 with 65520, then adds 16 to d1, then subtracts the memory at an offset from a3 from d1, then copies d1 to the memory at an offset from a4, then clears the memory at an offset from a4, then sets d7 to all ones, then returns.
 - `frag_andi_sub_move_clr_st_rts_2`: Short code fragment that masks d1 with 65520, then subtracts the memory at an offset from a3 from d1, then copies d1 to the memory at an offset from a4, then clears the memory at an offset from a4, then sets d7 to all ones, then returns.
-- `update_structure_from_table_2`: Compares register values with table entries and updates two different structure offsets based on comparison results, clearing flags and performing arithmetic operations.
-- `update_structure_on_increase_2`: Updates structure offsets using table values and register comparisons when register values are less than or equal to table values, performing arithmetic operations and flag clearing.
 - `calculate_and_set_properties`: Reads data from tables using indexed addressing, performs bit manipulation and arithmetic operations, and updates multiple fields in a structure with calculated values.
 - `frag_move_sub_cmpi_blt_bra`: Short code fragment that copies the memory at an offset from a4 to d2, then subtracts d6 from d2, then compares d2 with 65520, then branches if the comparison was less, then compares d2 with 0, then branches if the comparison was less, then compares d2 with 16, then branches if the comparison was less, then jumps to another point in the code.
 - `frag_move_bra_7`: Short code fragment that copies 65535 to d3, then jumps to another point in the code.
@@ -1357,11 +1353,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `frag_move_mulu_lsr_clr_rts`: Short code fragment that copies the memory at an offset from a1 to d1, then copies d1 to the memory at an offset from a1, then multiplies d1 by a location in the code (unsigned), then shifts d1 right by 5, then copies d1 to the memory at an offset from a3, then clears the memory at an offset from a1, then returns.
 - `frag_clr_move_rts_2`: Short code fragment that clears the memory at an offset from a1, then clears the memory at an offset from a0, then copies the memory at an offset from a1 to the memory at an offset from a0, then clears the memory at an offset from a0, then returns.
 - `frag_moveq_and_lsr_jmp`: Short code fragment that loads 240 into d1, then masks d1 with the memory at an offset from a1, then shifts d1 right by 2, then jumps to another point in the code.
-- `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
 - `compute_division_result`: Loads a word from memory into d1, subtracts a word from a0 from it, divides the result by a word from a1, swaps the result, and if the result is not zero, reads a byte from offset -8 of a1 and performs an OR operation with a byte at offset 47 of a0.
 - `frag_addq_clr_andi_bsr_subq_rts`: Short code fragment that adds 4 to a1, then clears the memory at a1 (advancing a1), then masks the memory at a1 with 15, then calls another routine, then subtracts 6 from a1, then returns.
 - `frag_addq_clr_andi_neg_bsr_subq_rts`: Short code fragment that adds 4 to a1, then clears the memory at a1 (advancing a1), then masks the memory at a1 with 15, then negates the memory at an offset from a1, then calls another routine, then subtracts 6 from a1, then returns.
-- `frag_mulu_lsr_move_rts`: Short code fragment that multiplies d1 by a location in the code (unsigned), then shifts d1 right by 5, then copies d1 to the memory at an offset from a3, then returns.
 - `frag_subq_bne_clr_rts`: Short code fragment that subtracts 1 from the memory at a1, then branches if the last result was not zero, then clears the memory just below a1 (moving a1 down), then clears the memory at an offset from a1, then clears the memory at an offset from a3, then returns.
 - `frag_move_tst_beq_andi_add_addq_rts`: Short code fragment that copies 48 to the memory at an offset from a1, then tests d0, then branches if the last result was zero, then masks the memory at an offset from a1 with 15, then branches if the last result was zero, then adds the memory at an offset from a1 to d0, then copies an indexed entry from a0 to the memory at an offset from a1, then adds 4 to a7, then adds 6 to the top of the stack, then returns.
 - `frag_clr_rts`: Short code fragment that clears the memory at an offset from a1, then returns.

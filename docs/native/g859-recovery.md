@@ -8,19 +8,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (1809552 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 32 raw-word lines |
-| Functions named and described | pass, 139 of 139 named (0 author symbols), 139 of 139 described (39 by rule, 87 by the local model) |
+| Functions named and described | pass, 178 of 178 named (0 author symbols), 178 of 178 described (53 by rule, 111 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 1076 of 1076 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 29184 bytes, 31 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 4221 of 4303 instructions identical in start and length, 0 mismatches |
+| Recovered without load address (counted in proof 1, flagged) | 29184 bytes, 56 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 7670 of 7752 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 32296 |
-| code | 16148 |
-| data | 1485633 |
-| padding | 19 |
+| asset | 30892 |
+| code | 26456 |
+| data | 1476725 |
+| padding | 23 |
 | unused | 275456 |
 
 ## Code units
@@ -30,13 +30,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Air Support (1992)(Psygnosis)[cr SKR](Disk 1 of 2).adf:bootblock | 1 | 16 | 1 |
 | Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf:bootblock | 1 | 16 | 1 |
 | logged disk load from Air Support (1992)(Psygnosis)[cr SKR](Disk 1 of 2).adf boot-block load | 1 | 94 | 3 |
-| logged disk load from Air Support (1992)(Psygnosis)[cr SKR](Disk 1 of 2).adf boot-block load | 1 | 90 | 7 |
-| logged disk load from Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf boot-block load | 1 | 88 | 4 |
-| logged disk load from Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf boot-block load | 1 | 0 | 0 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 480 | 20 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1289 | 72 |
-| Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf bytes 6144-8192 (code never loaded by a reference run) | 1 | 0 | 0 |
-| Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf bytes 12288-39424 (code never loaded by a reference run) | 1 | 2230 | 31 |
+| logged disk load from Air Support (1992)(Psygnosis)[cr SKR](Disk 1 of 2).adf boot-block load | 1 | 138 | 8 |
+| logged disk load from Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf boot-block load | 1 | 3340 | 5 |
+| logged disk load from Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf boot-block load | 1 | 221 | 8 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 564 | 24 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1327 | 72 |
+| Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf bytes 6144-8192 (code never loaded by a reference run) | 1 | 430 | 23 |
+| Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf bytes 12288-39424 (code never loaded by a reference run) | 1 | 2373 | 33 |
 
 ## Cases handled
 
@@ -81,7 +81,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - air support (1992)(psygnosis)[cr skr](disk 2 of 2)/Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf: blocks 1080-1154 (bytes 552960-591360) outside the filesystem hold data, not code (opcode density 0.007, entropy 4.35)
 - air support (1992)(psygnosis)[cr skr](disk 2 of 2)/Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf: blocks 1200-1274 (bytes 614400-652800) outside the filesystem hold data, not code (opcode density 0.008, entropy 4.19)
 - air support (1992)(psygnosis)[cr skr](disk 2 of 2)/Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf: blocks 1320-1715 (bytes 675840-878592) hold ASCII text
-- 1 never-loaded region(s), 2048 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
@@ -89,6 +88,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Copy protection found
 
+- `process_coordinate_data` (Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf boot-block load +an address to an address (1536 bytes)): Multiplies coordinate values by a fixed factor, performs bit operations on data arrays, and updates memory locations with specific control bytes. Kind: disk track check. Pass path: branch taken when CIAB_PRB read matches expected track data.
+- `process_graphics_data` (Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf boot-block load +an address to an address (1536 bytes)): Processes coordinate data by dividing and shifting values, then performs bit operations on data arrays while updating memory locations through a loop with multiple conditional branches. Kind: disk track check. Pass path: branch taken when disk checksum validation passes, following bclr.b #an address, (a4) instruction.
+- `adjust_byte_value_2` (Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf boot-block load +an address to an address (1536 bytes)): Adjusts a byte value in a structure until it matches a derived target, sets or clears bits in a global variable based on the lowest bit of an input value. Kind: disk hardware check. Pass path: The routine manipulates CIAB_PRB to control hardware signals and waits for specific CIAA_PRA bit states, suggesting a check involving disk drive hardware or motor control. The loop that adjusts `*(unaff_A3 + 5)` based on comparison with `uV.
 - `update_palette_and_loop` (runtime segment an address): Configures DMA and interrupts, calls two routines, and if successful, populates several memory locations with values from a table and configures bitplane and copper registers; then it performs a loop calling another routine multiple times based on a bit test. Kind: disk hardware/sync check. Pass path: the loop continues (u6__sub_06DC returns and the loop repeats).
 - `calculate_bitstream_parameters_and` (runtime segment an address): Calculates a value using multiplication and subtraction, calls decompress_bitstream_data, and performs a bitwise toggle on bit 3 of a hardware register via a temporary load. Kind: disk hardware/parameter check. Pass path: the branch where d4 == 0 (the 'bne' is not taken).
 - `decompress_bitstream_data` (runtime segment an address): Calculates a target value from a register, updates a byte in a structure, and configures custom hardware registers. Kind: bitstream decompression with custom sync/checksum validation. Pass path: The loop continues through the bitstream processing (u6__l0_08E8) and eventually reaches the return statement CONCAT44(in_D0,in_D1) after the data is successfully reconstructed and copied..
@@ -115,6 +117,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### logged disk load from Air Support (1992)(Psygnosis)[cr SKR](Disk 1 of 2).adf boot-block load
 
+- `initialize_display`: Initializes display-related variables and copies data from a source table to a memory location, then waits for vertical blanking periods until a specific condition is met before clearing a color register.
 - `unpack_bitstream_data_2`: Reads a variable number of bits from a bit buffer to reconstruct bytes, which are then stored in a destination memory area using a pointer.
 - `frag_moveq_bra`: Short code fragment that loads 8 into d1, then loads 8 into d4, then jumps to another point in the code.
 - `branch_on_bit_count`: Loads 2 into d1, calls another routine, and then branches to different locations based on whether the value in d2 is less than 2, equal to 2, or equal to 3.
@@ -129,12 +132,28 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `test_d5_then_return`: Tests whether the D5 register shifted right by one is nonzero, then returns in either case without doing anything else.
 - `tiny_subq`: Small routine of 1 instruction that subtracts 1 from d0.
 - `shift_and_loop_data`: Performs a bitwise right shift on d5 using a loop controlled by d0, while simultaneously performing a rotate-left through the carry bit into d1.
+- `invert_bits_loop`: Repeatedly inverts bits in a working register and stores the result through a pointer, with conditional logic based on bit values from a bit buffer.
+
+### logged disk load from Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf boot-block load
+
+- `frag_btst_beq_moveq_bsr_bra_2`: Short code fragment that tests bit 4 of the memory at an offset from a4, then branches if the last result was zero, then loads 1 into d0, then calls another routine, then jumps to another point in the code.
+- `frag_clr_rts_2`: Short code fragment that clears a fixed memory address, then returns.
+- `update_cia_registers`: Updates multiple CIA timer registers with specific values and clears a bit in a control register, then stores byte values to memory locations offset from a4.
+- `process_coordinate_data`: Multiplies coordinate values by a fixed factor, performs bit operations on data arrays, and updates memory locations with specific control bytes.
+- `process_graphics_data`: Processes coordinate data by dividing and shifting values, then performs bit operations on data arrays while updating memory locations through a loop with multiple conditional branches.
+- `adjust_byte_value_2`: Adjusts a byte value in a structure until it matches a derived target, sets or clears bits in a global variable based on the lowest bit of an input value.
+- `frag_bset_bra_2`: Short code fragment that sets bit 1 of the memory at a1, then jumps to another point in the code.
+- `configure_hardware_registers_2`: Clears specific bits in a byte, sets another bit, writes constant values to multiple memory offsets, and waits for a bit to be set.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `initialize_dma_and_dispatch`: Sets the DMACON register, clears three bytes in a global variable, and calls another routine; if the returned value in d4 is not zero, it performs a second call to another routine with specific values in d0 and d1 before jumping to an address stored at an offset of a global variable.
 - `initialize_hardware_and_process`: Disables interrupts, configures DMA and custom registers, calls two routines, and if successful, populates several memory locations with values from a table and configures bitplane and copper registers before entering an infinite loop.
 - `frag_move_cmpi_bne_lea_rts`: Short code fragment that copies 7 to a fixed memory address, then compares a fixed memory address with 7, then branches if the last result was not zero, then loads the address of a fixed memory address into a6, then copies 32767 to the memory at an offset from a6 (3 times in a row), then copies 0 to a fixed memory address, then returns.
+- `tiny_rte_2`: Small routine of 1 instruction that returns from the exception.
+- `frag_movem_bsr_st_move_rte_2`: Short code fragment that saves registers on the stack, then calls another routine (2 times in a row), then sets a fixed memory address to all ones, then restores saved registers from the stack, then copies 32 to a fixed memory address, then returns from the exception.
+- `adjust_coordinate_range`: Adjusts a coordinate value by subtracting another value from it, clamps the result to a range between 1 and 65535, then updates a global variable with a calculated value.
+- `render_color_data`: Copies word values from memory to video registers based on a mode selection, updates color register values in a loop, and modifies global variables related to rendering parameters.
 - `update_palette_and_loop`: Configures DMA and interrupts, calls two routines, and if successful, populates several memory locations with values from a table and configures bitplane and copper registers; then it performs a loop calling another routine multiple times based on a bit test.
 - `frag_clr_tst_beq_rts`: Short code fragment that clears a fixed memory address, then tests a fixed memory address, then branches if the last result was zero, then returns.
 - `tiny_rte`: Small routine of 1 instruction that returns from the exception.
@@ -164,6 +183,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_and_test_word`: Clears a 16-bit word at an offset of 1412 from a5 and returns if the resulting value is zero, otherwise it returns.
 - `generate_dynamic_vertex_table`: Constructs a series of 32-bit coordinate pairs into a buffer by performing arithmetic on values from a structure in a5, including bitwise operations and scaling.
 - `scale_rgb_values`: Clears a 16-bit value at offset 578 of a structure in a5, then enters a loop that calls another routine to scale RGB components based on a count derived from a value at offset 652.
+- `initialize_structure_fields`: Initializes structure fields with calculated values using a lookup table, sets specific bit patterns in word values, and branches to different update routines based on input data.
 - `frag_move_bsr_rts`: Short code fragment that copies 2 to the memory at an offset from a5, then calls another routine, then returns.
 - `frag_move_bmi_bra_rts`: Short code fragment that copies the memory at a4 (advancing a4) to d0, then branches if the last result was negative, then copies d0 to the memory at an offset from a5, then copies 4 to the memory at an offset from a5, then jumps to another point in the code, then copies 2 to the memory at an offset from a5, then returns.
 - `frag_move_rts`: Short code fragment that copies the memory at a4 (advancing a4) to the memory at an offset from a5, then returns.
@@ -182,7 +202,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `frag_move_rts_7`: Short code fragment that copies the memory at a4 (advancing a4) to d0, then copies d0 to the memory at an offset from a5, then returns.
 - `rotate_structure_pointers`: Rotates three 32-bit values at offsets 5ac, 5b0, and 5b4 of a structure in a5, clears a 16-bit value at offset 5c0, and returns.
 - `scale_rgb_components`: Processes three nibbles from a word at a0 by multiplying each by a value in d0, scaling the result, clamping it to a maximum of 15, and storing the combined 16-bit result at a pointer in a1.
-- `initialize_structure_pointers`: Clears two 16-bit values in a structure, sets a pointer at offset 1030 to the value of a pointer in a0 plus 6, copies a 16-bit value from offset 2 of a0 to offset 1032 of the structure, and calls three different routines if the first word of a0 is non-negative.
 - `update_structure_pointers_2`: Copies a 32-bit pointer from offset 6 to offset 1742 of a structure in a5, writes a 16-bit value from offset 4 to offset 1698, and calls another routine if the value at offset 0 is not negative.
 - `synchronize_structure_state`: Waits until a 32-bit value at offset 1720 of the structure in a5 is zero, then clears two 16-bit values at offsets 1662 and 1656, performs a series of 16-bit and 32-bit word/long moves to copy data between various offsets, swaps two 32-bit values at offsets 1460 and 1468, and calls two other routines before returning.
 - `copy_data_with_scaling`: Copies data from a source at a0 to a destination at a1 using a scaling factor calculated from a value in a structure in a5, performing block copies for specific bit patterns and using a loop for the remainder.
@@ -228,14 +247,42 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `frag_move_rts_9`: Short code fragment that copies the memory at an offset from a5 to the memory at an offset from a6, then returns.
 - `frag_move_lsr_tst_ori_btst_beq_rts`: Short code fragment that copies 127 to the memory at an offset from a0, then copies d0 to the memory at an offset from a0, then shifts d0 right by 8, then copies d0 to the memory at an offset from a0, then tests the memory at an offset from a0, then merges 25 into the memory at an offset from a0, then tests bit 0 of the memory at an offset from a0, then branches if the last result was zero, then returns.
 
+### Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf bytes 6144-8192 (code never loaded by a reference run)
+
+- `setup_timer_registers`: Initializes timer hardware registers with predefined values, writes control bytes to specific memory locations, and performs conditional updates based on input parameters.
+- `frag_move_rts_10`: Short code fragment that copies 255 to the memory at an offset from a4, then copies 191 to the memory at an offset from a4, then copies 223 to the memory at an offset from a4, then copies 239 to the memory at an offset from a4, then copies 247 to the memory at an offset from a4, then copies 255 to the memory at an offset from a4, then returns.
+- `frag_btst_beq_moveq_bsr_bra_clr_rts`: Short code fragment that tests bit 4 of the memory at an offset from a4, then branches if the last result was zero, then loads 1 into d0, then calls another routine, then jumps to another point in the code, then clears a fixed memory address, then returns.
+- `frag_move_tst_bpl_bsr_sub_beq_add_neg`: Short code fragment that copies d0 to d6, then tests a fixed memory address, then branches if the last result was not negative, then calls another routine, then subtracts a fixed memory address from d6, then branches if the last result was zero, then adds d6 to a fixed memory address, then copies d6 to d0, then branches if the last result was not negative, then negates d0.
+- `manage_timer_operations`: Controls timer hardware operations by setting up registers with specific values, managing state flags through conditional branches, and coordinating with other timer-related routines.
+- `configure_hardware_timers`: Sets up timer hardware registers with predefined values, writes control bytes to specific memory locations, and performs conditional updates to timer configuration based on bit tests.
+- `frag_lsr_move_subq_eor_dbra_and_rts`: Short code fragment that shifts d1 right by 2, then copies the memory at a0 (advancing a0) to d0, then subtracts 2 from d1, then copies the memory at a0 (advancing a0) to d2, then exclusive-ors d2 into d0, then loops back while counting down d1, then masks d0 with d5, then returns.
+- `frag_move_and_add_or_rts`: Short code fragment that copies the memory at a0 (advancing a0) to d0, then copies the memory at a0 (advancing a0) to d1, then masks d0 with d5, then masks d1 with d5, then adds d0 to d0, then merges d1 into d0, then returns.
+- `combine_word_values`: Combines two word values through bitwise operations including AND, OR, and addition, then stores the result to a memory location while decrementing a counter in a loop.
+- `validate_graphics_data`: Compares coordinate data against expected values using arithmetic operations, performs bit manipulation on memory locations, and validates structural integrity of graphics buffers.
+- `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d4, then returns.
+- `frag_move_lsr_bsr`: Short code fragment that copies d0 to d3, then shifts d0 right by 1, then calls another routine, then copies d3 to d0, then calls another routine.
+- `frag_move_bclr_btst_bne_bset_rts`: Short code fragment that copies the memory at a0 to d0, then clears bit 7 of d0, then tests bit 6 of d0, then branches if the last result was not zero, then tests bit 0 of the memory at an offset from a0, then branches if the last result was not zero, then sets bit 7 of d0, then copies d0 to the memory at a0, then returns.
+- `process_bit_operations`: Performs bitwise AND, XOR, and shift operations on a long value, sets or clears specific bits based on a test condition, then stores the modified value to memory.
+- `initialize_render_parameters`: Initializes multiple structure fields with various values including pointers, word values, and calculated parameters, then updates these fields based on conditional tests of a global flag.
+- `setup_graphics_system`: Initializes several hardware registers including DMA control, sets up memory pointers, calls multiple routines for graphics configuration, and handles conditional branches based on test results from memory operations.
+- `frag_move_rts_11`: Short code fragment that copies 3840 to the memory at an offset from a6, then returns.
+- `control_render_loop`: Manages the rendering loop by setting up timer operations, calling initialization routines for graphics components, and controlling execution flow based on interrupt flags and state variables.
+- `configure_timer_hardware`: Sets up timer hardware registers with specific control values, updates memory locations with predefined patterns, and configures interrupt settings for timer operations.
+- `initialize_render_structure`: Populates a render structure with initial values including pointers, word values, and calculated parameters while updating multiple memory locations with specific data patterns.
+- `initialize_render_data`: Writes a specific 32-bit pattern to memory locations in a loop that iterates 2048 times, then performs bit manipulation operations on values from memory and calls another routine with the result.
+- `setup_render_parameters`: Configures rendering parameters by copying data to memory locations, performing bit operations on control values, and calling subroutines to initialize various render components.
+- `calculate_and_store_value`: Calculates a cumulative sum from array elements, handles carry propagation with conditional increments, and stores the final negated value to a memory location.
+
 ### Air Support (1992)(Psygnosis)[cr SKR](Disk 2 of 2).adf bytes 12288-39424 (code never loaded by a reference run)
 
 - `process_input_and_update_camera_2`: Branches to another routine, performs several memory and hardware register writes, calls another routine, and contains several loops that manipulate data and hardware registers.
+- `update_input_buffer`: Processes input data from hardware registers and updates a buffer with bit manipulation operations while managing state flags in memory.
 - `copy_color_palette`: Copies 32 words from a source table to the hardware color registers starting at the address in a0.
 - `configure_interrupt_settings`: Iterates through a loop to call three subroutines, then sets two 16-bit values at offsets 250 and 254 of a structure in a6 before returning.
 - `configure_interrupt_registers`: Sets various bits in the interrupt mask and enable registers by performing bitwise operations on d0 and d1 and writing the results to hardware registers.
 - `clear_table_entry`: Calculates an offset into a table using the lower two bits of d0, shifts the result, and clears the 16-bit word at that location.
 - `configure_hardware_and_interrupts`: Saves registers to the stack, performs several memory and hardware register writes, calls multiple routines, and eventually jumps to another routine.
+- `initialize_hardware`: Configures graphics hardware registers including display modes, color palettes, and timer settings while setting up interrupt handlers and DMA channels.
 - `update_hardware_and_structures`: Checks a global variable, writes values to hardware registers and various memory locations, calls several routines, and performs arithmetic on values from a global variable before returning.
 - `check_and_call_routines`: Checks a longword at a specific address and, if non-zero, calls two different routines before returning.
 - `run_nested_interpolation`: Sets a global variable to negative one and executes a nested loop that calls another routine one hundred and twenty-one times.

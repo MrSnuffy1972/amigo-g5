@@ -1,0 +1,113 @@
+# Game 269 (HiredGuns v1.0 1MB 1114): code recovery summary
+
+## Functions (part 2 of 2)
+
+### unit:u4#packproof-None#unpacked
+(continued)
+
+- `process_memory_chain`: Processes a linked list of memory blocks, updating pointers and calling helper routines to manage the chain.
+- `validate_file_seek`: Validates a file seek operation by checking table entry existence and updating a global error flag, then returns the result of the seek operation or -1 on failure.
+- `allocate_memory_block_2`: Allocates a new memory block using exec library, initializes its fields with parameters from the stack, links it into a global list, and returns a pointer to the allocated block.
+- `frag_move_jsr_addq_rts`: Short code fragment that copies d7 to the stack, then copies the memory at an offset from a7 to d7, then copies d7 to the stack, then calls another routine, then adds 4 to a7, then copies the top of the stack to d7, then returns.
+- `seek_stream_with_direction_flag`: Reads a stream object from the stack, adjusts the offset by its step size according to direction and mode flags, resets its counters, calls the seek routine and returns zero or minus one.
+- `update_memory_pointer`: Processes a linked list of memory blocks, updating pointers and calling helper routines to manage the chain, then stores the updated pointer in a global variable at offset 4280 from a4.
+- `update_counter_and_buffer`: Increments a counter in a global structure and manages a buffer by decrementing its length counter, then writes a byte value to the buffer when the counter is positive.
+- `frag_move_moveq_jsr_addq_movem_rts`: Short code fragment that copies d7 to d0, then loads 0 into d1, then copies d0 to d1, then copies a0 to the stack, then copies d1 to the stack, then calls another routine, then adds 8 to a7, then copies d0 to d1, then restores saved registers from the stack, then returns.
+- `initialize_and_call`: Initializes a 32-bit value at offset 4292 of a structure pointed to by a4 with the first parameter, stores the second parameter at offset 4288, then calls a routine with parameters from the stack and a pointer to a5 offset 16, and returns the 32-bit value at offset 4292.
+- `initialize_entry`: Initializes a data structure entry by allocating memory, clearing it, and setting up a pointer chain in a global table.
+- `initialize_file_handle_2`: Initializes a file handle entry in a table, updates related global variables based on access mode and locking status, and returns the index.
+- `advance_and_read`: Checks a bit in a structure pointed to by a3, calls a routine if the bit is set, decrements a counter at offset 8 of that structure, and if the counter goes below zero, reads and returns the next byte from a buffer pointed to by offset 4 of that structure.
+- `check_node_flags_and_run_children`: Saves d6-d7/a2-a3, reads a node pointer from the stack, tests bit 1 of its flags at offset 27, optionally calls a routine with the node and minus one, then calls two routines on its fields and returns zero or minus one.
+- `validate_and_read`: Validates file access flags and calculates a data size difference before calling a file reading routine with the calculated parameters.
+- `write_file_data`: Writes data to a file handle using the dos.Write library call, updates an error code in a global variable when the operation fails, and sets a status value in another global variable.
+- `seek_file_position`: Moves the file position indicator to a specified location using the dos.Seek library call, updates an error code in a global variable when the operation fails, and returns a calculated file position based on the input parameters.
+- `read_file_data`: Reads data from a file handle using the dos.Read library call, updates an error code in a global variable when the operation fails, and returns the number of bytes actually read.
+- `open_file_handle`: Opens a file using the dos.Open library call with specified access mode, updates an error code in a global variable when the operation fails, and returns the file handle or -1 on failure.
+- `lock_or_open_file`: Attempts to lock a file using dos.Lock, unlocks it if successful, and opens it with dos.Open if locking fails, returning either the opened file handle or -1 on failure.
+- `delete_and_open_file`: Locks a file, unlocks it, deletes it using dos.DeleteFile, then opens it with dos.Open, returning the file handle or -1 if opening fails.
+- `close_file_handle`: Checks if a file handle is valid, calls dos.Close if it is, and returns zero after restoring the stack.
+- `initialize_intuition`: Opens the intuition library if not already open, copies data from a global structure to a local buffer, and calls other routines to process entries and cleanup.
+- `compute_fixed_point_product_2`: The routine takes two 32-bit fixed-point values from registers and returns their product as a 32-bit fixed-point value.
+- `divide_with_sign_handling`: Performs division of two 32-bit integers with sign handling, returning the quotient after adjusting for negative inputs and using a normalized fixed-point method.
+- `normalize_fixed_point_divide_2`: The routine divides a 32-bit dividend in d0 by a 32-bit divisor in d1 using a normalized fixed-point method.
+- `validate_and_copy_data`: Validates data length against a constant, copies data from one memory location to another in a loop, clears a byte at an offset from a5, and writes debug information to a file handle.
+- `copy_and_write_data`: Copies data from one memory location to another in a loop, clears a byte at an offset from a5, and writes debug information to a file handle when available.
+- `open_intuition_lib`: Opens the intuition library if not already open, stores a pointer to the library in a global variable, and calls another routine with several stack parameters before returning a conditional result.
+- `function_epilogue_11`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `validate_and_clear_entry`: Validates a table entry pointer, checks a flag bit, clears the entry if the bit is not set, and calls another routine with the entry's data before clearing it.
+- `validate_and_lookup_table_entry`: Validates an index against limits, checks if a table entry exists, and returns a pointer to that entry or zero if validation fails.
+- `check_signal_and_process`: Sets a signal mask, checks if the signal is set, and if so, calls another routine to process entries and cleanup, returning a value based on the processing result.
+- `frag_bsr_rts`: Short code fragment that calls another routine, then returns.
+- `call_intuition_request`: Calls the intuition library's AutoRequest function with parameters from the stack and returns its result as a floating-point value.
+- `process_entries_and_cleanup`: Iterates through an array of entries, processes valid entries that don't have a specific flag set, and calls another routine for each processed entry before returning.
+- `free_memory_chain`: Frees all memory blocks in a linked list starting from a global pointer, clearing the pointers to the first and last blocks in the structure.
+- `allocate_and_link_memory_block`: Allocates a new memory block using exec library, initializes its fields with parameters from the stack, links it into a global list, and returns a pointer to the allocated data area.
+- `validate_and_execute_2`: Validates stack pointer against a global variable, performs conditional operations based on flags, and calls other routines to process tile.
+- `validate_and_execute_3`: Validates a stack pointer against a global variable, performs conditional operations based on flags, and calls other routines to process tile data.
+- `validate_and_execute_4`: Validates the stack pointer against a global variable, performs conditional operations based on flags, and calls other routines to process tile.
+- `validate_and_copy`: Validates the stack pointer against a global variable and performs conditional operations based on flags, copying data between memory locations when the stack check passes.
+- `copy_tile_data`: Copies tile data from a source buffer to a destination buffer with row and column adjustments, updating pointers and counters during the process.
+- `swap_tile_pointers`: Swaps two tile data pointers in a global structure and updates related counters, then calls a tile data copying routine.
+- `process_tile_data`: Validates stack pointer against a global variable, performs conditional operations based on flags, calls other routines to process tile data, and updates global structures with results.
+- `process_tile_data_2`: Validates stack pointer against a global variable, performs conditional operations based on flags, and calls other routines to process tile data.
+- `validate_and_execute`: Validates stack pointer against a global variable, performs conditional operations based on flags, and calls other routines to process tile data.
+- `frag_jmp_2`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_3`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_4`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_5`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_6`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_7`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_8`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_9`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_10`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_11`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_12`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_13`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_14`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_15`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_16`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_17`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_18`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_19`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_20`: Short code fragment that jumps to another point in the code.
+- `frag_cmpa_bcs_pea_jsr_addq_rts`: Short code fragment that compares a7 with the memory at an offset from a4, then branches if the carry flag is set, then pushes the address of the memory at an offset from a4 onto the stack (2 times in a row), then calls another routine, then adds 8 to a7, then returns.
+- `parse_command_line`: Processes command-line arguments starting at offset -32129 in a global structure, parsing options beginning with a hyphen and updating a counter at offset -30398.
+- `validate_stack_pointer`: Compares the stack pointer with a global offset and branches if the carry flag is set, then performs memory operations and returns.
+- `parse_input_buffer`: Parses a null-terminated string in a global buffer, splitting it into words separated by spaces or tabs, and stores pointers to each word in a table.
+- `update_counter_and_store`: Increments a counter in memory, calculates an address using a shift operation, and stores a value at that address while decrementing another counter.
+- `function_epilogue_12`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `check_input_flag_and_execute`: Compares a stack pointer with a global value, branches if the stack is below the global, reads a byte from memory, decrements it, and conditionally sets a return value based on a bit test.
+- `process_input_buffer_2`: Reads characters into a buffer until newline, carriage return, or end-of-file is encountered, then null-terminates the buffer.
+- `clear_input_buffer`: Initializes a 256-byte input buffer to zero, then reads characters from a data source into the buffer until a newline, carriage return, or end-of-file is encountered, and finally null-terminates the string.
+- `frag_jmp_21`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_22`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_23`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_24`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_25`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_26`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_27`: Short code fragment that jumps to another point in the code.
+- `iterate_and_execute_with_parameters`: Iterates through nested loops using global parameters, calls another routine with specific arguments for each iteration, and updates counters in the stack frame.
+- `frag_jmp_28`: Short code fragment that jumps to another point in the code.
+- `process_input_sequence_2`: Reads bytes from a data stream, compares them with a sequence of four characters, and updates a global variable based on the comparison result.
+- `process_command_data`: Reads bytes from a data buffer, processes them through a series of operations, and returns a combined 32-bit value.
+- `process_byte_pair`: Reads two bytes from a buffer, shifts the first byte left by eight bits, adds it to the second byte, and returns the result in the low word of the data register.
+- `read_single_byte`: Reads a single byte from a buffer, performs a bitwise NOT operation on it, and returns the result in the low byte of the data register.
+- `update_game_state`: Updates multiple global variables with values read from a data stream, processes byte pairs from a buffer, and writes results to specific memory offsets.
+- `decode_buffer_data`: Processes data from a buffer based on a control byte, handling both literal and compressed sequences while updating global variables.
+- `process_input_sequence_3`: Reads bytes from a data stream, compares them with a sequence of four characters, and updates a global variable based on the comparison result.
+- `execute_command_with_file_handling`: Compares the stack pointer against a global limit, executes a command using dos library functions, handles file operations for output redirection, and returns error codes from dos calls.
+- `frag_jmp_29`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_30`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_31`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_32`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_33`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_34`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_35`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_36`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_37`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_38`: Short code fragment that jumps to another point in the code.
+- `frag_jmp_39`: Short code fragment that jumps to another point in the code.
+- `find_filename_start`: Scans a string for colon or backslash characters from the end toward the beginning, and returns a pointer to the character following the last such separator found.
+- `function_epilogue_13`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `copy_until_dot_or_null`: Copies bytes from one buffer to another until it encounters a dot character or null terminator, then writes a null terminator at the end of the destination buffer.
+- `parse_filename_and_add_extension`: Parses a filename string to find the last dot character, extracts the extension part, adds a period if needed, and returns a pointer to the modified string.

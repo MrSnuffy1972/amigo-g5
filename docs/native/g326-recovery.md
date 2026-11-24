@@ -6,37 +6,40 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901184 top-level bytes in 32 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 4 raw-word lines |
-| Functions named and described | pass, 283 of 283 named (0 author symbols), 283 of 283 described (74 by rule, 208 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1479 of 1479 (100.00%) |
+| Bytes classified (901206 top-level bytes in 33 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 4 raw-word lines |
+| Functions named and described | pass, 476 of 476 named (0 author symbols), 476 of 476 described (171 by rule, 303 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 2422 of 2422 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 23040 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 29654 of 29657 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 32691 of 32694 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 426163 |
-| code | 115182 |
-| data | 119214 |
-| padding | 6641 |
+| code | 126698 |
+| data | 107717 |
+| padding | 6644 |
 | unused | 233984 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Trump Castle.adf:type | 2 | 117 | 2 |
-| Trump Castle.adf:Trump_Castle | 3 | 29529 | 279 |
+| Trump Castle.adf:type | 2 | 363 | 12 |
+| Trump Castle.adf:Trump_Castle | 3 | 32313 | 460 |
 | Trump Castle.adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 2 |
 | allfruit (raw code file, load address unknown) | 1 | 0 | 0 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 1 |
 
 ## Cases handled
 
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - Trump Castle/Trump Castle.adf:data/allfruit: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 displacement
+- RAMSCAN: 1 confirmed routine segment(s) from the run-end RAM image, 22 bytes, added as run-time units
 - 1 never-loaded region(s), 23040 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
@@ -46,6 +49,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ## Copy protection found
 
 - `generate_ascii_character` (Trump_Castle): Calculates an ASCII character value using a combination of arithmetic operations on registers and checks if the result falls within certain ranges. Kind: checksum/manual lookup trap. Pass path: the branch where uStack_c == uStack_10, resulting in the return or exit via u1__sub_0_20620.
+- `process_input_and_execute` (Trump_Castle): Converts numerical values to ASCII characters and stores them in a buffer, then executes bytecode sequences while managing state variables and handling input events through recursive function calls and library interactions. Kind: input validation/check. Pass path: The loop continues until the correct input is entered (matching *(short *)(unaff_A5 + -0xc)) or 3 incorrect attempts are made, which triggers the 'Wrong too many times!!!' message and resets the check..
 - `validate_global_state_range` (Trump_Castle): Checks if a global variable falls within a large number of specific, non-contiguous valid ranges. Kind: range-based checksum/value trap. Pass path: the branchs where the conditional checks fail (i.e., the code skips the nested `if` blocks or proceeds to subsequent logic, rather than entering the failure-state nested blocks).
 
 ## Functions
@@ -55,6 +59,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `copy_memory_block`: copies a fixed number of words from a source pointer to a destination pointer.
+- `initialize_game_state_2`: Initializes various game state variables and clears multiple memory locations.
+- `frag_bra`: Short code fragment that jumps to another point in the code.
+- `frag_moveq_move_bra`: Short code fragment that loads 255 into d1, then copies d1 to the memory at an offset from a2, then jumps to another point in the code.
+- `frag_moveq_move_bra_2`: Short code fragment that loads 255 into d1, then copies d1 to the memory at an offset from a1, then jumps to another point in the code.
+- `process_bytecode_entry`: Reads a bytecode value from a table using an index from a structure, updates counters in the structure, and calls a function multiple times based on conditions involving the read value and flags in the structure.
+- `process_bytecode_value`: Reads a bytecode value from a table using an index from a structure, updates counters in the structure, and calls a function multiple times.
+- `execute_bytecode_sequence`: Executes bytecode sequences by managing counters and memory locations, calling functions with specific parameters based on conditional checks.
+- `initialize_and_execute`: Initializes a global variable with the value one, then performs a series of function calls with specific parameters, updating memory locations and checking conditions before branching to different code sections based on comparison results.
+- `frag_bra_2`: Short code fragment that jumps to another point in the code.
+- `frag_move_movea_jsr_jmp`: Short code fragment that copies 232 to d0, then copies the memory at an offset from a2 to a4, then calls the routine whose address is in a5, then jumps to the address in a6.
 
 ### Trump Castle.adf:Trump_Castle
 
@@ -66,6 +80,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_global_state`: Sets certain global flags to a constant value and calls a routine that appends strings to a local buffer.
 - `initialize_string_table_and_validate_data`: populates a table with string fragments or values and performs a check or loop involving string copying and pointer-based validation.
 - `generate_ascii_character`: Calculates an ASCII character value using a combination of arithmetic operations on registers and checks if the result falls within certain ranges.
+- `convert_and_store_value`: Converts a numerical value to an ASCII character representation and stores it at a fixed offset in a register.
+- `process_input_and_execute`: Converts numerical values to ASCII characters and stores them in a buffer, then executes bytecode sequences while managing state variables and handling input events through recursive function calls and library interactions.
 - `execute_fixed_sequence`: Executes a fixed sequence of three routine calls, including one with a zeroed argument.
 - `traverse_and_update_structure`: Recursively traverses a linked or nested structure to check for a zeroed entry, then updates a target structure with new or cleared data if a match is found.
 - `tiny_moveq`: Small routine of 1 instruction that loads 0 into d1.
@@ -98,6 +114,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `build_string_structure_list_2`: Calls a routine to build a list of structures from a string and then calls another routine using the returned pointer.
 - `parse_string_tags_and_validate_metadata`: Parses a string tag sequence to extract or validate configuration-related metadata, such as string lengths and buffer limits.
 - `evaluate_state_transition`: Evaluates a chain of pointers and checks certain bitmask conditions or value ranges to determine a new state, potentially updating a global variable or calling other routines based on the result.
+- `frag_move_bra`: Short code fragment that copies 34 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_2`: Short code fragment that copies 162 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_3`: Short code fragment that copies 66 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_4`: Short code fragment that copies 98 to the memory at an offset from a5, then jumps to another point in the code.
+- `process_game_state`: Updates a global variable based on conditional logic and table data, then calls several routines including table iterations, bit modification, and library functions before returning the value of the global variable.
 - `traverse_linked_lists`: Iterates through a nested linked list structure, calling another routine for each element or pointer encountered.
 - `initialize_blinker_struct`: Initializes a structure or object or table with specific integer values and sets certain function pointers, including a pointer to itself, while also performing a series of initial data-population calls using hardcoded parameters or previously computed values.
 - `initialize_game_state`: Initializes several global variables and structures, clears a small array, and configures an initial state for a conditional logic branch.
@@ -109,19 +130,134 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_iterative_audio_setup`: Calculates a loop count based on a masked return value, then repeatedly initializes an audio timer with a masked global value and executes a delay-based routine a fixed number of times.
 - `reconfigure_data_buffer_layout`: This routine copies and reorders blocks of data from one location in a global buffer to another, using a stride-based offset determined by the input parameter.
 - `update_graphics_primitives`: updates or draws a series or sequence of primitive shapes or lines by updating a destination buffer or display area.
+- `execute_bytecode_sequence_3`: Prepares and executes a series of bytecode operations by pushing parameters onto the stack and calling functions, with conditional execution based on a global variable's value.
+- `execute_bytecode_sequence_2`: Prepares and executes a series of bytecode operations by pushing parameters onto the stack and calling functions.
+- `execute_bytecode_operations`: Executes multiple bytecode operations by preparing parameters and calling a recursive function with various values, while managing stack frames and handling conditional execution paths.
+- `handle_bytecode_execution`: Processes bytecode execution commands with varying parameters, managing stack frames and handling conditional logic paths through comparisons against a global variable.
+- `execute_bytecode_operations_2`: Processes a series of bytecode execution commands with varying parameters, managing stack frames and handling conditional logic paths through multiple function calls.
+- `execute_multiple_operations_2`: Processes a series of structured parameter sets by calling another routine with varying arguments, managing stack frames, and handling conditional execution paths through recursive function calls with specific parameters.
+- `execute_multiple_operations_3`: Processes a series of structured parameter sets by calling another routine with varying arguments and handling recursive function execution with global state updates, then returns.
+- `execute_multiple_operations`: Executes multiple operations by calling functions with various parameters, managing stack frames, and handling conditional execution paths.
+- `initialize_and_store`: Sets up a stack frame with a link instruction, pushes two values onto the stack, calls a library function, and stores the result from the library call into a global variable at a specific offset from the stack pointer.
+- `frag_move_jsr_clr_bra`: Short code fragment that copies 160 to d1, then copies the memory at an offset from a5 to d0, then calls multiply_32_bit_values, then copies d0 to the memory at an offset from a5, then copies the memory at an offset from a5 to the memory at an offset from a5, then clears the memory at an offset from a5, then jumps to another point in the code.
+- `copy_sprite_data`: Copies sprite attribute data from a table to a destination structure, advancing pointers and incrementing a counter through a loop that repeats fourteen times.
+- `process_and_call_function`: Processes parameters and calls a library function repeatedly while updating memory values, then performs a final call with a fixed parameter.
+- `execute_bytecode_recursive`: Updates a counter in a local structure, prepares parameters for bytecode execution, calls a function to execute bytecode with those parameters, and then calls another function to process recursive operations using the same parameters.
 - `update_card_values_and_check_patterns`: Updates a table of five integer values by incrementing or decrementing them based on a provided parameter, then checks the new values against hardcoded patterns to update a secondary temporary table and a global flag.
+- `frag_move_ext_bra`: Short code fragment that copies the memory at an offset from a5 to d0, then sign-extends d0, then jumps to another point in the code.
+- `frag_cmpi_bne_move_ext_asl_lea_bra`: Short code fragment that compares the memory at an offset from a5 with 4, then branches if the last result was not zero, then copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 2 to an indexed entry from a0, then jumps to another point in the code.
+- `frag_cmpi_bne_move_ext_asl_lea_bra_2`: Short code fragment that compares the memory at an offset from a5 with 8, then branches if the last result was not zero, then copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 6 to an indexed entry from a0, then jumps to another point in the code.
+- `check_conditions_and_write`: Compares specific values in a local structure with constants, branches if the comparisons fail, checks a condition in memory, and writes a fixed value to an address calculated from another memory location using a shifted index.
+- `frag_move_ext_asl_lea_bra`: Short code fragment that copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 65535 to an indexed entry from a0, then copies 1 to a fixed memory address, then jumps to another point in the code.
+- `frag_cmpi_bne_move_ext_asl_lea_bra_3`: Short code fragment that compares the memory at an offset from a5 with 7, then branches if the last result was not zero, then copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 6 to an indexed entry from a0, then jumps to another point in the code.
+- `validate_and_store_value`: Compares specific values in a local structure with constants, branches if the comparisons fail, checks a condition in memory, and stores a fixed value to an address calculated from another memory location using a shifted index.
+- `frag_move_ext_asl_lea_bra_2`: Short code fragment that copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 65535 to an indexed entry from a0, then copies 1 to a fixed memory address, then jumps to another point in the code.
+- `verify_and_update_memory`: Compares specific values in a local structure with constants, branches if the comparisons fail, calculates an address using a shifted index, and writes a fixed value to that memory location.
+- `frag_move_ext_asl_lea_bra_3`: Short code fragment that copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 2 to an indexed entry from a0, then jumps to another point in the code.
+- `validate_and_write_value`: Compares specific values in a local structure with constants, branches if the comparisons fail, calculates an address using a shifted index, and writes a fixed value to that memory location.
+- `frag_cmpi_bne_move_ext_asl_lea_bra_4`: Short code fragment that compares the memory at an offset from a5 with 3, then branches if the last result was not zero, then copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 7 to an indexed entry from a0, then jumps to another point in the code.
+- `frag_cmpi_bne_move_ext_asl_lea_bra_5`: Short code fragment that compares the memory at an offset from a5 with 5, then branches if the last result was not zero, then copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 8 to an indexed entry from a0, then jumps to another point in the code.
+- `frag_cmp_bcc_asl_move_jmp`: Short code fragment that compares d0 with 10, then branches if the carry flag is clear, then shifts d0 left by 1, then copies a location in the code to d0, then jumps to another point in the code.
+- `frag_cmpi_bge_clr_bra`: Short code fragment that compares the memory at an offset from a5 with 2, then branches if the comparison was greater or equal, then clears the memory at an offset from a5, then jumps to another point in the code.
+- `update_card_pattern_4`: Increments a value in a table based on an index from a global variable, then checks if the value exceeds ten and adjusts it accordingly.
+- `update_card_pattern_5`: Updates card pattern values based on comparisons with global variables and stores results in a local array.
+- `update_card_pattern`: Updates card pattern values based on comparisons with global variables and stores results in a local array.
+- `frag_move_ext_bra_2`: Short code fragment that copies the memory at an offset from a5 to d0, then sign-extends d0, then jumps to another point in the code.
+- `update_pattern_entry`: Updates a table entry based on comparison of global variables with constants, then performs a sign-extension and left shift operation on a value from the structure before storing a word at a calculated address.
+- `frag_move_ext_asl_lea_bra_4`: Short code fragment that copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 65535 to an indexed entry from a0, then copies 1 to a fixed memory address, then jumps to another point in the code.
+- `check_and_update_pattern_2`: Compares values from two global variables with specific constants and updates a table entry based on a counter value, then branches to the end of the routine.
+- `check_and_update_pattern`: Checks two global variables and updates a table entry based on a counter value, then branches to the end of the routine.
+- `update_tile_pattern`: Updates a tile pattern value based on conditions involving multiple global variables, then performs a series of operations on a counter and related data structures before returning.
+- `update_sprite_state`: Reads state values from specific offsets relative to a5, performs conditional checks based on those values, and writes a 16-bit value to a memory location calculated using another offset from a5.
+- `update_game_state`: Updates game state variables based on conditional checks involving multiple offsets from a5 register, then performs arithmetic operations and value assignments to global data structures.
+- `update_game_state_12`: Reads state variables from offsets -22(a5) and -20(a5) to determine which value to write at an address calculated from offset -10(a5) and register d0.
+- `update_game_state_10`: Updates internal game state variables based on conditional checks involving multiple offsets from a5, then writes specific values to a memory location determined by a calculated index.
+- `check_game_conditions`: Tests two global variables for specific values and performs a table lookup using a third variable to update a game state value.
+- `update_game_state_2`: Updates internal game state variables based on conditional checks involving multiple offsets from a5, then writes specific values to a memory location calculated using a word value from a5 as an index.
+- `frag_cmp_bcc_asl_move_jmp_2`: Short code fragment that compares d0 with 9, then branches if the carry flag is clear, then shifts d0 left by 1, then copies a location in the code to d0, then jumps to another point in the code.
+- `frag_cmpi_bge_clr_bra_2`: Short code fragment that compares the memory at an offset from a5 with 2, then branches if the comparison was greater or equal, then clears the memory at an offset from a5, then jumps to another point in the code.
+- `increment_card_counter_2`: Increments a card value counter at a calculated offset, resets it to one if it reaches nine, then increments a tracking counter.
+- `update_card_values_2`: Updates card value counters based on conditions and copies the results to a target array while managing counter overflows.
+- `update_card_counters`: Increments and resets card value counters based on conditions, then copies updated values to a target array while managing counters and conditions.
+- `frag_move_ext_bra_3`: Short code fragment that copies the memory at an offset from a5 to d0, then sign-extends d0, then jumps to another point in the code.
+- `update_game_state_3`: Reads specific word values from offsets within a structure referenced by a5, compares them against fixed constants, and writes a predefined value to a table entry calculated from a word at offset -12 of the same structure.
+- `frag_move_ext_asl_lea_bra_5`: Short code fragment that copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 3 to an indexed entry from a0, then jumps to another point in the code.
+- `validate_and_write_value_2`: Checks specific word values at offsets from a5 and branches if any do not match expected constants, then calculates an address using a value from a5 and stores a constant word value at that address.
+- `validate_and_store_value_2`: Checks two word values at specific offsets from a5 and branches if either does not match expected constants, then calculates an address using a word value, extends it to long, shifts it left by one bit, loads that address into a0, and stores the value 180 at an offset in the structure pointed to by a0.
+- `frag_cmpi_bne_move_ext_asl_lea_bra_6`: Short code fragment that compares the memory at an offset from a5 with 9, then branches if the last result was not zero, then copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 12 to an indexed entry from a0, then jumps to another point in the code.
+- `validate_and_store_value_3`: Checks two word values in a global structure and branches if either does not equal three, then stores a word value at an address calculated from a pointer and a register.
+- `validate_and_store_another_value`: Checks two word values at specific offsets from a5 and branches if either does not match expected constants, then calculates an address using a word value, extends it to long, shifts it left by one bit, loads that address into a0, and stores the value 175 at an offset in the structure pointed to by a0.
+- `frag_cmpi_bne_move_ext_asl_lea_bra_7`: Short code fragment that compares the memory at an offset from a5 with 8, then branches if the last result was not zero, then copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 7 to an indexed entry from a0, then jumps to another point in the code.
+- `update_game_state_4`: Updates a game state value based on conditions involving multiple variables and a table index, then performs a series of operations including incrementing counters and copying values between arrays.
+- `frag_cmpi_bne_move_ext_asl_lea_bra_8`: Short code fragment that compares the memory at an offset from a5 with 4, then branches if the last result was not zero, then copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 2 to an indexed entry from a0, then jumps to another point in the code.
+- `frag_cmp_bcc_asl_move_jmp_3`: Short code fragment that compares d0 with 9, then branches if the carry flag is clear, then shifts d0 left by 1, then copies a location in the code to d0, then jumps to another point in the code.
+- `frag_clr_bra`: Short code fragment that clears the memory at an offset from a5, then jumps to another point in the code.
+- `increment_card_counter`: Increments a card counter at a calculated offset and updates its value based on conditions, then increments a global index and loops until the index reaches five.
+- `frag_move_ext_bra_4`: Short code fragment that copies the memory at an offset from a5 to d0, then sign-extends d0, then jumps to another point in the code.
+- `update_game_state_11`: Reads multiple game state variables from specific offsets relative to a5, performs conditional checks based on their values, and writes a 16-bit value to a table at offset -10 relative to a5.
+- `update_game_state_9`: Reads game state variables from offsets -22 and -20 relative to a5, then writes a value to a table at offset -10 based on conditional checks.
+- `frag_cmpi_bne_move_ext_asl_lea_bra_9`: Short code fragment that compares the memory at an offset from a5 with 3, then branches if the last result was not zero, then copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 1 to an indexed entry from a0, then jumps to another point in the code.
+- `update_game_state_5`: Updates internal game state variables based on conditional checks involving multiple offsets from a5, then performs a series of operations on a table and global variables before returning.
+- `update_tile_flags`: Updates tile flags based on multiple conditions involving values at specific offsets, then performs a loop to adjust counters and copy data to a global table.
+- `update_game_state_6`: Reads a value from a global structure, performs conditional checks on it, and writes a specific value to an array element identified by that value.
+- `frag_subq_cmp_bcc_asl_move_jmp`: Short code fragment that subtracts 2 from d0, then compares d0 with 7, then branches if the carry flag is clear, then shifts d0 left by 1, then copies a location in the code to d0, then jumps to another point in the code.
+- `frag_bra_3`: Short code fragment that jumps to another point in the code.
+- `update_pattern_values`: Updates pattern values based on multiple conditional checks involving global variables, then clears a memory region before branching to another routine.
+- `update_pattern_flags`: Updates pattern flags based on conditions involving multiple global variables, then clears a memory region before branching to another routine.
+- `frag_cmp_bcc_asl_move_jmp_4`: Short code fragment that compares d0 with 9, then branches if the carry flag is clear, then shifts d0 left by 1, then copies a location in the code to d0, then jumps to another point in the code.
+- `frag_clr_bra_2`: Short code fragment that clears the memory at an offset from a5, then jumps to another point in the code.
+- `update_card_pattern_2`: Increments a counter at a calculated offset in a table, updates card values based on pattern matching, and manages game state counters until reaching a limit of five iterations.
+- `frag_move_ext_bra_5`: Short code fragment that copies the memory at an offset from a5 to d0, then sign-extends d0, then jumps to another point in the code.
+- `check_and_set_value`: Compares values at specific offsets of a global structure with constants 6 and 3, and if both comparisons are false, loads a word value, extends it to long, shifts it left by one bit, uses it as an offset to access another global structure, and stores the value 40 into that location.
+- `frag_cmpi_bne_move_ext_asl_lea_bra_10`: Short code fragment that compares the memory at an offset from a5 with 6, then branches if the last result was not zero, then copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 1 to an indexed entry from a0, then jumps to another point in the code.
+- `frag_cmpi_bne_move_ext_asl_lea_bra_11`: Short code fragment that compares the memory at an offset from a5 with 3, then branches if the last result was not zero, then copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 1 to an indexed entry from a0, then jumps to another point in the code.
+- `check_game_state_2`: Compares values from global variables with constants 3, 6, and 1, and based on the results, updates a table entry with the value 8 at an offset calculated from another global variable.
+- `frag_cmpi_bne_move_ext_asl_lea_bra_12`: Short code fragment that compares the memory at an offset from a5 with 3, then branches if the last result was not zero, then copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 1 to an indexed entry from a0, then jumps to another point in the code.
+- `update_game_state_7`: Updates internal game state variables based on conditional checks and increments counters.
+- `check_game_state`: Checks specific game state values at offsets -16 and -14 relative to a5, and based on the results, either branches to another location or continues execution to update a table entry at offset -10 from a5.
+- `frag_move_ext_asl_lea_bra_6`: Short code fragment that copies the memory at an offset from a5 to d0, then sign-extends d0, then shifts d0 left by 1, then loads the address of the memory at an offset from a5 into a0, then copies 1 to an indexed entry from a0, then jumps to another point in the code.
+- `frag_cmp_bcc_asl_move_jmp_5`: Short code fragment that compares d0 with 7, then branches if the carry flag is clear, then shifts d0 left by 1, then copies a location in the code to d0, then jumps to another point in the code.
+- `frag_cmpi_bge_clr_bra_3`: Short code fragment that compares the memory at an offset from a5 with 2, then branches if the comparison was greater or equal, then clears the memory at an offset from a5, then jumps to another point in the code.
+- `increment_and_update_pattern`: Increments a counter at a calculated offset, updates a value to one if it reaches seven, then increments another counter and repeats until it exceeds four.
+- `update_card_pattern_3`: Updates card pattern values based on comparison results and manages counters, then copies updated values to a target array while handling conditional logic for specific card combinations.
+- `update_card_values`: Updates card values based on game state and pattern matching, then copies updated values to a target array while managing counters and conditional logic.
 - `initialize_and_populate_data_buffer`: Initializes a buffer by checking for valid pointers or certain input conditions, then copies a sequence of words or or larger data blocks from a source table or memory range into a destination array, or updates a structure with a specific amount of data or a calculated range.
 - `handle_exit_prompt`: Checks a global variable against several constant values and recursively calls another routine with a pointer to that global variable.
 - `update_global_and_recurse`: Updates a global variable by adding a parameter and then executes a sequence of recursive calls using values or pointers retrieved from a table and a conditional branch that selects different constants or registers.
 - `empty_routine_3`: the routine is empty and performs no operations or data transfers.
 - `process_event_chain`: Iteratively traverses a linked chain of routine pointers and processes event handlers.
 - `traverse_state_tree_recursively`: A recursive routine that updates a global state variable and a secondary value based on a lookup table, then calls itself or other routines with modified parameters or or new state-dependent offsets.
+- `frag_addi_bra`: Short code fragment that adds 17 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_addi_bra_2`: Short code fragment that adds 34 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_addi_bra_3`: Short code fragment that adds 51 to the memory at an offset from a5, then jumps to another point in the code.
+- `update_position_and_call`: Updates position coordinates and calls a range calculation function with multiple parameters.
 - `branch_on_global_value`: Checks a global variable and sets local stack values before calling a routine with a calculated range or a multiplication routine.
+- `frag_move_bra_5`: Short code fragment that copies 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_6`: Short code fragment that copies 5 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_7`: Short code fragment that copies 25 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_8`: Short code fragment that copies 100 to the memory at an offset from a5, then jumps to another point in the code.
+- `initialize_counter_2`: Sets a global variable to 500, updates it based on conditions involving another global variable's value and the counter itself, then returns.
+- `frag_move_bra_9`: Short code fragment that copies 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_10`: Short code fragment that copies 5 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_11`: Short code fragment that copies 25 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_12`: Short code fragment that copies 100 to the memory at an offset from a5, then jumps to another point in the code.
+- `initialize_counter`: Sets a global variable to 500, updates it based on conditions involving another global variable's value and the counter itself, then returns the counter's value.
 - `update_state_table_entry`: updates or resets values in a table or global variable based on a range-checked state or index.
 - `parse_string_tag_list`: Parses a string containing a delimited list of substrings separated by pipes and enclosed in brackets, storing the resulting string pointers into a table.
 - `initialize_game_data_tables`: Initializes several memory-mapped tables or arrays to zero and populates them with data from hardcoded or pointer-based sources.
 - `clear_register_d1`: Sets the d1 register to zero.
 - `initialize_game_state_and_process_events`: Initializes a large memory-mapped table or array to zero and enters a main event loop that dispatches or handles certain event codes.
+- `initialize_audio_and_library_calls`: Initializes an audio timer with specific parameters and performs two library function calls with fixed arguments, then branches to a loop that updates game state variables.
+- `frag_pea_move_jsr_lea_bra`: Short code fragment that pushes the address of a fixed memory address onto the stack, then copies a fixed memory address to the stack, then pushes the address of a fixed memory address onto the stack (4 times in a row), then calls call_library_with_range, then loads the address of the memory at an offset from a7 into a7, then jumps to another point in the code.
+- `initialize_game_variables`: Updates two word-sized global variables with values derived from a global counter, then initializes an audio timer using those values.
+- `initialize_audio_and_library_calls_2`: Updates two global word variables with processed values from a routine, initializes an audio timer with those values, and performs two library calls with fixed parameters and a global variable reference.
+- `initialize_audio_and_library_calls_3`: Updates two word-sized global variables using bitwise and and addition operations, then initializes an audio timer with those values before making two library calls with specific parameters.
+- `update_timer_parameters`: Reads a global variable, masks its lower 4 bits, adds fixed offsets, and stores the results to two word-sized slots in a global structure.
+- `push_and_call`: Pushes several values onto the stack and calls a library routine, then adjusts the stack pointer and branches to another location.
+- `initialize_game_state_3`: Updates global variables with calculated values based on random inputs, initializes audio timer with specific parameters, and sets up state variables for game progression.
+- `frag_move_muls_add_bra`: Short code fragment that copies the memory at an offset from a5 to d0, then multiplies d0 by 18 (signed), then adds 50 to d0, then copies d0 to the memory at an offset from a5, then jumps to another point in the code.
+- `update_position_and_state`: Updates position and state variables based on calculations involving multiplication, division, and conditional logic.
+- `update_game_state_8`: Updates game state variables including counters and coordinates based on calculations involving multiplication, division, and conditional logic.
 - `initialize_betting_limits_and_history_2`: Sets or resets betting limits and clears a 2D array or tracking history.
 - `initialize_betting_limits_and_history`: Sets betting or chip value limits based on a global configuration and clears a 2D array used for tracking recent results.
 - `execute_recursive_calls`: Performs a sequence of recursive or indirect calls using a global variable and a passed parameter, returning a value obtained from a previous routine execution.
@@ -138,20 +274,72 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_betting_range_and_history`: Sets up or resets a betting range or chip value based on a configuration value and clears several memory-mapped buffers or arrays.
 - `calculate_and_format_payoff`: Checks a table of bet amounts and multipliers, then calls a routine to format a string containing the calculated payoff amount.
 - `format_bet_payoff_string`: Checks if a payoff or bet amount is zero or otherwise valid, then formats a string containing a bet amount and its corresponding payoff into a buffer.
+- `frag_move_pea_jsr_addq_bra`: Short code fragment that copies 2 to the memory at an offset from a5, then copies 1 to the memory at an offset from a5, then pushes the address of a location in the code onto the stack, then pushes the address of the memory at an offset from a5 onto the stack, then calls append_string_to_buffer, then adds 8 to a7, then jumps to another point in the code.
+- `frag_move_pea_jsr_addq_bra_2`: Short code fragment that copies 3 to the memory at an offset from a5, then copies 2 to the memory at an offset from a5, then pushes the address of a location in the code onto the stack, then pushes the address of the memory at an offset from a5 onto the stack, then calls append_string_to_buffer, then adds 8 to a7, then jumps to another point in the code.
+- `format_bet_payoff_string_2`: Initializes two global variables with values 7 and 6, then conditionally formats a payoff string based on table lookups and arithmetic operations, storing the result in a buffer.
 - `format_bet_string`: Formats a string containing a bet amount and potential payoff, then appends or copies it to a buffer.
+- `frag_move_pea_jsr_addq_bra_3`: Short code fragment that copies 7 to the memory at an offset from a5, then copies 5 to the memory at an offset from a5, then pushes the address of a location in the code onto the stack, then pushes the address of the memory at an offset from a5 onto the stack, then calls append_string_to_buffer, then adds 8 to a7, then jumps to another point in the code.
+- `format_payout_string`: Initializes two global variables with values 7 and 6, then conditionally executes bytecode based on table lookups and performs string formatting operations using buffer manipulation routines.
 - `update_global_state_3`: Executes a series of calls involving a global variable and a provided parameter, returning the result of a previously executed routine.
 - `update_polygonal_state_tree`: Recursively updates a state tree or linked structure by modifying a global variable and branching or recalculating node values based on a provided or calculated index.
 - `update_state_tree_node_recursive`: Recursively traverses a state tree or linked structure, updating node values and character-related lookup tables based on conditional checks.
+- `frag_move_bra_13`: Short code fragment that copies 6 to the memory at an offset from a5, then copies 5 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_14`: Short code fragment that copies 3 to the memory at an offset from a5, then copies 2 to the memory at an offset from a5, then jumps to another point in the code.
+- `process_polygonal_updates`: Processes conditional polygonal state updates based on signed multiplication and division results, then traverses a state tree with specific parameters.
+- `frag_move_bra_15`: Short code fragment that copies 45 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_16`: Short code fragment that copies 58 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_17`: Short code fragment that copies 71 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_18`: Short code fragment that copies 84 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_19`: Short code fragment that copies 97 to the memory at an offset from a5, then jumps to another point in the code.
+- `update_polygonal_state`: Processes polygonal state updates based on conditional checks and signed multiplication results, then traverses a state tree with specific parameters.
+- `frag_move_bra_20`: Short code fragment that copies 45 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_21`: Short code fragment that copies 58 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_22`: Short code fragment that copies 71 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_23`: Short code fragment that copies 84 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_24`: Short code fragment that copies 97 to the memory at an offset from a5, then jumps to another point in the code.
+- `update_and_traverse_6`: Updates global variables based on signed division and multiplication results, then conditionally traverses a state tree with specific parameters.
 - `update_state_tree_node`: This routine recursively traverses a state tree, updating node values and character-related lookup tables based on conditional checks.
+- `frag_move_bra_25`: Short code fragment that copies 6 to the memory at an offset from a5, then copies 5 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_26`: Short code fragment that copies 3 to the memory at an offset from a5, then copies 2 to the memory at an offset from a5, then jumps to another point in the code.
+- `update_and_traverse_5`: Updates global variables based on signed division and multiplication results, then conditionally traverses a state tree with specific parameters.
+- `frag_move_bra_27`: Short code fragment that copies 45 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_28`: Short code fragment that copies 58 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_29`: Short code fragment that copies 71 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_30`: Short code fragment that copies 84 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_31`: Short code fragment that copies 97 to the memory at an offset from a5, then jumps to another point in the code.
+- `update_and_traverse_4`: Updates global variables based on signed division and multiplication results, then conditionally traverses a state tree with specific parameters.
+- `frag_move_bra_32`: Short code fragment that copies 45 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_33`: Short code fragment that copies 58 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_34`: Short code fragment that copies 71 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_35`: Short code fragment that copies 84 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_36`: Short code fragment that copies 97 to the memory at an offset from a5, then jumps to another point in the code.
+- `update_and_traverse_3`: Updates global variables based on signed division and multiplication results, then conditionally traverses a state tree with specific parameters.
+- `frag_move_clr_bra`: Short code fragment that copies 45 to the memory at an offset from a5, then clears the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_37`: Short code fragment that copies 58 to the memory at an offset from a5, then copies 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_38`: Short code fragment that copies 71 to the memory at an offset from a5, then copies 2 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_39`: Short code fragment that copies 84 to the memory at an offset from a5, then copies 3 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_40`: Short code fragment that copies 97 to the memory at an offset from a5, then copies 4 to the memory at an offset from a5, then jumps to another point in the code.
+- `update_and_traverse_2`: Updates a global variable based on signed division and multiplication results, then conditionally traverses a state tree with specific parameters.
 - `evaluate_recursive_state_tree`: This routine implements a recursive tree traversal that updates a table of values based on a conditional check of a lookup or state array.
+- `frag_move_bra_41`: Short code fragment that copies 7 to the memory at an offset from a5, then copies 5 to the memory at an offset from a5 (2 times in a row), then jumps to another point in the code.
+- `frag_move_bra_42`: Short code fragment that copies 7 to the memory at an offset from a5, then copies 6 to the memory at an offset from a5 (2 times in a row), then jumps to another point in the code.
+- `frag_move_bra_43`: Short code fragment that copies 7 to the memory at an offset from a5, then copies 6 to the memory at an offset from a5, then copies 8 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_bra_44`: Short code fragment that copies 7 to the memory at an offset from a5, then copies 5 to the memory at an offset from a5, then copies 9 to the memory at an offset from a5, then jumps to another point in the code.
+- `update_and_traverse`: Updates a global variable based on signed division and multiplication results, then conditionally traverses a state tree with specific parameters depending on loop iteration.
 - `validate_global_state_range`: Checks if a global variable falls within a large number of specific, non-contiguous valid ranges.
 - `parse_string_tags`: Iteratively parses string tags and copies string data into a buffer, potentially adjusting the buffer length based on values in a table.
 - `process_string_tags`: Iteratively checks a table of values to determine if certain string tags should be parsed or appended to a buffer.
+- `setup_bet_variables`: Initializes two global variables with the values six and five, then calls a routine that processes bet-related payouts using conditional table lookups.
+- `process_bet_payouts`: Sets up two global variables with values 6 and 5, processes multiple conditional table lookups for bet-related data, executes bytecode operations when conditions are met, and formats payout strings using buffer manipulation routines.
 - `execute_conditional_ranges`: Checks certain bits of input parameters and calls a library routine with various ranges or a function pointer from a table.
 - `populate_and_update_table`: This routine populates a table with a cumulative sum calculated from a loop, and subsequently updates certain memory locations using values derived from a global variable and library-calculated ranges.
 - `initialize_game_data_tables_2`: Initializes a sequence of memory-linked tables or arrays by calculating offsets and propagating values through iterative loops.
 - `populate_array_with_random_bits`: Iteratively calls a routine to get values, masks certain bits, and stores those masked values into a local array while updating a global pointer.
 - `traverse_function_pointer_table`: This routine recursively or iteratively traverses a table of function pointers, using offsets or calculated indices to call subsequent routines.
+- `execute_indirect_calls_2`: Processes multiple indirect function calls based on values from a local structure, with conditional execution paths that depend on a global variable and a local flag.
+- `execute_indirect_calls_3`: Processes multiple indirect function calls based on values from a local structure, with conditional execution paths that depend on a global variable.
+- `process_indirect_calls`: Executes multiple indirect function calls using parameters loaded from a local structure, with conditional execution paths based on a global variable and a local flag.
+- `execute_indirect_calls`: Processes multiple indirect function calls based on values from a local structure, with conditional execution paths that depend on a global variable and a counter in the structure.
 - `call_with_offset_index`: Reads a value from a table using an offset derived from a global variable and input parameters, then calls another routine with that value.
 - `process_poker_game_logic`: Updates game state, evaluates hand patterns, and manages betting or win/loss strings based on certain card or hand conditions.
 - `evaluate_hand_pattern`: Calculates a score or hand rank by analyzing the frequency of certain values within an array.
@@ -166,8 +354,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `branch_and_iterate_with_pointer_access`: Checks if a parameter is zero to branch and call another routine with a different constant, then enters a loop that passes a local stack variable address to another routine while iterating through a range of values or a loop count determined by another routine's return value.
 - `execute_delay_loop`: Performs a simple loop that increments a register until it reaches a fixed value.
 - `update_card_display_table`: Iterates through a table to update string buffers or values based on card-related string references and calculated offsets.
+- `frag_pea_jsr_addq_bra`: Short code fragment that pushes the address of a location in the code onto the stack, then pushes the address of the memory at an offset from a5 onto the stack, then calls append_string_to_buffer, then adds 8 to a7, then jumps to another point in the code.
+- `frag_pea_jsr_addq_bra_2`: Short code fragment that pushes the address of a location in the code onto the stack, then pushes the address of the memory at an offset from a5 onto the stack, then calls append_string_to_buffer, then adds 8 to a7, then jumps to another point in the code.
+- `frag_pea_jsr_addq_bra_3`: Short code fragment that pushes the address of a location in the code onto the stack, then pushes the address of the memory at an offset from a5 onto the stack, then calls append_string_to_buffer, then adds 8 to a7, then jumps to another point in the code.
+- `update_card_display`: Processes card display logic by modifying a counter at offset -2 relative to a5, checking conditions based on values at offsets 10 and 14, and updating a global variable at offset -6.
 - `build_string_structure_list`: Iterates through a null-terminated string to allocate and populate a linked list of structures, where each structure contains a pointer to a string-related object and an integer offset.
 - `setup_audio_timer`: Initializes an audio timer structure and configures audio device parameters or nodes using library calls.
+- `initialize_and_process`: Initializes a structure and processes data based on conditional checks, then calls multiple library functions with computed parameters.
 - `initialize_audio_timer_struct`: Initializes a memory structure with pointers and constant values, then configures timer and audio device parameters or node values.
 - `initialize_audio_timer`: Stores three passed parameters into a global variable.
 - `copy_string_to_buffer`: Copies bytes from a source pointer to a destination pointer until a zero byte is encountered, including the terminator, and returns the original destination pointer.
@@ -191,6 +384,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `search_and_modify_table_entry`: Iteratively searches a table for a null entry while checking a loop limit, then conditionally performs a sequence of file-related operations and updates the table or a secondary value with new status or parameter data.
 - `read_file_stream`: Reads a block of data from a file or stream, updating a status variable and checking for invalid file or buffer offsets.
 - `clear_memory_and_execute_library_calls`: Clears a block of memory by zeroing a range of bytes, updates a global variable, and conditionally calls functions using a pointer from a global structure.
+- `clear_and_execute`: Clears memory and executes library calls related to window data parsing and system operations.
 - `do_nothing_routine`: this routine is empty and performs no operations before returning.
 - `parse_and_set_window_data`: Performs a complex sequence of library calls and pointer manipulations, including writing a specific string or constant to a memory location and updating a pointer-based structure.
 - `tiny_move`: Small routine of 1 instruction that copies d0 to d5.
@@ -228,6 +422,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `fetch_output_stream_and_write`: Gets the output stream through a DOS wrapper and passes it to a write helper, then makes a second helper call with the constant one.
 - `execute_conditional_pointer`: Checks if a pointer in a structure is non-zero and, if so, calls the routine pointed to by that address.
 - `execute_recursive_tasks`: Recursively calls another routine while performing a series of conditional pointer dereferences and indirect function calls.
+- `execute_recursive_tasks_2`: Executes recursive tasks by checking memory conditions, calling library functions with parameters from memory locations, and managing stack pointers.
 - `tiny_move_unlk_rts`: Small routine of 3 instructions that copies (a7)+ to d4, then removes the stack frame held in a5, then returns.
 - `process_and_clear_entry`: Validates if an index is within a certain range and checks if a pointer-referenced value is non-zero, then potentially calls another routine before clearing that value.
 - `multiply_32_bit_values`: Returns a 64-bit product formed from the high and low 16-bit halves of two 32-bit operands.
@@ -344,4 +539,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
+- `copy_and_jump`: Copies a byte from a source address to a fixed offset in a register, performs a subtraction operation, then jumps to a fixed address.
 - `jump_vector_entry`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_tst_move_rte`: Short code fragment that tests a fixed memory address (2 times in a row), then copies 16271 to a fixed memory address, then returns from the exception.

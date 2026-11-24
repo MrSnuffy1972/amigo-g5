@@ -11,15 +11,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Functions named and described | pass, 81 of 81 named (0 author symbols), 81 of 81 described (35 by rule, 42 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 1553 of 1553 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 2655 of 2655 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2671 of 2671 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 359314 |
-| code | 11462 |
-| data | 41471 |
+| asset | 359210 |
+| code | 11550 |
+| data | 41487 |
 | padding | 697 |
 | unused | 490496 |
 
@@ -27,9 +27,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Mover (1992)(H. Mueller).adf:Mover | 2 | 2636 | 76 |
+| Mover (1992)(H. Mueller).adf:Mover | 2 | 2638 | 76 |
 | Mover (1992)(H. Mueller).adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 9 | 4 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 23 | 4 |
 
 ## Cases handled
 
@@ -126,7 +126,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_coordinates`: Updates two global variables representing coordinates, increments them in a nested loop structure, and resets the outer coordinate when a limit is reached.
 - `frag_bsr_subq_bne_rts`: Short code fragment that calls another routine (2 times in a row), then subtracts 1 from d0, then branches if the last result was not zero, then returns.
 - `frag_lea_bra`: Short code fragment that loads the address of a location in the code into a1, then loads the address of a location in the code into a0, then jumps to another point in the code.
-- `frag_move_dbra_rts`: Short code fragment that copies 985 to d0, then copies the memory at a0 (advancing a0) to the memory at a1 (advancing a1), then loops back while counting down d0, then returns.
+- `frag_lea_move_dbra_rts`: Short code fragment that loads the address of a location in the code into a0, then loads the address of a location in the code into a1, then copies 985 to d0, then copies the memory at a0 (advancing a0) to the memory at a1 (advancing a1), then loops back while counting down d0, then returns.
 - `update_animation_frame`: Increments animation counters and copies data from a table to a structure, cycling through different frame indices and updating pointers accordingly.
 - `frag_lea_move_moveq_bsr_cmpi_bne_rts`: Short code fragment that loads the address of a location in the code into a1, then copies the memory at a1 (advancing a1) to a fixed memory address (2 times in a row), then loads 2 into d3, then calls another routine, then compares the memory at a1 with 21845, then branches if the last result was not zero, then returns.
 - `frag_cmpi_beq_move_rts`: Short code fragment that compares a fixed memory address with 10, then branches if the last result was zero, then copies 10 to a fixed memory address, then returns.

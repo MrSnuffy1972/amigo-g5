@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (907600 top-level bytes in 6 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 1 raw-word lines |
 | Functions named and described | pass, 67 of 67 named (0 author symbols), 67 of 67 described (11 by rule, 54 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 868 of 868 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 872 of 872 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 2386 of 2386 instructions identical in start and length, 0 mismatches |
 
@@ -34,7 +34,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Cases handled
 
-- runtime segment an address: 639 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 642 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - frogger (19xx)(-)[m ale]/Frogger (19xx)(-)[m ALE].adf:frogger: crunched executable decrunched by XFDMaster (Imploder (xfd), 6784 -> 13432 bytes), 4 of 7 windows confirmed in reference RAM: recovered as a hunk executable
 - frogger (19xx)(-)[m ale]/Frogger (19xx)(-)[m ALE].adf:frogger: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
 

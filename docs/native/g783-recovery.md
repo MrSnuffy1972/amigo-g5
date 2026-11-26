@@ -8,8 +8,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (901248 top-level bytes in 33 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 12 of 12 units identical (bytes and relocations), 1066 raw-word lines |
-| Functions named and described | pass, 563 of 563 named (0 author symbols), 563 of 563 described (32 by rule, 527 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 4224 of 4225 (99.98%) |
+| Functions named and described | pass, 562 of 562 named (0 author symbols), 562 of 562 described (32 by rule, 526 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 4279 of 4280 (99.98%) |
 | Recovered without load address (counted in proof 1, flagged) | 10624 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 7701 of 7736 instructions identical in start and length, 2 mismatches |
 
@@ -31,7 +31,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | endcli | 2 | 117 | 2 |
 | Bionic Commando (1987)(GO!).adf:tune4.dat | 1 | 26 | 5 |
 | Bionic Commando (1987)(GO!).adf:tune2.dat | 1 | 17 | 3 |
-| Bionic Commando (1987)(GO!).adf:bionic | 1 | 7486 | 540 |
+| Bionic Commando (1987)(GO!).adf:bionic | 1 | 7486 | 539 |
 | Bionic Commando (1987)(GO!).adf:tune5.dat | 1 | 14 | 2 |
 | Bionic Commando (1987)(GO!).adf:tune3.dat | 1 | 24 | 4 |
 | Bionic Commando (1987)(GO!).adf:tune1.dat | 1 | 22 | 2 |
@@ -42,7 +42,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Cases handled
 
-- 2 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- 5 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - bionic commando (1987)(go!)/Bionic Commando (1987)(GO!).adf:level1.spr: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
@@ -300,7 +300,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `compare_and_modify_byte`: Compares two values pointed to by registers and returns a byte with specific bits set based on the comparison results.
 - `increment_structure_word`: Clears two bytes in a structure and then increments a word at a specific offset based on the value of a byte in a different structure.
 - `adjust_word_value`: Increments or decrements a word at a pointer address by four depending on the value of a byte at a specific offset.
-- `increment_and_check_word`: Increments a word at a pointer address and returns if the new value exceeds a specific threshold.
 - `increment_and_decrement_fields`: Increments a word and decrements a byte at specific offsets within a structure, checking against a threshold.
 - `check_word_threshold`: Compares a word at a pointer address against a threshold and returns if it is greater than that value.
 - `search_and_populate_structure`: Iterates through a table to find a specific character, then populates a structure with multiple global variable pointers and constant values.

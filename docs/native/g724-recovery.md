@@ -11,15 +11,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Functions named and described | pass, 61 of 61 named (0 author symbols), 61 of 61 described (2 by rule, 59 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 517 of 517 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 3584 bytes, 1 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1943 of 1943 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2142 of 2142 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 38513 |
-| code | 11872 |
-| data | 858045 |
+| code | 12524 |
+| data | 857393 |
 | padding | 2 |
 | unused | 1024 |
 
@@ -33,8 +33,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 79 | 5 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1206 | 30 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 101 | 7 |
-| Zeewolf.adf bytes 450560-452096 (code never loaded by a reference run) | 1 | 0 | 0 |
-| Zeewolf.adf bytes 458240-459264 (code never loaded by a reference run) | 1 | 0 | 0 |
+| Zeewolf.adf bytes 450560-452096 (code never loaded by a reference run) | 1 | 161 | 0 |
+| Zeewolf.adf bytes 458240-459264 (code never loaded by a reference run) | 1 | 38 | 0 |
 | Zeewolf.adf bytes 753152-754176 (code never loaded by a reference run) | 1 | 99 | 1 |
 
 ## Cases handled
@@ -57,7 +57,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - Zeewolf/Zeewolf.adf: blocks 1321-1468 (bytes 676352-752128) outside the filesystem hold data, not code (opcode density 0.002, entropy 7.04)
 - Zeewolf/Zeewolf.adf: blocks 1480-1671 (bytes 757760-856064) outside the filesystem hold data, not code (opcode density 0.000, entropy 4.58)
 - Zeewolf/Zeewolf.adf: blocks 1715-1739 (bytes 878080-890880) outside the filesystem hold data, not code (opcode density 0.000, entropy 4.35)
-- 2 never-loaded region(s), 2560 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 

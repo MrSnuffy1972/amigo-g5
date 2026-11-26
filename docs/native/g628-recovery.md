@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (923360 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 2 of 2 units identical (bytes and relocations), 7 raw-word lines |
-| Functions named and described | pass, 215 of 215 named (0 author symbols), 215 of 215 described (4 by rule, 189 by the local model) |
+| Functions named and described | pass, 219 of 219 named (0 author symbols), 219 of 219 described (6 by rule, 191 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 1815 of 1815 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 2923 of 2923 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2997 of 2997 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 1440 |
-| code | 12368 |
-| data | 16107 |
+| code | 12724 |
+| data | 15751 |
 | padding | 5 |
 | unused | 893440 |
 
@@ -28,7 +28,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Warhead.adf:bootblock | 1 | 23 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2900 | 214 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2974 | 218 |
 
 ## Cases handled
 
@@ -73,11 +73,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `wait_dma_ready_then_blit`: Waits for a specific DMA channel to become ready by polling a status register, then configures blitting parameters including source address and control registers for graphics transfer.
 - `wait_dma_ready_and_copy`: Polls the DMA status register until a channel is ready, then performs a graphics copy operation by setting up blitting parameters with different control values than other similar routines.
 - `process_color_data_2`: Processes color data from a source table by shifting and masking bytes, combines them into words, and stores the results in a color register area, then performs multiple audio channel setup operations.
+- `copy_dma_blocks`: Copies data blocks using a loop that iterates 199 times, calling another routine to perform the actual copying operation.
 - `copy_bytes_loop`: Copies bytes from one memory location to another in a loop, decrementing a counter until it reaches zero, then branches to the end.
 - `copy_and_loop`: Copies data from one memory location to another while decrementing a counter, continues looping until the counter reaches zero, then returns.
 - `copy_memory_blocks`: Copies data from one memory location to four separate destination locations in a pattern that duplicates and spreads the source data across multiple memory regions.
 - `decode_compressed_data`: Decodes compressed data streams using a global variable as a counter and multiple conditional branches to handle different operation codes, writing decoded bytes to a destination buffer.
-- `initialize_game`: Sets up multiple game data sections by loading word values from tables, calling decompression routines, and configuring audio parameters.
+- `frag_move_lea_jsr`: Short code fragment that copies a7 to a fixed memory address, then loads the address of a fixed memory address into a7, then calls setup_hardware_registers, then loads the address of a fixed memory address into a1, then copies 0 to d0.
+- `initialize_game_state`: Sets up game hardware registers, initializes color data, processes input, handles audio channels, and manages various game state transitions through multiple subroutines.
 - `initialize_coordinates`: Extends two word values in registers to long words, loads a constant into register d0, sets a word value at a specific memory address, then calls another routine with a word parameter before testing the result and returning.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 - `setup_and_copy_blocks`: Sets up memory addresses for copying data blocks and calls two different routines to perform memory copy operations.
@@ -92,7 +94,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_word_pairs`: Decrements a word value in a register by one and performs an arithmetic right shift of one bit, then copies word values from one memory location to another while decrementing the counter until it reaches negative one.
 - `copy_four_word_sets`: Loads a constant value into a register, calculates four memory addresses based on that constant and an input address, then copies word values from four different memory locations to a destination location in groups of four words while decrementing the counter.
 - `copy_data_blocks`: Copies word-sized data from one memory location to four different destination locations in a specific pattern, repeating this operation for a fixed number of iterations while updating pointers.
-- `initialize_audio_channel_0_c`: Initializes audio channel 0 by loading a memory address, writing a constant value to a hardware register, calling an initialization routine, and then writing two more values to hardware registers before returning.
+- `setup_audio_parameters_2`: Initializes audio channel parameters and sets up function pointers in global tables for audio processing.
 - `setup_audio_channel_0_3`: Initializes audio channel 0 by setting specific register values and writing a constant to a global variable at offset 32, then returns.
 - `initialize_audio_channel_0_b`: Initializes audio channel 0 by setting two memory locations to a constant value, loading a memory address, writing a constant value to a hardware register, calling an initialization routine, and then writing two more values to hardware registers before returning.
 - `initialize_audio_channel_1_b`: Configures audio channel 1 by loading a memory address, writing a constant value to a hardware register, calling an initialization routine, and then writing two more values to hardware registers before returning.
@@ -157,10 +159,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_global_flag`: Stores a word value of -1 into a specific memory address and jumps to another memory address without returning.
 - `initialize_audio`: Sends specific values to a hardware register at offset 4130 and then writes another value to a memory location at offset 4130.
 - `setup_hardware_registers`: Writes fixed values to multiple hardware registers including display control, color registers, coprocessor addresses, and interrupt enable bits to configure the Amiga's graphics and interrupt system.
+- `start_copper_list`: Points the copper at a new copper list by writing its address to COP1LC, then returns.
 - `set_hardware_register`: Writes a fixed value to a hardware register at a specific memory address.
 - `update_joystick_input`: Reads joystick and mouse input data from hardware registers, processes directional and fire button states into global variables, and manages game loop timing based on input polling results.
 - `initialize_flag`: Sets a global word variable to -1, then enters a loop that reads the same variable and branches back if it's not zero.
 - `process_color_data`: Processes 16 words of data by masking and shifting bits, then stores the results in a table at a fixed address.
+- `process_color_data_3`: Processes color data by reading from a source, applying bitwise operations, and writing results to both hardware color registers and a global table.
 - `copy_color_registers`: Copies 16 color values from a source table to both a hardware color register area and another memory location.
 - `shift_color_components`: Processes 32 color component values from a table, shifting and combining high and low nibbles before storing the results back to the same table.
 - `update_color_components`: Processes color data from two sources, modifies component values based on comparisons, and repeats until no changes occur.

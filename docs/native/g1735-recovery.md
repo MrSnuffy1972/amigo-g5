@@ -9,9 +9,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (911002 top-level bytes in 8 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 11 of 11 units identical (bytes and relocations), 21 raw-word lines |
 | Functions named and described | pass, 81 of 81 named (0 author symbols), 81 of 81 described (4 by rule, 43 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 1693 of 1696 (99.82%) |
+| Executed addresses (reference run) in recovered, described code | pass, 1696 of 1696 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 2624 of 2628 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2834 of 2835 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
@@ -120,7 +120,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `prepare_display_and_copy_table`: Forbids multitasking and disables audio DMA and interrupts, then waits on a loop for a button.
+- `prepare_display_and_copy_table`: Configures hardware registers, manages interrupt and DMA settings, and parses a data string to populate tables and clear memory buffers.
 - `build_copper_and_copy_tiles`: Writes bitplane pointer pairs into two copper lists using a fixed row stride, then sets DMA and sprite pointer words.
 - `copy_tile_rows_from_string`: For each character of a string, maps it through a lookup to a tile index and copies eight bytes of that tile into a destination at a forty-byte row stride.
 - `copy_block_to_low_memory`: Copies 800 bytes from a fixed source table into low memory starting at a fixed low address, one byte at a time.
@@ -132,7 +132,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_strided_bytes_to_bitmap`: Copies eight bytes spaced forty bytes apart from a source to a destination computed from row and column values.
 - `wait_with_countdown_loop`: Runs a short countdown loop from a difference of two globals, returning when it reaches minus one.
 - `wait_blitter_flag_clear`: Repeatedly masks a status word in the record down to its busy bit until that bit is clear, a blitter-style wait loop.
-- `handle_flag_bit_event`: Clears all but bit four of a flag word in the record and, when that bit was set, stores sixteen into a timer field and calls several helper routines.
+- `handle_flag_bit_event`: Checks if a bit is set in a memory location, and if so, writes a constant to a memory location and calls up to four other routines before returning via exception return.
 - `clear_pointer_table_by_threshold`: Searches a byte table for the first entry above a threshold, then clears a table of thirty pointer entries and stores the matching pointers into a second table.
 - `mt_end`: Stops the ProTracker music replay by silencing all four audio channels and switching audio DMA off.
 - `restart_audio_channel_pointers`: Advances a frame counter and, when it runs out, waits in fixed delay loops around a DMA bit change.
@@ -167,7 +167,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `process_hunk_relocation_table`: Iterates through a table of data structures, performing fixed-point multiplication to calculate offset values and updating a structure in a6 with the results.
 - `copy_data_loop`: Copies 50 words from a source table to a destination table and another destination table using a decrementing loop, then increments a global variable and returns a value from memory if a comparison with a constant passes.
 - `configure_blitter_hardware`: Stores several values from memory into specific locations, including a swapped word, and if a specific bit in a hardware register is not set, configures the blitter with a list pointer, a mask, a color, and a mode.
-- `update_blitter_config`: Loads values from a table into several global memory locations, including swapped words, and if bit 14 of a value at offset 2 of a6 is not set, configures a blitter list pointer, a mask, a color, and a mode within a structure pointed to by a6.
+- `update_blitter_config`: Writes several values from memory to specific locations, including a swapped word, and if a specific bit in a hardware register is not set, sets the blitter list pointer, a mask, a color, and a mode.
 - `decrement_global_counter`: Checks a 16-bit value in a global variable; if it is negative, it increments a word at an offset of 8260 in a structure in a5 and decrements the global variable before returning.
 - `initialize_graphics_and_audio_tables`: Populates several memory tables with calculated values, including a sequence of scaled values, a series of incrementing offsets, and a set of division-based constants.
 

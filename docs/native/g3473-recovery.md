@@ -18,8 +18,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | class | bytes |
 |---|---|
 | asset | 494 |
-| code | 11714 |
-| data | 301915 |
+| code | 11908 |
+| data | 301721 |
 | padding | 2277 |
 | unused | 593920 |
 
@@ -28,7 +28,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Dungeons, Amethysts, Alchemists 'n' Everythin'.adf:FUCKTHISSHIT! | 1 | 99 | 3 |
-| Type | 2 | 117 | 2 |
+| Type | 2 | 188 | 2 |
 | LoadDAA | 1 | 290 | 8 |
 | Wait | 2 | 392 | 12 |
 | Disk-Validator | 1 | 386 | 1 |

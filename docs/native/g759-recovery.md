@@ -6,19 +6,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901120 top-level bytes in 13 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 10 of 10 units identical (bytes and relocations), 6 raw-word lines |
-| Functions named and described | pass, 718 of 718 named (120 author symbols), 718 of 718 described (183 by rule, 514 by the local model) |
+| Bytes classified (901142 top-level bytes in 14 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 11 of 11 units identical (bytes and relocations), 6 raw-word lines |
+| Functions named and described | pass, 722 of 722 named (120 author symbols), 722 of 722 described (183 by rule, 517 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 1507 of 1507 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 14290 of 14418 instructions identical in start and length, 1 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 14471 of 14599 instructions identical in start and length, 1 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 340407 |
-| code | 54250 |
+| code | 54272 |
 | data | 85975 |
 | padding | 3208 |
 | unused | 417280 |
@@ -27,7 +27,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Type | 2 | 188 | 2 |
+| Type | 2 | 188 | 5 |
 | setfont | 23 | 877 | 39 |
 | cls | 3 | 19 | 1 |
 | border | 3 | 1800 | 114 |
@@ -37,10 +37,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | diskfont.library | 15 | 1040 | 76 |
 | Super Huey.adf:sh | 8 | 58 | 6 |
 | Super Huey.adf:bootblock | 1 | 10 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 1 |
 
 ## Cases handled
 
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 49 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 47 immediate, 1 displacement, 1 operand
+- RAMSCAN: 1 confirmed routine segment(s) from the run-end RAM image, 22 bytes, added as run-time units
 
 ## Cracktros (kept, not protection)
 
@@ -59,6 +61,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `move_and_branch`: Moves a long word from one register to another and then performs a short relative branch.
+- `handle_data_processing_loop`: Processes data values in a loop, performs comparisons and calls routines based on conditions, and updates memory locations before jumping to another location.
+- `validate_and_increment_counter`: Compares a value from memory with several constants and increments a counter if the value matches specific criteria, then jumps to another location.
+- `process_input_events`: Checks for specific data values in memory locations and calls a routine multiple times based on those conditions, then jumps to another location.
 
 ### setfont
 
@@ -802,3 +807,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Super Huey.adf:bootblock
 
 - `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `frag_tst_move_rte`: Short code fragment that tests a fixed memory address (2 times in a row), then copies 16271 to a fixed memory address, then returns from the exception.

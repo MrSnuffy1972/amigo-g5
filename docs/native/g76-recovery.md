@@ -6,21 +6,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (497120 top-level bytes in 28 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 11 of 11 units identical (bytes and relocations), 19 raw-word lines |
-| Functions named and described | pass, 512 of 512 named (0 author symbols), 512 of 512 described (120 by rule, 187 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 5548 of 5561 (99.77%) |
+| Bytes classified (532276 top-level bytes in 29 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 12 of 12 units identical (bytes and relocations), 21 raw-word lines |
+| Functions named and described | pass, 759 of 759 named (0 author symbols), 759 of 759 described (216 by rule, 324 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 5561 of 5561 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 8976 of 8989 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 15678 of 15678 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 458426 |
-| code | 29620 |
-| data | 8897 |
-| padding | 177 |
+| code | 51724 |
+| data | 21898 |
+| padding | 228 |
 
 ## Code units
 
@@ -37,6 +37,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6904 | 231 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 51 | 29 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 372 | 16 |
+| mathtrans.library:mathtrans.library#unpacked | 3 | 6689 | 247 |
 
 ## Cases handled
 
@@ -50,6 +51,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address: 4331 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 7 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - 314 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 1 first-run image unit(s) in 1 version group(s); 470 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
+- mathtrans.library: code lead from fmtread (35156 bytes, hunk exe), 13 of 15 windows confirmed in reference RAM at an address: recovered
 
 ## Cracktros (kept, not protection)
 
@@ -84,7 +86,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `convert_nonzero_to_minus_one`: Returns minus one, truncated to a 16-bit result, when the value in data register D0 is non-zero, and zero when it is zero.
 - `set_bit_six_clear_byte`: Sets bit six in a byte at offset 3584 from the address register A0, then clears a byte at offset 3072 from the same base.
 - `enter_infinite_loop`: Enters an infinite loop by repeatedly checking a global variable and then executing an unconditional jump.
-- `combine_table_values_into_field`: Combines the first three values of a global table into one number: the first is multiplied by 1440, the second is added, the sum is multiplied by 60, and the third, read as a signed 16-bit value and divided by 50, is added.
+- `calculate_table_offset`: Reads values from a global table and performs arithmetic operations including division, multiplication, and addition.
 - `dispatch_status_by_flags`: Clears a status byte at offset 31 of the structure in A1, then sets it to 29 when a flag bit in the structure at offset 64 is set.
 - `negate_word_flip_top_bit`: Negates the 16-bit value at offset 29547 in the structure at A1 and toggles the top bit of the byte at offset 65 in the structure at A3.
 - `store_inverted_bit_test`: Tests the bit selected by the byte at offset 67 of the structure at A3 within a global byte, and stores 255 at offset 32 of the structure at A1 when that bit is clear, or 0 when it is set.
@@ -97,7 +99,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_field_and_save_register`: Stores a zero 32-bit value at offset twelve of the structure in A1, then saves the A4 register value into a global variable and returns.
 - `compare_and_dispatch_indirect`: Compares the A4 register with a saved global value.
 - `store_own_address_in_ram`: Writes this routine's own address into a fixed RAM location and returns.
-- `allocate_and_link_library_nodes`: Allocates two memory blocks and links them together after opening a library through exec's OldOpenLibrary.
+- `initialize_expansion_structures`: Uses memory allocation and queueing functions to build descriptor structures, sets flags, and stores global pointers into RAM.
 - `invoke_library_function_pointer`: Calls a library function at offset minus 96 from the library base in A6, then makes an indirect call through the function pointer at offset 22 of the returned structure.
 - `dispatch_message_and_execute`: Finds a task, opens a library, waits for a port, and retrieves a message to update a structure and perform an indirect jump based on a table.
 - `dispatch_message_and_execute_2`: Updates several bitfields in various memory locations, sends a message to a port, waits for a port, retrieves a message, and performs an indirect call based on a value found in a table.
@@ -128,7 +130,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `return_from_subroutine_2`: This routine performs a single return instruction to exit the current function.
 - `return_from_subroutine_3`: This routine is empty and performs no operations before returning to the caller.
 - `return_from_subroutine_4`: executes a single instruction to return control to the calling routine.
-- `shift_string_and_store_count`: Moves the bytes of a zero-terminated string one place along toward its end, then writes the number of shifted bytes minus one into the first byte position.
+- `shift_string_left_and_store_length`: Copies bytes from a0 forward one position until a zero byte, then writes the byte count into the slot before the shifted string and returns.
 - `allocate_and_record_request`: Returns zero when its first helper reports nothing to do.
 - `process_request_data`: Checks a register, retrieves a value from a structure, and calls a function via a library offset.
 - `build_joined_path_string`: Combines a directory part taken from a stored name with the name passed in D1, resolving slashes and colons, and writes the result into a newly allocated block.
@@ -485,7 +487,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `remap_byte_rows_via_table`: Repeats 88 times: copies ten bytes from the argument buffer, mapping each through a 256-entry lookup table into a scratch area in reverse order, then copies the scratch area back over the buffer.
 - `build_bit_reverse_table`: Fills a 256-entry table so that each index holds the byte with its eight bits reversed.
 - `move_and_branch`: Moves the status register into d0, moves a longword from the address pointed to by a0 to that same address, and then branches to another routine.
-- `call_indirect_table_entry`: Calls one function through a pointer read from a global variable at offset -348 and returns, with no other operations.
+- `call_global_library_function_2`: Calls one library function through a library base read from a global variable at a fixed offset, passing no arguments, and returns.
 - `lookup_slot_or_error`: Clears a field of the caller's state, then returns the slot address for an index inside the valid range when that slot is non-null.
 - `open_library_init_display`: Opens the operating system library through the exec open-library call on first use and stores its base.
 - `flush_dirty_records_list`: Walks a linked list of records and, for each record with bit 2 set and bit 4 clear whose two counters differ, calls an unnamed routine with the difference.
@@ -513,7 +515,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `parse_command_line_arguments`: Splits the command-line string into up to 32 arguments, treating spaces, tabs and newlines as separators and double-quoted text as one argument.
 - `run_init_and_main_loop`: Allocates records and resources in order, opening libraries and checking each step, and exits early when a step fails.
 - `divide_32bit_with_sign_handling`: Divides a 32-bit value by another 32-bit value.
-- `divide_32bit_with_remainder`: Divides a 32-bit value by a 32-bit divisor using normalised 16-bit partial divisions and returns the quotient and remainder packed into one 64-bit result.
+- `multiply_32bit_words_2`: Multiplies two 32-bit values taken from the data registers using 16-bit partial products, adding the two cross terms to the low-word product.
 - `multiply_32bit_words`: Returns the low 32 bits of the product of two 32-bit values, built from the two cross products of their 16-bit halves shifted into the high word plus the low-word product.
 - `release_unflagged_slots_then_forward`: Loops over the slot table and, for each non-empty slot without bit 4 set, calls an unnamed routine on its second entry.
 - `poll_break_signal_bits`: Reads the task signal bits and tests bits 12 and 13.
@@ -523,7 +525,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `check_io_status_record_error`: Clears a stored status and calls library function at offset -48.
 - `seek_with_origin_mode`: Calls library function at offset -66 to get the current position, storing error code 22 when it fails.
 - `close_handle_and_return_zero`: Clears a stored flag through an unnamed routine when it is set, calls library function at offset -36 to close the handle and returns zero.
-- `next_random_scaled_value`: Steps a 32-bit shift-register pseudo-random generator once per bit of the argument, reseeding it with a fixed feedback constant when the carry is set or the state is zero.
+- `_RangeRan`: Steps a 32-bit shift-register pseudo-random generator once per bit of the argument, reseeding it with a fixed feedback constant when the carry is set or the state is zero.
 - `transform_input_value`: Doubles the input parameter and conditionally XORs the result with a constant if a carry occurs or the result is zero.
 - `call_library_vector_30`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
 - `init_self_linked_header`: Writes the block's own address plus four into its first word, clears the second word and points the third word back at the block.
@@ -606,3 +608,253 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `tiny_lsl`: Small routine of 1 instruction that shifts d0 left by 2.
 - `free_memory_conditionally`: Tests two inputs and, if both are non-zero, calls a function pointer before returning.
 - `compute_crc_checksum`: Computes a CRC-style checksum over a byte buffer of the given length, updating a 16-bit accumulator one byte at a time through an inner bit loop.
+
+### mathtrans.library:mathtrans.library#unpacked
+
+- `setup_library_entry_point`: Sets up the library entry point by initializing stack frame, allocating memory, calling library functions for system operations, and configuring global data structures with values from system calls.
+- `initialize_transform_data_3`: Initializes global transformation data by setting zero values in multiple structure fields, calling library routines for arithmetic operations, and updating specific memory locations with computed values.
+- `execute_library_calls`: Executes multiple library function calls using global variable pointers and handles conditional execution based on values in the structure referenced by a4.
+- `frag_lea_moveq_jsr_move_beq_rts_bra`: Short code fragment that loads the address of the memory at an offset from a4 into a1, then loads 0 into d0, then calls another routine, then copies d0 to the memory at an offset from a4, then branches if the last result was zero, then returns, then loads 100 into d0, then jumps to another point in the code.
+- `frag_lea_jsr_rts`: Short code fragment that loads the address of the memory at an offset from a3 into a0, then calls another routine, then loads the address of the memory at an offset from a3 into a0, then calls another routine, then returns.
+- `initialize_transform_data`: Initializes global transformation data by setting zero values in multiple structure fields, calling library routines for arithmetic operations, and updating counters based on loop iterations.
+- `process_arithmetic_table`: Iterates through a table of arithmetic values by loading data from global structures, calling library functions for arithmetic operations, incrementing a counter, and looping back to process the next entry.
+- `calculate_table_indices_2`: Calculates table indices using bit shifts and adds values to a counter, then performs multiplication operations and stores results in memory.
+- `frag_bra`: Short code fragment that jumps to another point in the code.
+- `frag_bra_2`: Short code fragment that jumps to another point in the code.
+- `frag_bra_3`: Short code fragment that jumps to another point in the code.
+- `frag_bra_4`: Short code fragment that jumps to another point in the code.
+- `frag_bra_5`: Short code fragment that jumps to another point in the code.
+- `frag_bra_6`: Short code fragment that jumps to another point in the code.
+- `load_and_process_matrix_entry`: Loads a matrix entry using shifted indices, processes it through library calls, stores results in memory, and updates a counter for iterative operations.
+- `process_table_indices`: Calculates table indices through bit shifts, performs a library function call with calculated values, stores result in memory, and updates a counter for loop control.
+- `compute_and_store_result`: Calculates table indices using bit shifts, calls a library function with computed parameters, stores the result in memory locations, and branches to continue processing.
+- `update_table_entries`: Calculates table indices through bit shifts, performs a library function call with parameters, stores results in memory, and updates a counter for loop continuation.
+- `process_and_update_values`: Calculates table indices using bit shifts, calls a library function with parameters, stores result in memory, performs additional calculations on data from another location, and updates a counter for loop control.
+- `calculate_table_indices`: Calculates table indices using bit shifts and adds values to a counter, then performs multiplication operations and stores results in memory locations.
+- `execute_transform_sequence`: Executes a sequence of transformations by calling library routines, processing table entries, performing mathematical operations on values, and looping back to process the next entry in the sequence.
+- `process_object_state`: Checks object state through library calls, updates flags in a structure based on comparison results, and performs conditional operations including calling another routine when a specific condition is met.
+- `update_table_entry`: Processes entries in a table by checking conditions and updating pointers, then increments a counter before looping back to process the next entry.
+- `initialize_and_dispatch`: Initializes multiple variables to zero, performs bounds checking on an index, and uses that index to jump to one of several code paths based on a lookup table.
+- `frag_addq_bra`: Short code fragment that adds 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `allocate_and_initialize_2`: Allocates memory blocks through library calls, initializes structure fields with computed values, and performs conditional operations before returning.
+- `render_and_transform`: Handles rendering operations by calculating coordinates, performing transformations, and calling graphics library functions to update display buffers.
+- `handle_fractional_arithmetic`: Performs mathematical operations involving fractional values by loading data from global structures, calling library functions for arithmetic, and updating flag bits in memory locations.
+- `setup_and_process`: Initializes memory areas using library calls, performs bounds checking on an index, and updates data structures at specific offsets based on that index.
+- `execute_multiplication_steps`: Executes a series of multiplication steps by calling another routine with different parameters, updates memory locations with computed values, and manages a loop counter.
+- `perform_multiplication`: Carries out multiplication operations by processing data through multiple steps including shifting, adding, and storing results in memory locations.
+- `execute_transform_operations`: Executes a series of mathematical transformations using library calls, updates flags in global memory, and stores computed values to specific memory locations.
+- `function_epilogue_2`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `decrement_and_test_counter`: Decrements a global counter and tests its value, storing intermediate results in stack locations before performing conditional jumps based on the test outcome.
+- `function_epilogue_3`: Function exit sequence shared or jumped to by a routine: puts the result in d0, removes the stack frame with unlk, then returns to the caller.
+- `update_object_state`: Checks object conditions and updates state flags based on comparisons, then calls routines to process the update and sets a global flag to indicate completion.
+- `handle_object_operations`: Performs conditional checks on object state flags, calls library functions to process data, and manages multiple memory locations based on comparison results.
+- `frag_tst_ble_subq_bra`: Short code fragment that tests the memory at an offset from a4, then branches if the comparison was less or equal, then subtracts 1 from the memory at an offset from a4, then jumps to another point in the code.
+- `initialize_structure_fields`: Initializes specific fields in a data structure by calling library functions with predefined parameters, updating memory locations with computed values, and returning immediately after processing.
+- `convert_number_to_string`: Converts a 32-bit number into its decimal string representation by repeatedly dividing by ten and storing remainder digits in a buffer.
+- `function_epilogue_4`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
+- `prepare_transform_args`: Prepares arguments for a mathematical transformation operation by manipulating pointers and values on the stack, then calls another routine to perform the actual transformation.
+- `execute_mathematical_transforms`: Executes multiple mathematical transformations by loading data from global memory, performing arithmetic operations using library calls, storing computed results to specific memory locations, and calling various processing routines.
+- `process_transform_data_2`: Extracts and processes transformation values from global memory, performs mathematical operations on these values, and calls library functions to handle the computed results.
+- `frag_moveq_move_rts`: Short code fragment that loads 1 into d0, then copies d0 to the memory at an offset from a4, then loads 4 into d0, then copies d0 to the memory at an offset from a4, then copies the memory at an offset from a4 to the memory at an offset from a4 (2 times in a row), then loads 0 into d0, then copies d0 to the memory at an offset from a4 (2 times in a row), then returns.
+- `process_memory_operations`: Processes multiple memory operations by calling library functions with addresses from global memory, updating memory locations with computed values, and returning immediately after completing all operations.
+- `execute_transform_sequence_2`: Executes a sequence of mathematical transformations by loading data from global memory, performing arithmetic operations using library calls, and storing computed values to specific locations.
+- `validate_transform_parameters`: Compares values between a structure and memory location, and if they don't match, calls another routine with parameters from the structure to update some state information.
+- `set_flag_bits_2`: Checks flag status through a library call, updates a bit in a structure if the condition is met, and clears another bit in the same structure.
+- `frag_moveq_move_tst_beq_pea_jsr_addq_br`: Short code fragment that loads 11 into d0, then copies d0 to the memory at an offset from a4, then tests the memory at an offset from a0, then branches if the last result was zero, then pushes the address of a fixed memory address onto the stack, then copies a0 to the stack, then calls another routine, then adds 8 to a7, then jumps to another point in the code.
+- `frag_pea_move_jsr_addq_bra`: Short code fragment that pushes the address of a fixed memory address onto the stack, then copies a0 to the stack, then calls another routine, then adds 8 to a7, then jumps to another point in the code.
+- `frag_cmpi_beq_moveq_move_bra`: Short code fragment that compares the memory at an offset from a4 with 1, then branches if the last result was zero, then loads 0 into d0, then copies d0 to the memory at an offset from a4, then jumps to another point in the code.
+- `frag_clr_bsr_move_movem_rts`: Short code fragment that clears the memory at an offset from a4, then calls another routine, then copies 1 to the memory at an offset from a4, then restores saved registers from the stack, then returns.
+- `process_transform_data_3`: Processes transformation data by reading values from global variables, performing arithmetic operations including shifts and additions, and calling library functions with parameters loaded from memory locations.
+- `initialize_and_execute`: Initializes multiple variables to zero, performs bounds checking on an index, and uses that index to jump to one of several code paths based on the value.
+- `execute_mathematical_operations`: Executes mathematical transformations by calling coordinate validation routines, updating global counters, and performing conditional operations based on comparison results with specific values in the data structure.
+- `frag_moveq_move_bsr_clr_rts`: Short code fragment that loads 9 into d0, then copies d0 to the memory at an offset from a4, then calls another routine, then copies 1 to the memory at an offset from a4, then clears the memory at an offset from a4, then returns.
+- `process_transformation_sequence`: Processes a sequence of transformation operations by calling library functions with parameters from global memory, updating flags in global memory, and storing computed values to specific memory locations.
+- `execute_transformation_sequence`: Executes a sequence of transformations by calling library functions with parameters from global memory, updating memory locations with computed results, and performing conditional operations based on flag values.
+- `frag_move_jsr_addq_movem_unlk_rts`: Short code fragment that copies the memory at an offset from a4 to the stack, then calls another routine, then adds 4 to a7, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
+- `process_mathematical_transforms`: Processes mathematical transformations by allocating memory structures, setting up parameters for library calls, and performing complex arithmetic operations on data values.
+- `process_fixed_point_values`: Processes multiple 32-bit fixed-point values through library calls, stores results in memory locations, and performs conditional operations based on the results before calling another library function.
+- `validate_and_compute`: Validates a condition against a global counter, performs multiplication operations using table data, and calls library functions with computed parameters to produce a result stored in memory.
+- `validate_and_multiply`: Validates a condition against a global counter, performs multiplication operations using table data, and calls library functions with computed parameters.
+- `frag_addq_bra_2`: Short code fragment that adds 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `validate_and_call_library`: Validates a condition against a global counter, performs conditional jumps based on that validation, and calls library functions with parameters from the stack.
+- `frag_move_jsr_addq_moveq_movem_unlk_rts_2`: Short code fragment that copies the memory at an offset from a5 to the stack, then calls another routine, then adds 4 to a7, then loads 1 into d0, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
+- `compute_with_validation`: Computes a value using a library function, stores the result in memory, validates the result, and returns zero if validation fails or continues processing otherwise.
+- `compare_and_execute`: Compares a computed value with a stored parameter, performs conditional execution based on that comparison, and calls library functions with parameters from the stack.
+- `frag_move_jsr_addq_moveq_unlk_rts`: Short code fragment that copies the memory at an offset from a5 to the stack, then calls another routine, then adds 4 to a7, then loads 1 into d0, then removes the stack frame held in a5, then returns.
+- `accumulate_and_compare`: Initializes a counter, computes values through library calls, accumulates results into the counter, and performs conditional operations based on comparison results before returning.
+- `normalize_and_scale`: Processes a fixed-point value by normalizing its fractional part and scaling it using library functions, storing intermediate results in local variables before returning the final scaled value.
+- `validate_and_process`: Computes a value using a library function, validates the result against specific constants, and returns either a computed value or zero based on validation outcomes.
+- `allocate_and_initialize`: Allocates memory blocks through library calls, initializes structure fields with computed values, and performs conditional operations before returning a result.
+- `update_structure_fields_3`: Checks conditions in a data structure and updates specific fields based on computed values, then calls another routine to process the updated data before incrementing a counter field.
+- `update_structure_fields_2`: Updates specific fields in a structure based on computed values from library calls, sets flags and values in the structure, and clears certain bits.
+- `update_structure_fields`: Updates specific fields in a structure based on computed values from library calls, sets flags and values in the structure, and clears certain memory locations before returning.
+- `set_flag_bits`: Checks flag status through a library call, updates a bit in a structure if the condition is met, and clears another bit in the same structure before returning.
+- `clear_multiple_fields`: Checks flag status through a library call, updates multiple byte fields in a structure with zero values if the condition is met, and returns immediately after clearing the fields.
+- `validate_object_state`: Checks object state flags and performs conditional operations based on structure values, including a library call to update transformation matrix data.
+- `update_transform_matrix_2`: Processes transformation data by reading from multiple global structures, performing library calls to check flag status, updating fields in a structure with computed values, and calling other routines for further processing.
+- `handle_object_flags`: Checks object state through library calls, updates flags in a structure based on comparison results, and performs conditional operations including clearing specific fields and calling another routine for additional processing.
+- `validate_and_compute_sequence`: Validates conditions against global counters, performs multiplication operations using table data, and compares computed results with stored values to determine success or failure of the operation.
+- `function_epilogue_5`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `normalize_fixed_point_2`: Processes a 32-bit fixed-point value by shifting and dividing to normalize its fractional part, then returns the result in d0.
+- `process_matrix_operations`: Processes three matrix-related operations by calling a routine with global variable pointers, then performs pointer updates and clears a memory location before returning.
+- `process_matrix_elements`: Processes three matrix elements by calling a routine with each, and updates pointers in a structure based on the results.
+- `check_and_execute`: Loads data from a global structure, validates it against specific conditions, and executes conditional jumps based on comparison results.
+- `frag_ori_bra`: Short code fragment that merges 0 into d0, then jumps to another point in the code.
+- `frag_or_bra`: Short code fragment that merges d0 into d0, then jumps to another point in the code.
+- `frag_ori_bra_2`: Short code fragment that merges 0 into d1, then jumps to another point in the code.
+- `frag_subi_ori_movea_move_bsr_addq_bra`: Short code fragment that subtracts 0 from d0, then merges 0 into d2, then copies the memory at an offset from a5 to a0, then copies the memory at an offset from a0 to d0, then copies d0 to the stack, then calls another routine, then adds 4 to a7, then jumps to another point in the code.
+- `frag_clr_bra`: Short code fragment that clears the memory at an offset from a4, then jumps to another point in the code.
+- `frag_move_bra`: Short code fragment that copies 1 to the memory at an offset from a4, then jumps to another point in the code.
+- `check_and_decrement`: Checks a global counter for positive values and a specific memory location for a particular value, decrements the counter if both conditions are met, then calls a library function.
+- `frag_link_move_cmpi_bcc_subi_blt_bge_as`: Short code fragment that creates a stack frame in a5, then copies the memory at an offset from a5 to d1, then compares d1 with 128, then branches if the carry flag is clear, then subtracts 80 from d1, then branches if the comparison was less, then compares d1 with 10, then branches if the comparison was greater or equal, then shifts d1 left by 2, then jumps to another point in the code.
+- `function_epilogue_6`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
+- `execute_transform_operations_2`: Executes a series of mathematical transformations using library calls, updates flags in global memory, and stores computed values to specific locations.
+- `set_transform_flags_2`: Sets specific flag values in memory locations pointed to by global variables, prepares parameters for a library call, and executes the transformation operations.
+- `set_transform_flags`: Sets specific flag values in memory locations pointed to by global variables, prepares parameters for a library call, and executes the transformation operation.
+- `process_fractional_operations`: Handles fractional arithmetic by loading values from a table, performing bit manipulation operations, calling library functions for mathematical computations, and updating multiple memory locations with computed results.
+- `handle_fractional_subtraction`: Processes fractional values through library calls, performs bit testing and conditional subtraction operations on memory locations, and calls another routine to handle the final computation results.
+- `frag_addq_bra_3`: Short code fragment that adds 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_moveq_move_movem_unlk_rts`: Short code fragment that loads 2 into d0, then copies d0 to the memory at an offset from a4, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
+- `process_data_transform_loop_2`: Processes data through a loop by reading from global tables, preparing parameters for library calls, executing transformations, and managing flags in a loop structure.
+- `process_data_transform_loop`: Processes data through a loop by reading from global tables, preparing parameters for library calls, executing transformations, and looping back to process the next entry in the sequence.
+- `frag_pea_jsr_addq_clr_movem_unlk_rts`: Short code fragment that pushes the address of a fixed memory address onto the stack, then calls another routine, then adds 4 to a7, then clears the memory at an offset from a4, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
+- `execute_transformation_loop`: Executes a loop that processes data through multiple steps including mathematical operations, updates memory locations, and calls library functions with computed parameters.
+- `frag_movea_move_unlk_rts`: Short code fragment that copies the memory at an offset from a5 to a0, then copies the memory at an offset from a4 to the memory at an offset from a0, then removes the stack frame held in a5, then returns.
+- `initialize_transform_data_4`: Initializes transformation data by setting up pointers and values in tables based on a loop counter that increments until it reaches seven, then clears a global variable and calls another routine.
+- `update_and_compare_values`: Updates memory values in a loop structure, performs comparisons between stored values, and manages flags based on comparison results.
+- `increment_and_update`: Decrements a counter in a local variable, checks if it reaches zero, updates memory at an address pointed to by another variable, and advances that pointer.
+- `execute_multiple_transforms`: Processes multiple transformation operations by reading from global tables, preparing parameters for library calls, and executing transformations with different argument combinations while updating memory locations.
+- `update_transform_matrix`: Updates transformation matrix values in global structures and calls library functions for mathematical operations, setting a status flag and returning a result code.
+- `process_transform_data`: Processes transformation data by loading pointers from global offsets, calling mathematical routines with parameters, and updating matrix values in global structures before returning.
+- `validate_character_code`: Validates character codes from a global structure by checking against specific ranges and calling library functions to process valid codes, returning a word value.
+- `check_and_update_flags`: Checks flag status in a global structure, performs conditional jumps based on the result, and updates memory locations with computed values.
+- `frag_link_movea_move_btst_beq_moveq_bra`: Short code fragment that creates a stack frame in a5, then copies the memory at an offset from a5 to a1, then copies the memory at a1 to a0, then copies the memory at an offset from a0 to d0, then tests bit 10 of d0, then branches if the last result was zero, then loads 1 into d0, then jumps to another point in the code.
+- `function_epilogue_7`: Function exit sequence shared or jumped to by a routine: puts the result in d0, removes the stack frame with unlk, then returns to the caller.
+- `compare_coordinates`: Compares coordinate values between two structures by loading word values, extending them to long words, performing subtraction, and returning a boolean result based on comparison.
+- `validate_coordinates_and_update`: Validates coordinate data by comparing values from different structures, updates flags in global memory, and modifies memory locations based on comparison results.
+- `check_and_update_counter`: Decrements a global counter and checks its value, then reads from a table based on another counter value, performs comparisons with specific constants, and calls routines for further processing when conditions are met.
+- `check_flag_status`: Checks flag status in a global structure by testing specific bits and returning a boolean value indicating whether the condition is met.
+- `handle_character_index`: Processes character data by reading indices from a structure, performing arithmetic operations to calculate offsets, and using the result as an index into a jump table to execute different code paths.
+- `frag_bra_7`: Short code fragment that jumps to another point in the code.
+- `frag_bra_8`: Short code fragment that jumps to another point in the code.
+- `frag_bra_9`: Short code fragment that jumps to another point in the code.
+- `frag_bra_10`: Short code fragment that jumps to another point in the code.
+- `frag_bra_11`: Short code fragment that jumps to another point in the code.
+- `frag_bra_12`: Short code fragment that jumps to another point in the code.
+- `frag_movea_clr_bra`: Short code fragment that copies the memory at an offset from a5 to a0, then clears the memory at an offset from a0, then jumps to another point in the code.
+- `frag_move_bra_2`: Short code fragment that copies 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_jsr_addq_bra`: Short code fragment that copies the memory at an offset from a5 to the stack, then calls another routine, then adds 4 to a7, then copies 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `update_character_fields`: Updates character-related data by reading from global tables, performing arithmetic operations on indices, and calling routines to handle data processing with computed parameters.
+- `execute_character_processing`: Processes character-related data by reading from global tables, performing arithmetic operations on indices, calling library functions with computed parameters, and updating memory locations with results.
+- `process_character_data`: Updates character-related data by reading from global tables, performing arithmetic operations on indices, calling routines to handle data processing, and setting flags based on comparison results.
+- `validate_object_condition`: Checks a specific condition in a data structure and performs conditional operations based on the result, calling another routine when the condition is met.
+- `update_object_position`: Updates object positions in global structures by calculating offsets, performing arithmetic operations on word values, and modifying coordinates based on game state conditions.
+- `update_character_attributes`: Processes character attribute data by reading values from structures, performing mathematical computations using table lookups, updating memory locations with computed results, and handling bit operations on flags.
+- `frag_bra_13`: Short code fragment that jumps to another point in the code.
+- `frag_bra_14`: Short code fragment that jumps to another point in the code.
+- `frag_bra_15`: Short code fragment that jumps to another point in the code.
+- `frag_bra_16`: Short code fragment that jumps to another point in the code.
+- `frag_bra_17`: Short code fragment that jumps to another point in the code.
+- `frag_bra_18`: Short code fragment that jumps to another point in the code.
+- `frag_move_bra_3`: Short code fragment that copies 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_move_jsr_addq_bra_2`: Short code fragment that copies the memory at an offset from a5 to the stack, then calls another routine, then adds 4 to a7, then copies 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `process_character_data_2`: Processes character-related data by reading from global tables, performing arithmetic operations on indices, and calling library functions with computed parameters.
+- `handle_character_attributes`: Processes character attribute data by reading values from structures, performing mathematical computations using table lookups, updating memory locations with computed results, and managing counter increments.
+- `validate_and_transform`: Validates coordinate values against a threshold and performs mathematical transformations on global data, updating structure fields based on computed results before returning.
+- `apply_transforms`: Applies three mathematical transformations using global data and a library routine, updating transformation parameters based on object state flags.
+- `execute_multiple_transforms_2`: Executes multiple mathematical transformations by loading data from global memory, performing arithmetic operations using library calls, and storing computed values to specific locations while managing flags and state.
+- `compute_transform_offset`: Computes a memory offset using multiplication and addition operations, then performs a series of transformations and calls another routine to process the results.
+- `process_matrix_elements_3`: Iterates through matrix elements using an index stored in a global variable, performs validation checks on each element, and calls routines to process the data.
+- `check_character_conditions`: Checks character status conditions by testing specific flag bits, calling validation routines, and performing conditional jumps based on the results of those checks to process different character states.
+- `process_character_entry`: Processes character entries by loading data from a table, performing bit tests on status flags, and calling another routine with parameters from the structure when certain conditions are met.
+- `function_epilogue_8`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `update_character_status`: Reads a byte value from a structure, compares it against specific constants, and based on the comparison result, either clears a global variable, calls another routine, or updates a global variable with a value from a register.
+- `frag_pea_jsr_addq_or_move_bra`: Short code fragment that pushes the address of a fixed memory address onto the stack, then calls another routine, then adds 4 to a7, then merges d0 into the memory at an offset from a4, then copies d0 to the memory at an offset from a5, then jumps to another point in the code.
+- `load_and_decrement`: Loads a byte value from a global structure, decrements it by one, and stores the result in another global variable.
+- `decrement_stat_value`: Reads a byte from a table using an index derived from a global variable, decrements the value by one, and stores the result in another global variable.
+- `update_character_stat`: Reads a value from a global table, performs arithmetic operations on it, and updates a memory location with the computed result before branching to another routine.
+- `validate_character_stat`: Validates character statistics by reading data from global tables, performing multiplication operations on indices, updating memory locations with computed values, and calling a validation routine when conditions are not met.
+- `validate_character_data`: Reads character-related data from global tables, performs multiplication operations on indices, updates memory locations with computed values, and compares results to determine if further processing is required.
+- `load_and_process_data`: Loads byte values from memory locations calculated through bit shifts and pointer arithmetic, then calls another routine with computed addresses and returns a processed value.
+- `compare_values_and_subtract`: Compares two extended long word values loaded from structure offsets, subtracts the smaller from the larger when the first is greater, and returns the difference.
+- `frag_move_movea_sub_movem_unlk_rts`: Short code fragment that copies the memory at an offset from a0 to d0, then copies the memory at an offset from a5 to a0, then subtracts the memory at an offset from a0 from d0, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
+- `process_matrix_elements_2`: Processes matrix elements by calling routines with specific global pointers, performing bit testing operations, and executing conditional library calls based on the test results.
+- `calculate_character_offset`: Calculates a character offset by loading a byte value from a structure, masking it to 7 bits, using it as an index into a table, and returning the byte value from that table.
+- `validate_and_transform_coordinates`: Validates coordinate values against thresholds, performs mathematical transformations on global data, updates structure fields based on comparisons, and calls other routines to handle coordinate validation.
+- `function_epilogue_9`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `frag_move_andi_bne_movea_bra`: Short code fragment that copies the memory at an offset from a7 to d0, then copies a2 to the stack, then copies d2 to the stack, then masks d0 with 1, then branches if the last result was not zero, then copies an address to a0, then copies 64 to d2, then jumps to another point in the code.
+- `process_bit_operations`: Processes bit operations on hardware registers by performing bitwise AND, OR, and shift operations, setting flags based on bit tests, and calling library functions with results.
+- `copy_and_transform_data`: Copies data between memory locations using indexed addressing, transforms byte values through lookup tables, and performs iterative copying operations with decrementing counters.
+- `rotate_bits_right`: Performs bit rotation operations on byte values using rotate instructions, processes data through a loop that executes eight times, and stores the result in memory.
+- `call_global_library_function`: Calls one library function through a library base read from a global variable at a fixed offset, passing no arguments, and returns.
+- `validate_and_link_node`: Validates a value against a threshold, performs pointer arithmetic to locate a structure, checks if the structure is initialized, and links it into a data structure when valid.
+- `initialize_and_call_functions`: Checks a global variable for zero, opens a library if needed, stores a value from the library call, and performs several function calls with parameters from memory locations.
+- `multiply_32bit_words_3_2`: Multiplies two 32-bit values taken from the data registers using 16-bit partial products, adding the two cross terms to the low-word product and returning the result.
+- `validate_and_link_node_2`: Validates a value against a threshold, performs pointer arithmetic to locate a structure, checks if the structure is initialized, and links related nodes together.
+- `allocate_and_update_memory`: Calculates a memory size, allocates memory using a library function, stores the result in a local variable, and returns zero if allocation fails or continues processing otherwise.
+- `update_linked_list_node_4`: Updates a linked list node by calculating a new address, copying data from one location to another, and calling a function to process the updated node.
+- `negate_zero_return_2`: Calls another routine with an argument from the stack, stores the result in a global variable, tests if the result equals zero, and returns negative one if it was zero, otherwise returns the original result.
+- `initialize_math_structures`: Initializes multiple fields in a data structure to zero, then performs conditional arithmetic operations based on a value at offset 10224, and calls other routines to process the results.
+- `frag_move_jsr_addq_moveq_movem_unlk_rts`: Short code fragment that copies d7 to the stack, then copies a2 to the stack, then calls another routine, then adds 8 to a7, then loads 0 into d0, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
+- `free_memory_block`: Frees a memory block by retrieving its header, calling the system's FreeMem function with the block address, and updating global pointers to reflect the freed memory.
+- `update_linked_list_node_3`: Copies data from a source pointer into a destination structure, clears the destination's head word, links the destination after the source's tail, and points the source's tail at the destination.
+- `fall_through_entry_3`: Entry point part-way through straight-line code: runs one instruction (moveq) and then falls through into the code that follows, with no return of its own.
+- `frag_link_move_bsr_addq_unlk_rts`: Short code fragment that creates a stack frame in a5, then copies the memory at an offset from a5 to d0, then copies d0 to the stack, then copies the memory at an offset from a5 to the stack, then copies d0 to the memory at an offset from a5, then calls another routine, then adds 8 to a7, then removes the stack frame held in a5, then returns.
+- `frag_link_movem_move_tst_bgt_moveq_bra`: Short code fragment that creates a stack frame in a5, then saves registers on the stack, then copies the memory at an offset from a5 to d7, then tests d7, then branches if the comparison was greater, then loads 255 into d0, then jumps to another point in the code.
+- `update_structure_pointers`: Processes data values through bit manipulation, updates structure pointers with calculated addresses, and manages linked list entries by updating pointer references.
+- `compare_and_update_pointers`: Compares two addresses, updates structure pointers based on comparison results, calculates new coordinates, and updates linked list entries with calculated values.
+- `frag_movea_cmpa_bcc_sub_moveq_bra`: Short code fragment that copies the memory at an offset from a5 to a1, then compares a1 with a0, then branches if the carry flag is clear, then subtracts d7 from the memory at an offset from a4, then loads 255 into d0, then jumps to another point in the code.
+- `frag_cmpa_bne_tst_beq_move_cmp_bls_sub`: Short code fragment that compares a1 with a0, then branches if the last result was not zero, then tests the memory at a2, then branches if the last result was zero, then copies the memory at a2 to d1, then compares d2 with d1, then branches if the comparison was lower or same (unsigned), then subtracts d7 from the memory at an offset from a4, then loads 255 into d0, then jumps to another point in the code.
+- `update_structure_coordinates`: Updates structure coordinates by adding a delta value to existing coordinates, performs pointer arithmetic to locate data, and stores the updated values in memory.
+- `frag_move_movea_bra`: Short code fragment that copies a2 to the memory at an offset from a5, then copies the memory at an offset from a5 to the memory at an offset from a5, then copies the memory at a2 to a2, then jumps to another point in the code.
+- `reset_structure_pointers_2`: Moves a pointer from offset negative 12 of a structure in a5 to offset negative 8 of the same structure, clears the word at the new pointer's location, calculates the difference between the pointer and zero, stores that difference into offset negative 12 of a structure in a5 and into offset 4 of that same structure, and then moves that difference into d0.
+- `copy_and_compare_strings`: Copies bytes from one string to another while comparing lengths, handles boundary conditions, and clears a specific byte at the end of the copied string.
+- `process_linked_list_entries_2`: Iterates through a linked list structure, processes each entry by calling functions with parameters from the list, and manages stack frames for nested operations.
+- `initialize_transform_data_2`: Initializes global transformation data by setting zero values in multiple structure fields, calling library routines for arithmetic operations, and preparing data structures for subsequent operations.
+- `handle_negative_values`: Handles negative values by testing signs and negating them before calling another routine, with conditional logic based on sign tests.
+- `normalize_fixed_point`: Processes a 32-bit fixed-point value by shifting and dividing to normalize its fractional part, then returns the result in d0.
+- `multiply_32bit_words_3`: Multiplies two 32-bit values taken from the data registers using 16-bit partial products, adding the two cross terms to the low-word product.
+- `process_linked_list_entries`: Iterates through a linked list structure, processes each entry by calling functions with parameters from the list, and manages stack frames during processing.
+- `frag_jmp`: Short code fragment that jumps to another point in the code.
+- `handle_signal_and_process_entries`: Sets a signal using a library function, checks a global variable for zero, calls a function through a pointer if the variable is non-zero, and returns a value from the library call.
+- `frag_bsr_rts`: Short code fragment that calls another routine, then returns.
+- `initialize_library_components`: Initializes library components by opening a system library, setting up global variables, and preparing data structures for subsequent operations.
+- `return_constant_2`: Returns the constant an address in d0 to the caller without any other effect.
+- `handle_signal_and_process_entries_2`: Sets a signal using a library function, checks a global variable for zero, calls a function through a pointer if the variable is non-zero, and handles process entries.
+- `handle_transform_entry`: Processes a transformation entry by checking a global flag, calling library functions, and updating internal state based on input parameters.
+- `frag_link_tst_beq_jsr_move_movea_moveq`: Short code fragment that creates a stack frame in a5, then tests the memory at an offset from a4, then branches if the last result was zero, then calls another routine, then copies the memory at an offset from a5 to d1, then copies the memory at an offset from a4 to a6, then calls another routine, then loads 0 into d0, then removes the stack frame held in a5, then returns.
+- `process_bit_operations_2`: Performs bit manipulation operations including multiplication, rotation, and XOR operations on 32-bit values, updates a global variable with the result, and handles conditional branching based on sign bits.
+- `multiply_high_bits`: Multiplies the low 16 bits of d0 by the low 16 bits of d5, clears the low word of d0, swaps the halves so the upper 16 bits of the product are returned in the low word of d0, restores d4 and d5 from the stack, and returns.
+- `frag_move_add_bhi_eori_rts`: Short code fragment that copies the memory at an offset from a7 to d0, then adds d0 to d0, then branches if the comparison was higher (unsigned), then exclusive-ors an address into d0, then returns.
+- `call_library_vector_30_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `frag_movea_move_addq_clr_rts`: Short code fragment that copies the memory at an offset from a7 to a0, then copies a0 to the memory at a0, then adds 4 to the memory at a0, then clears the memory at an offset from a0, then copies a0 to the memory at an offset from a0, then returns.
+- `allocate_indexed_record_block_2`: Obtains a slot index from an unnamed routine and, when valid, allocates a 34-byte block through a library call with flags 65537.
+- `delete_port`: Removes a port from the system, marks it as deleted, releases its signal, and frees its memory block.
+- `call_library_vector_30_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 30 of that base, returning its result to the caller.
+- `call_library_vector_36_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 36 of that base, returning its result to the caller.
+- `call_library_vector_42_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 42 of that base, returning its result to the caller.
+- `call_library_vector_48_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 48 of that base, returning its result to the caller.
+- `call_library_vector_198_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_132_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 132 of that base, returning its result to the caller.
+- `call_library_vector_138_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 138 of that base, returning its result to the caller.
+- `call_library_vector_198_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 198 of that base, returning its result to the caller.
+- `call_library_vector_210_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 210 of that base, returning its result to the caller.
+- `call_library_vector_216_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 216 of that base, returning its result to the caller.
+- `call_library_vector_294_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 294 of that base, returning its result to the caller.
+- `call_library_vector_330_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 330 of that base, returning its result to the caller.
+- `call_library_vector_336_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 336 of that base, returning its result to the caller.
+- `call_library_vector_354_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
+- `call_library_vector_360_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 360 of that base, returning its result to the caller.
+- `call_library_vector_372_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 372 of that base, returning its result to the caller.
+- `call_library_vector_378_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 378 of that base, returning its result to the caller.
+- `call_library_vector_414_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 414 of that base, returning its result to the caller.
+- `call_library_vector_444_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 444 of that base, returning its result to the caller.
+- `call_library_vector_450_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 450 of that base, returning its result to the caller.
+- `call_library_vector_468_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 468 of that base, returning its result to the caller.
+- `call_library_vector_474_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 474 of that base, returning its result to the caller.
+- `call_library_vector_552_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
+- `frag_movem_movea_jsr_rts`: Short code fragment that saves registers on the stack, then copies a fixed memory address to a6, then copies the memory at an offset from a7 to a0, then copies several registers to or from memory, then copies the memory at an offset from a7 to a1, then copies several registers to or from memory, then calls another routine, then restores saved registers from the stack, then returns.
+- `call_library_vector_288_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 288 of that base, returning its result to the caller.
+- `call_library_vector_270_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 270 of that base, returning its result to the caller.
+- `jump_vector_entry_59`: Jump-table entry: a single absolute jump that passes control straight on to a fixed address elsewhere in memory.

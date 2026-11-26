@@ -6,20 +6,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (3462392 top-level bytes in 95 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 28 of 28 units identical (bytes and relocations), 21 raw-word lines |
-| Functions named and described | pass, 2788 of 2788 named (0 author symbols), 2788 of 2788 described (986 by rule, 1614 by the local model) |
+| Bytes classified (3476580 top-level bytes in 96 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 29 of 29 units identical (bytes and relocations), 21 raw-word lines |
+| Functions named and described | pass, 2789 of 2789 named (0 author symbols), 2789 of 2789 described (986 by rule, 1614 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 1040 of 1040 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 68064 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 64670 of 64670 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 64685 of 64685 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 1293397 |
-| code | 211300 |
-| data | 1906328 |
+| code | 211346 |
+| data | 1920470 |
 | padding | 22183 |
 | unused | 29184 |
 
@@ -45,6 +45,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Nova 9 (1991)(Dynamix)(Disk 3 of 3).adf:story | 11 | 3040 | 114 |
 | Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:bootblock | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1 | 1 |
+| SKID_ROW#unpacked | 1 | 15 | 1 |
 | unit:u1#packproof-None#unpacked | 6 | 4924 | 129 |
 | unit:u2#packproof-None#unpacked | 6 | 2548 | 130 |
 | unit:u3#packproof-None#unpacked | 2 | 2321 | 79 |
@@ -59,7 +60,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ## Cases handled
 
 - nova 9 (1991)(dynamix)(disk 2 of 3)/Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:nova9.sng: high-entropy data file (7.74 bits/byte), classified as packed data
-- 1 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- 1 first-execution byte records contradict the logged opcode word (first an address): bad captures, the opcode word is used
+- 3 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
 - runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - nova 9 (1991)(dynamix)(disk 1 of 3)/Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:nx: Imploder (xfd) stream found by ancient scan (2876 -> 3436 bytes) but only 0 of 2 sampled windows are in reference RAM: not used
 - nova 9 (1991)(dynamix)(disk 1 of 3)/Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:Install: Imploder (xfd) stream found by ancient scan (30232 -> 48476 bytes) but only 0 of 22 sampled windows are in reference RAM: not used
@@ -70,6 +72,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - nova 9 (1991)(dynamix)(disk 1 of 3)/Nova 9 (1991)(Dynamix)(Disk 1 of 3).adf:title: Imploder (xfd) stream found by ancient scan (123148 -> 169496 bytes) but only 1 of 77 sampled windows are in reference RAM: not used
 - nova 9 (1991)(dynamix)(disk 2 of 3)/Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:gameover: Imploder (xfd) stream found by ancient scan (8752 -> 16156 bytes) but only 2 of 7 sampled windows are in reference RAM: not used
 - nova 9 (1991)(dynamix)(disk 2 of 3)/Nova 9 (1991)(Dynamix)(Disk 2 of 3).adf:ttl: Imploder (xfd) stream found by ancient scan (40112 -> 81372 bytes) but only 0 of 37 sampled windows are in reference RAM: not used
+- s/SKID_ROW: code lead from fmtread (14188 bytes, hunk exe), 0 of 7 windows confirmed in reference RAM (hunk exe, relocatable: no RAM confirmation needed): recovered
 - u1#packproof-None: code lead from fmtread (48476 bytes, hunk exe), 0 of 22 windows confirmed in reference RAM (hunk exe, relocatable: no RAM confirmation needed): recovered
 - u2#packproof-None: code lead from fmtread (145196 bytes, hunk exe), 3 of 68 windows confirmed in reference RAM (hunk exe, relocatable: no RAM confirmation needed): recovered
 - u3#packproof-None: code lead from fmtread (10548 bytes, hunk exe), 0 of 6 windows confirmed in reference RAM (hunk exe, relocatable: no RAM confirmation needed): recovered
@@ -773,6 +776,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `return_from_subroutine`: This routine is empty and performs no operations before returning.
+
+### SKID_ROW#unpacked
+
+- `invoke_sequential_pointers`: Invokes a sequence of four function pointers stored in a global structure, passing the result of the first call as the base address for the second and third, then returns zero.
 
 ### unit:u1#packproof-None#unpacked
 

@@ -1,0 +1,685 @@
+# Game 3097 (christoph kolumbus (1994)(software 2000)(de)): code recovery summary
+
+Step 1 of the native-port process: every byte of the game recovered into named, explained, reassemblable source on Ryzen (/srv/fast/amigo/recovery/03097). Source, disassembly, data and assets stay on Ryzen; this page has numbers and names only.
+
+## Proofs
+
+| proof | result |
+|---|---|
+| Bytes classified (3604480 top-level bytes in 112 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 151 raw-word lines |
+| Functions named and described | pass, 621 of 621 named (0 author symbols), 621 of 621 described (122 by rule, 493 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 1163 of 1163 (100.00%) |
+| Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 22971 of 22971 instructions identical in start and length, 0 mismatches |
+
+## Bytes by class (top level)
+
+| class | bytes |
+|---|---|
+| asset | 2892549 |
+| code | 103084 |
+| data | 500681 |
+| padding | 27782 |
+| unused | 80384 |
+
+## Code units
+
+| file | hunks | instructions | functions |
+|---|---|---|---|
+| Echo | 2 | 241 | 10 |
+| Christoph Kolumbus (1994)(Software 2000)(De)(Disk 1 of 4).adf:HD-Install | 2 | 821 | 54 |
+| Christoph Kolumbus (1994)(Software 2000)(De)(Disk 1 of 4).adf:Kolumbus | 1 | 21898 | 556 |
+| Christoph Kolumbus (1994)(Software 2000)(De)(Disk 1 of 4).adf:bootblock | 1 | 18 | 1 |
+
+## Cases handled
+
+- 2 executed PCs run code whose absolute operand the game patches at run time (first an address): mapped to the file bytes they came from
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate
+- christoph kolumbus (1994)(software 2000)(de)(disk 2 of 4)/Christoph Kolumbus (1994)(Software 2000)(De)(Disk 2 of 4).adf: boot area holds bytes but the checksum is invalid, so Kickstart never runs it
+- christoph kolumbus (1994)(software 2000)(de)(disk 3 of 4)/Christoph Kolumbus (1994)(Software 2000)(De)(Disk 3 of 4).adf: boot area holds bytes but the checksum is invalid, so Kickstart never runs it
+- christoph kolumbus (1994)(software 2000)(de)(disk 4 of 4)/Christoph Kolumbus (1994)(Software 2000)(De)(Disk 4 of 4).adf: boot area holds bytes but the checksum is invalid, so Kickstart never runs it
+
+## Cracktros (kept, not protection)
+
+- none
+
+## Copy protection found
+
+- `process_ship_selection` (Kolumbus): Processes ship selection logic by checking a value against specific conditions and branching to different handlers based on comparison results. Kind: manual/code-wheel lookup. Pass path: the routine returns with a valid ship selection index in D0, bypassing any error handling/invalid selection paths.
+
+## Functions
+
+
+### Echo
+
+- `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
+- `frag_move_bra`: Short code fragment that copies d1 to d0, then jumps to another point in the code.
+- `update_position_values_5`: Updates position-related data in a structure using calculated values from a table, performs comparisons between fields, and sets bounds for position parameters based on conditions.
+- `update_position_values_4`: Reads position-related data from a table using indexed addressing, updates structure fields with calculated values, performs comparisons between stored values, and writes results back to the structure at offsets 328, 332, and 336.
+- `frag_move_bra_2`: Short code fragment that copies the memory at an offset from a1 to d1, then copies d1 to the memory at an offset from a1, then jumps to another point in the code.
+- `update_position_values_3`: Updates position-related values in a structure, performs comparisons between calculated values, and calls another routine based on conditional logic.
+- `frag_move_bra_3`: Short code fragment that copies the memory at an offset from a1 to d1, then copies d1 to the memory at an offset from a1, then jumps to another point in the code.
+- `update_position_values`: Copies several long values between structure offsets, shifts a value left by two bits, performs indexed memory access, and calls a handler routine based on conditional logic.
+- `frag_move_lsl_tst_bne_moveq_movea_jsr_b`: Short code fragment that copies the memory at a1 to d1, then shifts d1 left by 2, then tests an indexed entry from a0, then branches if the last result was not zero, then loads 10 into d1, then copies 352 to d0, then copies the memory at an offset from a2 to a4, then calls the routine whose address is in a5, then jumps to another point in the code.
+- `handle_condition_checks`: Tests a global variable for zero, makes multiple library calls, and jumps to another routine when conditions are met.
+
+### Christoph Kolumbus (1994)(Software 2000)(De)(Disk 1 of 4).adf:HD-Install
+
+- `initialize_and_process_data_2`: Calls multiple routines to set up data structures, copies byte sequences between memory locations, and clears a global variable before returning zero.
+- `clear_memory_blocks`: Initializes two memory blocks with zeros using a loop that decrements a counter until it reaches zero.
+- `initialize_and_process_data`: Clears a global variable, calls multiple subroutines to set up data structures, copies byte sequences from one memory location to another, and processes data blocks in a loop until a condition is met.
+- `copy_string_and_process`: Copies characters from one memory location to another until a null terminator is encountered, then performs several file I/O operations using library calls.
+- `copy_and_validate_strings`: Copies strings from input buffers to global variables, validates string contents with comparison checks, and sets up file operation parameters.
+- `frag_addq_movea_move_tst_bne_bra`: Short code fragment that adds 1 to a1, then copies a location in the code to a2, then copies the memory at a1 (advancing a1) to the memory at a2 (advancing a2), then tests the memory at an offset from a2, then branches if the last result was not zero, then copies 9204 to a fixed memory address, then copies a location in the code to a fixed memory address, then jumps to another point in the code.
+- `validate_file_operations`: Opens two files for reading and writing, reads data into buffers, compares buffer contents, and closes files when conditions are satisfied.
+- `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d7, then returns.
+- `copy_and_validate_strings_2`: Initializes a counter variable, copies bytes from source locations to destination buffers, validates file operations, and continues processing until a specific condition is satisfied.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `create_directory_and_lock_2`: Creates a directory using a library call, stores the directory handle in a global variable, and unlocks the directory handle after operations.
+- `create_directory_and_lock`: Copies a string from one location to another, creates a directory using a library call, and unlocks the directory handle.
+- `frag_move_rts`: Short code fragment that copies 1 to a fixed memory address, then returns.
+- `initialize_installation`: Initializes installation data by setting up path strings and clearing counters, then iterates through a loop five times to configure global variables and perform file operations.
+- `delete_files_loop`: Iterates through a list of file paths, copies each path to a buffer, and deletes each file using a library call.
+- `tiny_moveq_rts_2`: Small routine of 2 instructions that loads 0 into d7, then returns.
+- `iterate_and_write_strings`: Iterates through memory addresses, copies byte sequences from input locations to global variables, writes fixed strings to memory, and performs validation operations on the copied data.
+- `write_string_constants`: Writes a fixed string 'HEXUMA/' into memory, sets the final byte to zero, and stores the address of the end of the string.
+- `copy_string_to_four_locations`: Copies bytes from a source location to four destination locations until a null terminator is encountered, then calls two other routines and returns.
+- `validate_file_operations_2`: Opens and reads files for comparison, writes data to files, and validates file contents through multiple operations before closing them.
+- `tiny_moveq_rts_3`: Small routine of 2 instructions that loads 255 into d7, then returns.
+- `frag_bsr_lea_moveq_bra`: Short code fragment that calls another routine, then loads the address of a location in the code into a0, then loads 2 into d0, then calls another routine, then jumps to another point in the code.
+- `construct_path_and_create_dir`: Builds a file path by copying components, writes path constants, creates a directory using a library call, and unlocks the directory handle.
+- `tiny_moveq_rts_4`: Small routine of 2 instructions that loads 255 into d7, then returns.
+- `frag_bsr_move_lea_moveq_bra`: Short code fragment that calls another routine, then copies 54 to a fixed memory address, then copies 65 to a fixed memory address, then loads the address of a location in the code into a0, then loads 3 into d0, then calls another routine, then jumps to another point in the code.
+- `frag_movea_move_rts`: Short code fragment that copies a location in the code to a0, then copies the memory at an offset from a0 to a fixed memory address, then copies a location in the code to the memory at an offset from a0, then returns.
+- `frag_movea_move_rts_2`: Short code fragment that copies a location in the code to a0, then copies a location in the code to the memory at an offset from a0, then returns.
+- `set_flag_based_on_conditions`: Initializes a counter, performs conditional checks against global variables, and sets a flag based on comparison results from multiple iterations.
+- `compare_values_and_set_flag`: Compares four input values against global variables and sets a flag to one if all comparisons satisfy their respective conditions.
+- `process_data_blocks`: Processes data blocks by calculating offsets, performing bit operations on byte pointers, and iterating through multiple loops to modify memory locations.
+- `handle_message_loop`: Handles message processing in a loop until specific conditions are met, checking message type and value before returning.
+- `check_joystick_input`: Checks joystick input by testing a bit in a hardware register, and if the bit is set, returns immediately without processing messages.
+- `process_message_loop`: Enters a loop that retrieves messages from a message port, stores the retrieved message address in a global variable, updates another global variable with message data, and replies to the message before continuing.
+- `draw_vertical_lines_and_update`: Draws vertical lines by setting memory bytes to 255, updates coordinate values in global variables, and performs iterative drawing operations until a counter reaches a specified limit.
+- `draw_vertical_lines`: Draws vertical lines by setting bytes to 255 at specific memory locations, then performs bitwise OR operations on additional memory locations.
+- `frag_movea_lea_move_jsr_rts`: Short code fragment that copies a location in the code to a6, then loads the address of a location in the code into a0, then copies a location in the code to the memory at an offset from a0, then calls another routine, then copies d0 to a fixed memory address, then copies d0 to a0, then copies the memory at an offset from a0 to a fixed memory address (2 times in a row), then returns.
+- `call_close_window`: Wrapper that calls the intuition library function CloseWindow and returns its result to the caller.
+- `load_screen_colors`: Loads RGB color values from a screen structure and stores them in global variables, then jumps to another routine with a specific parameter.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (eori.l) and then falls through into the code that follows, with no return of its own.
+- `call_close_screen`: Wrapper that calls the intuition library function CloseScreen and returns its result to the caller.
+- `open_system_libraries`: Opens three system libraries by calling a function with specific library names and stores the returned handles in global variables.
+- `frag_movea_jsr_rts`: Short code fragment that copies a fixed memory address to a6, then copies a location in the code to a1, then calls another routine, then copies a location in the code to a1, then calls another routine, then copies a location in the code to a1, then calls another routine, then returns.
+- `frag_movea_adda_move_clr_dbra_rts`: Short code fragment that copies a location in the code to a0, then copies a location in the code to a1, then adds 17280 to a0, then adds 17280 to a1, then copies 199 to d0, then clears the memory at a0 (advancing a0), then clears the memory at a1 (advancing a1), then loops back while counting down d0, then returns.
+- `print_text_with_coordinates`: Stores a byte value in a global variable, then calls another routine to print text using coordinates from memory locations.
+- `check_task_and_wait`: Finds a task and checks if it has a specific flag set, then waits for a message on a port or gets a message if the flag is not set.
+- `frag_tst_beq_movea_jmp`: Short code fragment that tests a fixed memory address, then branches if the last result was zero, then copies a fixed memory address to a6, then copies a location in the code to a1, then jumps to another point in the code.
+- `frag_movea_move_moveq_jsr_tst_beq_rts`: Short code fragment that copies a location in the code to a6, then copies 3252 to d1, then loads 254 into d2, then calls another routine, then tests d0, then branches if the last result was zero, then copies d0 to a fixed memory address, then loads 0 into d7, then returns.
+- `call_un_lock`: Wrapper that calls the dos library function UnLock and returns its result to the caller.
+- `frag_movea_move_jsr_tst_beq_moveq_bmi_b`: Short code fragment that copies a location in the code to a6, then copies a location in the code to d1, then copies 3508 to d2, then calls another routine, then tests d0, then branches if the last result was zero, then loads 0 into d7, then tests a fixed memory address, then branches if the last result was negative, then jumps to another point in the code.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `iterate_through_entries`: Iterates through entries using a loop that continues until a condition is met, performing comparisons and jumps based on the results.
+- `frag_movea_jsr_cmpi_bne_move_moveq_rts`: Short code fragment that copies a location in the code to a6, then calls another routine, then compares d0 with 232, then branches if the last result was not zero, then copies 1 to a fixed memory address, then loads 0 into d7, then returns.
+- `tiny_moveq_rts_5`: Small routine of 2 instructions that loads 255 into d7, then returns.
+- `search_and_store_entries`: Searches through entries to find valid ones, stores their addresses in memory, increments a counter, and returns when the counter reaches six or no more entries are found.
+
+### Christoph Kolumbus (1994)(Software 2000)(De)(Disk 1 of 4).adf:Kolumbus
+
+- `process_message_queue`: Handles message queue processing by finding system tasks, waiting for messages, retrieving messages from ports, and performing library calls to manage message handling.
+- `initialize_graphics_system_4`: Initializes graphics system resources by allocating memory blocks, setting up register values, copying data between memory locations, and configuring hardware parameters.
+- `validate_ship_entry`: Validates ship entry conditions by checking counter values against thresholds, comparing data from multiple tables, and updating position coordinates when conditions are met.
+- `frag_addi_cmpi_blt_tst_bne_beq`: Short code fragment that adds 1 to a fixed memory address, then compares a fixed memory address with 250, then branches if the comparison was less, then tests a fixed memory address, then branches if the last result was not zero, then tests a fixed memory address, then branches if the last result was zero.
+- `frag_addi_cmpi_blt_bne_jmp`: Short code fragment that adds 1 to a fixed memory address, then compares a fixed memory address with 5, then branches if the comparison was less, then adds 1 to a fixed memory address, then compares a fixed memory address with 1789, then branches if the last result was not zero, then jumps to another point in the code.
+- `update_speed_values`: Initializes a counter and processes data entries through a loop, setting values based on comparisons and arithmetic operations.
+- `calculate_movement_type`: Processes movement data by calculating averages and assigning type codes based on computed values.
+- `update_ship_coordinates`: Updates ship position coordinates by performing arithmetic calculations on data from multiple tables, handling overflow conditions and storing results back to global variables.
+- `update_game_entity_values`: Processes game entity movement and position adjustments using lookup tables and arithmetic operations, updating entity coordinates and related state variables.
+- `update_values_and_accumulate`: Processes data from multiple tables, performs arithmetic operations including multiplication and division, updates memory locations with calculated values, and accumulates results in a loop.
+- `frag_movem_lea_move_dbra_rts`: Short code fragment that saves registers on the stack, then loads the address of a fixed memory address into a0, then loads the address of a fixed memory address into a1, then copies 49 to d7, then copies the memory at a0 (advancing a0) to the memory at a1 (advancing a1), then loops back while counting down d7, then restores saved registers from the stack, then returns.
+- `update_game_state`: Processes game entity data by reading values from multiple tables, performing arithmetic operations including multiplication and division, updating counters and status flags based on conditional checks, and writing results back to memory locations.
+- `update_ship_status`: Updates ship status information in a global variable array based on loop index, performs arithmetic operations on array elements, and copies data between memory regions using indexed addressing.
+- `frag_move_rts_2`: Short code fragment that copies 0 to a fixed memory address, then copies 256 to a fixed memory address, then copies 0 to a fixed memory address, then returns.
+- `frag_bsr_move_tst_bne_bclr_rts`: Short code fragment that calls another routine, then copies 3 to a fixed memory address, then copies 127 to d0, then tests a fixed memory address, then branches if the last result was not zero, then clears bit 4 of d0, then copies d0 to a fixed memory address, then copies 0 to a fixed memory address, then returns.
+- `set_flag_based_on_conditions_2`: Loads a word value from memory, performs bit shifting operations, accesses a table using the shifted value as an index, and sets flags in global variables based on comparison results.
+- `process_character_data`: Processes character data by validating ranges, performing bit operations on a counter, and storing results in global variables based on comparison outcomes.
+- `loop_decrement_counter`: Decrements a counter in a register for a fixed number of iterations while loading data from two tables, and returns after the loop completes.
+- `validate_character_range`: Validates character values against a range and returns a specific value or fails based on comparison results.
+- `find_matching_entries`: Searches for matching entries across multiple data tables and stores the count of matches.
+- `frag_movem_lea_move_ext_mulu_adda_bra`: Short code fragment that saves registers on the stack, then loads the address of a fixed memory address into a0, then copies a fixed memory address to d2, then sign-extends d2, then multiplies d2 by 30 (unsigned), then adds d2 to a0, then jumps to another point in the code.
+- `copy_entry_data`: Copies data entries from one table to another based on conditional checks and maintains a count.
+- `initialize_tile_data_2`: Clears memory blocks at two addresses by writing zero values, copies word data from one table to another, and initializes several global variables with specific values.
+- `transfer_block_data`: Transfers blocks of data between memory locations using calculated offsets and a fixed loop count.
+- `process_game_loop`: Processes game loop operations by calling initialization routines, handling state transitions, updating global variables, and managing conditional execution paths based on system flags.
+- `frag_jsr`: Short code fragment that calls another routine (2 times in a row).
+- `process_input_event_3`: Processes input events from hardware devices by reading joystick and keyboard states, updating global variables based on input, and handling specific key presses to control game flow.
+- `check_joystick_input_4`: Checks joystick input status by polling a hardware register multiple times, setting a global flag based on whether a specific bit remains high, and returns immediately.
+- `initialize_blitter_dma_2`: Initializes blitter DMA operations by setting up source and destination pointers, configuring control registers, and performing two separate blitter channel setups before checking joystick input status.
+- `update_and_execute_blitter_operations`: Subtracts a value from a register, performs bit shifting operations, compares values with another register, updates global variables, and executes blitter operations using calculated addresses.
+- `validate_and_execute_blitter_operations`: Tests a global variable for negative values, compares it with another global variable, updates the second variable if conditions are met, and performs blitter operations using calculated addresses.
+- `setup_blitter_registers_5`: Configures blitter hardware registers with specific values for source and destination addresses, control settings, and waits for blitter operations to complete.
+- `frag_moveq_move_btst_beq_jsr_rts`: Short code fragment that loads 255 into d0, then copies a fixed memory address to d0, then tests bit d1 of d0, then branches if the last result was zero, then copies 63 to d0, then calls another routine, then returns, then copies 18 to d0, then calls another routine, then returns.
+- `frag_btst_ori`: Short code fragment that tests bit d0 of d1, then merges 3 into d6, then merges 63 into d0, then merges 255 into d6.
+- `validate_input_sequence`: Reads words from a pointer until a negative value is encountered, comparing each word with a register value, and returns if they do not match.
+- `update_coordinates`: Adjusts coordinate values by comparing them with thresholds and applying conditional modifications, then stores the results back to global variables.
+- `check_character_boundary`: Checks if a character value falls within a specified boundary and sets a flag accordingly.
+- `validate_and_process_entry`: Validates entry data against multiple tables and performs different processing actions based on comparison results, or sets default values when no matches are found.
+- `update_position_flags`: Updates position-related flags and data in a global table by performing arithmetic operations and bit testing on coordinate values.
+- `validate_coordinate_distance`: Calculates distance between coordinates and determines if they meet specific criteria for validity.
+- `check_and_execute_blitter_sequence`: Compares a global variable with a value loaded from memory, performs conditional jumps based on comparison results, initializes blitter registers, and executes multiple blitter operations in sequence.
+- `locate_and_store_match`: Finds matching entries in data tables and stores corresponding values from those entries.
+- `initialize_game_data`: Compares values from four data tables with input registers and writes corresponding values to global variables when matches are found, otherwise sets all global variables to -1.
+- `compare_and_update`: Compares values from two tables with a counter, updates global variables with data from the tables when a match is found, and increments the counter on each iteration.
+- `compare_and_update_2`: Compares values from two tables with a counter, updates global variables with data from the tables when values match, and handles loop termination with a maximum iteration count.
+- `update_tile_map`: Writes a byte value of 255 to a global variable at an offset calculated from two input word values, then writes another byte value of 255 to a different offset in the same global variable.
+- `update_ship_position_5`: Updates ship position data by reading from multiple tables based on index values, performing arithmetic operations to calculate offsets, and storing results into global variables.
+- `initialize_ship_data_4`: Initializes ship-related data by copying and shifting values from one table to another, then sets multiple global variables with specific constants before returning.
+- `initialize_ship_data_5`: Initializes ship-related data by calculating a table pointer based on a counter, storing the pointer in a global variable, and updating the counter.
+- `update_coordinates_3`: Updates coordinate values by subtracting three from each and storing the results to specific memory locations, then performs blitter operations for graphics rendering.
+- `compute_and_compare_values`: Loads word values from a table using an index, performs arithmetic operations including multiplication, addition, and division, then compares the result with a value from another table and branches if the computed value is less than the table value.
+- `process_table_data_2`: Reads values from a table, performs arithmetic operations including shifts, additions, and divisions, then compares the result with a value from another table before returning a conditional result.
+- `execute_blitter_operations`: Calls multiple routines to initialize blitter registers, sets up source and destination pointers for blitter operations, and executes a sequence of blitter operations with specific parameters.
+- `validate_tile_data_2`: Validates tile data values against specific ranges and returns a flag based on the validation result, with loop iterations controlled by a counter variable.
+- `initialize_game_state_4`: Initializes game state variables, tests input device status bits, delays execution when conditions are not met, and fills memory with a specific pattern for display initialization.
+- `update_position_components`: Reads values from three different memory locations using an index, performs arithmetic operations on them, and accumulates results into global variables.
+- `increment_ship_counter`: Increments a ship counter in a table based on a global index and updates related data, then returns.
+- `handle_game_events`: Processes game events by checking various global flags and variables, calling different routines based on conditional checks, and managing state transitions through jump tables.
+- `frag_bsr_tst_bne_bra`: Short code fragment that calls another routine (2 times in a row), then tests a fixed memory address, then branches if the last result was not zero, then calls another routine, then tests a fixed memory address, then branches if the last result was not zero, then jumps to another point in the code.
+- `initialize_game_state_3`: Sets a global variable to zero, checks another variable for a specific value, and calls different routines based on the comparison result.
+- `copy_and_compare_values`: Copies values between global variables, performs a comparison operation, and updates flags based on the comparison result.
+- `manage_collision_state`: Checks a table for non-zero entries and modifies values in global variables when a zero entry is found, then updates several global variables with specific constants.
+- `validate_and_scale_value`: Validates a value against thresholds, performs arithmetic operations including multiplication and division, then calls another routine with scaled results.
+- `calculate_and_store_division`: Performs division calculations using table lookups and stores the results in global variables after validating input ranges.
+- `frag_cmpi_bne_move_bsr_bra_rts`: Short code fragment that compares a fixed memory address with 1, then branches if the last result was not zero, then copies a fixed memory address to d2, then calls another routine, then jumps to another point in the code, then copies a fixed memory address to d2, then calls another routine, then returns.
+- `handle_game_state_2`: Processes different game states based on a value in memory, calling specific routines for each state and setting flags in global variables.
+- `validate_and_update_ship_data`: Checks conditions related to global variables, updates ship-related data structures using computed values, and modifies tile pointers based on ship status.
+- `update_resource_values`: Updates resource values in global tables by performing arithmetic operations, checking bit flags, and storing computed results based on comparison outcomes.
+- `initialize_ship_data`: Initializes ship-related global variables with specific values, sets up pointers to tile data structures, and configures various ship attributes such as health, damage, and status flags.
+- `update_coordinates_2`: Loads word values from global variables, performs conditional operations based on comparison results, and copies coordinate data between global variable pairs.
+- `adjust_movement_speed`: Multiplies certain global variables by two, checks conditions based on division results, and scales other variables depending on comparison outcomes.
+- `modify_velocity_factors`: Reads a value from a table using an index, checks specific bits, and applies multiplication and division operations to two global variables based on bit values.
+- `read_tile_data`: Calculates an address using global variables, reads a byte from that location, and extends it to a word value for return.
+- `calculate_coordinates`: Stores a word value in a global variable, performs table lookups with shifted indices, calculates a result using multiplication and addition, then stores the final value.
+- `calculate_and_update_coordinates`: Calculates coordinate values using division operations and table lookups, then updates global variables with the computed results after validation checks.
+- `load_object_attributes`: Reads a value from a table using an index, loads several values from different tables based on that value, or sets default values if the initial value is zero.
+- `load_movement_parameters`: Reads a value from a table using an index, calculates another index, and loads four values from different tables into global variables.
+- `initialize_coordinates`: Loads a word value from a table at an offset calculated from a parameter, compares it with 3, and if the value is less than 3 stores specific values into four global variables.
+- `update_and_compare_counters`: Updates counter values in global tables by performing arithmetic operations, compares them against thresholds, and sets status flags based on the comparison results.
+- `update_counters`: Checks if a value in a table is non-zero, and if so, adds a value from another global variable to it.
+- `decrement_and_reset`: Subtracts a value from a global variable and stores the result back to the same location.
+- `decrement_value`: Subtracts a value from a global variable and stores the result back to the same location.
+- `update_tile_flags_2`: Checks conditions based on global variables and updates tile flags in two tables, then calls another routine with a temporary value before restoring it.
+- `handle_tile_operations`: Processes tile data based on comparison results, updates flags in multiple tables, and calls routines with temporary values before restoring them.
+- `search_and_clear_entries`: Searches through data structures for matching entries and clears specific entries in a table, then writes zero values to a memory region.
+- `frag_move_bsr_dbra_rts`: Short code fragment that copies 15 to a fixed memory address, then copies 0 to a fixed memory address, then copies 29 to d7, then calls another routine, then loops back while counting down d7, then returns.
+- `restore_position_values`: Restores position-related values from a global table, sets specific hardware registers, and executes a loop that calls another routine 29 times before restoring original values and returning.
+- `update_tile_data_2`: Updates tile-related data in a global table based on coordinates and flags, then copies tile pattern data between memory regions using shift and add operations for addressing.
+- `update_position_data`: Iterates through multiple data structures, compares values, updates flags in a global table, and calls another routine with calculated coordinates.
+- `check_and_increment`: Compares values in two global variables with 1, and if both match, it reads a word from a table at an offset calculated from another global variable.
+- `update_ship_position_2`: Updates ship position coordinates based on input values, performs boundary checks, and triggers related game state updates including blitter operations and input handling.
+- `validate_movement_coordinates`: Processes input values through a loop, performs boundary checks and comparisons against memory values, updates a global variable when conditions are met.
+- `update_position_value_2`: Loads a word value from a table, performs arithmetic operations including right shift and addition, then calls another routine with the result.
+- `update_game_coordinates`: Calculates and stores updated coordinates based on input values, then initializes several game state variables and performs conditional operations depending on a global flag.
+- `update_game_state_4`: Loads a word value from a global variable, performs bit masking and conditional checks before updating multiple global variables.
+- `find_valid_position`: Iterates through a position table to find valid coordinates that match expected values, storing the index when found or setting a failure flag.
+- `update_tile_collision_flag`: Loads a word value from a global variable, scales it by two, uses the result as an offset to read and modify a value in a table.
+- `update_tile_map_entry`: Calculates an address in a table using a word value from a global variable, writes the value 255 to two memory locations at that address, and then calls several routines.
+- `update_game_state_9`: Updates game state variables based on a condition checked in a global variable, then performs multiple operations including copying data and calling routines depending on that condition.
+- `adjust_position_value`: Loads a word value from a table, applies bit manipulation and arithmetic operations, then calls another routine before performing conditional updates.
+- `validate_movement`: Validates movement coordinates by checking against boundary conditions and returns a success or failure indicator based on comparisons.
+- `update_game_state_5`: Loads a word value from a global variable, tests bits in that value, and conditionally updates multiple global variables based on the test results.
+- `find_valid_coordinate`: Searches for valid coordinate pairs in memory tables, performs arithmetic operations on them, and stores the index when matching conditions are met.
+- `update_tile_collision`: Updates a tile collision value based on calculated offsets and conditions, then calls another routine if the result is zero.
+- `update_ship_position_3`: Updates ship coordinates based on input data, performs boundary checks, and initializes game state variables including position tracking and status flags.
+- `validate_and_update_positions`: Validates position values against thresholds, resets them to zero when exceeding limits, and performs conditional updates based on comparison results.
+- `update_game_state_7`: Updates game state variables based on input conditions and performs initialization tasks including setting flags and copying data from tables.
+- `search_and_update_value`: Compares input values against a table and updates a global variable with an index when matches are found, or sets a failure flag if no match is found.
+- `process_and_modify_data`: Processes data from multiple tables using bitwise operations and arithmetic calculations, modifying values in memory based on comparison results.
+- `check_game_conditions`: Tests a global variable for zero value, then checks bit 5 of a word from a lookup table before proceeding with data copying and state updates.
+- `process_input_check`: Tests a global variable for zero and branches if non-zero.
+- `handle_delay_cleanup`: Calls multiple routines to initialize blitter operations and handle input events, then delays execution for 100 ticks using the DOS library.
+- `check_build_conditions`: Tests bits in multiple global variables to determine if construction can proceed, returning zero if any condition is met, otherwise returns -1.
+- `process_input_character`: Processes input character data by performing lookup operations through a table, applying arithmetic adjustments, and storing the resulting value in a global variable.
+- `lookup_tile_data`: Calculates an address offset using multiplication and addition, performs a table lookup to read a byte value, then returns the result in a register.
+- `process_input_events`: Reads keyboard and joystick input from hardware registers, processes movement commands, updates global variables based on input conditions, and calls other routines to handle blitter operations.
+- `calculate_tile_position`: Calculates tile position values by performing arithmetic operations on coordinates, then stores the results to a memory location using indexed addressing.
+- `validate_tile_data`: Checks tile data values against specific ranges and returns a flag based on the validation result, with loop iterations controlled by a counter.
+- `process_input_events_2`: Reads input device states from hardware registers and updates global variables based on button press events.
+- `setup_blitter_registers_6`: Configures multiple blitter hardware registers with specific control words and memory addresses for graphics operations.
+- `check_input_devices_2`: Performs hardware register tests for input devices, calls routines based on test results, and manages blitter operations with specific control values.
+- `setup_blitter_registers_7`: Configures multiple blitter hardware registers with specific control words and memory addresses for graphics operations.
+- `process_collision_data`: Processes collision-related data by reading values from memory locations, performing comparisons and arithmetic operations on word and longword values, and updating memory locations based on conditional logic.
+- `initialize_game_state_11`: Initializes game state variables by setting up pattern tables, configuring blitter registers, and processing character and resource data.
+- `process_resource_data`: Processes resource-related data by reading values from tables based on a counter, performing calculations and conditional operations, and calling routines to handle specific resource states.
+- `process_input_character_2`: Processes input character data by performing lookup operations through a table, applying arithmetic adjustments, and storing the resulting value.
+- `process_ship_data_2`: Processes ship-related data by reading coordinates from tables, performing arithmetic operations, and updating global variables with computed values.
+- `update_ship_position`: Processes ship movement data by reading coordinates from tables, performing arithmetic operations on them, and updating global variables with the results.
+- `update_game_state_6`: Processes game state transitions by checking conditions, copying data between memory locations using indexed addressing, and updating status flags.
+- `handle_game_state`: Handles game state transitions by checking various conditions, copying data between memory locations using indexed addressing, and updating status flags.
+- `initialize_and_wait_for_input`: Initializes two global word variables to -1, waits for a specific bit in a hardware register to become set and then clear, and then calls another routine before storing results from that routine into global variables.
+- `validate_and_adjust_coordinates`: Validates coordinate values from global variables, adjusts them based on boundary checks, and updates modified coordinates in global storage.
+- `adjust_coordinates_2`: Adjusts coordinate values based on input parameters and performs boundary checks, updating global variables with modified coordinates when conditions are met.
+- `update_display_coordinates`: Updates display coordinate values from input parameters, performs blitter operations for graphics rendering, and sets specific flags in global variables.
+- `setup_sprite_position`: Sets up sprite position coordinates by copying register values to memory locations, performing bit shifts and additions on word values, extending them to longwords, and multiplying by a constant.
+- `frag_movem_move_bpl_rts`: Short code fragment that saves registers on the stack, then copies a fixed memory address to d0, then branches if the last result was not negative, then restores saved registers from the stack, then returns.
+- `setup_blitter_operation`: Calculates coordinate offsets using shifts and additions, performs multiplication operations, and sets up blitter registers for graphics rendering.
+- `calculate_blitter_offset`: Calculates a blitter offset by reading a byte value from memory, checking for negative values, shifting the value left by three bits, and using it to compute an address through addition with a table lookup.
+- `frag_movea_jsr_movem_rts`: Short code fragment that copies a fixed memory address to a2, then calls another routine, then restores saved registers from the stack, then returns.
+- `frag_movem_lea_movea_jsr_rts`: Short code fragment that saves registers on the stack, then loads the address of a fixed memory address into a0, then copies a fixed memory address to a1, then calls another routine, then loads the address of a fixed memory address into a0, then copies a fixed memory address to a1, then calls another routine, then restores saved registers from the stack, then returns.
+- `process_blitter_operations`: Handles blitter operations by checking various conditions, copying data between memory locations using indexed addressing, and updating state variables for graphics rendering.
+- `handle_input_events`: Initializes game state variables, tests input device status bits, delays execution when conditions are not met, and fills memory with a specific value.
+- `initialize_game_state_2`: Initializes game state variables by testing memory locations for zero values, calling another routine when conditions are met, and setting a memory location to one when a condition is satisfied.
+- `frag_movea_adda_move_lea_dbra_rts`: Short code fragment that copies a location in the code to a0, then copies a fixed memory address to a1, then adds 1920 to a1, then copies 575 to d7, then copies the memory at a0 (advancing a0) to the memory at a1 (advancing a1) (3 times in a row), then loads the address of the memory at an offset from a1 into a1, then loops back while counting down d7, then returns.
+- `copy_memory_blocks`: Copies data between two memory locations by moving 12 bytes at a time for 575 iterations, advancing both pointers after each copy operation.
+- `frag_movea_adda_moveq_lea_move_dbra_rts`: Short code fragment that copies a fixed memory address to a0, then adds 20 to a0, then copies a fixed memory address to a1, then adds 100 to a1, then loads 16 into d7, then loads the address of the memory at an offset from a1 into a1, then copies the memory at a0 (advancing a0) to the memory at a1 (advancing a1), then loops back while counting down d7, then returns.
+- `frag_jsr_subq_bne_rts`: Short code fragment that calls another routine, then subtracts 1 from d1, then branches if the last result was not zero, then returns.
+- `transfer_data_blocks`: Transfers data between two memory regions by copying 12 bytes at a time for 83 iterations, with an inner loop that copies 12 bytes 5 times per outer iteration.
+- `configure_blitter_mode1`: Configures blitter registers with specific control words and memory offsets for graphics operations by loading constant values into registers, computing addresses through addition, and calling a setup routine.
+- `configure_blitter_mode2`: Configures blitter registers with specific control words and memory offsets for graphics operations by loading constant values into registers, computing addresses through addition, and calling a setup routine.
+- `execute_blitter_sequence`: Executes a sequence of blitter operations by saving register values on the stack, performing multiplication and addition operations, calling a setup routine multiple times with different parameters, and restoring registers before returning.
+- `execute_blitter_loop1`: Executes a loop of blitter operations by saving register values on the stack, performing multiplication and addition operations, calling a setup routine multiple times with different parameters, and restoring registers before returning.
+- `configure_blitter_loop`: Configures blitter registers with specific values and performs a loop of blitter operations, updating memory pointers and counters during each iteration.
+- `execute_blitter_sequence2`: Executes a complex sequence of blitter operations by saving register values on the stack, performing multiplication and addition operations, calling a setup routine multiple times with different parameters, and restoring registers before returning.
+- `clear_memory_region`: Clears a memory region by setting 12 bytes to zero for 53 iterations, advancing the pointer after each clear operation.
+- `process_tile_map`: Iterates through a tile map grid, checking bits in a global variable for each tile position and calling another routine based on the bit state.
+- `process_tile_graphics`: Calculates memory offsets using byte values and multiplication, performs conditional operations based on sign tests, and calls routines to set up graphics rendering.
+- `frag_movem_move_movea_jsr_rts`: Short code fragment that saves registers on the stack, then copies 6 to d2, then copies 12291 to d3, then copies a fixed memory address to a4, then copies a fixed memory address to a5, then copies a fixed memory address to a3, then copies a fixed memory address to a2, then calls another routine, then restores saved registers from the stack, then returns.
+- `load_and_process_tile_data`: Loads a byte from memory, performs conditional arithmetic operations on it, and calls another routine with computed address values.
+- `adjust_coordinates`: Adjusts two word values by adding or subtracting 80 based on their sign and comparison with 80, ensuring they remain within a specific range.
+- `update_tile_flags`: Processes tile data to update multiple flag words based on conditions derived from a global variable's value at an offset calculated from input parameters.
+- `update_tile_flags_4`: Processes tile data at a specific offset, checking bits and updating multiple flag words based on tile values and bit comparisons.
+- `configure_blitter_registers_2`: Sets up multiple blitter hardware registers with specific control words and memory offsets for graphics operations.
+- `update_animation_frame`: Updates an animation frame counter in a global variable, resets it to zero when reaching a specific threshold, and toggles another global variable's value.
+- `process_tile_data`: Loads tile data using a global variable as an index, calculates a memory address based on the index, and prepares for further processing by setting up pointers and calling another routine.
+- `load_tile_data`: Loads tile data using a global variable as an index, calculates a memory address based on the index, and prepares for further processing by calling another routine with the calculated address.
+- `update_bit_flags_in_memory`: Updates bit flags in multiple memory locations based on calculated coordinates and a conditional flag value.
+- `validate_coordinates`: Checks if coordinate differences are within specified bounds and returns the original values if they are, otherwise returns a negative result.
+- `initialize_display_buffer`: Initializes a display buffer by writing zero values to a memory region, then processes input data through a loop that updates a counter and calls routines based on bit tests.
+- `update_tile_data`: Updates tile data in memory by copying bytes from a source buffer and setting flags based on tile properties, then resets counters when reaching limits.
+- `initialize_and_process_grid_entry`: Initializes loop counters, processes grid entries, and updates memory flags while performing arithmetic operations on coordinates.
+- `update_tile_flags_3`: Updates tile flags in a global array based on calculated indices, increments a counter until it reaches 250, then sets a flag byte and repeats the process 9 times before returning.
+- `initialize_grid_positions`: Initializes grid positions by setting flags in a global array and updating counters, looping five times before returning.
+- `frag_move_jsr_rts`: Short code fragment that copies d2 to the stack, then copies 79 to d0, then calls another routine, then copies d2 to d1, then copies 79 to d0, then calls another routine, then copies d2 to d0, then copies the top of the stack to d2, then returns.
+- `check_collision_status`: Processes collision checks for grid positions by calling another routine and returning early if a non-zero value is found, otherwise continues processing.
+- `frag_movem_ext_mulu_add_lea_adda_rts`: Short code fragment that saves registers on the stack, then sign-extends d1, then multiplies d1 by 80 (unsigned), then adds d0 to d1, then loads the address of a fixed memory address into a0, then adds d1 to a0, then restores saved registers from the stack, then returns.
+- `update_global_flags`: Iterates through a global array, updates flags based on conditions, and modifies values in the array during each iteration.
+- `update_counter_values`: Updates counter values in a memory region by incrementing them based on conditional tests and arithmetic operations.
+- `store_position_and_tile_data`: Stores position coordinates and tile data to memory locations while performing arithmetic operations and bit flag manipulations.
+- `update_position_data_2`: Updates position values and writes them to multiple memory locations including tile maps and data tables.
+- `check_collision_with_threshold`: Checks collision status at calculated memory locations against a threshold value and returns early if condition is met.
+- `initialize_object_data`: Initializes object data by setting up coordinates, calling validation routines, and writing values to memory tables.
+- `validate_tile_properties`: Validates tile properties against multiple criteria and sets a specific value if all conditions are met, otherwise returns an error code.
+- `check_collision_range`: Processes a series of collision checks using coordinates from two tables, updating a counter and returning early if a match is found, otherwise decrementing a loop counter.
+- `update_grid_position`: Updates grid position values by calling a routine to adjust coordinates, then performs arithmetic operations on the results before checking a counter and returning early if it reaches a threshold.
+- `update_entity_position`: Updates entity coordinates and related flags in global tables, performs boundary checks, and handles position validation with multiple conditional branches based on coordinate comparisons and bit tests.
+- `process_ship_movement`: Processes ship movement by reading position data from tables, performing arithmetic operations to calculate offsets, updating global variables with new coordinates, and calling routines to handle blitter operations and input validation.
+- `calculate_distance_flags`: Compares coordinate differences with a threshold and sets flags to indicate whether distances are within or outside the specified range.
+- `initialize_ship_coordinates`: Initializes ship position data by loading values from tables, performing arithmetic operations, and storing results in global variables.
+- `update_ship_counter_2`: Increments a global counter and performs conditional operations based on its value, including table lookups and updates to ship status information.
+- `update_ship_status_4`: Increments a global counter and performs conditional operations based on its value, including table lookups and updates to ship status information.
+- `update_ship_position_data`: Updates ship position coordinates by reading from multiple tables, performing arithmetic operations, and storing results in global variables with conditional logic.
+- `update_ship_position_4`: Loads ship coordinates from tables, updates global position variables, performs arithmetic operations on coordinates, and stores updated values back to tables while checking collision flags and updating status data.
+- `validate_collision_entry`: Validates collision entry data by comparing values against thresholds and performing conditional jumps based on comparison results.
+- `verify_collision_match`: Verifies collision matches by comparing specific values against thresholds and performing conditional jumps based on comparison results.
+- `store_position_data`: Stores position coordinates in two separate arrays at calculated offsets based on input values and calls another routine twice.
+- `store_position_data_v2`: Stores position coordinates in two separate arrays at calculated offsets based on input values and calls another routine twice, using different memory locations.
+- `update_position_value`: Loads a word value from memory, performs arithmetic operations including subtraction, right shift, and addition, then calls another routine to compare values and updates a global variable with the result.
+- `count_matching_pairs`: Counts matching pairs of values between two arrays by comparing elements and incrementing a counter when matches are found.
+- `update_position_data_4`: Updates position-related data in multiple tables using computed offsets from global variables, with conditional branching based on bit tests.
+- `initialize_position_data`: Initializes multiple position-related data fields in a structure, setting some to zero and others to computed values based on table lookups and arithmetic operations, then performs conditional updates and final storage of a processed value.
+- `update_maximum_value`: Compares two word values and stores the larger one in a table at an offset calculated from a global variable, using a shift operation on the index.
+- `frag_movem_move_jsr_lea_lsl_cmp_ble_bsr`: Short code fragment that saves registers on the stack, then copies a fixed memory address to d2, then calls another routine, then loads the address of a fixed memory address into a0, then shifts d2 left by 1, then compares d0 with an indexed entry from a0, then branches if the comparison was less or equal, then calls another routine, then restores saved registers from the stack, then returns.
+- `update_game_position`: Updates game position coordinates by loading tile data, performing arithmetic operations, and storing results in global variables.
+- `validate_and_modify_array`: Validates array elements by iterating through them and checking for zero values, then modifies an element based on bit operations and returns a modified value or a failure indicator.
+- `update_and_process_values`: Updates values in a table by performing bitwise operations and arithmetic calculations, then stores a modified result in another table after checking for zero conditions.
+- `modify_bit_array_element`: Checks a condition and modifies an array element by incrementing a value at a specific offset, using bit testing to determine whether to proceed with the modification.
+- `compare_sum_with_threshold`: Calculates a sum from an array, compares it with a threshold value, and returns either zero or a negative result based on the comparison.
+- `set_flag_in_array`: Sets a specific bit in an array element after validating that a condition is met, using bitwise operations and a fixed mask value.
+- `increment_table_value`: Increments a table value if a validation check passes, specifically checking for a zero return from another routine and ensuring the value remains below a threshold.
+- `update_and_store_character`: Updates an array element to a specific value after validating conditions, then performs calculations to determine a memory address before storing a character value at that location.
+- `modify_and_store_value`: Modifies an array element and performs arithmetic operations to calculate a memory address before storing a specific character value at that location.
+- `initialize_game_data_3`: Initializes game data by validating input parameters, copying values to multiple tables, calculating memory offsets, and storing coordinate information.
+- `adjust_and_validate_coordinates`: Processes coordinate values by adjusting them based on sign and comparison with a threshold, then performs validation checks and updates global variables with adjusted values.
+- `perform_multiple_checks`: Executes multiple sequences of coordinate adjustments and checks, returning immediately if any check fails, otherwise continuing through all iterations before returning a success or failure indicator.
+- `frag_cmpi_blt_bsr_rts`: Short code fragment that compares a fixed memory address with 3, then branches if the comparison was less, then calls another routine, then returns, then calls another routine, then returns.
+- `validate_tile_access`: Checks if a tile at given coordinates is accessible by testing multiple conditions in memory tables and returns a boolean result.
+- `validate_tile_conditions`: Processes tile position data through coordinate adjustments and performs multiple conditional checks against memory locations before returning a status value.
+- `check_collision_conditions`: Processes collision data by reading from a table, comparing values with constants, and setting a flag based on multiple conditional checks.
+- `validate_game_state`: Checks a specific memory location for zero value, and if not zero, calls another routine before returning.
+- `frag_move_bra_4`: Short code fragment that copies 0 to a fixed memory address, then jumps to another point in the code.
+- `update_collision_flags`: Updates collision-related flags by reading from a table, performing comparisons with multiple constants, and setting a flag based on conditional logic.
+- `frag_move_bra_5`: Short code fragment that copies 0 to a fixed memory address, then jumps to another point in the code.
+- `process_input_conditions`: Processes input conditions by reading from a table, comparing values with constants, and setting a flag based on conditional checks.
+- `compare_with_table_values`: Compares a value against entries in a table, returning 1 if match found, otherwise returns 0 after iterating through all entries.
+- `update_position_data_3`: Updates multiple table entries with coordinate and flag data, performs arithmetic operations including multiplication and addition, and writes byte values to memory locations based on calculated offsets.
+- `verify_tile_constraints`: Iterates through a series of tile validation checks using coordinate calculations and compares values against specific thresholds in memory tables.
+- `initialize_tile_data`: Initializes tile data by setting memory locations to -1, processes coordinate pairs to write values into a global array, copies data between memory regions, and performs boundary checks on tile coordinates.
+- `validate_position_range`: Calculates position coordinates and performs boundary checks on memory locations while iterating through a counter to determine valid ranges.
+- `initialize_graphics_system`: Initializes graphics hardware and performs multiple blitter operations for screen setup, with conditional loops based on interrupt status checks.
+- `check_hardware_status_and_delay`: Checks specific bits in CIAA and POTGOR registers, and if certain conditions are met, calls a routine via a pointer in a6 within a loop that runs 149 times.
+- `initialize_end_sequence`: Initializes end sequence data by setting up various memory addresses and calling multiple routines, then waits for a specific duration using dos.Delay before closing libraries and freeing memory.
+- `frag_move_jsr_moveq`: Short code fragment that copies 0 to a fixed memory address, then calls another routine, then loads 0 into d0, then calls another routine.
+- `handle_input_events_4`: Processes input events from hardware registers by reading joystick and mouse states, comparing values against thresholds, and executing different code paths based on input conditions.
+- `adjust_coordinate_limits`: Modifies a coordinate value by incrementing or decrementing it based on comparison results with specific thresholds, then calls other routines for further processing.
+- `validate_range_data`: Validates coordinate data against range values from a table, returning when a match is found or when all entries are processed.
+- `frag_bsr_cmpi_bne_move_rts_subi`: Short code fragment that calls another routine, then compares the memory at a0 with 65535, then branches if the last result was not zero, then copies 65535 to a fixed memory address, then returns, then subtracts 1 from d2, then copies d2 to a fixed memory address, then returns.
+- `frag_cmpi_beq_movea_move_bsr_rts`: Short code fragment that compares a fixed memory address with 1, then branches if the last result was zero, then copies a fixed memory address to a0, then copies 20992 to the memory at an offset from a0, then calls another routine (3 times in a row), then copies 1 to a fixed memory address, then returns.
+- `initialize_render_data`: Initializes rendering data by setting specific register values and writing coordinate pairs to memory locations in a loop.
+- `setup_render_parameters`: Sets up render parameters by initializing register values and writing coordinate pairs to memory locations in a loop.
+- `calculate_and_store_coordinates`: Calculates coordinate values based on input parameters, stores them in memory locations, and repeats the process multiple times.
+- `frag_movea_move_rts_3`: Short code fragment that copies a fixed memory address to a0, then copies 358 to the memory at an offset from a0 (2 times in a row), then returns.
+- `frag_movea_move_rts_4`: Short code fragment that copies a fixed memory address to a0, then copies 48 to the memory at an offset from a0, then returns.
+- `setup_rendering_data`: Sets up rendering data by copying memory addresses to global variables, calls initialization routines, and performs memory operations including looped moves between address pointers.
+- `process_interrupts`: Processes interrupt-related tasks by calling several system routines, then jumps to another routine based on a table lookup using a global variable as index.
+- `process_graphics_setup`: Processes graphics setup by loading a pointer from memory, performing bit tests on a value, and calling another routine based on the test result while updating global variables.
+- `frag_move_jsr_bsr_bra`: Short code fragment that copies d1 to a fixed memory address, then calls another routine (6 times in a row), then jumps to another point in the code.
+- `frag_bsr_jsr_bra`: Short code fragment that calls another routine (5 times in a row), then jumps to another point in the code.
+- `update_ship_config`: Updates a ship configuration value in a global variable based on bit testing and comparison operations, then branches to another routine.
+- `frag_addq_dbra_bra`: Short code fragment that adds 1 to d4, then loops back while counting down d7, then jumps to another point in the code.
+- `configure_graphics_mode`: Configures graphics mode settings by setting up register values, calling initialization routines, and processing bit flags to determine which rendering path to take.
+- `setup_graphics_rendering`: Configures graphics rendering parameters including screen mode settings and memory addresses for blitter operations, with loop control for multiple iterations.
+- `setup_ship_build_ui`: Configures user interface elements for ship construction, including text display parameters and rendering data, then updates global variables with ship attributes such as cost, time, and capacity based on a selected ship type.
+- `setup_display_text`: Sets up display text rendering by calling various graphics routines, configuring blitter parameters, and preparing text pattern data for output.
+- `display_error_message`: Displays an error message about insufficient funds by calling display routines and setting up blitter parameters for text rendering.
+- `configure_display_patterns`: Sets up display pattern data for text rendering by copying character data to specific memory locations and calling graphics routines.
+- `frag_move_lsl_lea_movea_jsr_rts`: Short code fragment that copies a fixed memory address to d2, then shifts d2 left by 2, then loads the address of a fixed memory address into a1, then copies an indexed entry from a1 to d0, then copies a fixed memory address to a1, then calls another routine, then copies 0 to d0, then calls another routine, then returns.
+- `process_ship_transaction_3`: Loads a ship type from a global variable, performs arithmetic on it, and uses the result as an index to read a value from a table.
+- `frag_lea_bra`: Short code fragment that loads the address of a fixed memory address into a0, then jumps to another point in the code.
+- `process_ship_transaction_2`: Processes ship transaction data by performing arithmetic operations on values from memory tables, updating global variables, and handling currency calculations.
+- `handle_display_update`: Handles display updates by calling interrupt processing routines, setting up display patterns, and configuring blitter parameters for text rendering.
+- `frag_lea_jsr_move_bra`: Short code fragment that loads the address of a fixed memory address into a0, then calls another routine, then copies 95 to d1, then calls another routine (2 times in a row), then jumps to another point in the code.
+- `handle_ship_purchase`: Handles ship purchase operations by validating transaction conditions, calling graphics routines, and updating ship-related global variables.
+- `frag_cmpi_bne_lea_jsr_bra`: Short code fragment that compares d2 with 7, then branches if the last result was not zero, then loads the address of a fixed memory address into a0, then calls another routine, then jumps to another point in the code.
+- `process_ship_transaction`: Processes ship transaction data by performing arithmetic operations on values from memory tables, updating global variables, and handling conditional branches based on comparison results.
+- `initialize_game_data_4`: Initializes game data by setting up rendering information, processing interrupts, and configuring blitter registers, then performs a final check on a global variable before jumping to another routine.
+- `check_inventory_status`: Checks inventory values against thresholds and updates status flags based on comparisons, then calls another routine if a condition is met.
+- `update_inventory_values`: Updates inventory values by calculating differences between stored and computed values, then setting specific memory locations to zero or fixed values.
+- `initialize_game_state_9`: Initializes game state by setting up memory pointers, copying data from tables, and calling graphics rendering routines to configure display elements.
+- `initialize_ship_data_3`: Loads ship-related data from tables into global variables, configures function pointers in a table, and performs arithmetic operations including shifts and additions to compute adjusted values for ship attributes.
+- `setup_and_process_data`: Loads data from tables into global variables, configures function pointers in a table, and performs arithmetic operations including shifts, subtractions, and multiplications on values from tables before storing the result back to another table.
+- `update_harbor_balance_2`: Reads a value from a table, performs multiplication and comparison operations, and updates a harbor balance value if the condition is met.
+- `frag_lea_move_lsl_bra`: Short code fragment that loads the address of a fixed memory address into a0, then copies a fixed memory address to d2, then shifts d2 left by 1, then copies a fixed memory address to an indexed entry from a0, then jumps to another point in the code.
+- `update_harbor_balance`: Updates a harbor balance value by reading from a table, writing to a memory location, and calling graphics rendering routines to display updated balances.
+- `frag_movem_move_jsr_tst_beq_lsl_lea_add`: Short code fragment that saves registers on the stack, then copies a fixed memory address to d2, then calls another routine, then tests d0, then branches if the last result was zero, then shifts d2 left by 1, then loads the address of a fixed memory address into a0, then adds 1 to an indexed entry from a0, then restores saved registers from the stack, then returns.
+- `frag_movem_lea_move_lsl_tst_beq_subq_rt`: Short code fragment that saves registers on the stack, then loads the address of a fixed memory address into a0, then copies a fixed memory address to d2, then shifts d2 left by 1, then tests an indexed entry from a0, then branches if the last result was zero, then subtracts 1 from an indexed entry from a0, then restores saved registers from the stack, then returns.
+- `compute_scaled_value`: Performs arithmetic calculations including shifts, additions, multiplications, and divisions on data from memory tables to compute a scaled result.
+- `function_epilogue`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
+- `adjust_and_store_value`: Adjusts a value using arithmetic operations and stores the result back to a memory table location with bounds checking.
+- `initialize_graphics_system_3`: Sets up graphics rendering parameters by configuring blitter registers, copying data between memory areas, and calling multiple initialization routines with different parameters.
+- `initialize_graphics_system_2`: Initializes the graphics system by setting up rendering parameters, configuring blitter registers, copying data between memory areas, and updating display settings.
+- `process_interrupts_2`: Processes interrupt-related tasks by calling several system routines, then dispatches to a handler based on a value in d2 using a jump table, with a fallback to another routine if the value is -1.
+- `process_ship_selection`: Processes ship selection logic by checking a value against specific conditions and branching to different handlers based on comparison results.
+- `handle_ship_selection`: Handles ship selection by saving and restoring word values from stack, performing bit operations on a value, and updating memory locations based on conditional tests.
+- `update_game_state_8`: Updates game state variables including resource counts and display values, then configures text rendering and blitter parameters for interface updates.
+- `setup_text_display`: Configures display patterns for text rendering by copying character data to specific memory locations and setting up text-related registers, then calls a routine to process interrupt tasks and another to update display values.
+- `sum_table_values`: Reads a table of 14 word values, sums them into a long integer, and stores the result in a global variable.
+- `initialize_harbor_handlers`: Initializes harbor-related interrupt handlers by setting up function pointers in a global table based on a word value from another global variable, then calls routines to configure blitter parameters and clear global variables.
+- `frag_lea_move_lsl_bra_2`: Short code fragment that loads the address of a fixed memory address into a0, then copies a fixed memory address to d2, then shifts d2 left by 1, then copies a fixed memory address to an indexed entry from a0, then jumps to another point in the code.
+- `compute_difference_value`: Loads a word value from a global table, calls another routine to process it, then performs conditional operations on data from two memory tables based on comparison results.
+- `decrement_counter`: Loads a word value from a table at offset a fixed address, shifts it left by one bit, accesses a memory location using this offset, and decrements the value at that location if it's not zero.
+- `calculate_adjusted_value`: Retrieves a word value from a global table, calls another routine to process it, then computes an adjusted value using multiplication, division and arithmetic operations on data from memory tables.
+- `update_table_values`: Loads values from multiple global tables, performs arithmetic operations including multiplication and division, then updates two memory locations with computed results based on comparisons between values.
+- `render_harbor_text`: Processes text references and display values for harbor-related messages, handling string rendering and positioning with multiple subroutine calls to set up and write graphical data.
+- `initialize_ship_data_2`: Initializes ship-related data by setting up pointers in global variables, calling routines to update color components and ship counter, and copying a block of data from one memory area to another.
+- `update_ship_counter`: Updates a ship counter value based on conditions involving global variables and table lookups, then stores the result in a global variable.
+- `modify_counters`: Calculates an address offset using a global table value, checks if a word at that location is zero, then decrements one counter and increments another when the condition is met.
+- `update_pair_counters`: Updates two counter values in memory tables by decrementing one and incrementing another at corresponding offsets based on initial conditions.
+- `frag_tst_bmi_addi_cmpi_blt_move_bra`: Short code fragment that tests a fixed memory address, then branches if the last result was negative, then adds 1 to a fixed memory address, then compares a fixed memory address with 3, then branches if the comparison was less, then copies 0 to a fixed memory address, then jumps to another point in the code.
+- `load_harbor_text`: Loads text data for harbor display into a register and calls a routine to process it, then conditionally loads different text based on a global variable's value.
+- `frag_lea_bra_2`: Short code fragment that loads the address of a fixed memory address into a0, then jumps to another point in the code.
+- `process_harbor_display`: Processes and displays harbor-related text and graphics information, including ship counts and unit types, using data from multiple tables and updating display buffers accordingly.
+- `process_text_display`: Processes text display operations including character data loading, arithmetic calculations, and conditional branching for different display scenarios.
+- `frag_lea_bra_3`: Short code fragment that loads the address of a fixed memory address into a0, then jumps to another point in the code.
+- `frag_lea_move_jsr_rts`: Short code fragment that loads the address of a fixed memory address into a0, then copies 135 to d1, then calls another routine (2 times in a row), then returns.
+- `handle_input_events_3`: Processes input events from hardware registers, updates counters based on event values, and copies data between buffers while managing game state variables.
+- `process_input_and_render`: Processes joystick input and renders text or numerical data to the screen, with conditional logic based on a counter value.
+- `render_text_and_numbers`: Renders text and numerical data to the screen using multiple graphics operations, with conditional logic for different text rendering paths.
+- `setup_game_pointers`: Initializes multiple function pointers in a global structure with addresses of various routines, then loads word values from two global variables, shifts them left by two bits, and uses the results as offsets to load long values from two tables into global memory locations.
+- `manage_resource_adjustments`: Manages resource adjustments by comparing values against thresholds, setting/clearing bits in control words, and updating resource counters based on conditional logic.
+- `update_accumulator`: Reads a word from a global variable, shifts it left by two bits, uses the result as an offset to access a table, loads a long value from that location into d1, and increments a value in another table while decrementing the value loaded from the first table.
+- `update_reverse_accumulator`: Loads a word from a global variable, shifts it left by two bits, uses this as an offset to access a table, loads a long value into d1, and increments a value in one table while decrementing the value loaded from another table.
+- `calculate_ratio`: Loads a long value from one table using an offset derived from a global variable, loads another long value from a different table using an offset from another global variable, calls another routine to perform a comparison and shift operation, then performs arithmetic operations including addition, multiplication, division, and sign extension before returning the result.
+- `frag_cmpi_ble_lsr_bra`: Short code fragment that compares d0 with 32767, then branches if the comparison was less or equal, then shifts d0 right by 1, then shifts d1 right by 1, then jumps to another point in the code.
+- `frag_cmpi_ble_lsr_bra_2`: Short code fragment that compares d1 with 32767, then branches if the comparison was less or equal, then shifts d0 right by 1, then shifts d1 right by 1, then jumps to another point in the code.
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `update_counters_2`: Loads a word value from a global variable, adjusts it by subtracting 55, validates it against 210, loads values from two tables using an offset from a global variable, performs arithmetic operations including addition, division, multiplication, and bit manipulation, then updates values in both tables based on comparison results.
+- `initialize_game_data_2`: Loads multiple text strings and data values from global tables into registers and address pointers, performs bit shifts on some values, and calls routines to set up display elements and blitter configurations.
+- `update_credit_display`: Updates credit-related display values by loading data from tables, performing arithmetic operations including division, and storing results back to global variables, while also handling text rendering for credit information.
+- `frag_lea_move_lsl_bra_3`: Short code fragment that loads the address of a fixed memory address into a0, then copies a fixed memory address to d2, then shifts d2 left by 2, then copies a fixed memory address to an indexed entry from a0, then loads the address of a fixed memory address into a0, then copies a fixed memory address to an indexed entry from a0, then jumps to another point in the code.
+- `increment_if_equal`: Loads a long value from one table using an offset derived from a global variable, compares it with another value loaded from a second table at the same offset, and increments both values if they are equal.
+- `decrement_if_positive`: Loads a long value from one table using an offset derived from a global variable, checks if it's zero or negative, loads another value from a second table at the same offset, and decrements both values if the first is positive and the second is greater than zero.
+- `compute_division_result`: Loads two long values from tables using an offset derived from a global variable, performs multiplication and division operations on these values, extends the result to a long word, and returns the final value.
+- `adjust_counters_with_negation`: Loads a word value from a global variable, adjusts it by subtracting 55, validates it against 210, loads values from two tables using an offset from a global variable, performs division, multiplication, and arithmetic operations including negation, then updates both tables with adjusted values.
+- `update_credit_ui`: Updates colony credit information display by loading text segment addresses from tables, calling routines to display text segments at specific screen coordinates, and processing conditional logic based on a global flag.
+- `display_text_segments`: Loads text segment addresses from tables using an index, then calls routines to display those text segments at specific screen coordinates.
+- `render_colony_ui`: Processes and displays colony-related UI elements including settlers, units, forts, harbors, churches, and storage capacities by iterating through data tables and calling rendering routines.
+- `initialize_game_display`: Initializes game display elements by calling various routines with different parameters, processes conditional logic based on global flags and table values, then updates counters through a loop of iterations.
+- `process_unit_data`: Loads data from memory tables, performs arithmetic operations including subtraction, calls another routine to process character data, then iterates through unit data updating counters and calling display routines.
+- `process_table_data`: Initializes memory locations with zero values, processes data from multiple tables using loop counters, performs comparisons between table values and a global variable, and updates accumulators and counters based on these comparisons.
+- `initialize_game_state`: Clears multiple global variables and initializes data structures in memory, then processes a loop of 199 iterations to update various counters and accumulators based on data from several tables.
+- `process_file_operations`: Handles file operations including opening, reading, and closing files using DOS library calls while validating file contents against specific signatures.
+- `process_input_and_dispatch`: Processes joystick input and dispatches to different routines based on a conditional check, using a table lookup with shifted index from a global variable.
+- `initialize_graphics_data`: Loads multiple data values from memory tables, performs arithmetic operations including shifts and extensions, then calls graphics routines to write pattern table entries and configure display registers.
+- `calculate_statistics`: Processes data from multiple memory tables to compute statistical values including averages and ratios, then stores results in global variables.
+- `clear_memory_blocks_2`: Writes zero values to three separate memory blocks, each containing four 16-bit words, using a loop that iterates four times for each block.
+- `update_accumulator_table`: Processes data from multiple tables to update a shared accumulator table, handling different data ranges and performing arithmetic operations with indexed memory access.
+- `frag_lea_move_lsl_bpl_bra`: Short code fragment that loads the address of a fixed memory address into a0, then copies a fixed memory address to d2, then shifts d2 left by 2, then copies an indexed entry from a0 to d0, then branches if the last result was not negative, then jumps to another point in the code.
+- `initialize_text_display`: Sets up text display parameters by writing specific word values to memory locations, then calls multiple routines to process text rendering and input handling.
+- `frag_adda_bra`: Short code fragment that adds 10 to a0, then jumps to another point in the code.
+- `validate_file_entries_2`: Initializes a buffer with zero values, opens a file using DOS library calls, validates file contents against specific signatures, then copies data between buffers.
+- `frag_adda_bra_2`: Short code fragment that adds 10 to a0, then jumps to another point in the code.
+- `frag_lea_move_lsl_add_bra`: Short code fragment that loads the address of a fixed memory address into a0, then copies a fixed memory address to d2, then shifts d2 left by 2, then copies an indexed entry from a0 to d0, then adds a fixed memory address to d0, then copies d0 to an indexed entry from a0, then jumps to another point in the code.
+- `frag_movem_move_lsl_lea_tst_beq_subi_ad`: Short code fragment that saves registers on the stack, then copies a fixed memory address to d2, then shifts d2 left by 2, then loads the address of a fixed memory address into a1, then tests an indexed entry from a1, then branches if the last result was zero, then subtracts 1 from an indexed entry from a1, then adds 1 to a fixed memory address, then restores saved registers from the stack, then returns.
+- `frag_movem_tst_beq_move_lsl_lea_addi_su`: Short code fragment that saves registers on the stack, then tests a fixed memory address, then branches if the last result was zero, then copies a fixed memory address to d2, then shifts d2 left by 2, then loads the address of a fixed memory address into a1, then adds 1 to an indexed entry from a1, then subtracts 1 from a fixed memory address, then restores saved registers from the stack, then returns.
+- `calculate_scaled_value`: Performs division and multiplication operations on values retrieved from a lookup table based on an index, then stores the result in a global variable after applying a scaling factor.
+- `frag_move_movem_rts`: Short code fragment that copies 210 to d1, then copies d1 to d0, then restores saved registers from the stack, then returns.
+- `update_resource_counters`: Updates resource counters in memory by performing arithmetic operations with scaled values, handling boundary conditions and storing results back to memory locations.
+- `frag_cmpi_ble_lsl_lsr_bra`: Short code fragment that compares d1 with an address, then branches if the comparison was less or equal, then shifts d0 left by 1, then shifts d1 right by 1, then jumps to another point in the code.
+- `empty_stub_4`: Empty routine: returns to the caller immediately without doing anything.
+- `process_inventory_data`: Processes inventory-related data by loading item indices, performing arithmetic operations, and calling display update routines.
+- `initialize_inventory_display`: Initializes inventory display data by setting up pointers and calling routines to process item indices, then configures rendering parameters and updates color components based on item properties.
+- `handle_inventory_items`: Loads item indices from tables, performs arithmetic operations on them, and calls routines to handle inventory display and updates while managing game state variables.
+- `process_inventory_item`: Loads an item index from a table, performs arithmetic operations on it, then calls routines to handle inventory display and updates.
+- `setup_display_parameters`: Initializes display parameters by loading data from a lookup table, performs arithmetic operations on the loaded values, then calls graphics routines to configure screen settings.
+- `configure_blitter_registers`: Sets up blitter hardware registers for graphics operations by writing specific values to multiple register addresses, including enabling blitter functionality and configuring transfer parameters.
+- `configure_blitter_registers_v2`: Configures graphics blitter hardware registers with specific transfer parameters, setting up source and destination addresses along with control register values for bit block transfers.
+- `load_and_compare_values`: Loads values from tables using shift and index operations, performs comparisons between loaded values and a global variable, and updates a global payment amount based on the comparison results.
+- `adjust_and_compute_2`: Performs a sequence of arithmetic operations on data from memory tables including shifts, subtractions, and divisions to adjust base values for computation.
+- `calculate_resource_adjustment`: Computes a resource adjustment value by processing data from multiple tables through arithmetic operations, then applies a final calculation based on indexed memory access to determine the result.
+- `process_resource_values`: Calculates resource adjustment values by processing data from lookup tables, performs arithmetic operations, and compares results against a threshold value.
+- `initialize_game_state_5`: Initializes game state variables including ship counts, payment status, and display parameters.
+- `initialize_game_state_6`: Initializes game state variables including display parameters, color components, and input handling flags.
+- `initialize_game_state_7`: Initializes various game state variables including rendering parameters, blitter configurations, and input handling setup.
+- `initialize_game_state_8`: Initializes global game state variables including display parameters, input handling flags, and audio registers.
+- `open_and_validate_file`: Opens a file using DOS library calls, validates its contents against specific signatures, and copies data between buffers based on the validation result.
+- `initialize_game_data_5`: Initializes game data by setting up global variables, opening files using DOS library calls, and validating file contents against specific signatures.
+- `process_game_state`: Handles different game states by checking a global variable value and executing conditional operations based on the state, including calling various data processing routines.
+- `process_input_event`: Processes an input event from a global variable, updates a counter in a global variable based on the event value, and copies data between buffers depending on the event type.
+- `validate_file_entries`: Initializes a buffer with zero values, opens a file using DOS library calls, validates file contents against specific signatures, then copies filename components to a global table while maintaining a counter.
+- `validate_file_signature`: Checks file signature bytes in a buffer against specific values and updates global flags based on matching conditions during validation process.
+- `open_file_and_lock`: Attempts to open a file using a system call and locks it for exclusive access, storing the lock handle in a global variable when successful, otherwise returning an error code.
+- `validate_filename_extension`: Checks if a filename string starts with a period character, then validates that subsequent characters match specific ASCII values for 'CHK', returning a boolean result based on the comparison.
+- `display_menu_elements`: Sets up display parameters for menu elements, performs conditional operations based on global flags, then calls multiple routines to render text and graphics with varying coordinates and parameters.
+- `validate_file_access`: Initializes a file access flag, opens a directory using DOS library calls, validates file contents against expected signature values, then sets a success flag when validation passes.
+- `initialize_memory_block`: Clears a memory block by setting multiple longwords to zero, then calls several routines for further initialization and configuration.
+- `clear_and_initialize`: Clears a memory area by writing zero values to 1023 words, then performs several hardware-related operations including setting a global variable and calling routines that handle attribute updates and pattern table writes.
+- `initialize_and_process_2`: Saves all general-purpose and address registers to the stack, then initializes a memory area with zero values for 1023 words before restoring the registers and returning.
+- `frag_movea_move_lea_bsr_rts`: Short code fragment that copies a fixed memory address to a0, then copies a0 to a fixed memory address, then loads the address of a fixed memory address into a0, then copies a0 to a fixed memory address, then calls another routine, then copies a fixed memory address to a0, then copies a0 to a fixed memory address, then copies 0 to a fixed memory address (2 times in a row), then returns.
+- `initialize_and_check_collision`: Initializes a counter and performs collision detection by comparing coordinates against a bounding box structure, returning a flag indicating the result.
+- `clear_and_setup_pointers`: Clears three byte values in a global variable and sets up pointer values in two other global variables, then calls routines to configure blitter registers.
+- `check_joystick_input_3`: Reads joystick and mouse fire button states from global variables, checks specific bit conditions, and calls a routine through a pointer if certain conditions are met.
+- `initialize_game_state_10`: Initializes multiple global variables with specific byte values based on conditions, then calls two routines through pointers, and finally branches to a label.
+- `update_game_state_3`: Checks conditions based on a global variable's value and updates multiple global bytes accordingly, then calls two routines through pointers in global memory.
+- `update_game_state_2`: Updates multiple global variables based on conditions involving a counter and status flags, then sets specific values in a sequence of memory locations.
+- `configure_video_system`: Clears specific memory locations, sets up blitter registers with control words, and performs multiple conditional checks on hardware status registers before calling video configuration routines.
+- `frag_move_bsr_jsr_tst_bne_btst_beq_bra`: Short code fragment that copies 0 to a fixed memory address (3 times in a row), then calls another routine (2 times in a row), then tests a fixed memory address, then branches if the last result was not zero, then tests bit 6 of a fixed memory address, then branches if the last result was zero, then jumps to another point in the code.
+- `frag_btst_beq_bra`: Short code fragment that tests bit 6 of a fixed memory address, then branches if the last result was zero, then jumps to another point in the code.
+- `set_bit_flags_and_configure_blitter`: Sets specific bits in multiple word values at offsets within a structure and configures blitter registers with specific control words and memory pointers.
+- `set_bit_flags`: Sets specific bits in multiple word values at offsets within a structure and advances through the structure while decrementing a counter.
+- `setup_blitter_parameters`: Loads specific constant values into registers d0 through d3, sets up address pointers from global variables, and calls a blitter configuration routine with those parameters.
+- `configure_blitter_with_offset`: Saves all general-purpose and address registers to the stack, loads specific constant values into registers d0 through d3, sets up address pointers from global variables, performs arithmetic operations on a byte value, and calls a blitter configuration routine twice with those parameters.
+- `setup_blitter_with_offset_2`: Saves all general-purpose and address registers to the stack, loads specific constant values into registers d0 through d3, sets up address pointers from global variables, and calls a blitter configuration routine with those parameters.
+- `configure_blitter_multiple_times`: Saves all general-purpose and address registers to the stack, loads specific constant values into registers d0 through d3, sets up address pointers from global variables, performs arithmetic operations on byte values, and calls a blitter configuration routine three times with those parameters.
+- `initialize_render_data_2`: Initializes rendering data by setting specific register values and writing coordinate pairs to memory locations in a loop, then calls another routine to set up render parameters and initializes a global variable to zero.
+- `render_text_characters`: Calculates memory addresses for character data using multiplication and addition operations, then calls graphics routines to write pattern table entries and configure blitter registers for text rendering.
+- `update_timer_value`: Loads a word value from a table, performs bit testing on it, updates a timer value based on the result, and stores the updated value back to memory.
+- `update_position_and_flags`: Initializes a counter and loops through four entries to update position-related data in multiple tables, including flag settings and arithmetic operations on word values.
+- `calculate_and_store_value`: Calculates a scaled and divided value using data from multiple tables, stores the result in a buffer, and increments an index counter.
+- `frag_bsr_rts`: Short code fragment that calls another routine (2 times in a row), then returns.
+- `process_string_and_copy`: Clears a string buffer by setting its first character to zero, then performs a loop to copy 16 bytes from one memory location to another using multiple address pointers and byte-by-byte transfers.
+- `process_text_entry`: Processes a text entry by clearing a character and advancing a pointer, then performs a loop of 54 iterations to copy data between memory locations using shift and add operations.
+- `check_and_update_flag`: Checks if a counter has reached a specific value and updates a flag in a table accordingly, otherwise advances to the next entry in the table.
+- `validate_and_set_flag`: Validates a counter against a maximum value and sets a flag in a table if the condition is met, otherwise advances to the next entry in the table.
+- `initialize_table_entries`: Initializes multiple entries in different tables with specific values based on an index counter, and updates a data structure with zero values.
+- `populate_data_structure`: Sets specific entries in multiple tables to predefined values, calculates and stores zero values at calculated offsets, and initializes a buffer with zeros.
+- `fill_table_with_zeros`: Initializes multiple entries in different tables with specific values based on an index counter, and fills a buffer with zero values at calculated offsets.
+- `clear_and_set_flags`: Clears and sets specific flags in multiple tables based on an index value, then initializes entries in another table with zero values.
+- `compute_and_store_result`: Reads two word values from tables, performs bit shifting and arithmetic operations on them, extends the result to long format, and stores it in a global variable.
+- `calculate_offset_value`: Loads a word from a table at offset a fixed address, shifts it left by one bit, uses it as an index into another table at offset a fixed address, reads a word from that table, extends it to long, then uses it as an index into a third table at offset a fixed address.
+- `compute_weighted_sum`: Loads word values from tables, performs arithmetic operations including shifts, multiplications, divisions, and additions, then stores the final computed result to a global variable.
+- `compute_scaled_difference`: Loads a word from a table at offset a fixed address using a shifted index, then uses that value as an index into another table at offset a fixed address.
+- `compute_divided_value`: Loads a word from a table at offset a fixed address using a shifted index, then uses that value as an index into another table at offset a fixed address.
+- `calculate_difference`: Processes a series of values from memory tables using shift operations and arithmetic calculations to compute a difference value, storing intermediate results in registers before returning the final computed value.
+- `compute_adjusted_difference`: Loads a word from a table at offset a fixed address using a shifted index, multiplies it by 14, adds that to an address in another table at offset a fixed address.
+- `adjust_and_compute`: Performs a sequence of arithmetic operations on data from memory tables, including shifts, subtractions, and divisions, to adjust a base value and return the resulting difference.
+- `compute_adjusted_value`: Performs arithmetic operations on data from memory tables including shifts, subtractions, and divisions to adjust a base value and returns the result.
+- `frag_movem_lea_move_lsl_add_rts`: Short code fragment that saves registers on the stack, then loads the address of a fixed memory address into a0, then copies a fixed memory address to d2, then shifts d2 left by 2, then adds d0 to an indexed entry from a0, then restores saved registers from the stack, then returns.
+- `compute_scaled_result`: Loads a word from a table at offset a fixed address at index 20, adds five to it, shifts left by two bits, extends to long, divides by three, extends the quotient to long, stores the result in a global variable at offset a fixed address.
+- `process_ship_data`: Saves registers on the stack, loads a word from a fixed memory address into d2, shifts it left by one bit, uses that value as an index into another table, reads a word from that table and stores it in d2.
+- `frag_movem_lea_move_lsl_adda_jsr_rts`: Short code fragment that saves registers on the stack, then loads the address of a fixed memory address into a0, then copies a fixed memory address to d2, then shifts d2 left by 4, then adds d2 to a0, then calls another routine, then restores saved registers from the stack, then returns.
+- `process_debris_data`: Saves registers on the stack, loads a word from a table at offset a fixed address using a shifted index, adds another word from the same table, shifts right by one bit, extends to long, divides by 13, extends the quotient to long.
+- `update_collision_values`: Saves all registers on the stack, loads a word from a global variable at offset a fixed address, multiplies it by 28, adds that to an address in a table at offset a fixed address.
+- `scale_and_assign_values`: Reads multiple values from different memory locations, performs division operations with varying denominators, scales results using multiplication and bit shifts, then assigns computed values to corresponding memory locations.
+- `validate_and_set_value`: Loads a word from a table at offset a fixed address using a shifted index, loads the value into d1, checks if it's zero and branches to set d2 to zero.
+- `update_ship_status_3`: Updates ship status information including position and weapon settings, then performs a series of blitter operations and input handling.
+- `frag_movem_move_dbra_rts`: Short code fragment that saves registers on the stack, then copies 9 to d7, then copies 0 to the memory at a0 (advancing a0), then loops back while counting down d7, then restores saved registers from the stack, then returns.
+- `scale_and_update_values`: Loads a word from a table at offset a fixed address using a shifted index, shifts the value right by one bit, compares with a fixed address and branches to set maximum if less than or equal.
+- `update_and_store_value`: Loads word values from memory into registers, performs arithmetic operations including addition with carry and rotation, then stores the computed result at a calculated offset.
+- `compute_weighted_sum_and_store`: Loads word values from tables, performs arithmetic operations including shifts, multiplications, divisions, and additions, then stores the final result in a global variable.
+- `initialize_and_update_tables`: Initializes various data structures in memory tables by copying values from source locations, setting specific flags, and updating counters while maintaining a consistent indexing scheme.
+- `update_ship_status_2`: Updates ship-related status information including position and weapon settings, then performs a series of blitter operations and input handling routines before returning.
+- `check_joystick_input_2`: Tests bit 6 of a hardware register and branches to a label if clear, then tests bit 10 of another hardware register and branches to a different label if clear, before looping back to the start of the routine.
+- `check_input_devices`: Saves registers d0-d1 to the stack, tests bit 6 of a hardware register and branches to a label if clear, then tests bit 10 of another hardware register and branches to a different label if clear, before looping back to the start of the routine.
+- `update_position_values_2`: Loads word values from memory into registers d0-d3, performs arithmetic operations on them including addition with carry and rotation, then stores the results back to the same memory location.
+- `frag_move_andi_addi_bsr_cmp_blt_sub_bra`: Short code fragment that copies d0 to the stack, then masks d0 with 65535, then adds 1 to d0, then calls another routine, then compares d2 with d0, then branches if the comparison was less, then subtracts d0 from d2, then jumps to another point in the code, then copies the top of the stack to d0, then returns.
+- `write_pattern_table_entries`: Initializes a counter and loops up to five times to write either the word 3340 or 3580 to a table at a specific address, depending on a bit value.
+- `process_character_data_and_write_pattern`: Loads character data from memory, performs lookup operations using an offset table, applies arithmetic adjustments to the result, and writes pattern table entries.
+- `calculate_display_value`: Saves register values, calls a routine to process input data, performs arithmetic operations on the results, then calls another routine to update display parameters before returning.
+- `process_character_data_2`: Loads character data from memory, performs lookup operations using an offset table, applies arithmetic adjustments to the result, and stores the final computed value in a designated memory location.
+- `setup_graphics_parameters`: Calculates values based on input parameters and writes them to multiple graphics hardware registers, including setting up blitter parameters and performing a loop with a decrementing counter.
+- `write_pattern_table`: Initializes a counter and loops up to five times to write either the word 3340 or 3580 to a table at a specific address, depending on a bit test of d0.
+- `frag_movem_move_lea_btst_bne_bra`: Short code fragment that saves registers on the stack, then copies 0 to d1, then loads the address of a fixed memory address into a0, then tests bit d1 of d0, then branches if the last result was not zero, then copies 3340 to the memory at a0 (advancing a0), then jumps to another point in the code.
+- `frag_move_addq_cmpi_bne_movem_rts`: Short code fragment that copies 3580 to the memory at a0 (advancing a0), then adds 1 to d1, then compares d1 with 6, then branches if the last result was not zero, then restores saved registers from the stack, then returns.
+- `fall_through_entry_2`: Entry point part-way through straight-line code: runs three instructions (movep.w, movep.w, movep.w) and then falls through into the code that follows, with no return of its own.
+- `process_input_data`: Loads data from memory into registers and performs arithmetic operations including subtraction and addition with carry, then stores results back to memory locations.
+- `frag_ori_move_bsr_cmpi_bne_lea_bra`: Short code fragment that merges 0 into d0, then copies a0 to the stack, then calls another routine, then compares the memory at a0 with 32, then branches if the last result was not zero, then loads the address of the memory at an offset from a0 into a0, then jumps to another point in the code.
+- `frag_bsr_movea_rts`: Short code fragment that calls another routine, then copies the top of the stack to a0, then returns.
+- `frag_move_bsr_addi_sub_rts`: Short code fragment that copies d0 to the stack, then calls another routine (2 times in a row), then adds 50 to d0, then subtracts d2 from d0, then calls another routine, then copies the top of the stack to d0, then returns.
+- `convert_number_to_string`: Converts a number to a string representation by processing digits and storing them in memory, handling both positive and negative numbers with specific formatting rules.
+- `frag_move_rts_3`: Short code fragment that copies 0 to a fixed memory address (2 times in a row), then returns.
+- `frag_movem_lea_adda_move_beq_addq_bra_r`: Short code fragment that saves registers on the stack, then loads the address of a fixed memory address into a1, then adds a fixed memory address to a1, then copies the memory at a0 (advancing a0) to the memory at a1 (advancing a1), then branches if the last result was zero, then adds 1 to a fixed memory address, then jumps to another point in the code, then restores saved registers from the stack, then returns.
+- `frag_bsr_cmpi_bne_lea_bra`: Short code fragment that calls another routine, then compares the memory at a0 with 32, then branches if the last result was not zero, then loads the address of the memory at an offset from a0 into a0, then jumps to another point in the code.
+- `frag_move_lea_jsr_movea_rts`: Short code fragment that copies a0 to the stack, then loads the address of a fixed memory address into a0, then calls another routine (2 times in a row), then copies the top of the stack to a0, then returns.
+- `calculate_and_call`: Calls a routine using a pointer in a0, performs arithmetic involving a constant and the value in d2, and then calls two other routines.
+- `frag_move_cmpi_beq_addq_bne_movea_rts`: Short code fragment that copies a0 to the stack, then copies 0 to d2, then compares the memory at a0 (advancing a0) with 0, then branches if the last result was zero, then adds 1 to d2, then compares the memory at a0 (advancing a0) with 0, then branches if the last result was not zero, then copies the top of the stack to a0, then returns.
+- `calculate_character_value`: Loads character data from memory, performs arithmetic operations including subtraction and table lookups, then adds the result to an accumulator before returning.
+- `initialize_pattern_table`: Initializes a pattern table by writing specific values based on a counter, using two subroutine calls to perform the writes and setup operations.
+- `handle_input_character`: Processes input character data by performing lookup operations through a table, applying arithmetic adjustments, and storing the resulting value in a specific memory location for further processing.
+- `process_input_byte`: Handles byte input data by performing table lookups, applying arithmetic operations, and storing computed results in memory while maintaining proper register state throughout execution.
+- `frag_move_movem_rts_2`: Short code fragment that copies d0 to a fixed memory address, then restores saved registers from the stack, then returns.
+- `update_dma_blitter`: Configures multiple DMA blitter registers with specific values derived from input data, then performs a loop of five iterations to update blitter parameters and trigger blitter operations.
+- `initialize_intuition_resources`: Calls two subroutines via a jump table to initialize resources and stores the returned pointers in two global variables.
+- `frag_movem_movea_jsr_rts`: Short code fragment that saves registers on the stack, then copies a fixed memory address to a0, then copies a fixed memory address to a6, then calls another routine, then copies a fixed memory address to a0, then copies a fixed memory address to a6, then calls another routine, then restores saved registers from the stack, then returns.
+- `frag_movea_suba_jsr_move_rts`: Short code fragment that copies a fixed memory address to a6, then subtracts a1 from a1, then calls another routine, then copies d0 to a fixed memory address, then copies d0 to a0, then copies the memory at an offset from a0 to a fixed memory address, then copies an address to the memory at an offset from a0, then returns.
+- `frag_movea_move_rts_5`: Short code fragment that copies a location in the code to a0, then copies a location in the code to the memory at an offset from a0, then returns.
+- `setup_blitter_registers`: Configures multiple blitter hardware registers with specific values for graphics operations, including control words, memory offsets, and size parameters.
+- `setup_blitter_registers_2`: Configures multiple blitter hardware registers with different values than routine R1, setting up graphics operations for a second blitter configuration.
+- `compute_blitter_parameters`: Calculates memory addresses from input values, performs conditional checks on data, and updates blitter control words and memory pointers for rendering operations.
+- `configure_blitter_parameters`: Sets up blitter parameters by calculating memory addresses from input values, performing conditional checks on data, and updating blitter control registers with computed address values.
+- `configure_blitter_operations`: Computes memory offsets from input data, performs conditional checks, and updates blitter register values for specific rendering tasks.
+- `setup_blitter_operations`: Configures blitter operations by computing memory offsets from input data, performing conditional checks, and updating blitter register values to prepare for graphics operations.
+- `remove_interrupt_server`: Calls the system function to remove an interrupt server from the system's interrupt handling chain using a predefined interrupt vector.
+- `add_interrupt_server`: Calls the system function to add an interrupt server to the system's interrupt handling chain using a predefined interrupt vector.
+- `update_render_state`: Updates a rendering state counter in a global variable, performs conditional checks on the counter value, and calls another routine based on the result.
+- `frag_jsr_cmpi_bgt_addq_bra`: Short code fragment that calls another routine, then compares d0 with 7, then branches if the comparison was greater, then adds 8 to d0, then jumps to another point in the code.
+- `frag_bsr_movem_rts`: Short code fragment that calls another routine (2 times in a row), then restores saved registers from the stack, then calls another routine, then returns.
+- `configure_and_execute_blit`: Sets up blitter hardware registers with computed memory addresses, calls graphics library functions to execute blitter operations, and configures control words for specific graphics rendering tasks.
+- `configure_blitter_1`: Sets up specific blitter registers with fixed values for graphics operations, including control words and memory offsets.
+- `configure_blitter`: Sets up blitter registers for graphics operations by loading addresses from global variables and writing them to hardware registers, then calls two routines through function pointers in a structure.
+- `configure_blitter_2`: Configures several blitter registers with predetermined values to prepare for graphics operations in a different context.
+- `render_tile_row`: Processes tile data for rendering by calculating memory addresses based on index values, loading parameters from tables, and setting up blitter registers for graphics operations.
+- `configure_blitter_3`: Sets up multiple blitter registers with specific parameters for graphics rendering, including memory addresses and control settings.
+- `process_joystick_input`: Reads joystick button states from hardware registers and sets a return value based on the detected input conditions.
+- `read_joystick_input`: Checks joystick button states from hardware registers and sets a return value based on the detected input conditions.
+- `update_collision_flags_2`: Checks a global flag and updates collision-related variables with specific values, potentially resetting or decrementing counters based on conditional tests.
+- `check_collision`: Compares coordinates against a bounding box structure to determine if a collision has occurred, returning a flag indicating the result.
+- `handle_input_events_2`: Processes input events from hardware registers, compares values against specific constants, and updates global variables based on the comparison results.
+- `setup_blitter_for_rendering`: Calculates memory addresses for graphics rendering based on coordinate values and sets up blitter registers with calculated parameters.
+- `setup_blitter_dma`: Configures blitter registers for memory-to-memory transfer operations using parameters loaded from global variables and performs two blitter ownership calls before and after the setup.
+- `configure_blitter_dma`: Configures blitter parameters for memory transfer using global variables as offsets, sets up source and destination addresses with calculated offsets, and manages blitter ownership by calling OS routines.
+- `process_input_event_2`: Reads input character data from a global variable, compares it against specific constants, and updates global variables based on the comparison results.
+- `setup_blitter_dma_3`: Configures blitter registers for a specific memory transfer operation using calculated source address and fixed destination address, then calls blitter ownership functions to prepare for DMA.
+- `setup_blitter_dma_4`: Sets up blitter parameters for another memory transfer with source and destination addresses calculated from global data, performs blitter ownership operations, and configures transfer size registers.
+- `setup_blitter_dma_5`: Configures blitter registers for a memory transfer operation using two calculated addresses with offset adjustments, calls blitter ownership functions, and sets up transfer parameters in hardware registers.
+- `process_keyboard_input`: Reads from the keyboard serial register, processes the byte value through bitwise operations, and writes results to global memory locations based on conditional checks.
+- `modify_bit_mask`: Modifies a bit mask value in a global variable by clearing and setting specific bits based on the input byte value, using bitwise operations to manipulate the mask.
+- `frag_movem_lea_movea_moveq_move_dbra_rt`: Short code fragment that saves registers on the stack, then loads the address of a fixed memory address into a0, then copies a fixed memory address to a1, then loads 37 into d0, then copies the memory at a0 (advancing a0) to the memory at a1 (advancing a1), then loops back while counting down d0, then restores saved registers from the stack, then returns.
+- `frag_movem_movea_adda_moveq_move_dbra_r`: Short code fragment that saves registers on the stack, then copies a fixed memory address to a1, then adds 4 to a1, then loads 33 into d0, then copies 0 to the memory at a1 (advancing a1), then loops back while counting down d0, then restores saved registers from the stack, then returns.
+- `call_add_int_server`: Library stub: loads its arguments and the exec library base, calls AddIntServer and returns its result to the caller.
+- `call_rem_int_server`: Library stub: loads its arguments and the exec library base, calls RemIntServer and returns its result to the caller.
+- `update_joystick_input`: Processes joystick input data by reading from hardware registers, performing arithmetic operations on coordinate values, and updating position tracking variables with boundary checks.
+- `store_pixel_data`: Writes pixel coordinate data to memory at an address loaded from a global variable, storing both X and Y coordinates with bit manipulation and shifting operations.
+- `check_video_position`: Checks the current video position register against specific values to determine if certain display conditions are met, returning early if the conditions are not satisfied.
+- `copy_word_array`: Copies 32 word values from one memory area to another using a loop that decrements a counter, with the source and destination addresses calculated from global variables.
+- `frag_bsr_movem_movea_adda_move_lea_dbra`: Short code fragment that calls another routine, then saves registers on the stack, then copies a fixed memory address to a0, then adds 100 to a0, then copies 31 to d0, then loads the address of the memory at an offset from a0 into a0, then copies 0 to the memory at a0 (advancing a0), then loops back while counting down d0, then restores saved registers from the stack, then returns.
+- `update_color_components`: Processes color data by extracting high, middle, and low nibbles from words in two memory areas, comparing them, and updating values in a destination area based on comparison results.
+- `decrease_color_components`: Processes color data by extracting high, middle, and low nibbles from words in a memory area, decrementing them when zero, and updating values in the same area based on comparison results.
+- `setup_blitter_dma_6`: Configures blitter registers for a memory transfer operation using source and destination addresses loaded from global variables, sets up transfer parameters including size and control registers, and performs blitter ownership calls.
+- `setup_blitter`: Configures multiple blitter registers with specific values including control words, moduli, and memory pointers, then performs two blitter operations using routines from the graphics library.
+- `setup_blitter_registers_3`: Configures multiple blitter hardware registers including source and destination pointers, modulos, and control settings for graphics operations.
+- `setup_blitter_registers_v2`: Configures multiple blitter hardware registers including source and destination pointers, modulos, and control settings for graphics operations.
+- `setup_blitter_registers_4`: Configures multiple blitter hardware registers with specific values, including control and memory addressing settings, then performs two blitter operations using routines from a shared library.
+- `initialize_blitter_operations`: Initializes blitter operations by setting up multiple hardware registers with specific values, then calls routines to configure blitter parameters for graphics rendering and updates display settings.
+- `initialize_blitter_dma`: Initializes blitter DMA operations by setting up source and destination pointers, configuring control registers, and performing two separate blitter operations with different offsets applied to the pointers before each operation.
+- `setup_blitter_channels`: Configures blitter channel registers with specific values for source and destination pointers, control words, and size parameters, then performs two iterations of this setup with adjusted pointer offsets.
+- `copy_memory_blocks_2`: Copies memory blocks in three separate phases using a loop that processes 3840 words total.
+- `open_and_close_file`: Sets a byte in a global variable, calls a routine with a pointer and two arguments, and if the result is non-zero, stores it in a global variable and calls another routine to close the file.
+- `process_indexed_pointer`: Loads a pointer from a table using an index value, checks if the pointer is zero, and calls another routine if it is not.
+- `copy_data_block`: Loads data pointers from tables, performs conditional checks on the loaded values, then copies data between memory locations using a loop that decrements a counter until zero.
+- `read_file_data`: Checks a global flag and updates collision-related variables with specific values, potentially resetting or decrementing counters based on condition.
+- `read_and_close_file`: Tests a global variable and branches if zero, otherwise increments a value in a register and calls another routine.
+- `open_and_process_file`: Opens a file using a system call, processes the returned file handle, and calls several routines to save, modify, and restore attributes while managing file operations.
+- `save_and_modify_attributes`: Saves current attribute values from a structure to a temporary buffer, then modifies several fields in the original structure with new values.
+- `restore_attributes`: Restores attribute values from a temporary buffer back to a structure.
+- `clear_and_copy_buffer`: Clears a large memory block by setting all longwords to zero, then copies data from a lookup table to another memory area.
+- `update_structure_fields`: Updates specific fields in a structure by copying values from a buffer and modifying a counter field.
+- `copy_word_pair`: Copies 10 word values from a source buffer to a destination buffer with an offset, using a loop that decrements a counter.
+- `process_data_stream`: Reads data from a source buffer, compares bytes, and writes processed bytes to a destination buffer while decrementing a counter based on comparison results.
+- `update_frame_counter`: Increments a frame counter stored at a specific memory location and returns immediately.
+- `manage_memory_blocks`: Allocates memory blocks using system calls, loads data pointers from tables, performs conditional checks on the loaded values, then copies and updates memory locations before freeing allocated resources.
+- `update_lookup_table_entry`: Initializes a lookup table entry with specific values, copies data from a source buffer to a destination area, and updates a counter in a global variable based on the operation.
+- `compare_and_copy_bytes`: Compares bytes from a source buffer with a reference value, advances the source pointer, and copies bytes to a destination buffer with conditional logic.
+- `update_lookup_table`: Initializes a lookup table with zeros, then updates entries based on data from another buffer using bit shifting and indexed addressing.
+- `update_coprocessor`: Updates coprocessor registers by writing specific values to DMA control and display registers, then calls multiple routines to initialize hardware components.
+- `frag_movea_move_jsr`: Short code fragment that copies a fixed memory address to a1, then copies an address to d0, then copies a fixed memory address to a6, then calls another routine.
+- `return_constant`: Returns the constant an address in d0 to the caller without any other effect.
+- `free_memory_pointer`: Checks a pointer in a global variable, sets that pointer to zero, and if the pointer was not null, calls a library routine to free the memory at the address stored in another global variable.
+- `frag_bra`: Short code fragment that jumps to another point in the code.
+- `validate_and_copy_data`: Validates data headers from a buffer, copies structured data to a destination, and performs multiple data transfers with loop counters.
+- `initialize_audio_registers`: Clears audio register values, sets up volume levels for four audio channels, and configures various hardware registers for sound output.
+- `frag_movem_moveq_lea_move_rts`: Short code fragment that saves registers on the stack, then loads 0 into d0, then loads the address of a fixed memory address into a0, then copies d0 to the memory at an offset from a0 (4 times in a row), then copies 15 to a fixed memory address, then restores saved registers from the stack, then returns.
+- `update_audio_counter`: Updates audio-related counters and handles conditional logic based on counter values, calling routines to process audio channel updates.
+- `update_audio_channels`: Updates audio channel registers based on data from multiple memory locations, calculating values using a lookup table and bit shifts before writing results to hardware registers.
+- `validate_movement_data`: Checks if a global variable matches a value read from another global variable, and if not, jumps to a label.
+- `process_player_input`: Processes input data to update player position and state variables using lookup tables, handles boundary conditions, and manages audio and display updates based on movement data.
+- `frag_moveq_move_cmp_beq_dbra_rts`: Short code fragment that loads 6 into d0, then copies a fixed memory address to d1, then compares d1 with a fixed memory address, then branches if the last result was zero, then loops back while counting down d0, then returns.
+- `frag_bsr_moveq_move_mulu_lsr_rts`: Short code fragment that calls another routine, then loads 0 into d0, then copies the memory at an offset from a6 to d0, then multiplies d0 by a location in the code (unsigned), then shifts d0 right by 6, then copies d0 to the memory at an offset from a5, then returns.
+- `process_movement_action`: Reads a byte from a structure, extracts a nibble, uses it as an index into a lookup table to determine an action, and updates position data based on the result.
+- `update_position_based_on_input`: Processes input data to update position coordinates, using a lookup table for movement calculations and handling boundary conditions for horizontal displacement.
+- `process_movement_data_2_2`: Processes movement-related data from a structure using lookup tables and bit manipulation operations, updating position and state variables based on input.
+- `process_movement_data_2`: Processes movement-related data from a structure using lookup tables and bit manipulation operations.
+- `process_movement_data`: Processes movement-related data from a structure using lookup tables and bit manipulation operations.
+- `handle_input_byte`: Processes a byte from a structure using bitwise operations and conditional branches to determine actions based on the byte's value, then updates global variables and hardware registers accordingly.
+- `update_movement_data`: Processes movement-related data using lookup tables and bit manipulation, updating position and state variables based on input from a structure.
+- `clear_sprite_entry`: The routine reads a nibble from a byte in a structure, uses it as an index into a global table and adds the result to another byte in the same structure.
+
+### Christoph Kolumbus (1994)(Software 2000)(De)(Disk 1 of 4).adf:bootblock
+
+- `boot_entry`: Disk boot block code run by Kickstart at boot: finds the dos.library resident module and returns its entry so the system boots AmigaDOS from this disk.

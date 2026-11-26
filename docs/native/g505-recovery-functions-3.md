@@ -5,6 +5,17 @@
 ### Halls of Montezuma (1990)(SSG)[cr CSL](Disk 1 of 2).adf:HOM
 (continued)
 
+- `prepare_search_parameters`: Calculates an index using a value from a structure at offset 8 in a5 and a global variable, clears two local variables on the stack, and branches to another routine.
+- `search_table_for_value`: Loops through a table to find an entry where the value at offset 14 is either 5 or 6, stores that value into a local variable, and returns.
+- `update_structure_bounds_and_sync`: Saves two 16-bit values from a structure into global variables, updates those globals using values from a sub-structure pointed to by an offset in the original structure, and then compares a 16-bit value from the structure against a global variable to conditionally copy that global value to an offset in the structure.
+- `sync_structure_fields_3`: Copies a 16-bit word from offset negative 2 of the structure in a5 to offset negative 10, then compares a 16-bit word from offset negative 4 with a value in a global table and updates offset negative 12 of the structure if the comparison fails.
+- `compare_and_clear_structure_field`: Copies a 16-bit word from offset negative 4 of a structure to offset negative 12 of the same structure, compares a 16-bit word from offset negative 2 to a global variable, and if the value is less than the global variable, clears a 16-bit word at offset negative 8 of the structure; otherwise it returns.
+- `copy_stack_value`: Copies a 16-bit word from an offset of minus two from a5 to an offset of minus six from a5 and branches to another routine.
+- `update_object_memory_and_iterate`: Calculates a memory address based on a product of two 16-bit values and a global constant, then performs a series of bitwise AND operations on a word at a specific offset from that address.
+- `process_stack_and_list`: Compares a 16-bit value from a structure to a global variable, and if the value is greater, it pushes several values onto the stack and calls two different routines.
+- `clear_local_variable`: Clears a 16-bit word at an offset of minus six from a5 and branches to another routine.
+- `process_object_list_2`: Performs arithmetic on values from a structure, modifies bits in a table at an offset derived from the structure, and enters a loop that calls three different routines using pointers from a global variable and a structure.
+- `process_stack_parameters`: Compares a 16-bit value from a structure to a global value; if the value is greater, it pushes two values from the structure and a decremented global value onto the stack, calls three routines, and then calls a fourth routine.
 - `execute_multiple_handlers`: Calls five different routines using a pointer from a global table, performs arithmetic on a value from a structure to update a local variable, modifies bits in a table entry, and then calls three more routines.
 - `process_event_loop`: Calls a routine via a pointer in a4, increments a global counter, and enters a loop that iterates up to 60 times to check table entries, update values, and call various routines via pointers in a4.
 - `update_event_table_entry`: Iterates through a table of 60 entries, each 10 bytes wide, to find an entry where a specific 16-bit value at offset 8 is non-zero and a 16-bit value at offset 0 is zero.
@@ -514,11 +525,7 @@
 - `push_and_call_offsets`: Pushes four 16-bit words from offsets -10, -8, -6, and -4 of a structure in a5 onto the stack, calls another routine, and then branches to another routine.
 - `execute_table_updates`: Fetches a word from a table using an index derived from offset -2 of a5, calls a routine via a4, and then uses a second value from the same table to fetch data from a structure in a global table to call another routine if offset 12 of a5 is not zero.
 - `push_offset_words`: Pushes two 16-bit words from offsets 10 and 12 of the structure in a5 onto the stack, calls another routine, and then branches to another routine.
-- `process_list_entries`: Iterates through a list of entries, and for each non-zero entry, calculates a destination address based on a table and writes a sequence of values including a constant and a pointer into a destination buffer.
-- `function_epilogue_5`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, then returns to the caller.
 - `open_library_and_traverse_list`: Opens a library, calls a routine, and if successful, uses a pointer from a4 to traverse a linked list of structures, eventually storing a long value into a location found by following the list.
-- `store_long_word`: Stores a long word from register d0 into the memory location pointed to by register a0 and returns.
-- `call_alert`: Wrapper that calls the exec library function Alert and returns its result to the caller.
 - `jump_to_write_wrapper`: Performs an indirect jump to a routine that calls a write function.
 - `call_library_vector_624_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 624 of that base, returning its result to the caller.
 - `call_library_vector_300`: Library stub: loads a library base from a global variable and calls the library function at offset minus 300 of that base, returning its result to the caller.
@@ -554,6 +561,7 @@
 - `wait_for_bit_clear`: Spins until bit 7 of a byte at offset 2 of a structure is cleared.
 - `parse_data_stream_sequence`: Iterates through a data stream to identify specific control bytes, calling another routine when a specific byte is encountered and updating a structure with new pointers and values when a sequence marker is found.
 - `set_structure_parameters`: Calls another routine and then populates a structure in a5 with several 16-bit and 32-bit values at offsets 40, 42, 48, 54, 58, 60, and 66.
+- `populate_data_table`: Performs a large number of bitwise OR operations on registers d4 and d5 to populate them with specific bit patterns.
 - `update_structure_pointers`: Loads a 32-bit value from a global variable, performs four additions of 14880 to the value, and stores the resulting 16-bit halves into a structure at offsets 4512, 4516, 4520, 4524, 4528, 4532, 4536, 4540, 4544, and 4548.
 - `interpolate_table_values`: Loops four times to calculate interpolated values using a multiplier and a divisor, then copies four 16-bit words from one table to another.
 - `fill_data_table`: Fills a table starting at offset 41464 with a pattern of 16-bit values including 8001, 8101, and 0, then performs a nested loop to copy values from a global variable into the table.
@@ -586,6 +594,7 @@
 - `manipulate_cia_timer_and_return_bit`: Checks bit 3 of a value at offset 30 from a pointer in a5; if set, it reads a byte from a CIAA register, performs a bitwise rotation and shift on its complement, sets bit 6 of the CIAA control register, executes a loop that decrements a counter 1536 times, and clears bit 6 of the CIAA control register before returning the transformed value; otherwise, it returns the transformed value.
 - `clear_bit_on_condition_2`: Checks bit 3 of a word at offset 30 of a structure, and if that bit is set it runs a delay loop of 1536 iterations and then clears bit 6 of the keyboard serial register.
 - `update_graphics_library_pointers`: Loads a library base from a global variable and copies two pointers from that library base into a global structure, then calls a routine using the library base.
+- `frag_move_adda_dbra_rts`: Short code fragment that copies the memory at a0 (advancing a0) to the memory at an offset from a1 (6 times in a row), then adds 48 to a1, then loops back while counting down d0, then returns.
 - `initialize_structure_fields_5`: Loads a pointer to a memory address, calls another routine to retrieve a value, and then populates several fields in a structure pointed to by a5 with that value and certain constants, before calling another routine again and returning.
 - `frag_btst_bne_rts`: Short code fragment that tests bit 14 of the memory at an offset from a5, then branches if the last result was not zero, then returns.
 - `initialize_game_state`: Initializes game state variables including joystick input handling, timer counters, and data structure offsets.
@@ -601,3 +610,7 @@
 - `populate_memory_from_calculation`: Uses a loop to call a routine that performs a calculation, and stores the resulting word into a memory location pointed to by a0, decrementing a counter until finished.
 - `calculate_scaled_division_2`: Performs a complex calculation involving masking, multiplication, and division, and returns a value that is a combination of the quotient and remainder, otherwise it returns.
 - `clear_buffer_loop`: Clears a sequence of words in a buffer by looping through a pointer and setting a certain number of words to zero.
+- `process_audio_data`: Processes audio data by copying values from memory to registers, performing arithmetic operations on frequency and length values, then writing results to hardware registers.
+- `update_position`: Updates a position value based on input and direction flags, then stores the result in a global variable at offset 6 of a5.
+- `handle_input_command`: Processes input commands by reading values from global variables, performing arithmetic operations, and updating position or counter values based on command type.
+- `update_joystick_state`: Updates the joystick output state in a hardware register based on a value from a global variable, and clears or sets bits in other global variables depending on conditions.

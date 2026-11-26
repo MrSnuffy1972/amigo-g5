@@ -5,6 +5,19 @@
 ### Halls of Montezuma (1990)(SSG)[cr CSL](Disk 1 of 2).adf:HOM
 (continued)
 
+- `decrement_and_store_word`: Decrements a word from a global variable by two and stores the result at an offset of negative eighteen from the address in a5, then branches to another routine.
+- `execute_loop_with_calls`: Calculates a value using a multiplication and addition, calls another routine, and enters a loop that increments structure values and calls other routines until certain conditions are met.
+- `clear_and_set_small_word`: Clears a 16-bit value at a pointer in a0 and writes the value 6 to another pointer in a0.
+- `initialize_terrain_icon_table`: Initializes a table of 150 entries by calculating specific coordinate-based offsets and values for each entry, then iterates through a grid to set a flag in the table based on values found in another data structure.
+- `clear_offset_5f8`: Clears a 16-bit word at offset -1528 of a structure in a5 and branches to another routine.
+- `update_terrain_icon_indices`: Iterates through a list of terrain icons by calculating an index from a structure, updates a table with a value of one, and then performs a series of calls to update entity data and handle conditional logic based on a counter.
+- `iterate_and_clear_terrain_icons`: Iterates through a list of terrain icons using a counter, performing calculations to update an entity table and calling various routines to clear or modify icon properties.
+- `update_entity_table_and_process_logic`: Iterates through a structure to update a table of values based on indices, performs calculations involving multiplication by a global constant, and calls several subroutines to update entity states and handle data transfers.
+- `clear_offset_5fa`: Clears a 16-bit word at offset -1530 of a structure in a5 and branches to another routine.
+- `update_table_and_call_routines`: Executes a loop that calculates an index, updates a table with values from a structure in a5, and then performs a series of calls to other routines using various parameters from the structure and the stack.
+- `restore_structure_values`: Saves two 16-bit values from a structure in a5, calls three different routines using a4, and if the result of the third call does not match a global variable, restores the original 16-bit values to the structure in a5.
+- `copy_string_to_buffer`: Copies bytes from a source pointer to a destination pointer until a zero byte is encountered, including the terminator.
+- `compute_string_length`: Walks forward through a zero-terminated byte string and returns the number of bytes before the terminator.
 - `clear_and_branch_11`: Loads a pointer from offset 8 of a structure in a5 into a2, clears a 16-bit word at offset -2 of the structure in a5, and branches to another routine.
 - `load_and_branch_2`: Loads a 16-bit word from offset 12 of a structure in a5 into d5 and branches to another routine.
 - `process_pointer_and_loop`: Pushes a 32-bit value from offset 16 of a structure in a5 onto the stack, calls another routine, and then loops back to the start if the returned word in d0 is not equal to 65535.
@@ -1359,14 +1372,3 @@
 - `clear_structure_word`: Loads a pointer from an offset of 12 from a5, clears a 16-bit word at that address, and returns.
 - `update_table_value_3`: Calculates an index into a table, writes a word from offset 14 of a structure into offset 2 of the table entry, and if the value at offset 14 is 3, clears a word at offset 18 of a structure.
 - `search_and_update_value`: Calculates an index into a table, performs a call to another routine, and if the result is non-zero, updates a value at offset 18 of a5.
-- `prepare_search_parameters`: Calculates an index using a value from a structure at offset 8 in a5 and a global variable, clears two local variables on the stack, and branches to another routine.
-- `search_table_for_value`: Loops through a table to find an entry where the value at offset 14 is either 5 or 6, stores that value into a local variable, and returns.
-- `update_structure_bounds_and_sync`: Saves two 16-bit values from a structure into global variables, updates those globals using values from a sub-structure pointed to by an offset in the original structure, and then compares a 16-bit value from the structure against a global variable to conditionally copy that global value to an offset in the structure.
-- `sync_structure_fields_3`: Copies a 16-bit word from offset negative 2 of the structure in a5 to offset negative 10, then compares a 16-bit word from offset negative 4 with a value in a global table and updates offset negative 12 of the structure if the comparison fails.
-- `compare_and_clear_structure_field`: Copies a 16-bit word from offset negative 4 of a structure to offset negative 12 of the same structure, compares a 16-bit word from offset negative 2 to a global variable, and if the value is less than the global variable, clears a 16-bit word at offset negative 8 of the structure; otherwise it returns.
-- `copy_stack_value`: Copies a 16-bit word from an offset of minus two from a5 to an offset of minus six from a5 and branches to another routine.
-- `update_object_memory_and_iterate`: Calculates a memory address based on a product of two 16-bit values and a global constant, then performs a series of bitwise AND operations on a word at a specific offset from that address.
-- `process_stack_and_list`: Compares a 16-bit value from a structure to a global variable, and if the value is greater, it pushes several values onto the stack and calls two different routines.
-- `clear_local_variable`: Clears a 16-bit word at an offset of minus six from a5 and branches to another routine.
-- `process_object_list_2`: Performs arithmetic on values from a structure, modifies bits in a table at an offset derived from the structure, and enters a loop that calls three different routines using pointers from a global variable and a structure.
-- `process_stack_parameters`: Compares a 16-bit value from a structure to a global value; if the value is greater, it pushes two values from the structure and a decremented global value onto the stack, calls three routines, and then calls a fourth routine.

@@ -7,34 +7,34 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (1807248 top-level bytes in 55 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 20 of 20 units identical (bytes and relocations), 156 raw-word lines |
-| Functions named and described | pass, 3423 of 3423 named (15 author symbols), 3423 of 3423 described (268 by rule, 3084 by the local model) |
+| Byte-identical reassembly with vasm | pass, 20 of 20 units identical (bytes and relocations), 308 raw-word lines |
+| Functions named and described | pass, 3435 of 3435 named (15 author symbols), 3435 of 3435 described (272 by rule, 3092 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 841 of 841 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 196608 bytes, 24 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 77227 of 77245 instructions identical in start and length, 0 mismatches |
+| Recovered without load address (counted in proof 1, flagged) | 196608 bytes, 29 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 77268 of 77286 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 1225961 |
-| code | 276026 |
-| data | 250495 |
-| padding | 13294 |
+| asset | 1225321 |
+| code | 278586 |
+| data | 248572 |
+| padding | 13297 |
 | unused | 41472 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| run | 2 | 457 | 12 |
-| stack | 2 | 117 | 2 |
+| run | 2 | 762 | 12 |
+| stack | 2 | 154 | 2 |
 | more | 71 | 2097 | 110 |
 | setpatch | 20 | 749 | 42 |
 | assign | 2 | 435 | 7 |
-| endcli | 2 | 182 | 3 |
+| endcli | 2 | 208 | 3 |
 | execute | 2 | 117 | 2 |
-| cd | 2 | 282 | 5 |
+| cd | 2 | 494 | 12 |
 | fastmemfirst | 7 | 207 | 6 |
 | loadwb | 12 | 535 | 30 |
 | disk-validator | 1 | 386 | 1 |
@@ -42,11 +42,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | icon.library | 10 | 1421 | 110 |
 | diskfont.library | 15 | 1040 | 76 |
 | Halls of Montezuma (1990)(SSG)[cr CSL](Disk 1 of 2).adf:NOMAD | 1 | 99 | 3 |
-| Halls of Montezuma (1990)(SSG)[cr CSL](Disk 1 of 2).adf:HOM | 3 | 67640 | 2957 |
+| Halls of Montezuma (1990)(SSG)[cr CSL](Disk 1 of 2).adf:HOM | 3 | 67677 | 2956 |
 | Halls of Montezuma (1990)(SSG)[cr CSL](Disk 1 of 2).adf:bootblock | 1 | 10 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 454 | 24 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 614 | 25 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 383 | 7 |
-| Halls of Montezuma (1990)(SSG)[cr CSL](Disk 1 of 2).adf:NOMAD#unpacked | 1 | 632 | 24 |
+| Halls of Montezuma (1990)(SSG)[cr CSL](Disk 1 of 2).adf:NOMAD#unpacked | 1 | 1032 | 29 |
 
 ## Cases handled
 
@@ -274,6 +274,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_conditional_structure_values`: Calculates and stores word-aligned offsets into a structure, clears specific fields, and calls another routine multiple times to fetch and validate values from a table based on conditional checks.
 - `update_conditional_structure_values`: Calls another routine twice to initialize values, then checks a value in a table; if non-zero, it calls another routine to fetch a value, stores it in a structure at offset 608, and if that value is zero, calls another routine twice, otherwise it calls another routine, checks a condition in a table, and updates a structure at offset 600 and offset 440.
 - `execute_conditional_updates`: Calls another routine multiple times to update values in a structure based on conditions, updates a global variable with a value from another global variable, and performs an indirect jump.
+- `update_tile_array`: Clears a byte in memory at an index calculated from a register, decrements a counter, compares it with zero, and branches to another routine if not equal.
+- `initialize_object_data`: Initializes object data by copying memory locations to registers, performing shift operations, then storing calculated values in a structure at a1.
+- `process_object_data`: Copies data from memory locations to registers, performs calculations using shift and multiply operations, then stores results in a structure at a1.
+- `frag_move_moveq_movea_jsr_tst_bne_jmp`: Short code fragment that copies the memory at an offset from a1 to d1, then loads 48 into d0, then copies the memory at an offset from a2 to a4, then calls the routine whose address is in a5, then tests the memory at an offset from a1, then branches if the last result was not zero, then loads 0 into d1, then jumps to the address in a6.
+- `compare_tile_values`: Reads bytes from memory using calculated indices, subtracts one value from another, and compares the result with a third value to determine a conditional branch.
+- `update_tile_value`: Reads a byte from memory using an index, compares it with a constant, increments the index if they don't match, and writes a new value to memory.
+- `frag_move_lsl_moveq_add_jmp`: Short code fragment that copies the memory at an offset from a1 to d1, then shifts d1 left by 2, then loads 0 into d2, then copies an indexed entry from a0 to d2, then adds the memory at an offset from a1 to d2, then copies the memory at an offset from a1 to d3, then shifts d3 left by 2, then copies d2 to an indexed entry from a0, then loads 255 into d1, then jumps to the address in a6.
 
 ### fastmemfirst
 
@@ -1061,6 +1068,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_sequence_eight`: Calls swap_and_call_routine, then calls a routine at an offset from a pointer in a4, stores 8 at offset 7772 of a global table, stores 1 at offset 7770 of that table, calls push_and_call_handler_2, and branches to another routine.
 - `execute_sequence_nine`: Calls swap_and_call_routine, then calls a routine at an offset from a pointer in a4, stores 9 at offset 7772 of a global table, stores 1 at offset 7770 of that table, calls push_and_call_handler_2, and branches to another routine.
 - `execute_sequence_ten`: Calls swap_and_call_routine, then calls a routine at an offset from a pointer in a4, stores 10 at offset 7772 of a global table, stores 1 at offset 7770 of that table, calls push_and_call_handler_2, and branches to another routine.
+- `frag_addq_jsr_move_bra`: Short code fragment that adds 2 to a7, then calls push_and_call_handler_2, then copies 11 to a fixed memory address, then copies 1 to a fixed memory address, then calls unlock_address_register_five_3, then jumps to another point in the code.
+- `frag_move_jsr_addq_clr_bra`: Short code fragment that copies 2 to the stack, then calls execute_ui_sequence_2, then adds 2 to a7, then clears a fixed memory address, then calls push_and_call_handler_2, then calls swap_and_call_routine, then jumps to another point in the code.
+- `frag_jsr_addq_move_clr_bra`: Short code fragment that calls push_and_call_handler_2, then adds 2 to a7, then copies a fixed memory address to the stack, then calls swap_and_call_routine, then adds 2 to a7, then clears a fixed memory address, then calls unlock_address_register_five_3, then jumps to another point in the code.
 - `dispatch_state_transition`: Loads a 16-bit value from a table, extends it to a 32-bit integer, and passes it as an argument to two consecutive subroutines before branching to another routine.
 - `dispatch_state_transition_2`: Compares d0 to 15, and if d0 is less than 15, shifts d0 left by 1, loads a 16-bit word from a table using d0 as an offset, and jumps to the resulting address.
 - `unlock_address_register_five_3`: Releases the lock on address register five and returns immediately.
@@ -1576,18 +1586,5 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `perform_complex_initialization`: Calls several subroutines using parameters from a5 and a table, clears two 16-bit words at offsets -6 and -8 of a structure in a5, and performs a table lookup using a value from a5 offset 8 multiplied by four.
 - `apply_new_feature_icon`: Checks if a word at offset 8 of a structure in a5 is between 7 and 7 inclusive, otherwise it calls another routine with two arguments from the stack and returns.
 - `update_entity_grid_positions`: Calculates and updates spatial coordinates for two sets of entities by performing arithmetic on structure offsets and calling a routine to process them, then executes a nested loop that updates a 2D grid of values using a multiplier and a secondary routine.
-- `decrement_and_store_word`: Decrements a word from a global variable by two and stores the result at an offset of negative eighteen from the address in a5, then branches to another routine.
-- `execute_loop_with_calls`: Calculates a value using a multiplication and addition, calls another routine, and enters a loop that increments structure values and calls other routines until certain conditions are met.
-- `clear_and_set_small_word`: Clears a 16-bit value at a pointer in a0 and writes the value 6 to another pointer in a0.
-- `initialize_terrain_icon_table`: Initializes a table of 150 entries by calculating specific coordinate-based offsets and values for each entry, then iterates through a grid to set a flag in the table based on values found in another data structure.
-- `clear_offset_5f8`: Clears a 16-bit word at offset -1528 of a structure in a5 and branches to another routine.
-- `update_terrain_icon_indices`: Iterates through a list of terrain icons by calculating an index from a structure, updates a table with a value of one, and then performs a series of calls to update entity data and handle conditional logic based on a counter.
-- `iterate_and_clear_terrain_icons`: Iterates through a list of terrain icons using a counter, performing calculations to update an entity table and calling various routines to clear or modify icon properties.
-- `update_entity_table_and_process_logic`: Iterates through a structure to update a table of values based on indices, performs calculations involving multiplication by a global constant, and calls several subroutines to update entity states and handle data transfers.
-- `clear_offset_5fa`: Clears a 16-bit word at offset -1530 of a structure in a5 and branches to another routine.
-- `update_table_and_call_routines`: Executes a loop that calculates an index, updates a table with values from a structure in a5, and then performs a series of calls to other routines using various parameters from the structure and the stack.
-- `restore_structure_values`: Saves two 16-bit values from a structure in a5, calls three different routines using a4, and if the result of the third call does not match a global variable, restores the original 16-bit values to the structure in a5.
-- `copy_string_to_buffer`: Copies bytes from a source pointer to a destination pointer until a zero byte is encountered, including the terminator.
-- `compute_string_length`: Walks forward through a zero-terminated byte string and returns the number of bytes before the terminator.
 
 The function list continues in: g505-recovery-functions-2.md, g505-recovery-functions-3.md.

@@ -5,6 +5,30 @@
 ### Halls of Montezuma (1990)(SSG)[cr CSL](Disk 1 of 2).adf:HOM
 (continued)
 
+- `update_structure_state_2`: Calls several routines using pointers from a global table, then calculates an index into a table to check bits 1 and 2 of a word at offset 26 of a structure; if those bits are zero, it clears bits 4 and 5 of a word at offset 26 of a structure, otherwise it clears bits 4 and 5 and sets bit 3 of that same word.
+- `update_structure_status_bits`: Sets a flag in a local variable, checks a value in a table using an index derived from a structure member, and if the value is not five, modifies a 16-bit word at offset 26 of a structure by clearing bits 0 and 1 and potentially setting bit 3 based on the local flag.
+- `update_structure_state_and_loop`: Clears two bits in a 16-bit word at a specific offset within a sub-structure, then enters a loop that calls three different routines and a subroutine to update various fields in a structure.
+- `update_entity_status_bit`: Checks if two values from a structure are within specific bounds, calculates an index into a table using a multiplier and an offset, and then toggles bit 5 of a 16-bit word at offset 26 of the resulting structure element.
+- `update_status_and_call`: Clears bit 5 and sets bit 5 of a 16-bit word at an offset from a pointer in a5, then calls two routines using values from a5.
+- `configure_display_dimensions`: Sets display parameters including horizontal and vertical dimensions and map size using a series of calls, then enters a loop that monitors a status flag in a structure to trigger updates or re-initializations based on changes to specific global values.
+- `push_parameters_and_call`: Pushes a word from a global variable, the value one, and two values from a structure in a5 onto the stack, calls another routine, adjusts the stack pointer, and branches to another routine.
+- `update_display_resolution`: Checks a status flag in a structure and, if set, performs a series of calls to update display dimensions and parameters.
+- `call_external_function`: Pushes a 32-bit value from an offset of a structure in a5 onto the stack, calls a routine at an offset from a4, and then returns.
+- `clear_and_set_word`: Clears a 16-bit value at a pointer in a0 and writes the value 149 to another pointer in a0.
+- `call_routine_if_in_range`: Checks if a 16-bit word at offset 8 of a structure in a5 is between 0 and 155; if so, it clears two 32-bit values on the stack, pushes two values, calls another routine, and returns.
+- `execute_structure_operations`: Clears two 16-bit words at offsets -6 and -8 of a structure in a5, calls several subroutines using parameters from a5 and a table, and performs a table lookup using a value from a5 offset 18 multiplied by two.
+- `apply_new_icon`: Checks if a word at offset 8 of a structure in a5 is between 150 and 150 inclusive, otherwise it calls another routine with two arguments from the stack and returns.
+- `calculate_structure_values`: Clears two words at offsets -32 and -34 of a structure in a5, performs several arithmetic operations involving multiplication and subtraction using values from the structure and a table, and calls several other routines before decrementing a word at offset -20 of the structure in a5.
+- `decrement_and_branch_2`: Subtracts two from a 16-bit word loaded from a global variable, stores the result at offset -18 of a structure in a5, and branches to another routine.
+- `process_nested_loops_3`: Performs a calculation involving a multiplication and addition on a value from a structure in a5, stores the result in a structure offset, and enters a loop that updates structure values and calls other routines based on comparisons with values from a table.
+- `update_table_element_and_trigger_event`: Updates a value in a table using an index and a pointer from a structure, then checks if the old or new value equals five.
+- `clear_and_branch_4`: Clears a 16-bit word at offset -8 of a structure in a5 and branches to another routine.
+- `modify_table_bits_2`: Calculates an index into a table using values from a structure in a5, compares a word at that index with a value from the structure, and if certain conditions are met, performs bitwise AND operations on four consecutive words at specific offsets from that index before calling two other routines.
+- `update_table_elements_2`: Calls three different routines using a pointer at offset -10 of a structure in a5, increments the word at offset -8 of the structure, and if certain conditions are met by comparing values at offsets -8 and -10 against global variables, calls two more routines using a pointer from a global variable and a value from offset -6 of the structure.
+- `call_routine_if_within_limit`: Checks if a 16-bit word at offset 8 of a structure in a5 is between 0 and 7; if so, it clears two 32-bit values on the stack, pushes two values, calls another routine, and returns.
+- `perform_complex_initialization`: Calls several subroutines using parameters from a5 and a table, clears two 16-bit words at offsets -6 and -8 of a structure in a5, and performs a table lookup using a value from a5 offset 8 multiplied by four.
+- `apply_new_feature_icon`: Checks if a word at offset 8 of a structure in a5 is between 7 and 7 inclusive, otherwise it calls another routine with two arguments from the stack and returns.
+- `update_entity_grid_positions`: Calculates and updates spatial coordinates for two sets of entities by performing arithmetic on structure offsets and calling a routine to process them, then executes a nested loop that updates a 2D grid of values using a multiplier and a secondary routine.
 - `decrement_and_store_word`: Decrements a word from a global variable by two and stores the result at an offset of negative eighteen from the address in a5, then branches to another routine.
 - `execute_loop_with_calls`: Calculates a value using a multiplication and addition, calls another routine, and enters a loop that increments structure values and calls other routines until certain conditions are met.
 - `clear_and_set_small_word`: Clears a 16-bit value at a pointer in a0 and writes the value 6 to another pointer in a0.
@@ -1344,31 +1368,3 @@
 - `initialize_attribute_validation`: Clears several 16-bit global variables, calls three separate routines with different stack parameters, and stores a decremented 16-bit value from a global variable into offset -4 of a structure in a5.
 - `update_local_value`: Subtracts two from a 16-bit value loaded from a global variable, stores the result at an offset of minus two from a5, and branches to another routine.
 - `calculate_and_validate_attribute_range`: Calculates a value based on a multiplier and an offset, then performs a series of bitwise checks on a structure to determine if a specific routine should be called.
-- `toggle_table_word`: Calculates an offset into a table using a word from a global variable, checks the word at that offset, and if it is zero, sets it to one at the same offset in a different table.
-- `update_global_shorts`: Calculates an offset into a table using a value from a global variable, checks a word at that offset, and if it is not one, sets two global variables at offsets 1c6 and 1c8 to 1 and 2 respectively before branching.
-- `set_global_shorts_conditional`: If a 16-bit word at a global address is zero, it sets two 16-bit global variables at offsets 1c8 and 1c6 to 1 and 2 respectively before branching to another routine.
-- `set_global_shorts`: Writes the value 2 into two 16-bit global variables and then branches to another routine.
-- `clear_and_call_routine`: Clears two 16-bit global variables, calculates an offset into a table using a global value, pushes a value from that table and two constants onto the stack, calls a routine, and then calls another routine.
-- `toggle_table_entry_flag`: Calculates an offset into a table using a value from a global variable, checks if the word at that offset is zero, and if so, sets it to one.
-- `update_alternate_shorts`: Calculates an offset into a table using a value from a global variable, checks a word at that offset, and if it is one, sets a global variable at offset 1d0 to 1 and clears a global variable at offset 1d2 before branching.
-- `set_global_shorts_alternate_2`: If a 16-bit word at a global address is zero, it clears a 16-bit global variable at offset 1d0 and sets a 16-bit global variable at offset 1d2 to 1 before branching to another routine.
-- `set_global_shorts_alternate`: Writes the value 1 into two 16-bit global variables and then branches to another routine.
-- `clear_and_execute_handler`: Clears two 16-bit global variables, calculates an offset into a table using a global value, pushes a value from that table, a zero, and a constant onto the stack, calls a routine, and then calls another routine.
-- `toggle_table_entry`: Calculates two addresses into a table using a global 16-bit value, checks if the 16-bit word at the second address is non-zero, and if it is zero, sets the 16-bit word at the first address to 1.
-- `check_table_and_set_global`: Clears a 16-bit value at the address in a0, calculates an index into a table using a global value, checks the value at that index, and if it is not zero, writes 1 to a global variable and branches to another routine; otherwise it branches to another location.
-- `clear_and_dispatch_pointer`: Clears a 16-bit global variable, calculates an offset into a table using a global value, pushes a value from that table, a constant, and another constant onto the stack, calls a routine, and then calls another routine.
-- `update_table_entry_7`: Calculates an index by multiplying a global word by eight, checks a word at that index in a table, and if that word is zero, writes one to the same index in a second table.
-- `check_table_index`: Calculates an index by multiplying a global 16-bit value by eight, tests a word at that index in a table, and if the global value is 1, sets a 16-bit word at offset 462 to 1 and clears a 16-bit word at offset 460.
-- `check_and_set_flags`: Tests a 32-bit global variable, and if it is zero, clears two 16-bit global variables at offsets 1ce and 1cc, otherwise it branches.
-- `set_global_flags`: Sets two 16-bit global variables to one and branches to another routine.
-- `clear_and_call_routines`: Clears two 16-bit global variables, calculates an index by multiplying a global 16-bit value by eight, pushes a value from a table at that index and two constants onto the stack to call a routine via a pointer in a4, then calls another routine via a pointer in a4.
-- `execute_conditional_sequence_4`: Calls three routines via pointers in a4, using a value from the stack as an argument for the second call, and sets a global 16-bit variable to one if a specific global variable is not one.
-- `clear_and_execute_sequence`: Clears a 16-bit global variable, calls three routines via pointers in a4, and uses a value from the stack as an argument for the second call.
-- `update_field_status`: Calculates an index into a table using a value from a structure and a global multiplier, then if a specific bit is set in the table at that index, sets a word at offset 12 of a structure to 1.
-- `update_field_from_table`: Clears a 16-bit word at a location pointed to by a5, calculates an index into a table, and if a specific bit is set in the table value, sets a 16-bit word at offset 20 of a5 to 1.
-- `update_structure_field_2`: Clears a 16-bit word at offset 20 of a structure in a5, then calculates an index to access a table and sets a 16-bit word at offset 16 of a structure to one if a specific bitwise condition is met.
-- `clear_structure_field`: Clears a 16-bit word at offset 16 of a structure pointed to by a parameter.
-- `set_structure_flag`: Calculates an index using a value from a structure at offset 8 in a5 and a global variable, then sets a 16-bit word at offset 12 of a structure to one if a specific bit in a table is set.
-- `clear_structure_word`: Loads a pointer from an offset of 12 from a5, clears a 16-bit word at that address, and returns.
-- `update_table_value_3`: Calculates an index into a table, writes a word from offset 14 of a structure into offset 2 of the table entry, and if the value at offset 14 is 3, clears a word at offset 18 of a structure.
-- `search_and_update_value`: Calculates an index into a table, performs a call to another routine, and if the result is non-zero, updates a value at offset 18 of a5.

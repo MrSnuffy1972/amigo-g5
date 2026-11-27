@@ -8,7 +8,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (901120 top-level bytes in 10 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 1 raw-word lines |
-| Functions named and described | pass, 35 of 35 named (0 author symbols), 35 of 35 described (5 by rule, 12 by the local model) |
+| Functions named and described | pass, 37 of 37 named (0 author symbols), 37 of 37 described (5 by rule, 14 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 20 of 20 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 958 of 958 instructions identical in start and length, 0 mismatches |
@@ -18,8 +18,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | class | bytes |
 |---|---|
 | asset | 2364 |
-| code | 2836 |
-| data | 204011 |
+| code | 3822 |
+| data | 203025 |
 | padding | 1733 |
 | unused | 690176 |
 
@@ -28,8 +28,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Rick Dangerous (1989)(Micro Style)[cr QTX].adf:rickdangrous | 2 | 165 | 8 |
-| Run | 2 | 435 | 12 |
-| Type | 2 | 117 | 2 |
+| Run | 2 | 687 | 14 |
+| Type | 2 | 188 | 2 |
 | Rick Dangerous (1989)(Micro Style)[cr QTX].adf:VIRUS | 2 | 24 | 4 |
 | Rick Dangerous (1989)(Micro Style)[cr QTX].adf:rick | 2 | 207 | 8 |
 | Rick Dangerous (1989)(Micro Style)[cr QTX].adf:bootblock | 1 | 10 | 1 |
@@ -87,6 +87,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialize_object_data_2`: Writes data values to memory locations based on calculated offsets, clears several fields in a structure, and sets up initial state values for an object.
 - `initialize_object_data`: Writes data values to memory locations based on calculated offsets, clears several fields in a structure, and sets up initial state values for an object.
 - `process_data_and_jump`: Processes multiple data values from memory locations, performs conditional jumps based on test results, and executes several function calls through a jump table before ending with an unconditional jump.
+- `check_and_modify_flag`: Tests a bit in a global variable using a register value, toggles another byte in memory, loads a constant into a register, and performs conditional branching based on the result of that constant comparison.
+- `update_entity_data`: Processes entity data by loading values from tables based on an index, storing results in local structure fields, and performing conditional updates to memory locations.
 
 ### Type
 

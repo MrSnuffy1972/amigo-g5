@@ -5,6 +5,77 @@
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 (continued)
 
+- `frag_move_jsr_movea_cmpi_bhi_rts_15`: Short code fragment that copies a3 to the stack, then copies 1 to the stack, then copies 12 to the stack, then calls another routine, then copies the top of the stack to a3, then copies d0 to d2, then compares d2 with 11, then branches if the comparison was higher (unsigned), then copies 1 to the memory at an offset from a5, then returns.
+- `frag_move_jsr_movea_cmpi_bhi_rts_16`: Short code fragment that copies a3 to the stack, then copies 1 to the stack, then copies 20 to the stack, then calls another routine, then copies the top of the stack to a3, then copies d0 to d2, then compares d2 with 19, then branches if the comparison was higher (unsigned), then copies 1 to the memory at an offset from a5, then returns.
+- `frag_move_rts_306`: Short code fragment that copies 1 to the memory at an offset from a5, then returns.
+- `execute_table_function_6`: Calculates an index by shifting a value, loads a value from a table, calls a routine using that value as an offset, and then copies a 32-bit value from offset 198 of a structure to offset -4 of a structure.
+- `calculate_and_push_values`: Checks if a byte at offset -5 of a structure is non-zero, then pushes several values from a structure to the stack, calls a routine, calculates two values using a table and a byte from the structure, pushes them to the stack, calls another routine, and branches.
+- `function_epilogue_23`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `check_structure_status`: Clears a byte at offset -5 of a stack frame, loads a pointer from a global address, and if the pointer is non-zero and the byte at offset -5 is zero, calls a routine with three parameters and updates a byte at offset 198 of the structure.
+- `clear_byte_and_calculate_values`: Clears a byte at a global address, checks if a byte at offset -5 of a structure is non-zero, then pushes several values from a structure to the stack, calls a routine, calculates two values using a table and a byte from the structure, pushes them to the stack, calls another routine, and branches.
+- `function_epilogue_24`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `loop_and_compare_bytes`: Clears a 16-bit value at offset -2 of the structure in a5, then enters a loop that compares a byte from a table at offset 208 of a structure in a2 with a byte at offset 16 of the structure in a5, incrementing the value at offset -2 if they are not equal, until the value reaches 73 or the comparison fails.
+- `frag_cmpi_bhi_move_bra_2`: Short code fragment that compares the memory at an offset from a5 with 73, then branches if the comparison was higher (unsigned), then copies the memory at an offset from a5 to d2, then copies d2 to d0, then jumps to another point in the code.
+- `frag_bra_28`: Short code fragment that jumps to another point in the code.
+- `frag_move_bra_35`: Short code fragment that copies 255 to d0, then jumps to another point in the code.
+- `frag_unlk_movea_addq_jmp_44`: Short code fragment that removes the stack frame held in a5, then copies the top of the stack to a4, then copies the top of the stack to a0, then adds 6 to a7, then jumps to the address in a0.
+- `load_and_call_routine`: Loads a pointer from a global address into offset -4 of a structure, calls another routine with a byte from offset 12 and the pointer on the stack, and if the byte in d0 is not 255, copies a value from offset 312 of a structure to offset -4 of the structure.
+- `frag_move_bra_36`: Short code fragment that copies the memory at an offset from a5 to d0, then jumps to another point in the code.
+- `frag_unlk_movea_addq_jmp_45`: Short code fragment that removes the stack frame held in a5, then copies the top of the stack to a4, then copies the top of the stack to a0, then adds 2 to a7, then jumps to the address in a0.
+- `load_pointer_and_call_routine`: Pushes a value to the stack, calls a routine, stores d0 at offset -4 of a structure, and if that value is not zero, calls another routine using a pointer from a table and clears a byte at an offset determined by d0.
+- `frag_bra_29`: Short code fragment that jumps to another point in the code.
+- `frag_moveq_bra_22`: Short code fragment that loads 0 into d0, then jumps to another point in the code.
+- `function_epilogue_25`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `clamp_position_pair_globals_2`: Clears the flag byte at offset 725 of a global structure and calls a validator routine on a global word; when it returns nonzero, adds two table values to two global words, clamps each to the range 0 through 15, and sets the flag byte to 1 for each clamped value.
+- `execute_complex_sequence_5`: Calls two different routines, performs arithmetic on values retrieved from a table, updates values at offsets 0 and 2 of a structure, and calls several other routines using various parameters and stack-based arguments.
+- `frag_move_jsr_unlk_movea_rts_3`: Short code fragment that copies 1 to the stack (2 times in a row), then calls another routine, then removes the stack frame held in a5, then copies the top of the stack to a4, then returns.
+- `compute_and_dispatch_calls`: Reads bytes at offsets 195 and 196 from a global structure, increments them, and stores them at offsets -2 and -4 of the structure in a5, then performs several calls including one with a global pointer and two with no arguments, and finally calls a routine with values derived from the incremented bytes and a global value.
+- `call_routine_with_incremented_byte`: Calls a routine with a global value and the byte at offset 195 of a global structure plus 1, then returns.
+- `process_coordinates`: Processes coordinate values by reading from memory locations, performs arithmetic operations on them, clamps results to specific ranges, and stores the final values back to memory.
+- `frag_move_movea_link_clr_moveq_bra`: Short code fragment that copies a4 to the stack, then copies a location in the code to a4, then creates a stack frame in a5, then copies the memory at an offset from a5 to a3, then clears the memory at a3, then copies a fixed memory address to a3, then clears the memory at an offset from a3, then loads 0 into d2, then copies a fixed memory address to d2, then jumps to another point in the code.
+- `execute_action_index_2`: Calculates an index value for action execution, retrieves a function pointer from a table, and calls the retrieved function to perform the action.
+- `frag_move_bra_32`: Short code fragment that copies the memory at an offset from a5 to d2, then jumps to another point in the code.
+- `frag_jsr_move_rts_5`: Short code fragment that calls another routine, then copies 1 to a fixed memory address, then returns.
+- `handle_movement_flag`: Checks a movement flag in memory, sets or clears it based on conditions, then calls another routine with parameters from a data structure.
+- `frag_move_pea_moveq_clr_jsr_rts_2`: Short code fragment that copies 8 to the stack, then pushes the address of the memory at an offset from a4 onto the stack, then loads 30 into d2, then copies d2 to the stack, then clears the stack, then calls another routine, then returns.
+- `frag_movea_tst_bne_move_jsr_rts_2`: Short code fragment that copies a fixed memory address to a3, then tests the memory at an offset from a3, then branches if the last result was not zero, then copies 1 to a fixed memory address, then calls another routine, then returns.
+- `frag_move_pea_jsr_rts_35`: Short code fragment that copies 1 to a fixed memory address, then pushes the address of the memory at an offset from a5 onto the stack, then calls another routine, then returns.
+- `frag_move_movea_rts_3`: Short code fragment that copies 1 to the memory at an offset from a5, then copies 1 to a fixed memory address, then copies the memory at an offset from a5 to a3, then copies 1 to the memory at a3, then returns.
+- `frag_movea_move_jsr_rts_2`: Short code fragment that copies a fixed memory address to a3, then copies the memory at an offset from a3 to the stack, then copies 1 to the stack, then calls another routine, then copies a fixed memory address to a3, then copies d0 to the memory at an offset from a3, then calls another routine, then returns.
+- `update_status_byte_2`: Reads a status byte from memory, passes it to a library function, updates the status byte in memory, and calls additional library functions for further processing.
+- `execute_action_index`: Calculates an index value for action execution, retrieves a function pointer from a table, and calls the retrieved function to perform the action.
+- `initialize_entity_flags`: Calls a library routine to initialize entity state, sets specific memory locations to one, and performs conditional logic based on a computed value from a table.
+- `frag_moveq_move_bra_21`: Short code fragment that loads 0 into d2, then copies the memory at an offset from a5 to d2, then jumps to another point in the code.
+- `frag_move_bsr_movea_rts_3`: Short code fragment that copies a3 to the stack, then calls clamp_position_pair_globals_2, then copies the top of the stack to a3, then copies 1 to the memory at an offset from a5, then returns.
+- `modify_and_call_1`: Modifies a value in memory by adding 4, performs bit masking operations, then calls two library functions with parameters from the modified data structure.
+- `modify_and_call_2`: Modifies a value in memory by adding 6, performs bit masking operations, then calls two library functions with parameters from the modified data structure.
+- `modify_and_call_3`: Modifies a value in memory by adding 2, performs bit masking operations, then calls two library functions with parameters from the modified data structure.
+- `execute_action_table`: Executes actions from a table by calculating an index, retrieving a function pointer, and calling it.
+- `process_entity_actions_2`: Initializes entity processing by calling a library routine, sets specific memory locations to one, and performs conditional logic based on a computed value.
+- `frag_jsr_move_rts_6`: Short code fragment that calls another routine, then copies 1 to a fixed memory address, then returns.
+- `frag_move_movea_rts_4`: Short code fragment that copies 1 to the memory at an offset from a5, then copies 1 to a fixed memory address, then copies the memory at an offset from a5 to a3, then copies 1 to the memory at a3, then returns.
+- `frag_lea_subq_cmpi_bls_moveq_asl_move_10`: Short code fragment that loads the address of a location in the code into a3, then subtracts 1 from d2, then compares d2 with 1, then branches if the comparison was lower or same (unsigned), then loads 255 into d2, then shifts d2 left by 1, then copies an indexed entry from a3 to d2, then calls another routine, then jumps to another point in the code.
+- `process_entity_actions`: Initializes entity processing by calling a library routine, sets specific memory locations to one, and performs conditional logic based on a computed value from a table.
+- `frag_move_moveq_bra_2`: Short code fragment that copies 1 to the memory at an offset from a5, then loads 0 into d2, then copies the memory at an offset from a5 to d2, then jumps to another point in the code.
+- `frag_clr_rts_26`: Short code fragment that clears the memory at an offset from a3, then returns.
+- `frag_move_rts_282`: Short code fragment that copies 1 to the memory at an offset from a3, then returns.
+- `frag_move_rts_283`: Short code fragment that copies 2 to the memory at an offset from a3, then returns.
+- `frag_move_rts_284`: Short code fragment that copies 3 to the memory at an offset from a3, then returns.
+- `frag_move_rts_285`: Short code fragment that copies 4 to the memory at an offset from a3, then returns.
+- `frag_move_rts_286`: Short code fragment that copies 5 to the memory at an offset from a3, then returns.
+- `frag_move_rts_287`: Short code fragment that copies 6 to the memory at an offset from a3, then returns.
+- `frag_move_rts_288`: Short code fragment that copies 7 to the memory at an offset from a3, then returns.
+- `process_action_table`: Processes action data from a table by calculating an index, retrieving a function pointer, and calling it.
+- `execute_dispatch_sequence`: Selects and executes a function based on a value, sets a flag in memory, then calls a library function to handle input events.
+- `frag_unlk_movea_addq_jmp_34`: Short code fragment that removes the stack frame held in a5, then copies the top of the stack to a4, then copies the top of the stack to a0, then adds 4 to a7, then jumps to the address in a0.
+- `frag_move_movea_link_clr_lea_moveq_bra`: Short code fragment that copies a4 to the stack, then copies a location in the code to a4, then creates a stack frame in a5, then clears the memory at an offset from a5, then loads the address of a fixed memory address into a3, then loads 0 into d2, then copies a fixed memory address to d2, then jumps to another point in the code.
+- `validate_and_process`: Validates a byte value from memory, processes it through a library function, and conditionally calls another routine based on the result of that processing.
+- `frag_movea_clr_rts_6`: Short code fragment that copies a fixed memory address to a2, then clears the memory at an offset from a2, then returns.
+- `validate_coordinate`: Validates coordinate values by reading from memory locations, performing arithmetic operations, and clamping results to specific ranges.
+- `frag_movea_clr_rts_7`: Short code fragment that copies a fixed memory address to a2, then clears the memory at an offset from a2, then returns.
+- `execute_sequence_and_cleanup`: Selects and executes a function based on a value, then calls multiple library functions to handle input events and sets specific memory flags to ff.
+- `frag_move_movea_link_bra_25`: Short code fragment that copies a4 to the stack, then copies a location in the code to a4, then creates a stack frame in a5, then jumps to another point in the code.
+- `calculate_scaled_value_7`: Loads a pointer from a global address, and if a byte at a global address is non-zero, calculates a value by multiplying a byte from a structure by 100 and stores the result in a location at offset -20 of a stack frame.
 - `update_and_copy_data_2`: Loads a pointer from a global address, clears a 16-bit value at offset -20 of a structure, and if the pointer is not zero, performs several checks and calls a routine, then potentially calls another routine to allocate memory, calls a third routine, and enters a loop to copy 17 words from one location to another.
 - `copy_and_clear_data`: Calls a routine to fetch a value, copies 18 words from one memory location to another in a loop, clears a byte at offset 58 of a structure, and updates a pointer at offset 68 of a structure.
 - `frag_movea_move_bra_8`: Short code fragment that copies the memory at an offset from a5 to a3, then copies the memory at an offset from a3 to the memory at an offset from a5, then jumps to another point in the code.
@@ -168,6 +239,12 @@
 - `dispatch_multiple_routines`: Performs a series of calls to various routines using parameters from a structure and the stack, including a loop that uses a value from a global variable, and finally calls a routine with three parameters.
 - `frag_move_bra_38`: Short code fragment that copies the memory at an offset from a5 to d2, then jumps to another point in the code.
 - `frag_bsr_rts_47`: Short code fragment that calls another routine, then returns.
+- `call_frag_move_movea_link_unlk_rts_`: Call stub: calls frag_move_movea_link_unlk_rts_7, then returns to its own caller.
+- `frag_move_bsr_rts_28`: Short code fragment that copies 1 to the stack, then calls frag_move_movea_link_bra_28, then returns.
+- `frag_move_bsr_rts_29`: Short code fragment that copies 2 to the stack, then calls frag_move_movea_link_bra_28, then returns.
+- `frag_move_bsr_rts_30`: Short code fragment that copies 3 to the stack, then calls frag_move_movea_link_bra_28, then returns.
+- `frag_move_bsr_rts_31`: Short code fragment that copies 4 to the stack, then calls frag_move_movea_link_bra_28, then returns.
+- `frag_move_rts_307`: Short code fragment that copies 1 to the memory at an offset from a5, then returns.
 - `indexes_table_and_calls_entry`: Clamps the word in d2 to a maximum of 11 (otherwise 65535), uses it to index a table of 16-bit offsets, and calls the routine at the resulting address before returning.
 - `frag_move_rts_280`: Short code fragment that copies 1 to the memory at an offset from a5, then returns.
 - `dispatch_table_and_call_subroutines`: Calculates an index from d2, calls a routine from a table, and if the result is not less than 2, checks a byte at offset -473 of a5, then calls three separate routines and a final routine using a pointer from a global variable.
@@ -207,6 +284,11 @@
 - `frag_moveq_move_rts_25`: Short code fragment that loads 0 into d2, then copies d2 to the memory at an offset from a5, then returns.
 - `process_structure_values_2`: Compares values at offsets 16, -2, 14, and -4 of the structure in a5, performing arithmetic and setting d2 to 1 if specific conditions are met.
 - `frag_moveq_move_rts_26`: Short code fragment that loads 0 into d2, then copies d2 to the memory at an offset from a5, then returns.
+- `calculate_collision_values`: Performs multiple arithmetic operations on word values from memory locations relative to a5, compares results with another value, and sets a register based on comparison outcomes.
+- `frag_moveq_move_rts_34`: Short code fragment that loads 0 into d2, then copies d2 to the memory at an offset from a5, then returns.
+- `compute_boundary_check`: Executes a series of arithmetic calculations using values from memory addresses relative to a5, performs comparisons between computed results and a stored value, and conditionally sets a register to one.
+- `frag_moveq_move_rts_35`: Short code fragment that loads 0 into d2, then copies d2 to the memory at an offset from a5, then returns.
+- `frag_move_rts_308`: Short code fragment that copies 1 to the memory at an offset from a5, then returns.
 - `frag_lea_cmpi_bls_moveq_asl_move_jsr_br_5`: Short code fragment that loads the address of a location in the code into a3, then compares d2 with 8, then branches if the comparison was lower or same (unsigned), then loads 255 into d2, then shifts d2 left by 1, then copies an indexed entry from a3 to d2, then calls another routine, then copies the memory at an offset from a5 to d0, then jumps to another point in the code.
 - `frag_unlk_movea_lea_jmp_11`: Short code fragment that removes the stack frame held in a5, then copies the top of the stack to a4, then copies the top of the stack to a0, then loads the address of the memory at an offset from a7 into a7, then jumps to the address in a0.
 - `update_structure_with_calculated_offsets`: Clears a word at offset -6 of a structure, calls a routine with two values from the stack, and if the returned byte is non-zero, writes two words to a table at offset -30 and offset -38 using values from offsets 24 and 22 of the structure.
@@ -358,6 +440,12 @@
 - `frag_movea_move_addq_jmp_137`: Short code fragment that copies the memory at an offset from a7 to a1, then copies a fixed memory address to a6, then copies the top of the stack to the memory at an offset from a7, then adds 4 to a7, then jumps to another point in the code.
 - `empty_stub_28`: Empty routine: returns to the caller immediately without doing anything.
 - `empty_stub_29`: Empty routine: returns to the caller immediately without doing anything.
+- `frag_movea_move_addq_jmp_140`: Short code fragment that copies the memory at an offset from a7 to a0, then copies the memory at an offset from a7 to a1, then copies a fixed memory address to a6, then copies the top of the stack to the memory at an offset from a7, then adds 8 to a7, then jumps to another point in the code.
+- `frag_movea_move_addq_jmp_141`: Short code fragment that copies the memory at an offset from a7 to a0, then copies the memory at an offset from a7 to a1, then copies a fixed memory address to a6, then copies the top of the stack to the memory at an offset from a7, then adds 8 to a7, then jumps to another point in the code.
+- `frag_movea_move_addq_jmp_142`: Short code fragment that copies the memory at an offset from a7 to a0, then copies the memory at an offset from a7 to a1, then copies a fixed memory address to a6, then copies the top of the stack to the memory at an offset from a7, then adds 8 to a7, then jumps to another point in the code.
+- `frag_movea_move_addq_jmp_143`: Short code fragment that copies the memory at an offset from a7 to a0, then copies the memory at an offset from a7 to a1, then copies a fixed memory address to a6, then copies the top of the stack to the memory at an offset from a7, then adds 8 to a7, then jumps to another point in the code.
+- `call_insert_2`: Library stub: loads its arguments and the exec library base, calls Insert and returns its result to the caller.
+- `frag_movea_move_addq_clr_jmp`: Short code fragment that copies the memory at an offset from a7 to a0, then copies a0 to the memory at a0, then adds 4 to the memory at a0, then clears the memory at an offset from a0, then copies a0 to the memory at an offset from a0, then copies the top of the stack to a0, then adds 4 to a7, then jumps to the address in a0.
 - `frag_link_bra_25`: Short code fragment that creates a stack frame in a5, then jumps to another point in the code.
 - `function_epilogue_35`: Function exit sequence shared or jumped to by a routine: removes the stack frame with unlk, then returns to the caller.
 - `empty_stub_30`: Empty routine: returns to the caller immediately without doing anything.

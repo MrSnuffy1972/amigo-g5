@@ -5,6 +5,42 @@
 ### game
 (continued)
 
+- `push_and_call_subroutine_2`: Clears a word at offset -4 of a structure, pushes a byte from a global variable, a word from offset -2 of a structure, and a word of 6 onto the stack before calling another routine and then calling a third routine with a pointer in a4.
+- `process_entity_events`: Sets a byte at a global address, then performs several conditional blocks that copy bytes from a table to a structure, call various routines to update structure fields, and execute a loop that fetches pointers from a table to call a routine and update a byte at offset -13 of the structure.
+- `process_entity_event_and_update_status`: Copies a block of data from a structure to a new location, then iterates through a table to perform a series of conditional calls and updates status bytes and flags within the structure based on values retrieved from a global table.
+- `dispatch_event_callback_2`: Pushes a pointer and two words from a structure onto the stack to call a routine, then retrieves a byte from the structure to update a local field.
+- `execute_callback_via_stack`: Pushes several values from a structure in a5 onto the stack, including a word from offset 12, a word from offset 16, and a pointer from offset 12, then calls another routine.
+- `call_subroutine_with_parameter`: Loads a pointer from a constant offset, pushes a byte from a global variable onto the stack, pushes the value 10 onto the stack, and calls a routine with a pointer to an offset 28 of the loaded structure.
+- `call_handler_at_offset`: Calls another routine with a pointer computed as a global pointer plus 39 and a zero argument, then returns.
+- `check_byte_and_branch_3`: Loads a byte from a global variable into d2 and branches to another routine if d2 is not zero, otherwise it branches to a different location.
+- `store_result_if_match`: Loads a pointer from a global variable into a3, compares a byte at offset thirty-six of the structure in a3 to four, and if they are equal, pushes two words onto the stack, calls another routine, stores the returned word into offset negative two of a structure in a5, and branches to another location.
+- `process_status_with_offset_one`: Clears a 16-bit value at offset -2 of a structure in a5, calls another routine with parameters, adds the result and a value from offset -2 of a5 to a register, and if a subsequent routine returns a non-zero value, calls a third routine using a pointer from a global variable.
+- `branch_on_global_pointer`: Loads a pointer from a constant offset, links the stack frame, loads a 32-bit value from a global variable into the stack, and branches to a different location if that value is non-zero, otherwise it branches to another location.
+- `validate_and_dispatch_structure_2`: Checks a byte at offset 33 of a structure, calls another routine, and if successful, performs several operations including calling a routine with a pointer from a structure in a5 and calling a third routine with a pointer from offset -8 of a5.
+- `call_with_offset_pointer`: Pushes a pointer from a structure in a5 and several parameters onto the stack, calls another routine, and returns.
+- `validate_and_update_structure_2`: Checks specific byte values within a structure in a5, and if conditions are met, clears a byte, sets another byte, copies a byte from one structure to another, and calls another routine.
+- `call_handler_at_offset_2`: Calls another routine with a pointer computed as a global pointer plus 92 and a zero argument, then returns.
+- `call_two_handlers_with_offset`: Calls a routine with no arguments, then calls another routine with a pointer computed as a global pointer plus 110, then returns.
+- `validate_and_branch_on_pointer`: Saves the current stack pointer, loads a pointer from a table, pushes a value from a global variable onto the stack, and branches to another routine if the value is non-zero; otherwise it branches to a different routine.
+- `dispatch_conditional_event_structure`: Checks if a byte at offset 51 of a structure is equal to 7; if so, it calls another routine with a byte from offset 132 of the structure as a parameter, then checks if the result is non-zero and if a byte at offset 43 of the structure is greater than 1, before calling a third routine with a pointer from the structure and several parameters.
+- `process_conditional_structure_updates_2`: Pushes a byte from a global variable twice, calls another routine, and if the result is non-zero, calls a third routine with a pointer from offset -8 of a5 and a pointer from offset -4 of a5.
+- `dispatch_event_from_table`: Pushes a pointer from a4 to the stack, loads a pointer from a global variable, sets a 16-bit value at offset -702 of the new pointer and clears a 16-bit value at offset -706, then calls a routine using a value from a global variable and branches.
+- `frag_clr_rts_14`: Short code fragment that clears the memory at an offset from a4, then returns.
+- `frag_move_rts_154`: Short code fragment that copies 1 to the memory at an offset from a4, then returns.
+- `frag_move_rts_155`: Short code fragment that copies 51 to the memory at an offset from a4, then returns.
+- `frag_move_rts_156`: Short code fragment that copies 76 to the memory at an offset from a4, then returns.
+- `frag_move_rts_157`: Short code fragment that copies 91 to the memory at an offset from a4, then returns.
+- `frag_move_rts_158`: Short code fragment that copies 100 to the memory at an offset from a4, then returns.
+- `frag_move_rts_159`: Short code fragment that copies 19 to the memory at an offset from a4, then returns.
+- `frag_move_rts_160`: Short code fragment that copies 20 to the memory at an offset from a4, then returns.
+- `frag_move_rts_161`: Short code fragment that copies 21 to the memory at an offset from a4, then returns.
+- `frag_move_rts_162`: Short code fragment that copies 22 to the memory at an offset from a4, then returns.
+- `dispatch_and_process_event`: Dispatches a function from a table based on a value in a register, then calls another routine with parameters from structures in a4 and a5.
+- `call_with_offset_pointer_alt`: Pushes a pointer from an offset of a structure in a5 and several parameters onto the stack, calls another routine, and returns.
+- `process_conditional_sequence`: Checks a pointer and a byte in a structure, then conditionally calls several routines with different parameters, including one that uses a value from a4.
+- `run_loop_then_call_handler_at`: Calls a routine with the constant 2, calls another routine with a pointer computed as a global pointer plus 156 and a zero argument, then calls a third routine with no arguments.
+- `halve_word_result_and_call`: Calls a routine and takes its word result, adds one, shifts it right by one bit, passes that value to another routine, then calls a third routine with a pointer at offset 168 of a4.
+- `process_entity_stat_updates`: Iterates through a set of eight indices to compare values in a structure, potentially updating a 16-bit counter and calling another routine to update a longword in a table.
 - `update_entity_stats_and_index`: Updates three byte-sized fields in a structure by adding a value from a local stack offset, increments a byte in a table at an index provided by a stack offset, calls another routine, and conditionally updates a 32-bit value in a structure using a value from another structure.
 - `update_index_via_call`: Copies a 32-bit value from offset -6 of a5 to offset 106 of a structure pointed to by offset -10 of a5, calls another routine with that pointer, and stores the result at offset 212 of the structure.
 - `call_subroutine_with_offset_170`: Copies a byte from a global variable to the stack, pushes several zeroed words and bytes, and calls a subroutine with a pointer to an offset of 170 from a local address.
@@ -324,6 +360,9 @@
 - `frag_bsr_rts_17`: Short code fragment that calls another routine, then returns.
 - `frag_bsr_rts_18`: Short code fragment that calls another routine, then returns.
 - `frag_bsr_rts_19`: Short code fragment that calls another routine, then returns.
+- `call_search_structure_for_byte`: Call stub: calls search_structure_for_byte, then returns to its own caller.
+- `call_frag_move_movea_link_addq_tst_`: Call stub: calls frag_move_movea_link_addq_tst_beq_clr_b, then returns to its own caller.
+- `call_dispatch_bytecode_then_table`: Call stub: calls dispatch_bytecode_then_table, then returns to its own caller.
 - `frag_bsr_rts_20`: Short code fragment that calls another routine, then returns.
 - `frag_bsr_rts_21`: Short code fragment that calls another routine, then returns.
 - `frag_bsr_rts_22`: Short code fragment that calls another routine, then returns.
@@ -372,6 +411,7 @@
 - `frag_move_jsr_movea_cmpi_bhi_rts_6`: Short code fragment that copies a3 to the stack, then copies 1 to the stack, then copies 10 to the stack, then calls accumulate_and_loop_values, then copies the top of the stack to a3, then copies d0 to d2, then compares d2 with 9, then branches if the comparison was higher (unsigned), then copies 1 to the memory at an offset from a5, then returns.
 - `frag_move_jsr_movea_cmpi_bhi_rts_7`: Short code fragment that copies a3 to the stack, then copies 1 to the stack, then copies 12 to the stack, then calls accumulate_and_loop_values, then copies the top of the stack to a3, then copies d0 to d2, then compares d2 with 11, then branches if the comparison was higher (unsigned), then copies 1 to the memory at an offset from a5, then returns.
 - `frag_move_jsr_movea_cmpi_bhi_rts_8`: Short code fragment that copies a3 to the stack, then copies 1 to the stack, then copies 20 to the stack, then calls accumulate_and_loop_values, then copies the top of the stack to a3, then copies d0 to d2, then compares d2 with 19, then branches if the comparison was higher (unsigned), then copies 1 to the memory at an offset from a5, then returns.
+- `frag_move_rts_291`: Short code fragment that copies 1 to the memory at an offset from a5, then returns.
 - `dispatch_data_structure_element`: Validates a value in register d2 against a range, uses it as an index into a table to call a routine, and then updates a pointer in a structure via a linked list operation.
 - `process_conditional_data`: Checks if a byte at offset -5 of a5 is non-zero, then calls a routine with parameters from a table, performs arithmetic using values from two different tables, and calls another routine with the result.
 - `function_epilogue_4`: Function exit sequence shared or jumped to by a routine: restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
@@ -518,6 +558,24 @@
 - `copy_string_from_offset`: Copies bytes from a global table at offset 412 from a4 into a local buffer at offset -70 from a5, one byte at a time for up to 40 bytes, stopping after copying a zero byte.
 - `copy_string_from_offset_2`: Copies bytes from a global table at offset 427 from a4 into a local buffer at offset -70 from a5, one byte at a time for up to 40 bytes, stopping after copying a zero byte.
 - `copy_string_from_offset_3`: Copies bytes from a global table at offset 436 from a4 into a local buffer at offset -70 from a5, one byte at a time for up to 40 bytes, stopping after copying a zero byte.
+- `copy_string_block_1`: Copies 40 bytes from a memory location at offset 445 of a4 to another location at offset -70 of a5, using a loop that decrements a counter and copies byte by byte.
+- `copy_string_block_2`: Copies 40 bytes from a memory location at offset 454 of a4 to another location at offset -70 of a5, using a loop that decrements a counter and copies byte by byte.
+- `copy_string_block_3`: Copies 40 bytes from a memory location at offset 468 of a4 to another location at offset -70 of a5, using a loop that decrements a counter and copies byte by byte.
+- `copy_string_block_4`: Copies 40 bytes from a memory location at offset 484 of a4 to another location at offset -70 of a5, using a loop that decrements a counter and copies byte by byte.
+- `copy_string_block_5`: Copies 40 bytes from a memory location at offset 493 of a4 to another location at offset -70 of a5, using a loop that decrements a counter and copies byte by byte.
+- `copy_string_block_6`: Copies 40 bytes from a memory location at offset 510 of a4 to another location at offset -70 of a5, using a loop that decrements a counter and copies byte by byte.
+- `copy_string_block_7`: Copies 40 bytes from a memory location at offset 535 of a4 to another location at offset -70 of a5, using a loop that decrements a counter and copies byte by byte.
+- `copy_string_block`: Copies 40 bytes from a memory location in a4 to another location in a5, with both pointers incremented during the copy operation.
+- `copy_string_block_8`: Copies 40 bytes from a memory location in a4 to another location in a5, with both pointers incremented during the copy operation.
+- `copy_block_40`: Copies 40 bytes from a memory location pointed to by a4 plus 592 to another memory location pointed to by a5 minus 70, advancing both pointers during the copy operation.
+- `copy_string_block_9`: Copies 40 bytes from a source address derived from a4 plus 602 to a destination address derived from a5 minus 70, advancing both pointers during the copy operation.
+- `copy_string_block_10`: Copies a block of 40 bytes from a global variable at offset 623 of register a4 to another global variable at offset -70 of register a5, including the null terminator.
+- `copy_string_block_11`: Copies 40 bytes from a global variable table to another global variable buffer, advancing both pointers during the copy operation.
+- `copy_byte_block`: Copies bytes from a location pointed to by a4 plus 645 to a location pointed to by a5 minus 70, repeating 40 times.
+- `copy_string_block_12`: Copies 40 bytes from a source address in a4 to a destination address in a5, advancing both pointers during the copy operation.
+- `copy_string_block_13`: Copies 40 bytes from a source address derived from a4 plus 685 to a destination address derived from a5 minus 70, advancing both pointers during the copy operation.
+- `copy_string_block_14`: Copies 40 bytes from a memory location pointed to by a4 with offset 693 to another memory location pointed to by a5 with negative offset 70, advancing both pointers during the copy operation.
+- `frag_clr_rts_27`: Short code fragment that clears the memory at an offset from a5, then returns.
 - `dispatch_event_and_update_state_2`: Selects and calls a function from a table based on a value in a register, then if a specific byte in a structure is non-zero, increments a counter in that structure, copies 80 bytes from a source to a destination, and calls copy_string_with_limit_4 and another routine.
 - `execute_dual_event_sequence`: Checks a 16-bit value at offset 24 of the structure in a5; if zero, it pushes two sets of parameters onto the stack and calls another routine twice with different command IDs, then updates a pointer in the structure and branches to another routine.
 - `initialize_flags_and_invoke_setup`: Sets a byte at offset -28 of a5 to 1 and a word at offset -72 to 0, calls two setup routines, sets a global byte to 1, calls a routine with pointers into the frame and stores the returned word at offset -20, then calls two further routines before returning.
@@ -776,6 +834,7 @@
 - `frag_bsr_rts_41`: Short code fragment that calls another routine, then returns.
 - `frag_bsr_rts_42`: Short code fragment that calls another routine, then returns.
 - `frag_bsr_rts_43`: Short code fragment that calls another routine, then returns.
+- `frag_move_rts_292`: Short code fragment that copies 1 to the memory at an offset from a5, then returns.
 - `frag_lea_cmpi_bls_moveq_asl_move_jsr_rt_4`: Short code fragment that loads the address of a location in the code into a3, then compares d2 with 11, then branches if the comparison was lower or same (unsigned), then loads 255 into d2, then shifts d2 left by 1, then copies an indexed entry from a3 to d2, then calls another routine, then returns.
 - `frag_move_rts_192`: Short code fragment that copies 1 to the memory at an offset from a5, then returns.
 - `execute_indexed_event_sequence`: Selects and calls a routine from a table using an index derived from a register, then checks a flag in a structure to decide whether to call dispatch_linked_list_entries, dispatch_indexed_routine, and update_entity_status_and_dispatch.
@@ -1129,6 +1188,17 @@
 - `frag_move_rts_217`: Short code fragment that copies 10 to the memory at an offset from a3, then returns.
 - `frag_move_rts_218`: Short code fragment that copies 5 to the memory at an offset from a3, then copies 20 to the memory at an offset from a3, then returns.
 - `frag_move_rts_219`: Short code fragment that copies 60 to the memory at an offset from a3, then returns.
+- `frag_move_rts_293`: Short code fragment that copies 80 to the memory at an offset from a3, then returns.
+- `frag_move_rts_294`: Short code fragment that copies 20 to the memory at an offset from a3, then returns.
+- `frag_move_rts_295`: Short code fragment that copies 40 to the memory at an offset from a3, then returns.
+- `frag_move_rts_296`: Short code fragment that copies 35 to the memory at an offset from a3, then returns.
+- `frag_move_rts_297`: Short code fragment that copies 250 to the memory at an offset from a3, then returns.
+- `frag_move_rts_298`: Short code fragment that copies 400 to the memory at an offset from a3, then returns.
+- `frag_move_rts_299`: Short code fragment that copies 300 to the memory at an offset from a3, then returns.
+- `frag_move_rts_300`: Short code fragment that copies 350 to the memory at an offset from a3, then returns.
+- `frag_move_rts_301`: Short code fragment that copies 450 to the memory at an offset from a3, then returns.
+- `frag_move_rts_302`: Short code fragment that copies 1 to the memory at an offset from a3, then returns.
+- `frag_move_rts_303`: Short code fragment that copies 4 to the memory at an offset from a3, then copies 20 to the memory at an offset from a3, then returns.
 - `dispatch_via_table_and_byte`: Decrements d2, and if it is not less than 70, calls a routine from a table using d2 as an index; then it decrements d2 again, and if it is not less than 20, calls a routine from a table using a value derived from a byte at offset 48 of a3.
 - `scale_word_by_1250_to_offset`: Reads the 16-bit value at offset 54 of the structure in a3, multiplies it by 1250 as a signed word, and stores the low 16 bits at offset 66 of that structure, then returns.
 - `scale_word_by_75_to_offset`: Reads the 16-bit value at offset 54 of the structure in a3, multiplies it by 75 as a signed word, and stores the low 16 bits at offset 66 of that structure, then returns.
@@ -1309,53 +1379,3 @@
 - `frag_movea_move_addq_jmp_79`: Short code fragment that copies the memory at an offset from a7 to a1, then copies a location in the code to a6, then copies the top of the stack to the memory at an offset from a7, then adds 4 to a7, then jumps to another point in the code.
 - `frag_movea_move_addq_jmp_80`: Short code fragment that copies the memory at an offset from a7 to a0, then copies a location in the code to a6, then copies the top of the stack to the memory at an offset from a7, then adds 4 to a7, then jumps to another point in the code.
 - `frag_movea_move_addq_jmp_81`: Short code fragment that copies the memory at an offset from a7 to a1, then copies a location in the code to a6, then copies the top of the stack to the memory at an offset from a7, then adds 4 to a7, then jumps to another point in the code.
-- `frag_movea_move_addq_jmp_82`: Short code fragment that copies the memory at an offset from a7 to a1, then copies the memory at an offset from a7 to a0, then copies a location in the code to a6, then copies the top of the stack to the memory at an offset from a7, then adds 8 to a7, then jumps to another point in the code.
-- `frag_movea_moveq_move_addq_jmp_5`: Short code fragment that copies the memory at an offset from a7 to a1, then loads 0 into d0, then copies the memory at an offset from a7 to d0, then loads 0 into d1, then copies the memory at an offset from a7 to d1, then copies a location in the code to a6, then copies the top of the stack to the memory at an offset from a7, then adds 8 to a7, then jumps to another point in the code.
-- `call_library_vector_60_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 60 of that base, returning its result to the caller.
-- `call_library_vector_54_3`: Library stub: loads a library base from a global variable and calls the library function at offset minus 54 of that base, returning its result to the caller.
-- `frag_move_movea_link_unlk_rts`: Short code fragment that copies a4 to the stack, then copies a location in the code to a4, then creates a stack frame in a5, then removes the stack frame held in a5, then copies the top of the stack to a4, then returns.
-- `reload_a4_via_pc_relative_constant`: Saves the current value of a4 to the stack, loads a new address from a constant relative to the program counter into a4, performs a link and unlk operation on a5, restores the original a4 from the stack, and returns.
-- `save_a4_and_return`: Pushes the caller's A4 onto the stack, loads A4 from a PC-relative pointer slot, performs a link/unlk frame setup and teardown on A5 with no net effect, then restores the original A4 from the stack and returns.
-- `save_load_a4_frame_5`: Pushes the current value of a4 onto the stack, loads a4 from a pc-relative pointer slot, performs a link/unlk frame pair on a5 with zero locals, then pops the saved a4 back and returns.
-- `load_a4_via_pc_relative`: Saves the current value of a4 to the stack, loads a new address from a constant using PC-relative addressing into a4, performs a link and unlk operation on a5, restores the original a4 from the stack, and returns.
-- `save_a4_and_link_frame`: Pushes a4 onto the stack, loads a4 from a pc-relative pointer, then performs a link and unlk on a5 before popping the saved a4 and returning.
-- `load_and_verify_a5`: Saves the current value of a4 to the stack, loads a new address from a constant into a4, performs a link and unlk operation on a5, and restores the original a4 from the stack before returning.
-- `load_a4_from_pc_constant_2`: Saves the current value of a4 to the stack, loads a new address from a constant located immediately after the instruction into a4, performs a link and unlk operation on a5, restores the original a4 from the stack, and returns.
-- `save_a4_and_return_2`: Pushes the current value of a4 onto the stack, loads a4 from a PC-relative pointer slot, performs an empty link.w/unlk pair on a5 that changes no state, then pops and restores the original a4 before returning.
-- `save_a4_link_unlk_return`: Pushes the current value of a4 onto the stack, loads a4 from a PC-relative pointer slot, performs a link and unlk on a5 with a zero frame size, then restores the saved a4 from the stack and returns.
-- `load_a4_from_pc_and_return`: Saves the current value of a4 to the stack, loads a new address from the instruction stream into a4, performs a link and unlk operation on a5, restores the original a4 from the stack, and returns.
-- `frag_move_movea_link_unlk_rts_2`: Short code fragment that copies a4 to the stack, then copies a location in the code to a4, then creates a stack frame in a5, then removes the stack frame held in a5, then copies the top of the stack to a4, then returns.
-- `transfer_and_branch_2`: Pushes the contents of register a4 onto the stack, loads a longword from a constant offset relative to the program counter into register a4, and performs a branch to a distant address.
-- `process_conditional_increment`: Pushes a longword to the stack, loads a pointer from a table, links a5, saves a word from offset 12 of the structure to the stack, checks a bit in a byte from a global variable, and if set, increments the saved word, shifts it right, and branches to another routine.
-- `pop_two_pointers_and_jump`: Unlocks a5, pops two longwords from the stack into a4 and a0, increments the stack pointer by 2, and jumps to the address in a0.
-- `update_entity_status_and_timer`: Clears a byte at offset 202 of a structure, calls another routine to update a status byte, and then conditionally updates a 16-bit timer value at offset 4 of a local structure by adding or subtracting values based on results from other routines and a table lookup.
-- `update_structure_and_jump_4`: Clears a 16-bit word at offset 4 of a structure in a3, calls another routine using a pointer from offset 12 of a structure in a5, stores the returned byte from d0 into offset 8 of a structure pointed to by a pointer retrieved from offset 202 of a structure in a1, and finally performs an indirect jump using a pointer from the stack.
-- `execute_dispatch_logic`: Loads a pointer from a table, performs several lookups in a structure in a3 to push values onto the stack, calls three different routines, and finally performs an indirect jump to an address popped from the stack.
-- `dispatch_event_and_copy_string_2`: Retrieves a pointer from a table, calls a routine from a jump table based on a value in a register, and then performs two sequential calls to other routines using parameters.
-- `copies_string_into_local_buffer`: Copies bytes from the source pointed to by a4 into a local buffer of up to 81 bytes starting at a5 minus 84, stopping after a zero byte is copied.
-- `copies_string_from_offset_into_buffer`: Copies bytes starting at offset 12 of the structure in a4 into a local buffer of up to 81 bytes at a5 minus 84, stopping after a zero byte is copied.
-- `copies_string_from_offset`: Copies bytes starting at offset 27 of the structure in a4 into a local buffer of up to 81 bytes at a5 minus 84, stopping after a zero byte is copied.
-- `dispatch_event_and_copy_string`: Selects and calls a routine from a jump table based on a value in a register, then performs two sequential calls to other routines using parameters from a structure in a5.
-- `copy_event_string_and_dispatch`: Copies up to 80 bytes from a string in a structure to a destination buffer, then performs conditional checks on bytes at offsets 12 and 18 of the structure to either copy a second string or call dispatch_event_parameters and format_and_display_status with various parameters derived from the structure.
-- `format_and_display_status`: Converts a numeric value from a structure into a string and calls dispatch_event_parameters to display it, followed by several other calls to dispatch_event_parameters to update text or status information based on a conditional check of a value at offset 14 of the structure.
-- `dispatch_event_parameters`: Calls a routine twice with specific integer arguments and a structure pointer, then calls another routine using a pointer and a word from the structure in a5.
-- `process_event_data_structure_3`: Checks a byte at offset 213 of a structure pointed to by offset 20 of a5; if it is not 8, it prepares a stack frame with various parameters and calls another routine.
-- `call_dispatch_and_branch`: Calls dispatch_event_data_structure and then performs a short branch to another location.
-- `dispatch_event_data_structure`: Reads a byte from offset 214 of a structure pointed to by offset 20 of a5 and, if zero, performs a series of conditional calls based on values at offsets 213 and 214 of a sub-structure.
-- `execute_indirect_calls`: Calls two routines and then performs an indirect jump using a pointer loaded from the stack.
-- `process_entity_event_list_4`: Iterates through a list of pointers, checking a byte at offset 214 of a structure and a byte at offset 9 of a secondary structure.
-- `calculate_attribute_modifiers`: Calls another routine and uses the result to fetch two values from a table using an index derived from the result, then adds these values to other table-based lookups and stores the final results in local stack variables.
-- `calculate_damage_and_update_attribute`: Calculates a value by indexing into a table using offsets from a structure, scales it, and stores it in a local variable.
-- `update_entity_state_and_attributes_4`: Updates a byte at offset 8 of a structure by subtracting a value from a structure in a5, then conditionally performs several operations including calls to decrement_word_and_reset_flag, update_table_entries, and update_entity_attributes_and_clamp.
-- `process_conditional_entity_action`: Calls two different routines, checks a byte at offset 214 of a structure pointed to by offset 14 of a5, and if that byte is non-zero, calls a third routine; if the result of that third routine is zero, it clears a byte at offset 8 of a structure pointed to by offset 202 of the structure at offset 14 of a5, then performs an indirect jump using a pointer from the stack.
-- `execute_conditional_subroutine_calls`: Clears a byte at offset -57 of a stack frame, calls two different routines with specific arguments, stores the results in offsets -32 and -36 of the stack frame, and branches to another routine if the value at offset -36 is non-zero, otherwise it branches to a different location.
-- `process_entity_interaction_and_state`: Iterates through a list of entities to update their status and values based on table lookups, then performs conditional checks on entity properties and calls several routines to handle state changes and coordinate-based logic.
-- `test_structure_condition_and_set_flag`: Calls another routine and, if the return value is zero, sets a byte at offset negative one of the structure to one; otherwise, it branches to another location.
-- `update_structure_threshold_flag`: Retrieves two values via pointers from a structure, performs bitwise shifts and comparisons on them, and sets a byte at offset -1 of the structure to 1 if the second value is less than or equal to the first.
-- `process_conditional_structure_call`: Compares a word at offset -4 of a structure with a word at offset -6, and if they are equal, calls another routine with two words on the stack.
-- `execute_parameterized_call`: Pushes a value from a pointer at offset 243 of a4 onto the stack, calls another routine, pushes a word from offset 12 of a5 onto the stack, calls another routine, and then performs an indirect jump to an address in a0.
-- `pop_two_pointers_and_jump_2`: Unlocks a5, pops two longwords from the stack into a4 and a0, increments the stack pointer by 4, and jumps to the address in a0.
-- `process_structure_data_2`: Updates a local word from a byte at offset 220 of a structure, calls two routines conditionally, and then calculates a value from a table using a byte at offset 48 of a structure multiplied by 18 to update a global variable.
-- `update_structure_values_5`: Loads a byte from offset 220 of a pointer found at offset 12 of a5 into a global variable, calls another routine with a pointer to offset 12 of a5, and performs several conditional checks and updates to offsets -6, -2, and 220 of the structure in a5 before branching to a routine at offset 8 of a5.
-- `update_byte_and_jump_2`: Copies a word from offset -4 of a structure into d2, copies a byte from d2 into offset 220 of a pointer found at offset 12 of a5, unlocks a5, pops two longwords from the stack into a4 and a0, increments the stack pointer by 4, and jumps to the address in a0.
-- `manage_entity_group_membership`: Checks if an entity meets specific criteria based on a comparison between a byte at offset 220 of a structure and a byte at offset 7 of another structure, then iterates through a table of pointers to count entities matching a specific flag.

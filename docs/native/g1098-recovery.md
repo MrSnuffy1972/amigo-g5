@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (4449005 top-level bytes in 120 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 19 of 19 units identical (bytes and relocations), 17 raw-word lines |
-| Functions named and described | pass, 6002 of 6002 named (0 author symbols), 6002 of 6002 described (2155 by rule, 3512 by the local model) |
+| Functions named and described | pass, 6098 of 6098 named (0 author symbols), 6098 of 6098 described (2217 by rule, 3546 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 16406 of 16406 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 13319 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 115001 of 115002 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 115794 of 115795 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 1215430 |
-| code | 438450 |
-| data | 2794769 |
+| code | 441400 |
+| data | 2791819 |
 | padding | 356 |
 
 ## Code units
@@ -28,18 +28,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | game.slave | 1 | 1117 | 72 |
 | HDInstall | 19 | 3625 | 290 |
-| game | 118 | 88720 | 4171 |
+| game | 118 | 89345 | 4238 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 489 | 404 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 117 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4825 | 300 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4878 | 308 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 253 | 3 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3454 | 120 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2487 | 103 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3460 | 121 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2491 | 105 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 7 | 3 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4167 | 273 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2265 | 135 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1138 | 56 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4185 | 280 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2313 | 140 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1177 | 62 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 120 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2146 | 30 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 2 |
@@ -939,6 +939,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `frag_movea_move_addq_jmp_62`: Short code fragment that copies the memory at an offset from a7 to a0, then copies the memory at an offset from a7 to a1, then copies a location in the code to a6, then copies the top of the stack to the memory at an offset from a7, then adds 8 to a7, then jumps to another point in the code.
 - `frag_move_andi_movea_addq_jmp_2`: Short code fragment that copies the memory at an offset from a7 to d0, then masks d0 with 31, then copies the top of the stack to a0, then adds 2 to a7, then jumps to the address in a0.
 - `frag_move_lsr_andi_movea_addq_jmp_2`: Short code fragment that copies the memory at an offset from a7 to d0, then shifts d0 right by 5, then masks d0 with 63, then copies the top of the stack to a0, then adds 2 to a7, then jumps to the address in a0.
+- `frag_move_moveq_lsr_andi_movea_addq_jmp_2`: Short code fragment that copies the memory at an offset from a7 to d0, then loads 11 into d1, then shifts d0 right by d1, then masks d0 with 31, then copies the top of the stack to a0, then adds 2 to a7, then jumps to the address in a0.
+- `call_library_vector_462_4`: Library stub: loads a library base from a global variable and calls the library function at offset minus 462 of that base, returning its result to the caller.
+- `call_library_vector_42_4`: Library stub: loads a library base from a global variable and calls the library function at offset minus 42 of that base, returning its result to the caller.
 - `call_library_function_156`: Prepares parameters for a library call at offset -156 and executes it, then restores registers and returns to the caller.
 - `call_library_vector_174_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 174 of that base, returning its result to the caller.
 - `call_library_vector_186_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 186 of that base, returning its result to the caller.
@@ -1449,6 +1452,26 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispatch_masked_bytes`: Retrieves a byte from offset 206 of a structure in a3, and if it is not zero, it checks a global byte; if that byte is zero, it calls another routine with a byte from a global address and a constant 8, then repeats this process with a second byte from a different global address.
 - `validate_and_calculate_structure`: Calls validate_structure_bytes, calculates a value based on a byte from a global variable and a value at offset -6 of a structure, calls accumulate_and_loop_values, and performs conditional checks on a global variable before jumping to a function pointer at offset 8 of a structure.
 - `dispatch_table_entry_2`: Pushes a4 onto the stack, loads a pointer from a table into a4, links a5, loads a word from offset 16 of a5 into d2, and branches to another routine.
+- `frag_move_bsr_rts_21`: Short code fragment that copies the memory at an offset from a5 to the stack, then copies 25 to the stack, then calls execute_structure_action, then copies the memory at an offset from a5 to the stack, then copies 32 to the stack, then calls another routine, then copies the memory at an offset from a5 to the stack, then copies 37 to the stack, then calls another routine, then returns.
+- `execute_action_sequence`: Calls the structure action handler with eight different action codes sequentially, passing the same base pointer each time.
+- `execute_short_sequence`: Calls the structure action handler with six different action codes sequentially, passing the same base pointer each time.
+- `execute_extended_actions`: Calls the structure action handler with eight different action codes sequentially, passing the same base pointer each time.
+- `execute_varied_actions`: Calls the structure action handler with six different action codes sequentially, passing the same base pointer each time.
+- `process_masked_and_actions`: First calls a masked bytes dispatcher using data from a pointer, then calls the structure action handler with seventeen different action codes sequentially.
+- `execute_basic_sequence`: Calls the structure action handler with seven different action codes sequentially, passing the same base pointer each time.
+- `frag_move_bsr_rts_22`: Short code fragment that copies the memory at an offset from a5 to the stack, then copies 89 to the stack, then calls execute_structure_action, then returns.
+- `process_masked_and_extended`: First calls a masked bytes dispatcher using data from a pointer, then calls the structure action handler with seventeen different action codes sequentially.
+- `execute_multiple_actions`: Calls a routine with a structure pointer and multiple action codes, specifically values 1, 7, 26, 33, 36, 49, 108, and 118, each followed by the same structure pointer.
+- `execute_intermediate_sequence`: Calls the structure action handler with ten different action codes sequentially, passing the same base pointer each time.
+- `execute_comprehensive_sequence`: Calls the structure action handler with fourteen different action codes sequentially, passing the same base pointer each time.
+- `execute_action_sequence_2`: Calls the structure action handler multiple times with different word values, passing a global pointer from offset 12 of the stack frame each time.
+- `execute_extended_actions_2`: Invokes the structure action handler several times with distinct word parameters, always using the same global pointer from offset 12 of the stack frame.
+- `execute_short_sequence_2`: Executes the structure action handler a few times with specific word values, each call receiving the same global pointer from offset 12 of the stack frame.
+- `frag_move_bsr_rts_23`: Short code fragment that copies the memory at an offset from a5 to the stack, then copies 1 to the stack, then calls execute_structure_action, then copies the memory at an offset from a5 to the stack, then copies 11 to the stack, then calls another routine, then returns.
+- `frag_move_bsr_rts_24`: Short code fragment that copies the memory at an offset from a5 to the stack, then copies 9 to the stack, then calls execute_structure_action, then copies the memory at an offset from a5 to the stack, then copies 39 to the stack, then calls another routine, then copies the memory at an offset from a5 to the stack, then copies 42 to the stack, then calls another routine, then returns.
+- `frag_move_bsr_rts_25`: Short code fragment that copies the memory at an offset from a5 to the stack, then copies 11 to the stack, then calls execute_structure_action, then copies the memory at an offset from a5 to the stack, then copies 23 to the stack, then calls another routine, then returns.
+- `frag_move_bsr_rts_26`: Short code fragment that copies the memory at an offset from a5 to the stack, then copies 50 to the stack, then calls execute_structure_action, then copies the memory at an offset from a5 to the stack, then copies 54 to the stack, then calls another routine, then returns.
+- `frag_move_bsr_rts_27`: Short code fragment that copies the memory at an offset from a5 to the stack, then copies 35 to the stack, then calls execute_structure_action, then returns.
 - `dispatch_table_jump_and_chain`: Checks if d2 is less than or equal to 21, uses d2 to index into a table to call a routine, and then pops two values from the stack into a4 and a0, increments the stack pointer by 6, and jumps to the address in a0.
 - `validate_and_copy_data`: Copies bytes from a source to a destination using a loop, then checks if a byte at offset -5 of a structure is non-zero and performs several comparisons involving values from a table and a structure before potentially updating a byte and a longword.
 - `load_and_branch_pointer`: Checks a byte at offset -5 of a5 and, if non-zero, loads a longword from a table pointed to by offset -4 of a5 into d0 and branches.
@@ -1466,29 +1489,5 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `frag_addq_rts_2`: Short code fragment that adds 1 to the memory at an offset from a5, then returns.
 - `frag_subq_rts_2`: Short code fragment that subtracts 1 from the memory at an offset from a5, then returns.
 - `frag_subq_rts_3`: Short code fragment that subtracts 2 from the memory at an offset from a5, then returns.
-- `execute_table_and_check_bounds`: Calls a routine from a table based on a value in d2, pushes several values onto the stack including a pointer from offset 18 of a5, calls another routine, and if a global word plus values from a5 exceeds a value at offset 12 of a5, sets a byte at offset minus 3 of a5 to 1.
-- `dispatch_indirect_jump_ten`: Pops two values from the stack into registers a4 and a0, sets the stack pointer to offset 10 from its current position, and jumps to the address in a0.
-- `update_status_byte_3`: Sets a byte at a global variable to 1, calls another routine, stores the returned byte into a global variable, and if that byte is 1, clears a different global variable before branching to another routine.
-- `set_global_byte_2`: Clears d2, loads a byte from a table into d2, and if d2 is 20, sets a byte at offset 34a8 to 1 before branching.
-- `branch_via_offset_table`: Checks two bytes in a structure pointed to by offset 16 of a5, and if both are non-zero, calculates an offset by adding 472 to a byte at offset 37, stores it in a 16-bit value at offset -2 of the structure, and jumps to a routine from a global table using that offset.
-- `frag_subq_rts_4`: Short code fragment that subtracts 1 from the memory at an offset from a5, then returns.
-- `frag_addq_rts_3`: Short code fragment that adds 1 to the memory at an offset from a5, then returns.
-- `update_and_branch_table`: Calls a routine from a table, updates a byte in a global variable by adding values from a5, and performs a comparison before branching.
-- `clear_and_branch`: Clears a byte at a global variable, moves that byte into d0, and branches to another routine.
-- `dispatch_indirect_jump_eight_alt`: Pops two values from the stack into registers a4 and a0, increments the stack pointer by 8, and jumps to the address in a0.
-- `accumulate_and_loop_values`: Performs a loop where it calls another routine and adds the returned value plus one to a local variable at offset -4 of a5.
-- `push_and_call_subroutine`: Stores a byte from offset -2 of a structure into a global byte, pushes a word from offset -2 and a word from offset -4 of the structure onto the stack, and calls a subroutine.
-- `dispatch_indirect_pointer_5`: Unlinks a5, loads a4 and a0 from the stack, and performs an indirect jump using a0.
-- `sync_and_update_linked_list`: Calls a routine with 10 and 65536 on the stack, stores the result in offset minus 4 of a5, and if a longword at offset 62 of a structure in a3 is zero, stores that result into the same offset.
-- `copy_structure_buffer`: Copies a sequence of bytes from a source pointer to a destination pointer within a structure, where the number of bytes is determined by a value at offset 16 of the structure.
-- `execute_complex_sequence_2`: Calls several routines using parameters from a structure in a5, updates a word at offset -2 of the structure, clears bytes at offsets 214 and 230 of a structure pointed to by offset 20 of a5, performs arithmetic to clear a byte in a global table, and finally performs an indirect jump using a value from the stack.
-- `validate_and_call_handler`: Pushes a pointer from a4 to the stack, calls a routine with a value from offset -4 of a5, and if the return value is non-zero, calls another routine with a pointer from offset 12 of a5.
-- `dispatch_indirect_pointer_6`: Unlinks a5, retrieves two longwords from the stack into a4 and a0, and jumps to the address in a0.
-- `iterate_and_dispatch_values`: Populates a table in a5 with several 16-bit values, iterates through them to call a routine, and if a specific byte at offset 66 of a structure in a3 matches 179, clears a byte at offset 215 of that structure.
-- `load_and_dispatch_pointer`: Pushes a4 to the stack, loads a new address into a4 from a table, unlinks a5, and jumps to an address popped from the stack.
-- `dispatch_conditional_event_2`: Saves a4 to the stack, loads a pointer into a4, sets up a stack frame, clears a byte at offset -1 of a structure in a5, and calls a routine with a pointer to offset -6 of the structure; if the return value is non-zero, it calls another routine and then calls a third routine before branching to another routine.
-- `dispatch_indirect_pointer_offset_6`: Unlinks a5, pops two longwords into a4 and a0, increments the stack pointer by 6, and jumps to the address in a0.
-- `increment_structure_value_2`: Pushes a4 onto the stack, loads a pointer into a4, links a5, loads a word from offset 20 of a5 into d2, adds 100 to d2, stores d2 at offset negative 2 of a5, compares a word at offset 20 of a5 to 18, and if they are not equal, branches to another routine; otherwise it increments a word at offset 18 of a5, stores it at offset negative 2 of a5, and branches to another routine.
-- `dispatch_indirect_pointer_7`: Unlinks a5, loads a4 and a0 from the stack, and performs an indirect jump to the address in a0.
 
 The function list continues in: g1098-recovery-functions-2.md, g1098-recovery-functions-3.md, g1098-recovery-functions-4.md, g1098-recovery-functions-5.md.

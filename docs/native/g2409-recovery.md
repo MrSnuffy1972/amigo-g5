@@ -18,16 +18,16 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | class | bytes |
 |---|---|
 | asset | 2057 |
-| code | 5934 |
-| data | 1036186 |
-| padding | 3967 |
+| code | 6874 |
+| data | 1035242 |
+| padding | 3971 |
 | unused | 754176 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| run | 2 | 458 | 12 |
+| run | 2 | 759 | 12 |
 | dB | 2 | 228 | 12 |
 | joy_acc-handler | 3 | 276 | 23 |
 | 9 | 1 | 2 | 1 |

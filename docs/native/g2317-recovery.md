@@ -6,20 +6,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | proof | result |
 |---|---|
-| Bytes classified (901974 top-level bytes in 28 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 16 of 16 units identical (bytes and relocations), 3 raw-word lines |
-| Functions named and described | pass, 2976 of 2976 named (139 author symbols), 2976 of 2976 described (268 by rule, 2602 by the local model) |
+| Bytes classified (901584 top-level bytes in 29 containers) | pass, 100.000%, 0 unknown |
+| Byte-identical reassembly with vasm | pass, 17 of 17 units identical (bytes and relocations), 3 raw-word lines |
+| Functions named and described | pass, 2977 of 2977 named (139 author symbols), 2977 of 2977 described (269 by rule, 2602 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 393 of 393 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 48296 of 48297 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 48300 of 48301 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 253680 |
-| code | 163678 |
-| data | 374489 |
+| asset | 253168 |
+| code | 163692 |
+| data | 374597 |
 | padding | 6191 |
 | unused | 103936 |
 
@@ -38,20 +38,23 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | King's Quest I - Quest for the Crown (1990)(Sierra)(Disk 1 of 4)[cr SKR][h PRX].adf:amigasnd.drv | 3 | 3107 | 166 |
 | King's Quest I - Quest for the Crown (1990)(Sierra)(Disk 1 of 4)[cr SKR][h PRX].adf:kq1 | 3 | 1809 | 120 |
 | King's Quest I - Quest for the Crown (1990)(Sierra)(Disk 1 of 4)[cr SKR][h PRX].adf:bootblock | 1 | 113 | 4 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 5 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 8 | 2 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 24 | 4 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 1 |
 | SkidRow#unpacked | 2 | 24 | 4 |
 
 ## Cases handled
 
 - king's quest i - quest for the crown (1990)(sierra)(disk 1 of 4)[cr skr][h prx]/King's Quest I - Quest for the Crown (1990)(Sierra)(Disk 1 of 4)[cr SKR][h PRX].adf: file RESOURCE.001 (header 266621 bytes, blocks hold 217648): its blocks are judged as raw blocks outside the filesystem
-- runtime segment an address: 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 1 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-rs-m1500-unpk00): 4 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 20 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - RAM snapshot an address: 3 executed PCs whose RAM was overwritten before any snapshot match its bytes 524944-525008: recovered as a unit run at an address
-- 4 executed PCs ran code that was later overwritten: recovered from their logged first-execution bytes as 1 first-run image unit(s) in 1 version group(s); 0 unexecuted gap bytes taken from the RAM snapshot; 0 not decodable
 - king's quest i - quest for the crown (1990)(sierra)(disk 1 of 4)[cr skr][h prx]/King's Quest I - Quest for the Crown (1990)(Sierra)(Disk 1 of 4)[cr SKR][h PRX].adf:s/SkidRow: crunched executable decrunched by XFDMaster (PowerPacker 3.0 (xfd), 2916 -> 11652 bytes), 5 of 5 windows confirmed in reference RAM: recovered as a hunk executable
+- self-modifying code at an address (17 bytes change between runtime segment an address and runtime segment an address (play-rs-m1500-unpk00)): both forms recovered; writer: not identified statically (indirect store)
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 4 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 4 displacement
 - king's quest i - quest for the crown (1990)(sierra)(disk 1 of 4)[cr skr][h prx]/King's Quest I - Quest for the Crown (1990)(Sierra)(Disk 1 of 4)[cr SKR][h PRX].adf: blocks 1720-1726 (bytes 880640-884224) outside the filesystem hold data, not code (opcode density 0.009, entropy 7.18)
 - 3 packed track region(s), 276480 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)

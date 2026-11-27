@@ -141,7 +141,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### EndCLI
 
-- `record_unrecovered_entry_block`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
+- `find_max_and_prepare_buffer`: The routine walks a linked list of entries to find the maximum value stored in a field and then, if a condition is met, writes a small header, fills a buffer with sequential words, and sets up a stack frame for a call.
 - `forward_single_routine_call`: A two-instruction routine whose address is taken in code; it calls one unnamed routine and is called by one unnamed routine.
 
 ### Port-Handler
@@ -181,12 +181,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `stub_library_small_routine`: A three-instruction routine in the mathtrans library reached through a pointer stored in data and called by one unnamed routine.
 - `call_library_for_mathffp`: A 13-instruction routine in the mathtrans library that calls a library function by its offset from a library base, with the name mathffp.library referenced in its text.
 - `tiny_moveq_rts_2`: Small routine of 2 instructions that loads 255 into d0, then returns.
-- `call_library_vector_then_forward`: Library code that decrements a 16-bit counter at offset 32 of the structure at a6, calls another routine if the counter reaches zero and bit 3 of the flag byte at offset 14 is set, and calls another routine with a global value when the counter is zero.
+- `decrement_counter_and_call`: Library code that decrements a 16-bit counter at offset 32 of the structure at a6, calls another routine if the counter reaches zero and bit 3 of the flag byte at offset 14 is set, and calls another routine with a global value when the counter is zero.
 - `forward_single_routine_call_2`: A four-instruction routine in the mathtrans library that calls one unnamed routine.
 - `chain_two_library_routines`: Nineteen-instruction library routine reached through a pointer in the data hunk and from two other unnamed routines; it calls two further unnamed routines.
-- `run_leaf_routine_single_caller`: Library code that sets the bit selected by register D1 in D0, then repeatedly shifts a running difference with a doubling accumulator until a termination condition is met.
+- `adjust_bitfield_value`: Library code that sets the bit selected by register D1 in D0, then repeatedly shifts a running difference with a doubling accumulator until a termination condition is met.
 - `forward_to_library_stub_call`: Six-instruction library wrapper that calls the library stub at offset minus 528 and one other unnamed routine; one routine calls it.
-- `process_data_via_pointer`: Calls a series of function pointers located at fixed offsets from a register-derived base in an alternating pattern, then calls a third entry once and calls the second entry once more.
+- `call_jump_table_entries`: Calls a series of function pointers located at fixed offsets from a register-derived base in an alternating pattern, then calls a third entry once and calls the second entry once more.
 - `pass_control_one_routine`: Two-instruction library routine whose address is taken directly and which passes control on to one other routine; one routine calls it.
 - `dispatch_library_function_via_pointer`: This library routine executes 31 instructions to facilitate the execution of other library routines through pointers stored in data.
 - `sequence_two_library_calls`: Thirteen-instruction library routine that calls two other library routines; one routine refers to it through a data pointer.
@@ -200,7 +200,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_library_vector_552`: Library stub: loads a library base from a global variable and calls the library function at offset minus 552 of that base, returning its result to the caller.
 - `coordinate_three_library_routines`: Nineteen-instruction library routine with its address taken directly; it calls three other library routines and has one caller.
 - `relay_to_one_routine`: Seven-instruction library routine that calls one other library routine and is referenced through a data pointer.
-- `execute_chained_library_routines`: The library code executes a loop that performs bit-shifting and decrementing, potentially calling other routines if a counter reaches a certain value.
+- `execute_loop_with_branching`: The library code executes a loop that performs bit-shifting and decrementing, potentially calling other routines if a counter reaches a certain value.
 - `jump_to_single_routine`: Two-instruction library routine with its address taken directly; it calls one other library routine and has one caller.
 - `pass_control_single_routine`: Two-instruction library routine with its address taken directly that makes a single call to one other library routine.
 - `forward_call_to_routine`: Two-instruction library routine with its address taken directly that calls one other library routine; it has one caller.
@@ -216,7 +216,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispatch_two_library_routines_9`: This routine executes two other library routines in sequence.
 - `dispatch_two_library_routines_4`: Four-instruction library routine that calls two other library routines and is referenced through a data pointer.
 - `coordinate_three_library_routines_2`: Sixteen-instruction library routine with its address taken directly; it calls three other library routines and has one caller.
-- `coordinate_four_library_routines`: Library code invokes another routine and then, based on a boolean flag that remains false, invokes three additional routines in sequence.
+- `call_other_routine_conditionally`: Library code invokes another routine and then, based on a boolean flag that remains false, invokes three additional routines in sequence.
 - `orchestrate_six_library_routines_2`: Eighteen-instruction library routine with its address taken directly; it calls six other library routines and has three callers.
 - `forward_call_to_routine_3`: Three-instruction library routine that calls one other library routine and is referenced through a data pointer.
 - `transfer_pointer_value`: This two-instruction library routine moves a value from a register into a memory location specified by a pointer.
@@ -230,7 +230,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `coordinate_three_library_routines_3`: Seven-instruction library routine with its address taken directly; it calls three other library routines and has four callers.
 - `transfer_two_words`: This two-instruction library routine moves two words of data from one memory location to another.
 - `execute_multiple_library_calls_2`: This library routine consists of 23 instructions and invokes four different library routines.
-- `process_data_via_library_calls`: The library code executes a loop involving bit-shifting and conditional jumps, potentially calling other routines and performing arithmetic on a value.
+- `complex_loop_with_branching`: The library code executes a loop involving bit-shifting and conditional jumps, potentially calling other routines and performing arithmetic on a value.
 - `call_library_vector_and_helpers`: Six-instruction library routine with its address taken directly; it calls the library stub at offset minus 528 and two other library routines, and has one caller.
 - `dispatch_two_library_routines_5`: Six-instruction library routine with its address taken directly; it calls two other library routines and has one caller.
 - `coordinate_three_library_routines_4`: Five-instruction library routine that calls three other library routines and has two callers.
@@ -363,7 +363,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_library_handler`: A library routine consisting of four instructions that is invoked via a pointer in data.
 - `relay_version_library_call`: Seven-instruction version-library routine that calls one other routine and is referenced from the data hunk.
 - `forward_version_library_call`: Eight-instruction version-library routine called from one other routine that makes one call of its own.
-- `call_library_offsets_pair`: Reads a 32-bit value from offset 60 of the structure pointed to by register a5 into register d2, then calls two library functions via pointers at offsets -252 and -210 of register a6, then returns that value.
+- `get_library_value`: Reads a 32-bit value from offset 60 of the structure pointed to by register a5 into register d2, then calls two library functions via pointers at offsets -252 and -210 of register a6, then returns that value.
 - `run_version_library_block_c`: Two-instruction version-library routine with no listed calls.
 
 ### Disk-Validator

@@ -107,6 +107,14 @@
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `return_constant_7`: Returns the constant -1 in d0 to the caller without any other effect.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
+- `set_custom_stack_pointer`: Adjusts the stack pointer by four bytes, writes a specific memory address to a global variable, and saves several registers to the stack before returning.
+- `frag_move_ori_eori`: Short code fragment that copies d0 to d2, then merges 0 into d0, then exclusive-ors 0 into d0, then merges 0 into d0.
+
+### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
+
 - `call_library_vector_144`: Library stub: loads a library base from a global variable and calls the library function at offset minus 144 of that base, returning its result to the caller.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -119,10 +127,6 @@
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `call_library_vector_144_2`: Library stub: loads a library base from a global variable and calls the library function at offset minus 144 of that base, returning its result to the caller.
-
-### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
-
-- `set_custom_stack_pointer`: Adjusts the stack pointer by four bytes, writes a specific memory address to a global variable, and saves several registers to the stack before returning.
 
 ### SkidRow#unpacked
 

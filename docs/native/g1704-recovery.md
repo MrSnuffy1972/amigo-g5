@@ -91,7 +91,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_decompress_then_setup_disk`: Calls the decompression routine and returns if the result is non-negative, otherwise loads a word from offset 12 of the structure in a6 into a data register and jumps to the disk setup routine.
 - `decode_palette_rle`: Reads a compressed byte stream from the palette data at the palette pointer, decoding run-length markers (a byte of 128 ends a run, a negative byte counts as a repeat), and calls the store routine for each decoded byte.
 - `copy_bytes_loop_store`: It masks d0 to seven bits, copies successive bytes from the source in a0 into d1, calls the store routine for each byte, and decrements the loop counter until it reaches zero.
-- `store_byte_and_update_counters`: Stores a single byte from a register into the memory location pointed to by a register.
+- `store_byte_at_pointer_2`: Stores a single byte from a register into the memory location pointed to by a register.
 - `copy_and_expand_stream`: Copies a reversed block from one memory region to another, then processes a stream by copying bytes and repeating a value a number of times until a counter reaches zero.
 - `copy_pair_bytes_loop`: It clears d1, copies two consecutive bytes from the source in a1 into d0 and d1, stores the first byte to the destination in a0, decrements d3, and repeats until d3 is exhausted before restoring registers and returning.
 - `set_joystick_bitmask_and_wait`: Sets bits 3 to 7 and bit 2 of the joystick port register, clears bit derived from a structure value, then waits until bit 5 of the keyboard register is clear.
@@ -107,18 +107,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `tiny_move_moveq_rts`: Small routine of 3 instructions that copies d0 to d1, then loads 254 into d0, then returns.
 - `scan_for_marker_word`: Reads words from a pointer, advancing it, until a word equals 17529, then clears d0 and returns.
 - `sum_array_words`: Clears d0 and d2, then loops d1 times adding each word from a pointer to the running total in d0.
-- `combine_bit_patterns`: Iterates through two source buffers and writes a new pattern to a destination buffer by combining bits from both sources using bitwise operations.
+- `interleave_bit_patterns_2`: Iterates through two source buffers and writes a new pattern to a destination buffer by combining bits from both sources using bitwise operations.
 - `clear_and_set_structure_words`: Clears the word at offset 12 of the structure in a6 and stores 82 at offset 14, then returns.
-- `process_input_timing_loop`: Updates a value in a structure by comparing it to a value derived from a register, using delays and bitwise flags to control the loop.
+- `process_input_timing_2`: Updates a value in a structure by comparing it to a value derived from a register, using delays and bitwise flags to control the loop.
 - `set_audio_and_blitter_registers`: Clears bit 6 of the keyboard register, then writes a series of constant values to the audio and blitter registers before returning.
-- `clear_registers_memory`: Clears large blocks of memory and sets multiple hardware registers and global variables to specific constant values.
+- `initialize_hardware_state_2`: Clears large blocks of memory and sets multiple hardware registers and global variables to specific constant values.
 - `setup_interrupt_vectors`: Opens a library and, if successful, sets up five interrupt vectors with a trap-and-return sequence, installs a video interrupt handler, and stores a set of computed source addresses in a table, then returns.
 - `install_handlers_and_decompress_data`: Writes the trap-and-rts sequence to five global vectors, sets a video interrupt handler and installs a copy of itself at the reset vector, then decodes a bit-packed table and decompresses it into a memory block.
-- `copy_source_blocks`: Calculates two source addresses based on a value in d0, then loops 17 times to copy 6-byte chunks from these sources to a destination table at a fixed address.
-- `copy_source_blocks_alt`: Calculates two source addresses based on a value in d0, then loops 17 times to copy 6-byte chunks from these sources to a destination table at a fixed address.
-- `copy_from_a2_blocks`: Calculates two destination addresses based on a value in d2, then loops 17 times to copy 6-byte chunks from the address in a2 to those destinations.
-- `compute_indexed_offsets`: Calculates two destination addresses based on a value in a global variable, writes the results to a table at a fixed address, and increments the global variable, resetting it to zero if it reaches 43.
-- `run_blitter_transfers`: Sets up and calls four different blitter transfer routines using various source and destination addresses derived from offsets.
+- `copy_data_blocks`: Calculates two source addresses based on a value in d0, then loops 17 times to copy 6-byte chunks from these sources to a destination table at a fixed address.
+- `copy_data_blocks_2`: Calculates two source addresses based on a value in d0, then loops 17 times to copy 6-byte chunks from these sources to a destination table at a fixed address.
+- `copy_data_from_a2`: Calculates two destination addresses based on a value in d2, then loops 17 times to copy 6-byte chunks from the address in a2 to those destinations.
+- `update_position_table`: Calculates two destination addresses based on a value in a global variable, writes the results to a table at a fixed address, and increments the global variable, resetting it to zero if it reaches 43.
+- `execute_blitter_transfers`: Sets up and calls four different blitter transfer routines using various source and destination addresses derived from offsets.
 - `setup_blitter_transfer`: Calls another routine, then writes values to the blitter registers, storing the source address in one register and the destination address in another before returning.
 - `setup_blitter_transfer_alt`: Calls another routine, then writes values to the blitter registers, storing the source address in one register and a different destination address in another before returning.
 - `fill_memory_with_byte`: Computes a destination address and loops 1703 times to store the byte value 255 at each location.
@@ -148,15 +148,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_boundary_values`: Reads a byte index from a global variable and compares it to zero; if it is not zero it sets a byte at offset 3618 of a structure to 255, clears a byte at offset 3616 and a word at offset 3620, stores the index in the word at offset 3622, and clears the byte at the computed offset, otherwise it returns.
 - `copy_interpolated_blocks`: Computes a memory range using a value from a global variable, calls a routine to clear that range, and then enters a loop to copy 12-byte blocks from two tables into two destination areas using a calculated offset.
 - `clear_memory_blocks`: Computes a count from a word in a global variable, scales it, and adds it to two base addresses to obtain two destinations, then loops 17 times clearing four-byte blocks at both locations.
-- `convert_number_to_ascii`: Divides a byte from a global variable by 10, stores the quotient and remainder as ASCII characters into a table, then performs a series of calls with varying parameters and destination addresses.
+- `update_table_values`: Divides a byte from a global variable by 10, stores the quotient and remainder as ASCII characters into a table, then performs a series of calls with varying parameters and destination addresses.
 - `execute_nested_loops`: Loops over a count stored in a global variable, calling a series of library stubs and other routines, then runs a second loop that calls the same set of routines a fixed number of times.
 - `loop_and_call_subroutines`: Decrements a value from a global longword and enters a loop that performs division on a value in d0, checks a byte in a table, and calls various subroutines with specific register parameters based on the table contents.
 - `iterate_and_call_library`: Enters a loop that updates a global longword with a starting value of 64, calls another routine, and increments the global longword by 20 each iteration until d0 matches a value from a global longword, then calls another routine.
 - `call_library_vector_354`: Library stub: loads a library base from a global variable and calls the library function at offset minus 354 of that base, returning its result to the caller.
 - `call_library_vector_240`: Library stub: loads a library base from a global variable and calls the library function at offset minus 240 of that base, returning its result to the caller.
 - `call_library_vector_60`: Library stub: loads a library base from a global variable and calls the library function at offset minus 60 of that base, returning its result to the caller.
-- `execute_several_library_calls`: Performs several calls to subroutines using values from a global variable and specific constants in registers d0 through d4.
-- `conditional_library_calls`: Checks a byte at an offset from a global variable and, if non-zero, executes a sequence of calls with specific register parameters and destination addresses.
+- `execute_library_calls`: Performs several calls to subroutines using values from a global variable and specific constants in registers d0 through d4.
+- `conditional_execute_calls`: Checks a byte at an offset from a global variable and, if non-zero, executes a sequence of calls with specific register parameters and destination addresses.
 - `invoke_library_helpers`: Loads a base address from a global variable, increments it by one and two, and calls three different library helper routines with distinct register values, then jumps back.
 - `call_library_vector_342`: Library stub: loads a library base from a global variable and calls the library function at offset minus 342 of that base, returning its result to the caller.
 - `call_library_vector_348`: Library stub: loads a library base from a global variable and calls the library function at offset minus 348 of that base, returning its result to the caller.
@@ -171,7 +171,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `execute_nested_delays`: Runs two nested loops that decrement registers d0 and d1 to create a delay, then restores the saved registers and returns.
 - `populate_data_table_2`: Fills a memory area with a repeating pattern of bytes and 32-bit words retrieved from a table using an index, adjusting the pattern and switching to a second byte after the first inner loop completes.
 - `add_table_values`: Loops 131 times, adding a byte from one table to a byte in another table and storing the result, advancing the destination by eight bytes and the source by one byte each iteration.
-- `disable_interrupts_swap_vector`: Reads INTENAR into memory, writes 32767 then 32800 to INTENA, saves a6 and calls exec Disable, saves the old level three interrupt vector, installs a new one, calls exec Enable, restores a6 and returns.
+- `disable_interrupts_swap_level3_vector`: Reads INTENAR into memory, writes 32767 then 32800 to INTENA, saves a6 and calls exec Disable, saves the old level three interrupt vector, installs a new one, calls exec Enable, restores a6 and returns.
 - `toggle_interrupts`: Subtracts 32768 from a global variable and writes it to the INTENA register to change interrupt status, then calls two library functions via pointers stored in the exec library base.
 - `decode_and_reencode_bitstream`: Decodes a bit-packed stream from a global buffer into a byte table, copying run-length groups forward or expanding single bytes backward, then re-encodes the result into a second buffer while translating the byte 109 into a multi-byte sequence.
 - `copy_word_sequence`: Loops 31 times copying a word from a source table to a destination table at four-byte intervals, then restores the saved registers and returns.

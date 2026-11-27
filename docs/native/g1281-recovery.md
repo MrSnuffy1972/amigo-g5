@@ -26,7 +26,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Dragon's Lair 2 - Time Warp (1990)(ReadySoft)[cr SKR](Disk 1 of 7)[t +1 Golden Betrayal].adf:bootblock | 1 | 14 | 1 |
+| Dragon's Lair 2 - Time Warp (1990)(ReadySoft)[cr SKR](Disk 1 of 7)[t +1 Golden Betrayal].adf:bootblock | 1 | 30 | 1 |
 | logged disk load from Dragon's Lair 2 - Time Warp (1990)(ReadySoft)[cr SKR](Disk 1 of 7)[t +1 Golden Betrayal].adf boot-block load | 1 | 163 | 2 |
 | logged disk load from Dragon's Lair 2 - Time Warp (1990)(ReadySoft)[cr SKR](Disk 1 of 7)[t +1 Golden Betrayal].adf boot-block load | 1 | 163 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 85 | 9 |

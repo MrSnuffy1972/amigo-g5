@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (2601388 top-level bytes in 14 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 28 raw-word lines |
-| Functions named and described | pass, 1741 of 1741 named (0 author symbols), 1741 of 1741 described (1076 by rule, 150 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 15254 of 16027 (95.18%) |
+| Functions named and described | pass, 1742 of 1742 named (0 author symbols), 1742 of 1742 described (1077 by rule, 150 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 16027 of 16027 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 828746 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 28538 of 28538 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 34146 of 34146 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 21012 |
-| code | 118502 |
-| data | 2461665 |
+| code | 118506 |
+| data | 2461661 |
 | padding | 209 |
 
 ## Code units
@@ -27,7 +27,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | game.slave | 1 | 1096 | 74 |
-| GB | 43 | 32498 | 1222 |
+| GB | 43 | 32499 | 1223 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 499 | 414 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 50 | 30 |
@@ -843,6 +843,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `frag_bra_35`: Short code fragment that jumps to another point in the code.
 - `frag_bra_36`: Short code fragment that jumps to another point in the code.
 - `process_input_event`: Handles input events by setting specific status bytes in memory, performing conditional checks on bit flags, and dispatching to different code paths based on input values through a jump table.
+- `jump_to_process_input_status_2`: Jump stub: passes control straight on to process_input_status_2.
 - `frag_bra_37`: Short code fragment that jumps to another point in the code.
 - `frag_bra_38`: Short code fragment that jumps to another point in the code.
 - `frag_ori_bclr_bra`: Short code fragment that merges 0 into the memory at a6 (advancing a6), then clears bit d0 of the memory at an offset from a0, then merges an address into the memory at a5 (advancing a5), then merges 29 into d0, then jumps to another point in the code.

@@ -11,15 +11,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Functions named and described | pass, 126 of 126 named (0 author symbols), 126 of 126 described (12 by rule, 64 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 309 of 309 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 109568 bytes, 16 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 3352 of 3412 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 3417 of 3477 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 3292 |
-| code | 17804 |
-| data | 632418 |
+| code | 18014 |
+| data | 632208 |
 | padding | 6 |
 | unused | 258048 |
 
@@ -41,14 +41,14 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 495616-500736 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 506880-510464 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 529408-534528 (code never loaded by a reference run) | 1 | 197 | 1 |
-| Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 540672-545792 (code never loaded by a reference run) | 1 | 53 | 1 |
+| Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 540672-545792 (code never loaded by a reference run) | 1 | 112 | 1 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 551936-555520 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 563200-568320 (code never loaded by a reference run) | 1 | 9 | 1 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 574464-577024 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 578560-579584 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 586240-586752 (code never loaded by a reference run) | 1 | 0 | 0 |
-| Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 589824-590336 (code never loaded by a reference run) | 1 | 0 | 0 |
-| Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 597504-602112 (code never loaded by a reference run) | 1 | 0 | 0 |
+| Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 589824-590336 (code never loaded by a reference run) | 1 | 5 | 0 |
+| Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 597504-602112 (code never loaded by a reference run) | 1 | 1 | 0 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 608256-613376 (code never loaded by a reference run) | 1 | 0 | 0 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 619520-624640 (code never loaded by a reference run) | 1 | 19 | 1 |
 | Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf bytes 642048-647168 (code never loaded by a reference run) | 1 | 58 | 1 |
@@ -199,7 +199,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: blocks 1672-1673 (bytes 856064-857088) outside the filesystem hold data, not code (opcode density 0.000, entropy 2.81)
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: blocks 1675-1675 (bytes 857600-858112) outside the filesystem hold data, not code (opcode density 0.000, entropy 0.11)
 - midwinter (1990)(microprose)(fr)[cr pdx]/Midwinter (1990)(MicroProse)(Fr)[cr PDX].adf: blocks 1697-1697 (bytes 868864-869376) outside the filesystem hold data, not code (opcode density 0.000, entropy 0.15)
-- 22 never-loaded region(s), 93184 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+- 21 never-loaded region(s), 88064 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 - 4 packed track region(s), 20480 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)
 
 ## Cracktros (kept, not protection)

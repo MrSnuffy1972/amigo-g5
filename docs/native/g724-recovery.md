@@ -8,9 +8,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (909456 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 9 raw-word lines |
-| Functions named and described | pass, 61 of 61 named (0 author symbols), 61 of 61 described (2 by rule, 59 by the local model) |
+| Functions named and described | pass, 74 of 74 named (0 author symbols), 74 of 74 described (7 by rule, 67 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 517 of 517 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 3584 bytes, 1 functions |
+| Recovered without load address (counted in proof 1, flagged) | 3584 bytes, 14 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 2142 of 2142 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
@@ -33,8 +33,8 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 79 | 5 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1206 | 30 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 101 | 7 |
-| Zeewolf.adf bytes 450560-452096 (code never loaded by a reference run) | 1 | 161 | 0 |
-| Zeewolf.adf bytes 458240-459264 (code never loaded by a reference run) | 1 | 38 | 0 |
+| Zeewolf.adf bytes 450560-452096 (code never loaded by a reference run) | 1 | 161 | 12 |
+| Zeewolf.adf bytes 458240-459264 (code never loaded by a reference run) | 1 | 38 | 1 |
 | Zeewolf.adf bytes 753152-754176 (code never loaded by a reference run) | 1 | 99 | 1 |
 
 ## Cases handled
@@ -146,6 +146,25 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `increment_two_counters`: The routine increments two global variables, wrapping each to a negative value when it reaches a specific positive limit, then calls another routine and returns the original register values.
 - `write_palette_entry`: The routine computes an index from two input values and a global variable, stores the resulting 32-bit value as two 16-bit words into four consecutive table entries, then writes a nibble-mirrored byte derived from the low bits of one input into the next table slot.
 - `copy_color_palette`: Copies 30 words from a table located at a specific offset from the current program counter to the hardware color registers starting at offset a fixed address.
+
+### Zeewolf.adf bytes 450560-452096 (code never loaded by a reference run)
+
+- `frag_tst_beq_subq_rts`: Short code fragment that tests the memory at an offset from a3, then branches if the last result was zero, then subtracts 1 from the memory at an offset from a3, then returns.
+- `initialize_structure`: Loads address pointers from program memory into registers a5, a0, and a4, sets a byte counter in register d5 to three, tests a byte at offset three of the structure in a5, and branches to different locations based on the test result.
+- `frag_addq_bra`: Short code fragment that adds 1 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_tst_beq_subq_movea_move_bra`: Short code fragment that tests the memory at an offset from a5, then branches if the last result was zero, then subtracts 1 from the memory at an offset from a5, then copies the memory at an offset from a5 to a2, then copies the memory at a2 (advancing a2) to the memory at a5, then copies a2 to the memory at an offset from a5, then jumps to another point in the code.
+- `frag_movea_tst_bmi_move_bra`: Short code fragment that copies the memory at an offset from a5 to a2, then tests the memory at a2, then branches if the last result was negative, then copies the memory at a2 (advancing a2) to the memory at a5, then copies a2 to the memory at an offset from a5, then jumps to another point in the code.
+- `update_structure_fields`: Updates fields of a structure by copying word values from memory, calculating new addresses based on offset values, performing bitwise operations on a word field, and conditionally updating pointers and counters in the structure.
+- `update_enemy_state`: Processes an enemy object's state based on bitwise operations and table lookups, then updates related game data structures.
+- `update_enemy_position`: Updates the position and state of an enemy object based on bitwise operations and table lookups, then adjusts related game data structures before returning.
+- `update_enemy_position_2`: Calculates and updates an enemy object's position using bitwise operations and table lookups, then adjusts related game data structures based on conditional logic.
+- `load_enemy_data`: Loads enemy position and state data from tables using offsets from a data structure, then updates pointers and calculates new addresses based on the loaded values.
+- `update_enemy_direction`: Reads a byte from a structure, extracts nibbles, performs bitwise operations on them, and stores the result back to another location in the same structure.
+- `frag_moveq_and_move_bra`: Short code fragment that loads 15 into d0, then masks d0 with the memory at an offset from a5, then copies d0 to the memory at an offset from a5, then jumps to another point in the code.
+
+### Zeewolf.adf bytes 458240-459264 (code never loaded by a reference run)
+
+- `clear_and_copy_data`: Clears word values in three separate memory regions, copies data from input pointers to global variables, calculates offsets using register values, and initializes various fields of a structure with specific values.
 
 ### Zeewolf.adf bytes 753152-754176 (code never loaded by a reference run)
 

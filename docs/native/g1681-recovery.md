@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (905664 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 13 raw-word lines |
 | Functions named and described | pass, 48 of 48 named (0 author symbols), 48 of 48 described (14 by rule, 10 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 100 of 100 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 102 of 102 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 2048 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 1036 of 1036 instructions identical in start and length, 0 mismatches |
 
@@ -37,10 +37,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ## Cases handled
 
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: custom-format (non-DOS) disk, 1746 non-empty blocks: matched against track-loaded segments
-- 100 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
+- 102 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: the boot block reads 2048 bytes from disk offset 11264 to an address (found statically); recovered as a unit
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: the boot block reads 3584 bytes from disk offset 2048 to an address (found statically); recovered as a unit
-- runtime segment an address: 100 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 102 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: bytes 1024-2048 look like code no run loaded: recovered position-independently (load address unknown)
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: bytes 283136-284160 look like code no run loaded: recovered position-independently (load address unknown)
 - super hang on (1988)(activision)[cr defjam - ccs][t +2 band]/Super Hang On (1988)(Activision)[cr Defjam - CCS][t +2 Band].adf: 4 logged loads cover 7680 bytes of the image

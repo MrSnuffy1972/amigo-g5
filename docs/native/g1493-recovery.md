@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (860608 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 10 raw-word lines |
-| Functions named and described | pass, 41 of 41 named (0 author symbols), 41 of 41 described (10 by rule, 25 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 100 of 100 (100.00%) |
+| Functions named and described | pass, 47 of 47 named (0 author symbols), 47 of 47 described (11 by rule, 26 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 102 of 102 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 884 of 884 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 964 of 964 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 2029 |
-| code | 4642 |
-| data | 847791 |
+| asset | 1685 |
+| code | 5006 |
+| data | 847771 |
 | padding | 2 |
 | unused | 6144 |
 
@@ -28,17 +28,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf:bootblock | 1 | 40 | 2 |
-| logged disk load from Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf boot-block load | 1 | 0 | 0 |
+| logged disk load from Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf boot-block load | 1 | 129 | 6 |
 | logged disk load from Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf boot-block load | 1 | 469 | 16 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 375 | 23 |
 
 ## Cases handled
 
 - distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: custom-format (non-DOS) disk, 1658 non-empty blocks: matched against track-loaded segments
-- 100 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
+- 102 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
 - distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: the boot block reads 1024 bytes from disk offset 1024 to an address (found statically); recovered as a unit
 - distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: the boot block reads 2048 bytes from disk offset 11264 to an address (found statically); recovered as a unit
-- runtime segment an address: 100 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 102 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: 2 logged loads cover 3072 bytes of the image
 - distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: 8 track-loaded blocks found in recovered runtime segments and classified through them
 - distant armies - a playing history of chess (1988)(eagle tree software)[cr band][a]/Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf: blocks 4-21 (bytes 2048-11264) hold ASCII text
@@ -68,6 +68,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `allocate_memory_and_execute_io`: Calls a routine to allocate memory, calls a routine at a fixed address, performs memory allocation via a library call, checks a value, and if it meets certain criteria, writes a value to a global variable and calls a routine via a trap.
 - `initialize_hardware_and_jump`: Disables interrupts, sets several hardware registers including BPLCON0 and DMACON, updates the user stack pointer, and jumps to a fixed address.
+
+### logged disk load from Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf boot-block load
+
+- `initialize_chess_copper_list`: Initializes a copper list for chess display by setting up color registers and wait instructions, then branches to a loop that configures additional copper commands based on a counter value.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (sub.w) and then falls through into the code that follows, with no return of its own.
+- `append_copper_color_wait_chess`: Writes d0, a copper wait longword, and d1 through a2, advances the pointer, adds 256 to d0, and returns for the chess loader.
+- `append_color_register_pair_chess`: Calls the chess wait-entry writer, appends two colour-register words with d3, lowers d3 by 273, raises d0 by 512, and returns.
+- `call_builder_adjust_d2_a2_chess`: Calls the adjacent chess builder, adds 384 to d2, subtracts d4 from a2, and falls through into the next code.
+- `invoke_two_os_operations_chess`: Passes a3, d2 and d3 to one library call, passes a2 and d4 to another, advances a2 by d4, and returns.
 
 ### logged disk load from Distant Armies - A Playing History of Chess (1988)(Eagle Tree Software)[cr Band][a].adf boot-block load
 

@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (905664 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 10 raw-word lines |
-| Functions named and described | pass, 41 of 41 named (0 author symbols), 41 of 41 described (8 by rule, 1 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 100 of 100 (100.00%) |
+| Functions named and described | pass, 47 of 47 named (0 author symbols), 47 of 47 described (9 by rule, 2 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 102 of 102 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 884 of 884 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 964 of 964 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 2029 |
-| code | 4642 |
-| data | 892847 |
+| asset | 1685 |
+| code | 5006 |
+| data | 892827 |
 | padding | 2 |
 | unused | 6144 |
 
@@ -28,17 +28,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Super Hang On (1988)(Activision)[cr Defjam - CCS][m ELA Team - FBI Soft].adf:bootblock | 1 | 40 | 2 |
-| logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][m ELA Team - FBI Soft].adf boot-block load | 1 | 0 | 0 |
+| logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][m ELA Team - FBI Soft].adf boot-block load | 1 | 129 | 6 |
 | logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][m ELA Team - FBI Soft].adf boot-block load | 1 | 469 | 16 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 375 | 23 |
 
 ## Cases handled
 
 - super hang on (1988)(activision)[cr defjam - ccs][m ela team - fbi soft]/Super Hang On (1988)(Activision)[cr Defjam - CCS][m ELA Team - FBI Soft].adf: custom-format (non-DOS) disk, 1746 non-empty blocks: matched against track-loaded segments
-- 100 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
+- 102 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
 - super hang on (1988)(activision)[cr defjam - ccs][m ela team - fbi soft]/Super Hang On (1988)(Activision)[cr Defjam - CCS][m ELA Team - FBI Soft].adf: the boot block reads 1024 bytes from disk offset 1024 to an address (found statically); recovered as a unit
 - super hang on (1988)(activision)[cr defjam - ccs][m ela team - fbi soft]/Super Hang On (1988)(Activision)[cr Defjam - CCS][m ELA Team - FBI Soft].adf: the boot block reads 2048 bytes from disk offset 11264 to an address (found statically); recovered as a unit
-- runtime segment an address: 100 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 102 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - super hang on (1988)(activision)[cr defjam - ccs][m ela team - fbi soft]/Super Hang On (1988)(Activision)[cr Defjam - CCS][m ELA Team - FBI Soft].adf: 2 logged loads cover 3072 bytes of the image
 - super hang on (1988)(activision)[cr defjam - ccs][m ela team - fbi soft]/Super Hang On (1988)(Activision)[cr Defjam - CCS][m ELA Team - FBI Soft].adf: 8 track-loaded blocks found in recovered runtime segments and classified through them
 - super hang on (1988)(activision)[cr defjam - ccs][m ela team - fbi soft]/Super Hang On (1988)(Activision)[cr Defjam - CCS][m ELA Team - FBI Soft].adf: blocks 4-21 (bytes 2048-11264) hold ASCII text
@@ -68,6 +68,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `boot_alloc_and_do_io`: Boot block entry that allocates memory through exec's AllocMem, performs an I/O request with DoIO, and calls one further library function.
 - `configure_display_and_dma_registers`: Writes the bitplane control, background colour and DMA and interrupt enable registers as a short boot-block setup.
+
+### logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][m ELA Team - FBI Soft].adf boot-block load
+
+- `initialize_copper_list`: Initializes a copper list starting at a global memory location, setting up color registers and waits while managing a counter and pointer through multiple conditional branches.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (sub.w) and then falls through into the code that follows, with no return of its own.
+- `append_copper_color_wait_mod`: Writes d0, the copper wait command, and d1 through a2, advances d0 by 256, and returns for the modified release.
+- `append_color_register_pair_mod`: Invokes the modified wait writer, appends two colour-register pairs with d3, subtracts 273 from d3, adds 512 to d0, and returns.
+- `call_builder_adjust_d2_a2_mod`: Calls the modified builder, increases d2 by 384, decreases a2 by d4, and falls through into the next routine body.
+- `invoke_two_os_operations_mod`: Places a3, d2 and d3 for the first library call, a2 and d4 for the second, advances a2 by d4, and returns.
 
 ### logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS][m ELA Team - FBI Soft].adf boot-block load
 

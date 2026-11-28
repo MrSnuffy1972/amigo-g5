@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (907232 top-level bytes in 4 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 10 raw-word lines |
-| Functions named and described | pass, 79 of 79 named (0 author symbols), 79 of 79 described (35 by rule, 43 by the local model) |
+| Functions named and described | pass, 114 of 114 named (0 author symbols), 114 of 114 described (37 by rule, 42 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 532 of 533 (99.81%) |
 | Recovered without load address (counted in proof 1, flagged) | 4096 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1757 of 1758 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2194 of 2195 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 1128 |
-| code | 7360 |
-| data | 778424 |
+| asset | 289 |
+| code | 8676 |
+| data | 777947 |
 | unused | 120320 |
 
 ## Code units
@@ -27,11 +27,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Nicky Boum (1992)(Microids).adf:bootblock | 1 | 18 | 1 |
-| logged disk load from Nicky Boum (1992)(Microids).adf boot-block load | 1 | 1 | 1 |
+| logged disk load from Nicky Boum (1992)(Microids).adf boot-block load | 1 | 418 | 36 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 41 | 5 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1696 | 71 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1714 | 71 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
-| Nicky Boum (1992)(Microids).adf bytes 822272-826368 (code never loaded by a reference run) | 1 | 0 | 0 |
+| Nicky Boum (1992)(Microids).adf bytes 822272-826368 (code never loaded by a reference run) | 1 | 2 | 0 |
 
 ## Cases handled
 
@@ -39,7 +39,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - nicky boum (1992)(microids)/Nicky Boum (1992)(Microids).adf: the boot block reads 1656 bytes from disk offset 1024 to an address (found statically); recovered as a unit
 - runtime segment an address: 27 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 504 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
-- runtime segment an address (play-lgpwide): 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address (play-lgpc01): 2 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - nicky boum (1992)(microids)/Nicky Boum (1992)(Microids).adf: bytes 822272-826368 look like code no run loaded: recovered position-independently (load address unknown)
 - nicky boum (1992)(microids)/Nicky Boum (1992)(Microids).adf: 2 logged loads cover 5752 bytes of the image
 - nicky boum (1992)(microids)/Nicky Boum (1992)(Microids).adf: 3 track-loaded blocks found in recovered runtime segments and classified through them
@@ -53,6 +53,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Copy protection found
 
+- `read_decode_and_copy_disk_sectors` (Nicky Boum (1992)(Microids).adf boot-block load +an address to an address (1656 bytes)): Saves registers, configures disk DMA and interrupts, scans decoded track data for matching sectors, verifies checksums, copies sector payloads, retries failures, then exits through cleanup. Kind: disk track sync check. Pass path: the branch where the sync pattern and checksum match, leading to data decoding and copying.
 - `initialize_dma_transfer` (runtime segment an address): Sets up DMA transfer parameters including disk length, disk path, interrupt enable, interrupt request, disk sync, and audio data control registers. Kind: disk track sync check. Pass path: the branch where the sync pattern and data checksum match, leading to data loading and incrementing the sector counter.
 - `initialize_disk_dma` (runtime segment an address): Initializes disk DMA parameters and sets up interrupt control based on joystick input, then updates counter and coordinate values in a data structure. Kind: disk track check. Pass path: The routine proceeds through the loop without breaking, and the check passes when `u3__sub_119C()` returns 0, allowing the loop to continue until the track loading is complete..
 
@@ -66,6 +67,41 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### logged disk load from Nicky Boum (1992)(Microids).adf boot-block load
 
 - `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
+- `boot_install_vectors_verify_and_launch`: Disables hardware sources, copies vector code, installs vectors, checks loaded data, configures disk loading, optionally copies memory, calls setup functions, and jumps through a stored pointer.
+- `locate_first_hunk_record`: Loads parser pointers, reads a hunk count into d6, computes a2 from that count, masks the next record type in d0, and branches by comparison.
+- `test_hunk_code_type`: Compares d0 with hunk type 1002, branches to alternate handling when unequal, and otherwise branches to the common recognized-type path.
+- `record_hunk_segment_pointer`: Compares d0 with hunk type 1003, and when equal loads d7 from a2, stores the following a2 pointer through a1, then branches backward.
+- `collect_hunk_relocation_lists`: Checks for hunk type 1004, records nonempty relocation data through a3 and a4, advances a2 across each list, sets d7 to one, and branches backward.
+- `apply_collected_hunk_relocations`: Increments the current hunk index, optionally adjusts a stored entry pointer, then walks relocation lists and adds selected segment bases to destination longwords.
+- `empty_stub_2`: Empty routine: returns to the caller immediately without doing anything.
+- `prepare_backward_decompression`: Loads compressed size and base pointers, derives source and destination positions, saves d2 through d5 and a2, calls decompression, restores them, and returns.
+- `decode_literal_or_backreference_block`: Reads bits backward from a0, derives literal lengths or backreference parameters, writes bytes backward through a2, and branches to continuation code when a block finishes.
+- `select_eight_bit_literal_length`: Sets d1 and d4 to eight, then branches into the shared bit extraction path without reading or writing memory itself.
+- `decode_backreference_length_and_offset`: Extracts two control bits from d0, selects length handling, optionally extracts eight more bits into d3, sets d1 to twelve, and branches onward.
+- `copy_backreference_until_output_start`: Builds an offset from compressed bits, copies indexed bytes backward through a2 for the computed count, and returns once a2 reaches or passes a1.
+- `initialize_disk_io_request_fields`: Loads the request structure through a0, stores minus one in its word field, stores a pointer to following data, and returns.
+- `read_decode_and_copy_disk_sectors`: Saves registers, configures disk DMA and interrupts, scans decoded track data for matching sectors, verifies checksums, copies sector payloads, retries failures, then exits through cleanup.
+- `verify_sector_checksum_and_copy_data`: Decodes and checks a sector checksum, copies 128 decoded longwords through a4 when valid, decrements remaining sectors, advances sector and track fields, then branches for more input.
+- `cleanup_disk_read_and_restore_registers`: Calls the hardware cleanup function, restores d2 through d7 and a3 through a6 from the stack, then returns to the caller.
+- `xor_mask_disk_checksum`: Saves d2, XORs the requested sequence of longwords from a0 into d0, masks alternating bits, restores d2, and returns the checksum in d0.
+- `wait_for_disk_button_signal`: Calls a synchronization function, repeatedly tests bit five of CIAA port A until it clears, then returns to the caller.
+- `delay_with_repeated_custom_write`: Loads d0 with 255, repeatedly writes its low word to the custom-register offset while decrementing d0, then returns after the counter expires.
+- `select_disk_side_when_flag_clear`: Tests bit zero of a request byte and, when clear, sets bit two in the byte addressed by a5 before returning.
+- `clear_disk_side_control_bit`: Clears bit two in the byte addressed by a5 and returns immediately without changing any other listed memory.
+- `seek_track_to_requested_position`: Initializes negative track state, compares halved current and target positions, repeatedly calls inward or outward step functions until equal, then branches to completion.
+- `step_track_outward_and_retry`: Calls the outward track-step function and branches back to the position comparison path without directly modifying registers or memory.
+- `empty_stub_3`: Empty routine: returns to the caller immediately without doing anything.
+- `derive_track_sector_and_count`: Loads a4 from the request, divides shifted size values to store sector count, track number, and sector remainder fields in the request, then returns.
+- `select_drive_and_settle`: Sets drive selection and motor bits through a5, calls a delay, clears the selection bit, calls another delay, and returns.
+- `deselect_drive_wait_and_button`: Sets one control bit, clears another, calls a delay, clears selection, calls another delay, waits for the button signal, and returns.
+- `load_short_settle_delay`: Loads d1 with two and branches to the shared delay loop without reading memory or returning directly.
+- `load_long_settle_delay`: Loads d1 with 1290 and branches to the shared delay loop without reading memory or returning directly.
+- `wait_for_custom_counter_change`: Loads d1 with 86, repeatedly reads the custom byte twice until values differ, decrements d1 across retries, and returns when the counter expires.
+- `step_head_inward_and_increment_track`: Updates three control bits through a5, waits for the disk signal, adds two to the request track word, and returns.
+- `step_head_outward_and_decrement_track`: Updates three control bits through a5, waits for the disk signal, subtracts two from the request track word, and returns.
+- `step_outward_until_track_zero`: Tests CIAA port A bit four, repeatedly calls the outward step function while it remains set, then branches to track-word clearing.
+- `clear_current_track_word`: Clears the word at offset sixteen from a1 and returns immediately without touching any listed hardware register.
+- `wait_for_disk_dma_or_timeout`: Returns zero when disk status bit one appears, otherwise waits for custom counter changes until a long timeout, returns minus one on timeout, and stops disk DMA.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -143,7 +179,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `frag_btst_beq_bsr_bra_clr_rts`: Short code fragment that tests bit 4 of a fixed memory address, then branches if the last result was zero, then calls another routine, then jumps to another point in the code, then clears the memory at an offset from a1, then returns.
 - `decrement_and_compare`: Counts down from a fixed value while testing bits and comparing bytes, returning negative one when the counter reaches zero.
 - `setup_audio_dma`: Performs bit rotation operations on a register, writes to audio volume registers and DMA control registers, clears global variables, and updates several memory locations with values derived from a pointer before branching to another routine.
-- `initialize_audio_and_dma`: Clears memory locations in a loop, then writes to audio volume registers, DMA control registers, and several global variables before returning.
+- `init_audio_tables_and_mute_channels`: Finds a maximum byte, builds 31 audio data pointers while clearing their first longwords, mutes four audio channels, clears state, sets CIAA port bits, and returns.
 - `frag_clr_move_rts`: Short code fragment that clears a fixed memory address (5 times in a row), then copies 15 to a fixed memory address, then returns.
 - `update_audio_channels`: Updates audio channel registers based on bit tests and data from a table, then returns.
 - `update_position`: Updates position coordinates based on input values and clamps them within specified ranges, then stores the results at specific offsets in a structure.

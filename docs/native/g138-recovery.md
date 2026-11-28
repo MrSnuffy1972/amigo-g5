@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (907120 top-level bytes in 53 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 1 raw-word lines |
-| Functions named and described | pass, 56 of 56 named (0 author symbols), 56 of 56 described (25 by rule, 13 by the local model) |
+| Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 2 raw-word lines |
+| Functions named and described | pass, 90 of 90 named (0 author symbols), 90 of 90 described (44 by rule, 20 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 172 of 172 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 65884 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 851 of 851 instructions identical in start and length, 0 mismatches |
+| Recovered without load address (counted in proof 1, flagged) | 65884 bytes, 34 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 950 of 950 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 734805 |
-| code | 3994 |
-| data | 138302 |
+| code | 7398 |
+| data | 134898 |
 | padding | 13635 |
 | unused | 16384 |
 
@@ -32,7 +32,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 750 | 47 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 14 | 4 |
 | Aaargh!.adf:gwave.dat (raw code file, load address unknown) | 1 | 0 | 0 |
-| Aaargh!.adf:arg.bin (raw code file, load address unknown) | 1 | 0 | 0 |
+| Aaargh!.adf:arg.bin (raw code file, load address unknown) | 1 | 711 | 34 |
 
 ## Cases handled
 
@@ -40,7 +40,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - runtime segment an address: 3 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - Aaargh!/Aaargh!.adf:gwave.dat: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
 - Aaargh!/Aaargh!.adf:arg.bin: raw code file no run loaded verbatim: recovered position-independently (load address unknown)
-- 2 never-loaded region(s), 65884 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
+- 1 never-loaded region(s), 24110 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
@@ -48,7 +48,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ## Copy protection found
 
-- none found
+- `frag_move_lea_clr_bsr_dbra_rts` (arg.bin (raw code file, load address unknown)): Short code fragment that copies 255 to a fixed memory address, then copies 2047 to d7, then loads the address of a fixed memory address into a0, then clears d0, then calls advance_xorshift_random_state, then copies d0 to the memory at a0 (advancing a0), then loops back while counting down d7, then returns. Kind: disk hardware check. Pass path: branch taken when ADKCON register check passes.
 
 ## Functions
 
@@ -120,3 +120,40 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `call_super_state`: Wrapper that calls the exec library function SuperState and returns its result to the caller.
 - `call_forbid`: Wrapper that calls the exec library function Forbid and returns its result to the caller.
 - `call_permit`: Wrapper that calls the exec library function Permit and returns its result to the caller.
+
+### Aaargh!.adf:arg.bin (raw code file, load address unknown)
+
+- `setup_audio_dma`: Configures audio DMA channels and enables them using the DMA control register, then calls another routine to update the random number state.
+- `consume_positive_command_bytes`: Masks d5 to seven bits, reads bytes through a3, exits for zero or negative values, otherwise calls the drawing operation and repeats.
+- `empty_stub_6`: Empty routine: returns to the caller immediately without doing anything.
+- `composite_eight_sprite_rows`: Selects mask data from d0, combines eight rows from five source planes into five destination planes using OR and inverted-mask AND operations, increments d5, and returns.
+- `read_joystick_input`: Reads joystick port data from a hardware register, tests specific bits to determine button states, and sets corresponding flags in a word variable before returning.
+- `manage_sprite_flags`: Calls another routine to read joystick input, then uses the results to test bits in a global variable and set flags in various memory locations based on conditions.
+- `frag_move_clr_rts_2`: Short code fragment that copies an address to a fixed memory address, then copies 2000 to a fixed memory address, then copies a fixed memory address to a fixed memory address, then copies 1024 to a fixed memory address, then copies 32776 to a fixed memory address, then clears a fixed memory address, then returns.
+- `frag_tst_bmi_rts_5`: Short code fragment that tests a fixed memory address, then branches if the last result was negative, then returns.
+- `frag_move_bra_4`: Short code fragment that copies 1500 to a fixed memory address, then jumps to another point in the code.
+- `start_audio_channel_three`: Writes a fixed sample pointer, stored period and fixed length to audio channel three, enables its DMA bit, clears a state word, and returns.
+- `frag_bsr_andi_addi_move_bra_2`: Short code fragment that calls advance_xorshift_random_state, then masks d0 with 960, then adds 1024 to d0, then copies d0 to a fixed memory address, then copies 0 to a fixed memory address, then jumps to another point in the code.
+- `start_audio_channel_one_long_period`: Clears channel state, sets a long stored period, conditionally clears a control word, writes sample pointer, period and length to audio channel one, enables DMA, and returns.
+- `frag_tst_bmi_rts_6`: Short code fragment that tests a fixed memory address, then branches if the last result was negative, then returns.
+- `frag_clr_move_bra_3`: Short code fragment that clears a fixed memory address, then copies 512 to a fixed memory address, then copies an address to a fixed memory address, then jumps to another point in the code.
+- `empty_stub_7`: Empty routine: returns to the caller immediately without doing anything.
+- `start_audio_channel_one_short_period`: Stores sample metadata, clears state, conditionally clears a control word, writes a fixed sample pointer, shorter period and length to audio channel one, enables DMA, and returns.
+- `empty_stub_8`: Empty routine: returns to the caller immediately without doing anything.
+- `initialize_audio_channel`: Checks a global variable for a positive value and branches if not, otherwise writes values to audio registers and calls a random number generator routine.
+- `frag_move_rts_3`: Short code fragment that copies 1 to a fixed memory address, then copies 100 to a fixed memory address, then copies 4 to a fixed memory address, then copies an address to a fixed memory address, then copies a fixed memory address to a fixed memory address, then copies 448 to d0, then copies d0 to a fixed memory address, then copies 32772 to a fixed memory address, then returns.
+- `frag_move_bra_5`: Short code fragment that copies 1 to a fixed memory address, then copies 40 to a fixed memory address, then copies 4 to a fixed memory address, then copies an address to a fixed memory address, then copies 384 to d0, then jumps to another point in the code.
+- `empty_stub_9`: Empty routine: returns to the caller immediately without doing anything.
+- `frag_move_movea_bsr_bra_3`: Short code fragment that copies 1 to a fixed memory address, then copies 45 to a fixed memory address, then copies 4 to a fixed memory address, then copies a fixed memory address to a0, then copies a fixed memory address to a2, then calls set_audio_channel_two_period, then copies 496 to d0, then jumps to another point in the code.
+- `empty_stub_10`: Empty routine: returns to the caller immediately without doing anything.
+- `frag_move_movea_bsr_bra_4`: Short code fragment that copies 1 to a fixed memory address, then copies 30 to a fixed memory address, then copies 4 to a fixed memory address, then copies a fixed memory address to a0, then copies a fixed memory address to a2, then calls set_audio_channel_two_period, then copies 320 to d0, then jumps to another point in the code.
+- `set_audio_channel_two_period`: Writes d0 to audio channel two period, copies a stored length to its length register, enables channel two DMA, and returns.
+- `frag_clr_tst_bpl_move_rts_2`: Short code fragment that clears a fixed memory address, then tests a fixed memory address, then branches if the last result was not negative, then tests a fixed memory address, then branches if the last result was not negative, then copies an address to a fixed memory address, then copies 10 to a fixed memory address, then copies 2 to a fixed memory address, then returns.
+- `frag_clr_move_rts_2`: Short code fragment that clears a fixed memory address, then copies 65535 to a fixed memory address, then returns.
+- `process_audio_data`: Saves all registers to the stack, calls another routine, reads from multiple memory locations, loads byte values into a register, writes them to audio registers, and restores registers before returning.
+- `frag_move_lea_clr_bsr_dbra_rts`: Short code fragment that copies 255 to a fixed memory address, then copies 2047 to d7, then loads the address of a fixed memory address into a0, then clears d0, then calls advance_xorshift_random_state, then copies d0 to the memory at a0 (advancing a0), then loops back while counting down d7, then returns.
+- `advance_xorshift_random_state`: Loads the random state into d0, substitutes one when zero, shifts left, conditionally applies a feedback constant, stores the new state, and returns.
+- `empty_stub_11`: Empty routine: returns to the caller immediately without doing anything.
+- `copy_words_and_store_count`: Copies words from a0 to a1 while incrementing d0 until a0 reaches a2, stores the final count in memory, and returns.
+- `clear_audio_volumes`: Reads a hardware register, tests a specific bit and branches if clear, otherwise sets an audio volume register to a fixed value and returns immediately.
+- `initialize_display_registers`: Writes a fixed value to several global variables, then calls another routine to clear audio volumes, followed by setting multiple display and coprocessor registers with specific values.

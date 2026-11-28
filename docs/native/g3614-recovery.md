@@ -8,19 +8,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (1804816 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 9 raw-word lines |
-| Functions named and described | pass, 12 of 12 named (0 author symbols), 12 of 12 described (5 by rule, 7 by the local model) |
+| Functions named and described | pass, 14 of 14 named (0 author symbols), 14 of 14 described (5 by rule, 8 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 133 of 133 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 91136 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 292 of 292 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 325 of 325 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 12585 |
-| code | 1100 |
-| data | 863894 |
-| padding | 5 |
+| code | 1238 |
+| data | 863755 |
+| padding | 6 |
 | unused | 927232 |
 
 ## Code units
@@ -29,9 +29,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Federation Quest (19xx)(-)(beta)[cr Black Monks](Disk 1 of 2).adf:bootblock | 1 | 6 | 1 |
 | logged disk load from Federation Quest (19xx)(-)(beta)[cr Black Monks](Disk 1 of 2).adf boot-block load | 1 | 107 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 179 | 9 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 204 | 11 |
 | Federation Quest (19xx)(-)(beta)[cr Black Monks](Disk 1 of 2).adf bytes 1024-26112 (code never loaded by a reference run) | 1 | 0 | 0 |
-| Federation Quest (19xx)(-)(beta)[cr Black Monks](Disk 1 of 2).adf bytes 27648-93696 (code never loaded by a reference run) | 1 | 0 | 0 |
+| Federation Quest (19xx)(-)(beta)[cr Black Monks](Disk 1 of 2).adf bytes 27648-93696 (code never loaded by a reference run) | 1 | 8 | 0 |
 
 ## Cases handled
 
@@ -76,7 +76,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
-- `initialize_graphics_system`: Initializes the graphics system by checking hardware status, calling multiple setup routines, and configuring display registers before jumping to main execution.
+- `initialize_dma_and_blitter`: Sets up DMA and blitter parameters by configuring hardware registers, calling multiple setup routines, and managing display-related data through specific memory accesses and register operations.
+- `build_repeated_longword_pattern`: Writes one changing longword followed by forty-two copies of a fixed longword for 200 groups, advancing the destination and incrementing the changing value each group.
+- `clear_memory_blocks`: Clears memory blocks at three different addresses with varying sizes and data types, using loop counters to iterate through each block and zeroing out the memory locations sequentially.
 - `frag_move_lea_swap_rts`: Short code fragment that copies a fixed memory address to d0, then copies a fixed memory address to a fixed memory address, then copies d0 to a fixed memory address, then loads the address of a fixed memory address into a0, then copies d0 to the memory at an offset from a0, then swaps the halves of d0, then copies d0 to the memory at an offset from a0, then returns.
 - `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (sub.b) and then falls through into the code that follows, with no return of its own.
 - `fall_through_entry_2`: Entry point part-way through straight-line code: runs one instruction (ori.b) and then falls through into the code that follows, with no return of its own.

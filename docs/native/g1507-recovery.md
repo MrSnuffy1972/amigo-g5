@@ -8,17 +8,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (905440 top-level bytes in 18 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 9 of 9 units identical (bytes and relocations), 7 raw-word lines |
-| Functions named and described | pass, 64 of 64 named (0 author symbols), 64 of 64 described (1 by rule, 1 by the local model) |
+| Functions named and described | pass, 95 of 95 named (0 author symbols), 95 of 95 described (6 by rule, 26 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 569 of 569 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 845248 bytes, 39 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 2712 of 2713 instructions identical in start and length, 0 mismatches |
+| Recovered without load address (counted in proof 1, flagged) | 845248 bytes, 69 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 2720 of 2721 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 29333 |
-| code | 3048 |
+| asset | 29301 |
+| code | 3080 |
 | data | 823513 |
 | padding | 906 |
 | unused | 48640 |
@@ -29,12 +29,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf:bootblock | 1 | 21 | 1 |
 | logged disk load from Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf boot-block load | 1 | 90 | 3 |
-| logged disk load from Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf boot-block load | 1 | 124 | 2 |
+| logged disk load from Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf boot-block load | 1 | 132 | 3 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 590 | 19 |
-| Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf:blocks 11-235 (bytes 5632-120832)#unpacked (raw code file, load address unknown) | 1 | 783 | 20 |
-| Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf:blocks 242-289 (bytes 123904-148480)#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
-| Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf:blocks 297-341 (bytes 152064-175104)#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
-| Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf:blocks 352-458 (bytes 180224-235008)#unpacked (raw code file, load address unknown) | 1 | 0 | 0 |
+| Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf:blocks 11-235 (bytes 5632-120832)#unpacked (raw code file, load address unknown) | 1 | 841 | 25 |
+| Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf:blocks 242-289 (bytes 123904-148480)#unpacked (raw code file, load address unknown) | 1 | 53 | 1 |
+| Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf:blocks 297-341 (bytes 152064-175104)#unpacked (raw code file, load address unknown) | 1 | 691 | 21 |
+| Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf:blocks 352-458 (bytes 180224-235008)#unpacked (raw code file, load address unknown) | 1 | 156 | 3 |
 | Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf:blocks 1100-1372 (bytes 563200-702976)#unpacked (raw code file, load address unknown) | 1 | 1105 | 19 |
 
 ## Cases handled
@@ -97,6 +97,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `select_half_or_input_word`: Returns half of a second word when a flag equals one, otherwise returns the input word unchanged.
 - `lookup_table_word_masked`: Looks up a word in a fixed table, indexed by twice a register value, and returns it ANDed with a second word.
+- `copy_boot_words_and_jump_variant`: Initializes both stacks, transfers 118 words from a2 through a3, and enters the copied code using an address relative to the destination.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
@@ -136,12 +137,51 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `set_pitch_from_command_table`: Computes a table index from the command word and a byte in the caller's data, then loads the pitch value at that index into the record.
 - `negate_field_and_subtract`: Stores the negated value of one record field into a second field and subtracts that value from a third field.
 - `adjust_counter_by_scaling`: When the field at offset 18 is zero and the byte at offset 4 of the record in a0 is zero, updates offset 13 from another record, then either adds a scaled value to or subtracts a scaled value from the counter at offset 12 depending on a bitmask, clamping the result.
+- `frag_move_beq_clr_not_and_rts`: Short code fragment that copies the memory at an offset from a2 to d0, then branches if the last result was zero, then clears the memory at an offset from a2, then copies d0 to the memory at an offset from a2, then copies the memory at an offset from a2 to d1, then inverts d1, then masks the memory at a5 with d1, then returns.
+- `frag_move_beq_cmp_bne_clr_rts`: Short code fragment that copies the memory at an offset from a2 to d0, then branches if the last result was zero, then compares d0 with the memory at an offset from a0, then branches if the last result was not zero, then clears the memory at an offset from a2 (2 times in a row), then copies 0 to an indexed entry from a6, then returns.
+- `frag_move_beq_clr_rts`: Short code fragment that copies the memory at an offset from a2 to d0, then branches if the last result was zero, then clears the memory at an offset from a2, then copies d0 to the memory at an offset from a2, then copies the memory at an offset from a2 to the memory at an offset from a2 (2 times in a row), then returns.
+- `decrement_and_store`: Reads a byte from memory location 5 bytes offset from a0, decrements it by one, stores the result back to memory location 3 bytes offset from a0, then returns.
+- `frag_move_cmpi_bcc_add_rts`: Short code fragment that copies the memory at an offset from a2 to d0, then compares d0 with 31, then branches if the carry flag is clear, then adds a fixed memory address to d0, then copies d0 to the memory at an offset from a0, then returns.
 - `step_secondary_envelope_pitch`: Advances the secondary envelope counter at offset 43 by comparing it to a segment length, reloading it from the length minus the step and adding a table value to the pitch at offset 10 when the segment ends, otherwise incrementing the counter.
 - `step_primary_envelope_pitch`: Advances the primary envelope counter at offset 39 using its own record fields, reloading it and adding a lookup-table value to the pitch at offset 10 when the segment ends, otherwise incrementing the counter.
 - `copy_sequence_entry_to_buffer`: Advances the sequence counter at offset 35, and when the segment ends fetches a byte from a table, negating the counter when the byte is negative, otherwise copying the long and word fields of a 64-byte entry from the table into the output buffer at a running offset and recording the entry index.
 - `scale_position_into_buffer`: Calls one helper, copies a position word into a second field, and writes the high half of its product with a scale field into an output buffer at a running offset.
 - `run_envelope_state_machine`: Advances the record's level envelope one step according to its state: a ramp up, a ramp down, a counted pause, or a timed hold, moving to the next state when each one finishes.
 - `write_dma_control_registers`: Checks a flag word and, when clear, clears it, then indexes a table using a scaled value in d0 to fetch a byte that is written to several global variables before setting bit 15 of the DMA control register to enable DMA channels.
+
+### Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf:blocks 242-289 (bytes 123904-148480)#unpacked (raw code file, load address unknown)
+
+- `update_cia_registers`: Writes specific values to CIA register locations, performs bit manipulation on a data byte, and updates another register based on the result.
+
+### Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf:blocks 297-341 (bytes 152064-175104)#unpacked (raw code file, load address unknown)
+
+- `copy_memory_blocks_2`: Copies data from one memory block to another in a loop that iterates 1023 times, then calls another routine with a specific address.
+- `bitwise_or_copy_loop`: Processes data in two memory regions through multiple iterations of bitwise OR operations and memory copying, with nested loops controlling the processing.
+- `initialize_data_structure`: Sets up a data structure by copying specific values to memory locations at offsets from two pointers, then increments the pointers and continues through a loop.
+- `frag_not_bne_lea_moveq_cmpi_beq_addq_br`: Short code fragment that inverts a fixed memory address, then branches if the last result was not zero, then loads the address of a location in the code into a0, then loads the address of a location in the code into a1, then loads 7 into d7, then compares a fixed memory address with 16, then branches if the last result was zero, then adds 1 to a fixed memory address, then jumps to another point in the code.
+- `process_color_data`: Clears a bit in memory at 4e332, and if the bit is not set, it loads addresses of two tables into a0 and a1 respectively, then calls another routine to process color components.
+- `process_color_components`: Processes color data by extracting components from source words, multiplying them with a constant, shifting the results, combining them, and storing the final value.
+- `setup_graphics_parameters`: Checks a bit in memory, and if set, returns immediately; otherwise, it initializes several memory locations with specific values and sets up graphics parameters.
+- `initialize_sound`: Sets multiple sound-related parameters in a global structure, including a frequency value and several register settings, then returns.
+- `initialize_graphics_context`: Checks a bit in memory, and if set, returns immediately; otherwise, it initializes multiple memory locations with specific values and sets up graphics context parameters.
+- `update_game_state`: Decrements a counter in memory, and if not zero, increments another counter and updates memory locations with data from a table; otherwise, it decrements a different counter and returns.
+- `update_game_counter`: Decrements a counter at memory location 4e5da, and if not zero, increments another counter at 4e614 and adds 32 to that counter.
+- `setup_render_parameters_2`: Increments a counter at memory location 4e824 and loads a word from memory into d0.
+- `setup_render_parameters`: Loads a value from memory, checks a bit in memory, and if set, returns immediately; otherwise, it initializes several memory locations with specific values and sets up rendering parameters.
+- `load_sprite_attributes`: Decrements a counter at memory location 4e880, and if not zero, increments another counter at 4e882 and loads address of a table into a0.
+- `update_animation_state`: Decrements a counter at memory location 4e8fc, and if not zero, copies a word from a table to memory location 4e900 and another word to memory location 4e9be before returning.
+- `update_sprite_data`: Decrements a counter at memory location 4ea30 and branches to a label if the result is not zero.
+- `manage_sprite_data`: Decrements a counter at memory location 4eb86, and if not zero, increments another counter at 4eb84 and performs bitwise AND operation on that counter with 3 before loading address of a table into a0 and adding an offset to it.
+- `process_sprite_frame_2`: Decrements a counter at memory location 4ebf8 and branches to a label if the result is not zero.
+- `process_sprite_frame`: Decrements a counter at memory location 4edaa, and if not zero, increments another counter at 4eda8 and performs bitwise AND operation on that counter with 3 before loading address of a table into a0 and adding an offset to it.
+- `setup_dma_channels`: Configures DMA channels by writing specific values to CIA registers, shifts a value in a register, and modifies a hardware register.
+- `configure_dma_channels`: Sets up DMA channel configuration by writing specific values to CIA registers, shifts a value in a register, and modifies a hardware register based on conditional branches.
+
+### Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf:blocks 352-458 (bytes 180224-235008)#unpacked (raw code file, load address unknown)
+
+- `read_sprite_input`: Writes specific values to CIA registers and calls another routine with different input values multiple times.
+- `update_sprite_flags`: Modifies sprite configuration flags based on input data, then reads and processes a global variable to set final output values.
+- `initialize_rendering_data`: Loads address of a memory block into a0 and initializes several words in that block with specific values, then loads another address into a0 and initializes several words in that block with different values.
 
 ### Dyna Blaster (1991)(Hudson Soft)[cr VF][t +5 Supplex].adf:blocks 1100-1372 (bytes 563200-702976)#unpacked (raw code file, load address unknown)
 

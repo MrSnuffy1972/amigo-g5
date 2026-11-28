@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (904144 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 39 of 39 named (0 author symbols), 39 of 39 described (1 by rule, 18 by the local model) |
+| Functions named and described | pass, 46 of 46 named (0 author symbols), 46 of 46 described (1 by rule, 19 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 296 of 296 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 732 of 732 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 773 of 773 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 320 |
-| code | 2078 |
-| data | 7564 |
+| code | 2394 |
+| data | 7248 |
 | padding | 742 |
 | unused | 893440 |
 
@@ -30,7 +30,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Resolution 101 (1990)(Millenium)[cr CLS][a].adf:bootblock | 1 | 20 | 2 |
 | logged disk load from Resolution 101 (1990)(Millenium)[cr CLS][a].adf boot-block load | 1 | 89 | 2 |
 | logged disk load from Resolution 101 (1990)(Millenium)[cr CLS][a].adf boot-block load | 1 | 89 | 2 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 191 | 8 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 285 | 15 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 343 | 25 |
 
 ## Cases handled
@@ -77,6 +77,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `check_input_and_set_pot`: Checks bits in the CIAA port and the custom POTGOR register, then conditionally sets bit 1 of d1 or writes a value to the custom POTGO register.
 - `process_interrupt_and_input`: Handles an interrupt by checking the CIAA status, performing bitwise operations on a byte from the CIAA SDR, and then uses a table to update a global variable or a pointer based on a value retrieved from another memory location.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `copy_string_data`: Copies bytes from a source buffer pointed to by a0 to a destination buffer pointed to by a1, handling both positive and negative length values in the source data.
+- `load_returned_palette_words`: Calls a routine returning a palette pointer, preserves d0 and address registers, copies 32 words to COLOR00 onward, restores registers, and returns.
+- `store_value_and_xored_copy`: Loads one longword into d0, stores an unchanged copy in one location and a copy XORed with an address in another, then returns.
+- `wait_for_word_change_restore_d0`: Saves d0, repeatedly compares a memory word with that word plus one until they differ, restores d0, and returns.
+- `wait_for_two_zero_bytes`: Tests two adjacent memory bytes and branches back while either is nonzero, returning only after both bytes contain zero.
+- `wait_until_blitter_not_busy`: Saves d0, repeatedly reads DMACONR and tests its busy bit until clear, restores d0, and returns.
+- `record_vblank_request_and_branch`: Saves all data and address registers, intersects pending and enabled interrupt words, increments a counter for bit five, then branches to shared service code.
 - `service_bitplane_pointers_on_vblank`: On the vertical-blank interrupt bit, increments a frame counter and sets five bitplane pointers spaced 8000 bytes apart from a base address.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)

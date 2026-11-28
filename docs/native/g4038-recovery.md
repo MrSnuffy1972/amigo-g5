@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (903264 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 5 raw-word lines |
-| Functions named and described | pass, 80 of 80 named (0 author symbols), 80 of 80 described (28 by rule, 52 by the local model) |
+| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 6 raw-word lines |
+| Functions named and described | pass, 83 of 83 named (0 author symbols), 83 of 83 described (28 by rule, 52 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 213 of 213 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1724 of 1724 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2095 of 2095 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 48346 |
-| code | 7290 |
-| data | 843324 |
+| asset | 47611 |
+| code | 8090 |
+| data | 843259 |
 | padding | 720 |
 | unused | 3584 |
 
@@ -28,7 +28,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Iron Trackers (1989)(Microids).adf:bootblock | 1 | 93 | 1 |
-| logged disk load from Iron Trackers (1989)(Microids).adf boot-block load | 1 | 1295 | 62 |
+| logged disk load from Iron Trackers (1989)(Microids).adf boot-block load | 1 | 1666 | 65 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 316 | 16 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 20 | 1 |
 
@@ -124,6 +124,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_tracking_data_2`: Processes tracking information by copying a byte value from a register to memory, then calling another routine to handle the data, and finally updating a counter and memory location before branching back to the beginning.
 - `update_tracking_data`: Updates tracking information by copying a byte value from a register to memory, then calling another routine to process the data, and finally incrementing counters.
 - `frag_adda_neg_addq_bmi_move_dbra_subi_r`: Short code fragment that adds d7 to a5, then negates d7, then adds 7 to d7, then branches if the last result was negative, then copies 37 to the memory at a5 (advancing a5), then loops back while counting down d7, then subtracts 32000 from a fixed memory address, then returns.
+- `translate_indexed_byte_and_call`: Reads a byte indexed by d0 through a6, adds one of two constants depending on a0, uses it to fetch a table byte into memory through a1, then calls another entry.
+- `merge_shifted_four_plane_rows`: Repeatedly reads groups of source words through a5, shifts four plane values by d5 and d6, clears covered destination bits, merges values through a4, adjusts pointers, and returns.
+- `merge_shifted_six_plane_rows`: Processes a larger sequence of source word groups through a5, shifts multiple plane values, masks and merges them into destination words through a4, advances rows, and returns.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 

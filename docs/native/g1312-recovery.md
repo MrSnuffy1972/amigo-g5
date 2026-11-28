@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (905664 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 10 raw-word lines |
-| Functions named and described | pass, 41 of 41 named (0 author symbols), 41 of 41 described (11 by rule, 18 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 100 of 100 (100.00%) |
+| Functions named and described | pass, 47 of 47 named (0 author symbols), 47 of 47 described (12 by rule, 19 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 102 of 102 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 884 of 884 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 964 of 964 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 2029 |
-| code | 4642 |
-| data | 892847 |
+| asset | 1685 |
+| code | 5006 |
+| data | 892827 |
 | padding | 2 |
 | unused | 6144 |
 
@@ -28,17 +28,17 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Super Hang On (1988)(Activision)[cr Defjam - CCS].adf:bootblock | 1 | 40 | 2 |
-| logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS].adf boot-block load | 1 | 0 | 0 |
+| logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS].adf boot-block load | 1 | 129 | 6 |
 | logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS].adf boot-block load | 1 | 469 | 16 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 375 | 23 |
 
 ## Cases handled
 
 - super hang on (1988)(activision)[cr defjam - ccs]/Super Hang On (1988)(Activision)[cr Defjam - CCS].adf: custom-format (non-DOS) disk, 1746 non-empty blocks: matched against track-loaded segments
-- 100 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
+- 102 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
 - super hang on (1988)(activision)[cr defjam - ccs]/Super Hang On (1988)(Activision)[cr Defjam - CCS].adf: the boot block reads 1024 bytes from disk offset 1024 to an address (found statically); recovered as a unit
 - super hang on (1988)(activision)[cr defjam - ccs]/Super Hang On (1988)(Activision)[cr Defjam - CCS].adf: the boot block reads 2048 bytes from disk offset 11264 to an address (found statically); recovered as a unit
-- runtime segment an address: 100 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 102 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - super hang on (1988)(activision)[cr defjam - ccs]/Super Hang On (1988)(Activision)[cr Defjam - CCS].adf: 2 logged loads cover 3072 bytes of the image
 - super hang on (1988)(activision)[cr defjam - ccs]/Super Hang On (1988)(Activision)[cr Defjam - CCS].adf: 8 track-loaded blocks found in recovered runtime segments and classified through them
 - super hang on (1988)(activision)[cr defjam - ccs]/Super Hang On (1988)(Activision)[cr Defjam - CCS].adf: blocks 4-21 (bytes 2048-11264) hold ASCII text
@@ -64,6 +64,15 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `setup_display_and_jump_2`: Programs the display controller registers with two different video modes, allocates a block of memory and calls the display handler, then installs a vertical-blank handler and triggers a software interrupt.
 - `setup_display_and_jump`: Disables interrupts, configures the display controller registers, clears the interrupt request register, switches the user stack pointer to a stack at 384, and jumps to a fixed address.
+
+### logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS].adf boot-block load
+
+- `initialize_copper_list`: Initializes a copper list starting at a memory location pointed to by a4, setting up color register entries and managing a counter in d2 that wraps around every four iterations.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs one instruction (sub.w) and then falls through into the code that follows, with no return of its own.
+- `append_copper_color_wait_entry`: Writes d0, a copper wait longword, and d1 through a2, advances the pointer, adds 256 to d0, and returns.
+- `append_color_register_pair_primary`: Calls the wait-entry writer, appends two colour-register words paired with d3, subtracts 273 from d3, adds 512 to d0, and returns.
+- `call_builder_adjust_d2_a2_primary`: Calls the following builder, adds 384 to d2, subtracts d4 from a2, and continues directly into subsequent code.
+- `invoke_two_os_operations_primary`: Copies a3, d2 and d3 into call registers, invokes one library vector, invokes another using a2 and d4, advances a2, and returns.
 
 ### logged disk load from Super Hang On (1988)(Activision)[cr Defjam - CCS].adf boot-block load
 

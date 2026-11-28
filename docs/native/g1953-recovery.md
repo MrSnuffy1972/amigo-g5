@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (4862809 top-level bytes in 6 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 12 of 12 named (0 author symbols), 12 of 12 described (0 by rule, 4 by the local model) |
+| Functions named and described | pass, 17 of 17 named (0 author symbols), 17 of 17 described (2 by rule, 4 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 30 of 30 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 153 of 153 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 216 of 216 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
-| asset | 2250296 |
-| code | 714 |
-| data | 2610215 |
+| asset | 2250206 |
+| code | 832 |
+| data | 2610187 |
 | padding | 1584 |
 
 ## Code units
@@ -28,9 +28,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Kick Off 2 - The Final Whistle (Europe) (v1.9g).adf:bootblock | 1 | 46 | 3 |
 | Kick Off 2 - The Final Whistle (Europe) (v1.9g).ipf#adf:bootblock | 1 | 46 | 3 |
-| logged disk load from Kick Off 2 - The Final Whistle (Europe) (v1.9g).adf boot-block load | 1 | 0 | 0 |
-| logged disk load from Kick Off 2 - The Final Whistle (Europe) (v1.9g).ipf#adf boot-block load | 1 | 0 | 0 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 107 | 6 |
+| logged disk load from Kick Off 2 - The Final Whistle (Europe) (v1.9g).adf boot-block load | 1 | 13 | 0 |
+| logged disk load from Kick Off 2 - The Final Whistle (Europe) (v1.9g).ipf#adf boot-block load | 1 | 13 | 0 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 124 | 11 |
 
 ## Cases handled
 
@@ -73,8 +73,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
 
 - `pulse_bit_around_calls`: Loops indefinitely, setting bit 2 of a byte at one pointer, calling one routine, clearing the same bit at a second pointer, and calling that routine again.
-- `poll_bit_with_timeout`: Clears bit 4 of a byte at a pointer and polls that byte until bit 4 is set, bounded by a counter, then waits for a word's top bit.
+- `wait_for_flag_clear`: Polls a byte pointer for a specific bit to clear, using a decrementing counter loop.
 - `search_byte_pattern_in_stream`: Waits for the top bit of a word at a pointer to be set, then compares the following bytes against the character D and a second fixed byte value, with a counter that restarts the search.
 - `wait_for_word_top_bit`: Two-instruction routine that polls a word through a pointer until its top bit is set, repeating the poll several times in a row.
-- `compare_polled_byte_against_input`: Polls a word at a pointer and compares its low byte with an input byte register, returning on the first mismatch.
+- `compare_multiple_pointer_values`: Compares a byte in d1 against four consecutive signed words pointed to by a3, returning if any value is negative or if any value fails to match its corresponding byte in d1, d2, d3, or d4.
 - `repeat_control_write_and_poll`: Repeats 120 times: writes three fixed byte values to three offsets from a base pointer, then polls the first offset until its lowest bit is clear.
+- `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
+- `fall_through_entry`: Entry point part-way through straight-line code: runs two instructions (bset.b, subq.w) and then falls through into the code that follows, with no return of its own.
+- `pulse_control_bit_zero_then_continue_alt`: Invokes a control entry, clears and then sets bit zero through a0 around a second call, sets d2 to thirteen, and branches onward.
+- `compare_words_repeat_control_alt`: Tests d0 against d1, branches to completion if equal or to increment logic if greater, otherwise calls a control entry and repeats the comparison.
+- `clear_bit_increment_retry_alt`: Clears bit one at a0, adds one to d0, calls the alternate bit-zero pulse entry, and returns to the shared compare loop by branching.

@@ -7,10 +7,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (916080 top-level bytes in 11 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 241 raw-word lines |
-| Functions named and described | pass, 166 of 166 named (11 author symbols), 166 of 166 described (3 by rule, 150 by the local model) |
+| Byte-identical reassembly with vasm | pass, 7 of 7 units identical (bytes and relocations), 242 raw-word lines |
+| Functions named and described | pass, 196 of 196 named (11 author symbols), 196 of 196 described (16 by rule, 167 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 3135 of 3135 (100.00%) |
-| Recovered without load address (counted in proof 1, flagged) | 326122 bytes, 68 functions |
+| Recovered without load address (counted in proof 1, flagged) | 326122 bytes, 98 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 6554 of 6575 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
@@ -18,22 +18,22 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | class | bytes |
 |---|---|
 | asset | 28817 |
-| code | 22754 |
-| data | 347657 |
-| padding | 1780 |
+| code | 25964 |
+| data | 344442 |
+| padding | 1785 |
 | unused | 515072 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Helter Skelter (1990)(Audiogenic)[cr SKR][a].adf:Type | 2 | 363 | 12 |
+| Helter Skelter (1990)(Audiogenic)[cr SKR][a].adf:Type | 2 | 434 | 12 |
 | Helter Skelter (1990)(Audiogenic)[cr SKR][a].adf:hs | 1 | 205 | 12 |
 | Helter Skelter (1990)(Audiogenic)[cr SKR][a].adf:bootblock | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 3103 | 65 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 143 | 7 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 1 |
-| Helter Skelter (1990)(Audiogenic)[cr SKR][a].adf:hs.img (raw code file, load address unknown) | 1 | 2747 | 68 |
+| Helter Skelter (1990)(Audiogenic)[cr SKR][a].adf:hs.img (raw code file, load address unknown) | 1 | 3650 | 98 |
 
 ## Cases handled
 
@@ -54,6 +54,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `increment_and_store_loop` (runtime segment an address): Continuously increments a short integer value starting at offset 384 of a global structure and stores the result back to the same location, creating an infinite loop that never exits. Kind: disk hardware check. Pass path: branch taken when ADKCON and CIAB_PRB values match expected hardware state.
 - `process_input_data` (runtime segment an address): Processes input data by calling multiple routines based on a global variable's state, and returns a value from one of those calls when the variable is non-zero. Kind: checksum trap. Pass path: The function returns the result of `u3__sub_121C()` when `DAT_0000089b` is non-zero, indicating a successful checksum validation..
 - `configure_display_and_copy_buffers` (hs.img (raw code file, load address unknown)): Configures display registers and copies or initializes memory buffers or tables. Kind: disk/track/hardware check (ADKCON/CIAB_PRB). Pass path: an address.w == d0.
+- `reset_global_variable` (hs.img (raw code file, load address unknown)): Sets a global variable to a specific constant value and calls another routine. Kind: disk hardware check. Pass path: The routine executes normally and continues with the game code flow; the check passes if CIAB_PRB value matches expected hardware signature..
+- `frag_move_rts` (hs.img (raw code file, load address unknown)): Short code fragment that copies 255 to a fixed memory address, then copies 135 to a fixed memory address, then copies 255 to a fixed memory address, then returns. Kind: disk hardware check. Pass path: CIAB_PRB read value matches expected hardware signature.
+- `frag_move_rts_2` (hs.img (raw code file, load address unknown)): Short code fragment that copies 119 to a fixed memory address, then returns. Kind: disk hardware check. Pass path: CIAB_PRB read value matches expected hardware signature.
+- `write_port_bits` (hs.img (raw code file, load address unknown)): Writes specific byte values to a hardware port address, sets bit 0 of a register, and performs a loop that counts down a counter while writing values to the same port address. Kind: disk hardware check. Pass path: branch taken when CIAB_PRB read value matches expected hardware signature.
 
 ## Functions
 
@@ -101,18 +105,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_global_words`: Clears multiple word-sized global variables by setting them to zero using explicit store instructions.
 - `clear_global_bytes`: Clears multiple byte-sized global variables by setting them to zero using explicit store instructions.
 - `update_calculated_values`: Performs arithmetic operations on values from a table, processes the results through addition and bit manipulation, and stores the updated values back into global variables.
-- `transfer_sprite_data`: Copies sprite data between memory locations, applies bitwise operations to transform color and shape information, and updates pointers for subsequent processing.
-- `transform_sprite_data`: Processes sprite definition data by applying bitwise operations to manipulate color and shape information during transfer, using shift and mask techniques for scaling or sub-pixel positioning.
+- `process_sprite_list`: Iterates through a list of pointers, performing memory copies from source addresses to destination addresses based on values stored in the list.
+- `blit_transformed_sprites`: Iterates through a list of sprite definitions to perform bitwise scaling and color manipulation, copying transformed pixel data from a source table into destination buffers using bitwise rotations and masks.
 - `fill_memory_block`: Copies a 32-bit value from a register to an array of 8000 elements, incrementing the destination pointer after each write operation.
 - `process_word_array`: Processes an array of 16 words by applying a bitwise AND operation with the value 1911 and then doubling the result, storing back to the same array locations.
-- `copy_word_arrays`: Copies 16-bit words from a source array to multiple destination arrays in sequence, then transfers 32-bit longwords from one location to another using a loop with a counter.
+- `copy_memory_blocks_2`: Calls another routine and then performs two large block memory copies to different destination addresses.
 - `copy_memory_segments`: Copies data between three memory regions, writing 1999 elements from each of three source addresses to corresponding destinations in two other memory areas.
 - `find_zero_word`: Traverses a sequence of words starting at a fixed address until it finds a zero word, advancing the pointer through the sequence with each iteration.
 - `update_counter_and_process`: Decrements a counter and if it reaches zero, processes data from a buffer by reading values and updating pointers in a structure.
 - `apply_xor_mask_to_memory`: Performs bitwise XOR operations between values from global tables and source data, then writes the results to multiple memory locations with different offsets.
-- `process_and_store_data`: Processes data using bitwise AND and XOR operations with values from a global table, then stores the results to multiple memory locations with various offsets.
-- `process_bcd_arithmetic`: Performs BCD arithmetic on a value by adding bytes with carry, updating memory locations, and calling routines to process byte data based on comparison results.
-- `process_byte_data`: Processes a byte value through a series of operations including bitwise AND, division, and stack manipulation before calling another routine multiple times in a loop.
+- `apply_conditional_xor_to_memory`: Calculates a value using a bitwise XOR and a conditional mask, then writes the resulting 32-bit word to two different memory destinations.
+- `process_bcd_value`: Performs BCD arithmetic on a value and updates a memory location based on a comparison.
+- `repeat_routine_eight_times`: Executes another routine eight times in a loop.
 - `update_table_entries`: Processes a global variable through bitwise operations and conditional checks, updates table entries, and performs bit manipulation on memory locations before returning.
 - `apply_bitwise_operations`: Performs bitwise AND and XOR operations on data using values from a global table, then stores the results to multiple memory locations with specific offsets.
 - `process_and_store_data_2`: Processes data using bitwise AND and XOR operations with values from a global table, then stores the results to multiple memory locations with specific offsets.
@@ -121,11 +125,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `compare_and_set_flags`: Compares several word values against thresholds and sets processor flags based on comparison results, returning one of the input values depending on which condition is met.
 - `process_relocation_list`: Iterates through a list of pointers ending with a negative value, calling another routine for each entry in the list.
 - `update_tile_flags`: Processes tile data based on input parameters to modify bit flags in memory locations, with conditional logic determining which bits are set or cleared.
-- `process_data_block`: Reads bytes from a source buffer and writes them to a destination, with conditional copying and subtraction operations based on the sign of read values.
+- `copy_data_with_expansion`: Performs a nested loop to move and expand data between memory locations based on signed byte values.
 - `clear_memory_region`: Clears a 16-bit word value in a memory region by writing zero to each location, iterating through a table with a fixed stride.
 - `initialize_data_structure`: Writes a series of constant values and pointers into a memory location, including a word, two longwords, and another word.
-- `calculate_and_store_values`: Processes a series of values from memory, applies bit operations and arithmetic transformations, then stores the results in two separate locations.
-- `transform_and_store_data`: Reads data from memory locations, performs bitwise operations and arithmetic calculations on values, then stores transformed results to two destinations.
+- `enter_infinite_loop`: Executes an infinite loop that prevents further code execution.
+- `execute_infinite_loop`: The routine performs a series of operations that result in an infinite loop, preventing further execution.
 - `copy_and_transform_data`: Copies data between memory regions using calculated offsets, transforms values through bitwise operations, and stores results to multiple locations while initializing several global variables.
 - `jump_to_address`: Loads specific addresses into registers and performs a jump to another location without any additional processing or return.
 - `load_pointer_offset`: Loads a memory address from a fixed location into register a0, then adjusts that address by adding a constant offset, and finally branches to another routine without modifying any data.
@@ -146,7 +150,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_position_values`: Updates position-related values in memory by performing arithmetic operations on data from global variables and lookup tables.
 - `increment_global_counter`: Increments a counter in a global variable while traversing a sequence of integers until it encounters a negative value, then returns the incremented counter value.
 - `update_position_vector`: Processes a bit sequence to determine a range, calculates vector components using multiplication and accumulation, and updates position data based on table lookups.
-- `initialize_structures`: Initializes two different data structures based on a global variable's value, populating them with specific constant values and offsets, and clears certain flags in hardware registers.
+- `initialize_conditional_structures`: Checks a global variable and populates one of two different data structures with specific constant values and offsets.
 - `build_lookup_table`: Iterates through a sequence of values to populate a table with calculated offsets and data derived from the list entries, including processing word values and adjusting memory pointers based on input data.
 - `reset_counter_if_match`: Checks if a specific value in a structure matches a constant, and if so, clears a counter field in that same structure before returning.
 - `load_string_data`: Loads string processing parameters into registers and calls a routine to process characters from a global table, then updates the table pointer and repeats the process.
@@ -177,70 +181,100 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Helter Skelter (1990)(Audiogenic)[cr SKR][a].adf:hs.img (raw code file, load address unknown)
 
 - `initialize_memory_tables`: Initializes a memory-resident table with incrementing or constant values and clears several global or memory-based flags and pointers.
-- `wait_for_condition_and_limit`: Waits for a specific bit in a memory location to become set or checks a global variable against a value in a table, returning if a certain condition is met.
+- `wait_for_input_condition`: Polls a bit in a memory location while comparing a global variable against another value.
 - `clear_global_variable`: Sets a global variable to zero multiple times.
 - `clear_global_variable_2`: sets a global variable to zero.
-- `update_global_with_math`: Performs arithmetic or bitwise operations using values from a table and stores the result into a global variable.
-- `process_graphics_list`: Iterates through a list of pointers, using a lookup table to calculate source and destination addresses, then copies memory blocks between them.
-- `update_bitmapped_graphics_layer`: Calculates a destination pointer and bit-shift amount based on a lookup table, then iterates through a source list to perform bitwise OR and masking operations on a target buffer.
+- `update_calculated_values_2`: Performs arithmetic operations using values from a table and stores the results into a global variable.
+- `process_sprite_list_2`: Iterates through a list of pointers, performing memory copies from source addresses to destination addresses based on values stored in the list.
+- `blit_transformed_sprites_2`: Copies sprite data from a source table to a destination buffer using bitwise shifts and masks to perform scaling or sub-pixel positioning.
 - `fill_memory_with_register`: Fills a block of memory with the contents of a register using a pointer.
 - `modify_memory_with_mask`: Iterates through a list of memory locations, masking certain bits and multiplying the result by two.
-- `expand_memory_block`: Calls another routine and then copies a block of memory from a source pointer to several different destination pointers, followed by a second loop that copies a block or clears a range.
+- `copy_memory_blocks_3`: Calls another routine and then performs two large block memory copies to different destination addresses.
 - `calculate_digit_mapping`: Calculates a value based on a global variable, performs a digit-swapping or masking operation, and calls another routine with a constructed parameter.
 - `transform_index_and_swap_digits`: Calculates an offset-based index, performs a digit-swapping bitwise transformation on a value derived from that index, and passes the result to another routine.
 - `copy_memory_blocks`: Copies a block of data from a source table to two different destination tables.
-- `sync_memory_buffers`: Copies a block of data from one source pointer to two different destination pointers.
+- `copy_memory_triple_variable`: Copies data from a source memory location to two separate destination locations for a specified number of iterations.
 - `find_null_terminator`: Iterates through a table until a null or zero-valued word is encountered.
-- `update_decoding_table`: Calculates a bitwise value and stores the individual bytes of that value into a large memory buffer and a secondary offset buffer.
-- `apply_xor_mask_to_buffer`: Applies a bitwise XOR mask and stores the resulting bytes into a primary buffer and a secondary offset buffer.
-- `update_value_with_carry`: Performs arithmetic or bitwise operations on a byte or a pointer, involving a carry or a checksum-like adjustment, and updates a certain memory location.
-- `repeat_apply_mask`: Executes another routine a fixed number of times in a loop.
+- `update_counter_and_process_2`: Decrements a word counter at offset 26 of the structure in a5 and if it reaches zero, reads data from a buffer pointer at offset 22 of the structure and updates the buffer pointer and counter in the structure.
+- `apply_xor_mask_to_memory_2`: Performs a bitwise XOR operation between values from a global table and a source table, then writes the results to two different memory destinations.
+- `apply_conditional_xor_to_memory_2`: Calculates a value using a bitwise XOR and a conditional mask, then writes the resulting 32-bit word to two different memory destinations.
+- `process_bcd_value_2`: Performs BCD arithmetic on a value and updates a memory location based on a comparison.
+- `repeat_routine_eight_times_2`: Executes another routine eight times in a loop.
 - `apply_masked_data`: Decrements a global variable and, if certain conditions are met, writes masked or modified data to a range of memory buffers.
 - `apply_masked_buffer_update`: Calls another routine twice and then performs a loop that applies a bitwise mask to data, storing the result into two separate large memory buffers at specific offsets.
 - `write_xor_buffer_v_p_ptr`: Iterates through a source pointer, applies a bitwise XOR mask, and writes the resulting bytes to a primary and secondary buffer.
 - `write_xor_buffer_derived_ptr`: Calculates a source pointer based on a global variable and a mathematical offset, then writes XORed bytes to a primary and secondary buffer.
-- `traverse_string_buffer`: Iterates through a pointer until a null byte is encountered, calling another routine for each byte.
+- `iterate_null_terminated_string`: Iterates through a sequence of bytes until a null terminator is encountered, calling another routine for each byte.
+- `compare_and_set_flags_2`: Compares several word values against thresholds and sets processor flags based on comparison results, returning one of the input values depending on which condition is met.
 - `traverse_pointer_list`: Iterates through a list of pointers until a negative or terminal value is encountered.
 - `patch_hunk_relocation_data`: Iterates through a range of memory defined by a hunk-type structure to apply bitmask-based bit-setting or bit-clearing to a set of destination buffers.
-- `decode_string_and_copy`: Decodes a specialized string format by reading or copying bytes based on certain values and writes the result to a destination buffer.
+- `copy_data_with_expansion_2`: Performs a nested loop to move and expand data between memory locations based on signed byte values.
 - `clear_interleaved_table_values`: clears a sequence of words to zero, skipping a fixed number of bytes between each write.
 - `initialize_struct_members`: Writes a series or constant values to a memory structure pointed to by a register.
-- `empty_loop_routine`: The routine is empty and consists only of an infinite loop.
+- `enter_infinite_loop_2`: Executes an infinite loop that prevents further code execution.
 - `empty_loop_routine_2`: the routine executes an infinite loop without performing any operations or modifying any registers.
 - `initialize_and_copy_buffer_tables`: Initializes a block of memory with zeroed or constant values and copies data between several memory-mapped or or large buffer structures.
 - `run_repeated_routine`: Executes another routine a fixed number of times using a loop.
 - `process_digits_loop`: Iteratively calculates a value based on a global variable and calls another routine while processing or splitting digits.
 - `execute_repeated_routine`: executes another routine a fixed number of times.
 - `iteratively_transform_and_pass_data`: Iteratively applies a mathematical transformation involving division and remainder to a global variable and passes the result to another routine.
-- `select_and_store_pointer_value`: updates a flag in a global structure and selects a word from a table or an offset-displaced table based on a conditional check, then stores either the first or second word of the selected location into a target pointer or value.
-- `initialize_conditional_struct`: Checks a global variable and writes a set of constant values or values from a pointer-offset to a memory structure.
-- `process_pointer_table`: Iterates through a table of pointers, and for each, populates a structure with a calculated pointer and a flag.
+- `update_pointer_value`: Selects a word from one of two memory locations based on a condition and stores it in a global variable.
+- `frag_movea_lea_bra`: Short code fragment that copies a fixed memory address to a0, then loads the address of the memory at an offset from a0 into a0, then jumps to another point in the code.
+- `validate_and_process_input`: Reads input values from a buffer, performs comparisons with thresholds, updates pointers in a structure, and returns a validation result based on comparison outcomes.
+- `process_and_validate_input`: Processes input values from a buffer, performs arithmetic operations and comparisons with thresholds, updates pointers in a structure, and returns a validation result based on the processing outcome.
+- `update_and_process_positions`: Updates position values in a structure by negating longword values at specific offsets, increments a counter, and calls other routines to process and validate position data based on conditional checks.
+- `update_position_values_2`: Reads word values from a structure at offsets 2 and 6, performs arithmetic operations with data from memory locations, updates the structure values, and compares them with input values to return a result.
+- `process_and_insert_elements`: Processes word values to calculate offsets into memory tables, checks bits in memory locations, and inserts elements into lists with specific flags and values based on conditions.
+- `calculate_and_update_coordinates`: Processes word values to calculate offsets into memory tables, checks bits in memory locations, and updates coordinate values in a structure with results from multiplication operations.
+- `initialize_conditional_structures_2`: Checks a global variable and populates one of two different data structures with specific constant values and offsets.
+- `build_lookup_table_2`: Iterates through a list of values to populate a table with calculated offsets and data derived from the list entries.
 - `apply_to_string_data`: Iterates through a null-terminated string and calls another routine with an incrementing value for each character found.
-- `traverse_null_terminated_string`: Iterates through a string starting at a fixed address until a null terminator is found.
+- `process_string_characters_2`: Iterates through a null-terminated string, calling another routine for each character while incrementing a counter, and returns immediately after processing all characters.
 - `configure_display_and_copy_buffers`: Configures display registers and copies or initializes memory buffers or tables.
 - `find_base_address`: Loops through memory until the pointer or index returns to the start of a global variable.
 - `execute_recursive_routine_calls`: Executes a routine twice and then, if a certain global variable is non-zero, executes it two additional times, returning the last result in a register.
 - `search_string_for_value`: Searches through a string for a terminator and returns a byte from an offset relative to that terminator if found.
 - `traverse_string_and_call`: Traverses a null-terminated string and calls another routine for every byte encountered.
 - `update_mask_tables`: Copies blocks of data from a source pointer to a destination, then applies a bitwise mask to several global memory locations.
-- `mask_table_values`: Performs a bitwise AND between a register and several specific memory locations, while also ORing a value into certain table entries.
+- `apply_bitmask_to_table`: Applies bitwise AND operations to specific word entries in a large table using values from registers.
 - `expand_and_copy_data`: Copies and expands a small block of data from one memory location to a larger, or staggered, destination area.
-- `copy_memory_block`: Iteratively copies large blocks of data from a source address to a destination address, where the source address is determined by a value in a table.
+- `transfer_memory_blocks`: Iterates through a list of descriptors to copy blocks of data from one memory range to another.
 - `increment_returned_value`: calls another routine and returns the result incremented by one.
 - `transform_and_call_digit`: Constructs a value using a register and a global variable, performs a digit-swapping or masking operation, and calls another routine with a constructed parameter.
 - `recursively_call_routine`: This routine calls itself repeatedly before returning.
 - `update_decoding_table_2`: Calculates a bitwise value and stores the individual bytes of that value into a large memory buffer and a secondary offset buffer, while also traversing a null-terminated string and calling another routine.
 - `clamp_global_variable`: Iteratively checks a global variable, clears it, and then applies a clamping or saturation logic to a value before storing it back to a global variable.
-- `copy_and_expand_buffer`: Updates a global variable using a bitmask, then copies a sequence of words from a source table to a destination buffer, repeating the copy or clearing certain memory offsets.
+- `fill_pattern_buffer`: Calculates two values from a global variable and stores them in a table, then performs a nested loop to fill a large memory area with a repeating pattern of words.
 - `traverse_pointer_list_2`: Iterates through a list of pointers in memory until a negative or terminal pointer value is reached.
-- `traverse_pointer_triplet_list`: Iterates through a list of pointers, advancing by a fixed offset, and calls another routine.
+- `iterate_pointer_list`: Iterates through a list of pointers in increments of three, calling another routine for each entry until a negative value is found.
 - `blit_bitmapped_sprite_layer`: Iterates through a table of sprite or tile-like data to apply bitwise masks and ORs to a destination bitmapped buffer.
 - `blit_sprite_to_bitmapped_layer`: Iterates through a source list to apply bitwise OR and AND operations, masking or shifting sprite pixel data into a destination bitmapped buffer.
 - `reset_global_variable`: Sets a global variable to a specific constant value and calls another routine.
+- `frag_move_rts`: Short code fragment that copies 255 to a fixed memory address, then copies 135 to a fixed memory address, then copies 255 to a fixed memory address, then returns.
+- `frag_move_btst_beq_moveq_bsr_dbra_clr_r`: Short code fragment that copies 255 to d7, then tests bit 4 of a fixed memory address, then branches if the last result was zero, then loads 1 into d0, then calls another routine, then loops back while counting down d7, then clears a fixed memory address, then returns.
+- `adjust_and_compare_values`: Takes a word value from a memory location, compares it with another value, adjusts the first value based on the comparison result, and performs conditional operations based on the sign of the difference.
+- `frag_move_rts_2`: Short code fragment that copies 119 to a fixed memory address, then returns.
+- `frag_moveq_bra`: Short code fragment that loads 118 into d1, then jumps to another point in the code.
+- `write_port_bits`: Writes specific byte values to a hardware port address, sets bit 0 of a register, and performs a loop that counts down a counter while writing values to the same port address.
+- `frag_move_dbra_rts`: Short code fragment that copies 2400 to d3, then loops back while counting down d3, then returns.
+- `initialize_and_setup_data`: Initializes various data fields including memory locations and structure offsets, performs comparisons with thresholds, and calls other routines to set up and process data structures based on conditional logic.
+- `frag_addq_tst_bne_dbra_moveq_rts`: Short code fragment that adds 8 to a1, then tests a fixed memory address, then branches if the last result was not zero, then loops back while counting down d0, then loads 0 into d0, then returns.
+- `frag_subq_bmi_move_bsr_bra`: Short code fragment that subtracts 1 from a fixed memory address, then branches if the last result was negative, then copies a fixed memory address to the stack, then calls another routine, then copies the top of the stack to d0, then calls another routine, then jumps to another point in the code.
+- `tiny_moveq_rts`: Small routine of 2 instructions that loads 255 into d0, then returns.
+- `validate_and_compare_words`: Loads specific word values into registers, compares word values from memory with these registers, and branches based on comparison results to handle different validation cases.
+- `frag_lea_moveq_bra`: Short code fragment that loads the address of a location in the code into a2, then loads 15 into d0, then jumps to another point in the code.
+- `compare_and_adjust_pointer`: Compares word values from memory locations, adjusts a pointer based on comparison results, and loops through a sequence of operations until a counter reaches zero.
+- `combine_and_shift_words`: Combines two word values from memory with a shift operation, performs bitwise OR on them, stores the result in memory, and loops through a counter while performing these operations.
+- `initialize_and_process_structure`: Initializes various fields of a structure with specific values, performs bitwise operations on data from memory locations, and calls multiple routines to process and set up different parts of the structure.
+- `initialize_structure_values`: Initializes various fields of a structure pointed to by a6 with specific values including word and longword constants, and sets up pointers and flags based on bit tests in the structure.
+- `frag_movem_move_lsr_bsr_rts`: Short code fragment that saves registers on the stack, then copies d0 to d3, then shifts d0 right by 1, then calls another routine, then copies d3 to d0, then calls another routine (2 times in a row), then restores saved registers from the stack, then returns.
+- `modify_and_store_bits`: Processes a longword value through bitwise operations, checks a bit in memory, clears a specific bit if the condition is met, and stores the modified value back to memory.
+- `frag_move_lsr_subq_eor_dbra_andi_rts`: Short code fragment that copies d2 to the stack, then shifts d1 right by 2, then copies the memory at a0 (advancing a0) to d0, then subtracts 2 from d1, then copies the memory at a0 (advancing a0) to d2, then exclusive-ors d2 into d0, then loops back while counting down d1, then masks d0 with an address, then copies the top of the stack to d2, then returns.
+- `frag_move_btst_bne_bset_bra_bclr_rts`: Short code fragment that copies the memory at a0 to d0, then tests bit 6 of d0, then branches if the last result was not zero, then tests bit 0 of the memory at an offset from a0, then branches if the last result was not zero, then sets bit 7 of d0, then jumps to another point in the code, then clears bit 7 of d0, then copies d0 to the memory at a0, then returns.
 - `read_memory_indirect`: Returns a 32-bit value read from a memory location calculated by adding an offset to a register.
 - `tiny_ori_rts`: Small routine of 2 instructions that merges 0 into d0, then returns.
 - `set_memory_pattern`: Writes a specific sequence of bytes into a memory range and updates a global variable.
 - `set_audio_registers`: Checks a global variable and, if it does not match a specific value, performs a loop to decrement a counter and writes several values to audio-related hardware registers and certain memory locations.
-- `initialize_data_pattern`: Writes a specific pattern of 32-bit or 16-bit values to a range of memory starting from an offset relative to a register.
-- `find_and_insert_value`: Searches a list of memory locations for a specific 32-bit pattern and, if found, replaces a value or inserts a new value from a register.
-- `search_for_specific_word`: Iterates through a memory-resident table of 32-bit words, checking if any entry matches a specific constant value, and continues for a fixed number of iterations or until the value is found.
+- `setup_data_structures_2`: Writes a series of specific 16-bit and 32-bit values into two different memory locations using a loop.
+- `insert_into_list`: Searches a memory range for a specific marker and, if not found, inserts a 32-bit value and its preceding word into the list.
+- `wait_for_marker`: Enters a loop that repeatedly checks a memory location until a specific 16-bit value is encountered.

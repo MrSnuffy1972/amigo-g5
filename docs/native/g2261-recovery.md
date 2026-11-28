@@ -8,26 +8,26 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (901120 top-level bytes in 8 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 1 of 1 units identical (bytes and relocations), 6 raw-word lines |
-| Functions named and described | pass, 465 of 465 named (0 author symbols), 465 of 465 described (16 by rule, 33 by the local model) |
+| Functions named and described | pass, 551 of 551 named (0 author symbols), 551 of 551 described (46 by rule, 112 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 0 of 0 (0.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 8313 of 8361 instructions identical in start and length, 1 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 11471 of 11475 instructions identical in start and length, 1 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 5466 |
-| code | 24562 |
-| data | 846201 |
-| padding | 3387 |
+| code | 36194 |
+| data | 834565 |
+| padding | 3391 |
 | unused | 21504 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Worms - Custom Levels (1995)(Various)[h RamKids][a][addon levels][WB].adf:lha | 3 | 8361 | 465 |
+| Worms - Custom Levels (1995)(Various)[h RamKids][a][addon levels][WB].adf:lha | 3 | 12540 | 551 |
 
 ## Cases handled
 
@@ -50,6 +50,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `initialise_program_and_run`: Program entry point: it opens the arp and dos libraries, allocates the working state block, sets the task priority and signal mask, then calls two routines to run the LhA program.
 - `shutdown_program_resources`: Restores the task priority, closes the opened libraries and frees the allocated state memory through the exec library before returning.
 - `compute_a4_offset_address`: Loads the address of a global-data location at offset 1308 from the base in a4 into a0, copies it to d0, and returns it in d0.
+- `initialize_level_data`: Initializes multiple local variables and checks conditions based on input parameters, setting up level-related data structures.
+- `frag_btst_beq_moveq_bra`: Short code fragment that tests bit 16 of d0, then branches if the last result was zero, then loads 119 into d1, then jumps to another point in the code.
+- `frag_moveq_move_andi_movem_cmpi_bne_bra`: Short code fragment that loads 114 into d1, then copies d1 to the memory at an offset from a5, then loads 0 into d7, then copies the memory at an offset from a5 to d7, then masks d0 with 65535, then copies several registers to or from memory, then compares d0 with 488, then branches if the last result was not zero, then copies 488 to d1, then jumps to another point in the code.
+- `load_entry_data`: Loads entry data from a global table into a local structure, then checks a flag and branches accordingly.
+- `frag_lea_move_pea_jsr_moveq_bra`: Short code fragment that loads the address of a location in the code into a0, then copies a0 to the stack, then copies the memory at an offset from a5 to the stack, then pushes the address of a location in the code onto the stack, then calls emit_local_buffer_string, then loads 2 into d0, then jumps to another point in the code.
+- `process_entry_data_4`: Processes entry data based on conditional checks involving global flags and entry pointers, updates counters, and performs recursive operations.
+- `process_entry_data_2`: Processes entry data based on conditional checks involving global flags and entry pointers, updates counters, and performs recursive operations.
+- `process_entry_and_update_counters_2`: Updates counters based on conditional checks involving global variables and entry data, then performs recursive calls and string emissions depending on the results of those checks.
+- `process_entry_and_update_counters`: Updates counters based on conditional checks involving global variables and entry data, then performs recursive calls and string emissions depending on those conditions.
+- `check_conditions`: Tests global variables at specific offsets and branches based on their values, clearing a word-sized counter and conditionally calling another routine with a string pointer before branching to a final location.
+- `process_entry_conditions`: Checks global flags and pointers to determine if entry data should be processed, then calls helper routines to emit strings and values based on mode-dependent conditions.
+- `validate_and_process_entry`: Checks conditions based on global flags and pointers, then processes entry data by calling helper routines and updating counters.
+- `process_entry_data_3`: Processes entry data based on conditional checks involving global flags and entry pointers, updates counters, and performs recursive operations.
+- `copy_and_check_condition`: Copies data from one location to another using registers and performs a conditional branch based on the value in a register, then calls another routine with specific parameters.
 - `process_entry_list`: When a state word is non-zero, walks a circular list of entries and calls routines for each entry's fields until the list returns to its head.
 - `copy_entry_name_into_buffer`: When the mode is zero or three and the entry has a name or the name option is clear, copies the entry's name string into the destination buffer, then calls a routine.
 - `clear_buffer_append_slash`: Clears a buffer, then appends a trailing slash and a terminator when a state field is zero.
@@ -64,6 +78,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `emit_list_creation_error`: Pushes the address of a message string onto the stack, calls a routine that emits a local buffer string with the global variable as argument, then pops the argument and returns.
 - `jump_to_check_and_recursively_call`: Jump stub: passes control straight on to check_and_recursively_call.
 - `read_confirmation_response`: Returns a stored yes or no decision from a state flag when one is already set.
+- `jump_to_build_path_entry_node_checked`: Jump stub: passes control straight on to build_path_entry_node_checked.
+- `jump_to_lookup_error_code_entry`: Jump stub: passes control straight on to lookup_error_code_entry.
+- `jump_to_unpack_dos_timestamp`: Jump stub: passes control straight on to unpack_dos_timestamp.
 - `test_whitespace_character`: Returns 1 when the character in the data register is a space, tab, line feed or carriage return, and 0 for any other character.
 - `parse_lha_command_line`: Splits the command-line argument string into words and quoted strings, recognises option switches and at-sign include files, and reads the LHAOPTS environment variable when it is set.
 - `parse_decimal_digit`: Returns the value of a decimal digit character and advances the caller's string position by one.
@@ -107,27 +124,11 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `seek_within_entry_segments`: Searches a table of up to 128 segment ranges for the one containing the requested offset, seeks to the matching position through the library jump table and returns the result, or -1 when the seek fails.
 - `open_next_volume_file`: Builds the name of the next archive volume from the base name and a two-digit volume number, then opens it.
 - `refill_read_buffer`: Allocates the read buffer on first use and refills it through the library read call when the current position runs past the buffered range.
-- `refill_buffered_read_block`: Refills the buffer through the library read call when the buffered range is used up, allocating a new block when none is held.
-- `read_block_with_error_code`: Allocates a buffer block when none is held, refills the read buffer through the library read call and returns the number of bytes available.
-- `update_position_after_read`: After a successful read step, moves the buffered position counters forward and stores the new position returned by the library call.
-- `read_into_buffer_block`: Moves the buffered position counters forward, reads the next block through the library read call and returns the result it stored in the entry record.
 - `flush_entry_output_buffer`: Writes pending output for an entry record in write mode when it holds unsaved data, using the library write call.
 - `seek_entry_position`: Repositions an entry record for an absolute or relative seek, returning -1 for an invalid mode or a failed helper.
-- `reposition_entry_offset`: Repositions an entry record to the given offset through a helper, updating its buffered position fields.
-- `set_entry_offset_fields`: Updates an entry record's buffered offset fields to the given position, calling a helper to refill the block when the position falls outside the current range.
-- `set_entry_offset_relative`: Adds a relative displacement to the entry's current position and updates its buffered offset fields.
-- `stub_return_failure`: Routine that only returns the value minus one, signalling failure to its caller, with no other work.
-- `set_entry_offset_from_register`: Updates an entry record's buffered offset fields to the position held in a data register, calling a helper to refill the block when that position is outside the current range.
-- `reset_entry_buffer_window`: Marks the entry's buffer window as invalid, sets its start offset to the value passed in and clears the buffered count, then calls a helper.
-- `set_entry_buffer_count`: Stores the difference between the passed value and the entry's start offset as its buffered count, then calls a helper.
 - `test_flag_and_return_minus_one`: Saves d2, d3, a3 and a6 on the stack, copies a0 into a3, and tests bit 7 of the byte at offset 27 of the structure in a3.
 - `check_and_emit_terminator_byte`: Seeks the file handle pointed to by a3 back one byte and then to the saved position using DOS Seek, reads a byte from the entry buffer, and if that byte is zero emits a local buffer string and repositions the entry, then returns zero.
 - `copy_from_entry_buffer`: Copies the requested number of bytes from the entry's buffer block through a copy helper, refilling the block when it runs out.
-- `copy_entry_bytes_with_counter`: Copies bytes out of the entry's buffer block like the buffered copy routine, adding to the caller's running total as it goes.
-- `copy_entry_bytes_until_end`: Repeatedly copies from the entry's buffer block until the requested count is satisfied or the end of the entry is reached, refilling as needed.
-- `copy_entry_bytes_checked`: Copies from the entry's buffer block in steps, returning the bytes handled so far and marking the block as finished when the end of the entry is reached.
-- `copy_entry_bytes_memory`: Copies bytes from the entry buffer into the target with the library memory copy call, refilling when the block is exhausted, and marks the entry as finished at the end.
-- `copy_entry_bytes_block_refill`: Copies the entry's buffered bytes with the library memory copy call, refilling from the source as each block runs out.
 - `copy_entry_bytes_marking_status`: Sets status bits on the entry record, then copies the requested bytes out of the buffer block, refilling as needed.
 - `copy_entry_bytes_with_status`: Sets the status flag on the entry record, then copies bytes from the buffer block in steps, refilling as needed and advancing the high-water mark.
 - `copy_entry_bytes_stepwise`: Copies bytes from the entry buffer block in steps, refilling when needed and recording the buffered high-water mark.
@@ -170,10 +171,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_byte_flush_when_full`: Stores the byte in the data register at the write position of the entry buffer, updates the high-water mark and flushes the buffer when it is full.
 - `stub_return_zero`: Routine that returns zero immediately, with no other work.
 - `read_byte_from_entry_buffer`: Reads the next byte from the entry's buffer after a refill check.
-- `read_buffered_byte`: Returns the byte at the current read position of the entry's buffer and advances that position, with no refill check.
 - `tests_flag_returns_one`: Saves a3 on the stack and loads a0 into a3, then tests bit 0 of the byte at offset 27 of the structure in a3.
-- `check_read_buffer_bounds`: Calls a refill routine on the structure in a3, then loads the longword at offset 20 and compares it with the longword at offset 8; if it is greater than or equal, it leaves d0 unchanged, otherwise it compares it with the longword at offset 12 and sets d0 to 1 when it is not less, then exits through a shared epilogue.
-- `function_epilogue_2`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, then returns to the caller.
 - `sum_two_structure_fields`: Saves a3, copies the pointer in a0 into a3, adds the longwords at offsets 12 and 16 of that structure into d0, restores a3 and returns the sum in d0.
 - `store_constant_at_offset_144`: Stores the longword constant 488 into the global-data location at offset 144 from the base in a4, then returns.
 - `check_break_signal_once`: Polls the task signal mask through the library call and, when the break bit is set, runs two helpers and sets a state flag so that the handling happens only once.
@@ -282,6 +280,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `compare_mode_format_buffer`: Compares the long in d0 with the constant 3 and, when they are equal, pushes a long from offset 26 of a3, the pointer in a2 and a fixed address onto the stack and calls a formatting routine.
 - `conditionally_format_and_reset`: Compares a long global variable to the constant 3 and, only when equal, calls one routine to format a global buffer and then calls another routine to check and reset a buffer flag.
 - `stub_bad_instruction_data`: The bytes here do not decode to a valid instruction, so there is no real routine to describe.
+- `process_entry_data`: Processes file entry data by copying names, scaling operands, checking conditions, and calling routines to handle recursive operations or report stored messages.
 - `report_stored_message`: Reads a value through a helper, then calls a formatting routine with a message containing the word Stored and the stored state values, followed by an optional helper when a flag is set.
 - `emit_mode_dependent_value`: Dispatches on a mode value in the state block: mode one emits the next byte of a four-entry rotating buffer, mode two emits 100 or a supplied value, mode three emits a bounded value through helpers, and other modes call a fallback helper.
 - `emit_mode_value_register`: Performs the same mode-driven value emission as the frame-based emitter, but takes its argument from a data register.
@@ -291,7 +290,21 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `update_stored_maximum`: Works out a limit of 19, or one less than a helper's value when the data register is nonzero, and when the stored 16-bit value is below that limit it calls two helpers and stores the new limit.
 - `print_separator_line`: When the stored counter is below 19, prints a row of underscore characters through the library output and write calls and sets the counter to 19.
 - `skip_length_prefixed_block_sum`: Saves d7 and a2-a3, copies a0 into a3, advances a3 by two bytes, and reads the byte at a0 as a length.
-- `sum_bytes_in_range`: Adds each byte from the memory range between a3 and a2 into a running byte total in d7 and returns that total in d0.
+- `frag_movem_movea_move_bra`: Short code fragment that saves registers on the stack, then copies a0 to a3, then copies d0 to d7, then jumps to another point in the code.
+- `frag_movem_movea_bra`: Short code fragment that saves registers on the stack, then copies a0 to a3, then jumps to another point in the code.
+- `parse_coordinate_data`: Reads coordinate values from a memory location, performs bit shifts and additions to calculate a combined value, then uses this value to determine which branch to take based on the third byte of the input data.
+- `validate_level_header_3`: Reads and validates level header data from a buffer, checking against specific constants including AmigaDOS hunk type codes, and stores parsed values into a structure.
+- `copy_level_name`: Copies level name data from a source structure into a global buffer, processes string transformations based on flags, and updates various data fields.
+- `process_level_name`: Processes a level name by copying it into a global buffer, applying string transformations based on flags, and updating various data fields in memory.
+- `frag_move_beq_movea_lea_bne_bra`: Short code fragment that copies the memory at an offset from a3 to d0, then branches if the last result was zero, then copies d0 to a0, then loads the address of the memory at an offset from a4 into a1, then copies the memory at a0 (advancing a0) to the memory at a1 (advancing a1), then branches if the last result was not zero, then jumps to another point in the code.
+- `calculate_level_size`: Calculates the size of level data by measuring null-terminated strings and updates a global buffer with encoded data.
+- `copy_and_encode_level_data`: Copies level data from a source buffer to a destination buffer, encodes the data with length headers, and updates pointers and counters while handling string operations.
+- `encode_level_data_2`: Encodes level data into a structured format with length headers and conditional blocks, updating pointers and counters while handling string data.
+- `encode_level_data`: Encodes level data into a structured format with length headers and conditional blocks, updating pointers and counters while handling string data from multiple sources.
+- `copy_level_data`: Copies level data from a source buffer to a destination, updating counters and pointers while handling conditional blocks based on specific criteria.
+- `process_level_data`: Processes level data by copying bytes from a source buffer to a destination, updating counters and pointers, and handling conditional block markers based on global state.
+- `copy_and_process_entry`: Copies data from one memory location to another while decrementing a counter, then processes entry bytes and updates global variables based on computed values.
+- `frag_move_cmp_ble_moveq_movem_unlk_rts`: Short code fragment that copies the memory at an offset from a3 to d0, then compares d0 with the memory at an offset from a4, then branches if the comparison was less or equal, then copies d0 to the memory at an offset from a4, then loads 0 into d0, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
 - `set_status_two_and_report`: Obtains a value from a helper, sets a state field to 2, passes four state fields to a helper and then runs four further helpers.
 - `record_archive_name_fields`: Copies two leading bytes into state fields, sets a flag mask on an entry in a table and passes the remaining text on to a helper that prints an archive heading.
 - `resolve_work_directory`: Resolves the work directory when none is recorded yet: it looks up the current task through the library call, reports a mismatch error when the lookup result does not match the expected value, and stores the resulting directory name.
@@ -303,6 +316,58 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `dispatches_archive_command`: Works on a global structure and a list of entries by calling several routines in sequence, and writes status text through the DOS output routine.
 - `write_output_if_enabled`: Calls two helpers, then sends a message through the library output and write calls only when two state fields are both clear.
 - `clear_two_global_pointers`: Writes zero as a long value into two 32-bit global variables addressed relative to a4.
+- `process_file_slot`: Loads a file slot pointer from a global table, invokes a routine to open and process the file, and based on the result either frees memory and closes the file or sets a return value to zero before continuing.
+- `open_and_process_file`: Opens a file using a slot pointer, checks the result, and if successful processes buffer data before releasing a record and clearing specific global variables.
+- `seek_and_set_bit_2`: Performs a file seek operation using parameters from a global structure and sets a bit in a data record, then calls another routine to process the buffer and release a record.
+- `free_memory_and_close`: Frees a memory block and clears a file slot, then sets specific global variables to zero before returning.
+- `process_file_slot_2`: Loads a file slot pointer from a global table, invokes a routine to open and process the file, and based on the result either frees memory and clears a global variable, or calls a formatting routine with a specific string before returning zero.
+- `clear_and_copy_entry`: Clears a global variable and copies data from one structure to another using multiple helper routines, then returns zero.
+- `frag_movem_movea_bra_2`: Short code fragment that saves registers on the stack, then copies a0 to a3, then copies the memory at an offset from a4 to a0, then copies the memory at a0 to a2, then jumps to another point in the code.
+- `test_and_set_flag_loop`: Tests string equality and sets a flag based on the result, then loops through a linked list until reaching a specific element, checking a global condition before returning.
+- `frag_link_movem_movea_bra`: Short code fragment that creates a stack frame in a5, then saves registers on the stack, then copies a1 to a3, then copies several registers to or from memory, then copies the memory at an offset from a4 to a0, then copies the memory at a0 to a2, then jumps to another point in the code.
+- `build_path_string`: Builds a path string by copying data from one location to another, appends a path separator, and sets a bit in a data record.
+- `clear_and_append_path`: Clears a byte in a global structure, builds a path string by appending a separator, and sets a bit in a data record while performing comparisons with other data structures.
+- `process_file_list_2`: Traverses a linked list structure starting at a global table, checks flags and values at each node, increments a counter for qualifying entries, and clears a memory location before returning.
+- `check_and_increment_counter`: Checks a bit flag in a structure and tests a value at another offset, then increments a counter variable if both conditions are met.
+- `process_file_list`: Increments a counter and traverses a linked list structure, checking flags and values at each node.
+- `copy_and_delete_path`: Copies a string from a data record to a global buffer, appends a path separator, then processes the copied string to delete files by removing directory components.
+- `delete_file_path`: Processes a file path by removing directory separators, deletes the file using a system call, and updates internal pointers.
+- `setup_level_data_zero`: Initializes level-related data by setting up registers, calling an initialization routine, storing a value at a specific memory location, clearing another memory location, and preparing a series of parameters for a function call.
+- `setup_level_data_one`: Initializes level-related data by setting up registers, calling an initialization routine, storing a value at a specific memory location, setting another memory location to one, and preparing a series of parameters for a function call.
+- `seek_and_set_bit`: Performs a seek operation using entry position data, then calls a bit-setting routine and returns either zero or two depending on the result.
+- `function_epilogue_6`: Function exit sequence shared or jumped to by a routine: puts the result in d0, restores saved registers or drops stack space, removes the stack frame with unlk, then returns to the caller.
+- `initialize_level_data_3`: Sets up local variables and calls a routine to initialize level data with multiple parameters including pointers to data structures and a buffer, then cleans up the stack.
+- `frag_link_move_moveq_unlk_rts`: Short code fragment that creates a stack frame in a5, then copies a0 to the memory at an offset from a5, then loads 0 into d0, then removes the stack frame held in a5, then returns.
+- `frag_link_movem_moveq_unlk_rts`: Short code fragment that creates a stack frame in a5, then copies several registers to or from memory, then loads 0 into d0, then removes the stack frame held in a5, then returns.
+- `clear_and_format_buffer`: Clears a memory location pointed to by a global variable, checks a condition, and if the condition is false, calls a formatting routine with a string parameter before setting a return value to zero.
+- `check_and_increment`: Checks a bit in a structure and tests a value before incrementing a counter in another structure, then returns.
+- `increment_and_check_loop`: Increments a counter in memory, updates a pointer, compares it with another value, and returns zero if they match, otherwise continues processing.
+- `setup_level_data`: Initializes level data by storing input parameters to specific offsets in a global structure and prepares a series of function pointers on the stack for a subsequent call.
+- `check_filename_extension`: Scans a string for null terminator, checks if the fourth character from the end is a period, and compares against a table of strings to return one or zero.
+- `frag_lea_bra`: Short code fragment that loads the address of the memory at an offset from a4 into a2, then jumps to another point in the code.
+- `frag_movea_jsr_tst_bne_moveq_bra`: Short code fragment that copies a3 to a0, then copies a2 to a1, then calls compare_zero_terminated_strings, then tests d0, then branches if the last result was not zero, then loads 1 into d0, then jumps to another point in the code.
+- `frag_addq_tst_bne_moveq_movem_rts`: Short code fragment that adds 4 to a2, then tests the memory at a2, then branches if the last result was not zero, then loads 0 into d0, then restores saved registers from the stack, then returns.
+- `parse_level_filename_3`: Processes a filename string to locate a colon character, duplicates the string content, and stores the result at a specific offset in a data structure.
+- `parse_and_store_string`: Loops through a string until finding a null byte, then checks for specific character sequences and stores a pointer to the next position in memory.
+- `frag_movea_move_suba_bra`: Short code fragment that copies the memory at an offset from a3 to a0, then copies a0 to the memory at an offset from a5, then subtracts a0 from a0, then copies a0 to the memory at an offset from a5, then jumps to another point in the code.
+- `parse_level_filename_2`: Processes a filename string to locate a colon character, duplicates the string content, and stores the result at a specific offset in a data structure.
+- `parse_level_filename`: Processes a filename string to locate a colon character, duplicates the string content, and stores the result at a specific offset in a data structure.
+- `frag_lea_jsr_move_movea_bra`: Short code fragment that loads the address of the memory at an offset from a2 into a0, then calls duplicate_string_content, then copies d0 to the memory at an offset from a5, then copies the memory at an offset from a5 to a0, then copies the memory at an offset from a7 to the memory at an offset from a0, then jumps to another point in the code.
+- `frag_suba_move_bra`: Short code fragment that subtracts a0 from a0, then copies a0 to the memory at an offset from a5, then jumps to another point in the code.
+- `compute_offset`: Calculates a signed offset value by subtracting a pointer from another pointer and stores the result in a global variable, then branches based on whether the result equals zero.
+- `initialize_level_entry`: Initializes level entry data by copying name information, processing file paths, and setting up structure fields based on conditional flags and file operations.
+- `process_level_file_2`: Checks file existence and processes level data, allocating memory for file entries and handling path separators before opening or deleting files based on conditions.
+- `process_level_entry_2`: Processes a level file entry by copying name data, checking conditions, and handling file operations based on flags and structure values.
+- `process_level_file`: Processes a level file entry by copying name data, appending path separators, opening files into slots, and handling file operations based on flags and conditions.
+- `process_level_entry`: Processes a level entry by copying name data, updating structure fields, and handling file operations based on flags and conditions.
+- `copy_and_process_path`: Copies a string from one memory location to another and processes file path components, including appending separators and handling file operations based on flags and conditions.
+- `frag_movem_movea_move_moveq_cmp_bge_bra`: Short code fragment that saves registers on the stack, then copies a0 to a3, then copies d0 to d7, then copies d1 to d6, then loads 16 into d0, then compares d7 with d0, then branches if the comparison was greater or equal, then loads 0 into d0, then jumps to another point in the code.
+- `initialize_structure`: Initializes fields in a data structure based on input values and conditional checks, then updates related global variables accordingly.
+- `frag_movea_jsr_move_tst_bne_clr_moveq_b`: Short code fragment that copies d0 to a0, then calls allocate_three_blocks_or_rollback, then copies d0 to d5, then tests d5, then branches if the last result was not zero, then copies the memory at an offset from a4 to a0, then calls free_memory_block, then clears the memory at an offset from a4, then loads 0 into d0, then jumps to another point in the code.
+- `frag_jsr_movea_move_bne_moveq_bra`: Short code fragment that calls copy_stored_name_to_buffer, then copies d0 to a2, then copies a2 to d0, then branches if the last result was not zero, then loads 0 into d0, then jumps to another point in the code.
+- `update_structure_fields_3`: Updates fields in a data structure based on calculations involving input values, conditional checks, and scaling operations.
+- `update_structure_fields_2`: Updates fields in a data structure based on calculations involving input values, conditional checks, and scaling operations.
+- `update_structure_fields`: Updates fields in a data structure based on calculations involving input values, conditional checks, and scaling operations, then optionally releases a record entry.
 - `call_constant_return_routine`: Loads a pointer from a global variable into a0 and then calls another routine that returns a constant one.
 - `replace_file_extension`: Copies a file name into a buffer, replacing the text after its last dot with a new extension when a dot follows the last slash, and appending the extension otherwise.
 - `copy_colon_prefixed_string`: Copies the value of a0 into d0, then reads bytes from a0 with post-increment, and if the first byte is a colon copies the next byte to a1 with post-increment, ending when a zero byte is read and returning.
@@ -313,7 +378,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clear_byte_at_pointer`: Writes zero to the single byte addressed by a0.
 - `parse_signed_decimal`: Parses an optional leading minus sign and a run of decimal digits into a signed integer, stopping at the first non-digit character.
 - `copy_string_with_limit_2`: Copies a string from a source pointer to a destination pointer until a null terminator or a certain count is reached.
-- `copy_string_with_limit`: Copies the source string to the destination, returning as soon as the terminating zero is copied or the count runs out.
 - `saves_a2_and_branches_into_counter`: Pushes a2 onto the stack, clears d0 to zero, copies a1 into a2, and branches into the byte-counting loop of another routine.
 - `scan_for_matching_byte`: Reads a byte from a1 with post-increment into d2 and, if it is zero, stops.
 - `count_bytes_until_zero`: Increments the longword counter in d0, copies a2 into a1, reads bytes from a0 with post-increment until a zero byte is found, restores a2 from the stack, and returns.
@@ -321,7 +385,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `compare_zero_terminated_strings`: Compares two zero-terminated strings byte by byte through a global translation table, returning the difference of the first mismatched translated bytes or zero if the second string ends first.
 - `lowercase_or_map_string`: Rewrites a zero-terminated string in place.
 - `translate_or_uppercase_string`: If a long at offset 1484 of a global structure is nonzero, it replaces each byte of the zero-terminated string at a0 with the value from a global translation table until a zero byte is written.
-- `translate_string_in_place`: Replaces each byte of the zero-terminated string at a0 with the value looked up in a global translation table, until it writes a zero byte.
 - `match_wildcard_pattern`: Compares a pattern string with a name, treating a question mark as a single-character wildcard and an asterisk as a run of any characters.
 - `match_pattern_character`: Compares one pattern character with one name character, advancing through the pattern and the name.
 - `scan_name_for_character`: Scans backward through the name for a given character, calling a helper on each step.
@@ -334,8 +397,25 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `create_directory_path_components`: Walks a slash-separated path buffer, temporarily terminating each component, locking it, and creating a directory with dos.CreateDir when the lock fails, then restores the slash.
 - `stores_fill_byte_then_jumps`: Copies the value in d6 into d0 and calls a subroutine at a fixed offset, then stores the byte 47 through the a2 pointer with post-increment and branches to an earlier point in the surrounding code.
 - `stores_fill_byte_then_jumps_2`: Sets d0 to a fixed constant and copies a3 into a0, calls a routine through a pc-relative jump, saves the result in d7, and when the byte at a2 is zero restores saved registers and returns with d7 as the result, otherwise it branches into another routine.
+- `frag_move_movea_jsr_rts`: Short code fragment that copies a3 to the stack, then copies a0 to a3, then copies the memory at an offset from a3 to a0, then calls free_memory_block, then copies the memory at an offset from a3 to a0, then calls another routine, then copies a3 to a0, then calls another routine, then copies the top of the stack to a3, then returns.
+- `initialize_level_data_2`: Initializes level data by setting up pointers and counters in global tables, then performs a series of arithmetic operations on values stored at specific offsets before marking the end of the initialization with sentinel values.
+- `initialize_level_data_4`: Initializes level data by setting up pointers and counters in global tables, then performs a series of arithmetic operations on values stored in those tables.
+- `process_result`: Retrieves a value from a function call, checks if it's negative, and conditionally loads either 3 or 0 into a register based on the result.
+- `update_and_copy_data`: Updates delay counters, performs data copying operations between memory regions, and manages loop iterations based on calculated offsets and conditions.
+- `manage_delay_operations`: Manages delay counter updates, handles conditional execution paths based on delay values, and executes function calls with error handling for negative return codes.
+- `execute_and_adjust_counter`: Executes a function call through a pointer, processes the result with conditional logic, and adjusts a counter value based on the outcome of that execution.
+- `frag_movem_movea_pea_jsr_addq_rts`: Short code fragment that saves registers on the stack, then copies the memory at an offset from a6 to a4, then pushes the address of the memory at an offset from a6 onto the stack, then copies the memory at an offset from a6 to a1, then calls the routine whose address is in a1, then adds 4 to a7, then restores saved registers from the stack, then returns.
 - `decrement_delay_counter`: decrements a 16-bit register value until it reaches zero.
 - `count_down_delay`: Busy-wait loop that counts a 16-bit value down from the value passed in the data register, then returns.
+- `process_bitfield_data_4`: Processes bitfield data by initializing counters, copying bytes between buffers, and updating bitfield values based on input data.
+- `process_bitfield_data`: Processes bitfield data using shift and rotate operations, updates global variables based on conditional logic, and performs iterative calculations involving table lookups and arithmetic operations before returning.
+- `process_bitfield_data_2`: Processes bitfield data using shift operations and table lookups, updating values in a global array based on input from another data source.
+- `frag_movem_moveq_move_rol_eor_dbra_rts`: Short code fragment that saves registers on the stack, then loads 31 into d1, then loads 255 into d0, then copies the memory at a0 (advancing a0) to d2, then rotates d2 left by 2, then exclusive-ors d2 into d0, then copies d0 to the memory at a1 (advancing a1), then loops back while counting down d1, then restores saved registers from the stack, then returns.
+- `frag_move_subq_moveq_add_dbra_rts`: Short code fragment that copies d0 to d1, then subtracts 1 from d1, then loads 0 into d0, then adds the memory at a0 (advancing a0) to d0, then loops back while counting down d1, then returns.
+- `process_bitfield_data_3`: Processes bitfield data using shift and rotate operations, updates global variables based on conditional logic, and performs iterative calculations involving table lookups and arithmetic shifts.
+- `copy_byte_sequence`: Copies bytes from a source buffer pointed to by a0 to a destination buffer pointed to by a4, advancing both pointers with each iteration.
+- `calculate_division_result`: Performs a division calculation using a function call result and processes the quotient and remainder through bit manipulation operations.
+- `update_level_data_2`: Updates level data by transferring memory segments from one location to another, handling both full word transfers and byte transfers based on calculated loop counts, and adjusts pointers and counters accordingly.
 - `fill_memory_with_sentinel_words`: Writes the 32-bit value a fixed address to 2048 consecutive long words through two pointers, one based on a5 and one on a4, and then stores the 16-bit value 32768 at the end of the first region.
 - `copies_upper_buffer_half_down`: Selects one of two buffers based on a word in d7 and calls through a function pointer in the structure at a6, then for the value 12288 copies 32 longwords from the upper half of a 4096-word buffer at a6 down to its lower half.
 - `loads_buffer_offset_then_branches`: Loads the address of a4-relative buffer at offset 4352 into a0, then branches to a shared point in the surrounding code.
@@ -407,6 +487,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `clears_table_words_and_advances`: Increments d5 by one, reads a byte through a3 into d0 and passes it to another routine, then checks a global variable at offset 976 and, when it is zero, increments d4 and compares it against d6.
 - `clears_words_then_branches`: Clears 16-bit words starting at a3 in a loop that continues until a3 reaches the end address in a2, then loads a pointer from a global variable and computes an end address 28 bytes past it before branching to another routine.
 - `clears_word_array`: Writes zero to consecutive words starting at the address in a3 and stops once the pointer reaches the end address in a2.
+- `frag_link_movem_movea_move_moveq_bra`: Short code fragment that creates a stack frame in a5, then saves registers on the stack, then copies a0 to a3, then copies d0 to the memory at an offset from a5, then loads 0 into d5, then loads 0 into d4, then copies the memory at an offset from a3 to a3, then copies the memory at an offset from a5 to d7, then jumps to another point in the code.
+- `shift_and_update_counters`: Shifts a bit field right by one position, processes tile data based on the bit value, updates multiple counters in tables, and handles bit manipulation for coordinate calculations.
+- `shift_and_increment`: Shifts a value in a register right by one bit, increments another register, tests the shifted value, and if not zero continues the loop.
+- `increment_tile_counters`: Increments tile counters in a table based on bit manipulation of input data and returns after processing all bits.
 - `initialises_global_table_pointers`: Writes a series of derived pointers, offset from a base in a0 by fixed constants, into global longword slots, copies several longwords and a word from a0 into globals, clears two further longwords, zeroes one byte and a block of 16-bit words, and a second short block, then calls another routine.
 - `clears_words_up_to_end_pointer`: Clears 16-bit words starting at a3, advancing one word at a time while a3 is below the end address in a2, then reloads a3 from a pointer in the structure at a4 and sets a2 to 28 bytes past it before branching to another point.
 - `clears_words_then_calls_reset`: Clears 16-bit words starting at a3 until the pointer reaches the end address in a2, then calls another routine, restores a2 and a3 from the stack and returns.
@@ -428,6 +512,12 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `stores_word_index_into_table`: Reads a word through a pointer, sign-extends it and doubles it to index a table in the structure at a4, then stores either that word value or the constant from d7 into the indexed entry.
 - `store_doubled_index_pair`: Stores the low word of d7 into two consecutive words addressed by a2 and then advances d7 and a3 by one and two.
 - `updates_ranked_word_table`: Increments a word in a table in a global structure, then moves it up through a sorted word list by swapping entries and updating two index tables at offsets 3664 and 3668.
+- `process_tile_data`: Processes tile data by reading values from a table, counting iterations until a specific value is found, and packing bit data based on the count.
+- `frag_move_bsr_movem_rts`: Short code fragment that copies d5 to d0, then copies d4 to d1, then calls packs_bits_into_bit_buffer, then copies d7 to d0, then calls updates_ranked_word_table, then restores saved registers from the stack, then returns.
+- `pack_encoded_bits`: Packs encoded bit data into a buffer using two separate bit packing operations with different shift and mask calculations.
+- `frag_link_movem_move_moveq_movea_bra`: Short code fragment that creates a stack frame in a5, then saves registers on the stack, then copies d0 to d7, then copies a0 to the memory at an offset from a5, then loads 0 into d6, then loads 0 into d5, then copies the memory at an offset from a5 to a0, then copies the memory at an offset from a0 to a2, then jumps to another point in the code.
+- `process_bit_encoded_data`: Processes encoded bit data by reading values from a table, performing bit operations, and calling routines to pack the data into buffers.
+- `frag_addq_moveq_move_bsr_cmp_blt_movem`: Short code fragment that adds 1 to d6, then loads 0 into d0, then copies the memory at a3 to d0, then calls another routine, then compares d6 with d7, then branches if the comparison was less, then loads 0 into d0, then restores saved registers from the stack, then removes the stack frame held in a5, then returns.
 - `flushes_pending_byte`: If the byte flag in the structure at a4 is nonzero, calls a routine to write the byte and increments a 32-bit counter; then copies that counter into a field of the structure at a0 and sets a flag word there to 1 when the counter reaches the limit stored in the same structure.
 - `initialise_link_tables`: Stores the longword at offset 72 of a0 into a global longword and clears two further globals.
 - `initialises_two_linked_tables`: Fills two word tables with initial values in a loop of 313 iterations, then fills the remaining entries with a running index and counter, sets a terminating word to 65535 and clears a bit buffer and its bit count in the structure at a4.
@@ -481,10 +571,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `sum_three_helper_results`: Calls one helper for its side effect, then adds the results of three further helper calls and returns the total.
 - `computes_packed_timestamp`: Calls a fixed-point division routine four times, then a fixed-point product routine, and finally a routine that packs a DOS timestamp, returning the value left in the stack slot.
 - `pack_dos_timestamp`: Packs a file's date and time into DOS-style bit fields of a 32-bit word.
-- `pack_date_from_day_count`: Subtracts month lengths from a day count to find the month and day, then writes the year, month and day into the bit fields of the destination word.
-- `pack_month_day_from_days`: Subtracts month lengths from a day count until the remainder fits the current month, then writes the month and day fields of the destination word.
-- `find_month_and_pack_day`: Walks the month lengths subtracting from the day count, then writes the month and day fields of the destination word once the remainder fits the current month.
-- `pack_date_fields`: subtracts month lengths from a day count and writes the resulting month and day into a bit-packed global variable.
 - `unpack_dos_timestamp`: Reverses the packed DOS date and time: it extracts the minute, hour and year fields from the 32-bit word and computes a day count from the month-length table, adding a leap day where the year requires one, then stores the results.
 - `sum_month_lengths_to_day`: Adds the lengths of the earlier months from a month-length table to the day count, adds a leap day for leap years and stores the resulting day number.
 - `append_path_separator_2`: Checks if a path string ends with a separator and inserts a slash if it is missing, then appends a source string.

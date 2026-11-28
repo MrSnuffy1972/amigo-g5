@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (909136 top-level bytes in 5 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 91 raw-word lines |
-| Functions named and described | pass, 60 of 60 named (0 author symbols), 60 of 60 described (2 by rule, 51 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 738 of 738 (100.00%) |
+| Byte-identical reassembly with vasm | pass, 6 of 6 units identical (bytes and relocations), 95 raw-word lines |
+| Functions named and described | pass, 52 of 52 named (0 author symbols), 52 of 52 described (3 by rule, 41 by the local model) |
+| Executed addresses (reference run) in recovered, described code | pass, 765 of 765 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1270 of 1270 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1318 of 1320 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 27487 |
-| code | 4466 |
-| data | 869503 |
+| code | 4904 |
+| data | 869065 |
 | unused | 7680 |
 
 ## Code units
@@ -28,19 +28,20 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Super Cars II (1991)(Gremlin)[cr SKR](Disk 1 of 2)[t +9 Setrox].adf:bootblock | 1 | 106 | 5 |
 | logged disk load from Super Cars II (1991)(Gremlin)[cr SKR](Disk 1 of 2)[t +9 Setrox].adf boot-block load | 1 | 0 | 0 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 155 | 16 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 202 | 7 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 83 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 161 | 6 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 765 | 32 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 162 | 6 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 871 | 33 |
 
 ## Cases handled
 
 - super cars ii (1991)(gremlin)[cr skr](disk 1 of 2)[t +9 setrox]/Super Cars II (1991)(Gremlin)[cr SKR](Disk 1 of 2)[t +9 Setrox].adf: custom-format (non-DOS) disk, 1743 non-empty blocks: matched against track-loaded segments
 - super cars ii (1991)(gremlin)[cr skr](disk 1 of 2)[t +9 setrox]/Super Cars II (1991)(Gremlin)[cr SKR](Disk 1 of 2)[t +9 Setrox].adf: the boot block reads 25600 bytes from disk offset 872448 to an address (found statically); recovered as a unit
-- runtime segment an address: 33 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 60 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 81 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 43 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - runtime segment an address: 581 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 1 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 1 immediate
 - super cars ii (1991)(gremlin)[cr skr](disk 1 of 2)[t +9 setrox]/Super Cars II (1991)(Gremlin)[cr SKR](Disk 1 of 2)[t +9 Setrox].adf: 1 logged loads cover 25600 bytes of the image
 - 2 packed track region(s), 866816 bytes, recorded as PACKED DATA (UNVERIFIED): packer unknown, code recovered from the unpacked RAM image (Karl 5 Nov 2026)
 
@@ -70,16 +71,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `toggle_status_bit`: Compares a 16-bit value at a global offset to 25, and if equal, toggles the least significant bit of a 16-bit value at another global offset.
 - `update_memory_blocks`: Adds 65537 to four consecutive 32-bit words starting at a specific memory address and applies a bitwise AND with an address to each result.
 - `populate_pointer_table`: Iterates through a table of 16 16-bit values, uses a byte from a second table to calculate an index, and stores a series of calculated 32-bit pointers into a destination table.
-- `restore_context_and_set_register`: Stores a byte from d1 into a global variable, sets bit 6 of a hardware register, writes 8 to a location at offset 156 from a pointer in a6, and restores the processor state.
-- `branch_to_restore_context`: Sets bit 0 of d1 and branches to another routine.
-- `set_bit_one`: Sets bit 1 of the byte in d1 and branches to another routine.
-- `set_bit_three`: Sets bit 3 of the byte in d1 and branches to another routine.
-- `set_bit_two`: Sets bit 2 of the byte in d1 and branches to another routine.
-- `set_bit_four`: Sets bit 4 of the byte in d1 and branches to another routine.
-- `clear_bit_zero`: Clears bit 0 of the byte in d1 and branches to another routine.
-- `clear_bit_one`: Clears bit 1 of the byte in d1 and branches to another routine.
-- `clear_bit_three`: Clears bit 3 of the byte in d1 and branches to another routine.
-- `clear_bit_two`: Clears bit 2 of the byte in d1 and branches to another routine.
+- `decode_keyboard_to_control_bits`: Reads CIAA keyboard serial data, rotates and inverts the scan code, tracks qualifier keys, updates five control bits for press or release, acknowledges INTREQ, and returns from exception.
 - `clear_cia_control_bit`: Clears bit six of the first CIA control register, writes an all-ones value to a shared register, and saves the previous byte.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)
@@ -91,7 +83,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `stub_empty_return`: Returns immediately with no operations, so it is an empty stub reached only as unreached code.
 - `write_constant_to_offset`: Writes the value 15 to a 16-bit location at offset 150 from a pointer in a6 and returns.
 - `service_movement_interrupt_request`: Interrupt handler that reads the interrupt request register and, when bit four is set, clears that request, reads counter values, updates a state word and calls the matching handler from a function table.
-- `copy_memory_block`: Copies 765 32-bit words from a source table to a destination table using a loop.
+- `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 - `xor_global_byte`: Performs a bitwise XOR between a byte in d0 and a byte at a specific memory address and returns.
 - `empty_stub`: Empty routine: returns to the caller immediately without doing anything.
 
@@ -99,6 +91,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 - `parse_and_copy_resource_header`: Checks a header or resource identifier and, if a match is found, copies a block of data from a source pointer to a destination, while updating a global counter or pointer.
 - `process_table_with_shifts`: Iteratively shifts a value and updates it using a value from a table when the value reaches zero, controlled by a counter.
+- `shift_and_decrement_counter`: Repeatedly shifts a value and decrements a counter, potentially loading a new value from a pointer if the value becomes zero.
 - `looped_shift_with_table_lookup`: The routine repeatedly shifts an input value, using a table pointer when the value becomes zero, decrementand a short counter derived from an input register until it reaches minus one.
 - `copy_memory_backwards_decrement_counter`: Copies a block of memory backwards using a pointer while decrementing a counter initialized from a global variable.
 - `copy_memory_backwards_no_offset`: Copies a block of memory backwards using a pointer without adjusting the initial counter value.

@@ -8,10 +8,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (905840 top-level bytes in 3 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 5 of 5 units identical (bytes and relocations), 9 raw-word lines |
-| Functions named and described | pass, 67 of 67 named (0 author symbols), 67 of 67 described (16 by rule, 21 by the local model) |
+| Functions named and described | pass, 68 of 68 named (0 author symbols), 68 of 68 described (16 by rule, 21 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 260 of 260 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1274 of 1274 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1282 of 1282 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
@@ -28,7 +28,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|---|---|
 | Baal.adf:bootblock | 1 | 17 | 1 |
 | logged disk load from Baal.adf boot-block load | 1 | 124 | 4 |
-| logged disk load from Baal.adf boot-block load | 1 | 10 | 1 |
+| logged disk load from Baal.adf boot-block load | 1 | 18 | 2 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 1104 | 58 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 19 | 3 |
 
@@ -65,6 +65,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 ### logged disk load from Baal.adf boot-block load
 
+- `copy_boot_bytes_to_high_memory`: Sets a7, copies bytes from a PC-relative source until a0 reaches the limit in a1, then jumps to the destination start.
 - `frag_move_tst_beq_nop_jmp`: Short code fragment that copies 29588 to d0, then copies d0 to a fixed memory address, then tests a fixed memory address, then branches if the last result was zero, then copies 20081 to a fixed memory address, then pauses for one no-operation step (4 times in a row), then jumps to the address in a7.
 
 ### run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM)

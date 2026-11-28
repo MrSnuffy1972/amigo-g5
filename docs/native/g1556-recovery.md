@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (903952 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 2 of 2 units identical (bytes and relocations), 1 raw-word lines |
-| Functions named and described | pass, 28 of 28 named (0 author symbols), 28 of 28 described (0 by rule, 16 by the local model) |
+| Functions named and described | pass, 29 of 29 named (0 author symbols), 29 of 29 described (0 by rule, 16 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 186 of 186 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 407 of 407 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 413 of 413 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 2526 |
-| code | 1406 |
-| data | 827316 |
+| code | 1424 |
+| data | 827298 |
 | unused | 72704 |
 
 ## Code units
@@ -27,7 +27,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Manchester United - Europe (1991)(Krisalis Software)(M5)[cr CLS][a].adf:bootblock | 1 | 165 | 12 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 242 | 16 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 248 | 17 |
 
 ## Cases handled
 
@@ -55,7 +55,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `store_vectors_and_copy_table`: Stores three pointer values into a fixed low-memory slot, calling a routine after each, then copies a table of words to a fixed buffer.
 - `copy_block_and_run_forever`: Copies a block of longwords from a source pointer to a fixed low-memory address, then calls the code at another fixed address and spins forever.
 - `write_text_marker_by_flag`: Writes the four-character text marker FAT0 or FAT1 into a structure, choosing FAT1 when one bit of a global value is set.
-- `detect_frame_rate_from_cia`: Resets CIA port and timer registers, reads a counter from two CIA bytes and compares it with a threshold to choose between two frame rates, then writes a matching text marker.
+- `detect_refresh_rate_hz`: Resets the CIA-A and CIA-B port and timer registers, then reads a counter from two timer bytes and returns 50 or 60 depending on whether it is below a threshold.
 - `wait_until_status_byte_clear`: Polls a status byte at a fixed offset from the base register until its top bit is clear.
 - `initialize_tagged_structure`: Zeroes a 172-byte structure, writes the four-character tag RAMC into it, then stores two values and calls two routines to fill in the rest.
 - `find_bit_node_in_list`: Loads the head of a linked list from a structure and walks it, returning the first node whose 16-bit field has the requested bit set.
@@ -82,3 +82,4 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `loop_until_condition_met`: Executes a loop that checks a condition involving a pointer-based lookup and a multiplier, then sets a pointer-referenced value to zero.
 - `wait_for_value_match`: Sets a pointer-referenced value to zero and loops until a second pointer-referenced value matches that zeroed value.
 - `reset_global_variable`: Sets a global variable to zero and loops until that variable equals zero.
+- `clear_sixteen_record_words`: Clears the word at offset two in sixteen consecutive four-byte records addressed through a0, then returns.

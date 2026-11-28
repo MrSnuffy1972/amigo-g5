@@ -8,26 +8,26 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (901200 top-level bytes in 24 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 0 raw-word lines |
-| Functions named and described | pass, 120 of 120 named (0 author symbols), 120 of 120 described (43 by rule, 62 by the local model) |
+| Functions named and described | pass, 122 of 122 named (0 author symbols), 122 of 122 described (43 by rule, 62 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 832 of 832 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 5847 of 5847 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 5854 of 5854 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 73956 |
-| code | 18226 |
-| data | 68995 |
-| padding | 5303 |
+| code | 18244 |
+| data | 68975 |
+| padding | 5305 |
 | unused | 734720 |
 
 ## Code units
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| A-10 Tank Killer - Extra Missions (1990)(Sierra)[data disk].adf:sim_install | 2 | 5831 | 118 |
+| A-10 Tank Killer - Extra Missions (1990)(Sierra)[data disk].adf:sim_install | 2 | 5838 | 120 |
 | A-10 Tank Killer - Extra Missions (1990)(Sierra)[data disk].adf:bootblock | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 6 | 1 |
 
@@ -101,8 +101,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `format_number_as_reversed_string`: Calls another routine in a loop, writing each returned digit as an ASCII character into a stack buffer, then copies the characters back in reverse order into the output pointer, null-terminates it, and returns the length of the string.
 - `frag_clr_move_bra_2`: Short code fragment that clears d0, then copies the memory at an offset from a7 to d0, then jumps to another point in the code.
 - `format_number_as_octal`: Converts an unsigned value to octal digits by repeatedly taking its low three bits, stores the digits in a temporary stack buffer, then copies them in reverse order into the buffer given in the first argument, terminates the string with a zero byte, and returns the digit count.
+- `select_stack_word_and_format_value`: Loads a word indexed by d3, calls a comparison routine, follows condition-code branches, otherwise clears d0, loads a stack word, and branches to formatting code.
 - `format_uint_as_hex_string`: Converts the unsigned long in the second argument to lowercase hexadecimal digits using a lookup table, writes them reversed into the caller's buffer, null-terminates it and returns the character count.
 - `parse_signed_decimal_word`: Skips an optional leading sign and parses decimal digits into a signed 16-bit value stored at the output.
+- `accumulate_signed_decimal_word`: Updates d1 as a decimal accumulator, conditionally negates it for a minus sign, restores d2, stores the low word through a stack argument, and returns consumed length.
 - `update_memory_link`: Updates linked list pointers in a global structure when allocating memory, and initializes the allocated block's header with size and next pointer values.
 - `read_entry_and_data`: Validates a table entry, reads data from a file using another routine, and returns the result of the read operation or -1 on error.
 - `update_counter_and_store_byte`: Increments a counter at offset 1630 in a global structure, decrements another counter at offset 113a, and stores a byte value from d7 into memory at an address calculated from offset 1134.

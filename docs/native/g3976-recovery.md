@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (901200 top-level bytes in 19 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 14 raw-word lines |
-| Functions named and described | pass, 126 of 126 named (0 author symbols), 126 of 126 described (35 by rule, 86 by the local model) |
+| Byte-identical reassembly with vasm | pass, 4 of 4 units identical (bytes and relocations), 19 raw-word lines |
+| Functions named and described | pass, 127 of 127 named (0 author symbols), 127 of 127 described (35 by rule, 86 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 429 of 429 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 2838 of 2838 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 2840 of 2840 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 164633 |
-| code | 10904 |
-| data | 92982 |
+| code | 10952 |
+| data | 92934 |
 | padding | 3945 |
 | unused | 628736 |
 
@@ -28,7 +28,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | file | hunks | instructions | functions |
 |---|---|---|---|
 | Hyper Viper (1996)(L. Carminati)[h ALE].adf:type | 6 | 230 | 17 |
-| Hyper Viper (1996)(L. Carminati)[h ALE].adf:HyperViper | 12 | 2581 | 107 |
+| Hyper Viper (1996)(L. Carminati)[h ALE].adf:HyperViper | 12 | 2593 | 108 |
 | Hyper Viper (1996)(L. Carminati)[h ALE].adf:bootblock | 1 | 18 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 9 | 1 |
 
@@ -45,6 +45,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ## Copy protection found
 
 - `initialize_hardware` (HyperViper): Sets up hardware registers including DMA and interrupt control, reads current register values, modifies them with specific bit patterns, and stores the results back to global variables for later restoration. Kind: disk hardware check. Pass path: The routine initializes hardware registers including ADKCON and checks DMACON status, suggesting a disk drive or track validation check. If the check passes, execution continues normally; if it fails, a sabotage path or trap may be taken..
+- `store_a1_and_return_from_exception` (HyperViper): Stores a1 in a global longword and immediately returns from the exception; all following listed instructions are unreachable from this entry. Kind: disk hardware check. Pass path: ADKCON register read/write operations proceed normally, no exception raised.
 
 ## Functions
 
@@ -80,6 +81,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `allocate_signal`: Allocates a system signal using exec library functions, sets up task information in a structure, and returns the allocated signal number or -1 on failure.
 - `call_free_signal`: Library stub: loads its arguments and the exec library base, calls FreeSignal and returns its result to the caller.
 - `initialize_hardware`: Sets up hardware registers including DMA and interrupt control, reads current register values, modifies them with specific bit patterns, and stores the results back to global variables for later restoration.
+- `store_a1_and_return_from_exception`: Stores a1 in a global longword and immediately returns from the exception; all following listed instructions are unreachable from this entry.
 - `frag_movem_movea_move_cmp_bcs_jsr_rts`: Short code fragment that saves registers on the stack, then copies a fixed memory address to a6, then copies the memory at an offset from a6 to d0, then compares d0 with 37, then branches if the carry flag is set, then calls another routine, then restores saved registers from the stack, then returns.
 - `initialize_game_loop`: Initializes global variables and sets up a loop that manages game state through conditional checks and updates, configuring hardware registers including DMA control.
 - `manage_game_state`: Updates a global variable based on conditional checks against a global value and results from another routine, with different behavior for various states.

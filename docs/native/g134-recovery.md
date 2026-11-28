@@ -9,7 +9,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | Bytes classified (914192 top-level bytes in 2 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 4 raw-word lines |
 | Functions named and described | pass, 181 of 181 named (0 author symbols), 181 of 181 described (42 by rule, 5 by the local model) |
-| Executed addresses (reference run) in recovered, described code | pass, 252 of 252 (100.00%) |
+| Executed addresses (reference run) in recovered, described code | pass, 434 of 434 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
 | Independent decoder cross-check (Ghidra against capstone) | 3158 of 3158 instructions identical in start and length, 0 mismatches |
 
@@ -33,9 +33,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ## Cases handled
 
 - 3D World Boxing/3D World Boxing.adf: custom-format (non-DOS) disk, 1757 non-empty blocks: matched against track-loaded segments
-- 252 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
+- 434 executed addresses below an address (an address) run the game's own code, not harness stubs (their opcode words are not the fake OS's): treated as game code (LOWCODE, 15 Nov 2026)
 - 3D World Boxing/3D World Boxing.adf: the boot block reads 5632 bytes from disk offset 889856 to an address (found statically); recovered as a unit
-- runtime segment an address: 252 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
+- runtime segment an address: 434 executed PCs in code the game unpacked, copied or loaded at run time, carved from reference-run RAM and recovered
 - 3D World Boxing/3D World Boxing.adf: 1 logged loads cover 5632 bytes of the image
 - 3D World Boxing/3D World Boxing.adf: 24 track-loaded blocks found in recovered runtime segments and classified through them
 - 3D World Boxing/3D World Boxing.adf: blocks 2-3 (bytes 1024-2048) outside the filesystem hold data, not code (opcode density 0.027, entropy 3.13)

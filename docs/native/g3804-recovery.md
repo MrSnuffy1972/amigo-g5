@@ -7,19 +7,19 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | proof | result |
 |---|---|
 | Bytes classified (911216 top-level bytes in 7 containers) | pass, 100.000%, 0 unknown |
-| Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 4 raw-word lines |
-| Functions named and described | pass, 46 of 46 named (0 author symbols), 46 of 46 described (18 by rule, 26 by the local model) |
+| Byte-identical reassembly with vasm | pass, 3 of 3 units identical (bytes and relocations), 6 raw-word lines |
+| Functions named and described | pass, 52 of 52 named (0 author symbols), 52 of 52 described (22 by rule, 27 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 514 of 514 (100.00%) |
 | Recovered without load address (counted in proof 1, flagged) | 0 bytes, 0 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 1083 of 1084 instructions identical in start and length, 0 mismatches |
+| Independent decoder cross-check (Ghidra against capstone) | 1093 of 1094 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 5766 |
-| code | 4406 |
-| data | 378567 |
+| code | 4524 |
+| data | 378449 |
 | padding | 749 |
 | unused | 521728 |
 
@@ -27,9 +27,9 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| Giddy! II (1994)(P. Ruston)[t +2 GIN].adf:Game | 1 | 476 | 19 |
+| Giddy! II (1994)(P. Ruston)[t +2 GIN].adf:Game | 1 | 502 | 23 |
 | Giddy! II (1994)(P. Ruston)[t +2 GIN].adf:bootblock | 1 | 18 | 1 |
-| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 590 | 26 |
+| run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 607 | 28 |
 
 ## Cases handled
 
@@ -66,6 +66,10 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `copy_byte_block`: Copies bytes from one memory location to another using a counter loaded from a source pointer, decrementing the counter and branching back until it reaches zero.
 - `copy_byte_block_2`: Copies bytes from a source buffer to a destination buffer using a counter loaded from a source pointer, decrementing the counter and branching back until the counter reaches zero.
 - `decode_compressed_data`: Decompresses compressed data from a source buffer to a destination buffer using a custom decoding algorithm that processes bits and bytes in a loop, with conditional branches based on bit values.
+- `frag_or_and_adda_sub_rts`: Short code fragment that merges the memory just below a6 (moving a6 down) into d4, then masks d7 with the memory just below a2 (moving a2 down), then adds the memory just below a3 (moving a3 down) to a0, then subtracts an indexed entry from a6 from d1, then returns.
+- `frag_andi_and_lsl_or_rts`: Short code fragment that masks d0 with 10, then masks d0 with d7, then masks d1 with d7, then shifts d0 left by 1, then merges d1 into d0, then returns.
+- `xor_longwords_and_apply_mask`: XORs a d1-derived count of longwords from a0 into d0, masks the result with d7, restores d2, and returns the masked value.
+- `frag_and_bls_move_rts`: Short code fragment that masks d0 with the memory just below a4 (moving a4 down), then branches if the comparison was lower or same (unsigned), then copies a fixed memory address to d0, then copies d0 to the memory at an offset from a5, then returns.
 - `undecodable_bytes`: Undecodable bytes (unverified code): the bytes at this entry do not decode as valid 68000 code, so the decompiler stopped here and no behaviour is claimed.
 
 ### Giddy! II (1994)(P. Ruston)[t +2 GIN].adf:bootblock
@@ -98,5 +102,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `frag_lea_move_jsr_addi_rts`: Short code fragment that loads the address of a fixed memory address into a0, then loads the address of a fixed memory address into a1, then copies 4 to d5, then calls another routine, then adds 1 to a fixed memory address, then returns.
 - `open_resource_library`: Opens system libraries and resources using library calls, accesses hardware registers for input devices, and handles resource management operations.
 - `allocate_memory_block`: Allocates a memory block using a library call and returns immediately without performing any other operations.
+- `divide_and_store`: Divides a value from a global variable by the input word, stores the quotient at an offset from a4, shifts the quotient right by eight bits, and stores the resulting byte at another offset from a4.
+- `frag_move_lsr_rts`: Short code fragment that copies d2 to the memory at an offset from a4, then shifts d2 right by 8, then copies d2 to the memory at an offset from a4, then returns.
 - `initialize_audio_system`: Initializes audio system registers by setting multiple volume controls to zero, clearing several global variables, and writing specific values to hardware control registers related to sound output and disk status.
 - `frag_sf_lea_clr_move_rts`: Short code fragment that clears a fixed memory address, then loads the address of a fixed memory address into a0, then clears the memory at an offset from a0 (4 times in a row), then copies 15 to a fixed memory address, then returns.

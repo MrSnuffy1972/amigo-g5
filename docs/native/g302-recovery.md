@@ -8,18 +8,18 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 |---|---|
 | Bytes classified (907798 top-level bytes in 25 containers) | pass, 100.000%, 0 unknown |
 | Byte-identical reassembly with vasm | pass, 16 of 16 units identical (bytes and relocations), 32 raw-word lines |
-| Functions named and described | pass, 274 of 274 named (0 author symbols), 274 of 274 described (55 by rule, 211 by the local model) |
+| Functions named and described | pass, 318 of 318 named (0 author symbols), 318 of 318 described (55 by rule, 211 by the local model) |
 | Executed addresses (reference run) in recovered, described code | pass, 429 of 430 (99.77%) |
-| Recovered without load address (counted in proof 1, flagged) | 32768 bytes, 1 functions |
-| Independent decoder cross-check (Ghidra against capstone) | 5359 of 5359 instructions identical in start and length, 0 mismatches |
+| Recovered without load address (counted in proof 1, flagged) | 32768 bytes, 43 functions |
+| Independent decoder cross-check (Ghidra against capstone) | 5749 of 6264 instructions identical in start and length, 0 mismatches |
 
 ## Bytes by class (top level)
 
 | class | bytes |
 |---|---|
 | asset | 556675 |
-| code | 15976 |
-| data | 78042 |
+| code | 16174 |
+| data | 77844 |
 | padding | 4177 |
 | unused | 252928 |
 
@@ -27,13 +27,13 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 
 | file | hunks | instructions | functions |
 |---|---|---|---|
-| type | 2 | 117 | 2 |
+| type | 2 | 188 | 2 |
 | starsmittel | 2 | 177 | 7 |
 | shades | 2 | 208 | 7 |
 | add21K | 3 | 480 | 33 |
 | border | 3 | 223 | 6 |
 | Zzzep.adf:mad | 2 | 79 | 3 |
-| Zzzep.adf:cls | 3 | 2549 | 141 |
+| Zzzep.adf:cls | 3 | 2551 | 143 |
 | Zzzep.adf:1 | 1 | 155 | 3 |
 | Zzzep.adf:bootblock | 1 | 10 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 381 | 36 |
@@ -42,7 +42,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 217 | 6 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 2 | 1 |
 | run-time segment (code the game unpacked, copied or loaded; carved from reference-run RAM) | 1 | 4 | 1 |
-| Zzzep.adf:1#unpacked | 1 | 533 | 1 |
+| Zzzep.adf:1#unpacked | 1 | 1436 | 43 |
 
 ## Cases handled
 
@@ -59,7 +59,6 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - self-modifying code at an address (6 bytes change between runtime segment an address (play-rs-m1500-unpk03) and runtime segment an address): both forms recovered; writer: runtime segment an address (play-rs-m1500-unpk03) +286, runtime segment an address (play-rs-m1500-unpk03) +298, runtime segment an address (play-rs-m1500-unpk03) +2AA, runtime segment an address (play-rs-m1500-unpk03) +2BC
 - self-modifying operands (static SMC idiom recogniser, 12 Nov 2026): 3 instruction(s) whose operand field other code writes or takes the address of, to be lifted to variables (work/smc.json): 2 jump target, 1 displacement
 - Zzzep/Zzzep.adf:1: a hunk has very high entropy (packed payload); its depacker is recovered as code, the payload as data
-- 1 never-loaded region(s), 32768 bytes, recorded as UNVERIFIED DATA (under 5% of bytes decode as instruction flows; Karl 4 Nov 2026, 5% from 5 Nov)
 
 ## Cracktros (kept, not protection)
 
@@ -173,6 +172,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `parse_signed_integer_2`: Parses a signed integer from a string by skipping whitespace and handling optional sign characters.
 - `store_parameter_and_call`: Stores a parameter into a stack-based location and calls another routine.
 - `initialize_buffer_and_call_library`: Initializes a buffer with zeros using a loop, then checks a bit in a library-provided structure to decide whether to call a routine with a pointer or call another routine with a specific string or constant, otherwise it returns.
+- `exception_return_stub`: Returns from the exception immediately; all following instructions are unreachable from this entry.
 - `return_from_subroutine`: This routine is empty and performs no operations before returning.
 - `process_window_data`: Tokenizes strings, interacts with windowing and DOS libraries to retrieve pointers, and updates various fields within a structure based on indirect function results.
 - `tiny_move_2`: Small routine of 1 instruction that copies d0 to d5.
@@ -238,6 +238,7 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 - `write_fixed_text_then_callback`: Obtains an output handle, writes a four-byte text fragment from a fixed address via DOS calls, and then executes a conditional function.
 - `execute_indirect_function_4`: Checks if a value at a specific offset from a pointer is non-zero and, if so, calls the function pointed to by that value.
 - `process_complex_structure`: Iterates through a loop based on a table value, performs multiple indirect function calls using various offsets, and checks a bit in a system register before executing a final indirect call.
+- `exception_return_cleanup_stub`: Returns from the exception immediately; the subsequent resource cleanup and stack restoration instructions are unreachable from this entry.
 - `tiny_move_unlk_rts`: Small routine of 3 instructions that copies (a7)+ to d4, then removes the stack frame held in a5, then returns.
 - `close_file_handle`: The routine validates an index against a table, checks if the associated file pointer is non-zero, and if valid, calls a routine to close the file before zeroing the entry.
 - `call_close`: Wrapper that calls the dos library function Close and returns its result to the caller.
@@ -393,3 +394,45 @@ Step 1 of the native-port process: every byte of the game recovered into named, 
 ### Zzzep.adf:1#unpacked
 
 - `fills_with_zeros`: Fills memory with zero bytes by repeatedly executing a no-operation instruction on each data register.
+- `build_three_graphics_tables`: Loads fixed register parameters and invokes the same table-building operation three times with counts 29, 8, and 29, then returns.
+- `clear_selected_planar_columns`: Checks two global conditions, then clears either three adjacent columns or 25 spaced groups across four planes, and returns.
+- `build_wrapped_record_table`: Writes records containing an advancing longword, a constant word, and source words; wraps the source at a negative marker and repeats 150 times.
+- `dispatch_address_pairs_until_sentinel`: Reads a0 and a1 address pairs through a4, calls one operation for each nonnegative a0 value, and returns at the negative sentinel.
+- `refresh_three_display_sections`: Sets control globals, invokes conversion and copy operations for three sources, optionally copies 15 five-plane entries, adjusts a destination pointer, and returns.
+- `start_dual_channel_sample`: Disables audio DMA, delays, configures channels zero and one with identical pointer, length, period, and volume, re-enables both channels, and returns.
+- `load_asset_variant_one`: Stores one source pointer and a common destination pointer in globals, calls the conditional loader, and returns.
+- `load_asset_variant_two`: Stores a different source pointer and the common destination pointer in globals, calls the conditional loader, and returns.
+- `load_asset_to_alternate_buffer`: Stores a third source pointer and an alternate destination pointer in globals, calls the conditional loader, and returns.
+- `load_and_transform_two_assets`: Sets source and destination globals for two loads, calls three additional memory operations with fixed pointers and lengths, then returns.
+- `initialize_game_mode_zero`: Calls three setup operations, writes mode-zero state, collision control, limits, pointers, and flags, invokes six more setup operations, then returns.
+- `initialize_game_mode_one`: Calls three setup operations, writes mode-one state, collision control, alternate limits and pointers, invokes six more setup operations, then returns.
+- `clear_terminated_record_fields`: Clears four longwords and one word in each 18-byte record, continuing while the next record begins with a nonnegative longword, then returns.
+- `build_incrementing_word_pairs`: Writes an incrementing d1 word and one source word into each destination pair, advancing both pointers until d0 expires, then returns.
+- `build_four_word_graphics_entries`: Writes d2, minus two, d1, and one source word per entry, increases d2 by 256, repeats through d0, and returns.
+- `clear_six_field_columns`: Calls the same clearing operation for six offsets from a global base pointer, reloading that base before every call, then returns.
+- `clear_five_planar_words`: Across 15 records, clears words at five plane offsets from a1, advances a1 by 200 bytes each time, and returns.
+- `initialize_pointer_pair_tables`: Runs paired copy operations over six descriptor groups, initializes four flags, builds three smaller tables, clears three longwords, and returns.
+- `apply_four_packed_pointer_updates`: For four entries, loads a packed longword into d6 and a destination into a0, calls the field writer, then returns.
+- `split_d6_into_record_words`: Writes the low word of d6 at offset six from a0, swaps d6, writes its high word at offset two, and returns.
+- `collect_first_plane_word_pairs`: Copies two words from each widely spaced source record into consecutive destination pairs, repeats through d0, writes a zero longword terminator, and returns.
+- `collect_second_plane_word_pairs`: Copies words at offsets 80 and 120 from each spaced source record into destination pairs, repeats through d0, writes a zero longword terminator, and returns.
+- `build_and_replicate_display_descriptors`: Computes two descriptor coordinate pairs through calls, duplicates four resulting longwords into multiple global tables, and returns.
+- `encode_half_coordinate_and_flag`: Shifts d0 right, stores the low byte through a6, sets or clears a flag bit from the shifted-out bit, and returns.
+- `encode_two_coordinates_and_flags`: Stores low bytes of d0 and d1 in an a6 record and sets two flag bits according to bit eight of each value, then returns.
+- `build_linear_offset_table`: Writes 277 longword offsets starting at zero through a0, increasing each value by 176, then returns.
+- `generate_random_triplets_and_clear`: Generates 100 groups of three words through calls, masks each third word to 12 bits, then clears 100 longwords in another buffer and returns.
+- `subtract_signature_across_buffer`: Computes an end pointer from a0 and d0, subtracts the same signature longword from each successive location until reaching that end, then returns.
+- `update_seed_from_vhposr`: Reads VHPOSR, multiplies it by the seed word, adds seven, sign-extends d0, writes the new seed, and returns.
+- `format_and_copy_score_records`: Preserves all registers, processes ten records, converts each value to digits, adds character offsets, copies two strings into record destinations, restores registers, and returns.
+- `sort_ten_records_descending`: Repeatedly scans nine adjacent record pairs, swaps their longword, pointer, and word fields when the next key is larger, and stops after a swap-free pass.
+- `edit_high_score_entry`: When a new score exceeds the threshold, inserts a record, draws it, polls input, edits characters according to control codes, and stores the resulting name.
+- `open_read_close_asset`: Saves all registers, opens the configured name, reads up to an address bytes into the configured destination, closes the handle, branches through a success continuation, or clears the handle and returns.
+- `decode_backward_compressed_stream`: Saves all registers, reads packed bits through indirect refill operations, emits literal runs or backward copies into a descending output buffer, restores registers at the boundary, and returns.
+- `decode_body_run_length_data`: Finds a BODY marker, skips its header, expands literal and repeated byte runs from a0 into a1 until the requested output length is reached, restores registers, and returns.
+- `build_pairs_until_negative_marker`: Writes an incrementing d0 word and one source word to each destination pair, stopping before a negative source marker, then returns.
+- `convert_d7_to_six_digits`: Converts d7 into six decimal digit bytes by repeated subtraction, replaces leading zero digits with a configured fill byte, restores registers, and returns.
+- `copy_indexed_five_plane_columns`: Reads source column indices until 255, copies five plane bytes across d7 plus one rows into successive destination columns, restores registers, and returns.
+- `initialize_audio_workspace`: Finds the maximum byte in a 128-byte region, builds 31 workspace pointers, sets a CIA port bit, clears four audio volumes and state fields, then returns.
+- `mute_all_audio_channels`: Clears the volume words for audio channels zero through three, writes 15 to DMACON to disable their DMA, and returns.
+- `render_string_planar_glyphs`: Reads characters until zero, maps each through a font layout, copies four plane bytes across seven rows into successive destination columns, restores registers, and returns.
+- `mark_records_with_negative_word`: Starting from a global pointer, writes minus one to offset 12 of each 20-byte record while the next record key remains nonnegative, then returns.
